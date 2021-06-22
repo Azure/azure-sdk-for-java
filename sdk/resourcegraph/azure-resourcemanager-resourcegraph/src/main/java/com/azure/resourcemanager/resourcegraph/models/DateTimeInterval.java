@@ -12,7 +12,7 @@ import java.time.OffsetDateTime;
 
 /** An interval in time specifying the date and time for the inclusive start and exclusive end, i.e. `[start, end)`. */
 @Fluent
-public class DateTimeInterval {
+public final class DateTimeInterval {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DateTimeInterval.class);
 
     /*

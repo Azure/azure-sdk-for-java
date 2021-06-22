@@ -9,45 +9,46 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ResourcesHistoryRequestOptions model. */
+/** The options for history request evaluation. */
 @Fluent
 public final class ResourcesHistoryRequestOptions {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourcesHistoryRequestOptions.class);
 
     /*
-     * An interval in time specifying the date and time for the inclusive start
-     * and exclusive end, i.e. `[start, end)`.
+     * The time interval used to fetch history.
      */
     @JsonProperty(value = "interval")
     private DateTimeInterval interval;
 
     /*
-     * The $top property.
+     * The maximum number of rows that the query should return. Overrides the
+     * page size when ```$skipToken``` property is present.
      */
     @JsonProperty(value = "$top")
     private Integer top;
 
     /*
-     * The $skip property.
+     * The number of rows to skip from the beginning of the results. Overrides
+     * the next page offset when ```$skipToken``` property is present.
      */
     @JsonProperty(value = "$skip")
     private Integer skip;
 
     /*
-     * The $skipToken property.
+     * Continuation token for pagination, capturing the next page size and
+     * offset, as well as the context of the query.
      */
     @JsonProperty(value = "$skipToken")
     private String skipToken;
 
     /*
-     * The resultFormat property.
+     * Defines in which format query result returned.
      */
     @JsonProperty(value = "resultFormat")
-    private ResourcesHistoryRequestOptionsResultFormat resultFormat;
+    private ResultFormat resultFormat;
 
     /**
-     * Get the interval property: An interval in time specifying the date and time for the inclusive start and exclusive
-     * end, i.e. `[start, end)`.
+     * Get the interval property: The time interval used to fetch history.
      *
      * @return the interval value.
      */
@@ -56,8 +57,7 @@ public final class ResourcesHistoryRequestOptions {
     }
 
     /**
-     * Set the interval property: An interval in time specifying the date and time for the inclusive start and exclusive
-     * end, i.e. `[start, end)`.
+     * Set the interval property: The time interval used to fetch history.
      *
      * @param interval the interval value to set.
      * @return the ResourcesHistoryRequestOptions object itself.
@@ -68,7 +68,8 @@ public final class ResourcesHistoryRequestOptions {
     }
 
     /**
-     * Get the top property: The $top property.
+     * Get the top property: The maximum number of rows that the query should return. Overrides the page size when
+     * ```$skipToken``` property is present.
      *
      * @return the top value.
      */
@@ -77,7 +78,8 @@ public final class ResourcesHistoryRequestOptions {
     }
 
     /**
-     * Set the top property: The $top property.
+     * Set the top property: The maximum number of rows that the query should return. Overrides the page size when
+     * ```$skipToken``` property is present.
      *
      * @param top the top value to set.
      * @return the ResourcesHistoryRequestOptions object itself.
@@ -88,7 +90,8 @@ public final class ResourcesHistoryRequestOptions {
     }
 
     /**
-     * Get the skip property: The $skip property.
+     * Get the skip property: The number of rows to skip from the beginning of the results. Overrides the next page
+     * offset when ```$skipToken``` property is present.
      *
      * @return the skip value.
      */
@@ -97,7 +100,8 @@ public final class ResourcesHistoryRequestOptions {
     }
 
     /**
-     * Set the skip property: The $skip property.
+     * Set the skip property: The number of rows to skip from the beginning of the results. Overrides the next page
+     * offset when ```$skipToken``` property is present.
      *
      * @param skip the skip value to set.
      * @return the ResourcesHistoryRequestOptions object itself.
@@ -108,7 +112,8 @@ public final class ResourcesHistoryRequestOptions {
     }
 
     /**
-     * Get the skipToken property: The $skipToken property.
+     * Get the skipToken property: Continuation token for pagination, capturing the next page size and offset, as well
+     * as the context of the query.
      *
      * @return the skipToken value.
      */
@@ -117,7 +122,8 @@ public final class ResourcesHistoryRequestOptions {
     }
 
     /**
-     * Set the skipToken property: The $skipToken property.
+     * Set the skipToken property: Continuation token for pagination, capturing the next page size and offset, as well
+     * as the context of the query.
      *
      * @param skipToken the skipToken value to set.
      * @return the ResourcesHistoryRequestOptions object itself.
@@ -128,21 +134,21 @@ public final class ResourcesHistoryRequestOptions {
     }
 
     /**
-     * Get the resultFormat property: The resultFormat property.
+     * Get the resultFormat property: Defines in which format query result returned.
      *
      * @return the resultFormat value.
      */
-    public ResourcesHistoryRequestOptionsResultFormat resultFormat() {
+    public ResultFormat resultFormat() {
         return this.resultFormat;
     }
 
     /**
-     * Set the resultFormat property: The resultFormat property.
+     * Set the resultFormat property: Defines in which format query result returned.
      *
      * @param resultFormat the resultFormat value to set.
      * @return the ResourcesHistoryRequestOptions object itself.
      */
-    public ResourcesHistoryRequestOptions withResultFormat(ResourcesHistoryRequestOptionsResultFormat resultFormat) {
+    public ResourcesHistoryRequestOptions withResultFormat(ResultFormat resultFormat) {
         this.resultFormat = resultFormat;
         return this;
     }

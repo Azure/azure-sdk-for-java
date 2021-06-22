@@ -6,58 +6,9 @@ package com.azure.resourcemanager.resourcegraph.models;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import java.util.List;
 
 /** Resource collection API of ResourceProviders. */
 public interface ResourceProviders {
-    /**
-     * List changes to a resource for a given time interval.
-     *
-     * @param parameters the parameters for this request for changes.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of changes associated with a resource over a specific time interval.
-     */
-    ResourceChangeList resourceChanges(ResourceChangesRequestParameters parameters);
-
-    /**
-     * List changes to a resource for a given time interval.
-     *
-     * @param parameters the parameters for this request for changes.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of changes associated with a resource over a specific time interval.
-     */
-    Response<ResourceChangeList> resourceChangesWithResponse(
-        ResourceChangesRequestParameters parameters, Context context);
-
-    /**
-     * Get resource change details.
-     *
-     * @param parameters The parameters for this request for resource change details.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource change details.
-     */
-    List<ResourceChangeData> resourceChangeDetails(ResourceChangeDetailsRequestParameters parameters);
-
-    /**
-     * Get resource change details.
-     *
-     * @param parameters The parameters for this request for resource change details.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource change details.
-     */
-    Response<List<ResourceChangeData>> resourceChangeDetailsWithResponse(
-        ResourceChangeDetailsRequestParameters parameters, Context context);
-
     /**
      * Queries the resources managed by Azure Resource Manager for scopes specified in the request.
      *
@@ -84,7 +35,7 @@ public interface ResourceProviders {
     /**
      * List all snapshots of a resource for a given time interval.
      *
-     * @param request The request parameter.
+     * @param request Request specifying the query and its options.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -95,7 +46,7 @@ public interface ResourceProviders {
     /**
      * List all snapshots of a resource for a given time interval.
      *
-     * @param request The request parameter.
+     * @param request Request specifying the query and its options.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

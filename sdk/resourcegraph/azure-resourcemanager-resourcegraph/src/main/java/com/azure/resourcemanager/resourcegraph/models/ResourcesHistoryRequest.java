@@ -10,37 +10,38 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ResourcesHistoryRequest model. */
+/** Describes a history request to be executed. */
 @Fluent
 public final class ResourcesHistoryRequest {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourcesHistoryRequest.class);
 
     /*
-     * The subscriptions property.
+     * Azure subscriptions against which to execute the query.
      */
     @JsonProperty(value = "subscriptions")
     private List<String> subscriptions;
 
     /*
-     * The query property.
+     * The resources query.
      */
     @JsonProperty(value = "query")
     private String query;
 
     /*
-     * The options property.
+     * The history request evaluation options
      */
     @JsonProperty(value = "options")
     private ResourcesHistoryRequestOptions options;
 
     /*
-     * The managementGroupId property.
+     * Azure management groups against which to execute the query. Example: [
+     * 'mg1', 'mg2' ]
      */
-    @JsonProperty(value = "managementGroupId")
-    private String managementGroupId;
+    @JsonProperty(value = "managementGroups")
+    private List<String> managementGroups;
 
     /**
-     * Get the subscriptions property: The subscriptions property.
+     * Get the subscriptions property: Azure subscriptions against which to execute the query.
      *
      * @return the subscriptions value.
      */
@@ -49,7 +50,7 @@ public final class ResourcesHistoryRequest {
     }
 
     /**
-     * Set the subscriptions property: The subscriptions property.
+     * Set the subscriptions property: Azure subscriptions against which to execute the query.
      *
      * @param subscriptions the subscriptions value to set.
      * @return the ResourcesHistoryRequest object itself.
@@ -60,7 +61,7 @@ public final class ResourcesHistoryRequest {
     }
 
     /**
-     * Get the query property: The query property.
+     * Get the query property: The resources query.
      *
      * @return the query value.
      */
@@ -69,7 +70,7 @@ public final class ResourcesHistoryRequest {
     }
 
     /**
-     * Set the query property: The query property.
+     * Set the query property: The resources query.
      *
      * @param query the query value to set.
      * @return the ResourcesHistoryRequest object itself.
@@ -80,7 +81,7 @@ public final class ResourcesHistoryRequest {
     }
 
     /**
-     * Get the options property: The options property.
+     * Get the options property: The history request evaluation options.
      *
      * @return the options value.
      */
@@ -89,7 +90,7 @@ public final class ResourcesHistoryRequest {
     }
 
     /**
-     * Set the options property: The options property.
+     * Set the options property: The history request evaluation options.
      *
      * @param options the options value to set.
      * @return the ResourcesHistoryRequest object itself.
@@ -100,22 +101,24 @@ public final class ResourcesHistoryRequest {
     }
 
     /**
-     * Get the managementGroupId property: The managementGroupId property.
+     * Get the managementGroups property: Azure management groups against which to execute the query. Example: [ 'mg1',
+     * 'mg2' ].
      *
-     * @return the managementGroupId value.
+     * @return the managementGroups value.
      */
-    public String managementGroupId() {
-        return this.managementGroupId;
+    public List<String> managementGroups() {
+        return this.managementGroups;
     }
 
     /**
-     * Set the managementGroupId property: The managementGroupId property.
+     * Set the managementGroups property: Azure management groups against which to execute the query. Example: [ 'mg1',
+     * 'mg2' ].
      *
-     * @param managementGroupId the managementGroupId value to set.
+     * @param managementGroups the managementGroups value to set.
      * @return the ResourcesHistoryRequest object itself.
      */
-    public ResourcesHistoryRequest withManagementGroupId(String managementGroupId) {
-        this.managementGroupId = managementGroupId;
+    public ResourcesHistoryRequest withManagementGroups(List<String> managementGroups) {
+        this.managementGroups = managementGroups;
         return this;
     }
 

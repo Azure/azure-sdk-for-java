@@ -49,6 +49,13 @@ public final class QueryRequestOptions {
     @JsonProperty(value = "allowPartialScopes")
     private Boolean allowPartialScopes;
 
+    /*
+     * Defines what level of authorization resources should be returned based
+     * on the which subscriptions and management groups are passed as scopes.
+     */
+    @JsonProperty(value = "authorizationScopeFilter")
+    private AuthorizationScopeFilter authorizationScopeFilter;
+
     /**
      * Get the skipToken property: Continuation token for pagination, capturing the next page size and offset, as well
      * as the context of the query.
@@ -154,6 +161,28 @@ public final class QueryRequestOptions {
      */
     public QueryRequestOptions withAllowPartialScopes(Boolean allowPartialScopes) {
         this.allowPartialScopes = allowPartialScopes;
+        return this;
+    }
+
+    /**
+     * Get the authorizationScopeFilter property: Defines what level of authorization resources should be returned based
+     * on the which subscriptions and management groups are passed as scopes.
+     *
+     * @return the authorizationScopeFilter value.
+     */
+    public AuthorizationScopeFilter authorizationScopeFilter() {
+        return this.authorizationScopeFilter;
+    }
+
+    /**
+     * Set the authorizationScopeFilter property: Defines what level of authorization resources should be returned based
+     * on the which subscriptions and management groups are passed as scopes.
+     *
+     * @param authorizationScopeFilter the authorizationScopeFilter value to set.
+     * @return the QueryRequestOptions object itself.
+     */
+    public QueryRequestOptions withAuthorizationScopeFilter(AuthorizationScopeFilter authorizationScopeFilter) {
+        this.authorizationScopeFilter = authorizationScopeFilter;
         return this;
     }
 
