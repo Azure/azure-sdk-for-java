@@ -11,6 +11,7 @@ import com.azure.communication.callingserver.implementation.converters.CallingSe
 import com.azure.communication.callingserver.implementation.converters.JoinCallRequestConverter;
 import com.azure.communication.callingserver.implementation.models.CommunicationErrorResponseException;
 import com.azure.communication.callingserver.implementation.models.CreateCallRequest;
+import com.azure.communication.callingserver.models.CallingServerErrorException;
 import com.azure.communication.callingserver.models.CreateCallOptions;
 import com.azure.communication.callingserver.models.JoinCallOptions;
 import com.azure.communication.callingserver.models.ParallelDownloadOptions;
@@ -34,6 +35,7 @@ import java.nio.file.OpenOption;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -75,6 +77,8 @@ public final class CallingServerAsyncClient {
      * @param source The source of the call.
      * @param targets The targets of the call.
      * @param createCallOptions The call Options.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for a successful CreateCallConnection request.
      *
      * {@codesnippet com.azure.communication.callingserver.CallingServerAsyncClient.create.call.connection.async}
@@ -82,7 +86,7 @@ public final class CallingServerAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CallConnectionAsync> createCallConnection(
         CommunicationIdentifier source,
-        CommunicationIdentifier[] targets,
+        List<CommunicationIdentifier> targets,
         CreateCallOptions createCallOptions) {
         try {
             Objects.requireNonNull(source, "'source' cannot be null.");
@@ -103,12 +107,14 @@ public final class CallingServerAsyncClient {
      * @param source The source of the call.
      * @param targets The targets of the call.
      * @param createCallOptions The call Options.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CallConnectionAsync>> createCallConnectionWithResponse(
         CommunicationIdentifier source,
-        CommunicationIdentifier[] targets,
+        List<CommunicationIdentifier> targets,
         CreateCallOptions createCallOptions) {
         try {
             Objects.requireNonNull(source, "'source' cannot be null.");
@@ -125,7 +131,7 @@ public final class CallingServerAsyncClient {
 
     Mono<CallConnection> createCallConnectionInternal(
         CommunicationIdentifier source,
-        CommunicationIdentifier[] targets,
+        List<CommunicationIdentifier> targets,
         CreateCallOptions createCallOptions) {
         try {
             Objects.requireNonNull(source, "'source' cannot be null.");
@@ -142,7 +148,7 @@ public final class CallingServerAsyncClient {
 
     Mono<Response<CallConnection>> createCallConnectionWithResponseInternal(
         CommunicationIdentifier source,
-        CommunicationIdentifier[] targets,
+        List<CommunicationIdentifier> targets,
         CreateCallOptions createCallOptions,
         Context context) {
         try {
@@ -168,10 +174,12 @@ public final class CallingServerAsyncClient {
      * @param serverCallId The server call id.
      * @param source to Join Call.
      * @param joinCallOptions join call options.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for a successful join request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CallConnectionAsync> join(
+    public Mono<CallConnectionAsync> joinCall(
         String serverCallId,
         CommunicationIdentifier source,
         JoinCallOptions joinCallOptions) {
@@ -193,10 +201,12 @@ public final class CallingServerAsyncClient {
      * @param serverCallId The server call id.
      * @param source to Join Call.
      * @param joinCallOptions join call options.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for a successful join request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CallConnectionAsync>>joinWithResponse(
+    public Mono<Response<CallConnectionAsync>> joinCallWithResponse(
         String serverCallId,
         CommunicationIdentifier source,
         JoinCallOptions joinCallOptions) {
