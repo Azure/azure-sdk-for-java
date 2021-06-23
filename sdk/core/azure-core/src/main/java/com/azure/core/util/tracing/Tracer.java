@@ -253,7 +253,8 @@ public interface Tracer {
     }
 
     /**
-     * Adds an event to the current span with the provided {@code timestamp} and {@code attributes}.
+     * Adds an event to the span present in the {@code Context} with the provided {@code timestamp}
+     * and {@code attributes}.
      * <p>This API does not provide any normalization if provided timestamps are out of range of the current
      * span timeline</p>
      * <p>Supported attribute values include String, double, boolean, long, String [], double [], long [].

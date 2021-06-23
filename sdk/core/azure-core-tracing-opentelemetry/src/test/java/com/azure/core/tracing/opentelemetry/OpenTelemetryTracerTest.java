@@ -595,7 +595,7 @@ public class OpenTelemetryTracerTest {
     }
 
     @Test
-    public void addEventWithoutContext() {
+    public void addEventWithoutEventSpanContext() {
         // Arrange
         final String eventName = "event-0";
         OffsetDateTime eventTime = OffsetDateTime.parse("2021-01-01T18:35:24.00Z");
@@ -608,7 +608,7 @@ public class OpenTelemetryTracerTest {
         assertEquals(PARENT_SPAN_KEY, recordEventsSpan.getName());
         List<EventData> eventData = recordEventsSpan.toSpanData().getEvents();
         assertNotNull(eventData);
-        assertEquals(0, eventData.size());
+        assertEquals(1, eventData.size());
     }
 
     private static void assertSpanWithExplicitParent(Context updatedContext, String parentSpanId) {
