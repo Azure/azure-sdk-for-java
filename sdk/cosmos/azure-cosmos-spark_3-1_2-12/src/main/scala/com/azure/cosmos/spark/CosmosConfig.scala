@@ -142,7 +142,7 @@ private object CosmosConfig {
     }
 
     var effectiveUserConfig = CaseInsensitiveMap(userProvidedOptions)
-    if (accountDataResolverCls != null) {
+    if (accountDataResolverCls.isDefined) {
         val accountDataConfig = accountDataResolverCls.get.getAccountDataConfig(effectiveUserConfig)
         effectiveUserConfig = CaseInsensitiveMap(accountDataConfig)
     }
