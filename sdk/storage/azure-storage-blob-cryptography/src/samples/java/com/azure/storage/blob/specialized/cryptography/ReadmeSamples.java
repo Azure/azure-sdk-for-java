@@ -29,8 +29,8 @@ public class ReadmeSamples {
 
     private BlobClient blobClient;
     private String connectionString;
-    String containerName;
-    String blobName;
+    private String containerName;
+    private String blobName;
     private AsyncKeyEncryptionKey key;
     private AsyncKeyEncryptionKeyResolver keyResolver;
     private String keyWrapAlgorithm;
