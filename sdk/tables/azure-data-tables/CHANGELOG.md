@@ -2,6 +2,8 @@
 
 ## 12.1.0-beta.1 (Unreleased)
 
+### Bug fixes
+- Fixed an issue where a `connectionString` with an account name and key would override a `sasToken`'s authentication settings in client builders.
 
 ## 12.0.0 (2021-06-11)
 
