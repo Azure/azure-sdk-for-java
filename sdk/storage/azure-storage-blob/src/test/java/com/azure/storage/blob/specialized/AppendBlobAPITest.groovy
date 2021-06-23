@@ -4,7 +4,6 @@
 package com.azure.storage.blob.specialized
 
 import com.azure.core.exception.UnexpectedLengthException
-import com.azure.core.experimental.http.HttpAuthorization;
 import com.azure.core.util.Context
 import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.BlobServiceVersion
@@ -17,7 +16,6 @@ import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.options.AppendBlobSealOptions
-import com.azure.storage.blob.options.AppendBlobAppendBlockFromUrlOptions
 import com.azure.storage.blob.options.BlobGetTagsOptions
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import spock.lang.IgnoreIf

@@ -4,10 +4,8 @@
 package com.azure.storage.file.share
 
 import com.azure.core.exception.UnexpectedLengthException
-import com.azure.core.experimental.http.HttpAuthorization;
 import com.azure.core.util.Context
 import com.azure.core.util.polling.SyncPoller
-import com.azure.storage.blob.BlobServiceClientBuilder
 import com.azure.storage.common.ParallelTransferOptions
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
@@ -25,7 +23,6 @@ import com.azure.storage.file.share.models.ShareRequestConditions
 import com.azure.storage.file.share.models.ShareSnapshotInfo
 import com.azure.storage.file.share.models.ShareStorageException
 import com.azure.storage.file.share.options.ShareFileListRangesDiffOptions
-import com.azure.storage.file.share.options.ShareFileUploadRangeFromUrlOptions
 import com.azure.storage.file.share.sas.ShareFileSasPermission
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues
 import spock.lang.Ignore
