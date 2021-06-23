@@ -3,6 +3,7 @@
 
 package com.azure.core.http;
 
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
 
 import javax.json.Json;

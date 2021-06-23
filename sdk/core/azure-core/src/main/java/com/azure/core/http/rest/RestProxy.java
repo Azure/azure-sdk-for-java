@@ -13,7 +13,6 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.RequestOptions;
 import com.azure.core.http.ResponseStatusOption;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -296,9 +295,7 @@ public final class RestProxy implements InvocationHandler {
             }
 
             if (bodyContentObject instanceof BinaryData) {
-                byte[] body = ((BinaryData) bodyContentObject).toBytes();
-                request.setBody(body);
-                request.setHeader("Content-Length", String.valueOf(body.length));
+                request.setBody(((BinaryData) bodyContentObject).toBytes());
             } else if (isJson) {
                 ByteArrayOutputStream stream = new AccessibleByteArrayOutputStream();
                 serializer.serialize(bodyContentObject, SerializerEncoding.JSON, stream);

@@ -24,7 +24,6 @@ import com.azure.core.http.ContentType;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
-import com.azure.core.http.RequestOptions;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.implementation.UnixTime;
 import com.azure.core.implementation.http.UnexpectedExceptionInformation;
