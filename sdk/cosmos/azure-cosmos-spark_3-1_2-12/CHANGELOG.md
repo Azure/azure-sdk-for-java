@@ -4,6 +4,13 @@
 #### Configuration Changes
 * Changed the default value of `spark.cosmos.read.inferSchema.forceNullableProperties` from `false` to `true` based on user feedback, see [PR](https://github.com/Azure/azure-sdk-for-java/pull/22049).
 
+#### Key Bug Fixes
+* Fixes conversion for MapType schema (#22291).
+* Not-nullable properties to include "id" (#22143).
+* Support CustomQuery to be used for inference (#22079).
+* Fixes collision resolution on schema inference (#21933).
+* Fixes max length of userAgent header (#22018).
+
 ### 4.1.0 (2021-05-27)
 #### New Features
 * Added support for bulk deletes via `spark.cosmos.write.strategy` `ItemDelete` or `ItemDeleteIfNotModified`
