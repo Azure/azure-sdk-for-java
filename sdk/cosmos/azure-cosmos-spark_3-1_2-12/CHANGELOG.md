@@ -1,6 +1,6 @@
 ## Release History
 
-### 4.2.0
+### 4.2.0 (2021-06-23)
 #### Configuration Changes
 * Changed the default value of `spark.cosmos.read.inferSchema.forceNullableProperties` from `false` to `true` based on user feedback, see [PR](https://github.com/Azure/azure-sdk-for-java/pull/22049).
 
