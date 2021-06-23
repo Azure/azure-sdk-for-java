@@ -40,6 +40,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -529,7 +530,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         Assert.notNull(domainType, "domainType should not be null.");
         Assert.hasText(containerName, "container name should not be null, empty or only whitespaces");
 
-        final Flux<JsonNode> results = findItems(query, containerName);
+        final Flux<JsonNode> results = findItems(query, containerName, domainType);
 
         return results.flatMap(d -> deleteItem(d, containerName, domainType));
     }
@@ -544,7 +545,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
      */
     @Override
     public <T> Flux<T> find(CosmosQuery query, Class<T> domainType, String containerName) {
-        return findItems(query, containerName)
+        return findItems(query, containerName, domainType)
             .map(cosmosItemProperties -> toDomainObject(domainType, cosmosItemProperties));
     }
 
@@ -710,11 +711,14 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         }
     }
 
-    private Flux<JsonNode> findItems(@NonNull CosmosQuery query,
-                                     @NonNull String containerName) {
+    private <T> Flux<JsonNode> findItems(@NonNull CosmosQuery query,
+                                     @NonNull String containerName,
+                                     @NonNull Class<T> domainType) {
         final SqlQuerySpec sqlQuerySpec = new FindQuerySpecGenerator().generateCosmos(query);
         final CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
         cosmosQueryRequestOptions.setQueryMetricsEnabled(this.queryMetricsEnabled);
+        Optional<Object> partitionKeyValue = query.getPartitionKeyValue(domainType);
+        partitionKeyValue.ifPresent(o -> cosmosQueryRequestOptions.setPartitionKey(new PartitionKey(o)));
 
         return cosmosAsyncClient
             .getDatabase(this.databaseName)
