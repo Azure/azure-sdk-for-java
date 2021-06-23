@@ -108,16 +108,16 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 
 <!-- LINKS -->
 [samples]: src/samples/java/com/azure/verticals/agrifood/farming
-[source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/farmbeats/azure-verticals-agrifood-farming/src
-[samples_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/farmbeats/azure-verticals-agrifood-farming/src/samples/
+[source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/agrifood/azure-verticals-agrifood-farming/src
+[samples_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/agrifood/azure-verticals-agrifood-farming/src/samples/
 [azure_subscription]: https://azure.microsoft.com/free/
 [product_documentation]: https://aka.ms/FarmBeatsProductDocumentationPaaS
 [azure_portal]: https://portal.azure.com
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [package]: https://mvnrepository.com/artifact/com.azure/azure-verticals-agrifood-farming
-[samples_readme]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/farmbeats/azure-verticals-agrifood-farming/src/samples/README.md
+[samples_readme]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/agrifood/azure-verticals-agrifood-farming/src/samples/README.md
 [farm_hierarchy]: https://aka.ms/FarmBeatsFarmHierarchyDocs
 [farm_operations_docs]: https://aka.ms/FarmBeatsFarmOperationsDocumentation
 [install_farmbeats]: https://aka.ms/FarmBeatsInstallDocumentationPaaS
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Ffarmbeats%2Fazure-verticals-agrifood-farming%2FREADME.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fagrifood%2Fazure-verticals-agrifood-farming%2FREADME.png)
