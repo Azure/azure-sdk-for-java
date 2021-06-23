@@ -105,6 +105,13 @@ public final class ParquetSink extends CopySink {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ParquetSink withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

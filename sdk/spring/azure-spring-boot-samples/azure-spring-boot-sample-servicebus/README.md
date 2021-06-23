@@ -1,3 +1,13 @@
+---
+page_type: sample
+languages:
+- java
+products:
+- azure-service-bus
+description: "Azure Spring Boot Sample project for Service Bus client library"
+urlFragment: "azure-spring-boot-sample-service-bus"
+---
+
 # Sample for Azure Service Bus Spring Boot client library for Java
 
 ## Key concepts
@@ -39,4 +49,4 @@ Type | Reference Link
 ## Contributing
 
 <!-- LINKS -->
-[environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
+[environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist

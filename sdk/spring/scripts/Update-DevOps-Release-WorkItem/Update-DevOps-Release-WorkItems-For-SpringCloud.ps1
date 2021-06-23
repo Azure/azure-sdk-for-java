@@ -18,7 +18,6 @@ $springtCloudReleaseVersion = "2.5.0"
 . ${PSScriptRoot}\Update-DevOps-Release-WorkItem-Util.ps1 $releaseDate $serviceDirectory $springtCloudReleaseVersion azure-spring-cloud-stream-binder-servicebus-queue
 . ${PSScriptRoot}\Update-DevOps-Release-WorkItem-Util.ps1 $releaseDate $serviceDirectory $springtCloudReleaseVersion azure-spring-cloud-stream-binder-servicebus-topic
 . ${PSScriptRoot}\Update-DevOps-Release-WorkItem-Util.ps1 $releaseDate $serviceDirectory $springtCloudReleaseVersion azure-spring-cloud-stream-binder-test
-. ${PSScriptRoot}\Update-DevOps-Release-WorkItem-Util.ps1 $releaseDate $serviceDirectory $springtCloudReleaseVersion azure-spring-cloud-telemetry
 . ${PSScriptRoot}\Update-DevOps-Release-WorkItem-Util.ps1 $releaseDate $serviceDirectory $springtCloudReleaseVersion azure-spring-integration-core
 . ${PSScriptRoot}\Update-DevOps-Release-WorkItem-Util.ps1 $releaseDate $serviceDirectory $springtCloudReleaseVersion azure-spring-integration-eventhubs
 . ${PSScriptRoot}\Update-DevOps-Release-WorkItem-Util.ps1 $releaseDate $serviceDirectory $springtCloudReleaseVersion azure-spring-integration-servicebus

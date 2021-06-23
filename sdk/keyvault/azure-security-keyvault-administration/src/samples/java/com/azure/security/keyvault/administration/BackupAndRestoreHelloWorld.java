@@ -7,6 +7,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.administration.models.KeyVaultBackupOperation;
 import com.azure.security.keyvault.administration.models.KeyVaultRestoreOperation;
+import com.azure.security.keyvault.administration.models.KeyVaultRestoreResult;
 
 /**
  * This sample demonstrates how to fully backup and restore a key vault synchronously.
@@ -50,7 +51,8 @@ public class BackupAndRestoreHelloWorld {
         location the backup, as well as Shared Access Signature for accessing it. */
         String backupFolderUrl = backupPoller.getFinalResult();
 
-        SyncPoller<KeyVaultRestoreOperation, Void> restorePoller = backupClient.beginRestore(backupFolderUrl, sasToken);
+        SyncPoller<KeyVaultRestoreOperation, KeyVaultRestoreResult> restorePoller =
+            backupClient.beginRestore(backupFolderUrl, sasToken);
 
         restorePoller.waitForCompletion();
     }

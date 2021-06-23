@@ -1,3 +1,13 @@
+---
+page_type: sample
+languages:
+- java
+products:
+- azure-app-configuration
+description: "Sample project for Azure Spring Cloud Config Conversion client library"
+urlFragment: "azure-appconfiguration-conversion-sample-complete"
+---
+
 # Azure Spring Cloud App Configuration Conversion Sample client library for Java
 
 ## Key concepts
@@ -13,4 +23,4 @@
 ## Contributing
 
 <!-- LINKS -->
-[environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
+[environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist

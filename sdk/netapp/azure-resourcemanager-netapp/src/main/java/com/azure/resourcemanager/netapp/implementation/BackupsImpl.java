@@ -12,9 +12,11 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.fluent.BackupsClient;
 import com.azure.resourcemanager.netapp.fluent.models.BackupInner;
 import com.azure.resourcemanager.netapp.fluent.models.BackupStatusInner;
+import com.azure.resourcemanager.netapp.fluent.models.RestoreStatusInner;
 import com.azure.resourcemanager.netapp.models.Backup;
 import com.azure.resourcemanager.netapp.models.BackupStatus;
 import com.azure.resourcemanager.netapp.models.Backups;
+import com.azure.resourcemanager.netapp.models.RestoreStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class BackupsImpl implements Backups {
@@ -48,6 +50,34 @@ public final class BackupsImpl implements Backups {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new BackupStatusImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public RestoreStatus getVolumeRestoreStatus(
+        String resourceGroupName, String accountName, String poolName, String volumeName) {
+        RestoreStatusInner inner =
+            this.serviceClient().getVolumeRestoreStatus(resourceGroupName, accountName, poolName, volumeName);
+        if (inner != null) {
+            return new RestoreStatusImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<RestoreStatus> getVolumeRestoreStatusWithResponse(
+        String resourceGroupName, String accountName, String poolName, String volumeName, Context context) {
+        Response<RestoreStatusInner> inner =
+            this
+                .serviceClient()
+                .getVolumeRestoreStatusWithResponse(resourceGroupName, accountName, poolName, volumeName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new RestoreStatusImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }

@@ -1,7 +1,5 @@
 # Azure Tables client library for Java
-Azure Storage Tables client library is a service that stores structured NoSQL data in the cloud, providing a
-key/attribute store with a schemaless design. Tables storage gives developers flexibility and scalability with all the
-best parts of Azure cloud.
+Azure Tables is a service that stores structured NoSQL data in the cloud, providing a key/attribute store with a schemaless design. Azure Tables gives developers flexibility and scalability with all the best parts of Azure cloud.
 
 [Source code][source_code] | [Package (Maven)][package] | [API reference documentation][api_documentation]
 | [Product documentation][product_documentation] | [Samples][samples]
@@ -15,7 +13,7 @@ best parts of Azure cloud.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-data-tables</artifactId>
-  <version>12.0.0-beta.7</version>
+  <version>12.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -53,12 +51,12 @@ Your Table API account URL, subsequently identified as `<your-table-account-url>
 `http(s)://<cosmosdb-account-name>.table.cosmosdb.azure.com`.
 
 ### Authenticate the client
-Every request made to the Tables service must be authorized using a connection string, shared key credential, or shared access signature. The samples below demonstrate the usage of these methods.
+Every request made to the Tables service must be authorized using a connection string, named key credential, or Shared Access Signature. The samples below demonstrate the usage of these methods.
 
 Note: Azure Tables doesn't support Azure Active Directory (AAD) authentication.
 
 #### Connection string
-A connection string includes the authentication information required for your application to access data in an Azure table at runtime using Shared Key authorization. See [Authenticate with a connection string](#authenticate-with-a-connection-string) for an example of how to use a connection string with a `TableServiceClient`.
+A connection string includes the authentication information required for your application to access data in an Azure table at runtime using Shared Key authorization. See [Authenticate with a Connection String](#authenticate-with-a-connection-string) for an example of how to use a connection string with a `TableServiceClient`.
 
 You can obtain your connection string from the Azure Portal (click **Access keys** under **Settings** in the Portal Storage account blade, or **Connection String** under **Settings** in the Portal Cosmos DB account blade) or using the Azure CLI:
 
@@ -74,10 +72,10 @@ az cosmosdb list-connection-strings \
     --name <cosmosdb-account-name>
 ```
 
-#### Shared Key credential
-Shared Key authorization relies on your account access keys and other parameters to produce an encrypted signature string that is passed on the request in the Authorization header. See [Authenticate with a Shared Key credential](#authenticate-with-a-shared-key) for an example of how to use Shared Key authorization with a `TableServiceClient`.
+#### Named Key credential
+Named Key authorization relies on your account access keys and other parameters to produce an encrypted signature string that is passed on the request in the Authorization header. See [Authenticate with a Named Key credential](#authenticate-with-a-named-key) for an example of how to use Named Key authorization with a `TableServiceClient`.
 
-To use Shared Key authorization you'll need your account name and URL, as well as an account access key. You can obtain your primary access key from the Azure Portal (click **Access keys** under **Settings** in the Portal Storage account blade, or **Connection String** under **Settings** in the Portal Cosmos DB account blade) or using the Azure CLI:
+To use Named Key authorization you'll need your account name and URL, as well as an account access key. You can obtain your primary access key from the Azure Portal (click **Access keys** under **Settings** in the Portal Storage account blade, or **Connection String** under **Settings** in the Portal Cosmos DB account blade) or using the Azure CLI:
 
 ```bash
 # Storage account
@@ -92,7 +90,7 @@ az cosmosdb list-keys \
 ```
 
 #### Shared Access Signature (SAS)
-A shared access signature allows administrators to delegate granular access to an Azure table without sharing the access key directly. You can control what resources the client may access, what permissions it has on those resources, and how long the SAS is valid, among other parameters. It relies on your account access keys and other parameters to produce an encrypted signature string that is passed on the request in the query string. See [Authenticate with a Shared Access Signature (SAS) token](#authenticate-with-a-shared-access-signature-sas) for an example of how to use shared access signatures with a `TableServiceClient`.
+A Shared Access Signature allows administrators to delegate granular access to an Azure table without sharing the access key directly. You can control what resources the client may access, what permissions it has on those resources, and how long the SAS is valid, among other parameters. It relies on your account access keys and other parameters to produce an encrypted signature string that is passed on the request in the query string. See [Authenticate with a Shared Access Signature (SAS)](#authenticate-with-a-shared-access-signature-sas) for an example of how to use shared access signatures with a `TableServiceClient`.
 
 To use SAS token authorization you'll need your account name and URL, as well as the SAS. You can obtain your SAS from the Azure Portal (click **Shared access signature** under **Settings** in the Portal Storage account blade) or using the Azure CLI:
 
@@ -113,7 +111,7 @@ az storage table generate-sas \
 ## Key concepts
 
 - **TableServiceClient** - A `TableServiceClient` is a client object that enables you to interact with the Table Service in order to create, list, and delete tables.
-- **TableClient** - A `TableClient` is a client object that enables you to interact with a specific table in order to create, update, list, and delete entities within it.
+- **TableClient** - A `TableClient` is a client object that enables you to interact with a specific table in order to create, upsert, update, get, list, and delete entities within it.
 - **Table** - A table is a collection of entities. Tables don't enforce a schema on entities, which means a single table can contain entities that have different sets of properties.
 - **Entity** - An entity is a set of properties, similar to a database row. An entity in Azure Storage can be up to 1MB in size. An entity in Azure Cosmos DB can be up to 2MB in size. An entity has a partition key and a row key which together uniquely identify the entity within the table.
 - **Properties** - A property is a name-value pair. Each entity can include up to 252 properties to store data. Each entity also has three system properties that specify a partition key, a row key, and a timestamp.
@@ -130,8 +128,8 @@ Common uses of the Tables service include:
 ## Examples
 
 - [Authenticate a client](#authenticate-a-client)
-  - [Authenticate with a connection string](#authenticate-with-a-connection-string)
-  - [Authenticate with a Shared Key](#authenticate-with-a-shared-key)
+  - [Authenticate with a Connection String](#authenticate-with-a-connection-string)
+  - [Authenticate with a Named Key](#authenticate-with-a-named-key)
   - [Authenticate with a Shared Access Signature (SAS)](#authenticate-with-a-shared-access-signature-sas)
 - [Create, List, and Delete Azure tables](#create-list-and-delete-azure-tables)
   - [Construct a `TableServiceClient`](#construct-a-tableserviceclient)
@@ -332,13 +330,13 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [cosmosdb_create_cli]: https://docs.microsoft.com/azure/cosmos-db/scripts/cli/table/create
 [cosmosdb_create_portal]: https://docs.microsoft.com/azure/cosmos-db/create-table-java#create-a-database-account
 [jdk]: https://docs.microsoft.com/java/azure/jdk/
-[log_level]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/src/main/java/com/azure/core/util/logging/LogLevel.java
+[log_level]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/util/logging/LogLevel.java
 [package]: https://search.maven.org/artifact/com.azure/azure-data-tables
 [product_documentation]: https://docs.microsoft.com/azure/cosmos-db/table-storage-overview
 [query_options]: https://docs.microsoft.com/rest/api/storageservices/querying-tables-and-entities#supported-query-options
 [rest_api]: https://docs.microsoft.com/rest/api/storageservices/table-service-rest-api
-[samples]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/tables/azure-data-tables/src/samples/java/
-[source_code]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/tables/azure-data-tables/src
+[samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/tables/azure-data-tables/src/samples/java/
+[source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/tables/azure-data-tables/src
 [storage_account_create_cli]: https://docs.microsoft.com/azure/storage/common/storage-account-create?tabs=azure-cli
 [storage_account_create_portal]: https://docs.microsoft.com/azure/storage/common/storage-account-create?tabs=azure-portal
 

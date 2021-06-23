@@ -1,3 +1,13 @@
+---
+page_type: sample
+languages:
+- java
+products:
+- azure-event-hubs
+description: "Azure Spring Cloud Stream Binder Sample project for Event Hub client library"
+urlFragment: "azure-spring-cloud-sample-eventhubs-kafka"
+---
+
 # Spring Cloud Azure Stream Kafka Binder for Event Hub Code Sample shared library for Java
 
 ## Key concepts
@@ -76,6 +86,6 @@ Running this sample will be charged by Azure. You can check the usage and bill a
 [azure-account]: https://azure.microsoft.com/account/
 [azure-portal]: https://ms.portal.azure.com/
 [create-event-hubs]: https://docs.microsoft.com/azure/event-hubs/
-[create-sp-using-azure-cli]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/create-sp-using-azure-cli.md
-[environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
-[application.yaml]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-kafka/src/main/resources/application.yaml
+[create-sp-using-azure-cli]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot-samples/create-sp-using-azure-cli.md
+[environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
+[application.yaml]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-kafka/src/main/resources/application.yaml

@@ -14,8 +14,6 @@ public class PropertySettingUtil {
     public static final String URI = "https://test.documents.azure.com:443/";
     public static final String KEY = "KeyString";
     public static final String DATABASE_NAME = "test";
-    public static final boolean ALLOW_TELEMETRY_TRUE = true;
-    public static final boolean ALLOW_TELEMETRY_FALSE = false;
     public static final boolean POPULATE_QUERY_METRICS = true;
     public static final ConsistencyLevel CONSISTENCY_LEVEL = ConsistencyLevel.STRONG;
     public static final Duration REQUEST_TIMEOUT = Duration.ofSeconds(4);
@@ -34,7 +32,6 @@ public class PropertySettingUtil {
     private static final String PROPERTY_KEY = "azure.cosmos.key";
     private static final String PROPERTY_DBNAME = "azure.cosmos.database";
     private static final String PROPERTY_CONSISTENCY_LEVEL = "azure.cosmos.consistency-level";
-    private static final String PROPERTY_ALLOW_TELEMETRY = "azure.cosmos.allow-telemetry";
     private static final String PROPERTY_POPULATE_QUERY_METRICS = "azure.cosmos.populateQueryMetrics";
     private static final String PROPERTY_CONNECTION_MODE = "azure.cosmos.connection-mode";
 
@@ -43,14 +40,8 @@ public class PropertySettingUtil {
         System.setProperty(PROPERTY_KEY, KEY);
         System.setProperty(PROPERTY_DBNAME, DATABASE_NAME);
         System.setProperty(PROPERTY_CONSISTENCY_LEVEL, CONSISTENCY_LEVEL.name());
-        System.setProperty(PROPERTY_ALLOW_TELEMETRY, Boolean.toString(ALLOW_TELEMETRY_TRUE));
         System.setProperty(PROPERTY_POPULATE_QUERY_METRICS, Boolean.toString(POPULATE_QUERY_METRICS));
         System.setProperty(PROPERTY_CONNECTION_MODE, CONNECTION_MODE.name());
-    }
-
-    public static void setAllowTelemetryFalse() {
-        setProperties();
-        System.setProperty(PROPERTY_ALLOW_TELEMETRY, Boolean.toString(ALLOW_TELEMETRY_FALSE));
     }
 
     public static void unsetProperties() {
@@ -58,12 +49,7 @@ public class PropertySettingUtil {
         System.clearProperty(PROPERTY_KEY);
         System.clearProperty(PROPERTY_DBNAME);
         System.clearProperty(PROPERTY_CONSISTENCY_LEVEL);
-        System.clearProperty(PROPERTY_ALLOW_TELEMETRY);
         System.clearProperty(PROPERTY_POPULATE_QUERY_METRICS);
         System.clearProperty(PROPERTY_CONNECTION_MODE);
-    }
-
-    public static void unsetAllowTelemetry() {
-        System.clearProperty(PROPERTY_ALLOW_TELEMETRY);
     }
 }
