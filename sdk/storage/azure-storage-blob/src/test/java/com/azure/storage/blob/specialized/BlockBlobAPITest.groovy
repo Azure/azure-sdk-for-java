@@ -316,43 +316,6 @@ class BlockBlobAPITest extends APISpec {
         thrown(BlobStorageException)
     }
 
-    def "Stage block from URL source oauth"() {
-        setup:
-        def sourceBlob = cc.getBlobClient(generateBlobName())
-        sourceBlob.upload(data.defaultBinaryData)
-        def oauthHeader = getAuthToken()
-        def blockId = Base64.getEncoder().encodeToString("myBlockId".getBytes())
-
-        when:
-        blockBlobClient.stageBlockFromUrlWithResponse(
-            new BlockBlobStageBlockFromUrlOptions(blockId, sourceBlob.getBlobUrl())
-                .setSourceAuthorization(new HttpAuthorization("Bearer", oauthHeader)),
-            null, Context.NONE)
-        blockBlobClient.commitBlockList([blockId], true)
-
-        then:
-        def os = new ByteArrayOutputStream(data.defaultDataSize)
-        blockBlobClient.download(os)
-        os.toByteArray() == data.defaultBytes
-    }
-
-    def "Stage block from URL source oauth fail"() {
-        setup:
-        def sourceBlob = cc.getBlobClient(generateBlobName())
-        sourceBlob.upload(data.defaultBinaryData)
-        def oauthHeader = "garbage"
-        def blockId = Base64.getEncoder().encodeToString("myBlockId".getBytes())
-
-        when:
-        blockBlobClient.stageBlockFromUrlWithResponse(
-            new BlockBlobStageBlockFromUrlOptions(blockId, sourceBlob.getBlobUrl())
-                .setSourceAuthorization(new HttpAuthorization("Bearer", oauthHeader)),
-            null, Context.NONE)
-
-        then:
-        thrown(BlobStorageException)
-    }
-
     def "Stage block from URL error"() {
         setup:
         blockBlobClient = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
@@ -2107,40 +2070,6 @@ class BlockBlobAPITest extends APISpec {
         destinationProperties.getContentLanguage() == "en-GB"
         destinationProperties.getContentType() == "text"
         destinationProperties.getAccessTier() == AccessTier.COOL
-    }
-
-    def "Upload from URL source oauth"() {
-        setup:
-        def sourceBlob = cc.getBlobClient(generateBlobName())
-        sourceBlob.upload(data.defaultBinaryData)
-        def oauthHeader = getAuthToken()
-
-        when:
-        blockBlobClient.uploadFromUrlWithResponse(
-            new BlobUploadFromUrlOptions(sourceBlob.getBlobUrl())
-                .setSourceAuthorization(new HttpAuthorization("Bearer", oauthHeader)),
-            null, Context.NONE)
-
-        then:
-        def os = new ByteArrayOutputStream(data.defaultDataSize)
-        blockBlobClient.download(os)
-        os.toByteArray() == data.defaultBytes
-    }
-
-    def "Upload from URL source oauth fail"() {
-        setup:
-        def sourceBlob = cc.getBlobClient(generateBlobName())
-        sourceBlob.upload(data.defaultBinaryData)
-        def oauthHeader = "garbage"
-
-        when:
-        blockBlobClient.uploadFromUrlWithResponse(
-            new BlobUploadFromUrlOptions(sourceBlob.getBlobUrl())
-                .setSourceAuthorization(new HttpAuthorization("Bearer", oauthHeader)),
-            null, Context.NONE)
-
-        then:
-        thrown(BlobStorageException)
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_04_08")

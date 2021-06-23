@@ -602,43 +602,6 @@ class PageBlobAPITest extends APISpec {
         null                  | null                    | null          | receivedEtag
     }
 
-    def "Upload pages from URL source oauth"() {
-        setup:
-        def pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1)
-        def sourceBlob = cc.getBlobClient(generateBlobName())
-        def data = getRandomByteArray(PageBlobClient.PAGE_BYTES)
-        sourceBlob.upload(BinaryData.fromBytes(data))
-        def oauthHeader = getAuthToken()
-
-        when:
-        bc.uploadPagesFromUrlWithResponse(
-            new PageBlobUploadPagesFromUrlOptions(pageRange, sourceBlob.getBlobUrl())
-                .setSourceAuthorization(new HttpAuthorization("Bearer", oauthHeader)),
-            null, Context.NONE)
-
-        then:
-        def os = new ByteArrayOutputStream(data.length)
-        bc.download(os)
-        os.toByteArray() == data
-    }
-
-    def "Upload pages from URL source oauth fail"() {
-        setup:
-        def pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1)
-        def sourceBlob = cc.getBlobClient(generateBlobName())
-        sourceBlob.upload(data.defaultBinaryData)
-        def oauthHeader = "garbage"
-
-        when:
-        bc.uploadPagesFromUrlWithResponse(
-            new PageBlobUploadPagesFromUrlOptions(pageRange, sourceBlob.getBlobUrl())
-                .setSourceAuthorization(new HttpAuthorization("Bearer", oauthHeader)),
-            null, Context.NONE)
-
-        then:
-        thrown(BlobStorageException)
-    }
-
     def "Clear page"() {
         setup:
         bc.uploadPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),

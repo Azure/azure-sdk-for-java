@@ -580,40 +580,6 @@ class AppendBlobAPITest extends APISpec {
         null                  | null                    | null          | receivedEtag
     }
 
-    def "Append block from URL source oauth"() {
-        setup:
-        def sourceBlob = cc.getBlobClient(generateBlobName())
-        sourceBlob.upload(data.defaultBinaryData)
-        def oauthHeader = getAuthToken()
-
-        when:
-        bc.appendBlockFromUrlWithResponse(
-            new AppendBlobAppendBlockFromUrlOptions(sourceBlob.getBlobUrl())
-                .setSourceAuthorization(new HttpAuthorization("Bearer", oauthHeader)),
-            null, Context.NONE)
-
-        then:
-        def os = new ByteArrayOutputStream(data.defaultDataSize)
-        bc.download(os)
-        os.toByteArray() == data.defaultBytes
-    }
-
-    def "Append block from URL source oauth fail"() {
-        setup:
-        def sourceBlob = cc.getBlobClient(generateBlobName())
-        sourceBlob.upload(data.defaultBinaryData)
-        def oauthHeader = "garbage"
-
-        when:
-        bc.appendBlockFromUrlWithResponse(
-            new AppendBlobAppendBlockFromUrlOptions(sourceBlob.getBlobUrl())
-                .setSourceAuthorization(new HttpAuthorization("Bearer", oauthHeader)),
-            null, Context.NONE)
-
-        then:
-        thrown(BlobStorageException)
-    }
-
     def "Get Container Name"() {
         expect:
         containerName == bc.getContainerName()
