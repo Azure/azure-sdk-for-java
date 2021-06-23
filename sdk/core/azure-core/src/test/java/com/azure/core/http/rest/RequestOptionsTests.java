@@ -26,7 +26,7 @@ public class RequestOptionsTests {
             .addQueryParam("$skipToken", "1");
         options.getRequestCallback().accept(request);
 
-        assertTrue(request.getUrl().toString().contains("?foo=bar&$skipToken=1"));
+        assertTrue(request.getUrl().toString().contains("?foo=bar&%24skipToken=1"));
     }
 
     @Test
@@ -74,6 +74,6 @@ public class RequestOptionsTests {
         HttpHeaders headers = request.getHeaders();
         assertEquals("baz", headers.getValue("x-ms-foo"));
         assertEquals(HttpMethod.GET, request.getHttpMethod());
-        assertEquals("https://request.url?$skipToken=1", request.getUrl().toString());
+        assertEquals("https://request.url?%24skipToken=1", request.getUrl().toString());
     }
 }
