@@ -6,6 +6,7 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
+import com.azure.core.amqp.models.AmqpMessageBody;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
@@ -366,14 +367,16 @@ public abstract class IntegrationTestBase extends TestBase {
         Mono.when(closeableMonos).block(TIMEOUT);
     }
 
-    protected ServiceBusMessage getMessage(byte[] content, String messageId, boolean isSessionEnabled) {
-        final ServiceBusMessage message = TestUtils.getServiceBusMessage(content, messageId);
+    protected ServiceBusMessage getMessage(String messageId, boolean isSessionEnabled, AmqpMessageBody amqpMessageBody) {
+        final ServiceBusMessage message = new ServiceBusMessage(amqpMessageBody);
         logger.verbose("Message id '{}'.", messageId);
         return isSessionEnabled ? message.setSessionId(sessionId) : message;
     }
 
     protected ServiceBusMessage getMessage(String messageId, boolean isSessionEnabled) {
-        return getMessage(CONTENTS_BYTES, messageId, isSessionEnabled);
+        final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS_BYTES, messageId);
+        logger.verbose("Message id '{}'.", messageId);
+        return isSessionEnabled ? message.setSessionId(sessionId) : message;
     }
 
     protected void assertMessageEquals(ServiceBusMessageContext context, String messageId, boolean isSessionEnabled) {

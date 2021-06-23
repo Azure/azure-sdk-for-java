@@ -136,6 +136,7 @@ public final class ServiceBusClientBuilder {
     private Scheduler scheduler;
     private AmqpTransportType transport = AmqpTransportType.AMQP;
     private SslDomain.VerifyMode verifyMode;
+    private boolean crossEntityTransactions;
 
     /**
      * Keeps track of the open clients that were created from this builder when there is a shared connection.
@@ -187,6 +188,38 @@ public final class ServiceBusClientBuilder {
         }
 
         return credential(properties.getEndpoint().getHost(), tokenCredential);
+    }
+
+    /**
+     * Enable cross entity transaction on the connection to Service bus. Use this feature only when your transaction
+     * scope spans across different Service Bus entities. This feature is achieved by routing all the messages through
+     * one 'send-via' entity on server side as explained next.
+     * Once clients are created for multiple entities, the first entity that an operation occurs on becomes the
+     * entity through which all subsequent sends will be routed through ('send-via' entity). This enables the service to
+     * perform a transaction that is meant to span multiple entities. This means that subsequent entities that perform
+     * their first operation need to either be senders, or if they are receivers they need to be on the same entity as
+     * the initial entity through which all sends are routed through (otherwise the service would not be able to ensure
+     * that the transaction is committed because it cannot route a receive operation through a different entity). For
+     * instance, if you have SenderA (For entity A) and ReceiverB (For entity B) that are created from a client with
+     * cross-entity transactions enabled, you would need to receive first with ReceiverB to allow this to work. If you
+     * first send to entity A, and then attempted to receive from entity B, an exception would be thrown.
+     *
+     * <p><strong>Avoid using non-transaction API on this client</strong></p>
+     * Since this feature will set up connection to Service Bus optimised to enable this feature. Once all the clients
+     * have been setup, the first receiver or sender used will initialize 'send-via' queue as a single message transfer
+     * entity. All the messages will flow via this queue. Thus this client is not suitable for any non-transaction API.
+     *
+     * <p><strong>When not to enable this feature</strong></p>
+     * If your transaction is involved in one Service bus entity only. For example you are receiving from one
+     * queue/subscription and you want to settle your own messages which are part of one transaction.
+     *
+     * @return The updated {@link ServiceBusSenderClientBuilder} object.
+     *
+     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-transactions#transfers-and-send-via">Service Bus transactions</a>
+     */
+    public ServiceBusClientBuilder enableCrossEntityTransactions() {
+        this.crossEntityTransactions = true;
+        return this;
     }
 
     private TokenCredential getTokenCredential(ConnectionStringProperties properties) {
@@ -453,7 +486,8 @@ public final class ServiceBusClientBuilder {
                         connectionOptions.getAuthorizationScope());
 
                     return (ServiceBusAmqpConnection) new ServiceBusReactorAmqpConnection(connectionId,
-                        connectionOptions, provider, handlerProvider, tokenManagerProvider, serializer);
+                        connectionOptions, provider, handlerProvider, tokenManagerProvider, serializer,
+                        crossEntityTransactions);
                 }).repeat();
 
                 sharedConnection = connectionFlux.subscribeWith(new ServiceBusConnectionProcessor(
@@ -752,6 +786,23 @@ public final class ServiceBusClientBuilder {
         }
 
         /**
+         * Sets the amount of time to continue auto-renewing the lock. Setting {@link Duration#ZERO} or {@code null}
+         * disables auto-renewal. For {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE RECEIVE_AND_DELETE} mode,
+         * auto-renewal is disabled.
+         *
+         * @param maxAutoLockRenewDuration the amount of time to continue auto-renewing the lock. {@link Duration#ZERO}
+         * or {@code null} indicates that auto-renewal is disabled.
+         *
+         * @return The updated {@link ServiceBusSessionProcessorClientBuilder} object.
+         * @throws IllegalArgumentException If {code maxAutoLockRenewDuration} is negative.
+         */
+        public ServiceBusSessionProcessorClientBuilder maxAutoLockRenewDuration(Duration maxAutoLockRenewDuration) {
+            validateAndThrow(maxAutoLockRenewDuration);
+            sessionReceiverClientBuilder.maxAutoLockRenewDuration(maxAutoLockRenewDuration);
+            return this;
+        }
+
+        /**
          * Enables session processing roll-over by processing at most {@code maxConcurrentSessions}.
          *
          * @param maxConcurrentSessions Maximum number of concurrent sessions to process at any given time.
@@ -806,6 +857,21 @@ public final class ServiceBusClientBuilder {
          */
         public ServiceBusSessionProcessorClientBuilder receiveMode(ServiceBusReceiveMode receiveMode) {
             sessionReceiverClientBuilder.receiveMode(receiveMode);
+            return this;
+        }
+
+        /**
+         * Sets the type of the {@link SubQueue} to connect to. Azure Service Bus queues and subscriptions provide a
+         * secondary sub-queue, called a dead-letter queue (DLQ).
+         *
+         * @param subQueue The type of the sub queue.
+         *
+         * @return The modified {@link ServiceBusSessionProcessorClientBuilder} object.
+         * @see #queueName A queuename or #topicName A topic name should be set as well.
+         * @see SubQueue
+         */
+        public ServiceBusSessionProcessorClientBuilder subQueue(SubQueue subQueue) {
+            this.sessionReceiverClientBuilder.subQueue(subQueue);
             return this;
         }
 
@@ -928,6 +994,7 @@ public final class ServiceBusClientBuilder {
         private String subscriptionName;
         private String topicName;
         private Duration maxAutoLockRenewDuration = MAX_LOCK_RENEW_DEFAULT_DURATION;
+        private SubQueue subQueue = SubQueue.NONE;
 
         private ServiceBusSessionReceiverClientBuilder() {
         }
@@ -1025,6 +1092,21 @@ public final class ServiceBusClientBuilder {
         }
 
         /**
+         * Sets the type of the {@link SubQueue} to connect to. Azure Service Bus queues and subscriptions provide a
+         * secondary sub-queue, called a dead-letter queue (DLQ).
+         *
+         * @param subQueue The type of the sub queue.
+         *
+         * @return The modified {@link ServiceBusSessionReceiverClientBuilder} object.
+         * @see #queueName A queuename or #topicName A topic name should be set as well.
+         * @see SubQueue
+         */
+        public ServiceBusSessionReceiverClientBuilder subQueue(SubQueue subQueue) {
+            this.subQueue = subQueue;
+            return this;
+        }
+
+        /**
          * Sets the name of the subscription in the topic to listen to. <b>{@link #topicName(String)} must also be set.
          * </b>
          *
@@ -1068,7 +1150,7 @@ public final class ServiceBusClientBuilder {
             final MessagingEntityType entityType = validateEntityPaths(logger, connectionStringEntityName, topicName,
                 queueName);
             final String entityPath = getEntityPath(logger, entityType, queueName, topicName, subscriptionName,
-                SubQueue.NONE);
+                subQueue);
 
             if (enableAutoComplete && receiveMode == ServiceBusReceiveMode.RECEIVE_AND_DELETE) {
                 logger.warning("'enableAutoComplete' is not needed in for RECEIVE_AND_DELETE mode.");
@@ -1223,6 +1305,21 @@ public final class ServiceBusClientBuilder {
         }
 
         /**
+         * Sets the type of the {@link SubQueue} to connect to. Azure Service Bus queues and subscriptions provide a
+         * secondary sub-queue, called a dead-letter queue (DLQ).
+         *
+         * @param subQueue The type of the sub queue.
+         *
+         * @return The modified {@link ServiceBusProcessorClientBuilder} object.
+         * @see #queueName A queuename or #topicName A topic name should be set as well.
+         * @see SubQueue
+         */
+        public ServiceBusProcessorClientBuilder subQueue(SubQueue subQueue) {
+            serviceBusReceiverClientBuilder.subQueue(subQueue);
+            return this;
+        }
+
+        /**
          * Sets the name of the subscription in the topic to listen to. <b>{@link #topicName(String)} must also be set.
          * </b>
          * @param subscriptionName Name of the subscription.
@@ -1267,6 +1364,23 @@ public final class ServiceBusClientBuilder {
          */
         public ServiceBusProcessorClientBuilder processError(Consumer<ServiceBusErrorContext> processError) {
             this.processError = processError;
+            return this;
+        }
+
+        /**
+         * Sets the amount of time to continue auto-renewing the lock. Setting {@link Duration#ZERO} or {@code null}
+         * disables auto-renewal. For {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE RECEIVE_AND_DELETE} mode,
+         * auto-renewal is disabled.
+         *
+         * @param maxAutoLockRenewDuration the amount of time to continue auto-renewing the lock. {@link Duration#ZERO}
+         * or {@code null} indicates that auto-renewal is disabled.
+         *
+         * @return The updated {@link ServiceBusProcessorClientBuilder} object.
+         * @throws IllegalArgumentException If {code maxAutoLockRenewDuration} is negative.
+         */
+        public ServiceBusProcessorClientBuilder maxAutoLockRenewDuration(Duration maxAutoLockRenewDuration) {
+            validateAndThrow(maxAutoLockRenewDuration);
+            serviceBusReceiverClientBuilder.maxAutoLockRenewDuration(maxAutoLockRenewDuration);
             return this;
         }
 

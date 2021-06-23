@@ -1,5 +1,7 @@
 # Release History
 ## 7.3.0-beta.3 (Unreleased)
+### New Features
+- Added support receiving dead-letter queue (DLQ) for 'ServiceBusProcessorClient' and session receiver using 'subQueue'
 
 ## 7.2.3 (2021-06-14)
 ### Fixed
