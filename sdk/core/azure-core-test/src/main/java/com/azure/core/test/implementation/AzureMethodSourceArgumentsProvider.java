@@ -22,12 +22,10 @@ import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
@@ -165,31 +163,49 @@ public final class AzureMethodSourceArgumentsProvider
                 }
             }
 
-            // If there are no live service versions configured use the latest service version.
-            String[] liveServiceVersions = testingServiceVersions.liveServiceVersions();
-            if (CoreUtils.isNullOrEmpty(liveServiceVersions)) {
-                return Collections.singletonList(CLASS_TO_LATEST_SERVICE_VERSION.get(serviceVersionType));
-            }
+            // Otherwise compute all service versions which fall in the intersection of the class and method service
+            // version range intersection.
+            int minimumOrdinal = getServiceVersionRangeBound(testingServiceVersions.minimumLiveServiceVersion(),
+                minimumServiceVersion, serviceVersionType, false);
+            int maximumOrdinal = getServiceVersionRangeBound(testingServiceVersions.maximumLiveServiceVersion(),
+                maximumServiceVersion, serviceVersionType, true);
 
-            // Otherwise use all live service versions supported by the test.
-            Enum<?> minimumServiceVersionEnum = CoreUtils.isNullOrEmpty(minimumServiceVersion)
-                ? null
-                : (Enum<?>) CLASS_TO_MAP_STRING_SERVICE_VERSION.get(serviceVersionType).get(minimumServiceVersion);
-            Enum<?> maximumServiceVersionEnum = CoreUtils.isNullOrEmpty(maximumServiceVersion)
-                ? null
-                : (Enum<?>) CLASS_TO_MAP_STRING_SERVICE_VERSION.get(serviceVersionType).get(maximumServiceVersion);
-
-            Set<String> liveServiceVersionsSet = Arrays.stream(liveServiceVersions).collect(Collectors.toSet());
             return CLASS_TO_MAP_STRING_SERVICE_VERSION.get(serviceVersionType).values().stream()
-                .filter(sv -> liveServiceVersionsSet.contains(sv.getVersion()))
-                .filter(sv -> minimumServiceVersionEnum == null
-                    || ((Enum<?>) sv).ordinal() >= minimumServiceVersionEnum.ordinal())
-                .filter(sv -> maximumServiceVersionEnum == null
-                    || ((Enum<?>) sv).ordinal() <= maximumServiceVersionEnum.ordinal())
-                .collect(Collectors.toList());
+                .filter(sv -> {
+                    int ordinal = ((Enum<?>) sv).ordinal();
+                    return ordinal >= minimumOrdinal && ordinal <= maximumOrdinal;
+                }).collect(Collectors.toList());
         } else {
             return Collections.singletonList(CLASS_TO_LATEST_SERVICE_VERSION.get(serviceVersionType));
         }
+    }
+
+    private static int getServiceVersionRangeBound(String classServiceVersion, String methodServiceVersion,
+        Class<? extends ServiceVersion> serviceVersionType, boolean isMaximum) {
+        Enum<?> classServiceVersionEnum = getEnumOrNull(classServiceVersion, serviceVersionType);
+        Enum<?> methodServiceVersionEnum = getEnumOrNull(methodServiceVersion, serviceVersionType);
+
+        if (classServiceVersionEnum == null && methodServiceVersionEnum == null) {
+            // If neither is set return int32 bound based on min or max so all values pass.
+            return isMaximum ? Integer.MAX_VALUE : Integer.MIN_VALUE;
+
+        } else if (classServiceVersionEnum == null) {
+            return methodServiceVersionEnum.ordinal();
+        } else if (methodServiceVersionEnum == null) {
+            return classServiceVersionEnum.ordinal();
+        } else {
+            // If the maximum is being found take the lesser ordinal, otherwise take the greater ordinal.
+            // This will determine the intersection of versions.
+            return isMaximum
+                ? Math.min(classServiceVersionEnum.ordinal(), methodServiceVersionEnum.ordinal())
+                : Math.max(classServiceVersionEnum.ordinal(), methodServiceVersionEnum.ordinal());
+        }
+    }
+
+    private static Enum<?> getEnumOrNull(String serviceVersion, Class<? extends ServiceVersion> serviceVersionType) {
+        return CoreUtils.isNullOrEmpty(serviceVersion)
+            ? null
+            : (Enum<?>) CLASS_TO_MAP_STRING_SERVICE_VERSION.get(serviceVersionType).get(serviceVersion);
     }
 
     /*

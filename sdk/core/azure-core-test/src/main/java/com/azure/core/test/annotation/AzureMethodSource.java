@@ -79,13 +79,12 @@ public @interface AzureMethodSource {
     /**
      * The maximum service version that the test can be ran against.
      * <p>
-     * If neither this or {@link #minimumServiceVersion()} ()} are set the test will run against all service versions.
-     * If only this is set then the test will run against all service versions less than or equal to the maximum. If
-     * both this and {@link #minimumServiceVersion()} ()} are set then the inclusive range of service versions will be
-     * used to test.
+     * If neither this or {@link #minimumServiceVersion()} are set the test will run against all service versions. If
+     * only this is set then the test will run against all service versions less than or equal to the maximum. If both
+     * this and {@link #minimumServiceVersion()} are set then the inclusive range of service versions will be used to
+     * test.
      * <p>
-     * If no service versions meet the requirements of this and {@link #minimumServiceVersion()} ()} the test will
-     * fail.
+     * If no service versions meet the requirements of this and {@link #minimumServiceVersion()} the test will fail.
      * <p>
      * {@link ServiceVersion ServiceVersions} are compared using their enum ordinal.
      *
