@@ -203,7 +203,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
 
         Span currentSpan = Span.current();
         if (currentSpan == null) {
-            logger.info("Failed to find a starting span to associate the %s with.", eventName);
+            logger.info("Failed to find a starting span to associate the {} with.", eventName);
             return;
         }
 

@@ -90,24 +90,24 @@ For more extensive documentation on Azure Key Vault, see the [API reference docu
 This project welcomes contributions and suggestions. Find [more contributing][SDK_README_CONTRIBUTING] details here.
 
 <!-- LINKS -->
-[KEYS_SDK_README]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-keys/README.md
-[SDK_README_CONTRIBUTING]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-keys/README.md#contributing
-[SDK_README_GETTING_STARTED]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-keys/README.md#getting-started
-[SDK_README_KEY_CONCEPTS]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-keys/README.md#key-concepts
+[KEYS_SDK_README]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-keys/README.md
+[SDK_README_CONTRIBUTING]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-keys/README.md#contributing
+[SDK_README_GETTING_STARTED]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-keys/README.md#getting-started
+[SDK_README_KEY_CONCEPTS]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-keys/README.md#key-concepts
 [azkeyvault_rest]: https://docs.microsoft.com/rest/api/keyvault/
-[sample_helloWorld]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-keys/src/samples/java/com/azure/security/keyvault/keys/HelloWorld.java
-[sample_helloWorldAsync]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-keys/src/samples/java/com/azure/security/keyvault/keys/HelloWorldAsync.java
-[sample_list]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-keys/src/samples/java/com/azure/security/keyvault/keys/ListOperations.java
-[sample_listAsync]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-keys/src/samples/java/com/azure/security/keyvault/keys/ListOperationsAsync.java
-[sample_BackupRestore]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-keys/src/samples/java/com/azure/security/keyvault/keys/BackupAndRestoreOperations.java
-[sample_BackupRestoreAsync]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-keys/src/samples/java/com/azure/security/keyvault/keys/BackupAndRestoreOperationsAsync.java
-[sample_ManageDeleted]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-keys/src/samples/java/com/azure/security/keyvault/keys/ManagingDeletedKeys.java
-[sample_ManageDeletedAsync]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-keys/src/samples/java/com/azure/security/keyvault/keys/ManagingDeletedKeysAsync.java
-[sample_encryptDecrypt]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-keys/src/samples/java/com/azure/security/keyvault/keys/cryptography/EncryptDecryptOperations.java
-[sample_encryptDecryptAsync]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-keys/src/samples/java/com/azure/security/keyvault/keys/cryptography/EncryptDecryptOperationsAsync.java
-[sample_signVerify]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-keys/src/samples/java/com/azure/security/keyvault/keys/cryptography/SignVerifyOperations.java
-[sample_signVerifyAsync]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-keys/src/samples/java/com/azure/security/keyvault/keys/cryptography/SignVerifyOperationsAsync.java
-[sample_wrapUnwrap]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-keys/src/samples/java/com/azure/security/keyvault/keys/cryptography/KeyWrapUnwrapOperations.java
-[sample_wrapUnwrapAsync]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-keys/src/samples/java/com/azure/security/keyvault/keys/cryptography/KeyWrapUnwrapOperationsAsync.java
+[sample_helloWorld]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-keys/src/samples/java/com/azure/security/keyvault/keys/HelloWorld.java
+[sample_helloWorldAsync]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-keys/src/samples/java/com/azure/security/keyvault/keys/HelloWorldAsync.java
+[sample_list]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-keys/src/samples/java/com/azure/security/keyvault/keys/ListOperations.java
+[sample_listAsync]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-keys/src/samples/java/com/azure/security/keyvault/keys/ListOperationsAsync.java
+[sample_BackupRestore]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-keys/src/samples/java/com/azure/security/keyvault/keys/BackupAndRestoreOperations.java
+[sample_BackupRestoreAsync]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-keys/src/samples/java/com/azure/security/keyvault/keys/BackupAndRestoreOperationsAsync.java
+[sample_ManageDeleted]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-keys/src/samples/java/com/azure/security/keyvault/keys/ManagingDeletedKeys.java
+[sample_ManageDeletedAsync]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-keys/src/samples/java/com/azure/security/keyvault/keys/ManagingDeletedKeysAsync.java
+[sample_encryptDecrypt]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-keys/src/samples/java/com/azure/security/keyvault/keys/cryptography/EncryptDecryptOperations.java
+[sample_encryptDecryptAsync]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-keys/src/samples/java/com/azure/security/keyvault/keys/cryptography/EncryptDecryptOperationsAsync.java
+[sample_signVerify]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-keys/src/samples/java/com/azure/security/keyvault/keys/cryptography/SignVerifyOperations.java
+[sample_signVerifyAsync]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-keys/src/samples/java/com/azure/security/keyvault/keys/cryptography/SignVerifyOperationsAsync.java
+[sample_wrapUnwrap]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-keys/src/samples/java/com/azure/security/keyvault/keys/cryptography/KeyWrapUnwrapOperations.java
+[sample_wrapUnwrapAsync]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-keys/src/samples/java/com/azure/security/keyvault/keys/cryptography/KeyWrapUnwrapOperationsAsync.java
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fkeyvault%2Fazure-security-keyvault-keys%2Fsrc%2Fsamples%2FREADME.png)

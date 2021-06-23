@@ -87,9 +87,9 @@ Log messages can be seen in the output window by:
 [event_hubs_create]: https://docs.microsoft.com/azure/event-hubs/event-hubs-create
 [github-general]: https://github.com/Azure/azure-sdk
 [java-spec]: https://azuresdkspecs.z5.web.core.windows.net/JavaSpec.html
-[log-level]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java#L40
+[log-level]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java#L40
 [maven]: https://maven.apache.org/
 [slf4j]: https://www.slf4j.org/
 [slf4j-implementations]: https://www.slf4j.org/manual.html#swapping
-[test-mode]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core-test/src/main/java/com/azure/core/test/TestMode.java
-[test-mode-record]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core-test/src/main/java/com/azure/core/test/TestMode.java#L12
+[test-mode]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-test/src/main/java/com/azure/core/test/TestMode.java
+[test-mode-record]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-test/src/main/java/com/azure/core/test/TestMode.java#L12
