@@ -633,10 +633,10 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     abstract void analyzeActionsEmptyInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void analyzeEntitiesRecognition(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void analyzeEntitiesRecognitionAction(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void analyzeEntitiesRecognitionWithNoActionName(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void analyzeEntitiesRecognitionActionWithNoActionName(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
     abstract void analyzePiiEntityRecognitionWithCategoriesFilters(HttpClient httpClient,
@@ -653,16 +653,16 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     abstract void analyzeLinkedEntityActionWithNoActionName(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void keyPhrasesExtractionAction(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void analyzeKeyPhrasesExtractionAction(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void keyPhrasesExtractionActionWithNoActionName(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void analyzeKeyPhrasesExtractionActionWithNoActionName(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void analyzeSentimentActions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void analyzeSentimentAction(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void analyzeSentimentActionsWithNoActionName(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void analyzeSentimentActionWithNoActionName(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     // Detect Language runner
     void detectLanguageShowStatisticsRunner(BiConsumer<List<DetectLanguageInput>,

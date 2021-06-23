@@ -2379,7 +2379,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void analyzeEntitiesRecognition(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+    public void analyzeEntitiesRecognitionAction(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         analyzeEntitiesRecognitionRunner(
             (documents, tasks) -> {
@@ -2405,7 +2405,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void analyzeEntitiesRecognitionWithNoActionName(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+    public void analyzeEntitiesRecognitionActionWithNoActionName(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         analyzeEntitiesRecognitionRunner(
             (documents, tasks) -> {
@@ -2544,7 +2544,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void keyPhrasesExtractionAction(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+    public void analyzeKeyPhrasesExtractionAction(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         extractKeyPhrasesRunner((documents, tasks) -> {
             SyncPoller<AnalyzeActionsOperationDetail, PagedFlux<AnalyzeActionsResult>> syncPoller =
@@ -2568,7 +2568,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void keyPhrasesExtractionActionWithNoActionName(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+    public void analyzeKeyPhrasesExtractionActionWithNoActionName(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         extractKeyPhrasesRunner((documents, tasks) -> {
             SyncPoller<AnalyzeActionsOperationDetail, PagedFlux<AnalyzeActionsResult>> syncPoller =
@@ -2592,7 +2592,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void analyzeSentimentActions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+    public void analyzeSentimentAction(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         analyzeSentimentRunner((documents, tasks) -> {
             SyncPoller<AnalyzeActionsOperationDetail, PagedFlux<AnalyzeActionsResult>> syncPoller =
@@ -2616,7 +2616,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void analyzeSentimentActionsWithNoActionName(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+    public void analyzeSentimentActionWithNoActionName(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         analyzeSentimentRunner((documents, tasks) -> {
             SyncPoller<AnalyzeActionsOperationDetail, PagedFlux<AnalyzeActionsResult>> syncPoller =
