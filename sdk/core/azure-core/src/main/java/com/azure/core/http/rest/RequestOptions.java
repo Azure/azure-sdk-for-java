@@ -4,6 +4,7 @@
 package com.azure.core.http.rest;
 
 import com.azure.core.annotation.QueryParam;
+import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.util.BinaryData;
 
@@ -26,14 +27,7 @@ import java.util.function.Consumer;
  * </p>
  *
  * <p><strong>Creating an instance of DynamicRequest using the constructor</strong></p>
- * {@codesnippet com.azure.core.http.requestoptions.instantiation}
- **
- * <p><strong>Configuring the request with a path param and making a HTTP GET request</strong></p>
- * Continuing with the pet store example, getting information about a pet requires making a
- * <a href="https://petstore.swagger.io/#/pet/getPetById">HTTP GET call
- * to the pet service</a> and setting the pet id in path param as shown in the sample below.
- *
- * {@codesnippet com.azure.core.http.dynamicrequest.getrequest}
+ * {@codesnippet com.azure.core.http.rest.requestoptions.instantiation}
  *
  * <p><strong>Configuring the request with JSON body and making a HTTP POST request</strong></p>
  * To <a href="https://petstore.swagger.io/#/pet/addPet">add a new pet to the pet store</a>, a HTTP POST call should
@@ -65,11 +59,11 @@ import java.util.function.Consumer;
  * To create a concrete request, Json builder provided in javax package is used here for demonstration. However, any
  * other Json building library can be used to achieve similar results.
  *
- * {@codesnippet com.azure.core.http.requestoptions.createjsonrequest}
+ * {@codesnippet com.azure.core.http.rest.requestoptions.createjsonrequest}
  *
  * Now, this string representation of the JSON request can be set as body of RequestOptions
  *
- * {@codesnippet com.azure.core.http.requestoptions.postrequest}
+ * {@codesnippet com.azure.core.http.rest.requestoptions.postrequest}
  */
 public final class RequestOptions {
     private Consumer<HttpRequest> requestCallback = request -> { };
@@ -102,13 +96,20 @@ public final class RequestOptions {
      * @return the modified RequestOptions object
      */
     public RequestOptions addHeader(String header, String value) {
-        this.requestCallback = this.requestCallback.andThen(request ->
-            request.getHeaders().get(header).addValue(value));
+        this.requestCallback = this.requestCallback.andThen(request -> {
+            HttpHeader httpHeader = request.getHeaders().get(header);
+            if (httpHeader == null) {
+                request.getHeaders().set(header, value);
+            } else {
+                httpHeader.addValue(value);
+            }
+        });
         return this;
     }
 
     /**
-     * Adds a query parameter to the request URL.
+     * Adds a query parameter to the request URL. The parameter name and value will be URL encoded.
+     * To use an already encoded parameter name and value, call {@code addQueryParam("name", "value", true)}.
      *
      * @param parameterName the name of the query parameter
      * @param value the value of the query parameter
