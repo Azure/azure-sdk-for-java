@@ -51,6 +51,7 @@
       </activation>
       <modules>
         <module>azure-containers-containerregistry</module>
+        <module>azure-resourcemanager-containerregistry-generated</module>
       </modules>
     </profile>
   </profiles>
