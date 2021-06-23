@@ -1,5 +1,5 @@
 # Release History
-
+    
 ## 7.3.0 (2021-06-25)
 ### New Features
 - Added support receiving dead-letter queue (DLQ) for 'ServiceBusProcessorClient' and session receiver using 'subQueue'
