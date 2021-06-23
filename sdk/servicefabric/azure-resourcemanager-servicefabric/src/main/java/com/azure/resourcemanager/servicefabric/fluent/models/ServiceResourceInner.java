@@ -7,6 +7,7 @@ package com.azure.resourcemanager.servicefabric.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.servicefabric.models.ArmServicePackageActivationMode;
 import com.azure.resourcemanager.servicefabric.models.MoveCost;
@@ -88,6 +89,13 @@ public class ServiceResourceInner extends ProxyResource {
     private ArmServicePackageActivationMode servicePackageActivationMode;
 
     /*
+     * Dns name used for the service. If this is specified, then the service
+     * can be accessed via its DNS name instead of service name.
+     */
+    @JsonProperty(value = "properties.serviceDnsName")
+    private String serviceDnsName;
+
+    /*
      * It will be deprecated in New API, resource location depends on the
      * parent resource.
      */
@@ -105,6 +113,12 @@ public class ServiceResourceInner extends ProxyResource {
      */
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
+
+    /*
+     * Metadata pertaining to creation and last modification of the resource.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /**
      * Get the placementConstraints property: The placement constraints as a string. Placement constraints are boolean
@@ -289,6 +303,28 @@ public class ServiceResourceInner extends ProxyResource {
     }
 
     /**
+     * Get the serviceDnsName property: Dns name used for the service. If this is specified, then the service can be
+     * accessed via its DNS name instead of service name.
+     *
+     * @return the serviceDnsName value.
+     */
+    public String serviceDnsName() {
+        return this.serviceDnsName;
+    }
+
+    /**
+     * Set the serviceDnsName property: Dns name used for the service. If this is specified, then the service can be
+     * accessed via its DNS name instead of service name.
+     *
+     * @param serviceDnsName the serviceDnsName value to set.
+     * @return the ServiceResourceInner object itself.
+     */
+    public ServiceResourceInner withServiceDnsName(String serviceDnsName) {
+        this.serviceDnsName = serviceDnsName;
+        return this;
+    }
+
+    /**
      * Get the location property: It will be deprecated in New API, resource location depends on the parent resource.
      *
      * @return the location value.
@@ -335,6 +371,15 @@ public class ServiceResourceInner extends ProxyResource {
      */
     public String etag() {
         return this.etag;
+    }
+
+    /**
+     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**

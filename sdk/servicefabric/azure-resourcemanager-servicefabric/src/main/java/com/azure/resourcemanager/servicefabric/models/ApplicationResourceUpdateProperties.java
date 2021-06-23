@@ -68,6 +68,13 @@ public class ApplicationResourceUpdateProperties {
     @JsonProperty(value = "metrics")
     private List<ApplicationMetricDescription> metrics;
 
+    /*
+     * List of user assigned identities for the application, each mapped to a
+     * friendly name.
+     */
+    @JsonProperty(value = "managedIdentities")
+    private List<ApplicationUserAssignedIdentity> managedIdentities;
+
     /**
      * Get the typeVersion property: The version of the application type as defined in the application manifest.
      *
@@ -221,6 +228,29 @@ public class ApplicationResourceUpdateProperties {
     }
 
     /**
+     * Get the managedIdentities property: List of user assigned identities for the application, each mapped to a
+     * friendly name.
+     *
+     * @return the managedIdentities value.
+     */
+    public List<ApplicationUserAssignedIdentity> managedIdentities() {
+        return this.managedIdentities;
+    }
+
+    /**
+     * Set the managedIdentities property: List of user assigned identities for the application, each mapped to a
+     * friendly name.
+     *
+     * @param managedIdentities the managedIdentities value to set.
+     * @return the ApplicationResourceUpdateProperties object itself.
+     */
+    public ApplicationResourceUpdateProperties withManagedIdentities(
+        List<ApplicationUserAssignedIdentity> managedIdentities) {
+        this.managedIdentities = managedIdentities;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -231,6 +261,9 @@ public class ApplicationResourceUpdateProperties {
         }
         if (metrics() != null) {
             metrics().forEach(e -> e.validate());
+        }
+        if (managedIdentities() != null) {
+            managedIdentities().forEach(e -> e.validate());
         }
     }
 }

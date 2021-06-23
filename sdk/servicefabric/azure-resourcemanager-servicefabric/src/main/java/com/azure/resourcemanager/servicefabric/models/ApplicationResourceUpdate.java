@@ -7,6 +7,7 @@ package com.azure.resourcemanager.servicefabric.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -72,6 +73,13 @@ public class ApplicationResourceUpdate extends ProxyResource {
     private List<ApplicationMetricDescription> metrics;
 
     /*
+     * List of user assigned identities for the application, each mapped to a
+     * friendly name.
+     */
+    @JsonProperty(value = "properties.managedIdentities")
+    private List<ApplicationUserAssignedIdentity> managedIdentities;
+
+    /*
      * It will be deprecated in New API, resource location depends on the
      * parent resource.
      */
@@ -89,6 +97,12 @@ public class ApplicationResourceUpdate extends ProxyResource {
      */
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
+
+    /*
+     * Metadata pertaining to creation and last modification of the resource.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /**
      * Get the typeVersion property: The version of the application type as defined in the application manifest.
@@ -243,6 +257,28 @@ public class ApplicationResourceUpdate extends ProxyResource {
     }
 
     /**
+     * Get the managedIdentities property: List of user assigned identities for the application, each mapped to a
+     * friendly name.
+     *
+     * @return the managedIdentities value.
+     */
+    public List<ApplicationUserAssignedIdentity> managedIdentities() {
+        return this.managedIdentities;
+    }
+
+    /**
+     * Set the managedIdentities property: List of user assigned identities for the application, each mapped to a
+     * friendly name.
+     *
+     * @param managedIdentities the managedIdentities value to set.
+     * @return the ApplicationResourceUpdate object itself.
+     */
+    public ApplicationResourceUpdate withManagedIdentities(List<ApplicationUserAssignedIdentity> managedIdentities) {
+        this.managedIdentities = managedIdentities;
+        return this;
+    }
+
+    /**
      * Get the location property: It will be deprecated in New API, resource location depends on the parent resource.
      *
      * @return the location value.
@@ -292,6 +328,15 @@ public class ApplicationResourceUpdate extends ProxyResource {
     }
 
     /**
+     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -302,6 +347,9 @@ public class ApplicationResourceUpdate extends ProxyResource {
         }
         if (metrics() != null) {
             metrics().forEach(e -> e.validate());
+        }
+        if (managedIdentities() != null) {
+            managedIdentities().forEach(e -> e.validate());
         }
     }
 }

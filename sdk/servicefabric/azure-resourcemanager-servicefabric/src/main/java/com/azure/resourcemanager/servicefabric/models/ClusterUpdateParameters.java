@@ -9,6 +9,7 @@ import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -120,18 +121,73 @@ public class ClusterUpdateParameters {
     private ClusterUpgradePolicy upgradeDescription;
 
     /*
+     * The policy used to clean up unused versions.
+     */
+    @JsonProperty(value = "properties.applicationTypeVersionsCleanupPolicy")
+    private ApplicationTypeVersionsCleanupPolicy applicationTypeVersionsCleanupPolicy;
+
+    /*
      * The upgrade mode of the cluster when new Service Fabric runtime version
      * is available.
-     *
-     * - Automatic - The cluster will be automatically upgraded to the latest
-     * Service Fabric runtime version as soon as it is available.
-     * - Manual - The cluster will not be automatically upgraded to the latest
-     * Service Fabric runtime version. The cluster is upgraded by setting the
-     * **clusterCodeVersion** property in the cluster resource.
-     *
      */
     @JsonProperty(value = "properties.upgradeMode")
     private UpgradeMode upgradeMode;
+
+    /*
+     * This property controls the logical grouping of VMs in upgrade domains
+     * (UDs). This property can't be modified if a node type with multiple
+     * Availability Zones is already present in the cluster.
+     */
+    @JsonProperty(value = "properties.sfZonalUpgradeMode")
+    private SfZonalUpgradeMode sfZonalUpgradeMode;
+
+    /*
+     * This property defines the upgrade mode for the virtual machine scale
+     * set, it is mandatory if a node type with multiple Availability Zones is
+     * added.
+     */
+    @JsonProperty(value = "properties.vmssZonalUpgradeMode")
+    private VmssZonalUpgradeMode vmssZonalUpgradeMode;
+
+    /*
+     * Indicates if infrastructure service manager is enabled.
+     */
+    @JsonProperty(value = "properties.infrastructureServiceManager")
+    private Boolean infrastructureServiceManager;
+
+    /*
+     * Indicates when new cluster runtime version upgrades will be applied
+     * after they are released. By default is Wave0. Only applies when
+     * **upgradeMode** is set to 'Automatic'.
+     */
+    @JsonProperty(value = "properties.upgradeWave")
+    private ClusterUpgradeCadence upgradeWave;
+
+    /*
+     * The start timestamp to pause runtime version upgrades on the cluster
+     * (UTC).
+     */
+    @JsonProperty(value = "properties.upgradePauseStartTimestampUtc")
+    private OffsetDateTime upgradePauseStartTimestampUtc;
+
+    /*
+     * The end timestamp of pause runtime version upgrades on the cluster
+     * (UTC).
+     */
+    @JsonProperty(value = "properties.upgradePauseEndTimestampUtc")
+    private OffsetDateTime upgradePauseEndTimestampUtc;
+
+    /*
+     * Boolean to pause automatic runtime version upgrades to the cluster.
+     */
+    @JsonProperty(value = "properties.waveUpgradePaused")
+    private Boolean waveUpgradePaused;
+
+    /*
+     * Indicates a list of notification channels for cluster events.
+     */
+    @JsonProperty(value = "properties.notifications")
+    private List<Notification> notifications;
 
     /**
      * Get the tags property: Cluster update parameters.
@@ -428,12 +484,29 @@ public class ClusterUpdateParameters {
     }
 
     /**
+     * Get the applicationTypeVersionsCleanupPolicy property: The policy used to clean up unused versions.
+     *
+     * @return the applicationTypeVersionsCleanupPolicy value.
+     */
+    public ApplicationTypeVersionsCleanupPolicy applicationTypeVersionsCleanupPolicy() {
+        return this.applicationTypeVersionsCleanupPolicy;
+    }
+
+    /**
+     * Set the applicationTypeVersionsCleanupPolicy property: The policy used to clean up unused versions.
+     *
+     * @param applicationTypeVersionsCleanupPolicy the applicationTypeVersionsCleanupPolicy value to set.
+     * @return the ClusterUpdateParameters object itself.
+     */
+    public ClusterUpdateParameters withApplicationTypeVersionsCleanupPolicy(
+        ApplicationTypeVersionsCleanupPolicy applicationTypeVersionsCleanupPolicy) {
+        this.applicationTypeVersionsCleanupPolicy = applicationTypeVersionsCleanupPolicy;
+        return this;
+    }
+
+    /**
      * Get the upgradeMode property: The upgrade mode of the cluster when new Service Fabric runtime version is
      * available.
-     *
-     * <p>- Automatic - The cluster will be automatically upgraded to the latest Service Fabric runtime version as soon
-     * as it is available. - Manual - The cluster will not be automatically upgraded to the latest Service Fabric
-     * runtime version. The cluster is upgraded by setting the **clusterCodeVersion** property in the cluster resource.
      *
      * @return the upgradeMode value.
      */
@@ -445,15 +518,183 @@ public class ClusterUpdateParameters {
      * Set the upgradeMode property: The upgrade mode of the cluster when new Service Fabric runtime version is
      * available.
      *
-     * <p>- Automatic - The cluster will be automatically upgraded to the latest Service Fabric runtime version as soon
-     * as it is available. - Manual - The cluster will not be automatically upgraded to the latest Service Fabric
-     * runtime version. The cluster is upgraded by setting the **clusterCodeVersion** property in the cluster resource.
-     *
      * @param upgradeMode the upgradeMode value to set.
      * @return the ClusterUpdateParameters object itself.
      */
     public ClusterUpdateParameters withUpgradeMode(UpgradeMode upgradeMode) {
         this.upgradeMode = upgradeMode;
+        return this;
+    }
+
+    /**
+     * Get the sfZonalUpgradeMode property: This property controls the logical grouping of VMs in upgrade domains (UDs).
+     * This property can't be modified if a node type with multiple Availability Zones is already present in the
+     * cluster.
+     *
+     * @return the sfZonalUpgradeMode value.
+     */
+    public SfZonalUpgradeMode sfZonalUpgradeMode() {
+        return this.sfZonalUpgradeMode;
+    }
+
+    /**
+     * Set the sfZonalUpgradeMode property: This property controls the logical grouping of VMs in upgrade domains (UDs).
+     * This property can't be modified if a node type with multiple Availability Zones is already present in the
+     * cluster.
+     *
+     * @param sfZonalUpgradeMode the sfZonalUpgradeMode value to set.
+     * @return the ClusterUpdateParameters object itself.
+     */
+    public ClusterUpdateParameters withSfZonalUpgradeMode(SfZonalUpgradeMode sfZonalUpgradeMode) {
+        this.sfZonalUpgradeMode = sfZonalUpgradeMode;
+        return this;
+    }
+
+    /**
+     * Get the vmssZonalUpgradeMode property: This property defines the upgrade mode for the virtual machine scale set,
+     * it is mandatory if a node type with multiple Availability Zones is added.
+     *
+     * @return the vmssZonalUpgradeMode value.
+     */
+    public VmssZonalUpgradeMode vmssZonalUpgradeMode() {
+        return this.vmssZonalUpgradeMode;
+    }
+
+    /**
+     * Set the vmssZonalUpgradeMode property: This property defines the upgrade mode for the virtual machine scale set,
+     * it is mandatory if a node type with multiple Availability Zones is added.
+     *
+     * @param vmssZonalUpgradeMode the vmssZonalUpgradeMode value to set.
+     * @return the ClusterUpdateParameters object itself.
+     */
+    public ClusterUpdateParameters withVmssZonalUpgradeMode(VmssZonalUpgradeMode vmssZonalUpgradeMode) {
+        this.vmssZonalUpgradeMode = vmssZonalUpgradeMode;
+        return this;
+    }
+
+    /**
+     * Get the infrastructureServiceManager property: Indicates if infrastructure service manager is enabled.
+     *
+     * @return the infrastructureServiceManager value.
+     */
+    public Boolean infrastructureServiceManager() {
+        return this.infrastructureServiceManager;
+    }
+
+    /**
+     * Set the infrastructureServiceManager property: Indicates if infrastructure service manager is enabled.
+     *
+     * @param infrastructureServiceManager the infrastructureServiceManager value to set.
+     * @return the ClusterUpdateParameters object itself.
+     */
+    public ClusterUpdateParameters withInfrastructureServiceManager(Boolean infrastructureServiceManager) {
+        this.infrastructureServiceManager = infrastructureServiceManager;
+        return this;
+    }
+
+    /**
+     * Get the upgradeWave property: Indicates when new cluster runtime version upgrades will be applied after they are
+     * released. By default is Wave0. Only applies when **upgradeMode** is set to 'Automatic'.
+     *
+     * @return the upgradeWave value.
+     */
+    public ClusterUpgradeCadence upgradeWave() {
+        return this.upgradeWave;
+    }
+
+    /**
+     * Set the upgradeWave property: Indicates when new cluster runtime version upgrades will be applied after they are
+     * released. By default is Wave0. Only applies when **upgradeMode** is set to 'Automatic'.
+     *
+     * @param upgradeWave the upgradeWave value to set.
+     * @return the ClusterUpdateParameters object itself.
+     */
+    public ClusterUpdateParameters withUpgradeWave(ClusterUpgradeCadence upgradeWave) {
+        this.upgradeWave = upgradeWave;
+        return this;
+    }
+
+    /**
+     * Get the upgradePauseStartTimestampUtc property: The start timestamp to pause runtime version upgrades on the
+     * cluster (UTC).
+     *
+     * @return the upgradePauseStartTimestampUtc value.
+     */
+    public OffsetDateTime upgradePauseStartTimestampUtc() {
+        return this.upgradePauseStartTimestampUtc;
+    }
+
+    /**
+     * Set the upgradePauseStartTimestampUtc property: The start timestamp to pause runtime version upgrades on the
+     * cluster (UTC).
+     *
+     * @param upgradePauseStartTimestampUtc the upgradePauseStartTimestampUtc value to set.
+     * @return the ClusterUpdateParameters object itself.
+     */
+    public ClusterUpdateParameters withUpgradePauseStartTimestampUtc(OffsetDateTime upgradePauseStartTimestampUtc) {
+        this.upgradePauseStartTimestampUtc = upgradePauseStartTimestampUtc;
+        return this;
+    }
+
+    /**
+     * Get the upgradePauseEndTimestampUtc property: The end timestamp of pause runtime version upgrades on the cluster
+     * (UTC).
+     *
+     * @return the upgradePauseEndTimestampUtc value.
+     */
+    public OffsetDateTime upgradePauseEndTimestampUtc() {
+        return this.upgradePauseEndTimestampUtc;
+    }
+
+    /**
+     * Set the upgradePauseEndTimestampUtc property: The end timestamp of pause runtime version upgrades on the cluster
+     * (UTC).
+     *
+     * @param upgradePauseEndTimestampUtc the upgradePauseEndTimestampUtc value to set.
+     * @return the ClusterUpdateParameters object itself.
+     */
+    public ClusterUpdateParameters withUpgradePauseEndTimestampUtc(OffsetDateTime upgradePauseEndTimestampUtc) {
+        this.upgradePauseEndTimestampUtc = upgradePauseEndTimestampUtc;
+        return this;
+    }
+
+    /**
+     * Get the waveUpgradePaused property: Boolean to pause automatic runtime version upgrades to the cluster.
+     *
+     * @return the waveUpgradePaused value.
+     */
+    public Boolean waveUpgradePaused() {
+        return this.waveUpgradePaused;
+    }
+
+    /**
+     * Set the waveUpgradePaused property: Boolean to pause automatic runtime version upgrades to the cluster.
+     *
+     * @param waveUpgradePaused the waveUpgradePaused value to set.
+     * @return the ClusterUpdateParameters object itself.
+     */
+    public ClusterUpdateParameters withWaveUpgradePaused(Boolean waveUpgradePaused) {
+        this.waveUpgradePaused = waveUpgradePaused;
+        return this;
+    }
+
+    /**
+     * Get the notifications property: Indicates a list of notification channels for cluster events.
+     *
+     * @return the notifications value.
+     */
+    public List<Notification> notifications() {
+        return this.notifications;
+    }
+
+    /**
+     * Set the notifications property: Indicates a list of notification channels for cluster events.
+     *
+     * @param notifications the notifications value to set.
+     * @return the ClusterUpdateParameters object itself.
+     */
+    public ClusterUpdateParameters withNotifications(List<Notification> notifications) {
+        this.notifications = notifications;
         return this;
     }
 
@@ -486,6 +727,12 @@ public class ClusterUpdateParameters {
         }
         if (upgradeDescription() != null) {
             upgradeDescription().validate();
+        }
+        if (applicationTypeVersionsCleanupPolicy() != null) {
+            applicationTypeVersionsCleanupPolicy().validate();
+        }
+        if (notifications() != null) {
+            notifications().forEach(e -> e.validate());
         }
     }
 }

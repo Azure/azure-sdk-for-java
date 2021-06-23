@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.servicefabric.fluent.models.ApplicationTypeVersionResourceInner;
 import java.util.Map;
@@ -75,6 +76,13 @@ public interface ApplicationTypeVersionResource {
      * @return the etag value.
      */
     String etag();
+
+    /**
+     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
 
     /**
      * Gets the region of the resource.

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.servicefabric.implementation;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.servicefabric.fluent.models.ServiceResourceInner;
 import com.azure.resourcemanager.servicefabric.models.ArmServicePackageActivationMode;
@@ -87,6 +88,10 @@ public final class ServiceResourceImpl implements ServiceResource, ServiceResour
         return this.innerModel().servicePackageActivationMode();
     }
 
+    public String serviceDnsName() {
+        return this.innerModel().serviceDnsName();
+    }
+
     public String location() {
         return this.innerModel().location();
     }
@@ -102,6 +107,10 @@ public final class ServiceResourceImpl implements ServiceResource, ServiceResour
 
     public String etag() {
         return this.innerModel().etag();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public Region region() {
@@ -301,6 +310,11 @@ public final class ServiceResourceImpl implements ServiceResource, ServiceResour
     public ServiceResourceImpl withServicePackageActivationMode(
         ArmServicePackageActivationMode servicePackageActivationMode) {
         this.innerModel().withServicePackageActivationMode(servicePackageActivationMode);
+        return this;
+    }
+
+    public ServiceResourceImpl withServiceDnsName(String serviceDnsName) {
+        this.innerModel().withServiceDnsName(serviceDnsName);
         return this;
     }
 

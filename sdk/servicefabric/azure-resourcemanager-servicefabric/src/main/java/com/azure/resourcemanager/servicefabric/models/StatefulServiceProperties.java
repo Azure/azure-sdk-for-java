@@ -213,6 +213,13 @@ public final class StatefulServiceProperties extends ServiceResourceProperties {
 
     /** {@inheritDoc} */
     @Override
+    public StatefulServiceProperties withServiceDnsName(String serviceDnsName) {
+        super.withServiceDnsName(serviceDnsName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public StatefulServiceProperties withPlacementConstraints(String placementConstraints) {
         super.withPlacementConstraints(placementConstraints);
         return this;

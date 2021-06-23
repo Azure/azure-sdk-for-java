@@ -16,6 +16,13 @@ public interface OperationResult {
     String name();
 
     /**
+     * Gets the isDataAction property: Indicates whether the operation is a data action.
+     *
+     * @return the isDataAction value.
+     */
+    Boolean isDataAction();
+
+    /**
      * Gets the display property: The object that represents the operation.
      *
      * @return the display value.

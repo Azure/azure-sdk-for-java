@@ -5,12 +5,15 @@
 package com.azure.resourcemanager.servicefabric.implementation;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.servicefabric.fluent.models.ApplicationResourceInner;
 import com.azure.resourcemanager.servicefabric.models.ApplicationMetricDescription;
 import com.azure.resourcemanager.servicefabric.models.ApplicationResource;
 import com.azure.resourcemanager.servicefabric.models.ApplicationResourceUpdate;
 import com.azure.resourcemanager.servicefabric.models.ApplicationUpgradePolicy;
+import com.azure.resourcemanager.servicefabric.models.ApplicationUserAssignedIdentity;
+import com.azure.resourcemanager.servicefabric.models.ManagedIdentity;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +34,10 @@ public final class ApplicationResourceImpl
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public ManagedIdentity identity() {
+        return this.innerModel().identity();
     }
 
     public String typeVersion() {
@@ -71,6 +78,15 @@ public final class ApplicationResourceImpl
         }
     }
 
+    public List<ApplicationUserAssignedIdentity> managedIdentities() {
+        List<ApplicationUserAssignedIdentity> inner = this.innerModel().managedIdentities();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
     public String provisioningState() {
         return this.innerModel().provisioningState();
     }
@@ -94,6 +110,10 @@ public final class ApplicationResourceImpl
 
     public String etag() {
         return this.innerModel().etag();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public Region region() {
@@ -223,6 +243,11 @@ public final class ApplicationResourceImpl
         }
     }
 
+    public ApplicationResourceImpl withIdentity(ManagedIdentity identity) {
+        this.innerModel().withIdentity(identity);
+        return this;
+    }
+
     public ApplicationResourceImpl withTypeVersion(String typeVersion) {
         if (isInCreateMode()) {
             this.innerModel().withTypeVersion(typeVersion);
@@ -289,6 +314,16 @@ public final class ApplicationResourceImpl
             return this;
         } else {
             this.updateParameters.withMetrics(metrics);
+            return this;
+        }
+    }
+
+    public ApplicationResourceImpl withManagedIdentities(List<ApplicationUserAssignedIdentity> managedIdentities) {
+        if (isInCreateMode()) {
+            this.innerModel().withManagedIdentities(managedIdentities);
+            return this;
+        } else {
+            this.updateParameters.withManagedIdentities(managedIdentities);
             return this;
         }
     }

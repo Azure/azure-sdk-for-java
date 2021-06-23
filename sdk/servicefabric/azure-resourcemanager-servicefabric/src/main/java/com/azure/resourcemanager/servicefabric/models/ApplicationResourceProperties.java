@@ -108,6 +108,14 @@ public final class ApplicationResourceProperties extends ApplicationResourceUpda
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationResourceProperties withManagedIdentities(
+        List<ApplicationUserAssignedIdentity> managedIdentities) {
+        super.withManagedIdentities(managedIdentities);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

@@ -222,7 +222,7 @@ public final class ServiceFabricManagementClientImpl implements ServiceFabricMan
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2019-03-01";
+        this.apiVersion = "2021-06-01";
         this.clusters = new ClustersClientImpl(this);
         this.clusterVersions = new ClusterVersionsClientImpl(this);
         this.operations = new OperationsClientImpl(this);

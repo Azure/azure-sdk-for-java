@@ -53,6 +53,13 @@ public class ServiceResourceProperties extends ServiceResourcePropertiesBase {
     @JsonProperty(value = "servicePackageActivationMode")
     private ArmServicePackageActivationMode servicePackageActivationMode;
 
+    /*
+     * Dns name used for the service. If this is specified, then the service
+     * can be accessed via its DNS name instead of service name.
+     */
+    @JsonProperty(value = "serviceDnsName")
+    private String serviceDnsName;
+
     /**
      * Get the provisioningState property: The current deployment or provisioning state, which only appears in the
      * response.
@@ -121,6 +128,28 @@ public class ServiceResourceProperties extends ServiceResourcePropertiesBase {
     public ServiceResourceProperties withServicePackageActivationMode(
         ArmServicePackageActivationMode servicePackageActivationMode) {
         this.servicePackageActivationMode = servicePackageActivationMode;
+        return this;
+    }
+
+    /**
+     * Get the serviceDnsName property: Dns name used for the service. If this is specified, then the service can be
+     * accessed via its DNS name instead of service name.
+     *
+     * @return the serviceDnsName value.
+     */
+    public String serviceDnsName() {
+        return this.serviceDnsName;
+    }
+
+    /**
+     * Set the serviceDnsName property: Dns name used for the service. If this is specified, then the service can be
+     * accessed via its DNS name instead of service name.
+     *
+     * @param serviceDnsName the serviceDnsName value to set.
+     * @return the ServiceResourceProperties object itself.
+     */
+    public ServiceResourceProperties withServiceDnsName(String serviceDnsName) {
+        this.serviceDnsName = serviceDnsName;
         return this;
     }
 
