@@ -33,8 +33,10 @@ public class RequiredServiceVersionExtension implements IAnnotationDrivenExtensi
     private Enum getTargetServiceVersion(Class clazz) {
         String targetServiceVersionFromEnvironment = TestEnvironment.getInstance().getServiceVersion();
         if (targetServiceVersionFromEnvironment != null) {
+            // Use environment defined version first.
             return Enum.valueOf(clazz, targetServiceVersionFromEnvironment);
         } else {
+            // Fall back to "latest" service version otherwise.
             try {
                 return (Enum) clazz.getMethod("getLatest").invoke(null);
             } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
