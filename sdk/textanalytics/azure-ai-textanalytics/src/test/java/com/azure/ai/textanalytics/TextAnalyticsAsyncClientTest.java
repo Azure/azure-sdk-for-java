@@ -887,14 +887,13 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/19568")
     public void recognizePiiEntityWithCategoriesFilterFromOtherResult(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         recognizeStringBatchPiiEntitiesForCategoriesFilterRunner(
             (inputs, options) -> {
                 List<PiiEntityCategory> categories = new ArrayList<>();
-                StepVerifier.create(client.recognizePiiEntitiesBatch(inputs, "en", null))
+                StepVerifier.create(client.recognizePiiEntitiesBatch(inputs, "en", options))
                     .assertNext(
                         resultCollection -> {
                             resultCollection.forEach(result -> result.getEntities().forEach(piiEntity -> {
@@ -2425,7 +2424,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/19568")
     public void analyzePiiEntityRecognitionWithCategoriesFilters(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
