@@ -14,7 +14,7 @@ import com.azure.storage.blob.specialized.BlockBlobClient
 import com.azure.storage.blob.specialized.PageBlobClient
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 
-@RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-10-02")
+@RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_10_02")
 class OAuthCopySourceTests extends APISpec {
     BlobClient defaultDataSourceBlobClient
     BlobClient pageBlobDataSourceBlobClient
