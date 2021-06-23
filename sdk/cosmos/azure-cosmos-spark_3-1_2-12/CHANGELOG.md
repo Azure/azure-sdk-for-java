@@ -5,11 +5,11 @@
 * Changed the default value of `spark.cosmos.read.inferSchema.forceNullableProperties` from `false` to `true` based on user feedback, see [PR](https://github.com/Azure/azure-sdk-for-java/pull/22049).
 
 #### Key Bug Fixes
-* Fixes conversion for MapType schema (#22291).
-* Not-nullable properties to include "id" (#22143).
-* Support CustomQuery to be used for inference (#22079).
-* Fixes collision resolution on schema inference (#21933).
-* Fixes max length of userAgent header (#22018).
+* Fixes conversion for MapType schema, see [PR](https://github.com/Azure/azure-sdk-for-java/pull/22291).
+* Not-nullable properties to include "id", see [PR](https://github.com/Azure/azure-sdk-for-java/pull/22143).
+* Support CustomQuery to be used for inference, see [PR](https://github.com/Azure/azure-sdk-for-java/pull/22079).
+* Fixes collision resolution on schema inference, see [PR](https://github.com/Azure/azure-sdk-for-java/pull/21933).
+* Fixes max length of userAgent header, see [PR](https://github.com/Azure/azure-sdk-for-java/pull/22018).
 
 ### 4.1.0 (2021-05-27)
 #### New Features
