@@ -1,7 +1,10 @@
 # Release History
-## 7.3.0-beta.3 (Unreleased)
+
+## 7.3.0 (2021-06-25)
 ### New Features
 - Added support receiving dead-letter queue (DLQ) for 'ServiceBusProcessorClient' and session receiver using 'subQueue'
+- Exposing 'ServiceBusClientBuilder.crossEntityTransaction()' for cross entity transactions support.
+- Exposing 'AmqpMessageBody#value' and 'AmqpMessageBody#sequence' to support value and sequence amqp types.
 
 ## 7.2.3 (2021-06-14)
 ### Fixed

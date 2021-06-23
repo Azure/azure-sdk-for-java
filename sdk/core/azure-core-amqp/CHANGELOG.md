@@ -1,6 +1,9 @@
 # Release History
 
-## 2.3.0-beta.1 (Unreleased)
+## 2.3.0 (2021-06-25)
+### New Features
+- Exposing 'AmqpTransactionCoordinator' interface for transactions support.
+- Exposing 'AmqpMessageBody#value' and 'AmqpMessageBody#sequence' amqp types.
 
 ## 2.2.0 (2021-06-11)
 

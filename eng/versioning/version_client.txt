@@ -59,7 +59,7 @@ com.azure:azure-communication-identity;1.1.1;1.2.0-beta.1
 com.azure:azure-communication-phonenumbers;1.0.3;1.1.0-beta.1
 com.azure:azure-containers-containerregistry;1.0.0-beta.3;1.0.0-beta.4
 com.azure:azure-core;1.17.0;1.18.0-beta.1
-com.azure:azure-core-amqp;2.2.0;2.3.0-beta.1
+com.azure:azure-core-amqp;2.2.0;2.3.0
 com.azure:azure-core-amqp-experimental;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-core-experimental;1.0.0-beta.14;1.0.0-beta.15
 com.azure:azure-core-http-jdk-httpclient;1.0.0-beta.1;1.0.0-beta.1
@@ -94,7 +94,7 @@ com.azure:azure-messaging-eventhubs;5.8.0;5.9.0-beta.1
 com.azure:azure-messaging-eventhubs-checkpointstore-blob;1.8.0;1.9.0-beta.1
 com.azure:azure-messaging-eventhubs-track1-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-eventhubs-track2-perf;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-messaging-servicebus;7.2.3;7.3.0-beta.3
+com.azure:azure-messaging-servicebus;7.2.3;7.3.0
 com.azure:azure-messaging-servicebus-track1-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-servicebus-track2-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-webpubsub;1.0.0-beta.2;1.0.0-beta.3
@@ -317,4 +317,4 @@ com.azure.resourcemanager:azure-resourcemanager-deviceprovisioningservices;1.0.0
 # beta_<groupId>:<artifactId>;dependency-version
 # note: Released beta versions will not be manipulated with the automatic PR creation code.
 beta_com.azure:azure-security-keyvault-keys;4.3.0-beta.6
-beta_com.azure:azure-core-amqp;2.3.0-beta.1
+beta_com.azure:azure-core-amqp;2.3.0
