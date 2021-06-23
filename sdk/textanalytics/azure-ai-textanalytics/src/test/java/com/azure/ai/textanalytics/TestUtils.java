@@ -136,9 +136,17 @@ final class TestUtils {
         "The patient is a 54-year-old gentleman with a history of progressive angina over the past several months.",
         "The patient went for six minutes with minimal ST depressions in the anterior lateral leads , thought due to fatigue and wrist pain , his anginal equivalent.");
 
-    static final String PII_TASK = "entityRecognitionPiiTasks";
-    static final String ENTITY_TASK = "entityRecognitionTasks";
-    static final String KEY_PHRASES_TASK = "keyPhraseExtractionTasks";
+    static final String ENTITIES_RECOGNITION_NAME = "EntitiesRecognitionName";
+    static final String PII_ENTITIES_RECOGNITION_NAME = "PiiEntitiesRecognitionName";
+    static final String LINKED_ENTITIES_RECOGNITION_NAME = "LinkedEntitiesRecognitionName";
+    static final String KEY_PHRASES_EXTRACTION_NAME = "KeyPhrasesExtractionName";
+    static final String SENTIMENT_ANALYSIS_NAME = "SentimentAnalysisName";
+
+    static final String ENTITIES_RECOGNITION_DEFAULT_NAME = "NamedEntityRecognition_latest";
+    static final String PII_ENTITIES_RECOGNITION_DEFAULT_NAME = "PersonallyIdentifiableInformation_latest";
+    static final String LINKED_ENTITIES_RECOGNITION_DEFAULT_NAME = "EntityLinking_latest";
+    static final String KEY_PHRASES_EXTRACTION_DEFAULT_NAME = "KeyPhraseExtraction_latest";
+    static final String SENTIMENT_ANALYSIS_DEFAULT_NAME = "SentimentAnalysis_latest";
 
     // "personal" and "social" are common to both English and Spanish and if given with limited context the
     // response will be based on the "US" country hint. If the origin of the text is known to be coming from
@@ -239,9 +247,10 @@ final class TestUtils {
      * Helper method to get the expected Categorized Entities List 1
      */
     static List<CategorizedEntity> getCategorizedEntitiesList1() {
+        CategorizedEntity categorizedEntity1 = new CategorizedEntity("trip", EntityCategory.EVENT, null, 0.0, 18);
         CategorizedEntity categorizedEntity2 = new CategorizedEntity("Seattle", EntityCategory.LOCATION, "GPE", 0.0, 26);
         CategorizedEntity categorizedEntity3 = new CategorizedEntity("last week", EntityCategory.DATE_TIME, "DateRange", 0.0, 34);
-        return asList(categorizedEntity2, categorizedEntity3);
+        return asList(categorizedEntity1, categorizedEntity2, categorizedEntity3);
     }
 
     /**
@@ -442,6 +451,21 @@ final class TestUtils {
         return asList(linkedEntity);
     }
 
+    static List<LinkedEntity> getLinkedEntitiesList3() {
+        LinkedEntityMatch linkedEntityMatch = new LinkedEntityMatch("Microsoft", 0.0, 0);
+        LinkedEntityMatch linkedEntityMatch1 = new LinkedEntityMatch("API's", 0.0, 61);
+        LinkedEntity linkedEntity = new LinkedEntity(
+            "Microsoft", new IterableStream<>(Collections.singletonList(linkedEntityMatch)),
+            "en", "Microsoft", "https://en.wikipedia.org/wiki/Microsoft",
+            "Wikipedia", "a093e9b9-90f5-a3d5-c4b8-5855e1b01f85");
+        LinkedEntity linkedEntity1 = new LinkedEntity(
+            "Application programming interface", new IterableStream<>(Collections.singletonList(linkedEntityMatch1)),
+            "en", "Application programming interface",
+            "https://en.wikipedia.org/wiki/Application_programming_interface",
+            "Wikipedia", "");
+        return asList(linkedEntity, linkedEntity1);
+    }
+
     /**
      * Helper method to get the expected Batch Key Phrases.
      */
@@ -616,6 +640,42 @@ final class TestUtils {
         return new DocumentSentiment(TextSentiment.MIXED,
             new SentimentConfidenceScores(0.0, 0.0, 0.0),
             new IterableStream<>(asList(sentenceSentiment1, sentenceSentiment2)),
+            null);
+    }
+
+    /*
+     * This is the expected result for testing an input:
+     * "I had a wonderful trip to Seattle last week."
+     */
+    static DocumentSentiment getExpectedDocumentSentimentForActions() {
+        final SentenceSentiment sentenceSentiment1 = new SentenceSentiment(
+            "I had a wonderful trip to Seattle last week.", TextSentiment.POSITIVE,
+            new SentimentConfidenceScores(0.0, 0.0, 0.0));
+        SentenceSentimentPropertiesHelper.setOpinions(sentenceSentiment1, null);
+        SentenceSentimentPropertiesHelper.setOffset(sentenceSentiment1, 0);
+        SentenceSentimentPropertiesHelper.setLength(sentenceSentiment1, 44);
+
+        return new DocumentSentiment(TextSentiment.POSITIVE,
+            new SentimentConfidenceScores(0.0, 0.0, 0.0),
+            new IterableStream<>(asList(sentenceSentiment1)),
+            null);
+    }
+
+    /*
+     * This is the expected result for testing an input:
+     * "Microsoft employee with ssn 859-98-0987 is using our awesome API's."
+     */
+    static DocumentSentiment getExpectedDocumentSentimentForActions2() {
+        final SentenceSentiment sentenceSentiment1 = new SentenceSentiment(
+            "Microsoft employee with ssn 859-98-0987 is using our awesome API's.", TextSentiment.POSITIVE,
+            new SentimentConfidenceScores(0.0, 0.0, 0.0));
+        SentenceSentimentPropertiesHelper.setOpinions(sentenceSentiment1, null);
+        SentenceSentimentPropertiesHelper.setOffset(sentenceSentiment1, 0);
+        SentenceSentimentPropertiesHelper.setLength(sentenceSentiment1, 67);
+
+        return new DocumentSentiment(TextSentiment.POSITIVE,
+            new SentimentConfidenceScores(0.0, 0.0, 0.0),
+            new IterableStream<>(asList(sentenceSentiment1)),
             null);
     }
 
@@ -949,53 +1009,80 @@ final class TestUtils {
             new TextDocumentBatchStatistics(2, 2, 0, 2));
     }
 
-    static RecognizeEntitiesActionResult getExpectedRecognizeEntitiesActionResult(boolean isError,
+    static RecognizeLinkedEntitiesResultCollection getRecognizeLinkedEntitiesResultCollectionForActions() {
+        return new RecognizeLinkedEntitiesResultCollection(
+            asList(new RecognizeLinkedEntitiesResult("0", new TextDocumentStatistics(44, 1), null,
+                    new LinkedEntityCollection(new IterableStream<>(getLinkedEntitiesList1()), null)),
+                new RecognizeLinkedEntitiesResult("1", new TextDocumentStatistics(20, 1), null,
+                    new LinkedEntityCollection(new IterableStream<>(getLinkedEntitiesList3()), null))
+            ),
+            DEFAULT_MODEL_VERSION,
+            new TextDocumentBatchStatistics(2, 2, 0, 2));
+    }
+
+    static AnalyzeSentimentResultCollection getAnalyzeSentimentResultCollectionForActions() {
+        final AnalyzeSentimentResult analyzeSentimentResult1 = new AnalyzeSentimentResult("0",
+            null, null, getExpectedDocumentSentimentForActions());
+        final AnalyzeSentimentResult analyzeSentimentResult2 = new AnalyzeSentimentResult("1",
+            null, null, getExpectedDocumentSentimentForActions2());
+
+        return new AnalyzeSentimentResultCollection(
+            asList(analyzeSentimentResult1, analyzeSentimentResult2),
+            DEFAULT_MODEL_VERSION, new TextDocumentBatchStatistics(2, 2, 0, 2));
+    }
+
+    static RecognizeEntitiesActionResult getExpectedRecognizeEntitiesActionResult(boolean isError, String actionName,
         OffsetDateTime completeAt, RecognizeEntitiesResultCollection resultCollection, TextAnalyticsError actionError) {
-        RecognizeEntitiesActionResult recognizeEntitiesActionResult = new RecognizeEntitiesActionResult();
-        RecognizeEntitiesActionResultPropertiesHelper.setDocumentsResults(recognizeEntitiesActionResult, resultCollection);
-        TextAnalyticsActionResultPropertiesHelper.setCompletedAt(recognizeEntitiesActionResult, completeAt);
-        TextAnalyticsActionResultPropertiesHelper.setIsError(recognizeEntitiesActionResult, isError);
-        TextAnalyticsActionResultPropertiesHelper.setError(recognizeEntitiesActionResult, actionError);
-        return recognizeEntitiesActionResult;
-    }
-
-    static RecognizePiiEntitiesActionResult getExpectedRecognizePiiEntitiesActionResult(boolean isError,
-        OffsetDateTime completedAt, RecognizePiiEntitiesResultCollection resultCollection,
-        TextAnalyticsError actionError) {
-        RecognizePiiEntitiesActionResult recognizePiiEntitiesActionResult = new RecognizePiiEntitiesActionResult();
-        RecognizePiiEntitiesActionResultPropertiesHelper.setDocumentsResults(recognizePiiEntitiesActionResult, resultCollection);
-        TextAnalyticsActionResultPropertiesHelper.setCompletedAt(recognizePiiEntitiesActionResult, completedAt);
-        TextAnalyticsActionResultPropertiesHelper.setIsError(recognizePiiEntitiesActionResult, isError);
-        TextAnalyticsActionResultPropertiesHelper.setError(recognizePiiEntitiesActionResult, actionError);
-        return recognizePiiEntitiesActionResult;
-    }
-
-    static ExtractKeyPhrasesActionResult getExpectedExtractKeyPhrasesActionResult(boolean isError,
-        OffsetDateTime completedAt, ExtractKeyPhrasesResultCollection resultCollection,
-        TextAnalyticsError actionError) {
-        ExtractKeyPhrasesActionResult extractKeyPhrasesActionResult = new ExtractKeyPhrasesActionResult();
-        ExtractKeyPhrasesActionResultPropertiesHelper.setDocumentsResults(extractKeyPhrasesActionResult, resultCollection);
-        TextAnalyticsActionResultPropertiesHelper.setCompletedAt(extractKeyPhrasesActionResult, completedAt);
-        TextAnalyticsActionResultPropertiesHelper.setIsError(extractKeyPhrasesActionResult, isError);
-        TextAnalyticsActionResultPropertiesHelper.setError(extractKeyPhrasesActionResult, actionError);
-        return extractKeyPhrasesActionResult;
-    }
-
-    static RecognizeLinkedEntitiesActionResult getExpectedRecognizeLinkedEntitiesActionResult(boolean isError,
-        OffsetDateTime completeAt, RecognizeLinkedEntitiesResultCollection resultCollection,
-        TextAnalyticsError actionError) {
-        RecognizeLinkedEntitiesActionResult actionResult = new RecognizeLinkedEntitiesActionResult();
-        RecognizeLinkedEntitiesActionResultPropertiesHelper.setDocumentsResults(actionResult, resultCollection);
+        RecognizeEntitiesActionResult actionResult = new RecognizeEntitiesActionResult();
+        RecognizeEntitiesActionResultPropertiesHelper.setDocumentsResults(actionResult, resultCollection);
+        TextAnalyticsActionResultPropertiesHelper.setActionName(actionResult, actionName);
         TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult, completeAt);
         TextAnalyticsActionResultPropertiesHelper.setIsError(actionResult, isError);
         TextAnalyticsActionResultPropertiesHelper.setError(actionResult, actionError);
         return actionResult;
     }
 
-    static AnalyzeSentimentActionResult getExpectedAnalyzeSentimentActionResult(boolean isError,
+    static RecognizePiiEntitiesActionResult getExpectedRecognizePiiEntitiesActionResult(boolean isError,
+        String actionName, OffsetDateTime completedAt, RecognizePiiEntitiesResultCollection resultCollection,
+        TextAnalyticsError actionError) {
+        RecognizePiiEntitiesActionResult actionResult = new RecognizePiiEntitiesActionResult();
+        RecognizePiiEntitiesActionResultPropertiesHelper.setDocumentsResults(actionResult, resultCollection);
+        TextAnalyticsActionResultPropertiesHelper.setActionName(actionResult, actionName);
+        TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult, completedAt);
+        TextAnalyticsActionResultPropertiesHelper.setIsError(actionResult, isError);
+        TextAnalyticsActionResultPropertiesHelper.setError(actionResult, actionError);
+        return actionResult;
+    }
+
+    static ExtractKeyPhrasesActionResult getExpectedExtractKeyPhrasesActionResult(boolean isError, String actionName,
+        OffsetDateTime completedAt, ExtractKeyPhrasesResultCollection resultCollection,
+        TextAnalyticsError actionError) {
+        ExtractKeyPhrasesActionResult actionResult = new ExtractKeyPhrasesActionResult();
+        ExtractKeyPhrasesActionResultPropertiesHelper.setDocumentsResults(actionResult, resultCollection);
+        TextAnalyticsActionResultPropertiesHelper.setActionName(actionResult, actionName);
+        TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult, completedAt);
+        TextAnalyticsActionResultPropertiesHelper.setIsError(actionResult, isError);
+        TextAnalyticsActionResultPropertiesHelper.setError(actionResult, actionError);
+        return actionResult;
+    }
+
+    static RecognizeLinkedEntitiesActionResult getExpectedRecognizeLinkedEntitiesActionResult(boolean isError,
+        String actionName, OffsetDateTime completeAt, RecognizeLinkedEntitiesResultCollection resultCollection,
+        TextAnalyticsError actionError) {
+        RecognizeLinkedEntitiesActionResult actionResult = new RecognizeLinkedEntitiesActionResult();
+        RecognizeLinkedEntitiesActionResultPropertiesHelper.setDocumentsResults(actionResult, resultCollection);
+        TextAnalyticsActionResultPropertiesHelper.setActionName(actionResult, actionName);
+        TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult, completeAt);
+        TextAnalyticsActionResultPropertiesHelper.setIsError(actionResult, isError);
+        TextAnalyticsActionResultPropertiesHelper.setError(actionResult, actionError);
+        return actionResult;
+    }
+
+    static AnalyzeSentimentActionResult getExpectedAnalyzeSentimentActionResult(boolean isError, String actionName,
         OffsetDateTime completeAt, AnalyzeSentimentResultCollection resultCollection, TextAnalyticsError actionError) {
         AnalyzeSentimentActionResult actionResult = new AnalyzeSentimentActionResult();
         AnalyzeSentimentActionResultPropertiesHelper.setDocumentsResults(actionResult, resultCollection);
+        TextAnalyticsActionResultPropertiesHelper.setActionName(actionResult, actionName);
         TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult, completeAt);
         TextAnalyticsActionResultPropertiesHelper.setIsError(actionResult, isError);
         TextAnalyticsActionResultPropertiesHelper.setError(actionResult, actionError);
@@ -1007,9 +1094,9 @@ final class TestUtils {
      */
     static AnalyzeActionsResult getExpectedAnalyzeBatchActionsResult(
         IterableStream<RecognizeEntitiesActionResult> recognizeEntitiesActionResults,
+        IterableStream<RecognizeLinkedEntitiesActionResult> recognizeLinkedEntitiesActionResults,
         IterableStream<RecognizePiiEntitiesActionResult> recognizePiiEntitiesActionResults,
         IterableStream<ExtractKeyPhrasesActionResult> extractKeyPhrasesActionResults,
-        IterableStream<RecognizeLinkedEntitiesActionResult> recognizeLinkedEntitiesActionResults,
         IterableStream<AnalyzeSentimentActionResult> analyzeSentimentActionResults) {
 
         final AnalyzeActionsResult analyzeActionsResult = new AnalyzeActionsResult();
@@ -1029,7 +1116,7 @@ final class TestUtils {
     }
 
     /**
-     * ExtractKeyPhrasesResultCollection result for
+     * CategorizedEntityCollection result for
      * "Microsoft employee with ssn 859-98-0987 is using our awesome API's."
      */
     static RecognizeEntitiesResultCollection getRecognizeEntitiesResultCollectionForPagination(int startIndex,
@@ -1046,7 +1133,7 @@ final class TestUtils {
     }
 
     /**
-     * ExtractKeyPhrasesResultCollection result for
+     * RecognizePiiEntitiesResultCollection result for
      * "Microsoft employee with ssn 859-98-0987 is using our awesome API's."
      */
     static RecognizePiiEntitiesResultCollection getRecognizePiiEntitiesResultCollectionForPagination(int startIndex,
@@ -1083,6 +1170,38 @@ final class TestUtils {
     }
 
     /**
+     * RecognizeLinkedEntitiesResultCollection result for
+     * "Microsoft employee with ssn 859-98-0987 is using our awesome API's."
+     */
+    static RecognizeLinkedEntitiesResultCollection getRecognizeLinkedEntitiesResultCollectionForPagination(
+        int startIndex, int documentCount) {
+        List<RecognizeLinkedEntitiesResult> recognizeLinkedEntitiesResults = new ArrayList<>();
+        for (int i = startIndex; i < startIndex + documentCount; i++) {
+            recognizeLinkedEntitiesResults.add(new RecognizeLinkedEntitiesResult(Integer.toString(i), null, null,
+                new LinkedEntityCollection(new IterableStream<>(getLinkedEntitiesList3()), null)));
+        }
+        return new RecognizeLinkedEntitiesResultCollection(recognizeLinkedEntitiesResults, "",
+            new TextDocumentBatchStatistics(documentCount, documentCount, 0, documentCount)
+        );
+    }
+
+    /**
+     * AnalyzeSentimentResultCollection result for
+     * "Microsoft employee with ssn 859-98-0987 is using our awesome API's."
+     */
+    static AnalyzeSentimentResultCollection getAnalyzeSentimentResultCollectionForPagination(
+        int startIndex, int documentCount) {
+        List<AnalyzeSentimentResult> analyzeSentimentResults = new ArrayList<>();
+        for (int i = startIndex; i < startIndex + documentCount; i++) {
+            analyzeSentimentResults.add(new AnalyzeSentimentResult(Integer.toString(i), null, null,
+                getExpectedDocumentSentimentForActions2()));
+        }
+        return new AnalyzeSentimentResultCollection(analyzeSentimentResults, "",
+            new TextDocumentBatchStatistics(documentCount, documentCount, 0, documentCount)
+        );
+    }
+
+    /**
      * Helper method that get a multiple-pages (AnalyzeActionsResult) list.
      */
     static List<AnalyzeActionsResult> getExpectedAnalyzeActionsResultListForMultiplePages(int startIndex,
@@ -1091,25 +1210,27 @@ final class TestUtils {
         // First Page
         analyzeActionsResults.add(getExpectedAnalyzeBatchActionsResult(
             IterableStream.of(asList(getExpectedRecognizeEntitiesActionResult(
-                false, TIME_NOW, getRecognizeEntitiesResultCollectionForPagination(startIndex, firstPage), null))),
-            IterableStream.of(asList(getExpectedRecognizePiiEntitiesActionResult(
-                false, TIME_NOW, getRecognizePiiEntitiesResultCollectionForPagination(startIndex, firstPage), null))),
+                false, ENTITIES_RECOGNITION_NAME, TIME_NOW, getRecognizeEntitiesResultCollectionForPagination(startIndex, firstPage), null))),
+            IterableStream.of(asList(getExpectedRecognizeLinkedEntitiesActionResult(
+                false, LINKED_ENTITIES_RECOGNITION_NAME, TIME_NOW, getRecognizeLinkedEntitiesResultCollectionForPagination(startIndex, firstPage), null))), IterableStream.of(asList(getExpectedRecognizePiiEntitiesActionResult(
+                false, PII_ENTITIES_RECOGNITION_NAME, TIME_NOW, getRecognizePiiEntitiesResultCollectionForPagination(startIndex, firstPage), null))),
             IterableStream.of(asList(getExpectedExtractKeyPhrasesActionResult(
-                false, TIME_NOW, getExtractKeyPhrasesResultCollectionForPagination(startIndex, firstPage), null))),
-            IterableStream.of(Collections.emptyList()),
-            IterableStream.of(Collections.emptyList())
+                false, KEY_PHRASES_EXTRACTION_NAME, TIME_NOW, getExtractKeyPhrasesResultCollectionForPagination(startIndex, firstPage), null))),
+            IterableStream.of(asList(getExpectedAnalyzeSentimentActionResult(
+                false, SENTIMENT_ANALYSIS_NAME, TIME_NOW, getAnalyzeSentimentResultCollectionForPagination(startIndex, firstPage), null)))
         ));
         // Second Page
         startIndex += firstPage;
         analyzeActionsResults.add(getExpectedAnalyzeBatchActionsResult(
             IterableStream.of(asList(getExpectedRecognizeEntitiesActionResult(
-                false, TIME_NOW, getRecognizeEntitiesResultCollectionForPagination(startIndex, secondPage), null))),
-            IterableStream.of(asList(getExpectedRecognizePiiEntitiesActionResult(
-                false, TIME_NOW, getRecognizePiiEntitiesResultCollectionForPagination(startIndex, secondPage), null))),
+                false, ENTITIES_RECOGNITION_NAME, TIME_NOW, getRecognizeEntitiesResultCollectionForPagination(startIndex, secondPage), null))),
+            IterableStream.of(asList(getExpectedRecognizeLinkedEntitiesActionResult(
+                false, LINKED_ENTITIES_RECOGNITION_NAME, TIME_NOW, getRecognizeLinkedEntitiesResultCollectionForPagination(startIndex, secondPage), null))), IterableStream.of(asList(getExpectedRecognizePiiEntitiesActionResult(
+                false, PII_ENTITIES_RECOGNITION_NAME, TIME_NOW, getRecognizePiiEntitiesResultCollectionForPagination(startIndex, secondPage), null))),
             IterableStream.of(asList(getExpectedExtractKeyPhrasesActionResult(
-                false, TIME_NOW, getExtractKeyPhrasesResultCollectionForPagination(startIndex, secondPage), null))),
-            IterableStream.of(Collections.emptyList()),
-            IterableStream.of(Collections.emptyList())
+                false, KEY_PHRASES_EXTRACTION_NAME, TIME_NOW, getExtractKeyPhrasesResultCollectionForPagination(startIndex, secondPage), null))),
+            IterableStream.of(asList(getExpectedAnalyzeSentimentActionResult(
+                false, SENTIMENT_ANALYSIS_NAME, TIME_NOW, getAnalyzeSentimentResultCollectionForPagination(startIndex, secondPage), null)))
         ));
         return analyzeActionsResults;
     }

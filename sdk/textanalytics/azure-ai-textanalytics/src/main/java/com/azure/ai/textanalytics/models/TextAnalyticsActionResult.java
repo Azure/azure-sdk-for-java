@@ -15,6 +15,7 @@ import java.util.Locale;
 public class TextAnalyticsActionResult {
     private final ClientLogger logger = new ClientLogger(TextAnalyticsActionResult.class);
 
+    private String actionName;
     private OffsetDateTime completedAt;
     private TextAnalyticsError error;
     private boolean isError;
@@ -22,6 +23,11 @@ public class TextAnalyticsActionResult {
     static {
         TextAnalyticsActionResultPropertiesHelper.setAccessor(
             new TextAnalyticsActionResultPropertiesHelper.TextAnalyticsActionResultAccessor() {
+                @Override
+                public void setActionName(TextAnalyticsActionResult actionResult, String actionName) {
+                    actionResult.setActionName(actionName);
+                }
+
                 @Override
                 public void setCompletedAt(TextAnalyticsActionResult actionResult, OffsetDateTime completedAt) {
                     actionResult.setCompletedAt(completedAt);
@@ -37,6 +43,16 @@ public class TextAnalyticsActionResult {
                     actionResult.setIsError(isError);
                 }
             });
+    }
+
+    /**
+     * Get the customized action name. If the 'actionName' property is not set in the request, the service will
+     * use a default action name.
+     *
+     * @return the name of action.
+     */
+    public String getActionName() {
+        return actionName;
     }
 
     /**
@@ -64,6 +80,10 @@ public class TextAnalyticsActionResult {
      */
     public boolean isError() {
         return isError;
+    }
+
+    private void setActionName(String actionName) {
+        this.actionName = actionName;
     }
 
     private void setCompletedAt(OffsetDateTime completedAt) {

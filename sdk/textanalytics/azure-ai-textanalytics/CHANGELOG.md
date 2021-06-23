@@ -7,6 +7,7 @@
 - Added the new types, `ExtractKeyPhrasesAction`, `RecognizeEntitiesAction`, `RecognizePiiEntitiesAction`,
   `RecognizeLinkedEntitiesAction`, and `AnalyzeSentimentAction`. These types should include all the properties in the
   `***Options` option bags but also could have additional properties, such as `actionName`.
+- Added a new property, `actionName` into the `TextAnalyticsActionResult`.
 
 ### Breaking Changes
 - Removed `StringIndexType`. This SDK will keep using UTF-16 code unit as the default encoding.
