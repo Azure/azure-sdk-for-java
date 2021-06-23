@@ -2,6 +2,8 @@
 
 ## 3.6.0-beta.1 (Unreleased)
 ### Breaking Changes
+
+### Deprecations
 - Deprecate aad.group.enable-full-list, use aad.group.allowed-group-ids=all instead.
 - Deprecate `allowTelemetry` configuration item.
 - Deprecate the two construction methods of class `AADJwtBearerTokenAuthenticationConverter`.

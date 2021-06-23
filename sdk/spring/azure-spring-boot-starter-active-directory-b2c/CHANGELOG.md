@@ -2,8 +2,10 @@
 
 ## 3.6.0-beta.1 (Unreleased)
 ### Breaking Changes
-- Deprecate the two construction methods of class AADB2CJwtBearerTokenAuthenticationConverter.
 - Remove class `AADB2COAuth2AuthenticatedPrincipal`, use class `AADOAuth2AuthenticatedPrincipal` instead.
+
+### Deprecations
+- Deprecate the two construction methods of class AADB2CJwtBearerTokenAuthenticationConverter.
 - Deprecate `allowTelemetry` configuration item.
 
 ## 3.5.0 (2021-05-24)
