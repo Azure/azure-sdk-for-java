@@ -26,7 +26,7 @@ import java.util.Map;
 public class BlobParallelUploadOptions {
     private final Flux<ByteBuffer> dataFlux;
     private final InputStream dataStream;
-    private final long length;
+    private final Long length;
     private ParallelTransferOptions parallelTransferOptions;
     private BlobHttpHeaders headers;
     private Map<String, String> metadata;
@@ -37,7 +37,7 @@ public class BlobParallelUploadOptions {
     private Duration timeout;
 
     /**
-     * Constructs a new {@code BlobParallelUploadOptions}.
+     * Constructs a new {@link BlobParallelUploadOptions}.
      *
      * @param dataFlux The data to write to the blob. Unlike other upload methods, this method does not require that
      * the {@code Flux} be replayable. In other words, it does not have to support multiple subscribers and is not
@@ -47,36 +47,48 @@ public class BlobParallelUploadOptions {
         StorageImplUtils.assertNotNull("dataFlux", dataFlux);
         this.dataFlux = dataFlux;
         this.dataStream = null;
-        this.length = -1;
+        this.length = null;
     }
 
     /**
-     * Constructs a new {@code BlobParalleUploadOptions}.
+     * Constructs a new {@link BlobParallelUploadOptions}.
      *
      * Use {@link #BlobParallelUploadOptions(InputStream)} instead to supply an InputStream without knowing the exact
      * length beforehand.
      *
      * @param dataStream The data to write to the blob.
-     * @param length The exact length of the data, or -1. It is important that a non-negative value match precisely the
-     * length of the data provided in the {@link InputStream}.
+     * @param length The exact length of the data. It is important that this value match precisely the length of the
+     * data provided in the {@link InputStream}.
      * @deprecated length is no longer necessary; use {@link #BlobParallelUploadOptions(InputStream)} instead.
      */
     @Deprecated
     public BlobParallelUploadOptions(InputStream dataStream, long length) {
-        StorageImplUtils.assertNotNull("dataStream", dataStream);
-        StorageImplUtils.assertInBounds("length", length, -1, Long.MAX_VALUE);
-        this.dataStream = dataStream;
-        this.length = length;
-        this.dataFlux = null;
+        this(dataStream, Long.valueOf(length));
     }
 
     /**
-     * Constructs a new {@code BlobParalleUploadOptions}.
+     * Constructs a new {@link BlobParallelUploadOptions}.
      *
      * @param dataStream The data to write to the blob.
      */
     public BlobParallelUploadOptions(InputStream dataStream) {
-        this(dataStream, -1);
+        this(dataStream, null);
+    }
+
+    /**
+     * Common constructor for building options from InputStream.
+     *
+     * @param dataStream The data to write to the blob.
+     * @param length Optional known length of the data, affects reactive behavior for backwards compatibility.
+     */
+    private BlobParallelUploadOptions(InputStream dataStream, Long length) {
+        StorageImplUtils.assertNotNull("dataStream", dataStream);
+        if (length != null) {
+            StorageImplUtils.assertInBounds("length", length, 0, Long.MAX_VALUE);
+        }
+        this.dataStream = dataStream;
+        this.dataFlux = null;
+        this.length = length;
     }
 
     /**
@@ -88,7 +100,7 @@ public class BlobParallelUploadOptions {
         StorageImplUtils.assertNotNull("data", data);
         this.dataFlux = Flux.just(data.toByteBuffer());
         this.dataStream = null;
-        this.length = -1;
+        this.length = null;
     }
 
     /**
@@ -114,8 +126,20 @@ public class BlobParallelUploadOptions {
      *
      * @return The exact length of the data. It is important that this value match precisely the length of the
      * data provided in the {@link InputStream}.
+     * @deprecated use {@link #getOptionalLength()} to have safe access to a length that will not always exist.
      */
+    @Deprecated
     public long getLength() {
+        return length;
+    }
+
+    /**
+     * Gets the length of the data.
+     *
+     * @return The exact length of the data. It is important that this value match precisely the length of the
+     * data provided in the {@link InputStream}.
+     */
+    public Long getOptionalLength() {
         return length;
     }
 

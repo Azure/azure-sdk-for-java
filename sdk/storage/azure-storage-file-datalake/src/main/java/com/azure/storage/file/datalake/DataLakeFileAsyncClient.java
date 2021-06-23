@@ -328,7 +328,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
 
             Flux<ByteBuffer> data = options.getDataFlux();
             // no specified length: use azure.core's converter
-            if (data == null && options.getLength() == -1) {
+            if (data == null && options.getOptionalLength() == null) {
                 // We can only buffer up to max int due to restrictions in ByteBuffer.
                 int chunkSize = (int) Math.min(Integer.MAX_VALUE, validatedParallelTransferOptions.getBlockSizeLong());
                 data = FluxUtil.toFluxByteBuffer(options.getDataStream(), chunkSize);
@@ -337,7 +337,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
                 // We can only buffer up to max int due to restrictions in ByteBuffer.
                 int chunkSize = (int) Math.min(Integer.MAX_VALUE, validatedParallelTransferOptions.getBlockSizeLong());
                 data = Utility.convertStreamToByteBuffer(
-                    options.getDataStream(), options.getLength(), chunkSize, false);
+                    options.getDataStream(), options.getOptionalLength(), chunkSize, false);
             }
 
             return createWithResponse(options.getPermissions(), options.getUmask(), options.getHeaders(),

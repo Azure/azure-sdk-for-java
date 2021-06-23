@@ -2902,17 +2902,6 @@ class FileAPITest extends APISpec {
         os.toByteArray() == data.defaultBytes
     }
 
-    def "Upload InputStream explicit -1 length"() {
-        when:
-        fc.uploadWithResponse(new FileParallelUploadOptions(data.defaultInputStream, -1), null, null)
-
-        then:
-        notThrown(Exception)
-        ByteArrayOutputStream os = new ByteArrayOutputStream()
-        fc.read(os)
-        os.toByteArray() == data.defaultBytes
-    }
-
     def "Upload InputStream bad length"() {
         when:
         fc.uploadWithResponse(new FileParallelUploadOptions(data.defaultInputStream, length), null, null)

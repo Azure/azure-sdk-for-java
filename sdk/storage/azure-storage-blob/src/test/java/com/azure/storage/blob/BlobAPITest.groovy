@@ -218,15 +218,6 @@ class BlobAPITest extends APISpec {
         bc.downloadContent().toBytes() == data.defaultBytes
     }
 
-    def "Upload InputStream explicit -1 length"() {
-        when:
-        bc.uploadWithResponse(new BlobParallelUploadOptions(data.defaultInputStream, -1), null, null)
-
-        then:
-        notThrown(Exception)
-        bc.downloadContent().toBytes() == data.defaultBytes
-    }
-
     def "Upload InputStream bad length"() {
         when:
         bc.uploadWithResponse(new BlobParallelUploadOptions(data.defaultInputStream, length), null, null)

@@ -52,12 +52,10 @@ public final class ShareFileUploadOptions {
     @Deprecated
     public ShareFileUploadOptions(InputStream dataStream, long length) {
         StorageImplUtils.assertNotNull("dataStream", length);
-        StorageImplUtils.assertInBounds("length", length, -1, Long.MAX_VALUE);
+        StorageImplUtils.assertInBounds("length", length, 0, Long.MAX_VALUE);
         this.dataStream = dataStream;
+        this.length = length;
         this.dataFlux = null;
-        // this class uses Long field while blob and datalake use long and use -1 to indicate no value.
-        // this emulates their behavior passing -1 as length in constructor while retaining nullable field behavior.
-        this.length = length == -1 ? null : length;
     }
 
     /**

@@ -314,18 +314,6 @@ class FileAPITests extends APISpec {
         os.toByteArray() == data.defaultBytes
     }
 
-    def "Parallel Upload InputStream explicit -1 length"() {
-        when:
-        primaryFileClient.create(data.defaultDataSize)
-        primaryFileClient.uploadWithResponse(new ShareFileUploadOptions(data.defaultInputStream, -1), null, null)
-
-        then:
-        notThrown(Exception)
-        ByteArrayOutputStream os = new ByteArrayOutputStream()
-        primaryFileClient.download(os)
-        os.toByteArray() == data.defaultBytes
-    }
-
     def "Parallel Upload InputStream bad length"() {
         when:
         primaryFileClient.create(data.defaultDataSize)
