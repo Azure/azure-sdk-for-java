@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.core.query;
 
-import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -119,11 +118,8 @@ public class CosmosQuery {
                 return false;
             } else if (hasKeywordAnd()) {
                 return false;
-            } else if (criteria1.getType() == CriteriaType.IN && criteria1.getSubjectValues().size() == 1) {
-                return false;
-            } else {
-                return true;
-            }
+            } else return criteria1.getType() != CriteriaType.IN
+                || criteria1.getSubjectValues().size() != 1;
         }).orElse(true);
     }
 
