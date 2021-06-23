@@ -5,7 +5,6 @@ package com.azure.core.http.rest;
 
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.http.HttpRequest;
-import com.azure.core.http.ResponseStatusOption;
 import com.azure.core.util.BinaryData;
 
 import java.util.function.Consumer;
@@ -74,7 +73,7 @@ import java.util.function.Consumer;
  */
 public final class RequestOptions {
     private Consumer<HttpRequest> requestCallback = request -> { };
-    private ResponseStatusOption statusOption = ResponseStatusOption.DEFAULT;
+    private boolean throwOnError = true;
     private BinaryData requestBody;
 
     /**
@@ -86,11 +85,13 @@ public final class RequestOptions {
     }
 
     /**
-     * Gets under what conditions the operation raises an exception if the underlying response indicates a failure.
-     * @return the configured option
+     * Gets whether or not to throw an exception when an HTTP response with a status code indicating an error
+     * (400 or above) is received.
+     *
+     * @return true if to throw on status codes of 400 or above, false if not. Default is true.
      */
-    ResponseStatusOption getStatusOption() {
-        return this.statusOption;
+    boolean isThrowOnError() {
+        return this.throwOnError;
     }
 
     /**
@@ -130,9 +131,9 @@ public final class RequestOptions {
     public RequestOptions addQueryParam(String parameterName, String value, boolean encoded) {
         this.requestCallback = this.requestCallback.andThen(request -> {
             String url = request.getUrl().toString();
-            request.setUrl(url + (url.contains("?") ? "&" : "?")
-                + UrlEscapers.QUERY_ESCAPER.escape(parameterName) + "="
-                + UrlEscapers.QUERY_ESCAPER.escape(value));
+            String encodedParameterName = encoded ? parameterName : UrlEscapers.QUERY_ESCAPER.escape(parameterName);
+            String encodedParameterValue = encoded ? value : UrlEscapers.QUERY_ESCAPER.escape(value);
+            request.setUrl(url + (url.contains("?") ? "&" : "?") + encodedParameterName + "=" + encodedParameterValue);
         });
         return this;
     }
@@ -162,12 +163,14 @@ public final class RequestOptions {
     }
 
     /**
-     * Sets under what conditions the operation raises an exception if the underlying response indicates a failure.
-     * @param statusOption the option to control under what conditions the operation raises an exception
+     * Sets whether or not to throw an exception when an HTTP response with a status code indicating an error
+     * (400 or above) is received. By default an exception will be thrown when an error response is received.
+     *
+     * @param throwOnError true if to throw on status codes of 400 or above, false if not. Default is true.
      * @return the modified RequestOptions object
      */
-    public RequestOptions setStatusOption(ResponseStatusOption statusOption) {
-        this.statusOption = statusOption;
+    public RequestOptions setThrowOnError(boolean throwOnError) {
+        this.throwOnError = throwOnError;
         return this;
     }
 }
