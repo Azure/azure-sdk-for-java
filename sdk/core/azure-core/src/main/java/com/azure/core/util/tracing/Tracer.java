@@ -248,7 +248,9 @@ public interface Tracer {
      * @param attributes the additional attributes to be set for the event.
      * @param timestamp The instant, in UTC, at which the event will be associated to the span.
      * @throws NullPointerException if {@code eventName} is {@code null}.
+     * @deprecated Use {@link #addEvent(String, Map, OffsetDateTime, Context)}
      */
+    @Deprecated
     default void addEvent(String name, Map<String, Object> attributes, OffsetDateTime timestamp) {
     }
 
