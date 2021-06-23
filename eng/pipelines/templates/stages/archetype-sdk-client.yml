@@ -44,9 +44,6 @@ parameters:
 - name: MatrixReplace
   type: object
   default: []
-- name: EnvVars
-  type: object
-  default: {}
 
 stages:
   - stage: Build
@@ -77,7 +74,6 @@ stages:
             - TestGoals=.*/verify
             - TestOptions=.*/-am
           - AZURE_TEST.*=.*/
-        EnvVars: ${{ parameters.EnvVars }}
 
 
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
