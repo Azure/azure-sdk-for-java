@@ -163,10 +163,6 @@ private object CosmosConfig {
     returnValue
   }
 
-  private def tryGet(userProvidedOptions: Map[String, String], key: String): Option[String] = {
-      userProvidedOptions.get(key.toLowerCase(Locale.ROOT))
-  }
-
   @throws[IllegalStateException] // if there is no active spark session
   def getEffectiveConfig
   (
