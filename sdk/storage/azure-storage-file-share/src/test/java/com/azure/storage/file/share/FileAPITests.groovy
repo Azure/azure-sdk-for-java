@@ -753,57 +753,6 @@ class FileAPITests extends APISpec {
         "ü1ü"      || _ /* Something that needs to be url encoded. */
     }
 
-    def "Copy from URL with oauth source"() {
-        given:
-        def container = instrument(new BlobServiceClientBuilder())
-            .endpoint(env.primaryAccount.blobEndpoint)
-            .credential(env.primaryAccount.credential)
-            .buildClient()
-            .createBlobContainer(getShareName())
-        def blob = container.getBlobClient(generatePathName())
-        blob.upload(data.defaultBinaryData)
-        def oauthHeader = getAuthToken()
-        primaryFileClient.create(data.defaultDataSize)
-
-        when:
-        primaryFileClient.uploadRangeFromUrlWithResponse(
-            new ShareFileUploadRangeFromUrlOptions(data.defaultDataSize, blob.getBlobUrl())
-                .setSourceAuthorization(new HttpAuthorization("Bearer", oauthHeader)),
-            null, Context.NONE)
-
-        then:
-        def os = new ByteArrayOutputStream(data.defaultDataSize)
-        primaryFileClient.download(os)
-        os.toByteArray() == data.defaultBytes
-
-        cleanup:
-        container.delete()
-    }
-
-    def "Copy from URL with oauth source invalid credential"() {
-        given:
-        def container = instrument(new BlobServiceClientBuilder())
-            .endpoint(env.primaryAccount.blobEndpoint)
-            .credential(env.primaryAccount.credential)
-            .buildClient()
-            .createBlobContainer(getShareName())
-        def blob = container.getBlobClient(generatePathName())
-        blob.upload(data.defaultBinaryData)
-        def oauthHeader = "garbage"
-        primaryFileClient.create(data.defaultDataSize)
-
-        when:
-        primaryFileClient.uploadRangeFromUrlWithResponse(
-            new ShareFileUploadRangeFromUrlOptions(data.defaultDataSize, blob.getBlobUrl())
-                .setSourceAuthorization(new HttpAuthorization("Bearer", oauthHeader)), null, Context.NONE)
-
-        then:
-        thrown(ShareStorageException)
-
-        cleanup:
-        container.delete()
-    }
-
     @Unroll
     def "Start copy"() {
         given:

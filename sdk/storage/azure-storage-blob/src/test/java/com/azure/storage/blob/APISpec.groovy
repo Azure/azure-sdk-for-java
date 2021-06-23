@@ -795,9 +795,9 @@ class APISpec extends StorageSpec {
     static String getAuthToken() {
         if (env.testMode == TestMode.PLAYBACK) {
             // we just need some string to satisfy SDK for playback mode. Recording framework handles this fine.
-            return Mono.just("recordingBearerToken")
+            return "recordingBearerToken"
         }
-        new EnvironmentCredentialBuilder().build()
+        return new EnvironmentCredentialBuilder().build()
             .getToken(new TokenRequestContext().setScopes(["https://storage.azure.com/.default"]))
             .map { it.getToken() }
             .block()
