@@ -1074,7 +1074,8 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                 .setDisplayName("Test1")
                 .setRecognizePiiEntitiesActions(
                     new RecognizePiiEntitiesAction()
-                        .setCategoriesFilter(PiiEntityCategory.USSOCIAL_SECURITY_NUMBER)
+                        .setCategoriesFilter(PiiEntityCategory.USSOCIAL_SECURITY_NUMBER,
+                            PiiEntityCategory.ABAROUTING_NUMBER)
                         .setActionName(PII_ENTITIES_RECOGNITION_NAME)
                 ));
     }

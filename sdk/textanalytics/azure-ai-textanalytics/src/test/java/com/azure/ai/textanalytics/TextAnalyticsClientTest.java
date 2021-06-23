@@ -862,14 +862,13 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/19568")
     public void recognizePiiEntityWithCategoriesFilterFromOtherResult(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         recognizeStringBatchPiiEntitiesForCategoriesFilterRunner(
             (inputs, options) -> {
                 List<PiiEntityCategory> categories = new ArrayList<>();
-                final RecognizePiiEntitiesResultCollection resultCollection = client.recognizePiiEntitiesBatch(inputs, "en", null);
+                final RecognizePiiEntitiesResultCollection resultCollection = client.recognizePiiEntitiesBatch(inputs, "en", options);
                 resultCollection.forEach(
                     result -> result.getEntities().forEach(
                         piiEntity -> {
@@ -2329,7 +2328,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/19568")
     public void analyzePiiEntityRecognitionWithCategoriesFilters(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
