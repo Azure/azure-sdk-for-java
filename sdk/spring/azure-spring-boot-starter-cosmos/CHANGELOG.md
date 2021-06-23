@@ -17,7 +17,7 @@
 ## 3.3.0 (2021-03-22)
 ### New Features
 - Upgrade to `Spring Boot` [2.4.3](https://github.com/spring-projects/spring-boot/releases/tag/v2.4.3).
-- Upgrade to `azure-spring-data-cosmos` [3.5.0](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/cosmos/azure-spring-data-cosmos/CHANGELOG.md#350-2021-03-11)
+- Upgrade to `azure-spring-data-cosmos` [3.5.0](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-spring-data-cosmos/CHANGELOG.md#350-2021-03-11)
 
 ## 3.2.0 (2021-03-03)
 

@@ -4,8 +4,12 @@
 package com.azure.ai.metricsadvisor.administration.models;
 
 import com.azure.ai.metricsadvisor.implementation.util.HookHelper;
+import com.azure.core.http.HttpHeaders;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.TreeSet;
 
 /**
  * Describes a hook that receives anomaly incident alerts.
@@ -22,8 +26,18 @@ public abstract class NotificationHook {
             }
 
             @Override
-            public void setAdminEmails(NotificationHook hook, List<String> adminEmails) {
-                hook.setAdminEmails(adminEmails);
+            public List<String> getAdminEmailsRaw(NotificationHook hook) {
+                return hook.getAdminEmailsRaw();
+            }
+
+            @Override
+            public List<String> getEmailsToAlertRaw(EmailNotificationHook emailHook) {
+                return emailHook.getEmailsToAlertRaw();
+            }
+
+            @Override
+            public HttpHeaders getHttpHeadersRaw(WebNotificationHook webHook) {
+                return webHook.getHttpHeadersRaw();
             }
         });
     }
@@ -52,19 +66,41 @@ public abstract class NotificationHook {
     public abstract String getDescription();
 
     /**
-     * The list of admin emails for the Notification hook.
+     * The list of user e-mails with administrative rights to manage the hook.
      *
      * @return The emails of admins.
      */
     public List<String> getAdminEmails() {
-        return this.adminEmails;
+        if (this.adminEmails != null) {
+            return Collections.unmodifiableList(this.adminEmails);
+        } else {
+            return Collections.emptyList();
+        }
     }
 
-    void setId(String id) {
+    private void setId(String id) {
         this.id = id;
     }
 
-    void setAdminEmails(List<String> adminEmails) {
-        this.adminEmails = adminEmails;
+    private List<String> getAdminEmailsRaw() {
+        // Getter that won't translate null admin-emails to empty-list.
+        return this.adminEmails;
+    }
+
+    void setAdministratorEmails(List<String> emails) {
+        this.adminEmails = emails != null ? dedupe(emails) : null;
+    }
+
+    /**
+     * Removes duplicates in a list.
+     *
+     * @param list The list to dedupe
+     * @return A new deduped list.
+     */
+    List<String> dedupe(List<String> list) {
+        TreeSet<String> seen = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+        List<String> dedupedList = new ArrayList<>(list);
+        dedupedList.removeIf(e -> !seen.add(e));
+        return dedupedList;
     }
 }

@@ -101,7 +101,7 @@ public class KeyVaultCertificatesTest {
         keyStore.deleteEntry(certificateName);
         assertNull(keyStore.getCertificate(certificateName));
         Thread.sleep(10);
-        KeyVaultCertificates.updateLastForceRefreshTime();
+        KeyVaultCertificates.updateForceRefreshTime();
         assertNotNull(keyStore.getCertificate(certificateName));
     }
 }
