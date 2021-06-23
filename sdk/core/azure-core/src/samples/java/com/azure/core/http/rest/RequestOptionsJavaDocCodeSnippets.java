@@ -4,7 +4,6 @@
 package com.azure.core.http.rest;
 
 import com.azure.core.http.HttpMethod;
-import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
 
 import javax.json.Json;
