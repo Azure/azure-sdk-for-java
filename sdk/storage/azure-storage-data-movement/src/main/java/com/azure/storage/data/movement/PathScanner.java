@@ -5,13 +5,13 @@ package com.azure.storage.data.movement;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import com.azure.core.util.logging.ClientLogger;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
 import java.util.stream.BaseStream;
 
 public class PathScanner {
+    private final ClientLogger logger = new ClientLogger(PathScanner.class);
     private final String basePath;
     private final boolean isDir;
 
@@ -25,7 +25,7 @@ public class PathScanner {
         if (Files.exists(pathObj)) {
             isDir = Files.isDirectory(pathObj);
         } else {
-            throw new IllegalArgumentException("No accessible object exists at the given path");
+            throw logger.logExceptionAsError(new IllegalArgumentException(String.format("No accessible item exists at the path '%s'.", basePath)));
         }
     }
 
@@ -45,16 +45,16 @@ public class PathScanner {
                     return Flux.using(() -> Files.list(path),
                         Flux::fromStream,
                         BaseStream::close)
-                        .onErrorResume((e) -> {
-                            // Log any resulting errors
-                            System.err.println(e);
-
+                        .onErrorResume(e -> {
                             // If set to skip subdirectories, continue processing; else,
                             // pass an error which will stop the Flux stream
+                            //
+                            // How should we log when set to skip subdirectories? Logger
+                            // needs to throw, and consequently needs to be handled.
                             if (skipSubdirectories)
                                 return Mono.empty();
                             else
-                                return Mono.error(e);
+                                return Mono.error(logger.logThrowableAsError(e));
                         });
                 }})
                 // Return the paths as strings
