@@ -1,7 +1,5 @@
 package com.azure.storage.data.movement
 
-import com.azure.storage.data.movement.PathScanner
-import com.azure.storage.data.movement.PathScannerBuilder
 import reactor.core.publisher.Flux
 import reactor.test.StepVerifier
 import spock.lang.Specification
