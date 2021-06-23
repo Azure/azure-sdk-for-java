@@ -1305,7 +1305,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
             assertEquals(expectedLinkedEntity.getUrl(), actualLinkedEntity.getUrl());
         }
         assertEquals(expectedLinkedEntity.getDataSourceEntityId(), actualLinkedEntity.getDataSourceEntityId());
-        // TODO: Bing ID is missing.
+        // TODO: Bing ID is missing. https://github.com/Azure/azure-sdk-for-java/issues/22208
         // assertEquals(expectedLinkedEntity.getBingEntitySearchApiId(), actualLinkedEntity.getBingEntitySearchApiId());
         validateLinkedEntityMatches(expectedLinkedEntity.getMatches().stream().collect(Collectors.toList()),
             actualLinkedEntity.getMatches().stream().collect(Collectors.toList()));

@@ -2333,13 +2333,12 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                 Arrays.asList(getExpectedAnalyzeBatchActionsResult(
                     IterableStream.of(asList(getExpectedRecognizeEntitiesActionResult(false,
                         ENTITIES_RECOGNITION_NAME, TIME_NOW, getRecognizeEntitiesResultCollection(), null))),
-                    IterableStream.of(asList(getExpectedRecognizePiiEntitiesActionResult(false,
+                    IterableStream.of(asList(getExpectedRecognizeLinkedEntitiesActionResult(false,
+                        LINKED_ENTITIES_RECOGNITION_NAME, TIME_NOW, getRecognizeLinkedEntitiesResultCollectionForActions(), null))), IterableStream.of(asList(getExpectedRecognizePiiEntitiesActionResult(false,
                         PII_ENTITIES_RECOGNITION_NAME, TIME_NOW,
                         getRecognizePiiEntitiesResultCollection(), null))),
                     IterableStream.of(asList(getExpectedExtractKeyPhrasesActionResult(false,
                         KEY_PHRASES_EXTRACTION_NAME, TIME_NOW, getExtractKeyPhrasesResultCollection(), null))),
-                    IterableStream.of(asList(getExpectedRecognizeLinkedEntitiesActionResult(false,
-                        LINKED_ENTITIES_RECOGNITION_NAME, TIME_NOW, getRecognizeLinkedEntitiesResultCollectionForActions(), null))),
                     IterableStream.of(asList(getExpectedAnalyzeSentimentActionResult(false,
                         SENTIMENT_ANALYSIS_NAME, TIME_NOW, getAnalyzeSentimentResultCollectionForActions(), null)))
                 )),
@@ -2447,10 +2446,9 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                 validateAnalyzeBatchActionsResultList(false, false,
                     Arrays.asList(getExpectedAnalyzeBatchActionsResult(
                         IterableStream.of(Collections.emptyList()),
-                        IterableStream.of(asList(getExpectedRecognizePiiEntitiesActionResult(false,
-                            PII_ENTITIES_RECOGNITION_NAME, TIME_NOW,
-                            getExpectedBatchPiiEntitiesForCategoriesFilter(), null))),
                         IterableStream.of(Collections.emptyList()),
+                        IterableStream.of(asList(getExpectedRecognizePiiEntitiesActionResult(false,
+                            PII_ENTITIES_RECOGNITION_NAME, TIME_NOW, getExpectedBatchPiiEntitiesForCategoriesFilter(), null))),
                         IterableStream.of(Collections.emptyList()),
                         IterableStream.of(Collections.emptyList()))),
                     result.toStream().collect(Collectors.toList()));
@@ -2476,9 +2474,9 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                 validateAnalyzeBatchActionsResultList(false, false,
                     Arrays.asList(getExpectedAnalyzeBatchActionsResult(
                         IterableStream.of(Collections.emptyList()),
+                        IterableStream.of(Collections.emptyList()),
                         IterableStream.of(asList(getExpectedRecognizePiiEntitiesActionResult(false,
                             PII_ENTITIES_RECOGNITION_NAME, TIME_NOW, getExpectedBatchPiiEntitiesForDomainFilter(), null))),
-                        IterableStream.of(Collections.emptyList()),
                         IterableStream.of(Collections.emptyList()),
                         IterableStream.of(Collections.emptyList()))),
                     result.toStream().collect(Collectors.toList()));
@@ -2503,11 +2501,10 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                 false, false,
                 asList(getExpectedAnalyzeBatchActionsResult(
                     IterableStream.of(Collections.emptyList()),
+                    IterableStream.of(asList(getExpectedRecognizeLinkedEntitiesActionResult(false,
+                        LINKED_ENTITIES_RECOGNITION_NAME, TIME_NOW, getRecognizeLinkedEntitiesResultCollection(), null))),
                     IterableStream.of(Collections.emptyList()),
                     IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(asList(
-                        getExpectedRecognizeLinkedEntitiesActionResult(false, LINKED_ENTITIES_RECOGNITION_NAME,
-                            TIME_NOW, getRecognizeLinkedEntitiesResultCollection(), null))),
                     IterableStream.of(Collections.emptyList())
                 )),
                 result.toStream().collect(Collectors.toList()));
@@ -2531,12 +2528,10 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             validateAnalyzeBatchActionsResultList(false, false,
                 asList(getExpectedAnalyzeBatchActionsResult(
                     IterableStream.of(Collections.emptyList()),
+                    IterableStream.of(asList(getExpectedRecognizeLinkedEntitiesActionResult(false,
+                        LINKED_ENTITIES_RECOGNITION_DEFAULT_NAME, TIME_NOW, getRecognizeLinkedEntitiesResultCollection(), null))),
                     IterableStream.of(Collections.emptyList()),
                     IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(asList(
-                        getExpectedRecognizeLinkedEntitiesActionResult(false, LINKED_ENTITIES_RECOGNITION_DEFAULT_NAME,
-                            TIME_NOW, getRecognizeLinkedEntitiesResultCollection(), null)
-                    )),
                     IterableStream.of(Collections.emptyList()))),
                 result.toStream().collect(Collectors.toList()));
         });
@@ -2558,9 +2553,9 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                 asList(getExpectedAnalyzeBatchActionsResult(
                     IterableStream.of(Collections.emptyList()),
                     IterableStream.of(Collections.emptyList()),
+                    IterableStream.of(Collections.emptyList()),
                     IterableStream.of(asList(getExpectedExtractKeyPhrasesActionResult(false,
                         KEY_PHRASES_EXTRACTION_NAME, TIME_NOW, getExtractKeyPhrasesResultCollection(), null))),
-                    IterableStream.of(Collections.emptyList()),
                     IterableStream.of(Collections.emptyList()))),
                 result.toStream().collect(Collectors.toList()));
         });
@@ -2582,9 +2577,9 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                 asList(getExpectedAnalyzeBatchActionsResult(
                     IterableStream.of(Collections.emptyList()),
                     IterableStream.of(Collections.emptyList()),
+                    IterableStream.of(Collections.emptyList()),
                     IterableStream.of(asList(getExpectedExtractKeyPhrasesActionResult(false,
                         KEY_PHRASES_EXTRACTION_DEFAULT_NAME, TIME_NOW, getExtractKeyPhrasesResultCollection(), null))),
-                    IterableStream.of(Collections.emptyList()),
                     IterableStream.of(Collections.emptyList()))),
                 result.toStream().collect(Collectors.toList()));
         });
@@ -2607,9 +2602,8 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                     IterableStream.of(Collections.emptyList()),
                     IterableStream.of(Collections.emptyList()),
                     IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(asList(
-                        getExpectedAnalyzeSentimentActionResult(false, SENTIMENT_ANALYSIS_NAME, TIME_NOW,
-                            getExpectedBatchTextSentiment(), null))))),
+                    IterableStream.of(asList(getExpectedAnalyzeSentimentActionResult(false,
+                        SENTIMENT_ANALYSIS_NAME, TIME_NOW, getExpectedBatchTextSentiment(), null))))),
                 result.toStream().collect(Collectors.toList()));
         });
     }
@@ -2632,9 +2626,8 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                     IterableStream.of(Collections.emptyList()),
                     IterableStream.of(Collections.emptyList()),
                     IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(asList(
-                        getExpectedAnalyzeSentimentActionResult(false, SENTIMENT_ANALYSIS_DEFAULT_NAME, TIME_NOW,
-                            getExpectedBatchTextSentiment(), null))))),
+                    IterableStream.of(asList(getExpectedAnalyzeSentimentActionResult(false,
+                        SENTIMENT_ANALYSIS_DEFAULT_NAME, TIME_NOW, getExpectedBatchTextSentiment(), null))))),
                 result.toStream().collect(Collectors.toList()));
         });
     }

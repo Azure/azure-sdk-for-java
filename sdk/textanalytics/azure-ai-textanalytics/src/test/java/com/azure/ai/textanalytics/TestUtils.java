@@ -143,7 +143,7 @@ final class TestUtils {
     static final String SENTIMENT_ANALYSIS_NAME = "SentimentAnalysisName";
 
     static final String ENTITIES_RECOGNITION_DEFAULT_NAME = "NamedEntityRecognition_latest";
-    static final String PII_ENTITIES_RECOGNITION_DEFAULT_NAME = "PiiEntitiesRecognitionName";
+    static final String PII_ENTITIES_RECOGNITION_DEFAULT_NAME = "PersonallyIdentifiableInformation_latest";
     static final String LINKED_ENTITIES_RECOGNITION_DEFAULT_NAME = "EntityLinking_latest";
     static final String KEY_PHRASES_EXTRACTION_DEFAULT_NAME = "KeyPhraseExtraction_latest";
     static final String SENTIMENT_ANALYSIS_DEFAULT_NAME = "SentimentAnalysis_latest";
@@ -1094,9 +1094,9 @@ final class TestUtils {
      */
     static AnalyzeActionsResult getExpectedAnalyzeBatchActionsResult(
         IterableStream<RecognizeEntitiesActionResult> recognizeEntitiesActionResults,
+        IterableStream<RecognizeLinkedEntitiesActionResult> recognizeLinkedEntitiesActionResults,
         IterableStream<RecognizePiiEntitiesActionResult> recognizePiiEntitiesActionResults,
         IterableStream<ExtractKeyPhrasesActionResult> extractKeyPhrasesActionResults,
-        IterableStream<RecognizeLinkedEntitiesActionResult> recognizeLinkedEntitiesActionResults,
         IterableStream<AnalyzeSentimentActionResult> analyzeSentimentActionResults) {
 
         final AnalyzeActionsResult analyzeActionsResult = new AnalyzeActionsResult();
@@ -1211,12 +1211,11 @@ final class TestUtils {
         analyzeActionsResults.add(getExpectedAnalyzeBatchActionsResult(
             IterableStream.of(asList(getExpectedRecognizeEntitiesActionResult(
                 false, ENTITIES_RECOGNITION_NAME, TIME_NOW, getRecognizeEntitiesResultCollectionForPagination(startIndex, firstPage), null))),
-            IterableStream.of(asList(getExpectedRecognizePiiEntitiesActionResult(
+            IterableStream.of(asList(getExpectedRecognizeLinkedEntitiesActionResult(
+                false, LINKED_ENTITIES_RECOGNITION_NAME, TIME_NOW, getRecognizeLinkedEntitiesResultCollectionForPagination(startIndex, firstPage), null))), IterableStream.of(asList(getExpectedRecognizePiiEntitiesActionResult(
                 false, PII_ENTITIES_RECOGNITION_NAME, TIME_NOW, getRecognizePiiEntitiesResultCollectionForPagination(startIndex, firstPage), null))),
             IterableStream.of(asList(getExpectedExtractKeyPhrasesActionResult(
                 false, KEY_PHRASES_EXTRACTION_NAME, TIME_NOW, getExtractKeyPhrasesResultCollectionForPagination(startIndex, firstPage), null))),
-            IterableStream.of(asList(getExpectedRecognizeLinkedEntitiesActionResult(
-                false, LINKED_ENTITIES_RECOGNITION_NAME, TIME_NOW, getRecognizeLinkedEntitiesResultCollectionForPagination(startIndex, firstPage), null))),
             IterableStream.of(asList(getExpectedAnalyzeSentimentActionResult(
                 false, SENTIMENT_ANALYSIS_NAME, TIME_NOW, getAnalyzeSentimentResultCollectionForPagination(startIndex, firstPage), null)))
         ));
@@ -1225,12 +1224,11 @@ final class TestUtils {
         analyzeActionsResults.add(getExpectedAnalyzeBatchActionsResult(
             IterableStream.of(asList(getExpectedRecognizeEntitiesActionResult(
                 false, ENTITIES_RECOGNITION_NAME, TIME_NOW, getRecognizeEntitiesResultCollectionForPagination(startIndex, secondPage), null))),
-            IterableStream.of(asList(getExpectedRecognizePiiEntitiesActionResult(
+            IterableStream.of(asList(getExpectedRecognizeLinkedEntitiesActionResult(
+                false, LINKED_ENTITIES_RECOGNITION_NAME, TIME_NOW, getRecognizeLinkedEntitiesResultCollectionForPagination(startIndex, secondPage), null))), IterableStream.of(asList(getExpectedRecognizePiiEntitiesActionResult(
                 false, PII_ENTITIES_RECOGNITION_NAME, TIME_NOW, getRecognizePiiEntitiesResultCollectionForPagination(startIndex, secondPage), null))),
             IterableStream.of(asList(getExpectedExtractKeyPhrasesActionResult(
                 false, KEY_PHRASES_EXTRACTION_NAME, TIME_NOW, getExtractKeyPhrasesResultCollectionForPagination(startIndex, secondPage), null))),
-            IterableStream.of(asList(getExpectedRecognizeLinkedEntitiesActionResult(
-                false, LINKED_ENTITIES_RECOGNITION_NAME, TIME_NOW, getRecognizeLinkedEntitiesResultCollectionForPagination(startIndex, secondPage), null))),
             IterableStream.of(asList(getExpectedAnalyzeSentimentActionResult(
                 false, SENTIMENT_ANALYSIS_NAME, TIME_NOW, getAnalyzeSentimentResultCollectionForPagination(startIndex, secondPage), null)))
         ));
