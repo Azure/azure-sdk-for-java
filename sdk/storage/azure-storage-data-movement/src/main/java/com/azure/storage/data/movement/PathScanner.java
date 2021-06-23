@@ -50,13 +50,12 @@ public class PathScanner {
                         .onErrorResume(e -> {
                             // If set to skip subdirectories, continue processing; else,
                             // pass an error which will stop the Flux stream
-                            //
-                            // How should we log when set to skip subdirectories? Logger
-                            // needs to throw, and consequently needs to be handled.
-                            if (skipSubdirectories)
+                            if (skipSubdirectories) {
+                                logger.warning(e.getMessage(), e);
                                 return Mono.empty();
-                            else
+                            } else {
                                 return Mono.error(logger.logThrowableAsError(e));
+                            }
                         });
                 }})
                 // Return the paths as strings
