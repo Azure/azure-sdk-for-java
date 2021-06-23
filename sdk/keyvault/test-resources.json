@@ -459,7 +459,7 @@
       "type": "string",
       "value": "[parameters('certificateName')]"
     },
-    "CERTIFICATE_AZURE_KEYVAULT_URI": {
+    "AZURE_KEYVAULT_URI": {
       "type": "string",
       "value": "[reference(variables('kvName')).vaultUri]"
     },

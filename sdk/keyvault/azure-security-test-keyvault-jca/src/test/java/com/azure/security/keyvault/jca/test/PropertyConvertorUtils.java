@@ -21,7 +21,7 @@ public class PropertyConvertorUtils {
         KEYVAULT_JCA_SYSTEM_PROPERTIES.forEach(
             environmentPropertyKey -> {
                 String value = System.getenv(environmentPropertyKey);
-                String systemPropertyKey = environmentPropertyKey.replaceFirst("CERTIFICATE_", "").toLowerCase().replaceFirst("azure_keyvault_",
+                String systemPropertyKey = environmentPropertyKey.toLowerCase().replaceFirst("azure_keyvault_",
                     "azure.keyvault.").replaceAll("_", "-");
                 System.getProperties().put(systemPropertyKey, value);
             }
@@ -32,7 +32,7 @@ public class PropertyConvertorUtils {
         "AZURE_KEYVAULT_TENANT_ID",
         "AZURE_KEYVAULT_CLIENT_ID",
         "AZURE_KEYVAULT_CLIENT_SECRET",
-        "CERTIFICATE_AZURE_KEYVAULT_URI"); //Don't sure if AZURE_KEYVAULT_URI will affect other module, so add prefix
+        "AZURE_KEYVAULT_URI");
 
     public static KeyStore getKeyVaultKeyStore() throws CertificateException, NoSuchAlgorithmException, IOException, KeyStoreException {
         KeyStore keyStore = KeyStore.getInstance("AzureKeyVault");
