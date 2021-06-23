@@ -73,7 +73,7 @@ public class FileParallelUploadOptions {
     }
 
     private FileParallelUploadOptions(InputStream dataStream, Long length) {
-        StorageImplUtils.assertNotNull("dataStream", length);
+        StorageImplUtils.assertNotNull("dataStream", dataStream);
         if (length != null) {
             StorageImplUtils.assertInBounds("length", length, 0, Long.MAX_VALUE);
         }
