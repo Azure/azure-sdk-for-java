@@ -1,0 +1,132 @@
+<!-- Copyright (c) Microsoft Corporation. All rights reserved.
+     Licensed under the MIT License. -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.azure</groupId>
+  <artifactId>azure-storage-parent</artifactId>
+  <packaging>pom</packaging>
+  <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-storage-parent;current} -->
+
+  <name>Microsoft Azure common parent module for Storage.</name>
+  <description>Parent POM for Microsoft Azure Storage SDK for Java.</description>
+  <url>https://github.com/Azure/azure-sdk-for-java</url>
+  <organization>
+    <name>Microsoft Corporation</name>
+    <url>http://microsoft.com</url>
+  </organization>
+
+  <parent>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-client-sdk-parent</artifactId>
+    <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
+    <relativePath>../../parents/azure-client-sdk-parent</relativePath>
+  </parent>
+
+  <properties>
+    <CI_AZURE_LIVE_TEST_SERVICE_VERSION>V2020_10_02</CI_AZURE_LIVE_TEST_SERVICE_VERSION>
+    <CI_AZURE_STORAGE_SAS_SERVICE_VERSION>2020-10-02</CI_AZURE_STORAGE_SAS_SERVICE_VERSION>
+  </properties>
+
+  <profiles>
+    <profile>
+      <id>storage-test-playback-no-azure-test-mode-env</id>
+      <activation>
+        <property>
+          <name>!env.AZURE_TEST_MODE</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <configuration>
+              <systemPropertyVariables>
+                <AZURE_LIVE_TEST_SERVICE_VERSION>${CI_AZURE_LIVE_TEST_SERVICE_VERSION}</AZURE_LIVE_TEST_SERVICE_VERSION>
+                <AZURE_STORAGE_SAS_SERVICE_VERSION>${CI_AZURE_STORAGE_SAS_SERVICE_VERSION}</AZURE_STORAGE_SAS_SERVICE_VERSION>
+              </systemPropertyVariables>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>storage-test-playback-azure-test-mode-playback-env</id>
+      <activation>
+        <property>
+          <name>env.AZURE_TEST_MODE</name>
+          <value>PLAYBACK</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <configuration>
+              <systemPropertyVariables>
+                <AZURE_LIVE_TEST_SERVICE_VERSION>${CI_AZURE_LIVE_TEST_SERVICE_VERSION}</AZURE_LIVE_TEST_SERVICE_VERSION>
+                <AZURE_STORAGE_SAS_SERVICE_VERSION>${CI_AZURE_STORAGE_SAS_SERVICE_VERSION}</AZURE_STORAGE_SAS_SERVICE_VERSION>
+              </systemPropertyVariables>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>storage-test-playback-no-azure-test-mode-prop</id>
+      <activation>
+        <property>
+          <name>AZURE_TEST_MODE</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <configuration>
+              <systemPropertyVariables>
+                <AZURE_LIVE_TEST_SERVICE_VERSION>${CI_AZURE_LIVE_TEST_SERVICE_VERSION}</AZURE_LIVE_TEST_SERVICE_VERSION>
+                <AZURE_STORAGE_SAS_SERVICE_VERSION>${CI_AZURE_STORAGE_SAS_SERVICE_VERSION}</AZURE_STORAGE_SAS_SERVICE_VERSION>
+              </systemPropertyVariables>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>storage-test-playback-azure-test-mode-playback-prop</id>
+      <activation>
+        <property>
+          <name>AZURE_TEST_MODE</name>
+          <value>PLAYBACK</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <configuration>
+              <systemPropertyVariables>
+                <AZURE_LIVE_TEST_SERVICE_VERSION>${CI_AZURE_LIVE_TEST_SERVICE_VERSION}</AZURE_LIVE_TEST_SERVICE_VERSION>
+                <AZURE_STORAGE_SAS_SERVICE_VERSION>${CI_AZURE_STORAGE_SAS_SERVICE_VERSION}</AZURE_STORAGE_SAS_SERVICE_VERSION>
+              </systemPropertyVariables>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+  </profiles>
+</project>
