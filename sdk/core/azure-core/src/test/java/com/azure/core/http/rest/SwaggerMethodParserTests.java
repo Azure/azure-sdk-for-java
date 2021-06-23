@@ -516,7 +516,7 @@ public class SwaggerMethodParserTests {
             .addRequestCallback(httpRequest -> httpRequest.setUrl("https://foo.host.com"));
 
         RequestOptions statusOptionOptions = new RequestOptions()
-            .setStatusOption(ResponseStatusOption.NO_THROW);
+            .setThrowOnError(false);
 
         return Stream.of(
             Arguments.of(swaggerMethodParser, null, null),

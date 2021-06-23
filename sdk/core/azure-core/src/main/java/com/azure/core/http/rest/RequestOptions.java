@@ -26,7 +26,7 @@ import java.util.function.Consumer;
  * list of APIs available on this service are <a href="https://petstore.swagger.io/#/pet">documented in the swagger definition.</a>
  * </p>
  *
- * <p><strong>Creating an instance of RequestOptions using the constructor</strong></p>
+ * <p><strong>Creating an instance of RequestOptions</strong></p>
  * {@codesnippet com.azure.core.http.rest.requestoptions.instantiation}
  *
  * <p><strong>Configuring the request with JSON body and making a HTTP POST request</strong></p>
