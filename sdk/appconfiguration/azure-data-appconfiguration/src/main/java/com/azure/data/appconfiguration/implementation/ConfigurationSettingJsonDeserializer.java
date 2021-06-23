@@ -97,9 +97,9 @@ public final class ConfigurationSettingJsonDeserializer extends JsonDeserializer
                 return readSecretReferenceConfigurationSetting(node, baseSetting);
             }
         } catch (Exception exception) {
-            LOGGER.info(String.format(
-                "The setting is neither a 'FeatureFlagConfigurationSetting' nor 'SecretReferenceConfigurationSetting'"
-                    + ", return the setting as 'ConfigurationSetting', error is ", exception));
+            LOGGER.info("The setting is neither a 'FeatureFlagConfigurationSetting' nor "
+                + "'SecretReferenceConfigurationSetting', return the setting as 'ConfigurationSetting'. "
+                + "Error: ", exception);
         }
         return baseSetting;
     }

@@ -2,6 +2,7 @@
 
 ## 12.13.0-beta.1 (Unreleased)
 - Added support to get a blob client that uses an encryption scope and customer provided key. 
+- Updated DownloadRetryOptions.maxRetryRequests to default downloads to retry 5 times. 
 
 ## 12.12.0 (2021-06-09)
 - GA release
