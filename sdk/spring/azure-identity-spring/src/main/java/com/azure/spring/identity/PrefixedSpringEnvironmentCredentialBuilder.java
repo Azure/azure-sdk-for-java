@@ -3,16 +3,22 @@
 package com.azure.spring.identity;
 
 import com.azure.core.credential.TokenCredential;
-import org.springframework.util.StringUtils;
+import org.springframework.core.env.Environment;
+import org.springframework.util.Assert;
 
 /**
  * Spring token credential built from the prefixed properties.
  */
-public class PrefixedSpringCredentialBuilder extends SpringCredentialBuilderBase<PrefixedSpringCredentialBuilder> {
+public class PrefixedSpringEnvironmentCredentialBuilder
+    extends SpringCredentialBuilderBase<PrefixedSpringEnvironmentCredentialBuilder> {
 
     private String prefix;
 
-    public PrefixedSpringCredentialBuilder prefix(String prefix) {
+    public PrefixedSpringEnvironmentCredentialBuilder(Environment environment) {
+        super(environment);
+    }
+
+    public PrefixedSpringEnvironmentCredentialBuilder prefix(String prefix) {
         this.prefix = prefix;
         return this;
     }
@@ -24,15 +30,10 @@ public class PrefixedSpringCredentialBuilder extends SpringCredentialBuilderBase
      * @throws IllegalArgumentException if no environment or prefix is set.
      */
     public TokenCredential build() {
-        if (environment == null) {
-            throw new IllegalArgumentException("To build a spring credential the environment must be set.");
-        }
+        Assert.notNull(prefix, "To build a PrefixedSpringEnvironmentCredential the prefix must be set.");
 
-        if (StringUtils.isEmpty(prefix)) {
-            throw new IllegalArgumentException("The prefix must be set.");
-        }
-
-        return populateTokenCredential(prefix);
+        return new PrefixedSpringEnvironmentCredential(environment, prefix);
     }
+
 
 }

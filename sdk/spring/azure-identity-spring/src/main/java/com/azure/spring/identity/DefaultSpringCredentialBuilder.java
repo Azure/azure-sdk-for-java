@@ -3,7 +3,18 @@
 package com.azure.spring.identity;
 
 import com.azure.core.credential.TokenCredential;
-import com.azure.identity.ChainedTokenCredentialBuilder;
+import com.azure.identity.AzureCliCredential;
+import com.azure.identity.AzureCliCredentialBuilder;
+import com.azure.identity.AzurePowerShellCredential;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
+import com.azure.identity.IntelliJCredential;
+import com.azure.identity.IntelliJCredentialBuilder;
+import com.azure.identity.ManagedIdentityCredential;
+import com.azure.identity.ManagedIdentityCredentialBuilder;
+import com.azure.identity.SharedTokenCacheCredential;
+import com.azure.identity.VisualStudioCodeCredential;
+import com.azure.identity.VisualStudioCodeCredentialBuilder;
+import org.springframework.core.env.Environment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,54 +26,52 @@ import java.util.List;
  */
 public class DefaultSpringCredentialBuilder extends SpringCredentialBuilderBase<DefaultSpringCredentialBuilder> {
 
-    /**
-     * Defines the AZURE_CREDENTIAL_PREFIX.
-     */
-    static final String AZURE_CREDENTIAL_PREFIX = "azure.credential.";
+    private String managedIdentityClientId;
+    private String tenantId;
 
-    private String alternativePrefix;
+    public DefaultSpringCredentialBuilder(Environment environment) {
+        super(environment);
+        final AzureEnvironment azureEnvironment = new AzureEnvironment(environment);
+        this.managedIdentityClientId = azureEnvironment.getClientId();
+        this.tenantId = azureEnvironment.getTenantId();
+    }
 
-    public DefaultSpringCredentialBuilder alternativePrefix(String alternative) {
-        if (alternative != null) {
-            this.alternativePrefix = alternative + (alternative.endsWith(".") ? "" : ".");
-        }
+    public DefaultSpringCredentialBuilder managedIdentityClientId(String clientId) {
+        this.managedIdentityClientId = clientId;
+        return this;
+    }
 
+    public DefaultSpringCredentialBuilder tenantId(String tenantId) {
+        this.tenantId = tenantId;
         return this;
     }
 
     /**
-     * Build a default Spring token credential, which will be a chained credential.
-     * If an alternative prefix is specified in the builder, the chain of credential
-     * will have three credentials, one with the specified prefix, one with the default
-     * spring credential prefix, and the default managed identity credential without client id
-     * set. Otherwise, the chain will consist the credential with the default prefix and the default
-     * managed identity credential.
+     * Build a {@link DefaultSpringCredential} with below list of credentials:
+     * <ol>
+     * <li>{@link SpringEnvironmentCredential}</li>
+     * <li>{@link ManagedIdentityCredential}</li>
+     * <li>{@link SharedTokenCacheCredential}</li>
+     * <li>{@link IntelliJCredential}</li>
+     * <li>{@link VisualStudioCodeCredential}</li>
+     * <li>{@link AzureCliCredential}</li>
+     * <li>{@link AzurePowerShellCredential}</li>
+     * </ol>
      *
      * @return the default Spring token credential.
-     * @throws IllegalArgumentException if no environment is set.
      */
     public TokenCredential build() {
-        if (environment == null) {
-            throw new IllegalArgumentException("To build a spring credential the environment must be set.");
-        }
+        List<TokenCredential> chain = new ArrayList<>();
 
-        List<TokenCredential> tokenCredentials = new ArrayList<>();
+        chain.add(new SpringEnvironmentCredential(this.environment));
+        chain.add(new ManagedIdentityCredentialBuilder().clientId(this.managedIdentityClientId).build());
+        // TODO (xiada) Add SharedTokenCacheCredential
+        chain.add(new IntelliJCredentialBuilder().tenantId(this.tenantId).build());
+        chain.add(new VisualStudioCodeCredentialBuilder().tenantId(this.tenantId).build());
+        chain.add(new AzureCliCredentialBuilder().build());
+        chain.add(new AzurePowerShellCredentialBuilder().build());
 
-        if (alternativePrefix != null) {
-            addToChain(tokenCredentials, populateTokenCredentialBasedOnClientId(alternativePrefix));
-        }
-
-        addToChain(tokenCredentials, populateTokenCredentialBasedOnClientId(AZURE_CREDENTIAL_PREFIX));
-
-        addToChain(tokenCredentials, defaultManagedIdentityCredential());
-
-        return new ChainedTokenCredentialBuilder().addAll(tokenCredentials).build();
-    }
-
-    private void addToChain(List<TokenCredential> chain, TokenCredential tokenCredential) {
-        if (tokenCredential != null) {
-            chain.add(tokenCredential);
-        }
+        return new DefaultSpringCredential(chain);
     }
 
 }
