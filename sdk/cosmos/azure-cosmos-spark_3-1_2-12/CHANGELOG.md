@@ -10,6 +10,7 @@
 * Support CustomQuery to be used for inference, see [PR](https://github.com/Azure/azure-sdk-for-java/pull/22079).
 * Fixes collision resolution on schema inference, see [PR](https://github.com/Azure/azure-sdk-for-java/pull/21933).
 * Fixes max length of userAgent header, see [PR](https://github.com/Azure/azure-sdk-for-java/pull/22018).
+* Improves bulk ingestion throttling rate by dynamically adjusting the max. micro-batch size.
 
 ### 4.1.0 (2021-05-27)
 #### New Features
