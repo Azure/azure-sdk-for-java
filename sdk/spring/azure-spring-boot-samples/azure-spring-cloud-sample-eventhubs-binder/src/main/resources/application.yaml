@@ -2,29 +2,29 @@ spring:
   cloud:
     azure:
       eventhub:
-        connection-string: Endpoint=sb://yiehtest.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=H3vdqCIDOarSap8IWoGrXcGZTiHGwjLcfEBL98Ntlkg=
-        checkpoint-storage-account: yist
-        checkpoint-access-key: DefaultEndpointsProtocol=https;AccountName=yist;AccountKey=GFXOXMOx5hrPSNgFnJVPp8/XLkrP632Prre/WXM+7LTQJZa8tg/qRwhk2fcbVWiEs7MPb2sZRYOLEvv+p6ZQ7g==;EndpointSuffix=core.windows.net
-        checkpoint-container: yict
+        connection-string: [eventhub-namespace-connection-string]
+        checkpoint-storage-account: [checkpoint-storage-account]
+        checkpoint-access-key: [checkpoint-access-key]
+        checkpoint-container: [checkpoint-container]
 
     stream:
       function:
         definition: consume;supply
       bindings:
         consume-in-0:
-          destination: yieh
-          group: $Default
+          destination: [eventhub-name]
+          group: [consumer-group]
         supply-out-0:
-          destination: yist
+          destination: [the-same-eventhub-name-as-above]
 
-      #      eventhub:
-      #        bindings:
-      #          consume-in-0:
-      #            consumer:
-      #              checkpoint-mode: MANUAL
+      eventhub:
+        bindings:
+          consume-in-0:
+            consumer:
+              checkpoint-mode: MANUAL
       default:
         producer:
           errorChannelEnabled: true
       poller:
         initial-delay: 0
-        fixed-delay: 10000
+        fixed-delay: 1000
