@@ -4,11 +4,13 @@
 package com.azure.ai.textanalytics.models;
 
 import com.azure.ai.textanalytics.implementation.HealthcareEntityPropertiesHelper;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 /**
  * The {@link HealthcareEntity} model.
  */
+@Immutable
 public final class HealthcareEntity {
     private String text;
     private String normalizedText;

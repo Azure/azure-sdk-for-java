@@ -4,10 +4,12 @@
 package com.azure.ai.textanalytics.models;
 
 import com.azure.ai.textanalytics.implementation.HealthcareEntityRelationRolePropertiesHelper;
+import com.azure.core.annotation.Immutable;
 
 /**
  * The {@link HealthcareEntityRelationRole} model.
  */
+@Immutable
 public final class HealthcareEntityRelationRole {
     /*
      * Role of entity in the relationship. For example: 'CD20-positive diffuse

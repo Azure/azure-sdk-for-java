@@ -4,12 +4,14 @@
 package com.azure.ai.textanalytics.models;
 
 import com.azure.ai.textanalytics.implementation.AnalyzeActionsOperationDetailPropertiesHelper;
+import com.azure.core.annotation.Immutable;
 
 import java.time.OffsetDateTime;
 
 /**
  * The {@link AnalyzeActionsOperationDetail} model.
  */
+@Immutable
 public final class AnalyzeActionsOperationDetail {
     private String operationId;
     private String displayName;

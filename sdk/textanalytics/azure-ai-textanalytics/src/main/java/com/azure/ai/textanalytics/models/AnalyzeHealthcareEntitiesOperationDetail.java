@@ -4,12 +4,14 @@
 package com.azure.ai.textanalytics.models;
 
 import com.azure.ai.textanalytics.implementation.AnalyzeHealthcareEntitiesOperationDetailPropertiesHelper;
+import com.azure.core.annotation.Immutable;
 
 import java.time.OffsetDateTime;
 
 /**
  * The {@link AnalyzeHealthcareEntitiesOperationDetail} model.
  */
+@Immutable
 public final class AnalyzeHealthcareEntitiesOperationDetail {
     private String operationId;
     private OffsetDateTime createdAt;

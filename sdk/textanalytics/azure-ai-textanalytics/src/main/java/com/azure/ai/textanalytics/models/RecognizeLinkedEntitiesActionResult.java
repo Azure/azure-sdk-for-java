@@ -5,10 +5,12 @@ package com.azure.ai.textanalytics.models;
 
 import com.azure.ai.textanalytics.implementation.RecognizeLinkedEntitiesActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.util.RecognizeLinkedEntitiesResultCollection;
+import com.azure.core.annotation.Immutable;
 
 /**
  * The {@link RecognizeLinkedEntitiesActionResult} model.
  */
+@Immutable
 public final class RecognizeLinkedEntitiesActionResult extends TextAnalyticsActionResult {
     private RecognizeLinkedEntitiesResultCollection documentsResults;
 
