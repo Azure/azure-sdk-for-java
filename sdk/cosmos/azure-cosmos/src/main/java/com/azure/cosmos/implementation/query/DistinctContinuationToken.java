@@ -3,7 +3,9 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.routing.HexConvert;
 import com.azure.cosmos.implementation.routing.UInt128;
 import com.azure.cosmos.implementation.JsonSerializable;
 import org.slf4j.Logger;
@@ -40,10 +42,10 @@ public class DistinctContinuationToken extends JsonSerializable {
             outDistinctContinuationToken.v = distinctContinuationToken;
             parsed = true;
         } catch (Exception ex) {
-            logger.debug(
-                "Received exception {} when trying to parse: {}",
-                ex.getMessage(),
-                serializedDistinctContinuationToken);
+            logger.warn(
+                "Received exception when trying to parse: {}",
+                serializedDistinctContinuationToken,
+                ex);
             parsed = false;
             outDistinctContinuationToken.v = null;
         }
@@ -65,8 +67,13 @@ public class DistinctContinuationToken extends JsonSerializable {
     }
 
     UInt128 getLastHash() {
-        ByteBuffer byteBuffer = super.getObject(LAST_HASH_PROPERTY_NAME, ByteBuffer.class);
-        if (byteBuffer != null) {
+        ByteBuffer byteBuffer = null;
+        String hexString = super.getString(LAST_HASH_PROPERTY_NAME);
+        if (!Strings.isNullOrEmpty(hexString)) {
+            byteBuffer = ByteBuffer.wrap(HexConvert.hexToByteBuffer(hexString));
+        }
+
+        if (byteBuffer != null && byteBuffer.capacity() > 0) {
             return new UInt128(byteBuffer);
         }
         return null;
@@ -79,7 +86,10 @@ public class DistinctContinuationToken extends JsonSerializable {
      */
     public void setLastHash(UInt128 lastHash) {
         if (lastHash != null) {
-            BridgeInternal.setProperty(this, LAST_HASH_PROPERTY_NAME, lastHash.toByteBuffer());
+            BridgeInternal.setProperty(
+                this,
+                LAST_HASH_PROPERTY_NAME,
+                HexConvert.bytesToHex(lastHash.toByteBuffer(), true));
         } else {
             this.set(LAST_HASH_PROPERTY_NAME, null);
         }
