@@ -1,6 +1,9 @@
 parameters:
   PackageName: not-specified
-  SafeName: notspecified
+  SafeName: not-specified
+  Clouds: 'Public,Int'
+  TestMode: 'LIVE'
+  EnvVars: {}
 
 stages:
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
@@ -15,7 +18,8 @@ stages:
           SubscriptionConfigurations:
             - $(sub-config-communication-int-test-resources-common)
             - $(sub-config-communication-int-test-resources-java)
-      Clouds: Public, Int
+      Clouds: ${{ parameters.Clouds }}
+      TestMode: ${{ parameters.TestMode }}
       Artifacts:
         - name: ${{ parameters.PackageName }}
           groupId: com.azure
@@ -34,3 +38,5 @@ stages:
             failIfCoverageEmpty: true
       EnvVars:
         SKIP_LIVE_TEST: TRUE
+        ${{ each var in parameters.EnVars }}:
+          ${{ var.key }}: ${{ var.value }}

@@ -22,6 +22,7 @@ required-fields-as-ctor-args: true
 model-override-setter-from-superclass: true
 credential-types: tokencredential
 client-side-validations: true
+artifact-id: azure-monitor-query
 ```
 
 ## Metrics Query
@@ -45,6 +46,7 @@ required-fields-as-ctor-args: true
 model-override-setter-from-superclass: true
 credential-types: tokencredential
 client-side-validations: true
+artifact-id: azure-monitor-query
 directive:
     - rename-model:
         from: Response
@@ -73,6 +75,7 @@ required-fields-as-ctor-args: true
 model-override-setter-from-superclass: true
 credential-types: tokencredential
 client-side-validations: true
+artifact-id: azure-monitor-query
 ```
 
 ## Metrics Definitions Query
@@ -97,4 +100,5 @@ required-fields-as-ctor-args: true
 model-override-setter-from-superclass: true
 credential-types: tokencredential
 client-side-validations: true
+artifact-id: azure-monitor-query
 ```

@@ -10,7 +10,7 @@ import com.azure.core.annotation.Fluent;
  * configuration.
  */
 @Fluent
-public final class MetricAnomalyAlertConfiguration {
+public final class MetricAlertConfiguration {
     private final String detectionConfigurationId;
     private boolean negationOperation;
     private MetricAnomalyAlertScope alertScope;
@@ -18,18 +18,18 @@ public final class MetricAnomalyAlertConfiguration {
     private MetricAnomalyAlertSnoozeCondition snoozeCondition;
 
     /**
-     * Creates a new instance of MetricAnomalyAlertConfiguration.
+     * Creates a new instance of MetricAlertConfiguration.
      *
      * @param detectionConfigurationId The anomaly detection configuration id.
      * @param alertScope The scope for the alert.
      */
-    public MetricAnomalyAlertConfiguration(String detectionConfigurationId,
-        MetricAnomalyAlertScope alertScope) {
+    public MetricAlertConfiguration(String detectionConfigurationId,
+                                    MetricAnomalyAlertScope alertScope) {
         this(detectionConfigurationId, alertScope, false);
     }
 
     /**
-     * Creates a new instance of MetricAnomalyAlertConfiguration.
+     * Creates a new instance of MetricAlertConfiguration.
      *
      * @param detectionConfigurationId The anomaly detection configuration id.
      * @param alertScope The scope for the alert.
@@ -38,9 +38,9 @@ public final class MetricAnomalyAlertConfiguration {
      *     performed among corresponding series in other configurations. The result of expression is true
      *     only if there is no anomaly found in the series.
      */
-    public MetricAnomalyAlertConfiguration(String detectionConfigurationId,
-                                           MetricAnomalyAlertScope alertScope,
-                                           boolean negationOperation) {
+    public MetricAlertConfiguration(String detectionConfigurationId,
+                                    MetricAnomalyAlertScope alertScope,
+                                    boolean negationOperation) {
         this.detectionConfigurationId = detectionConfigurationId;
         this.negationOperation = negationOperation;
         this.alertScope =  alertScope;
@@ -102,9 +102,9 @@ public final class MetricAnomalyAlertConfiguration {
      * only if there is no anomaly found in the series.
      *
      * @param negationOperation The negation operation value.
-     * @return The MetricAnomalyAlertConfiguration object itself.
+     * @return The MetricAlertConfiguration object itself.
      */
-    public MetricAnomalyAlertConfiguration setNegationOperation(boolean negationOperation) {
+    public MetricAlertConfiguration setNegationOperation(boolean negationOperation) {
         this.negationOperation = negationOperation;
         return this;
     }
@@ -113,9 +113,9 @@ public final class MetricAnomalyAlertConfiguration {
      * Sets the alert scope.
      *
      * @param alertScope The alert scope.
-     * @return The MetricAnomalyAlertConfiguration object itself.
+     * @return The MetricAlertConfiguration object itself.
      */
-    public MetricAnomalyAlertConfiguration setScopeOfAlertTo(MetricAnomalyAlertScope alertScope) {
+    public MetricAlertConfiguration setScopeOfAlertTo(MetricAnomalyAlertScope alertScope) {
         this.alertScope = alertScope;
         return this;
     }
@@ -125,9 +125,9 @@ public final class MetricAnomalyAlertConfiguration {
      * in the alert or not.
      *
      * @param alertConditions The alert conditions.
-     * @return The MetricAnomalyAlertConfiguration object itself.
+     * @return The MetricAlertConfiguration object itself.
      */
-    public MetricAnomalyAlertConfiguration setAlertConditions(MetricAnomalyAlertConditions alertConditions) {
+    public MetricAlertConfiguration setAlertConditions(MetricAnomalyAlertConditions alertConditions) {
         this.alertConditions = alertConditions;
         return this;
     }
@@ -137,9 +137,9 @@ public final class MetricAnomalyAlertConfiguration {
      * of anomalies in upcoming alerts.
      *
      * @param snoozeCondition The snooze condition.
-     * @return The MetricAnomalyAlertConfiguration object itself.
+     * @return The MetricAlertConfiguration object itself.
      */
-    public MetricAnomalyAlertConfiguration setAlertSnoozeCondition(MetricAnomalyAlertSnoozeCondition snoozeCondition) {
+    public MetricAlertConfiguration setAlertSnoozeCondition(MetricAnomalyAlertSnoozeCondition snoozeCondition) {
         this.snoozeCondition = snoozeCondition;
         return this;
     }

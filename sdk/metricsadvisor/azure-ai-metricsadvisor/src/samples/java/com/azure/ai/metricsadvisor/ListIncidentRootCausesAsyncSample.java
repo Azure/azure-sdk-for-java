@@ -28,7 +28,7 @@ public class ListIncidentRootCausesAsyncSample {
                 System.out.printf("Series Key: %s%n", incidentRootCause.getSeriesKey().asMap());
                 System.out.printf("Confidence for the detected incident root cause %.2f%n",
                     incidentRootCause.getContributionScore());
-                System.out.printf("Trace the path for the incident root cause : %s%n");
+                System.out.println("Trace the path for the incident root cause :");
                 incidentRootCause.getPaths().forEach(System.out::println);
             }).blockLast();
             /*

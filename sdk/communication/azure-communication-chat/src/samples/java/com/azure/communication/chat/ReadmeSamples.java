@@ -12,6 +12,7 @@ import com.azure.communication.chat.models.ChatMessageReadReceipt;
 import com.azure.communication.chat.models.CreateChatThreadOptions;
 import com.azure.communication.chat.models.CreateChatThreadResult;
 import com.azure.communication.chat.models.SendChatMessageOptions;
+import com.azure.communication.chat.models.TypingNotificationOptions;
 import com.azure.communication.chat.models.UpdateChatMessageOptions;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.common.CommunicationTokenCredential;
@@ -272,6 +273,8 @@ public class ReadmeSamples {
     public void sendTypingNotification() {
         ChatThreadClient chatThreadClient = getChatThreadClient();
 
-        chatThreadClient.sendTypingNotification();
+        TypingNotificationOptions options = new TypingNotificationOptions();
+        options.setSenderDisplayName("Sender Display Name");
+        chatThreadClient.sendTypingNotification(options);
     }
 }

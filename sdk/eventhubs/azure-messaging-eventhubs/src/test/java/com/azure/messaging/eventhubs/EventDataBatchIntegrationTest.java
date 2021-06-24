@@ -150,8 +150,8 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
                         logger.info("Event[{}] matched. Countdown: {}", event.getSequenceNumber(), countDownLatch.getCount());
                         countDownLatch.countDown();
                     } else {
-                        logger.warning(String.format("Event[%s] matched partition key, but not GUID. Expected: %s. Actual: %s",
-                            event.getSequenceNumber(), messageValue, event.getProperties().get(MESSAGE_ID)));
+                        logger.warning("Event[{}] matched partition key, but not GUID. Expected: {}. Actual: {}",
+                            event.getSequenceNumber(), messageValue, event.getProperties().get(MESSAGE_ID));
                     }
                 }, error -> {
                         Assertions.fail("An error should not have occurred:" + error.toString());

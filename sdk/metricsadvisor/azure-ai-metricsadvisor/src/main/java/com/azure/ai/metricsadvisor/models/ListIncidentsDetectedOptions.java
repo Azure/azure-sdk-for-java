@@ -16,9 +16,9 @@ public final class ListIncidentsDetectedOptions {
     private List<DimensionKey> dimensionsToFilter;
 
     /**
-     * Gets limit indicating the number of items to be included in a service returned page.
+     * Gets limit indicating the number of items that will be included in a service returned page.
      *
-     * @return The maxPageSize value.
+     * @return The max page size value.
      */
     public Integer getMaxPageSize() {
         return this.maxPageSize;
@@ -36,10 +36,10 @@ public final class ListIncidentsDetectedOptions {
     /**
      * Gets limit indicating the number of items to be included in a service returned page.
      *
-     * @param maxPageSize The maxPageSize value.
+     * @param maxPageSize The max page size value.
      * @return ListIncidentsDetectedOptions itself.
      */
-    public ListIncidentsDetectedOptions setMaxPageSize(int maxPageSize) {
+    public ListIncidentsDetectedOptions setMaxPageSize(Integer maxPageSize) {
         this.maxPageSize = maxPageSize;
         return this;
     }

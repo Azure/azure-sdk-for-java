@@ -23,7 +23,7 @@ stages:
           JavaVersion: '1.8'
 
     pool:
-      vmImage: 'ubuntu-18.04'
+      vmImage: 'ubuntu-20.04'
 
     steps:
       - task: Maven@3
