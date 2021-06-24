@@ -8,6 +8,7 @@ import java.nio.ByteBuffer;
 
 public class HexConvert {
     final private static char[] hexArray = "0123456789ABCDEF".toCharArray();
+    final private static byte[] emptyByteArray = new byte[0];
 
     public static String bytesToHex(byte[] bytes) {
         char[] hexChars = new char[bytes.length * 2];
@@ -41,7 +42,7 @@ public class HexConvert {
 
     public static byte[] hexToByteBuffer(String hexString) {
         if (Strings.isNullOrEmpty(hexString)) {
-            return null;
+            return emptyByteArray;
         }
         String str = hexString.replace("-", "");
         if(str.startsWith("0x")) { // Get rid of potential prefix
