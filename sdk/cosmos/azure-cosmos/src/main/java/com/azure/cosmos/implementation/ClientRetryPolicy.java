@@ -62,7 +62,8 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         this.throttlingRetry = new ResourceThrottleRetryPolicy(
             throttlingRetryOptions.getMaxRetryAttemptsOnThrottledRequests(),
             throttlingRetryOptions.getMaxRetryWaitTime(),
-            BridgeInternal.getRetryContext(this.getCosmosDiagnostics()));
+            BridgeInternal.getRetryContext(this.getCosmosDiagnostics()),
+            false);
     }
 
     @Override

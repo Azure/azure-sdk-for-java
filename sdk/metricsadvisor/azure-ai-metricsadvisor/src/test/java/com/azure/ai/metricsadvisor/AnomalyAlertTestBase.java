@@ -5,12 +5,13 @@ package com.azure.ai.metricsadvisor;
 
 import com.azure.ai.metricsadvisor.administration.models.AnomalyAlertConfiguration;
 import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertConditions;
-import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertConfiguration;
+import com.azure.ai.metricsadvisor.administration.models.MetricAlertConfiguration;
 import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertScope;
 import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertSnoozeCondition;
 import com.azure.ai.metricsadvisor.administration.models.MetricBoundaryCondition;
 import com.azure.core.util.Configuration;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
@@ -22,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public abstract class AnomalyAlertTestBase extends MetricsAdvisorAdministrationClientTestBase {
 
     static final String DETECTION_CONFIGURATION_ID = "fb5a6ed6-2b9e-4b72-8b0c-0046ead1c15c";
-    static final String ALERT_HOOK_ID = "793adcdb-5293-4e4a-a60c-7c32cd5829fc";
+    static final String ALERT_HOOK_ID = "dd3bfc43-c461-440d-9fcd-f6326d8e7fae";
 
     @Override
     protected void beforeTest() {
@@ -39,13 +40,13 @@ public abstract class AnomalyAlertTestBase extends MetricsAdvisorAdministrationC
     }
 
     private AnomalyAlertConfiguration getAnomalyAlertConfiguration() {
-        final MetricAnomalyAlertConfiguration metricAnomalyAlertConfiguration
-            = new MetricAnomalyAlertConfiguration(DETECTION_CONFIGURATION_ID, MetricAnomalyAlertScope.forWholeSeries());
+        final MetricAlertConfiguration metricAnomalyAlertConfiguration
+            = new MetricAlertConfiguration(DETECTION_CONFIGURATION_ID, MetricAnomalyAlertScope.forWholeSeries());
 
         return new AnomalyAlertConfiguration("test_alert_configuration")
             .setDescription("testing_alert_configuration_description")
             .addMetricAlertConfiguration(metricAnomalyAlertConfiguration)
-            .addIdOfHookToAlert(ALERT_HOOK_ID);
+            .setHookIdsToAlert(new ArrayList<String>() {{ add(ALERT_HOOK_ID); }});
     }
 
     void validateAnomalyAlertResult(AnomalyAlertConfiguration expectedAnomalyAlertConfiguration,
@@ -58,12 +59,12 @@ public abstract class AnomalyAlertTestBase extends MetricsAdvisorAdministrationC
     }
 
     private void validateMetricAnomalyDetectionConfiguration(
-        List<MetricAnomalyAlertConfiguration> expectedConfiguration,
-        List<MetricAnomalyAlertConfiguration> actualAlertConfiguration) {
+        List<MetricAlertConfiguration> expectedConfiguration,
+        List<MetricAlertConfiguration> actualAlertConfiguration) {
         assertEquals(expectedConfiguration.size(), actualAlertConfiguration.size());
         for (int i = 0; i < expectedConfiguration.size(); i++) {
-            final MetricAnomalyAlertConfiguration expectedConfig = expectedConfiguration.get(i);
-            final MetricAnomalyAlertConfiguration actualConfig = actualAlertConfiguration.get(i);
+            final MetricAlertConfiguration expectedConfig = expectedConfiguration.get(i);
+            final MetricAlertConfiguration actualConfig = actualAlertConfiguration.get(i);
             validateAlertConditions(expectedConfig.getAlertConditions(), actualConfig.getAlertConditions());
             validateAlertScope(expectedConfig.getAlertScope(), actualConfig.getAlertScope());
             validateSnoozeCondition(expectedConfig.getAlertSnoozeCondition(), actualConfig.getAlertSnoozeCondition());

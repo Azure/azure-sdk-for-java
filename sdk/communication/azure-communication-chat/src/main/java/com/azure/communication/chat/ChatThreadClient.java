@@ -14,6 +14,7 @@ import com.azure.communication.chat.models.ListParticipantsOptions;
 import com.azure.communication.chat.models.ListReadReceiptOptions;
 import com.azure.communication.chat.models.SendChatMessageOptions;
 import com.azure.communication.chat.models.SendChatMessageResult;
+import com.azure.communication.chat.models.TypingNotificationOptions;
 import com.azure.communication.chat.models.UpdateChatMessageOptions;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
@@ -350,8 +351,8 @@ public final class ChatThreadClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> sendTypingNotificationWithResponse(Context context) {
-
-        return this.client.sendTypingNotification(context).block();
+        TypingNotificationOptions options = new TypingNotificationOptions();
+        return this.client.sendTypingNotification(options, context).block();
     }
 
     /**
@@ -363,6 +364,32 @@ public final class ChatThreadClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void sendTypingNotification() {
         this.client.sendTypingNotification().block();
+    }
+
+    /**
+     * Posts a typing event to a thread, on behalf of a user.
+     *
+     * @param options Options for sending the typing notification.
+     * @param context The context to associate with this operation.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> sendTypingNotificationWithResponse(TypingNotificationOptions options, Context context) {
+        return this.client.sendTypingNotification(options, context).block();
+    }
+
+    /**
+     * Posts a typing event to a thread, on behalf of a user.
+     *
+     * @param options Options for sending the typing notification.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void sendTypingNotification(TypingNotificationOptions options) {
+        this.client.sendTypingNotification(options).block();
     }
 
     /**

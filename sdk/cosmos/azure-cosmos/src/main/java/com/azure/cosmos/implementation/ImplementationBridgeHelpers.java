@@ -4,9 +4,11 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BulkProcessingOptions;
+import com.azure.cosmos.BulkProcessingThresholds;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.implementation.batch.PartitionScopeThresholds;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
@@ -15,6 +17,8 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.concurrent.ConcurrentMap;
 
 public class ImplementationBridgeHelpers {
     private static Logger logger = LoggerFactory.getLogger(ImplementationBridgeHelpers.class);
@@ -237,6 +241,36 @@ public class ImplementationBridgeHelpers {
 
         public interface CosmosClientAccessor {
             CosmosAsyncClient getCosmosAsyncClient(CosmosClient cosmosClient);
+        }
+    }
+
+    public static final class BulkProcessingThresholdsHelper {
+        private static BulkProcessingThresholdsAccessor accessor;
+
+        private BulkProcessingThresholdsHelper() {}
+        static {
+            ensureClassLoaded(BulkProcessingThresholdsHelper.class);
+        }
+
+        public static void setBulkProcessingThresholdsAccessor(final BulkProcessingThresholdsAccessor newAccessor) {
+            if (accessor != null) {
+                throw new IllegalStateException("BulkProcessingThresholdsHelper accessor already initialized!");
+            }
+
+            accessor = newAccessor;
+        }
+
+        public static BulkProcessingThresholdsAccessor getBulkProcessingThresholdsAccessor() {
+            if (accessor == null) {
+                throw new IllegalStateException("BulkProcessingThresholdsHelper accessor is not initialized yet!");
+            }
+
+            return accessor;
+        }
+
+        public interface BulkProcessingThresholdsAccessor {
+            <T> ConcurrentMap<String, PartitionScopeThresholds<T>> getPartitionScopeThresholds(
+                BulkProcessingThresholds<T> thresholds);
         }
     }
 

@@ -6,6 +6,7 @@
 - Added support for the 2020-10-02 service version.
 - Added support to list blobs deleted with versioning enabled. 
 - Added support to specify Parquet Input Serialization when querying a blob.
+- Updated DownloadRetryOptions.maxRetryRequests to default downloads to retry 5 times. 
 
 ## 12.12.0 (2021-06-09)
 - GA release

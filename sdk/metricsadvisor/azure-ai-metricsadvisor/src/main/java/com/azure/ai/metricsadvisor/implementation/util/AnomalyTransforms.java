@@ -36,7 +36,7 @@ public class AnomalyTransforms {
                 .setMin(minSeverity).
                     setMax(maxSeverity));
         }
-        List<DimensionKey> seriesKeys = filter.getSeriesKeys();
+        List<DimensionKey> seriesKeys = filter.getSeriesGroupKeys();
         if (seriesKeys != null && !seriesKeys.isEmpty()) {
             innerFilter.setDimensionFilter(seriesKeys
                 .stream()

@@ -13,6 +13,7 @@ import com.azure.communication.callingserver.implementation.models.CancelAllMedi
 import com.azure.communication.callingserver.implementation.models.CommunicationErrorResponseException;
 import com.azure.communication.callingserver.implementation.models.PlayAudioRequest;
 import com.azure.communication.callingserver.models.AddParticipantResult;
+import com.azure.communication.callingserver.models.CallingServerErrorException;
 import com.azure.communication.callingserver.models.CancelAllMediaOperationsResult;
 import com.azure.communication.callingserver.models.PlayAudioOptions;
 import com.azure.communication.callingserver.models.PlayAudioResult;
@@ -64,6 +65,8 @@ public final class CallConnectionAsync {
      * @param callbackUri call back uri to receive notifications.
      * @param operationContext The value to identify context of the operation. This is used to co-relate other
      *                         communications related to this operation
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -83,6 +86,8 @@ public final class CallConnectionAsync {
      *                     audio prompts are supported. More specifically, the audio content in the wave file must
      *                     be mono (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
      * @param playAudioOptions Options for play audio.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -145,36 +150,9 @@ public final class CallConnectionAsync {
      * @param audioFileUri The media resource uri of the play audio request. Currently only Wave file (.wav) format
      *                     audio prompts are supported. More specifically, the audio content in the wave file must
      *                     be mono (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
-     * @param loop The flag indicating whether audio file needs to be played in loop or not.
-     * @param audioFileId An id for the media in the AudioFileUri, using which we cache the media.
-     * @param callbackUri call back uri to receive notifications.
-     * @param operationContext The value to identify context of the operation. This is used to co-relate other
-     *                         communications related to this operation
-     * @return the response payload for play audio operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PlayAudioResult>> playAudioWithResponse(
-        String audioFileUri,
-        boolean loop,
-        String audioFileId,
-        String callbackUri,
-        String operationContext) {
-        return playAudioWithResponseInternal(
-            audioFileUri,
-            loop,
-            audioFileId,
-            callbackUri,
-            operationContext,
-            null);
-    }
-
-    /**
-     * Play audio in a call.
-     *
-     * @param audioFileUri The media resource uri of the play audio request. Currently only Wave file (.wav) format
-     *                     audio prompts are supported. More specifically, the audio content in the wave file must
-     *                     be mono (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
      * @param playAudioOptions Options for play audio.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -182,30 +160,6 @@ public final class CallConnectionAsync {
         String audioFileUri,
         PlayAudioOptions playAudioOptions) {
         return playAudioWithResponseInternal(audioFileUri, playAudioOptions, null);
-    }
-
-    Mono<Response<PlayAudioResult>> playAudioWithResponseInternal(
-        String audioFileUri,
-        boolean loop,
-        String audioFileId,
-        String callbackUri,
-        String operationContext,
-        Context context) {
-        try {
-            Objects.requireNonNull(audioFileUri, "'audioFileUri' cannot be null.");
-            PlayAudioRequest playAudioRequest =
-                new PlayAudioRequest()
-                    .setAudioFileUri(audioFileUri)
-                    .setLoop(loop)
-                    .setAudioFileId(audioFileId)
-                    .setOperationContext(operationContext)
-                    .setCallbackUri(callbackUri);
-            return playAudioWithResponseInternal(playAudioRequest, context);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-
-
     }
 
     Mono<Response<PlayAudioResult>> playAudioWithResponseInternal(
@@ -248,6 +202,8 @@ public final class CallConnectionAsync {
     /**
      * Hangup a call.
      *
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for a successful hangup request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -264,6 +220,8 @@ public final class CallConnectionAsync {
     /**
      * Hangup a call.
      *
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for a successful hangup request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -288,6 +246,8 @@ public final class CallConnectionAsync {
      *
      * @param operationContext The value to identify context of the operation. This is used to co-relate other
      *                         communications related to this operation
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response payload of the cancel all media operations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -308,6 +268,8 @@ public final class CallConnectionAsync {
      *
      * @param operationContext The value to identify context of the operation. This is used to co-relate other
      *                         communications related to this operation
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response payload of the cancel all media operations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -341,6 +303,8 @@ public final class CallConnectionAsync {
      * @param alternateCallerId The phone number to use when adding a phone number participant.
      * @param operationContext The value to identify context of the operation. This is used to co-relate other
      *                         communications related to this operation
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for a successful add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -369,6 +333,8 @@ public final class CallConnectionAsync {
      * @param alternateCallerId The phone number to use when adding a phone number participant.
      * @param operationContext The value to identify context of the operation. This is used to co-relate other
      *                         communications related to this operation
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for a successful add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -406,6 +372,8 @@ public final class CallConnectionAsync {
      * Remove a participant from the call.
      *
      * @param participantId Participant id.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for a successful remove participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -423,6 +391,8 @@ public final class CallConnectionAsync {
      * Remove a participant from the call.
      *
      * @param participantId Participant id.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for a successful remove participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
