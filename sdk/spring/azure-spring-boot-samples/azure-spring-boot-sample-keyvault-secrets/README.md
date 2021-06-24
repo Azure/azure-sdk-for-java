@@ -11,7 +11,7 @@ urlFragment: "azure-spring-boot-sample-keyvault-secrets"
 # Sample for Azure Key Vault Secrets Spring Boot Starter client library for Java
 
 ## Key concepts
-This sample illustrates how to use [Azure Spring Boot Starter Key Vault Secrets ](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-keyvault-secrets/README.md).
+This sample illustrates how to use [Azure Spring Boot Starter Key Vault Secrets ](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot-starter-keyvault-secrets/README.md).
 
 In this sample, a secret named `spring-data-source-url` is stored into an Azure Key Vault, and a sample Spring application will use its value as a configuration property value.
 
@@ -144,7 +144,7 @@ mvn spring-boot:run
 
 
 <!-- links -->
-[version_link]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-secrets/src/main/java/com/azure/security/keyvault/secrets/SecretServiceVersion.java#L12
-[environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
+[version_link]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-secrets/src/main/java/com/azure/security/keyvault/secrets/SecretServiceVersion.java#L12
+[environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
 [certificate-based-authentication]: https://docs.microsoft.com/cli/azure/create-an-azure-service-principal-azure-cli#certificate-based-authentication
 [assign-an-access-policy]: https://docs.microsoft.com/azure/key-vault/general/assign-access-policy-portal#assign-an-access-policy

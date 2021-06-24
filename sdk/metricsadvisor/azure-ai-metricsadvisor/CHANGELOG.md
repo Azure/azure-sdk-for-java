@@ -65,8 +65,8 @@ https://azure.github.io/azure-sdk/releases/latest/java.html.
 - Reactive streams support using [Project Reactor](https://projectreactor.io/).
 
 This package's
-[documentation](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/metricsadvisor/azure-ai-metricsadvisor/README.md)
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/metricsadvisor/azure-ai-metricsadvisor/README.md)
 and
-[samples](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/metricsadvisor/azure-ai-metricsadvisor/src/samples)
+[samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/metricsadvisor/azure-ai-metricsadvisor/src/samples)
 demonstrate the new API.
 

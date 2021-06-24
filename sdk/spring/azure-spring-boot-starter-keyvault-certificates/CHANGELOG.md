@@ -1,6 +1,6 @@
 # Release History
 
-## 3.0.0-beta.8 (Unreleased)
+## 3.0.0 (2021-06-23)
 ### New Features
 - Load JRE key store certificates to AzureKeyVault key store. ([#21845](https://github.com/Azure/azure-sdk-for-java/pull/21845))
 

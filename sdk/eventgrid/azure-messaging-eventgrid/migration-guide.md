@@ -195,7 +195,7 @@ More examples can be found at:
 [GuidelinesJava]: https://azure.github.io/azure-sdk/java_introduction.html
 [GuidelinesJavaDesign]: https://azure.github.io/azure-sdk/java_introduction.html#namespaces
 [project-reactor]: https://projectreactor.io/
-[README-Samples]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/eventgrid/azure-messaging-eventgrid/src/samples/java/README.md
-[README]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/eventgrid/azure-messaging-eventgrid/README.md
+[README-Samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventgrid/azure-messaging-eventgrid/src/samples/java/README.md
+[README]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventgrid/azure-messaging-eventgrid/README.md
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Feventgrid%2Fazure-messaging-eventgrid%2Fmigration-guide.png)

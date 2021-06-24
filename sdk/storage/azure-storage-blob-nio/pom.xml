@@ -34,6 +34,7 @@
   <properties>
     <src.dir>src/main/java</src.dir>
     <test.dir>src/test/java</test.dir>
+    <AZURE_TEST_SYSTEM_PLAYBACK_PROPERTIES_FILE>../azure-storage-common/ci.system.properties</AZURE_TEST_SYSTEM_PLAYBACK_PROPERTIES_FILE>
   </properties>
 
   <pluginRepositories>
