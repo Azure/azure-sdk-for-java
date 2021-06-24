@@ -27,26 +27,6 @@ public abstract class AbstractJwtBearerTokenAuthenticationConverter implements C
     protected Converter<Jwt, Collection<GrantedAuthority>> converter;
     protected String principalClaimName;
 
-    public AbstractJwtBearerTokenAuthenticationConverter() {
-        this.converter = new AADJwtGrantedAuthoritiesConverter(DEFAULT_CLAIM_TO_AUTHORITY_PREFIX_MAP);
-    }
-
-    /**
-     * Construct jwt token converter.
-     * @param authoritiesClaimName authority claim name
-     * @param authorityPrefix the prefix name of the authority
-     * @deprecated Recommended to use others constructor.
-     */
-    @Deprecated
-    public AbstractJwtBearerTokenAuthenticationConverter(String authoritiesClaimName,
-                                                         String authorityPrefix) {
-        Assert.notNull(authoritiesClaimName, "authoritiesClaimName cannot be null");
-        Assert.notNull(authorityPrefix, "authorityPrefix cannot be null");
-        Map<String, String> claimToAuthorityPrefixMap = new HashMap<>();
-        claimToAuthorityPrefixMap.put(authoritiesClaimName, authorityPrefix);
-        this.converter = new AADJwtGrantedAuthoritiesConverter(claimToAuthorityPrefixMap);
-    }
-
     public AbstractJwtBearerTokenAuthenticationConverter(String principalClaimName,
                                                          Map<String, String> claimToAuthorityPrefixMap) {
         Assert.notNull(claimToAuthorityPrefixMap, "claimToAuthorityPrefixMap cannot be null");
