@@ -509,29 +509,42 @@ public class ModelHelper {
             return;
         }
         List<String> invalidConditionsFound = new ArrayList<>();
-        if (invalidConditions.contains(BlobRequestConditionProperty.LEASE_ID)
-            && requestConditions.getLeaseId() != null) {
-            invalidConditionsFound.add(BlobRequestConditionProperty.LEASE_ID.toString());
-        }
-        if (invalidConditions.contains(BlobRequestConditionProperty.TAGS_CONDITIONS)
-            && requestConditions.getTagsConditions() != null) {
-            invalidConditionsFound.add(BlobRequestConditionProperty.TAGS_CONDITIONS.toString());
-        }
-        if (invalidConditions.contains(BlobRequestConditionProperty.IF_MODIFIED_SINCE)
-            && requestConditions.getIfModifiedSince() != null) {
-            invalidConditionsFound.add(BlobRequestConditionProperty.IF_MODIFIED_SINCE.toString());
-        }
-        if (invalidConditions.contains(BlobRequestConditionProperty.IF_UNMODIFIED_SINCE)
-            && requestConditions.getIfUnmodifiedSince() != null) {
-            invalidConditionsFound.add(BlobRequestConditionProperty.IF_UNMODIFIED_SINCE.toString());
-        }
-        if (invalidConditions.contains(BlobRequestConditionProperty.IF_MATCH)
-            && requestConditions.getIfMatch() != null) {
-            invalidConditionsFound.add(BlobRequestConditionProperty.IF_MATCH.toString());
-        }
-        if (invalidConditions.contains(BlobRequestConditionProperty.IF_NONE_MATCH)
-            && requestConditions.getIfNoneMatch() != null) {
-            invalidConditionsFound.add(BlobRequestConditionProperty.IF_NONE_MATCH.toString());
+
+        for (BlobRequestConditionProperty condition : invalidConditions) {
+            switch (condition) {
+                case LEASE_ID:
+                    if (requestConditions.getLeaseId() != null) {
+                        invalidConditionsFound.add(BlobRequestConditionProperty.LEASE_ID.toString());
+                    }
+                    break;
+                case TAGS_CONDITIONS:
+                    if (requestConditions.getTagsConditions() != null) {
+                        invalidConditionsFound.add(BlobRequestConditionProperty.TAGS_CONDITIONS.toString());
+                    }
+                    break;
+                case IF_MODIFIED_SINCE:
+                    if (requestConditions.getIfModifiedSince() != null) {
+                        invalidConditionsFound.add(BlobRequestConditionProperty.IF_MODIFIED_SINCE.toString());
+                    }
+                    break;
+                case IF_UNMODIFIED_SINCE:
+                    if (requestConditions.getIfUnmodifiedSince() != null) {
+                        invalidConditionsFound.add(BlobRequestConditionProperty.IF_UNMODIFIED_SINCE.toString());
+                    }
+                    break;
+                case IF_MATCH:
+                    if (requestConditions.getIfMatch() != null) {
+                        invalidConditionsFound.add(BlobRequestConditionProperty.IF_MATCH.toString());
+                    }
+                    break;
+                case IF_NONE_MATCH:
+                    if (requestConditions.getIfNoneMatch() != null) {
+                        invalidConditionsFound.add(BlobRequestConditionProperty.IF_NONE_MATCH.toString());
+                    }
+                    break;
+                default:
+                    break;
+            }
         }
         if (!invalidConditionsFound.isEmpty()) {
             String unsupported = String.join(", ", invalidConditionsFound);
