@@ -176,46 +176,6 @@ public final class BlobListDetails {
     }
 
     /**
-     * Whether immutability policy for the blob should be returned.
-     *
-     * @return a flag indicating if immutability policy for the blob will be returned in the listing
-     */
-    public boolean getRetrieveImmutabilityPolicy() {
-        return retrieveImmutabilityPolicy;
-    }
-
-    /**
-     * Whether immutability policy for the blob should be returned.
-     *
-     * @param retrieveImmutabilityPolicy Flag indicating whether immutability policy for the blob should be returned
-     * @return the updated BlobListDetails object
-     */
-    public BlobListDetails setRetrieveImmutabilityPolicy(boolean retrieveImmutabilityPolicy) {
-        this.retrieveImmutabilityPolicy = retrieveImmutabilityPolicy;
-        return this;
-    }
-
-    /**
-     * Whether legal hold for the blob should be returned.
-     *
-     * @return a flag indicating if legal hold for the blob will be returned in the listing
-     */
-    public boolean getRetrieveLegalHold() {
-        return retrieveLegalHold;
-    }
-
-    /**
-     * Whether legal hold for the blob should be returned.
-     *
-     * @param retrieveLegalHold Flag indicating whetherlegal hold for the blob  should be returned
-     * @return the updated BlobListDetails object
-     */
-    public BlobListDetails setRetrieveLegalHold(boolean retrieveLegalHold) {
-        this.retrieveLegalHold = retrieveLegalHold;
-        return this;
-    }
-
-    /**
      * Whether blobs which have been deleted with versioning.
      *
      * @return a flag indicating if deleted blobs with versioning will be returned in the listing
