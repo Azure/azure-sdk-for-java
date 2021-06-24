@@ -14,7 +14,7 @@
 # This script can be run locally from the root of the repo. .\eng\DependencyGraph\gen-dep-graph-data.ps1
 
 # Since we're only dealing with client only items with the azure-client-sdk-parent are valid right now.
-$ValidParents = ("azure-client-sdk-parent", "azure-storage-parent")
+$ValidParents = ("azure-client-sdk-parent")
 # Limit the path to only things under the SDK directory. While this isn't required when running locally
 # the aggregate reports pipeline seems to have a number of duplicate pom files in a temp directory
 # by the time this script runs.
