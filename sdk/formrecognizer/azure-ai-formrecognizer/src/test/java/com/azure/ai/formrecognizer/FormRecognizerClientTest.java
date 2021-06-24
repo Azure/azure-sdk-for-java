@@ -799,7 +799,6 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                         createdModel.getModelId(), invalidSourceUrl, new RecognizeCustomFormsOptions()
                             .setPollInterval(durationTestMode), Context.NONE)
                         .getFinalResult());
-                System.out.println(httpResponseException.getValue());
                 FormRecognizerErrorInformation errorInformation =
                     (FormRecognizerErrorInformation) httpResponseException.getValue();
                 assertEquals(INVALID_SOURCE_URL_EXCEPTION_MESSAGE, errorInformation.getMessage());
