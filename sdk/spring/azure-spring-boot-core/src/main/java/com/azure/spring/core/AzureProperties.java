@@ -5,12 +5,9 @@ package com.azure.spring.core;
 
 
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.google.common.base.Strings;
+import com.azure.core.util.logging.LogLevel;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.util.Assert;
 import org.springframework.validation.annotation.Validated;
-
-import javax.annotation.PostConstruct;
 
 /**
  * Azure related properties.
@@ -20,6 +17,26 @@ import javax.annotation.PostConstruct;
 public class AzureProperties {
 
     public static final String PREFIX = "spring.cloud.azure";
+
+    /**
+     * Disables telemetry collection.
+     */
+    private boolean allowTelemetry;
+
+    /**
+     * Disables tracing.
+     */
+    private boolean tracingDisabled;
+
+    /**
+     * The Azure Active Directory endpoint to connect to.
+     */
+    private String authorityHost;
+
+    /**
+     * Name of the Azure cloud to connect to.
+     */
+    private String environment = "Azure";
 
     /**
      * Client id to use when performing service principal authentication with Azure.
@@ -32,69 +49,14 @@ public class AzureProperties {
     private String clientSecret;
 
     /**
-     * Tenant id for the Azure resources.
+     * Path of a PEM certificate file to use when performing service principal authentication with Azure.
      */
-    private String tenantId;
-
-    /**
-     * Name of the Azure resource group.
-     */
-    private String resourceGroup;
-
-    /**
-     * Name of the Azure cloud to connect to.
-     */
-    private AzureCloud environment = AzureCloud.Azure;
-
-    /**
-     * The Azure Active Directory endpoint to connect to.
-     */
-    private String authorityHost;
-
-    /**
-     * Name of the region where resources would be automatically created.
-     */
-    private String region;
-
-    /**
-     * Flag to automatically create resources.
-     */
-    private boolean autoCreateResources = false;
+    private String clientCertificatePath;
 
     /**
      * Flag to enable MSI.
      */
     private boolean msiEnabled = false;
-
-    /**
-     * Subscription id to use when connecting to Azure resources.
-     */
-    private String subscriptionId;
-
-    /**
-     * URL of the proxy for HTTP connections.
-     */
-    private String httpProxy;
-
-    /**
-     * URL of the proxy for HTTPS connections.
-     */
-    private String httpsProxy;
-
-    /**
-     * Endpoint to connect to when using Azure Active Directory managed service identity (MSI).
-     */
-    private String identityEndpoint;
-
-    /**
-     * Header when connecting to Azure Active Directory using managed service identity (MSI).
-     */
-    private String identityHeader;
-
-    /**
-     * A list of hosts or CIDR to not use proxy HTTP/HTTPS connections through, separated by comma.
-     */
-    private String noProxy;
 
     /**
      * Endpoint to connect to when using Azure Active Directory managed service identity (MSI).
@@ -107,6 +69,21 @@ public class AzureProperties {
     private String msiSecret;
 
     /**
+     * Name of the Azure resource group.
+     */
+    private String resourceGroup;
+
+    /**
+     * Subscription id to use when connecting to Azure resources.
+     */
+    private String subscriptionId;
+
+    /**
+     * Tenant id for the Azure resources.
+     */
+    private String tenantId;
+
+    /**
      * Username to use when performing username/password authentication with Azure.
      */
     private String username;
@@ -117,24 +94,9 @@ public class AzureProperties {
     private String password;
 
     /**
-     * Path of a PEM certificate file to use when performing service principal authentication with Azure.
-     */
-    private String clientCertificatePath;
-
-    /**
-     * Flag to disable the CP1 client capabilities in Azure Identity Token credentials.
-     */
-    private boolean identityDisableCP1;
-
-    /**
-     * Disables telemetry collection.
-     */
-    private boolean allowTelemetry;
-
-    /**
      * Enables logging by setting a log level.
      */
-    private String logLevel;
+    private LogLevel logLevel;
 
     /**
      * Enables HTTP request/response logging by setting an HTTP log detail level.
@@ -142,22 +104,57 @@ public class AzureProperties {
     private HttpLogDetailLevel httpLogDetailLevel;
 
     /**
-     * Disables tracing.
+     * URL of the proxy for HTTP connections.
      */
-    private boolean tracingDisabled;
+    private String httpProxy;
 
+    /**
+     * URL of the proxy for HTTPS connections.
+     */
+    private String httpsProxy;
 
-    @PostConstruct
-    private void validate() {
-        if (autoCreateResources) {
-            Assert.hasText(this.region,
-                "When auto create resources is enabled, spring.cloud.azure.region must be provided");
-        }
+    /**
+     * A list of hosts or CIDR to not use proxy HTTP/HTTPS connections through, separated by comma.
+     */
+    private String noProxy;
 
-        if (msiEnabled && Strings.isNullOrEmpty(subscriptionId)) {
-            Assert.hasText(this.subscriptionId, "When msi is enabled, "
-                + "spring.cloud.azure.subscription-id must be provided");
-        }
+    /**
+     * Flag to disable the CP1 client capabilities in Azure Identity Token credentials.
+     */
+    private boolean identityDisableCP1;
+
+    /**
+     * Endpoint to connect to when using Azure Active Directory managed service identity (MSI).
+     */
+    private String identityEndpoint;
+
+    /**
+     * Header when connecting to Azure Active Directory using managed service identity (MSI).
+     */
+    private String identityHeader;
+
+    public boolean getAllowTelemetry() {
+        return allowTelemetry;
+    }
+
+    public void setAllowTelemetry(boolean allowTelemetry) {
+        this.allowTelemetry = allowTelemetry;
+    }
+
+    public String getAuthorityHost() {
+        return authorityHost;
+    }
+
+    public void setAuthorityHost(String authorityHost) {
+        this.authorityHost = authorityHost;
+    }
+
+    public String getClientCertificatePath() {
+        return clientCertificatePath;
+    }
+
+    public void setClientCertificatePath(String clientCertificatePath) {
+        this.clientCertificatePath = clientCertificatePath;
     }
 
     public String getClientId() {
@@ -176,68 +173,20 @@ public class AzureProperties {
         this.clientSecret = clientSecret;
     }
 
-    public String getTenantId() {
-        return tenantId;
-    }
-
-    public void setTenantId(String tenantId) {
-        this.tenantId = tenantId;
-    }
-
-    public String getResourceGroup() {
-        return resourceGroup;
-    }
-
-    public void setResourceGroup(String resourceGroup) {
-        this.resourceGroup = resourceGroup;
-    }
-
-    public AzureCloud getEnvironment() {
+    public String getEnvironment() {
         return environment;
     }
 
-    public void setEnvironment(AzureCloud environment) {
+    public void setEnvironment(String environment) {
         this.environment = environment;
     }
 
-    public String getRegion() {
-        return region;
+    public HttpLogDetailLevel getHttpLogDetailLevel() {
+        return httpLogDetailLevel;
     }
 
-    public void setRegion(String region) {
-        this.region = region;
-    }
-
-    public boolean isAutoCreateResources() {
-        return autoCreateResources;
-    }
-
-    public void setAutoCreateResources(boolean autoCreateResources) {
-        this.autoCreateResources = autoCreateResources;
-    }
-
-    public boolean isMsiEnabled() {
-        return msiEnabled;
-    }
-
-    public void setMsiEnabled(boolean msiEnabled) {
-        this.msiEnabled = msiEnabled;
-    }
-
-    public String getSubscriptionId() {
-        return subscriptionId;
-    }
-
-    public void setSubscriptionId(String subscriptionId) {
-        this.subscriptionId = subscriptionId;
-    }
-
-    public String getAuthorityHost() {
-        return authorityHost;
-    }
-
-    public void setAuthorityHost(String authorityHost) {
-        this.authorityHost = authorityHost;
+    public void setHttpLogDetailLevel(HttpLogDetailLevel httpLogDetailLevel) {
+        this.httpLogDetailLevel = httpLogDetailLevel;
     }
 
     public String getHttpProxy() {
@@ -272,12 +221,12 @@ public class AzureProperties {
         this.identityHeader = identityHeader;
     }
 
-    public String getNoProxy() {
-        return noProxy;
+    public LogLevel getLogLevel() {
+        return logLevel;
     }
 
-    public void setNoProxy(String noProxy) {
-        this.noProxy = noProxy;
+    public void setLogLevel(LogLevel logLevel) {
+        this.logLevel = logLevel;
     }
 
     public String getMsiEndpoint() {
@@ -296,12 +245,12 @@ public class AzureProperties {
         this.msiSecret = msiSecret;
     }
 
-    public String getUsername() {
-        return username;
+    public String getNoProxy() {
+        return noProxy;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setNoProxy(String noProxy) {
+        this.noProxy = noProxy;
     }
 
     public String getPassword() {
@@ -312,12 +261,36 @@ public class AzureProperties {
         this.password = password;
     }
 
-    public String getClientCertificatePath() {
-        return clientCertificatePath;
+    public String getResourceGroup() {
+        return resourceGroup;
     }
 
-    public void setClientCertificatePath(String clientCertificatePath) {
-        this.clientCertificatePath = clientCertificatePath;
+    public void setResourceGroup(String resourceGroup) {
+        this.resourceGroup = resourceGroup;
+    }
+
+    public String getSubscriptionId() {
+        return subscriptionId;
+    }
+
+    public void setSubscriptionId(String subscriptionId) {
+        this.subscriptionId = subscriptionId;
+    }
+
+    public String getTenantId() {
+        return tenantId;
+    }
+
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public boolean isIdentityDisableCP1() {
@@ -328,28 +301,12 @@ public class AzureProperties {
         this.identityDisableCP1 = identityDisableCP1;
     }
 
-    public boolean getAllowTelemetry() {
-        return allowTelemetry;
+    public boolean isMsiEnabled() {
+        return msiEnabled;
     }
 
-    public void setAllowTelemetry(boolean allowTelemetry) {
-        this.allowTelemetry = allowTelemetry;
-    }
-
-    public String getLogLevel() {
-        return logLevel;
-    }
-
-    public void setLogLevel(String logLevel) {
-        this.logLevel = logLevel;
-    }
-
-    public HttpLogDetailLevel getHttpLogDetailLevel() {
-        return httpLogDetailLevel;
-    }
-
-    public void setHttpLogDetailLevel(HttpLogDetailLevel httpLogDetailLevel) {
-        this.httpLogDetailLevel = httpLogDetailLevel;
+    public void setMsiEnabled(boolean msiEnabled) {
+        this.msiEnabled = msiEnabled;
     }
 
     public boolean isTracingDisabled() {

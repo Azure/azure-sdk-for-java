@@ -6,6 +6,7 @@ package com.azure.spring.cloud.autoconfigure.servicebus;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.autoconfigure.context.AzureContextAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.context.AzureContextProperties;
 import com.azure.spring.core.AzureProperties;
 import com.azure.spring.cloud.context.core.impl.ServiceBusNamespaceManager;
 import com.azure.spring.integration.servicebus.factory.ServiceBusConnectionStringProvider;
@@ -40,8 +41,8 @@ public class AzureServiceBusAutoConfiguration {
     @ConditionalOnMissingBean
     @ConditionalOnBean({ AzureResourceManager.class, AzureProperties.class })
     public ServiceBusNamespaceManager serviceBusNamespaceManager(AzureResourceManager azureResourceManager,
-                                                                 AzureProperties azureProperties) {
-        return new ServiceBusNamespaceManager(azureResourceManager, azureProperties);
+                                                                 AzureContextProperties azureContextProperties) {
+        return new ServiceBusNamespaceManager(azureResourceManager, azureContextProperties);
     }
 
     /**

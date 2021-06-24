@@ -10,12 +10,15 @@ import com.azure.identity.ManagedIdentityCredentialBuilder;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.core.env.Environment;
 
-import static com.azure.spring.core.Constants.DEFAULT_AUTHORITY_HOST;
-
 /**
  *
  */
 public abstract class SpringCredentialBuilderBase<T extends SpringCredentialBuilderBase<T>> {
+
+    /**
+     * Defines the DEFAULT_AUTHORITY_HOST.
+     */
+    public static final String DEFAULT_AUTHORITY_HOST = "https://login.microsoftonline.com/";
 
     protected Environment environment;
 
@@ -38,10 +41,10 @@ public abstract class SpringCredentialBuilderBase<T extends SpringCredentialBuil
     }
 
     private TokenCredential populateTokenCredential(String prefix, boolean createDefault) {
-        String tenantId = getPropertyValue(prefix, "tenant-id");
-        String clientId = getPropertyValue(prefix, "client-id");
-        String clientSecret = getPropertyValue(prefix, "client-secret");
-        String authorityHost = getPropertyValue(String.class, prefix, "authority-host", DEFAULT_AUTHORITY_HOST);
+        String tenantId = getPropertyValue(prefix + "tenant-id");
+        String clientId = getPropertyValue(prefix +"client-id");
+        String clientSecret = getPropertyValue(prefix + "client-secret");
+        String authorityHost = getPropertyValue(prefix +"authority-host", DEFAULT_AUTHORITY_HOST);
 
         if (tenantId != null && clientId != null && clientSecret != null) {
             return new ClientSecretCredentialBuilder()
@@ -52,7 +55,7 @@ public abstract class SpringCredentialBuilderBase<T extends SpringCredentialBuil
                 .build();
         }
 
-        String certPath = getPropertyValue(prefix, "client-certificate-path");
+        String certPath = getPropertyValue(prefix + "client-certificate-path", null);
 
         if (tenantId != null && clientId != null && certPath != null) {
             return new ClientCertificateCredentialBuilder()
@@ -74,15 +77,13 @@ public abstract class SpringCredentialBuilderBase<T extends SpringCredentialBuil
         return new ManagedIdentityCredentialBuilder().build();
     }
 
-    protected String getPropertyValue(String prefix, String propertyKey) {
-        return Binder.get(this.environment)
-                     .bind(prefix + propertyKey, String.class)
-                     .orElse(null);
+    protected String getPropertyValue(String propertyName) {
+        return getPropertyValue(propertyName, null);
     }
 
-    protected <C> C getPropertyValue(Class<C> type, String prefix, String propertyKey, C defaultValue) {
+    protected String getPropertyValue(String propertyName, String defaultValue) {
         return Binder.get(this.environment)
-                     .bind(prefix + propertyKey, type)
+                     .bind(propertyName, String.class)
                      .orElse(defaultValue);
     }
 

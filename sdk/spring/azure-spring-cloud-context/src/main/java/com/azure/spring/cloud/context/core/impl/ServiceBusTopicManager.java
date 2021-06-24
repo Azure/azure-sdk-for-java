@@ -6,7 +6,7 @@ package com.azure.spring.cloud.context.core.impl;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.servicebus.models.ServiceBusNamespace;
 import com.azure.resourcemanager.servicebus.models.Topic;
-import com.azure.spring.core.AzureProperties;
+import com.azure.spring.cloud.autoconfigure.context.AzureContextProperties;
 import com.azure.spring.cloud.context.core.util.Tuple;
 
 /**
@@ -14,8 +14,8 @@ import com.azure.spring.cloud.context.core.util.Tuple;
  */
 public class ServiceBusTopicManager extends AzureManager<Topic, Tuple<ServiceBusNamespace, String>> {
 
-    public ServiceBusTopicManager(AzureProperties azureProperties) {
-        super(azureProperties);
+    public ServiceBusTopicManager(AzureContextProperties azureContextProperties) {
+        super(azureContextProperties);
     }
 
     @Override

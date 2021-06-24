@@ -196,7 +196,7 @@ class KeyVaultEnvironmentPostProcessorHelper {
     }
 
     private String getProperty(final String normalizedName, final Property property, String defaultValue) {
-        if (normalizedName != "") {
+        if (!normalizedName.equals("")) {
             return getPropertyValue(normalizedName, property, defaultValue);
         }
 

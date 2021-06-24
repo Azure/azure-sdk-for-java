@@ -35,7 +35,7 @@ public class AADAuthenticationProperties implements InitializingBean {
     private static final long DEFAULT_JWK_SET_CACHE_LIFESPAN = TimeUnit.MINUTES.toMillis(5);
     private static final long DEFAULT_JWK_SET_CACHE_REFRESH_TIME = DEFAULT_JWK_SET_CACHE_LIFESPAN;
 
-    @Autowired(required = false)
+    @Autowired
     private AzureProperties azureProperties;
     /**
      * Default UserGroup configuration.
@@ -379,6 +379,14 @@ public class AADAuthenticationProperties implements InitializingBean {
 
     public void setAuthorizationClients(Map<String, AuthorizationClientProperties> authorizationClients) {
         this.authorizationClients = authorizationClients;
+    }
+
+    public AzureProperties getAzureProperties() {
+        return azureProperties;
+    }
+
+    public void setAzureProperties(AzureProperties azureProperties) {
+        this.azureProperties = azureProperties;
     }
 
     public boolean isAllowedGroup(String group) {

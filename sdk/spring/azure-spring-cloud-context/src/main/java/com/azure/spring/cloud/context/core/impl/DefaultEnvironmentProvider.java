@@ -5,7 +5,6 @@ package com.azure.spring.cloud.context.core.impl;
 
 import com.azure.core.management.AzureEnvironment;
 import com.azure.spring.cloud.context.core.api.EnvironmentProvider;
-import com.azure.spring.core.AzureCloud;
 import com.azure.spring.core.AzureProperties;
 
 /**
@@ -23,7 +22,7 @@ public class DefaultEnvironmentProvider implements EnvironmentProvider {
         return environment;
     }
 
-    public void setEnvironment(AzureCloud cloud) {
+    public void setEnvironment(String cloud) {
         this.environment = toAzureEnvironment(cloud);
     }
 
@@ -31,13 +30,13 @@ public class DefaultEnvironmentProvider implements EnvironmentProvider {
         this.environment = environment;
     }
 
-    private static AzureEnvironment toAzureEnvironment(AzureCloud cloud) {
+    private AzureEnvironment toAzureEnvironment(String cloud) {
         switch (cloud) {
-            case AzureChina:
+            case "AzureChina":
                 return AzureEnvironment.AZURE_CHINA;
-            case AzureGermany:
+            case "AzureGermany":
                 return AzureEnvironment.AZURE_GERMANY;
-            case AzureUSGovernment:
+            case "AzureUSGovernment":
                 return AzureEnvironment.AZURE_US_GOVERNMENT;
             default:
                 return AzureEnvironment.AZURE;

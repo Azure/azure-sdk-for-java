@@ -21,7 +21,7 @@ import java.util.Optional;
 @ConfigurationProperties("spring.cloud.azure.storage")
 public class AzureStorageProperties implements InitializingBean {
 
-    @Autowired(required = false)
+    @Autowired
     private AzureProperties azureProperties;
 
     @NotEmpty
@@ -55,6 +55,14 @@ public class AzureStorageProperties implements InitializingBean {
 
     public void setResourceGroup(String resourceGroup) {
         this.resourceGroup = resourceGroup;
+    }
+
+    public AzureProperties getAzureProperties() {
+        return azureProperties;
+    }
+
+    public void setAzureProperties(AzureProperties azureProperties) {
+        this.azureProperties = azureProperties;
     }
 
     @Override

@@ -5,7 +5,7 @@ package com.azure.spring.cloud.context.core.impl;
 
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
-import com.azure.spring.core.AzureProperties;
+import com.azure.spring.cloud.autoconfigure.context.AzureContextProperties;
 
 /**
  * Resource manager for resource group.
@@ -14,8 +14,8 @@ public class ResourceGroupManager extends AzureManager<ResourceGroup, String> {
 
     private final AzureResourceManager azureResourceManager;
     
-    public ResourceGroupManager(AzureResourceManager azureResourceManager, AzureProperties azureProperties) {
-        super(azureProperties);
+    public ResourceGroupManager(AzureResourceManager azureResourceManager, AzureContextProperties azureContextProperties) {
+        super(azureContextProperties);
         this.azureResourceManager = azureResourceManager;
     }
 

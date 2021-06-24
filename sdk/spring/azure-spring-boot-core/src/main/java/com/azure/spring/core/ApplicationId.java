@@ -25,10 +25,6 @@ public class ApplicationId {
     //    aad: for AAD
     //    b2c: for AAD B2C
 
-    public static final String AZURE_SPRING_KEY_VAULT = "az-sp-kv/";
-    public static final String AZURE_SPRING_SERVICE_BUS = "az-sp-bus/";
-    public static final String AZURE_SPRING_STORAGE_BLOB = "az-sp-sb/";
-    public static final String AZURE_SPRING_STORAGE_FILES = "az-sp-sf/";
     /**
      * AZURE_SPRING_AAD does not contain VERSION, because AAD server support 2 headers:
      * 1. x-client-SKU;
@@ -36,8 +32,11 @@ public class ApplicationId {
      */
     public static final String AZURE_SPRING_AAD = "az-sp-aad";
     public static final String AZURE_SPRING_B2C = "az-sp-b2c";
-
-    public static final String AZURE_SPRING_STORAGE_QUEUE = "az-si-sq/";
     public static final String AZURE_SPRING_EVENT_HUB = "az-sc-eh/;";
+    public static final String AZURE_SPRING_KEY_VAULT = "az-sp-kv/";
+    public static final String AZURE_SPRING_SERVICE_BUS = "az-sp-bus/";
+    public static final String AZURE_SPRING_STORAGE_BLOB = "az-sp-sb/";
+    public static final String AZURE_SPRING_STORAGE_FILES = "az-sp-sf/";
+    public static final String AZURE_SPRING_STORAGE_QUEUE = "az-si-sq/";
 
 }

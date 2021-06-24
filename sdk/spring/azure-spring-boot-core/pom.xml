@@ -15,8 +15,8 @@
   <version>1.6.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-core;current} -->
   <packaging>jar</packaging>
 
-  <name>Azure Core Spring Integration Library</name>
-  <description>Azure Core Spring Integration Library</description>
+  <name>Azure Spring Boot Core Library</name>
+  <description>Azure Spring Boot Core Library</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <dependencies>
@@ -49,11 +49,6 @@
       <version>2.5.0</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-web</artifactId>
-      <version>2.5.0</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-web;external_dependency} -->
-    </dependency>
   </dependencies>
 
   <build>
@@ -66,7 +61,6 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.springframework.boot:spring-boot-starter-web:[2.5.0]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-web;external_dependency} -->
                 <include>org.springframework.boot:spring-boot:[2.5.0]</include> <!-- {x-include-update;org.springframework.boot:spring-boot;external_dependency} -->
                 <include>org.springframework:spring-context:[5.3.7]</include> <!-- {x-include-update;org.springframework:spring-context;external_dependency} -->
                 <include>org.springframework:spring-core:[5.3.7]</include> <!-- {x-include-update;org.springframework:spring-core;external_dependency} -->
