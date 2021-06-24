@@ -326,16 +326,16 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
         // proton-j doesn't support multiple dataSections to be part of AmqpMessage
         // here's the alternate approach provided by them: https://github.com/apache/qpid-proton/pull/54
         Message batchMessage = Proton.message();
-        
+
         // Set partition identifier properties of the first message on batch message
         batchMessage.setMessageAnnotations(firstMessage.getMessageAnnotations());
         if (StringUtil.isNullOrWhiteSpace((String)firstMessage.getMessageId())) {
         	batchMessage.setMessageId(firstMessage.getMessageId());
         }
-        
+
         if (StringUtil.isNullOrWhiteSpace(firstMessage.getGroupId())) {
         	batchMessage.setGroupId(firstMessage.getGroupId());
-        }        
+        }
 
         byte[] bytes = null;
         int byteArrayOffset = 0;
@@ -599,7 +599,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 
 			return;
 		}
-		
+
         final Session session = connection.session();
         session.setOutgoingWindow(Integer.MAX_VALUE);
         session.open();
@@ -656,7 +656,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
                             CoreMessageSender.this.lastKnownErrorReportedAt.isAfter(Instant.now().minusSeconds(ClientConstants.SERVER_BUSY_BASE_SLEEP_TIME_IN_SECS)) ? CoreMessageSender.this.lastKnownLinkError : null);
                     TRACE_LOGGER.info(operationTimedout.getMessage());
                     ExceptionUtil.completeExceptionally(CoreMessageSender.this.linkFirstOpen, operationTimedout, CoreMessageSender.this, true);
-                    
+
                 	CoreMessageSender.this.setClosing();
                     CoreMessageSender.this.closeInternals(false);
                     CoreMessageSender.this.setClosed();
@@ -859,7 +859,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 
         boolean isClientSideTimeout = (cause == null || !(cause instanceof ServiceBusException));
         ServiceBusException exception = isClientSideTimeout
-                ? new TimeoutException(String.format(Locale.US, "%s %s %s.", CoreMessageSender.SEND_TIMED_OUT, " at ", ZonedDateTime.now(), cause))
+                ? new TimeoutException(String.format(Locale.US, "%s %s %s.", CoreMessageSender.SEND_TIMED_OUT, " at ", ZonedDateTime.now()), cause)
                 : (ServiceBusException) cause;
 
         TRACE_LOGGER.info("Send timed out", exception);

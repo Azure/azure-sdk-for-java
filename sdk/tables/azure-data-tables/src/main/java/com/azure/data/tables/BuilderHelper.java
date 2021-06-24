@@ -69,11 +69,13 @@ final class BuilderHelper {
             CoreUtils.getApplicationId(clientOptions, logOptions), CLIENT_NAME, CLIENT_VERSION, configuration));
         policies.add(new RequestIdPolicy());
 
-        List<HttpHeader> httpHeaderList = new ArrayList<>();
-
         if (clientOptions != null) {
+            List<HttpHeader> httpHeaderList = new ArrayList<>();
+
             clientOptions.getHeaders().forEach(header ->
                 httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
+
+            policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
         }
 
         // Add per call additional policies.

@@ -10,6 +10,9 @@ import com.azure.ai.metricsadvisor.administration.models.WebNotificationHook;
 import com.azure.core.http.rest.PagedFlux;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Sample demonstrates how to create, get, update, delete and list hook.
  */
@@ -24,7 +27,7 @@ public class HookAsyncSample {
         // Create email hook.
         NotificationHook emailNotificationHookToCreate = new EmailNotificationHook("email hook")
             .setDescription("my email hook")
-            .addEmailToAlert("alertme@alertme.com")
+            .setEmailsToAlert(new ArrayList<String>() {{ add("alertme@alertme.com"); }})
             .setExternalLink("https://adwiki.azurewebsites.net/articles/howto/alerts/create-hooks.html");
 
         Mono<NotificationHook> createHookMono
@@ -60,10 +63,12 @@ public class HookAsyncSample {
         Mono<NotificationHook> updateHookMono = fetchHookMono
             .flatMap(hook -> {
                 EmailNotificationHook emailHookToUpdate = (EmailNotificationHook) hook;
+                final List<String> emailsToUpdate = new ArrayList<>(emailHookToUpdate.getEmailsToAlert());
+                emailsToUpdate.remove("alertme@alertme.com");
+                emailsToUpdate.add("alertme2@alertme.com");
+                emailsToUpdate.add("alertme3@alertme.com");
                 emailHookToUpdate
-                    .removeEmailToAlert("alertme@alertme.com")
-                    .addEmailToAlert("alertme2@alertme.com")
-                    .addEmailToAlert("alertme3@alertme.com");
+                    .setEmailsToAlert(emailsToUpdate);
                 return advisorAdministrationAsyncClient.updateHook(emailHookToUpdate)
                     .doOnSubscribe(__ ->
                         System.out.printf("Updating Notification Hook: %s%n", hook.getId()))

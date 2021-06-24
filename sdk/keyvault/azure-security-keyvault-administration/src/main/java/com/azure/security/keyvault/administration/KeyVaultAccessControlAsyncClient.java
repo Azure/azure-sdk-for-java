@@ -207,9 +207,8 @@ public final class KeyVaultAccessControlAsyncClient {
                     context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
                 .doOnRequest(ignored -> logger.verbose("Listing role definitions for roleScope - {}", roleScope))
                 .doOnSuccess(response -> logger.verbose("Listed role definitions for roleScope - {}", roleScope))
-                .doOnError(error ->
-                    logger.warning(String.format("Failed to list role definitions for roleScope - %s", roleScope),
-                        error))
+                .doOnError(error -> logger.warning("Failed to list role definitions for roleScope - {}", roleScope,
+                    error))
                 .onErrorMap(KeyVaultAdministrationUtils::mapThrowableToKeyVaultAdministrationException)
                 .map(KeyVaultAccessControlAsyncClient::transformRoleDefinitionsPagedResponse);
         } catch (RuntimeException e) {
@@ -633,9 +632,8 @@ public final class KeyVaultAccessControlAsyncClient {
                     context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
                 .doOnRequest(ignored -> logger.verbose("Listing role assignments for roleScope - {}", roleScope))
                 .doOnSuccess(response -> logger.verbose("Listed role assignments for roleScope - {}", roleScope))
-                .doOnError(error ->
-                    logger.warning(String.format("Failed to list role assignments for roleScope - %s", roleScope),
-                        error))
+                .doOnError(error -> logger.warning("Failed to list role assignments for roleScope - {}", roleScope,
+                    error))
                 .onErrorMap(KeyVaultAdministrationUtils::mapThrowableToKeyVaultAdministrationException)
                 .map(KeyVaultAccessControlAsyncClient::transformRoleAssignmentsPagedResponse);
         } catch (RuntimeException e) {

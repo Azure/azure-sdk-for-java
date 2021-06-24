@@ -3,21 +3,21 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/metrics/27e3015f-04fd-44ba-a20b-bc529a0aebae/dimension/query?$skip=20&$maxpagesize=20",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.4 (1.8.0_221; Mac OS X; 10.16)",
-      "x-ms-client-request-id" : "9bb064a6-d649-4a0f-912f-e87263722420",
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.5 (11.0.11; Mac OS X; 11.4)",
+      "x-ms-client-request-id" : "5b34d6e3-929f-4893-acc4-424716a13395",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "x-request-id" : "f2829fae-2a78-44a8-994c-8f56b817f493",
-      "content-length" : "234",
-      "x-envoy-upstream-service-time" : "5133",
+      "x-request-id" : "7b96db95-8f61-4a30-aece-690940ccd108",
+      "content-length" : "217",
+      "x-envoy-upstream-service-time" : "57",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "f2829fae-2a78-44a8-994c-8f56b817f493",
+      "apim-request-id" : "7b96db95-8f61-4a30-aece-690940ccd108",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"value\":[\"Music\",\"Musical Instruments\",\"Office Products\",\"Outdoors\",\"Personal Computers\",\"Shoes Handbags & Sunglasses\",\"Software & Computer Games\",\"Sports\",\"Sports Collectibles\",\"__SUM__\",\"Tools & Home Improvement\"],\"@nextLink\":null}",
-      "Date" : "Mon, 24 May 2021 21:31:39 GMT",
+      "Body" : "{\"value\":[\"Music\",\"Musical Instruments\",\"Office Products\",\"Outdoors\",\"Personal Computers\",\"Shoes Handbags & Sunglasses\",\"Software & Computer Games\",\"Sports\",\"Sports Collectibles\",\"__SUM__\",\"Tools & Home Improvement\"]}",
+      "Date" : "Mon, 21 Jun 2021 23:22:52 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

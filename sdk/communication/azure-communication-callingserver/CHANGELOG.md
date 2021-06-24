@@ -14,6 +14,6 @@ This is a Public Preview version, so breaking changes are possible in subsequent
 - Add and remove participants from the call.
 
 <!-- LINKS -->
-[read_me]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/communication/azure-communication-callingserver/README.md
+[read_me]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/communication/azure-communication-callingserver/README.md
 
 

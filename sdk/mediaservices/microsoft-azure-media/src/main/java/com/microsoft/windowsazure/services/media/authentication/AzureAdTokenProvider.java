@@ -86,7 +86,7 @@ public class AzureAdTokenProvider implements TokenProvider {
             default:
                 throw new NotImplementedException(
                     String.format(
-                        "Token Credential type %1 is not supported.",
+                        "Token Credential type %s is not supported.",
                         this.tokenCredentials.getCredentialType()));
         }
     }

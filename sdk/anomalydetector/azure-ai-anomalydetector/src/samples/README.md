@@ -47,13 +47,13 @@ If you would like to become an active contributor to this project please refer t
 Guidelines][SDK_README_CONTRIBUTING] for more information.
 
 <!-- LINKS -->
-[SDK_README_CONTRIBUTING]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/anomalydetector/azure-ai-anomalydetector/README.md#contributing
-[SDK_README_GETTING_STARTED]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/anomalydetector/azure-ai-anomalydetector/README.md#getting-started
-[SDK_README_TROUBLESHOOTING]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/anomalydetector/azure-ai-anomalydetector/README.md#troubleshooting
-[SDK_README_KEY_CONCEPTS]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/anomalydetector/azure-ai-anomalydetector/README.md#key-concepts
+[SDK_README_CONTRIBUTING]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/anomalydetector/azure-ai-anomalydetector/README.md#contributing
+[SDK_README_GETTING_STARTED]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/anomalydetector/azure-ai-anomalydetector/README.md#getting-started
+[SDK_README_TROUBLESHOOTING]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/anomalydetector/azure-ai-anomalydetector/README.md#troubleshooting
+[SDK_README_KEY_CONCEPTS]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/anomalydetector/azure-ai-anomalydetector/README.md#key-concepts
 [SDK_README_DEPENDENCY]: ../../README.md#include-the-package
-[SDK_README_NEXT_STEPS]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/anomalydetector/azure-ai-anomalydetector/README.md#next-steps
+[SDK_README_NEXT_STEPS]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/anomalydetector/azure-ai-anomalydetector/README.md#next-steps
 
-[detect_anomaly_entire]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/anomalydetector/azure-ai-anomalydetector/src/samples/java/com/azure/ai/anomalydetector/DetectAnomaliesEntireSeries.java
-[detect_anomaly_last]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/anomalydetector/azure-ai-anomalydetector/src/samples/java/com/azure/ai/anomalydetector/DetectAnomaliesLastPoint.java
-[detect_change_point]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/anomalydetector/azure-ai-anomalydetector/src/samples/java/com/azure/ai/anomalydetector/DetectChangePoints.java
+[detect_anomaly_entire]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/anomalydetector/azure-ai-anomalydetector/src/samples/java/com/azure/ai/anomalydetector/DetectAnomaliesEntireSeries.java
+[detect_anomaly_last]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/anomalydetector/azure-ai-anomalydetector/src/samples/java/com/azure/ai/anomalydetector/DetectAnomaliesLastPoint.java
+[detect_change_point]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/anomalydetector/azure-ai-anomalydetector/src/samples/java/com/azure/ai/anomalydetector/DetectChangePoints.java
