@@ -4,16 +4,19 @@
 
 package com.azure.resourcemanager.hybridkubernetes.implementation;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.hybridkubernetes.HybridKubernetesManager;
 import com.azure.resourcemanager.hybridkubernetes.fluent.models.ConnectedClusterInner;
 import com.azure.resourcemanager.hybridkubernetes.models.ConnectedCluster;
 import com.azure.resourcemanager.hybridkubernetes.models.ConnectedClusterIdentity;
 import com.azure.resourcemanager.hybridkubernetes.models.ConnectedClusterPatch;
 import com.azure.resourcemanager.hybridkubernetes.models.ConnectivityStatus;
+import com.azure.resourcemanager.hybridkubernetes.models.CredentialResults;
+import com.azure.resourcemanager.hybridkubernetes.models.ListClusterUserCredentialsProperties;
+import com.azure.resourcemanager.hybridkubernetes.models.PrivateLinkState;
 import com.azure.resourcemanager.hybridkubernetes.models.ProvisioningState;
-import com.azure.resourcemanager.hybridkubernetes.models.SystemData;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.Map;
@@ -22,7 +25,7 @@ public final class ConnectedClusterImpl
     implements ConnectedCluster, ConnectedCluster.Definition, ConnectedCluster.Update {
     private ConnectedClusterInner innerObject;
 
-    private final HybridKubernetesManager serviceManager;
+    private final com.azure.resourcemanager.hybridkubernetes.HybridKubernetesManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -105,6 +108,14 @@ public final class ConnectedClusterImpl
         return this.innerModel().connectivityStatus();
     }
 
+    public PrivateLinkState privateLinkState() {
+        return this.innerModel().privateLinkState();
+    }
+
+    public String privateLinkScopeResourceId() {
+        return this.innerModel().privateLinkScopeResourceId();
+    }
+
     public Region region() {
         return Region.fromName(this.regionName());
     }
@@ -117,7 +128,7 @@ public final class ConnectedClusterImpl
         return this.innerObject;
     }
 
-    private HybridKubernetesManager manager() {
+    private com.azure.resourcemanager.hybridkubernetes.HybridKubernetesManager manager() {
         return this.serviceManager;
     }
 
@@ -150,7 +161,8 @@ public final class ConnectedClusterImpl
         return this;
     }
 
-    ConnectedClusterImpl(String name, HybridKubernetesManager serviceManager) {
+    ConnectedClusterImpl(
+        String name, com.azure.resourcemanager.hybridkubernetes.HybridKubernetesManager serviceManager) {
         this.innerObject = new ConnectedClusterInner();
         this.serviceManager = serviceManager;
         this.clusterName = name;
@@ -166,8 +178,7 @@ public final class ConnectedClusterImpl
             serviceManager
                 .serviceClient()
                 .getConnectedClusters()
-                .updateWithResponse(resourceGroupName, clusterName, updateConnectedClusterPatch, Context.NONE)
-                .getValue();
+                .update(resourceGroupName, clusterName, updateConnectedClusterPatch, Context.NONE);
         return this;
     }
 
@@ -176,12 +187,13 @@ public final class ConnectedClusterImpl
             serviceManager
                 .serviceClient()
                 .getConnectedClusters()
-                .updateWithResponse(resourceGroupName, clusterName, updateConnectedClusterPatch, context)
-                .getValue();
+                .update(resourceGroupName, clusterName, updateConnectedClusterPatch, context);
         return this;
     }
 
-    ConnectedClusterImpl(ConnectedClusterInner innerObject, HybridKubernetesManager serviceManager) {
+    ConnectedClusterImpl(
+        ConnectedClusterInner innerObject,
+        com.azure.resourcemanager.hybridkubernetes.HybridKubernetesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourcegroups");
@@ -206,6 +218,19 @@ public final class ConnectedClusterImpl
                 .getByResourceGroupWithResponse(resourceGroupName, clusterName, context)
                 .getValue();
         return this;
+    }
+
+    public CredentialResults listClusterUserCredentials(ListClusterUserCredentialsProperties properties) {
+        return serviceManager
+            .connectedClusters()
+            .listClusterUserCredentials(resourceGroupName, clusterName, properties);
+    }
+
+    public Response<CredentialResults> listClusterUserCredentialsWithResponse(
+        ListClusterUserCredentialsProperties properties, Context context) {
+        return serviceManager
+            .connectedClusters()
+            .listClusterUserCredentialsWithResponse(resourceGroupName, clusterName, properties, context);
     }
 
     public ConnectedClusterImpl withRegion(Region location) {
@@ -253,9 +278,24 @@ public final class ConnectedClusterImpl
         return this;
     }
 
-    public ConnectedClusterImpl withProperties(Object properties) {
-        this.updateConnectedClusterPatch.withProperties(properties);
-        return this;
+    public ConnectedClusterImpl withPrivateLinkState(PrivateLinkState privateLinkState) {
+        if (isInCreateMode()) {
+            this.innerModel().withPrivateLinkState(privateLinkState);
+            return this;
+        } else {
+            this.updateConnectedClusterPatch.withPrivateLinkState(privateLinkState);
+            return this;
+        }
+    }
+
+    public ConnectedClusterImpl withPrivateLinkScopeResourceId(String privateLinkScopeResourceId) {
+        if (isInCreateMode()) {
+            this.innerModel().withPrivateLinkScopeResourceId(privateLinkScopeResourceId);
+            return this;
+        } else {
+            this.updateConnectedClusterPatch.withPrivateLinkScopeResourceId(privateLinkScopeResourceId);
+            return this;
+        }
     }
 
     private boolean isInCreateMode() {

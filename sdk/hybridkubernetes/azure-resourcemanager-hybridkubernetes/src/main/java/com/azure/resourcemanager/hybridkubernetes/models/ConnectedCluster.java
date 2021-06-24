@@ -4,7 +4,9 @@
 
 package com.azure.resourcemanager.hybridkubernetes.models;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.hybridkubernetes.fluent.models.ConnectedClusterInner;
 import java.time.OffsetDateTime;
@@ -149,6 +151,22 @@ public interface ConnectedCluster {
     ConnectivityStatus connectivityStatus();
 
     /**
+     * Gets the privateLinkState property: Property which describes the state of private link on a connected cluster
+     * resource.
+     *
+     * @return the privateLinkState value.
+     */
+    PrivateLinkState privateLinkState();
+
+    /**
+     * Gets the privateLinkScopeResourceId property: The resource id of the private link scope this connected cluster is
+     * assigned to, if any.
+     *
+     * @return the privateLinkScopeResourceId value.
+     */
+    String privateLinkScopeResourceId();
+
+    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -241,7 +259,9 @@ public interface ConnectedCluster {
             extends DefinitionStages.WithTags,
                 DefinitionStages.WithProvisioningState,
                 DefinitionStages.WithDistribution,
-                DefinitionStages.WithInfrastructure {
+                DefinitionStages.WithInfrastructure,
+                DefinitionStages.WithPrivateLinkState,
+                DefinitionStages.WithPrivateLinkScopeResourceId {
             /**
              * Executes the create request.
              *
@@ -299,6 +319,30 @@ public interface ConnectedCluster {
              */
             WithCreate withInfrastructure(String infrastructure);
         }
+        /** The stage of the ConnectedCluster definition allowing to specify privateLinkState. */
+        interface WithPrivateLinkState {
+            /**
+             * Specifies the privateLinkState property: Property which describes the state of private link on a
+             * connected cluster resource..
+             *
+             * @param privateLinkState Property which describes the state of private link on a connected cluster
+             *     resource.
+             * @return the next definition stage.
+             */
+            WithCreate withPrivateLinkState(PrivateLinkState privateLinkState);
+        }
+        /** The stage of the ConnectedCluster definition allowing to specify privateLinkScopeResourceId. */
+        interface WithPrivateLinkScopeResourceId {
+            /**
+             * Specifies the privateLinkScopeResourceId property: The resource id of the private link scope this
+             * connected cluster is assigned to, if any..
+             *
+             * @param privateLinkScopeResourceId The resource id of the private link scope this connected cluster is
+             *     assigned to, if any.
+             * @return the next definition stage.
+             */
+            WithCreate withPrivateLinkScopeResourceId(String privateLinkScopeResourceId);
+        }
     }
     /**
      * Begins update for the ConnectedCluster resource.
@@ -308,7 +352,8 @@ public interface ConnectedCluster {
     ConnectedCluster.Update update();
 
     /** The template for ConnectedCluster update. */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithProperties {
+    interface Update
+        extends UpdateStages.WithTags, UpdateStages.WithPrivateLinkState, UpdateStages.WithPrivateLinkScopeResourceId {
         /**
          * Executes the update request.
          *
@@ -336,17 +381,29 @@ public interface ConnectedCluster {
              */
             Update withTags(Map<String, String> tags);
         }
-        /** The stage of the ConnectedCluster update allowing to specify properties. */
-        interface WithProperties {
+        /** The stage of the ConnectedCluster update allowing to specify privateLinkState. */
+        interface WithPrivateLinkState {
             /**
-             * Specifies the properties property: Describes the connected cluster resource properties that can be
-             * updated during PATCH operation..
+             * Specifies the privateLinkState property: Property which describes the state of private link on a
+             * connected cluster resource..
              *
-             * @param properties Describes the connected cluster resource properties that can be updated during PATCH
-             *     operation.
+             * @param privateLinkState Property which describes the state of private link on a connected cluster
+             *     resource.
              * @return the next definition stage.
              */
-            Update withProperties(Object properties);
+            Update withPrivateLinkState(PrivateLinkState privateLinkState);
+        }
+        /** The stage of the ConnectedCluster update allowing to specify privateLinkScopeResourceId. */
+        interface WithPrivateLinkScopeResourceId {
+            /**
+             * Specifies the privateLinkScopeResourceId property: The resource id of the private link scope this
+             * connected cluster is assigned to, if any..
+             *
+             * @param privateLinkScopeResourceId The resource id of the private link scope this connected cluster is
+             *     assigned to, if any.
+             * @return the next definition stage.
+             */
+            Update withPrivateLinkScopeResourceId(String privateLinkScopeResourceId);
         }
     }
     /**
@@ -363,4 +420,28 @@ public interface ConnectedCluster {
      * @return the refreshed resource.
      */
     ConnectedCluster refresh(Context context);
+
+    /**
+     * Gets cluster user credentials of the connected cluster with a specified resource group and name.
+     *
+     * @param properties ListClusterUserCredentials properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cluster user credentials of the connected cluster with a specified resource group and name.
+     */
+    CredentialResults listClusterUserCredentials(ListClusterUserCredentialsProperties properties);
+
+    /**
+     * Gets cluster user credentials of the connected cluster with a specified resource group and name.
+     *
+     * @param properties ListClusterUserCredentials properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cluster user credentials of the connected cluster with a specified resource group and name.
+     */
+    Response<CredentialResults> listClusterUserCredentialsWithResponse(
+        ListClusterUserCredentialsProperties properties, Context context);
 }

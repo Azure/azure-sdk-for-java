@@ -14,6 +14,7 @@ import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -35,8 +36,10 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.hybridkubernetes.fluent.ConnectedClustersClient;
 import com.azure.resourcemanager.hybridkubernetes.fluent.models.ConnectedClusterInner;
+import com.azure.resourcemanager.hybridkubernetes.fluent.models.CredentialResultsInner;
 import com.azure.resourcemanager.hybridkubernetes.models.ConnectedClusterList;
 import com.azure.resourcemanager.hybridkubernetes.models.ConnectedClusterPatch;
+import com.azure.resourcemanager.hybridkubernetes.models.ListClusterUserCredentialsProperties;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -89,9 +92,9 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
         @Patch(
             "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Kubernetes"
                 + "/connectedClusters/{clusterName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ConnectedClusterInner>> update(
+        Mono<Response<Flux<ByteBuffer>>> update(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -128,6 +131,22 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("clusterName") String clusterName,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Kubernetes"
+                + "/connectedClusters/{clusterName}/listClusterUserCredentials")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<CredentialResultsInner>> listClusterUserCredentials(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("clusterName") String clusterName,
+            @BodyParam("application/json") ListClusterUserCredentialsProperties properties,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -230,7 +249,7 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
                             connectedCluster,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -458,7 +477,7 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @return represents a connected cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ConnectedClusterInner>> updateWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
         String resourceGroupName, String clusterName, ConnectedClusterPatch connectedClusterPatch) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -499,7 +518,7 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
                             connectedClusterPatch,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -515,7 +534,7 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @return represents a connected cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ConnectedClusterInner>> updateWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
         String resourceGroupName, String clusterName, ConnectedClusterPatch connectedClusterPatch, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -568,17 +587,116 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @return represents a connected cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    private PollerFlux<PollResult<ConnectedClusterInner>, ConnectedClusterInner> beginUpdateAsync(
+        String resourceGroupName, String clusterName, ConnectedClusterPatch connectedClusterPatch) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateWithResponseAsync(resourceGroupName, clusterName, connectedClusterPatch);
+        return this
+            .client
+            .<ConnectedClusterInner, ConnectedClusterInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ConnectedClusterInner.class,
+                ConnectedClusterInner.class,
+                Context.NONE);
+    }
+
+    /**
+     * API to update certain properties of the connected cluster resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kubernetes cluster on which get is called.
+     * @param connectedClusterPatch Parameters supplied to update Connected Cluster.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a connected cluster.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PollerFlux<PollResult<ConnectedClusterInner>, ConnectedClusterInner> beginUpdateAsync(
+        String resourceGroupName, String clusterName, ConnectedClusterPatch connectedClusterPatch, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateWithResponseAsync(resourceGroupName, clusterName, connectedClusterPatch, context);
+        return this
+            .client
+            .<ConnectedClusterInner, ConnectedClusterInner>getLroResult(
+                mono, this.client.getHttpPipeline(), ConnectedClusterInner.class, ConnectedClusterInner.class, context);
+    }
+
+    /**
+     * API to update certain properties of the connected cluster resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kubernetes cluster on which get is called.
+     * @param connectedClusterPatch Parameters supplied to update Connected Cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a connected cluster.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<ConnectedClusterInner>, ConnectedClusterInner> beginUpdate(
+        String resourceGroupName, String clusterName, ConnectedClusterPatch connectedClusterPatch) {
+        return beginUpdateAsync(resourceGroupName, clusterName, connectedClusterPatch).getSyncPoller();
+    }
+
+    /**
+     * API to update certain properties of the connected cluster resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kubernetes cluster on which get is called.
+     * @param connectedClusterPatch Parameters supplied to update Connected Cluster.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a connected cluster.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<ConnectedClusterInner>, ConnectedClusterInner> beginUpdate(
+        String resourceGroupName, String clusterName, ConnectedClusterPatch connectedClusterPatch, Context context) {
+        return beginUpdateAsync(resourceGroupName, clusterName, connectedClusterPatch, context).getSyncPoller();
+    }
+
+    /**
+     * API to update certain properties of the connected cluster resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kubernetes cluster on which get is called.
+     * @param connectedClusterPatch Parameters supplied to update Connected Cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a connected cluster.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ConnectedClusterInner> updateAsync(
         String resourceGroupName, String clusterName, ConnectedClusterPatch connectedClusterPatch) {
-        return updateWithResponseAsync(resourceGroupName, clusterName, connectedClusterPatch)
-            .flatMap(
-                (Response<ConnectedClusterInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return beginUpdateAsync(resourceGroupName, clusterName, connectedClusterPatch)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * API to update certain properties of the connected cluster resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kubernetes cluster on which get is called.
+     * @param connectedClusterPatch Parameters supplied to update Connected Cluster.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a connected cluster.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<ConnectedClusterInner> updateAsync(
+        String resourceGroupName, String clusterName, ConnectedClusterPatch connectedClusterPatch, Context context) {
+        return beginUpdateAsync(resourceGroupName, clusterName, connectedClusterPatch, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -611,9 +729,9 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @return represents a connected cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ConnectedClusterInner> updateWithResponse(
+    public ConnectedClusterInner update(
         String resourceGroupName, String clusterName, ConnectedClusterPatch connectedClusterPatch, Context context) {
-        return updateWithResponseAsync(resourceGroupName, clusterName, connectedClusterPatch, context).block();
+        return updateAsync(resourceGroupName, clusterName, connectedClusterPatch, context).block();
     }
 
     /**
@@ -662,7 +780,7 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
                             clusterName,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -814,7 +932,7 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
                             clusterName,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -997,6 +1115,180 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
     }
 
     /**
+     * Gets cluster user credentials of the connected cluster with a specified resource group and name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kubernetes cluster on which get is called.
+     * @param properties ListClusterUserCredentials properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cluster user credentials of the connected cluster with a specified resource group and name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<CredentialResultsInner>> listClusterUserCredentialsWithResponseAsync(
+        String resourceGroupName, String clusterName, ListClusterUserCredentialsProperties properties) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (properties == null) {
+            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
+        } else {
+            properties.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listClusterUserCredentials(
+                            this.client.getEndpoint(),
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            clusterName,
+                            properties,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Gets cluster user credentials of the connected cluster with a specified resource group and name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kubernetes cluster on which get is called.
+     * @param properties ListClusterUserCredentials properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cluster user credentials of the connected cluster with a specified resource group and name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<CredentialResultsInner>> listClusterUserCredentialsWithResponseAsync(
+        String resourceGroupName,
+        String clusterName,
+        ListClusterUserCredentialsProperties properties,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (properties == null) {
+            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
+        } else {
+            properties.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listClusterUserCredentials(
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                clusterName,
+                properties,
+                accept,
+                context);
+    }
+
+    /**
+     * Gets cluster user credentials of the connected cluster with a specified resource group and name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kubernetes cluster on which get is called.
+     * @param properties ListClusterUserCredentials properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cluster user credentials of the connected cluster with a specified resource group and name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<CredentialResultsInner> listClusterUserCredentialsAsync(
+        String resourceGroupName, String clusterName, ListClusterUserCredentialsProperties properties) {
+        return listClusterUserCredentialsWithResponseAsync(resourceGroupName, clusterName, properties)
+            .flatMap(
+                (Response<CredentialResultsInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Gets cluster user credentials of the connected cluster with a specified resource group and name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kubernetes cluster on which get is called.
+     * @param properties ListClusterUserCredentials properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cluster user credentials of the connected cluster with a specified resource group and name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CredentialResultsInner listClusterUserCredentials(
+        String resourceGroupName, String clusterName, ListClusterUserCredentialsProperties properties) {
+        return listClusterUserCredentialsAsync(resourceGroupName, clusterName, properties).block();
+    }
+
+    /**
+     * Gets cluster user credentials of the connected cluster with a specified resource group and name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kubernetes cluster on which get is called.
+     * @param properties ListClusterUserCredentials properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cluster user credentials of the connected cluster with a specified resource group and name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<CredentialResultsInner> listClusterUserCredentialsWithResponse(
+        String resourceGroupName,
+        String clusterName,
+        ListClusterUserCredentialsProperties properties,
+        Context context) {
+        return listClusterUserCredentialsWithResponseAsync(resourceGroupName, clusterName, properties, context).block();
+    }
+
+    /**
      * API to enumerate registered connected K8s clusters under a Resource Group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -1044,7 +1336,7 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1200,7 +1492,7 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1333,7 +1625,7 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1406,7 +1698,7 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

@@ -5,14 +5,16 @@
 package com.azure.resourcemanager.hybridkubernetes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Object containing updates for patch operations. */
+@JsonFlatten
 @Fluent
-public final class ConnectedClusterPatch {
+public class ConnectedClusterPatch {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectedClusterPatch.class);
 
     /*
@@ -22,11 +24,18 @@ public final class ConnectedClusterPatch {
     private Map<String, String> tags;
 
     /*
-     * Describes the connected cluster resource properties that can be updated
-     * during PATCH operation.
+     * Property which describes the state of private link on a connected
+     * cluster resource.
      */
-    @JsonProperty(value = "properties")
-    private Object properties;
+    @JsonProperty(value = "properties.privateLinkState")
+    private PrivateLinkState privateLinkState;
+
+    /*
+     * The resource id of the private link scope this connected cluster is
+     * assigned to, if any.
+     */
+    @JsonProperty(value = "properties.privateLinkScopeResourceId")
+    private String privateLinkScopeResourceId;
 
     /**
      * Get the tags property: Resource tags.
@@ -49,24 +58,46 @@ public final class ConnectedClusterPatch {
     }
 
     /**
-     * Get the properties property: Describes the connected cluster resource properties that can be updated during PATCH
-     * operation.
+     * Get the privateLinkState property: Property which describes the state of private link on a connected cluster
+     * resource.
      *
-     * @return the properties value.
+     * @return the privateLinkState value.
      */
-    public Object properties() {
-        return this.properties;
+    public PrivateLinkState privateLinkState() {
+        return this.privateLinkState;
     }
 
     /**
-     * Set the properties property: Describes the connected cluster resource properties that can be updated during PATCH
-     * operation.
+     * Set the privateLinkState property: Property which describes the state of private link on a connected cluster
+     * resource.
      *
-     * @param properties the properties value to set.
+     * @param privateLinkState the privateLinkState value to set.
      * @return the ConnectedClusterPatch object itself.
      */
-    public ConnectedClusterPatch withProperties(Object properties) {
-        this.properties = properties;
+    public ConnectedClusterPatch withPrivateLinkState(PrivateLinkState privateLinkState) {
+        this.privateLinkState = privateLinkState;
+        return this;
+    }
+
+    /**
+     * Get the privateLinkScopeResourceId property: The resource id of the private link scope this connected cluster is
+     * assigned to, if any.
+     *
+     * @return the privateLinkScopeResourceId value.
+     */
+    public String privateLinkScopeResourceId() {
+        return this.privateLinkScopeResourceId;
+    }
+
+    /**
+     * Set the privateLinkScopeResourceId property: The resource id of the private link scope this connected cluster is
+     * assigned to, if any.
+     *
+     * @param privateLinkScopeResourceId the privateLinkScopeResourceId value to set.
+     * @return the ConnectedClusterPatch object itself.
+     */
+    public ConnectedClusterPatch withPrivateLinkScopeResourceId(String privateLinkScopeResourceId) {
+        this.privateLinkScopeResourceId = privateLinkScopeResourceId;
         return this;
     }
 

@@ -7,7 +7,6 @@ package com.azure.resourcemanager.hybridkubernetes.implementation;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.hybridkubernetes.HybridKubernetesManager;
 import com.azure.resourcemanager.hybridkubernetes.fluent.OperationsClient;
 import com.azure.resourcemanager.hybridkubernetes.fluent.models.OperationInner;
 import com.azure.resourcemanager.hybridkubernetes.models.Operation;
@@ -19,9 +18,11 @@ public final class OperationsImpl implements Operations {
 
     private final OperationsClient innerClient;
 
-    private final HybridKubernetesManager serviceManager;
+    private final com.azure.resourcemanager.hybridkubernetes.HybridKubernetesManager serviceManager;
 
-    public OperationsImpl(OperationsClient innerClient, HybridKubernetesManager serviceManager) {
+    public OperationsImpl(
+        OperationsClient innerClient,
+        com.azure.resourcemanager.hybridkubernetes.HybridKubernetesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -40,7 +41,7 @@ public final class OperationsImpl implements Operations {
         return this.innerClient;
     }
 
-    private HybridKubernetesManager manager() {
+    private com.azure.resourcemanager.hybridkubernetes.HybridKubernetesManager manager() {
         return this.serviceManager;
     }
 }

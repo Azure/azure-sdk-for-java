@@ -7,11 +7,12 @@ package com.azure.resourcemanager.hybridkubernetes.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hybridkubernetes.models.ConnectedClusterIdentity;
 import com.azure.resourcemanager.hybridkubernetes.models.ConnectivityStatus;
+import com.azure.resourcemanager.hybridkubernetes.models.PrivateLinkState;
 import com.azure.resourcemanager.hybridkubernetes.models.ProvisioningState;
-import com.azure.resourcemanager.hybridkubernetes.models.SystemData;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -111,6 +112,20 @@ public class ConnectedClusterInner extends Resource {
      */
     @JsonProperty(value = "properties.connectivityStatus", access = JsonProperty.Access.WRITE_ONLY)
     private ConnectivityStatus connectivityStatus;
+
+    /*
+     * Property which describes the state of private link on a connected
+     * cluster resource.
+     */
+    @JsonProperty(value = "properties.privateLinkState")
+    private PrivateLinkState privateLinkState;
+
+    /*
+     * The resource id of the private link scope this connected cluster is
+     * assigned to, if any.
+     */
+    @JsonProperty(value = "properties.privateLinkScopeResourceId")
+    private String privateLinkScopeResourceId;
 
     /**
      * Get the identity property: The identity of the connected cluster.
@@ -298,6 +313,50 @@ public class ConnectedClusterInner extends Resource {
         return this.connectivityStatus;
     }
 
+    /**
+     * Get the privateLinkState property: Property which describes the state of private link on a connected cluster
+     * resource.
+     *
+     * @return the privateLinkState value.
+     */
+    public PrivateLinkState privateLinkState() {
+        return this.privateLinkState;
+    }
+
+    /**
+     * Set the privateLinkState property: Property which describes the state of private link on a connected cluster
+     * resource.
+     *
+     * @param privateLinkState the privateLinkState value to set.
+     * @return the ConnectedClusterInner object itself.
+     */
+    public ConnectedClusterInner withPrivateLinkState(PrivateLinkState privateLinkState) {
+        this.privateLinkState = privateLinkState;
+        return this;
+    }
+
+    /**
+     * Get the privateLinkScopeResourceId property: The resource id of the private link scope this connected cluster is
+     * assigned to, if any.
+     *
+     * @return the privateLinkScopeResourceId value.
+     */
+    public String privateLinkScopeResourceId() {
+        return this.privateLinkScopeResourceId;
+    }
+
+    /**
+     * Set the privateLinkScopeResourceId property: The resource id of the private link scope this connected cluster is
+     * assigned to, if any.
+     *
+     * @param privateLinkScopeResourceId the privateLinkScopeResourceId value to set.
+     * @return the ConnectedClusterInner object itself.
+     */
+    public ConnectedClusterInner withPrivateLinkScopeResourceId(String privateLinkScopeResourceId) {
+        this.privateLinkScopeResourceId = privateLinkScopeResourceId;
+        return this;
+    }
+
     /** {@inheritDoc} */
     @Override
     public ConnectedClusterInner withLocation(String location) {
@@ -324,9 +383,6 @@ public class ConnectedClusterInner extends Resource {
                     new IllegalArgumentException("Missing required property identity in model ConnectedClusterInner"));
         } else {
             identity().validate();
-        }
-        if (systemData() != null) {
-            systemData().validate();
         }
         if (agentPublicKeyCertificate() == null) {
             throw logger
