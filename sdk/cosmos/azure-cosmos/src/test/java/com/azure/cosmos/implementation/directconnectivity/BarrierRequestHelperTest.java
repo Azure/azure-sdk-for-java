@@ -155,12 +155,11 @@ public class BarrierRequestHelperTest {
     }
 
     @Test(groups = "direct")
-    public void barrierAuthorizationTokenProvider() throws URISyntaxException {
+    public void barrierWithAadAuthorizationTokenProviderType() throws URISyntaxException {
 
         TokenCredential tokenCredential = new AadSimpleTokenCredential(TestConfigurations.MASTER_KEY);
 
-        IAuthorizationTokenProvider authTokenProvider = (RxDocumentClientImpl)
-            new RxDocumentClientImpl(new URI(TestConfigurations.HOST),
+        IAuthorizationTokenProvider authTokenProvider = new RxDocumentClientImpl(new URI(TestConfigurations.HOST),
                 null,
                 null,
                 null,
