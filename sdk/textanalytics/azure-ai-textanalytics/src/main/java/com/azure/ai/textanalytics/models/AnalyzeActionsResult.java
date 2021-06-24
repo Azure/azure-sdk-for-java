@@ -4,11 +4,13 @@
 package com.azure.ai.textanalytics.models;
 
 import com.azure.ai.textanalytics.implementation.AnalyzeActionsResultPropertiesHelper;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 /**
  * The {@link AnalyzeActionsResult} model.
  */
+@Immutable
 public final class AnalyzeActionsResult {
     private IterableStream<RecognizeEntitiesActionResult> recognizeEntitiesResults;
     private IterableStream<RecognizeLinkedEntitiesActionResult> recognizeLinkedEntitiesResults;

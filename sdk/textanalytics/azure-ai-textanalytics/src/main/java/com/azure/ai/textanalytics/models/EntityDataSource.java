@@ -5,10 +5,12 @@ package com.azure.ai.textanalytics.models;
 
 
 import com.azure.ai.textanalytics.implementation.EntityDataSourcePropertiesHelper;
+import com.azure.core.annotation.Immutable;
 
 /**
  * The {@link EntityDataSource} model.
  */
+@Immutable
 public final class EntityDataSource {
     /*
      * Entity id in the given source catalog.

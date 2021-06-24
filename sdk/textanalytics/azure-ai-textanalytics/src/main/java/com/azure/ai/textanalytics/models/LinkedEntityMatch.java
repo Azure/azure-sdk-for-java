@@ -4,10 +4,12 @@
 package com.azure.ai.textanalytics.models;
 
 import com.azure.ai.textanalytics.implementation.LinkedEntityMatchPropertiesHelper;
+import com.azure.core.annotation.Immutable;
 
 /**
  * The {@link LinkedEntityMatch} model.
  */
+@Immutable
 public final class LinkedEntityMatch {
     private final String text;
     private final double confidenceScore;
