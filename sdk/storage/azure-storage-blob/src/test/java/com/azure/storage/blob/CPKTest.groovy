@@ -309,4 +309,12 @@ class CPKTest extends APISpec {
         newCpkBlobClient instanceof BlobClient
         newCpkBlobClient.getCustomerProvidedKey() != cpkBlobClient.getCustomerProvidedKey()
     }
+
+    def "Exists without CPK"() {
+        setup:
+        def clientWithoutCpk = cpkExistingBlob.getCustomerProvidedKeyClient(null)
+
+        expect:
+        clientWithoutCpk.exists()
+    }
 }
