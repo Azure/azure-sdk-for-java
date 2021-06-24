@@ -385,6 +385,42 @@ class DirectoryAPITests extends APISpec {
     def "List files and directories args"() {
         given:
         primaryDirectoryClient.create()
+        def nameList = new LinkedList()
+        def dirPrefix = namer.getRandomName(60)
+        for (int i = 0; i < 2; i++) {
+            def subDirClient = primaryDirectoryClient.getSubdirectoryClient(dirPrefix + i)
+            subDirClient.create()
+            for (int j = 0; j < 2; j++) {
+                def num = i * 2 + j + 3
+                subDirClient.createFile(dirPrefix + num, 1024)
+            }
+        }
+        primaryDirectoryClient.createFile(dirPrefix + 2, 1024)
+        for (int i = 0; i < 3; i++) {
+            nameList.add(dirPrefix + i)
+        }
+
+        when:
+        def fileRefIter = primaryDirectoryClient.listFilesAndDirectories(namer.getResourcePrefix() + extraPrefix, maxResults, null, null).iterator()
+
+        then:
+        for (int i = 0; i < numOfResults; i++) {
+            Objects.equals(nameList.pop(), fileRefIter.next().getName())
+        }
+        !fileRefIter.hasNext()
+
+        where:
+        extraPrefix   | maxResults | numOfResults
+        ""            | null       | 3
+        ""            | 1          | 3
+        "noOp"        | 3          | 0
+    }
+
+    @Unroll
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2020_10_02")
+    def "List files and directories extended info args"() {
+        given:
+        primaryDirectoryClient.create()
         def nameList = [] as List<String>
         def dirPrefix = namer.getRandomName(60)
         for (int i = 0; i < 2; i++) {
@@ -402,9 +438,8 @@ class DirectoryAPITests extends APISpec {
 
         when:
         def options = new ShareListFilesAndDirectoriesOptions()
-            .setPrefix(namer.getResourcePrefix() + extraPrefix)
-            .setMaxResultsPerPage(maxResults)
-            .setIncludeExtendedInfo(includeExtendedInfo) // set FIRST since subsequent can autoset this one
+            .setPrefix(namer.getResourcePrefix())
+            .setIncludeExtendedInfo(true)
             .setIncludeTimestamps(timestamps)
             .setIncludeETag(etag)
             .setIncludeAttributes(attributes)
@@ -412,25 +447,16 @@ class DirectoryAPITests extends APISpec {
         def returnedFileList = primaryDirectoryClient.listFilesAndDirectories(options, null, null).collect()
 
         then:
-        options.includeExtendedInfo() == includeExtendedInfoIsTrue
-        if (expectingResults) {
-            assert nameList == returnedFileList*.getName()
-        }
-        else {
-            assert returnedFileList.size() == 0
-        }
+        nameList == returnedFileList*.getName()
 
         where:
-        extraPrefix | maxResults | timestamps | etag  | attributes | permissionKey | includeExtendedInfo || includeExtendedInfoIsTrue | expectingResults
-        ""          | null       | false      | false | false      | false         | null                || null                      | true
-        ""          | 1          | false      | false | false      | false         | null                || null                      | true
-        "noOp"      | 3          | false      | false | false      | false         | null                || null                      | false
-        ""          | null       | true       | false | false      | false         | null                || true                      | true
-        ""          | null       | false      | true  | false      | false         | null                || true                      | true
-        ""          | null       | false      | false | true       | false         | null                || true                      | true
-        ""          | null       | false      | false | false      | true          | null                || true                      | true
-        ""          | null       | true       | true  | true       | true          | null                || true                      | true
-        ""          | null       | false      | false | false      | false         | true                || true                      | true
+        timestamps | etag  | attributes | permissionKey
+        false      | false | false      | false
+        true       | false | false      | false
+        false      | true  | false      | false
+        false      | false | true       | false
+        false      | false | false      | true
+        true       | true  | true       | true
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2020_10_02")

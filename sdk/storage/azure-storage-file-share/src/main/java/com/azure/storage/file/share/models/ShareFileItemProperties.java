@@ -8,73 +8,35 @@ import java.time.OffsetDateTime;
 /**
  * Share item properties for items on a listing operation.
  */
-public class ShareFileItemProperties {
-    private final OffsetDateTime createdOn;
-    private final OffsetDateTime lastAccessedOn;
-    private final OffsetDateTime lastWrittenOn;
-    private final OffsetDateTime changedOn;
-    private final OffsetDateTime lastModified;
-    private final String eTag;
-
-    /**
-     * Creates an instance of share item properties.
-     *
-     * @param createdOn Datetime the item was created.
-     * @param lastAccessedOn Datetime the item was last accessed.
-     * @param lastWrittenOn Datetime the item was last written.
-     * @param changedOn Datetime the item was last changed.
-     * @param lastModified Datetime the item was last modified.
-     * @param eTag ETag of the item.
-     */
-    public ShareFileItemProperties(OffsetDateTime createdOn, OffsetDateTime lastAccessedOn,
-        OffsetDateTime lastWrittenOn, OffsetDateTime changedOn, OffsetDateTime lastModified, String eTag) {
-        this.createdOn = createdOn;
-        this.lastAccessedOn = lastAccessedOn;
-        this.lastWrittenOn = lastWrittenOn;
-        this.changedOn = changedOn;
-        this.lastModified = lastModified;
-        this.eTag = eTag;
-    }
+public interface ShareFileItemProperties {
 
     /**
      * @return Datetime this item was created.
      */
-    public OffsetDateTime getCreatedOn() {
-        return createdOn;
-    }
+    OffsetDateTime getCreatedOn();
 
     /**
      * @return Datetime this item was last accessed.
      */
-    public OffsetDateTime getLastAccessedOn() {
-        return lastAccessedOn;
-    }
+    OffsetDateTime getLastAccessedOn();
 
     /**
      * @return Datetime this item was last written.
      */
-    public OffsetDateTime getLastWrittenOn() {
-        return lastWrittenOn;
-    }
+    OffsetDateTime getLastWrittenOn();
 
     /**
      * @return Datetime this item was last changed.
      */
-    public OffsetDateTime getChangedOn() {
-        return changedOn;
-    }
+    OffsetDateTime getChangedOn();
 
     /**
      * @return Datetime this item was last modified.
      */
-    public OffsetDateTime getLastModified() {
-        return lastModified;
-    }
+    OffsetDateTime getLastModified();
 
     /**
      * @return ETag of this item.
      */
-    public String getETag() {
-        return eTag;
-    }
+    String getETag();
 }
