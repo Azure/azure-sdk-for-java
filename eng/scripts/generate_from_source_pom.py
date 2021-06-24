@@ -25,7 +25,7 @@ import json
 import xml.etree.ElementTree as ET
 
 # Only azure-client-sdk-parent and spring-boot-starter-parent are valid parent POMs for Track 2 libraries.
-valid_parents = ['azure-client-sdk-parent', 'spring-boot-starter-parent', 'azure-spring-boot-test-parent']
+valid_parents = ['azure-client-sdk-parent', 'spring-boot-starter-parent', 'azure-spring-boot-test-parent', 'azure-storage-parent']
 
 # From this file get to the root path of the repo.
 root_path = os.path.normpath(os.path.abspath(__file__) + '/../../../')
