@@ -9,6 +9,7 @@ import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.Configuration;
 import com.azure.identity.AuthenticationRecord;
 import com.azure.identity.AzureAuthorityHosts;
+import com.azure.identity.RegionalAuthority;
 import com.azure.identity.TokenCachePersistenceOptions;
 import com.azure.identity.implementation.util.ValidationUtil;
 
@@ -22,6 +23,7 @@ import java.util.function.Function;
  */
 public final class IdentityClientOptions {
     private static final int MAX_RETRY_DEFAULT_LIMIT = 3;
+    private static final String AZURE_REGIONAL_AUTHORITY_NAME = "AZURE_REGIONAL_AUTHORITY_NAME";
 
     private String authorityHost;
     private int maxRetry;
@@ -37,6 +39,7 @@ public final class IdentityClientOptions {
     private AuthenticationRecord authenticationRecord;
     private TokenCachePersistenceOptions tokenCachePersistenceOptions;
     private boolean cp1Disabled;
+    private RegionalAuthority regionalAuthority;
 
     /**
      * Creates an instance of IdentityClientOptions with default settings.
@@ -49,6 +52,7 @@ public final class IdentityClientOptions {
         ValidationUtil.validateAuthHost(getClass().getSimpleName(), authorityHost);
         maxRetry = MAX_RETRY_DEFAULT_LIMIT;
         retryTimeout = i -> Duration.ofSeconds((long) Math.pow(2, i.getSeconds() - 1));
+        regionalAuthority = RegionalAuthority.fromString(configuration.get(AZURE_REGIONAL_AUTHORITY_NAME));
     }
 
     /**
@@ -304,5 +308,24 @@ public final class IdentityClientOptions {
      */
     public boolean isCp1Disabled() {
         return this.cp1Disabled;
+    }
+
+    /**
+     * Specifies either the specific regional authority, or use {@link RegionalAuthority#AUTO_DISCOVER_REGION} to attempt to auto-detect the region.
+     *
+     * @param regionalAuthority the regional authority
+     * @return the updated identity client options
+     */
+    public IdentityClientOptions setRegionalAuthority(RegionalAuthority regionalAuthority) {
+        this.regionalAuthority = regionalAuthority;
+        return this;
+    }
+
+    /**
+     * Gets the regional authority, or null if regional authority should not be used.
+     * @return the regional authority value if specified
+     */
+    public RegionalAuthority getRegionalAuthority() {
+        return regionalAuthority;
     }
 }

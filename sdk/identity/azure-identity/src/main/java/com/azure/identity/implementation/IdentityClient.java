@@ -22,6 +22,7 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.identity.CredentialUnavailableException;
 import com.azure.identity.DeviceCodeInfo;
+import com.azure.identity.RegionalAuthority;
 import com.azure.identity.TokenCachePersistenceOptions;
 import com.azure.identity.implementation.util.CertificateUtil;
 import com.azure.identity.implementation.util.IdentitySslUtil;
@@ -237,6 +238,13 @@ public class IdentityClient {
                 } catch (Throwable t) {
                     return  Mono.error(logger.logExceptionAsError(new ClientAuthenticationException(
                         "Shared token cache is unavailable in this environment.", null, t)));
+                }
+            }
+            if (options.getRegionalAuthority() != null) {
+                if (options.getRegionalAuthority() == RegionalAuthority.AUTO_DISCOVER_REGION) {
+                    applicationBuilder.autoDetectRegion(true);
+                } else {
+                    applicationBuilder.azureRegion(options.getRegionalAuthority().toString());
                 }
             }
             ConfidentialClientApplication confidentialClientApplication = applicationBuilder.build();

@@ -3,6 +3,7 @@
 
 package com.azure.identity;
 
+import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.util.ValidationUtil;
 
 import java.util.HashMap;
@@ -59,6 +60,19 @@ public class ClientSecretCredentialBuilder extends AadCredentialBuilderBase<Clie
     public ClientSecretCredentialBuilder tokenCachePersistenceOptions(TokenCachePersistenceOptions
                                                                                 tokenCachePersistenceOptions) {
         this.identityClientOptions.setTokenCacheOptions(tokenCachePersistenceOptions);
+        return this;
+    }
+
+    /**
+     * Specifies either the specific regional authority, or use {@link RegionalAuthority#AUTO_DISCOVER_REGION} to
+     * attempt to auto-detect the region. If unset, a regional authority will not be used. This argument should be used
+     * only by applications deployed to Azure VMs.
+     *
+     * @param regionalAuthority the regional authority
+     * @return An updated instance of this builder with the regional authority configured.
+     */
+    public ClientSecretCredentialBuilder regionalAuthority(RegionalAuthority regionalAuthority) {
+        this.identityClientOptions.setRegionalAuthority(regionalAuthority);
         return this;
     }
 
