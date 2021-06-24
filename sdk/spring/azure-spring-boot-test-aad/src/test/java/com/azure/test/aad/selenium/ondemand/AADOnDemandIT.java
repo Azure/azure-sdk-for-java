@@ -44,9 +44,12 @@ public class AADOnDemandIT {
         aadSeleniumITHelper.logIn();
 
         String httpResponse = aadSeleniumITHelper.httpGet("api/azure");
+        LOGGER.info("armClientUrl = {}", armClientUrl);
+        LOGGER.info("api/azure response = {}", httpResponse);
         Assertions.assertTrue(httpResponse.contains("azure"));
 
         String incrementalConsentUrl = aadSeleniumITHelper.httpGetWithIncrementalConsent("api/arm");
+        LOGGER.info("incrementalConsentUrl = {}", incrementalConsentUrl);
         Assertions.assertTrue(incrementalConsentUrl.contains(armClientScope));
 
         httpResponse = aadSeleniumITHelper.httpGet("api/arm");

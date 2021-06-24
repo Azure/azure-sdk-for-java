@@ -105,6 +105,7 @@ public class AADSeleniumITHelper extends SeleniumITHelper {
 
         String oauth2AuthorizationUrlFraction = String.format(AzureCloudUrls.getBaseUrl(AZURE_CLOUD_TYPE)
             + "%s/oauth2/v2.0/" + "authorize?", AAD_TENANT_ID_1);
+        LOGGER.info("oauth2AuthorizationUrlFraction = {}", oauth2AuthorizationUrlFraction);
         wait.until(ExpectedConditions.urlContains(oauth2AuthorizationUrlFraction));
 
         String onDemandAuthorizationUrl = driver.getCurrentUrl();
