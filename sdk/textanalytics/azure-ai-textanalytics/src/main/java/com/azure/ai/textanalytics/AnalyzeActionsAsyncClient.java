@@ -30,7 +30,6 @@ import com.azure.ai.textanalytics.implementation.models.PiiResult;
 import com.azure.ai.textanalytics.implementation.models.PiiTask;
 import com.azure.ai.textanalytics.implementation.models.PiiTaskParameters;
 import com.azure.ai.textanalytics.implementation.models.PiiTaskParametersDomain;
-import com.azure.ai.textanalytics.implementation.models.RequestStatistics;
 import com.azure.ai.textanalytics.implementation.models.SentimentAnalysisTask;
 import com.azure.ai.textanalytics.implementation.models.SentimentAnalysisTaskParameters;
 import com.azure.ai.textanalytics.implementation.models.SentimentResponse;
@@ -53,7 +52,6 @@ import com.azure.ai.textanalytics.models.RecognizePiiEntitiesActionResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsActionResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextAnalyticsErrorCode;
-import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
@@ -498,25 +496,15 @@ class AnalyzeActionsAsyncClient {
         }
 
         final AnalyzeActionsResult analyzeActionsResult = new AnalyzeActionsResult();
-        final RequestStatistics requestStatistics = analyzeJobState.getStatistics();
-        TextDocumentBatchStatistics batchStatistics = null;
-        if (requestStatistics != null) {
-            batchStatistics = new TextDocumentBatchStatistics(
-                requestStatistics.getDocumentsCount(), requestStatistics.getErroneousDocumentsCount(),
-                requestStatistics.getValidDocumentsCount(), requestStatistics.getTransactionsCount()
-            );
-        }
-
-        AnalyzeActionsResultPropertiesHelper.setStatistics(analyzeActionsResult, batchStatistics);
-        AnalyzeActionsResultPropertiesHelper.setRecognizeEntitiesActionResults(analyzeActionsResult,
+        AnalyzeActionsResultPropertiesHelper.setRecognizeEntitiesResults(analyzeActionsResult,
             IterableStream.of(recognizeEntitiesActionResults));
-        AnalyzeActionsResultPropertiesHelper.setRecognizePiiEntitiesActionResults(analyzeActionsResult,
+        AnalyzeActionsResultPropertiesHelper.setRecognizePiiEntitiesResults(analyzeActionsResult,
             IterableStream.of(recognizePiiEntitiesActionResults));
-        AnalyzeActionsResultPropertiesHelper.setExtractKeyPhrasesActionResults(analyzeActionsResult,
+        AnalyzeActionsResultPropertiesHelper.setExtractKeyPhrasesResults(analyzeActionsResult,
             IterableStream.of(extractKeyPhrasesActionResults));
-        AnalyzeActionsResultPropertiesHelper.setRecognizeLinkedEntitiesActionResults(analyzeActionsResult,
+        AnalyzeActionsResultPropertiesHelper.setRecognizeLinkedEntitiesResults(analyzeActionsResult,
             IterableStream.of(recognizeLinkedEntitiesActionResults));
-        AnalyzeActionsResultPropertiesHelper.setAnalyzeSentimentActionResults(analyzeActionsResult,
+        AnalyzeActionsResultPropertiesHelper.setAnalyzeSentimentResults(analyzeActionsResult,
             IterableStream.of(analyzeSentimentActionResults));
         return analyzeActionsResult;
     }
