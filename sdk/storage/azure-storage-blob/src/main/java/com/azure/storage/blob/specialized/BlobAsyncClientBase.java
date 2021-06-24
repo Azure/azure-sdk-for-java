@@ -2256,7 +2256,8 @@ public class BlobAsyncClientBase {
         ModelHelper.validateConditionsNotPresent(finalRequestConditions,
             EnumSet.of(BlobRequestConditionProperty.LEASE_ID, BlobRequestConditionProperty.TAGS_CONDITIONS,
                 BlobRequestConditionProperty.IF_MATCH, BlobRequestConditionProperty.IF_NONE_MATCH,
-                BlobRequestConditionProperty.IF_MODIFIED_SINCE));
+                BlobRequestConditionProperty.IF_MODIFIED_SINCE), "setImmutabilityPolicy(WithResponse)",
+            "requestConditions");
 
         return this.azureBlobStorage.getBlobs().setImmutabilityPolicyWithResponseAsync(containerName, blobName, null,
             null, finalRequestConditions.getIfUnmodifiedSince(), finalImmutabilityPolicy.getExpiryTime(),

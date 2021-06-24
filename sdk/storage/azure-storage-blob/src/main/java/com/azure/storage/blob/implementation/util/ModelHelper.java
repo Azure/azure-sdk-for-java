@@ -504,37 +504,40 @@ public class ModelHelper {
     }
 
     public static void validateConditionsNotPresent(BlobRequestConditions requestConditions,
-        EnumSet<BlobRequestConditionProperty> invalidConditions) {
+        EnumSet<BlobRequestConditionProperty> invalidConditions, String operationName, String parameterName) {
         if (requestConditions == null) {
             return;
         }
+        List<String> invalidConditionsFound = new ArrayList<>();
         if (invalidConditions.contains(BlobRequestConditionProperty.LEASE_ID)
             && requestConditions.getLeaseId() != null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'leaseId' is not applicable to this API."));
+            invalidConditionsFound.add(BlobRequestConditionProperty.LEASE_ID.toString());
         }
         if (invalidConditions.contains(BlobRequestConditionProperty.TAGS_CONDITIONS)
             && requestConditions.getTagsConditions() != null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'tagsConditions' is not applicable to "
-                + "this API."));
+            invalidConditionsFound.add(BlobRequestConditionProperty.TAGS_CONDITIONS.toString());
         }
         if (invalidConditions.contains(BlobRequestConditionProperty.IF_MODIFIED_SINCE)
             && requestConditions.getIfModifiedSince() != null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'ifModifiedSince' is not applicable to "
-                + "this API."));
+            invalidConditionsFound.add(BlobRequestConditionProperty.IF_MODIFIED_SINCE.toString());
         }
         if (invalidConditions.contains(BlobRequestConditionProperty.IF_UNMODIFIED_SINCE)
             && requestConditions.getIfUnmodifiedSince() != null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'ifUnmodifiedSince' is not applicable to "
-                + "this API."));
+            invalidConditionsFound.add(BlobRequestConditionProperty.IF_UNMODIFIED_SINCE.toString());
         }
         if (invalidConditions.contains(BlobRequestConditionProperty.IF_MATCH)
             && requestConditions.getIfMatch() != null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'ifMatch' is not applicable to this API."));
+            invalidConditionsFound.add(BlobRequestConditionProperty.IF_MATCH.toString());
         }
         if (invalidConditions.contains(BlobRequestConditionProperty.IF_NONE_MATCH)
             && requestConditions.getIfNoneMatch() != null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'ifNoneMatch' is not applicable to this "
-                + "API."));
+            invalidConditionsFound.add(BlobRequestConditionProperty.IF_NONE_MATCH.toString());
+        }
+        if (!invalidConditionsFound.isEmpty()) {
+            String unsupported = String.join(", ", invalidConditionsFound);
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("%s does not support the %s request condition(s) for parameter '%s'.",
+                    operationName, unsupported, parameterName)));
         }
     }
 }
