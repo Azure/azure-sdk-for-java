@@ -188,4 +188,11 @@ public class ModelHelper {
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
     }
+
+    public static String getETag(HttpHeaders headers) {
+        if (headers == null) {
+            return null;
+        }
+        return headers.getValue("ETag");
+    }
 }

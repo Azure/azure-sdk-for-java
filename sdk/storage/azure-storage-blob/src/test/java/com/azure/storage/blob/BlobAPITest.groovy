@@ -50,6 +50,7 @@ import com.azure.storage.common.test.shared.extensions.LiveOnly
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import com.azure.storage.common.test.shared.policy.MockFailureResponsePolicy
+import com.azure.storage.common.test.shared.policy.MockRetryRangeResponsePolicy
 import reactor.core.Exceptions
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Hooks
@@ -377,7 +378,7 @@ class BlobAPITest extends APISpec {
         constructed in BlobClient.download().
          */
         setup:
-        def bu2 = getBlobClient(env.primaryAccount.credential, bc.getBlobUrl(), new MockRetryRangeResponsePolicy())
+        def bu2 = getBlobClient(env.primaryAccount.credential, bc.getBlobUrl(), new MockRetryRangeResponsePolicy("bytes=2-6"))
 
         when:
         def range = new BlobRange(2, 5L)
