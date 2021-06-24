@@ -26,10 +26,11 @@ public class AADJwtGrantedAuthoritiesConverter implements Converter<Jwt, Collect
     private static final Logger LOGGER = LoggerFactory.getLogger(AADJwtGrantedAuthoritiesConverter.class);
     public static final Map<String, String> DEFAULT_CLAIM_TO_AUTHORITY_PREFIX_MAP;
     public static final String DEFAULT_AUTHORITY_CLAIM_NAME = "scp";
+    public static final String DEFAULT_AUTHORITY_PREFIX = "SCOPE_";
 
     static {
         Map<String, String> claimAuthorityMap = new HashMap<>();
-        claimAuthorityMap.put(DEFAULT_AUTHORITY_CLAIM_NAME, "SCOPE_");
+        claimAuthorityMap.put(DEFAULT_AUTHORITY_CLAIM_NAME, DEFAULT_AUTHORITY_PREFIX);
         claimAuthorityMap.put("roles", "APPROLE_");
         DEFAULT_CLAIM_TO_AUTHORITY_PREFIX_MAP = Collections.unmodifiableMap(claimAuthorityMap);
     }

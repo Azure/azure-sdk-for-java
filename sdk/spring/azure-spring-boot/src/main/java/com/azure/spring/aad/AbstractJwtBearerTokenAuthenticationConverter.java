@@ -49,7 +49,6 @@ public abstract class AbstractJwtBearerTokenAuthenticationConverter implements C
 
     public AbstractJwtBearerTokenAuthenticationConverter(String principalClaimName,
                                                          Map<String, String> claimToAuthorityPrefixMap) {
-        Assert.notNull(principalClaimName, "principalClaimName cannot be null");
         Assert.notNull(claimToAuthorityPrefixMap, "claimToAuthorityPrefixMap cannot be null");
         this.principalClaimName = principalClaimName;
         this.converter = new AADJwtGrantedAuthoritiesConverter(claimToAuthorityPrefixMap);
@@ -63,6 +62,15 @@ public abstract class AbstractJwtBearerTokenAuthenticationConverter implements C
         OAuth2AuthenticatedPrincipal principal = getAuthenticatedPrincipal(
             jwt.getHeaders(), jwt.getClaims(), authorities, jwt.getTokenValue());
         return new BearerTokenAuthentication(principal, accessToken, authorities);
+    }
+
+    protected static Map<String, String> buildClaimToAuthorityPrefixMap(String authoritiesClaimName,
+                                                                        String authorityPrefix) {
+        Assert.notNull(authoritiesClaimName, "authoritiesClaimName cannot be null");
+        Assert.notNull(authorityPrefix, "authorityPrefix cannot be null");
+        Map<String, String> claimToAuthorityPrefixMap = new HashMap<>();
+        claimToAuthorityPrefixMap.put(authoritiesClaimName, authorityPrefix);
+        return claimToAuthorityPrefixMap;
     }
 
     /**

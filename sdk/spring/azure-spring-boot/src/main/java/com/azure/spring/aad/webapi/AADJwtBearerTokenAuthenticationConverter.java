@@ -14,8 +14,8 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 
+import static com.azure.spring.aad.AADJwtGrantedAuthoritiesConverter.DEFAULT_AUTHORITY_PREFIX;
 import static com.azure.spring.aad.AADJwtGrantedAuthoritiesConverter.DEFAULT_CLAIM_TO_AUTHORITY_PREFIX_MAP;
-import static com.azure.spring.aad.AADJwtGrantedAuthoritiesConverter.DEFAULT_AUTHORITY_CLAIM_NAME;
 
 /**
  * A {@link Converter} that takes a {@link Jwt} and converts it into a {@link BearerTokenAuthentication}.
@@ -32,22 +32,19 @@ public class AADJwtBearerTokenAuthenticationConverter extends AbstractJwtBearerT
     /**
      * Construct AADJwtBearerTokenAuthenticationConverter with the authority claim.
      * @param authoritiesClaimName authority claim name
-     * @deprecated Recommended to use others constructor.
      */
-    @Deprecated
     public AADJwtBearerTokenAuthenticationConverter(String authoritiesClaimName) {
-        this(authoritiesClaimName, DEFAULT_CLAIM_TO_AUTHORITY_PREFIX_MAP.get(DEFAULT_AUTHORITY_CLAIM_NAME));
+        this(authoritiesClaimName, DEFAULT_AUTHORITY_PREFIX);
     }
 
     /**
      * Construct AADJwtBearerTokenAuthenticationConverter with the authority claim name and prefix.
      * @param authoritiesClaimName authority claim name
      * @param authorityPrefix the prefix name of the authority
-     * @deprecated Recommended to use others constructor.
      */
-    @Deprecated
-    public AADJwtBearerTokenAuthenticationConverter(String authoritiesClaimName, String authorityPrefix) {
-        super(authoritiesClaimName, authorityPrefix);
+    public AADJwtBearerTokenAuthenticationConverter(String authoritiesClaimName,
+                                                    String authorityPrefix) {
+        this(null, buildClaimToAuthorityPrefixMap(authoritiesClaimName, authorityPrefix));
     }
 
     /**

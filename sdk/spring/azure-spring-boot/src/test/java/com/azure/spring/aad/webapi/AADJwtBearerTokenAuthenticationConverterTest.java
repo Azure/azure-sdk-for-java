@@ -65,51 +65,7 @@ public class AADJwtBearerTokenAuthenticationConverterTest {
     }
 
     @Test
-    public void testNoArgumentsConstructorExtractScopeAuthorities() {
-        when(jwt.getClaim("roles")).thenReturn(null);
-        AADJwtBearerTokenAuthenticationConverter converter = new AADJwtBearerTokenAuthenticationConverter();
-        AbstractAuthenticationToken authenticationToken = converter.convert(jwt);
-        assertThat(authenticationToken.getPrincipal()).isExactlyInstanceOf(AADOAuth2AuthenticatedPrincipal.class);
-        AADOAuth2AuthenticatedPrincipal principal = (AADOAuth2AuthenticatedPrincipal) authenticationToken
-            .getPrincipal();
-        assertThat(principal.getAttributes()).isNotEmpty();
-        assertThat(principal.getAttributes()).hasSize(2);
-        assertThat(principal.getAuthorities()).hasSize(2);
-    }
-
-    @Test
-    public void testNoArgumentsConstructorExtractRoleAuthorities() {
-        when(jwt.getClaim("scp")).thenReturn(null);
-        AADJwtBearerTokenAuthenticationConverter converter = new AADJwtBearerTokenAuthenticationConverter();
-        AbstractAuthenticationToken authenticationToken = converter.convert(jwt);
-        assertThat(authenticationToken.getPrincipal()).isExactlyInstanceOf(AADOAuth2AuthenticatedPrincipal.class);
-        AADOAuth2AuthenticatedPrincipal principal = (AADOAuth2AuthenticatedPrincipal) authenticationToken
-            .getPrincipal();
-        assertThat(principal.getAttributes()).isNotEmpty();
-        assertThat(principal.getAttributes()).hasSize(2);
-        assertThat(principal.getAuthorities()).hasSize(2);
-    }
-
-    @Test
-    public void testConstructorExtractRoleAuthoritiesWithAuthorityPrefixMapParameter() {
-        when(jwt.getClaim("scp")).thenReturn(null);
-        Map<String, String> claimToAuthorityPrefixMap = new HashMap<>();
-        claimToAuthorityPrefixMap.put("roles", "APPROLE_");
-        AADJwtBearerTokenAuthenticationConverter converter = new AADJwtBearerTokenAuthenticationConverter("scp", claimToAuthorityPrefixMap);
-        AbstractAuthenticationToken authenticationToken = converter.convert(jwt);
-        assertThat(authenticationToken.getPrincipal()).isExactlyInstanceOf(AADOAuth2AuthenticatedPrincipal.class);
-        AADOAuth2AuthenticatedPrincipal principal = (AADOAuth2AuthenticatedPrincipal) authenticationToken
-            .getPrincipal();
-        assertThat(principal.getAttributes()).isNotEmpty();
-        assertThat(principal.getAttributes()).hasSize(2);
-        assertThat(principal.getAuthorities()).hasSize(2);
-        Assertions.assertTrue(principal.getAuthorities().contains(new SimpleGrantedAuthority("APPROLE_User.read")));
-        Assertions.assertTrue(principal.getAuthorities().contains(new SimpleGrantedAuthority("APPROLE_User.write")));
-    }
-
-    @Test
     public void testParameterConstructorExtractScopeAuthorities() {
-        when(jwt.getClaim("roles")).thenReturn(null);
         AADJwtBearerTokenAuthenticationConverter converter = new AADJwtBearerTokenAuthenticationConverter("scp");
         AbstractAuthenticationToken authenticationToken = converter.convert(jwt);
         assertThat(authenticationToken.getPrincipal()).isExactlyInstanceOf(AADOAuth2AuthenticatedPrincipal.class);
@@ -122,7 +78,6 @@ public class AADJwtBearerTokenAuthenticationConverterTest {
 
     @Test
     public void testParameterConstructorExtractRoleAuthorities() {
-        when(jwt.getClaim("scp")).thenReturn(null);
         AADJwtBearerTokenAuthenticationConverter converter = new AADJwtBearerTokenAuthenticationConverter("roles",
             "APPROLE_");
         AbstractAuthenticationToken authenticationToken = converter.convert(jwt);
@@ -132,5 +87,21 @@ public class AADJwtBearerTokenAuthenticationConverterTest {
         assertThat(principal.getAttributes()).isNotEmpty();
         assertThat(principal.getAttributes()).hasSize(2);
         assertThat(principal.getAuthorities()).hasSize(2);
+    }
+
+    @Test
+    public void testConstructorExtractRoleAuthoritiesWithAuthorityPrefixMapParameter() {
+        Map<String, String> claimToAuthorityPrefixMap = new HashMap<>();
+        claimToAuthorityPrefixMap.put("roles", "APPROLE_");
+        AADJwtBearerTokenAuthenticationConverter converter = new AADJwtBearerTokenAuthenticationConverter("scp", claimToAuthorityPrefixMap);
+        AbstractAuthenticationToken authenticationToken = converter.convert(jwt);
+        assertThat(authenticationToken.getPrincipal()).isExactlyInstanceOf(AADOAuth2AuthenticatedPrincipal.class);
+        AADOAuth2AuthenticatedPrincipal principal = (AADOAuth2AuthenticatedPrincipal) authenticationToken
+            .getPrincipal();
+        assertThat(principal.getAttributes()).isNotEmpty();
+        assertThat(principal.getAttributes()).hasSize(2);
+        assertThat(principal.getAuthorities()).hasSize(2);
+        Assertions.assertTrue(principal.getAuthorities().contains(new SimpleGrantedAuthority("APPROLE_User.read")));
+        Assertions.assertTrue(principal.getAuthorities().contains(new SimpleGrantedAuthority("APPROLE_User.write")));
     }
 }
