@@ -27,6 +27,9 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Pattern;
 
 /**
@@ -48,7 +51,7 @@ final class FlatteningDeserializer extends StdDeserializer<Object> implements Re
     private final JsonDeserializer<?> defaultDeserializer;
 
     /**
-     * The object mapper for default deserializations.
+     * The object mapper for default deserialization.
      */
     private final ObjectMapper mapper;
 
@@ -59,7 +62,7 @@ final class FlatteningDeserializer extends StdDeserializer<Object> implements Re
      *
      * @param beanDesc The {@link BeanDescription} of the class being deserialized.
      * @param defaultDeserializer the default JSON mapperAdapter
-     * @param mapper the object mapper for default deserializations
+     * @param mapper the object mapper for default deserialization
      */
     protected FlatteningDeserializer(BeanDescription beanDesc, JsonDeserializer<?> defaultDeserializer,
         ObjectMapper mapper) {
@@ -73,7 +76,7 @@ final class FlatteningDeserializer extends StdDeserializer<Object> implements Re
     /**
      * Gets a module wrapping this serializer as an adapter for the Jackson ObjectMapper.
      *
-     * @param mapper the object mapper for default deserializations
+     * @param mapper the object mapper for default deserialization
      * @return a simple module to be plugged onto Jackson ObjectMapper.
      */
     public static SimpleModule getModule(final ObjectMapper mapper) {
@@ -179,56 +182,66 @@ final class FlatteningDeserializer extends StdDeserializer<Object> implements Re
             }
 
             if ((classHasJsonFlatten || annotatedField.hasAnnotation(JsonFlatten.class))
-                && containsFlatteningDots(jsonPropValue)) {
+                && IS_FLATTENED_PATTERN.matcher(jsonPropValue).matches()) {
                 // The jsonProperty value contains flattening dots, uplift the nested
                 // json node that this value resolving to the current level.
-                JsonNode childJsonNode = findNestedNode(jsonNode, jsonPropValue);
+                String[] jsonNodeKeys = Arrays.stream(SPLIT_KEY_PATTERN.split(jsonPropValue))
+                    .map(FlatteningDeserializer::unescapeEscapedDots)
+                    .toArray(String[]::new);
 
-                // This should replace the JsonNode it is compacting.
-                ((ObjectNode) jsonNode).set(jsonPropValue, childJsonNode);
+                // Keep track of the JsonNodes which lead to the flattened property being deserialized.
+                //
+                // This will be used later to clean up the parent JsonNode so that there aren't additional dangling
+                // JSON once the flattened value is uplifted. If this isn't done it can result in models with
+                // @JsonAnySetter containing errant values.
+                List<JsonNode> nodePath = new ArrayList<>();
+                nodePath.add(jsonNode);
+                JsonNode nodeToAdd = jsonNode;
+                for (String jsonNodeKey : jsonNodeKeys) {
+                    nodeToAdd = nodeToAdd.get(jsonNodeKey);
+                    if (nodeToAdd == null) {
+                        break;
+                    }
+                    nodePath.add(nodeToAdd);
+                }
+
+                // No sub-properties leading to the flattened property exists. Set the un-flattened property to null and
+                // return early.
+                if (nodePath.size() == 1) {
+                    ((ObjectNode) jsonNode).set(jsonPropValue, null);
+                    return;
+                }
+
+                if (!nodePath.get(nodePath.size() - 2).has(jsonNodeKeys[jsonNodeKeys.length - 1])) {
+                    // If some properties leading to the flattened property exists, but not all of them, set the
+                    // un-flattened property to null.
+                    ((ObjectNode) jsonNode).set(jsonPropValue, null);
+                } else {
+                    // If all properties leading to the flattened property exists, set the un-flattened property to the
+                    // value contained at the flattened location.
+                    ((ObjectNode) jsonNode).set(jsonPropValue, nodePath.get(nodePath.size() - 1));
+                }
+
+                // After uplifting the flattened property attempt to clean up the flattened values.
+                for (int i = nodePath.size() - 2; i >= 0; i--) {
+                    // On the first child node removal and if the full flattened path didn't exist, only remove the node
+                    // if it doesn't have any other children nodes.
+                    if (i == nodePath.size() - 2
+                        && nodePath.size() - 1 != jsonNodeKeys.length
+                        && nodePath.get(i).get(jsonNodeKeys[i]).size() != 0) {
+                        break;
+                    }
+
+                    ((ObjectNode) nodePath.get(i)).remove(jsonNodeKeys[i]);
+
+                    // Only continue the removal cycle while the nodes in the flattening path have no additional
+                    // children nodes.
+                    if (nodePath.get(i).size() > 0) {
+                        break;
+                    }
+                }
             }
         }
-    }
-
-    /**
-     * Checks whether the given key has flattening dots in it. Flattening dots are dot '.' characters those are not
-     * preceded by slash '\'
-     *
-     * @param key the key
-     * @return true if the key has flattening dots, false otherwise.
-     */
-    private static boolean containsFlatteningDots(String key) {
-        return IS_FLATTENED_PATTERN.matcher(key).matches();
-    }
-
-    /**
-     * Given a json node, find a nested node in it identified by the given composed key.
-     *
-     * @param jsonNode the parent json node
-     * @param composedKey a key combines multiple keys using flattening dots. Flattening dots are dot character '.'
-     * those are not preceded by slash '\' Each flattening dot represents a level with following key as field key in
-     * that level
-     * @return nested json node located using given composed key
-     */
-    private static JsonNode findNestedNode(JsonNode jsonNode, String composedKey) {
-        String[] jsonNodeKeys = splitKeyByFlatteningDots(composedKey);
-        for (String jsonNodeKey : jsonNodeKeys) {
-            jsonNode = jsonNode.get(unescapeEscapedDots(jsonNodeKey));
-            if (jsonNode == null) {
-                return null;
-            }
-        }
-        return jsonNode;
-    }
-
-    /**
-     * Split the key by flattening dots. Flattening dots are dot character '.' those are not preceded by slash '\'
-     *
-     * @param key the key to split
-     * @return the array of sub keys
-     */
-    private static String[] splitKeyByFlatteningDots(String key) {
-        return SPLIT_KEY_PATTERN.split(key);
     }
 
     /**

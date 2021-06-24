@@ -7,6 +7,7 @@ package com.azure.core.util.serializer;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.implementation.models.jsonflatten.ClassWithFlattenedProperties;
 import com.azure.core.implementation.models.jsonflatten.FlattenedProduct;
+import com.azure.core.implementation.models.jsonflatten.FlattenedPropertiesAndJsonAnyGetter;
 import com.azure.core.implementation.models.jsonflatten.JsonFlattenOnArrayType;
 import com.azure.core.implementation.models.jsonflatten.JsonFlattenOnCollectionType;
 import com.azure.core.implementation.models.jsonflatten.JsonFlattenOnJsonIgnoredProperty;
@@ -618,6 +619,27 @@ public class FlatteningSerializerTests {
         JsonFlattenWithJsonInfoDiscriminator deserialized = deserialize(actualSerialization,
             JsonFlattenWithJsonInfoDiscriminator.class);
         assertEquals(expected.getJsonFlattenDiscriminator(), deserialized.getJsonFlattenDiscriminator());
+    }
+
+    @Test
+    public void flattenedPropertiesAndJsonAnyGetter() {
+        FlattenedPropertiesAndJsonAnyGetter expected = new FlattenedPropertiesAndJsonAnyGetter()
+            .setString("string")
+            .addAdditionalProperty("key1", "value1")
+            .addAdditionalProperty("key2", "value2");
+
+        String expectedSerialization = "{\"flattened\":{\"string\":\"string\"},\"key1\":\"value1\",\"key2\":\"value2\"}";
+        String actualSerialization = serialize(expected);
+
+        assertEquals(expectedSerialization, actualSerialization);
+
+        FlattenedPropertiesAndJsonAnyGetter deserialized = deserialize(actualSerialization,
+            FlattenedPropertiesAndJsonAnyGetter.class);
+        assertEquals(expected.getString(), deserialized.getString());
+        assertEquals(expected.additionalProperties().size(), deserialized.additionalProperties().size());
+        for (String key : expected.additionalProperties().keySet()) {
+            assertEquals(expected.additionalProperties().get(key), deserialized.additionalProperties().get(key));
+        }
     }
 
     private static String serialize(Object object) {

@@ -5,20 +5,26 @@ package com.azure.core.util.serializer;
 
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.BeanDescription;
+import com.fasterxml.jackson.databind.BeanProperty;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyMetadata;
+import com.fasterxml.jackson.databind.PropertyName;
 import com.fasterxml.jackson.databind.SerializationConfig;
 import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.introspect.AnnotatedMember;
 import com.fasterxml.jackson.databind.introspect.BeanPropertyDefinition;
 import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.ser.AnyGetterWriter;
 import com.fasterxml.jackson.databind.ser.BeanSerializerModifier;
 import com.fasterxml.jackson.databind.ser.ResolvableSerializer;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
@@ -141,7 +147,7 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
         return module;
     }
 
-    private List<Field> getAllDeclaredFields(Class<?> clazz) {
+    private static List<Field> getAllDeclaredFields(Class<?> clazz) {
         List<Field> fields = new ArrayList<>();
         while (clazz != null && !clazz.equals(Object.class)) {
             for (Field f : clazz.getDeclaredFields()) {
@@ -156,7 +162,7 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
     }
 
     @SuppressWarnings("unchecked")
-    private void escapeMapKeys(Object value) {
+    private static void escapeMapKeys(Object value, ClientLogger logger) {
         if (value == null) {
             return;
         }
@@ -179,7 +185,7 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
             }
 
             for (Object val : ((Map<?, ?>) value).values()) {
-                escapeMapKeys(val);
+                escapeMapKeys(val, logger);
             }
 
             return;
@@ -187,7 +193,7 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
 
         if (value instanceof List<?>) {
             for (Object val : ((List<?>) value)) {
-                escapeMapKeys(val);
+                escapeMapKeys(val, logger);
             }
             return;
         }
@@ -201,7 +207,7 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
             // Why is this setting accessible to true?
             f.setAccessible(true);
             try {
-                escapeMapKeys(f.get(value));
+                escapeMapKeys(f.get(value), logger);
             } catch (IllegalAccessException e) {
                 throw logger.logExceptionAsError(new RuntimeException(e));
             }
@@ -210,33 +216,112 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
 
     @Override
     public void serializeWithType(Object value, JsonGenerator gen, SerializerProvider provider,
-        TypeSerializer typeSerializer) throws IOException {
-        if (!classHasJsonFlatten) {
-            ObjectNode objectNode = mapper.createObjectNode();
+        TypeSerializer typeSer) throws IOException {
+        if (value == null) {
+            gen.writeNull();
+            return;
+        }
 
-            // Need to write JsonType information before serialization.
-            objectNode.put(typeSerializer.getPropertyName(), typeSerializer.getTypeIdResolver().idFromValue(value));
-
-            propertyOnlyFlattenSerialize(value, gen, objectNode);
+        if (classHasJsonFlatten) {
+            classLevelFlattenSerialize(value, gen);
         } else {
-            serialize(value, gen, provider);
+            ObjectNode node = mapper.createObjectNode();
+
+            if (typeSer != null) {
+                // Need to write JsonType information before serialization.
+                node.put(typeSer.getPropertyName(), typeSer.getTypeIdResolver().idFromValue(value));
+            }
+
+            propertyOnlyFlattenSerialize(value, gen, provider, node);
         }
     }
 
     @Override
-    public void serialize(Object value, JsonGenerator jgen, SerializerProvider provider) throws IOException {
-        if (value == null) {
-            jgen.writeNull();
-            return;
+    public void serialize(Object value, JsonGenerator gen, SerializerProvider provider) throws IOException {
+        serializeWithType(value, gen, provider, null);
+    }
+
+    @Override
+    public void resolve(SerializerProvider provider) throws JsonMappingException {
+        if (this.defaultSerializer instanceof ResolvableSerializer) {
+            ((ResolvableSerializer) this.defaultSerializer).resolve(provider);
+        }
+    }
+
+    private void propertyOnlyFlattenSerialize(Object value, JsonGenerator gen, SerializerProvider provider,
+        ObjectNode node) throws IOException {
+        for (BeanPropertyDefinition beanProp : beanDescription.findProperties()) {
+            ObjectNode nodeToUse = node;
+            String propertyName = beanProp.getName();
+            if (jsonPropertiesWithJsonFlatten.contains(beanProp.getName())) {
+                String[] splitNames = SPLIT_FLATTEN_PROPERTY_PATTERN.split(beanProp.getName());
+                propertyName = splitNames[splitNames.length - 1];
+
+                // Find or create the ObjectNodes to use.
+                // This is done so that multiple flattened properties using the same path doesn't result in objects
+                // for each child property.
+                //
+                // For example a class with two JSON flattened properties with names "flattened.string" and
+                // "flattened.number" should serialize into the following:
+                //
+                // {
+                //   "flattened": {
+                //     "string": "string",
+                //     "number": 0
+                //   }
+                // }
+                //
+                // If this isn't done it could result in the following:
+                //
+                // {
+                //   "flattened": {
+                //     { "string": "string" },
+                //     { "number": 0 }
+                //   }
+                // }
+                for (int i = 0; i < splitNames.length - 1; i++) {
+                    nodeToUse = (nodeToUse.has(splitNames[i]))
+                        ? (ObjectNode) nodeToUse.get(splitNames[i])
+                        : nodeToUse.putObject(splitNames[i]);
+                }
+            }
+
+            nodeToUse.putPOJO(propertyName, beanProp.getField().getValue(value));
         }
 
-        // Custom path for property only JsonFlattening.
-        if (!classHasJsonFlatten) {
-            propertyOnlyFlattenSerialize(value, jgen, mapper.createObjectNode());
-            return;
+        gen.writeStartObject();
+
+        Iterator<Map.Entry<String, JsonNode>> fields = node.fields();
+        while (fields.hasNext()) {
+            Map.Entry<String, JsonNode> field = fields.next();
+            gen.writeFieldName(field.getKey());
+            gen.writeTree(field.getValue());
         }
 
-        escapeMapKeys(value);
+        // Attempt to find if the class has a method with @JsonAnyGetter.
+        //
+        // If @JsonAnyGetter is found serialize the properties into the generator before finalizing the object.
+        // Values from the any getter are serialized as key:fields and not as a sub-object.
+        AnnotatedMember anyGetter = beanDescription.findAnyGetter();
+        if (anyGetter != null && anyGetter.getAnnotation(JsonAnyGetter.class).enabled()) {
+            BeanProperty.Std anyProperty = new BeanProperty.Std(PropertyName.construct(anyGetter.getName()),
+                anyGetter.getType(), null, anyGetter, PropertyMetadata.STD_OPTIONAL);
+            JsonSerializer<Object> anySerializer = provider.findTypedValueSerializer(anyGetter.getType(), true,
+                anyProperty);
+            AnyGetterWriter anyGetterWriter = new AnyGetterWriter(anyProperty, anyGetter, anySerializer);
+
+            try {
+                anyGetterWriter.getAndSerialize(value, gen, provider);
+            } catch (Exception exception) {
+                throw logger.logThrowableAsError(new IOException(exception));
+            }
+        }
+
+        gen.writeEndObject();
+    }
+
+    private void classLevelFlattenSerialize(Object value, JsonGenerator gen) throws IOException {
+        escapeMapKeys(value, logger);
 
         // BFS for all collapsed properties
         ObjectNode root = mapper.valueToTree(value);
@@ -299,35 +384,6 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
                 }
             }
         }
-        jgen.writeTree(res);
-    }
-
-    @Override
-    public void resolve(SerializerProvider provider) throws JsonMappingException {
-        if (this.defaultSerializer instanceof ResolvableSerializer) {
-            ((ResolvableSerializer) this.defaultSerializer).resolve(provider);
-        }
-    }
-
-    private void propertyOnlyFlattenSerialize(Object value, JsonGenerator jgen, ObjectNode objNode) throws IOException {
-        for (BeanPropertyDefinition beanPropertyDefinition : beanDescription.findProperties()) {
-            if (jsonPropertiesWithJsonFlatten.contains(beanPropertyDefinition.getName())) {
-                String[] splitNames = SPLIT_FLATTEN_PROPERTY_PATTERN.split(beanPropertyDefinition.getName());
-                ObjectNode nodeToWriteTo = objNode;
-                for (int i = 0; i < splitNames.length - 1; i++) {
-                    nodeToWriteTo = (nodeToWriteTo.has(splitNames[i]))
-                        ? (ObjectNode) nodeToWriteTo.get(splitNames[i])
-                        : nodeToWriteTo.putObject(splitNames[i]);
-                }
-
-                nodeToWriteTo.putPOJO(splitNames[splitNames.length - 1],
-                    beanPropertyDefinition.getField().getValue(value));
-            } else {
-                objNode.putPOJO(beanPropertyDefinition.getName(),
-                    beanPropertyDefinition.getField().getValue(value));
-            }
-        }
-
-        jgen.writeTree(objNode);
+        gen.writeTree(res);
     }
 }
