@@ -98,8 +98,9 @@ public class ListPathsOptions {
     }
 
     /**
-     * Specifies the maximum number of blobs to return, including all BlobPrefix elements. If the request does not
-     * specify maxResults or specifies a value greater than 5,000, the server will return up to 5,000 items.
+     * Specifies the maximum number of blobs to return per page, including all BlobPrefix elements. If the request does
+     * not specify maxResults or specifies a value greater than 5,000, the server will return up to 5,000 items per
+     * page.
      *
      * @return the number of containers to be returned in a single response
      */

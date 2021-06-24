@@ -20,6 +20,7 @@ import com.azure.storage.blob.implementation.models.BlockBlobsUploadHeaders;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
+import com.azure.storage.blob.models.BlobImmutabilityPolicy;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlockBlobItem;
@@ -300,14 +301,17 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         BlobRequestConditions requestConditions = options.getRequestConditions() == null ? new BlobRequestConditions()
             : options.getRequestConditions();
         context = context == null ? Context.NONE : context;
+        BlobImmutabilityPolicy immutabilityPolicy = options.getImmutabilityPolicy() == null
+            ? new BlobImmutabilityPolicy() : options.getImmutabilityPolicy();
 
         return this.azureBlobStorage.getBlockBlobs().uploadWithResponseAsync(containerName, blobName,
             options.getLength(), data, null, options.getContentMd5(), options.getMetadata(),
             requestConditions.getLeaseId(), options.getTier(), requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
             requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,
-            tagsToString(options.getTags()), options.getHeaders(), getCustomerProvidedKey(), encryptionScope,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            tagsToString(options.getTags()), immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(),
+            options.isLegalHold(), options.getHeaders(), getCustomerProvidedKey(),
+            encryptionScope, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
                 BlockBlobsUploadHeaders hd = rb.getDeserializedHeaders();
                 BlockBlobItem item = new BlockBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
@@ -426,7 +430,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
             sourceRequestConditions.getIfMatch(), sourceRequestConditions.getIfNoneMatch(),
             sourceRequestConditions.getTagsConditions(),
             null, options.getContentMd5(), tagsToString(options.getTags()),
-            options.isCopySourceBlobProperties(), options.getHeaders(), getCustomerProvidedKey(), encryptionScope,
+            options.isCopySourceBlobProperties(), null, options.getHeaders(), getCustomerProvidedKey(), encryptionScope,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
                 BlockBlobsPutBlobFromUrlHeaders hd = rb.getDeserializedHeaders();
@@ -593,7 +597,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         return this.azureBlobStorage.getBlockBlobs().stageBlockFromURLWithResponseAsync(containerName, blobName, base64BlockId, 0,
             url, sourceRange.toHeaderValue(), sourceContentMd5, null, null, leaseId,
             sourceRequestConditions.getIfModifiedSince(), sourceRequestConditions.getIfUnmodifiedSince(),
-            sourceRequestConditions.getIfMatch(), sourceRequestConditions.getIfNoneMatch(), null,
+            sourceRequestConditions.getIfMatch(), sourceRequestConditions.getIfNoneMatch(), null, null,
             getCustomerProvidedKey(), encryptionScope,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
@@ -791,14 +795,17 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         BlobRequestConditions requestConditions = options.getRequestConditions() == null ? new BlobRequestConditions()
             : options.getRequestConditions();
         context = context == null ? Context.NONE : context;
+        BlobImmutabilityPolicy immutabilityPolicy = options.getImmutabilityPolicy() == null
+            ? new BlobImmutabilityPolicy() : options.getImmutabilityPolicy();
 
         return this.azureBlobStorage.getBlockBlobs().commitBlockListWithResponseAsync(containerName, blobName,
             new BlockLookupList().setLatest(options.getBase64BlockIds()), null, null, null, options.getMetadata(),
             requestConditions.getLeaseId(), options.getTier(), requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
             requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,
-            tagsToString(options.getTags()), options.getHeaders(), getCustomerProvidedKey(), encryptionScope,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            tagsToString(options.getTags()), immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(),
+            options.isLegalHold(), options.getHeaders(), getCustomerProvidedKey(),
+            encryptionScope, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
                 BlockBlobsCommitBlockListHeaders hd = rb.getDeserializedHeaders();
                 BlockBlobItem item = new BlockBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),

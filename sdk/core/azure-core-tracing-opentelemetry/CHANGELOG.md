@@ -1,7 +1,8 @@
 # Release History
 
 ## 1.0.0-beta.12 (Unreleased)
-
+### Key Bugs Fixed
+- Fixed `addEvent` API to use the span provided in the context rather than `Span.current()`.
 
 ## 1.0.0-beta.11 (2021-06-07)
 

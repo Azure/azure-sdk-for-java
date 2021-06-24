@@ -78,7 +78,7 @@ public final class Constants {
     public static final String PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION = "AZURE_STORAGE_SAS_SERVICE_VERSION";
 
     public static final String SAS_SERVICE_VERSION = Configuration.getGlobalConfiguration()
-        .get(PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION, "2020-08-04");
+        .get(PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION, "2020-10-02");
 
     private Constants() {
     }
@@ -206,7 +206,7 @@ public final class Constants {
          * @deprecated For SAS Service Version use {@link Constants#SAS_SERVICE_VERSION}.
          */
         @Deprecated
-        public static final String TARGET_STORAGE_VERSION = "2020-08-04";
+        public static final String TARGET_STORAGE_VERSION = "2020-10-02";
 
         /**
          * Error code returned from the service.

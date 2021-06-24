@@ -11,10 +11,12 @@ import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.implementation.models.DeleteSnapshotsOptionType;
+import com.azure.storage.file.share.implementation.models.FileProperty;
 import com.azure.storage.file.share.implementation.models.ServicesListSharesSegmentHeaders;
 import com.azure.storage.file.share.implementation.models.ShareItemInternal;
 import com.azure.storage.file.share.implementation.models.SharePropertiesInternal;
 import com.azure.storage.file.share.models.ShareFileDownloadHeaders;
+import com.azure.storage.file.share.models.ShareFileItemProperties;
 import com.azure.storage.file.share.models.ShareItem;
 import com.azure.storage.file.share.models.ShareProperties;
 import com.azure.storage.file.share.models.ShareProtocols;
@@ -194,5 +196,13 @@ public class ModelHelper {
             return null;
         }
         return headers.getValue("ETag");
+    }
+    
+    public static ShareFileItemProperties transformFileProperty(FileProperty property) {
+        if (property == null) {
+            return null;
+        }
+        return new ShareFileItemProperties(property.getCreationTime(), property.getLastAccessTime(),
+            property.getLastWriteTime(), property.getChangeTime(), property.getLastModified(), property.getEtag());
     }
 }

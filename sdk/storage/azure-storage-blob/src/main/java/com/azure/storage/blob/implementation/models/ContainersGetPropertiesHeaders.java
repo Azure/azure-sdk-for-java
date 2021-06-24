@@ -33,6 +33,12 @@ public final class ContainersGetPropertiesHeaders {
     private String xMsVersion;
 
     /*
+     * The x-ms-immutable-storage-with-versioning-enabled property.
+     */
+    @JsonProperty(value = "x-ms-immutable-storage-with-versioning-enabled")
+    private Boolean xMsImmutableStorageWithVersioningEnabled;
+
+    /*
      * The x-ms-lease-state property.
      */
     @JsonProperty(value = "x-ms-lease-state")
@@ -147,6 +153,29 @@ public final class ContainersGetPropertiesHeaders {
      */
     public ContainersGetPropertiesHeaders setXMsVersion(String xMsVersion) {
         this.xMsVersion = xMsVersion;
+        return this;
+    }
+
+    /**
+     * Get the xMsImmutableStorageWithVersioningEnabled property: The x-ms-immutable-storage-with-versioning-enabled
+     * property.
+     *
+     * @return the xMsImmutableStorageWithVersioningEnabled value.
+     */
+    public Boolean isXMsImmutableStorageWithVersioningEnabled() {
+        return this.xMsImmutableStorageWithVersioningEnabled;
+    }
+
+    /**
+     * Set the xMsImmutableStorageWithVersioningEnabled property: The x-ms-immutable-storage-with-versioning-enabled
+     * property.
+     *
+     * @param xMsImmutableStorageWithVersioningEnabled the xMsImmutableStorageWithVersioningEnabled value to set.
+     * @return the ContainersGetPropertiesHeaders object itself.
+     */
+    public ContainersGetPropertiesHeaders setXMsImmutableStorageWithVersioningEnabled(
+            Boolean xMsImmutableStorageWithVersioningEnabled) {
+        this.xMsImmutableStorageWithVersioningEnabled = xMsImmutableStorageWithVersioningEnabled;
         return this;
     }
 

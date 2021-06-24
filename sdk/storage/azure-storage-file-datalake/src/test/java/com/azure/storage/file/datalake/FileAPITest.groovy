@@ -3184,8 +3184,7 @@ class FileAPITest extends APISpec {
         1000      | '\n'            || _
     }
 
-    @Unroll
-    @Ignore /* TODO: Unignore when parquet is officially supported. */
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_10_02")
     @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
     def "Query Input parquet"() {
         setup:
@@ -3572,7 +3571,7 @@ class FileAPITest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
-    @Ignore /* TODO: Unignore when parquet is officially supported. */
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_10_02")
     @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
     def "Query parquet output IA"() {
         setup:
