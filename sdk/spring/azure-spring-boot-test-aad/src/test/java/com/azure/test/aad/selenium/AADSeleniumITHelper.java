@@ -109,7 +109,14 @@ public class AADSeleniumITHelper extends SeleniumITHelper {
         wait.until(ExpectedConditions.urlContains(oauth2AuthorizationUrlFraction));
 
         String onDemandAuthorizationUrl = driver.getCurrentUrl();
+        LOGGER.info("before httpGetWithIncrementalConsent = {}", wait.until(presenceOfElementLocated(By.tagName("body"))).getText());
         wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[type='submit']"))).click();
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        LOGGER.info("after httpGetWithIncrementalConsent = {}", wait.until(presenceOfElementLocated(By.tagName("body"))).getText());
         return onDemandAuthorizationUrl;
     }
 
