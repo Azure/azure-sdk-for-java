@@ -31,7 +31,8 @@ public class PropertyConvertorUtils {
     public static final List<String> KEYVAULT_JCA_SYSTEM_PROPERTIES = Arrays.asList("AZURE_KEYVAULT_ENDPOINT",
         "AZURE_KEYVAULT_TENANT_ID",
         "AZURE_KEYVAULT_CLIENT_ID",
-        "AZURE_KEYVAULT_CLIENT_SECRET");
+        "AZURE_KEYVAULT_CLIENT_SECRET",
+        "AZURE_KEYVAULT_URI");
 
     public static KeyStore getKeyVaultKeyStore() throws CertificateException, NoSuchAlgorithmException, IOException, KeyStoreException {
         KeyStore keyStore = KeyStore.getInstance("AzureKeyVault");

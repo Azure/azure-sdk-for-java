@@ -1,6 +1,6 @@
 # Release History
 
-## 3.6.0-beta.1 (Unreleased)
+## 3.6.0 (2021-06-23)
 ### Breaking Changes
 - Deprecate aad.group.enable-full-list, use aad.group.allowed-group-ids=all instead.
 - Deprecated `allowTelemetry` configuration item.

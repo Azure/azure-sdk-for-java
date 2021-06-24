@@ -1,6 +1,6 @@
 # Release History
 
-## 3.6.0-beta.1 (Unreleased)
+## 3.6.0 (2021-06-23)
 ### Breaking Changes
 - Deprecated `allowTelemetry` configuration item.
 

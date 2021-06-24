@@ -28,7 +28,7 @@ If you want to authenticate as simple as possible, you need to prepare `TokenCre
 
 ### Preparing TokenCredential
   * The `TokenCredential` is an interface in the `azure-core` package for credentials that can provide a token. 
-  * Azure Identity offers multiple implementations of the `TokenCredential` class in the `azure-identity` package. To learn more, see [credentials in Azure Identity](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/identity/azure-identity#credentials).
+  * Azure Identity offers multiple implementations of the `TokenCredential` class in the `azure-identity` package. To learn more, see [credentials in Azure Identity](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity#credentials).
 
 Sample code to create a simple `ClientSecretCredential`:
 
@@ -97,12 +97,12 @@ AzureResourceManager azure = authenticated.withSubscription(subscriptionId);
 If you want to take full control of Azure client, you could build your own http pipeline for authentication.
 
 ### Preparing HttpPipelinePolicy
-  * The `HttpPipelinePolicy` is an interface that process provided request context and invokes the next policy. To learn more, see [policies in Azure Core](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/core/azure-core/src/main/java/com/azure/core/http/policy) and [policies in Azure Management Libraries for Java](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/resourcemanager/azure-resourcemanager-resources/src/main/java/com/azure/resourcemanager/resources/fluentcore/policy).
+  * The `HttpPipelinePolicy` is an interface that process provided request context and invokes the next policy. To learn more, see [policies in Azure Core](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/core/azure-core/src/main/java/com/azure/core/http/policy) and [policies in Azure Management Libraries for Java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/resourcemanager/azure-resourcemanager-resources/src/main/java/com/azure/resourcemanager/resources/fluentcore/policy).
 
 ### Preparing HttpClient
   * The `HttpClient` is a generic interface for sending HTTP requests and getting responses. 
-  * [azure-core-http-netty](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/core/azure-core-http-netty) provides a Netty derived HTTP client.
-  * [azure-core-http-okhttp](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/core/azure-core-http-okhttp) provides an OkHttp derived HTTP client.
+  * [azure-core-http-netty](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/core/azure-core-http-netty) provides a Netty derived HTTP client.
+  * [azure-core-http-okhttp](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/core/azure-core-http-okhttp) provides an OkHttp derived HTTP client.
 
 ### Authenticating with custom HttpPipeline
 

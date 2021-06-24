@@ -51,11 +51,12 @@ public class KeyVaultCertificatesTest {
     }
 
     @Test
-    public void testRefreshAndGetAliasByCertificate() throws InterruptedException {
+    public void testRefreshAndGetAliasByCertificate() {
         Assertions.assertEquals(keyVaultCertificates.refreshAndGetAliasByCertificate(certificate), "myalias");
+        Assertions.assertEquals(keyVaultCertificates.getCertificates().get("myalias"), certificate);
         when(keyVaultClient.getAliases()).thenReturn(null);
-        Thread.sleep(10); // TODO: (rujche) update this logic
         Assertions.assertNotEquals(keyVaultCertificates.refreshAndGetAliasByCertificate(certificate), "myalias");
+        Assertions.assertNull(keyVaultCertificates.getCertificates().get("myalias"));
     }
 
     @Test
@@ -71,9 +72,7 @@ public class KeyVaultCertificatesTest {
         Assertions.assertTrue(keyVaultCertificates.certificatesNeedRefresh());
         keyVaultCertificates.getAliases();
         Assertions.assertFalse(keyVaultCertificates.certificatesNeedRefresh());
-        Thread.sleep(10);
-        KeyVaultCertificates.updateLastForceRefreshTime();
-        Assertions.assertTrue(keyVaultCertificates.certificatesNeedRefresh());
+        KeyVaultCertificates.updateForceRefreshTime();
         keyVaultCertificates.getAliases();
         Assertions.assertFalse(keyVaultCertificates.certificatesNeedRefresh());
         Thread.sleep(2000);

@@ -599,7 +599,7 @@ public class MetricsAdvisorClientJavaDocCodeSnippets {
                 = (MetricPeriodFeedback) metricFeedback;
             System.out.printf("Data Feed Metric feedback type: %s%n",
                 createMetricPeriodFeedback.getPeriodType().toString());
-            System.out.printf("Data Feed Metric feedback period value: %f%n",
+            System.out.printf("Data Feed Metric feedback period value: %d%n",
                 createMetricPeriodFeedback.getPeriodValue());
         }
         // END: com.azure.ai.metricsadvisor.MetricsAdvisorClient.getFeedback#String
@@ -624,7 +624,7 @@ public class MetricsAdvisorClientJavaDocCodeSnippets {
                 = (MetricPeriodFeedback) metricFeedback;
             System.out.printf("Data Feed Metric feedback type: %s%n",
                 createMetricPeriodFeedback.getPeriodType().toString());
-            System.out.printf("Data Feed Metric feedback period value: %f%n",
+            System.out.printf("Data Feed Metric feedback period value: %d%n",
                 createMetricPeriodFeedback.getPeriodValue());
         }
         // END: com.azure.ai.metricsadvisor.MetricsAdvisorClient.getFeedbackWithResponse#String-Context
@@ -647,7 +647,7 @@ public class MetricsAdvisorClientJavaDocCodeSnippets {
                         = (MetricPeriodFeedback) metricFeedback;
                     System.out.printf("Data Feed Metric feedback type: %s%n",
                         periodFeedback.getPeriodType().toString());
-                    System.out.printf("Data Feed Metric feedback period value: %f%n",
+                    System.out.printf("Data Feed Metric feedback period value: %d%n",
                         periodFeedback.getPeriodValue());
                 } else if (ANOMALY.equals(metricFeedback.getFeedbackType())) {
                     MetricAnomalyFeedback metricAnomalyFeedback
@@ -692,7 +692,7 @@ public class MetricsAdvisorClientJavaDocCodeSnippets {
                         = (MetricPeriodFeedback) metricFeedback;
                     System.out.printf("Data Feed Metric feedback type: %s%n",
                         periodFeedback.getPeriodType().toString());
-                    System.out.printf("Data Feed Metric feedback period value: %f%n",
+                    System.out.printf("Data Feed Metric feedback period value: %d%n",
                         periodFeedback.getPeriodValue());
                 } else if (ANOMALY.equals(metricFeedback.getFeedbackType())) {
                     MetricAnomalyFeedback metricAnomalyFeedback

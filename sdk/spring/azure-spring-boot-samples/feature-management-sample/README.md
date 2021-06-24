@@ -1,6 +1,6 @@
 # Feature Management Sample shared library for Java
 
-This sample describes how to use [spring-cloud-feature-management](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/appconfiguration/spring-cloud-azure-feature-management/README.md) to manage features and how to get configurations from Azure Configuration Service to Spring Environment.
+This sample describes how to use [spring-cloud-feature-management](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/appconfiguration/spring-cloud-azure-feature-management/README.md) to manage features and how to get configurations from Azure Configuration Service to Spring Environment.
 
 ## Key concepts
 ## Getting started
@@ -55,7 +55,7 @@ $ mvn -Dspring.application.name=foo -Dspring.profiles.active=dev spring-boot:run
 
 ### More details
 
-Please refer to this [README](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/appconfiguration/spring-cloud-starter-azure-appconfiguration-config/README.md) about more usage details. 
+Please refer to this [README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/appconfiguration/spring-cloud-starter-azure-appconfiguration-config/README.md) about more usage details. 
 
 ## Examples
 ## Troubleshooting
@@ -63,4 +63,4 @@ Please refer to this [README](https://github.com/Azure/azure-sdk-for-java/blob/m
 ## Contributing
 
 <!-- LINKS -->
-[environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
+[environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
