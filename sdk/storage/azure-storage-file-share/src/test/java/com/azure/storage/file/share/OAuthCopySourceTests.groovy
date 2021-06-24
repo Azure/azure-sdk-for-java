@@ -10,7 +10,8 @@ import com.azure.storage.file.share.models.ShareStorageException
 import com.azure.storage.file.share.options.ShareFileUploadRangeFromUrlOptions
 
 @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2020_10_02")
-class OAuthCopySourceTests extends APISpec {ShareFileClient primaryFileClient
+class OAuthCopySourceTests extends APISpec {
+    ShareFileClient primaryFileClient
     ShareClient shareClient
     String shareName
     String filePath
