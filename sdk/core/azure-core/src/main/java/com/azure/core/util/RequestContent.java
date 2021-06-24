@@ -154,6 +154,10 @@ public abstract class RequestContent {
      * Creates a {@link RequestContent} that uses a serialized {@link Object} as its data.
      * <p>
      * This uses an {@link ObjectSerializer} found on the classpath.
+     * <p>
+     * The {@link RequestContent} returned has a null {@link #getLength()}, if the length of the content is needed use
+     * {@link BinaryData#fromObject(Object)} and {@link RequestContent#fromBinaryData(BinaryData)} to create the request
+     * content.
      *
      * @param serializable An {@link Object} that will be serialized to be the {@link RequestContent} data.
      * @return A new {@link RequestContent}.
@@ -164,6 +168,10 @@ public abstract class RequestContent {
 
     /**
      * Creates a {@link RequestContent} that uses a serialized {@link Object} as its data.
+     * <p>
+     * The {@link RequestContent} returned has a null {@link #getLength()}, if the length of the content is needed use
+     * {@link BinaryData#fromObject(Object, ObjectSerializer)} and {@link RequestContent#fromBinaryData(BinaryData)} to
+     * create the request content.
      *
      * @param serializable An {@link Object} that will be serialized to be the {@link RequestContent} data.
      * @param serializer The {@link ObjectSerializer} that will serialize the {@link Object}.
@@ -219,7 +227,7 @@ public abstract class RequestContent {
      * @return A new {@link RequestContent}.
      * @throws NullPointerException If {@code content} is null.
      */
-    public static RequestContent fromBufferedFlux(BufferedFluxByteBuffer content) {
+    static RequestContent fromBufferedFlux(BufferedFluxByteBuffer content) {
         Objects.requireNonNull(content, "'content' cannot be null.");
         return new FluxByteBufferContent(content);
     }
@@ -233,7 +241,7 @@ public abstract class RequestContent {
      * @throws NullPointerException If {@code content} is null.
      * @throws IllegalStateException If {@code length} is less than 0.
      */
-    public static RequestContent fromBufferedFlux(BufferedFluxByteBuffer content, long length) {
+    static RequestContent fromBufferedFlux(BufferedFluxByteBuffer content, long length) {
         Objects.requireNonNull(content, "'content' cannot be null.");
         if (length < 0) {
             throw new ClientLogger(RequestContent.class).logExceptionAsError(new IllegalArgumentException(

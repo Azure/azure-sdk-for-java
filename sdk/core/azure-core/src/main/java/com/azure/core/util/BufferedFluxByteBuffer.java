@@ -12,7 +12,7 @@ import java.nio.ByteBuffer;
  * A {@code Flux<ByteBuffer>} implementation which buffers the contents of the passed {@code Flux<ByteBuffer>} before
  * emitting them downstream.
  */
-public final class BufferedFluxByteBuffer extends Flux<ByteBuffer> {
+final class BufferedFluxByteBuffer extends Flux<ByteBuffer> {
     private final Flux<ByteBuffer> flux;
 
     /**
@@ -20,17 +20,19 @@ public final class BufferedFluxByteBuffer extends Flux<ByteBuffer> {
      *
      * @param flux The {@code Flux<ByteBuffer>} to buffer.
      */
-    public BufferedFluxByteBuffer(Flux<ByteBuffer> flux) {
-        this.flux = flux;
-    }
-
-    @Override
-    public void subscribe(CoreSubscriber<? super ByteBuffer> actual) {
-        flux.map(ByteBuffer::duplicate).map(buffer -> {
+    BufferedFluxByteBuffer(Flux<ByteBuffer> flux) {
+        this.flux = flux.map(buffer -> {
             ByteBuffer duplicate = ByteBuffer.allocate(buffer.remaining());
             duplicate.put(buffer);
             duplicate.rewind();
             return duplicate;
-        }).subscribe(actual);
+        })
+            .cache()
+            .map(ByteBuffer::duplicate);
+    }
+
+    @Override
+    public void subscribe(CoreSubscriber<? super ByteBuffer> actual) {
+        flux.subscribe(actual);
     }
 }
