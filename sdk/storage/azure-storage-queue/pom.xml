@@ -33,7 +33,7 @@
   </scm>
 
   <properties>
-    <AZURE_TEST_SYSTEM_PLAYBACK_PROPERTIES_FILE>${project.basedir}\ci.system.properties</AZURE_TEST_SYSTEM_PLAYBACK_PROPERTIES_FILE>
+    <AZURE_TEST_SYSTEM_PLAYBACK_PROPERTIES_FILE>../azure-storage-common/ci.system.properties</AZURE_TEST_SYSTEM_PLAYBACK_PROPERTIES_FILE>
   </properties>
 
   <dependencies>
