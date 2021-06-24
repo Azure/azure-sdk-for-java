@@ -82,10 +82,6 @@ public class ShareListFilesAndDirectoriesOptions {
      * @throws IllegalStateException Throws when attempting to set null when other parameters require it to be true.
      */
     public ShareListFilesAndDirectoriesOptions setIncludeExtendedInfo(Boolean includeExtendedInfo) {
-        if (includeTimestamps || includeETag || includeAttributes || includePermissionKey) {
-            throw logger.logExceptionAsError(
-                new IllegalStateException("includeExtendedInfo must be true in the current state."));
-        }
         this.includeExtendedInfo = includeExtendedInfo;
         return this;
     }
@@ -103,9 +99,6 @@ public class ShareListFilesAndDirectoriesOptions {
      */
     public ShareListFilesAndDirectoriesOptions setIncludeTimestamps(boolean includeTimestamps) {
         this.includeTimestamps = includeTimestamps;
-        if (includeTimestamps) {
-            this.includeExtendedInfo = true;
-        }
         return this;
     }
 
@@ -122,9 +115,6 @@ public class ShareListFilesAndDirectoriesOptions {
      */
     public ShareListFilesAndDirectoriesOptions setIncludeETag(boolean includeETag) {
         this.includeETag = includeETag;
-        if (includeETag) {
-            this.includeExtendedInfo = true;
-        }
         return this;
     }
 
@@ -141,9 +131,6 @@ public class ShareListFilesAndDirectoriesOptions {
      */
     public ShareListFilesAndDirectoriesOptions setIncludeAttributes(boolean includeAttributes) {
         this.includeAttributes = includeAttributes;
-        if (includeAttributes) {
-            this.includeExtendedInfo = true;
-        }
         return this;
     }
 
@@ -160,9 +147,6 @@ public class ShareListFilesAndDirectoriesOptions {
      */
     public ShareListFilesAndDirectoriesOptions setIncludePermissionKey(boolean includePermissionKey) {
         this.includePermissionKey = includePermissionKey;
-        if (includePermissionKey) {
-            this.includeExtendedInfo = true;
-        }
         return this;
     }
 }
