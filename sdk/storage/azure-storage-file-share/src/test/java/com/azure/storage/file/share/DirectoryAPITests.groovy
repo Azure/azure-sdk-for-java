@@ -380,6 +380,7 @@ class DirectoryAPITests extends APISpec {
      *                               -> listOp6 (file)
      *              -> listOp2 (file)
      */
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2020_10_02")
     @Unroll
     def "List files and directories args"() {
         given:
@@ -432,6 +433,7 @@ class DirectoryAPITests extends APISpec {
         ""          | null       | false      | false | false      | false         | true                || true                      | true
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2020_10_02")
     def "List files and directories extended info results"() {
         given:
         def parentDir = primaryDirectoryClient
