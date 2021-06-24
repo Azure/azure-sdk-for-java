@@ -85,7 +85,7 @@ public class AnalyzeActions {
                 perPage.getContinuationToken());
             for (AnalyzeActionsResult actionsResult : perPage.getElements()) {
                 System.out.println("Entities recognition action results:");
-                for (RecognizeEntitiesActionResult actionResult : actionsResult.getRecognizeEntitiesActionResults()) {
+                for (RecognizeEntitiesActionResult actionResult : actionsResult.getRecognizeEntitiesResults()) {
                     if (!actionResult.isError()) {
                         for (RecognizeEntitiesResult documentResult : actionResult.getDocumentsResults()) {
                             if (!documentResult.isError()) {
@@ -106,7 +106,7 @@ public class AnalyzeActions {
                 }
 
                 System.out.println("Key phrases extraction action results:");
-                for (ExtractKeyPhrasesActionResult actionResult : actionsResult.getExtractKeyPhrasesActionResults()) {
+                for (ExtractKeyPhrasesActionResult actionResult : actionsResult.getExtractKeyPhrasesResults()) {
                     if (!actionResult.isError()) {
                         for (ExtractKeyPhraseResult documentResult : actionResult.getDocumentsResults()) {
                             if (!documentResult.isError()) {

@@ -1,6 +1,6 @@
 # Release History
 
-## 5.1.0-beta.8 (Unreleased)
+## 5.1.0 (Unreleased)
 #### Feature Added
 - We are now targeting the service's v3.1 API as the default instead of v3.1-preview.4.
 - Added a new class, `HealthcareEntityCategory` to replace the `String` type of property `category` in the `HealthcareEntity`.
@@ -12,7 +12,11 @@
 ### Breaking Changes
 - Removed `StringIndexType`. This SDK will keep using UTF-16 code unit as the default encoding.
 - Removed type `ExtractKeyPhrasesOptions`, `RecognizeEntitiesOptions`, `RecognizeLinkedEntitiesOptions` and respective exposures.
+- Removed the property `statistics` from `AnalyzeActionsResult` as it is not currently returned by the service even if 
+  the user passes `includeStatistics` = `true`.
 - Renamed type `PiiEntityDomainType` to `PiiEntityDomain`.
+- Renamed `AnalyzeActionResult`'s property `recognizeEntitiesActionResults` to `recognizeEntitiesResults` which dropped the keyword `Action`.
+  This change applied to all the other `***ActionResults` properties as well.
 - Renamed property name `result` to `documentsResults` in `AnalyzeSentimentActionResult`, `ExtractKeyPhrasesActionResult`,
   `RecognizeEntitiesActionResult`, `RecognizeLinkedEntitiesActionResult`, and `RecognizePiiEntitiesActionResult`. 
 - `TextAnalyticsActions` now takes `***Action` types, instead of `***Options` types. Renamed The getter and setter method names

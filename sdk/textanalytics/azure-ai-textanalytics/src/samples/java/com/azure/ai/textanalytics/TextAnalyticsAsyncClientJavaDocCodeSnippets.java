@@ -883,7 +883,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             .subscribe(
                 analyzeActionsResultPagedFlux -> analyzeActionsResultPagedFlux.subscribe(
                     analyzeActionsResult -> {
-                        analyzeActionsResult.getRecognizeEntitiesActionResults().forEach(
+                        analyzeActionsResult.getRecognizeEntitiesResults().forEach(
                             actionResult -> {
                                 if (!actionResult.isError()) {
                                     actionResult.getDocumentsResults().forEach(
@@ -895,7 +895,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                                                 entity.getConfidenceScore())));
                                 }
                             });
-                        analyzeActionsResult.getExtractKeyPhrasesActionResults().forEach(
+                        analyzeActionsResult.getExtractKeyPhrasesResults().forEach(
                             actionResult -> {
                                 if (!actionResult.isError()) {
                                     actionResult.getDocumentsResults().forEach(extractKeyPhraseResult -> {
@@ -927,7 +927,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 analyzeActionsResultPagedFlux -> analyzeActionsResultPagedFlux.subscribe(
                     analyzeActionsResult -> {
                         System.out.println("Entities recognition action results:");
-                        analyzeActionsResult.getRecognizeEntitiesActionResults().forEach(
+                        analyzeActionsResult.getRecognizeEntitiesResults().forEach(
                             actionResult -> {
                                 if (!actionResult.isError()) {
                                     actionResult.getDocumentsResults().forEach(
@@ -940,7 +940,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                                 }
                             });
                         System.out.println("Key phrases extraction action results:");
-                        analyzeActionsResult.getExtractKeyPhrasesActionResults().forEach(
+                        analyzeActionsResult.getExtractKeyPhrasesResults().forEach(
                             actionResult -> {
                                 if (!actionResult.isError()) {
                                     actionResult.getDocumentsResults().forEach(extractKeyPhraseResult -> {

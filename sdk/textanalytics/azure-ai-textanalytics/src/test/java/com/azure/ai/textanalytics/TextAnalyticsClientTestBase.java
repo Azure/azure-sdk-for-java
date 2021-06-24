@@ -1596,20 +1596,20 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 //        }
 
         validateRecognizeEntitiesActionResults(showStatistics,
-            expected.getRecognizeEntitiesActionResults().stream().collect(Collectors.toList()),
-            actual.getRecognizeEntitiesActionResults().stream().collect(Collectors.toList()));
+            expected.getRecognizeEntitiesResults().stream().collect(Collectors.toList()),
+            actual.getRecognizeEntitiesResults().stream().collect(Collectors.toList()));
         validateRecognizeLinkedEntitiesActionResults(showStatistics,
-            expected.getRecognizeLinkedEntitiesActionResults().stream().collect(Collectors.toList()),
-            actual.getRecognizeLinkedEntitiesActionResults().stream().collect(Collectors.toList()));
+            expected.getRecognizeLinkedEntitiesResults().stream().collect(Collectors.toList()),
+            actual.getRecognizeLinkedEntitiesResults().stream().collect(Collectors.toList()));
         validateRecognizePiiEntitiesActionResults(showStatistics,
-            expected.getRecognizePiiEntitiesActionResults().stream().collect(Collectors.toList()),
-            actual.getRecognizePiiEntitiesActionResults().stream().collect(Collectors.toList()));
+            expected.getRecognizePiiEntitiesResults().stream().collect(Collectors.toList()),
+            actual.getRecognizePiiEntitiesResults().stream().collect(Collectors.toList()));
         validateExtractKeyPhrasesActionResults(showStatistics,
-            expected.getExtractKeyPhrasesActionResults().stream().collect(Collectors.toList()),
-            actual.getExtractKeyPhrasesActionResults().stream().collect(Collectors.toList()));
+            expected.getExtractKeyPhrasesResults().stream().collect(Collectors.toList()),
+            actual.getExtractKeyPhrasesResults().stream().collect(Collectors.toList()));
         validateAnalyzeSentimentActionResults(showStatistics, includeOpinionMining,
-            expected.getAnalyzeSentimentActionResults().stream().collect(Collectors.toList()),
-            actual.getAnalyzeSentimentActionResults().stream().collect(Collectors.toList()));
+            expected.getAnalyzeSentimentResults().stream().collect(Collectors.toList()),
+            actual.getAnalyzeSentimentResults().stream().collect(Collectors.toList()));
     }
 
     // Action results validation

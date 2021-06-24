@@ -261,7 +261,7 @@ public class ReadmeSamples {
         syncPoller.waitForCompletion();
         syncPoller.getFinalResult().forEach(analyzeActionsResult -> {
             System.out.println("Key phrases extraction action results:");
-            analyzeActionsResult.getExtractKeyPhrasesActionResults().forEach(actionResult -> {
+            analyzeActionsResult.getExtractKeyPhrasesResults().forEach(actionResult -> {
                 AtomicInteger counter = new AtomicInteger();
                 if (!actionResult.isError()) {
                     for (ExtractKeyPhraseResult extractKeyPhraseResult : actionResult.getDocumentsResults()) {
@@ -273,7 +273,7 @@ public class ReadmeSamples {
                 }
             });
             System.out.println("PII entities recognition action results:");
-            analyzeActionsResult.getRecognizePiiEntitiesActionResults().forEach(actionResult -> {
+            analyzeActionsResult.getRecognizePiiEntitiesResults().forEach(actionResult -> {
                 AtomicInteger counter = new AtomicInteger();
                 if (!actionResult.isError()) {
                     for (RecognizePiiEntitiesResult entitiesResult : actionResult.getDocumentsResults()) {

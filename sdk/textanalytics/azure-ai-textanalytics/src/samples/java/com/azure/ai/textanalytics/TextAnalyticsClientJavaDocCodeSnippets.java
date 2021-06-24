@@ -930,7 +930,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         PagedIterable<AnalyzeActionsResult> result = syncPoller.getFinalResult();
         result.forEach(analyzeActionsResult -> {
             System.out.println("Entities recognition action results:");
-            analyzeActionsResult.getRecognizeEntitiesActionResults().forEach(
+            analyzeActionsResult.getRecognizeEntitiesResults().forEach(
                 actionResult -> {
                     if (!actionResult.isError()) {
                         actionResult.getDocumentsResults().forEach(
@@ -943,7 +943,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
                     }
                 });
             System.out.println("Key phrases extraction action results:");
-            analyzeActionsResult.getExtractKeyPhrasesActionResults().forEach(
+            analyzeActionsResult.getExtractKeyPhrasesResults().forEach(
                 actionResult -> {
                     if (!actionResult.isError()) {
                         actionResult.getDocumentsResults().forEach(extractKeyPhraseResult -> {
@@ -980,7 +980,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         PagedIterable<AnalyzeActionsResult> result = syncPoller.getFinalResult();
         result.forEach(analyzeActionsResult -> {
             System.out.println("Entities recognition action results:");
-            analyzeActionsResult.getRecognizeEntitiesActionResults().forEach(
+            analyzeActionsResult.getRecognizeEntitiesResults().forEach(
                 actionResult -> {
                     if (!actionResult.isError()) {
                         actionResult.getDocumentsResults().forEach(
@@ -993,7 +993,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
                     }
                 });
             System.out.println("Key phrases extraction action results:");
-            analyzeActionsResult.getExtractKeyPhrasesActionResults().forEach(
+            analyzeActionsResult.getExtractKeyPhrasesResults().forEach(
                 actionResult -> {
                     if (!actionResult.isError()) {
                         actionResult.getDocumentsResults().forEach(extractKeyPhraseResult -> {
