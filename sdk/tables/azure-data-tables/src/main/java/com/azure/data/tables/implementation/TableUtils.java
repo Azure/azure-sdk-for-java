@@ -123,18 +123,6 @@ public final class TableUtils {
     }
 
     /**
-     * Applies a timeout to a {@link PagedFlux publisher} if the given timeout is not null.
-     *
-     * @param publisher {@link PagedFlux} to apply optional timeout to.
-     * @param timeout Optional timeout.
-     * @param <T> Return type of the {@link PagedFlux}.
-     * @return {@link PagedFlux} with an applied timeout, if any.
-     */
-    public static <T> PagedFlux<T> applyOptionalTimeout(PagedFlux<T> publisher, Duration timeout) {
-        return timeout == null ? publisher : (PagedFlux<T>) publisher.timeout(timeout);
-    }
-
-    /**
      * Blocks an asynchronous response with an optional timeout.
      *
      * @param response Asynchronous response to block.
