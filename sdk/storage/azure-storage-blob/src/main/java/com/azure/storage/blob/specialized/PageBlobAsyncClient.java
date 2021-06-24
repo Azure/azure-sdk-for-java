@@ -25,6 +25,7 @@ import com.azure.storage.blob.implementation.models.PageBlobsUploadPagesFromURLH
 import com.azure.storage.blob.implementation.models.PageBlobsUploadPagesHeaders;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.BlobHttpHeaders;
+import com.azure.storage.blob.models.BlobImmutabilityPolicy;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.CopyStatusType;
@@ -285,13 +286,16 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
                 new IllegalArgumentException("SequenceNumber must be greater than or equal to 0."));
         }
         context = context == null ? Context.NONE : context;
+        BlobImmutabilityPolicy immutabilityPolicy = options.getImmutabilityPolicy() == null
+            ? new BlobImmutabilityPolicy() : options.getImmutabilityPolicy();
 
         return this.azureBlobStorage.getPageBlobs().createWithResponseAsync(containerName, blobName, 0,
             options.getSize(), null, null, options.getMetadata(), requestConditions.getLeaseId(),
             requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
             requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(),
-            options.getSequenceNumber(), null, tagsToString(options.getTags()), options.getHeaders(),
-            getCustomerProvidedKey(), encryptionScope,
+            options.getSequenceNumber(), null, tagsToString(options.getTags()),
+            immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(), options.isLegalHold(),
+            options.getHeaders(), getCustomerProvidedKey(), encryptionScope,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
                 PageBlobsCreateHeaders hd = rb.getDeserializedHeaders();
@@ -509,7 +513,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
             destRequestConditions.getIfMatch(), destRequestConditions.getIfNoneMatch(),
             destRequestConditions.getTagsConditions(), sourceRequestConditions.getIfModifiedSince(),
             sourceRequestConditions.getIfUnmodifiedSince(), sourceRequestConditions.getIfMatch(),
-            sourceRequestConditions.getIfNoneMatch(), null, getCustomerProvidedKey(), encryptionScope,
+            sourceRequestConditions.getIfNoneMatch(), null, null, getCustomerProvidedKey(), encryptionScope,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
                 PageBlobsUploadPagesFromURLHeaders hd = rb.getDeserializedHeaders();

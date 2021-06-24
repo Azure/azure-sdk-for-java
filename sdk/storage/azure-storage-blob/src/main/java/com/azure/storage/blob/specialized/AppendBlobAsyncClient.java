@@ -21,6 +21,7 @@ import com.azure.storage.blob.implementation.models.AppendBlobsAppendBlockFromUr
 import com.azure.storage.blob.implementation.models.AppendBlobsAppendBlockHeaders;
 import com.azure.storage.blob.implementation.models.AppendBlobsCreateHeaders;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
+import com.azure.storage.blob.models.BlobImmutabilityPolicy;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.options.AppendBlobCreateOptions;
 import com.azure.storage.blob.models.AppendBlobRequestConditions;
@@ -233,13 +234,16 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
         BlobRequestConditions requestConditions = options.getRequestConditions();
         requestConditions = (requestConditions == null) ? new BlobRequestConditions() : requestConditions;
         context = context == null ? Context.NONE : context;
+        BlobImmutabilityPolicy immutabilityPolicy = options.getImmutabilityPolicy() == null
+            ? new BlobImmutabilityPolicy() : options.getImmutabilityPolicy();
 
         return this.azureBlobStorage.getAppendBlobs().createWithResponseAsync(containerName, blobName, 0, null,
             options.getMetadata(), requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
             requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,
-            tagsToString(options.getTags()), options.getHeaders(), getCustomerProvidedKey(), encryptionScope,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            tagsToString(options.getTags()), immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(),
+            options.isLegalHold(), options.getHeaders(), getCustomerProvidedKey(),
+            encryptionScope, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
                 AppendBlobsCreateHeaders hd = rb.getDeserializedHeaders();
                 AppendBlobItem item = new AppendBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
@@ -408,7 +412,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
             destRequestConditions.getIfMatch(), destRequestConditions.getIfNoneMatch(),
             destRequestConditions.getTagsConditions(), sourceRequestConditions.getIfModifiedSince(),
             sourceRequestConditions.getIfUnmodifiedSince(), sourceRequestConditions.getIfMatch(),
-            sourceRequestConditions.getIfNoneMatch(), null, getCustomerProvidedKey(), encryptionScope,
+            sourceRequestConditions.getIfNoneMatch(), null, null, getCustomerProvidedKey(), encryptionScope,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
                 AppendBlobsAppendBlockFromUrlHeaders hd = rb.getDeserializedHeaders();
