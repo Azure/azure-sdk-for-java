@@ -138,7 +138,7 @@ public class KeyVaultCertificates implements AzureCertificates {
 
     private synchronized void refreshCertificates() {
         if (!certificatesNeedRefresh()) {
-            return; // After obtaining the lock, avoid to do much operation as much as we can.
+            return; // After obtaining the lock, avoid doing too many operations.
         }
         // When refreshing certificates, the update of the 3 variables should be an atomic operation.
         aliases = keyVaultClient.getAliases();
