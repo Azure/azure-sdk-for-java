@@ -10,9 +10,9 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
  *
  * @see <a href="https://docs.spring.io/spring-boot/docs/current/reference/html/appendix-configuration-metadata.html">Metadata</a>
  */
-@EnableConfigurationProperties({ KeyVaultProperties.class })
+@EnableConfigurationProperties({ AzureKeyVaultProperties.class })
 @ConfigurationProperties("azure.keyvault")
-public class KeyVaultProperties {
+public class AzureKeyVaultProperties {
     /**
      * The URI to the Azure Key Vault used
      */
