@@ -69,6 +69,13 @@ public interface Cluster {
     String cloudId();
 
     /**
+     * Gets the cloudManagementEndpoint property: Endpoint configured for management from the Azure portal.
+     *
+     * @return the cloudManagementEndpoint value.
+     */
+    String cloudManagementEndpoint();
+
+    /**
      * Gets the aadClientId property: App id of cluster AAD identity.
      *
      * @return the aadClientId value.
@@ -233,9 +240,9 @@ public interface Cluster {
          */
         interface WithCreate
             extends DefinitionStages.WithTags,
+                DefinitionStages.WithCloudManagementEndpoint,
                 DefinitionStages.WithAadClientId,
                 DefinitionStages.WithAadTenantId,
-                DefinitionStages.WithReportedProperties,
                 DefinitionStages.WithCreatedBy,
                 DefinitionStages.WithCreatedByType,
                 DefinitionStages.WithCreatedAt,
@@ -267,6 +274,16 @@ public interface Cluster {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+        /** The stage of the Cluster definition allowing to specify cloudManagementEndpoint. */
+        interface WithCloudManagementEndpoint {
+            /**
+             * Specifies the cloudManagementEndpoint property: Endpoint configured for management from the Azure portal.
+             *
+             * @param cloudManagementEndpoint Endpoint configured for management from the Azure portal.
+             * @return the next definition stage.
+             */
+            WithCreate withCloudManagementEndpoint(String cloudManagementEndpoint);
+        }
         /** The stage of the Cluster definition allowing to specify aadClientId. */
         interface WithAadClientId {
             /**
@@ -286,16 +303,6 @@ public interface Cluster {
              * @return the next definition stage.
              */
             WithCreate withAadTenantId(String aadTenantId);
-        }
-        /** The stage of the Cluster definition allowing to specify reportedProperties. */
-        interface WithReportedProperties {
-            /**
-             * Specifies the reportedProperties property: Properties reported by cluster agent..
-             *
-             * @param reportedProperties Properties reported by cluster agent.
-             * @return the next definition stage.
-             */
-            WithCreate withReportedProperties(ClusterReportedProperties reportedProperties);
         }
         /** The stage of the Cluster definition allowing to specify createdBy. */
         interface WithCreatedBy {
@@ -366,7 +373,7 @@ public interface Cluster {
     Cluster.Update update();
 
     /** The template for Cluster update. */
-    interface Update extends UpdateStages.WithTags {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithCloudManagementEndpoint {
         /**
          * Executes the update request.
          *
@@ -393,6 +400,16 @@ public interface Cluster {
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
+        }
+        /** The stage of the Cluster update allowing to specify cloudManagementEndpoint. */
+        interface WithCloudManagementEndpoint {
+            /**
+             * Specifies the cloudManagementEndpoint property: Endpoint configured for management from the Azure portal.
+             *
+             * @param cloudManagementEndpoint Endpoint configured for management from the Azure portal.
+             * @return the next definition stage.
+             */
+            Update withCloudManagementEndpoint(String cloudManagementEndpoint);
         }
     }
     /**

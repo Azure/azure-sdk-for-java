@@ -8,8 +8,8 @@ import com.azure.core.management.Region;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.azurestackhci.fluent.models.ClusterInner;
 import com.azure.resourcemanager.azurestackhci.models.Cluster;
+import com.azure.resourcemanager.azurestackhci.models.ClusterPatch;
 import com.azure.resourcemanager.azurestackhci.models.ClusterReportedProperties;
-import com.azure.resourcemanager.azurestackhci.models.ClusterUpdate;
 import com.azure.resourcemanager.azurestackhci.models.CreatedByType;
 import com.azure.resourcemanager.azurestackhci.models.ProvisioningState;
 import com.azure.resourcemanager.azurestackhci.models.Status;
@@ -57,6 +57,10 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
 
     public String cloudId() {
         return this.innerModel().cloudId();
+    }
+
+    public String cloudManagementEndpoint() {
+        return this.innerModel().cloudManagementEndpoint();
     }
 
     public String aadClientId() {
@@ -135,7 +139,7 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
 
     private String clusterName;
 
-    private ClusterUpdate updateCluster;
+    private ClusterPatch updateCluster;
 
     public ClusterImpl withExistingResourceGroup(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
@@ -169,7 +173,7 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
     }
 
     public ClusterImpl update() {
-        this.updateCluster = new ClusterUpdate();
+        this.updateCluster = new ClusterPatch();
         return this;
     }
 
@@ -240,6 +244,16 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         }
     }
 
+    public ClusterImpl withCloudManagementEndpoint(String cloudManagementEndpoint) {
+        if (isInCreateMode()) {
+            this.innerModel().withCloudManagementEndpoint(cloudManagementEndpoint);
+            return this;
+        } else {
+            this.updateCluster.withCloudManagementEndpoint(cloudManagementEndpoint);
+            return this;
+        }
+    }
+
     public ClusterImpl withAadClientId(String aadClientId) {
         this.innerModel().withAadClientId(aadClientId);
         return this;
@@ -247,11 +261,6 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
 
     public ClusterImpl withAadTenantId(String aadTenantId) {
         this.innerModel().withAadTenantId(aadTenantId);
-        return this;
-    }
-
-    public ClusterImpl withReportedProperties(ClusterReportedProperties reportedProperties) {
-        this.innerModel().withReportedProperties(reportedProperties);
         return this;
     }
 

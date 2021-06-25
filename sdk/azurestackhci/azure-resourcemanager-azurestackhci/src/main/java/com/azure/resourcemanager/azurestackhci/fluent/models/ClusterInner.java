@@ -42,6 +42,12 @@ public class ClusterInner extends Resource {
     private String cloudId;
 
     /*
+     * Endpoint configured for management from the Azure portal
+     */
+    @JsonProperty(value = "properties.cloudManagementEndpoint")
+    private String cloudManagementEndpoint;
+
+    /*
      * App id of cluster AAD identity.
      */
     @JsonProperty(value = "properties.aadClientId")
@@ -56,7 +62,7 @@ public class ClusterInner extends Resource {
     /*
      * Properties reported by cluster agent.
      */
-    @JsonProperty(value = "properties.reportedProperties")
+    @JsonProperty(value = "properties.reportedProperties", access = JsonProperty.Access.WRITE_ONLY)
     private ClusterReportedProperties reportedProperties;
 
     /*
@@ -153,6 +159,26 @@ public class ClusterInner extends Resource {
     }
 
     /**
+     * Get the cloudManagementEndpoint property: Endpoint configured for management from the Azure portal.
+     *
+     * @return the cloudManagementEndpoint value.
+     */
+    public String cloudManagementEndpoint() {
+        return this.cloudManagementEndpoint;
+    }
+
+    /**
+     * Set the cloudManagementEndpoint property: Endpoint configured for management from the Azure portal.
+     *
+     * @param cloudManagementEndpoint the cloudManagementEndpoint value to set.
+     * @return the ClusterInner object itself.
+     */
+    public ClusterInner withCloudManagementEndpoint(String cloudManagementEndpoint) {
+        this.cloudManagementEndpoint = cloudManagementEndpoint;
+        return this;
+    }
+
+    /**
      * Get the aadClientId property: App id of cluster AAD identity.
      *
      * @return the aadClientId value.
@@ -199,17 +225,6 @@ public class ClusterInner extends Resource {
      */
     public ClusterReportedProperties reportedProperties() {
         return this.reportedProperties;
-    }
-
-    /**
-     * Set the reportedProperties property: Properties reported by cluster agent.
-     *
-     * @param reportedProperties the reportedProperties value to set.
-     * @return the ClusterInner object itself.
-     */
-    public ClusterInner withReportedProperties(ClusterReportedProperties reportedProperties) {
-        this.reportedProperties = reportedProperties;
-        return this;
     }
 
     /**

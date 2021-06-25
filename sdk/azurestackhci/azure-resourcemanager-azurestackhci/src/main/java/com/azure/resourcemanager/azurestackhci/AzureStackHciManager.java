@@ -9,7 +9,6 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -17,14 +16,19 @@ import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.azurestackhci.fluent.AzureStackHciClient;
+import com.azure.resourcemanager.azurestackhci.implementation.ArcSettingsImpl;
 import com.azure.resourcemanager.azurestackhci.implementation.AzureStackHciClientBuilder;
 import com.azure.resourcemanager.azurestackhci.implementation.ClustersImpl;
+import com.azure.resourcemanager.azurestackhci.implementation.ExtensionsImpl;
 import com.azure.resourcemanager.azurestackhci.implementation.OperationsImpl;
+import com.azure.resourcemanager.azurestackhci.models.ArcSettings;
 import com.azure.resourcemanager.azurestackhci.models.Clusters;
+import com.azure.resourcemanager.azurestackhci.models.Extensions;
 import com.azure.resourcemanager.azurestackhci.models.Operations;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
@@ -34,9 +38,13 @@ import java.util.Objects;
 
 /** Entry point to AzureStackHciManager. Azure Stack HCI management service. */
 public final class AzureStackHciManager {
-    private Operations operations;
+    private ArcSettings arcSettings;
 
     private Clusters clusters;
+
+    private Extensions extensions;
+
+    private Operations operations;
 
     private final AzureStackHciClient clientObject;
 
@@ -81,6 +89,7 @@ public final class AzureStackHciManager {
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
         private final List<HttpPipelinePolicy> policies = new ArrayList<>();
+        private final List<String> scopes = new ArrayList<>();
         private RetryPolicy retryPolicy;
         private Duration defaultPollInterval;
 
@@ -117,6 +126,17 @@ public final class AzureStackHciManager {
          */
         public Configurable withPolicy(HttpPipelinePolicy policy) {
             this.policies.add(Objects.requireNonNull(policy, "'policy' cannot be null."));
+            return this;
+        }
+
+        /**
+         * Adds the scope to permission sets.
+         *
+         * @param scope the scope.
+         * @return the configurable object itself.
+         */
+        public Configurable withScope(String scope) {
+            this.scopes.add(Objects.requireNonNull(scope, "'scope' cannot be null."));
             return this;
         }
 
@@ -176,6 +196,9 @@ public final class AzureStackHciManager {
                 userAgentBuilder.append(" (auto-generated)");
             }
 
+            if (scopes.isEmpty()) {
+                scopes.add(profile.getEnvironment().getManagementEndpoint() + "/.default");
+            }
             if (retryPolicy == null) {
                 retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
             }
@@ -185,10 +208,7 @@ public final class AzureStackHciManager {
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
-            policies
-                .add(
-                    new BearerTokenAuthenticationPolicy(
-                        credential, profile.getEnvironment().getManagementEndpoint() + "/.default"));
+            policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
             policies.addAll(this.policies);
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
@@ -201,12 +221,12 @@ public final class AzureStackHciManager {
         }
     }
 
-    /** @return Resource collection API of Operations. */
-    public Operations operations() {
-        if (this.operations == null) {
-            this.operations = new OperationsImpl(clientObject.getOperations(), this);
+    /** @return Resource collection API of ArcSettings. */
+    public ArcSettings arcSettings() {
+        if (this.arcSettings == null) {
+            this.arcSettings = new ArcSettingsImpl(clientObject.getArcSettings(), this);
         }
-        return operations;
+        return arcSettings;
     }
 
     /** @return Resource collection API of Clusters. */
@@ -215,6 +235,22 @@ public final class AzureStackHciManager {
             this.clusters = new ClustersImpl(clientObject.getClusters(), this);
         }
         return clusters;
+    }
+
+    /** @return Resource collection API of Extensions. */
+    public Extensions extensions() {
+        if (this.extensions == null) {
+            this.extensions = new ExtensionsImpl(clientObject.getExtensions(), this);
+        }
+        return extensions;
+    }
+
+    /** @return Resource collection API of Operations. */
+    public Operations operations() {
+        if (this.operations == null) {
+            this.operations = new OperationsImpl(clientObject.getOperations(), this);
+        }
+        return operations;
     }
 
     /**
