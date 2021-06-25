@@ -51,6 +51,7 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <modules>
+        <module>azure-resourcemanager-search</module>
         <module>azure-search-documents</module>
         <module>azure-search-perf</module>
       </modules>
