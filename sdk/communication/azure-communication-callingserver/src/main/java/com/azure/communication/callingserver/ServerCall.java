@@ -52,7 +52,7 @@ public final class ServerCall {
         String callBackUri,
         String alternateCallerId,
         String operationContext) {
-        return serverCallAsync.addParticipant(participant, alternateCallerId, operationContext, callBackUri).block();
+        return serverCallAsync.addParticipant(participant, callBackUri, alternateCallerId, operationContext).block();
     }
 
     /**
