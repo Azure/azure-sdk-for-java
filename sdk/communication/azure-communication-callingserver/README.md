@@ -191,5 +191,5 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [call_recording_overview]:https://docs.microsoft.com/en-us/azure/communication-services/concepts/voice-video-calling/call-recording
 [call_automation_apis_quickstart]:https://docs.microsoft.com/en-us/azure/communication-services/quickstarts/voice-video-calling/call-automation-api-sample?pivots=programming-language-java
 [call_recording_quickstart]:https://docs.microsoft.com/en-us/azure/communication-services/quickstarts/voice-video-calling/call-recording-sample?pivots=programming-language-java
-[record_and_download_calls_with_event_grid]:https://docs.microsoft.com/en-us/azure/communication-services/quickstarts/voice-video-calling/download-recording-file-sample?pivots=programming-language-java
+[record_and_download_calls_with_event_grid]:https://docs.microsoft.com/en-us/azure/communication-services/quickstarts/voice-video-calling/download-recording-file-sample
 [source]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/communication/azure-communication-callingserver/src
