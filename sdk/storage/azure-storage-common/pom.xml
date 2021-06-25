@@ -61,6 +61,14 @@
 
     <dependency>
       <groupId>com.azure</groupId>
+      <artifactId>azure-storage-common</artifactId>
+      <version>12.13.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
+      <classifier>tests</classifier>
+      <type>test-jar</type>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
       <version>1.6.3</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
@@ -121,20 +129,19 @@
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>3.2.0</version>
         <executions>
           <execution>
-            <id>test-jar</id>
-            <phase>test-compile</phase>
+            <id>test-shared-jar</id>
+            <phase>process-test-classes</phase>
             <goals>
-              <goal>test-jar</goal>
+              <goal>single</goal>
             </goals>
             <configuration>
-              <includes>
-                <include>com/azure/storage/common/test/shared/**/*</include>
-                <include>SpockConfig.groovy</include>
-              </includes>
+              <descriptors>
+                <descriptor>src/test-shared/assembly/assembly.xml</descriptor>
+              </descriptors>
             </configuration>
           </execution>
         </executions>
