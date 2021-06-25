@@ -64,7 +64,7 @@ public class ClientSecretCredentialBuilder extends AadCredentialBuilderBase<Clie
 
     /**
      * Specifies either the specific regional authority, or use {@link RegionalAuthority#AUTO_DISCOVER_REGION} to
-     * attempt to auto-detect the region. If unset, a regional authority will not be used. This argument should be used
+     * attempt to auto-detect the region. If unset, a non-regional authority will be used. This argument should be used
      * only by applications deployed to Azure VMs.
      *
      * @param regionalAuthority the regional authority
