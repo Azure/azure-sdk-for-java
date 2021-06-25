@@ -18,6 +18,7 @@ public final class CategorizedEntityPropertiesHelper {
      */
     public interface CategorizedEntityAccessor {
         void setLength(CategorizedEntity entity, int length);
+        void setOffset(CategorizedEntity entity, int offset);
     }
 
     /**
@@ -31,5 +32,9 @@ public final class CategorizedEntityPropertiesHelper {
 
     public static void setLength(CategorizedEntity entity, int length) {
         accessor.setLength(entity, length);
+    }
+
+    public static void setOffset(CategorizedEntity entity, int offset) {
+        accessor.setOffset(entity, offset);
     }
 }

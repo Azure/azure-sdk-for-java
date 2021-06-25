@@ -335,8 +335,9 @@ public final class Utility {
                     new IterableStream<>(documentEntities.getEntities().stream().map(entity -> {
                         final CategorizedEntity categorizedEntity = new CategorizedEntity(entity.getText(),
                             EntityCategory.fromString(entity.getCategory()), entity.getSubcategory(),
-                            entity.getConfidenceScore(), entity.getOffset());
+                            entity.getConfidenceScore());
                         CategorizedEntityPropertiesHelper.setLength(categorizedEntity, entity.getLength());
+                        CategorizedEntityPropertiesHelper.setOffset(categorizedEntity, entity.getOffset());
                         return categorizedEntity;
                     }).collect(Collectors.toList())),
                     new IterableStream<>(documentEntities.getWarnings().stream()
@@ -451,22 +452,27 @@ public final class Utility {
                     null,
                     new LinkedEntityCollection(new IterableStream<>(
                         documentLinkedEntities.getEntities().stream().map(
-                            linkedEntity -> new LinkedEntity(
-                                linkedEntity.getName(),
-                                new IterableStream<>(
-                                    linkedEntity.getMatches().stream().map(
-                                        match -> {
-                                            final LinkedEntityMatch linkedEntityMatch = new LinkedEntityMatch(
-                                                match.getText(), match.getConfidenceScore(), match.getOffset());
-                                            LinkedEntityMatchPropertiesHelper.setLength(linkedEntityMatch,
-                                                match.getLength());
-                                            return linkedEntityMatch;
-                                        }).collect(Collectors.toList())),
-                                linkedEntity.getLanguage(),
-                                linkedEntity.getId(),
-                                linkedEntity.getUrl(),
-                                linkedEntity.getDataSource(),
-                                linkedEntity.getBingId())).collect(Collectors.toList())),
+                            linkedEntity -> {
+                                final LinkedEntity entity = new LinkedEntity(
+                                    linkedEntity.getName(),
+                                    new IterableStream<>(
+                                        linkedEntity.getMatches().stream().map(
+                                            match -> {
+                                                final LinkedEntityMatch linkedEntityMatch = new LinkedEntityMatch(
+                                                    match.getText(), match.getConfidenceScore());
+                                                LinkedEntityMatchPropertiesHelper.setOffset(linkedEntityMatch,
+                                                    match.getOffset());
+                                                LinkedEntityMatchPropertiesHelper.setLength(linkedEntityMatch,
+                                                    match.getLength());
+                                                return linkedEntityMatch;
+                                            }).collect(Collectors.toList())),
+                                    linkedEntity.getLanguage(),
+                                    linkedEntity.getId(),
+                                    linkedEntity.getUrl(),
+                                    linkedEntity.getDataSource());
+                                LinkedEntityPropertiesHelper.setBingEntitySearchApiId(entity, linkedEntity.getBingId());
+                                return entity;
+                            }).collect(Collectors.toList())),
                         new IterableStream<>(documentLinkedEntities.getWarnings().stream().map(
                             warning -> {
                                 final WarningCodeValue warningCodeValue = warning.getCode();

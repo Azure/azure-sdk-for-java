@@ -155,8 +155,9 @@ class RecognizeEntityAsyncClient {
                     new IterableStream<>(documentEntities.getEntities().stream().map(entity -> {
                         final CategorizedEntity categorizedEntity =
                             new CategorizedEntity(entity.getText(), EntityCategory.fromString(entity.getCategory()),
-                                entity.getSubcategory(), entity.getConfidenceScore(), entity.getOffset());
+                                entity.getSubcategory(), entity.getConfidenceScore());
                         CategorizedEntityPropertiesHelper.setLength(categorizedEntity, entity.getLength());
+                        CategorizedEntityPropertiesHelper.setOffset(categorizedEntity, entity.getOffset());
                         return categorizedEntity;
                     }).collect(Collectors.toList())),
                     new IterableStream<>(documentEntities.getWarnings().stream()
