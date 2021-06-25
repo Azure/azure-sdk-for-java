@@ -38,4 +38,5 @@ spring:
       poller:
         initial-delay: 0
         fixed-delay: 1000
-
+  profiles:
+    active: manual
