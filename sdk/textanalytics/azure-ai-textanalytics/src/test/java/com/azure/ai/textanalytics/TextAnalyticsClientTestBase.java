@@ -799,7 +799,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         BiConsumer<List<String>, RecognizePiiEntitiesOptions> testRunner) {
         testRunner.accept(PII_ENTITY_INPUTS,
             new RecognizePiiEntitiesOptions().setCategoriesFilter(
-                PiiEntityCategory.USSOCIAL_SECURITY_NUMBER, PiiEntityCategory.ABAROUTING_NUMBER));
+                PiiEntityCategory.US_SOCIAL_SECURITY_NUMBER, PiiEntityCategory.ABA_ROUTING_NUMBER));
     }
 
     // Linked Entity runner
@@ -1074,8 +1074,8 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                 .setDisplayName("Test1")
                 .setRecognizePiiEntitiesActions(
                     new RecognizePiiEntitiesAction()
-                        .setCategoriesFilter(PiiEntityCategory.USSOCIAL_SECURITY_NUMBER,
-                            PiiEntityCategory.ABAROUTING_NUMBER)
+                        .setCategoriesFilter(PiiEntityCategory.US_SOCIAL_SECURITY_NUMBER,
+                            PiiEntityCategory.ABA_ROUTING_NUMBER)
                         .setActionName(PII_ENTITIES_RECOGNITION_NAME)
                 ));
     }

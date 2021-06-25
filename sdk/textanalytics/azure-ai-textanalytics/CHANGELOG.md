@@ -29,6 +29,7 @@
   This change applied to all the other `***ActionResults` properties as well.
 - Renamed property name `result` to `documentsResults` in `AnalyzeSentimentActionResult`, `ExtractKeyPhrasesActionResult`,
   `RecognizeEntitiesActionResult`, `RecognizeLinkedEntitiesActionResult`, and `RecognizePiiEntitiesActionResult`. 
+- Renamed the enum values in `PiiEntityCategory` by separating words with the underscore character.
 - Renamed the methods in `AnalyzeActionsOperationDetail`,
   `getActionsFailed()` to `getFailedCount()`,
   `getActionsInProgress()` to `getInProgressCount()`,

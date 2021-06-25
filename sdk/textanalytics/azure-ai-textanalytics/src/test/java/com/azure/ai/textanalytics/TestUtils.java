@@ -371,7 +371,7 @@ final class TestUtils {
 
         final PiiEntity piiEntity2 = new PiiEntity();
         PiiEntityPropertiesHelper.setText(piiEntity2, "859-98-0987");
-        PiiEntityPropertiesHelper.setCategory(piiEntity2, PiiEntityCategory.USSOCIAL_SECURITY_NUMBER);
+        PiiEntityPropertiesHelper.setCategory(piiEntity2, PiiEntityCategory.US_SOCIAL_SECURITY_NUMBER);
         PiiEntityPropertiesHelper.setSubcategory(piiEntity2, null);
         PiiEntityPropertiesHelper.setOffset(piiEntity2, 28);
         return asList(piiEntity0, piiEntity1, piiEntity2);
@@ -395,14 +395,14 @@ final class TestUtils {
 
         final PiiEntity piiEntity1 = new PiiEntity();
         PiiEntityPropertiesHelper.setText(piiEntity1, expectedText);
-        PiiEntityPropertiesHelper.setCategory(piiEntity1, PiiEntityCategory.ABAROUTING_NUMBER);
+        PiiEntityPropertiesHelper.setCategory(piiEntity1, PiiEntityCategory.ABA_ROUTING_NUMBER);
         PiiEntityPropertiesHelper.setSubcategory(piiEntity1, null);
         PiiEntityPropertiesHelper.setConfidenceScore(piiEntity1, 0.75);
         PiiEntityPropertiesHelper.setOffset(piiEntity1, 18);
 
         final PiiEntity piiEntity2 = new PiiEntity();
         PiiEntityPropertiesHelper.setText(piiEntity2, expectedText);
-        PiiEntityPropertiesHelper.setCategory(piiEntity2, PiiEntityCategory.NZSOCIAL_WELFARE_NUMBER);
+        PiiEntityPropertiesHelper.setCategory(piiEntity2, PiiEntityCategory.NZ_SOCIAL_WELFARE_NUMBER);
         PiiEntityPropertiesHelper.setSubcategory(piiEntity2, null);
         PiiEntityPropertiesHelper.setConfidenceScore(piiEntity2, 0.65);
         PiiEntityPropertiesHelper.setOffset(piiEntity2, 18);
