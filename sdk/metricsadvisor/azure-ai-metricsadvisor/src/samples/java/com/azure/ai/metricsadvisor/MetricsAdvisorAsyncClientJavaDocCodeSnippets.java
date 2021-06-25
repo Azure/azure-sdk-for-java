@@ -386,7 +386,8 @@ public class MetricsAdvisorAsyncClientJavaDocCodeSnippets {
             .setMaxPageSize(1000);
 
         PagedFlux<AnomalyIncident> incidentsFlux
-            = metricsAdvisorAsyncClient.listIncidentsForDetectionConfiguration(detectionConfigurationId, startTime, endTime, options);
+            = metricsAdvisorAsyncClient.listIncidentsForDetectionConfiguration(detectionConfigurationId, startTime,
+            endTime, options);
 
         incidentsFlux.subscribe(incident -> {
             System.out.printf("Data Feed Metric Id: %s%n", incident.getMetricId());
@@ -666,7 +667,8 @@ public class MetricsAdvisorAsyncClientJavaDocCodeSnippets {
             = new ListIncidentsDetectedOptions()
             .setMaxPageSize(10);
 
-        metricsAdvisorAsyncClient.listIncidentsForDetectionConfiguration(detectionConfigurationId, startTime, endTime, options)
+        metricsAdvisorAsyncClient.listIncidentsForDetectionConfiguration(detectionConfigurationId, startTime, endTime,
+            options)
             .flatMap(incident -> {
                 return metricsAdvisorAsyncClient.listIncidentRootCauses(incident);
             })
