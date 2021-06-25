@@ -2,6 +2,8 @@
 
 ## 12.1.0-beta.1 (Unreleased)
 
+### Bug Fixes
+- Fixed issue where HTTP headers set in a `ClientOptions` object passed to a client builder would not be set on a client instantiated by said builder.
 
 ## 12.0.0 (2021-06-11)
 

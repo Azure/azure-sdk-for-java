@@ -107,7 +107,7 @@ public class MetricFeedbackAsyncSample {
                         = (MetricPeriodFeedback) feedbackItem;
                     System.out.printf("Metric feedback type: %s%n",
                         periodFeedback.getPeriodType().toString());
-                    System.out.printf("Metric feedback period value: %f%n",
+                    System.out.printf("Metric feedback period value: %d%n",
                         periodFeedback.getPeriodValue());
                 } else if (ANOMALY.equals(feedbackItem.getFeedbackType())) {
                     MetricAnomalyFeedback metricAnomalyFeedback

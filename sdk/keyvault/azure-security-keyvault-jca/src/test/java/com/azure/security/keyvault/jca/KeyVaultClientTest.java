@@ -36,28 +36,28 @@ public class KeyVaultClientTest {
      */
     @Test
     public void testInitializationOfGlobalURI() {
-        kvClient = new KeyVaultClient(KEY_VAULT_TEST_URI_GLOBAL);
+        kvClient = new KeyVaultClient(KEY_VAULT_TEST_URI_GLOBAL, null);
         Assertions.assertEquals(kvClient.getKeyVaultBaseUri(), KEY_VAULT_BASE_URI_GLOBAL);
         Assertions.assertEquals(kvClient.getAadAuthenticationUrl(), AAD_LOGIN_URI_GLOBAL);
     }
 
     @Test
     public void testInitializationOfCNURI() {
-        kvClient = new KeyVaultClient(KEY_VAULT_TEST_URI_CN);
+        kvClient = new KeyVaultClient(KEY_VAULT_TEST_URI_CN, null);
         Assertions.assertEquals(kvClient.getKeyVaultBaseUri(), KEY_VAULT_BASE_URI_CN);
         Assertions.assertEquals(kvClient.getAadAuthenticationUrl(), AAD_LOGIN_URI_CN);
     }
 
     @Test
     public void testInitializationOfUSURI() {
-        kvClient = new KeyVaultClient(KEY_VAULT_TEST_URI_US);
+        kvClient = new KeyVaultClient(KEY_VAULT_TEST_URI_US, null);
         Assertions.assertEquals(kvClient.getKeyVaultBaseUri(), KEY_VAULT_BASE_URI_US);
         Assertions.assertEquals(kvClient.getAadAuthenticationUrl(), AAD_LOGIN_URI_US);
     }
 
     @Test
     public void testInitializationOfDEURI() {
-        kvClient = new KeyVaultClient(KEY_VAULT_TEST_URI_DE);
+        kvClient = new KeyVaultClient(KEY_VAULT_TEST_URI_DE, null);
         Assertions.assertEquals(kvClient.getKeyVaultBaseUri(), KEY_VAULT_BASE_URI_DE);
         Assertions.assertEquals(kvClient.getAadAuthenticationUrl(), AAD_LOGIN_URI_DE);
     }

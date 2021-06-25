@@ -656,7 +656,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
         final Flux<ServiceBusMessageContext> withAutoLockRenewal;
         if (!receiverOptions.isSessionReceiver() && receiverOptions.isAutoLockRenewEnabled()) {
-            withAutoLockRenewal = new FluxAutoLockRenew(messageFlux, receiverOptions.getMaxLockRenewDuration(),
+            withAutoLockRenewal = new FluxAutoLockRenew(messageFlux, receiverOptions,
                 renewalContainer, this::renewMessageLock);
         } else {
             withAutoLockRenewal = messageFlux;
