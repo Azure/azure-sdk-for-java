@@ -11,6 +11,7 @@ if (isRunningOnAgent) {
     printf("%s=%s%n", "BUILD_BUILDID", System.getenv("BUILD_BUILDID"))
     printf("%s=%s%n", "BUILD_DEFINITIONNAME", System.getenv("BUILD_DEFINITIONNAME"))
     printf("%s=%s%n", "BUILD_REASON", System.getenv("BUILD_REASON"))
+    printf("%s=%s%n", "SYSTEM_TEAMPROJECT", System.getenv("SYSTEM_TEAMPROJECT"))
     printf("%s=%s%n", "SETDEVVERSION", System.getenv("SETDEVVERSION"))
 }
 
