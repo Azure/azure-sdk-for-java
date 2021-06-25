@@ -26,9 +26,7 @@ final class BufferedFluxByteBuffer extends Flux<ByteBuffer> {
             duplicate.put(buffer);
             duplicate.rewind();
             return duplicate;
-        })
-            .cache()
-            .map(ByteBuffer::duplicate);
+        }).cache().map(ByteBuffer::duplicate);
     }
 
     @Override

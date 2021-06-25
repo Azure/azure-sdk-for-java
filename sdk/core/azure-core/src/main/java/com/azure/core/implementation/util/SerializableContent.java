@@ -34,7 +34,7 @@ public final class SerializableContent extends RequestContent {
     public Flux<ByteBuffer> asFluxByteBuffer() {
         serializedObject.compareAndSet(null, objectSerializer.serializeToBytes(serializable));
 
-        return Flux.defer(() -> Flux.just(ByteBuffer.wrap(serializedObject.get())));
+        return Flux.defer(() -> Flux.just(ByteBuffer.wrap(serializedObject.get()).asReadOnlyBuffer()));
     }
 
     @Override

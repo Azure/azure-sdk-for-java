@@ -25,6 +25,8 @@ import java.util.Objects;
  * Represents the content sent as part of a request.
  */
 public abstract class RequestContent {
+    private static final ClientLogger LOGGER = new ClientLogger(RequestContent.class);
+
     /**
      * Converts the {@link RequestContent} into a {@code Flux<ByteBuffer>} for use in reactive streams.
      *
@@ -67,15 +69,13 @@ public abstract class RequestContent {
     public static RequestContent fromBytes(byte[] bytes, int offset, int length) {
         Objects.requireNonNull(bytes, "'bytes' cannot be null.");
         if (offset < 0) {
-            throw new ClientLogger(RequestContent.class).logExceptionAsError(new IllegalArgumentException(
-                "'offset' cannot be negative."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'offset' cannot be negative."));
         }
         if (length < 0) {
-            throw new ClientLogger(RequestContent.class).logExceptionAsError(new IllegalArgumentException(
-                "'length' cannot be negative."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'length' cannot be negative."));
         }
         if (offset + length > bytes.length) {
-            throw new ClientLogger(RequestContent.class).logExceptionAsError(new IllegalArgumentException(
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "'offset' plus 'length' cannot be greater than 'bytes.length'."));
         }
 
@@ -135,15 +135,13 @@ public abstract class RequestContent {
     public static RequestContent fromFile(Path file, long offset, long length) {
         Objects.requireNonNull(file, "'file' cannot be null.");
         if (offset < 0) {
-            throw new ClientLogger(RequestContent.class).logExceptionAsError(new IllegalArgumentException(
-                "'offset' cannot be negative."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'offset' cannot be negative."));
         }
         if (length < 0) {
-            throw new ClientLogger(RequestContent.class).logExceptionAsError(new IllegalArgumentException(
-                "'length' cannot be negative."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'length' cannot be negative."));
         }
         if (offset + length > file.toFile().length()) {
-            throw new ClientLogger(RequestContent.class).logExceptionAsError(new IllegalArgumentException(
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "'offset' plus 'length' cannot be greater than the file's size."));
         }
 
@@ -188,6 +186,10 @@ public abstract class RequestContent {
      * <p>
      * {@link RequestContent#getLength()} will be null if this factory method is used, if the length needs to be
      * non-null use {@link RequestContent#fromFlux(Flux, long)}.
+     * <p>
+     * The {@link RequestContent} created by this factory method doesn't buffer the passed {@link Flux} of {@link
+     * ByteBuffer}, if the content must be replay-able the passed {@link Flux} of {@link ByteBuffer} must be replay-able
+     * as well.
      *
      * @param content The {@link Flux} of {@link ByteBuffer} that will be the {@link RequestContent} data.
      * @return A new {@link RequestContent}.
@@ -200,6 +202,10 @@ public abstract class RequestContent {
 
     /**
      * Creates a {@link RequestContent} that uses a {@link Flux} of {@link ByteBuffer} as its data.
+     * <p>
+     * The {@link RequestContent} created by this factory method doesn't buffer the passed {@link Flux} of {@link
+     * ByteBuffer}, if the content must be replay-able the passed {@link Flux} of {@link ByteBuffer} must be replay-able
+     * as well.
      *
      * @param content The {@link Flux} of {@link ByteBuffer} that will be the {@link RequestContent} data.
      * @param length The length of the content.
@@ -210,8 +216,7 @@ public abstract class RequestContent {
     public static RequestContent fromFlux(Flux<ByteBuffer> content, long length) {
         Objects.requireNonNull(content, "'content' cannot be null.");
         if (length < 0) {
-            throw new ClientLogger(RequestContent.class).logExceptionAsError(new IllegalArgumentException(
-                "'length' cannot be less than 0."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'length' cannot be less than 0."));
         }
 
         return new FluxByteBufferContent(content, length);
@@ -244,8 +249,7 @@ public abstract class RequestContent {
     static RequestContent fromBufferedFlux(BufferedFluxByteBuffer content, long length) {
         Objects.requireNonNull(content, "'content' cannot be null.");
         if (length < 0) {
-            throw new ClientLogger(RequestContent.class).logExceptionAsError(new IllegalArgumentException(
-                "'length' cannot be less than 0."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'length' cannot be less than 0."));
         }
 
         return new FluxByteBufferContent(content, length);
@@ -279,8 +283,7 @@ public abstract class RequestContent {
     public static RequestContent fromInputStream(InputStream content, long length) {
         Objects.requireNonNull(content, "'content' cannot be null.");
         if (length < 0) {
-            throw new ClientLogger(RequestContent.class).logExceptionAsError(new IllegalArgumentException(
-                "'length' cannot be less than 0."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'length' cannot be less than 0."));
         }
 
         return new InputStreamContent(content, length);
