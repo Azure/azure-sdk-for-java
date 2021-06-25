@@ -19,6 +19,7 @@
   This change applied to all the other `***ActionResults` properties as well.
 - Renamed property name `result` to `documentsResults` in `AnalyzeSentimentActionResult`, `ExtractKeyPhrasesActionResult`,
   `RecognizeEntitiesActionResult`, `RecognizeLinkedEntitiesActionResult`, and `RecognizePiiEntitiesActionResult`. 
+- Renamed the enum values in `PiiEntityCategory` by separating words with the underscore character.
 - `TextAnalyticsActions` now takes `***Action` types, instead of `***Options` types. Renamed The getter and setter method names
   based on the new type names. Replacing types show as follows:
   - `ExtractKeyPhrasesOption` changed to new type `ExtractKeyPhrasesAction`.

@@ -869,8 +869,8 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                     result -> result.getEntities().forEach(
                         piiEntity -> {
                             final PiiEntityCategory category = piiEntity.getCategory();
-                            if (PiiEntityCategory.ABAROUTING_NUMBER == category
-                                    || PiiEntityCategory.USSOCIAL_SECURITY_NUMBER == category) {
+                            if (PiiEntityCategory.ABA_ROUTING_NUMBER == category
+                                    || PiiEntityCategory.US_SOCIAL_SECURITY_NUMBER == category) {
                                 categories.add(category);
                             }
                         }));
