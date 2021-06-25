@@ -14,6 +14,10 @@
 - Removed type `ExtractKeyPhrasesOptions`, `RecognizeEntitiesOptions`, `RecognizeLinkedEntitiesOptions` and respective exposures.
 - Removed the property `statistics` from `AnalyzeActionsResult` as it is not currently returned by the service even if 
   the user passes `includeStatistics` = `true`.
+- Removed constructors, but to use the private setter accessor to assign the additional properties:
+    `CategorizedEntity(String text, EntityCategory category, String subcategory, double confidenceScore, int offset)`,
+    `LinkedEntity(String name, IterableStream<LinkedEntityMatch> matches, String languages, String dataSourceEntityId, String url, String dataSource, String bingEntitySearchApiId)`,
+    `LinkedEntityMatch(String text, double confidenceScore, int offset)`
 - Renamed type `PiiEntityDomainType` to `PiiEntityDomain`.
 - Renamed `AnalyzeActionResult`'s property `recognizeEntitiesActionResults` to `recognizeEntitiesResults` which dropped the keyword `Action`.
   This change applied to all the other `***ActionResults` properties as well.

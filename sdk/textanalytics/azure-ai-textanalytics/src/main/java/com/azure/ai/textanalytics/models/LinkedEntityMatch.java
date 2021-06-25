@@ -13,7 +13,7 @@ import com.azure.core.annotation.Immutable;
 public final class LinkedEntityMatch {
     private final String text;
     private final double confidenceScore;
-    private final int offset;
+    private int offset;
     private int length;
 
     /**
@@ -29,22 +29,19 @@ public final class LinkedEntityMatch {
         this.offset = 0;
     }
 
-    /**
-     * Creates a {@link LinkedEntityMatch} model that describes linked entity match.
-     *
-     * @param text The linked entity match text as appears in the request.
-     * @param confidenceScore If a well-known item is recognized, a decimal number denoting the
-     * confidence level between 0 and 1 will be returned.
-     * @param offset The start position for the linked entity match text in a document.
-     */
-    public LinkedEntityMatch(String text, double confidenceScore, int offset) {
-        this.text = text;
-        this.offset = offset;
-        this.confidenceScore = confidenceScore;
-    }
-
     static {
-        LinkedEntityMatchPropertiesHelper.setAccessor((entity, length) -> entity.setLength(length));
+        LinkedEntityMatchPropertiesHelper.setAccessor(
+            new LinkedEntityMatchPropertiesHelper.LinkedEntityMatchAccessor() {
+                @Override
+                public void setLength(LinkedEntityMatch entity, int length) {
+                    entity.setLength(length);
+                }
+
+                @Override
+                public void setOffset(LinkedEntityMatch entity, int offset) {
+                    entity.setOffset(offset);
+                }
+            });
     }
 
     /**
@@ -73,6 +70,10 @@ public final class LinkedEntityMatch {
      */
     public int getOffset() {
         return offset;
+    }
+
+    private void setOffset(int offset) {
+        this.offset = offset;
     }
 
     /**

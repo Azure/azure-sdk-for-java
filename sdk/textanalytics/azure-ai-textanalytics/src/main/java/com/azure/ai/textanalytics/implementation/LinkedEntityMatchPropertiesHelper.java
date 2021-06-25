@@ -18,6 +18,7 @@ public final class LinkedEntityMatchPropertiesHelper {
      */
     public interface LinkedEntityMatchAccessor {
         void setLength(LinkedEntityMatch entity, int length);
+        void setOffset(LinkedEntityMatch entity, int offset);
     }
 
     /**
@@ -31,5 +32,9 @@ public final class LinkedEntityMatchPropertiesHelper {
 
     public static void setLength(LinkedEntityMatch entity, int length) {
         accessor.setLength(entity, length);
+    }
+
+    public static void setOffset(LinkedEntityMatch entity, int offset) {
+        accessor.setOffset(entity, offset);
     }
 }

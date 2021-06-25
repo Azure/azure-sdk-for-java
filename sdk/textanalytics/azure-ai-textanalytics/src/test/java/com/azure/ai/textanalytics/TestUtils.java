@@ -8,10 +8,13 @@ import com.azure.ai.textanalytics.implementation.AnalyzeHealthcareEntitiesResult
 import com.azure.ai.textanalytics.implementation.AnalyzeHealthcareEntitiesResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.AnalyzeSentimentActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.AssessmentSentimentPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.CategorizedEntityPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.ExtractKeyPhrasesActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.HealthcareEntityPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.HealthcareEntityRelationPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.HealthcareEntityRelationRolePropertiesHelper;
+import com.azure.ai.textanalytics.implementation.LinkedEntityMatchPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.LinkedEntityPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.PiiEntityPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.RecognizeEntitiesActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.RecognizeLinkedEntitiesActionResultPropertiesHelper;
@@ -247,9 +250,12 @@ final class TestUtils {
      * Helper method to get the expected Categorized Entities List 1
      */
     static List<CategorizedEntity> getCategorizedEntitiesList1() {
-        CategorizedEntity categorizedEntity1 = new CategorizedEntity("trip", EntityCategory.EVENT, null, 0.0, 18);
-        CategorizedEntity categorizedEntity2 = new CategorizedEntity("Seattle", EntityCategory.LOCATION, "GPE", 0.0, 26);
-        CategorizedEntity categorizedEntity3 = new CategorizedEntity("last week", EntityCategory.DATE_TIME, "DateRange", 0.0, 34);
+        CategorizedEntity categorizedEntity1 = new CategorizedEntity("trip", EntityCategory.EVENT, null, 0.0);
+        CategorizedEntityPropertiesHelper.setOffset(categorizedEntity1, 18);
+        CategorizedEntity categorizedEntity2 = new CategorizedEntity("Seattle", EntityCategory.LOCATION, "GPE", 0.0);
+        CategorizedEntityPropertiesHelper.setOffset(categorizedEntity2, 26);
+        CategorizedEntity categorizedEntity3 = new CategorizedEntity("last week", EntityCategory.DATE_TIME, "DateRange", 0.0);
+        CategorizedEntityPropertiesHelper.setOffset(categorizedEntity3, 34);
         return asList(categorizedEntity1, categorizedEntity2, categorizedEntity3);
     }
 
@@ -257,21 +263,34 @@ final class TestUtils {
      * Helper method to get the expected Categorized Entities List 2
      */
     static List<CategorizedEntity> getCategorizedEntitiesList2() {
-        return asList(new CategorizedEntity("Microsoft", EntityCategory.ORGANIZATION, null, 0.0, 10));
+        CategorizedEntity categorizedEntity1 = new CategorizedEntity("Microsoft", EntityCategory.ORGANIZATION, null, 0.0);
+        CategorizedEntityPropertiesHelper.setOffset(categorizedEntity1, 10);
+        return asList(categorizedEntity1);
     }
 
     /**
      * Helper method to get the expected Categorized entity result for PII document input.
      */
     static List<CategorizedEntity> getCategorizedEntitiesForPiiInput() {
-        return asList(
-            new CategorizedEntity("Microsoft", EntityCategory.ORGANIZATION, null, 0.0, 0),
-            new CategorizedEntity("employee", EntityCategory.PERSON_TYPE, null, 0.0, 10),
-            new CategorizedEntity("859", EntityCategory.QUANTITY, "Number", 0.0, 28),
-            new CategorizedEntity("98", EntityCategory.QUANTITY, "Number", 0.0, 32),
-            new CategorizedEntity("0987", EntityCategory.QUANTITY, "Number", 0.0, 35),
-            new CategorizedEntity("API", EntityCategory.SKILL, null, 0.0, 61)
-        );
+        CategorizedEntity categorizedEntity1 = new CategorizedEntity("Microsoft", EntityCategory.ORGANIZATION, null, 0.0);
+        CategorizedEntityPropertiesHelper.setOffset(categorizedEntity1, 0);
+
+        CategorizedEntity categorizedEntity2 = new CategorizedEntity("employee", EntityCategory.PERSON_TYPE, null, 0.0);
+        CategorizedEntityPropertiesHelper.setOffset(categorizedEntity2, 10);
+
+        CategorizedEntity categorizedEntity3 = new CategorizedEntity("859", EntityCategory.QUANTITY, "Number", 0.0);
+        CategorizedEntityPropertiesHelper.setOffset(categorizedEntity3, 28);
+
+        CategorizedEntity categorizedEntity4 = new CategorizedEntity("98", EntityCategory.QUANTITY, "Number", 0.0);
+        CategorizedEntityPropertiesHelper.setOffset(categorizedEntity4, 32);
+
+        CategorizedEntity categorizedEntity5 = new CategorizedEntity("0987", EntityCategory.QUANTITY, "Number", 0.0);
+        CategorizedEntityPropertiesHelper.setOffset(categorizedEntity5, 35);
+
+        CategorizedEntity categorizedEntity6 = new CategorizedEntity("API", EntityCategory.SKILL, null, 0.0);
+        CategorizedEntityPropertiesHelper.setOffset(categorizedEntity6, 61);
+
+        return asList(categorizedEntity1, categorizedEntity2, categorizedEntity3, categorizedEntity4, categorizedEntity5, categorizedEntity6);
     }
 
     /**
@@ -431,11 +450,13 @@ final class TestUtils {
      * Helper method to get the expected linked Entities List 1
      */
     static List<LinkedEntity> getLinkedEntitiesList1() {
-        final LinkedEntityMatch linkedEntityMatch = new LinkedEntityMatch("Seattle", 0.0, 26);
+        final LinkedEntityMatch linkedEntityMatch = new LinkedEntityMatch("Seattle", 0.0);
+        LinkedEntityMatchPropertiesHelper.setOffset(linkedEntityMatch, 26);
         LinkedEntity linkedEntity = new LinkedEntity(
             "Seattle", new IterableStream<>(Collections.singletonList(linkedEntityMatch)),
             "en", "Seattle", "https://en.wikipedia.org/wiki/Seattle",
-            "Wikipedia", "5fbba6b8-85e1-4d41-9444-d9055436e473");
+            "Wikipedia");
+        LinkedEntityPropertiesHelper.setBingEntitySearchApiId(linkedEntity, "5fbba6b8-85e1-4d41-9444-d9055436e473");
         return asList(linkedEntity);
     }
 
@@ -443,26 +464,31 @@ final class TestUtils {
      * Helper method to get the expected linked Entities List 2
      */
     static List<LinkedEntity> getLinkedEntitiesList2() {
-        LinkedEntityMatch linkedEntityMatch = new LinkedEntityMatch("Microsoft", 0.0, 10);
+        LinkedEntityMatch linkedEntityMatch = new LinkedEntityMatch("Microsoft", 0.0);
+        LinkedEntityMatchPropertiesHelper.setOffset(linkedEntityMatch, 10);
         LinkedEntity linkedEntity = new LinkedEntity(
             "Microsoft", new IterableStream<>(Collections.singletonList(linkedEntityMatch)),
             "en", "Microsoft", "https://en.wikipedia.org/wiki/Microsoft",
-            "Wikipedia", "a093e9b9-90f5-a3d5-c4b8-5855e1b01f85");
+            "Wikipedia");
+        LinkedEntityPropertiesHelper.setBingEntitySearchApiId(linkedEntity, "a093e9b9-90f5-a3d5-c4b8-5855e1b01f85");
         return asList(linkedEntity);
     }
 
     static List<LinkedEntity> getLinkedEntitiesList3() {
-        LinkedEntityMatch linkedEntityMatch = new LinkedEntityMatch("Microsoft", 0.0, 0);
-        LinkedEntityMatch linkedEntityMatch1 = new LinkedEntityMatch("API's", 0.0, 61);
+        LinkedEntityMatch linkedEntityMatch = new LinkedEntityMatch("Microsoft", 0.0);
+        LinkedEntityMatchPropertiesHelper.setOffset(linkedEntityMatch, 0);
+        LinkedEntityMatch linkedEntityMatch1 = new LinkedEntityMatch("API's", 0.0);
+        LinkedEntityMatchPropertiesHelper.setOffset(linkedEntityMatch1, 61);
         LinkedEntity linkedEntity = new LinkedEntity(
             "Microsoft", new IterableStream<>(Collections.singletonList(linkedEntityMatch)),
             "en", "Microsoft", "https://en.wikipedia.org/wiki/Microsoft",
-            "Wikipedia", "a093e9b9-90f5-a3d5-c4b8-5855e1b01f85");
+            "Wikipedia");
+        LinkedEntityPropertiesHelper.setBingEntitySearchApiId(linkedEntity, "a093e9b9-90f5-a3d5-c4b8-5855e1b01f85");
         LinkedEntity linkedEntity1 = new LinkedEntity(
             "Application programming interface", new IterableStream<>(Collections.singletonList(linkedEntityMatch1)),
             "en", "Application programming interface",
             "https://en.wikipedia.org/wiki/Application_programming_interface",
-            "Wikipedia", "");
+            "Wikipedia");
         return asList(linkedEntity, linkedEntity1);
     }
 
