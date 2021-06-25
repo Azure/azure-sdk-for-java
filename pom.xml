@@ -707,6 +707,7 @@
         <module>eng/code-quality-reports</module>
         <module>eng/jacoco-test-coverage</module>
         <module>sdk/advisor</module>
+        <module>sdk/agrifood</module>
         <module>sdk/anomalydetector</module>
         <module>sdk/apimanagement</module>
         <module>sdk/appconfiguration</module>
@@ -751,7 +752,6 @@
         <module>sdk/digitaltwins</module>
         <module>sdk/eventgrid</module>
         <module>sdk/eventhubs</module>
-        <module>sdk/agrifood</module>
         <module>sdk/formrecognizer</module>
         <module>sdk/frontdoor</module>
         <module>sdk/hanaonazure</module>
@@ -783,6 +783,7 @@
         <module>sdk/monitor</module>
         <module>sdk/mysql</module>
         <module>sdk/netapp</module>
+        <module>sdk/network</module>
         <module>sdk/notificationhubs</module>
         <module>sdk/operationsmanagement</module>
         <module>sdk/peering</module>
