@@ -5,7 +5,6 @@ package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
-import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
@@ -29,17 +28,17 @@ import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
-import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
+import com.azure.ai.textanalytics.util.AnalyzeActionsResultPagedIterable;
 import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
 import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
+import com.azure.ai.textanalytics.util.HealthcareEntitiesResultCollectionPagedIterable;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeLinkedEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.IterableStream;
@@ -853,11 +852,11 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         AnalyzeHealthcareEntitiesOptions options = new AnalyzeHealthcareEntitiesOptions()
             .setIncludeStatistics(true);
 
-        SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, PagedIterable<AnalyzeHealthcareEntitiesResultCollection>>
+        SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, HealthcareEntitiesResultCollectionPagedIterable>
             syncPoller = textAnalyticsClient.beginAnalyzeHealthcareEntities(documents, options, Context.NONE);
 
         syncPoller.waitForCompletion();
-        PagedIterable<AnalyzeHealthcareEntitiesResultCollection> healthcareResultIterable = syncPoller.getFinalResult();
+        HealthcareEntitiesResultCollectionPagedIterable healthcareResultIterable = syncPoller.getFinalResult();
 
         // Task operation statistics
         final AnalyzeHealthcareEntitiesOperationDetail operationResult = syncPoller.poll().getValue();
@@ -918,7 +917,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             "My SSN is 859-98-0987"
         );
 
-        SyncPoller<AnalyzeActionsOperationDetail, PagedIterable<AnalyzeActionsResult>> syncPoller =
+        SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedIterable> syncPoller =
             textAnalyticsClient.beginAnalyzeActions(
                 documents,
                 new TextAnalyticsActions().setDisplayName("{tasks_display_name}")
@@ -927,7 +926,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
                 "en",
                 new AnalyzeActionsOptions().setIncludeStatistics(false));
         syncPoller.waitForCompletion();
-        PagedIterable<AnalyzeActionsResult> result = syncPoller.getFinalResult();
+        AnalyzeActionsResultPagedIterable result = syncPoller.getFinalResult();
         result.forEach(analyzeActionsResult -> {
             System.out.println("Entities recognition action results:");
             analyzeActionsResult.getRecognizeEntitiesResults().forEach(
@@ -968,7 +967,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             new TextDocumentInput("1", "My SSN is 859-98-0987").setLanguage("en")
         );
 
-        SyncPoller<AnalyzeActionsOperationDetail, PagedIterable<AnalyzeActionsResult>> syncPoller =
+        SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedIterable> syncPoller =
             textAnalyticsClient.beginAnalyzeActions(
                 documents,
                 new TextAnalyticsActions().setDisplayName("{tasks_display_name}")
@@ -977,7 +976,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
                 new AnalyzeActionsOptions().setIncludeStatistics(false),
                 Context.NONE);
         syncPoller.waitForCompletion();
-        PagedIterable<AnalyzeActionsResult> result = syncPoller.getFinalResult();
+        AnalyzeActionsResultPagedIterable result = syncPoller.getFinalResult();
         result.forEach(analyzeActionsResult -> {
             System.out.println("Entities recognition action results:");
             analyzeActionsResult.getRecognizeEntitiesResults().forEach(

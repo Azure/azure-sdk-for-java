@@ -383,7 +383,7 @@ List<TextDocumentInput> documents = Arrays.asList(
             + " only complaint I have is the food didn't come fast enough. Overall I highly recommend it!")
 );
 
-SyncPoller<AnalyzeActionsOperationDetail, PagedIterable<AnalyzeActionsResult>> syncPoller =
+SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedIterable> syncPoller =
     textAnalyticsClient.beginAnalyzeActions(documents,
         new TextAnalyticsActions().setDisplayName("{tasks_display_name}")
             .setExtractKeyPhrasesOptions(new ExtractKeyPhrasesOptions())

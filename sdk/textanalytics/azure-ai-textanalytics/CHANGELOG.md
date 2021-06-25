@@ -8,8 +8,15 @@
   `RecognizeLinkedEntitiesAction`, and `AnalyzeSentimentAction`. These types should include all the properties in the
   `***Options` option bags but also could have additional properties, such as `actionName`.
 - Added a new property, `actionName` into the `TextAnalyticsActionResult`.
-
+- Added new customized `***PagedFlux`, `***PagedIterable` types, `AnalyzeActionsResultPagedFlux`, `AnalyzeActionsResultPagedIterable`
+  `HealthcareEntitiesResultCollectionPagedFlux`, `HealthcareEntitiesResultCollectionPagedIterable`.
+  
 ### Breaking Changes
+- Replaced
+  `AnalyzeActionsResultPagedFlux` to `PagedFlux<AnalyzeActionsResult>`,
+  `AnalyzeActionsResultPagedIterable` to `PagedIterable<AnalyzeActionsResult>`,
+  `HealthcareEntitiesResultCollectionPagedFlux` to `PagedFlux<AnalyzeHealthcareEntitiesResultCollection>`,
+  `HealthcareEntitiesResultCollectionPagedIterable` to `PagedIterable<AnalyzeHealthcareEntitiesResultCollection>`.
 - Deprecated `analyzeSentimentBatch***` APIs with type `TextAnalyticsRequestOptions` option bag below. The same 
   functionalities can be done in the APIs with `AnalyzeSentimentOptions` instead:
   `AnalyzeSentimentResultCollection analyzeSentimentBatch(Iterable<String> documents, String language, TextAnalyticsRequestOptions options)`,

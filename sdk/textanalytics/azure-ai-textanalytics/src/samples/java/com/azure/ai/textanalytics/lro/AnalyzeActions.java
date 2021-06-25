@@ -17,8 +17,8 @@ import com.azure.ai.textanalytics.models.RecognizeEntitiesActionResult;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
+import com.azure.ai.textanalytics.util.AnalyzeActionsResultPagedIterable;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -57,12 +57,11 @@ public class AnalyzeActions {
             ));
         }
 
-        SyncPoller<AnalyzeActionsOperationDetail, PagedIterable<AnalyzeActionsResult>> syncPoller =
+        SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedIterable> syncPoller =
             client.beginAnalyzeActions(documents,
                 new TextAnalyticsActions().setDisplayName("{tasks_display_name}")
                     .setRecognizeEntitiesActions(new RecognizeEntitiesAction())
                     .setExtractKeyPhrasesActions(
-                        new ExtractKeyPhrasesAction().setModelVersion("invalidVersion"),
                         new ExtractKeyPhrasesAction().setModelVersion("latest")),
                 new AnalyzeActionsOptions().setIncludeStatistics(false),
                 Context.NONE);
