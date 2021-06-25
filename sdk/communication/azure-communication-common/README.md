@@ -1,7 +1,7 @@
 # Azure Communication Service Common client library for Java
 
 Azure Communication Common contains data structures commonly used for communicating with Azure Communication Services. 
-It is intended to provide cross cutting concerns, e.g. authentication. 
+It is intended to provide cross-cutting concerns, e.g. authentication. 
 
 ## Getting started
 
