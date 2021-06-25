@@ -22,7 +22,7 @@ public class MockRetryRangeResponsePolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        return next.process().flatMap( response -> {
+        return next.process().flatMap(response -> {
             if (!response.getRequest().getHeaders().getValue("x-ms-range").equals(rangeMatch)) {
                 return Mono.error(new IllegalArgumentException("The range header was not set correctly on retry."));
             } else {
