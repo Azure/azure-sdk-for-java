@@ -4,12 +4,12 @@
 
 package com.azure.resourcemanager.machinelearningservices.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /** The liveness probe requirements. */
-@Immutable
+@Fluent
 public final class AksServiceResponseLivenessProbeRequirements extends LivenessProbeRequirements {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AksServiceResponseLivenessProbeRequirements.class);
 

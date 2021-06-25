@@ -4,13 +4,13 @@
 
 package com.azure.resourcemanager.machinelearningservices.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.List;
 
 /** The configuration for a Spark environment. */
-@Immutable
+@Fluent
 public final class ModelEnvironmentDefinitionSpark extends ModelSparkSection {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ModelEnvironmentDefinitionSpark.class);
 

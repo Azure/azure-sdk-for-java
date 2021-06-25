@@ -4,12 +4,12 @@
 
 package com.azure.resourcemanager.machinelearningservices.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /** The auto scaler properties. */
-@Immutable
+@Fluent
 public final class AksServiceResponseAutoScaler extends AutoScaler {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AksServiceResponseAutoScaler.class);
 

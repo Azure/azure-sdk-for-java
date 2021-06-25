@@ -4,13 +4,13 @@
 
 package com.azure.resourcemanager.machinelearningservices.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.List;
 
 /** The Environment, models and assets needed for inferencing. */
-@Immutable
+@Fluent
 public final class CreateServiceRequestEnvironmentImageRequest extends EnvironmentImageRequest {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CreateServiceRequestEnvironmentImageRequest.class);
 

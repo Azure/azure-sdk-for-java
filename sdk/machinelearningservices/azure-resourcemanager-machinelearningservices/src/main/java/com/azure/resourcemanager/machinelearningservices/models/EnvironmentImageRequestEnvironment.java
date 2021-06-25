@@ -4,13 +4,13 @@
 
 package com.azure.resourcemanager.machinelearningservices.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Map;
 
 /** The details of the AZURE ML environment. */
-@Immutable
+@Fluent
 public final class EnvironmentImageRequestEnvironment extends ModelEnvironmentDefinition {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(EnvironmentImageRequestEnvironment.class);
 

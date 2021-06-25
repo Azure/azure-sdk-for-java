@@ -4,12 +4,12 @@
 
 package com.azure.resourcemanager.machinelearningservices.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /** Image registry that contains the base image. */
-@Immutable
+@Fluent
 public final class ModelDockerSectionBaseImageRegistry extends ContainerRegistry {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ModelDockerSectionBaseImageRegistry.class);
 

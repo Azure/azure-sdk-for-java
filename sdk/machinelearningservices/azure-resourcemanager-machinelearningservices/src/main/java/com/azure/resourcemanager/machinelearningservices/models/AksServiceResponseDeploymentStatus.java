@@ -4,12 +4,12 @@
 
 package com.azure.resourcemanager.machinelearningservices.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /** The deployment status. */
-@Immutable
+@Fluent
 public final class AksServiceResponseDeploymentStatus extends AksReplicaStatus {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AksServiceResponseDeploymentStatus.class);
 
