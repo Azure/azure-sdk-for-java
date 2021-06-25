@@ -64,7 +64,8 @@ public class AADSeleniumITHelper extends SeleniumITHelper {
                 // Sometimes AAD cannot locate the user account and will ask to select it's a work account or
                 // personal account.
                 // Here select work accout.
-                // https://docs.microsoft.com/azure/devops/organizations/accounts/faq-azure-access?view=azure-devops#q-why-do-i-have-to-choose-between-a-work-or-school-account-and-my-personal-account
+                // https://docs.microsoft.com/azure/devops/organizations/accounts/faq-azure-access?view=azure-devops
+                // #q-why-do-i-have-to-choose-between-a-work-or-school-account-and-my-personal-account
                 wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("aadTileTitle"))).click();
                 wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("passwd"))).sendKeys(password + Keys.ENTER);
             }
@@ -105,18 +106,28 @@ public class AADSeleniumITHelper extends SeleniumITHelper {
 
         String oauth2AuthorizationUrlFraction = String.format(AzureCloudUrls.getBaseUrl(AZURE_CLOUD_TYPE)
             + "%s/oauth2/v2.0/" + "authorize?", AAD_TENANT_ID_1);
-        LOGGER.info("oauth2AuthorizationUrlFraction = {}", oauth2AuthorizationUrlFraction);
+        LOGGER.info("oauth2AuthorizationUrlFraction = {}", oauth2AuthorizationUrlFraction.substring(0,
+            oauth2AuthorizationUrlFraction.length() / 2));
+        LOGGER.info("oauth2AuthorizationUrlFraction2 = {}",
+            oauth2AuthorizationUrlFraction.substring(oauth2AuthorizationUrlFraction.length() / 2,
+                oauth2AuthorizationUrlFraction.length() - 1));
         wait.until(ExpectedConditions.urlContains(oauth2AuthorizationUrlFraction));
 
         String onDemandAuthorizationUrl = driver.getCurrentUrl();
-        LOGGER.info("before httpGetWithIncrementalConsent = {}", wait.until(presenceOfElementLocated(By.tagName("body"))).getText());
+        String beforeConsentPageSource = driver.getPageSource();
+        LOGGER.info("before ConsentSourcePage = {}", beforeConsentPageSource);
+        LOGGER.info("before httpGetWithIncrementalConsent = {}", wait.until(presenceOfElementLocated(By.tagName("body"
+        ))).getText());
         wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[type='submit']"))).click();
         try {
             Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        LOGGER.info("after httpGetWithIncrementalConsent = {}", wait.until(presenceOfElementLocated(By.tagName("body"))).getText());
+        String afterConsentPageSource = driver.getPageSource();
+        LOGGER.info("after ConsentSourcePage = {}", afterConsentPageSource);
+        LOGGER.info("after httpGetWithIncrementalConsent = {}",
+            wait.until(presenceOfElementLocated(By.tagName("body"))).getText());
         return onDemandAuthorizationUrl;
     }
 
