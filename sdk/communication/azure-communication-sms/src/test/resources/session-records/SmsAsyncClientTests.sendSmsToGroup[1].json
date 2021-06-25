@@ -3,21 +3,21 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.communication.azure.com/sms?api-version=2021-03-07",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-sms/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "bddca24c-16a5-4078-b0e2-ad5fbd4166a7",
+      "User-Agent" : "azsdk-java-azure-communication-sms/1.1.0-beta.1 (1.8.0_291; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "3ebf3103-dbc4-4162-85d5-5535550d9537",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
       "X-Cache" : "CONFIG_NOCACHE",
       "api-supported-versions" : "2020-07-20-preview1, 2020-08-20-preview, 2021-03-07",
-      "X-Processing-Time" : "537ms",
-      "MS-CV" : "ZlUTtF/uPkSZcA9iTkWyuQ.0",
+      "X-Processing-Time" : "507ms",
+      "MS-CV" : "2ccjimGcnESHSrHUdCXSIw.0",
       "retry-after" : "0",
-      "X-Azure-Ref" : "0hL/DYAAAAADmIKVz3R67Q7IlW36zBGjpWVZSMzBFREdFMDMxMwA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "X-Azure-Ref" : "0ZRXWYAAAAAASsdKVv9h8QIj7J1AiowusWVZSMzBFREdFMDMxMgA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
       "StatusCode" : "202",
-      "Body" : "{\"value\":[{\"to\":\"REDACTED\",\"messageId\":\"Outgoing_20210611195444c23c3b29-f2dc-474d-b16f-5ede4137e323_noam\",\"httpStatusCode\":202,\"repeatabilityResult\":\"accepted\",\"successful\":true},{\"to\":\"REDACTED\",\"messageId\":\"Outgoing_202106111954440d1656c7-c4bc-448c-be11-650491d37564_noam\",\"httpStatusCode\":202,\"repeatabilityResult\":\"accepted\",\"successful\":true}]}",
-      "Date" : "Fri, 11 Jun 2021 19:54:44 GMT",
+      "Body" : "{\"value\":[{\"to\":\"REDACTED\",\"messageId\":\"Outgoing_202106251741585229a95d-e9d8-49b4-bb0f-f939e77b7c23_noam\",\"httpStatusCode\":202,\"repeatabilityResult\":\"accepted\",\"successful\":true},{\"to\":\"REDACTED\",\"messageId\":\"Outgoing_20210625174158fdd4ead3-9d14-45b5-8567-14a3d12b33b8_noam\",\"httpStatusCode\":202,\"repeatabilityResult\":\"accepted\",\"successful\":true}]}",
+      "Date" : "Fri, 25 Jun 2021 17:41:58 GMT",
       "Content-Type" : "application/json; charset=utf-8",
       "Request-Context" : "appId="
     },
