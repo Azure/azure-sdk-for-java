@@ -63,9 +63,9 @@ public class AnalyzeActionsAsync {
                 AnalyzeActionsOperationDetail operationDetail = result.getValue();
                 System.out.printf("Action display name: %s, Successfully completed actions: %d, in-process actions: %d,"
                                       + " failed actions: %d, total actions: %d%n",
-                    operationDetail.getDisplayName(), operationDetail.getActionsSucceeded(),
-                    operationDetail.getActionsInProgress(), operationDetail.getActionsFailed(),
-                    operationDetail.getActionsInTotal());
+                    operationDetail.getDisplayName(), operationDetail.getSucceededCount(),
+                    operationDetail.getInProgressCount(), operationDetail.getFailedCount(),
+                    operationDetail.getTotalCount());
                 return result.getFinalResult();
             })
             .subscribe(analyzeActionsResultPagedFlux -> analyzeActionsResultPagedFlux.byPage().subscribe(

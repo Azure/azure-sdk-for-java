@@ -10,6 +10,12 @@
 - Added a new property, `actionName` into the `TextAnalyticsActionResult`.
 
 ### Breaking Changes
+- Deprecated `analyzeSentimentBatch***` APIs with type `TextAnalyticsRequestOptions` option bag below. The same 
+  functionalities can be done in the APIs with `AnalyzeSentimentOptions` instead:
+  `AnalyzeSentimentResultCollection analyzeSentimentBatch(Iterable<String> documents, String language, TextAnalyticsRequestOptions options)`,
+  `Response<AnalyzeSentimentResultCollection> analyzeSentimentBatchWithResponse(Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context)`,
+  `Mono<Response<AnalyzeSentimentResultCollection>> analyzeSentimentBatchWithResponse(Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options)`,
+  `Mono<AnalyzeSentimentResultCollection> analyzeSentimentBatch(Iterable<String> documents, String language, TextAnalyticsRequestOptions options)`
 - Removed `StringIndexType`. This SDK will keep using UTF-16 code unit as the default encoding.
 - Removed type `ExtractKeyPhrasesOptions`, `RecognizeEntitiesOptions`, `RecognizeLinkedEntitiesOptions` and respective exposures.
 - Removed the property `statistics` from `AnalyzeActionsResult` as it is not currently returned by the service even if 
@@ -23,6 +29,11 @@
   This change applied to all the other `***ActionResults` properties as well.
 - Renamed property name `result` to `documentsResults` in `AnalyzeSentimentActionResult`, `ExtractKeyPhrasesActionResult`,
   `RecognizeEntitiesActionResult`, `RecognizeLinkedEntitiesActionResult`, and `RecognizePiiEntitiesActionResult`. 
+- Renamed the methods in `AnalyzeActionsOperationDetail`,
+  `getActionsFailed()` to `getFailedCount()`,
+  `getActionsInProgress()` to `getInProgressCount()`,
+  `getActionsInTotal()` to `getTotalCount()`,
+  `getActionsSucceeded()` to `getSucceededCount()`.
 - `TextAnalyticsActions` now takes `***Action` types, instead of `***Options` types. Renamed The getter and setter method names
   based on the new type names. Replacing types show as follows:
   - `ExtractKeyPhrasesOption` changed to new type `ExtractKeyPhrasesAction`.

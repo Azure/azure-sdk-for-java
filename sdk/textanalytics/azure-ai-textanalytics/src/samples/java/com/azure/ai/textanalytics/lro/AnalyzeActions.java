@@ -72,9 +72,9 @@ public class AnalyzeActions {
             final AnalyzeActionsOperationDetail operationDetail = syncPoller.poll().getValue();
             System.out.printf("Action display name: %s, Successfully completed actions: %d, in-process actions: %d,"
                                   + " failed actions: %d, total actions: %d%n",
-                operationDetail.getDisplayName(), operationDetail.getActionsSucceeded(),
-                operationDetail.getActionsInProgress(), operationDetail.getActionsFailed(),
-                operationDetail.getActionsInTotal());
+                operationDetail.getDisplayName(), operationDetail.getSucceededCount(),
+                operationDetail.getInProgressCount(), operationDetail.getFailedCount(),
+                operationDetail.getTotalCount());
         }
 
         syncPoller.waitForCompletion();

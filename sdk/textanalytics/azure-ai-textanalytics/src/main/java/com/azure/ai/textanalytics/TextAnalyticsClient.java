@@ -776,7 +776,10 @@ public final class TextAnalyticsClient {
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
+     *
+     * @deprecated Please use the {@link #analyzeSentimentBatch(Iterable, String, AnalyzeSentimentOptions)}.
      */
+    @Deprecated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AnalyzeSentimentResultCollection analyzeSentimentBatch(
         Iterable<String> documents, String language, TextAnalyticsRequestOptions options) {
@@ -835,7 +838,11 @@ public final class TextAnalyticsClient {
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
+     *
+     * @deprecated Please use the
+     * {@link #analyzeSentimentBatchWithResponse(Iterable, AnalyzeSentimentOptions, Context)}.
      */
+    @Deprecated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AnalyzeSentimentResultCollection> analyzeSentimentBatchWithResponse(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
