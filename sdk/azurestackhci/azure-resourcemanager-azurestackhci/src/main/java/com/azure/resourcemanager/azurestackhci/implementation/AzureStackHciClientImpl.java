@@ -21,8 +21,10 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.resourcemanager.azurestackhci.fluent.ArcSettingsClient;
 import com.azure.resourcemanager.azurestackhci.fluent.AzureStackHciClient;
 import com.azure.resourcemanager.azurestackhci.fluent.ClustersClient;
+import com.azure.resourcemanager.azurestackhci.fluent.ExtensionsClient;
 import com.azure.resourcemanager.azurestackhci.fluent.OperationsClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -111,16 +113,16 @@ public final class AzureStackHciClientImpl implements AzureStackHciClient {
         return this.defaultPollInterval;
     }
 
-    /** The OperationsClient object to access its operations. */
-    private final OperationsClient operations;
+    /** The ArcSettingsClient object to access its operations. */
+    private final ArcSettingsClient arcSettings;
 
     /**
-     * Gets the OperationsClient object to access its operations.
+     * Gets the ArcSettingsClient object to access its operations.
      *
-     * @return the OperationsClient object.
+     * @return the ArcSettingsClient object.
      */
-    public OperationsClient getOperations() {
-        return this.operations;
+    public ArcSettingsClient getArcSettings() {
+        return this.arcSettings;
     }
 
     /** The ClustersClient object to access its operations. */
@@ -133,6 +135,30 @@ public final class AzureStackHciClientImpl implements AzureStackHciClient {
      */
     public ClustersClient getClusters() {
         return this.clusters;
+    }
+
+    /** The ExtensionsClient object to access its operations. */
+    private final ExtensionsClient extensions;
+
+    /**
+     * Gets the ExtensionsClient object to access its operations.
+     *
+     * @return the ExtensionsClient object.
+     */
+    public ExtensionsClient getExtensions() {
+        return this.extensions;
+    }
+
+    /** The OperationsClient object to access its operations. */
+    private final OperationsClient operations;
+
+    /**
+     * Gets the OperationsClient object to access its operations.
+     *
+     * @return the OperationsClient object.
+     */
+    public OperationsClient getOperations() {
+        return this.operations;
     }
 
     /**
@@ -157,9 +183,11 @@ public final class AzureStackHciClientImpl implements AzureStackHciClient {
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2020-10-01";
-        this.operations = new OperationsClientImpl(this);
+        this.apiVersion = "2021-01-01-preview";
+        this.arcSettings = new ArcSettingsClientImpl(this);
         this.clusters = new ClustersClientImpl(this);
+        this.extensions = new ExtensionsClientImpl(this);
+        this.operations = new OperationsClientImpl(this);
     }
 
     /**

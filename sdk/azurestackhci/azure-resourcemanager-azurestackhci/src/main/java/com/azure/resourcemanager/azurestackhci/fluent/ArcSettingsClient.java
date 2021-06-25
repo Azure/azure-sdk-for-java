@@ -8,170 +8,161 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.azurestackhci.fluent.models.ClusterInner;
-import com.azure.resourcemanager.azurestackhci.models.ClusterPatch;
+import com.azure.core.util.polling.SyncPoller;
+import com.azure.resourcemanager.azurestackhci.fluent.models.ArcSettingInner;
 
-/** An instance of this class provides access to all the operations defined in ClustersClient. */
-public interface ClustersClient {
+/** An instance of this class provides access to all the operations defined in ArcSettingsClient. */
+public interface ArcSettingsClient {
     /**
-     * List all HCI clusters in a subscription.
+     * Get ArcSetting resources of HCI Cluster.
      *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of clusters.
+     * @return arcSetting resources of HCI Cluster.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ClusterInner> list();
+    PagedIterable<ArcSettingInner> listByCluster(String resourceGroupName, String clusterName);
 
     /**
-     * List all HCI clusters in a subscription.
+     * Get ArcSetting resources of HCI Cluster.
      *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of clusters.
+     * @return arcSetting resources of HCI Cluster.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ClusterInner> list(Context context);
+    PagedIterable<ArcSettingInner> listByCluster(String resourceGroupName, String clusterName, Context context);
 
     /**
-     * List all HCI clusters in a resource group.
+     * Get ArcSetting resource details of HCI Cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of clusters.
+     * @return arcSetting resource details of HCI Cluster.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ClusterInner> listByResourceGroup(String resourceGroupName);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ArcSettingInner get(String resourceGroupName, String clusterName, String arcSettingName);
 
     /**
-     * List all HCI clusters in a resource group.
+     * Get ArcSetting resource details of HCI Cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of clusters.
+     * @return arcSetting resource details of HCI Cluster.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ClusterInner> listByResourceGroup(String resourceGroupName, Context context);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ArcSettingInner> getWithResponse(
+        String resourceGroupName, String clusterName, String arcSettingName, Context context);
 
     /**
-     * Get HCI cluster.
+     * Create ArcSetting for HCI cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
+     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
+     * @param arcSetting Parameters supplied to the Create ArcSetting resource for this HCI cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hCI cluster.
+     * @return arcSetting details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ClusterInner getByResourceGroup(String resourceGroupName, String clusterName);
+    ArcSettingInner create(
+        String resourceGroupName, String clusterName, String arcSettingName, ArcSettingInner arcSetting);
 
     /**
-     * Get HCI cluster.
+     * Create ArcSetting for HCI cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
+     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
+     * @param arcSetting Parameters supplied to the Create ArcSetting resource for this HCI cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hCI cluster.
+     * @return arcSetting details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ClusterInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String clusterName, Context context);
+    Response<ArcSettingInner> createWithResponse(
+        String resourceGroupName,
+        String clusterName,
+        String arcSettingName,
+        ArcSettingInner arcSetting,
+        Context context);
 
     /**
-     * Create an HCI cluster.
+     * Delete ArcSetting resource details of HCI Cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
-     * @param cluster Details of the HCI cluster.
+     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cluster details.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ClusterInner create(String resourceGroupName, String clusterName, ClusterInner cluster);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName, String arcSettingName);
 
     /**
-     * Create an HCI cluster.
+     * Delete ArcSetting resource details of HCI Cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
-     * @param cluster Details of the HCI cluster.
+     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cluster details.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ClusterInner> createWithResponse(
-        String resourceGroupName, String clusterName, ClusterInner cluster, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String clusterName, String arcSettingName, Context context);
 
     /**
-     * Update an HCI cluster.
+     * Delete ArcSetting resource details of HCI Cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
-     * @param cluster Details of the HCI cluster.
+     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cluster details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ClusterInner update(String resourceGroupName, String clusterName, ClusterPatch cluster);
+    void delete(String resourceGroupName, String clusterName, String arcSettingName);
 
     /**
-     * Update an HCI cluster.
+     * Delete ArcSetting resource details of HCI Cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
-     * @param cluster Details of the HCI cluster.
+     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cluster details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ClusterInner> updateWithResponse(
-        String resourceGroupName, String clusterName, ClusterPatch cluster, Context context);
-
-    /**
-     * Delete an HCI cluster.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String clusterName);
-
-    /**
-     * Delete an HCI cluster.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(String resourceGroupName, String clusterName, Context context);
+    void delete(String resourceGroupName, String clusterName, String arcSettingName, Context context);
 }
