@@ -3,12 +3,14 @@
 
 package com.azure.storage.common.test.shared
 
+import com.azure.core.credential.TokenRequestContext
 import com.azure.core.http.HttpClient
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
 import com.azure.core.util.ServiceVersion
+import com.azure.identity.EnvironmentCredentialBuilder
 import spock.lang.Specification
 
 class StorageSpec extends Specification {
@@ -74,6 +76,17 @@ class StorageSpec extends Specification {
         } else {
             return interceptorManager.getPlaybackClient()
         }
+    }
+
+    private static String getAuthToken() {
+        if (env.testMode == TestMode.PLAYBACK) {
+            // we just need some string to satisfy SDK for playback mode. Recording framework handles this fine.
+            return "recordingBearerToken"
+        }
+        return new EnvironmentCredentialBuilder().build()
+            .getToken(new TokenRequestContext().setScopes(["https://storage.azure.com/.default"]))
+            .map { it.getToken() }
+            .block()
     }
 
     private String getTestName() {
