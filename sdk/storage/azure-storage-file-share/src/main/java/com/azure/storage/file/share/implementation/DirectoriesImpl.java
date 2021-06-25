@@ -19,6 +19,8 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
+import com.azure.core.util.serializer.CollectionFormat;
+import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.storage.file.share.implementation.models.DirectoriesCreateResponse;
 import com.azure.storage.file.share.implementation.models.DirectoriesDeleteResponse;
 import com.azure.storage.file.share.implementation.models.DirectoriesForceCloseHandlesResponse;
@@ -27,7 +29,9 @@ import com.azure.storage.file.share.implementation.models.DirectoriesListFilesAn
 import com.azure.storage.file.share.implementation.models.DirectoriesListHandlesResponse;
 import com.azure.storage.file.share.implementation.models.DirectoriesSetMetadataResponse;
 import com.azure.storage.file.share.implementation.models.DirectoriesSetPropertiesResponse;
+import com.azure.storage.file.share.implementation.models.ListFilesIncludeType;
 import com.azure.storage.file.share.implementation.models.StorageErrorException;
+import java.util.List;
 import java.util.Map;
 import reactor.core.publisher.Mono;
 
@@ -152,6 +156,8 @@ public final class DirectoriesImpl {
                 @QueryParam("maxresults") Integer maxresults,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
+                @QueryParam("include") String include,
+                @HeaderParam("x-ms-file-extended-info") Boolean includeExtendedInfo,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -417,6 +423,8 @@ public final class DirectoriesImpl {
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      *     Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param include Include this parameter to specify one or more datasets to include in the response.
+     * @param includeExtendedInfo The includeExtendedInfo parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws StorageErrorException thrown if the request is rejected by server.
@@ -432,10 +440,14 @@ public final class DirectoriesImpl {
             String marker,
             Integer maxresults,
             Integer timeout,
+            List<ListFilesIncludeType> include,
+            Boolean includeExtendedInfo,
             Context context) {
         final String restype = "directory";
         final String comp = "list";
         final String accept = "application/xml";
+        String includeConverted =
+                JacksonAdapter.createDefaultSerializerAdapter().serializeList(include, CollectionFormat.CSV);
         return service.listFilesAndDirectoriesSegment(
                 this.client.getUrl(),
                 restype,
@@ -448,6 +460,8 @@ public final class DirectoriesImpl {
                 maxresults,
                 timeout,
                 this.client.getVersion(),
+                includeConverted,
+                includeExtendedInfo,
                 accept,
                 context);
     }

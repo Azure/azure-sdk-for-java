@@ -1,7 +1,7 @@
 # Release History
 
 ## 12.13.0-beta.1 (Unreleased)
-
+- Added support for the set immutability policy permission for Account SAS. 
 
 ## 12.12.0 (2021-06-09)
 - GA release
