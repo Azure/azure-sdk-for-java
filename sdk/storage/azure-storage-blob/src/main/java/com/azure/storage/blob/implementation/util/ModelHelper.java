@@ -508,37 +508,49 @@ public class ModelHelper {
         if (requestConditions == null) {
             return;
         }
-        List<String> invalidConditionsFound = new ArrayList<>();
+        List<String> invalidConditionsFound = null;
 
         for (BlobRequestConditionProperty condition : invalidConditions) {
             switch (condition) {
                 case LEASE_ID:
                     if (requestConditions.getLeaseId() != null) {
+                        invalidConditionsFound = invalidConditionsFound == null ? new ArrayList<>()
+                            : invalidConditionsFound;
                         invalidConditionsFound.add(BlobRequestConditionProperty.LEASE_ID.toString());
                     }
                     break;
                 case TAGS_CONDITIONS:
                     if (requestConditions.getTagsConditions() != null) {
+                        invalidConditionsFound = invalidConditionsFound == null ? new ArrayList<>()
+                            : invalidConditionsFound;
                         invalidConditionsFound.add(BlobRequestConditionProperty.TAGS_CONDITIONS.toString());
                     }
                     break;
                 case IF_MODIFIED_SINCE:
                     if (requestConditions.getIfModifiedSince() != null) {
+                        invalidConditionsFound = invalidConditionsFound == null ? new ArrayList<>()
+                            : invalidConditionsFound;
                         invalidConditionsFound.add(BlobRequestConditionProperty.IF_MODIFIED_SINCE.toString());
                     }
                     break;
                 case IF_UNMODIFIED_SINCE:
                     if (requestConditions.getIfUnmodifiedSince() != null) {
+                        invalidConditionsFound = invalidConditionsFound == null ? new ArrayList<>()
+                            : invalidConditionsFound;
                         invalidConditionsFound.add(BlobRequestConditionProperty.IF_UNMODIFIED_SINCE.toString());
                     }
                     break;
                 case IF_MATCH:
                     if (requestConditions.getIfMatch() != null) {
+                        invalidConditionsFound = invalidConditionsFound == null ? new ArrayList<>()
+                            : invalidConditionsFound;
                         invalidConditionsFound.add(BlobRequestConditionProperty.IF_MATCH.toString());
                     }
                     break;
                 case IF_NONE_MATCH:
                     if (requestConditions.getIfNoneMatch() != null) {
+                        invalidConditionsFound = invalidConditionsFound == null ? new ArrayList<>()
+                            : invalidConditionsFound;
                         invalidConditionsFound.add(BlobRequestConditionProperty.IF_NONE_MATCH.toString());
                     }
                     break;
@@ -546,7 +558,7 @@ public class ModelHelper {
                     break;
             }
         }
-        if (!invalidConditionsFound.isEmpty()) {
+        if (invalidConditionsFound != null && !invalidConditionsFound.isEmpty()) {
             String unsupported = String.join(", ", invalidConditionsFound);
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("%s does not support the %s request condition(s) for parameter '%s'.",
