@@ -8,7 +8,9 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.recoveryservices.fluent.models.VaultInner;
 import com.azure.resourcemanager.recoveryservices.models.PatchVault;
 
@@ -100,6 +102,37 @@ public interface VaultsClient {
      * @return resource information, as returned by the resource provider.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<VaultInner>, VaultInner> beginCreateOrUpdate(
+        String resourceGroupName, String vaultName, VaultInner vault);
+
+    /**
+     * Creates or updates a Recovery Services vault.
+     *
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param vaultName The name of the recovery services vault.
+     * @param vault Recovery Services Vault to be created.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource information, as returned by the resource provider.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<VaultInner>, VaultInner> beginCreateOrUpdate(
+        String resourceGroupName, String vaultName, VaultInner vault, Context context);
+
+    /**
+     * Creates or updates a Recovery Services vault.
+     *
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param vaultName The name of the recovery services vault.
+     * @param vault Recovery Services Vault to be created.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource information, as returned by the resource provider.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     VaultInner createOrUpdate(String resourceGroupName, String vaultName, VaultInner vault);
 
     /**
@@ -115,8 +148,7 @@ public interface VaultsClient {
      * @return resource information, as returned by the resource provider.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VaultInner> createOrUpdateWithResponse(
-        String resourceGroupName, String vaultName, VaultInner vault, Context context);
+    VaultInner createOrUpdate(String resourceGroupName, String vaultName, VaultInner vault, Context context);
 
     /**
      * Deletes a vault.
@@ -156,6 +188,37 @@ public interface VaultsClient {
      * @return resource information, as returned by the resource provider.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<VaultInner>, VaultInner> beginUpdate(
+        String resourceGroupName, String vaultName, PatchVault vault);
+
+    /**
+     * Updates the vault.
+     *
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param vaultName The name of the recovery services vault.
+     * @param vault Recovery Services Vault to be created.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource information, as returned by the resource provider.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<VaultInner>, VaultInner> beginUpdate(
+        String resourceGroupName, String vaultName, PatchVault vault, Context context);
+
+    /**
+     * Updates the vault.
+     *
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param vaultName The name of the recovery services vault.
+     * @param vault Recovery Services Vault to be created.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource information, as returned by the resource provider.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     VaultInner update(String resourceGroupName, String vaultName, PatchVault vault);
 
     /**
@@ -171,6 +234,5 @@ public interface VaultsClient {
      * @return resource information, as returned by the resource provider.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VaultInner> updateWithResponse(
-        String resourceGroupName, String vaultName, PatchVault vault, Context context);
+    VaultInner update(String resourceGroupName, String vaultName, PatchVault vault, Context context);
 }

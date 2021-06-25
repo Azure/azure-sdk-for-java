@@ -150,7 +150,7 @@ public final class VaultExtendedInfoesClientImpl implements VaultExtendedInfoesC
                             vaultName,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -309,7 +309,7 @@ public final class VaultExtendedInfoesClientImpl implements VaultExtendedInfoesC
                             resourceExtendedInfoDetails,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -490,7 +490,7 @@ public final class VaultExtendedInfoesClientImpl implements VaultExtendedInfoesC
                             resourceExtendedInfoDetails,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

@@ -9,7 +9,6 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -17,6 +16,7 @@ import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
@@ -27,6 +27,7 @@ import com.azure.resourcemanager.recoveryservices.implementation.RecoveryService
 import com.azure.resourcemanager.recoveryservices.implementation.RecoveryServicesManagementClientBuilder;
 import com.azure.resourcemanager.recoveryservices.implementation.RegisteredIdentitiesImpl;
 import com.azure.resourcemanager.recoveryservices.implementation.ReplicationUsagesImpl;
+import com.azure.resourcemanager.recoveryservices.implementation.ResourceProvidersImpl;
 import com.azure.resourcemanager.recoveryservices.implementation.UsagesImpl;
 import com.azure.resourcemanager.recoveryservices.implementation.VaultCertificatesImpl;
 import com.azure.resourcemanager.recoveryservices.implementation.VaultExtendedInfoesImpl;
@@ -36,6 +37,7 @@ import com.azure.resourcemanager.recoveryservices.models.PrivateLinkResourcesOpe
 import com.azure.resourcemanager.recoveryservices.models.RecoveryServices;
 import com.azure.resourcemanager.recoveryservices.models.RegisteredIdentities;
 import com.azure.resourcemanager.recoveryservices.models.ReplicationUsages;
+import com.azure.resourcemanager.recoveryservices.models.ResourceProviders;
 import com.azure.resourcemanager.recoveryservices.models.Usages;
 import com.azure.resourcemanager.recoveryservices.models.VaultCertificates;
 import com.azure.resourcemanager.recoveryservices.models.VaultExtendedInfoes;
@@ -63,6 +65,8 @@ public final class RecoveryServicesManager {
     private Operations operations;
 
     private VaultExtendedInfoes vaultExtendedInfoes;
+
+    private ResourceProviders resourceProviders;
 
     private Usages usages;
 
@@ -109,6 +113,7 @@ public final class RecoveryServicesManager {
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
         private final List<HttpPipelinePolicy> policies = new ArrayList<>();
+        private final List<String> scopes = new ArrayList<>();
         private RetryPolicy retryPolicy;
         private Duration defaultPollInterval;
 
@@ -149,6 +154,17 @@ public final class RecoveryServicesManager {
         }
 
         /**
+         * Adds the scope to permission sets.
+         *
+         * @param scope the scope.
+         * @return the configurable object itself.
+         */
+        public Configurable withScope(String scope) {
+            this.scopes.add(Objects.requireNonNull(scope, "'scope' cannot be null."));
+            return this;
+        }
+
+        /**
          * Sets the retry policy to the HTTP pipeline.
          *
          * @param retryPolicy the HTTP pipeline retry policy.
@@ -184,25 +200,40 @@ public final class RecoveryServicesManager {
             Objects.requireNonNull(credential, "'credential' cannot be null.");
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
+            StringBuilder userAgentBuilder = new StringBuilder();
+            userAgentBuilder
+                .append("azsdk-java")
+                .append("-")
+                .append("com.azure.resourcemanager.recoveryservices")
+                .append("/")
+                .append("1.0.0-beta.1");
+            if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
+                userAgentBuilder
+                    .append(" (")
+                    .append(Configuration.getGlobalConfiguration().get("java.version"))
+                    .append("; ")
+                    .append(Configuration.getGlobalConfiguration().get("os.name"))
+                    .append("; ")
+                    .append(Configuration.getGlobalConfiguration().get("os.version"))
+                    .append("; auto-generated)");
+            } else {
+                userAgentBuilder.append(" (auto-generated)");
+            }
+
+            if (scopes.isEmpty()) {
+                scopes.add(profile.getEnvironment().getManagementEndpoint() + "/.default");
+            }
             if (retryPolicy == null) {
                 retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
             }
             List<HttpPipelinePolicy> policies = new ArrayList<>();
-            policies
-                .add(
-                    new UserAgentPolicy(
-                        null,
-                        "com.azure.resourcemanager.recoveryservices",
-                        "1.0.0-beta.1",
-                        Configuration.getGlobalConfiguration()));
+            policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
             policies.add(new RequestIdPolicy());
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
-            policies
-                .add(
-                    new BearerTokenAuthenticationPolicy(
-                        credential, profile.getEnvironment().getManagementEndpoint() + "/.default"));
+            policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
+            policies.addAll(this.policies);
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
             HttpPipeline httpPipeline =
@@ -277,6 +308,14 @@ public final class RecoveryServicesManager {
             this.vaultExtendedInfoes = new VaultExtendedInfoesImpl(clientObject.getVaultExtendedInfoes(), this);
         }
         return vaultExtendedInfoes;
+    }
+
+    /** @return Resource collection API of ResourceProviders. */
+    public ResourceProviders resourceProviders() {
+        if (this.resourceProviders == null) {
+            this.resourceProviders = new ResourceProvidersImpl(clientObject.getResourceProviders(), this);
+        }
+        return resourceProviders;
     }
 
     /** @return Resource collection API of Usages. */

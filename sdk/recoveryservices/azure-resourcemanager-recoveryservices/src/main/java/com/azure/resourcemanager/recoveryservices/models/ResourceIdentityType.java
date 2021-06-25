@@ -16,6 +16,12 @@ public final class ResourceIdentityType extends ExpandableStringEnum<ResourceIde
     /** Static value None for ResourceIdentityType. */
     public static final ResourceIdentityType NONE = fromString("None");
 
+    /** Static value UserAssigned for ResourceIdentityType. */
+    public static final ResourceIdentityType USER_ASSIGNED = fromString("UserAssigned");
+
+    /** Static value SystemAssigned, UserAssigned for ResourceIdentityType. */
+    public static final ResourceIdentityType SYSTEM_ASSIGNED_USER_ASSIGNED = fromString("SystemAssigned, UserAssigned");
+
     /**
      * Creates or finds a ResourceIdentityType from its string representation.
      *

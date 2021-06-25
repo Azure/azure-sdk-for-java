@@ -8,7 +8,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.recoveryservices.RecoveryServicesManager;
 import com.azure.resourcemanager.recoveryservices.fluent.RecoveryServicesClient;
 import com.azure.resourcemanager.recoveryservices.fluent.models.CheckNameAvailabilityResultInner;
 import com.azure.resourcemanager.recoveryservices.models.CheckNameAvailabilityParameters;
@@ -21,9 +20,11 @@ public final class RecoveryServicesImpl implements RecoveryServices {
 
     private final RecoveryServicesClient innerClient;
 
-    private final RecoveryServicesManager serviceManager;
+    private final com.azure.resourcemanager.recoveryservices.RecoveryServicesManager serviceManager;
 
-    public RecoveryServicesImpl(RecoveryServicesClient innerClient, RecoveryServicesManager serviceManager) {
+    public RecoveryServicesImpl(
+        RecoveryServicesClient innerClient,
+        com.azure.resourcemanager.recoveryservices.RecoveryServicesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -58,7 +59,7 @@ public final class RecoveryServicesImpl implements RecoveryServices {
         return this.innerClient;
     }
 
-    private RecoveryServicesManager manager() {
+    private com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager() {
         return this.serviceManager;
     }
 }

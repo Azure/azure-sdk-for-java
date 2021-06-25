@@ -16,64 +16,57 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
-import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.recoveryservices.fluent.PrivateLinkResourcesOperationsClient;
-import com.azure.resourcemanager.recoveryservices.fluent.models.PrivateLinkResourceInner;
-import com.azure.resourcemanager.recoveryservices.models.PrivateLinkResources;
+import com.azure.resourcemanager.recoveryservices.fluent.ResourceProvidersClient;
+import com.azure.resourcemanager.recoveryservices.fluent.models.OperationResourceInner;
+import com.azure.resourcemanager.recoveryservices.fluent.models.VaultInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in PrivateLinkResourcesOperationsClient. */
-public final class PrivateLinkResourcesOperationsClientImpl implements PrivateLinkResourcesOperationsClient {
-    private final ClientLogger logger = new ClientLogger(PrivateLinkResourcesOperationsClientImpl.class);
+/** An instance of this class provides access to all the operations defined in ResourceProvidersClient. */
+public final class ResourceProvidersClientImpl implements ResourceProvidersClient {
+    private final ClientLogger logger = new ClientLogger(ResourceProvidersClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
-    private final PrivateLinkResourcesOperationsService service;
+    private final ResourceProvidersService service;
 
     /** The service client containing this operation class. */
     private final RecoveryServicesManagementClientImpl client;
 
     /**
-     * Initializes an instance of PrivateLinkResourcesOperationsClientImpl.
+     * Initializes an instance of ResourceProvidersClientImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    PrivateLinkResourcesOperationsClientImpl(RecoveryServicesManagementClientImpl client) {
+    ResourceProvidersClientImpl(RecoveryServicesManagementClientImpl client) {
         this.service =
-            RestProxy
-                .create(
-                    PrivateLinkResourcesOperationsService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+            RestProxy.create(ResourceProvidersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for RecoveryServicesManagementClientPrivateLinkResourcesOperations to be
-     * used by the proxy service to perform REST calls.
+     * The interface defining all the services for RecoveryServicesManagementClientResourceProviders to be used by the
+     * proxy service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesMana")
-    private interface PrivateLinkResourcesOperationsService {
+    private interface ResourceProvidersService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{vaultName}/privateLinkResources")
+                + "/vaults/{vaultName}/operationStatus/{operationId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PrivateLinkResources>> list(
+        Mono<Response<OperationResourceInner>> getOperationStatus(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("vaultName") String vaultName,
+            @PathParam("operationId") String operationId,
             @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept,
             Context context);
@@ -81,43 +74,34 @@ public final class PrivateLinkResourcesOperationsClientImpl implements PrivateLi
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{vaultName}/privateLinkResources/{privateLinkResourceName}")
-        @ExpectedResponses({200})
+                + "/vaults/{vaultName}/operationResults/{operationId}")
+        @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PrivateLinkResourceInner>> get(
+        Mono<Response<VaultInner>> getOperationResult(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("vaultName") String vaultName,
+            @PathParam("operationId") String operationId,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("privateLinkResourceName") String privateLinkResourceName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PrivateLinkResources>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept,
             Context context);
     }
 
     /**
-     * Returns the list of private link resources that need to be created for Backup and SiteRecovery.
+     * Gets the operation status for a resource.
      *
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param vaultName The name of the recovery services vault.
+     * @param operationId The operationId parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class which represent the stamps associated with the vault.
+     * @return the operation status for a resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PrivateLinkResourceInner>> listSinglePageAsync(
-        String resourceGroupName, String vaultName) {
+    private Mono<Response<OperationResourceInner>> getOperationStatusWithResponseAsync(
+        String resourceGroupName, String vaultName, String operationId) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -136,222 +120,42 @@ public final class PrivateLinkResourcesOperationsClientImpl implements PrivateLi
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
+        }
+        if (operationId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
                     service
-                        .list(
+                        .getOperationStatus(
                             this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             vaultName,
+                            operationId,
                             this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<PrivateLinkResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Returns the list of private link resources that need to be created for Backup and SiteRecovery.
-     *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param vaultName The name of the recovery services vault.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class which represent the stamps associated with the vault.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PrivateLinkResourceInner>> listSinglePageAsync(
-        String resourceGroupName, String vaultName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (vaultName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                vaultName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Returns the list of private link resources that need to be created for Backup and SiteRecovery.
-     *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param vaultName The name of the recovery services vault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class which represent the stamps associated with the vault.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PrivateLinkResourceInner> listAsync(String resourceGroupName, String vaultName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, vaultName), nextLink -> listNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Returns the list of private link resources that need to be created for Backup and SiteRecovery.
-     *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param vaultName The name of the recovery services vault.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class which represent the stamps associated with the vault.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PrivateLinkResourceInner> listAsync(String resourceGroupName, String vaultName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, vaultName, context),
-            nextLink -> listNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Returns the list of private link resources that need to be created for Backup and SiteRecovery.
-     *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param vaultName The name of the recovery services vault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class which represent the stamps associated with the vault.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PrivateLinkResourceInner> list(String resourceGroupName, String vaultName) {
-        return new PagedIterable<>(listAsync(resourceGroupName, vaultName));
-    }
-
-    /**
-     * Returns the list of private link resources that need to be created for Backup and SiteRecovery.
-     *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param vaultName The name of the recovery services vault.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class which represent the stamps associated with the vault.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PrivateLinkResourceInner> list(String resourceGroupName, String vaultName, Context context) {
-        return new PagedIterable<>(listAsync(resourceGroupName, vaultName, context));
-    }
-
-    /**
-     * Returns a specified private link resource that need to be created for Backup and SiteRecovery.
-     *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param vaultName The name of the recovery services vault.
-     * @param privateLinkResourceName The privateLinkResourceName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information of the private link resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PrivateLinkResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String vaultName, String privateLinkResourceName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (vaultName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
-        }
-        if (privateLinkResourceName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter privateLinkResourceName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            vaultName,
-                            this.client.getApiVersion(),
-                            privateLinkResourceName,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Returns a specified private link resource that need to be created for Backup and SiteRecovery.
+     * Gets the operation status for a resource.
      *
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param vaultName The name of the recovery services vault.
-     * @param privateLinkResourceName The privateLinkResourceName parameter.
+     * @param operationId The operationId parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information of the private link resource.
+     * @return the operation status for a resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PrivateLinkResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String vaultName, String privateLinkResourceName, Context context) {
+    private Mono<Response<OperationResourceInner>> getOperationStatusWithResponseAsync(
+        String resourceGroupName, String vaultName, String operationId, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -371,42 +175,40 @@ public final class PrivateLinkResourcesOperationsClientImpl implements PrivateLi
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
         }
-        if (privateLinkResourceName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter privateLinkResourceName is required and cannot be null."));
+        if (operationId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .get(
+            .getOperationStatus(
                 this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 vaultName,
+                operationId,
                 this.client.getApiVersion(),
-                privateLinkResourceName,
                 accept,
                 context);
     }
 
     /**
-     * Returns a specified private link resource that need to be created for Backup and SiteRecovery.
+     * Gets the operation status for a resource.
      *
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param vaultName The name of the recovery services vault.
-     * @param privateLinkResourceName The privateLinkResourceName parameter.
+     * @param operationId The operationId parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information of the private link resource.
+     * @return the operation status for a resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PrivateLinkResourceInner> getAsync(
-        String resourceGroupName, String vaultName, String privateLinkResourceName) {
-        return getWithResponseAsync(resourceGroupName, vaultName, privateLinkResourceName)
+    private Mono<OperationResourceInner> getOperationStatusAsync(
+        String resourceGroupName, String vaultName, String operationId) {
+        return getOperationStatusWithResponseAsync(resourceGroupName, vaultName, operationId)
             .flatMap(
-                (Response<PrivateLinkResourceInner> res) -> {
+                (Response<OperationResourceInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -416,107 +218,198 @@ public final class PrivateLinkResourcesOperationsClientImpl implements PrivateLi
     }
 
     /**
-     * Returns a specified private link resource that need to be created for Backup and SiteRecovery.
+     * Gets the operation status for a resource.
      *
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param vaultName The name of the recovery services vault.
-     * @param privateLinkResourceName The privateLinkResourceName parameter.
+     * @param operationId The operationId parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information of the private link resource.
+     * @return the operation status for a resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateLinkResourceInner get(String resourceGroupName, String vaultName, String privateLinkResourceName) {
-        return getAsync(resourceGroupName, vaultName, privateLinkResourceName).block();
+    public OperationResourceInner getOperationStatus(String resourceGroupName, String vaultName, String operationId) {
+        return getOperationStatusAsync(resourceGroupName, vaultName, operationId).block();
     }
 
     /**
-     * Returns a specified private link resource that need to be created for Backup and SiteRecovery.
+     * Gets the operation status for a resource.
      *
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param vaultName The name of the recovery services vault.
-     * @param privateLinkResourceName The privateLinkResourceName parameter.
+     * @param operationId The operationId parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information of the private link resource.
+     * @return the operation status for a resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PrivateLinkResourceInner> getWithResponse(
-        String resourceGroupName, String vaultName, String privateLinkResourceName, Context context) {
-        return getWithResponseAsync(resourceGroupName, vaultName, privateLinkResourceName, context).block();
+    public Response<OperationResourceInner> getOperationStatusWithResponse(
+        String resourceGroupName, String vaultName, String operationId, Context context) {
+        return getOperationStatusWithResponseAsync(resourceGroupName, vaultName, operationId, context).block();
     }
 
     /**
-     * Get the next page of items.
+     * Gets the operation result for a resource.
      *
-     * @param nextLink The nextLink parameter.
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param vaultName The name of the recovery services vault.
+     * @param operationId The operationId parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class which represent the stamps associated with the vault.
+     * @return the operation result for a resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PrivateLinkResourceInner>> listNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
+    private Mono<Response<VaultInner>> getOperationResultWithResponseAsync(
+        String resourceGroupName, String vaultName, String operationId) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (vaultName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
+        }
+        if (operationId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
+        }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<PrivateLinkResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(
+                context ->
+                    service
+                        .getOperationResult(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            vaultName,
+                            operationId,
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Get the next page of items.
+     * Gets the operation result for a resource.
      *
-     * @param nextLink The nextLink parameter.
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param vaultName The name of the recovery services vault.
+     * @param operationId The operationId parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class which represent the stamps associated with the vault.
+     * @return the operation result for a resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PrivateLinkResourceInner>> listNextSinglePageAsync(String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
+    private Mono<Response<VaultInner>> getOperationResultWithResponseAsync(
+        String resourceGroupName, String vaultName, String operationId, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (vaultName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
+        }
+        if (operationId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
+        }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .getOperationResult(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                vaultName,
+                operationId,
+                this.client.getApiVersion(),
+                accept,
+                context);
+    }
+
+    /**
+     * Gets the operation result for a resource.
+     *
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param vaultName The name of the recovery services vault.
+     * @param operationId The operationId parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the operation result for a resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<VaultInner> getOperationResultAsync(String resourceGroupName, String vaultName, String operationId) {
+        return getOperationResultWithResponseAsync(resourceGroupName, vaultName, operationId)
+            .flatMap(
+                (Response<VaultInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Gets the operation result for a resource.
+     *
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param vaultName The name of the recovery services vault.
+     * @param operationId The operationId parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the operation result for a resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VaultInner getOperationResult(String resourceGroupName, String vaultName, String operationId) {
+        return getOperationResultAsync(resourceGroupName, vaultName, operationId).block();
+    }
+
+    /**
+     * Gets the operation result for a resource.
+     *
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param vaultName The name of the recovery services vault.
+     * @param operationId The operationId parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the operation result for a resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<VaultInner> getOperationResultWithResponse(
+        String resourceGroupName, String vaultName, String operationId, Context context) {
+        return getOperationResultWithResponseAsync(resourceGroupName, vaultName, operationId, context).block();
     }
 }

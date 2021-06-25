@@ -49,6 +49,12 @@ public final class ResourceCertificateAndAadDetails extends ResourceCertificateD
     @JsonProperty(value = "azureManagementEndpointAudience", required = true)
     private String azureManagementEndpointAudience;
 
+    /*
+     * Service Resource Id.
+     */
+    @JsonProperty(value = "serviceResourceId")
+    private String serviceResourceId;
+
     /**
      * Get the aadAuthority property: AAD tenant authority.
      *
@@ -147,6 +153,26 @@ public final class ResourceCertificateAndAadDetails extends ResourceCertificateD
     public ResourceCertificateAndAadDetails withAzureManagementEndpointAudience(
         String azureManagementEndpointAudience) {
         this.azureManagementEndpointAudience = azureManagementEndpointAudience;
+        return this;
+    }
+
+    /**
+     * Get the serviceResourceId property: Service Resource Id.
+     *
+     * @return the serviceResourceId value.
+     */
+    public String serviceResourceId() {
+        return this.serviceResourceId;
+    }
+
+    /**
+     * Set the serviceResourceId property: Service Resource Id.
+     *
+     * @param serviceResourceId the serviceResourceId value to set.
+     * @return the ResourceCertificateAndAadDetails object itself.
+     */
+    public ResourceCertificateAndAadDetails withServiceResourceId(String serviceResourceId) {
+        this.serviceResourceId = serviceResourceId;
         return this;
     }
 

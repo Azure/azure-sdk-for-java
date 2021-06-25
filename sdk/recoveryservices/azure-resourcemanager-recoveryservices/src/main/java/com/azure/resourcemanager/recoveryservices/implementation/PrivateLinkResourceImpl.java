@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservices.implementation;
 
-import com.azure.resourcemanager.recoveryservices.RecoveryServicesManager;
 import com.azure.resourcemanager.recoveryservices.fluent.models.PrivateLinkResourceInner;
 import com.azure.resourcemanager.recoveryservices.models.PrivateLinkResource;
 import java.util.Collections;
@@ -13,9 +12,11 @@ import java.util.List;
 public final class PrivateLinkResourceImpl implements PrivateLinkResource {
     private PrivateLinkResourceInner innerObject;
 
-    private final RecoveryServicesManager serviceManager;
+    private final com.azure.resourcemanager.recoveryservices.RecoveryServicesManager serviceManager;
 
-    PrivateLinkResourceImpl(PrivateLinkResourceInner innerObject, RecoveryServicesManager serviceManager) {
+    PrivateLinkResourceImpl(
+        PrivateLinkResourceInner innerObject,
+        com.azure.resourcemanager.recoveryservices.RecoveryServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -58,7 +59,7 @@ public final class PrivateLinkResourceImpl implements PrivateLinkResource {
         return this.innerObject;
     }
 
-    private RecoveryServicesManager manager() {
+    private com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager() {
         return this.serviceManager;
     }
 }

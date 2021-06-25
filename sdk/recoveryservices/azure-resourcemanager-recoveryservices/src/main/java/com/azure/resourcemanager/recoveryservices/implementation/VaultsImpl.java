@@ -9,7 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.recoveryservices.RecoveryServicesManager;
 import com.azure.resourcemanager.recoveryservices.fluent.VaultsClient;
 import com.azure.resourcemanager.recoveryservices.fluent.models.VaultInner;
 import com.azure.resourcemanager.recoveryservices.models.Vault;
@@ -21,31 +20,32 @@ public final class VaultsImpl implements Vaults {
 
     private final VaultsClient innerClient;
 
-    private final RecoveryServicesManager serviceManager;
+    private final com.azure.resourcemanager.recoveryservices.RecoveryServicesManager serviceManager;
 
-    public VaultsImpl(VaultsClient innerClient, RecoveryServicesManager serviceManager) {
+    public VaultsImpl(
+        VaultsClient innerClient, com.azure.resourcemanager.recoveryservices.RecoveryServicesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<Vault> list() {
         PagedIterable<VaultInner> inner = this.serviceClient().list();
-        return inner.mapPage(inner1 -> new VaultImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new VaultImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Vault> list(Context context) {
         PagedIterable<VaultInner> inner = this.serviceClient().list(context);
-        return inner.mapPage(inner1 -> new VaultImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new VaultImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Vault> listByResourceGroup(String resourceGroupName) {
         PagedIterable<VaultInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return inner.mapPage(inner1 -> new VaultImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new VaultImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Vault> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<VaultInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return inner.mapPage(inner1 -> new VaultImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new VaultImpl(inner1, this.manager()));
     }
 
     public Vault getByResourceGroup(String resourceGroupName, String vaultName) {
@@ -159,7 +159,7 @@ public final class VaultsImpl implements Vaults {
         return this.innerClient;
     }
 
-    private RecoveryServicesManager manager() {
+    private com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager() {
         return this.serviceManager;
     }
 

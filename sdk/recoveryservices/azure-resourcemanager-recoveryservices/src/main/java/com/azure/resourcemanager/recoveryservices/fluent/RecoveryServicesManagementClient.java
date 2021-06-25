@@ -101,6 +101,13 @@ public interface RecoveryServicesManagementClient {
     VaultExtendedInfoesClient getVaultExtendedInfoes();
 
     /**
+     * Gets the ResourceProvidersClient object to access its operations.
+     *
+     * @return the ResourceProvidersClient object.
+     */
+    ResourceProvidersClient getResourceProviders();
+
+    /**
      * Gets the UsagesClient object to access its operations.
      *
      * @return the UsagesClient object.

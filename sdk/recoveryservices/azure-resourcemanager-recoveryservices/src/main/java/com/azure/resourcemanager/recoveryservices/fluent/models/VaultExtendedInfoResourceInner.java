@@ -44,7 +44,7 @@ public class VaultExtendedInfoResourceInner extends ProxyResource {
     /*
      * Optional ETag.
      */
-    @JsonProperty(value = "eTag")
+    @JsonProperty(value = "etag")
     private String etag;
 
     /**

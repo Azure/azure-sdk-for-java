@@ -31,7 +31,7 @@ public class PatchTrackedResource extends ProxyResource {
     /*
      * Optional ETag.
      */
-    @JsonProperty(value = "eTag")
+    @JsonProperty(value = "etag")
     private String etag;
 
     /**

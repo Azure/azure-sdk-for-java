@@ -20,6 +20,12 @@ public final class Sku {
     @JsonProperty(value = "name", required = true)
     private SkuName name;
 
+    /*
+     * The Sku tier.
+     */
+    @JsonProperty(value = "tier")
+    private String tier;
+
     /**
      * Get the name property: The Sku name.
      *
@@ -37,6 +43,26 @@ public final class Sku {
      */
     public Sku withName(SkuName name) {
         this.name = name;
+        return this;
+    }
+
+    /**
+     * Get the tier property: The Sku tier.
+     *
+     * @return the tier value.
+     */
+    public String tier() {
+        return this.tier;
+    }
+
+    /**
+     * Set the tier property: The Sku tier.
+     *
+     * @param tier the tier value to set.
+     * @return the Sku object itself.
+     */
+    public Sku withTier(String tier) {
+        this.tier = tier;
         return this;
     }
 

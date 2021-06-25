@@ -7,7 +7,6 @@ package com.azure.resourcemanager.recoveryservices.implementation;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.recoveryservices.RecoveryServicesManager;
 import com.azure.resourcemanager.recoveryservices.fluent.OperationsClient;
 import com.azure.resourcemanager.recoveryservices.fluent.models.ClientDiscoveryValueForSingleApiInner;
 import com.azure.resourcemanager.recoveryservices.models.ClientDiscoveryValueForSingleApi;
@@ -19,28 +18,30 @@ public final class OperationsImpl implements Operations {
 
     private final OperationsClient innerClient;
 
-    private final RecoveryServicesManager serviceManager;
+    private final com.azure.resourcemanager.recoveryservices.RecoveryServicesManager serviceManager;
 
-    public OperationsImpl(OperationsClient innerClient, RecoveryServicesManager serviceManager) {
+    public OperationsImpl(
+        OperationsClient innerClient,
+        com.azure.resourcemanager.recoveryservices.RecoveryServicesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<ClientDiscoveryValueForSingleApi> list() {
         PagedIterable<ClientDiscoveryValueForSingleApiInner> inner = this.serviceClient().list();
-        return inner.mapPage(inner1 -> new ClientDiscoveryValueForSingleApiImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new ClientDiscoveryValueForSingleApiImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ClientDiscoveryValueForSingleApi> list(Context context) {
         PagedIterable<ClientDiscoveryValueForSingleApiInner> inner = this.serviceClient().list(context);
-        return inner.mapPage(inner1 -> new ClientDiscoveryValueForSingleApiImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new ClientDiscoveryValueForSingleApiImpl(inner1, this.manager()));
     }
 
     private OperationsClient serviceClient() {
         return this.innerClient;
     }
 
-    private RecoveryServicesManager manager() {
+    private com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager() {
         return this.serviceManager;
     }
 }
