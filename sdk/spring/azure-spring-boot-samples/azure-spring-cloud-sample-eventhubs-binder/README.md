@@ -32,6 +32,8 @@ Event Hub. You can choose anyone of them.
 >[!Important]
 >
 >  When using the Restful API to send messages, the **Active profiles** must contain `manual`.
+> 
+>  When automatic message sending is used, the **Active profiles** must contain `auto`.
 
 
 #### Method 1: Connection string based usage
@@ -195,12 +197,22 @@ spring:
 1.  Run the `mvn spring-boot:run` in the root of the code sample to get the app running.
 
 1.  Send a POST request
-
-        $ curl -X POST http://localhost:8080/messages?message=hello
-
+    
+        $ ### Send messages through imperative.  
+        $ curl -X POST http://localhost:8080/messages/imperative/staticalDestination?message=hello
+        $ curl -X POST http://localhost:8080/messages/imperative/dynamicDestination?message=hello
+    
+        $ ### Send messages through reactive.
+        $ curl -X POST http://localhost:8080/messages/reactive?message=hello
+    
     or when the app runs on App Service or VM
 
-        $ curl -d -X POST https://[your-app-URL]/messages?message=hello
+        $ ### Send messages through imperative.
+        $ curl -d -X POST https://[your-app-URL]/messages/imperative/staticalDestination?message=hello
+        $ curl -d -X POST https://[your-app-URL]/messages/imperative/dynamicDestination?message=hello
+    
+        $ ### Send messages through reactive.
+        $ curl -d -X POST https://[your-app-URL]/messages/reactive?message=hello
 
 1.  Verify in your app’s logs that a similar message was posted:
 
