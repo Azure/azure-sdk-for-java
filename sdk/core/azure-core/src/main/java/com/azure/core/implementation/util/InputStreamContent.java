@@ -16,30 +16,24 @@ import java.nio.ByteBuffer;
 public class InputStreamContent extends RequestContent {
     private final InputStream content;
     private final Long length;
-
-    /**
-     * Creates a new instance of {@link InputStreamContent}.
-     *
-     * @param content The {@link InputStream} content.
-     */
-    public InputStreamContent(InputStream content) {
-        this(content, null);
-    }
+    private final int chunkSize;
 
     /**
      * Creates a new instance of {@link InputStreamContent}.
      *
      * @param content The {@link InputStream} content.
      * @param length The length of the content, may be null.
+     * @param chunkSize The requested size for each {@link InputStream#read(byte[])}.
      */
-    public InputStreamContent(InputStream content, Long length) {
+    public InputStreamContent(InputStream content, Long length, int chunkSize) {
         this.content = content;
         this.length = length;
+        this.chunkSize = chunkSize;
     }
 
     @Override
     public Flux<ByteBuffer> asFluxByteBuffer() {
-        return FluxUtil.toFluxByteBuffer(content);
+        return FluxUtil.toFluxByteBuffer(content, chunkSize);
     }
 
     @Override

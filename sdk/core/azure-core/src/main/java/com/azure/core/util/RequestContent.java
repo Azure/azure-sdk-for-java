@@ -133,6 +133,22 @@ public abstract class RequestContent {
      * length} is greater than the file size.
      */
     public static RequestContent fromFile(Path file, long offset, long length) {
+        return fromFile(file, offset, length, 8092);
+    }
+
+    /**
+     * Creates a {@link RequestContent} that uses {@link Path} as its data.
+     *
+     * @param file The {@link Path} that will be the {@link RequestContent} data.
+     * @param offset Offset in the {@link Path} where the data will begin.
+     * @param length Length of the data.
+     * @param chunkSize The requested size for each read of the path.
+     * @return A new {@link RequestContent}.
+     * @throws NullPointerException If {@code file} is null.
+     * @throws IllegalArgumentException If {@code offset} or {@code length} are negative or {@code offset} plus {@code
+     * length} is greater than the file size or {@code chunkSize} is less than or equal to 0.
+     */
+    public static RequestContent fromFile(Path file, long offset, long length, int chunkSize) {
         Objects.requireNonNull(file, "'file' cannot be null.");
         if (offset < 0) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'offset' cannot be negative."));
@@ -144,8 +160,12 @@ public abstract class RequestContent {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "'offset' plus 'length' cannot be greater than the file's size."));
         }
+        if (chunkSize <= 0) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "'chunkSize' cannot be less than or equal to 0."));
+        }
 
-        return new FileContent(file, offset, length);
+        return new FileContent(file, offset, length, chunkSize);
     }
 
     /**
@@ -266,9 +286,7 @@ public abstract class RequestContent {
      * @throws NullPointerException If {@code inputStream} is null.
      */
     public static RequestContent fromInputStream(InputStream content) {
-        Objects.requireNonNull(content, "'content' cannot be null.");
-
-        return new InputStreamContent(content);
+        return fromInputStreamInternal(content, null, 8092);
     }
 
     /**
@@ -281,11 +299,34 @@ public abstract class RequestContent {
      * @throws IllegalArgumentException If {@code length} is less than 0.
      */
     public static RequestContent fromInputStream(InputStream content, long length) {
+        return fromInputStream(content, length, 8092);
+    }
+
+    /**
+     * Creates a {@link RequestContent} that uses an {@link InputStream} as its data.
+     *
+     * @param content The {@link InputStream} that will be the {@link RequestContent} data.
+     * @param length The length of the content.
+     * @param chunkSize The requested size for each {@link InputStream#read(byte[])}.
+     * @return A new {@link RequestContent}.
+     * @throws NullPointerException If {@code inputStream} is null.
+     * @throws IllegalArgumentException If {@code length} is less than 0 or {@code chunkSize} is less than or equal to
+     * 0.
+     */
+    public static RequestContent fromInputStream(InputStream content, long length, int chunkSize) {
+        return fromInputStreamInternal(content, length, chunkSize);
+    }
+
+    private static RequestContent fromInputStreamInternal(InputStream content, Long length, int chunkSize) {
         Objects.requireNonNull(content, "'content' cannot be null.");
-        if (length < 0) {
+        if (length != null && length < 0) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'length' cannot be less than 0."));
         }
+        if (chunkSize <= 0) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "'chunkSize' cannot be less than or equal to 0."));
+        }
 
-        return new InputStreamContent(content, length);
+        return new InputStreamContent(content, length, chunkSize);
     }
 }

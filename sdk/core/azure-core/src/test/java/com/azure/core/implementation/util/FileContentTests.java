@@ -29,7 +29,7 @@ public class FileContentTests {
     @Test
     public void fileChannelOpenErrorReturnsReactively() {
         Path notARealPath = Paths.get("fake");
-        FileContent fileContent = new FileContent(notARealPath, 0, 1024);
+        FileContent fileContent = new FileContent(notARealPath, 0, 1024, 8092);
 
         StepVerifier.create(fileContent.asFluxByteBuffer())
             .verifyError(IOException.class);
@@ -50,7 +50,7 @@ public class FileContentTests {
         Path path = mock(Path.class);
         when(path.getFileSystem()).thenReturn(fileSystem);
 
-        FileContent fileContent = new FileContent(path, 0, 1024);
+        FileContent fileContent = new FileContent(path, 0, 1024, 8092);
         StepVerifier.create(fileContent.asFluxByteBuffer())
             .thenConsumeWhile(Objects::nonNull)
             .verifyError(IOException.class);
@@ -70,7 +70,7 @@ public class FileContentTests {
         Path path = mock(Path.class);
         when(path.getFileSystem()).thenReturn(fileSystem);
 
-        FileContent fileContent = new FileContent(path, 0, 1024);
+        FileContent fileContent = new FileContent(path, 0, 1024, 8092);
         StepVerifier.create(fileContent.asFluxByteBuffer())
             .thenConsumeWhile(Objects::nonNull)
             .verifyError(IOException.class);

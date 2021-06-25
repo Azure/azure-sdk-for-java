@@ -22,6 +22,7 @@ public final class FileContent extends RequestContent {
     private final Path file;
     private final long offset;
     private final long length;
+    private final int chunkSize;
 
     /**
      * Creates a new instance of {@link FileContent}.
@@ -29,11 +30,13 @@ public final class FileContent extends RequestContent {
      * @param file The {@link Path} content.
      * @param offset The offset in the {@link Path} to begin reading data.
      * @param length The length of the content.
+     * @param chunkSize The requested size for each read of the path.
      */
-    public FileContent(Path file, long offset, long length) {
+    public FileContent(Path file, long offset, long length, int chunkSize) {
         this.file = file;
         this.offset = offset;
         this.length = length;
+        this.chunkSize = chunkSize;
     }
 
     @Override
@@ -44,7 +47,7 @@ public final class FileContent extends RequestContent {
                 return count;
             }
 
-            int readCount = (int) Math.min(8096, length - count);
+            int readCount = (int) Math.min(chunkSize, length - count);
             try {
                 sink.next(channel.map(FileChannel.MapMode.READ_ONLY, offset + count, readCount));
             } catch (IOException ex) {
