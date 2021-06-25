@@ -4,31 +4,44 @@
 
 package com.azure.resourcemanager.resourcehealth.models;
 
-import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import java.util.Collection;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 /** Defines values for ReasonChronicityTypes. */
-public final class ReasonChronicityTypes extends ExpandableStringEnum<ReasonChronicityTypes> {
-    /** Static value Transient for ReasonChronicityTypes. */
-    public static final ReasonChronicityTypes TRANSIENT = fromString("Transient");
+public enum ReasonChronicityTypes {
+    /** Enum value Transient. */
+    TRANSIENT("Transient"),
 
-    /** Static value Persistent for ReasonChronicityTypes. */
-    public static final ReasonChronicityTypes PERSISTENT = fromString("Persistent");
+    /** Enum value Persistent. */
+    PERSISTENT("Persistent");
 
-    /**
-     * Creates or finds a ReasonChronicityTypes from its string representation.
-     *
-     * @param name a name to look for.
-     * @return the corresponding ReasonChronicityTypes.
-     */
-    @JsonCreator
-    public static ReasonChronicityTypes fromString(String name) {
-        return fromString(name, ReasonChronicityTypes.class);
+    /** The actual serialized value for a ReasonChronicityTypes instance. */
+    private final String value;
+
+    ReasonChronicityTypes(String value) {
+        this.value = value;
     }
 
-    /** @return known ReasonChronicityTypes values. */
-    public static Collection<ReasonChronicityTypes> values() {
-        return values(ReasonChronicityTypes.class);
+    /**
+     * Parses a serialized value to a ReasonChronicityTypes instance.
+     *
+     * @param value the serialized value to parse.
+     * @return the parsed ReasonChronicityTypes object, or null if unable to parse.
+     */
+    @JsonCreator
+    public static ReasonChronicityTypes fromString(String value) {
+        ReasonChronicityTypes[] items = ReasonChronicityTypes.values();
+        for (ReasonChronicityTypes item : items) {
+            if (item.toString().equalsIgnoreCase(value)) {
+                return item;
+            }
+        }
+        return null;
+    }
+
+    @JsonValue
+    @Override
+    public String toString() {
+        return this.value;
     }
 }

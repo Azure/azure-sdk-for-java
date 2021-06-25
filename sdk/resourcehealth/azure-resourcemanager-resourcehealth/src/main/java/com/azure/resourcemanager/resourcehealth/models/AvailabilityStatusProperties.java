@@ -91,8 +91,8 @@ public final class AvailabilityStatusProperties {
     /*
      * Timestamp for when last change in health status occurred.
      */
-    @JsonProperty(value = "occurredTime")
-    private OffsetDateTime occurredTime;
+    @JsonProperty(value = "occuredTime")
+    private OffsetDateTime occuredTime;
 
     /*
      * Chronicity of the availability transition.
@@ -110,8 +110,8 @@ public final class AvailabilityStatusProperties {
      * An annotation describing a change in the availabilityState to Available
      * from Unavailable with a reasonType of type Unplanned
      */
-    @JsonProperty(value = "recentlyResolved")
-    private AvailabilityStatusPropertiesRecentlyResolved recentlyResolved;
+    @JsonProperty(value = "recentlyResolvedState")
+    private AvailabilityStatusPropertiesRecentlyResolvedState recentlyResolvedState;
 
     /*
      * Lists actions the user can take based on the current availabilityState
@@ -342,22 +342,22 @@ public final class AvailabilityStatusProperties {
     }
 
     /**
-     * Get the occurredTime property: Timestamp for when last change in health status occurred.
+     * Get the occuredTime property: Timestamp for when last change in health status occurred.
      *
-     * @return the occurredTime value.
+     * @return the occuredTime value.
      */
-    public OffsetDateTime occurredTime() {
-        return this.occurredTime;
+    public OffsetDateTime occuredTime() {
+        return this.occuredTime;
     }
 
     /**
-     * Set the occurredTime property: Timestamp for when last change in health status occurred.
+     * Set the occuredTime property: Timestamp for when last change in health status occurred.
      *
-     * @param occurredTime the occurredTime value to set.
+     * @param occuredTime the occuredTime value to set.
      * @return the AvailabilityStatusProperties object itself.
      */
-    public AvailabilityStatusProperties withOccurredTime(OffsetDateTime occurredTime) {
-        this.occurredTime = occurredTime;
+    public AvailabilityStatusProperties withOccuredTime(OffsetDateTime occuredTime) {
+        this.occuredTime = occuredTime;
         return this;
     }
 
@@ -402,25 +402,25 @@ public final class AvailabilityStatusProperties {
     }
 
     /**
-     * Get the recentlyResolved property: An annotation describing a change in the availabilityState to Available from
-     * Unavailable with a reasonType of type Unplanned.
+     * Get the recentlyResolvedState property: An annotation describing a change in the availabilityState to Available
+     * from Unavailable with a reasonType of type Unplanned.
      *
-     * @return the recentlyResolved value.
+     * @return the recentlyResolvedState value.
      */
-    public AvailabilityStatusPropertiesRecentlyResolved recentlyResolved() {
-        return this.recentlyResolved;
+    public AvailabilityStatusPropertiesRecentlyResolvedState recentlyResolvedState() {
+        return this.recentlyResolvedState;
     }
 
     /**
-     * Set the recentlyResolved property: An annotation describing a change in the availabilityState to Available from
-     * Unavailable with a reasonType of type Unplanned.
+     * Set the recentlyResolvedState property: An annotation describing a change in the availabilityState to Available
+     * from Unavailable with a reasonType of type Unplanned.
      *
-     * @param recentlyResolved the recentlyResolved value to set.
+     * @param recentlyResolvedState the recentlyResolvedState value to set.
      * @return the AvailabilityStatusProperties object itself.
      */
-    public AvailabilityStatusProperties withRecentlyResolved(
-        AvailabilityStatusPropertiesRecentlyResolved recentlyResolved) {
-        this.recentlyResolved = recentlyResolved;
+    public AvailabilityStatusProperties withRecentlyResolvedState(
+        AvailabilityStatusPropertiesRecentlyResolvedState recentlyResolvedState) {
+        this.recentlyResolvedState = recentlyResolvedState;
         return this;
     }
 
@@ -474,8 +474,8 @@ public final class AvailabilityStatusProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (recentlyResolved() != null) {
-            recentlyResolved().validate();
+        if (recentlyResolvedState() != null) {
+            recentlyResolvedState().validate();
         }
         if (recommendedActions() != null) {
             recommendedActions().forEach(e -> e.validate());

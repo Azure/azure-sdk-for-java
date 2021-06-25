@@ -15,9 +15,9 @@ import java.time.OffsetDateTime;
  * Unplanned.
  */
 @Fluent
-public final class AvailabilityStatusPropertiesRecentlyResolved {
+public final class AvailabilityStatusPropertiesRecentlyResolvedState {
     @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(AvailabilityStatusPropertiesRecentlyResolved.class);
+    private final ClientLogger logger = new ClientLogger(AvailabilityStatusPropertiesRecentlyResolvedState.class);
 
     /*
      * Timestamp for when the availabilityState changed to Unavailable
@@ -50,9 +50,9 @@ public final class AvailabilityStatusPropertiesRecentlyResolved {
      * Set the unavailableOccurredTime property: Timestamp for when the availabilityState changed to Unavailable.
      *
      * @param unavailableOccurredTime the unavailableOccurredTime value to set.
-     * @return the AvailabilityStatusPropertiesRecentlyResolved object itself.
+     * @return the AvailabilityStatusPropertiesRecentlyResolvedState object itself.
      */
-    public AvailabilityStatusPropertiesRecentlyResolved withUnavailableOccurredTime(
+    public AvailabilityStatusPropertiesRecentlyResolvedState withUnavailableOccurredTime(
         OffsetDateTime unavailableOccurredTime) {
         this.unavailableOccurredTime = unavailableOccurredTime;
         return this;
@@ -71,9 +71,9 @@ public final class AvailabilityStatusPropertiesRecentlyResolved {
      * Set the resolvedTime property: Timestamp when the availabilityState changes to Available.
      *
      * @param resolvedTime the resolvedTime value to set.
-     * @return the AvailabilityStatusPropertiesRecentlyResolved object itself.
+     * @return the AvailabilityStatusPropertiesRecentlyResolvedState object itself.
      */
-    public AvailabilityStatusPropertiesRecentlyResolved withResolvedTime(OffsetDateTime resolvedTime) {
+    public AvailabilityStatusPropertiesRecentlyResolvedState withResolvedTime(OffsetDateTime resolvedTime) {
         this.resolvedTime = resolvedTime;
         return this;
     }
@@ -91,9 +91,9 @@ public final class AvailabilityStatusPropertiesRecentlyResolved {
      * Set the unavailabilitySummary property: Brief description of cause of the resource becoming unavailable.
      *
      * @param unavailabilitySummary the unavailabilitySummary value to set.
-     * @return the AvailabilityStatusPropertiesRecentlyResolved object itself.
+     * @return the AvailabilityStatusPropertiesRecentlyResolvedState object itself.
      */
-    public AvailabilityStatusPropertiesRecentlyResolved withUnavailabilitySummary(String unavailabilitySummary) {
+    public AvailabilityStatusPropertiesRecentlyResolvedState withUnavailabilitySummary(String unavailabilitySummary) {
         this.unavailabilitySummary = unavailabilitySummary;
         return this;
     }

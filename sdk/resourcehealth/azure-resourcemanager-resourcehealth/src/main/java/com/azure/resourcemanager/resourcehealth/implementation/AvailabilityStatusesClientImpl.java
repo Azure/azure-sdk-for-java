@@ -147,7 +147,8 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
     }
 
     /**
-     * Lists the current availability status for all the resources in the subscription.
+     * Lists the current availability status for all the resources in the subscription. Use the nextLink property in the
+     * response to get the next page of availability statuses.
      *
      * @param filter The filter to apply on the operation. For more information please see
      *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
@@ -198,7 +199,8 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
     }
 
     /**
-     * Lists the current availability status for all the resources in the subscription.
+     * Lists the current availability status for all the resources in the subscription. Use the nextLink property in the
+     * response to get the next page of availability statuses.
      *
      * @param filter The filter to apply on the operation. For more information please see
      *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
@@ -247,7 +249,8 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
     }
 
     /**
-     * Lists the current availability status for all the resources in the subscription.
+     * Lists the current availability status for all the resources in the subscription. Use the nextLink property in the
+     * response to get the next page of availability statuses.
      *
      * @param filter The filter to apply on the operation. For more information please see
      *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
@@ -265,7 +268,8 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
     }
 
     /**
-     * Lists the current availability status for all the resources in the subscription.
+     * Lists the current availability status for all the resources in the subscription. Use the nextLink property in the
+     * response to get the next page of availability statuses.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -281,7 +285,8 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
     }
 
     /**
-     * Lists the current availability status for all the resources in the subscription.
+     * Lists the current availability status for all the resources in the subscription. Use the nextLink property in the
+     * response to get the next page of availability statuses.
      *
      * @param filter The filter to apply on the operation. For more information please see
      *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
@@ -301,7 +306,8 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
     }
 
     /**
-     * Lists the current availability status for all the resources in the subscription.
+     * Lists the current availability status for all the resources in the subscription. Use the nextLink property in the
+     * response to get the next page of availability statuses.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -315,7 +321,8 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
     }
 
     /**
-     * Lists the current availability status for all the resources in the subscription.
+     * Lists the current availability status for all the resources in the subscription. Use the nextLink property in the
+     * response to get the next page of availability statuses.
      *
      * @param filter The filter to apply on the operation. For more information please see
      *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
@@ -332,7 +339,8 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
     }
 
     /**
-     * Lists the current availability status for all the resources in the resource group.
+     * Lists the current availability status for all the resources in the resource group. Use the nextLink property in
+     * the response to get the next page of availability statuses.
      *
      * @param resourceGroupName The name of the resource group.
      * @param filter The filter to apply on the operation. For more information please see
@@ -389,7 +397,8 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
     }
 
     /**
-     * Lists the current availability status for all the resources in the resource group.
+     * Lists the current availability status for all the resources in the resource group. Use the nextLink property in
+     * the response to get the next page of availability statuses.
      *
      * @param resourceGroupName The name of the resource group.
      * @param filter The filter to apply on the operation. For more information please see
@@ -444,7 +453,8 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
     }
 
     /**
-     * Lists the current availability status for all the resources in the resource group.
+     * Lists the current availability status for all the resources in the resource group. Use the nextLink property in
+     * the response to get the next page of availability statuses.
      *
      * @param resourceGroupName The name of the resource group.
      * @param filter The filter to apply on the operation. For more information please see
@@ -464,7 +474,8 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
     }
 
     /**
-     * Lists the current availability status for all the resources in the resource group.
+     * Lists the current availability status for all the resources in the resource group. Use the nextLink property in
+     * the response to get the next page of availability statuses.
      *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -482,7 +493,8 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
     }
 
     /**
-     * Lists the current availability status for all the resources in the resource group.
+     * Lists the current availability status for all the resources in the resource group. Use the nextLink property in
+     * the response to get the next page of availability statuses.
      *
      * @param resourceGroupName The name of the resource group.
      * @param filter The filter to apply on the operation. For more information please see
@@ -503,7 +515,8 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
     }
 
     /**
-     * Lists the current availability status for all the resources in the resource group.
+     * Lists the current availability status for all the resources in the resource group. Use the nextLink property in
+     * the response to get the next page of availability statuses.
      *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -519,7 +532,8 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
     }
 
     /**
-     * Lists the current availability status for all the resources in the resource group.
+     * Lists the current availability status for all the resources in the resource group. Use the nextLink property in
+     * the response to get the next page of availability statuses.
      *
      * @param resourceGroupName The name of the resource group.
      * @param filter The filter to apply on the operation. For more information please see
@@ -718,7 +732,8 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
     }
 
     /**
-     * Lists all historical availability transitions and impacting events for a single resource.
+     * Lists all historical availability transitions and impacting events for a single resource. Use the nextLink
+     * property in the response to get the next page of availability status.
      *
      * @param resourceUri The fully qualified ID of the resource, including the resource name and resource type.
      *     Currently the API support not nested and one nesting level resource types :
@@ -771,7 +786,8 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
     }
 
     /**
-     * Lists all historical availability transitions and impacting events for a single resource.
+     * Lists all historical availability transitions and impacting events for a single resource. Use the nextLink
+     * property in the response to get the next page of availability status.
      *
      * @param resourceUri The fully qualified ID of the resource, including the resource name and resource type.
      *     Currently the API support not nested and one nesting level resource types :
@@ -815,7 +831,8 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
     }
 
     /**
-     * Lists all historical availability transitions and impacting events for a single resource.
+     * Lists all historical availability transitions and impacting events for a single resource. Use the nextLink
+     * property in the response to get the next page of availability status.
      *
      * @param resourceUri The fully qualified ID of the resource, including the resource name and resource type.
      *     Currently the API support not nested and one nesting level resource types :
@@ -837,7 +854,8 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
     }
 
     /**
-     * Lists all historical availability transitions and impacting events for a single resource.
+     * Lists all historical availability transitions and impacting events for a single resource. Use the nextLink
+     * property in the response to get the next page of availability status.
      *
      * @param resourceUri The fully qualified ID of the resource, including the resource name and resource type.
      *     Currently the API support not nested and one nesting level resource types :
@@ -858,7 +876,8 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
     }
 
     /**
-     * Lists all historical availability transitions and impacting events for a single resource.
+     * Lists all historical availability transitions and impacting events for a single resource. Use the nextLink
+     * property in the response to get the next page of availability status.
      *
      * @param resourceUri The fully qualified ID of the resource, including the resource name and resource type.
      *     Currently the API support not nested and one nesting level resource types :
@@ -883,7 +902,8 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
     }
 
     /**
-     * Lists all historical availability transitions and impacting events for a single resource.
+     * Lists all historical availability transitions and impacting events for a single resource. Use the nextLink
+     * property in the response to get the next page of availability status.
      *
      * @param resourceUri The fully qualified ID of the resource, including the resource name and resource type.
      *     Currently the API support not nested and one nesting level resource types :
@@ -903,7 +923,8 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
     }
 
     /**
-     * Lists all historical availability transitions and impacting events for a single resource.
+     * Lists all historical availability transitions and impacting events for a single resource. Use the nextLink
+     * property in the response to get the next page of availability status.
      *
      * @param resourceUri The fully qualified ID of the resource, including the resource name and resource type.
      *     Currently the API support not nested and one nesting level resource types :
