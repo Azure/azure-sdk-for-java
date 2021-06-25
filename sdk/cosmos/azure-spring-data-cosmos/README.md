@@ -68,18 +68,18 @@ If you are using Maven, add the following dependency.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-spring-data-cosmos</artifactId>
-    <version>3.7.0</version>
+    <version>3.8.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
 
 ### Prerequisites
 
-- Java Development Kit 8
+- [Java Development Kit (JDK)][jdk_link], version 8 or later.
 - An active Azure account. If you don't have one, you can sign up for a [free account][azure_subscription]. Alternatively, you can use the [Azure Cosmos DB Emulator][local_emulator] for development and testing. As emulator https certificate is self signed, you need to import its certificate to java trusted cert store, [explained here][local_emulator_export_ssl_certificates]
 - (Optional) SLF4J is a logging facade.
 - (Optional) [SLF4J binding](https://www.slf4j.org/manual.html) is used to associate a specific logging framework with SLF4J.
-- (Optional) Maven
+- (Optional) [Maven][maven_link]
 
 SLF4J is only needed if you plan to use logging, please also download an SLF4J binding which will link the SLF4J API with the logging implementation of your choice. See the [SLF4J user manual](https://www.slf4j.org/manual.html) for more information.
 
@@ -244,9 +244,13 @@ public class User {
 
 - Annotation `@Container(containerName="myContainer")` specifies container name in Azure Cosmos DB.
 - Annotation `@PartitionKey` on `lastName` field specifies this field as partition key in Azure Cosmos DB.
+
+#### Creating Containers with autoscale throughput
+- Annotation `autoScale` field specifies container to be created with autoscale throughput if set to true. Default is false, which means containers are created with manual throughput.
+- Read more about autoscale throughput [here][autoscale-throughput]
 <!-- embedme src/samples/java/com/azure/spring/data/cosmos/UserSample.java#L14-L19 -->
 ```java
-@Container(containerName = "myContainer")
+@Container(containerName = "myContainer", autoScale = true, ru = "4000")
 public class UserSample {
     @Id
     private String emailAddress;
@@ -935,5 +939,8 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 [spring_data_custom_query]: https://docs.spring.io/spring-data/commons/docs/current/reference/html/#repositories.query-methods.details
 [sql_queries_in_cosmos]: https://docs.microsoft.com/azure/cosmos-db/tutorial-query-sql-api
 [sql_queries_getting_started]: https://docs.microsoft.com/azure/cosmos-db/sql-query-getting-started
+[jdk_link]: https://docs.microsoft.com/java/azure/jdk/
+[maven_link]: https://maven.apache.org/
+[autoscale-throughput]: https://docs.microsoft.com/azure/cosmos-db/provision-throughput-autoscale
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcosmos%2F%2Fazure-spring-data-cosmos%2FREADME.png)

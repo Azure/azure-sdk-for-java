@@ -3,6 +3,7 @@
 
 package com.azure.spring.aad.webapp;
 
+import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import com.azure.spring.autoconfigure.aad.Constants;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizationRequestResolver;
@@ -21,11 +22,15 @@ import java.util.Optional;
 public class AADOAuth2AuthorizationRequestResolver implements OAuth2AuthorizationRequestResolver {
     private final OAuth2AuthorizationRequestResolver defaultResolver;
 
-    public AADOAuth2AuthorizationRequestResolver(ClientRegistrationRepository clientRegistrationRepository) {
+    private final AADAuthenticationProperties properties;
+
+    public AADOAuth2AuthorizationRequestResolver(ClientRegistrationRepository clientRegistrationRepository,
+                                                 AADAuthenticationProperties properties) {
         this.defaultResolver = new DefaultOAuth2AuthorizationRequestResolver(
             clientRegistrationRepository,
             OAuth2AuthorizationRequestRedirectFilter.DEFAULT_AUTHORIZATION_REQUEST_BASE_URI
         );
+        this.properties = properties;
     }
 
     @Override
@@ -56,11 +61,13 @@ public class AADOAuth2AuthorizationRequestResolver implements OAuth2Authorizatio
                         return claims;
                     })
                     .orElse(null);
-        if (conditionalAccessPolicyClaims == null) {
-            return oAuth2AuthorizationRequest;
-        }
         final Map<String, Object> additionalParameters = new HashMap<>();
-        additionalParameters.put(Constants.CLAIMS, conditionalAccessPolicyClaims);
+        if (conditionalAccessPolicyClaims != null) {
+            additionalParameters.put(Constants.CLAIMS, conditionalAccessPolicyClaims);
+        }
+        Optional.ofNullable(properties)
+                .map(AADAuthenticationProperties::getAuthenticateAdditionalParameters)
+                .ifPresent(additionalParameters::putAll);
         Optional.of(oAuth2AuthorizationRequest)
                 .map(OAuth2AuthorizationRequest::getAdditionalParameters)
                 .ifPresent(additionalParameters::putAll);

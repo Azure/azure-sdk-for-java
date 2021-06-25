@@ -37,6 +37,14 @@ private object CosmosTableSchemaInferrer
     ResourceIdAttributeName,
     AttachmentsAttributeName)
 
+  private val notNullableProperties = List(
+    IdAttributeName,
+    ETagAttributeName,
+    SelfAttributeName,
+    ResourceIdAttributeName,
+    TimestampAttributeName,
+    AttachmentsAttributeName)
+
   private[spark] def inferSchema(
                                   inferredItems: Seq[ObjectNode],
                                   includeSystemProperties: Boolean,
@@ -75,29 +83,34 @@ private object CosmosTableSchemaInferrer
   private[spark] def inferSchema(client: CosmosAsyncClient,
                                  userConfig: Map[String, String],
                                  defaultSchema: StructType): StructType = {
-    val cosmosReadConfig = CosmosSchemaInferenceConfig.parseCosmosReadConfig(userConfig)
-    if (cosmosReadConfig.inferSchemaEnabled) {
+    val cosmosInferenceConfig = CosmosSchemaInferenceConfig.parseCosmosInferenceConfig(userConfig)
+    val cosmosReadConfig = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+    if (cosmosInferenceConfig.inferSchemaEnabled) {
       val cosmosContainerConfig = CosmosContainerConfig.parseCosmosContainerConfig(userConfig)
       val sourceContainer = ThroughputControlHelper.getContainer(userConfig, cosmosContainerConfig, client)
       val queryOptions = new CosmosQueryRequestOptions()
-      queryOptions.setMaxBufferedItemCount(cosmosReadConfig.inferSchemaSamplingSize)
-      val queryText = cosmosReadConfig.inferSchemaQuery match {
-        case None => s"select TOP ${cosmosReadConfig.inferSchemaSamplingSize} * from c"
-        case _ => cosmosReadConfig.inferSchemaQuery.get
+      queryOptions.setMaxBufferedItemCount(cosmosInferenceConfig.inferSchemaSamplingSize)
+      val queryText = cosmosInferenceConfig.inferSchemaQuery match {
+        case None =>
+          cosmosReadConfig.customQuery match {
+            case None => s"select TOP ${cosmosInferenceConfig.inferSchemaSamplingSize} * from c"
+            case _ => cosmosReadConfig.customQuery.get.queryText
+          }
+        case _ => cosmosInferenceConfig.inferSchemaQuery.get
       }
 
       val pagedFluxResponse =
         sourceContainer.queryItems(queryText, queryOptions, classOf[ObjectNode])
 
       val feedResponseList = pagedFluxResponse
-        .take(cosmosReadConfig.inferSchemaSamplingSize)
+        .take(cosmosInferenceConfig.inferSchemaSamplingSize)
         .collectList
         .block
 
       inferSchema(feedResponseList.asScala,
-        cosmosReadConfig.inferSchemaQuery.isDefined || cosmosReadConfig.includeSystemProperties,
-        cosmosReadConfig.inferSchemaQuery.isDefined || cosmosReadConfig.includeTimestamp,
-        cosmosReadConfig.allowNullForInferredProperties)
+        cosmosInferenceConfig.inferSchemaQuery.isDefined || cosmosInferenceConfig.includeSystemProperties,
+        cosmosInferenceConfig.inferSchemaQuery.isDefined || cosmosInferenceConfig.includeTimestamp,
+        cosmosInferenceConfig.allowNullForInferredProperties)
     } else {
       defaultSchema
     }
@@ -120,7 +133,7 @@ private object CosmosTableSchemaInferrer
               case anyType: DataType => field.getKey -> StructField(
                 field.getKey,
                 anyType,
-                nullable= !systemProperties.contains(field.getKey) && allowNullForInferredProperties)
+                nullable= !notNullableProperties.contains(field.getKey) && allowNullForInferredProperties)
             })
         .toSeq)
   }

@@ -4,6 +4,7 @@
 package com.azure.communication.chat;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -375,10 +376,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
     public void canSendThenGetHtmlMessage(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient, "canSendThenGetHtmlMessage");
-        SendChatMessageOptions messageRequest = new SendChatMessageOptions()
-            .setType(ChatMessageType.HTML)
-            .setSenderDisplayName("John")
-            .setContent("<div>test</div>");
+        SendChatMessageOptions messageRequest = ChatOptionsProvider.sendMessageOptions(ChatMessageType.HTML, "<div>test</div>");
 
         // Action & Assert
         StepVerifier
@@ -457,6 +455,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
                 assertEquals(message.getContent().getMessage(), messageRequest.getContent());
                 assertEquals(message.getType(), messageRequest.getType());
                 assertEquals(message.getSenderDisplayName(), messageRequest.getSenderDisplayName());
+                assertTrue(message.getMetadata().equals(messageRequest.getMetadata()));
             })
             .verifyComplete();
     }
@@ -480,6 +479,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
                 ChatMessage message = getResponse.getValue();
                 assertEquals(message.getContent().getMessage(), messageRequest.getContent());
                 assertEquals(message.getSenderDisplayName(), messageRequest.getSenderDisplayName());
+                assertTrue(message.getMetadata().equals(messageRequest.getMetadata()));
             })
             .verifyComplete();
     }
@@ -609,6 +609,12 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
         )
             .assertNext(message -> {
                 assertEquals(message.getContent(), updateMessageRequest.getContent());
+
+                assertFalse(message.getMetadata().containsKey("tags"));
+                assertEquals(message.getMetadata().get("deliveryMode"), updateMessageRequest.getMetadata().get("deliveryMode"));
+                assertEquals(message.getMetadata().get("onedriveReferences"), updateMessageRequest.getMetadata().get("onedriveReferences"));
+                assertEquals(message.getMetadata().get("amsreferences"), messageRequest.getMetadata().get("amsreferences"));
+                assertEquals(message.getMetadata().get("key"), messageRequest.getMetadata().get("key"));
             });
 
     }
@@ -659,6 +665,12 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
         )
             .assertNext(message -> {
                 assertEquals(message.getContent().getMessage(), updateMessageRequest.getContent());
+
+                assertFalse(message.getMetadata().containsKey("tags"));
+                assertEquals(message.getMetadata().get("deliveryMode"), updateMessageRequest.getMetadata().get("deliveryMode"));
+                assertEquals(message.getMetadata().get("onedriveReferences"), updateMessageRequest.getMetadata().get("onedriveReferences"));
+                assertEquals(message.getMetadata().get("amsreferences"), messageRequest.getMetadata().get("amsreferences"));
+                assertEquals(message.getMetadata().get("key"), messageRequest.getMetadata().get("key"));
             })
             .verifyComplete();
     }
@@ -865,6 +877,31 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
         };
         setupUnitTest(mockHttpClient);
         PagedFlux<ChatMessageReadReceipt> readReceipts = chatThreadClient.listReadReceipts();
+
+        // // process the iterableByPage
+        List<ChatMessageReadReceipt> readReceiptList = new ArrayList<ChatMessageReadReceipt>();
+        readReceipts.toIterable().forEach(receipt -> {
+            readReceiptList.add(receipt);
+        });
+
+        assertEquals(readReceiptList.size(), 2);
+        assertNotNull(readReceiptList.get(0).getChatMessageId());
+        assertNotNull(readReceiptList.get(0).getReadOn());
+        assertNotNull(readReceiptList.get(0).getSender());
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void canListReadReceiptsWithOptions(HttpClient httpClient) {
+        HttpClient mockHttpClient = new NoOpHttpClient() {
+            @Override
+            public Mono<HttpResponse> send(HttpRequest request) {
+                return Mono.just(ChatResponseMocker.createReadReceiptsResponse(request));
+            }
+        };
+        setupUnitTest(mockHttpClient);
+        PagedFlux<ChatMessageReadReceipt> readReceipts = chatThreadClient.listReadReceipts(
+            new ListReadReceiptOptions().setMaxPageSize(1));
 
         // // process the iterableByPage
         List<ChatMessageReadReceipt> readReceiptList = new ArrayList<ChatMessageReadReceipt>();

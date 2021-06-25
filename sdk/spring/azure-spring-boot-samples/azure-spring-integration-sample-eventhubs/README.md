@@ -1,3 +1,13 @@
+---
+page_type: sample
+languages:
+- java
+products:
+- azure-event-hubs
+description: "Azure Spring Cloud Sample project for Event Hub Integration client library"
+urlFragment: "azure-spring-integration-eventhubs-sample"
+---
+
 # Spring Cloud Azure Event Hub Integration Code Sample shared library for Java
 
 ## Key concepts

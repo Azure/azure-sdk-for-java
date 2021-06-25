@@ -96,6 +96,29 @@ public final class BlockBlobClient extends BlobClientBase {
     }
 
     /**
+     * Creates a new {@link BlockBlobClient} with the specified {@code encryptionScope}.
+     *
+     * @param encryptionScope the encryption scope for the blob, pass {@code null} to use no encryption scope.
+     * @return a {@link BlockBlobClient} with the specified {@code encryptionScope}.
+     */
+    @Override
+    public BlockBlobClient getEncryptionScopeClient(String encryptionScope) {
+        return new BlockBlobClient(client.getEncryptionScopeClient(encryptionScope));
+    }
+
+    /**
+     * Creates a new {@link BlockBlobClient} with the specified {@code customerProvidedKey}.
+     *
+     * @param customerProvidedKey the {@link CustomerProvidedKey} for the blob,
+     * pass {@code null} to use no customer provided key.
+     * @return a {@link BlockBlobClient} with the specified {@code customerProvidedKey}.
+     */
+    @Override
+    public BlockBlobClient getCustomerProvidedKeyClient(CustomerProvidedKey customerProvidedKey) {
+        return new BlockBlobClient(client.getCustomerProvidedKeyClient(customerProvidedKey));
+    }
+
+    /**
      * Creates and opens an output stream to write data to the block blob.
      * <p>
      * Note: We recommend you call write with reasonably sized buffers, you can do so by wrapping the BlobOutputStream

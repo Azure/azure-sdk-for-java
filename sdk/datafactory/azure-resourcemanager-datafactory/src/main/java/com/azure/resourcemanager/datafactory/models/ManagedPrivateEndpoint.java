@@ -10,15 +10,11 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /** Properties of a managed private endpoint. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("ManagedPrivateEndpoint")
 @Fluent
 public final class ManagedPrivateEndpoint {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedPrivateEndpoint.class);
