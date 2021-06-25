@@ -179,9 +179,10 @@ public class AADAuthenticationProperties implements InitializingBean {
             return enableFullList;
         }
 
+        @Deprecated
         public void setEnableFullList(Boolean enableFullList) {
-            logger.info(" 'azure.activedirectory.user-group.enable-full-list' property is deprecated."
-                + " 'azure.activedirectory.user-group.allowed-group-ids: all' to instead!");
+            logger.warn(" 'azure.activedirectory.user-group.enable-full-list' property detected! "
+                + "Use 'azure.activedirectory.user-group.allowed-group-ids: all' instead!");
             this.enableFullList = enableFullList;
         }
 
@@ -196,8 +197,8 @@ public class AADAuthenticationProperties implements InitializingBean {
 
         @Deprecated
         public void setAllowedGroups(List<String> allowedGroups) {
-            logger.info(" 'azure.activedirectory.user-group.allowed-groups' property is deprecated." +
-                " 'azure.activedirectory.user-group.allowed-group-names' to instead!");
+            logger.warn(" 'azure.activedirectory.user-group.allowed-groups' property detected! " + " Use 'azure"
+                + ".activedirectory.user-group.allowed-group-names' instead!");
             this.allowedGroupNames = allowedGroups;
         }
 
