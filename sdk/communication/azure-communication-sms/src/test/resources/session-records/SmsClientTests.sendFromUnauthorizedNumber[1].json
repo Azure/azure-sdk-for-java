@@ -3,22 +3,20 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.communication.azure.com/sms?api-version=2021-03-07",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-sms/1.1.0-beta.1 (1.8.0_291; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "190581a0-012c-4b58-9fae-24073a928b9f",
+      "User-Agent" : "azsdk-java-azure-communication-sms/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ce1a6d6f-c788-4ae8-87d1-0beec722d8d2",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "Transfer-Encoding" : "chunked",
       "X-Cache" : "CONFIG_NOCACHE",
+      "content-length" : "0",
       "api-supported-versions" : "2020-07-20-preview1, 2020-08-20-preview, 2021-03-07",
-      "X-Processing-Time" : "439ms",
-      "MS-CV" : "OXaKJ+Ng8Uq/KsovyCHiGw.0",
+      "X-Processing-Time" : "418ms",
+      "MS-CV" : "z3abkGjmQ0yNquMo7EYCSA.0",
       "retry-after" : "0",
-      "X-Azure-Ref" : "0bxXWYAAAAADChep34pzRQ7DcaVoXe/4bWVZSMzBFREdFMDMxMgA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "X-Azure-Ref" : "0jr/DYAAAAAD6HFJM6FoNSJ8WiDlOx4YSWVZSMzBFREdFMDMxMwA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
       "StatusCode" : "401",
-      "Body" : "{\"error\":{\"code\":\"InternalError\",\"message\":\"The server encountered an internal error.\"}}",
-      "Date" : "Fri, 25 Jun 2021 17:42:07 GMT",
-      "Content-Type" : "application/json",
+      "Date" : "Fri, 11 Jun 2021 19:54:54 GMT",
       "Request-Context" : "appId="
     },
     "Exception" : null
