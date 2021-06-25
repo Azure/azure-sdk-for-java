@@ -275,15 +275,16 @@ class ImmutableStorageWithVersioningTest extends APISpec {
 
         then:
         def e = thrown(IllegalArgumentException)
-        e.getMessage() == wrongCondition + " is not applicable to this API."
+        e.getMessage() == String.format("%s does not support the %s request condition(s) for parameter 'requestConditions'.", "setImmutabilityPolicy(WithResponse)", wrongCondition)
 
         where:
         leaseId     | tags              | ifMatch   | ifNoneMatch   | ifModifiedSince    || wrongCondition
-        "leaseId"   | null              | null      | null          | null               || "'leaseId'"
-        null        | "tagsConditions"  | null      | null          | null               || "'tagsConditions'"
-        null        | null              | "ifMatch" | null          | null               || "'ifMatch'"
-        null        | null              | null      | "ifNoneMatch" | null               || "'ifNoneMatch'"
-        null        | null              | null      | null          | oldDate            || "'ifModifiedSince'"
+        "leaseId"   | null              | null      | null          | null               || "LeaseId"
+        null        | "tagsConditions"  | null      | null          | null               || "TagsConditions"
+        null        | null              | "ifMatch" | null          | null               || "IfMatch"
+        null        | null              | null      | "ifNoneMatch" | null               || "IfNoneMatch"
+        null        | null              | null      | null          | oldDate            || "IfModifiedSince"
+        "leaseId"   | "tagsConditions"  | "ifMatch" | "ifNoneMatch" | oldDate            || "LeaseId, TagsConditions, IfModifiedSince, IfMatch, IfNoneMatch"
     }
 
     def "set immutability policy error"() {
