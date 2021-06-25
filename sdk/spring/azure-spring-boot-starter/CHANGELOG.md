@@ -2,7 +2,7 @@
 
 ## 3.6.0 (2021-06-23)
 ### New Features
-- Load JRE key store certificates to AzureKeyVault key store. ([#21845](https://github.com/Azure/azure-sdk-for-java/pull/21845))
+- Upgrade to [spring-boot-dependencies:2.5.0](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.5.0/spring-boot-dependencies-2.5.0.pom).
 
 ## 3.5.0 (2021-05-24)
 ### New Features
