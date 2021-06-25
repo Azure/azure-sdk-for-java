@@ -9,7 +9,6 @@ import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
 import com.azure.core.util.ServiceVersion
-import com.azure.storage.common.test.shared.extensions.TestHeaderExtension
 import spock.lang.Specification
 
 class StorageSpec extends Specification {
@@ -20,7 +19,7 @@ class StorageSpec extends Specification {
     private StorageResourceNamer namer
 
     def setup() {
-        def testName = TestHeaderExtension.FeatureInterceptor.getTestName(specificationContext.getCurrentIteration())
+        def testName = TestNameProvider.getTestName(specificationContext.getCurrentIteration());
         interceptorManager = new InterceptorManager(testName, ENVIRONMENT.testMode)
         namer = new StorageResourceNamer(testName, ENVIRONMENT.testMode, interceptorManager.getRecordedData())
     }

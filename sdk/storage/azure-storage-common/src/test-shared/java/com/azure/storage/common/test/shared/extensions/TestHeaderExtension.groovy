@@ -1,12 +1,14 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.common.test.shared.extensions
 
+import com.azure.storage.common.test.shared.TestNameProvider
 import org.spockframework.runtime.extension.AbstractGlobalExtension
 import org.spockframework.runtime.extension.IMethodInterceptor
 import org.spockframework.runtime.extension.IMethodInvocation
-import org.spockframework.runtime.extension.MethodInvocation
-import org.spockframework.runtime.model.FieldInfo
-import org.spockframework.runtime.model.IterationInfo
 import org.spockframework.runtime.model.SpecInfo
+
 
 class TestHeaderExtension extends AbstractGlobalExtension {
     @Override
@@ -17,26 +19,11 @@ class TestHeaderExtension extends AbstractGlobalExtension {
 
     static class FeatureInterceptor implements IMethodInterceptor {
         @Override
-        void intercept(IMethodInvocation inv) {
+        void intercept(IMethodInvocation invocation) {
             // Print out the test name to create breadcrumbs in our test logging in case anything hangs.
-            System.out.printf("========================= %s =========================%n", getTestName(inv.getIteration()))
-            inv.proceed();
-            FieldInfo field = new FieldInfo();
-            inv
-        }
-
-        static String getTestName(IterationInfo iterationInfo) {
-            def featureInfo = iterationInfo.getParent()
-            def specInfo = featureInfo.getParent()
-            def fullName = specInfo.getName() + featureInfo.getName().split(" ").collect { it.capitalize() }.join("")
-
-            if (iterationInfo.getDataValues().length == 0) {
-                return fullName
-            }
-            def prefix = fullName
-            def suffix = "[" + iterationInfo.getIterationIndex() + "]"
-
-            return prefix + suffix
+            def testName = TestNameProvider.getTestName(invocation.getIteration());
+            System.out.printf("========================= %s =========================%n", testName)
+            invocation.proceed();
         }
     }
 }
