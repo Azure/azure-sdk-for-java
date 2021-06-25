@@ -14,6 +14,7 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.TracerProvider;
@@ -220,6 +221,21 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
             telemetry.getClientTelemetryInfo().getOperationInfoMap().put(reportPayloadRequestCharge,
                 requestChargeHistogram);
         }
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    // the following helper/accessor only helps to access this class outside of this package.//
+    ///////////////////////////////////////////////////////////////////////////////////////////
+
+    static {
+        ImplementationBridgeHelpers.CosmosPageFluxHelper.setCosmosPageFluxAccessor(
+            new ImplementationBridgeHelpers.CosmosPageFluxHelper.CosmosPageFluxAccessor() {
+
+                @Override
+                public <T> CosmosPagedFlux<T> getCosmosPagedFlux(Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> optionsFluxFunction) {
+                    return new CosmosPagedFlux<>(optionsFluxFunction);
+                }
+            });
     }
 
     private ReportPayload createReportPayload(CosmosAsyncClient cosmosAsyncClient,

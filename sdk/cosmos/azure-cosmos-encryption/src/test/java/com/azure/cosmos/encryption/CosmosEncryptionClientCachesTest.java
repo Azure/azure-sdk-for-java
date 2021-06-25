@@ -80,7 +80,7 @@ public class CosmosEncryptionClientCachesTest extends TestSuiteBase {
 
     @Test(groups = {"encryption"}, priority = 0, timeOut = TIMEOUT)
     public void emptyCache() {
-        AsyncCache<String, ClientEncryptionPolicy> clientEncryptionPolicyAsyncCache =  ReflectionUtils.getClientEncryptionPolicyCacheByContainerId(cosmosEncryptionAsyncClient);
+        AsyncCache<String, CosmosContainerProperties> clientEncryptionPolicyAsyncCache =  ReflectionUtils.getContainerPropertiesCacheByContainerId(cosmosEncryptionAsyncClient);
         ConcurrentHashMap<String, ?>  clientEncryptionPolicyMap= ReflectionUtils.getValueMap(clientEncryptionPolicyAsyncCache);
         assertThat(clientEncryptionPolicyMap.size()).isEqualTo(0);
 
@@ -100,24 +100,25 @@ public class CosmosEncryptionClientCachesTest extends TestSuiteBase {
         Mockito.verify(spyCosmosEncryptionAsyncClient, Mockito.times(2)).fetchClientEncryptionKeyPropertiesAsync(Mockito.any(CosmosAsyncContainer.class), Mockito.anyString());
 
         //Testing clientEncryptionPolicy cache
-        AsyncCache<String, ClientEncryptionPolicy> clientEncryptionPolicyAsyncCache =  ReflectionUtils.getClientEncryptionPolicyCacheByContainerId(cosmosEncryptionAsyncClient);
-        ConcurrentHashMap<String, ?>  clientEncryptionPolicyMap= ReflectionUtils.getValueMap(clientEncryptionPolicyAsyncCache);
-        assertThat(clientEncryptionPolicyMap.size()).isEqualTo(1);
-        Object clientEncryptionPolicyAyncLazy = clientEncryptionPolicyMap.get(cosmosEncryptionAsyncDatabase.getCosmosAsyncDatabase().getId()+"/"+cosmosEncryptionAsyncContainer.getCosmosAsyncContainer().getId());
+        AsyncCache<String, CosmosContainerProperties> cosmosContainerPropertiesAsyncCache =  ReflectionUtils.getContainerPropertiesCacheByContainerId(cosmosEncryptionAsyncClient);
+        ConcurrentHashMap<String, ?>   cosmosContainerPropertiesMap= ReflectionUtils.getValueMap(cosmosContainerPropertiesAsyncCache);
+        assertThat(cosmosContainerPropertiesMap.size()).isEqualTo(1);
+        Object cosmosContainerPropertiesAsyncLazy = cosmosContainerPropertiesMap.get(cosmosEncryptionAsyncDatabase.getCosmosAsyncDatabase().getId()+"/"+cosmosEncryptionAsyncContainer.getCosmosAsyncContainer().getId());
 
         Class<?> AsyncLazyClass = Class.forName("com.azure.cosmos.implementation.caches.AsyncLazy");
-        Field clientEncryptionPolicyMonoSingle = AsyncLazyClass.getDeclaredField("single");
-        clientEncryptionPolicyMonoSingle.setAccessible(true);
-        Mono<ClientEncryptionPolicy> clientEncryptionPolicyMono = (Mono<ClientEncryptionPolicy>) clientEncryptionPolicyMonoSingle.get(clientEncryptionPolicyAyncLazy);
-        ClientEncryptionPolicy clientEncryptionPolicy = clientEncryptionPolicyMono.block();
-        assertThat(clientEncryptionPolicy.getIncludedPaths().size()).isEqualTo(13);
+        Field cosmosContainerPropertyMonoSingle = AsyncLazyClass.getDeclaredField("single");
+        cosmosContainerPropertyMonoSingle.setAccessible(true);
+        Mono<CosmosContainerProperties> clientEncryptionPolicyMono = (Mono<CosmosContainerProperties>) cosmosContainerPropertyMonoSingle.get(cosmosContainerPropertiesAsyncLazy);
+        CosmosContainerProperties containerProperties = clientEncryptionPolicyMono.block();
+        assertThat(containerProperties.getClientEncryptionPolicy().getIncludedPaths().size()).isEqualTo(13);
 
         //Testing clientEncryptionKey cache
         AsyncCache<String, CosmosClientEncryptionKeyProperties> clientEncryptionKeyPropertiesAsyncCache =  ReflectionUtils.getClientEncryptionKeyPropertiesCacheByKeyId(cosmosEncryptionAsyncClient);
         ConcurrentHashMap<String, ?>  clientEncryptionKeyMap= ReflectionUtils.getValueMap(clientEncryptionKeyPropertiesAsyncCache);
         assertThat(clientEncryptionKeyMap.size()).isEqualTo(2);
 
-        Object ClientEncryptionKeyAyncLazy1 = clientEncryptionKeyMap.get(cosmosEncryptionAsyncDatabase.getCosmosAsyncDatabase().getId()+"/"+"key1");
+        String databaseRid = cosmosEncryptionAsyncDatabase.getCosmosAsyncDatabase().read().block().getProperties().getResourceId();
+        Object ClientEncryptionKeyAyncLazy1 = clientEncryptionKeyMap.get(databaseRid+"/"+"key1");
         AsyncLazyClass = Class.forName("com.azure.cosmos.implementation.caches.AsyncLazy");
         Field clientEncryptionKeyMonoSingle1 = AsyncLazyClass.getDeclaredField("single");
         clientEncryptionKeyMonoSingle1.setAccessible(true);
@@ -125,7 +126,7 @@ public class CosmosEncryptionClientCachesTest extends TestSuiteBase {
         CosmosClientEncryptionKeyProperties clientEncryptionKey1 = clientEncryptionKeyMono1.block();
         assertThat(clientEncryptionKey1.getEncryptionKeyWrapMetadata().getName()).isEqualTo("key1");
 
-        Object ClientEncryptionKeyAyncLazy2 = clientEncryptionKeyMap.get(cosmosEncryptionAsyncDatabase.getCosmosAsyncDatabase().getId()+"/"+"key2");
+        Object ClientEncryptionKeyAyncLazy2 = clientEncryptionKeyMap.get(databaseRid+"/"+"key2");
         AsyncLazyClass = Class.forName("com.azure.cosmos.implementation.caches.AsyncLazy");
         Field clientEncryptionKeyMonoSingle2 = AsyncLazyClass.getDeclaredField("single");
         clientEncryptionKeyMonoSingle2.setAccessible(true);
