@@ -89,6 +89,11 @@ public class Configuration implements Cloneable {
     public static final String PROPERTY_AZURE_IDENTITY_DISABLE_CP1 = "AZURE_IDENTITY_DISABLE_CP1";
 
     /**
+     * URL used by Bridge To Kubernetes to redirect IMDS calls in the development environment.
+     */
+    public static final String PROPERTY_AZURE_POD_IDENTITY_TOKEN_URL = "AZURE_POD_IDENTITY_TOKEN_URL";
+
+    /**
      * Name of the Azure resource group.
      */
     public static final String PROPERTY_AZURE_RESOURCE_GROUP = "AZURE_RESOURCE_GROUP";

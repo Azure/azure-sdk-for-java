@@ -15,6 +15,7 @@ import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
@@ -24,6 +25,7 @@ import com.azure.identity.CredentialUnavailableException;
 import com.azure.identity.DeviceCodeInfo;
 import com.azure.identity.TokenCachePersistenceOptions;
 import com.azure.identity.implementation.util.CertificateUtil;
+import com.azure.identity.implementation.util.IdentityConstants;
 import com.azure.identity.implementation.util.IdentitySslUtil;
 import com.azure.identity.implementation.util.ScopeUtil;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -1106,15 +1108,18 @@ public class IdentityClient {
             return Mono.error(exception);
         }
 
-        return checkIMDSAvailable().flatMap(available -> Mono.fromCallable(() -> {
+        String endpoint = Configuration.getGlobalConfiguration().get(
+            Configuration.PROPERTY_AZURE_POD_IDENTITY_TOKEN_URL,
+            IdentityConstants.DEFAULT_IMDS_ENDPOINT);
+
+        return checkIMDSAvailable(endpoint).flatMap(available -> Mono.fromCallable(() -> {
             int retry = 1;
             while (retry <= options.getMaxRetry()) {
                 URL url = null;
                 HttpURLConnection connection = null;
                 try {
                     url =
-                            new URL(String.format("http://169.254.169.254/metadata/identity/oauth2/token?%s",
-                                    payload.toString()));
+                            new URL(String.format("%s?%s", endpoint, payload.toString()));
 
                     connection = (HttpURLConnection) url.openConnection();
                     connection.setRequestMethod("GET");
@@ -1181,7 +1186,7 @@ public class IdentityClient {
         }));
     }
 
-    private Mono<Boolean> checkIMDSAvailable() {
+    private Mono<Boolean> checkIMDSAvailable(String endpoint) {
         StringBuilder payload = new StringBuilder();
 
         try {
@@ -1192,8 +1197,7 @@ public class IdentityClient {
         }
         return Mono.fromCallable(() -> {
             HttpURLConnection connection = null;
-            URL url = new URL(String.format("http://169.254.169.254/metadata/identity/oauth2/token?%s",
-                            payload.toString()));
+            URL url = new URL(String.format("%s?%s", endpoint, payload.toString()));
 
             try {
                 connection = (HttpURLConnection) url.openConnection();
