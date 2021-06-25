@@ -2,11 +2,15 @@
 // Licensed under the MIT License.
 package com.azure.storage.blob;
 
+import com.azure.core.http.RequestConditions;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.blob.models.BlobCopyInfo;
 import com.azure.storage.blob.models.BlobItem;
+import com.azure.storage.blob.models.BlobRequestConditions;
+import com.azure.storage.blob.options.BlobParallelUploadOptions;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 
 import java.io.ByteArrayInputStream;
@@ -145,6 +149,115 @@ public class ReadmeSamples {
 
     public void downloadDataFromBlob() {
         BinaryData content = blobClient.downloadContent();
+    }
+
+    public void enumerateBlobsCreateClient() {
+        for (BlobItem blobItem : blobContainerClient.listBlobs()) {
+            BlobClient blobClient;
+            if (blobItem.getSnapshot() != null) {
+                blobClient = blobContainerClient.getBlobClient(blobItem.getName(), blobItem.getSnapshot());
+            } else {
+                blobClient = blobContainerClient.getBlobClient(blobItem.getName());
+            }
+            System.out.println("This is the new blob uri: " + blobClient.getBlobUrl());
+        }
+    }
+
+    public void uploadIfNotExists() {
+        /*
+       Rather than use an if block conditioned on an exists call, there are three ways to upload-if-not-exists in one
+       line.
+         */
+        // 1. The minimal upload method defaults to no overwriting
+        String dataSample = "samples";
+        try (ByteArrayInputStream dataStream = new ByteArrayInputStream(dataSample.getBytes())) {
+            blobClient.upload(dataStream, dataSample.length());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // 2. The overwrite flag can explicitly be set to false to make intention clear
+        try (ByteArrayInputStream dataStream = new ByteArrayInputStream(dataSample.getBytes())) {
+            blobClient.upload(dataStream, dataSample.length(), false /* overwrite */);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // 3. If the max overload is needed, access conditions must be used to prevent overwriting.
+        try (ByteArrayInputStream dataStream = new ByteArrayInputStream(dataSample.getBytes())) {
+            BlobParallelUploadOptions options =
+                new BlobParallelUploadOptions(dataStream, dataSample.length());
+            // Setting IfNoneMatch="*" ensures the upload will fail if there is already a blob at the destination.
+            options.setRequestConditions(new BlobRequestConditions().setIfNoneMatch("*"));
+            blobClient.uploadWithResponse(options, null, Context.NONE);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void overwriteBlob() {
+        /*
+       Rather than use an if block conditioned on an exists call, there are three ways to upload-if-exists in one
+       line.
+         */
+        String dataSample = "samples";
+
+        // 1. The overwrite flag can explicitly be set to true. This will succeed as a create and overwrite.
+        try (ByteArrayInputStream dataStream = new ByteArrayInputStream(dataSample.getBytes())) {
+            blobClient.upload(dataStream, dataSample.length(), true /* overwrite */);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        /*
+         2. If the max overload is needed and no access conditions are passed, the upload will succeed as both a
+         create and overwrite.
+         */
+        try (ByteArrayInputStream dataStream = new ByteArrayInputStream(dataSample.getBytes())) {
+            BlobParallelUploadOptions options =
+                new BlobParallelUploadOptions(dataStream, dataSample.length());
+            blobClient.uploadWithResponse(options, null, Context.NONE);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        /*
+         3. If the max overload is needed, access conditions may be used to assert that the upload is an overwrite and
+         not simply a create.
+         */
+        try (ByteArrayInputStream dataStream = new ByteArrayInputStream(dataSample.getBytes())) {
+            BlobParallelUploadOptions options =
+                new BlobParallelUploadOptions(dataStream, dataSample.length());
+
+            // Setting IfMatch="*" ensures the upload will succeed only if there is already a blob at the destination.
+            options.setRequestConditions(new BlobRequestConditions().setIfMatch("*"));
+            blobClient.uploadWithResponse(options, null, Context.NONE);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setProxy() {
+
+    }
+
+    public void openBlobInputStream() {
+        /*
+        Opening a blob input stream allows you to read from a blob through a normal stream interface. It is also
+        markable.
+         */
+    }
+
+    public void openBlobOutputStream() {
+        /*
+        Opening a blob input stream allows you to write to a blob through a normal stream interface. It will not be
+        committed until the stream is closed.
+        This option is convenient when the length of the data is unknown.
+         */
+    }
+
+    public void generateSas() {
+
     }
 }
 
