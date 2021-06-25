@@ -310,7 +310,6 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
         CosmosEncryptionAsyncContainer encryptionAsyncContainerOriginal =
             cosmosEncryptionAsyncDatabase.getCosmosEncryptionAsyncContainer(containerId);
 
-
         EncryptionPojo encryptionPojo = getItem(UUID.randomUUID().toString());
         CosmosItemResponse<EncryptionPojo> createResponse = encryptionAsyncContainerOriginal.createItem(encryptionPojo,
             new PartitionKey(encryptionPojo.getMypk()), new CosmosItemRequestOptions()).block();
@@ -338,8 +337,7 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
         validateResponse(encryptionPojo, createResponse.getItem());
 
         //Deleting and creating container
-        cosmosEncryptionAsyncDatabase.getCosmosAsyncDatabase().delete().block();
-        createNewDatabaseWithClientEncryptionKey(databaseId);
+        encryptionAsyncContainerOriginal.getCosmosAsyncContainer().delete().block();
         createEncryptionContainer(cosmosEncryptionAsyncDatabase, clientEncryptionPolicy, containerId);
         CosmosEncryptionAsyncContainer encryptionAsyncContainerNew = getNewEncryptionContainerProxyObject(cosmosEncryptionAsyncDatabase.getCosmosAsyncDatabase().getId(), containerId);
         encryptionAsyncContainerNew.createItem(encryptionPojo,
