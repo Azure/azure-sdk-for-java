@@ -100,7 +100,7 @@ public final class CallConnection {
     }
 
     /**
-     * Disconnect the current caller in a group-call or end a p2p-call.
+     * Disconnect from a call.
      *
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -111,7 +111,7 @@ public final class CallConnection {
     }
 
     /**
-     * Disconnect the current caller in a group-call or end a p2p-call.
+     * Disconnect from a call.
      *
      * @param context A {@link Context} representing the request context.
      * @throws CallingServerErrorException thrown if the request is rejected by server.

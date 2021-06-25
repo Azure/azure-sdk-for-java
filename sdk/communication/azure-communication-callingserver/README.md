@@ -173,7 +173,11 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 
 ## Next steps
 
-Check out other client libraries for Azure Communication Services
+- [Read more about CallingServer Call Automation in Azure Communication Services][call_automation_apis_overview]
+- [Read more about CallingServer Call Recording in Azure Communication Services][call_recording_overview]
+- For a basic guide on how to use call automation apis please refer to the [Call Automation APIs Quickstart][call_automation_apis_quickstart].
+- For a basic guide on how to use call recording apis please refer to the [Call Recording Quickstart][call_recording_quickstart].
+- For a basic guide on how to record and download calls with Event Grid please refer to the [Record and download calls with Event Grid][record_and_download_calls_with_event_grid].
 
 <!-- LINKS -->
 [cla]: https://cla.microsoft.com
@@ -183,4 +187,9 @@ Check out other client libraries for Azure Communication Services
 [product_docs]: https://docs.microsoft.com/azure/communication-services/
 [package]: https://search.maven.org/artifact/com.azure/azure-communication-callingserver
 [api_documentation]: https://aka.ms/java-docs
+[call_automation_apis_overview]:https://docs.microsoft.com/en-us/azure/communication-services/concepts/voice-video-calling/call-automation-apis
+[call_recording_overview]:https://docs.microsoft.com/en-us/azure/communication-services/concepts/voice-video-calling/call-recording
+[call_automation_apis_quickstart]:https://docs.microsoft.com/en-us/azure/communication-services/quickstarts/voice-video-calling/call-automation-api-sample?pivots=programming-language-java
+[call_recording_quickstart]:https://docs.microsoft.com/en-us/azure/communication-services/quickstarts/voice-video-calling/call-recording-sample?pivots=programming-language-java
+[record_and_download_calls_with_event_grid]:https://docs.microsoft.com/en-us/azure/communication-services/quickstarts/voice-video-calling/download-recording-file-sample?pivots=programming-language-java
 [source]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/communication/azure-communication-callingserver/src
