@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 /**
  * Defines currently available regional authorities, or "AutoDiscoverRegion" to auto-detect the region.
  */
-public class RegionalAuthority extends ExpandableStringEnum<RegionalAuthority> {
+public final class RegionalAuthority extends ExpandableStringEnum<RegionalAuthority> {
     public static final RegionalAuthority AUTO_DISCOVER_REGION = fromString("AutoDiscoverRegion");
     public static final RegionalAuthority US_WEST = fromString("westus");
     public static final RegionalAuthority US_WEST2 = fromString("westus2");

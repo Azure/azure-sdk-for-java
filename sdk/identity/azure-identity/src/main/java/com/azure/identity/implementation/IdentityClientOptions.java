@@ -23,7 +23,6 @@ import java.util.function.Function;
  */
 public final class IdentityClientOptions {
     private static final int MAX_RETRY_DEFAULT_LIMIT = 3;
-    private static final String AZURE_REGIONAL_AUTHORITY_NAME = "AZURE_REGIONAL_AUTHORITY_NAME";
 
     private String authorityHost;
     private int maxRetry;
@@ -52,7 +51,8 @@ public final class IdentityClientOptions {
         ValidationUtil.validateAuthHost(getClass().getSimpleName(), authorityHost);
         maxRetry = MAX_RETRY_DEFAULT_LIMIT;
         retryTimeout = i -> Duration.ofSeconds((long) Math.pow(2, i.getSeconds() - 1));
-        regionalAuthority = RegionalAuthority.fromString(configuration.get(AZURE_REGIONAL_AUTHORITY_NAME));
+        regionalAuthority = RegionalAuthority.fromString(
+            configuration.get(Configuration.PROPERTY_AZURE_REGIONAL_AUTHORITY_NAME));
     }
 
     /**
