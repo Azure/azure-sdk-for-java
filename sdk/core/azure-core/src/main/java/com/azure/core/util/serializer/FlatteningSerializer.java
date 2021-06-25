@@ -4,17 +4,15 @@
 package com.azure.core.util.serializer;
 
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.BeanDescription;
-import com.fasterxml.jackson.databind.BeanProperty;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.PropertyMetadata;
-import com.fasterxml.jackson.databind.PropertyName;
 import com.fasterxml.jackson.databind.SerializationConfig;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.introspect.AnnotatedMember;
@@ -24,7 +22,6 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.databind.ser.AnyGetterWriter;
 import com.fasterxml.jackson.databind.ser.BeanSerializerModifier;
 import com.fasterxml.jackson.databind.ser.ResolvableSerializer;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
@@ -36,12 +33,15 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -225,14 +225,17 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
         if (classHasJsonFlatten) {
             classLevelFlattenSerialize(value, gen);
         } else {
-            ObjectNode node = mapper.createObjectNode();
+            // ObjectNode node = mapper.createObjectNode();
+            Map<String, Object> convertedValue = new LinkedHashMap<>();
 
             if (typeSer != null) {
                 // Need to write JsonType information before serialization.
-                node.put(typeSer.getPropertyName(), typeSer.getTypeIdResolver().idFromValue(value));
+                // node.put(typeSer.getPropertyName(), typeSer.getTypeIdResolver().idFromValue(value));
+                convertedValue.put(typeSer.getPropertyName(), typeSer.getTypeIdResolver().idFromValue(value));
             }
 
-            propertyOnlyFlattenSerialize(value, gen, provider, node);
+            // propertyOnlyFlattenSerialize(value, gen, provider, node);
+            propertyOnlyFlattenSerialize(value, gen, provider, convertedValue);
         }
     }
 
@@ -248,10 +251,12 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
         }
     }
 
+    @SuppressWarnings("unchecked")
     private void propertyOnlyFlattenSerialize(Object value, JsonGenerator gen, SerializerProvider provider,
-        ObjectNode node) throws IOException {
+        /*ObjectNode node*/ Map<String, Object> convertedValue) throws IOException {
         for (BeanPropertyDefinition beanProp : beanDescription.findProperties()) {
-            ObjectNode nodeToUse = node;
+            // ObjectNode nodeToUse = node;
+            Map<String, Object> convertedValueToUse = convertedValue;
             String propertyName = beanProp.getName();
             if (jsonPropertiesWithJsonFlatten.contains(beanProp.getName())) {
                 String[] splitNames = SPLIT_FLATTEN_PROPERTY_PATTERN.split(beanProp.getName());
@@ -280,23 +285,27 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
                 //   }
                 // }
                 for (int i = 0; i < splitNames.length - 1; i++) {
-                    nodeToUse = (nodeToUse.has(splitNames[i]))
-                        ? (ObjectNode) nodeToUse.get(splitNames[i])
-                        : nodeToUse.putObject(splitNames[i]);
+                    convertedValueToUse = (Map<String, Object>) convertedValueToUse.computeIfAbsent(splitNames[i],
+                        key -> new LinkedHashMap<String, Object>());
+
+//                    nodeToUse = (nodeToUse.has(splitNames[i]))
+//                        ? (ObjectNode) nodeToUse.get(splitNames[i])
+//                        : nodeToUse.putObject(splitNames[i]);
                 }
             }
 
-            nodeToUse.putPOJO(propertyName, beanProp.getField().getValue(value));
+            // nodeToUse.putPOJO(propertyName, beanProp.getField().getValue(value));
+            convertedValueToUse.put(propertyName, beanProp.getField().getValue(value));
         }
 
-        gen.writeStartObject();
+        // gen.writeStartObject();
 
-        Iterator<Map.Entry<String, JsonNode>> fields = node.fields();
-        while (fields.hasNext()) {
-            Map.Entry<String, JsonNode> field = fields.next();
-            gen.writeFieldName(field.getKey());
-            gen.writeTree(field.getValue());
-        }
+//        Iterator<Map.Entry<String, JsonNode>> fields = node.fields();
+//        while (fields.hasNext()) {
+//            Map.Entry<String, JsonNode> field = fields.next();
+//            gen.writeFieldName(field.getKey());
+//            gen.writeTree(field.getValue());
+//        }
 
         // Attempt to find if the class has a method with @JsonAnyGetter.
         //
@@ -304,20 +313,26 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
         // Values from the any getter are serialized as key:fields and not as a sub-object.
         AnnotatedMember anyGetter = beanDescription.findAnyGetter();
         if (anyGetter != null && anyGetter.getAnnotation(JsonAnyGetter.class).enabled()) {
-            BeanProperty.Std anyProperty = new BeanProperty.Std(PropertyName.construct(anyGetter.getName()),
-                anyGetter.getType(), null, anyGetter, PropertyMetadata.STD_OPTIONAL);
-            JsonSerializer<Object> anySerializer = provider.findTypedValueSerializer(anyGetter.getType(), true,
-                anyProperty);
-            AnyGetterWriter anyGetterWriter = new AnyGetterWriter(anyProperty, anyGetter, anySerializer);
-
-            try {
-                anyGetterWriter.getAndSerialize(value, gen, provider);
-            } catch (Exception exception) {
-                throw logger.logThrowableAsError(new IOException(exception));
+            Map<String, Object> anyValue = (Map<String, Object>) anyGetter.getValue(value);
+            if (!CoreUtils.isNullOrEmpty(anyValue)) {
+                anyValue.forEach(convertedValue::put);
             }
+
+//            BeanProperty.Std anyProperty = new BeanProperty.Std(PropertyName.construct(anyGetter.getName()),
+//                anyGetter.getType(), null, anyGetter, PropertyMetadata.STD_OPTIONAL);
+//            JsonSerializer<Object> anySerializer = provider.findTypedValueSerializer(anyGetter.getType(), true,
+//                anyProperty);
+//            AnyGetterWriter anyGetterWriter = new AnyGetterWriter(anyProperty, anyGetter, anySerializer);
+//
+//            try {
+//                anyGetterWriter.getAndSerialize(value, gen, provider);
+//            } catch (Exception exception) {
+//                throw logger.logThrowableAsError(new IOException(exception));
+//            }
         }
 
-        gen.writeEndObject();
+        // gen.writeEndObject();
+        gen.writeObject(convertedValue);
     }
 
     private void classLevelFlattenSerialize(Object value, JsonGenerator gen) throws IOException {
