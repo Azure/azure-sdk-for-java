@@ -507,19 +507,19 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
     public void getRandomBytes() {
         KeyAsyncClient keyAsyncClient = createAsyncClient();
 
-        // BEGIN: com.azure.security.keyvault.keys.KeyClient.getRandomBytes#int
+        // BEGIN: com.azure.security.keyvault.keys.KeyAsyncClient.getRandomBytes#int
         int amount = 16;
         keyAsyncClient.getRandomBytes(amount)
             .subscribe(randomBytes ->
                 System.out.printf("Retrieved %d random bytes: %s%n", amount, Arrays.toString(randomBytes.getBytes())));
-        // END: com.azure.security.keyvault.keys.KeyClient.getRandomBytes#int
+        // END: com.azure.security.keyvault.keys.KeyAsyncClient.getRandomBytes#int
 
-        // BEGIN: com.azure.security.keyvault.keys.KeyClient.getRandomBytesWithResponse#int-Context
+        // BEGIN: com.azure.security.keyvault.keys.KeyAsyncClient.getRandomBytesWithResponse#int
         int amountOfBytes = 16;
         keyAsyncClient.getRandomBytesWithResponse(amountOfBytes).subscribe(response ->
             System.out.printf("Response received successfully with status code: %d. Retrieved %d random bytes: %s%n",
                 response.getStatusCode(), amountOfBytes, Arrays.toString(response.getValue().getBytes())));
-        // END: com.azure.security.keyvault.keys.KeyClient.getRandomBytesWithResponse#int-Context
+        // END: com.azure.security.keyvault.keys.KeyAsyncClient.getRandomBytesWithResponse#int
     }
 
     /**
