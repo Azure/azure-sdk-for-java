@@ -26,9 +26,11 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.security.keyvault.keys.implementation.DeletedKeyPage;
 import com.azure.security.keyvault.keys.implementation.KeyPropertiesPage;
+import com.azure.security.keyvault.keys.implementation.models.GetRandomBytesRequest;
 import com.azure.security.keyvault.keys.models.DeletedKey;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import com.azure.security.keyvault.keys.models.KeyProperties;
+import com.azure.security.keyvault.keys.models.RandomBytes;
 import reactor.core.publisher.Mono;
 
 /**
@@ -238,4 +240,14 @@ interface KeyService {
                                                   @HeaderParam("accept-language") String acceptLanguage,
                                                   @HeaderParam("Content-Type") String type,
                                                   Context context);
+
+    @Post("/rng")
+    @ExpectedResponses({200})
+    @UnexpectedResponseExceptionType(HttpResponseException.class)
+    Mono<Response<RandomBytes>> getRandomBytes(
+        @HostParam("vaultBaseUrl") String vaultBaseUrl,
+        @QueryParam("api-version") String apiVersion,
+        @BodyParam("application/json") GetRandomBytesRequest parameters,
+        @HeaderParam("Accept") String accept,
+        Context context);
 }
