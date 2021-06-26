@@ -63,7 +63,7 @@ public final class PlayAudioResultEvent extends CallingServerEventBase {
      *                         communications related to this operation
      * @param status the status value.
      */
-    public PlayAudioResultEvent(ResultInfo resultInfo, String operationContext, OperationStatus status) {
+    PlayAudioResultEvent(ResultInfo resultInfo, String operationContext, OperationStatus status) {
         this.resultInfo = resultInfo;
         this.operationContext = operationContext;
         this.status = status;

@@ -8,11 +8,9 @@ import com.azure.spring.cloud.autoconfigure.context.AzureEnvironmentAutoConfigur
 import com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusProperties;
 import com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusTopicAutoConfiguration;
-import com.azure.spring.cloud.autoconfigure.servicebus.ServiceBusUtils;
 import com.azure.spring.cloud.context.core.impl.ServiceBusNamespaceManager;
 import com.azure.spring.cloud.context.core.impl.ServiceBusTopicManager;
 import com.azure.spring.cloud.context.core.impl.ServiceBusTopicSubscriptionManager;
-import com.azure.spring.cloud.telemetry.TelemetryCollector;
 import com.azure.spring.integration.servicebus.topic.ServiceBusTopicOperation;
 import com.azure.spring.servicebus.stream.binder.ServiceBusTopicMessageChannelBinder;
 import com.azure.spring.servicebus.stream.binder.properties.ServiceBusTopicExtendedBindingProperties;
@@ -25,8 +23,6 @@ import org.springframework.cloud.stream.binder.Binder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-
-import javax.annotation.PostConstruct;
 
 /**
  * @author Warren Zhu
@@ -41,14 +37,6 @@ import javax.annotation.PostConstruct;
 })
 @EnableConfigurationProperties({ AzureServiceBusProperties.class, ServiceBusTopicExtendedBindingProperties.class })
 public class ServiceBusTopicBinderConfiguration {
-
-    private static final String SERVICE_BUS_TOPIC_BINDER = "ServiceBusTopicBinder";
-    private static final String NAMESPACE = "Namespace";
-
-    @PostConstruct
-    public void collectTelemetry() {
-        TelemetryCollector.getInstance().addService(SERVICE_BUS_TOPIC_BINDER);
-    }
 
     @Bean
     @ConditionalOnMissingBean
@@ -65,10 +53,6 @@ public class ServiceBusTopicBinderConfiguration {
                                                                         serviceBusTopicManager,
                                                                         serviceBusTopicSubscriptionManager,
                                                                         serviceBusProperties.getNamespace());
-        } else {
-            final String namespace = ServiceBusUtils.getNamespace(serviceBusProperties.getConnectionString());
-            TelemetryCollector.getInstance()
-                              .addProperty(SERVICE_BUS_TOPIC_BINDER, NAMESPACE, namespace);
         }
         return new ServiceBusChannelProvisioner();
     }

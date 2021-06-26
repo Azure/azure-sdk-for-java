@@ -3,41 +3,41 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/feedback/metric",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.4 (1.8.0_221; Mac OS X; 10.16)",
-      "x-ms-client-request-id" : "9cf4647b-e75c-460a-ab80-f425c574be9d",
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.5 (11.0.11; Mac OS X; 11.4)",
+      "x-ms-client-request-id" : "5d5902f3-47c4-41b3-b7dc-ee8d5d5617a8",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "x-request-id" : "85066b05-6705-4a9a-b0b9-b2a7cd9c0b83",
+      "x-request-id" : "0c678124-cc6e-4693-b884-50f166f52bf3",
       "content-length" : "0",
-      "x-envoy-upstream-service-time" : "333",
+      "x-envoy-upstream-service-time" : "190",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "85066b05-6705-4a9a-b0b9-b2a7cd9c0b83",
+      "apim-request-id" : "0c678124-cc6e-4693-b884-50f166f52bf3",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "Date" : "Mon, 24 May 2021 21:31:47 GMT",
-      "Location" : "https://js-metrics-advisor.cognitiveservices.azure.com/metricsadvisor/v1.0/feedback/metric/a33fa24c-6fd6-4b74-808b-01aba6a1d7d5"
+      "Date" : "Mon, 21 Jun 2021 23:23:20 GMT",
+      "Location" : "https://js-metrics-advisor.cognitiveservices.azure.com/metricsadvisor/v1.0/feedback/metric/3b9ca812-6064-4938-a561-5caac68b4fc8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/feedback/metric/a33fa24c-6fd6-4b74-808b-01aba6a1d7d5",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/feedback/metric/3b9ca812-6064-4938-a561-5caac68b4fc8",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.4 (1.8.0_221; Mac OS X; 10.16)",
-      "x-ms-client-request-id" : "0bc4a94e-17c8-470b-8e91-aa7212263389"
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.5 (11.0.11; Mac OS X; 11.4)",
+      "x-ms-client-request-id" : "df71f40b-69fa-45aa-941f-fcc7c9dc04b2"
     },
     "Response" : {
-      "x-request-id" : "b616560b-a145-4395-bb66-33d8804ed508",
-      "content-length" : "423",
-      "x-envoy-upstream-service-time" : "5114",
+      "x-request-id" : "ea3186ad-d817-40c7-a9b2-dfd9fa8b8853",
+      "content-length" : "422",
+      "x-envoy-upstream-service-time" : "43",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "b616560b-a145-4395-bb66-33d8804ed508",
+      "apim-request-id" : "ea3186ad-d817-40c7-a9b2-dfd9fa8b8853",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"feedbackId\":\"a33fa24c-6fd6-4b74-808b-01aba6a1d7d5\",\"createdTime\":\"2021-05-24T21:31:47.939Z\",\"userPrincipal\":\"f850650c-1fcf-4489-b46f-71af2e30d360\",\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimensionFilter\":{\"dimension\":{\"city\":\"Miami\",\"category\":\"Health & Personal Care\"}},\"feedbackType\":\"ChangePoint\",\"startTime\":\"2020-01-01T00:00:00Z\",\"endTime\":\"2020-10-22T00:00:00Z\",\"value\":{\"changePointValue\":\"AutoDetect\"}}",
-      "Date" : "Mon, 24 May 2021 21:31:52 GMT",
+      "Body" : "{\"feedbackId\":\"3b9ca812-6064-4938-a561-5caac68b4fc8\",\"createdTime\":\"2021-06-21T23:23:20.53Z\",\"userPrincipal\":\"f850650c-1fcf-4489-b46f-71af2e30d360\",\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimensionFilter\":{\"dimension\":{\"city\":\"Miami\",\"category\":\"Health & Personal Care\"}},\"feedbackType\":\"ChangePoint\",\"startTime\":\"2020-01-01T00:00:00Z\",\"endTime\":\"2020-10-22T00:00:00Z\",\"value\":{\"changePointValue\":\"AutoDetect\"}}",
+      "Date" : "Mon, 21 Jun 2021 23:23:21 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

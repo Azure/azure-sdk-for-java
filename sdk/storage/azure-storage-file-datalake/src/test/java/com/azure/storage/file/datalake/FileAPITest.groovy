@@ -14,6 +14,7 @@ import com.azure.storage.common.implementation.Constants
 import com.azure.storage.blob.models.BlockListType
 import com.azure.storage.common.test.shared.extensions.LiveOnly
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
+import com.azure.storage.common.test.shared.policy.MockFailureResponsePolicy
 import com.azure.storage.file.datalake.models.DownloadRetryOptions
 import com.azure.storage.file.datalake.models.AccessTier
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions
@@ -1099,6 +1100,21 @@ class FileAPITest extends APISpec {
 
         then:
         contentMD5 == Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(data.defaultText.substring(0, 3).getBytes()))
+    }
+
+    def "Read retry default"() {
+        setup:
+        fc.append(new ByteArrayInputStream(data.defaultBytes), 0, data.defaultDataSize)
+        fc.flush(data.defaultDataSize)
+        def failureFileClient = getFileClient(env.dataLakeAccount.credential, fc.getFileUrl(), new MockFailureResponsePolicy(5))
+
+        when:
+        def outStream = new ByteArrayOutputStream()
+        failureFileClient.read(outStream)
+        String bodyStr = outStream.toString()
+
+        then:
+        bodyStr == data.defaultText
     }
 
     def "Read error"() {
@@ -3167,8 +3183,7 @@ class FileAPITest extends APISpec {
         1000      | '\n'            || _
     }
 
-    @Unroll
-    @Ignore /* TODO: Unignore when parquet is officially supported. */
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_10_02")
     @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
     def "Query Input parquet"() {
         setup:
@@ -3555,7 +3570,7 @@ class FileAPITest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
-    @Ignore /* TODO: Unignore when parquet is officially supported. */
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_10_02")
     @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
     def "Query parquet output IA"() {
         setup:

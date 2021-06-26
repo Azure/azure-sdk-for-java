@@ -3,13 +3,16 @@
 
 package com.azure.communication.callingserver;
 
-import com.azure.communication.callingserver.models.CallModality;
 import com.azure.communication.callingserver.models.CreateCallOptions;
 import com.azure.communication.callingserver.models.EventSubscriptionType;
+import com.azure.communication.callingserver.models.MediaType;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class CallingServerAsyncClientJavaDocCodeSnippets {
     public CallingServerAsyncClient createCallingServerAsyncClientWithPipeline() {
@@ -44,12 +47,11 @@ public class CallingServerAsyncClientJavaDocCodeSnippets {
         String callbackUri = "<callback-uri-for-notification>";
 
         // BEGIN: com.azure.communication.callingserver.CallingServerAsyncClient.create.call.connection.async
-        CommunicationIdentifier[] targets = new CommunicationIdentifier[] { firstCallee, secondCallee };
-        CallModality[] requestedMediaTypes = new CallModality[] { CallModality.AUDIO, CallModality.VIDEO };
-        EventSubscriptionType[] requestedCallEvents = new EventSubscriptionType[] {
+        List<CommunicationIdentifier> targets = Arrays.asList(firstCallee, secondCallee);
+        List<MediaType> requestedMediaTypes = Arrays.asList(MediaType.AUDIO, MediaType.VIDEO);
+        List<EventSubscriptionType> requestedCallEvents = Arrays.asList(
             EventSubscriptionType.DTMF_RECEIVED,
-            EventSubscriptionType.PARTICIPANTS_UPDATED
-        };
+            EventSubscriptionType.PARTICIPANTS_UPDATED);
         CreateCallOptions createCallOptions = new CreateCallOptions(
             callbackUri,
             requestedMediaTypes,

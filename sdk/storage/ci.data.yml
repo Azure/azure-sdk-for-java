@@ -3,7 +3,6 @@
 trigger:
   branches:
     include:
-      - master
       - main
       - feature/*
       - hotfix/*
@@ -37,7 +36,6 @@ trigger:
 pr:
   branches:
     include:
-      - master
       - main
       - feature/*
       - hotfix/*

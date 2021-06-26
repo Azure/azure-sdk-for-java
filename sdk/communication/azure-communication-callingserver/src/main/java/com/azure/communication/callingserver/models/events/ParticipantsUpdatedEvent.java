@@ -4,7 +4,7 @@
 package com.azure.communication.callingserver.models.events;
 
 import com.azure.communication.callingserver.implementation.converters.CommunicationIdentifierConverter;
-import com.azure.communication.callingserver.implementation.models.CommunicationParticipantInternal;
+import com.azure.communication.callingserver.implementation.models.CallParticipantInternal;
 import com.azure.communication.callingserver.implementation.models.ParticipantsUpdatedEventInternal;
 import com.azure.communication.callingserver.models.CallParticipant;
 import com.azure.core.annotation.Immutable;
@@ -26,7 +26,7 @@ public final class ParticipantsUpdatedEvent extends CallingServerEventBase {
     /**
      * The participants.
      */
-    private final CallParticipant[] participants;
+    private final List<CallParticipant> participants;
 
     /**
      * Get the callConnectionId property: The call connection id.
@@ -43,8 +43,8 @@ public final class ParticipantsUpdatedEvent extends CallingServerEventBase {
      *
      * @return the list of participants value.
      */
-    public CallParticipant[] getParticipants() {
-        return participants == null ? new CallParticipant[0] : participants.clone();
+    public List<CallParticipant> getParticipants() {
+        return participants;
     }
 
     /**
@@ -54,7 +54,7 @@ public final class ParticipantsUpdatedEvent extends CallingServerEventBase {
      * @param participants The participants
      * @throws IllegalArgumentException if any parameter is null or empty.
      */
-    public ParticipantsUpdatedEvent(String callConnectionId, CallParticipant[] participants) {
+    ParticipantsUpdatedEvent(String callConnectionId, List<CallParticipant> participants) {
         if (callConnectionId == null || callConnectionId.isEmpty()) {
             throw new IllegalArgumentException("object callConnectionId cannot be null or empty");
         }
@@ -62,7 +62,7 @@ public final class ParticipantsUpdatedEvent extends CallingServerEventBase {
             throw new IllegalArgumentException("object participants cannot be null");
         }
         this.callConnectionId = callConnectionId;
-        this.participants = participants.clone();
+        this.participants = participants;
     }
 
     /**
@@ -77,15 +77,14 @@ public final class ParticipantsUpdatedEvent extends CallingServerEventBase {
         }
         ParticipantsUpdatedEventInternal internalEvent = eventData.toObject(ParticipantsUpdatedEventInternal.class);
         List<CallParticipant> participants = new LinkedList<>();
-        for (CommunicationParticipantInternal communicationParticipantInternal : internalEvent.getParticipants()) {
+        for (CallParticipantInternal callParticipantInternal : internalEvent.getParticipants()) {
             participants.add(
                 new CallParticipant(
-                    CommunicationIdentifierConverter.convert(communicationParticipantInternal.getIdentifier()),
-                    communicationParticipantInternal.getParticipantId(),
-                    communicationParticipantInternal.isMuted()));
+                    CommunicationIdentifierConverter.convert(callParticipantInternal.getIdentifier()),
+                    callParticipantInternal.getParticipantId(),
+                    callParticipantInternal.isMuted()));
         }
 
-        return new ParticipantsUpdatedEvent(internalEvent.getCallConnectionId(),
-            participants.toArray(new CallParticipant[0]));
+        return new ParticipantsUpdatedEvent(internalEvent.getCallConnectionId(), participants);
     }
 }

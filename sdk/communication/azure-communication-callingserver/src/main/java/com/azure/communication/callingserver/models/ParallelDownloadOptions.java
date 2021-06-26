@@ -30,7 +30,7 @@ public final class ParallelDownloadOptions {
      * Gets the block size (chunk size) to transfer at a time.
      * @return The block size.
      */
-    public long getBlockSizeLong() {
+    public long getBlockSize() {
         return blockSize == null ? ContentDownloader.DEFAULT_BUFFER_SIZE : blockSize;
     }
 
@@ -47,7 +47,7 @@ public final class ParallelDownloadOptions {
      * @param blockSize The block size.
      * @return The ParallelDownloadOptions object itself.
      */
-    public ParallelDownloadOptions setBlockSizeLong(Long blockSize) {
+    public ParallelDownloadOptions setBlockSize(Long blockSize) {
         if (blockSize != null) {
             assertInBounds("blockSize", blockSize, 1, Long.MAX_VALUE);
         }

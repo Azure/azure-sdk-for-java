@@ -54,7 +54,7 @@ public class KeyVaultCertificatesTest {
 
     @BeforeAll
     public static void setEnvironmentProperty() {
-        PropertyConvertorUtils.putEnvironmentPropertyToSystemPropertyForKeyVaultJca(PropertyConvertorUtils.SYSTEM_PROPERTIES);
+        PropertyConvertorUtils.putEnvironmentPropertyToSystemPropertyForKeyVaultJca();
         PropertyConvertorUtils.addKeyVaultJcaProvider();
         certificateName = System.getenv("AZURE_KEYVAULT_CERTIFICATE_NAME");
     }
@@ -101,7 +101,7 @@ public class KeyVaultCertificatesTest {
         keyStore.deleteEntry(certificateName);
         assertNull(keyStore.getCertificate(certificateName));
         Thread.sleep(10);
-        KeyVaultCertificates.updateLastForceRefreshTime();
+        KeyVaultCertificates.updateForceRefreshTime();
         assertNotNull(keyStore.getCertificate(certificateName));
     }
 }

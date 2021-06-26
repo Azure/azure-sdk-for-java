@@ -28,18 +28,18 @@ A `web application` is any web based application that allows user to login, wher
 
 ### Accessing a web application
 
-This scenario uses the [The OAuth 2.0 authorization code grant] flow to login in a user with a Microsoft account. 
+This scenario uses the [The OAuth 2.0 authorization code grant] flow to login in a user with a Microsoft account.
 
 **System diagram**:
 
-![Standalone Web Application](https://github.com/Azure/azure-sdk-for-java/raw/master/sdk/spring/azure-spring-boot-starter-active-directory/resource/web-application.png)
+![Standalone Web Application](https://github.com/Azure/azure-sdk-for-java/raw/main/sdk/spring/azure-spring-boot-starter-active-directory/resource/web-application.png)
 
 
-* Step 1: Make sure `redirect URI` has been set to `{application-base-uri}/login/oauth2/code/`, for 
+* Step 1: Make sure `redirect URI` has been set to `{application-base-uri}/login/oauth2/code/`, for
 example `http://localhost:8080/login/oauth2/code/`. Note the tailing `/` cannot be omitted.
 
-    ![web-application-set-redirect-uri-1.png](https://github.com/Azure/azure-sdk-for-java/raw/master/sdk/spring/azure-spring-boot-starter-active-directory/resource/web-application-set-redirect-uri-1.png)
-    ![web-application-set-redirect-uri-2.png](https://github.com/Azure/azure-sdk-for-java/raw/master/sdk/spring/azure-spring-boot-starter-active-directory/resource/web-application-set-redirect-uri-2.png)
+    ![web-application-set-redirect-uri-1.png](https://github.com/Azure/azure-sdk-for-java/raw/main/sdk/spring/azure-spring-boot-starter-active-directory/resource/web-application-set-redirect-uri-1.png)
+    ![web-application-set-redirect-uri-2.png](https://github.com/Azure/azure-sdk-for-java/raw/main/sdk/spring/azure-spring-boot-starter-active-directory/resource/web-application-set-redirect-uri-2.png)
 
 * Step 2: Add the following dependencies in your pom.xml.
 
@@ -48,7 +48,7 @@ example `http://localhost:8080/login/oauth2/code/`. Note the tailing `/` cannot 
     <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>azure-spring-boot-starter-active-directory</artifactId>
-        <version>3.5.0</version>
+        <version>3.6.0</version>
     </dependency>
     <dependency>
         <groupId>org.springframework.boot</groupId>
@@ -56,7 +56,7 @@ example `http://localhost:8080/login/oauth2/code/`. Note the tailing `/` cannot 
     </dependency>
     ```
     [//]: # "{x-version-update-end}"
-   
+
 * Step 3: Add properties in application.yml. These values should be got in [prerequisite].
     ```yaml
     azure:
@@ -71,15 +71,15 @@ example `http://localhost:8080/login/oauth2/code/`. Note the tailing `/` cannot 
     `AADWebSecurityConfigurerAdapter` contains necessary web security configuration for **aad-starter**.
 
      (A). `DefaultAADWebSecurityConfigurerAdapter` is configured automatically if you not provide one.
-    
-     (B). You can provide one by extending `AADWebSecurityConfigurerAdapter` and call `super.configure(http)` explicitly 
+
+     (B). You can provide one by extending `AADWebSecurityConfigurerAdapter` and call `super.configure(http)` explicitly
     in the `configure(HttpSecurity http)` function. Here is an example:
     <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp/src/main/java/com/azure/spring/sample/aad/security/AADOAuth2LoginSecurityConfig.java#L11-L25 -->
     ```java
     @EnableWebSecurity
     @EnableGlobalMethodSecurity(prePostEnabled = true)
     public class AADOAuth2LoginSecurityConfig extends AADWebSecurityConfigurerAdapter {
-    
+
         /**
          * Add configuration logic as needed.
          */
@@ -97,7 +97,7 @@ example `http://localhost:8080/login/oauth2/code/`. Note the tailing `/` cannot 
 
 **System diagram**:
 
-![web-application-visiting-resource-servers.png](https://github.com/Azure/azure-sdk-for-java/raw/master/sdk/spring/azure-spring-boot-starter-active-directory/resource/web-application-visiting-resource-servers.png)
+![web-application-visiting-resource-servers.png](https://github.com/Azure/azure-sdk-for-java/raw/main/sdk/spring/azure-spring-boot-starter-active-directory/resource/web-application-visiting-resource-servers.png)
 
 * Step 1: Make sure `redirect URI` has been set, just like [Accessing a web application].
 
@@ -108,7 +108,7 @@ example `http://localhost:8080/login/oauth2/code/`. Note the tailing `/` cannot 
     <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>azure-spring-boot-starter-active-directory</artifactId>
-        <version>3.5.0</version>
+        <version>3.6.0</version>
     </dependency>
     <dependency>
         <groupId>org.springframework.boot</groupId>
@@ -143,7 +143,7 @@ example `http://localhost:8080/login/oauth2/code/`. Note the tailing `/` cannot 
         return toJsonString(graphClient);
     }
     ```
-    Here, `graph` is the client name configured in step 2. OAuth2AuthorizedClient contains access_token. 
+    Here, `graph` is the client name configured in step 2. OAuth2AuthorizedClient contains access_token.
 access_token can be used to access resource server.
 
 ### Accessing a resource server
@@ -151,7 +151,7 @@ This scenario not support login. Just protect the server by validating the acces
 
 **System diagram**:
 
-![Standalone resource server usage](https://github.com/Azure/azure-sdk-for-java/raw/master/sdk/spring/azure-spring-boot-starter-active-directory/resource/resource-server.png)
+![Standalone resource server usage](https://github.com/Azure/azure-sdk-for-java/raw/main/sdk/spring/azure-spring-boot-starter-active-directory/resource/resource-server.png)
 
 To use **aad-starter** in this scenario, we need these steps:
 
@@ -162,7 +162,7 @@ To use **aad-starter** in this scenario, we need these steps:
     <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>azure-spring-boot-starter-active-directory</artifactId>
-        <version>3.5.0</version>
+        <version>3.6.0</version>
     </dependency>
     <dependency>
         <groupId>org.springframework.boot</groupId>
@@ -179,16 +179,16 @@ To use **aad-starter** in this scenario, we need these steps:
         app-id-uri: <app-id-uri>
     ```
     Both `client-id` and `app-id-uri` can be used to verify access token. `app-id-uri` can be get in Azure Portal:
-    
-    ![get-app-id-uri-1.png](https://github.com/Azure/azure-sdk-for-java/raw/master/sdk/spring/azure-spring-boot-starter-active-directory/resource/get-app-id-uri-1.png)
-    ![get-app-id-uri-2.png](https://github.com/Azure/azure-sdk-for-java/raw/master/sdk/spring/azure-spring-boot-starter-active-directory/resource/get-app-id-uri-2.png)
+
+    ![get-app-id-uri-1.png](https://github.com/Azure/azure-sdk-for-java/raw/main/sdk/spring/azure-spring-boot-starter-active-directory/resource/get-app-id-uri-1.png)
+    ![get-app-id-uri-2.png](https://github.com/Azure/azure-sdk-for-java/raw/main/sdk/spring/azure-spring-boot-starter-active-directory/resource/get-app-id-uri-2.png)
 
 * Step 3: Write Java code:
-  
+
     `AADResourceServerWebSecurityConfigurerAdapter` contains necessary web security configuration for resource server.
 
     (A). `DefaultAADResourceServerWebSecurityConfigurerAdapter` is configured automatically if you not provide one.
-    
+
     (B). You can provide one by extending `AADResourceServerWebSecurityConfigurerAdapter` and call `super.configure(http)` explicitly
     in the `configure(HttpSecurity http)` function. Here is an example:
     <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server/src/main/java/com/azure/spring/sample/aad/security/AADOAuth2ResourceServerSecurityConfig.java#L12-L23 -->
@@ -213,7 +213,7 @@ This scenario support visit other resource servers in resource servers.
 
 **System diagram**:
 
-![resource-server-visiting-other-resource-servers.png](https://github.com/Azure/azure-sdk-for-java/raw/master/sdk/spring/azure-spring-boot-starter-active-directory/resource/resource-server-visiting-other-resource-servers.png)
+![resource-server-visiting-other-resource-servers.png](https://github.com/Azure/azure-sdk-for-java/raw/main/sdk/spring/azure-spring-boot-starter-active-directory/resource/resource-server-visiting-other-resource-servers.png)
 
 To use **aad-starter** in this scenario, we need these steps:
 
@@ -224,7 +224,7 @@ To use **aad-starter** in this scenario, we need these steps:
     <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>azure-spring-boot-starter-active-directory</artifactId>
-        <version>3.5.0</version>
+        <version>3.6.0</version>
     </dependency>
     <dependency>
         <groupId>org.springframework.boot</groupId>
@@ -255,7 +255,7 @@ To use **aad-starter** in this scenario, we need these steps:
 
     Using `@RegisteredOAuth2AuthorizedClient` to access related resource server:
 
-    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-obo/src/main/java/com/azure/spring/sample/aad/controller/SampleController.java#L64-L68 --> 
+    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-obo/src/main/java/com/azure/spring/sample/aad/controller/SampleController.java#L64-L68 -->
     ```java
     @PreAuthorize("hasAuthority('SCOPE_Obo.Graph.Read')")
     @GetMapping("call-graph")
@@ -304,10 +304,10 @@ Here are some examples about how to use these properties:
       activedirectory:
         user-group:
           allowed-group-names: group1_name_1, group2_name_2
-          # 1. If allowed-group-ids = all, then all group id will take effect. 
+          # 1. If allowed-group-ids = all, then all group id will take effect.
           # 2. If "all" is used, we should not configure other group ids.
           # 3. "all" is only supported for allowed-group-ids, not supported for allowed-group-names.
-          allowed-group-ids: group_id_1, group_id_2  
+          allowed-group-ids: group_id_1, group_id_2
     ```
 
 * Step 2: Add `@EnableGlobalMethodSecurity(prePostEnabled = true)` in web application:
@@ -317,7 +317,7 @@ Here are some examples about how to use these properties:
     @EnableWebSecurity
     @EnableGlobalMethodSecurity(prePostEnabled = true)
     public class AADOAuth2LoginSecurityConfig extends AADWebSecurityConfigurerAdapter {
-    
+
         /**
          * Add configuration logic as needed.
          */
@@ -342,21 +342,21 @@ Here are some examples about how to use these properties:
         public String group1() {
             return "group1 message";
         }
-    
+
         @GetMapping("group2")
         @ResponseBody
         @PreAuthorize("hasRole('ROLE_group2')")
         public String group2() {
             return "group2 message";
         }
-    
+
         @GetMapping("group1Id")
         @ResponseBody
         @PreAuthorize("hasRole('ROLE_<group1-id>')")
         public String group1Id() {
             return "group1Id message";
         }
-    
+
         @GetMapping("group2Id")
         @ResponseBody
         @PreAuthorize("hasRole('ROLE_<group2-id>')")
@@ -394,14 +394,14 @@ Here are some examples about how to use these properties:
     }
     ```
 
-    After these steps. `arm`'s scopes (https://management.core.windows.net/user_impersonation) doesn't 
-    need to be consented at login time. When user request `/arm` endpoint, user need to consent the 
+    After these steps. `arm`'s scopes (https://management.core.windows.net/user_impersonation) doesn't
+    need to be consented at login time. When user request `/arm` endpoint, user need to consent the
     scope. That's `incremental consent` means.
-    
-    After the scopes have been consented, AAD server will remember that this user has already granted 
-    the permission to the web application. So incremental consent will not happen anymore after user 
+
+    After the scopes have been consented, AAD server will remember that this user has already granted
+    the permission to the web application. So incremental consent will not happen anymore after user
     consented.
-  
+
 #### Property example 4: [Client credential flow] in resource server visiting resource servers.
 
 * Step 1: Add property in application.yml
@@ -435,10 +435,10 @@ Here are some examples about how to use these properties:
 
 ### Advanced features
 
-#### Support access control by id token in web application 
+#### Support access control by id token in web application
 
 This starter supports creating `GrantedAuthority` from id_token's `roles` claim to allow using `id_token` for authorization in web application. Developers can use the
-`appRoles` feature of Azure Active Directory to create `roles` claim and implement access control. 
+`appRoles` feature of Azure Active Directory to create `roles` claim and implement access control.
 
 Note:
  - The `roles` claim generated from `appRoles` is decorated with prefix `APPROLE_`.
@@ -481,37 +481,37 @@ Follow the guide to [add app roles in your application and assign to users or gr
     ```
 
 #### Support Conditional Access in web application.
-  
-This starter supports [Conditional Access] policy. By using [Conditional Access] policies, you can apply the right **access controls** when needed to keep your organization secure. **Access controls** has many concepts, [Block Access] and [Grant Access] are important. In some scenarios, this stater will help you complete [Grant Access] controls. 
- 
+
+This starter supports [Conditional Access] policy. By using [Conditional Access] policies, you can apply the right **access controls** when needed to keep your organization secure. **Access controls** has many concepts, [Block Access] and [Grant Access] are important. In some scenarios, this stater will help you complete [Grant Access] controls.
+
 In [Resource server visiting other resource server] scenario(For better description, we think that resource server with OBO function as **webapiA** and the other resource servers as **webapiB**), When we configure the webapiB application with Conditional Access(such as [multi-factor authentication]), this stater will help us send the Conditional Access information of the webapiA to the web application and the web application will help us complete the Conditional Access Policy. As shown below:
 
-  ![aad-conditional-access-flow.png](https://github.com/Azure/azure-sdk-for-java/raw/master/sdk/spring/azure-spring-boot-starter-active-directory/resource/aad-conditional-access-flow.png)
-  
-  
-  
+  ![aad-conditional-access-flow.png](https://github.com/Azure/azure-sdk-for-java/raw/main/sdk/spring/azure-spring-boot-starter-active-directory/resource/aad-conditional-access-flow.png)
+
+
+
  We can use our sample to create a Conditional Access scenario.
   1. **webapp**: [azure-spring-boot-sample-active-directory-webapp].
   1. **webapiA**:  [azure-spring-boot-sample-active-directory-resource-server-obo].
-  1. **webapiB**: [azure-spring-boot-sample-active-directory-resource-server]. 
-  
+  1. **webapiB**: [azure-spring-boot-sample-active-directory-resource-server].
+
 * Step 1: Follow the guide to create conditional access policy for webapiB.
-  
-    ![aad-create-conditional-access](https://github.com/Azure/azure-sdk-for-java/raw/master/sdk/spring/azure-spring-boot-starter-active-directory/resource/aad-create-conditional-access.png)
-  
-    ![aad-conditional-access-add-application](https://github.com/Azure/azure-sdk-for-java/raw/master/sdk/spring/azure-spring-boot-starter-active-directory/resource/aad-conditional-access-add-application.png) 
-  
+
+    ![aad-create-conditional-access](https://github.com/Azure/azure-sdk-for-java/raw/main/sdk/spring/azure-spring-boot-starter-active-directory/resource/aad-create-conditional-access.png)
+
+    ![aad-conditional-access-add-application](https://github.com/Azure/azure-sdk-for-java/raw/main/sdk/spring/azure-spring-boot-starter-active-directory/resource/aad-conditional-access-add-application.png)
+
 * Step 2: [Require MFA for all users] or specify the user account in your policy.
 
-    ![aad-create-conditional-access](https://github.com/Azure/azure-sdk-for-java/raw/master/sdk/spring/azure-spring-boot-starter-active-directory/resource/aad-conditional-access-add-user.png)
-    
+    ![aad-create-conditional-access](https://github.com/Azure/azure-sdk-for-java/raw/main/sdk/spring/azure-spring-boot-starter-active-directory/resource/aad-conditional-access-add-user.png)
+
 * Step 3: Follow the guide, configure our samples.
    1. **webapiB**: [configure webapiB]
    1. **webapiA**: [configure webapiA]
    1. **webapp**: [configure webapp]
-    
-* Step 4: Add properties in application.yml.  
-  	
+
+* Step 4: Add properties in application.yml.
+
     - webapp:
      ```yaml
      azure:
@@ -524,7 +524,7 @@ In [Resource server visiting other resource server] scenario(For better descript
            webapiA:
              scopes:
                - <Web-API-A-app-id-url>/Obo.WebApiA.ExampleScope
-     ```   
+     ```
     - webapiA:
      ```yaml
      azure:
@@ -545,10 +545,10 @@ In [Resource server visiting other resource server] scenario(For better descript
           client-id: <Web-API-B-client-id>
           app-id-uri: <Web-API-B-app-id-url>
      ```
-      
-* Step 5: Write your Java code:  	
+
+* Step 5: Write your Java code:
     - webapp :
-    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp/src/main/java/com/azure/spring/sample/aad/controller/WebApiController.java#L34-L38 -->    
+    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp/src/main/java/com/azure/spring/sample/aad/controller/WebApiController.java#L34-L38 -->
     ```java
     @GetMapping("/webapp/webapiA/webapiB")
     @ResponseBody
@@ -557,7 +557,7 @@ In [Resource server visiting other resource server] scenario(For better descript
     }
     ```
     - webapiA:
-    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-obo/src/main/java/com/azure/spring/sample/aad/controller/SampleController.java#L76-L81 -->    
+    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-obo/src/main/java/com/azure/spring/sample/aad/controller/SampleController.java#L76-L81 -->
     ```java
     @PreAuthorize("hasAuthority('SCOPE_Obo.WebApiA.ExampleScope')")
     @GetMapping("webapiA/webapiB")
@@ -567,7 +567,7 @@ In [Resource server visiting other resource server] scenario(For better descript
     }
     ```
     - webapiB:
-    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server/src/main/java/com/azure/spring/sample/aad/controller/HomeController.java#L16-L21 -->      
+    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server/src/main/java/com/azure/spring/sample/aad/controller/HomeController.java#L16-L21 -->
     ```java
     @GetMapping("/webapiB")
     @ResponseBody
@@ -575,7 +575,7 @@ In [Resource server visiting other resource server] scenario(For better descript
     public String file() {
         return "Response from WebApiB.";
     }
-    ```  
+    ```
 
 #### Support setting redirect-uri-template.
 
@@ -618,7 +618,7 @@ public class AADOAuth2LoginSecurityConfig extends AADWebSecurityConfigurerAdapte
     }
 }
 ```
-  
+
 ## Examples
 
 ### Microsoft Identity In Spring.
@@ -660,37 +660,37 @@ Please follow [instructions here] to build from source or contribute.
 <!-- LINKS -->
 [Azure Portal]: https://ms.portal.azure.com/#home
 [The OAuth 2.0 authorization code grant]: https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-auth-code-flow
-[azure-spring-boot-sample-active-directory-webapp]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp
-[azure-spring-boot-sample-active-directory-resource-server]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server/README.md
-[azure-spring-boot-sample-active-directory-resource-server-obo]: https://github.com/ZhuXiaoBing-cn/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-obo
-[azure-spring-boot-sample-active-directory-resource-server-by-filter]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-by-filter
+[azure-spring-boot-sample-active-directory-webapp]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp
+[azure-spring-boot-sample-active-directory-resource-server]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server/README.md
+[azure-spring-boot-sample-active-directory-resource-server-obo]: https://github.com/ZhuXiaoBing-cn/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-obo
+[azure-spring-boot-sample-active-directory-resource-server-by-filter]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-by-filter
 [AAD App Roles feature]: https://docs.microsoft.com/azure/architecture/multitenant-identity/app-roles#roles-using-azure-ad-app-roles
 [client credentials grant flow]: https://docs.microsoft.com/azure/active-directory/develop/v1-oauth2-client-creds-grant-flow
 [configured in your manifest]: https://docs.microsoft.com/azure/active-directory/develop/howto-add-app-roles-in-azure-ad-apps#examples
 [docs]: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-boot-starter-java-app-with-azure-active-directory
 [graph-api-list-member-of]: https://docs.microsoft.com/graph/api/user-list-memberof?view=graph-rest-1.0
 [graph-api-list-transitive-member-of]: https://docs.microsoft.com/graph/api/user-list-transitivememberof?view=graph-rest-1.0
-[instructions here]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/CONTRIBUTING.md
+[instructions here]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/CONTRIBUTING.md
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
 [official doc]: https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#boot-features-logging
 [OAuth 2.0 implicit grant flow]: https://docs.microsoft.com/azure/active-directory/develop/v1-oauth2-implicit-grant-flow
 [package]: https://mvnrepository.com/artifact/com.azure.spring/azure-spring-boot-starter-active-directory
 [refdocs]: https://azure.github.io/azure-sdk-for-java/springboot.html#azure-spring-boot
-[sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples
+[sample]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-boot-samples
 [set up in the manifest of your application registration]: https://docs.microsoft.com/azure/active-directory/develop/howto-add-app-roles-in-azure-ad-apps
 [Azure China]: https://docs.microsoft.com/azure/china/resources-developer-guide#check-endpoints-in-azure
 [Incremental consent]: https://docs.microsoft.com/azure/active-directory/azuread-dev/azure-ad-endpoint-comparison#incremental-and-dynamic-consent
 [register_an_application_in_portal]: https://docs.microsoft.com/azure/active-directory/develop/quickstart-register-app
-[prerequisite]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-starter-active-directory#prerequisites
-[Accessing a web application]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-starter-active-directory#accessing-a-web-application
-[environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
+[prerequisite]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-boot-starter-active-directory#prerequisites
+[Accessing a web application]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-boot-starter-active-directory#accessing-a-web-application
+[environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
 [Conditional Access]: https://docs.microsoft.com/azure/active-directory/conditional-access
 [Grant Access]: https://docs.microsoft.com/azure/active-directory/conditional-access/concept-conditional-access-grant
 [Block Access]: https://docs.microsoft.com/azure/active-directory/conditional-access/howto-conditional-access-policy-block-access
-[Resource server visiting other resource server]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-starter-active-directory#resource-server-visiting-other-resource-servers
+[Resource server visiting other resource server]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-boot-starter-active-directory#resource-server-visiting-other-resource-servers
 [multi-factor authentication]: https://docs.microsoft.com/azure/active-directory/authentication/concept-mfa-howitworks
 [Require MFA for all users]: https://docs.microsoft.com/azure/active-directory/conditional-access/howto-conditional-access-policy-all-users-mfa
-[configure webapiA]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-obo#configure-your-middle-tier-web-api-a
-[configure webapiB]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server/README.md#configure-web-api
-[configure webapp]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp/README.md#configure-access-other-resources-server
+[configure webapiA]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-obo#configure-your-middle-tier-web-api-a
+[configure webapiB]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server/README.md#configure-web-api
+[configure webapp]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp/README.md#configure-access-other-resources-server
 [ms-identity-java-spring-tutorial]:https://github.com/Azure-Samples/ms-identity-java-spring-tutorial

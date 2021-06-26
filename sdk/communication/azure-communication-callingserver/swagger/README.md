@@ -33,12 +33,12 @@ To update generated files for calling service, run the following command
 ``` yaml
 tag: package-2021-06-15-preview
 require:
-    - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/74575fadb83fcd08a70d1168c8d04a6ca5e90715/specification/communication/data-plane/CallingServer/readme.md
+    - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/b4b5fa5ee23f8cce9e1ade4a82076b4c34b25651/specification/communication/data-plane/CallingServer/readme.md
 java: true
 output-folder: ..\
 license-header: MICROSOFT_MIT_SMALL
 namespace: com.azure.communication.callingserver
-custom-types: ToneValue,OperationStatus,CallRecordingState,CallConnectionState,EventSubscriptionType,CallModality
+custom-types: ToneValue,OperationStatus,CallRecordingState,CallConnectionState,EventSubscriptionType,MediaType
 custom-types-subpackage: models
 generate-client-as-impl: true
 models-subpackage: implementation.models
@@ -51,8 +51,8 @@ directive:
     from: CallRecordingStateChangeEvent
     to: CallRecordingStateChangeEventInternal    
 - rename-model:
-    from: InviteParticipantsResultEvent
-    to: InviteParticipantsResultEventInternal    
+    from: AddParticipantResultEvent
+    to: AddParticipantResultEventInternal    
 - rename-model:
     from: PlayAudioResultEvent
     to: PlayAudioResultEventInternal   
@@ -66,8 +66,8 @@ directive:
     from: ParticipantsUpdatedEvent
     to: ParticipantsUpdatedEventInternal
 - rename-model:
-    from: CommunicationParticipant
-    to: CommunicationParticipantInternal
+    from: CallParticipant
+    to: CallParticipantInternal
 - rename-model:
     from: JoinCallResult
     to: JoinCallResultInternal
@@ -75,14 +75,17 @@ directive:
     from: PlayAudioResult
     to: PlayAudioResultInternal
 - rename-model:
-    from: CallRecordingStateResult
-    to: CallRecordingStateResultInternal
+    from: CallRecordingProperties
+    to: CallRecordingPropertiesInternal
 - rename-model:
     from: StartCallRecordingResult
     to: StartCallRecordingResultInternal
 - rename-model:
     from: CreateCallResult
     to: CreateCallResultInternal
+- rename-model:
+    from: AddParticipantResult
+    to: AddParticipantResultInternal    
 - rename-model:
     from: CancelAllMediaOperationsResult
     to: CancelAllMediaOperationsResultInternal

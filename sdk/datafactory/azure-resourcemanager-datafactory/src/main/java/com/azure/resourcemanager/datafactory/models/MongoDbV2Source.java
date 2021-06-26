@@ -192,6 +192,13 @@ public final class MongoDbV2Source extends CopySource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public MongoDbV2Source withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

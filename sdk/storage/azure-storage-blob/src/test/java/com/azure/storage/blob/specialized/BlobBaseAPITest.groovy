@@ -301,8 +301,7 @@ class BlobBaseAPITest extends APISpec {
         1000      || _
     }
 
-    @Unroll
-    @Ignore /* TODO: Unignore when parquet is officially supported. */
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_10_02")
     @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
     def "Query Input parquet"() {
         setup:
@@ -722,7 +721,7 @@ class BlobBaseAPITest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
-    @Ignore /* TODO: Unignore when parquet is officially supported. */
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_10_02")
     @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
     def "Query parquet output IA"() {
         setup:
