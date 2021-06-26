@@ -145,7 +145,7 @@
         <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
         <configuration>
           <additionalClasspathElements>
-            <additionalClasspathElement>${basedir}/target/${artifactId}-${version}-tests.jar</additionalClasspathElement>
+            <additionalClasspathElement>${settings.localRepository}/com/azure/${project.artifactId}/${project.version}/${project.artifactId}-${project.version}-tests.jar</additionalClasspathElement>
           </additionalClasspathElements>
         </configuration>
       </plugin>

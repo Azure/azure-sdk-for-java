@@ -9,19 +9,19 @@
   <includeBaseDirectory>false</includeBaseDirectory>
   <fileSets>
     <fileSet>
-      <directory>${project.build.directory}\test-classes</directory>
-      <outputDirectory>\</outputDirectory>
+      <directory>${project.build.directory}/test-classes</directory>
+      <outputDirectory>${file.separator}</outputDirectory>
       <includes>
-        <include>com\azure\storage\common\test\shared\**\*</include>
+        <include>com/azure/storage/common/test/shared/**/*</include>
         <include>SpockConfig.groovy</include>
       </includes>
       <useDefaultExcludes>true</useDefaultExcludes>
     </fileSet>
     <fileSet>
-      <directory>${project.build.directory}\test-classes\manifests</directory>
-      <outputDirectory>\</outputDirectory>
+      <directory>${project.build.directory}/test-classes/manifests</directory>
+      <outputDirectory>${file.separator}</outputDirectory>
       <includes>
-        <include>**\*</include>
+        <include>**/*</include>
       </includes>
       <useDefaultExcludes>true</useDefaultExcludes>
     </fileSet>
