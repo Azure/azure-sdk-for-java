@@ -92,11 +92,11 @@ public class RequestContentTests {
             Arguments.of(RequestContent.fromString(randomString), true, randomStringBytes),
 
             Arguments.of(RequestContent.fromFile(emptyTempFile), true, emptyBytes),
-            Arguments.of(RequestContent.fromFile(emptyTempFile, 0, 0), true, emptyBytes),
+            Arguments.of(RequestContent.fromFile(emptyTempFile, 0, 0, 8092), true, emptyBytes),
 
             Arguments.of(RequestContent.fromFile(randomTempFile), true, randomBytes),
-            Arguments.of(RequestContent.fromFile(randomTempFile, 0, randomBytes.length), true, randomBytes),
-            Arguments.of(RequestContent.fromFile(randomTempFile, 1024, 1024), true,
+            Arguments.of(RequestContent.fromFile(randomTempFile, 0, randomBytes.length, 8092), true, randomBytes),
+            Arguments.of(RequestContent.fromFile(randomTempFile, 1024, 1024, 8092), true,
                 Arrays.copyOfRange(randomBytes, 1024, 2048)),
 
             Arguments.of(RequestContent.fromObject(emptyString), false, "\"\"".getBytes(StandardCharsets.UTF_8)),
@@ -124,11 +124,12 @@ public class RequestContentTests {
                 true, randomBytes),
 
             Arguments.of(RequestContent.fromInputStream(new ByteArrayInputStream(emptyBytes)), false, emptyBytes),
-            Arguments.of(RequestContent.fromInputStream(new ByteArrayInputStream(emptyBytes), 0), true, emptyBytes),
+            Arguments.of(RequestContent.fromInputStream(new ByteArrayInputStream(emptyBytes), 0, 8092), true,
+                emptyBytes),
 
             Arguments.of(RequestContent.fromInputStream(new ByteArrayInputStream(randomBytes)), false, randomBytes),
-            Arguments.of(RequestContent.fromInputStream(new ByteArrayInputStream(randomBytes), randomBytes.length),
-                true, randomBytes)
+            Arguments.of(RequestContent.fromInputStream(new ByteArrayInputStream(randomBytes), randomBytes.length,
+                8092), true, randomBytes)
         );
     }
 
@@ -172,24 +173,17 @@ public class RequestContentTests {
 
             // file cannot be null
             Arguments.of(createExecutable(() -> RequestContent.fromFile(null)), NullPointerException.class),
-            Arguments.of(createExecutable(() -> RequestContent.fromFile(null, 0, 0)), NullPointerException.class),
             Arguments.of(createExecutable(() -> RequestContent.fromFile(null, 0, 0, 0)), NullPointerException.class),
 
             // offset cannot be negative
-            Arguments.of(createExecutable(() -> RequestContent.fromFile(mockPath, -1, 0)),
-                IllegalArgumentException.class),
             Arguments.of(createExecutable(() -> RequestContent.fromFile(mockPath, -1, 0, 0)),
                 IllegalArgumentException.class),
 
             // length cannot be negative
-            Arguments.of(createExecutable(() -> RequestContent.fromFile(mockPath, 0, -1)),
-                IllegalArgumentException.class),
             Arguments.of(createExecutable(() -> RequestContent.fromFile(mockPath, 0, -1, 0)),
                 IllegalArgumentException.class),
 
             // offset + length cannot be greater than file size
-            Arguments.of(createExecutable(() -> RequestContent.fromFile(mockPath, 0, 1)),
-                IllegalArgumentException.class),
             Arguments.of(createExecutable(() -> RequestContent.fromFile(mockPath, 0, 1, 0)),
                 IllegalArgumentException.class),
 
@@ -219,12 +213,8 @@ public class RequestContentTests {
 
             // content cannot be null
             Arguments.of(createExecutable(() -> RequestContent.fromInputStream(null)), NullPointerException.class),
-            Arguments.of(createExecutable(() -> RequestContent.fromInputStream(null, 0)), NullPointerException.class),
 
             // length cannot be negative
-            Arguments.of(
-                createExecutable(() -> RequestContent.fromInputStream(new ByteArrayInputStream(dummyBytes), -1)),
-                IllegalArgumentException.class),
             Arguments.of(
                 createExecutable(() -> RequestContent.fromInputStream(new ByteArrayInputStream(dummyBytes), -1, 0)),
                 IllegalArgumentException.class),

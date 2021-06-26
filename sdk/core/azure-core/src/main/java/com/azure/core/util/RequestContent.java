@@ -118,22 +118,7 @@ public abstract class RequestContent {
      */
     public static RequestContent fromFile(Path file) {
         Objects.requireNonNull(file, "'file' cannot be null.");
-        return fromFile(file, 0, file.toFile().length());
-    }
-
-    /**
-     * Creates a {@link RequestContent} that uses {@link Path} as its data.
-     *
-     * @param file The {@link Path} that will be the {@link RequestContent} data.
-     * @param offset Offset in the {@link Path} where the data will begin.
-     * @param length Length of the data.
-     * @return A new {@link RequestContent}.
-     * @throws NullPointerException If {@code file} is null.
-     * @throws IllegalArgumentException If {@code offset} or {@code length} are negative or {@code offset} plus {@code
-     * length} is greater than the file size.
-     */
-    public static RequestContent fromFile(Path file, long offset, long length) {
-        return fromFile(file, offset, length, 8092);
+        return fromFile(file, 0, file.toFile().length(), 8092);
     }
 
     /**
@@ -279,7 +264,7 @@ public abstract class RequestContent {
      * Creates a {@link RequestContent} that uses an {@link InputStream} as its data.
      * <p>
      * {@link RequestContent#getLength()} will be null if this factory method is used, if the length needs to be
-     * non-null use {@link RequestContent#fromInputStream(InputStream, long)}.
+     * non-null use {@link RequestContent#fromInputStream(InputStream, long, int)}.
      *
      * @param content The {@link InputStream} that will be the {@link RequestContent} data.
      * @return A new {@link RequestContent}.
@@ -287,19 +272,6 @@ public abstract class RequestContent {
      */
     public static RequestContent fromInputStream(InputStream content) {
         return fromInputStreamInternal(content, null, 8092);
-    }
-
-    /**
-     * Creates a {@link RequestContent} that uses an {@link InputStream} as its data.
-     *
-     * @param content The {@link InputStream} that will be the {@link RequestContent} data.
-     * @param length The length of the content.
-     * @return A new {@link RequestContent}.
-     * @throws NullPointerException If {@code inputStream} is null.
-     * @throws IllegalArgumentException If {@code length} is less than 0.
-     */
-    public static RequestContent fromInputStream(InputStream content, long length) {
-        return fromInputStream(content, length, 8092);
     }
 
     /**
