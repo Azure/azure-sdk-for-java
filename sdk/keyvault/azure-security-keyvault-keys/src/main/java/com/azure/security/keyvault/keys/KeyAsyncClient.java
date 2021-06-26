@@ -1371,6 +1371,12 @@ public final class KeyAsyncClient {
     /**
      * Get the requested number of bytes containing random values from a managed HSM.
      *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Gets a number of bytes containing random values from a Managed HSM. Prints out the retrieved bytes in
+     * base64Url format.</p>
+     *
+     * {@codesnippet com.azure.security.keyvault.keys.KeyAsyncClient.getRandomBytes#int}
+     *
      * @param amount The requested number of random bytes.
      *
      * @return The requested number of bytes containing random values from a managed HSM.
@@ -1387,6 +1393,12 @@ public final class KeyAsyncClient {
 
     /**
      * Get the requested number of bytes containing random values from a managed HSM.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Gets a number of bytes containing random values from a Managed HSM. Prints out the
+     * {@link Response HTTP Response} details and the retrieved bytes in base64Url format.</p>
+     *
+     * {@codesnippet com.azure.security.keyvault.keys.KeyAsyncClient.getRandomBytesWithResponse#int}
      *
      * @param amount The requested number of random bytes.
      *

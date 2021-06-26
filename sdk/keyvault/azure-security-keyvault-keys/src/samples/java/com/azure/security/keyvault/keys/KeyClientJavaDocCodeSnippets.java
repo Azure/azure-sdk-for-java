@@ -6,6 +6,7 @@ package com.azure.security.keyvault.keys;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.security.keyvault.keys.models.CreateOctKeyOptions;
@@ -21,8 +22,10 @@ import com.azure.security.keyvault.keys.models.KeyProperties;
 import com.azure.security.keyvault.keys.models.ImportKeyOptions;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.security.keyvault.keys.models.RandomBytes;
 
 import java.time.OffsetDateTime;
+import java.util.Arrays;
 
 /**
  * This class contains code samples for generating javadocs through doclets for {@link KeyClient}
@@ -459,6 +462,30 @@ public final class KeyClientJavaDocCodeSnippets {
             });
         });
         // END: com.azure.keyvault.keys.keyclient.listKeyVersions.iterableByPage
+    }
+
+    /**
+     * Generates code samples for using {@link KeyClient#getRandomBytes(int)} and
+     * {@link KeyClient#getRandomBytesWithResponse(int, Context)}.
+     */
+    public void getRandomBytes() {
+        KeyClient keyClient = createClient();
+
+        // BEGIN: com.azure.security.keyvault.keys.KeyClient.getRandomBytes#int
+        int amount = 16;
+        RandomBytes randomBytes = keyClient.getRandomBytes(amount);
+
+        System.out.printf("Retrieved %d random bytes: %s%n", amount, Arrays.toString(randomBytes.getBytes()));
+        // END: com.azure.security.keyvault.keys.KeyClient.getRandomBytes#int
+
+        // BEGIN: com.azure.security.keyvault.keys.KeyClient.getRandomBytesWithResponse#int-Context
+        int amountOfBytes = 16;
+        Response<RandomBytes> response =
+            keyClient.getRandomBytesWithResponse(amountOfBytes, new Context("key1", "value1"));
+
+        System.out.printf("Response received successfully with status code: %d. Retrieved %d random bytes: %s%n",
+            response.getStatusCode(), amountOfBytes, Arrays.toString(response.getValue().getBytes()));
+        // END: com.azure.security.keyvault.keys.KeyClient.getRandomBytesWithResponse#int-Context
     }
 
     /**

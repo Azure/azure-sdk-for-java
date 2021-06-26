@@ -889,6 +889,12 @@ public final class KeyClient {
     /**
      * Get the requested number of bytes containing random values from a managed HSM.
      *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Gets a number of bytes containing random values from a Managed HSM. Prints out the retrieved bytes in
+     * base64Url format.</p>
+     *
+     * {@codesnippet com.azure.security.keyvault.keys.KeyClient.getRandomBytes#int}
+     *
      * @param amount The requested number of random bytes.
      *
      * @return The requested number of bytes containing random values from a managed HSM.
@@ -899,6 +905,12 @@ public final class KeyClient {
 
     /**
      * Get the requested number of bytes containing random values from a managed HSM.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Gets a number of bytes containing random values from a Managed HSM. Prints out the
+     * {@link Response HTTP Response} details and the retrieved bytes in base64Url format.</p>
+     *
+     * {@codesnippet com.azure.security.keyvault.keys.KeyClient.getRandomBytesWithResponse#int-Context}
      *
      * @param amount The requested number of random bytes.
      * @param context Additional context that is passed through the Http pipeline during the service call.
