@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.managedhsm.azure.net/keys/1b2ddf53-7b55-4b37-aa46-984d60cb3999-testRsaKey/create?api-version=7.2",
+    "Uri" : "https://REDACTED.managedhsm.azure.net/keys/1b2ddf53-7b55-4b37-aa46-984d60cb3999-testRsaKey/create?api-version=7.3-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
