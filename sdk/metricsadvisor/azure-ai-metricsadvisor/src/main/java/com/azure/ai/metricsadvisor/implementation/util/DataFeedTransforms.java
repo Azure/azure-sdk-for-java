@@ -3,6 +3,7 @@
 
 package com.azure.ai.metricsadvisor.implementation.util;
 
+import com.azure.ai.metricsadvisor.administration.models.DataFeedDimension;
 import com.azure.ai.metricsadvisor.implementation.models.AuthenticationTypeEnum;
 import com.azure.ai.metricsadvisor.implementation.models.AzureApplicationInsightsDataFeed;
 import com.azure.ai.metricsadvisor.implementation.models.AzureApplicationInsightsDataFeedPatch;
@@ -84,6 +85,8 @@ import com.azure.ai.metricsadvisor.administration.models.SqlServerDataFeedSource
 import com.azure.core.util.logging.ClientLogger;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -109,7 +112,7 @@ public final class DataFeedTransforms {
         dataFeed
             .setName(dataFeedDetail.getDataFeedName())
             .setSchema(new DataFeedSchema(dataFeedDetail.getMetrics())
-                .setDimensions(dataFeedDetail.getDimension())
+                .setDimensions(fromInner(dataFeedDetail.getDimension()))
                 .setTimestampColumn(dataFeedDetail.getTimestampColumn()))
             .setGranularity(dataFeedGranularity)
             .setIngestionSettings(new DataFeedIngestionSettings(dataFeedDetail.getDataStartFrom())
@@ -643,5 +646,31 @@ public final class DataFeedTransforms {
         }
 
         return dataFeedDetailPatch;
+    }
+
+    public static List<com.azure.ai.metricsadvisor.implementation.models.DataFeedDimension>
+        toInnerForCreate(List<DataFeedDimension> dimensions) {
+        List<com.azure.ai.metricsadvisor.implementation.models.DataFeedDimension> innerDimensions = null;
+        if (dimensions != null) {
+            innerDimensions = new ArrayList<>();
+            for (DataFeedDimension dimension : dimensions) {
+                innerDimensions.add(new com.azure.ai.metricsadvisor.implementation.models.DataFeedDimension()
+                    .setName(dimension.getName()).setDisplayName(dimension.getDisplayName()));
+            }
+        }
+        return innerDimensions;
+    }
+
+    private static List<DataFeedDimension>
+        fromInner(List<com.azure.ai.metricsadvisor.implementation.models.DataFeedDimension> innerList) {
+        if (innerList == null) {
+            return null;
+        } else {
+            List<DataFeedDimension> dimensions = new ArrayList<>();
+            for (com.azure.ai.metricsadvisor.implementation.models.DataFeedDimension inner : innerList) {
+                dimensions.add(new DataFeedDimension(inner.getName()).setDisplayName(inner.getDisplayName()));
+            }
+            return dimensions;
+        }
     }
 }

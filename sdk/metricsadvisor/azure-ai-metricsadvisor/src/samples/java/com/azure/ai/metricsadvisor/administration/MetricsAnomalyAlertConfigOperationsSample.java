@@ -10,8 +10,8 @@ import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertCondi
 import com.azure.ai.metricsadvisor.administration.models.MetricAlertConfiguration;
 import com.azure.ai.metricsadvisor.administration.models.MetricAlertConfigurationsOperator;
 import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertScope;
-import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
 import com.azure.ai.metricsadvisor.administration.models.SeverityCondition;
+import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -46,7 +46,7 @@ public class MetricsAnomalyAlertConfigOperationsSample {
                         new MetricAlertConfiguration(detectionConfigurationId2,
                             MetricAnomalyAlertScope.forWholeSeries())
                             .setAlertConditions(new MetricAnomalyAlertConditions()
-                                .setSeverityRangeCondition(new SeverityCondition().setMinAlertSeverity(AnomalySeverity.LOW)))))
+                                .setSeverityRangeCondition(new SeverityCondition(AnomalySeverity.LOW, AnomalySeverity.LOW)))))
                     .setCrossMetricsOperator(MetricAlertConfigurationsOperator.AND)
                     .setHookIdsToAlert(Arrays.asList(hookId1, hookId2)));
 

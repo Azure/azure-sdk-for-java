@@ -189,7 +189,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
                 .setGranularityName(Granularity.fromString(dataFeedGranularity.getGranularityType() == null
                     ? null : dataFeedGranularity.getGranularityType().toString()))
                 .setGranularityAmount(dataFeedGranularity.getCustomGranularityValue())
-                .setDimension(dataFeedSchema.getDimensions())
+                .setDimension(DataFeedTransforms.toInnerForCreate(dataFeedSchema.getDimensions()))
                 .setMetrics(dataFeedSchema.getMetrics())
                 .setTimestampColumn(dataFeedSchema.getTimestampColumn())
                 .setDataStartFrom(dataFeedIngestionSettings.getIngestionStartTime())

@@ -4,7 +4,6 @@
 
 package com.azure.ai.metricsadvisor.implementation.models;
 
-import com.azure.ai.metricsadvisor.administration.models.DataFeedDimension;
 import com.azure.ai.metricsadvisor.administration.models.DataFeedMetric;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
