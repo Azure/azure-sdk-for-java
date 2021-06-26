@@ -15,6 +15,7 @@ import com.azure.security.keyvault.keys.models.DeletedKey;
 import com.azure.security.keyvault.keys.models.KeyProperties;
 import com.azure.security.keyvault.keys.models.KeyType;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
+import com.azure.security.keyvault.keys.models.RandomBytes;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -450,6 +451,24 @@ public class KeyClientTest extends KeyClientTestBase {
             List<KeyProperties> keyVersionsList = new ArrayList<>();
             keyVersionsOutput.forEach(keyVersionsList::add);
             assertEquals(keyVersions.size(), keyVersionsList.size());
+        });
+    }
+
+    /**
+     * Tests that random bytes can be retrieved from a Managed HSM.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void getRandomBytes(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        if (!isManagedHsmTest) {
+            return;
+        }
+
+        createKeyClient(httpClient, serviceVersion);
+        getRandomBytesRunner((amountOfBytes) -> {
+            RandomBytes randomBytes = client.getRandomBytes(amountOfBytes);
+
+            assertEquals(amountOfBytes, randomBytes.getBytes().length);
         });
     }
 

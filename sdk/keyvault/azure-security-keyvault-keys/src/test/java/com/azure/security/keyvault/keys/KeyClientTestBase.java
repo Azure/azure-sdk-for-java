@@ -391,6 +391,12 @@ public abstract class KeyClientTestBase extends TestBase {
         testRunner.accept(keyOptions);
     }
 
+    void getRandomBytesRunner(Consumer<Integer> testRunner) {
+        int amountOfBytes = 16;
+
+        testRunner.accept(amountOfBytes);
+    }
+
     String generateResourceId(String suffix) {
         if (interceptorManager.isPlaybackMode()) {
             return suffix;
