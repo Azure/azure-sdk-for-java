@@ -49,9 +49,6 @@ extends:
       - name: azure-storage-common
         groupId: com.azure
         safeName: azurestoragecommon
-      - name: azure-storage-data-movement
-        groupId: com.azure
-        safeName: azurestoragedatamovement
       - name: azure-storage-blob
         groupId: com.azure
         safeName: azurestorageblob

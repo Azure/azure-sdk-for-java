@@ -13,7 +13,6 @@
       <id>coverage</id>
       <modules>
         <module>azure-storage-common</module>
-        <module>azure-storage-data-movement</module>
         <module>azure-storage-blob</module>
         <module>azure-storage-blob-batch</module>
         <module>azure-storage-blob-changefeed</module>
@@ -29,11 +28,6 @@
           <groupId>com.azure</groupId>
           <artifactId>azure-storage-common</artifactId>
           <version>12.13.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
-        </dependency>
-        <dependency>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-storage-data-movement</artifactId>
-          <version>12.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-data-movement;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
@@ -111,7 +105,6 @@
       </activation>
       <modules>
         <module>azure-storage-common</module>
-        <module>azure-storage-data-movement</module>
         <module>azure-storage-blob</module>
         <module>azure-storage-blob-batch</module>
         <module>azure-storage-blob-changefeed</module>
