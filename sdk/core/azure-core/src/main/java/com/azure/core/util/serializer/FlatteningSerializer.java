@@ -363,7 +363,8 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
                     outNode = node.get(values[values.length - 1]);
                 } else if (CHECK_IF_ESCAPED_MAP_PATTERN.matcher(key).matches()) {
                     // Handle escaped map key
-                    //
+                    // for #8372 identity node should pass thru this check
+
                     String originalKey = REPLACE_ESCAPED_MAP_PATTERN.matcher(key).replaceAll(".");
                     resCurrent.remove(key);
                     resCurrent.set(originalKey, outNode);
