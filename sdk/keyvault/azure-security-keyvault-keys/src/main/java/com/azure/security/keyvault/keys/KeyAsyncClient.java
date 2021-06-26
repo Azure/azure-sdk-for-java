@@ -34,6 +34,7 @@ import com.azure.security.keyvault.keys.models.KeyOperation;
 import com.azure.security.keyvault.keys.models.KeyProperties;
 import com.azure.security.keyvault.keys.models.KeyType;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
+import com.azure.security.keyvault.keys.models.RandomBytes;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -1364,6 +1365,51 @@ public final class KeyAsyncClient {
                     error));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Get the requested number of bytes containing random values from a managed HSM.
+     *
+     * @param amount The requested number of random bytes.
+     *
+     * @return The requested number of bytes containing random values from a managed HSM.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<RandomBytes> getRandomBytes(int amount) {
+        try {
+            return withContext(context -> getRandomBytesWithResponse(amount, context)
+                .flatMap(FluxUtil::toMono));
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
+        }
+    }
+
+    /**
+     * Get the requested number of bytes containing random values from a managed HSM.
+     *
+     * @param amount The requested number of random bytes.
+     *
+     * @return The requested number of bytes containing random values from a managed HSM.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<RandomBytes>> getRandomBytesWithResponse(int amount) {
+        try {
+            return withContext(context -> getRandomBytesWithResponse(amount, context));
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
+        }
+    }
+
+    Mono<Response<RandomBytes>> getRandomBytesWithResponse(int count, Context context) {
+        try {
+            return service.getRandomBytes(vaultUrl, apiVersion, null, "application/json",
+                context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+                .doOnRequest(ignored -> logger.verbose("Getting {} random bytes.", count))
+                .doOnSuccess(response -> logger.verbose("Got {} random bytes."))
+                .doOnError(error -> logger.warning("Failed to get random bytes - {}", error));
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
         }
     }
 }

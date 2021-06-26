@@ -25,6 +25,7 @@ import com.azure.security.keyvault.keys.models.JsonWebKey;
 import com.azure.security.keyvault.keys.models.KeyCurveName;
 import com.azure.security.keyvault.keys.models.KeyOperation;
 import com.azure.security.keyvault.keys.models.KeyType;
+import com.azure.security.keyvault.keys.models.RandomBytes;
 
 /**
  * The KeyClient provides synchronous methods to manage {@link KeyVaultKey keys} in the Azure Key Vault. The client supports
@@ -883,5 +884,28 @@ public final class KeyClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KeyProperties> listPropertiesOfKeyVersions(String name, Context context) {
         return new PagedIterable<>(client.listPropertiesOfKeyVersions(name, context));
+    }
+
+    /**
+     * Get the requested number of bytes containing random values from a managed HSM.
+     *
+     * @param amount The requested number of random bytes.
+     *
+     * @return The requested number of bytes containing random values from a managed HSM.
+     */
+    public RandomBytes getRandomBytes(int amount) {
+        return client.getRandomBytes(amount).block();
+    }
+
+    /**
+     * Get the requested number of bytes containing random values from a managed HSM.
+     *
+     * @param amount The requested number of random bytes.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
+     * @return The requested number of bytes containing random values from a managed HSM.
+     */
+    public Response<RandomBytes> getRandomBytesWithResponse(int amount, Context context) {
+        return client.getRandomBytesWithResponse(amount, context).block();
     }
 }
