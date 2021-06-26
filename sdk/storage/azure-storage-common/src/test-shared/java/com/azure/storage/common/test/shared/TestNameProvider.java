@@ -10,7 +10,7 @@ import org.spockframework.runtime.model.SpecInfo;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-public class TestNameProvider {
+public final class TestNameProvider {
     public static String getTestName(IterationInfo iterationInfo) {
         FeatureInfo featureInfo = iterationInfo.getFeature();
         SpecInfo specInfo = featureInfo.getSpec();
