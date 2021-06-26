@@ -14,7 +14,6 @@ class TestHeaderExtension extends AbstractGlobalExtension {
     @Override
     void visitSpec(SpecInfo spec) {
         spec.allFeatures*.addIterationInterceptor(new FeatureInterceptor());
-        spec.addInitializerInterceptor(new FeatureInterceptor());
     }
 
     static class FeatureInterceptor implements IMethodInterceptor {

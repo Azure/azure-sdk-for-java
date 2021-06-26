@@ -61,14 +61,6 @@
 
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-storage-common</artifactId>
-      <version>12.13.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
-      <classifier>tests</classifier>
-      <type>test-jar</type>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
       <version>1.6.3</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
@@ -113,7 +105,7 @@
         <version>3.0.0</version> <!-- {x-version-update;org.codehaus.mojo:build-helper-maven-plugin;external_dependency} -->
         <executions>
           <execution>
-            <id>compile-samples-source</id>
+            <id>compile-test-shared-source</id>
             <phase>generate-test-sources</phase>
             <goals>
               <goal>add-test-source</goal>
@@ -133,8 +125,8 @@
         <version>3.2.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-assembly-plugin;external_dependency} -->
         <executions>
           <execution>
-            <id>test-shared-jar</id>
-            <phase>process-test-classes</phase>
+            <id>package-test-shared-jar</id>
+            <phase>test-compile</phase>
             <goals>
               <goal>single</goal>
             </goals>
@@ -145,6 +137,17 @@
             </configuration>
           </execution>
         </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+        <configuration>
+          <additionalClasspathElements>
+            <additionalClasspathElement>${basedir}/target/${artifactId}-${version}-tests.jar</additionalClasspathElement>
+          </additionalClasspathElements>
+        </configuration>
       </plugin>
     </plugins>
   </build>
