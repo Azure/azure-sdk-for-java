@@ -111,8 +111,8 @@ public final class DataFeedTransforms {
         final DataFeed dataFeed = setDataFeedSourceType(dataFeedDetail);
         dataFeed
             .setName(dataFeedDetail.getDataFeedName())
-            .setSchema(new DataFeedSchema(dataFeedDetail.getMetrics())
-                .setDimensions(fromInner(dataFeedDetail.getDimension()))
+            .setSchema(new DataFeedSchema(fromInnerMetricList(dataFeedDetail.getMetrics()))
+                .setDimensions(fromInnerDimensionList(dataFeedDetail.getDimension()))
                 .setTimestampColumn(dataFeedDetail.getTimestampColumn()))
             .setGranularity(dataFeedGranularity)
             .setIngestionSettings(new DataFeedIngestionSettings(dataFeedDetail.getDataStartFrom())
@@ -143,7 +143,8 @@ public final class DataFeedTransforms {
         DataFeedHelper.setStatus(dataFeed, DataFeedStatus.fromString(dataFeedDetail.getStatus().toString()));
         DataFeedHelper.setMetricIds(dataFeed,
             dataFeedDetail.getMetrics().stream()
-                .collect(Collectors.toMap(DataFeedMetric::getId, DataFeedMetric::getName)));
+                .collect(Collectors.toMap(com.azure.ai.metricsadvisor.implementation.models.DataFeedMetric::getId,
+                    com.azure.ai.metricsadvisor.implementation.models.DataFeedMetric::getName)));
         return dataFeed;
     }
 
@@ -649,7 +650,7 @@ public final class DataFeedTransforms {
     }
 
     public static List<com.azure.ai.metricsadvisor.implementation.models.DataFeedDimension>
-        toInnerForCreate(List<DataFeedDimension> dimensions) {
+        toInnerDimensionsListForCreate(List<DataFeedDimension> dimensions) {
         List<com.azure.ai.metricsadvisor.implementation.models.DataFeedDimension> innerDimensions = null;
         if (dimensions != null) {
             innerDimensions = new ArrayList<>();
@@ -661,8 +662,23 @@ public final class DataFeedTransforms {
         return innerDimensions;
     }
 
+    public static List<com.azure.ai.metricsadvisor.implementation.models.DataFeedMetric>
+        toInnerMetricsListForCreate(List<DataFeedMetric> metrics) {
+        List<com.azure.ai.metricsadvisor.implementation.models.DataFeedMetric> innerMetrics = null;
+        if (metrics != null) {
+            innerMetrics = new ArrayList<>();
+            for (DataFeedMetric metric : metrics) {
+                innerMetrics.add(new com.azure.ai.metricsadvisor.implementation.models.DataFeedMetric()
+                    .setName(metric.getName())
+                    .setDisplayName(metric.getDisplayName())
+                    .setDescription(metric.getDescription()));
+            }
+        }
+        return innerMetrics;
+    }
+
     private static List<DataFeedDimension>
-        fromInner(List<com.azure.ai.metricsadvisor.implementation.models.DataFeedDimension> innerList) {
+        fromInnerDimensionList(List<com.azure.ai.metricsadvisor.implementation.models.DataFeedDimension> innerList) {
         if (innerList == null) {
             return null;
         } else {
@@ -671,6 +687,23 @@ public final class DataFeedTransforms {
                 dimensions.add(new DataFeedDimension(inner.getName()).setDisplayName(inner.getDisplayName()));
             }
             return dimensions;
+        }
+    }
+
+    private static List<DataFeedMetric> fromInnerMetricList(
+        List<com.azure.ai.metricsadvisor.implementation.models.DataFeedMetric> innerList) {
+        if (innerList == null) {
+            return null;
+        } else {
+            List<DataFeedMetric> metrics = new ArrayList<>();
+            for (com.azure.ai.metricsadvisor.implementation.models.DataFeedMetric inner : innerList) {
+                DataFeedMetric metric = new DataFeedMetric(inner.getName())
+                    .setDisplayName(inner.getDisplayName())
+                    .setDescription(inner.getDescription());
+                DataFeedMetricAccessor.setId(metric, inner.getId());
+                metrics.add(metric);
+            }
+            return metrics;
         }
     }
 }

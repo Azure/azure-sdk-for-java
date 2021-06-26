@@ -40,8 +40,8 @@ public class DatafeedAsyncSample {
             .setSchema(
                 new DataFeedSchema(
                     Arrays.asList(
-                        new DataFeedMetric().setName("cost"),
-                        new DataFeedMetric().setName("revenue")
+                        new DataFeedMetric("cost"),
+                        new DataFeedMetric("revenue")
                 )).setDimensions(
                     Arrays.asList(
                         new DataFeedDimension("city"),

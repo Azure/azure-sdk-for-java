@@ -108,8 +108,8 @@ public class MetricsAdvisorAdministrationAsyncClientJavaDocCodeSnippets {
             .setGranularity(new DataFeedGranularity().setGranularityType(DataFeedGranularityType.DAILY))
             .setSchema(new DataFeedSchema(
                 Arrays.asList(
-                    new DataFeedMetric().setName("cost"),
-                    new DataFeedMetric().setName("revenue")
+                    new DataFeedMetric("cost"),
+                    new DataFeedMetric("revenue")
                 )).setDimensions(
                     Arrays.asList(
                         new DataFeedDimension("city"),
@@ -143,8 +143,8 @@ public class MetricsAdvisorAdministrationAsyncClientJavaDocCodeSnippets {
             .setGranularity(new DataFeedGranularity().setGranularityType(DataFeedGranularityType.DAILY))
             .setSchema(new DataFeedSchema(
                 Arrays.asList(
-                    new DataFeedMetric().setName("metric1"),
-                    new DataFeedMetric().setName("metric2")
+                    new DataFeedMetric("metric1"),
+                    new DataFeedMetric("metric2")
                 )
             ))
             .setIngestionSettings(new DataFeedIngestionSettings(OffsetDateTime.parse("2020-01-01T00:00:00Z")))

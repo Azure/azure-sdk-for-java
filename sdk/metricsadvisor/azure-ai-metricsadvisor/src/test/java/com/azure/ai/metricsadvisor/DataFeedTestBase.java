@@ -163,8 +163,8 @@ public abstract class DataFeedTestBase extends MetricsAdvisorAdministrationClien
         }
 
         testRunner.accept(dataFeed.setSchema(new DataFeedSchema(Arrays.asList(
-            new DataFeedMetric().setName("cost").setDisplayName("cost"),
-            new DataFeedMetric().setName("revenue").setDisplayName("revenue")))
+            new DataFeedMetric("cost").setDisplayName("cost"),
+            new DataFeedMetric("revenue").setDisplayName("revenue")))
             .setDimensions(Arrays.asList(
                 new DataFeedDimension("city").setDisplayName("city"),
                 new DataFeedDimension("category").setDisplayName("category"))))
