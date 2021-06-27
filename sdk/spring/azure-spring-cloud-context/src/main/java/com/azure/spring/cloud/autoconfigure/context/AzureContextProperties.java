@@ -34,6 +34,12 @@ public class AzureContextProperties {
      */
     private String region;
 
+    /**
+     * Name of the Azure resource group.
+     */
+    private String resourceGroup;
+
+    private String subscriptionId;
 
     public AzureProperties getAzureProperties() {
         return azureProperties;
@@ -59,6 +65,22 @@ public class AzureContextProperties {
         this.autoCreateResources = autoCreateResources;
     }
 
+    public String getResourceGroup() {
+        return resourceGroup;
+    }
+
+    public void setResourceGroup(String resourceGroup) {
+        this.resourceGroup = resourceGroup;
+    }
+
+    public String getSubscriptionId() {
+        return subscriptionId;
+    }
+
+    public void setSubscriptionId(String subscriptionId) {
+        this.subscriptionId = subscriptionId;
+    }
+
     @PostConstruct
     private void validate() {
         if (autoCreateResources) {
@@ -66,8 +88,8 @@ public class AzureContextProperties {
                 "When auto create resources is enabled, spring.cloud.azure.region must be provided");
         }
 
-        if (azureProperties.isMsiEnabled() && Strings.isNullOrEmpty(azureProperties.getSubscriptionId())) {
-            Assert.hasText(azureProperties.getSubscriptionId(), "When msi is enabled, "
+        if (azureProperties.getCredentialProperties().isMsiEnabled() && Strings.isNullOrEmpty(getSubscriptionId())) {
+            Assert.hasText(getSubscriptionId(), "When msi is enabled, "
                 + "spring.cloud.azure.subscription-id must be provided");
         }
     }

@@ -5,6 +5,7 @@ package com.azure.spring.autoconfigure.aad;
 
 import com.azure.spring.aad.AADAuthorizationGrantType;
 import com.azure.spring.aad.webapp.AuthorizationClientProperties;
+import com.azure.spring.core.CredentialProperties;
 import com.nimbusds.jose.jwk.source.RemoteJWKSet;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
-import com.azure.spring.core.AzureProperties;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,7 +36,7 @@ public class AADAuthenticationProperties implements InitializingBean {
     private static final long DEFAULT_JWK_SET_CACHE_REFRESH_TIME = DEFAULT_JWK_SET_CACHE_LIFESPAN;
 
     @Autowired
-    private AzureProperties azureProperties;
+    private CredentialProperties credentialProperties;
     /**
      * Default UserGroup configuration.
      */
@@ -381,12 +381,12 @@ public class AADAuthenticationProperties implements InitializingBean {
         this.authorizationClients = authorizationClients;
     }
 
-    public AzureProperties getAzureProperties() {
-        return azureProperties;
+    public CredentialProperties getAzureProperties() {
+        return credentialProperties;
     }
 
-    public void setAzureProperties(AzureProperties azureProperties) {
-        this.azureProperties = azureProperties;
+    public void setAzureProperties(CredentialProperties credentialProperties) {
+        this.credentialProperties = credentialProperties;
     }
 
     public boolean isAllowedGroup(String group) {
@@ -439,15 +439,15 @@ public class AADAuthenticationProperties implements InitializingBean {
         }
 
         if (!StringUtils.hasText(tenantId)) {
-            tenantId = Optional.ofNullable(azureProperties).map(AzureProperties::getTenantId).orElse("common");
+            tenantId = Optional.ofNullable(credentialProperties).map(CredentialProperties::getTenantId).orElse("common");
         }
 
         if (!StringUtils.hasText(clientId)) {
-            clientId = Optional.ofNullable(azureProperties).map(AzureProperties::getClientId).orElse(null);
+            clientId = Optional.ofNullable(credentialProperties).map(CredentialProperties::getClientId).orElse(null);
         }
 
         if (!StringUtils.hasText(clientSecret)) {
-            clientSecret = Optional.ofNullable(azureProperties).map(AzureProperties::getClientSecret).orElse(null);
+            clientSecret = Optional.ofNullable(credentialProperties).map(CredentialProperties::getClientSecret).orElse(null);
         }
 
         if (isMultiTenantsApplication(tenantId) && !userGroup.getAllowedGroups().isEmpty()) {

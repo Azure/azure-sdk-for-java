@@ -9,6 +9,7 @@ import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.context.core.api.CredentialsProvider;
 import com.azure.spring.cloud.context.core.api.EnvironmentProvider;
 import com.azure.spring.core.AzureProperties;
+import com.azure.spring.core.CredentialProperties;
 import com.azure.spring.identity.DefaultSpringCredentialBuilder;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -49,8 +50,10 @@ public class AzureContextAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public AzureProfile azureProfile(AzureProperties azureProperties, EnvironmentProvider environmentProvider) {
-        return new AzureProfile(azureProperties.getTenantId(), azureProperties.getSubscriptionId(),
+    public AzureProfile azureProfile(CredentialProperties credentialProperties,
+                                     AzureContextProperties azureContextProperties,
+                                     EnvironmentProvider environmentProvider) {
+        return new AzureProfile(credentialProperties.getTenantId(), azureContextProperties.getSubscriptionId(),
             environmentProvider.getEnvironment());
     }
 

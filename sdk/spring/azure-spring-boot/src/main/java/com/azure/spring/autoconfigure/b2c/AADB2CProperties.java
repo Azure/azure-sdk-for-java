@@ -2,9 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.spring.autoconfigure.b2c;
 
+import com.azure.spring.core.CredentialProperties;
 import com.nimbusds.jose.jwk.source.RemoteJWKSet;
 import org.hibernate.validator.constraints.URL;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
 import org.springframework.util.CollectionUtils;
@@ -42,6 +44,9 @@ public class AADB2CProperties implements InitializingBean {
      * The default user flow key 'password-reset'.
      */
     protected static final String DEFAULT_KEY_PASSWORD_RESET = "password-reset";
+
+    @Autowired
+    private CredentialProperties credentialProperties;
 
     /**
      * The name of the b2c tenant.
@@ -124,6 +129,7 @@ public class AADB2CProperties implements InitializingBean {
     @Override
     public void afterPropertiesSet() {
         validateWebappProperties();
+        configureCredentialPropertiesIfNeeded();
         validateCommonProperties();
     }
 
@@ -142,6 +148,12 @@ public class AADB2CProperties implements InitializingBean {
         }
     }
 
+    private void configureCredentialPropertiesIfNeeded() {
+        tenantId = Optional.ofNullable(tenantId).orElse(credentialProperties.getTenantId());
+        clientId = Optional.ofNullable(clientId).orElse(credentialProperties.getClientId());
+        clientSecret = Optional.ofNullable(clientSecret).orElse(credentialProperties.getClientSecret());
+    }
+
     /**
      * Validate common scenario properties configuration.
      */
@@ -155,6 +167,14 @@ public class AADB2CProperties implements InitializingBean {
             throw new AADB2CConfigurationException("'tenant-id' must be configured "
                 + "when using client credential flow.");
         }
+    }
+
+    public CredentialProperties getCredentialProperties() {
+        return credentialProperties;
+    }
+
+    public void setCredentialProperties(CredentialProperties credentialProperties) {
+        this.credentialProperties = credentialProperties;
     }
 
     protected String getPasswordReset() {
