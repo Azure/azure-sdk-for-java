@@ -29,7 +29,7 @@ import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection
 import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
 import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
-import com.azure.ai.textanalytics.util.HealthcareEntitiesResultCollectionPagedFlux;
+import com.azure.ai.textanalytics.util.HealthcareEntitiesPagedFlux;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeLinkedEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
@@ -1051,7 +1051,7 @@ public final class TextAnalyticsAsyncClient {
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<AnalyzeHealthcareEntitiesOperationDetail, HealthcareEntitiesResultCollectionPagedFlux>
+    public PollerFlux<AnalyzeHealthcareEntitiesOperationDetail, HealthcareEntitiesPagedFlux>
         beginAnalyzeHealthcareEntities(Iterable<String> documents, String language,
             AnalyzeHealthcareEntitiesOptions options) {
         return beginAnalyzeHealthcareEntities(
@@ -1092,7 +1092,7 @@ public final class TextAnalyticsAsyncClient {
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<AnalyzeHealthcareEntitiesOperationDetail, HealthcareEntitiesResultCollectionPagedFlux>
+    public PollerFlux<AnalyzeHealthcareEntitiesOperationDetail, HealthcareEntitiesPagedFlux>
         beginAnalyzeHealthcareEntities(Iterable<TextDocumentInput> documents,
             AnalyzeHealthcareEntitiesOptions options) {
         return analyzeHealthcareEntityAsyncClient.beginAnalyzeHealthcareEntities(documents, options, Context.NONE);

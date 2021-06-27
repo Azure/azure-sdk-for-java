@@ -7,7 +7,7 @@ import com.azure.ai.textanalytics.TextAnalyticsClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetail;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
-import com.azure.ai.textanalytics.util.HealthcareEntitiesResultCollectionPagedIterable;
+import com.azure.ai.textanalytics.util.HealthcareEntitiesPagedIterable;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollResponse;
@@ -52,7 +52,7 @@ public class CancelAnalyzeHealthcareEntities {
                     + " for revascularization with open heart surgery."));
         }
 
-        SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, HealthcareEntitiesResultCollectionPagedIterable>
+        SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, HealthcareEntitiesPagedIterable>
             syncPoller = client.beginAnalyzeHealthcareEntities(documents, null, Context.NONE);
 
         PollResponse<AnalyzeHealthcareEntitiesOperationDetail> pollResponse = syncPoller.poll();

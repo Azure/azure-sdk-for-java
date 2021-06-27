@@ -22,8 +22,8 @@ import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
-import com.azure.ai.textanalytics.util.HealthcareEntitiesResultCollectionPagedFlux;
-import com.azure.ai.textanalytics.util.HealthcareEntitiesResultCollectionPagedIterable;
+import com.azure.ai.textanalytics.util.HealthcareEntitiesPagedFlux;
+import com.azure.ai.textanalytics.util.HealthcareEntitiesPagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
@@ -70,7 +70,7 @@ class AnalyzeHealthcareEntityAsyncClient {
         this.service = service;
     }
 
-    PollerFlux<AnalyzeHealthcareEntitiesOperationDetail, HealthcareEntitiesResultCollectionPagedFlux>
+    PollerFlux<AnalyzeHealthcareEntitiesOperationDetail, HealthcareEntitiesPagedFlux>
         beginAnalyzeHealthcareEntities(Iterable<TextDocumentInput> documents, AnalyzeHealthcareEntitiesOptions options,
             Context context) {
         try {
@@ -98,7 +98,7 @@ class AnalyzeHealthcareEntityAsyncClient {
                 pollingOperation(operationId -> service.healthStatusWithResponseAsync(operationId,
                     null, null, finalIncludeStatistics, finalContext)),
                 cancelOperation(operationId -> service.cancelHealthJobWithResponseAsync(operationId, finalContext)),
-                fetchingOperation(operationId -> Mono.just(getHealthcareEntitiesResultCollectionFluxPage(operationId,
+                fetchingOperation(operationId -> Mono.just(getHealthcareEntitiesPagedFlux(operationId,
                     null, null, finalIncludeStatistics, finalContext)))
             );
         } catch (RuntimeException ex) {
@@ -106,7 +106,7 @@ class AnalyzeHealthcareEntityAsyncClient {
         }
     }
 
-    PollerFlux<AnalyzeHealthcareEntitiesOperationDetail, HealthcareEntitiesResultCollectionPagedIterable>
+    PollerFlux<AnalyzeHealthcareEntitiesOperationDetail, HealthcareEntitiesPagedIterable>
         beginAnalyzeHealthcarePagedIterable(Iterable<TextDocumentInput> documents,
             AnalyzeHealthcareEntitiesOptions options, Context context) {
         try {
@@ -134,8 +134,8 @@ class AnalyzeHealthcareEntityAsyncClient {
                 pollingOperation(operationId -> service.healthStatusWithResponseAsync(operationId, null,
                     null, finalIncludeStatistics, finalContext)),
                 cancelOperation(operationId -> service.cancelHealthJobWithResponseAsync(operationId, finalContext)),
-                fetchingOperationIterable(operationId -> Mono.just(new HealthcareEntitiesResultCollectionPagedIterable(
-                    getHealthcareEntitiesResultCollectionFluxPage(operationId, null, null, finalIncludeStatistics,
+                fetchingOperationIterable(operationId -> Mono.just(new HealthcareEntitiesPagedIterable(
+                    getHealthcareEntitiesPagedFlux(operationId, null, null, finalIncludeStatistics,
                         finalContext))))
             );
         } catch (RuntimeException ex) {
@@ -143,9 +143,9 @@ class AnalyzeHealthcareEntityAsyncClient {
         }
     }
 
-    HealthcareEntitiesResultCollectionPagedFlux getHealthcareEntitiesResultCollectionFluxPage(
+    HealthcareEntitiesPagedFlux getHealthcareEntitiesPagedFlux(
         UUID operationId, Integer top, Integer skip, boolean showStats, Context context) {
-        return new HealthcareEntitiesResultCollectionPagedFlux(
+        return new HealthcareEntitiesPagedFlux(
             () -> (continuationToken, pageSize) ->
                       getPagedResult(continuationToken, operationId, top, skip, showStats, context).flux());
     }
@@ -244,8 +244,8 @@ class AnalyzeHealthcareEntityAsyncClient {
 
     // Fetching operation
     private Function<PollingContext<AnalyzeHealthcareEntitiesOperationDetail>,
-                        Mono<HealthcareEntitiesResultCollectionPagedFlux>>
-        fetchingOperation(Function<UUID, Mono<HealthcareEntitiesResultCollectionPagedFlux>> fetchingFunction) {
+                        Mono<HealthcareEntitiesPagedFlux>>
+        fetchingOperation(Function<UUID, Mono<HealthcareEntitiesPagedFlux>> fetchingFunction) {
         return pollingContext -> {
             try {
                 final UUID resultUuid = UUID.fromString(pollingContext.getLatestResponse().getValue().getOperationId());
@@ -280,8 +280,8 @@ class AnalyzeHealthcareEntityAsyncClient {
 
     // Fetching iterable operation
     private Function<PollingContext<AnalyzeHealthcareEntitiesOperationDetail>,
-        Mono<HealthcareEntitiesResultCollectionPagedIterable>> fetchingOperationIterable(
-            final Function<UUID, Mono<HealthcareEntitiesResultCollectionPagedIterable>> fetchingFunction) {
+        Mono<HealthcareEntitiesPagedIterable>> fetchingOperationIterable(
+            final Function<UUID, Mono<HealthcareEntitiesPagedIterable>> fetchingFunction) {
         return pollingContext -> {
             try {
                 final UUID resultUuid = UUID.fromString(pollingContext.getLatestResponse().getValue().getOperationId());

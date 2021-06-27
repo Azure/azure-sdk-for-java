@@ -32,7 +32,7 @@ import com.azure.ai.textanalytics.util.AnalyzeActionsResultPagedIterable;
 import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
 import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
-import com.azure.ai.textanalytics.util.HealthcareEntitiesResultCollectionPagedIterable;
+import com.azure.ai.textanalytics.util.HealthcareEntitiesPagedIterable;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeLinkedEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
@@ -852,11 +852,11 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         AnalyzeHealthcareEntitiesOptions options = new AnalyzeHealthcareEntitiesOptions()
             .setIncludeStatistics(true);
 
-        SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, HealthcareEntitiesResultCollectionPagedIterable>
+        SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, HealthcareEntitiesPagedIterable>
             syncPoller = textAnalyticsClient.beginAnalyzeHealthcareEntities(documents, options, Context.NONE);
 
         syncPoller.waitForCompletion();
-        HealthcareEntitiesResultCollectionPagedIterable healthcareResultIterable = syncPoller.getFinalResult();
+        HealthcareEntitiesPagedIterable healthcareResultIterable = syncPoller.getFinalResult();
 
         // Task operation statistics
         final AnalyzeHealthcareEntitiesOperationDetail operationResult = syncPoller.poll().getValue();
