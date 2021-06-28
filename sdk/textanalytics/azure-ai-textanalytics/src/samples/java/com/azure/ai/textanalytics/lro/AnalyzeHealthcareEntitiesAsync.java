@@ -18,7 +18,6 @@ import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.util.paging.ContinuablePagedFluxCore;
 
 import java.util.Arrays;
 import java.util.List;
@@ -59,7 +58,7 @@ public class AnalyzeHealthcareEntitiesAsync {
                     operationResult.getCreatedAt(), operationResult.getExpiresAt());
                 return pollResult.getFinalResult();
             })
-            .flatMap(ContinuablePagedFluxCore::byPage)
+            .flatMap(analyzeHealthcareEntitiesPagedFlux -> analyzeHealthcareEntitiesPagedFlux.byPage())
             .subscribe(
                 perPage -> processAnalyzeHealthcareEntitiesResultCollection(perPage),
                 ex -> System.out.println("Error listing pages: " + ex.getMessage()),

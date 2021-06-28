@@ -34,7 +34,6 @@ import com.azure.ai.textanalytics.util.RecognizeLinkedEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.IterableStream;
-import com.azure.core.util.paging.ContinuablePagedFluxCore;
 import com.azure.core.util.polling.AsyncPollResponse;
 
 import java.util.ArrayList;
@@ -814,7 +813,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                     operationResult.getCreatedAt(), operationResult.getExpiresAt());
                 return pollResult.getFinalResult();
             })
-            .flatMap(ContinuablePagedFluxCore::byPage)
+            .flatMap(analyzeActionsResultPagedFlux -> analyzeActionsResultPagedFlux.byPage())
             .subscribe(
                 pagedResponse -> pagedResponse.getElements().forEach(
                     analyzeHealthcareEntitiesResultCollection -> {
@@ -881,7 +880,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             "en",
             new AnalyzeActionsOptions().setIncludeStatistics(false))
             .flatMap(AsyncPollResponse::getFinalResult)
-            .flatMap(ContinuablePagedFluxCore::byPage)
+            .flatMap(analyzeActionsResultPagedFlux -> analyzeActionsResultPagedFlux.byPage())
             .subscribe(
                 pagedResponse -> pagedResponse.getElements().forEach(
                     analyzeActionsResult -> {
@@ -925,7 +924,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 .setExtractKeyPhrasesActions(new ExtractKeyPhrasesAction()),
             new AnalyzeActionsOptions().setIncludeStatistics(false))
             .flatMap(AsyncPollResponse::getFinalResult)
-            .flatMap(ContinuablePagedFluxCore::byPage)
+            .flatMap(analyzeActionsResultPagedFlux -> analyzeActionsResultPagedFlux.byPage())
             .subscribe(
                 pagedResponse -> pagedResponse.getElements().forEach(
                     analyzeActionsResult -> {

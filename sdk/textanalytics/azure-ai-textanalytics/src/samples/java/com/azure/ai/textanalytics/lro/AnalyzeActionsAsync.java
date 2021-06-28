@@ -18,7 +18,6 @@ import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.util.paging.ContinuablePagedFluxCore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,7 +66,7 @@ public class AnalyzeActionsAsync {
                     operationDetail.getTotalCount());
                 return result.getFinalResult();
             })
-            .flatMap(ContinuablePagedFluxCore::byPage)
+            .flatMap(analyzeActionsResultPagedFlux -> analyzeActionsResultPagedFlux.byPage())
             .subscribe(
                 perPage -> processAnalyzeActionsResult(perPage),
                 ex -> System.out.println("Error listing pages: " + ex.getMessage()),
