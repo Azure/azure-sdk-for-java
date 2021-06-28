@@ -13,6 +13,10 @@ import com.azure.core.util.ServiceVersion
 import com.azure.identity.EnvironmentCredentialBuilder
 import spock.lang.Specification
 
+import java.time.Duration
+import java.util.function.Predicate
+import java.util.function.Supplier
+
 class StorageSpec extends Specification {
     private static final TestEnvironment ENVIRONMENT = TestEnvironment.getInstance()
     private static final HttpClient HTTP_CLIENT = new NettyAsyncHttpClientBuilder().build()
@@ -86,5 +90,21 @@ class StorageSpec extends Specification {
             .getToken(new TokenRequestContext().setScopes(["https://storage.azure.com/.default"]))
             .map { it.getToken() }
             .block()
+    }
+
+    protected <T, E extends Exception> T retry(
+        Supplier<T> action, Predicate<E> retryPredicate,
+        int times=6, Duration delay=Duration.ofSeconds(10)) {
+        for (i in 0..<times) {
+            try {
+                return action.get()
+            } catch (Exception e) {
+                if (!retryPredicate(e)) {
+                    throw e
+                } else {
+                    Thread.sleep(delay.toMillis())
+                }
+            }
+        }
     }
 }
