@@ -5,9 +5,11 @@ package com.azure.storage.data.movement
 
 import reactor.core.publisher.Flux
 import reactor.test.StepVerifier
+import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Unroll
 
+import java.nio.file.AccessDeniedException
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -20,6 +22,8 @@ import java.nio.file.attribute.PosixFilePermissions
 import java.nio.file.attribute.UserPrincipal
 
 class PathScannerTest extends Specification {
+    static def temp = Paths.get(System.getProperty("java.io.tmpdir"));
+
     def setup() {
         String fullTestName = specificationContext.getCurrentIteration().getName().replace(' ', '').toLowerCase()
         String className = specificationContext.getCurrentSpec().getName()
@@ -28,9 +32,9 @@ class PathScannerTest extends Specification {
     }
 
     @Unroll
-    def "Scan local folder containing items of mixed permissions"() {
+    def "Scan folder containing mixed permissions"() {
         given:
-        Path folder = Files.createTempDirectory(Paths.get(System.getProperty("java.io.tmpdir")), null);
+        Path folder = Files.createTempDirectory(temp, null);
         Path openChild = Files.createTempFile(folder, null, null);
         Path lockedChild = Files.createTempFile(folder, null, null);
 
@@ -48,7 +52,7 @@ class PathScannerTest extends Specification {
 
         List<String> expectedResult = [folder, openChild, lockedChild, openSubfolder, lockedSubfolder, openSubchild]
             .stream()
-            .map({ path -> path.toString() })
+            .map({ path -> path.toAbsolutePath().toString() })
             .collect()
             .asList();
 
@@ -74,6 +78,92 @@ class PathScannerTest extends Specification {
         Files.walk(folder)
             .sorted({ o1, o2 -> -(o1 <=> o2) })
             .forEach(Files.&delete);
+    }
+
+    @Unroll
+    def "Scan folder without read permission"() {
+        given:
+        Path folder = Files.createTempDirectory(temp, null);
+        Path child = Files.createTempFile(folder, null, null);
+
+        allowReadData(folder, false);
+
+        PathScannerFactory scannerFactory = new PathScannerFactory(folder.toAbsolutePath().toString());
+        PathScanner scanner = scannerFactory.getPathScanner();
+
+        when:
+        Flux<String> result = scanner.scan(false);
+
+        then:
+        StepVerifier.create(result)
+            .expectNext(folder.toAbsolutePath().toString())
+            .expectError(AccessDeniedException.class)
+            .verify();
+
+        cleanup:
+        allowReadData(folder, true);
+
+        Files.walk(folder)
+            .sorted({ o1, o2 -> -(o1 <=> o2) })
+            .forEach(Files.&delete);
+    }
+
+    @Unroll
+    def "Scan single file path"() {
+        given:
+        Path file = Files.createTempFile(temp, null, null);
+
+        PathScannerFactory scannerFactory = new PathScannerFactory(file.toAbsolutePath().toString());
+        PathScanner scanner = scannerFactory.getPathScanner();
+
+        when:
+        Flux<String> result = scanner.scan(false);
+
+        then:
+        StepVerifier.create(result)
+            .expectNext(file.toAbsolutePath().toString())
+            .expectComplete()
+            .verify();
+
+        cleanup:
+        Files.delete(file);
+    }
+
+    @Unroll
+    def "Scan unreadable file path"() {
+        given:
+        Path file = Files.createTempFile(temp, null, null);
+
+        allowReadData(file, false);
+
+        PathScannerFactory scannerFactory = new PathScannerFactory(file.toAbsolutePath().toString());
+        PathScanner scanner = scannerFactory.getPathScanner();
+
+        when:
+        Flux<String> result = scanner.scan(false);
+
+        then:
+        StepVerifier.create(result)
+            .expectNext(file.toAbsolutePath().toString())
+            .expectComplete()
+            .verify();
+
+        cleanup:
+        allowReadData(file, true);
+
+        Files.delete(file);
+    }
+
+    def "Scan nonexistent item"() {
+        given:
+        Path file = Paths.get(temp.toAbsolutePath().toString(), UUID.randomUUID().toString());
+
+        when:
+        PathScannerFactory scannerFactory = new PathScannerFactory(file.toAbsolutePath().toString());
+        PathScanner scanner = scannerFactory.getPathScanner();
+
+        then:
+        thrown IllegalArgumentException;
     }
 
     def static allowReadData(Path path, boolean allowRead) {
