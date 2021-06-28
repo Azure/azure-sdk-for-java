@@ -19,10 +19,28 @@ public final class FileItem {
     private String name;
 
     /*
+     * The FileId property.
+     */
+    @JsonProperty(value = "FileId")
+    private String fileId;
+
+    /*
      * File properties.
      */
     @JsonProperty(value = "Properties", required = true)
     private FileProperty properties;
+
+    /*
+     * The Attributes property.
+     */
+    @JsonProperty(value = "Attributes")
+    private String attributes;
+
+    /*
+     * The PermissionKey property.
+     */
+    @JsonProperty(value = "PermissionKey")
+    private String permissionKey;
 
     /**
      * Get the name property: The Name property.
@@ -45,6 +63,26 @@ public final class FileItem {
     }
 
     /**
+     * Get the fileId property: The FileId property.
+     *
+     * @return the fileId value.
+     */
+    public String getFileId() {
+        return this.fileId;
+    }
+
+    /**
+     * Set the fileId property: The FileId property.
+     *
+     * @param fileId the fileId value to set.
+     * @return the FileItem object itself.
+     */
+    public FileItem setFileId(String fileId) {
+        this.fileId = fileId;
+        return this;
+    }
+
+    /**
      * Get the properties property: File properties.
      *
      * @return the properties value.
@@ -61,6 +99,46 @@ public final class FileItem {
      */
     public FileItem setProperties(FileProperty properties) {
         this.properties = properties;
+        return this;
+    }
+
+    /**
+     * Get the attributes property: The Attributes property.
+     *
+     * @return the attributes value.
+     */
+    public String getAttributes() {
+        return this.attributes;
+    }
+
+    /**
+     * Set the attributes property: The Attributes property.
+     *
+     * @param attributes the attributes value to set.
+     * @return the FileItem object itself.
+     */
+    public FileItem setAttributes(String attributes) {
+        this.attributes = attributes;
+        return this;
+    }
+
+    /**
+     * Get the permissionKey property: The PermissionKey property.
+     *
+     * @return the permissionKey value.
+     */
+    public String getPermissionKey() {
+        return this.permissionKey;
+    }
+
+    /**
+     * Set the permissionKey property: The PermissionKey property.
+     *
+     * @param permissionKey the permissionKey value to set.
+     * @return the FileItem object itself.
+     */
+    public FileItem setPermissionKey(String permissionKey) {
+        this.permissionKey = permissionKey;
         return this;
     }
 }

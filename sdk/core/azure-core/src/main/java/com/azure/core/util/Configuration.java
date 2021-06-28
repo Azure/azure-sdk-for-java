@@ -89,6 +89,11 @@ public class Configuration implements Cloneable {
     public static final String PROPERTY_AZURE_IDENTITY_DISABLE_CP1 = "AZURE_IDENTITY_DISABLE_CP1";
 
     /**
+     * Name of Azure AAD regional authority.
+     */
+    public static final String PROPERTY_AZURE_REGIONAL_AUTHORITY_NAME = "AZURE_REGIONAL_AUTHORITY_NAME";
+
+    /**
      * Name of the Azure resource group.
      */
     public static final String PROPERTY_AZURE_RESOURCE_GROUP = "AZURE_RESOURCE_GROUP";

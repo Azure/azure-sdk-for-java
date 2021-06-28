@@ -152,7 +152,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.blob.core.windows.net/d427b9070d427b907451542233d38aec9f91b4b1887e/d427b9072d427b9074518730214a895b24cd148b6910?sv=2020-08-04&ss=b&srt=sco&se=2021-05-06T17%3A53%3A43Z&sp=r&sig=REDACTED",
+    "Uri" : "https://REDACTED.blob.core.windows.net/d427b9070d427b907451542233d38aec9f91b4b1887e/d427b9072d427b9074518730214a895b24cd148b6910?sv=2020-10-02&ss=b&srt=sco&se=2021-05-06T17%3A53%3A43Z&sp=r&sig=REDACTED",
     "Headers" : {
       "x-ms-version" : "2020-08-04",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.12.0-beta.1 azsdk-java-azure-storage-file-datalake/12.6.0-beta.1 (11.0.8; Windows 10; 10.0)",
