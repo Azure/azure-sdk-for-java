@@ -61,9 +61,6 @@ public abstract class FeedbackTestBase extends MetricsAdvisorClientTestBase {
     abstract void testListMetricFeedback(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion);
 
     @Test
-    abstract void testListMetricFeedbackTop3(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion);
-
-    @Test
     abstract void testListMetricFeedbackFilterStartTime(HttpClient httpClient,
         MetricsAdvisorServiceVersion serviceVersion);
 

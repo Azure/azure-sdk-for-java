@@ -31,6 +31,7 @@ import com.azure.communication.chat.models.ListParticipantsOptions;
 import com.azure.communication.chat.models.ListReadReceiptOptions;
 import com.azure.communication.chat.models.SendChatMessageOptions;
 import com.azure.communication.chat.models.SendChatMessageResult;
+import com.azure.communication.chat.models.TypingNotificationOptions;
 import com.azure.communication.chat.models.UpdateChatMessageOptions;
 import com.azure.communication.chat.models.UpdateChatThreadOptions;
 import com.azure.communication.common.CommunicationIdentifier;
@@ -734,7 +735,8 @@ public final class ChatThreadAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> sendTypingNotification() {
         try {
-            return withContext(context -> sendTypingNotification(context)
+            TypingNotificationOptions options = new TypingNotificationOptions();
+            return withContext(context -> sendTypingNotification(options, context)
                 .flatMap((Response<Void> res) -> {
                     return Mono.empty();
                 }));
@@ -753,7 +755,8 @@ public final class ChatThreadAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sendTypingNotificationWithResponse() {
         try {
-            return withContext(context -> sendTypingNotification(context));
+            TypingNotificationOptions options = new TypingNotificationOptions();
+            return withContext(context -> sendTypingNotification(options, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -762,13 +765,54 @@ public final class ChatThreadAsyncClient {
     /**
      * Posts a typing event to a thread, on behalf of a user.
      *
+     * @param options Options for sending the typing notification.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> sendTypingNotification(TypingNotificationOptions options) {
+        try {
+            Objects.requireNonNull(options, "'options' cannot be null.");
+            return withContext(context -> sendTypingNotification(options, context)
+                .flatMap((Response<Void> res) -> {
+                    return Mono.empty();
+                }));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Posts a typing event to a thread, on behalf of a user.
+     *
+     * @param options Options for sending the typing notification.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> sendTypingNotificationWithResponse(TypingNotificationOptions options) {
+        try {
+            Objects.requireNonNull(options, "'options' cannot be null.");
+            return withContext(context -> sendTypingNotification(options, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Posts a typing event to a thread, on behalf of a user.
+     *
+     * @param options Options for sending the typing notification.
      * @param context The context to associate with this operation.
      * @return the completion.
      */
-    Mono<Response<Void>> sendTypingNotification(Context context) {
+    Mono<Response<Void>> sendTypingNotification(TypingNotificationOptions options, Context context) {
         context = context == null ? Context.NONE : context;
         try {
-            return this.chatThreadClient.sendTypingNotificationWithResponseAsync(chatThreadId, context)
+            Objects.requireNonNull(options, "'options' cannot be null.");
+            return this.chatThreadClient.sendTypingNotificationWithResponseAsync(chatThreadId, options, context)
                 .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);

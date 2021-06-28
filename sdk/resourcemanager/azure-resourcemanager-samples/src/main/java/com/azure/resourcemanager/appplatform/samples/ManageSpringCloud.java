@@ -67,7 +67,7 @@ import java.util.Collections;
  *  - Assign custom domain to gateway endpoint
  */
 public class ManageSpringCloud {
-    private static final String PIGGYMETRICS_TAR_GZ_URL = "https://github.com/weidongxu-microsoft/azure-sdk-for-java-management-tests/raw/master/spring-cloud/piggymetrics.tar.gz";
+    private static final String PIGGYMETRICS_TAR_GZ_URL = "https://github.com/weidongxu-microsoft/azure-sdk-for-java-management-tests/raw/main/spring-cloud/piggymetrics.tar.gz";
     private static final String SPRING_CLOUD_SERVICE_PRINCIPAL = "03b39d0f-4213-4864-a245-b1476ec03169";
 
     /**

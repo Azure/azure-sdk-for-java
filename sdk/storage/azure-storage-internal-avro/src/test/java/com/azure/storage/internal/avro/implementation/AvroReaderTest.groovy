@@ -16,13 +16,6 @@ import java.nio.file.StandardOpenOption
 
 class AvroReaderTest extends Specification {
 
-    def setup() {
-        String fullTestName = specificationContext.getCurrentIteration().getName().replace(' ', '').toLowerCase()
-        String className = specificationContext.getCurrentSpec().getName()
-        // Print out the test name to create breadcrumbs in our test logging in case anything hangs.
-        System.out.printf("========================= %s.%s =========================%n", className, fullTestName)
-    }
-
     String getTestCasePath(int testCase) {
         String fileName = String.format("test_null_%d.avro", testCase)
         ClassLoader classLoader = getClass().getClassLoader()

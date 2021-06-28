@@ -119,4 +119,4 @@ For more details on authentication methods, please refer to [Azure Identity][azu
 [microsoft_graph]: https://docs.microsoft.com/graph/overview
 [aad_graph]: https://docs.microsoft.com/azure/active-directory/develop/active-directory-graph-api
 [service_principal]: https://docs.microsoft.com/azure/active-directory/develop/app-objects-and-service-principals
-[azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/identity/azure-identity
+[azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity

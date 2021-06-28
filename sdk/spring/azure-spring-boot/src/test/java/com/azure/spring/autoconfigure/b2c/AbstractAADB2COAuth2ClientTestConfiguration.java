@@ -30,7 +30,8 @@ public abstract class AbstractAADB2COAuth2ClientTestConfiguration {
     }
 
     protected static final String AAD_B2C_ENABLE_CONFIG_FILE_NAME = "aadb2c.enable.config";
-    protected WebApplicationContextRunner contextRunner;
+
+    abstract WebApplicationContextRunner getDefaultContextRunner();
 
     protected String[] getAuthorizationClientPropertyValues() {
         return new String[]{ String.format("%s.%s.scopes=%s", AADB2CConstants.AUTHORIZATION_CLIENTS,
@@ -42,7 +43,7 @@ public abstract class AbstractAADB2COAuth2ClientTestConfiguration {
 
     @Test
     public void testClientCredentialProperties() {
-        this.contextRunner
+        getDefaultContextRunner()
             .withPropertyValues(getAuthorizationClientPropertyValues())
             .run(c -> {
                 final AADB2CProperties properties = c.getBean(AADB2CProperties.class);
@@ -61,7 +62,7 @@ public abstract class AbstractAADB2COAuth2ClientTestConfiguration {
 
     @Test
     public void testClientRelatedBeans() {
-        this.contextRunner
+        getDefaultContextRunner()
             .withPropertyValues(getAuthorizationClientPropertyValues())
             .run(c -> {
                 final AADB2COAuth2ClientConfiguration config = c.getBean(AADB2COAuth2ClientConfiguration.class);

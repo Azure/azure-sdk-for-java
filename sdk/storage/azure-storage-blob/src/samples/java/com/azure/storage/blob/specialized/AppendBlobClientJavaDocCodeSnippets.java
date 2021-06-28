@@ -10,6 +10,7 @@ import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.options.AppendBlobSealOptions;
+import com.azure.storage.blob.options.AppendBlobAppendBlockFromUrlOptions;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -159,6 +160,30 @@ public class AppendBlobClientJavaDocCodeSnippets {
                 appendBlobRequestConditions, modifiedRequestConditions, timeout,
                 context).getValue().getBlobCommittedBlockCount());
         // END: com.azure.storage.blob.specialized.AppendBlobClient.appendBlockFromUrlWithResponse#String-BlobRange-byte-AppendBlobRequestConditions-BlobRequestConditions-Duration-Context
+    }
+
+    /**
+     * Code snippet for {@link AppendBlobClient#appendBlockFromUrlWithResponse(String, BlobRange, byte[],
+     * AppendBlobRequestConditions, BlobRequestConditions, Duration, Context)}
+     */
+    public void appendBlockFromUrlOptionsBagWithResponse() {
+        // BEGIN: com.azure.storage.blob.specialized.AppendBlobClient.appendBlockFromUrlWithResponse#AppendBlobAppendBlockFromUrlOptions-Duration-Context
+        AppendBlobRequestConditions appendBlobRequestConditions = new AppendBlobRequestConditions()
+            .setAppendPosition(POSITION)
+            .setMaxSize(maxSize);
+
+        BlobRequestConditions modifiedRequestConditions = new BlobRequestConditions()
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
+
+        Context context = new Context("key", "value");
+
+        System.out.printf("AppendBlob has %d committed blocks%n",
+            client.appendBlockFromUrlWithResponse(new AppendBlobAppendBlockFromUrlOptions(sourceUrl)
+                .setSourceRange(new BlobRange(offset, count))
+                .setDestinationRequestConditions(appendBlobRequestConditions)
+                .setSourceRequestConditions(modifiedRequestConditions), timeout,
+                context).getValue().getBlobCommittedBlockCount());
+        // END: com.azure.storage.blob.specialized.AppendBlobClient.appendBlockFromUrlWithResponse#AppendBlobAppendBlockFromUrlOptions-Duration-Context
     }
 
     /**

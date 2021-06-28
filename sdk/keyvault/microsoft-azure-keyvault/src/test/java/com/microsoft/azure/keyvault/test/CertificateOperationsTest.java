@@ -933,7 +933,7 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
             }
 
             throw new Exception(String.format(
-                    "Polling on pending certificate returned an unexpected result. Error code = {1}, Error message = {2}",
+                    "Polling on pending certificate returned an unexpected result. Error code = %s, Error message = %s",
                     pendingCertificateOperation.error().code(),
                     pendingCertificateOperation.error().message()));
         }

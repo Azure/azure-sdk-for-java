@@ -14,7 +14,7 @@ Azure Key Vault Certificates Spring Boot Starter is Spring starter for [Azure Ke
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-boot-starter-keyvault-certificates</artifactId>
-    <version>3.0.0-beta.7</version>
+    <version>3.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -40,7 +40,7 @@ To create a self-signed certificate use the command line below:
 ```
 
 ## Key concepts
-This starter allows you to securely manage and tightly control your certificates by using Azure Key Vault or side-load certificates by supplying them as part of the application.
+This starter provides a KeyStore (`AzureKeyVault`) which can get certificates from `JRE` / `specific path` / `Azure Key Vault` / `classpath` .
 
 ## Examples
 ### Server side SSL
@@ -316,19 +316,36 @@ You can also manually refresh the certificate by calling this method:
 KeyVaultCertificates.refreshCertsInfo();
 ```
 
-### Side-loading certificates
+### Specific path certificates
+AzureKeyVault keystore will load certificates in the specific path:
 
-This starter allows you to side-load certificates by supplying them as part of
-the application. 
+well-know path: /etc/certs/well-known/
+custom path: /etc/certs/custom/
+The 2 paths can be configured by these propreties:
 
-To side-load add your certificates to the `src/main/resources/keyvault` folder.
+```yaml
+azure:
+  cert-path:
+    well-known:     # The file location where you store the well-known certificate
+    custom:         # The file location where you store the custom certificate
+```
+
+### Classpath certificates
+
+AzureKeyVault keystore will load certificates in the classpath.
+
+Add the certificates to `src/main/resources/keyvault` as classpath certificates.
 
 Notes: 
 1. The alias (certificate name) is constructed from the filename of the 
 certificate (minus the extension). So if your filename is `mycert.x509` the
 certificate will be added with the alias of `mycert`. 
-2. Certificates coming from Azure Key Vault take precedence over 
-side-loaded certificates.
+2. The priority order of the certificates is: 
+    1. Certificates from JRE.
+    2. Certificates from well-known file path.
+    3. Certificates from custom file path.
+    4. Certificates from Azure Key Vault. 
+    5. Certificates from classpath.
 
 
 ## Troubleshooting
@@ -358,12 +375,12 @@ The following section provide a sample project illustrating how to use the start
 ## Contributing
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
 
-Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/CONTRIBUTING.md) to build from source or contribute.
+Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/CONTRIBUTING.md) to build from source or contribute.
 
 <!-- LINKS -->
 [refdocs]: https://azure.github.io/azure-sdk-for-java/springboot.html#azure-spring-boot
 [package]: https://mvnrepository.com/artifact/com.azure.spring/azure-spring-boot-starter-keyvault-certificates
-[sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-keyvault-certificates-server-side
+[sample]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-keyvault-certificates-server-side
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
-[environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
+[environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
 
