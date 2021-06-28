@@ -179,6 +179,8 @@ public class FlatteningSerializerTests {
             "{\"properties\":{\"cuteLevel\":10},\"breed\":\"AKITA\",\"@odata.type\":\"#Favourite.Pet.DogWithTypeIdContainingDot\"}",
         };
 
+        // {"breed":"AKITA","properties.cuteLevel":10,"@odata.type":"#Favourite.Pet.DogWithTypeIdContainingDot"}
+
         assertTrue(Arrays.asList(results).contains(serialized));
 
         // de-serialization
@@ -663,7 +665,7 @@ public class FlatteningSerializerTests {
     public void jsonFlattenNestedInner() {
         JsonFlattenNestedInner expected = new JsonFlattenNestedInner();
         VirtualMachineIdentity identity = new VirtualMachineIdentity();
-        Map<String, Object> map = new HashMap<>();
+        final Map<String, Object> map = new HashMap<>();
         map.put("/subscriptions/0-0-0-0-0/resourcegroups/0/providers/Microsoft.ManagedIdentity/userAssignedIdentities/0",
             new Object());
         identity.setType(Arrays.asList("SystemAssigned, UserAssigned"));

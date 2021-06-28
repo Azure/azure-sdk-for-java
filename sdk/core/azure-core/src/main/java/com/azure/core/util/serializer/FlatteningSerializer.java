@@ -340,15 +340,10 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
                 String key = field.getKey();
                 JsonNode outNode = resCurrent.get(key);
 
-                if (CHECK_IF_FLATTEN_PROPERTY_PATTERN.matcher(key).matches()) {
-                    if (key.contains(".")) {
-                        String newKey = CREATE_ESCAPED_MAP_PATTERN.matcher(key).replaceAll("\\\\.");
-                        String originalKey = REPLACE_ESCAPED_MAP_PATTERN.matcher(key).replaceAll(".");
-                        resCurrent.remove(key);
-                        resCurrent.set(originalKey, outNode);
-                    } else {
+                // skip flattening keys of a Map
+                if (!(field.getValue() instanceof ObjectNode)) {
+                    if (CHECK_IF_FLATTEN_PROPERTY_PATTERN.matcher(key).matches()) {
                         // Handle flattening properties
-                        //
                         String[] values = SPLIT_FLATTEN_PROPERTY_PATTERN.split(key);
                         for (int i = 0; i < values.length; ++i) {
                             values[i] = values[i].replace("\\.", ".");
@@ -367,14 +362,14 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
                         node.set(values[values.length - 1], resCurrent.get(key));
                         resCurrent.remove(key);
                         outNode = node.get(values[values.length - 1]);
-                    }
-                } else if (CHECK_IF_ESCAPED_MAP_PATTERN.matcher(key).matches()) {
-                    // Handle escaped map key
-                    // for #8372 identity node should pass thru this check
+                    } else if (CHECK_IF_ESCAPED_MAP_PATTERN.matcher(key).matches()) {
+                        // Handle escaped map key
+                        // for #8372 identity node should pass thru this check
 
-                    String originalKey = REPLACE_ESCAPED_MAP_PATTERN.matcher(key).replaceAll(".");
-                    resCurrent.remove(key);
-                    resCurrent.set(originalKey, outNode);
+                        String originalKey = REPLACE_ESCAPED_MAP_PATTERN.matcher(key).replaceAll(".");
+                        resCurrent.remove(key);
+                        resCurrent.set(originalKey, outNode);
+                    }
                 }
 
                 if (field.getValue() instanceof ObjectNode) {
