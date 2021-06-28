@@ -584,7 +584,7 @@ public interface Pool {
             UpdateStages.WithApplicationPackages,
             UpdateStages.WithApplicationLicenses,
             UpdateStages.WithMountConfiguration,
-            UpdateStages.WithifMatch {
+            UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
          *
@@ -821,7 +821,7 @@ public interface Pool {
             Update withMountConfiguration(List<MountConfiguration> mountConfiguration);
         }
         /** The stage of the Pool update allowing to specify ifMatch. */
-        interface WithifMatch {
+        interface WithIfMatch {
             /**
              * Specifies the ifMatch property: The entity state (ETag) version of the pool to update. This value can be
              * omitted or set to "*" to apply the operation unconditionally..
@@ -830,7 +830,7 @@ public interface Pool {
              *     "*" to apply the operation unconditionally.
              * @return the next definition stage.
              */
-            Update ifMatch(String ifMatch);
+            Update withIfMatch(String ifMatch);
         }
     }
     /**

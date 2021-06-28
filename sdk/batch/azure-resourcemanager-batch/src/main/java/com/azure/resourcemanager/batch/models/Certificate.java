@@ -253,7 +253,7 @@ public interface Certificate {
             UpdateStages.WithFormat,
             UpdateStages.WithData,
             UpdateStages.WithPassword,
-            UpdateStages.WithifMatch {
+            UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
          *
@@ -325,7 +325,7 @@ public interface Certificate {
             Update withPassword(String password);
         }
         /** The stage of the Certificate update allowing to specify ifMatch. */
-        interface WithifMatch {
+        interface WithIfMatch {
             /**
              * Specifies the ifMatch property: The entity state (ETag) version of the certificate to update. This value
              * can be omitted or set to "*" to apply the operation unconditionally..
@@ -334,7 +334,7 @@ public interface Certificate {
              *     set to "*" to apply the operation unconditionally.
              * @return the next definition stage.
              */
-            Update ifMatch(String ifMatch);
+            Update withIfMatch(String ifMatch);
         }
     }
     /**

@@ -261,17 +261,17 @@ public final class CertificateImpl implements Certificate, Certificate.Definitio
     }
 
     public CertificateImpl withIfMatch(String ifMatch) {
-        this.createIfMatch = ifMatch;
-        return this;
+        if (isInCreateMode()) {
+            this.createIfMatch = ifMatch;
+            return this;
+        } else {
+            this.updateIfMatch = ifMatch;
+            return this;
+        }
     }
 
     public CertificateImpl withIfNoneMatch(String ifNoneMatch) {
         this.createIfNoneMatch = ifNoneMatch;
-        return this;
-    }
-
-    public CertificateImpl ifMatch(String ifMatch) {
-        this.updateIfMatch = ifMatch;
         return this;
     }
 
