@@ -3,6 +3,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
+import com.azure.cosmos.spark.diagnostics.LoggerHelper
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.connector.read.streaming.MicroBatchStream
@@ -14,12 +15,14 @@ private case class ChangeFeedScan
   session: SparkSession,
   schema: StructType,
   config: Map[String, String],
-  cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot]
+  cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot],
+  diagnosticsConfig: DiagnosticsConfig
 )
-  extends Scan
-    with CosmosLoggingTrait {
+  extends Scan {
 
-  logTrace(s"Instantiated ${this.getClass.getSimpleName}")
+  @transient private lazy val log = LoggerHelper.getLogger(diagnosticsConfig, this.getClass)
+
+  log.logTrace(s"Instantiated ${this.getClass.getSimpleName}")
   private lazy val containerConfig = CosmosContainerConfig.parseCosmosContainerConfig(config)
 
   /**
@@ -44,7 +47,7 @@ private case class ChangeFeedScan
    *                                       `TableCapability.BATCH_READ`
    */
   override def toBatch: Batch = {
-    new ChangeFeedBatch(session, schema, config, cosmosClientStateHandle)
+    new ChangeFeedBatch(session, schema, config, cosmosClientStateHandle, diagnosticsConfig)
   }
 
   /**
@@ -60,6 +63,6 @@ private case class ChangeFeedScan
    *                                       `TableCapability.MICRO_BATCH_READ`
    */
   override def toMicroBatchStream(checkpointLocation: String): MicroBatchStream = {
-    new ChangeFeedMicroBatchStream(session, schema, config, cosmosClientStateHandle, checkpointLocation: String)
+    new ChangeFeedMicroBatchStream(session, schema, config, cosmosClientStateHandle, checkpointLocation: String, diagnosticsConfig)
   }
 }

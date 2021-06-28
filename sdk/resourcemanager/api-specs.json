@@ -109,7 +109,7 @@
     "dir": "azure-resourcemanager-cosmos",
     "source": "specification/cosmos-db/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.cosmos",
-    "args": "--payload-flattening-threshold=0 --tag=package-2021-05"
+    "args": "--payload-flattening-threshold=0 --tag=package-2021-06"
   },
   "customerinsights": {
     "dir": "azure-resourcemanager-customerinsights",
@@ -170,7 +170,7 @@
     "args": "--tag=package-features-2015-12"
   },
   "graphrbac": {
-    "spec": "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/resourcemanager",
+    "spec": "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/resourcemanager",
     "dir": "azure-resourcemanager-authorization",
     "source": "azure-resourcemanager-authorization/swagger/swagger.md",
     "package": "com.azure.resourcemanager.authorization",

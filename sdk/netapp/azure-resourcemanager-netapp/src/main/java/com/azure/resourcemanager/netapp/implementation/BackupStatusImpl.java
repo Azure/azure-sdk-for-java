@@ -40,6 +40,18 @@ public final class BackupStatusImpl implements BackupStatus {
         return this.innerModel().errorMessage();
     }
 
+    public Long lastTransferSize() {
+        return this.innerModel().lastTransferSize();
+    }
+
+    public String lastTransferType() {
+        return this.innerModel().lastTransferType();
+    }
+
+    public Long totalTransferBytes() {
+        return this.innerModel().totalTransferBytes();
+    }
+
     public BackupStatusInner innerModel() {
         return this.innerObject;
     }

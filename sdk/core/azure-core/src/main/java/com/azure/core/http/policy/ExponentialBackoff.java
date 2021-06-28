@@ -39,6 +39,8 @@ public class ExponentialBackoff implements RetryStrategy {
      * @param maxRetries The max retry attempts that can be made.
      * @param baseDelay The base delay duration for retry.
      * @param maxDelay The max delay duration for retry.
+     * @throws IllegalArgumentException if {@code maxRetries} is less than 0 or {@code baseDelay} is less than or
+     * equal to 0 or {@code maxDelay} is less than {@code baseDelay}.
      */
     public ExponentialBackoff(int maxRetries, Duration baseDelay, Duration maxDelay) {
         if (maxRetries < 0) {
@@ -47,8 +49,8 @@ public class ExponentialBackoff implements RetryStrategy {
         Objects.requireNonNull(baseDelay, "'baseDelay' cannot be null.");
         Objects.requireNonNull(maxDelay, "'maxDelay' cannot be null.");
 
-        if (baseDelay.isZero()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'baseDelay' cannot be 0."));
+        if (baseDelay.isZero() || baseDelay.isNegative()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'baseDelay' cannot be negative or 0."));
         }
 
         if (baseDelay.compareTo(maxDelay) > 0) {

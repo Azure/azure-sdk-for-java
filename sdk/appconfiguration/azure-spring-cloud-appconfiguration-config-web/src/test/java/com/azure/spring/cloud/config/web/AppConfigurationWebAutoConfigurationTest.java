@@ -22,11 +22,10 @@ import org.springframework.cloud.endpoint.RefreshEndpoint;
 
 import com.azure.spring.cloud.config.AppConfigurationAutoConfiguration;
 import com.azure.spring.cloud.config.AppConfigurationBootstrapConfiguration;
-import com.azure.spring.cloud.config.web.AppConfigurationWebAutoConfiguration;
 
 public class AppConfigurationWebAutoConfigurationTest {
 
-    private static final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
+    private static final ApplicationContextRunner CONTEXT_RUNNER = new ApplicationContextRunner()
         .withPropertyValues(propPair(CONN_STRING_PROP, TEST_CONN_STRING),
             propPair(STORE_ENDPOINT_PROP, TEST_STORE_NAME))
         .withConfiguration(AutoConfigurations.of(AppConfigurationBootstrapConfiguration.class,
@@ -36,7 +35,7 @@ public class AppConfigurationWebAutoConfigurationTest {
 
     @Test
     public void refreshMissing() {
-        contextRunner
+        CONTEXT_RUNNER
             .withClassLoader(new FilteredClassLoader(WebEndpointProperties.class))
             .run(context -> {
                 assertThat(context)
@@ -50,7 +49,7 @@ public class AppConfigurationWebAutoConfigurationTest {
 
     @Test
     public void busRefreshMissing() {
-        contextRunner
+        CONTEXT_RUNNER
             .withClassLoader(new FilteredClassLoader(RefreshRemoteApplicationEvent.class))
             .run(context -> {
                 assertThat(context)
@@ -64,14 +63,14 @@ public class AppConfigurationWebAutoConfigurationTest {
 
     @Test
     public void pullRefreshListenerMissing() {
-        contextRunner.withClassLoader(new FilteredClassLoader(RefreshEndpoint.class))
+        CONTEXT_RUNNER.withClassLoader(new FilteredClassLoader(RefreshEndpoint.class))
             .run(context -> assertThat(context)
                 .doesNotHaveBean("configListener"));
     }
 
     @Test
     public void pushRefresh() {
-        contextRunner
+        CONTEXT_RUNNER
             .run(context -> {
                 assertThat(context)
                     .hasBean("appConfigurationRefreshEndpoint");
@@ -80,7 +79,7 @@ public class AppConfigurationWebAutoConfigurationTest {
 
     @Test
     public void busRefresh() {
-        contextRunner
+        CONTEXT_RUNNER
             .run(context -> 
             assertThat(context)
                 .hasBean("appConfigurationBusRefreshEndpoint"));
@@ -88,7 +87,7 @@ public class AppConfigurationWebAutoConfigurationTest {
 
     @Test
     public void fullRefresh() {
-        contextRunner
+        CONTEXT_RUNNER
             .run(context -> {
                 assertThat(context)
                     .hasBean("configListener");

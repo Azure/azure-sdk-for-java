@@ -39,7 +39,7 @@ public class DatasourceCredentialSample {
             .createDatasourceCredential(datasourceCredential);
 
 
-        System.out.printf("Created Datasource credential entity: %s");
+        System.out.printf("Created Datasource credential entity: %s%n", createdDatasourceCredentialEntity.getName());
 
         // Retrieve the datasource credential entity that just created.
         DatasourceCredentialEntity fetchDatasourceCredEntity

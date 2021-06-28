@@ -27,16 +27,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+/**
+ * Endpoint for requesting new configurations to be loaded.
+ */
 @ControllerEndpoint(id = APPCONFIGURATION_REFRESH)
 public class AppConfigurationRefreshEndpoint implements ApplicationEventPublisherAware {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationRefreshEndpoint.class);
 
-    private ContextRefresher contextRefresher;
+    private final ContextRefresher contextRefresher;
 
-    private ObjectMapper objectmapper = new ObjectMapper();
+    private final ObjectMapper objectmapper = new ObjectMapper();
 
-    private AppConfigurationProperties appConfiguration;
+    private final AppConfigurationProperties appConfiguration;
 
     private ApplicationEventPublisher publisher;
 
@@ -47,6 +50,16 @@ public class AppConfigurationRefreshEndpoint implements ApplicationEventPublishe
 
     }
 
+    /**
+     * Checks a HttpServletRequest to see if it is a refresh event. Validates token information. If request is a
+     * validation request returns validation code.
+     * 
+     * @param request Request checked for refresh.
+     * @param response Response for request.
+     * @param allRequestParams request parameters needs to contain validation token. 
+     * @return 200 if refresh event triggered. 500 if invalid for any reason. Validation response if requested.
+     * @throws IOException Unable to parse request info for validation.
+     */
     @PostMapping(value = "/")
     @ResponseBody
     public String refresh(HttpServletRequest request, HttpServletResponse response,

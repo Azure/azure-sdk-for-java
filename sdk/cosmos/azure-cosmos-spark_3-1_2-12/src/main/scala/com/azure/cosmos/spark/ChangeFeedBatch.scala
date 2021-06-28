@@ -3,6 +3,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, SparkBridgeImplementationInternal}
+import com.azure.cosmos.spark.diagnostics.LoggerHelper
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.connector.read.{Batch, InputPartition, PartitionReaderFactory}
@@ -16,17 +17,19 @@ private class ChangeFeedBatch
   session: SparkSession,
   schema: StructType,
   config: Map[String, String],
-  cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot]
-) extends Batch
-  with CosmosLoggingTrait {
+  cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot],
+  diagnosticsConfig: DiagnosticsConfig
+) extends Batch {
+
+  @transient private lazy val log = LoggerHelper.getLogger(diagnosticsConfig, this.getClass)
 
   val batchId = UUID.randomUUID().toString()
-  logTrace(s"Instantiated ${this.getClass.getSimpleName}")
+  log.logTrace(s"Instantiated ${this.getClass.getSimpleName}")
   val defaultParallelism = session.sparkContext.defaultParallelism
 
   override def planInputPartitions(): Array[InputPartition] = {
 
-    logInfo(s"--> planInputPartitions $batchId")
+    log.logInfo(s"--> planInputPartitions $batchId")
     val readConfig = CosmosReadConfig.parseCosmosReadConfig(config)
     val clientConfiguration = CosmosClientConfiguration.apply(config, readConfig.forceEventualConsistency)
     val containerConfig = CosmosContainerConfig.parseCosmosContainerConfig(config)
@@ -66,11 +69,11 @@ private class ChangeFeedBatch
             .extractChangeFeedStateForRange(initialOffsetJson, partition.feedRange),
           clearEndLsn = true))
 
-    logInfo(s"<-- planInputPartitions $batchId (creating ${inputPartitions.length} partitions)" )
+    log.logInfo(s"<-- planInputPartitions $batchId (creating ${inputPartitions.length} partitions)" )
     inputPartitions
   }
 
   override def createReaderFactory(): PartitionReaderFactory = {
-    ChangeFeedScanPartitionReaderFactory(config, schema, cosmosClientStateHandle)
+    ChangeFeedScanPartitionReaderFactory(config, schema, cosmosClientStateHandle, diagnosticsConfig)
   }
 }
