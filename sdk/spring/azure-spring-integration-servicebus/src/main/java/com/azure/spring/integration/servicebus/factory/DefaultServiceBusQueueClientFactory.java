@@ -4,6 +4,7 @@
 package com.azure.spring.integration.servicebus.factory;
 
 
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusErrorContext;
@@ -40,6 +41,10 @@ public class DefaultServiceBusQueueClientFactory extends AbstractServiceBusSende
     public DefaultServiceBusQueueClientFactory(String connectionString, AmqpTransportType amqpTransportType) {
         this(connectionString);
         this.serviceBusClientBuilder.transportType(amqpTransportType);
+    }
+
+    public void setRetryOptions(AmqpRetryOptions amqpRetryOptions) {
+        this.serviceBusClientBuilder.retryOptions(amqpRetryOptions);
     }
 
     @Override
