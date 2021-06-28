@@ -13,6 +13,10 @@ import com.azure.core.util.ServiceVersion
 import com.azure.identity.EnvironmentCredentialBuilder
 import spock.lang.Specification
 
+import java.time.Duration
+import java.util.function.Predicate
+import java.util.function.Supplier
+
 class StorageSpec extends Specification {
     private static final TestEnvironment ENVIRONMENT = TestEnvironment.getInstance()
     private static final HttpClient HTTP_CLIENT = new NettyAsyncHttpClientBuilder().build()
@@ -21,10 +25,9 @@ class StorageSpec extends Specification {
     private StorageResourceNamer namer
 
     def setup() {
-        def testName = getTestName()
+        def testName = TestNameProvider.getTestName(specificationContext.getCurrentIteration());
         interceptorManager = new InterceptorManager(testName, ENVIRONMENT.testMode)
         namer = new StorageResourceNamer(testName, ENVIRONMENT.testMode, interceptorManager.getRecordedData())
-        System.out.printf("========================= %s =========================%n", testName)
     }
 
     def cleanup() {
@@ -89,18 +92,19 @@ class StorageSpec extends Specification {
             .block()
     }
 
-    private String getTestName() {
-        def iterationInfo = specificationContext.currentIteration
-        def featureInfo = iterationInfo.getParent()
-        def specInfo = featureInfo.getParent()
-        def fullName = specInfo.getName() + featureInfo.getName().split(" ").collect { it.capitalize() }.join("")
-
-        if (iterationInfo.getDataValues().length == 0) {
-            return fullName
+    protected <T, E extends Exception> T retry(
+        Supplier<T> action, Predicate<E> retryPredicate,
+        int times=6, Duration delay=Duration.ofSeconds(10)) {
+        for (i in 0..<times) {
+            try {
+                return action.get()
+            } catch (Exception e) {
+                if (!retryPredicate(e)) {
+                    throw e
+                } else {
+                    Thread.sleep(delay.toMillis())
+                }
+            }
         }
-        def prefix = fullName
-        def suffix = "[" + iterationInfo.getIterationIndex() + "]"
-
-        return prefix + suffix
     }
 }

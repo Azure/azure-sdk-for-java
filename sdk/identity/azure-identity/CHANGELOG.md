@@ -3,6 +3,7 @@
 ## 1.4.0-beta.1 (Unreleased)
 ### Features Added
 
+- Added support to `ManagedIdentityCredential` for Bridge to Kubernetes local development authentication.
 - Added regional STS support to client credential types.
     - Added the `RegionalAuthority` type, that allows specifying Azure regions.
     - Added `regionalAuthority()` setter to `ClientSecretCredentialBuilder` and `ClientCertificateCredentialBuilder`.
