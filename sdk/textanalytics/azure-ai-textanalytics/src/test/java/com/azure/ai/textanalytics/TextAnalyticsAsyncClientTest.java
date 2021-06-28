@@ -28,7 +28,7 @@ import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextSentiment;
 import com.azure.ai.textanalytics.util.AnalyzeActionsResultPagedFlux;
-import com.azure.ai.textanalytics.util.HealthcareEntitiesPagedFlux;
+import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesPagedFlux;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.IterableStream;
@@ -82,8 +82,8 @@ import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchPiiEntitiesFo
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchTextSentiment;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedDocumentSentiment;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedExtractKeyPhrasesActionResult;
-import static com.azure.ai.textanalytics.TestUtils.getExpectedHealthcareTaskResultListForMultiplePages;
-import static com.azure.ai.textanalytics.TestUtils.getExpectedHealthcareTaskResultListForSinglePage;
+import static com.azure.ai.textanalytics.TestUtils.getExpectedAnalyzeHealthcareEntitiesResultCollectionListForMultiplePages;
+import static com.azure.ai.textanalytics.TestUtils.getExpectedAnalyzeHealthcareEntitiesResultCollectionListForSinglePage;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedRecognizeEntitiesActionResult;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedRecognizeLinkedEntitiesActionResult;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedRecognizePiiEntitiesActionResult;
@@ -1957,15 +1957,15 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void healthcareLroPagination(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         healthcareLroPaginationRunner((documents, options) -> {
-            SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, HealthcareEntitiesPagedFlux>
+            SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedFlux>
                 syncPoller = client.beginAnalyzeHealthcareEntities(documents, options).getSyncPoller();
             syncPoller = setPollInterval(syncPoller);
             syncPoller.waitForCompletion();
-            HealthcareEntitiesPagedFlux healthcareEntitiesPagedFlux = syncPoller.getFinalResult();
+            AnalyzeHealthcareEntitiesPagedFlux analyzeHealthcareEntitiesPagedFlux = syncPoller.getFinalResult();
             validateAnalyzeHealthcareEntitiesResultCollectionList(
                 options.isIncludeStatistics(),
-                getExpectedHealthcareTaskResultListForMultiplePages(0, 10, 0),
-                healthcareEntitiesPagedFlux.toStream().collect(Collectors.toList()));
+                getExpectedAnalyzeHealthcareEntitiesResultCollectionListForMultiplePages(0, 10, 0),
+                analyzeHealthcareEntitiesPagedFlux.toStream().collect(Collectors.toList()));
         }, 10);
     }
 
@@ -1975,15 +1975,15 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void healthcareLroWithOptions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         healthcareLroRunner((documents, options) -> {
-            SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, HealthcareEntitiesPagedFlux>
+            SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedFlux>
                 syncPoller = client.beginAnalyzeHealthcareEntities(documents, options).getSyncPoller();
             syncPoller = setPollInterval(syncPoller);
             syncPoller.waitForCompletion();
-            HealthcareEntitiesPagedFlux healthcareEntitiesPagedFlux = syncPoller.getFinalResult();
+            AnalyzeHealthcareEntitiesPagedFlux analyzeHealthcareEntitiesPagedFlux = syncPoller.getFinalResult();
             validateAnalyzeHealthcareEntitiesResultCollectionList(
                 options.isIncludeStatistics(),
-                getExpectedHealthcareTaskResultListForSinglePage(),
-                healthcareEntitiesPagedFlux.toStream().collect(Collectors.toList()));
+                getExpectedAnalyzeHealthcareEntitiesResultCollectionListForSinglePage(),
+                analyzeHealthcareEntitiesPagedFlux.toStream().collect(Collectors.toList()));
         });
     }
 
@@ -2033,13 +2033,13 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         emojiRunner(
             document -> {
-                SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, HealthcareEntitiesPagedFlux>
+                SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedFlux>
                     syncPoller = client.beginAnalyzeHealthcareEntities(
                     Collections.singletonList(new TextDocumentInput("0", document)), null).getSyncPoller();
                 syncPoller = setPollInterval(syncPoller);
                 syncPoller.waitForCompletion();
-                HealthcareEntitiesPagedFlux healthcareEntitiesPagedFlux = syncPoller.getFinalResult();
-                healthcareEntitiesPagedFlux.toStream().forEach(result -> result.forEach(
+                AnalyzeHealthcareEntitiesPagedFlux analyzeHealthcareEntitiesPagedFlux = syncPoller.getFinalResult();
+                analyzeHealthcareEntitiesPagedFlux.toStream().forEach(result -> result.forEach(
                     entitiesResult -> entitiesResult.getEntities().forEach(
                         entity -> {
                             assertEquals(11, entity.getLength());
@@ -2056,13 +2056,13 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         emojiWithSkinToneModifierRunner(
             document -> {
-                SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, HealthcareEntitiesPagedFlux>
+                SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedFlux>
                     syncPoller = client.beginAnalyzeHealthcareEntities(
                     Collections.singletonList(new TextDocumentInput("0", document)), null).getSyncPoller();
                 syncPoller = setPollInterval(syncPoller);
                 syncPoller.waitForCompletion();
-                HealthcareEntitiesPagedFlux healthcareEntitiesPagedFlux = syncPoller.getFinalResult();
-                healthcareEntitiesPagedFlux.toStream().forEach(result -> result.forEach(
+                AnalyzeHealthcareEntitiesPagedFlux analyzeHealthcareEntitiesPagedFlux = syncPoller.getFinalResult();
+                analyzeHealthcareEntitiesPagedFlux.toStream().forEach(result -> result.forEach(
                     entitiesResult -> entitiesResult.getEntities().forEach(
                         entity -> {
                             assertEquals(11, entity.getLength());
@@ -2078,13 +2078,13 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         emojiFamilyRunner(
             document -> {
-                SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, HealthcareEntitiesPagedFlux>
+                SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedFlux>
                     syncPoller = client.beginAnalyzeHealthcareEntities(
                     Collections.singletonList(new TextDocumentInput("0", document)), null).getSyncPoller();
                 syncPoller = setPollInterval(syncPoller);
                 syncPoller.waitForCompletion();
-                HealthcareEntitiesPagedFlux healthcareEntitiesPagedFlux = syncPoller.getFinalResult();
-                healthcareEntitiesPagedFlux.toStream().forEach(result -> result.forEach(
+                AnalyzeHealthcareEntitiesPagedFlux analyzeHealthcareEntitiesPagedFlux = syncPoller.getFinalResult();
+                analyzeHealthcareEntitiesPagedFlux.toStream().forEach(result -> result.forEach(
                     entitiesResult -> entitiesResult.getEntities().forEach(
                         entity -> {
                             assertEquals(11, entity.getLength());
@@ -2101,13 +2101,13 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         emojiFamilyWithSkinToneModifierRunner(
             document -> {
-                SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, HealthcareEntitiesPagedFlux>
+                SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedFlux>
                     syncPoller = client.beginAnalyzeHealthcareEntities(
                     Collections.singletonList(new TextDocumentInput("0", document)), null).getSyncPoller();
                 syncPoller = setPollInterval(syncPoller);
                 syncPoller.waitForCompletion();
-                HealthcareEntitiesPagedFlux healthcareEntitiesPagedFlux = syncPoller.getFinalResult();
-                healthcareEntitiesPagedFlux.toStream().forEach(result -> result.forEach(
+                AnalyzeHealthcareEntitiesPagedFlux analyzeHealthcareEntitiesPagedFlux = syncPoller.getFinalResult();
+                analyzeHealthcareEntitiesPagedFlux.toStream().forEach(result -> result.forEach(
                     entitiesResult -> entitiesResult.getEntities().forEach(
                         entity -> {
                             assertEquals(11, entity.getLength());
@@ -2125,13 +2125,13 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         diacriticsNfcRunner(
             document -> {
-                SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, HealthcareEntitiesPagedFlux>
+                SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedFlux>
                     syncPoller = client.beginAnalyzeHealthcareEntities(
                     Collections.singletonList(new TextDocumentInput("0", document)), null).getSyncPoller();
                 syncPoller = setPollInterval(syncPoller);
                 syncPoller.waitForCompletion();
-                HealthcareEntitiesPagedFlux healthcareEntitiesPagedFlux = syncPoller.getFinalResult();
-                healthcareEntitiesPagedFlux.toStream().forEach(result -> result.forEach(
+                AnalyzeHealthcareEntitiesPagedFlux analyzeHealthcareEntitiesPagedFlux = syncPoller.getFinalResult();
+                analyzeHealthcareEntitiesPagedFlux.toStream().forEach(result -> result.forEach(
                     entitiesResult -> entitiesResult.getEntities().forEach(
                         entity -> {
                             assertEquals(11, entity.getLength());
@@ -2149,13 +2149,13 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         diacriticsNfdRunner(
             document -> {
-                SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, HealthcareEntitiesPagedFlux>
+                SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedFlux>
                     syncPoller = client.beginAnalyzeHealthcareEntities(
                     Collections.singletonList(new TextDocumentInput("0", document)), null).getSyncPoller();
                 syncPoller = setPollInterval(syncPoller);
                 syncPoller.waitForCompletion();
-                HealthcareEntitiesPagedFlux healthcareEntitiesPagedFlux = syncPoller.getFinalResult();
-                healthcareEntitiesPagedFlux.toStream().forEach(result -> result.forEach(
+                AnalyzeHealthcareEntitiesPagedFlux analyzeHealthcareEntitiesPagedFlux = syncPoller.getFinalResult();
+                analyzeHealthcareEntitiesPagedFlux.toStream().forEach(result -> result.forEach(
                     entitiesResult -> entitiesResult.getEntities().forEach(
                         entity -> {
                             assertEquals(11, entity.getLength());
@@ -2171,13 +2171,13 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         koreanNfcRunner(
             document -> {
-                SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, HealthcareEntitiesPagedFlux>
+                SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedFlux>
                     syncPoller = client.beginAnalyzeHealthcareEntities(
                     Collections.singletonList(new TextDocumentInput("0", document)), null).getSyncPoller();
                 syncPoller = setPollInterval(syncPoller);
                 syncPoller.waitForCompletion();
-                HealthcareEntitiesPagedFlux healthcareEntitiesPagedFlux = syncPoller.getFinalResult();
-                healthcareEntitiesPagedFlux.toStream().forEach(result -> result.forEach(
+                AnalyzeHealthcareEntitiesPagedFlux analyzeHealthcareEntitiesPagedFlux = syncPoller.getFinalResult();
+                analyzeHealthcareEntitiesPagedFlux.toStream().forEach(result -> result.forEach(
                     entitiesResult -> entitiesResult.getEntities().forEach(
                         entity -> {
                             assertEquals(11, entity.getLength());
@@ -2193,13 +2193,13 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         koreanNfdRunner(
             document -> {
-                SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, HealthcareEntitiesPagedFlux>
+                SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedFlux>
                     syncPoller = client.beginAnalyzeHealthcareEntities(
                     Collections.singletonList(new TextDocumentInput("0", document)), null).getSyncPoller();
                 syncPoller = setPollInterval(syncPoller);
                 syncPoller.waitForCompletion();
-                HealthcareEntitiesPagedFlux healthcareEntitiesPagedFlux = syncPoller.getFinalResult();
-                healthcareEntitiesPagedFlux.toStream().forEach(result -> result.forEach(
+                AnalyzeHealthcareEntitiesPagedFlux analyzeHealthcareEntitiesPagedFlux = syncPoller.getFinalResult();
+                analyzeHealthcareEntitiesPagedFlux.toStream().forEach(result -> result.forEach(
                     entitiesResult -> entitiesResult.getEntities().forEach(
                         entity -> {
                             assertEquals(11, entity.getLength());
@@ -2215,13 +2215,13 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         zalgoTextRunner(
             document -> {
-                SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, HealthcareEntitiesPagedFlux>
+                SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedFlux>
                     syncPoller = client.beginAnalyzeHealthcareEntities(
                     Collections.singletonList(new TextDocumentInput("0", document)), null).getSyncPoller();
                 syncPoller = setPollInterval(syncPoller);
                 syncPoller.waitForCompletion();
-                HealthcareEntitiesPagedFlux healthcareEntitiesPagedFlux = syncPoller.getFinalResult();
-                healthcareEntitiesPagedFlux.toStream().forEach(result -> result.forEach(
+                AnalyzeHealthcareEntitiesPagedFlux analyzeHealthcareEntitiesPagedFlux = syncPoller.getFinalResult();
+                analyzeHealthcareEntitiesPagedFlux.toStream().forEach(result -> result.forEach(
                     entitiesResult -> entitiesResult.getEntities().forEach(
                         entity -> {
                             assertEquals(11, entity.getLength());
@@ -2236,15 +2236,15 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void analyzeHealthcareEntitiesForAssertion(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         analyzeHealthcareEntitiesForAssertionRunner((documents, options) -> {
-            SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, HealthcareEntitiesPagedFlux>
+            SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedFlux>
                 syncPoller = client.beginAnalyzeHealthcareEntities(documents, "en", options).getSyncPoller();
             syncPoller = setPollInterval(syncPoller);
             syncPoller.waitForCompletion();
-            HealthcareEntitiesPagedFlux healthcareEntitiesPagedFlux = syncPoller.getFinalResult();
+            AnalyzeHealthcareEntitiesPagedFlux analyzeHealthcareEntitiesPagedFlux = syncPoller.getFinalResult();
             // "All female participants that are premenopausal will be required to have a pregnancy test;
             // any participant who is pregnant or breastfeeding will not be included"
             final HealthcareEntityAssertion assertion =
-                healthcareEntitiesPagedFlux.toStream().collect(Collectors.toList())
+                analyzeHealthcareEntitiesPagedFlux.toStream().collect(Collectors.toList())
                     .get(0).stream().collect(Collectors.toList()) // List of document result
                     .get(0).getEntities().stream().collect(Collectors.toList()) // List of entities
                     .get(1) // "premenopausal" is the second entity recognized.
@@ -2262,7 +2262,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void cancelHealthcareLro(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         cancelHealthcareLroRunner((documents, options) -> {
-            SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, HealthcareEntitiesPagedFlux>
+            SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedFlux>
                 syncPoller = client.beginAnalyzeHealthcareEntities(documents, options).getSyncPoller();
             syncPoller = setPollInterval(syncPoller);
             syncPoller.cancelOperation();

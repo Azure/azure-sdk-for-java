@@ -32,7 +32,7 @@ import com.azure.ai.textanalytics.util.AnalyzeActionsResultPagedIterable;
 import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
 import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
-import com.azure.ai.textanalytics.util.HealthcareEntitiesPagedIterable;
+import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesPagedIterable;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeLinkedEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
@@ -852,30 +852,31 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         AnalyzeHealthcareEntitiesOptions options = new AnalyzeHealthcareEntitiesOptions()
             .setIncludeStatistics(true);
 
-        SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, HealthcareEntitiesPagedIterable>
+        SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedIterable>
             syncPoller = textAnalyticsClient.beginAnalyzeHealthcareEntities(documents, options, Context.NONE);
 
         syncPoller.waitForCompletion();
-        HealthcareEntitiesPagedIterable healthcareResultIterable = syncPoller.getFinalResult();
+        AnalyzeHealthcareEntitiesPagedIterable result = syncPoller.getFinalResult();
 
         // Task operation statistics
         final AnalyzeHealthcareEntitiesOperationDetail operationResult = syncPoller.poll().getValue();
         System.out.printf("Operation created time: %s, expiration time: %s.%n",
             operationResult.getCreatedAt(), operationResult.getExpiresAt());
 
-        healthcareResultIterable.forEach(healthcareTaskResult -> {
+        result.forEach(analyzeHealthcareEntitiesResultCollection -> {
             // Model version
             System.out.printf("Results of Azure Text Analytics \"Analyze Healthcare\" Model, version: %s%n",
-                healthcareTaskResult.getModelVersion());
+                analyzeHealthcareEntitiesResultCollection.getModelVersion());
 
-            TextDocumentBatchStatistics healthcareTaskStatistics = healthcareTaskResult.getStatistics();
+            TextDocumentBatchStatistics healthcareTaskStatistics =
+                analyzeHealthcareEntitiesResultCollection.getStatistics();
             // Batch statistics
             System.out.printf("Documents statistics: document count = %s, erroneous document count = %s,"
                     + " transaction count = %s, valid document count = %s.%n",
                 healthcareTaskStatistics.getDocumentCount(), healthcareTaskStatistics.getInvalidDocumentCount(),
                 healthcareTaskStatistics.getTransactionCount(), healthcareTaskStatistics.getValidDocumentCount());
 
-            healthcareTaskResult.forEach(healthcareEntitiesResult -> {
+            analyzeHealthcareEntitiesResultCollection.forEach(healthcareEntitiesResult -> {
                 System.out.println("document id = " + healthcareEntitiesResult.getId());
                 System.out.println("Document entities: ");
                 AtomicInteger ct = new AtomicInteger();

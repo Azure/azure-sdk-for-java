@@ -20,7 +20,7 @@ import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.util.AnalyzeActionsResultPagedIterable;
-import com.azure.ai.textanalytics.util.HealthcareEntitiesPagedIterable;
+import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesPagedIterable;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
@@ -204,35 +204,36 @@ public class ReadmeSamples {
                 + " for revascularization with open heart surgery."
         ));
         AnalyzeHealthcareEntitiesOptions options = new AnalyzeHealthcareEntitiesOptions().setIncludeStatistics(true);
-        SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, HealthcareEntitiesPagedIterable>
+        SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedIterable>
             syncPoller = textAnalyticsClient.beginAnalyzeHealthcareEntities(documents, options, Context.NONE);
         syncPoller.waitForCompletion();
-        syncPoller.getFinalResult().forEach(healthcareTaskResult -> healthcareTaskResult.forEach(
-            healthcareEntitiesResult -> {
-                System.out.println("Document entities: ");
-                AtomicInteger ct = new AtomicInteger();
-                healthcareEntitiesResult.getEntities().forEach(healthcareEntity -> {
-                    System.out.printf("\ti = %d, Text: %s, category: %s, subcategory: %s, confidence score: %f.%n",
-                        ct.getAndIncrement(), healthcareEntity.getText(), healthcareEntity.getCategory(),
-                        healthcareEntity.getSubcategory(), healthcareEntity.getConfidenceScore());
-                    IterableStream<EntityDataSource> healthcareEntityDataSources =
-                        healthcareEntity.getDataSources();
-                    if (healthcareEntityDataSources != null) {
-                        healthcareEntityDataSources.forEach(healthcareEntityLink -> System.out.printf(
-                            "\t\tEntity ID in data source: %s, data source: %s.%n",
-                            healthcareEntityLink.getEntityId(), healthcareEntityLink.getName()));
-                    }
-                });
-                // Healthcare entity relation groups
-                healthcareEntitiesResult.getEntityRelations().forEach(entityRelation -> {
-                    System.out.printf("\tRelation type: %s.%n", entityRelation.getRelationType());
-                    entityRelation.getRoles().forEach(role -> {
-                        final HealthcareEntity entity = role.getEntity();
-                        System.out.printf("\t\tEntity text: %s, category: %s, role: %s.%n",
-                            entity.getText(), entity.getCategory(), role.getName());
+        syncPoller.getFinalResult().forEach(
+            analyzeHealthcareEntitiesResultCollection -> analyzeHealthcareEntitiesResultCollection.forEach(
+                healthcareEntitiesResult -> {
+                    System.out.println("Document entities: ");
+                    AtomicInteger ct = new AtomicInteger();
+                    healthcareEntitiesResult.getEntities().forEach(healthcareEntity -> {
+                        System.out.printf("\ti = %d, Text: %s, category: %s, subcategory: %s, confidence score: %f.%n",
+                            ct.getAndIncrement(), healthcareEntity.getText(), healthcareEntity.getCategory(),
+                            healthcareEntity.getSubcategory(), healthcareEntity.getConfidenceScore());
+                        IterableStream<EntityDataSource> healthcareEntityDataSources =
+                            healthcareEntity.getDataSources();
+                        if (healthcareEntityDataSources != null) {
+                            healthcareEntityDataSources.forEach(healthcareEntityLink -> System.out.printf(
+                                "\t\tEntity ID in data source: %s, data source: %s.%n",
+                                healthcareEntityLink.getEntityId(), healthcareEntityLink.getName()));
+                        }
                     });
-                });
-            }));
+                    // Healthcare entity relation groups
+                    healthcareEntitiesResult.getEntityRelations().forEach(entityRelation -> {
+                        System.out.printf("\tRelation type: %s.%n", entityRelation.getRelationType());
+                        entityRelation.getRoles().forEach(role -> {
+                            final HealthcareEntity entity = role.getEntity();
+                            System.out.printf("\t\tEntity text: %s, category: %s, role: %s.%n",
+                                entity.getText(), entity.getCategory(), role.getName());
+                        });
+                    });
+                }));
     }
 
     /**

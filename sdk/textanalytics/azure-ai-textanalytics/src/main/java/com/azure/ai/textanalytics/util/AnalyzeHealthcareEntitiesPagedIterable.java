@@ -14,15 +14,15 @@ import java.util.stream.Stream;
  * interfaces.
  */
 @Immutable
-public final class HealthcareEntitiesPagedIterable extends ContinuablePagedIterable<String,
+public final class AnalyzeHealthcareEntitiesPagedIterable extends ContinuablePagedIterable<String,
     AnalyzeHealthcareEntitiesResultCollection, PagedResponse<AnalyzeHealthcareEntitiesResultCollection>> {
 
     /**
-     * Creates instance given {@link HealthcareEntitiesPagedIterable}.
+     * Creates instance given {@link AnalyzeHealthcareEntitiesPagedIterable}.
      *
      * @param pagedFlux It used as iterable.
      */
-    public HealthcareEntitiesPagedIterable(HealthcareEntitiesPagedFlux pagedFlux) {
+    public AnalyzeHealthcareEntitiesPagedIterable(AnalyzeHealthcareEntitiesPagedFlux pagedFlux) {
         super(pagedFlux);
     }
 }

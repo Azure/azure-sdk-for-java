@@ -28,7 +28,7 @@ import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection
 import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
 import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
-import com.azure.ai.textanalytics.util.HealthcareEntitiesPagedIterable;
+import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesPagedIterable;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeLinkedEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
@@ -910,7 +910,7 @@ public final class TextAnalyticsClient {
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, HealthcareEntitiesPagedIterable>
+    public SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedIterable>
         beginAnalyzeHealthcareEntities(Iterable<String> documents, String language,
             AnalyzeHealthcareEntitiesOptions options) {
         return beginAnalyzeHealthcareEntities(
@@ -952,7 +952,7 @@ public final class TextAnalyticsClient {
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, HealthcareEntitiesPagedIterable>
+    public SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedIterable>
         beginAnalyzeHealthcareEntities(Iterable<TextDocumentInput> documents, AnalyzeHealthcareEntitiesOptions options,
             Context context) {
         return client.analyzeHealthcareEntityAsyncClient.beginAnalyzeHealthcarePagedIterable(documents, options,

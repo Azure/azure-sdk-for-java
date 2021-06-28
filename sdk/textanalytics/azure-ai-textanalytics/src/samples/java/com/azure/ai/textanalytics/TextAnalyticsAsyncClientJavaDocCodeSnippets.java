@@ -817,12 +817,13 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             .flatMap(ContinuablePagedFluxCore::byPage)
             .subscribe(
                 pagedResponse -> pagedResponse.getElements().forEach(
-                    healthcareTaskResult -> {
+                    analyzeHealthcareEntitiesResultCollection -> {
                         // Model version
                         System.out.printf("Results of Azure Text Analytics \"Analyze Healthcare\" Model, version: %s%n",
-                            healthcareTaskResult.getModelVersion());
+                            analyzeHealthcareEntitiesResultCollection.getModelVersion());
 
-                        TextDocumentBatchStatistics healthcareTaskStatistics = healthcareTaskResult.getStatistics();
+                        TextDocumentBatchStatistics healthcareTaskStatistics =
+                            analyzeHealthcareEntitiesResultCollection.getStatistics();
                         // Batch statistics
                         System.out.printf("Documents statistics: document count = %s, erroneous document count = %s,"
                                               + " transaction count = %s, valid document count = %s.%n",
@@ -831,7 +832,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                             healthcareTaskStatistics.getTransactionCount(),
                             healthcareTaskStatistics.getValidDocumentCount());
 
-                        healthcareTaskResult.forEach(healthcareEntitiesResult -> {
+                        analyzeHealthcareEntitiesResultCollection.forEach(healthcareEntitiesResult -> {
                             System.out.println("document id = " + healthcareEntitiesResult.getId());
                             System.out.println("Document entities: ");
                             AtomicInteger ct = new AtomicInteger();

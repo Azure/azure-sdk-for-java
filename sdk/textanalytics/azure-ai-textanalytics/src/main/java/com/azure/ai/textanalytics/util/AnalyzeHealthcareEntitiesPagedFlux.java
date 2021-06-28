@@ -16,14 +16,14 @@ import java.util.function.Supplier;
  * @see ContinuablePagedFluxCore
  */
 @Immutable
-public final class HealthcareEntitiesPagedFlux extends ContinuablePagedFluxCore<String,
+public final class AnalyzeHealthcareEntitiesPagedFlux extends ContinuablePagedFluxCore<String,
     AnalyzeHealthcareEntitiesResultCollection, PagedResponse<AnalyzeHealthcareEntitiesResultCollection>> {
     /**
-     * Create an instance of {@link HealthcareEntitiesPagedFlux}
+     * Create an instance of {@link AnalyzeHealthcareEntitiesPagedFlux}
      *
      * @param pageRetrieverProvider a provider that returns {@link PageRetriever}
      */
-    public HealthcareEntitiesPagedFlux(Supplier<PageRetriever<String,
+    public AnalyzeHealthcareEntitiesPagedFlux(Supplier<PageRetriever<String,
         PagedResponse<AnalyzeHealthcareEntitiesResultCollection>>> pageRetrieverProvider) {
         super(pageRetrieverProvider);
     }
