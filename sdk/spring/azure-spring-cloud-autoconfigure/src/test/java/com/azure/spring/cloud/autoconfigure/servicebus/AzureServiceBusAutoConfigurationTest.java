@@ -97,7 +97,6 @@ public class AzureServiceBusAutoConfigurationTest {
             });
     }
 
-
     @Test
     public void testWithAzureResourceManagerProvided() {
         this.contextRunner.withUserConfiguration(TestConfigWithAzureResourceManager.class)
