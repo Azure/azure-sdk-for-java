@@ -47,6 +47,12 @@ public final class MigrateMySqlAzureDbForMySqlSyncDatabaseInput {
     @JsonProperty(value = "targetSetting")
     private Map<String, String> targetSetting;
 
+    /*
+     * Mapping of source to target tables
+     */
+    @JsonProperty(value = "tableMap")
+    private Map<String, String> tableMap;
+
     /**
      * Get the name property: Name of the database.
      *
@@ -146,6 +152,26 @@ public final class MigrateMySqlAzureDbForMySqlSyncDatabaseInput {
      */
     public MigrateMySqlAzureDbForMySqlSyncDatabaseInput withTargetSetting(Map<String, String> targetSetting) {
         this.targetSetting = targetSetting;
+        return this;
+    }
+
+    /**
+     * Get the tableMap property: Mapping of source to target tables.
+     *
+     * @return the tableMap value.
+     */
+    public Map<String, String> tableMap() {
+        return this.tableMap;
+    }
+
+    /**
+     * Set the tableMap property: Mapping of source to target tables.
+     *
+     * @param tableMap the tableMap value to set.
+     * @return the MigrateMySqlAzureDbForMySqlSyncDatabaseInput object itself.
+     */
+    public MigrateMySqlAzureDbForMySqlSyncDatabaseInput withTableMap(Map<String, String> tableMap) {
+        this.tableMap = tableMap;
         return this;
     }
 

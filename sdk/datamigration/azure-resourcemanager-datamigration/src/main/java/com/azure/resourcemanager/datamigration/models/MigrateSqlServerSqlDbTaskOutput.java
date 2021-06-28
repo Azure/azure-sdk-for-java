@@ -23,13 +23,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "MigrationLevelOutput", value = MigrateSqlServerSqlDbTaskOutputMigrationLevel.class),
     @JsonSubTypes.Type(name = "DatabaseLevelOutput", value = MigrateSqlServerSqlDbTaskOutputDatabaseLevel.class),
     @JsonSubTypes.Type(name = "TableLevelOutput", value = MigrateSqlServerSqlDbTaskOutputTableLevel.class),
-    @JsonSubTypes.Type(name = "ErrorOutput", value = MigrateSqlServerSqlDbTaskOutputError.class),
-    @JsonSubTypes.Type(
-        name = "MigrationValidationOutput",
-        value = MigrateSqlServerSqlDbTaskOutputValidationResult.class),
-    @JsonSubTypes.Type(
-        name = "MigrationDatabaseLevelValidationOutput",
-        value = MigrateSqlServerSqlDbTaskOutputDatabaseLevelValidationResult.class)
+    @JsonSubTypes.Type(name = "ErrorOutput", value = MigrateSqlServerSqlDbTaskOutputError.class)
 })
 @Immutable
 public class MigrateSqlServerSqlDbTaskOutput {

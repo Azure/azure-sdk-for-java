@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 import java.util.Map;
 
 /** Database specific information for PostgreSQL to Azure Database for PostgreSQL migration task inputs. */
@@ -46,6 +47,12 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput {
      */
     @JsonProperty(value = "targetSetting")
     private Map<String, String> targetSetting;
+
+    /*
+     * Tables selected for migration
+     */
+    @JsonProperty(value = "selectedTables")
+    private List<MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseTableInput> selectedTables;
 
     /**
      * Get the name property: Name of the database.
@@ -151,10 +158,34 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput {
     }
 
     /**
+     * Get the selectedTables property: Tables selected for migration.
+     *
+     * @return the selectedTables value.
+     */
+    public List<MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseTableInput> selectedTables() {
+        return this.selectedTables;
+    }
+
+    /**
+     * Set the selectedTables property: Tables selected for migration.
+     *
+     * @param selectedTables the selectedTables value to set.
+     * @return the MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput object itself.
+     */
+    public MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput withSelectedTables(
+        List<MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseTableInput> selectedTables) {
+        this.selectedTables = selectedTables;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (selectedTables() != null) {
+            selectedTables().forEach(e -> e.validate());
+        }
     }
 }

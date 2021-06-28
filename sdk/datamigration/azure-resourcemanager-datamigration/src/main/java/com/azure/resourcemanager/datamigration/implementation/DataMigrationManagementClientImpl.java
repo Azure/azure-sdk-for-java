@@ -22,9 +22,11 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.datamigration.fluent.DataMigrationManagementClient;
+import com.azure.resourcemanager.datamigration.fluent.FilesClient;
 import com.azure.resourcemanager.datamigration.fluent.OperationsClient;
 import com.azure.resourcemanager.datamigration.fluent.ProjectsClient;
 import com.azure.resourcemanager.datamigration.fluent.ResourceSkusClient;
+import com.azure.resourcemanager.datamigration.fluent.ServiceTasksClient;
 import com.azure.resourcemanager.datamigration.fluent.ServicesClient;
 import com.azure.resourcemanager.datamigration.fluent.TasksClient;
 import com.azure.resourcemanager.datamigration.fluent.UsagesClient;
@@ -151,6 +153,18 @@ public final class DataMigrationManagementClientImpl implements DataMigrationMan
         return this.tasks;
     }
 
+    /** The ServiceTasksClient object to access its operations. */
+    private final ServiceTasksClient serviceTasks;
+
+    /**
+     * Gets the ServiceTasksClient object to access its operations.
+     *
+     * @return the ServiceTasksClient object.
+     */
+    public ServiceTasksClient getServiceTasks() {
+        return this.serviceTasks;
+    }
+
     /** The ProjectsClient object to access its operations. */
     private final ProjectsClient projects;
 
@@ -187,6 +201,18 @@ public final class DataMigrationManagementClientImpl implements DataMigrationMan
         return this.operations;
     }
 
+    /** The FilesClient object to access its operations. */
+    private final FilesClient files;
+
+    /**
+     * Gets the FilesClient object to access its operations.
+     *
+     * @return the FilesClient object.
+     */
+    public FilesClient getFiles() {
+        return this.files;
+    }
+
     /**
      * Initializes an instance of DataMigrationManagementClient client.
      *
@@ -209,13 +235,15 @@ public final class DataMigrationManagementClientImpl implements DataMigrationMan
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2018-04-19";
+        this.apiVersion = "2018-07-15-preview";
         this.resourceSkus = new ResourceSkusClientImpl(this);
         this.services = new ServicesClientImpl(this);
         this.tasks = new TasksClientImpl(this);
+        this.serviceTasks = new ServiceTasksClientImpl(this);
         this.projects = new ProjectsClientImpl(this);
         this.usages = new UsagesClientImpl(this);
         this.operations = new OperationsClientImpl(this);
+        this.files = new FilesClientImpl(this);
     }
 
     /**

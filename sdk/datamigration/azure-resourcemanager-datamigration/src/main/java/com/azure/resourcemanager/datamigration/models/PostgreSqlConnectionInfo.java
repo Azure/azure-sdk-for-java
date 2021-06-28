@@ -36,6 +36,18 @@ public final class PostgreSqlConnectionInfo extends ConnectionInfo {
     @JsonProperty(value = "port", required = true)
     private int port;
 
+    /*
+     * Whether to encrypt the connection
+     */
+    @JsonProperty(value = "encryptConnection")
+    private Boolean encryptConnection;
+
+    /*
+     * Whether to trust the server certificate
+     */
+    @JsonProperty(value = "trustServerCertificate")
+    private Boolean trustServerCertificate;
+
     /**
      * Get the serverName property: Name of the server.
      *
@@ -93,6 +105,46 @@ public final class PostgreSqlConnectionInfo extends ConnectionInfo {
      */
     public PostgreSqlConnectionInfo withPort(int port) {
         this.port = port;
+        return this;
+    }
+
+    /**
+     * Get the encryptConnection property: Whether to encrypt the connection.
+     *
+     * @return the encryptConnection value.
+     */
+    public Boolean encryptConnection() {
+        return this.encryptConnection;
+    }
+
+    /**
+     * Set the encryptConnection property: Whether to encrypt the connection.
+     *
+     * @param encryptConnection the encryptConnection value to set.
+     * @return the PostgreSqlConnectionInfo object itself.
+     */
+    public PostgreSqlConnectionInfo withEncryptConnection(Boolean encryptConnection) {
+        this.encryptConnection = encryptConnection;
+        return this;
+    }
+
+    /**
+     * Get the trustServerCertificate property: Whether to trust the server certificate.
+     *
+     * @return the trustServerCertificate value.
+     */
+    public Boolean trustServerCertificate() {
+        return this.trustServerCertificate;
+    }
+
+    /**
+     * Set the trustServerCertificate property: Whether to trust the server certificate.
+     *
+     * @param trustServerCertificate the trustServerCertificate value to set.
+     * @return the PostgreSqlConnectionInfo object itself.
+     */
+    public PostgreSqlConnectionInfo withTrustServerCertificate(Boolean trustServerCertificate) {
+        this.trustServerCertificate = trustServerCertificate;
         return this;
     }
 

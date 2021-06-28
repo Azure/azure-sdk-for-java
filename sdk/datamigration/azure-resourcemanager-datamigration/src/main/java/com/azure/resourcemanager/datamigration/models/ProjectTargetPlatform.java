@@ -13,6 +13,18 @@ public final class ProjectTargetPlatform extends ExpandableStringEnum<ProjectTar
     /** Static value SQLDB for ProjectTargetPlatform. */
     public static final ProjectTargetPlatform SQLDB = fromString("SQLDB");
 
+    /** Static value SQLMI for ProjectTargetPlatform. */
+    public static final ProjectTargetPlatform SQLMI = fromString("SQLMI");
+
+    /** Static value AzureDbForMySql for ProjectTargetPlatform. */
+    public static final ProjectTargetPlatform AZURE_DB_FOR_MY_SQL = fromString("AzureDbForMySql");
+
+    /** Static value AzureDbForPostgreSql for ProjectTargetPlatform. */
+    public static final ProjectTargetPlatform AZURE_DB_FOR_POSTGRE_SQL = fromString("AzureDbForPostgreSql");
+
+    /** Static value MongoDb for ProjectTargetPlatform. */
+    public static final ProjectTargetPlatform MONGO_DB = fromString("MongoDb");
+
     /** Static value Unknown for ProjectTargetPlatform. */
     public static final ProjectTargetPlatform UNKNOWN = fromString("Unknown");
 

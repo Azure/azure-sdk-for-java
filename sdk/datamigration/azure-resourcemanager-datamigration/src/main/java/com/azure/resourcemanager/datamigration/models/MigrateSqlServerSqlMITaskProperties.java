@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
+import java.util.Map;
 
 /** Properties for task that migrates SQL Server databases to Azure SQL Database Managed Instance. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "taskType")
@@ -58,6 +59,13 @@ public final class MigrateSqlServerSqlMITaskProperties extends ProjectTaskProper
      */
     public List<MigrateSqlServerSqlMITaskOutput> output() {
         return this.output;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MigrateSqlServerSqlMITaskProperties withClientData(Map<String, String> clientData) {
+        super.withClientData(clientData);
+        return this;
     }
 
     /**

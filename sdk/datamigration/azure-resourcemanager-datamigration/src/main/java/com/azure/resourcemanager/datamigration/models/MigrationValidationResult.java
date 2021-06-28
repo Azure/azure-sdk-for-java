@@ -8,17 +8,18 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.Map;
 
-/** Validation result for Sql Server to Azure Sql DB migration. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType")
-@JsonTypeName("MigrationValidationOutput")
+/** Migration Validation Result. */
 @Fluent
-public final class MigrateSqlServerSqlDbTaskOutputValidationResult extends MigrateSqlServerSqlDbTaskOutput {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(MigrateSqlServerSqlDbTaskOutputValidationResult.class);
+public final class MigrationValidationResult {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(MigrationValidationResult.class);
+
+    /*
+     * Migration validation result identifier
+     */
+    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
+    private String id;
 
     /*
      * Migration Identifier
@@ -38,6 +39,15 @@ public final class MigrateSqlServerSqlDbTaskOutputValidationResult extends Migra
      */
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private ValidationStatus status;
+
+    /**
+     * Get the id property: Migration validation result identifier.
+     *
+     * @return the id value.
+     */
+    public String id() {
+        return this.id;
+    }
 
     /**
      * Get the migrationId property: Migration Identifier.
@@ -61,9 +71,9 @@ public final class MigrateSqlServerSqlDbTaskOutputValidationResult extends Migra
      * Set the summaryResults property: Validation summary results for each database.
      *
      * @param summaryResults the summaryResults value to set.
-     * @return the MigrateSqlServerSqlDbTaskOutputValidationResult object itself.
+     * @return the MigrationValidationResult object itself.
      */
-    public MigrateSqlServerSqlDbTaskOutputValidationResult withSummaryResults(
+    public MigrationValidationResult withSummaryResults(
         Map<String, MigrationValidationDatabaseSummaryResult> summaryResults) {
         this.summaryResults = summaryResults;
         return this;
@@ -84,9 +94,7 @@ public final class MigrateSqlServerSqlDbTaskOutputValidationResult extends Migra
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
-        super.validate();
         if (summaryResults() != null) {
             summaryResults()
                 .values()

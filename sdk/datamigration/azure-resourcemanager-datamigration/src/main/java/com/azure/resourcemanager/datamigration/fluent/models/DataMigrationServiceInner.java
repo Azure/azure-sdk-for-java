@@ -58,6 +58,13 @@ public class DataMigrationServiceInner extends Resource {
     @JsonProperty(value = "properties.virtualSubnetId")
     private String virtualSubnetId;
 
+    /*
+     * The ID of the Microsoft.Network/networkInterfaces resource which the
+     * service have
+     */
+    @JsonProperty(value = "properties.virtualNicId")
+    private String virtualNicId;
+
     /**
      * Get the etag property: HTTP strong entity tag value. Ignored if submitted.
      *
@@ -166,6 +173,26 @@ public class DataMigrationServiceInner extends Resource {
      */
     public DataMigrationServiceInner withVirtualSubnetId(String virtualSubnetId) {
         this.virtualSubnetId = virtualSubnetId;
+        return this;
+    }
+
+    /**
+     * Get the virtualNicId property: The ID of the Microsoft.Network/networkInterfaces resource which the service have.
+     *
+     * @return the virtualNicId value.
+     */
+    public String virtualNicId() {
+        return this.virtualNicId;
+    }
+
+    /**
+     * Set the virtualNicId property: The ID of the Microsoft.Network/networkInterfaces resource which the service have.
+     *
+     * @param virtualNicId the virtualNicId value to set.
+     * @return the DataMigrationServiceInner object itself.
+     */
+    public DataMigrationServiceInner withVirtualNicId(String virtualNicId) {
+        this.virtualNicId = virtualNicId;
         return this;
     }
 

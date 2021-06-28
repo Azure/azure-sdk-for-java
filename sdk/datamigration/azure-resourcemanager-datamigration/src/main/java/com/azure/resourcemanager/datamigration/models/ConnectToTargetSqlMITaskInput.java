@@ -20,6 +20,25 @@ public final class ConnectToTargetSqlMITaskInput {
     @JsonProperty(value = "targetConnectionInfo", required = true)
     private SqlConnectionInfo targetConnectionInfo;
 
+    /*
+     * Flag for whether to collect logins from target SQL MI server.
+     */
+    @JsonProperty(value = "collectLogins")
+    private Boolean collectLogins;
+
+    /*
+     * Flag for whether to collect agent jobs from target SQL MI server.
+     */
+    @JsonProperty(value = "collectAgentJobs")
+    private Boolean collectAgentJobs;
+
+    /*
+     * Flag for whether to validate SSIS catalog is reachable on the target SQL
+     * MI server.
+     */
+    @JsonProperty(value = "validateSsisCatalogOnly")
+    private Boolean validateSsisCatalogOnly;
+
     /**
      * Get the targetConnectionInfo property: Connection information for target SQL Server.
      *
@@ -37,6 +56,68 @@ public final class ConnectToTargetSqlMITaskInput {
      */
     public ConnectToTargetSqlMITaskInput withTargetConnectionInfo(SqlConnectionInfo targetConnectionInfo) {
         this.targetConnectionInfo = targetConnectionInfo;
+        return this;
+    }
+
+    /**
+     * Get the collectLogins property: Flag for whether to collect logins from target SQL MI server.
+     *
+     * @return the collectLogins value.
+     */
+    public Boolean collectLogins() {
+        return this.collectLogins;
+    }
+
+    /**
+     * Set the collectLogins property: Flag for whether to collect logins from target SQL MI server.
+     *
+     * @param collectLogins the collectLogins value to set.
+     * @return the ConnectToTargetSqlMITaskInput object itself.
+     */
+    public ConnectToTargetSqlMITaskInput withCollectLogins(Boolean collectLogins) {
+        this.collectLogins = collectLogins;
+        return this;
+    }
+
+    /**
+     * Get the collectAgentJobs property: Flag for whether to collect agent jobs from target SQL MI server.
+     *
+     * @return the collectAgentJobs value.
+     */
+    public Boolean collectAgentJobs() {
+        return this.collectAgentJobs;
+    }
+
+    /**
+     * Set the collectAgentJobs property: Flag for whether to collect agent jobs from target SQL MI server.
+     *
+     * @param collectAgentJobs the collectAgentJobs value to set.
+     * @return the ConnectToTargetSqlMITaskInput object itself.
+     */
+    public ConnectToTargetSqlMITaskInput withCollectAgentJobs(Boolean collectAgentJobs) {
+        this.collectAgentJobs = collectAgentJobs;
+        return this;
+    }
+
+    /**
+     * Get the validateSsisCatalogOnly property: Flag for whether to validate SSIS catalog is reachable on the target
+     * SQL MI server.
+     *
+     * @return the validateSsisCatalogOnly value.
+     */
+    public Boolean validateSsisCatalogOnly() {
+        return this.validateSsisCatalogOnly;
+    }
+
+    /**
+     * Set the validateSsisCatalogOnly property: Flag for whether to validate SSIS catalog is reachable on the target
+     * SQL MI server.
+     *
+     * @param validateSsisCatalogOnly the validateSsisCatalogOnly value to set.
+     * @return the ConnectToTargetSqlMITaskInput object itself.
+     */
+    public ConnectToTargetSqlMITaskInput withValidateSsisCatalogOnly(Boolean validateSsisCatalogOnly) {
+        this.validateSsisCatalogOnly = validateSsisCatalogOnly;
         return this;
     }
 

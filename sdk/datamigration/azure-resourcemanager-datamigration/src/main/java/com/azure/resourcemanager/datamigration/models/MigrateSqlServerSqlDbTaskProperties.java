@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
+import java.util.Map;
 
 /** Properties for the task that migrates on-prem SQL Server databases to Azure SQL Database. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "taskType")
@@ -58,6 +59,13 @@ public final class MigrateSqlServerSqlDbTaskProperties extends ProjectTaskProper
      */
     public List<MigrateSqlServerSqlDbTaskOutput> output() {
         return this.output;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MigrateSqlServerSqlDbTaskProperties withClientData(Map<String, String> clientData) {
+        super.withClientData(clientData);
+        return this;
     }
 
     /**

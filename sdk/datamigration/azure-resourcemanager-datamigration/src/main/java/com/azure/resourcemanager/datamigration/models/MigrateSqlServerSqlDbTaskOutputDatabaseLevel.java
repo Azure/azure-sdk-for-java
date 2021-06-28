@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Database level result for Sql Server to Azure Sql DB migration. */
+/** The MigrateSqlServerSqlDbTaskOutputDatabaseLevel model. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType")
 @JsonTypeName("DatabaseLevelOutput")
 @Immutable

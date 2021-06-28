@@ -40,6 +40,12 @@ public final class ConnectToSourceSqlServerTaskOutputTaskLevel extends ConnectTo
     private String agentJobs;
 
     /*
+     * Mapping from database name to TDE certificate name, if applicable
+     */
+    @JsonProperty(value = "databaseTdeCertificateMapping", access = JsonProperty.Access.WRITE_ONLY)
+    private String databaseTdeCertificateMapping;
+
+    /*
      * Source server version
      */
     @JsonProperty(value = "sourceServerVersion", access = JsonProperty.Access.WRITE_ONLY)
@@ -82,6 +88,16 @@ public final class ConnectToSourceSqlServerTaskOutputTaskLevel extends ConnectTo
      */
     public String agentJobs() {
         return this.agentJobs;
+    }
+
+    /**
+     * Get the databaseTdeCertificateMapping property: Mapping from database name to TDE certificate name, if
+     * applicable.
+     *
+     * @return the databaseTdeCertificateMapping value.
+     */
+    public String databaseTdeCertificateMapping() {
+        return this.databaseTdeCertificateMapping;
     }
 
     /**

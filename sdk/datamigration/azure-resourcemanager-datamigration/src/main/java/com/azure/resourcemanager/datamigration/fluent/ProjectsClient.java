@@ -25,7 +25,7 @@ public interface ProjectsClient {
      * @return oData page of project resources.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ProjectInner> listByResourceGroup(String groupName, String serviceName);
+    PagedIterable<ProjectInner> list(String groupName, String serviceName);
 
     /**
      * The project resource is a nested resource representing a stored migration project. This method returns a list of
@@ -40,7 +40,7 @@ public interface ProjectsClient {
      * @return oData page of project resources.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ProjectInner> listByResourceGroup(String groupName, String serviceName, Context context);
+    PagedIterable<ProjectInner> list(String groupName, String serviceName, Context context);
 
     /**
      * The project resource is a nested resource representing a stored migration project. The PUT method creates a new

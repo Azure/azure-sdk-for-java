@@ -91,6 +91,14 @@ public interface DataMigrationService {
     String virtualSubnetId();
 
     /**
+     * Gets the virtualNicId property: The ID of the Microsoft.Network/networkInterfaces resource which the service
+     * have.
+     *
+     * @return the virtualNicId value.
+     */
+    String virtualNicId();
+
+    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -161,7 +169,8 @@ public interface DataMigrationService {
                 DefinitionStages.WithKind,
                 DefinitionStages.WithSku,
                 DefinitionStages.WithPublicKey,
-                DefinitionStages.WithVirtualSubnetId {
+                DefinitionStages.WithVirtualSubnetId,
+                DefinitionStages.WithVirtualNicId {
             /**
              * Executes the create request.
              *
@@ -240,6 +249,17 @@ public interface DataMigrationService {
              */
             WithCreate withVirtualSubnetId(String virtualSubnetId);
         }
+        /** The stage of the DataMigrationService definition allowing to specify virtualNicId. */
+        interface WithVirtualNicId {
+            /**
+             * Specifies the virtualNicId property: The ID of the Microsoft.Network/networkInterfaces resource which the
+             * service have.
+             *
+             * @param virtualNicId The ID of the Microsoft.Network/networkInterfaces resource which the service have.
+             * @return the next definition stage.
+             */
+            WithCreate withVirtualNicId(String virtualNicId);
+        }
     }
     /**
      * Begins update for the DataMigrationService resource.
@@ -255,7 +275,8 @@ public interface DataMigrationService {
             UpdateStages.WithKind,
             UpdateStages.WithSku,
             UpdateStages.WithPublicKey,
-            UpdateStages.WithVirtualSubnetId {
+            UpdateStages.WithVirtualSubnetId,
+            UpdateStages.WithVirtualNicId {
         /**
          * Executes the update request.
          *
@@ -335,6 +356,17 @@ public interface DataMigrationService {
              * @return the next definition stage.
              */
             Update withVirtualSubnetId(String virtualSubnetId);
+        }
+        /** The stage of the DataMigrationService update allowing to specify virtualNicId. */
+        interface WithVirtualNicId {
+            /**
+             * Specifies the virtualNicId property: The ID of the Microsoft.Network/networkInterfaces resource which the
+             * service have.
+             *
+             * @param virtualNicId The ID of the Microsoft.Network/networkInterfaces resource which the service have.
+             * @return the next definition stage.
+             */
+            Update withVirtualNicId(String virtualNicId);
         }
     }
     /**
@@ -425,7 +457,7 @@ public interface DataMigrationService {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return indicates whether a proposed resource name is available.
      */
-    NameAvailabilityResponse nestedCheckNameAvailability(NameAvailabilityRequest parameters);
+    NameAvailabilityResponse checkChildrenNameAvailability(NameAvailabilityRequest parameters);
 
     /**
      * This method checks whether a proposed nested resource name is valid and available.
@@ -437,6 +469,6 @@ public interface DataMigrationService {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return indicates whether a proposed resource name is available.
      */
-    Response<NameAvailabilityResponse> nestedCheckNameAvailabilityWithResponse(
+    Response<NameAvailabilityResponse> checkChildrenNameAvailabilityWithResponse(
         NameAvailabilityRequest parameters, Context context);
 }

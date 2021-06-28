@@ -6,6 +6,7 @@ package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datamigration.fluent.models.CommandPropertiesInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -15,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "commandType")
 @JsonTypeName("Migrate.Sync.Complete.Database")
 @Fluent
-public final class MigrateSyncCompleteCommandProperties extends CommandProperties {
+public final class MigrateSyncCompleteCommandProperties extends CommandPropertiesInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(MigrateSyncCompleteCommandProperties.class);
 
     /*

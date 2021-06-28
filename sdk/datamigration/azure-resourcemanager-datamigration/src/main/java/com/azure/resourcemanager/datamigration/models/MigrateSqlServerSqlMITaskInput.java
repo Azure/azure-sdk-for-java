@@ -54,6 +54,14 @@ public final class MigrateSqlServerSqlMITaskInput extends SqlMigrationTaskInput 
     @JsonProperty(value = "backupMode")
     private BackupMode backupMode;
 
+    /*
+     * Azure Active Directory domain name in the format of 'contoso.com' for
+     * federated Azure AD or 'contoso.onmicrosoft.com' for managed domain,
+     * required if and only if Windows logins are selected
+     */
+    @JsonProperty(value = "aadDomainName")
+    private String aadDomainName;
+
     /**
      * Get the selectedDatabases property: Databases to migrate.
      *
@@ -174,6 +182,28 @@ public final class MigrateSqlServerSqlMITaskInput extends SqlMigrationTaskInput 
      */
     public MigrateSqlServerSqlMITaskInput withBackupMode(BackupMode backupMode) {
         this.backupMode = backupMode;
+        return this;
+    }
+
+    /**
+     * Get the aadDomainName property: Azure Active Directory domain name in the format of 'contoso.com' for federated
+     * Azure AD or 'contoso.onmicrosoft.com' for managed domain, required if and only if Windows logins are selected.
+     *
+     * @return the aadDomainName value.
+     */
+    public String aadDomainName() {
+        return this.aadDomainName;
+    }
+
+    /**
+     * Set the aadDomainName property: Azure Active Directory domain name in the format of 'contoso.com' for federated
+     * Azure AD or 'contoso.onmicrosoft.com' for managed domain, required if and only if Windows logins are selected.
+     *
+     * @param aadDomainName the aadDomainName value to set.
+     * @return the MigrateSqlServerSqlMITaskInput object itself.
+     */
+    public MigrateSqlServerSqlMITaskInput withAadDomainName(String aadDomainName) {
+        this.aadDomainName = aadDomainName;
         return this;
     }
 

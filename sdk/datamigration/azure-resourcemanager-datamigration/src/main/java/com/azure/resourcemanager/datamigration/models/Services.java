@@ -195,7 +195,7 @@ public interface Services {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return indicates whether a proposed resource name is available.
      */
-    NameAvailabilityResponse nestedCheckNameAvailability(
+    NameAvailabilityResponse checkChildrenNameAvailability(
         String groupName, String serviceName, NameAvailabilityRequest parameters);
 
     /**
@@ -210,7 +210,7 @@ public interface Services {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return indicates whether a proposed resource name is available.
      */
-    Response<NameAvailabilityResponse> nestedCheckNameAvailabilityWithResponse(
+    Response<NameAvailabilityResponse> checkChildrenNameAvailabilityWithResponse(
         String groupName, String serviceName, NameAvailabilityRequest parameters, Context context);
 
     /**

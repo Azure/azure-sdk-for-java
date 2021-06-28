@@ -465,7 +465,7 @@ public interface ServicesClient {
      * @return indicates whether a proposed resource name is available.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NameAvailabilityResponseInner nestedCheckNameAvailability(
+    NameAvailabilityResponseInner checkChildrenNameAvailability(
         String groupName, String serviceName, NameAvailabilityRequest parameters);
 
     /**
@@ -481,7 +481,7 @@ public interface ServicesClient {
      * @return indicates whether a proposed resource name is available.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NameAvailabilityResponseInner> nestedCheckNameAvailabilityWithResponse(
+    Response<NameAvailabilityResponseInner> checkChildrenNameAvailabilityWithResponse(
         String groupName, String serviceName, NameAvailabilityRequest parameters, Context context);
 
     /**

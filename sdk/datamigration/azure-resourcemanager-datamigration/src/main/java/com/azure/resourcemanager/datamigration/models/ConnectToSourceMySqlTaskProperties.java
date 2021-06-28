@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
+import java.util.Map;
 
 /** Properties for the task that validates MySQL database connection. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "taskType")
@@ -58,6 +59,13 @@ public final class ConnectToSourceMySqlTaskProperties extends ProjectTaskPropert
      */
     public List<ConnectToSourceNonSqlTaskOutput> output() {
         return this.output;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ConnectToSourceMySqlTaskProperties withClientData(Map<String, String> clientData) {
+        super.withClientData(clientData);
+        return this;
     }
 
     /**

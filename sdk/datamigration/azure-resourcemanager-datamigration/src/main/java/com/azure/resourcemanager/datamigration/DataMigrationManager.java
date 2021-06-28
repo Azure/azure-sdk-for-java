@@ -9,7 +9,6 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -17,20 +16,25 @@ import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datamigration.fluent.DataMigrationManagementClient;
 import com.azure.resourcemanager.datamigration.implementation.DataMigrationManagementClientBuilder;
+import com.azure.resourcemanager.datamigration.implementation.FilesImpl;
 import com.azure.resourcemanager.datamigration.implementation.OperationsImpl;
 import com.azure.resourcemanager.datamigration.implementation.ProjectsImpl;
 import com.azure.resourcemanager.datamigration.implementation.ResourceSkusImpl;
+import com.azure.resourcemanager.datamigration.implementation.ServiceTasksImpl;
 import com.azure.resourcemanager.datamigration.implementation.ServicesImpl;
 import com.azure.resourcemanager.datamigration.implementation.TasksImpl;
 import com.azure.resourcemanager.datamigration.implementation.UsagesImpl;
+import com.azure.resourcemanager.datamigration.models.Files;
 import com.azure.resourcemanager.datamigration.models.Operations;
 import com.azure.resourcemanager.datamigration.models.Projects;
 import com.azure.resourcemanager.datamigration.models.ResourceSkus;
+import com.azure.resourcemanager.datamigration.models.ServiceTasks;
 import com.azure.resourcemanager.datamigration.models.Services;
 import com.azure.resourcemanager.datamigration.models.Tasks;
 import com.azure.resourcemanager.datamigration.models.Usages;
@@ -48,11 +52,15 @@ public final class DataMigrationManager {
 
     private Tasks tasks;
 
+    private ServiceTasks serviceTasks;
+
     private Projects projects;
 
     private Usages usages;
 
     private Operations operations;
+
+    private Files files;
 
     private final DataMigrationManagementClient clientObject;
 
@@ -97,6 +105,7 @@ public final class DataMigrationManager {
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
         private final List<HttpPipelinePolicy> policies = new ArrayList<>();
+        private final List<String> scopes = new ArrayList<>();
         private RetryPolicy retryPolicy;
         private Duration defaultPollInterval;
 
@@ -133,6 +142,17 @@ public final class DataMigrationManager {
          */
         public Configurable withPolicy(HttpPipelinePolicy policy) {
             this.policies.add(Objects.requireNonNull(policy, "'policy' cannot be null."));
+            return this;
+        }
+
+        /**
+         * Adds the scope to permission sets.
+         *
+         * @param scope the scope.
+         * @return the configurable object itself.
+         */
+        public Configurable withScope(String scope) {
+            this.scopes.add(Objects.requireNonNull(scope, "'scope' cannot be null."));
             return this;
         }
 
@@ -192,6 +212,9 @@ public final class DataMigrationManager {
                 userAgentBuilder.append(" (auto-generated)");
             }
 
+            if (scopes.isEmpty()) {
+                scopes.add(profile.getEnvironment().getManagementEndpoint() + "/.default");
+            }
             if (retryPolicy == null) {
                 retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
             }
@@ -201,10 +224,7 @@ public final class DataMigrationManager {
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
-            policies
-                .add(
-                    new BearerTokenAuthenticationPolicy(
-                        credential, profile.getEnvironment().getManagementEndpoint() + "/.default"));
+            policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
             policies.addAll(this.policies);
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
@@ -241,6 +261,14 @@ public final class DataMigrationManager {
         return tasks;
     }
 
+    /** @return Resource collection API of ServiceTasks. */
+    public ServiceTasks serviceTasks() {
+        if (this.serviceTasks == null) {
+            this.serviceTasks = new ServiceTasksImpl(clientObject.getServiceTasks(), this);
+        }
+        return serviceTasks;
+    }
+
     /** @return Resource collection API of Projects. */
     public Projects projects() {
         if (this.projects == null) {
@@ -263,6 +291,14 @@ public final class DataMigrationManager {
             this.operations = new OperationsImpl(clientObject.getOperations(), this);
         }
         return operations;
+    }
+
+    /** @return Resource collection API of Files. */
+    public Files files() {
+        if (this.files == null) {
+            this.files = new FilesImpl(clientObject.getFiles(), this);
+        }
+        return files;
     }
 
     /**

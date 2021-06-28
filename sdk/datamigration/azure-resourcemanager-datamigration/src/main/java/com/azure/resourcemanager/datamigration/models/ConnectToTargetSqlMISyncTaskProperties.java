@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
+import java.util.Map;
 
 /** Properties for the task that validates connection to Azure SQL Database Managed Instance. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "taskType")
@@ -58,6 +59,13 @@ public final class ConnectToTargetSqlMISyncTaskProperties extends ProjectTaskPro
      */
     public List<ConnectToTargetSqlMISyncTaskOutput> output() {
         return this.output;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ConnectToTargetSqlMISyncTaskProperties withClientData(Map<String, String> clientData) {
+        super.withClientData(clientData);
+        return this;
     }
 
     /**

@@ -11,12 +11,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Properties for the task that migrates PostgreSQL databases to Azure Database for PostgreSQL for online migrations.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "taskType")
-@JsonTypeName("Migrate.PostgreSql.AzureDbForPostgreSql.Sync")
+@JsonTypeName("Migrate.PostgreSql.AzureDbForPostgreSql.SyncV2")
 @Fluent
 public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskProperties extends ProjectTaskProperties {
     @JsonIgnore
@@ -62,6 +63,13 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskProperties exten
      */
     public List<MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutput> output() {
         return this.output;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MigratePostgreSqlAzureDbForPostgreSqlSyncTaskProperties withClientData(Map<String, String> clientData) {
+        super.withClientData(clientData);
+        return this;
     }
 
     /**

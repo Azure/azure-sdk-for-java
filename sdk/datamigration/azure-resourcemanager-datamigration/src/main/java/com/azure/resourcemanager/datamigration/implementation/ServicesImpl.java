@@ -121,10 +121,10 @@ public final class ServicesImpl implements Services {
         return Utils.mapPage(inner, inner1 -> new AvailableServiceSkuImpl(inner1, this.manager()));
     }
 
-    public NameAvailabilityResponse nestedCheckNameAvailability(
+    public NameAvailabilityResponse checkChildrenNameAvailability(
         String groupName, String serviceName, NameAvailabilityRequest parameters) {
         NameAvailabilityResponseInner inner =
-            this.serviceClient().nestedCheckNameAvailability(groupName, serviceName, parameters);
+            this.serviceClient().checkChildrenNameAvailability(groupName, serviceName, parameters);
         if (inner != null) {
             return new NameAvailabilityResponseImpl(inner, this.manager());
         } else {
@@ -132,10 +132,10 @@ public final class ServicesImpl implements Services {
         }
     }
 
-    public Response<NameAvailabilityResponse> nestedCheckNameAvailabilityWithResponse(
+    public Response<NameAvailabilityResponse> checkChildrenNameAvailabilityWithResponse(
         String groupName, String serviceName, NameAvailabilityRequest parameters, Context context) {
         Response<NameAvailabilityResponseInner> inner =
-            this.serviceClient().nestedCheckNameAvailabilityWithResponse(groupName, serviceName, parameters, context);
+            this.serviceClient().checkChildrenNameAvailabilityWithResponse(groupName, serviceName, parameters, context);
         if (inner != null) {
             return new SimpleResponse<>(
                 inner.getRequest(),

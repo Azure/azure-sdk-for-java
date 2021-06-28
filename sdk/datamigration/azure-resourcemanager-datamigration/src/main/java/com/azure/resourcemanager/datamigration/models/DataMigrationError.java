@@ -21,7 +21,7 @@ public final class DataMigrationError {
     private String message;
 
     /*
-     * Type of error.
+     * Error type
      */
     @JsonProperty(value = "type")
     private ErrorType type;
@@ -36,7 +36,7 @@ public final class DataMigrationError {
     }
 
     /**
-     * Get the type property: Type of error.
+     * Get the type property: Error type.
      *
      * @return the type value.
      */
@@ -45,7 +45,7 @@ public final class DataMigrationError {
     }
 
     /**
-     * Set the type property: Type of error.
+     * Set the type property: Error type.
      *
      * @param type the type value to set.
      * @return the DataMigrationError object itself.

@@ -66,6 +66,13 @@ public interface DataMigrationManagementClient {
     TasksClient getTasks();
 
     /**
+     * Gets the ServiceTasksClient object to access its operations.
+     *
+     * @return the ServiceTasksClient object.
+     */
+    ServiceTasksClient getServiceTasks();
+
+    /**
      * Gets the ProjectsClient object to access its operations.
      *
      * @return the ProjectsClient object.
@@ -85,4 +92,11 @@ public interface DataMigrationManagementClient {
      * @return the OperationsClient object.
      */
     OperationsClient getOperations();
+
+    /**
+     * Gets the FilesClient object to access its operations.
+     *
+     * @return the FilesClient object.
+     */
+    FilesClient getFiles();
 }

@@ -21,7 +21,7 @@ public interface Projects {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return oData page of project resources.
      */
-    PagedIterable<Project> listByResourceGroup(String groupName, String serviceName);
+    PagedIterable<Project> list(String groupName, String serviceName);
 
     /**
      * The project resource is a nested resource representing a stored migration project. This method returns a list of
@@ -35,7 +35,7 @@ public interface Projects {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return oData page of project resources.
      */
-    PagedIterable<Project> listByResourceGroup(String groupName, String serviceName, Context context);
+    PagedIterable<Project> list(String groupName, String serviceName, Context context);
 
     /**
      * The project resource is a nested resource representing a stored migration project. The GET method retrieves

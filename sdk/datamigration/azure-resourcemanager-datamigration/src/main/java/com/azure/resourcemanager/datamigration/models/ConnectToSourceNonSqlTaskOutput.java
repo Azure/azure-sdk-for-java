@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Output for connect to Oracle, MySQL type source. */
+/** Output for connect to MySQL type source. */
 @Immutable
 public final class ConnectToSourceNonSqlTaskOutput {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectToSourceNonSqlTaskOutput.class);

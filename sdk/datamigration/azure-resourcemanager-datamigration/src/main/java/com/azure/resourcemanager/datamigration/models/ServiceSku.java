@@ -21,7 +21,8 @@ public final class ServiceSku {
     private String name;
 
     /*
-     * The tier of the SKU, such as 'Free', 'Basic', 'Standard', or 'Premium'
+     * The tier of the SKU, such as 'Basic', 'General Purpose', or 'Business
+     * Critical'
      */
     @JsonProperty(value = "tier")
     private String tier;
@@ -68,7 +69,7 @@ public final class ServiceSku {
     }
 
     /**
-     * Get the tier property: The tier of the SKU, such as 'Free', 'Basic', 'Standard', or 'Premium'.
+     * Get the tier property: The tier of the SKU, such as 'Basic', 'General Purpose', or 'Business Critical'.
      *
      * @return the tier value.
      */
@@ -77,7 +78,7 @@ public final class ServiceSku {
     }
 
     /**
-     * Set the tier property: The tier of the SKU, such as 'Free', 'Basic', 'Standard', or 'Premium'.
+     * Set the tier property: The tier of the SKU, such as 'Basic', 'General Purpose', or 'Business Critical'.
      *
      * @param tier the tier value to set.
      * @return the ServiceSku object itself.

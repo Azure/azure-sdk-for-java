@@ -202,7 +202,7 @@ public final class ServicesClientImpl implements ServicesClient {
                 + "/{serviceName}/checkNameAvailability")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NameAvailabilityResponseInner>> nestedCheckNameAvailability(
+        Mono<Response<NameAvailabilityResponseInner>> checkChildrenNameAvailability(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("groupName") String groupName,
@@ -244,8 +244,8 @@ public final class ServicesClientImpl implements ServicesClient {
         Mono<Response<NameAvailabilityResponseInner>> checkNameAvailability(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
             @PathParam("location") String location,
+            @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") NameAvailabilityRequest parameters,
             @HeaderParam("Accept") String accept,
             Context context);
@@ -2150,7 +2150,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @return indicates whether a proposed resource name is available.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<NameAvailabilityResponseInner>> nestedCheckNameAvailabilityWithResponseAsync(
+    private Mono<Response<NameAvailabilityResponseInner>> checkChildrenNameAvailabilityWithResponseAsync(
         String groupName, String serviceName, NameAvailabilityRequest parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -2180,7 +2180,7 @@ public final class ServicesClientImpl implements ServicesClient {
             .withContext(
                 context ->
                     service
-                        .nestedCheckNameAvailability(
+                        .checkChildrenNameAvailability(
                             this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             groupName,
@@ -2205,7 +2205,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @return indicates whether a proposed resource name is available.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<NameAvailabilityResponseInner>> nestedCheckNameAvailabilityWithResponseAsync(
+    private Mono<Response<NameAvailabilityResponseInner>> checkChildrenNameAvailabilityWithResponseAsync(
         String groupName, String serviceName, NameAvailabilityRequest parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -2233,7 +2233,7 @@ public final class ServicesClientImpl implements ServicesClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .nestedCheckNameAvailability(
+            .checkChildrenNameAvailability(
                 this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 groupName,
@@ -2256,9 +2256,9 @@ public final class ServicesClientImpl implements ServicesClient {
      * @return indicates whether a proposed resource name is available.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NameAvailabilityResponseInner> nestedCheckNameAvailabilityAsync(
+    private Mono<NameAvailabilityResponseInner> checkChildrenNameAvailabilityAsync(
         String groupName, String serviceName, NameAvailabilityRequest parameters) {
-        return nestedCheckNameAvailabilityWithResponseAsync(groupName, serviceName, parameters)
+        return checkChildrenNameAvailabilityWithResponseAsync(groupName, serviceName, parameters)
             .flatMap(
                 (Response<NameAvailabilityResponseInner> res) -> {
                     if (res.getValue() != null) {
@@ -2281,9 +2281,9 @@ public final class ServicesClientImpl implements ServicesClient {
      * @return indicates whether a proposed resource name is available.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NameAvailabilityResponseInner nestedCheckNameAvailability(
+    public NameAvailabilityResponseInner checkChildrenNameAvailability(
         String groupName, String serviceName, NameAvailabilityRequest parameters) {
-        return nestedCheckNameAvailabilityAsync(groupName, serviceName, parameters).block();
+        return checkChildrenNameAvailabilityAsync(groupName, serviceName, parameters).block();
     }
 
     /**
@@ -2299,9 +2299,9 @@ public final class ServicesClientImpl implements ServicesClient {
      * @return indicates whether a proposed resource name is available.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<NameAvailabilityResponseInner> nestedCheckNameAvailabilityWithResponse(
+    public Response<NameAvailabilityResponseInner> checkChildrenNameAvailabilityWithResponse(
         String groupName, String serviceName, NameAvailabilityRequest parameters, Context context) {
-        return nestedCheckNameAvailabilityWithResponseAsync(groupName, serviceName, parameters, context).block();
+        return checkChildrenNameAvailabilityWithResponseAsync(groupName, serviceName, parameters, context).block();
     }
 
     /**
@@ -2658,8 +2658,8 @@ public final class ServicesClientImpl implements ServicesClient {
                         .checkNameAvailability(
                             this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
                             location,
+                            this.client.getApiVersion(),
                             parameters,
                             accept,
                             context))
@@ -2706,8 +2706,8 @@ public final class ServicesClientImpl implements ServicesClient {
             .checkNameAvailability(
                 this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
                 location,
+                this.client.getApiVersion(),
                 parameters,
                 accept,
                 context);

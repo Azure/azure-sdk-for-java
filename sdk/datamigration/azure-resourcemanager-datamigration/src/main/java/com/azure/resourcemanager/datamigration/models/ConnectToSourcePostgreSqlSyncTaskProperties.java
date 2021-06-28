@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Properties for the task that validates connection to PostgreSQL server and source server requirements for online
@@ -61,6 +62,13 @@ public final class ConnectToSourcePostgreSqlSyncTaskProperties extends ProjectTa
      */
     public List<ConnectToSourcePostgreSqlSyncTaskOutput> output() {
         return this.output;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ConnectToSourcePostgreSqlSyncTaskProperties withClientData(Map<String, String> clientData) {
+        super.withClientData(clientData);
+        return this;
     }
 
     /**

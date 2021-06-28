@@ -58,6 +58,24 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputMigrationL
     @JsonProperty(value = "targetServer", access = JsonProperty.Access.WRITE_ONLY)
     private String targetServer;
 
+    /*
+     * Source server type.
+     */
+    @JsonProperty(value = "sourceServerType", access = JsonProperty.Access.WRITE_ONLY)
+    private ScenarioSource sourceServerType;
+
+    /*
+     * Target server type.
+     */
+    @JsonProperty(value = "targetServerType", access = JsonProperty.Access.WRITE_ONLY)
+    private ScenarioTarget targetServerType;
+
+    /*
+     * Migration status
+     */
+    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
+    private ReplicateMigrationState state;
+
     /**
      * Get the startedOn property: Migration start time.
      *
@@ -110,6 +128,33 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputMigrationL
      */
     public String targetServer() {
         return this.targetServer;
+    }
+
+    /**
+     * Get the sourceServerType property: Source server type.
+     *
+     * @return the sourceServerType value.
+     */
+    public ScenarioSource sourceServerType() {
+        return this.sourceServerType;
+    }
+
+    /**
+     * Get the targetServerType property: Target server type.
+     *
+     * @return the targetServerType value.
+     */
+    public ScenarioTarget targetServerType() {
+        return this.targetServerType;
+    }
+
+    /**
+     * Get the state property: Migration status.
+     *
+     * @return the state value.
+     */
+    public ReplicateMigrationState state() {
+        return this.state;
     }
 
     /**

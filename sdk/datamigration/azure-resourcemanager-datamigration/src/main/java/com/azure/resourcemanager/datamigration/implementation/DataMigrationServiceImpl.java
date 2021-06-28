@@ -72,6 +72,10 @@ public final class DataMigrationServiceImpl
         return this.innerModel().virtualSubnetId();
     }
 
+    public String virtualNicId() {
+        return this.innerModel().virtualNicId();
+    }
+
     public Region region() {
         return Region.fromName(this.regionName());
     }
@@ -193,15 +197,15 @@ public final class DataMigrationServiceImpl
         serviceManager.services().stop(groupName, serviceName, context);
     }
 
-    public NameAvailabilityResponse nestedCheckNameAvailability(NameAvailabilityRequest parameters) {
-        return serviceManager.services().nestedCheckNameAvailability(groupName, serviceName, parameters);
+    public NameAvailabilityResponse checkChildrenNameAvailability(NameAvailabilityRequest parameters) {
+        return serviceManager.services().checkChildrenNameAvailability(groupName, serviceName, parameters);
     }
 
-    public Response<NameAvailabilityResponse> nestedCheckNameAvailabilityWithResponse(
+    public Response<NameAvailabilityResponse> checkChildrenNameAvailabilityWithResponse(
         NameAvailabilityRequest parameters, Context context) {
         return serviceManager
             .services()
-            .nestedCheckNameAvailabilityWithResponse(groupName, serviceName, parameters, context);
+            .checkChildrenNameAvailabilityWithResponse(groupName, serviceName, parameters, context);
     }
 
     public DataMigrationServiceImpl withRegion(Region location) {
@@ -241,6 +245,11 @@ public final class DataMigrationServiceImpl
 
     public DataMigrationServiceImpl withVirtualSubnetId(String virtualSubnetId) {
         this.innerModel().withVirtualSubnetId(virtualSubnetId);
+        return this;
+    }
+
+    public DataMigrationServiceImpl withVirtualNicId(String virtualNicId) {
+        this.innerModel().withVirtualNicId(virtualNicId);
         return this;
     }
 }
