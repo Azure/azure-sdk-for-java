@@ -3,12 +3,12 @@
 
 package com.azure.storage.data.movement;
 
-public class PathScannerFactory {
+public final class PathScannerFactory {
     private final String path;
 
     public PathScannerFactory(String path) {
         this.path = path;
     }
 
-    public PathScanner buildPathScanner() { return new PathScanner(path); }
+    public PathScanner getPathScanner() { return new PathScanner(path); }
 }

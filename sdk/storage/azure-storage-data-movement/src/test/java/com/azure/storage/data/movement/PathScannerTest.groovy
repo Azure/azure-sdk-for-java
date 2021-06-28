@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.data.movement
 
 import reactor.core.publisher.Flux
@@ -27,48 +30,50 @@ class PathScannerTest extends Specification {
     @Unroll
     def "Scan local folder containing items of mixed permissions"() {
         given:
-            Path folder = Files.createTempDirectory(Paths.get(System.getProperty("java.io.tmpdir")), null);
-            Path openChild = Files.createTempFile(folder, null, null);
-            Path lockedChild = Files.createTempFile(folder, null, null);
+        Path folder = Files.createTempDirectory(Paths.get(System.getProperty("java.io.tmpdir")), null);
+        Path openChild = Files.createTempFile(folder, null, null);
+        Path lockedChild = Files.createTempFile(folder, null, null);
 
-            Path openSubfolder = Files.createTempDirectory(folder, null);
-            Path openSubchild = Files.createTempFile(openSubfolder, null, null);
+        Path openSubfolder = Files.createTempDirectory(folder, null);
+        Path openSubchild = Files.createTempFile(openSubfolder, null, null);
 
-            Path lockedSubfolder = Files.createTempDirectory(folder, null);
-            Path lockedSubchild = Files.createTempFile(lockedSubfolder, null, null);
+        Path lockedSubfolder = Files.createTempDirectory(folder, null);
+        Path lockedSubchild = Files.createTempFile(lockedSubfolder, null, null);
 
-            allowReadData(lockedChild, false);
-            allowReadData(lockedSubfolder, false);
+        allowReadData(lockedChild, false);
+        allowReadData(lockedSubfolder, false);
 
-            PathScannerFactory scannerFactory = new PathScannerFactory(folder.toAbsolutePath().toString());
-            PathScanner scanner = scannerFactory.buildPathScanner();
+        PathScannerFactory scannerFactory = new PathScannerFactory(folder.toAbsolutePath().toString());
+        PathScanner scanner = scannerFactory.getPathScanner();
 
-            def expectedResult = [folder, openChild, lockedChild, openSubfolder, openSubchild, lockedSubfolder]
-                .stream()
-                .map({ path -> path.toString() })
-                .collect();
+        List<String> expectedResult = [folder, openChild, lockedChild, openSubfolder, lockedSubfolder, openSubchild]
+            .stream()
+            .map({ path -> path.toString() })
+            .collect()
+            .asList();
 
         when:
-            Flux<String> result = scanner.scan(true);
+        Flux<String> result = scanner.scan(true);
 
         then:
-            StepVerifier.create(result)
-                .expectNextMatches({ path -> expectedResult.contains(path) })
-                .expectNextMatches({ path -> expectedResult.contains(path) })
-                .expectNextMatches({ path -> expectedResult.contains(path) })
-                .expectNextMatches({ path -> expectedResult.contains(path) })
-                .expectNextMatches({ path -> expectedResult.contains(path) })
-                .expectNextMatches({ path -> expectedResult.contains(path) })
-                .expectComplete()
-                .verify();
+        // Ordering should go from shallowest to deepest level in file hierarchy
+        StepVerifier.create(result)
+            .expectNextMatches({ path -> liesWithin(path, expectedResult, 0, 1) })
+            .expectNextMatches({ path -> liesWithin(path, expectedResult, 1, 5) })
+            .expectNextMatches({ path -> liesWithin(path, expectedResult, 1, 5) })
+            .expectNextMatches({ path -> liesWithin(path, expectedResult, 1, 5) })
+            .expectNextMatches({ path -> liesWithin(path, expectedResult, 1, 5) })
+            .expectNextMatches({ path -> liesWithin(path, expectedResult, 5, 6) })
+            .expectComplete()
+            .verify();
 
         cleanup:
-            allowReadData(lockedChild, true);
-            allowReadData(lockedSubfolder, true);
+        allowReadData(lockedChild, true);
+        allowReadData(lockedSubfolder, true);
 
-            Files.walk(folder)
-                .sorted({ o1, o2 -> -(o1 <=> o2) })
-                .forEach(Files.&delete);
+        Files.walk(folder)
+            .sorted({ o1, o2 -> -(o1 <=> o2) })
+            .forEach(Files.&delete);
     }
 
     def static allowReadData(Path path, boolean allowRead) {
@@ -94,5 +99,8 @@ class PathScannerTest extends Specification {
         }
     }
 
-
+    static boolean liesWithin(String searchValue, List<String> list, int start, int end) {
+        System.out.println(searchValue);
+        return list.subList(start, end).contains(searchValue);
+    }
 }
