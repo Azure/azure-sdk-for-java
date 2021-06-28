@@ -40,6 +40,10 @@
 ### Dependency Updates
 - Upgraded `azure-core` dependency to `1.15.0`.
 
+## 2.1.0-beta.1 (2021-03-26)
+### New Features
+- Exposes 'AmqpTransactionCoordinator' via AmqpSession. 
+
 ## 2.0.4 (2021-04-12)
 
 ### Bug Fixes

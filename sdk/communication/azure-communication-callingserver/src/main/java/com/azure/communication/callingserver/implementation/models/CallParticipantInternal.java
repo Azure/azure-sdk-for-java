@@ -25,8 +25,8 @@ public final class CallParticipantInternal {
     /*
      * Is participant muted
      */
-    @JsonProperty(value = "isMuted")
-    private Boolean isMuted;
+    @JsonProperty(value = "isMuted", required = true)
+    private boolean isMuted;
 
     /**
      * Get the identifier property: Communication identifier of the participant.
@@ -73,7 +73,7 @@ public final class CallParticipantInternal {
      *
      * @return the isMuted value.
      */
-    public Boolean isMuted() {
+    public boolean isMuted() {
         return this.isMuted;
     }
 
@@ -83,7 +83,7 @@ public final class CallParticipantInternal {
      * @param isMuted the isMuted value to set.
      * @return the CallParticipantInternal object itself.
      */
-    public CallParticipantInternal setIsMuted(Boolean isMuted) {
+    public CallParticipantInternal setIsMuted(boolean isMuted) {
         this.isMuted = isMuted;
         return this;
     }

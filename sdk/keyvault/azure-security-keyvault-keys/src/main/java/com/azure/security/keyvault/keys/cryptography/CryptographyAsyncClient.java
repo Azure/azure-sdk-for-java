@@ -14,7 +14,9 @@ import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.security.keyvault.keys.cryptography.models.DecryptParameters;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptResult;
+import com.azure.security.keyvault.keys.cryptography.models.EncryptParameters;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptResult;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
@@ -59,6 +61,7 @@ import static com.azure.security.keyvault.keys.models.KeyType.RSA_HSM;
 @ServiceClient(builder = CryptographyClientBuilder.class, isAsync = true, serviceInterfaces = CryptographyService.class)
 public class CryptographyAsyncClient {
     static final String KEY_VAULT_SCOPE = "https://vault.azure.net/.default";
+    static final String MHSM_SCOPE = "https://managedhsm.azure.net/.default";
     static final String SECRETS_COLLECTION = "secrets";
     // Please see <a href=https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
     // for more information on Azure resource provider namespaces.
@@ -255,7 +258,10 @@ public class CryptographyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EncryptResult> encrypt(EncryptionAlgorithm algorithm, byte[] plaintext) {
-        return encrypt(new EncryptParameters(algorithm, plaintext, null, null), null);
+        Objects.requireNonNull(algorithm, "'algorithm' cannot be null.");
+        Objects.requireNonNull(plaintext, "'plaintext' cannot be null.");
+
+        return encrypt(algorithm, plaintext, null);
     }
 
     /**
@@ -304,6 +310,20 @@ public class CryptographyAsyncClient {
         }
     }
 
+    Mono<EncryptResult> encrypt(EncryptionAlgorithm algorithm, byte[] plaintext, Context context) {
+        return ensureValidKeyAvailable().flatMap(available -> {
+            if (!available) {
+                return cryptographyServiceClient.encrypt(algorithm, plaintext, context);
+            }
+
+            if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.ENCRYPT)) {
+                return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format(
+                    "Encrypt operation is missing permission/not supported for key with id: %s", key.getId()))));
+            }
+
+            return localKeyCryptographyClient.encryptAsync(algorithm, plaintext, context, key);
+        });
+    }
 
     Mono<EncryptResult> encrypt(EncryptParameters encryptParameters, Context context) {
         return ensureValidKeyAvailable().flatMap(available -> {
@@ -356,7 +376,10 @@ public class CryptographyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DecryptResult> decrypt(EncryptionAlgorithm algorithm, byte[] ciphertext) {
-        return decrypt(new DecryptParameters(algorithm, ciphertext, null, null, null));
+        Objects.requireNonNull(algorithm, "'algorithm' cannot be null.");
+        Objects.requireNonNull(algorithm, "'ciphertext' cannot be null.");
+
+        return decrypt(algorithm, ciphertext, null);
     }
 
     /**
@@ -401,6 +424,21 @@ public class CryptographyAsyncClient {
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
+    }
+
+    Mono<DecryptResult> decrypt(EncryptionAlgorithm algorithm, byte[] ciphertext, Context context) {
+        return ensureValidKeyAvailable().flatMap(available -> {
+            if (!available) {
+                return cryptographyServiceClient.decrypt(algorithm, ciphertext, context);
+            }
+
+            if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.DECRYPT)) {
+                return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format(
+                    "Decrypt operation is not allowed for key with id: %s", key.getId()))));
+            }
+
+            return localKeyCryptographyClient.decryptAsync(algorithm, ciphertext, context, key);
+        });
     }
 
     Mono<DecryptResult> decrypt(DecryptParameters decryptParameters, Context context) {

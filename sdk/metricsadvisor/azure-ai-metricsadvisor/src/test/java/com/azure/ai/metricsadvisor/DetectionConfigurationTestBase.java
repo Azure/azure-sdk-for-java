@@ -13,7 +13,7 @@ import com.azure.ai.metricsadvisor.administration.models.DataFeedGranularity;
 import com.azure.ai.metricsadvisor.administration.models.DataFeedGranularityType;
 import com.azure.ai.metricsadvisor.administration.models.DataFeedIngestionSettings;
 import com.azure.ai.metricsadvisor.administration.models.DataFeedSchema;
-import com.azure.ai.metricsadvisor.administration.models.DetectionConditionsOperator;
+import com.azure.ai.metricsadvisor.administration.models.DetectionConditionOperator;
 import com.azure.ai.metricsadvisor.models.DimensionKey;
 import com.azure.ai.metricsadvisor.administration.models.HardThresholdCondition;
 import com.azure.ai.metricsadvisor.administration.models.DataFeedMetric;
@@ -44,11 +44,11 @@ public abstract class DetectionConfigurationTestBase extends MetricsAdvisorAdmin
 
         final String detectionConfigName = "testdetectionconfig" + UUID.randomUUID();
         final MetricWholeSeriesDetectionCondition wholeSeriesCondition = new MetricWholeSeriesDetectionCondition()
-            .setCrossConditionOperator(DetectionConditionsOperator.OR)
+            .setConditionOperator(DetectionConditionOperator.OR)
             .setSmartDetectionCondition(new SmartDetectionCondition()
                 .setSensitivity(50)
                 .setAnomalyDetectorDirection(AnomalyDetectorDirection.BOTH)
-                .setSuppressCondition(new SuppressCondition().setMinNumber(50).setMinRatio(50)))
+                .setSuppressCondition(new SuppressCondition().setMinNumber(13).setMinRatio(50)))
             .setHardThresholdCondition(new HardThresholdCondition()
                 .setLowerBound(0.0)
                 .setUpperBound(100.0)
@@ -86,8 +86,8 @@ public abstract class DetectionConfigurationTestBase extends MetricsAdvisorAdmin
             = CreateDetectionConfigurationForWholeSeriesInput.INSTANCE.wholeSeriesCondition;
 
         Assertions.assertNotNull(createdWholeSeriesCondition);
-        Assertions.assertEquals(expectedWholeSeriesCondition.getCrossConditionsOperator(),
-            createdWholeSeriesCondition.getCrossConditionsOperator());
+        Assertions.assertEquals(expectedWholeSeriesCondition.getConditionOperator(),
+            createdWholeSeriesCondition.getConditionOperator());
         // WholeSeries::SmartDetection
         Assertions.assertNotNull(createdWholeSeriesCondition.getSmartDetectionCondition());
         Assertions.assertEquals(
@@ -143,11 +143,11 @@ public abstract class DetectionConfigurationTestBase extends MetricsAdvisorAdmin
 
         final String detectionConfigName = "testdetectionconfig" + UUID.randomUUID();
         final MetricWholeSeriesDetectionCondition wholeSeriesCondition = new MetricWholeSeriesDetectionCondition()
-            .setCrossConditionOperator(DetectionConditionsOperator.AND)
+            .setConditionOperator(DetectionConditionOperator.AND)
             .setSmartDetectionCondition(new SmartDetectionCondition()
                 .setSensitivity(50)
                 .setAnomalyDetectorDirection(AnomalyDetectorDirection.BOTH)
-                .setSuppressCondition(new SuppressCondition().setMinNumber(50).setMinRatio(50)))
+                .setSuppressCondition(new SuppressCondition().setMinNumber(13).setMinRatio(50)))
             .setHardThresholdCondition(new HardThresholdCondition()
                 .setLowerBound(0.0)
                 .setUpperBound(100.0)
@@ -205,8 +205,8 @@ public abstract class DetectionConfigurationTestBase extends MetricsAdvisorAdmin
             = CreateDetectionConfigurationForSeriesAndGroupInput.INSTANCE.wholeSeriesCondition;
 
         Assertions.assertNotNull(createdWholeSeriesCondition);
-        Assertions.assertEquals(expectedWholeSeriesCondition.getCrossConditionsOperator(),
-            createdWholeSeriesCondition.getCrossConditionsOperator());
+        Assertions.assertEquals(expectedWholeSeriesCondition.getConditionOperator(),
+            createdWholeSeriesCondition.getConditionOperator());
         // WholeSeries::SmartDetection
         Assertions.assertNotNull(createdWholeSeriesCondition.getSmartDetectionCondition());
         Assertions.assertEquals(
@@ -320,11 +320,11 @@ public abstract class DetectionConfigurationTestBase extends MetricsAdvisorAdmin
 
         final String detectionConfigName = "testdetectionconfig" + UUID.randomUUID();
         final MetricWholeSeriesDetectionCondition wholeSeriesCondition = new MetricWholeSeriesDetectionCondition()
-            .setCrossConditionOperator(DetectionConditionsOperator.AND)
+            .setConditionOperator(DetectionConditionOperator.AND)
             .setSmartDetectionCondition(new SmartDetectionCondition()
                 .setSensitivity(50)
                 .setAnomalyDetectorDirection(AnomalyDetectorDirection.BOTH)
-                .setSuppressCondition(new SuppressCondition().setMinNumber(50).setMinRatio(50)))
+                .setSuppressCondition(new SuppressCondition().setMinNumber(13).setMinRatio(50)))
             .setHardThresholdCondition(new HardThresholdCondition()
                 .setLowerBound(0.0)
                 .setUpperBound(100.0)
@@ -343,7 +343,7 @@ public abstract class DetectionConfigurationTestBase extends MetricsAdvisorAdmin
 
         final MetricSingleSeriesDetectionCondition seriesCondition1
             = new MetricSingleSeriesDetectionCondition(seriesKey1)
-            .setCrossConditionOperator(DetectionConditionsOperator.OR)
+            .setConditionOperator(DetectionConditionOperator.OR)
             .setSmartDetectionCondition(new SmartDetectionCondition()
                 .setSensitivity(63)
                 .setAnomalyDetectorDirection(AnomalyDetectorDirection.BOTH)
@@ -376,7 +376,7 @@ public abstract class DetectionConfigurationTestBase extends MetricsAdvisorAdmin
 
         final MetricSeriesGroupDetectionCondition seriesGroupCondition1
             = new MetricSeriesGroupDetectionCondition(seriesGroupKey1)
-            .setCrossConditionOperator(DetectionConditionsOperator.OR)
+            .setConditionOperator(DetectionConditionOperator.OR)
             .setSmartDetectionCondition(new SmartDetectionCondition()
                 .setSensitivity(63)
                 .setAnomalyDetectorDirection(AnomalyDetectorDirection.BOTH)
@@ -431,8 +431,8 @@ public abstract class DetectionConfigurationTestBase extends MetricsAdvisorAdmin
             = CreateDetectionConfigurationForMultipleSeriesAndGroupInput.INSTANCE.wholeSeriesCondition;
 
         Assertions.assertNotNull(createdWholeSeriesCondition);
-        Assertions.assertEquals(expectedWholeSeriesCondition.getCrossConditionsOperator(),
-            createdWholeSeriesCondition.getCrossConditionsOperator());
+        Assertions.assertEquals(expectedWholeSeriesCondition.getConditionOperator(),
+            createdWholeSeriesCondition.getConditionOperator());
         // WholeSeries::SmartDetection
         Assertions.assertNotNull(createdWholeSeriesCondition.getSmartDetectionCondition());
         Assertions.assertEquals(
@@ -496,8 +496,8 @@ public abstract class DetectionConfigurationTestBase extends MetricsAdvisorAdmin
 
         final MetricSingleSeriesDetectionCondition expectedSeriesCondition1
             = CreateDetectionConfigurationForMultipleSeriesAndGroupInput.INSTANCE.seriesCondition1;
-        Assertions.assertEquals(createdSeriesCondition1.getCrossConditionsOperator(),
-            expectedSeriesCondition1.getCrossConditionsOperator());
+        Assertions.assertEquals(createdSeriesCondition1.getConditionOperator(),
+            expectedSeriesCondition1.getConditionOperator());
         // Series1::SmartDetection
         Assertions.assertNotNull(createdSeriesCondition1.getSmartDetectionCondition());
         Assertions.assertEquals(
@@ -596,8 +596,8 @@ public abstract class DetectionConfigurationTestBase extends MetricsAdvisorAdmin
 
         final MetricSeriesGroupDetectionCondition expectedSeriesGroupCondition1
             = CreateDetectionConfigurationForMultipleSeriesAndGroupInput.INSTANCE.seriesGroupCondition1;
-        Assertions.assertEquals(createdSeriesGroupCondition1.getCrossConditionsOperator(),
-            expectedSeriesGroupCondition1.getCrossConditionsOperator());
+        Assertions.assertEquals(createdSeriesGroupCondition1.getConditionOperator(),
+            expectedSeriesGroupCondition1.getConditionOperator());
         // SeriesGroup1::SmartDetection
         Assertions.assertNotNull(createdSeriesGroupCondition1.getSmartDetectionCondition());
         Assertions.assertEquals(
@@ -688,11 +688,11 @@ public abstract class DetectionConfigurationTestBase extends MetricsAdvisorAdmin
 
         final String detectionConfigName = "testdetectionconfig" + UUID.randomUUID();
         final MetricWholeSeriesDetectionCondition wholeSeriesCondition = new MetricWholeSeriesDetectionCondition()
-            .setCrossConditionOperator(DetectionConditionsOperator.AND)
+            .setConditionOperator(DetectionConditionOperator.AND)
             .setSmartDetectionCondition(new SmartDetectionCondition()
                 .setSensitivity(50)
                 .setAnomalyDetectorDirection(AnomalyDetectorDirection.BOTH)
-                .setSuppressCondition(new SuppressCondition().setMinNumber(50).setMinRatio(50)))
+                .setSuppressCondition(new SuppressCondition().setMinNumber(13).setMinRatio(50)))
             .setHardThresholdCondition(new HardThresholdCondition()
                 .setLowerBound(0.0)
                 .setUpperBound(100.0)
@@ -711,7 +711,7 @@ public abstract class DetectionConfigurationTestBase extends MetricsAdvisorAdmin
 
         final MetricSingleSeriesDetectionCondition seriesCondition1
             = new MetricSingleSeriesDetectionCondition(seriesKey1)
-            .setCrossConditionOperator(DetectionConditionsOperator.OR)
+            .setConditionOperator(DetectionConditionOperator.OR)
             .setSmartDetectionCondition(new SmartDetectionCondition()
                 .setSensitivity(63)
                 .setAnomalyDetectorDirection(AnomalyDetectorDirection.BOTH)
@@ -744,7 +744,7 @@ public abstract class DetectionConfigurationTestBase extends MetricsAdvisorAdmin
 
         final MetricSeriesGroupDetectionCondition seriesGroupCondition1
             = new MetricSeriesGroupDetectionCondition(seriesGroupKey1)
-            .setCrossConditionOperator(DetectionConditionsOperator.OR)
+            .setConditionOperator(DetectionConditionOperator.OR)
             .setSmartDetectionCondition(new SmartDetectionCondition()
                 .setSensitivity(63)
                 .setAnomalyDetectorDirection(AnomalyDetectorDirection.BOTH)
@@ -823,8 +823,8 @@ public abstract class DetectionConfigurationTestBase extends MetricsAdvisorAdmin
             = UpdateDetectionConfigurationInput.INSTANCE.wholeSeriesCondition;
 
         Assertions.assertNotNull(createdWholeSeriesCondition);
-        Assertions.assertEquals(expectedWholeSeriesCondition.getCrossConditionsOperator(),
-            createdWholeSeriesCondition.getCrossConditionsOperator());
+        Assertions.assertEquals(expectedWholeSeriesCondition.getConditionOperator(),
+            createdWholeSeriesCondition.getConditionOperator());
         // WholeSeries::SmartDetection
         Assertions.assertNotNull(createdWholeSeriesCondition.getSmartDetectionCondition());
         Assertions.assertEquals(
@@ -888,8 +888,8 @@ public abstract class DetectionConfigurationTestBase extends MetricsAdvisorAdmin
 
         final MetricSingleSeriesDetectionCondition expectedSeriesCondition1
             = UpdateDetectionConfigurationInput.INSTANCE.seriesCondition1;
-        Assertions.assertEquals(createdSeriesCondition1.getCrossConditionsOperator(),
-            expectedSeriesCondition1.getCrossConditionsOperator());
+        Assertions.assertEquals(createdSeriesCondition1.getConditionOperator(),
+            expectedSeriesCondition1.getConditionOperator());
         // Series1::SmartDetection
         Assertions.assertNotNull(createdSeriesCondition1.getSmartDetectionCondition());
         Assertions.assertEquals(
@@ -965,8 +965,8 @@ public abstract class DetectionConfigurationTestBase extends MetricsAdvisorAdmin
 
         final MetricSeriesGroupDetectionCondition expectedSeriesGroupCondition1
             = UpdateDetectionConfigurationInput.INSTANCE.seriesGroupCondition1;
-        Assertions.assertEquals(createdSeriesGroupCondition1.getCrossConditionsOperator(),
-            expectedSeriesGroupCondition1.getCrossConditionsOperator());
+        Assertions.assertEquals(createdSeriesGroupCondition1.getConditionOperator(),
+            expectedSeriesGroupCondition1.getConditionOperator());
         // SeriesGroup1::SmartDetection
         Assertions.assertNotNull(createdSeriesGroupCondition1.getSmartDetectionCondition());
         Assertions.assertEquals(

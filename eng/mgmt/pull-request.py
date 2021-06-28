@@ -12,7 +12,7 @@ def create_pull_request(owner, repo, title, head, auth = os.environ.get("GITHUB_
         auth = (auth, ""),
         json = {
             "title": title,
-            "base": "master",
+            "base": "main",
             "head": head,
         }
     )

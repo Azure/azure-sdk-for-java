@@ -8,47 +8,46 @@ import com.azure.communication.callingserver.models.ToneValue;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Gets or sets the tone info. */
+/** The information about the tone. */
 @Fluent
 public final class ToneInfoInternal {
     /*
-     * Gets or sets the sequence id. This id can be used to determine if the
-     * same tone
-     * was played multiple times or if any tones were missed.
+     * The sequence id which can be used to determine if the same tone was
+     * played multiple times or if any tones were missed.
      */
-    @JsonProperty(value = "sequenceId")
-    private Integer sequenceId;
+    @JsonProperty(value = "sequenceId", required = true)
+    private int sequenceId;
 
     /*
-     * Gets or sets the tone detected.
+     * The tone value.
      */
-    @JsonProperty(value = "tone")
+    @JsonProperty(value = "tone", required = true)
     private ToneValue tone;
 
     /**
-     * Get the sequenceId property: Gets or sets the sequence id. This id can be used to determine if the same tone was
-     * played multiple times or if any tones were missed.
+     * Get the sequenceId property: The sequence id which can be used to determine if the same tone was played multiple
+     * times or if any tones were missed.
      *
      * @return the sequenceId value.
      */
-    public Integer getSequenceId() {
+    public int getSequenceId() {
         return this.sequenceId;
     }
 
     /**
-     * Set the sequenceId property: Gets or sets the sequence id. This id can be used to determine if the same tone was
-     * played multiple times or if any tones were missed.
+     * Set the sequenceId property: The sequence id which can be used to determine if the same tone was played multiple
+     * times or if any tones were missed.
      *
      * @param sequenceId the sequenceId value to set.
      * @return the ToneInfoInternal object itself.
      */
-    public ToneInfoInternal setSequenceId(Integer sequenceId) {
+    public ToneInfoInternal setSequenceId(int sequenceId) {
         this.sequenceId = sequenceId;
         return this;
     }
 
     /**
-     * Get the tone property: Gets or sets the tone detected.
+     * Get the tone property: The tone value.
      *
      * @return the tone value.
      */
@@ -57,7 +56,7 @@ public final class ToneInfoInternal {
     }
 
     /**
-     * Set the tone property: Gets or sets the tone detected.
+     * Set the tone property: The tone value.
      *
      * @param tone the tone value to set.
      * @return the ToneInfoInternal object itself.

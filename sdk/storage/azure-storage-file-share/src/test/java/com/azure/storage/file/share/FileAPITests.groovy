@@ -26,7 +26,6 @@ import com.azure.storage.file.share.options.ShareFileListRangesDiffOptions
 import com.azure.storage.file.share.sas.ShareFileSasPermission
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues
 import spock.lang.Ignore
-import spock.lang.Requires
 import spock.lang.Unroll
 
 import java.nio.charset.StandardCharsets
@@ -300,6 +299,52 @@ class FileAPITests extends APISpec {
         downloadResponse.getDeserializedHeaders().getContentLength() == data.defaultDataSizeLong
 
         data.defaultBytes == stream.toByteArray()
+    }
+
+    def "Parallel Upload InputStream no length"() {
+        when:
+        primaryFileClient.create(data.defaultDataSize)
+        primaryFileClient.uploadWithResponse(new ShareFileUploadOptions(data.defaultInputStream), null, null)
+
+        then:
+        notThrown(Exception)
+        ByteArrayOutputStream os = new ByteArrayOutputStream()
+        primaryFileClient.download(os)
+        os.toByteArray() == data.defaultBytes
+    }
+
+    def "Parallel Upload InputStream bad length"() {
+        when:
+        primaryFileClient.create(data.defaultDataSize)
+        primaryFileClient.uploadWithResponse(new ShareFileUploadOptions(data.defaultInputStream, length), null, null)
+
+        then:
+        thrown(Exception)
+
+        where:
+        _ | length
+        _ | 0
+        _ | -100
+        _ | data.defaultDataSize - 1
+        _ | data.defaultDataSize + 1
+    }
+
+    def "Upload successful retry"() {
+        given:
+        primaryFileClient.create(data.defaultDataSize)
+        def clientWithFailure = getFileClient(
+            env.primaryAccount.credential,
+            primaryFileClient.getFileUrl(),
+            new TransientFailureInjectingHttpPipelinePolicy())
+
+        when:
+        clientWithFailure.uploadWithResponse(new ShareFileUploadOptions(data.defaultInputStream), null, null)
+
+        then:
+        notThrown(Exception)
+        ByteArrayOutputStream os = new ByteArrayOutputStream()
+        primaryFileClient.download(os)
+        os.toByteArray() == data.defaultBytes
     }
 
     def "Upload range and download data"() {

@@ -3,10 +3,9 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestOptions;
+import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.util.Beta;
 
 import java.util.ArrayList;
@@ -20,6 +19,7 @@ import java.util.Map;
 public class CosmosItemRequestOptions {
     private ConsistencyLevel consistencyLevel;
     private IndexingDirective indexingDirective;
+    private OperationContextAndListenerTuple operationContextAndListenerTuple;
     private List<String> preTriggerInclude;
     private List<String> postTriggerInclude;
     private String sessionToken;
@@ -46,6 +46,7 @@ public class CosmosItemRequestOptions {
         contentResponseOnWriteEnabled = options.contentResponseOnWriteEnabled;
         throughputControlGroupName = options.throughputControlGroupName;
         dedicatedGatewayRequestOptions = options.dedicatedGatewayRequestOptions;
+        operationContextAndListenerTuple = options.operationContextAndListenerTuple;
     }
 
 
@@ -312,6 +313,7 @@ public class CosmosItemRequestOptions {
         requestOptions.setPartitionKey(partitionKey);
         requestOptions.setContentResponseOnWriteEnabled(contentResponseOnWriteEnabled);
         requestOptions.setThroughputControlGroupName(throughputControlGroupName);
+        requestOptions.setOperationContextAndListenerTuple(operationContextAndListenerTuple);
         requestOptions.setDedicatedGatewayRequestOptions(dedicatedGatewayRequestOptions);
         if(this.customOptions != null) {
             for(Map.Entry<String, String> entry : this.customOptions.entrySet()) {
@@ -356,6 +358,14 @@ public class CosmosItemRequestOptions {
         return this.customOptions;
     }
 
+    void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {
+        this.operationContextAndListenerTuple = operationContextAndListenerTuple;
+    }
+
+    OperationContextAndListenerTuple getOperationContextAndListenerTuple() {
+        return this.operationContextAndListenerTuple;
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -364,9 +374,25 @@ public class CosmosItemRequestOptions {
         ImplementationBridgeHelpers.CosmosItemRequestOptionsHelper.setCosmosItemRequestOptionsAccessor(
             new ImplementationBridgeHelpers.CosmosItemRequestOptionsHelper.CosmosItemRequestOptionsAccessor() {
 
+                @Override
+                public void setOperationContext(CosmosItemRequestOptions itemRequestOptions,
+                                                OperationContextAndListenerTuple operationContextAndListenerTuple) {
+                    itemRequestOptions.setOperationContextAndListenerTuple(operationContextAndListenerTuple);
+                }
 
                 @Override
-                public CosmosItemRequestOptions setHeader(CosmosItemRequestOptions cosmosItemRequestOptions, String name, String value) {
+                public OperationContextAndListenerTuple getOperationContext(CosmosItemRequestOptions itemRequestOptions) {
+                    return itemRequestOptions.getOperationContextAndListenerTuple();
+                }
+
+                @Override
+                public CosmosItemRequestOptions clone(CosmosItemRequestOptions options) {
+                    return new CosmosItemRequestOptions(options);
+                }
+
+                @Override
+                public CosmosItemRequestOptions setHeader(CosmosItemRequestOptions cosmosItemRequestOptions,
+                                                          String name, String value) {
                     return cosmosItemRequestOptions.setHeader(name, value);
                 }
 
@@ -374,6 +400,7 @@ public class CosmosItemRequestOptions {
                 public Map<String, String> getHeader(CosmosItemRequestOptions cosmosItemRequestOptions) {
                     return cosmosItemRequestOptions.getHeaders();
                 }
-            });
+            }
+        );
     }
 }
