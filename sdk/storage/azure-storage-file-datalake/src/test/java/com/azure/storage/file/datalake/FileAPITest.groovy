@@ -80,6 +80,7 @@ class FileAPITest extends APISpec {
 
     def setup() {
         fileName = generatePathName()
+        primaryDataLakeServiceClient
         fc = fsc.getFileClient(fileName)
 
         fc.create()

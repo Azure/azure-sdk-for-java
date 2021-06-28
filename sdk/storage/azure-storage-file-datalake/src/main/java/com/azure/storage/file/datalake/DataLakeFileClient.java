@@ -17,6 +17,8 @@ import com.azure.storage.blob.models.BlobDownloadResponse;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobQueryResponse;
 import com.azure.storage.blob.options.BlobDownloadToFileOptions;
+import com.azure.storage.blob.options.BlobInputStreamOptions;
+import com.azure.storage.blob.specialized.BlobInputStream;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.Utility;
@@ -24,11 +26,13 @@ import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.FluxInputStream;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.UploadUtils;
+import com.azure.storage.file.datalake.implementation.models.InternalFileOpenInputStreamResult;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.models.ConsistentReadControl;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
+import com.azure.storage.file.datalake.models.FileOpenInputStreamResult;
 import com.azure.storage.file.datalake.models.FileQueryAsyncResponse;
 import com.azure.storage.file.datalake.options.DataLakeFileInputStreamOptions;
 import com.azure.storage.file.datalake.options.FileParallelUploadOptions;
@@ -499,12 +503,12 @@ public class DataLakeFileClient extends DataLakePathClient {
     }
 
     /**
-     * Opens a file input stream to download the file.
+     * Opens a file input stream to download the file. Locks on ETags.
      *
      * @return An {@link InputStream} object that represents the stream to use for reading from the file.
      * @throws DataLakeStorageException If a storage service error occurred.
      */
-    public DataLakeFileInputStream openInputStream() {
+    public FileOpenInputStreamResult openInputStream() {
         return openInputStream(null);
     }
 
@@ -513,41 +517,14 @@ public class DataLakeFileClient extends DataLakePathClient {
      * is not specified.
      *
      * @param options {@link DataLakeFileInputStreamOptions}
-     * @return An {@link InputStream} object that represents the stream to use for reading from the file.
+     * @return A {@link FileOpenInputStreamResult} object that contains the stream to use for reading from the file.
      * @throws DataLakeStorageException If a storage service error occurred.
      */
-    public DataLakeFileInputStream openInputStream(DataLakeFileInputStreamOptions options) {
-        options = options == null ? new DataLakeFileInputStreamOptions() : options;
-
-        // default to etag locking
-        ConsistentReadControl consistentReadControl = options.getConsistentReadControl() == null
-            ? ConsistentReadControl.ETAG : options.getConsistentReadControl();
-
-        PathProperties properties = getPropertiesWithResponse(options.getRequestConditions(), null, null).getValue();
-        String eTag = properties.getETag();
-
-        FileRange range = options.getRange() == null ? new FileRange(0) : options.getRange();
-        int chunkSize = options.getBlockSize() == null ? 4 * Constants.MB : options.getBlockSize();
-
-        DataLakeRequestConditions requestConditions = options.getRequestConditions() == null
-            ? new DataLakeRequestConditions() : options.getRequestConditions();
-
-        switch (consistentReadControl) {
-            case NONE:
-                break;
-            case ETAG:
-                // Target the user specified eTag by default. If not provided, target the latest eTag.
-                if (requestConditions.getIfMatch() == null) {
-                    requestConditions.setIfMatch(eTag);
-                }
-                break;
-            default:
-                throw logger.logExceptionAsError(new IllegalArgumentException("Concurrency control type not "
-                    + "supported."));
-        }
-
-        return new DataLakeFileInputStream(this.dataLakeFileAsyncClient, range.getOffset(), range.getCount(), chunkSize,
-            requestConditions, properties);
+    public FileOpenInputStreamResult openInputStream(DataLakeFileInputStreamOptions options) {
+        BlobInputStreamOptions convertedOptions = Transforms.toBlobInputStreamOptions(options);
+        BlobInputStream inputStream = blockBlobClient.openInputStream(convertedOptions);
+        return new InternalFileOpenInputStreamResult(inputStream,
+            Transforms.toPathProperties(inputStream.getProperties()));
     }
 
     /**
