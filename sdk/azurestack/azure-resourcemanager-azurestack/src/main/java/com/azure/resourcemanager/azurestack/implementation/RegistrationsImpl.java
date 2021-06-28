@@ -40,6 +40,16 @@ public final class RegistrationsImpl implements Registrations {
         return Utils.mapPage(inner, inner1 -> new RegistrationImpl(inner1, this.manager()));
     }
 
+    public PagedIterable<Registration> list() {
+        PagedIterable<RegistrationInner> inner = this.serviceClient().list();
+        return Utils.mapPage(inner, inner1 -> new RegistrationImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<Registration> list(Context context) {
+        PagedIterable<RegistrationInner> inner = this.serviceClient().list(context);
+        return Utils.mapPage(inner, inner1 -> new RegistrationImpl(inner1, this.manager()));
+    }
+
     public Registration getByResourceGroup(String resourceGroup, String registrationName) {
         RegistrationInner inner = this.serviceClient().getByResourceGroup(resourceGroup, registrationName);
         if (inner != null) {
