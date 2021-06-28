@@ -21,24 +21,8 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.resourcemanager.applicationinsights.fluent.AnalyticsItemsClient;
-import com.azure.resourcemanager.applicationinsights.fluent.AnnotationsClient;
-import com.azure.resourcemanager.applicationinsights.fluent.ApiKeysClient;
 import com.azure.resourcemanager.applicationinsights.fluent.ApplicationInsightsManagementClient;
-import com.azure.resourcemanager.applicationinsights.fluent.ComponentAvailableFeaturesClient;
-import com.azure.resourcemanager.applicationinsights.fluent.ComponentCurrentBillingFeaturesClient;
-import com.azure.resourcemanager.applicationinsights.fluent.ComponentFeatureCapabilitiesClient;
-import com.azure.resourcemanager.applicationinsights.fluent.ComponentQuotaStatusClient;
-import com.azure.resourcemanager.applicationinsights.fluent.ComponentsClient;
-import com.azure.resourcemanager.applicationinsights.fluent.ExportConfigurationsClient;
-import com.azure.resourcemanager.applicationinsights.fluent.FavoritesClient;
-import com.azure.resourcemanager.applicationinsights.fluent.MyWorkbooksClient;
-import com.azure.resourcemanager.applicationinsights.fluent.OperationsClient;
-import com.azure.resourcemanager.applicationinsights.fluent.ProactiveDetectionConfigurationsClient;
-import com.azure.resourcemanager.applicationinsights.fluent.WebTestLocationsClient;
-import com.azure.resourcemanager.applicationinsights.fluent.WebTestsClient;
-import com.azure.resourcemanager.applicationinsights.fluent.WorkItemConfigurationsClient;
-import com.azure.resourcemanager.applicationinsights.fluent.WorkbooksClient;
+import com.azure.resourcemanager.applicationinsights.fluent.WorkbookTemplatesClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -78,6 +62,18 @@ public final class ApplicationInsightsManagementClientImpl implements Applicatio
         return this.endpoint;
     }
 
+    /** Api Version. */
+    private final String apiVersion;
+
+    /**
+     * Gets Api Version.
+     *
+     * @return the apiVersion value.
+     */
+    public String getApiVersion() {
+        return this.apiVersion;
+    }
+
     /** The HTTP pipeline to send requests through. */
     private final HttpPipeline httpPipeline;
 
@@ -114,208 +110,16 @@ public final class ApplicationInsightsManagementClientImpl implements Applicatio
         return this.defaultPollInterval;
     }
 
-    /** The AnalyticsItemsClient object to access its operations. */
-    private final AnalyticsItemsClient analyticsItems;
+    /** The WorkbookTemplatesClient object to access its operations. */
+    private final WorkbookTemplatesClient workbookTemplates;
 
     /**
-     * Gets the AnalyticsItemsClient object to access its operations.
+     * Gets the WorkbookTemplatesClient object to access its operations.
      *
-     * @return the AnalyticsItemsClient object.
+     * @return the WorkbookTemplatesClient object.
      */
-    public AnalyticsItemsClient getAnalyticsItems() {
-        return this.analyticsItems;
-    }
-
-    /** The AnnotationsClient object to access its operations. */
-    private final AnnotationsClient annotations;
-
-    /**
-     * Gets the AnnotationsClient object to access its operations.
-     *
-     * @return the AnnotationsClient object.
-     */
-    public AnnotationsClient getAnnotations() {
-        return this.annotations;
-    }
-
-    /** The ApiKeysClient object to access its operations. */
-    private final ApiKeysClient apiKeys;
-
-    /**
-     * Gets the ApiKeysClient object to access its operations.
-     *
-     * @return the ApiKeysClient object.
-     */
-    public ApiKeysClient getApiKeys() {
-        return this.apiKeys;
-    }
-
-    /** The ExportConfigurationsClient object to access its operations. */
-    private final ExportConfigurationsClient exportConfigurations;
-
-    /**
-     * Gets the ExportConfigurationsClient object to access its operations.
-     *
-     * @return the ExportConfigurationsClient object.
-     */
-    public ExportConfigurationsClient getExportConfigurations() {
-        return this.exportConfigurations;
-    }
-
-    /** The ComponentCurrentBillingFeaturesClient object to access its operations. */
-    private final ComponentCurrentBillingFeaturesClient componentCurrentBillingFeatures;
-
-    /**
-     * Gets the ComponentCurrentBillingFeaturesClient object to access its operations.
-     *
-     * @return the ComponentCurrentBillingFeaturesClient object.
-     */
-    public ComponentCurrentBillingFeaturesClient getComponentCurrentBillingFeatures() {
-        return this.componentCurrentBillingFeatures;
-    }
-
-    /** The ComponentQuotaStatusClient object to access its operations. */
-    private final ComponentQuotaStatusClient componentQuotaStatus;
-
-    /**
-     * Gets the ComponentQuotaStatusClient object to access its operations.
-     *
-     * @return the ComponentQuotaStatusClient object.
-     */
-    public ComponentQuotaStatusClient getComponentQuotaStatus() {
-        return this.componentQuotaStatus;
-    }
-
-    /** The ComponentFeatureCapabilitiesClient object to access its operations. */
-    private final ComponentFeatureCapabilitiesClient componentFeatureCapabilities;
-
-    /**
-     * Gets the ComponentFeatureCapabilitiesClient object to access its operations.
-     *
-     * @return the ComponentFeatureCapabilitiesClient object.
-     */
-    public ComponentFeatureCapabilitiesClient getComponentFeatureCapabilities() {
-        return this.componentFeatureCapabilities;
-    }
-
-    /** The ComponentAvailableFeaturesClient object to access its operations. */
-    private final ComponentAvailableFeaturesClient componentAvailableFeatures;
-
-    /**
-     * Gets the ComponentAvailableFeaturesClient object to access its operations.
-     *
-     * @return the ComponentAvailableFeaturesClient object.
-     */
-    public ComponentAvailableFeaturesClient getComponentAvailableFeatures() {
-        return this.componentAvailableFeatures;
-    }
-
-    /** The ProactiveDetectionConfigurationsClient object to access its operations. */
-    private final ProactiveDetectionConfigurationsClient proactiveDetectionConfigurations;
-
-    /**
-     * Gets the ProactiveDetectionConfigurationsClient object to access its operations.
-     *
-     * @return the ProactiveDetectionConfigurationsClient object.
-     */
-    public ProactiveDetectionConfigurationsClient getProactiveDetectionConfigurations() {
-        return this.proactiveDetectionConfigurations;
-    }
-
-    /** The ComponentsClient object to access its operations. */
-    private final ComponentsClient components;
-
-    /**
-     * Gets the ComponentsClient object to access its operations.
-     *
-     * @return the ComponentsClient object.
-     */
-    public ComponentsClient getComponents() {
-        return this.components;
-    }
-
-    /** The WorkItemConfigurationsClient object to access its operations. */
-    private final WorkItemConfigurationsClient workItemConfigurations;
-
-    /**
-     * Gets the WorkItemConfigurationsClient object to access its operations.
-     *
-     * @return the WorkItemConfigurationsClient object.
-     */
-    public WorkItemConfigurationsClient getWorkItemConfigurations() {
-        return this.workItemConfigurations;
-    }
-
-    /** The FavoritesClient object to access its operations. */
-    private final FavoritesClient favorites;
-
-    /**
-     * Gets the FavoritesClient object to access its operations.
-     *
-     * @return the FavoritesClient object.
-     */
-    public FavoritesClient getFavorites() {
-        return this.favorites;
-    }
-
-    /** The WebTestLocationsClient object to access its operations. */
-    private final WebTestLocationsClient webTestLocations;
-
-    /**
-     * Gets the WebTestLocationsClient object to access its operations.
-     *
-     * @return the WebTestLocationsClient object.
-     */
-    public WebTestLocationsClient getWebTestLocations() {
-        return this.webTestLocations;
-    }
-
-    /** The WebTestsClient object to access its operations. */
-    private final WebTestsClient webTests;
-
-    /**
-     * Gets the WebTestsClient object to access its operations.
-     *
-     * @return the WebTestsClient object.
-     */
-    public WebTestsClient getWebTests() {
-        return this.webTests;
-    }
-
-    /** The MyWorkbooksClient object to access its operations. */
-    private final MyWorkbooksClient myWorkbooks;
-
-    /**
-     * Gets the MyWorkbooksClient object to access its operations.
-     *
-     * @return the MyWorkbooksClient object.
-     */
-    public MyWorkbooksClient getMyWorkbooks() {
-        return this.myWorkbooks;
-    }
-
-    /** The WorkbooksClient object to access its operations. */
-    private final WorkbooksClient workbooks;
-
-    /**
-     * Gets the WorkbooksClient object to access its operations.
-     *
-     * @return the WorkbooksClient object.
-     */
-    public WorkbooksClient getWorkbooks() {
-        return this.workbooks;
-    }
-
-    /** The OperationsClient object to access its operations. */
-    private final OperationsClient operations;
-
-    /**
-     * Gets the OperationsClient object to access its operations.
-     *
-     * @return the OperationsClient object.
-     */
-    public OperationsClient getOperations() {
-        return this.operations;
+    public WorkbookTemplatesClient getWorkbookTemplates() {
+        return this.workbookTemplates;
     }
 
     /**
@@ -340,23 +144,8 @@ public final class ApplicationInsightsManagementClientImpl implements Applicatio
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.analyticsItems = new AnalyticsItemsClientImpl(this);
-        this.annotations = new AnnotationsClientImpl(this);
-        this.apiKeys = new ApiKeysClientImpl(this);
-        this.exportConfigurations = new ExportConfigurationsClientImpl(this);
-        this.componentCurrentBillingFeatures = new ComponentCurrentBillingFeaturesClientImpl(this);
-        this.componentQuotaStatus = new ComponentQuotaStatusClientImpl(this);
-        this.componentFeatureCapabilities = new ComponentFeatureCapabilitiesClientImpl(this);
-        this.componentAvailableFeatures = new ComponentAvailableFeaturesClientImpl(this);
-        this.proactiveDetectionConfigurations = new ProactiveDetectionConfigurationsClientImpl(this);
-        this.components = new ComponentsClientImpl(this);
-        this.workItemConfigurations = new WorkItemConfigurationsClientImpl(this);
-        this.favorites = new FavoritesClientImpl(this);
-        this.webTestLocations = new WebTestLocationsClientImpl(this);
-        this.webTests = new WebTestsClientImpl(this);
-        this.myWorkbooks = new MyWorkbooksClientImpl(this);
-        this.workbooks = new WorkbooksClientImpl(this);
-        this.operations = new OperationsClientImpl(this);
+        this.apiVersion = "2020-11-20";
+        this.workbookTemplates = new WorkbookTemplatesClientImpl(this);
     }
 
     /**

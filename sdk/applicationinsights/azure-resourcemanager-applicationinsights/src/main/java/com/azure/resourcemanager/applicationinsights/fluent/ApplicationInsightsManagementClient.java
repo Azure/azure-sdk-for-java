@@ -24,6 +24,13 @@ public interface ApplicationInsightsManagementClient {
     String getEndpoint();
 
     /**
+     * Gets Api Version.
+     *
+     * @return the apiVersion value.
+     */
+    String getApiVersion();
+
+    /**
      * Gets The HTTP pipeline to send requests through.
      *
      * @return the httpPipeline value.
@@ -38,121 +45,9 @@ public interface ApplicationInsightsManagementClient {
     Duration getDefaultPollInterval();
 
     /**
-     * Gets the AnalyticsItemsClient object to access its operations.
+     * Gets the WorkbookTemplatesClient object to access its operations.
      *
-     * @return the AnalyticsItemsClient object.
+     * @return the WorkbookTemplatesClient object.
      */
-    AnalyticsItemsClient getAnalyticsItems();
-
-    /**
-     * Gets the AnnotationsClient object to access its operations.
-     *
-     * @return the AnnotationsClient object.
-     */
-    AnnotationsClient getAnnotations();
-
-    /**
-     * Gets the ApiKeysClient object to access its operations.
-     *
-     * @return the ApiKeysClient object.
-     */
-    ApiKeysClient getApiKeys();
-
-    /**
-     * Gets the ExportConfigurationsClient object to access its operations.
-     *
-     * @return the ExportConfigurationsClient object.
-     */
-    ExportConfigurationsClient getExportConfigurations();
-
-    /**
-     * Gets the ComponentCurrentBillingFeaturesClient object to access its operations.
-     *
-     * @return the ComponentCurrentBillingFeaturesClient object.
-     */
-    ComponentCurrentBillingFeaturesClient getComponentCurrentBillingFeatures();
-
-    /**
-     * Gets the ComponentQuotaStatusClient object to access its operations.
-     *
-     * @return the ComponentQuotaStatusClient object.
-     */
-    ComponentQuotaStatusClient getComponentQuotaStatus();
-
-    /**
-     * Gets the ComponentFeatureCapabilitiesClient object to access its operations.
-     *
-     * @return the ComponentFeatureCapabilitiesClient object.
-     */
-    ComponentFeatureCapabilitiesClient getComponentFeatureCapabilities();
-
-    /**
-     * Gets the ComponentAvailableFeaturesClient object to access its operations.
-     *
-     * @return the ComponentAvailableFeaturesClient object.
-     */
-    ComponentAvailableFeaturesClient getComponentAvailableFeatures();
-
-    /**
-     * Gets the ProactiveDetectionConfigurationsClient object to access its operations.
-     *
-     * @return the ProactiveDetectionConfigurationsClient object.
-     */
-    ProactiveDetectionConfigurationsClient getProactiveDetectionConfigurations();
-
-    /**
-     * Gets the ComponentsClient object to access its operations.
-     *
-     * @return the ComponentsClient object.
-     */
-    ComponentsClient getComponents();
-
-    /**
-     * Gets the WorkItemConfigurationsClient object to access its operations.
-     *
-     * @return the WorkItemConfigurationsClient object.
-     */
-    WorkItemConfigurationsClient getWorkItemConfigurations();
-
-    /**
-     * Gets the FavoritesClient object to access its operations.
-     *
-     * @return the FavoritesClient object.
-     */
-    FavoritesClient getFavorites();
-
-    /**
-     * Gets the WebTestLocationsClient object to access its operations.
-     *
-     * @return the WebTestLocationsClient object.
-     */
-    WebTestLocationsClient getWebTestLocations();
-
-    /**
-     * Gets the WebTestsClient object to access its operations.
-     *
-     * @return the WebTestsClient object.
-     */
-    WebTestsClient getWebTests();
-
-    /**
-     * Gets the MyWorkbooksClient object to access its operations.
-     *
-     * @return the MyWorkbooksClient object.
-     */
-    MyWorkbooksClient getMyWorkbooks();
-
-    /**
-     * Gets the WorkbooksClient object to access its operations.
-     *
-     * @return the WorkbooksClient object.
-     */
-    WorkbooksClient getWorkbooks();
-
-    /**
-     * Gets the OperationsClient object to access its operations.
-     *
-     * @return the OperationsClient object.
-     */
-    OperationsClient getOperations();
+    WorkbookTemplatesClient getWorkbookTemplates();
 }

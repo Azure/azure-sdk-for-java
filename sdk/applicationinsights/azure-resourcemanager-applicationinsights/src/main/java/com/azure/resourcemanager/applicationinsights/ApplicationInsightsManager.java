@@ -9,7 +9,6 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -17,45 +16,14 @@ import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.applicationinsights.fluent.ApplicationInsightsManagementClient;
-import com.azure.resourcemanager.applicationinsights.implementation.AnalyticsItemsImpl;
-import com.azure.resourcemanager.applicationinsights.implementation.AnnotationsImpl;
-import com.azure.resourcemanager.applicationinsights.implementation.ApiKeysImpl;
 import com.azure.resourcemanager.applicationinsights.implementation.ApplicationInsightsManagementClientBuilder;
-import com.azure.resourcemanager.applicationinsights.implementation.ComponentAvailableFeaturesImpl;
-import com.azure.resourcemanager.applicationinsights.implementation.ComponentCurrentBillingFeaturesImpl;
-import com.azure.resourcemanager.applicationinsights.implementation.ComponentFeatureCapabilitiesImpl;
-import com.azure.resourcemanager.applicationinsights.implementation.ComponentQuotaStatusImpl;
-import com.azure.resourcemanager.applicationinsights.implementation.ComponentsImpl;
-import com.azure.resourcemanager.applicationinsights.implementation.ExportConfigurationsImpl;
-import com.azure.resourcemanager.applicationinsights.implementation.FavoritesImpl;
-import com.azure.resourcemanager.applicationinsights.implementation.MyWorkbooksImpl;
-import com.azure.resourcemanager.applicationinsights.implementation.OperationsImpl;
-import com.azure.resourcemanager.applicationinsights.implementation.ProactiveDetectionConfigurationsImpl;
-import com.azure.resourcemanager.applicationinsights.implementation.WebTestLocationsImpl;
-import com.azure.resourcemanager.applicationinsights.implementation.WebTestsImpl;
-import com.azure.resourcemanager.applicationinsights.implementation.WorkItemConfigurationsImpl;
-import com.azure.resourcemanager.applicationinsights.implementation.WorkbooksImpl;
-import com.azure.resourcemanager.applicationinsights.models.AnalyticsItems;
-import com.azure.resourcemanager.applicationinsights.models.Annotations;
-import com.azure.resourcemanager.applicationinsights.models.ApiKeys;
-import com.azure.resourcemanager.applicationinsights.models.ComponentAvailableFeatures;
-import com.azure.resourcemanager.applicationinsights.models.ComponentCurrentBillingFeatures;
-import com.azure.resourcemanager.applicationinsights.models.ComponentFeatureCapabilities;
-import com.azure.resourcemanager.applicationinsights.models.ComponentQuotaStatus;
-import com.azure.resourcemanager.applicationinsights.models.Components;
-import com.azure.resourcemanager.applicationinsights.models.ExportConfigurations;
-import com.azure.resourcemanager.applicationinsights.models.Favorites;
-import com.azure.resourcemanager.applicationinsights.models.MyWorkbooks;
-import com.azure.resourcemanager.applicationinsights.models.Operations;
-import com.azure.resourcemanager.applicationinsights.models.ProactiveDetectionConfigurations;
-import com.azure.resourcemanager.applicationinsights.models.WebTestLocations;
-import com.azure.resourcemanager.applicationinsights.models.WebTests;
-import com.azure.resourcemanager.applicationinsights.models.WorkItemConfigurations;
-import com.azure.resourcemanager.applicationinsights.models.Workbooks;
+import com.azure.resourcemanager.applicationinsights.implementation.WorkbookTemplatesImpl;
+import com.azure.resourcemanager.applicationinsights.models.WorkbookTemplates;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -64,39 +32,7 @@ import java.util.Objects;
 
 /** Entry point to ApplicationInsightsManager. Composite Swagger for Application Insights Management Client. */
 public final class ApplicationInsightsManager {
-    private AnalyticsItems analyticsItems;
-
-    private Annotations annotations;
-
-    private ApiKeys apiKeys;
-
-    private ExportConfigurations exportConfigurations;
-
-    private ComponentCurrentBillingFeatures componentCurrentBillingFeatures;
-
-    private ComponentQuotaStatus componentQuotaStatus;
-
-    private ComponentFeatureCapabilities componentFeatureCapabilities;
-
-    private ComponentAvailableFeatures componentAvailableFeatures;
-
-    private ProactiveDetectionConfigurations proactiveDetectionConfigurations;
-
-    private Components components;
-
-    private WorkItemConfigurations workItemConfigurations;
-
-    private Favorites favorites;
-
-    private WebTestLocations webTestLocations;
-
-    private WebTests webTests;
-
-    private MyWorkbooks myWorkbooks;
-
-    private Workbooks workbooks;
-
-    private Operations operations;
+    private WorkbookTemplates workbookTemplates;
 
     private final ApplicationInsightsManagementClient clientObject;
 
@@ -141,6 +77,7 @@ public final class ApplicationInsightsManager {
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
         private final List<HttpPipelinePolicy> policies = new ArrayList<>();
+        private final List<String> scopes = new ArrayList<>();
         private RetryPolicy retryPolicy;
         private Duration defaultPollInterval;
 
@@ -177,6 +114,17 @@ public final class ApplicationInsightsManager {
          */
         public Configurable withPolicy(HttpPipelinePolicy policy) {
             this.policies.add(Objects.requireNonNull(policy, "'policy' cannot be null."));
+            return this;
+        }
+
+        /**
+         * Adds the scope to permission sets.
+         *
+         * @param scope the scope.
+         * @return the configurable object itself.
+         */
+        public Configurable withScope(String scope) {
+            this.scopes.add(Objects.requireNonNull(scope, "'scope' cannot be null."));
             return this;
         }
 
@@ -236,6 +184,9 @@ public final class ApplicationInsightsManager {
                 userAgentBuilder.append(" (auto-generated)");
             }
 
+            if (scopes.isEmpty()) {
+                scopes.add(profile.getEnvironment().getManagementEndpoint() + "/.default");
+            }
             if (retryPolicy == null) {
                 retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
             }
@@ -245,10 +196,7 @@ public final class ApplicationInsightsManager {
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
-            policies
-                .add(
-                    new BearerTokenAuthenticationPolicy(
-                        credential, profile.getEnvironment().getManagementEndpoint() + "/.default"));
+            policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
             policies.addAll(this.policies);
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
@@ -261,145 +209,12 @@ public final class ApplicationInsightsManager {
         }
     }
 
-    /** @return Resource collection API of AnalyticsItems. */
-    public AnalyticsItems analyticsItems() {
-        if (this.analyticsItems == null) {
-            this.analyticsItems = new AnalyticsItemsImpl(clientObject.getAnalyticsItems(), this);
+    /** @return Resource collection API of WorkbookTemplates. */
+    public WorkbookTemplates workbookTemplates() {
+        if (this.workbookTemplates == null) {
+            this.workbookTemplates = new WorkbookTemplatesImpl(clientObject.getWorkbookTemplates(), this);
         }
-        return analyticsItems;
-    }
-
-    /** @return Resource collection API of Annotations. */
-    public Annotations annotations() {
-        if (this.annotations == null) {
-            this.annotations = new AnnotationsImpl(clientObject.getAnnotations(), this);
-        }
-        return annotations;
-    }
-
-    /** @return Resource collection API of ApiKeys. */
-    public ApiKeys apiKeys() {
-        if (this.apiKeys == null) {
-            this.apiKeys = new ApiKeysImpl(clientObject.getApiKeys(), this);
-        }
-        return apiKeys;
-    }
-
-    /** @return Resource collection API of ExportConfigurations. */
-    public ExportConfigurations exportConfigurations() {
-        if (this.exportConfigurations == null) {
-            this.exportConfigurations = new ExportConfigurationsImpl(clientObject.getExportConfigurations(), this);
-        }
-        return exportConfigurations;
-    }
-
-    /** @return Resource collection API of ComponentCurrentBillingFeatures. */
-    public ComponentCurrentBillingFeatures componentCurrentBillingFeatures() {
-        if (this.componentCurrentBillingFeatures == null) {
-            this.componentCurrentBillingFeatures =
-                new ComponentCurrentBillingFeaturesImpl(clientObject.getComponentCurrentBillingFeatures(), this);
-        }
-        return componentCurrentBillingFeatures;
-    }
-
-    /** @return Resource collection API of ComponentQuotaStatus. */
-    public ComponentQuotaStatus componentQuotaStatus() {
-        if (this.componentQuotaStatus == null) {
-            this.componentQuotaStatus = new ComponentQuotaStatusImpl(clientObject.getComponentQuotaStatus(), this);
-        }
-        return componentQuotaStatus;
-    }
-
-    /** @return Resource collection API of ComponentFeatureCapabilities. */
-    public ComponentFeatureCapabilities componentFeatureCapabilities() {
-        if (this.componentFeatureCapabilities == null) {
-            this.componentFeatureCapabilities =
-                new ComponentFeatureCapabilitiesImpl(clientObject.getComponentFeatureCapabilities(), this);
-        }
-        return componentFeatureCapabilities;
-    }
-
-    /** @return Resource collection API of ComponentAvailableFeatures. */
-    public ComponentAvailableFeatures componentAvailableFeatures() {
-        if (this.componentAvailableFeatures == null) {
-            this.componentAvailableFeatures =
-                new ComponentAvailableFeaturesImpl(clientObject.getComponentAvailableFeatures(), this);
-        }
-        return componentAvailableFeatures;
-    }
-
-    /** @return Resource collection API of ProactiveDetectionConfigurations. */
-    public ProactiveDetectionConfigurations proactiveDetectionConfigurations() {
-        if (this.proactiveDetectionConfigurations == null) {
-            this.proactiveDetectionConfigurations =
-                new ProactiveDetectionConfigurationsImpl(clientObject.getProactiveDetectionConfigurations(), this);
-        }
-        return proactiveDetectionConfigurations;
-    }
-
-    /** @return Resource collection API of Components. */
-    public Components components() {
-        if (this.components == null) {
-            this.components = new ComponentsImpl(clientObject.getComponents(), this);
-        }
-        return components;
-    }
-
-    /** @return Resource collection API of WorkItemConfigurations. */
-    public WorkItemConfigurations workItemConfigurations() {
-        if (this.workItemConfigurations == null) {
-            this.workItemConfigurations =
-                new WorkItemConfigurationsImpl(clientObject.getWorkItemConfigurations(), this);
-        }
-        return workItemConfigurations;
-    }
-
-    /** @return Resource collection API of Favorites. */
-    public Favorites favorites() {
-        if (this.favorites == null) {
-            this.favorites = new FavoritesImpl(clientObject.getFavorites(), this);
-        }
-        return favorites;
-    }
-
-    /** @return Resource collection API of WebTestLocations. */
-    public WebTestLocations webTestLocations() {
-        if (this.webTestLocations == null) {
-            this.webTestLocations = new WebTestLocationsImpl(clientObject.getWebTestLocations(), this);
-        }
-        return webTestLocations;
-    }
-
-    /** @return Resource collection API of WebTests. */
-    public WebTests webTests() {
-        if (this.webTests == null) {
-            this.webTests = new WebTestsImpl(clientObject.getWebTests(), this);
-        }
-        return webTests;
-    }
-
-    /** @return Resource collection API of MyWorkbooks. */
-    public MyWorkbooks myWorkbooks() {
-        if (this.myWorkbooks == null) {
-            this.myWorkbooks = new MyWorkbooksImpl(clientObject.getMyWorkbooks(), this);
-        }
-        return myWorkbooks;
-    }
-
-    /** @return Resource collection API of Workbooks. */
-    public Workbooks workbooks() {
-        if (this.workbooks == null) {
-            this.workbooks = new WorkbooksImpl(clientObject.getWorkbooks(), this);
-        }
-        return workbooks;
-    }
-
-    /** @return Resource collection API of Operations. */
-    public Operations operations() {
-        if (this.operations == null) {
-            this.operations = new OperationsImpl(clientObject.getOperations(), this);
-        }
-        return operations;
+        return workbookTemplates;
     }
 
     /**
