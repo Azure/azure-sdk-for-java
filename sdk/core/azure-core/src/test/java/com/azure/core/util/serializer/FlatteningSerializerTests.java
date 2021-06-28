@@ -670,9 +670,9 @@ public class FlatteningSerializerTests {
         identity.setUserAssignedIdentities(map);
         expected.setIdentity(identity);
 
-        String expectedSerialization = " {\"identity\": {\"type\": [\"SystemAssigned, UserAssigned\"],"
-            + "\"userAssignedIdentities\": {\"/subscriptions/0-0-0-0-0/resourcegroups/0/providers/"
-            + "Microsoft.ManagedIdentity/userAssignedIdentities/0\": {}}}";
+        String expectedSerialization = "{\"identity\":{\"type\":[\"SystemAssigned, UserAssigned\"],"
+            + "\"userAssignedIdentities\":{\"/subscriptions/0-0-0-0-0/resourcegroups/0/providers/"
+            + "Microsoft.ManagedIdentity/userAssignedIdentities/0\":{}}}}";
         String actualSerialization = serialize(expected);
 
         Assertions.assertEquals(expectedSerialization, actualSerialization);
