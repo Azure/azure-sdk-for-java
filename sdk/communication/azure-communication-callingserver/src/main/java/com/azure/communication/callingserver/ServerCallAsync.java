@@ -35,7 +35,7 @@ import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 
 /**
- * Async client that supports server call operations.
+ * Asynchronous client that supports server call operations.
  */
 public final class ServerCallAsync {
     private final String serverCallId;
@@ -48,9 +48,9 @@ public final class ServerCallAsync {
     }
 
     /**
-     * Get the server call id property
+     * Get server call id property
      *
-     * @return the id value.
+     * @return Server call id value.
      */
     public String getServerCallId() {
         return serverCallId;
@@ -61,12 +61,12 @@ public final class ServerCallAsync {
      *
      * @param participant Added participant.
      * @param callBackUri callBackUri to get notifications.
-     * @param alternateCallerId The phone number to use when adding a phone number participant.
-     * @param operationContext The value to identify context of the operation. This is used to co-relate other
+     * @param alternateCallerId Phone number to use when adding a phone number participant.
+     * @param operationContext Value to identify context of the operation. This is used to co-relate other
      *                         communications related to this operation
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for a successful add participant request.
+     * @return Response for a successful add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AddParticipantResult> addParticipant(
@@ -94,12 +94,12 @@ public final class ServerCallAsync {
      *
      * @param participant Added participant.
      * @param callBackUri callBackUri to get notifications.
-     * @param alternateCallerId The phone number to use when adding a phone number participant.
-     * @param operationContext The value to identify context of the operation. This is used to co-relate other
+     * @param alternateCallerId Phone number to use when adding a phone number participant.
+     * @param operationContext Value to identify context of the operation. This is used to co-relate other
      *                         communications related to this operation
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for a successful add participant request.
+     * @return Response for a successful add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AddParticipantResult>> addParticipantWithResponse(
@@ -146,7 +146,7 @@ public final class ServerCallAsync {
      * @param participantId Participant id.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for a successful remove participant request.
+     * @return Response for a successful remove participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> removeParticipant(String participantId) {
@@ -165,7 +165,7 @@ public final class ServerCallAsync {
      * @param participantId Participant id.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for a successful remove participant request.
+     * @return Response for a successful remove participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> removeParticipantWithResponse(String participantId) {
@@ -186,13 +186,13 @@ public final class ServerCallAsync {
     }
 
     /**
-     * Start recording
+     * Start recording of the call.
      *
-     * @param recordingStateCallbackUri The uri to send state change callbacks.
+     * @param recordingStateCallbackUri Uri to send state change callbacks.
      * @throws InvalidParameterException is recordingStateCallbackUri is absolute uri.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for a successful start recording request.
+     * @return Response for a successful start recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StartCallRecordingResult> startRecording(String recordingStateCallbackUri) {
@@ -214,13 +214,13 @@ public final class ServerCallAsync {
     }
 
     /**
-     * Start recording
+     * Start recording of the call.
      *
-     * @param recordingStateCallbackUri The uri to send state change callbacks.
+     * @param recordingStateCallbackUri Uri to send state change callbacks.
      * @throws InvalidParameterException is recordingStateCallbackUri is absolute uri.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for a successful start recording request.
+     * @return Response for a successful start recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<StartCallRecordingResult>> startRecordingWithResponse(String recordingStateCallbackUri) {
@@ -253,12 +253,12 @@ public final class ServerCallAsync {
     }
 
     /**
-     * Stop recording
+     * Stop recording of the call.
      *
-     * @param recordingId The recording id to stop.
+     * @param recordingId Recording id to stop.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for a successful stop recording request.
+     * @return Response for a successful stop recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> stopRecording(String recordingId) {
@@ -272,12 +272,12 @@ public final class ServerCallAsync {
     }
 
     /**
-     * Stop recording
+     * Stop recording of the call.
      *
-     * @param recordingId The recording id to stop.
+     * @param recordingId Recording id to stop.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for a successful stop recording request.
+     * @return Response for a successful stop recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> stopRecordingWithResponse(String recordingId) {
@@ -298,12 +298,12 @@ public final class ServerCallAsync {
     }
 
     /**
-     * Pause recording
+     * Pause recording of the call.
      *
-     * @param recordingId The recording id to stop.
+     * @param recordingId Recording id to stop.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for a successful pause recording request.
+     * @return Response for a successful pause recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> pauseRecording(String recordingId) {
@@ -317,12 +317,12 @@ public final class ServerCallAsync {
     }
 
     /**
-     * Pause recording
+     * Pause recording of the call.
      *
-     * @param recordingId The recording id to stop.
+     * @param recordingId Recording id to stop.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for a successful pause recording request.
+     * @return Response for a successful pause recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> pauseRecordingWithResponse(String recordingId) {
@@ -343,9 +343,9 @@ public final class ServerCallAsync {
     }
 
     /**
-     * Resume recording
+     * Resume recording of the call.
      *
-     * @param recordingId The recording id to stop.
+     * @param recordingId Recording id to stop.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for a successful resume recording request.
@@ -362,9 +362,9 @@ public final class ServerCallAsync {
     }
 
     /**
-     * Resume recording
+     * Resume recording of the call.
      *
-     * @param recordingId The recording id to stop.
+     * @param recordingId Recording id to stop.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for a successful resume recording request.
@@ -388,12 +388,12 @@ public final class ServerCallAsync {
     }
 
     /**
-     * Get recording state
+     * Get current recording state by recording id.
      *
-     * @param recordingId The recording id to stop.
+     * @param recordingId Recording id to stop.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for a successful get recording state request.
+     * @return Response for a successful get recording state request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CallRecordingProperties> getRecordingState(String recordingId) {
@@ -407,12 +407,12 @@ public final class ServerCallAsync {
     }
 
     /**
-     * Get recording state
+     * Get current recording state by recording id.
      *
-     * @param recordingId The recording id to stop.
+     * @param recordingId Recording id to stop.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for a successful get recording state request.
+     * @return Response for a successful get recording state request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CallRecordingProperties>> getRecordingStateWithResponse(String recordingId) {
@@ -437,16 +437,16 @@ public final class ServerCallAsync {
     /**
      * Play audio in a call.
      *
-     * @param audioFileUri The media resource uri of the play audio request. Currently only Wave file (.wav) format
+     * @param audioFileUri Media resource uri of the play audio request. Currently only Wave file (.wav) format
      *                     audio prompts are supported. More specifically, the audio content in the wave file must
      *                     be mono (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
-     * @param audioFileId Tne id for the media in the AudioFileUri, using which we cache the media resource.
-     * @param callbackUri The callback Uri to receive PlayAudio status notifications.
+     * @param audioFileId Id for the media in the AudioFileUri, using which we cache the media resource.
+     * @param callbackUri Callback Uri to receive PlayAudio status notifications.
      * @param operationContext The value to identify context of the operation. This is used to co-relate other
      *                         communications related to this operation
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response payload for play audio operation.
+     * @return Response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PlayAudioResult> playAudio(
@@ -460,13 +460,13 @@ public final class ServerCallAsync {
     /**
      * Play audio in a call.
      *
-     * @param audioFileUri The media resource uri of the play audio request. Currently only Wave file (.wav) format
+     * @param audioFileUri Media resource uri of the play audio request. Currently only Wave file (.wav) format
      *                     audio prompts are supported. More specifically, the audio content in the wave file must
      *                     be mono (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
      * @param playAudioOptions Options for play audio.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response payload for play audio operation.
+     * @return Response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PlayAudioResult> playAudio(String audioFileUri, PlayAudioOptions playAudioOptions) {

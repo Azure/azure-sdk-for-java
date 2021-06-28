@@ -1,11 +1,10 @@
 ---
 page_type: sample
 languages:
-- java
+ - java
 products:
-- azure-active-directory
-description: "Azure OAuth 2.0 Sample project for Azure AD Spring Boot Starter Resource Server client library"
-urlFragment: "azure-spring-boot-sample-active-directory-resource-server"
+ - azure-active-directory
+urlFragment: azure-spring-boot-sample-active-directory-resource-server
 ---
 
 # Azure OAuth 2.0 Sample for Azure AD Spring Boot Starter Resource Server client library for Java

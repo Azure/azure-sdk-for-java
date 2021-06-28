@@ -16,7 +16,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 
 /**
- * Sync Client that supports call connection operations.
+ * Synchronous Client that supports call connection operations.
  */
 public final class CallConnection {
     private final CallConnectionAsync callConnectionAsync;
@@ -27,16 +27,16 @@ public final class CallConnection {
     }
 
     /**
-     * Get the call connection id property
+     * Get the call connection id property.
      *
-     * @return the id value.
+     * @return Call connection id value.
      */
     public String getCallConnectionId() {
         return callConnectionAsync.getCallConnectionId();
     }
 
     /**
-     * Play audio in a call.
+     * Play audio in the call.
      *
      * @param audioFileUri The media resource uri of the play audio request. Currently only Wave file (.wav) format
      *                     audio prompts are supported. More specifically, the audio content in the wave file must
@@ -48,7 +48,7 @@ public final class CallConnection {
      *                         communications related to this operation
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response payload for play audio operation.
+     * @return Response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PlayAudioResult playAudio(
@@ -62,7 +62,7 @@ public final class CallConnection {
     }
 
     /**
-     * Play audio in a call.
+     * Play audio in the call.
      *
      * @param audioFileUri The media resource uri of the play audio request. Currently only Wave file (.wav) format
      *                     audio prompts are supported. More specifically, the audio content in the wave file must
@@ -70,7 +70,7 @@ public final class CallConnection {
      * @param playAudioOptions Options for play audio.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response payload for play audio operation.
+     * @return Response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PlayAudioResult playAudio(String audioFileUri, PlayAudioOptions playAudioOptions) {
@@ -78,7 +78,7 @@ public final class CallConnection {
     }
 
     /**
-     * Play audio in a call.
+     * Play audio in the call.
      *
      * @param audioFileUri The media resource uri of the play audio request. Currently only Wave file (.wav) format
      *                     audio prompts are supported. More specifically, the audio content in the wave file must
@@ -87,7 +87,7 @@ public final class CallConnection {
      * @param context A {@link Context} representing the request context.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response payload for play audio operation.
+     * @return Response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PlayAudioResult> playAudioWithResponse(
@@ -100,7 +100,7 @@ public final class CallConnection {
     }
 
     /**
-     * Disconnect the current caller in a group-call or end a p2p-call.
+     * Disconnect from a call.
      *
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -111,12 +111,12 @@ public final class CallConnection {
     }
 
     /**
-     * Disconnect the current caller in a group-call or end a p2p-call.
+     * Disconnect from a call.
      *
      * @param context A {@link Context} representing the request context.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for a successful hangup request.
+     * @return Response for a successful hangup request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> hangupWithResponse(final Context context) {
@@ -130,7 +130,7 @@ public final class CallConnection {
      *                         communications related to this operation
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for a successful cancel all media operations request.
+     * @return Response for a successful cancel all media operations request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CancelAllMediaOperationsResult cancelAllMediaOperations(String operationContext) {
@@ -145,7 +145,7 @@ public final class CallConnection {
      * @param context A {@link Context} representing the request context.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for a successful cancel all media operations request.
+     * @return Response for a successful cancel all media operations request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CancelAllMediaOperationsResult> cancelAllMediaOperationsWithResponse(
@@ -158,12 +158,12 @@ public final class CallConnection {
      * Add a participant to the call.
      *
      * @param participant Added participant.
-     * @param alternateCallerId The phone number to use when adding a phone number participant.
-     * @param operationContext The value to identify context of the operation. This is used to co-relate other
+     * @param alternateCallerId Phone number to use when adding a phone number participant.
+     * @param operationContext Value to identify context of the operation. This is used to co-relate other
      *                         communications related to this operation
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for a successful add participant request.
+     * @return Response for a successful add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AddParticipantResult addParticipant(
@@ -177,13 +177,13 @@ public final class CallConnection {
      * Add a participant to the call.
      *
      * @param participant Added participant.
-     * @param alternateCallerId The phone number to use when adding a phone number participant.
-     * @param operationContext The value to identify context of the operation. This is used to co-relate other
+     * @param alternateCallerId Phone number to use when adding a phone number participant.
+     * @param operationContext Value to identify context of the operation. This is used to co-relate other
      *                         communications related to this operation
-     * @param context A {@link Context} representing the request context.
+     * @param context {@link Context} representing the request context.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for a successful add participant request.
+     * @return Response for a successful add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AddParticipantResult> addParticipantWithResponse(
@@ -211,10 +211,10 @@ public final class CallConnection {
      * Remove a participant from the call.
      *
      * @param participantId Participant id.
-     * @param context A {@link Context} representing the request context.
+     * @param context {@link Context} representing the request context.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for a successful remove participant request.
+     * @return Response for a successful remove participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> removeParticipantWithResponse(String participantId, final Context context) {

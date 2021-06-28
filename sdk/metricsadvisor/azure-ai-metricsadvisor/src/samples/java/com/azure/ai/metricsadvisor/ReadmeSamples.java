@@ -264,7 +264,7 @@ public class ReadmeSamples {
                 System.out.printf("AnomalyAlert created on: %s%n", alert.getCreatedTime());
 
                 // List anomalies for returned alerts
-                metricsAdvisorClient.listAnomalies(
+                metricsAdvisorClient.listAnomaliesForAlert(
                     alertConfigurationId,
                     alert.getId())
                     .forEach(anomaly -> {
