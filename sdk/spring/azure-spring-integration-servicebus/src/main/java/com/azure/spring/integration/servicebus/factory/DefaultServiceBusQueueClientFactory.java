@@ -38,8 +38,7 @@ public class DefaultServiceBusQueueClientFactory extends AbstractServiceBusSende
     }
 
     public DefaultServiceBusQueueClientFactory(String connectionString, AmqpTransportType amqpTransportType) {
-        super(connectionString);
-        this.serviceBusClientBuilder = new ServiceBusClientBuilder().connectionString(connectionString);
+        this(connectionString);
         this.serviceBusClientBuilder.transportType(amqpTransportType);
     }
 
