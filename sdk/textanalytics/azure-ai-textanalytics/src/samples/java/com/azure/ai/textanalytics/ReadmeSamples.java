@@ -5,7 +5,6 @@ package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
-import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
@@ -20,13 +19,13 @@ import com.azure.ai.textanalytics.models.RecognizePiiEntitiesAction;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
-import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
+import com.azure.ai.textanalytics.util.AnalyzeActionsResultPagedIterable;
+import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesPagedIterable;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.polling.SyncPoller;
@@ -205,35 +204,36 @@ public class ReadmeSamples {
                 + " for revascularization with open heart surgery."
         ));
         AnalyzeHealthcareEntitiesOptions options = new AnalyzeHealthcareEntitiesOptions().setIncludeStatistics(true);
-        SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, PagedIterable<AnalyzeHealthcareEntitiesResultCollection>>
+        SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedIterable>
             syncPoller = textAnalyticsClient.beginAnalyzeHealthcareEntities(documents, options, Context.NONE);
         syncPoller.waitForCompletion();
-        syncPoller.getFinalResult().forEach(healthcareTaskResult -> healthcareTaskResult.forEach(
-            healthcareEntitiesResult -> {
-                System.out.println("Document entities: ");
-                AtomicInteger ct = new AtomicInteger();
-                healthcareEntitiesResult.getEntities().forEach(healthcareEntity -> {
-                    System.out.printf("\ti = %d, Text: %s, category: %s, subcategory: %s, confidence score: %f.%n",
-                        ct.getAndIncrement(), healthcareEntity.getText(), healthcareEntity.getCategory(),
-                        healthcareEntity.getSubcategory(), healthcareEntity.getConfidenceScore());
-                    IterableStream<EntityDataSource> healthcareEntityDataSources =
-                        healthcareEntity.getDataSources();
-                    if (healthcareEntityDataSources != null) {
-                        healthcareEntityDataSources.forEach(healthcareEntityLink -> System.out.printf(
-                            "\t\tEntity ID in data source: %s, data source: %s.%n",
-                            healthcareEntityLink.getEntityId(), healthcareEntityLink.getName()));
-                    }
-                });
-                // Healthcare entity relation groups
-                healthcareEntitiesResult.getEntityRelations().forEach(entityRelation -> {
-                    System.out.printf("\tRelation type: %s.%n", entityRelation.getRelationType());
-                    entityRelation.getRoles().forEach(role -> {
-                        final HealthcareEntity entity = role.getEntity();
-                        System.out.printf("\t\tEntity text: %s, category: %s, role: %s.%n",
-                            entity.getText(), entity.getCategory(), role.getName());
+        syncPoller.getFinalResult().forEach(
+            analyzeHealthcareEntitiesResultCollection -> analyzeHealthcareEntitiesResultCollection.forEach(
+                healthcareEntitiesResult -> {
+                    System.out.println("Document entities: ");
+                    AtomicInteger ct = new AtomicInteger();
+                    healthcareEntitiesResult.getEntities().forEach(healthcareEntity -> {
+                        System.out.printf("\ti = %d, Text: %s, category: %s, subcategory: %s, confidence score: %f.%n",
+                            ct.getAndIncrement(), healthcareEntity.getText(), healthcareEntity.getCategory(),
+                            healthcareEntity.getSubcategory(), healthcareEntity.getConfidenceScore());
+                        IterableStream<EntityDataSource> healthcareEntityDataSources =
+                            healthcareEntity.getDataSources();
+                        if (healthcareEntityDataSources != null) {
+                            healthcareEntityDataSources.forEach(healthcareEntityLink -> System.out.printf(
+                                "\t\tEntity ID in data source: %s, data source: %s.%n",
+                                healthcareEntityLink.getEntityId(), healthcareEntityLink.getName()));
+                        }
                     });
-                });
-            }));
+                    // Healthcare entity relation groups
+                    healthcareEntitiesResult.getEntityRelations().forEach(entityRelation -> {
+                        System.out.printf("\tRelation type: %s.%n", entityRelation.getRelationType());
+                        entityRelation.getRoles().forEach(role -> {
+                            final HealthcareEntity entity = role.getEntity();
+                            System.out.printf("\t\tEntity text: %s, category: %s, role: %s.%n",
+                                entity.getText(), entity.getCategory(), role.getName());
+                        });
+                    });
+                }));
     }
 
     /**
@@ -251,7 +251,7 @@ public class ReadmeSamples {
                     + " only complaint I have is the food didn't come fast enough. Overall I highly recommend it!")
         );
 
-        SyncPoller<AnalyzeActionsOperationDetail, PagedIterable<AnalyzeActionsResult>> syncPoller =
+        SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedIterable> syncPoller =
             textAnalyticsClient.beginAnalyzeActions(documents,
                 new TextAnalyticsActions().setDisplayName("{tasks_display_name}")
                     .setExtractKeyPhrasesActions(new ExtractKeyPhrasesAction())

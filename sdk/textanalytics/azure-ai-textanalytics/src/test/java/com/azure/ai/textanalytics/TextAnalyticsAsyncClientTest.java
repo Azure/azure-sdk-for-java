@@ -6,7 +6,6 @@ package com.azure.ai.textanalytics;
 import com.azure.ai.textanalytics.implementation.SentenceSentimentPropertiesHelper;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
-import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentAction;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
@@ -28,10 +27,10 @@ import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextSentiment;
-import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
+import com.azure.ai.textanalytics.util.AnalyzeActionsResultPagedFlux;
+import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesPagedFlux;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.SyncPoller;
@@ -83,8 +82,8 @@ import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchPiiEntitiesFo
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchTextSentiment;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedDocumentSentiment;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedExtractKeyPhrasesActionResult;
-import static com.azure.ai.textanalytics.TestUtils.getExpectedHealthcareTaskResultListForMultiplePages;
-import static com.azure.ai.textanalytics.TestUtils.getExpectedHealthcareTaskResultListForSinglePage;
+import static com.azure.ai.textanalytics.TestUtils.getExpectedAnalyzeHealthcareEntitiesResultCollectionListForMultiplePages;
+import static com.azure.ai.textanalytics.TestUtils.getExpectedAnalyzeHealthcareEntitiesResultCollectionListForSinglePage;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedRecognizeEntitiesActionResult;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedRecognizeLinkedEntitiesActionResult;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedRecognizePiiEntitiesActionResult;
@@ -1958,16 +1957,15 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void healthcareLroPagination(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         healthcareLroPaginationRunner((documents, options) -> {
-            SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, PagedFlux<AnalyzeHealthcareEntitiesResultCollection>>
+            SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedFlux>
                 syncPoller = client.beginAnalyzeHealthcareEntities(documents, options).getSyncPoller();
             syncPoller = setPollInterval(syncPoller);
             syncPoller.waitForCompletion();
-            PagedFlux<AnalyzeHealthcareEntitiesResultCollection> healthcareEntitiesResultCollectionPagedFlux
-                = syncPoller.getFinalResult();
+            AnalyzeHealthcareEntitiesPagedFlux analyzeHealthcareEntitiesPagedFlux = syncPoller.getFinalResult();
             validateAnalyzeHealthcareEntitiesResultCollectionList(
                 options.isIncludeStatistics(),
-                getExpectedHealthcareTaskResultListForMultiplePages(0, 10, 0),
-                healthcareEntitiesResultCollectionPagedFlux.toStream().collect(Collectors.toList()));
+                getExpectedAnalyzeHealthcareEntitiesResultCollectionListForMultiplePages(0, 10, 0),
+                analyzeHealthcareEntitiesPagedFlux.toStream().collect(Collectors.toList()));
         }, 10);
     }
 
@@ -1977,16 +1975,15 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void healthcareLroWithOptions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         healthcareLroRunner((documents, options) -> {
-            SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, PagedFlux<AnalyzeHealthcareEntitiesResultCollection>>
+            SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedFlux>
                 syncPoller = client.beginAnalyzeHealthcareEntities(documents, options).getSyncPoller();
             syncPoller = setPollInterval(syncPoller);
             syncPoller.waitForCompletion();
-            PagedFlux<AnalyzeHealthcareEntitiesResultCollection> healthcareEntitiesResultCollectionPagedFlux
-                = syncPoller.getFinalResult();
+            AnalyzeHealthcareEntitiesPagedFlux analyzeHealthcareEntitiesPagedFlux = syncPoller.getFinalResult();
             validateAnalyzeHealthcareEntitiesResultCollectionList(
                 options.isIncludeStatistics(),
-                getExpectedHealthcareTaskResultListForSinglePage(),
-                healthcareEntitiesResultCollectionPagedFlux.toStream().collect(Collectors.toList()));
+                getExpectedAnalyzeHealthcareEntitiesResultCollectionListForSinglePage(),
+                analyzeHealthcareEntitiesPagedFlux.toStream().collect(Collectors.toList()));
         });
     }
 
@@ -2036,21 +2033,18 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         emojiRunner(
             document -> {
-                SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, PagedFlux<AnalyzeHealthcareEntitiesResultCollection>>
+                SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedFlux>
                     syncPoller = client.beginAnalyzeHealthcareEntities(
                     Collections.singletonList(new TextDocumentInput("0", document)), null).getSyncPoller();
                 syncPoller = setPollInterval(syncPoller);
                 syncPoller.waitForCompletion();
-                PagedFlux<AnalyzeHealthcareEntitiesResultCollection> healthcareEntitiesResultCollectionPagedFlux
-                    = syncPoller.getFinalResult();
-                healthcareEntitiesResultCollectionPagedFlux.toStream().forEach(result -> {
-                    result.forEach(
-                        entitiesResult -> entitiesResult.getEntities().forEach(
-                            entity -> {
-                                assertEquals(11, entity.getLength());
-                                assertEquals(20, entity.getOffset());
-                            }));
-                });
+                AnalyzeHealthcareEntitiesPagedFlux analyzeHealthcareEntitiesPagedFlux = syncPoller.getFinalResult();
+                analyzeHealthcareEntitiesPagedFlux.toStream().forEach(result -> result.forEach(
+                    entitiesResult -> entitiesResult.getEntities().forEach(
+                        entity -> {
+                            assertEquals(11, entity.getLength());
+                            assertEquals(20, entity.getOffset());
+                        })));
             },
             HEALTHCARE_ENTITY_OFFSET_INPUT);
     }
@@ -2062,21 +2056,18 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         emojiWithSkinToneModifierRunner(
             document -> {
-                SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, PagedFlux<AnalyzeHealthcareEntitiesResultCollection>>
+                SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedFlux>
                     syncPoller = client.beginAnalyzeHealthcareEntities(
                     Collections.singletonList(new TextDocumentInput("0", document)), null).getSyncPoller();
                 syncPoller = setPollInterval(syncPoller);
                 syncPoller.waitForCompletion();
-                PagedFlux<AnalyzeHealthcareEntitiesResultCollection> healthcareEntitiesResultCollectionPagedFlux
-                    = syncPoller.getFinalResult();
-                healthcareEntitiesResultCollectionPagedFlux.toStream().forEach(result -> {
-                    result.forEach(
-                        entitiesResult -> entitiesResult.getEntities().forEach(
-                            entity -> {
-                                assertEquals(11, entity.getLength());
-                                assertEquals(22, entity.getOffset());
-                            }));
-                });
+                AnalyzeHealthcareEntitiesPagedFlux analyzeHealthcareEntitiesPagedFlux = syncPoller.getFinalResult();
+                analyzeHealthcareEntitiesPagedFlux.toStream().forEach(result -> result.forEach(
+                    entitiesResult -> entitiesResult.getEntities().forEach(
+                        entity -> {
+                            assertEquals(11, entity.getLength());
+                            assertEquals(22, entity.getOffset());
+                        })));
             },
             HEALTHCARE_ENTITY_OFFSET_INPUT);
     }
@@ -2087,22 +2078,18 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         emojiFamilyRunner(
             document -> {
-                SyncPoller<AnalyzeHealthcareEntitiesOperationDetail,
-                              PagedFlux<AnalyzeHealthcareEntitiesResultCollection>>
+                SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedFlux>
                     syncPoller = client.beginAnalyzeHealthcareEntities(
                     Collections.singletonList(new TextDocumentInput("0", document)), null).getSyncPoller();
                 syncPoller = setPollInterval(syncPoller);
                 syncPoller.waitForCompletion();
-                PagedFlux<AnalyzeHealthcareEntitiesResultCollection> healthcareEntitiesResultCollectionPagedFlux
-                    = syncPoller.getFinalResult();
-                healthcareEntitiesResultCollectionPagedFlux.toStream().forEach(result -> {
-                    result.forEach(
-                        entitiesResult -> entitiesResult.getEntities().forEach(
-                            entity -> {
-                                assertEquals(11, entity.getLength());
-                                assertEquals(29, entity.getOffset());
-                            }));
-                });
+                AnalyzeHealthcareEntitiesPagedFlux analyzeHealthcareEntitiesPagedFlux = syncPoller.getFinalResult();
+                analyzeHealthcareEntitiesPagedFlux.toStream().forEach(result -> result.forEach(
+                    entitiesResult -> entitiesResult.getEntities().forEach(
+                        entity -> {
+                            assertEquals(11, entity.getLength());
+                            assertEquals(29, entity.getOffset());
+                        })));
             },
             HEALTHCARE_ENTITY_OFFSET_INPUT);
     }
@@ -2114,22 +2101,18 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         emojiFamilyWithSkinToneModifierRunner(
             document -> {
-                SyncPoller<AnalyzeHealthcareEntitiesOperationDetail,
-                              PagedFlux<AnalyzeHealthcareEntitiesResultCollection>>
+                SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedFlux>
                     syncPoller = client.beginAnalyzeHealthcareEntities(
                     Collections.singletonList(new TextDocumentInput("0", document)), null).getSyncPoller();
                 syncPoller = setPollInterval(syncPoller);
                 syncPoller.waitForCompletion();
-                PagedFlux<AnalyzeHealthcareEntitiesResultCollection> healthcareEntitiesResultCollectionPagedFlux
-                    = syncPoller.getFinalResult();
-                healthcareEntitiesResultCollectionPagedFlux.toStream().forEach(result -> {
-                    result.forEach(
-                        entitiesResult -> entitiesResult.getEntities().forEach(
-                            entity -> {
-                                assertEquals(11, entity.getLength());
-                                assertEquals(37, entity.getOffset());
-                            }));
-                });
+                AnalyzeHealthcareEntitiesPagedFlux analyzeHealthcareEntitiesPagedFlux = syncPoller.getFinalResult();
+                analyzeHealthcareEntitiesPagedFlux.toStream().forEach(result -> result.forEach(
+                    entitiesResult -> entitiesResult.getEntities().forEach(
+                        entity -> {
+                            assertEquals(11, entity.getLength());
+                            assertEquals(37, entity.getOffset());
+                        })));
             },
             HEALTHCARE_ENTITY_OFFSET_INPUT);
     }
@@ -2142,22 +2125,18 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         diacriticsNfcRunner(
             document -> {
-                SyncPoller<AnalyzeHealthcareEntitiesOperationDetail,
-                              PagedFlux<AnalyzeHealthcareEntitiesResultCollection>>
+                SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedFlux>
                     syncPoller = client.beginAnalyzeHealthcareEntities(
                     Collections.singletonList(new TextDocumentInput("0", document)), null).getSyncPoller();
                 syncPoller = setPollInterval(syncPoller);
                 syncPoller.waitForCompletion();
-                PagedFlux<AnalyzeHealthcareEntitiesResultCollection> healthcareEntitiesResultCollectionPagedFlux
-                    = syncPoller.getFinalResult();
-                healthcareEntitiesResultCollectionPagedFlux.toStream().forEach(result -> {
-                    result.forEach(
-                        entitiesResult -> entitiesResult.getEntities().forEach(
-                            entity -> {
-                                assertEquals(11, entity.getLength());
-                                assertEquals(21, entity.getOffset());
-                            }));
-                });
+                AnalyzeHealthcareEntitiesPagedFlux analyzeHealthcareEntitiesPagedFlux = syncPoller.getFinalResult();
+                analyzeHealthcareEntitiesPagedFlux.toStream().forEach(result -> result.forEach(
+                    entitiesResult -> entitiesResult.getEntities().forEach(
+                        entity -> {
+                            assertEquals(11, entity.getLength());
+                            assertEquals(21, entity.getOffset());
+                        })));
             },
             HEALTHCARE_ENTITY_OFFSET_INPUT);
     }
@@ -2170,22 +2149,18 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         diacriticsNfdRunner(
             document -> {
-                SyncPoller<AnalyzeHealthcareEntitiesOperationDetail,
-                              PagedFlux<AnalyzeHealthcareEntitiesResultCollection>>
+                SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedFlux>
                     syncPoller = client.beginAnalyzeHealthcareEntities(
                     Collections.singletonList(new TextDocumentInput("0", document)), null).getSyncPoller();
                 syncPoller = setPollInterval(syncPoller);
                 syncPoller.waitForCompletion();
-                PagedFlux<AnalyzeHealthcareEntitiesResultCollection> healthcareEntitiesResultCollectionPagedFlux
-                    = syncPoller.getFinalResult();
-                healthcareEntitiesResultCollectionPagedFlux.toStream().forEach(result -> {
-                    result.forEach(
-                        entitiesResult -> entitiesResult.getEntities().forEach(
-                            entity -> {
-                                assertEquals(11, entity.getLength());
-                                assertEquals(22, entity.getOffset());
-                            }));
-                });
+                AnalyzeHealthcareEntitiesPagedFlux analyzeHealthcareEntitiesPagedFlux = syncPoller.getFinalResult();
+                analyzeHealthcareEntitiesPagedFlux.toStream().forEach(result -> result.forEach(
+                    entitiesResult -> entitiesResult.getEntities().forEach(
+                        entity -> {
+                            assertEquals(11, entity.getLength());
+                            assertEquals(22, entity.getOffset());
+                        })));
             },
             HEALTHCARE_ENTITY_OFFSET_INPUT);
     }
@@ -2196,22 +2171,18 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         koreanNfcRunner(
             document -> {
-                SyncPoller<AnalyzeHealthcareEntitiesOperationDetail,
-                              PagedFlux<AnalyzeHealthcareEntitiesResultCollection>>
+                SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedFlux>
                     syncPoller = client.beginAnalyzeHealthcareEntities(
                     Collections.singletonList(new TextDocumentInput("0", document)), null).getSyncPoller();
                 syncPoller = setPollInterval(syncPoller);
                 syncPoller.waitForCompletion();
-                PagedFlux<AnalyzeHealthcareEntitiesResultCollection> healthcareEntitiesResultCollectionPagedFlux
-                    = syncPoller.getFinalResult();
-                healthcareEntitiesResultCollectionPagedFlux.toStream().forEach(result -> {
-                    result.forEach(
-                        entitiesResult -> entitiesResult.getEntities().forEach(
-                            entity -> {
-                                assertEquals(11, entity.getLength());
-                                assertEquals(20, entity.getOffset());
-                            }));
-                });
+                AnalyzeHealthcareEntitiesPagedFlux analyzeHealthcareEntitiesPagedFlux = syncPoller.getFinalResult();
+                analyzeHealthcareEntitiesPagedFlux.toStream().forEach(result -> result.forEach(
+                    entitiesResult -> entitiesResult.getEntities().forEach(
+                        entity -> {
+                            assertEquals(11, entity.getLength());
+                            assertEquals(20, entity.getOffset());
+                        })));
             },
             HEALTHCARE_ENTITY_OFFSET_INPUT);
     }
@@ -2222,22 +2193,18 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         koreanNfdRunner(
             document -> {
-                SyncPoller<AnalyzeHealthcareEntitiesOperationDetail,
-                              PagedFlux<AnalyzeHealthcareEntitiesResultCollection>>
+                SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedFlux>
                     syncPoller = client.beginAnalyzeHealthcareEntities(
                     Collections.singletonList(new TextDocumentInput("0", document)), null).getSyncPoller();
                 syncPoller = setPollInterval(syncPoller);
                 syncPoller.waitForCompletion();
-                PagedFlux<AnalyzeHealthcareEntitiesResultCollection> healthcareEntitiesResultCollectionPagedFlux
-                    = syncPoller.getFinalResult();
-                healthcareEntitiesResultCollectionPagedFlux.toStream().forEach(result -> {
-                    result.forEach(
-                        entitiesResult -> entitiesResult.getEntities().forEach(
-                            entity -> {
-                                assertEquals(11, entity.getLength());
-                                assertEquals(20, entity.getOffset());
-                            }));
-                });
+                AnalyzeHealthcareEntitiesPagedFlux analyzeHealthcareEntitiesPagedFlux = syncPoller.getFinalResult();
+                analyzeHealthcareEntitiesPagedFlux.toStream().forEach(result -> result.forEach(
+                    entitiesResult -> entitiesResult.getEntities().forEach(
+                        entity -> {
+                            assertEquals(11, entity.getLength());
+                            assertEquals(20, entity.getOffset());
+                        })));
             },
             HEALTHCARE_ENTITY_OFFSET_INPUT);
     }
@@ -2248,22 +2215,18 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         zalgoTextRunner(
             document -> {
-                SyncPoller<AnalyzeHealthcareEntitiesOperationDetail,
-                              PagedFlux<AnalyzeHealthcareEntitiesResultCollection>>
+                SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedFlux>
                     syncPoller = client.beginAnalyzeHealthcareEntities(
                     Collections.singletonList(new TextDocumentInput("0", document)), null).getSyncPoller();
                 syncPoller = setPollInterval(syncPoller);
                 syncPoller.waitForCompletion();
-                PagedFlux<AnalyzeHealthcareEntitiesResultCollection> healthcareEntitiesResultCollectionPagedFlux
-                    = syncPoller.getFinalResult();
-                healthcareEntitiesResultCollectionPagedFlux.toStream().forEach(result -> {
-                    result.forEach(
-                        entitiesResult -> entitiesResult.getEntities().forEach(
-                            entity -> {
-                                assertEquals(11, entity.getLength());
-                                assertEquals(133, entity.getOffset());
-                            }));
-                });
+                AnalyzeHealthcareEntitiesPagedFlux analyzeHealthcareEntitiesPagedFlux = syncPoller.getFinalResult();
+                analyzeHealthcareEntitiesPagedFlux.toStream().forEach(result -> result.forEach(
+                    entitiesResult -> entitiesResult.getEntities().forEach(
+                        entity -> {
+                            assertEquals(11, entity.getLength());
+                            assertEquals(133, entity.getOffset());
+                        })));
             },
             HEALTHCARE_ENTITY_OFFSET_INPUT);
     }
@@ -2273,16 +2236,15 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void analyzeHealthcareEntitiesForAssertion(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         analyzeHealthcareEntitiesForAssertionRunner((documents, options) -> {
-            SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, PagedFlux<AnalyzeHealthcareEntitiesResultCollection>>
+            SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedFlux>
                 syncPoller = client.beginAnalyzeHealthcareEntities(documents, "en", options).getSyncPoller();
             syncPoller = setPollInterval(syncPoller);
             syncPoller.waitForCompletion();
-            PagedFlux<AnalyzeHealthcareEntitiesResultCollection> healthcareEntitiesResultCollectionPagedFlux
-                = syncPoller.getFinalResult();
+            AnalyzeHealthcareEntitiesPagedFlux analyzeHealthcareEntitiesPagedFlux = syncPoller.getFinalResult();
             // "All female participants that are premenopausal will be required to have a pregnancy test;
             // any participant who is pregnant or breastfeeding will not be included"
             final HealthcareEntityAssertion assertion =
-                healthcareEntitiesResultCollectionPagedFlux.toStream().collect(Collectors.toList())
+                analyzeHealthcareEntitiesPagedFlux.toStream().collect(Collectors.toList())
                     .get(0).stream().collect(Collectors.toList()) // List of document result
                     .get(0).getEntities().stream().collect(Collectors.toList()) // List of entities
                     .get(1) // "premenopausal" is the second entity recognized.
@@ -2300,7 +2262,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void cancelHealthcareLro(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         cancelHealthcareLroRunner((documents, options) -> {
-            SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, PagedFlux<AnalyzeHealthcareEntitiesResultCollection>>
+            SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedFlux>
                 syncPoller = client.beginAnalyzeHealthcareEntities(documents, options).getSyncPoller();
             syncPoller = setPollInterval(syncPoller);
             syncPoller.cancelOperation();
@@ -2316,12 +2278,12 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void analyzeActionsWithOptions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         analyzeBatchActionsRunner((documents, tasks) -> {
-            SyncPoller<AnalyzeActionsOperationDetail, PagedFlux<AnalyzeActionsResult>> syncPoller =
+            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller =
                 client.beginAnalyzeActions(documents, tasks,
                     new AnalyzeActionsOptions().setIncludeStatistics(false)).getSyncPoller();
             syncPoller = setPollInterval(syncPoller);
             syncPoller.waitForCompletion();
-            PagedFlux<AnalyzeActionsResult> result = syncPoller.getFinalResult();
+            AnalyzeActionsResultPagedFlux result = syncPoller.getFinalResult();
 
             validateAnalyzeBatchActionsResultList(false, false,
                 Arrays.asList(getExpectedAnalyzeBatchActionsResult(
@@ -2345,12 +2307,12 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void analyzeActionsPagination(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         analyzeBatchActionsPaginationRunner((documents, tasks) -> {
-            SyncPoller<AnalyzeActionsOperationDetail, PagedFlux<AnalyzeActionsResult>>
+            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux>
                 syncPoller = client.beginAnalyzeActions(
                     documents, tasks, new AnalyzeActionsOptions().setIncludeStatistics(false)).getSyncPoller();
             syncPoller = setPollInterval(syncPoller);
             syncPoller.waitForCompletion();
-            PagedFlux<AnalyzeActionsResult> result = syncPoller.getFinalResult();
+            AnalyzeActionsResultPagedFlux result = syncPoller.getFinalResult();
             validateAnalyzeBatchActionsResultList(false, false,
                 getExpectedAnalyzeActionsResultListForMultiplePages(0, 20, 2),
                 result.toStream().collect(Collectors.toList()));
@@ -2376,12 +2338,12 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         analyzeEntitiesRecognitionRunner(
             (documents, tasks) -> {
-                SyncPoller<AnalyzeActionsOperationDetail, PagedFlux<AnalyzeActionsResult>> syncPoller =
+                SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller =
                     client.beginAnalyzeActions(documents, tasks,
                         new AnalyzeActionsOptions().setIncludeStatistics(false)).getSyncPoller();
                 syncPoller = setPollInterval(syncPoller);
                 syncPoller.waitForCompletion();
-                PagedFlux<AnalyzeActionsResult> result = syncPoller.getFinalResult();
+                AnalyzeActionsResultPagedFlux result = syncPoller.getFinalResult();
 
                 validateAnalyzeBatchActionsResultList(false, false,
                     Arrays.asList(getExpectedAnalyzeBatchActionsResult(
@@ -2402,12 +2364,12 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         analyzeEntitiesRecognitionRunner(
             (documents, tasks) -> {
-                SyncPoller<AnalyzeActionsOperationDetail, PagedFlux<AnalyzeActionsResult>> syncPoller =
+                SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller =
                     client.beginAnalyzeActions(documents, tasks.setRecognizeEntitiesActions(new RecognizeEntitiesAction()),
                         new AnalyzeActionsOptions().setIncludeStatistics(false)).getSyncPoller();
                 syncPoller = setPollInterval(syncPoller);
                 syncPoller.waitForCompletion();
-                PagedFlux<AnalyzeActionsResult> result = syncPoller.getFinalResult();
+                AnalyzeActionsResultPagedFlux result = syncPoller.getFinalResult();
 
                 validateAnalyzeBatchActionsResultList(false, false,
                     Arrays.asList(getExpectedAnalyzeBatchActionsResult(
@@ -2429,12 +2391,12 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         analyzePiiEntityRecognitionWithCategoriesFiltersRunner(
             (documents, tasks) -> {
-                SyncPoller<AnalyzeActionsOperationDetail, PagedFlux<AnalyzeActionsResult>> syncPoller =
+                SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller =
                     client.beginAnalyzeActions(documents, tasks,
                         new AnalyzeActionsOptions().setIncludeStatistics(false)).getSyncPoller();
                 syncPoller = setPollInterval(syncPoller);
                 syncPoller.waitForCompletion();
-                PagedFlux<AnalyzeActionsResult> result = syncPoller.getFinalResult();
+                AnalyzeActionsResultPagedFlux result = syncPoller.getFinalResult();
 
                 validateAnalyzeBatchActionsResultList(false, false,
                     Arrays.asList(getExpectedAnalyzeBatchActionsResult(
@@ -2457,12 +2419,12 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         analyzePiiEntityRecognitionWithDomainFiltersRunner(
             (documents, tasks) -> {
-                SyncPoller<AnalyzeActionsOperationDetail, PagedFlux<AnalyzeActionsResult>> syncPoller =
+                SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller =
                     client.beginAnalyzeActions(documents, tasks,
                         new AnalyzeActionsOptions().setIncludeStatistics(false)).getSyncPoller();
                 syncPoller = setPollInterval(syncPoller);
                 syncPoller.waitForCompletion();
-                PagedFlux<AnalyzeActionsResult> result = syncPoller.getFinalResult();
+                AnalyzeActionsResultPagedFlux result = syncPoller.getFinalResult();
 
                 validateAnalyzeBatchActionsResultList(false, false,
                     Arrays.asList(getExpectedAnalyzeBatchActionsResult(
@@ -2483,12 +2445,12 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void analyzeLinkedEntityActions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         analyzeLinkedEntityRecognitionRunner((documents, tasks) -> {
-            SyncPoller<AnalyzeActionsOperationDetail, PagedFlux<AnalyzeActionsResult>> syncPoller =
+            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller =
                 client.beginAnalyzeActions(documents, tasks, "en",
                     new AnalyzeActionsOptions().setIncludeStatistics(false)).getSyncPoller();
             syncPoller = setPollInterval(syncPoller);
             syncPoller.waitForCompletion();
-            PagedFlux<AnalyzeActionsResult> result = syncPoller.getFinalResult();
+            AnalyzeActionsResultPagedFlux result = syncPoller.getFinalResult();
 
             validateAnalyzeBatchActionsResultList(
                 false, false,
@@ -2510,13 +2472,13 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void analyzeLinkedEntityActionWithNoActionName(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         analyzeLinkedEntityRecognitionRunner((documents, tasks) -> {
-            SyncPoller<AnalyzeActionsOperationDetail, PagedFlux<AnalyzeActionsResult>> syncPoller =
+            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller =
                 client.beginAnalyzeActions(documents,
                     tasks.setRecognizeLinkedEntitiesActions(new RecognizeLinkedEntitiesAction()), "en",
                     new AnalyzeActionsOptions().setIncludeStatistics(false)).getSyncPoller();
             syncPoller = setPollInterval(syncPoller);
             syncPoller.waitForCompletion();
-            PagedFlux<AnalyzeActionsResult> result = syncPoller.getFinalResult();
+            AnalyzeActionsResultPagedFlux result = syncPoller.getFinalResult();
 
             validateAnalyzeBatchActionsResultList(false, false,
                 asList(getExpectedAnalyzeBatchActionsResult(
@@ -2535,12 +2497,12 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void analyzeKeyPhrasesExtractionAction(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         extractKeyPhrasesRunner((documents, tasks) -> {
-            SyncPoller<AnalyzeActionsOperationDetail, PagedFlux<AnalyzeActionsResult>> syncPoller =
+            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller =
                 client.beginAnalyzeActions(documents, tasks, "en",
                     new AnalyzeActionsOptions().setIncludeStatistics(false)).getSyncPoller();
             syncPoller = setPollInterval(syncPoller);
             syncPoller.waitForCompletion();
-            PagedFlux<AnalyzeActionsResult> result = syncPoller.getFinalResult();
+            AnalyzeActionsResultPagedFlux result = syncPoller.getFinalResult();
 
             validateAnalyzeBatchActionsResultList(false, false,
                 asList(getExpectedAnalyzeBatchActionsResult(
@@ -2559,12 +2521,12 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void analyzeKeyPhrasesExtractionActionWithNoActionName(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         extractKeyPhrasesRunner((documents, tasks) -> {
-            SyncPoller<AnalyzeActionsOperationDetail, PagedFlux<AnalyzeActionsResult>> syncPoller =
+            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller =
                 client.beginAnalyzeActions(documents, tasks.setExtractKeyPhrasesActions(new ExtractKeyPhrasesAction()),
                     "en", new AnalyzeActionsOptions().setIncludeStatistics(false)).getSyncPoller();
             syncPoller = setPollInterval(syncPoller);
             syncPoller.waitForCompletion();
-            PagedFlux<AnalyzeActionsResult> result = syncPoller.getFinalResult();
+            AnalyzeActionsResultPagedFlux result = syncPoller.getFinalResult();
 
             validateAnalyzeBatchActionsResultList(false, false,
                 asList(getExpectedAnalyzeBatchActionsResult(
@@ -2583,12 +2545,12 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void analyzeSentimentAction(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         analyzeSentimentRunner((documents, tasks) -> {
-            SyncPoller<AnalyzeActionsOperationDetail, PagedFlux<AnalyzeActionsResult>> syncPoller =
+            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller =
                 client.beginAnalyzeActions(documents, tasks, "en",
                     new AnalyzeActionsOptions().setIncludeStatistics(false)).getSyncPoller();
             syncPoller = setPollInterval(syncPoller);
             syncPoller.waitForCompletion();
-            PagedFlux<AnalyzeActionsResult> result = syncPoller.getFinalResult();
+            AnalyzeActionsResultPagedFlux result = syncPoller.getFinalResult();
             validateAnalyzeBatchActionsResultList(false, false,
                 asList(getExpectedAnalyzeBatchActionsResult(
                     IterableStream.of(Collections.emptyList()),
@@ -2606,12 +2568,12 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void analyzeSentimentActionWithNoActionName(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         analyzeSentimentRunner((documents, tasks) -> {
-            SyncPoller<AnalyzeActionsOperationDetail, PagedFlux<AnalyzeActionsResult>> syncPoller =
+            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller =
                 client.beginAnalyzeActions(documents, tasks.setAnalyzeSentimentActions(new AnalyzeSentimentAction()), "en",
                     new AnalyzeActionsOptions().setIncludeStatistics(false)).getSyncPoller();
             syncPoller = setPollInterval(syncPoller);
             syncPoller.waitForCompletion();
-            PagedFlux<AnalyzeActionsResult> result = syncPoller.getFinalResult();
+            AnalyzeActionsResultPagedFlux result = syncPoller.getFinalResult();
 
             validateAnalyzeBatchActionsResultList(false, false,
                 asList(getExpectedAnalyzeBatchActionsResult(

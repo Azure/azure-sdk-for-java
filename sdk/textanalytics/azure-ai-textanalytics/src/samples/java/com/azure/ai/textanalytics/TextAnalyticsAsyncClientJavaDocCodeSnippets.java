@@ -813,14 +813,16 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                     operationResult.getCreatedAt(), operationResult.getExpiresAt());
                 return pollResult.getFinalResult();
             })
-            .subscribe(healthcareTaskResultPagedFlux -> {
-                healthcareTaskResultPagedFlux.subscribe(
-                    healthcareTaskResult -> {
+            .flatMap(analyzeActionsResultPagedFlux -> analyzeActionsResultPagedFlux.byPage())
+            .subscribe(
+                pagedResponse -> pagedResponse.getElements().forEach(
+                    analyzeHealthcareEntitiesResultCollection -> {
                         // Model version
                         System.out.printf("Results of Azure Text Analytics \"Analyze Healthcare\" Model, version: %s%n",
-                            healthcareTaskResult.getModelVersion());
+                            analyzeHealthcareEntitiesResultCollection.getModelVersion());
 
-                        TextDocumentBatchStatistics healthcareTaskStatistics = healthcareTaskResult.getStatistics();
+                        TextDocumentBatchStatistics healthcareTaskStatistics =
+                            analyzeHealthcareEntitiesResultCollection.getStatistics();
                         // Batch statistics
                         System.out.printf("Documents statistics: document count = %s, erroneous document count = %s,"
                                               + " transaction count = %s, valid document count = %s.%n",
@@ -829,7 +831,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                             healthcareTaskStatistics.getTransactionCount(),
                             healthcareTaskStatistics.getValidDocumentCount());
 
-                        healthcareTaskResult.forEach(healthcareEntitiesResult -> {
+                        analyzeHealthcareEntitiesResultCollection.forEach(healthcareEntitiesResult -> {
                             System.out.println("document id = " + healthcareEntitiesResult.getId());
                             System.out.println("Document entities: ");
                             AtomicInteger ct = new AtomicInteger();
@@ -857,9 +859,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                                 });
                             });
                         });
-                    }
-                );
-            });
+                    }));
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.beginAnalyzeHealthcareEntities#Iterable-AnalyzeHealthcareEntitiesOptions
     }
 
@@ -880,8 +880,9 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             "en",
             new AnalyzeActionsOptions().setIncludeStatistics(false))
             .flatMap(AsyncPollResponse::getFinalResult)
+            .flatMap(analyzeActionsResultPagedFlux -> analyzeActionsResultPagedFlux.byPage())
             .subscribe(
-                analyzeActionsResultPagedFlux -> analyzeActionsResultPagedFlux.subscribe(
+                pagedResponse -> pagedResponse.getElements().forEach(
                     analyzeActionsResult -> {
                         analyzeActionsResult.getRecognizeEntitiesResults().forEach(
                             actionResult -> {
@@ -923,8 +924,9 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 .setExtractKeyPhrasesActions(new ExtractKeyPhrasesAction()),
             new AnalyzeActionsOptions().setIncludeStatistics(false))
             .flatMap(AsyncPollResponse::getFinalResult)
+            .flatMap(analyzeActionsResultPagedFlux -> analyzeActionsResultPagedFlux.byPage())
             .subscribe(
-                analyzeActionsResultPagedFlux -> analyzeActionsResultPagedFlux.subscribe(
+                pagedResponse -> pagedResponse.getElements().forEach(
                     analyzeActionsResult -> {
                         System.out.println("Entities recognition action results:");
                         analyzeActionsResult.getRecognizeEntitiesResults().forEach(
