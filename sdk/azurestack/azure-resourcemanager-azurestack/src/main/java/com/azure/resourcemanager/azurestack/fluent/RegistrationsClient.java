@@ -41,6 +41,28 @@ public interface RegistrationsClient {
     PagedIterable<RegistrationInner> listByResourceGroup(String resourceGroup, Context context);
 
     /**
+     * Returns a list of all registrations under current subscription.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return pageable list of registrations.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<RegistrationInner> list();
+
+    /**
+     * Returns a list of all registrations under current subscription.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return pageable list of registrations.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<RegistrationInner> list(Context context);
+
+    /**
      * Returns the properties of an Azure Stack registration.
      *
      * @param resourceGroup Name of the resource group.
