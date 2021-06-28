@@ -48,7 +48,7 @@ import java.util.stream.Collectors;
 
 /**
  * Custom serializer for serializing types with wrapped properties. For example, a property with annotation
- *
+ * <p>
  * {@code @JsonProperty(value = "properties.name")} will be mapped from a top level "name" property in the POJO model to
  * {@code {'properties' : { 'name' : 'my_name' }}} in the serialized payload.
  */
@@ -56,9 +56,8 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
     private static final long serialVersionUID = -6130180289951110573L;
 
     private static final Pattern CHECK_IF_FLATTEN_PROPERTY_PATTERN = Pattern.compile(".+[^\\\\]\\..+");
-    private static final Pattern SPLIT_FLATTEN_PROPERTY_PATTERN = Pattern.compile("((?<!\\\\))\\.");
+    private static final Pattern UNESCAPED_PERIOD_PATTERN = Pattern.compile("((?<!\\\\))\\.");
 
-    private static final Pattern CREATE_ESCAPED_MAP_PATTERN = Pattern.compile("((?<!\\\\))\\.");
     private static final Pattern CHECK_IF_ESCAPED_MAP_PATTERN = Pattern.compile(".*[^\\\\]\\\\..+");
     private static final Pattern REPLACE_ESCAPED_MAP_PATTERN = Pattern.compile("\\\\.");
 
@@ -127,7 +126,7 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
         module.setSerializerModifier(new BeanSerializerModifier() {
             @Override
             public JsonSerializer<?> modifySerializer(SerializationConfig config, BeanDescription beanDesc,
-                JsonSerializer<?> serializer) {
+                                                      JsonSerializer<?> serializer) {
                 // If the class is annotated with @JsonFlatten add the serializer.
                 // Else if any property is annotated with @JsonFlatten add the serializer.
                 // Otherwise do not add the serializer.
@@ -178,7 +177,7 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
         if (value instanceof Map<?, ?>) {
             for (String key : new HashSet<>(((Map<String, Object>) value).keySet())) {
                 if (key.contains(".")) {
-                    String newKey = CREATE_ESCAPED_MAP_PATTERN.matcher(key).replaceAll("\\\\.");
+                    String newKey = UNESCAPED_PERIOD_PATTERN.matcher(key).replaceAll("\\\\.");
                     Object val = ((Map<String, Object>) value).remove(key);
                     ((Map<String, Object>) value).put(newKey, val);
                 }
@@ -198,10 +197,11 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
             return;
         }
 
-        int mod = value.getClass().getModifiers();
-        if (Modifier.isFinal(mod) || Modifier.isStatic(mod)) {
-            return;
-        }
+        // Why should we avoid escaping flattening of Map keys in a final class?
+        // int mod = value.getClass().getModifiers();
+        // if (Modifier.isFinal(mod) || Modifier.isStatic(mod)) {
+        //     return;
+        // }
 
         for (Field f : getAllDeclaredFields(value.getClass())) {
             // Why is this setting accessible to true?
@@ -216,7 +216,7 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
 
     @Override
     public void serializeWithType(Object value, JsonGenerator gen, SerializerProvider provider,
-        TypeSerializer typeSer) throws IOException {
+                                  TypeSerializer typeSer) throws IOException {
         if (value == null) {
             gen.writeNull();
             return;
@@ -249,12 +249,12 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
     }
 
     private void propertyOnlyFlattenSerialize(Object value, JsonGenerator gen, SerializerProvider provider,
-        ObjectNode node) throws IOException {
+                                              ObjectNode node) throws IOException {
         for (BeanPropertyDefinition beanProp : beanDescription.findProperties()) {
             ObjectNode nodeToUse = node;
             String propertyName = beanProp.getName();
             if (jsonPropertiesWithJsonFlatten.contains(beanProp.getName())) {
-                String[] splitNames = SPLIT_FLATTEN_PROPERTY_PATTERN.split(beanProp.getName());
+                String[] splitNames = UNESCAPED_PERIOD_PATTERN.split(beanProp.getName());
                 propertyName = splitNames[splitNames.length - 1];
 
                 // Find or create the ObjectNodes to use.
@@ -342,8 +342,7 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
 
                 if (CHECK_IF_FLATTEN_PROPERTY_PATTERN.matcher(key).matches()) {
                     // Handle flattening properties
-                    //
-                    String[] values = SPLIT_FLATTEN_PROPERTY_PATTERN.split(key);
+                    String[] values = UNESCAPED_PERIOD_PATTERN.split(key);
                     for (int i = 0; i < values.length; ++i) {
                         values[i] = values[i].replace("\\.", ".");
                         if (i == values.length - 1) {

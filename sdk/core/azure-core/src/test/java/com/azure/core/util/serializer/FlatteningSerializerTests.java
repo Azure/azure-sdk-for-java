@@ -655,7 +655,6 @@ public class FlatteningSerializerTests {
         String actualSerialization = serialize(school);
         String expectedSerialization = "{\"tags\":{\"/subscriptions/0-0-0-0-0/resourcegroups"
             + "/0/providers/Microsoft.ManagedIdentity/0\":\"value\"}}";
-        // Assertions.assertTrue(actualSerialization.contains("/tag.1/"));
         Assertions.assertEquals(expectedSerialization, actualSerialization);
     }
 
@@ -663,16 +662,16 @@ public class FlatteningSerializerTests {
     public void jsonFlattenNestedInner() {
         JsonFlattenNestedInner expected = new JsonFlattenNestedInner();
         VirtualMachineIdentity identity = new VirtualMachineIdentity();
-        Map<String, Object> map = new HashMap<>();
+        final Map<String, Object> map = new HashMap<>();
         map.put("/subscriptions/0-0-0-0-0/resourcegroups/0/providers/Microsoft.ManagedIdentity/userAssignedIdentities/0",
             new Object());
         identity.setType(Arrays.asList("SystemAssigned, UserAssigned"));
         identity.setUserAssignedIdentities(map);
         expected.setIdentity(identity);
 
-        String expectedSerialization = " {\"identity\": {\"type\": [\"SystemAssigned, UserAssigned\"],"
-            + "\"userAssignedIdentities\": {\"/subscriptions/0-0-0-0-0/resourcegroups/0/providers/"
-            + "Microsoft.ManagedIdentity/userAssignedIdentities/0\": {}}}";
+        String expectedSerialization = "{\"identity\":{\"type\":[\"SystemAssigned, UserAssigned\"],"
+            + "\"userAssignedIdentities\":{\"/subscriptions/0-0-0-0-0/resourcegroups/0/providers/"
+            + "Microsoft.ManagedIdentity/userAssignedIdentities/0\":{}}}}";
         String actualSerialization = serialize(expected);
 
         Assertions.assertEquals(expectedSerialization, actualSerialization);
