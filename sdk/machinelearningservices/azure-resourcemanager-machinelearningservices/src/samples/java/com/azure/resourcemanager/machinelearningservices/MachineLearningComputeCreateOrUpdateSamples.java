@@ -4,7 +4,26 @@
 
 package com.azure.resourcemanager.machinelearningservices;
 
-import com.azure.resourcemanager.machinelearningservices.models.Compute;
+import com.azure.resourcemanager.machinelearningservices.models.Aks;
+import com.azure.resourcemanager.machinelearningservices.models.AksProperties;
+import com.azure.resourcemanager.machinelearningservices.models.AmlCompute;
+import com.azure.resourcemanager.machinelearningservices.models.AmlComputeProperties;
+import com.azure.resourcemanager.machinelearningservices.models.ApplicationSharingPolicy;
+import com.azure.resourcemanager.machinelearningservices.models.AssignedUser;
+import com.azure.resourcemanager.machinelearningservices.models.ComputeInstance;
+import com.azure.resourcemanager.machinelearningservices.models.ComputeInstanceAuthorizationType;
+import com.azure.resourcemanager.machinelearningservices.models.ComputeInstanceProperties;
+import com.azure.resourcemanager.machinelearningservices.models.ComputeInstanceSshSettings;
+import com.azure.resourcemanager.machinelearningservices.models.DataFactory;
+import com.azure.resourcemanager.machinelearningservices.models.OsType;
+import com.azure.resourcemanager.machinelearningservices.models.PersonalComputeInstanceSettings;
+import com.azure.resourcemanager.machinelearningservices.models.RemoteLoginPortPublicAccess;
+import com.azure.resourcemanager.machinelearningservices.models.ResourceId;
+import com.azure.resourcemanager.machinelearningservices.models.ScaleSettings;
+import com.azure.resourcemanager.machinelearningservices.models.SshPublicAccess;
+import com.azure.resourcemanager.machinelearningservices.models.VirtualMachineImage;
+import com.azure.resourcemanager.machinelearningservices.models.VmPriority;
+import java.time.Duration;
 
 public final class MachineLearningComputeCreateOrUpdateSamples {
     public static void updateAAKSCompute(
@@ -15,12 +34,7 @@ public final class MachineLearningComputeCreateOrUpdateSamples {
             .define("compute123")
             .withRegion("eastus")
             .withExistingWorkspace("testrg123", "workspaces123")
-            .withProperties(
-                new Compute()
-                    .withDescription("some compute")
-                    .withResourceId(
-                        "/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourcegroups/testrg123/providers"
-                            + "/Microsoft.ContainerService/managedClusters/compute123-56826-c9b00420020b2"))
+            .withProperties(new Aks().withProperties(new AksProperties().withAgentCount(4)))
             .create();
     }
 
@@ -32,7 +46,27 @@ public final class MachineLearningComputeCreateOrUpdateSamples {
             .define("compute123")
             .withRegion("eastus")
             .withExistingWorkspace("testrg123", "workspaces123")
-            .withProperties(new Compute())
+            .withProperties(
+                new AmlCompute()
+                    .withProperties(
+                        new AmlComputeProperties()
+                            .withOsType(OsType.WINDOWS)
+                            .withVmSize("STANDARD_NC6")
+                            .withVmPriority(VmPriority.DEDICATED)
+                            .withVirtualMachineImage(
+                                new VirtualMachineImage()
+                                    .withId(
+                                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups"
+                                            + "/myResourceGroup/providers/Microsoft.Compute/galleries/myImageGallery"
+                                            + "/images/myImageDefinition/versions/0.0.1"))
+                            .withIsolatedNetwork(false)
+                            .withScaleSettings(
+                                new ScaleSettings()
+                                    .withMaxNodeCount(1)
+                                    .withMinNodeCount(0)
+                                    .withNodeIdleTimeBeforeScaleDown(Duration.parse("PT5M")))
+                            .withRemoteLoginPortPublicAccess(RemoteLoginPortPublicAccess.NOT_SPECIFIED)
+                            .withEnableNodePublicIp(true)))
             .create();
     }
 
@@ -44,7 +78,22 @@ public final class MachineLearningComputeCreateOrUpdateSamples {
             .define("compute123")
             .withRegion("eastus")
             .withExistingWorkspace("testrg123", "workspaces123")
-            .withProperties(new Compute())
+            .withProperties(
+                new ComputeInstance()
+                    .withProperties(
+                        new ComputeInstanceProperties()
+                            .withVmSize("STANDARD_NC6")
+                            .withSubnet(new ResourceId())
+                            .withApplicationSharingPolicy(ApplicationSharingPolicy.PERSONAL)
+                            .withSshSettings(
+                                new ComputeInstanceSshSettings().withSshPublicAccess(SshPublicAccess.DISABLED))
+                            .withComputeInstanceAuthorizationType(ComputeInstanceAuthorizationType.PERSONAL)
+                            .withPersonalComputeInstanceSettings(
+                                new PersonalComputeInstanceSettings()
+                                    .withAssignedUser(
+                                        new AssignedUser()
+                                            .withObjectId("00000000-0000-0000-0000-000000000000")
+                                            .withTenantId("00000000-0000-0000-0000-000000000000")))))
             .create();
     }
 
@@ -56,7 +105,8 @@ public final class MachineLearningComputeCreateOrUpdateSamples {
             .define("compute123")
             .withRegion("eastus")
             .withExistingWorkspace("testrg123", "workspaces123")
-            .withProperties(new Compute())
+            .withProperties(
+                new ComputeInstance().withProperties(new ComputeInstanceProperties().withVmSize("STANDARD_NC6")))
             .create();
     }
 
@@ -68,7 +118,15 @@ public final class MachineLearningComputeCreateOrUpdateSamples {
             .define("compute123")
             .withRegion("eastus")
             .withExistingWorkspace("testrg123", "workspaces123")
-            .withProperties(new Compute().withDescription("some compute"))
+            .withProperties(
+                new AmlCompute()
+                    .withProperties(
+                        new AmlComputeProperties()
+                            .withScaleSettings(
+                                new ScaleSettings()
+                                    .withMaxNodeCount(4)
+                                    .withMinNodeCount(4)
+                                    .withNodeIdleTimeBeforeScaleDown(Duration.parse("PT5M")))))
             .create();
     }
 
@@ -80,7 +138,7 @@ public final class MachineLearningComputeCreateOrUpdateSamples {
             .define("compute123")
             .withRegion("eastus")
             .withExistingWorkspace("testrg123", "workspaces123")
-            .withProperties(new Compute())
+            .withProperties(new Aks())
             .create();
     }
 
@@ -92,7 +150,7 @@ public final class MachineLearningComputeCreateOrUpdateSamples {
             .define("compute123")
             .withRegion("eastus")
             .withExistingWorkspace("testrg123", "workspaces123")
-            .withProperties(new Compute())
+            .withProperties(new DataFactory())
             .create();
     }
 }
