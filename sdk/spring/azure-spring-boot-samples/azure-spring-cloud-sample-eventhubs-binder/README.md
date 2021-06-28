@@ -191,6 +191,20 @@ spring:
       region: [region]
 ```
 
+#### Enable sync message
+If you want to get a response from eventhub immediately after sending a message, 
+we should add the following configuration, which will work with `StreamBridge`.
+
+```yaml
+spring:
+  cloud:
+    stream:
+      eventhub:
+        bindings:
+          supply-out-0:
+            producer:
+              sync: true
+```
 
 ## Examples
 
