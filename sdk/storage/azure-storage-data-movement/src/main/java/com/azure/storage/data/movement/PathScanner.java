@@ -13,10 +13,20 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.stream.BaseStream;
 
+/**
+ * Scanner for enumerating local files/folders at a specified location through publishers.
+ *
+ * TODO: Replace placeholder Javadoc
+ */
 public final class PathScanner {
     private final ClientLogger logger = new ClientLogger(PathScanner.class);
     private final String basePath;
 
+    /**
+     * Constructor for {@link PathScanner}.
+     *
+     * TODO: Replace placeholder Javadoc
+     */
     public PathScanner(String path) {
         try {
             // Resolve the given path to an absolute path in case it isn't one already
@@ -34,31 +44,42 @@ public final class PathScanner {
         }
     }
 
+    /**
+     * Enumerates the files/folders at the path this scanner points to using a non-blocking
+     * publisher.
+     *
+     * TODO: Replace placeholder Javadoc comment
+     *
+     * @param skipSubdirectories Sets whether to continue enumerating with warnings or throw through the
+     *                           Flux when a folder can't be accessed.
+     * @return a {@link Flux<String>} containing the absolute paths of all matching entries.
+     */
     public Flux<String> scan(boolean skipSubdirectories) {
         // Set up Mono for recursing through directories
         Mono<Path> basePath = Mono.just(Paths.get(this.basePath));
 
         // Return a Flux constructed from expanding path
         return basePath.expand(path -> {
-            // Return an empty publisher when the path is not a directory
-            // (files will cause errors when being used with Files::list)
-            if (!Files.isDirectory(path)) {
-                return Mono.empty();
-            } else {
-                return Flux.using(() -> Files.list(path),
-                    Flux::fromStream,
-                    BaseStream::close)
-                    .onErrorResume(e -> {
-                        // If set to skip subdirectories, continue processing; else,
-                        // pass an error which will stop the Flux stream
-                        if (skipSubdirectories) {
-                            logger.warning(e.getMessage(), e);
-                            return Mono.empty();
-                        } else {
-                            return Mono.error(logger.logThrowableAsError(e));
-                        }
-                    });
-            }})
+                // Return an empty publisher when the path is not a directory
+                // (files will cause errors when being used with Files::list)
+                if (!Files.isDirectory(path)) {
+                    return Mono.empty();
+                } else {
+                    return Flux.using(() -> Files.list(path),
+                        Flux::fromStream,
+                        BaseStream::close)
+                        .onErrorResume(e -> {
+                            // If set to skip subdirectories, continue processing; else,
+                            // pass an error which will stop the Flux stream
+                            if (skipSubdirectories) {
+                                logger.warning(e.getMessage(), e);
+                                return Mono.empty();
+                            } else {
+                                return Mono.error(logger.logThrowableAsError(e));
+                            }
+                        });
+                }
+            })
             // Return the paths as strings
             .map(path -> path.toAbsolutePath().toString())
             .subscribeOn(Schedulers.boundedElastic());

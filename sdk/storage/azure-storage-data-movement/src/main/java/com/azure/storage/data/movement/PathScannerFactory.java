@@ -3,6 +3,12 @@
 
 package com.azure.storage.data.movement;
 
+/**
+ * Factory for constructing {@link PathScanner}. Call {@link #getPathScanner()} to create a path scanner with the
+ * path passed to constructor.
+ *
+ * TODO: Replace placeholder Javadoc comment
+ */
 public final class PathScannerFactory {
     private final String path;
 
@@ -10,5 +16,16 @@ public final class PathScannerFactory {
         this.path = path;
     }
 
-    public PathScanner getPathScanner() { return new PathScanner(path); }
+    /**
+     * Creates a {@link PathScanner} with the configured path.
+     *
+     * TODO: Replace placeholder Javadoc comment
+     *
+     * @return a {@link PathScanner} created from the path passed to this factory.
+     * @throws IllegalArgumentException If multiple credentials have been specified.
+     * @throws java.nio.file.InvalidPathException If multiple credentials have been specified.
+     */
+    public PathScanner getPathScanner() {
+        return new PathScanner(path);
+    }
 }
