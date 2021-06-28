@@ -19,6 +19,9 @@ import org.springframework.util.StringUtils;
 
 import com.azure.spring.cloud.config.resource.Connection;
 
+/**
+ * Config Store Properties for Requests to an Azure App Configuration Store.
+ */
 public class ConfigStore {
 
     private static final String EMPTY_LABEL = "\0";
@@ -107,6 +110,9 @@ public class ConfigStore {
         this.featureFlags = featureFlags;
     }
 
+    /**
+     * @throws IllegalStateException Connection String URL endpoint is invalid
+     */
     @PostConstruct
     public void validateAndInit() {
         if (StringUtils.hasText(label)) {

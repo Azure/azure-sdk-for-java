@@ -50,7 +50,7 @@ public final class CallParticipant {
      *
      * @return the communication identity of the participant object itself
      */
-    public boolean getIsMuted() {
+    public boolean isMuted() {
         return isMuted;
     }
 

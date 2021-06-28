@@ -330,13 +330,13 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [cosmosdb_create_cli]: https://docs.microsoft.com/azure/cosmos-db/scripts/cli/table/create
 [cosmosdb_create_portal]: https://docs.microsoft.com/azure/cosmos-db/create-table-java#create-a-database-account
 [jdk]: https://docs.microsoft.com/java/azure/jdk/
-[log_level]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/src/main/java/com/azure/core/util/logging/LogLevel.java
+[log_level]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/util/logging/LogLevel.java
 [package]: https://search.maven.org/artifact/com.azure/azure-data-tables
 [product_documentation]: https://docs.microsoft.com/azure/cosmos-db/table-storage-overview
 [query_options]: https://docs.microsoft.com/rest/api/storageservices/querying-tables-and-entities#supported-query-options
 [rest_api]: https://docs.microsoft.com/rest/api/storageservices/table-service-rest-api
-[samples]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/tables/azure-data-tables/src/samples/java/
-[source_code]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/tables/azure-data-tables/src
+[samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/tables/azure-data-tables/src/samples/java/
+[source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/tables/azure-data-tables/src
 [storage_account_create_cli]: https://docs.microsoft.com/azure/storage/common/storage-account-create?tabs=azure-cli
 [storage_account_create_portal]: https://docs.microsoft.com/azure/storage/common/storage-account-create?tabs=azure-portal
 

@@ -26,7 +26,6 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 
 import static com.azure.core.util.FluxUtil.monoError;
-import static com.azure.data.tables.implementation.TableUtils.applyOptionalTimeout;
 import static com.azure.data.tables.implementation.TableUtils.blockWithOptionalTimeout;
 
 /**
@@ -301,7 +300,7 @@ public final class TableServiceClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TableItem> listTables(ListTablesOptions options, Duration timeout, Context context) {
-        return new PagedIterable<>(applyOptionalTimeout(client.listTables(options, context), timeout));
+        return new PagedIterable<>(client.listTables(options, context, timeout));
     }
 
     /**

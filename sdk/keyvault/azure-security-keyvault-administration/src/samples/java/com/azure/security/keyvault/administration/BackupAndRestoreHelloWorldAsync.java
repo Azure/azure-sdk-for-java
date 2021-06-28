@@ -22,7 +22,7 @@ public class BackupAndRestoreHelloWorldAsync {
         using default Azure credentials. To make default credentials work, ensure that environment variables
         'AZURE_CLIENT_ID', 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
 
-        To get started, you'll need a URI to an Azure Key Vault. See the README (https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-administration/README.md)
+        To get started, you'll need a URI to an Azure Key Vault. See the README (https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-administration/README.md)
         for links and instructions. */
         KeyVaultBackupAsyncClient backupAsyncClient = new KeyVaultBackupClientBuilder()
             .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
@@ -31,11 +31,11 @@ public class BackupAndRestoreHelloWorldAsync {
 
         /* Using the KeyVaultBackupClient, you can back up your entire collection of keys. The backing store for full
         key backups is a blob storage container using Shared Access Signature authentication. For more details on
-        creating a SAS token using the BlobServiceClient, see the Azure Storage Blobs client README (https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/storage/azure-storage-blob/README.md).
+        creating a SAS token using the BlobServiceClient, see the Azure Storage Blobs client README (https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-blob/README.md).
         Alternatively, it is possible to generate a SAS token in Storage Explorer (https://docs.microsoft.com/azure/vs-azure-tools-storage-manage-with-storage-explorer?tabs=windows#generate-a-shared-access-signature-in-storage-explorer).
 
         To ensure you have some keys for backup, you may want to first create a key using the KeyClient. To create a
-        new KeyClient to create a key, see the 'Azure Key Vault Key client library for Java' README (https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-keys/README.md#create-key-client).
+        new KeyClient to create a key, see the 'Azure Key Vault Key client library for Java' README (https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-keys/README.md#create-key-client).
 
         In the sample below, you can set blobStorageUrl and sasToken based on environment variables, configuration
         settings, or any way that works for your application. */

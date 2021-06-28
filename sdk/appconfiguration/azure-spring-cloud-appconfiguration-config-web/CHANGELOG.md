@@ -1,7 +1,10 @@
 # Release History
 
-## 2.0.0-beta.2 (Unreleased)
+## 2.0.0-beta.3 (Unreleased)
 
+
+## 2.0.0-beta.2 (2021-06-21)
+- Changed package path to `com.azure.spring.cloud.config`
 
 ## 2.0.0-beta.1 (2021-05-04)
 ### Breaking Changes
