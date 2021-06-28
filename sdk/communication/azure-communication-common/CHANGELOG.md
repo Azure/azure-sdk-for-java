@@ -1,8 +1,6 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
-
-## 1.0.3 (2021-06-25)
+## 1.0.3 (2021-06-28)
 Updated `azure-communication-common` version
 
 ## 1.0.2 (2021-06-09)
