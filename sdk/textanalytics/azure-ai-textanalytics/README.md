@@ -8,8 +8,8 @@ and includes six main functions:
 - Named Entity Recognition
 - Personally Identifiable Information Entity Recognition 
 - Linked Entity Recognition
-- Support Analyze Healthcare Entity <sup>beta</sup>
-- Support Multiple Actions Per Document <sup>beta</sup>
+- Healthcare Entity Recognition
+- Multiple Actions Analysis Per Document
 
 [Source code][source_code] | [Package (Maven)][package] | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation] | [Samples][samples_readme]
 
@@ -191,6 +191,8 @@ The following sections provide several code snippets covering some of the most c
 * [Recognize Entities](#recognize-entities "Recognize entities")
 * [Recognize Personally Identifiable Information Entities](#recognize-personally-identifiable-information-entities "Recognize Personally Identifiable Information entities")
 * [Recognize Linked Entities](#recognize-linked-entities "Recognize linked entities")
+* [Analyze Healthcare Entities](#analyze-healthcare-entities "Analyze healthcare entities")
+* [Analyze Multiple Actions](#analyze-multiple-actions "Analyze multiple actions")
 
 ### Text Analytics Client
 Text analytics support both synchronous and asynchronous client creation by using
