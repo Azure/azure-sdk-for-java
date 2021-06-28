@@ -182,7 +182,6 @@ class PathScannerTest extends Specification {
     }
 
     static boolean liesWithin(String searchValue, List<String> list, int start, int end) {
-        System.out.println(searchValue);
         return list.subList(start, end).contains(searchValue);
     }
 }
