@@ -3,6 +3,7 @@
 
 package com.azure.spring.integration.servicebus.factory;
 
+import com.azure.core.amqp.AmqpTransportType;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusErrorContext;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
@@ -32,6 +33,12 @@ public class DefaultServiceBusTopicClientFactory extends AbstractServiceBusSende
     public DefaultServiceBusTopicClientFactory(String connectionString) {
         super(connectionString);
         this.serviceBusClientBuilder = new ServiceBusClientBuilder().connectionString(connectionString);
+    }
+
+    public DefaultServiceBusTopicClientFactory(String connectionString, AmqpTransportType amqpTransportType) {
+        super(connectionString);
+        this.serviceBusClientBuilder = new ServiceBusClientBuilder().connectionString(connectionString);
+        this.serviceBusClientBuilder.transportType(amqpTransportType);
     }
 
     @Override

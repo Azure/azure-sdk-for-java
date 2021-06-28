@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.servicebus;
 
+import com.azure.core.amqp.AmqpTransportType;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.context.core.config.AzureProperties;
@@ -50,6 +51,7 @@ public class AzureServiceBusAutoConfigurationTest {
                 assertThat(context).hasSingleBean(AzureServiceBusProperties.class);
                 assertThat(context.getBean(AzureServiceBusProperties.class).getNamespace()).isEqualTo("ns1");
                 assertThat(context.getBean(AzureServiceBusProperties.class).getConnectionString()).isEqualTo("str1");
+                assertThat(context.getBean(AzureServiceBusProperties.class).getTransportType()).isEqualTo(AmqpTransportType.AMQP);
             });
     }
 
@@ -86,6 +88,15 @@ public class AzureServiceBusAutoConfigurationTest {
                               assertThat(context).doesNotHaveBean(ServiceBusNamespaceManager.class);
                           });
     }
+
+    @Test
+    public void testTransportTypeWithAmqpWebSockets() {
+        this.contextRunner.withPropertyValues(SERVICE_BUS_PROPERTY_PREFIX + "transport-type=AmqpWebSockets")
+            .run(context -> {
+                assertThat(context.getBean(AzureServiceBusProperties.class).getTransportType()).isEqualTo(AmqpTransportType.AMQP_WEB_SOCKETS);
+            });
+    }
+
 
     @Test
     public void testWithAzureResourceManagerProvided() {
