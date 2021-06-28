@@ -24,17 +24,13 @@ public final class QuotasUpdateSamples {
                             .asList(
                                 new QuotaBaseProperties()
                                     .withId(
-                                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg"
-                                            + "/providers/Microsoft.MachineLearningServices/workspaces/demo_workspace1"
-                                            + "/quotas/Standard_DSv2_Family_Cluster_Dedicated_vCPUs")
+                                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.MachineLearningServices/workspaces/demo_workspace1/quotas/Standard_DSv2_Family_Cluster_Dedicated_vCPUs")
                                     .withType("Microsoft.MachineLearningServices/workspaces/quotas")
                                     .withLimit(100L)
                                     .withUnit(QuotaUnit.COUNT),
                                 new QuotaBaseProperties()
                                     .withId(
-                                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg"
-                                            + "/providers/Microsoft.MachineLearningServices/workspaces/demo_workspace2"
-                                            + "/quotas/Standard_DSv2_Family_Cluster_Dedicated_vCPUs")
+                                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.MachineLearningServices/workspaces/demo_workspace2/quotas/Standard_DSv2_Family_Cluster_Dedicated_vCPUs")
                                     .withType("Microsoft.MachineLearningServices/workspaces/quotas")
                                     .withLimit(200L)
                                     .withUnit(QuotaUnit.COUNT))),

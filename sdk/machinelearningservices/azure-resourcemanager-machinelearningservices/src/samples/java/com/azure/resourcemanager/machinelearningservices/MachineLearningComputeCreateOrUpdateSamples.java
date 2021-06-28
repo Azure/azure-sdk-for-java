@@ -56,9 +56,7 @@ public final class MachineLearningComputeCreateOrUpdateSamples {
                             .withVirtualMachineImage(
                                 new VirtualMachineImage()
                                     .withId(
-                                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups"
-                                            + "/myResourceGroup/providers/Microsoft.Compute/galleries/myImageGallery"
-                                            + "/images/myImageDefinition/versions/0.0.1"))
+                                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Compute/galleries/myImageGallery/images/myImageDefinition/versions/0.0.1"))
                             .withIsolatedNetwork(false)
                             .withScaleSettings(
                                 new ScaleSettings()

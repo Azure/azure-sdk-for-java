@@ -29,30 +29,24 @@ public final class WorkspacesCreateOrUpdateSamples {
             .withDescription("test description")
             .withFriendlyName("HelloName")
             .withKeyVault(
-                "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers"
-                    + "/Microsoft.KeyVault/vaults/testkv")
+                "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.KeyVault/vaults/testkv")
             .withApplicationInsights(
-                "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers"
-                    + "/microsoft.insights/components/testinsights")
+                "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/microsoft.insights/components/testinsights")
             .withContainerRegistry(
-                "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers"
-                    + "/Microsoft.ContainerRegistry/registries/testRegistry")
+                "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.ContainerRegistry/registries/testRegistry")
             .withStorageAccount(
-                "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/accountcrud-1234/providers"
-                    + "/Microsoft.Storage/storageAccounts/testStorageAccount")
+                "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/accountcrud-1234/providers/Microsoft.Storage/storageAccounts/testStorageAccount")
             .withEncryption(
                 new EncryptionProperty()
                     .withStatus(EncryptionStatus.ENABLED)
                     .withIdentity(
                         new IdentityForCmk()
                             .withUserAssignedIdentity(
-                                "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234"
-                                    + "/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testuai"))
+                                "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testuai"))
                     .withKeyVaultProperties(
                         new KeyVaultProperties()
                             .withKeyVaultArmId(
-                                "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234"
-                                    + "/providers/Microsoft.KeyVault/vaults/testkv")
+                                "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.KeyVault/vaults/testkv")
                             .withKeyIdentifier(
                                 "https://testkv.vault.azure.net/keys/testkey/aabbccddee112233445566778899aabb")
                             .withIdentityClientId("")))
@@ -63,9 +57,7 @@ public final class WorkspacesCreateOrUpdateSamples {
                         new SharedPrivateLinkResource()
                             .withName("testdbresource")
                             .withPrivateLinkResourceId(
-                                "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234"
-                                    + "/providers/Microsoft.DocumentDB/databaseAccounts/testdbresource"
-                                    + "/privateLinkResources/Sql")
+                                "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.DocumentDB/databaseAccounts/testdbresource/privateLinkResources/Sql")
                             .withGroupId("Sql")
                             .withRequestMessage("Please approve")
                             .withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)))
@@ -74,8 +66,7 @@ public final class WorkspacesCreateOrUpdateSamples {
                     .withType(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
                     .withUserAssignedIdentities(
                         mapOf(
-                            "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234"
-                                + "/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testuai",
+                            "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testuai",
                             new UserAssignedIdentity())))
             .create();
     }
