@@ -118,8 +118,10 @@ public class CosmosQuery {
                 return false;
             } else if (hasKeywordAnd()) {
                 return false;
-            } else return criteria1.getType() != CriteriaType.IN
-                || criteria1.getSubjectValues().size() != 1;
+            } else {
+                return criteria1.getType() != CriteriaType.IN
+                    || criteria1.getSubjectValues().size() != 1;
+            }
         }).orElse(true);
     }
 
