@@ -706,19 +706,21 @@ final class TestUtils {
     }
 
     /**
-     * Helper method that get a single-page (healthcareTaskResult) list.
+     * Helper method that get a single-page {@link AnalyzeHealthcareEntitiesResultCollection} list.
      */
-    static List<AnalyzeHealthcareEntitiesResultCollection> getExpectedHealthcareTaskResultListForSinglePage() {
+    static List<AnalyzeHealthcareEntitiesResultCollection>
+        getExpectedAnalyzeHealthcareEntitiesResultCollectionListForSinglePage() {
         return asList(
-            getExpectedHealthcareTaskResult(2,
+            getExpectedAnalyzeHealthcareEntitiesResultCollection(2,
                 asList(getRecognizeHealthcareEntitiesResult1("0"), getRecognizeHealthcareEntitiesResult2())));
     }
 
     /**
-     * Helper method that get a multiple-pages (healthcareTaskResult) list.
+     * Helper method that get a multiple-pages {@link AnalyzeHealthcareEntitiesResultCollection} list.
      */
-    static List<AnalyzeHealthcareEntitiesResultCollection> getExpectedHealthcareTaskResultListForMultiplePages(int startIndex,
-        int firstPage, int secondPage) {
+    static List<AnalyzeHealthcareEntitiesResultCollection>
+        getExpectedAnalyzeHealthcareEntitiesResultCollectionListForMultiplePages(int startIndex, int firstPage,
+            int secondPage) {
         List<AnalyzeHealthcareEntitiesResult> healthcareEntitiesResults1 = new ArrayList<>();
         // First Page
         int i = startIndex;
@@ -732,22 +734,22 @@ final class TestUtils {
         }
 
         List<AnalyzeHealthcareEntitiesResultCollection> result = new ArrayList<>();
-        result.add(getExpectedHealthcareTaskResult(firstPage, healthcareEntitiesResults1));
+        result.add(getExpectedAnalyzeHealthcareEntitiesResultCollection(firstPage, healthcareEntitiesResults1));
         if (secondPage != 0) {
-            result.add(getExpectedHealthcareTaskResult(secondPage, healthcareEntitiesResults2));
+            result.add(getExpectedAnalyzeHealthcareEntitiesResultCollection(secondPage, healthcareEntitiesResults2));
         }
 
         return result;
     }
 
     /**
-     * Helper method that get the expected HealthcareTaskResult result.
+     * Helper method that get the expected {@link AnalyzeHealthcareEntitiesResultCollection} result.
      *
      * @param sizePerPage batch size per page.
      * @param healthcareEntitiesResults a collection of {@link AnalyzeHealthcareEntitiesResult}.
      */
-    static AnalyzeHealthcareEntitiesResultCollection getExpectedHealthcareTaskResult(int sizePerPage,
-        List<AnalyzeHealthcareEntitiesResult> healthcareEntitiesResults) {
+    static AnalyzeHealthcareEntitiesResultCollection getExpectedAnalyzeHealthcareEntitiesResultCollection(
+        int sizePerPage, List<AnalyzeHealthcareEntitiesResult> healthcareEntitiesResults) {
         TextDocumentBatchStatistics textDocumentBatchStatistics = new TextDocumentBatchStatistics(
             sizePerPage, sizePerPage, 0, sizePerPage);
         final AnalyzeHealthcareEntitiesResultCollection analyzeHealthcareEntitiesResultCollection =

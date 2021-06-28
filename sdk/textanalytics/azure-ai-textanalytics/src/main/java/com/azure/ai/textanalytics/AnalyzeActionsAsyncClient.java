@@ -53,8 +53,8 @@ import com.azure.ai.textanalytics.models.TextAnalyticsActionResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextAnalyticsErrorCode;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
-import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedIterable;
+import com.azure.ai.textanalytics.util.AnalyzeActionsResultPagedFlux;
+import com.azure.ai.textanalytics.util.AnalyzeActionsResultPagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
@@ -113,7 +113,7 @@ class AnalyzeActionsAsyncClient {
         this.service = service;
     }
 
-    PollerFlux<AnalyzeActionsOperationDetail, PagedFlux<AnalyzeActionsResult>> beginAnalyzeActions(
+    PollerFlux<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> beginAnalyzeActions(
         Iterable<TextDocumentInput> documents, TextAnalyticsActions actions, AnalyzeActionsOptions options,
         Context context) {
         try {
@@ -151,7 +151,7 @@ class AnalyzeActionsAsyncClient {
         }
     }
 
-    PollerFlux<AnalyzeActionsOperationDetail, PagedIterable<AnalyzeActionsResult>> beginAnalyzeActionsIterable(
+    PollerFlux<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedIterable> beginAnalyzeActionsIterable(
         Iterable<TextDocumentInput> documents, TextAnalyticsActions actions, AnalyzeActionsOptions options,
         Context context) {
         try {
@@ -180,8 +180,9 @@ class AnalyzeActionsAsyncClient {
                     finalIncludeStatistics, null, null, finalContext)),
                 (activationResponse, pollingContext) ->
                     Mono.error(new RuntimeException("Cancellation is not supported.")),
-                fetchingOperationIterable(operationId -> Mono.just(new PagedIterable<>(getAnalyzeOperationFluxPage(
-                    operationId, null, null, finalIncludeStatistics, finalContext))))
+                fetchingOperationIterable(
+                    operationId -> Mono.just(new AnalyzeActionsResultPagedIterable(getAnalyzeOperationFluxPage(
+                        operationId, null, null, finalIncludeStatistics, finalContext))))
             );
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
@@ -297,8 +298,8 @@ class AnalyzeActionsAsyncClient {
         };
     }
 
-    private Function<PollingContext<AnalyzeActionsOperationDetail>, Mono<PagedFlux<AnalyzeActionsResult>>>
-        fetchingOperation(Function<String, Mono<PagedFlux<AnalyzeActionsResult>>> fetchingFunction) {
+    private Function<PollingContext<AnalyzeActionsOperationDetail>, Mono<AnalyzeActionsResultPagedFlux>>
+        fetchingOperation(Function<String, Mono<AnalyzeActionsResultPagedFlux>> fetchingFunction) {
         return pollingContext -> {
             try {
                 // TODO: [Service-Bug] change back to UUID after service support it.
@@ -312,8 +313,8 @@ class AnalyzeActionsAsyncClient {
         };
     }
 
-    private Function<PollingContext<AnalyzeActionsOperationDetail>, Mono<PagedIterable<AnalyzeActionsResult>>>
-        fetchingOperationIterable(Function<String, Mono<PagedIterable<AnalyzeActionsResult>>> fetchingFunction) {
+    private Function<PollingContext<AnalyzeActionsOperationDetail>, Mono<AnalyzeActionsResultPagedIterable>>
+        fetchingOperationIterable(Function<String, Mono<AnalyzeActionsResultPagedIterable>> fetchingFunction) {
         return pollingContext -> {
             try {
                 // TODO: [Service-Bug] change back to UUID after service support it.
@@ -327,11 +328,11 @@ class AnalyzeActionsAsyncClient {
         };
     }
 
-    PagedFlux<AnalyzeActionsResult> getAnalyzeOperationFluxPage(String operationId, Integer top, Integer skip,
+    AnalyzeActionsResultPagedFlux getAnalyzeOperationFluxPage(String operationId, Integer top, Integer skip,
         boolean showStats, Context context) {
-        return new PagedFlux<>(
-            () -> getPage(null, operationId, top, skip, showStats, context),
-            continuationToken -> getPage(continuationToken, operationId, top, skip, showStats, context));
+        return new AnalyzeActionsResultPagedFlux(
+            () -> (continuationToken, pageSize) ->
+                      getPage(continuationToken, operationId, top, skip, showStats, context).flux());
     }
 
     Mono<PagedResponse<AnalyzeActionsResult>> getPage(String continuationToken, String operationId, Integer top,

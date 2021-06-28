@@ -533,7 +533,7 @@ public final class PiiEntityCategory extends ExpandableStringEnum<PiiEntityCateg
     public static final PiiEntityCategory PHONE_NUMBER = fromString("PhoneNumber");
 
     /** Static value IPAddress for PiiEntityCategory. */
-    public static final PiiEntityCategory IPADDRESS = fromString("IPAddress");
+    public static final PiiEntityCategory IP_ADDRESS = fromString("IPAddress");
 
     /** Static value Date for PiiEntityCategory. */
     public static final PiiEntityCategory DATE = fromString("Date");
