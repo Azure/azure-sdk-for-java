@@ -35,6 +35,9 @@
 # PRLabel: %Azure.Core
 /sdk/core/                                          @alzimmermsft @jianghaolu @srnagar @anuchandy @lmolkova
 
+# PRLabel: %Azure.Core.AMQP
+/sdk/core/azure-core-amqp/                          @conniey @yijunxiems @ki1729 @srnagar @anuchandy
+
 # PRLabel: %Azure.Core
 /sdk/core/azure-core-tracing-opentelemetry/         @samvaity @alzimmermsft @trask @lmolkova
 
