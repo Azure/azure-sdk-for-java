@@ -15,7 +15,7 @@ autorest --java --use:@autorest/java@4.0.x
 
 ### Code generation settings
 ``` yaml
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/storage-dataplane-preview/specification/storage/data-plane/Microsoft.QueueStorage/preview/2018-03-28/queue.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/e26b202f59cf887d2df3859d8154a31908d74a66/specification/storage/data-plane/Microsoft.QueueStorage/preview/2018-03-28/queue.json
 java: true
 output-folder: ../
 namespace: com.azure.storage.queue
@@ -31,118 +31,6 @@ custom-types: QueueErrorCode,QueueSignedIdentifier,SendMessageResult,QueueMessag
 custom-types-subpackage: models
 customization-jar-path: target/azure-storage-queue-customization-1.0.0-beta.1.jar
 customization-class: com.azure.storage.queue.customization.QueueStorageCustomization
-```
-
-### /{queueName}
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{queueName}"]
-  transform: >
-    let param = $.put.parameters[0];
-    if (!param["$ref"].endsWith("QueueName")) {
-        const path = param["$ref"].replace(/[#].*$/, "#/parameters/QueueName");
-        $.put.parameters.splice(0, 0, { "$ref": path });
-        $.delete.parameters.splice(0, 0, { "$ref": path });
-    }
-```
-
-### /{queueName}?comp=metadata
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{queueName}?comp=metadata"]
-  transform: >
-    let param = $.put.parameters[0];
-    if (!param["$ref"].endsWith("QueueName")) {
-        const path = param["$ref"].replace(/[#].*$/, "#/parameters/QueueName");
-        $.put.parameters.splice(0, 0, { "$ref": path });
-        $.get.parameters.splice(0, 0, { "$ref": path });
-    }
-```
-
-### /{queueName}?comp=acl
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{queueName}?comp=acl"]
-  transform: >
-    let param = $.put.parameters[0];
-    if (!param["$ref"].endsWith("QueueName")) {
-        const path = param["$ref"].replace(/[#].*$/, "#/parameters/QueueName");
-        $.put.parameters.splice(0, 0, { "$ref": path });
-        $.get.parameters.splice(0, 0, { "$ref": path });
-    }
-```
-
-### /{queueName}/messages
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{queueName}/messages"]
-  transform: >
-    let param = $.get.parameters[0];
-    if (!param["$ref"].endsWith("QueueName")) {
-        const path = param["$ref"].replace(/[#].*$/, "#/parameters/QueueName");
-        $.get.parameters.splice(0, 0, { "$ref": path });
-        $.delete.parameters.splice(0, 0, { "$ref": path });
-    }
-```
-
-### /{queueName}/messages?visibilitytimeout={visibilityTimeout}&messagettl={messageTimeToLive}
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{queueName}/messages?visibilitytimeout={visibilityTimeout}&messagettl={messageTimeToLive}"]
-  transform: >
-    let param = $.post.parameters[0];
-    if (!param["$ref"].endsWith("QueueName")) {
-        const path = param["$ref"].replace(/[#].*$/, "#/parameters/QueueName");
-        $.post.parameters.splice(0, 0, { "$ref": path });
-    }
-```
-
-### /{queueName}/messages?peekonly=true
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{queueName}/messages?peekonly=true"]
-  transform: >
-    let param = $.get.parameters[0];
-    if (!param["$ref"].endsWith("QueueName")) {
-        const path = param["$ref"].replace(/[#].*$/, "#/parameters/QueueName");
-        $.get.parameters.splice(0, 0, { "$ref": path });
-    }
-```
-
-### /{queueName}/messages/{messageid}?popreceipt={popReceipt}&visibilitytimeout={visibilityTimeout}
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{queueName}/messages/{messageid}?popreceipt={popReceipt}&visibilitytimeout={visibilityTimeout}"]
-  transform: >
-    let param = $.put.parameters[0];
-    if (!param["$ref"].endsWith("QueueName")) {
-        const queueNamePath = param["$ref"].replace(/[#].*$/, "#/parameters/QueueName");
-        const messageIdPath = param["$ref"].replace(/[#].*$/, "#/parameters/MessageId");
-        $.put.parameters.splice(0, 0, { "$ref": queueNamePath });
-        $.put.parameters.splice(1, 0, { "$ref": messageIdPath });
-    }
-```
-
-### /{queueName}/messages/{messageid}?popreceipt={popReceipt}
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{queueName}/messages/{messageid}?popreceipt={popReceipt}"]
-  transform: >
-    let param = $.delete.parameters[0];
-    if (!param["$ref"].endsWith("QueueName")) {
-        const queueNamePath = param["$ref"].replace(/[#].*$/, "#/parameters/QueueName");
-        const messageIdPath = param["$ref"].replace(/[#].*$/, "#/parameters/MessageId");
-        $.delete.parameters.splice(0, 0, { "$ref": queueNamePath });
-        $.delete.parameters.splice(1, 0, { "$ref": messageIdPath });
-    }
 ```
 
 ### Rename MessageItems
