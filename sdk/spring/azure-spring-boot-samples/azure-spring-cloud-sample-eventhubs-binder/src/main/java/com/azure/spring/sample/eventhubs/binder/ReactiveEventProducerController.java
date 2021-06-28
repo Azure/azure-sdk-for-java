@@ -21,16 +21,16 @@ import reactor.core.publisher.Sinks;
  */
 @RestController
 @Profile("manual")
-public class EventProducerController {
+public class ReactiveEventProducerController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(EventHubBinderApplication.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ReactiveEventProducerController.class);
 
     @Autowired
     private Sinks.Many<Message<String>> many;
 
-    @PostMapping("/messages")
-    public ResponseEntity<String> sendMessage(@RequestParam String message) {
-        LOGGER.info("Going to add message {} to sendMessage.", message);
+    @PostMapping("/messages/reactive")
+    public ResponseEntity<String> reactiveSendMessage(@RequestParam String message) {
+        LOGGER.info("Reactive method to send message: {} to destination.", message);
         many.emitNext(MessageBuilder.withPayload(message).build(), Sinks.EmitFailureHandler.FAIL_FAST);
         return ResponseEntity.ok(message);
     }

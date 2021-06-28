@@ -3,6 +3,8 @@
 
 package com.azure.storage.file.share
 
+import com.azure.core.credential.AccessToken
+import com.azure.core.credential.TokenRequestContext
 import com.azure.core.http.HttpHeaders
 import com.azure.core.http.HttpPipelineCallContext
 import com.azure.core.http.HttpPipelineNextPolicy
@@ -11,6 +13,11 @@ import com.azure.core.http.HttpResponse
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.test.TestMode
 import com.azure.core.util.Context
+import com.azure.identity.EnvironmentCredential
+import com.azure.identity.EnvironmentCredentialBuilder
+import com.azure.identity.implementation.IdentityClientOptions
+import com.azure.storage.blob.BlobServiceClient
+import com.azure.storage.blob.BlobServiceClientBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.test.shared.StorageSpec
 import com.azure.storage.common.test.shared.TestAccount

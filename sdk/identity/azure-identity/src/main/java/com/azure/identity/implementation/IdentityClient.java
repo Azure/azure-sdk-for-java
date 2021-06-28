@@ -22,6 +22,7 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.identity.CredentialUnavailableException;
 import com.azure.identity.DeviceCodeInfo;
+import com.azure.identity.RegionalAuthority;
 import com.azure.identity.TokenCachePersistenceOptions;
 import com.azure.identity.implementation.util.CertificateUtil;
 import com.azure.identity.implementation.util.IdentitySslUtil;
@@ -37,8 +38,8 @@ import com.microsoft.aad.msal4j.IAccount;
 import com.microsoft.aad.msal4j.IAuthenticationResult;
 import com.microsoft.aad.msal4j.IClientCredential;
 import com.microsoft.aad.msal4j.InteractiveRequestParameters;
-import com.microsoft.aad.msal4j.PublicClientApplication;
 import com.microsoft.aad.msal4j.Prompt;
+import com.microsoft.aad.msal4j.PublicClientApplication;
 import com.microsoft.aad.msal4j.RefreshTokenParameters;
 import com.microsoft.aad.msal4j.SilentParameters;
 import com.microsoft.aad.msal4j.UserNamePasswordParameters;
@@ -74,8 +75,8 @@ import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -237,6 +238,13 @@ public class IdentityClient {
                 } catch (Throwable t) {
                     return  Mono.error(logger.logExceptionAsError(new ClientAuthenticationException(
                         "Shared token cache is unavailable in this environment.", null, t)));
+                }
+            }
+            if (options.getRegionalAuthority() != null) {
+                if (options.getRegionalAuthority() == RegionalAuthority.AUTO_DISCOVER_REGION) {
+                    applicationBuilder.autoDetectRegion(true);
+                } else {
+                    applicationBuilder.azureRegion(options.getRegionalAuthority().toString());
                 }
             }
             ConfidentialClientApplication confidentialClientApplication = applicationBuilder.build();

@@ -48,8 +48,7 @@ import spock.lang.Unroll
 import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
 import java.time.Duration
- import java.time.OffsetDateTime
- import java.time.temporal.ChronoUnit
+import java.time.temporal.ChronoUnit
 
 @ResourceLock("ManagementPlaneThrottling")
 @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_10_02")
@@ -67,6 +66,7 @@ class ImmutableStorageWithVersioningTest extends APISpec {
 
     def setup() {
         containerName = generateContainerName()
+
         if (env.testMode != TestMode.PLAYBACK) {
             String url = String.format("https://management.azure.com/subscriptions/%s/resourceGroups/%s/providers/"
                 + "Microsoft.Storage/storageAccounts/%s/blobServices/default/containers/%s?api-version=%s", subscriptionId,
