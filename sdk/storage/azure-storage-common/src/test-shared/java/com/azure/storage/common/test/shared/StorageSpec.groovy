@@ -21,10 +21,9 @@ class StorageSpec extends Specification {
     private StorageResourceNamer namer
 
     def setup() {
-        def testName = getTestName()
+        def testName = TestNameProvider.getTestName(specificationContext.getCurrentIteration());
         interceptorManager = new InterceptorManager(testName, ENVIRONMENT.testMode)
         namer = new StorageResourceNamer(testName, ENVIRONMENT.testMode, interceptorManager.getRecordedData())
-        System.out.printf("========================= %s =========================%n", testName)
     }
 
     def cleanup() {
@@ -87,20 +86,5 @@ class StorageSpec extends Specification {
             .getToken(new TokenRequestContext().setScopes(["https://storage.azure.com/.default"]))
             .map { it.getToken() }
             .block()
-    }
-
-    private String getTestName() {
-        def iterationInfo = specificationContext.currentIteration
-        def featureInfo = iterationInfo.getParent()
-        def specInfo = featureInfo.getParent()
-        def fullName = specInfo.getName() + featureInfo.getName().split(" ").collect { it.capitalize() }.join("")
-
-        if (iterationInfo.getDataValues().length == 0) {
-            return fullName
-        }
-        def prefix = fullName
-        def suffix = "[" + iterationInfo.getIterationIndex() + "]"
-
-        return prefix + suffix
     }
 }
