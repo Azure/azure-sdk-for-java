@@ -5,7 +5,6 @@ package com.azure.storage.data.movement
 
 import reactor.core.publisher.Flux
 import reactor.test.StepVerifier
-import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Unroll
 
@@ -23,13 +22,6 @@ import java.nio.file.attribute.UserPrincipal
 
 class PathScannerTest extends Specification {
     static def temp = Paths.get(System.getProperty("java.io.tmpdir"));
-
-    def setup() {
-        String fullTestName = specificationContext.getCurrentIteration().getName().replace(' ', '').toLowerCase()
-        String className = specificationContext.getCurrentSpec().getName()
-        // Print out the test name to create breadcrumbs in our test logging in case anything hangs.
-        System.out.printf("========================= %s.%s =========================%n", className, fullTestName)
-    }
 
     @Unroll
     def "Scan folder containing mixed permissions"() {
