@@ -6,6 +6,7 @@
 - Deprecated `allowTelemetry` configuration item in each module property class.
 
 ### New Features
+- Upgrade to [spring-boot-dependencies:2.5.0](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.5.0/spring-boot-dependencies-2.5.0.pom).
 - Support domain_hint in aad-starter.([#21517](https://github.com/Azure/azure-sdk-for-java/issues/21517))
 - "aad.group.allowed-group-ids=all" can be used to map all group ids to GrantedAuthority (ROLE_group_id). 
   And it can work together with group names configured by "aad.group.allowed-group-names" (ROLE_group_name).[#21983](https://github.com/Azure/azure-sdk-for-java/issues/21983)
