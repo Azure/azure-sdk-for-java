@@ -32,8 +32,6 @@ Event Hub. You can choose anyone of them.
 >[!Important]
 >
 >  When using the Restful API to send messages, the **Active profiles** must contain `manual`.
-> 
->  When automatic message sending is used, the **Active profiles** must contain `auto`.
 
 
 #### Method 1: Connection string based usage
