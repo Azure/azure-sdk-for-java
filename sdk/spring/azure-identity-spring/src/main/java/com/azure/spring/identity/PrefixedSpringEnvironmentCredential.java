@@ -5,10 +5,12 @@ package com.azure.spring.identity;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.identity.AadCredentialBuilderBase;
 import com.azure.identity.ClientCertificateCredentialBuilder;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.identity.CredentialUnavailableException;
 import com.azure.identity.UsernamePasswordCredentialBuilder;
+import com.azure.identity.implementation.IdentityClientOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
@@ -32,10 +34,10 @@ public class PrefixedSpringEnvironmentCredential implements TokenCredential {
     private final String prefix;
     private final TokenCredential tokenCredential;
 
-    PrefixedSpringEnvironmentCredential(Environment environment, String prefix) {
+    PrefixedSpringEnvironmentCredential(Environment environment, String prefix, IdentityClientOptions identityClientOptions) {
         this.azureEnvironment = new AzureEnvironment(environment);
         this.prefix = prefix;
-        this.tokenCredential = populateTokenCredential(prefix);
+        this.tokenCredential = populateTokenCredential(prefix, identityClientOptions);
     }
 
     @Override
@@ -53,39 +55,57 @@ public class PrefixedSpringEnvironmentCredential implements TokenCredential {
         }
     }
 
-    private TokenCredential populateTokenCredential(String prefix) {
+    private TokenCredential populateTokenCredential(String prefix, IdentityClientOptions identityClientOptions) {
         String tenantId = azureEnvironment.getPropertyValue(prefix + TENANT_ID);
         String clientId = azureEnvironment.getPropertyValue(prefix + CLIENT_ID);
         String clientSecret = azureEnvironment.getPropertyValue(prefix + CLIENT_SECRET);
 
         if (tenantId != null && clientId != null && clientSecret != null) {
-            return new ClientSecretCredentialBuilder().tenantId(tenantId)
-                                                      .clientId(clientId)
-                                                      .clientSecret(clientSecret)
-                                                      .build();
+            final ClientSecretCredentialBuilder builder = new ClientSecretCredentialBuilder()
+                                                              .tenantId(tenantId)
+                                                              .clientId(clientId)
+                                                              .clientSecret(clientSecret);
+            configureIdentityOptions(builder, identityClientOptions);
+            return builder.build();
         }
 
         String certPath = azureEnvironment.getPropertyValue(prefix + CLIENT_CERTIFICATE_PATH);
 
         if (tenantId != null && clientId != null && certPath != null) {
-            return new ClientCertificateCredentialBuilder().tenantId(tenantId)
-                                                           .clientId(clientId)
-                                                           .pemCertificate(certPath)
-                                                           .build();
+            final ClientCertificateCredentialBuilder builder = new ClientCertificateCredentialBuilder()
+                                                                   .tenantId(tenantId)
+                                                                   .clientId(clientId)
+                                                                   .pemCertificate(certPath);
+
+            configureIdentityOptions(builder, identityClientOptions);
+            return builder.build();
         }
 
         String username = azureEnvironment.getPropertyValue(prefix + USERNAME);
         String password = azureEnvironment.getPropertyValue(prefix + PASSWORD);
 
         if (clientId != null && username != null && password != null) {// tenant-id is not required
-            return new UsernamePasswordCredentialBuilder().tenantId(tenantId)
-                                                          .clientId(clientId)
-                                                          .username(username)
-                                                          .password(password)
-                                                          .build();
+            final UsernamePasswordCredentialBuilder builder = new UsernamePasswordCredentialBuilder()
+                                                                  .tenantId(tenantId)
+                                                                  .clientId(clientId)
+                                                                  .username(username)
+                                                                  .password(password);
+            configureIdentityOptions(builder, identityClientOptions);
+            return builder.build();
         }
 
         return null;
+    }
+
+    // TODO (xiada) better abstraction of this class and SpringEnvironmentCredential
+    private void configureIdentityOptions(AadCredentialBuilderBase<?> aadCredentialBuilderBase,
+                                          IdentityClientOptions identityClientOptions) {
+        aadCredentialBuilderBase.authorityHost(identityClientOptions.getAuthorityHost())
+                                .executorService(identityClientOptions.getExecutorService())
+                                .httpClient(identityClientOptions.getHttpClient())
+                                .httpPipeline(identityClientOptions.getHttpPipeline())
+                                .maxRetry(identityClientOptions.getMaxRetry())
+                                .retryTimeout(identityClientOptions.getRetryTimeout());
     }
 
 }

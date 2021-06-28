@@ -5,12 +5,9 @@ package com.azure.spring.cloud.autoconfigure.context;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.identity.ChainedTokenCredentialBuilder;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.context.core.api.CredentialsProvider;
 import com.azure.spring.cloud.context.core.config.AzureProperties;
-import com.azure.spring.identity.DefaultSpringCredential;
-import com.azure.spring.identity.DefaultSpringCredentialBuilder;
 import com.azure.spring.identity.PrefixedSpringEnvironmentCredentialBuilder;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -18,9 +15,10 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
 
-import java.util.List;
+import static com.azure.spring.cloud.autoconfigure.context.AzureContextCredentialAutoConfiguration.SPRING_ENV_CREDENTIAL_ORDER;
 
 /**
  * Auto-config to provide default {@link CredentialsProvider} for all Azure services
@@ -55,14 +53,9 @@ public class AzureContextAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnMissingBean
-    public TokenCredential credential(Environment environment) {
-        final List<TokenCredential> tokenCredentials = ((DefaultSpringCredential) new DefaultSpringCredentialBuilder(
-            environment).build()).getTokenCredentials();
-
-        final TokenCredential prefixedTokenCredential = new PrefixedSpringEnvironmentCredentialBuilder(
-            environment).prefix(AzureProperties.PREFIX).build();
-
-        return new ChainedTokenCredentialBuilder().addAll(tokenCredentials).addFirst(prefixedTokenCredential).build();
+    @Order(SPRING_ENV_CREDENTIAL_ORDER - 1)
+    public PrefixedSpringEnvironmentCredentialBuilder azureSpringCloudCredentialBuilder(Environment environment) {
+        return new PrefixedSpringEnvironmentCredentialBuilder(environment).prefix(AzureProperties.PREFIX);
     }
+
 }
