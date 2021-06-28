@@ -3,14 +3,13 @@
 
 package com.azure.core.http;
 
-import com.azure.core.implementation.util.FluxByteBufferContent;
-import com.azure.core.util.RequestContent;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 
 /**
  * The outgoing Http request. It provides ways to construct {@link HttpRequest} with {@link HttpMethod}, {@link URL},
@@ -22,7 +21,7 @@ public class HttpRequest {
     private HttpMethod httpMethod;
     private URL url;
     private HttpHeaders headers;
-    private RequestContent requestContent;
+    private Flux<ByteBuffer> body;
 
     /**
      * Create a new HttpRequest instance.
@@ -31,7 +30,7 @@ public class HttpRequest {
      * @param url the target address to send the request to
      */
     public HttpRequest(HttpMethod httpMethod, URL url) {
-        this(httpMethod, url, new HttpHeaders(), (RequestContent) null);
+        this(httpMethod, url, new HttpHeaders(), null);
     }
 
     /**
@@ -60,22 +59,10 @@ public class HttpRequest {
      * @param body the request content
      */
     public HttpRequest(HttpMethod httpMethod, URL url, HttpHeaders headers, Flux<ByteBuffer> body) {
-        this(httpMethod, url, headers, new FluxByteBufferContent(body));
-    }
-
-    /**
-     * Creates a new {@link HttpRequest} instance.
-     *
-     * @param httpMethod The HTTP request method.
-     * @param url The target address to send the request.
-     * @param headers The HTTP headers of the request.
-     * @param requestContent The {@link RequestContent}.
-     */
-    public HttpRequest(HttpMethod httpMethod, URL url, HttpHeaders headers, RequestContent requestContent) {
         this.httpMethod = httpMethod;
         this.url = url;
         this.headers = headers;
-        this.requestContent = requestContent;
+        this.body = body;
     }
 
     /**
@@ -173,7 +160,7 @@ public class HttpRequest {
      * @return the content to be send
      */
     public Flux<ByteBuffer> getBody() {
-        return (requestContent == null) ? null : requestContent.asFluxByteBuffer();
+        return body;
     }
 
     /**
@@ -185,7 +172,8 @@ public class HttpRequest {
      * @return this HttpRequest
      */
     public HttpRequest setBody(String content) {
-        return setRequestContent(RequestContent.fromString(content));
+        final byte[] bodyBytes = content.getBytes(StandardCharsets.UTF_8);
+        return setBody(bodyBytes);
     }
 
     /**
@@ -211,36 +199,7 @@ public class HttpRequest {
      * @return this HttpRequest
      */
     public HttpRequest setBody(Flux<ByteBuffer> content) {
-        this.requestContent = new FluxByteBufferContent(content);
-        return this;
-    }
-
-    /**
-     * Gets the HttpRequest's {@link RequestContent}.
-     *
-     * @return The {@link RequestContent}.
-     */
-    public RequestContent getRequestContent() {
-        return this.requestContent;
-    }
-
-    /**
-     * Sets the {@link RequestContent}.
-     * <p>
-     * If {@link RequestContent#getLength()} returns null for the passed {@link RequestContent} the caller must set the
-     * Content-Length header to indicate the length of the content, or use Transfer-Encoding: chunked. Otherwise, {@link
-     * RequestContent#getLength()} will be used to set the Content-Length header.
-     *
-     * @param requestContent The {@link RequestContent}.
-     * @return The updated HttpRequest object.
-     */
-    public HttpRequest setRequestContent(RequestContent requestContent) {
-        Long requestContentLength = requestContent.getLength();
-        if (requestContentLength != null) {
-            setContentLength(requestContentLength);
-        }
-
-        this.requestContent = requestContent;
+        this.body = content;
         return this;
     }
 
@@ -259,6 +218,6 @@ public class HttpRequest {
      */
     public HttpRequest copy() {
         final HttpHeaders bufferedHeaders = new HttpHeaders(headers);
-        return new HttpRequest(httpMethod, url, bufferedHeaders, requestContent);
+        return new HttpRequest(httpMethod, url, bufferedHeaders, body);
     }
 }
