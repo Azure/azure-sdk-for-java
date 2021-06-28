@@ -68,12 +68,14 @@ public class ServiceBusManagementSerializer implements SerializerAdapter {
         }
 
         // This hack is here because value of custom property within RuleFilter should have a namespace like xmlns:d6p1="http://www.w3.org/2001/XMLSchema" ns0:type="d6p1:string".
-        final Matcher filterValue = FILTER_VALUE_PATTERN.matcher(replaced);
-        if (filterValue.find()) {
-            replaced = filterValue.replaceAll(RULE_VALUE_ATTRIBUTE_XML);
-        } else {
-            logger.warning("Could not find filter name pattern '{}' in {}.", FILTER_VALUE_PATTERN.pattern(),
-                contents);
+        if (CreateRuleBody.class.equals(clazz)) {
+            final Matcher filterValue = FILTER_VALUE_PATTERN.matcher(replaced);
+            if (filterValue.find()) {
+                replaced = filterValue.replaceAll(RULE_VALUE_ATTRIBUTE_XML);
+            } else {
+                logger.warning("Could not find filter name pattern '{}' in {}.", FILTER_VALUE_PATTERN.pattern(),
+                    contents);
+            }
         }
 
         // This hack is here because RuleFilter and RuleAction type="Foo" should have a namespace like n0:type="Foo".
