@@ -192,8 +192,9 @@ spring:
 ```
 
 #### Enable sync message
-If you want to get a response from eventhub immediately after sending a message, 
-we should add the following configuration, which will work with `StreamBridge`.
+To enable message sending in a synchronized way with Spring Cloud Stream 3.x, 
+azure-spring-cloud-stream-binder-eventhubs supports the sync producer mode to get responses for sent messages. 
+By enabling following configuration, you could use [StreamBridge][StreamBridge] for the synchronized message producing.
 
 ```yaml
 spring:
@@ -256,3 +257,4 @@ spring:
 [application-mi.yaml]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-binder/src/main/resources/application-mi.yaml
 [application.yaml]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-binder/src/main/resources/application.yaml
 [application-sp.yaml]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-binder/src/main/resources/application-sp.yaml
+[StreamBridge]: https://docs.spring.io/spring-cloud-stream/docs/3.1.3/reference/html/spring-cloud-stream.html#_sending_arbitrary_data_to_an_output_e_g_foreign_event_driven_sources

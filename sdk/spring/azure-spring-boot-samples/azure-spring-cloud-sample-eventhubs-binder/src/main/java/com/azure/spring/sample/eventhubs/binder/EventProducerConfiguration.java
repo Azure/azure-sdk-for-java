@@ -14,7 +14,7 @@ import org.springframework.messaging.support.MessageBuilder;
 import java.util.function.Supplier;
 
 @Configuration
-@Profile("auto")
+@Profile("!manual")
 public class EventProducerConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubBinderApplication.class);
