@@ -10,7 +10,6 @@ import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
 
 /** PeeringService provider. */
 @JsonFlatten
@@ -23,13 +22,6 @@ public class PeeringServiceProviderInner extends ProxyResource {
      */
     @JsonProperty(value = "properties.serviceProviderName")
     private String serviceProviderName;
-
-    /*
-     * The list of locations at which the service provider peers with
-     * Microsoft.
-     */
-    @JsonProperty(value = "properties.peeringLocations")
-    private List<String> peeringLocations;
 
     /**
      * Get the serviceProviderName property: The name of the service provider.
@@ -48,26 +40,6 @@ public class PeeringServiceProviderInner extends ProxyResource {
      */
     public PeeringServiceProviderInner withServiceProviderName(String serviceProviderName) {
         this.serviceProviderName = serviceProviderName;
-        return this;
-    }
-
-    /**
-     * Get the peeringLocations property: The list of locations at which the service provider peers with Microsoft.
-     *
-     * @return the peeringLocations value.
-     */
-    public List<String> peeringLocations() {
-        return this.peeringLocations;
-    }
-
-    /**
-     * Set the peeringLocations property: The list of locations at which the service provider peers with Microsoft.
-     *
-     * @param peeringLocations the peeringLocations value to set.
-     * @return the PeeringServiceProviderInner object itself.
-     */
-    public PeeringServiceProviderInner withPeeringLocations(List<String> peeringLocations) {
-        this.peeringLocations = peeringLocations;
         return this;
     }
 

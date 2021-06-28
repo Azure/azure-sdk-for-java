@@ -23,7 +23,7 @@ public final class DirectConnection {
     /*
      * The bandwidth that is actually provisioned.
      */
-    @JsonProperty(value = "provisionedBandwidthInMbps", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "provisionedBandwidthInMbps")
     private Integer provisionedBandwidthInMbps;
 
     /*
@@ -38,13 +38,6 @@ public final class DirectConnection {
      */
     @JsonProperty(value = "useForPeeringService")
     private Boolean useForPeeringService;
-
-    /*
-     * The ID used within Microsoft's peering provisioning system to track the
-     * connection
-     */
-    @JsonProperty(value = "microsoftTrackingId", access = JsonProperty.Access.WRITE_ONLY)
-    private String microsoftTrackingId;
 
     /*
      * The PeeringDB.com ID of the facility at which the connection has to be
@@ -70,12 +63,6 @@ public final class DirectConnection {
      */
     @JsonProperty(value = "connectionIdentifier")
     private String connectionIdentifier;
-
-    /*
-     * The error message related to the connection state, if any.
-     */
-    @JsonProperty(value = "errorMessage", access = JsonProperty.Access.WRITE_ONLY)
-    private String errorMessage;
 
     /**
      * Get the bandwidthInMbps property: The bandwidth of the connection.
@@ -104,6 +91,17 @@ public final class DirectConnection {
      */
     public Integer provisionedBandwidthInMbps() {
         return this.provisionedBandwidthInMbps;
+    }
+
+    /**
+     * Set the provisionedBandwidthInMbps property: The bandwidth that is actually provisioned.
+     *
+     * @param provisionedBandwidthInMbps the provisionedBandwidthInMbps value to set.
+     * @return the DirectConnection object itself.
+     */
+    public DirectConnection withProvisionedBandwidthInMbps(Integer provisionedBandwidthInMbps) {
+        this.provisionedBandwidthInMbps = provisionedBandwidthInMbps;
+        return this;
     }
 
     /**
@@ -146,16 +144,6 @@ public final class DirectConnection {
     public DirectConnection withUseForPeeringService(Boolean useForPeeringService) {
         this.useForPeeringService = useForPeeringService;
         return this;
-    }
-
-    /**
-     * Get the microsoftTrackingId property: The ID used within Microsoft's peering provisioning system to track the
-     * connection.
-     *
-     * @return the microsoftTrackingId value.
-     */
-    public String microsoftTrackingId() {
-        return this.microsoftTrackingId;
     }
 
     /**
@@ -227,15 +215,6 @@ public final class DirectConnection {
     public DirectConnection withConnectionIdentifier(String connectionIdentifier) {
         this.connectionIdentifier = connectionIdentifier;
         return this;
-    }
-
-    /**
-     * Get the errorMessage property: The error message related to the connection state, if any.
-     *
-     * @return the errorMessage value.
-     */
-    public String errorMessage() {
-        return this.errorMessage;
     }
 
     /**

@@ -11,7 +11,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The peering service location. */
+/** PeeringService location. */
 @JsonFlatten
 @Fluent
 public class PeeringServiceLocationInner extends ProxyResource {

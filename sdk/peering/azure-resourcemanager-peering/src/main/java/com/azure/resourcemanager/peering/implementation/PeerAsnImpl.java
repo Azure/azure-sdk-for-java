@@ -6,11 +6,9 @@ package com.azure.resourcemanager.peering.implementation;
 
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.peering.fluent.models.PeerAsnInner;
-import com.azure.resourcemanager.peering.models.ContactDetail;
+import com.azure.resourcemanager.peering.models.ContactInfo;
 import com.azure.resourcemanager.peering.models.PeerAsn;
 import com.azure.resourcemanager.peering.models.ValidationState;
-import java.util.Collections;
-import java.util.List;
 
 public final class PeerAsnImpl implements PeerAsn, PeerAsn.Definition, PeerAsn.Update {
     private PeerAsnInner innerObject;
@@ -33,13 +31,8 @@ public final class PeerAsnImpl implements PeerAsn, PeerAsn.Definition, PeerAsn.U
         return this.innerModel().peerAsn();
     }
 
-    public List<ContactDetail> peerContactDetail() {
-        List<ContactDetail> inner = this.innerModel().peerContactDetail();
-        if (inner != null) {
-            return Collections.unmodifiableList(inner);
-        } else {
-            return Collections.emptyList();
-        }
+    public ContactInfo peerContactInfo() {
+        return this.innerModel().peerContactInfo();
     }
 
     public String peerName() {
@@ -48,10 +41,6 @@ public final class PeerAsnImpl implements PeerAsn, PeerAsn.Definition, PeerAsn.U
 
     public ValidationState validationState() {
         return this.innerModel().validationState();
-    }
-
-    public String errorMessage() {
-        return this.innerModel().errorMessage();
     }
 
     public PeerAsnInner innerModel() {
@@ -137,8 +126,8 @@ public final class PeerAsnImpl implements PeerAsn, PeerAsn.Definition, PeerAsn.U
         return this;
     }
 
-    public PeerAsnImpl withPeerContactDetail(List<ContactDetail> peerContactDetail) {
-        this.innerModel().withPeerContactDetail(peerContactDetail);
+    public PeerAsnImpl withPeerContactInfo(ContactInfo peerContactInfo) {
+        this.innerModel().withPeerContactInfo(peerContactInfo);
         return this;
     }
 

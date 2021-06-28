@@ -8,7 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.peering.models.PeeringServiceSku;
 import com.azure.resourcemanager.peering.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -19,12 +18,6 @@ import java.util.Map;
 @Fluent
 public class PeeringServiceInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PeeringServiceInner.class);
-
-    /*
-     * The SKU that defines the type of the peering service.
-     */
-    @JsonProperty(value = "sku")
-    private PeeringServiceSku sku;
 
     /*
      * The location of the resource.
@@ -39,13 +32,13 @@ public class PeeringServiceInner extends ProxyResource {
     private Map<String, String> tags;
 
     /*
-     * The location (state/province) of the customer.
+     * The PeeringServiceLocation of the Customer.
      */
     @JsonProperty(value = "properties.peeringServiceLocation")
     private String peeringServiceLocation;
 
     /*
-     * The name of the service provider.
+     * The MAPS Provider Name.
      */
     @JsonProperty(value = "properties.peeringServiceProvider")
     private String peeringServiceProvider;
@@ -55,40 +48,6 @@ public class PeeringServiceInner extends ProxyResource {
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
-
-    /*
-     * The primary peering (Microsoft/service provider) location to be used for
-     * customer traffic.
-     */
-    @JsonProperty(value = "properties.providerPrimaryPeeringLocation")
-    private String providerPrimaryPeeringLocation;
-
-    /*
-     * The backup peering (Microsoft/service provider) location to be used for
-     * customer traffic.
-     */
-    @JsonProperty(value = "properties.providerBackupPeeringLocation")
-    private String providerBackupPeeringLocation;
-
-    /**
-     * Get the sku property: The SKU that defines the type of the peering service.
-     *
-     * @return the sku value.
-     */
-    public PeeringServiceSku sku() {
-        return this.sku;
-    }
-
-    /**
-     * Set the sku property: The SKU that defines the type of the peering service.
-     *
-     * @param sku the sku value to set.
-     * @return the PeeringServiceInner object itself.
-     */
-    public PeeringServiceInner withSku(PeeringServiceSku sku) {
-        this.sku = sku;
-        return this;
-    }
 
     /**
      * Get the location property: The location of the resource.
@@ -131,7 +90,7 @@ public class PeeringServiceInner extends ProxyResource {
     }
 
     /**
-     * Get the peeringServiceLocation property: The location (state/province) of the customer.
+     * Get the peeringServiceLocation property: The PeeringServiceLocation of the Customer.
      *
      * @return the peeringServiceLocation value.
      */
@@ -140,7 +99,7 @@ public class PeeringServiceInner extends ProxyResource {
     }
 
     /**
-     * Set the peeringServiceLocation property: The location (state/province) of the customer.
+     * Set the peeringServiceLocation property: The PeeringServiceLocation of the Customer.
      *
      * @param peeringServiceLocation the peeringServiceLocation value to set.
      * @return the PeeringServiceInner object itself.
@@ -151,7 +110,7 @@ public class PeeringServiceInner extends ProxyResource {
     }
 
     /**
-     * Get the peeringServiceProvider property: The name of the service provider.
+     * Get the peeringServiceProvider property: The MAPS Provider Name.
      *
      * @return the peeringServiceProvider value.
      */
@@ -160,7 +119,7 @@ public class PeeringServiceInner extends ProxyResource {
     }
 
     /**
-     * Set the peeringServiceProvider property: The name of the service provider.
+     * Set the peeringServiceProvider property: The MAPS Provider Name.
      *
      * @param peeringServiceProvider the peeringServiceProvider value to set.
      * @return the PeeringServiceInner object itself.
@@ -180,58 +139,11 @@ public class PeeringServiceInner extends ProxyResource {
     }
 
     /**
-     * Get the providerPrimaryPeeringLocation property: The primary peering (Microsoft/service provider) location to be
-     * used for customer traffic.
-     *
-     * @return the providerPrimaryPeeringLocation value.
-     */
-    public String providerPrimaryPeeringLocation() {
-        return this.providerPrimaryPeeringLocation;
-    }
-
-    /**
-     * Set the providerPrimaryPeeringLocation property: The primary peering (Microsoft/service provider) location to be
-     * used for customer traffic.
-     *
-     * @param providerPrimaryPeeringLocation the providerPrimaryPeeringLocation value to set.
-     * @return the PeeringServiceInner object itself.
-     */
-    public PeeringServiceInner withProviderPrimaryPeeringLocation(String providerPrimaryPeeringLocation) {
-        this.providerPrimaryPeeringLocation = providerPrimaryPeeringLocation;
-        return this;
-    }
-
-    /**
-     * Get the providerBackupPeeringLocation property: The backup peering (Microsoft/service provider) location to be
-     * used for customer traffic.
-     *
-     * @return the providerBackupPeeringLocation value.
-     */
-    public String providerBackupPeeringLocation() {
-        return this.providerBackupPeeringLocation;
-    }
-
-    /**
-     * Set the providerBackupPeeringLocation property: The backup peering (Microsoft/service provider) location to be
-     * used for customer traffic.
-     *
-     * @param providerBackupPeeringLocation the providerBackupPeeringLocation value to set.
-     * @return the PeeringServiceInner object itself.
-     */
-    public PeeringServiceInner withProviderBackupPeeringLocation(String providerBackupPeeringLocation) {
-        this.providerBackupPeeringLocation = providerBackupPeeringLocation;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (sku() != null) {
-            sku().validate();
-        }
         if (location() == null) {
             throw logger
                 .logExceptionAsError(

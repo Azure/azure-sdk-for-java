@@ -11,25 +11,25 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The paginated list of peering service prefixes. */
+/** The paginated list of [T]. */
 @Fluent
 public final class PeeringServicePrefixListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PeeringServicePrefixListResult.class);
 
     /*
-     * The list of peering service prefixes.
+     * The list of [T].
      */
     @JsonProperty(value = "value")
     private List<PeeringServicePrefixInner> value;
 
     /*
-     * The link to fetch the next page of peering service prefixes.
+     * The link to fetch the next page of [T].
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
-     * Get the value property: The list of peering service prefixes.
+     * Get the value property: The list of [T].
      *
      * @return the value value.
      */
@@ -38,7 +38,7 @@ public final class PeeringServicePrefixListResult {
     }
 
     /**
-     * Set the value property: The list of peering service prefixes.
+     * Set the value property: The list of [T].
      *
      * @param value the value value to set.
      * @return the PeeringServicePrefixListResult object itself.
@@ -49,7 +49,7 @@ public final class PeeringServicePrefixListResult {
     }
 
     /**
-     * Get the nextLink property: The link to fetch the next page of peering service prefixes.
+     * Get the nextLink property: The link to fetch the next page of [T].
      *
      * @return the nextLink value.
      */
@@ -58,7 +58,7 @@ public final class PeeringServicePrefixListResult {
     }
 
     /**
-     * Set the nextLink property: The link to fetch the next page of peering service prefixes.
+     * Set the nextLink property: The link to fetch the next page of [T].
      *
      * @param nextLink the nextLink value to set.
      * @return the PeeringServicePrefixListResult object itself.

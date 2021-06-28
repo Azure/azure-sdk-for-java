@@ -26,7 +26,7 @@ public final class PeeringPropertiesDirect {
      * The flag that indicates whether or not the peering is used for peering
      * service.
      */
-    @JsonProperty(value = "useForPeeringService", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "useForPeeringService")
     private Boolean useForPeeringService;
 
     /*
@@ -69,6 +69,18 @@ public final class PeeringPropertiesDirect {
      */
     public Boolean useForPeeringService() {
         return this.useForPeeringService;
+    }
+
+    /**
+     * Set the useForPeeringService property: The flag that indicates whether or not the peering is used for peering
+     * service.
+     *
+     * @param useForPeeringService the useForPeeringService value to set.
+     * @return the PeeringPropertiesDirect object itself.
+     */
+    public PeeringPropertiesDirect withUseForPeeringService(Boolean useForPeeringService) {
+        this.useForPeeringService = useForPeeringService;
+        return this;
     }
 
     /**

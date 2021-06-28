@@ -66,7 +66,6 @@ public final class PeeringServiceLocationsClientImpl implements PeeringServiceLo
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PeeringServiceLocationListResult>> list(
             @HostParam("$host") String endpoint,
-            @QueryParam("country") String country,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept,
@@ -84,16 +83,14 @@ public final class PeeringServiceLocationsClientImpl implements PeeringServiceLo
     }
 
     /**
-     * Lists all of the available locations for peering service.
+     * Lists all of the available peering service locations for the specified kind of peering.
      *
-     * @param country The country of interest, in which the locations are to be present.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paginated list of peering service locations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PeeringServiceLocationInner>> listSinglePageAsync(String country) {
+    private Mono<PagedResponse<PeeringServiceLocationInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -113,7 +110,6 @@ public final class PeeringServiceLocationsClientImpl implements PeeringServiceLo
                     service
                         .list(
                             this.client.getEndpoint(),
-                            country,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
                             accept,
@@ -131,9 +127,8 @@ public final class PeeringServiceLocationsClientImpl implements PeeringServiceLo
     }
 
     /**
-     * Lists all of the available locations for peering service.
+     * Lists all of the available peering service locations for the specified kind of peering.
      *
-     * @param country The country of interest, in which the locations are to be present.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -141,7 +136,7 @@ public final class PeeringServiceLocationsClientImpl implements PeeringServiceLo
      * @return the paginated list of peering service locations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PeeringServiceLocationInner>> listSinglePageAsync(String country, Context context) {
+    private Mono<PagedResponse<PeeringServiceLocationInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -159,7 +154,6 @@ public final class PeeringServiceLocationsClientImpl implements PeeringServiceLo
         return service
             .list(
                 this.client.getEndpoint(),
-                country,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
                 accept,
@@ -176,21 +170,7 @@ public final class PeeringServiceLocationsClientImpl implements PeeringServiceLo
     }
 
     /**
-     * Lists all of the available locations for peering service.
-     *
-     * @param country The country of interest, in which the locations are to be present.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering service locations.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PeeringServiceLocationInner> listAsync(String country) {
-        return new PagedFlux<>(() -> listSinglePageAsync(country), nextLink -> listNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Lists all of the available locations for peering service.
+     * Lists all of the available peering service locations for the specified kind of peering.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -198,14 +178,12 @@ public final class PeeringServiceLocationsClientImpl implements PeeringServiceLo
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PeeringServiceLocationInner> listAsync() {
-        final String country = null;
-        return new PagedFlux<>(() -> listSinglePageAsync(country), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
-     * Lists all of the available locations for peering service.
+     * Lists all of the available peering service locations for the specified kind of peering.
      *
-     * @param country The country of interest, in which the locations are to be present.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -213,13 +191,13 @@ public final class PeeringServiceLocationsClientImpl implements PeeringServiceLo
      * @return the paginated list of peering service locations.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PeeringServiceLocationInner> listAsync(String country, Context context) {
+    private PagedFlux<PeeringServiceLocationInner> listAsync(Context context) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(country, context), nextLink -> listNextSinglePageAsync(nextLink, context));
+            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
-     * Lists all of the available locations for peering service.
+     * Lists all of the available peering service locations for the specified kind of peering.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -227,14 +205,12 @@ public final class PeeringServiceLocationsClientImpl implements PeeringServiceLo
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PeeringServiceLocationInner> list() {
-        final String country = null;
-        return new PagedIterable<>(listAsync(country));
+        return new PagedIterable<>(listAsync());
     }
 
     /**
-     * Lists all of the available locations for peering service.
+     * Lists all of the available peering service locations for the specified kind of peering.
      *
-     * @param country The country of interest, in which the locations are to be present.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -242,8 +218,8 @@ public final class PeeringServiceLocationsClientImpl implements PeeringServiceLo
      * @return the paginated list of peering service locations.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PeeringServiceLocationInner> list(String country, Context context) {
-        return new PagedIterable<>(listAsync(country, context));
+    public PagedIterable<PeeringServiceLocationInner> list(Context context) {
+        return new PagedIterable<>(listAsync(context));
     }
 
     /**

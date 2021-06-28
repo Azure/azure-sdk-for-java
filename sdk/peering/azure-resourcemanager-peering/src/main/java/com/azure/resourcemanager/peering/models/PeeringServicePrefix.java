@@ -6,7 +6,6 @@ package com.azure.resourcemanager.peering.models;
 
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.peering.fluent.models.PeeringServicePrefixInner;
-import java.util.List;
 
 /** An immutable client-side representation of PeeringServicePrefix. */
 public interface PeeringServicePrefix {
@@ -32,7 +31,7 @@ public interface PeeringServicePrefix {
     String type();
 
     /**
-     * Gets the prefix property: The prefix from which your traffic originates.
+     * Gets the prefix property: Valid route prefix.
      *
      * @return the prefix value.
      */
@@ -51,27 +50,6 @@ public interface PeeringServicePrefix {
      * @return the learnedType value.
      */
     LearnedType learnedType();
-
-    /**
-     * Gets the errorMessage property: The error message for validation state.
-     *
-     * @return the errorMessage value.
-     */
-    String errorMessage();
-
-    /**
-     * Gets the events property: The list of events for peering service prefix.
-     *
-     * @return the events value.
-     */
-    List<PeeringServicePrefixEvent> events();
-
-    /**
-     * Gets the peeringServicePrefixKey property: The peering service prefix key.
-     *
-     * @return the peeringServicePrefixKey value.
-     */
-    String peeringServicePrefixKey();
 
     /**
      * Gets the provisioningState property: The provisioning state of the resource.
@@ -101,8 +79,8 @@ public interface PeeringServicePrefix {
             /**
              * Specifies resourceGroupName, peeringServiceName.
              *
-             * @param resourceGroupName The name of the resource group.
-             * @param peeringServiceName The name of the peering service.
+             * @param resourceGroupName The resource group name.
+             * @param peeringServiceName The peering service name.
              * @return the next definition stage.
              */
             WithCreate withExistingPeeringService(String resourceGroupName, String peeringServiceName);
@@ -111,7 +89,10 @@ public interface PeeringServicePrefix {
          * The stage of the PeeringServicePrefix definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithPrefix, DefinitionStages.WithPeeringServicePrefixKey {
+        interface WithCreate
+            extends DefinitionStages.WithPrefix,
+                DefinitionStages.WithPrefixValidationState,
+                DefinitionStages.WithLearnedType {
             /**
              * Executes the create request.
              *
@@ -130,22 +111,32 @@ public interface PeeringServicePrefix {
         /** The stage of the PeeringServicePrefix definition allowing to specify prefix. */
         interface WithPrefix {
             /**
-             * Specifies the prefix property: The prefix from which your traffic originates..
+             * Specifies the prefix property: Valid route prefix.
              *
-             * @param prefix The prefix from which your traffic originates.
+             * @param prefix Valid route prefix.
              * @return the next definition stage.
              */
             WithCreate withPrefix(String prefix);
         }
-        /** The stage of the PeeringServicePrefix definition allowing to specify peeringServicePrefixKey. */
-        interface WithPeeringServicePrefixKey {
+        /** The stage of the PeeringServicePrefix definition allowing to specify prefixValidationState. */
+        interface WithPrefixValidationState {
             /**
-             * Specifies the peeringServicePrefixKey property: The peering service prefix key.
+             * Specifies the prefixValidationState property: The prefix validation state.
              *
-             * @param peeringServicePrefixKey The peering service prefix key.
+             * @param prefixValidationState The prefix validation state.
              * @return the next definition stage.
              */
-            WithCreate withPeeringServicePrefixKey(String peeringServicePrefixKey);
+            WithCreate withPrefixValidationState(PrefixValidationState prefixValidationState);
+        }
+        /** The stage of the PeeringServicePrefix definition allowing to specify learnedType. */
+        interface WithLearnedType {
+            /**
+             * Specifies the learnedType property: The prefix learned type.
+             *
+             * @param learnedType The prefix learned type.
+             * @return the next definition stage.
+             */
+            WithCreate withLearnedType(LearnedType learnedType);
         }
     }
     /**
@@ -156,7 +147,8 @@ public interface PeeringServicePrefix {
     PeeringServicePrefix.Update update();
 
     /** The template for PeeringServicePrefix update. */
-    interface Update extends UpdateStages.WithPrefix, UpdateStages.WithPeeringServicePrefixKey {
+    interface Update
+        extends UpdateStages.WithPrefix, UpdateStages.WithPrefixValidationState, UpdateStages.WithLearnedType {
         /**
          * Executes the update request.
          *
@@ -177,22 +169,32 @@ public interface PeeringServicePrefix {
         /** The stage of the PeeringServicePrefix update allowing to specify prefix. */
         interface WithPrefix {
             /**
-             * Specifies the prefix property: The prefix from which your traffic originates..
+             * Specifies the prefix property: Valid route prefix.
              *
-             * @param prefix The prefix from which your traffic originates.
+             * @param prefix Valid route prefix.
              * @return the next definition stage.
              */
             Update withPrefix(String prefix);
         }
-        /** The stage of the PeeringServicePrefix update allowing to specify peeringServicePrefixKey. */
-        interface WithPeeringServicePrefixKey {
+        /** The stage of the PeeringServicePrefix update allowing to specify prefixValidationState. */
+        interface WithPrefixValidationState {
             /**
-             * Specifies the peeringServicePrefixKey property: The peering service prefix key.
+             * Specifies the prefixValidationState property: The prefix validation state.
              *
-             * @param peeringServicePrefixKey The peering service prefix key.
+             * @param prefixValidationState The prefix validation state.
              * @return the next definition stage.
              */
-            Update withPeeringServicePrefixKey(String peeringServicePrefixKey);
+            Update withPrefixValidationState(PrefixValidationState prefixValidationState);
+        }
+        /** The stage of the PeeringServicePrefix update allowing to specify learnedType. */
+        interface WithLearnedType {
+            /**
+             * Specifies the learnedType property: The prefix learned type.
+             *
+             * @param learnedType The prefix learned type.
+             * @return the next definition stage.
+             */
+            Update withLearnedType(LearnedType learnedType);
         }
     }
     /**

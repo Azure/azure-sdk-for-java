@@ -39,12 +39,6 @@ public final class ExchangeConnection {
     @JsonProperty(value = "connectionIdentifier")
     private String connectionIdentifier;
 
-    /*
-     * The error message related to the connection state, if any.
-     */
-    @JsonProperty(value = "errorMessage", access = JsonProperty.Access.WRITE_ONLY)
-    private String errorMessage;
-
     /**
      * Get the peeringDBFacilityId property: The PeeringDB.com ID of the facility at which the connection has to be set
      * up.
@@ -114,15 +108,6 @@ public final class ExchangeConnection {
     public ExchangeConnection withConnectionIdentifier(String connectionIdentifier) {
         this.connectionIdentifier = connectionIdentifier;
         return this;
-    }
-
-    /**
-     * Get the errorMessage property: The error message related to the connection state, if any.
-     *
-     * @return the errorMessage value.
-     */
-    public String errorMessage() {
-        return this.errorMessage;
     }
 
     /**

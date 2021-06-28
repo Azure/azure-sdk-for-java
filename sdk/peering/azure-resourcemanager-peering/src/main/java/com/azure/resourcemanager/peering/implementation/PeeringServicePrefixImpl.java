@@ -8,11 +8,8 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.peering.fluent.models.PeeringServicePrefixInner;
 import com.azure.resourcemanager.peering.models.LearnedType;
 import com.azure.resourcemanager.peering.models.PeeringServicePrefix;
-import com.azure.resourcemanager.peering.models.PeeringServicePrefixEvent;
 import com.azure.resourcemanager.peering.models.PrefixValidationState;
 import com.azure.resourcemanager.peering.models.ProvisioningState;
-import java.util.Collections;
-import java.util.List;
 
 public final class PeeringServicePrefixImpl
     implements PeeringServicePrefix, PeeringServicePrefix.Definition, PeeringServicePrefix.Update {
@@ -44,23 +41,6 @@ public final class PeeringServicePrefixImpl
         return this.innerModel().learnedType();
     }
 
-    public String errorMessage() {
-        return this.innerModel().errorMessage();
-    }
-
-    public List<PeeringServicePrefixEvent> events() {
-        List<PeeringServicePrefixEvent> inner = this.innerModel().events();
-        if (inner != null) {
-            return Collections.unmodifiableList(inner);
-        } else {
-            return Collections.emptyList();
-        }
-    }
-
-    public String peeringServicePrefixKey() {
-        return this.innerModel().peeringServicePrefixKey();
-    }
-
     public ProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
     }
@@ -89,7 +69,7 @@ public final class PeeringServicePrefixImpl
         this.innerObject =
             serviceManager
                 .serviceClient()
-                .getPrefixes()
+                .getPeeringServicePrefixes()
                 .createOrUpdateWithResponse(
                     resourceGroupName, peeringServiceName, prefixName, this.innerModel(), Context.NONE)
                 .getValue();
@@ -100,7 +80,7 @@ public final class PeeringServicePrefixImpl
         this.innerObject =
             serviceManager
                 .serviceClient()
-                .getPrefixes()
+                .getPeeringServicePrefixes()
                 .createOrUpdateWithResponse(
                     resourceGroupName, peeringServiceName, prefixName, this.innerModel(), context)
                 .getValue();
@@ -121,7 +101,7 @@ public final class PeeringServicePrefixImpl
         this.innerObject =
             serviceManager
                 .serviceClient()
-                .getPrefixes()
+                .getPeeringServicePrefixes()
                 .createOrUpdateWithResponse(
                     resourceGroupName, peeringServiceName, prefixName, this.innerModel(), Context.NONE)
                 .getValue();
@@ -132,7 +112,7 @@ public final class PeeringServicePrefixImpl
         this.innerObject =
             serviceManager
                 .serviceClient()
-                .getPrefixes()
+                .getPeeringServicePrefixes()
                 .createOrUpdateWithResponse(
                     resourceGroupName, peeringServiceName, prefixName, this.innerModel(), context)
                 .getValue();
@@ -149,23 +129,21 @@ public final class PeeringServicePrefixImpl
     }
 
     public PeeringServicePrefix refresh() {
-        String localExpand = null;
         this.innerObject =
             serviceManager
                 .serviceClient()
-                .getPrefixes()
-                .getWithResponse(resourceGroupName, peeringServiceName, prefixName, localExpand, Context.NONE)
+                .getPeeringServicePrefixes()
+                .getWithResponse(resourceGroupName, peeringServiceName, prefixName, Context.NONE)
                 .getValue();
         return this;
     }
 
     public PeeringServicePrefix refresh(Context context) {
-        String localExpand = null;
         this.innerObject =
             serviceManager
                 .serviceClient()
-                .getPrefixes()
-                .getWithResponse(resourceGroupName, peeringServiceName, prefixName, localExpand, context)
+                .getPeeringServicePrefixes()
+                .getWithResponse(resourceGroupName, peeringServiceName, prefixName, context)
                 .getValue();
         return this;
     }
@@ -175,8 +153,13 @@ public final class PeeringServicePrefixImpl
         return this;
     }
 
-    public PeeringServicePrefixImpl withPeeringServicePrefixKey(String peeringServicePrefixKey) {
-        this.innerModel().withPeeringServicePrefixKey(peeringServicePrefixKey);
+    public PeeringServicePrefixImpl withPrefixValidationState(PrefixValidationState prefixValidationState) {
+        this.innerModel().withPrefixValidationState(prefixValidationState);
+        return this;
+    }
+
+    public PeeringServicePrefixImpl withLearnedType(LearnedType learnedType) {
+        this.innerModel().withLearnedType(learnedType);
         return this;
     }
 }

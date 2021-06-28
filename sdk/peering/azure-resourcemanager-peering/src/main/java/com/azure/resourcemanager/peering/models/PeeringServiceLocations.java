@@ -10,7 +10,7 @@ import com.azure.core.util.Context;
 /** Resource collection API of PeeringServiceLocations. */
 public interface PeeringServiceLocations {
     /**
-     * Lists all of the available locations for peering service.
+     * Lists all of the available peering service locations for the specified kind of peering.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -19,14 +19,13 @@ public interface PeeringServiceLocations {
     PagedIterable<PeeringServiceLocation> list();
 
     /**
-     * Lists all of the available locations for peering service.
+     * Lists all of the available peering service locations for the specified kind of peering.
      *
-     * @param country The country of interest, in which the locations are to be present.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paginated list of peering service locations.
      */
-    PagedIterable<PeeringServiceLocation> list(String country, Context context);
+    PagedIterable<PeeringServiceLocation> list(Context context);
 }

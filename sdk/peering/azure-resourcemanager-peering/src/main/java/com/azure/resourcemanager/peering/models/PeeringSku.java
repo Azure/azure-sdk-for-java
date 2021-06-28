@@ -18,7 +18,7 @@ public final class PeeringSku {
      * The name of the peering SKU.
      */
     @JsonProperty(value = "name")
-    private String name;
+    private Name name;
 
     /*
      * The tier of the peering SKU.
@@ -43,7 +43,7 @@ public final class PeeringSku {
      *
      * @return the name value.
      */
-    public String name() {
+    public Name name() {
         return this.name;
     }
 
@@ -53,7 +53,7 @@ public final class PeeringSku {
      * @param name the name value to set.
      * @return the PeeringSku object itself.
      */
-    public PeeringSku withName(String name) {
+    public PeeringSku withName(Name name) {
         this.name = name;
         return this;
     }

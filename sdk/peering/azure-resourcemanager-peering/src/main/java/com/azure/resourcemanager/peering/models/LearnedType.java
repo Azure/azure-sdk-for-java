@@ -13,8 +13,8 @@ public final class LearnedType extends ExpandableStringEnum<LearnedType> {
     /** Static value None for LearnedType. */
     public static final LearnedType NONE = fromString("None");
 
-    /** Static value ViaServiceProvider for LearnedType. */
-    public static final LearnedType VIA_SERVICE_PROVIDER = fromString("ViaServiceProvider");
+    /** Static value ViaPartner for LearnedType. */
+    public static final LearnedType VIA_PARTNER = fromString("ViaPartner");
 
     /** Static value ViaSession for LearnedType. */
     public static final LearnedType VIA_SESSION = fromString("ViaSession");

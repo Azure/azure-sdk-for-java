@@ -9,12 +9,10 @@ import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.peering.models.LearnedType;
-import com.azure.resourcemanager.peering.models.PeeringServicePrefixEvent;
 import com.azure.resourcemanager.peering.models.PrefixValidationState;
 import com.azure.resourcemanager.peering.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
 
 /** The peering service prefix class. */
 @JsonFlatten
@@ -23,7 +21,7 @@ public class PeeringServicePrefixInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PeeringServicePrefixInner.class);
 
     /*
-     * The prefix from which your traffic originates.
+     * Valid route prefix
      */
     @JsonProperty(value = "properties.prefix")
     private String prefix;
@@ -31,32 +29,14 @@ public class PeeringServicePrefixInner extends ProxyResource {
     /*
      * The prefix validation state
      */
-    @JsonProperty(value = "properties.prefixValidationState", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.prefixValidationState")
     private PrefixValidationState prefixValidationState;
 
     /*
      * The prefix learned type
      */
-    @JsonProperty(value = "properties.learnedType", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.learnedType")
     private LearnedType learnedType;
-
-    /*
-     * The error message for validation state
-     */
-    @JsonProperty(value = "properties.errorMessage", access = JsonProperty.Access.WRITE_ONLY)
-    private String errorMessage;
-
-    /*
-     * The list of events for peering service prefix
-     */
-    @JsonProperty(value = "properties.events", access = JsonProperty.Access.WRITE_ONLY)
-    private List<PeeringServicePrefixEvent> events;
-
-    /*
-     * The peering service prefix key
-     */
-    @JsonProperty(value = "properties.peeringServicePrefixKey")
-    private String peeringServicePrefixKey;
 
     /*
      * The provisioning state of the resource.
@@ -65,7 +45,7 @@ public class PeeringServicePrefixInner extends ProxyResource {
     private ProvisioningState provisioningState;
 
     /**
-     * Get the prefix property: The prefix from which your traffic originates.
+     * Get the prefix property: Valid route prefix.
      *
      * @return the prefix value.
      */
@@ -74,7 +54,7 @@ public class PeeringServicePrefixInner extends ProxyResource {
     }
 
     /**
-     * Set the prefix property: The prefix from which your traffic originates.
+     * Set the prefix property: Valid route prefix.
      *
      * @param prefix the prefix value to set.
      * @return the PeeringServicePrefixInner object itself.
@@ -94,6 +74,17 @@ public class PeeringServicePrefixInner extends ProxyResource {
     }
 
     /**
+     * Set the prefixValidationState property: The prefix validation state.
+     *
+     * @param prefixValidationState the prefixValidationState value to set.
+     * @return the PeeringServicePrefixInner object itself.
+     */
+    public PeeringServicePrefixInner withPrefixValidationState(PrefixValidationState prefixValidationState) {
+        this.prefixValidationState = prefixValidationState;
+        return this;
+    }
+
+    /**
      * Get the learnedType property: The prefix learned type.
      *
      * @return the learnedType value.
@@ -103,40 +94,13 @@ public class PeeringServicePrefixInner extends ProxyResource {
     }
 
     /**
-     * Get the errorMessage property: The error message for validation state.
+     * Set the learnedType property: The prefix learned type.
      *
-     * @return the errorMessage value.
-     */
-    public String errorMessage() {
-        return this.errorMessage;
-    }
-
-    /**
-     * Get the events property: The list of events for peering service prefix.
-     *
-     * @return the events value.
-     */
-    public List<PeeringServicePrefixEvent> events() {
-        return this.events;
-    }
-
-    /**
-     * Get the peeringServicePrefixKey property: The peering service prefix key.
-     *
-     * @return the peeringServicePrefixKey value.
-     */
-    public String peeringServicePrefixKey() {
-        return this.peeringServicePrefixKey;
-    }
-
-    /**
-     * Set the peeringServicePrefixKey property: The peering service prefix key.
-     *
-     * @param peeringServicePrefixKey the peeringServicePrefixKey value to set.
+     * @param learnedType the learnedType value to set.
      * @return the PeeringServicePrefixInner object itself.
      */
-    public PeeringServicePrefixInner withPeeringServicePrefixKey(String peeringServicePrefixKey) {
-        this.peeringServicePrefixKey = peeringServicePrefixKey;
+    public PeeringServicePrefixInner withLearnedType(LearnedType learnedType) {
+        this.learnedType = learnedType;
         return this;
     }
 
@@ -155,8 +119,5 @@ public class PeeringServicePrefixInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (events() != null) {
-            events().forEach(e -> e.validate());
-        }
     }
 }

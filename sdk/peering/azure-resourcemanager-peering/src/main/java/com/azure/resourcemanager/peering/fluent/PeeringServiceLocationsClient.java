@@ -13,7 +13,7 @@ import com.azure.resourcemanager.peering.fluent.models.PeeringServiceLocationInn
 /** An instance of this class provides access to all the operations defined in PeeringServiceLocationsClient. */
 public interface PeeringServiceLocationsClient {
     /**
-     * Lists all of the available locations for peering service.
+     * Lists all of the available peering service locations for the specified kind of peering.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -23,9 +23,8 @@ public interface PeeringServiceLocationsClient {
     PagedIterable<PeeringServiceLocationInner> list();
 
     /**
-     * Lists all of the available locations for peering service.
+     * Lists all of the available peering service locations for the specified kind of peering.
      *
-     * @param country The country of interest, in which the locations are to be present.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -33,5 +32,5 @@ public interface PeeringServiceLocationsClient {
      * @return the paginated list of peering service locations.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PeeringServiceLocationInner> list(String country, Context context);
+    PagedIterable<PeeringServiceLocationInner> list(Context context);
 }

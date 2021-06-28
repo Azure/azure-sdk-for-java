@@ -32,8 +32,8 @@ public final class LegacyPeeringsImpl implements LegacyPeerings {
         return Utils.mapPage(inner, inner1 -> new PeeringImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Peering> list(String peeringLocation, LegacyPeeringsKind kind, Integer asn, Context context) {
-        PagedIterable<PeeringInner> inner = this.serviceClient().list(peeringLocation, kind, asn, context);
+    public PagedIterable<Peering> list(String peeringLocation, LegacyPeeringsKind kind, Context context) {
+        PagedIterable<PeeringInner> inner = this.serviceClient().list(peeringLocation, kind, context);
         return Utils.mapPage(inner, inner1 -> new PeeringImpl(inner1, this.manager()));
     }
 

@@ -13,8 +13,8 @@ public final class Enum0 extends ExpandableStringEnum<Enum0> {
     /** Static value Available for Enum0. */
     public static final Enum0 AVAILABLE = fromString("Available");
 
-    /** Static value Unavailable for Enum0. */
-    public static final Enum0 UNAVAILABLE = fromString("Unavailable");
+    /** Static value UnAvailable for Enum0. */
+    public static final Enum0 UN_AVAILABLE = fromString("UnAvailable");
 
     /**
      * Creates or finds a Enum0 from its string representation.

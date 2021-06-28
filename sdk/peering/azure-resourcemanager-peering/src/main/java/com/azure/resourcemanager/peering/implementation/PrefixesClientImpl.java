@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.peering.implementation;
 
-import com.azure.core.annotation.BodyParam;
-import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
 import com.azure.core.annotation.HeaderParam;
@@ -13,7 +11,6 @@ import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
-import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
@@ -64,56 +61,6 @@ public final class PrefixesClientImpl implements PrefixesClient {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Peering"
-                + "/peeringServices/{peeringServiceName}/prefixes/{prefixName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PeeringServicePrefixInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("peeringServiceName") String peeringServiceName,
-            @PathParam("prefixName") String prefixName,
-            @QueryParam("$expand") String expand,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Peering"
-                + "/peeringServices/{peeringServiceName}/prefixes/{prefixName}")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PeeringServicePrefixInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("peeringServiceName") String peeringServiceName,
-            @PathParam("prefixName") String prefixName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") PeeringServicePrefixInner peeringServicePrefix,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Peering"
-                + "/peeringServices/{peeringServiceName}/prefixes/{prefixName}")
-        @ExpectedResponses({200, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("peeringServiceName") String peeringServiceName,
-            @PathParam("prefixName") String prefixName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Peering"
                 + "/peeringServices/{peeringServiceName}/prefixes")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -121,7 +68,6 @@ public final class PrefixesClientImpl implements PrefixesClient {
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("peeringServiceName") String peeringServiceName,
-            @QueryParam("$expand") String expand,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept,
@@ -139,588 +85,18 @@ public final class PrefixesClientImpl implements PrefixesClient {
     }
 
     /**
-     * Gets an existing prefix with the specified name under the given subscription, resource group and peering service.
+     * Lists the peerings prefix in the resource group.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param peeringServiceName The name of the peering service.
-     * @param prefixName The name of the prefix.
-     * @param expand The properties to be expanded.
+     * @param resourceGroupName The resource group name.
+     * @param peeringServiceName The peering service name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing prefix with the specified name under the given subscription, resource group and peering
-     *     service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PeeringServicePrefixInner>> getWithResponseAsync(
-        String resourceGroupName, String peeringServiceName, String prefixName, String expand) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (peeringServiceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter peeringServiceName is required and cannot be null."));
-        }
-        if (prefixName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter prefixName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            peeringServiceName,
-                            prefixName,
-                            expand,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Gets an existing prefix with the specified name under the given subscription, resource group and peering service.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param peeringServiceName The name of the peering service.
-     * @param prefixName The name of the prefix.
-     * @param expand The properties to be expanded.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing prefix with the specified name under the given subscription, resource group and peering
-     *     service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PeeringServicePrefixInner>> getWithResponseAsync(
-        String resourceGroupName, String peeringServiceName, String prefixName, String expand, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (peeringServiceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter peeringServiceName is required and cannot be null."));
-        }
-        if (prefixName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter prefixName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                peeringServiceName,
-                prefixName,
-                expand,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
-    }
-
-    /**
-     * Gets an existing prefix with the specified name under the given subscription, resource group and peering service.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param peeringServiceName The name of the peering service.
-     * @param prefixName The name of the prefix.
-     * @param expand The properties to be expanded.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing prefix with the specified name under the given subscription, resource group and peering
-     *     service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PeeringServicePrefixInner> getAsync(
-        String resourceGroupName, String peeringServiceName, String prefixName, String expand) {
-        return getWithResponseAsync(resourceGroupName, peeringServiceName, prefixName, expand)
-            .flatMap(
-                (Response<PeeringServicePrefixInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets an existing prefix with the specified name under the given subscription, resource group and peering service.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param peeringServiceName The name of the peering service.
-     * @param prefixName The name of the prefix.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing prefix with the specified name under the given subscription, resource group and peering
-     *     service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PeeringServicePrefixInner> getAsync(
-        String resourceGroupName, String peeringServiceName, String prefixName) {
-        final String expand = null;
-        return getWithResponseAsync(resourceGroupName, peeringServiceName, prefixName, expand)
-            .flatMap(
-                (Response<PeeringServicePrefixInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets an existing prefix with the specified name under the given subscription, resource group and peering service.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param peeringServiceName The name of the peering service.
-     * @param prefixName The name of the prefix.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing prefix with the specified name under the given subscription, resource group and peering
-     *     service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PeeringServicePrefixInner get(String resourceGroupName, String peeringServiceName, String prefixName) {
-        final String expand = null;
-        return getAsync(resourceGroupName, peeringServiceName, prefixName, expand).block();
-    }
-
-    /**
-     * Gets an existing prefix with the specified name under the given subscription, resource group and peering service.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param peeringServiceName The name of the peering service.
-     * @param prefixName The name of the prefix.
-     * @param expand The properties to be expanded.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing prefix with the specified name under the given subscription, resource group and peering
-     *     service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PeeringServicePrefixInner> getWithResponse(
-        String resourceGroupName, String peeringServiceName, String prefixName, String expand, Context context) {
-        return getWithResponseAsync(resourceGroupName, peeringServiceName, prefixName, expand, context).block();
-    }
-
-    /**
-     * Creates a new prefix with the specified name under the given subscription, resource group and peering service.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param peeringServiceName The name of the peering service.
-     * @param prefixName The name of the prefix.
-     * @param peeringServicePrefix The properties needed to create a prefix.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the peering service prefix class.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PeeringServicePrefixInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String peeringServiceName,
-        String prefixName,
-        PeeringServicePrefixInner peeringServicePrefix) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (peeringServiceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter peeringServiceName is required and cannot be null."));
-        }
-        if (prefixName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter prefixName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (peeringServicePrefix == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter peeringServicePrefix is required and cannot be null."));
-        } else {
-            peeringServicePrefix.validate();
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            peeringServiceName,
-                            prefixName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            peeringServicePrefix,
-                            accept,
-                            context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Creates a new prefix with the specified name under the given subscription, resource group and peering service.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param peeringServiceName The name of the peering service.
-     * @param prefixName The name of the prefix.
-     * @param peeringServicePrefix The properties needed to create a prefix.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the peering service prefix class.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PeeringServicePrefixInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String peeringServiceName,
-        String prefixName,
-        PeeringServicePrefixInner peeringServicePrefix,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (peeringServiceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter peeringServiceName is required and cannot be null."));
-        }
-        if (prefixName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter prefixName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (peeringServicePrefix == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter peeringServicePrefix is required and cannot be null."));
-        } else {
-            peeringServicePrefix.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                peeringServiceName,
-                prefixName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                peeringServicePrefix,
-                accept,
-                context);
-    }
-
-    /**
-     * Creates a new prefix with the specified name under the given subscription, resource group and peering service.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param peeringServiceName The name of the peering service.
-     * @param prefixName The name of the prefix.
-     * @param peeringServicePrefix The properties needed to create a prefix.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the peering service prefix class.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PeeringServicePrefixInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String peeringServiceName,
-        String prefixName,
-        PeeringServicePrefixInner peeringServicePrefix) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, peeringServiceName, prefixName, peeringServicePrefix)
-            .flatMap(
-                (Response<PeeringServicePrefixInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates a new prefix with the specified name under the given subscription, resource group and peering service.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param peeringServiceName The name of the peering service.
-     * @param prefixName The name of the prefix.
-     * @param peeringServicePrefix The properties needed to create a prefix.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the peering service prefix class.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PeeringServicePrefixInner createOrUpdate(
-        String resourceGroupName,
-        String peeringServiceName,
-        String prefixName,
-        PeeringServicePrefixInner peeringServicePrefix) {
-        return createOrUpdateAsync(resourceGroupName, peeringServiceName, prefixName, peeringServicePrefix).block();
-    }
-
-    /**
-     * Creates a new prefix with the specified name under the given subscription, resource group and peering service.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param peeringServiceName The name of the peering service.
-     * @param prefixName The name of the prefix.
-     * @param peeringServicePrefix The properties needed to create a prefix.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the peering service prefix class.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PeeringServicePrefixInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String peeringServiceName,
-        String prefixName,
-        PeeringServicePrefixInner peeringServicePrefix,
-        Context context) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, peeringServiceName, prefixName, peeringServicePrefix, context)
-            .block();
-    }
-
-    /**
-     * Deletes an existing prefix with the specified name under the given subscription, resource group and peering
-     * service.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param peeringServiceName The name of the peering service.
-     * @param prefixName The name of the prefix.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String peeringServiceName, String prefixName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (peeringServiceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter peeringServiceName is required and cannot be null."));
-        }
-        if (prefixName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter prefixName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            peeringServiceName,
-                            prefixName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Deletes an existing prefix with the specified name under the given subscription, resource group and peering
-     * service.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param peeringServiceName The name of the peering service.
-     * @param prefixName The name of the prefix.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String peeringServiceName, String prefixName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (peeringServiceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter peeringServiceName is required and cannot be null."));
-        }
-        if (prefixName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter prefixName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                peeringServiceName,
-                prefixName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
-    }
-
-    /**
-     * Deletes an existing prefix with the specified name under the given subscription, resource group and peering
-     * service.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param peeringServiceName The name of the peering service.
-     * @param prefixName The name of the prefix.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String peeringServiceName, String prefixName) {
-        return deleteWithResponseAsync(resourceGroupName, peeringServiceName, prefixName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes an existing prefix with the specified name under the given subscription, resource group and peering
-     * service.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param peeringServiceName The name of the peering service.
-     * @param prefixName The name of the prefix.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String peeringServiceName, String prefixName) {
-        deleteAsync(resourceGroupName, peeringServiceName, prefixName).block();
-    }
-
-    /**
-     * Deletes an existing prefix with the specified name under the given subscription, resource group and peering
-     * service.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param peeringServiceName The name of the peering service.
-     * @param prefixName The name of the prefix.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String peeringServiceName, String prefixName, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, peeringServiceName, prefixName, context).block();
-    }
-
-    /**
-     * Lists all prefixes under the given subscription, resource group and peering service.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param peeringServiceName The name of the peering service.
-     * @param expand The properties to be expanded.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering service prefixes.
+     * @return the paginated list of [T].
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PeeringServicePrefixInner>> listByPeeringServiceSinglePageAsync(
-        String resourceGroupName, String peeringServiceName, String expand) {
+        String resourceGroupName, String peeringServiceName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -750,7 +126,6 @@ public final class PrefixesClientImpl implements PrefixesClient {
                             this.client.getEndpoint(),
                             resourceGroupName,
                             peeringServiceName,
-                            expand,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
                             accept,
@@ -768,20 +143,19 @@ public final class PrefixesClientImpl implements PrefixesClient {
     }
 
     /**
-     * Lists all prefixes under the given subscription, resource group and peering service.
+     * Lists the peerings prefix in the resource group.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param peeringServiceName The name of the peering service.
-     * @param expand The properties to be expanded.
+     * @param resourceGroupName The resource group name.
+     * @param peeringServiceName The peering service name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering service prefixes.
+     * @return the paginated list of [T].
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PeeringServicePrefixInner>> listByPeeringServiceSinglePageAsync(
-        String resourceGroupName, String peeringServiceName, String expand, Context context) {
+        String resourceGroupName, String peeringServiceName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -809,7 +183,6 @@ public final class PrefixesClientImpl implements PrefixesClient {
                 this.client.getEndpoint(),
                 resourceGroupName,
                 peeringServiceName,
-                expand,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
                 accept,
@@ -826,96 +199,73 @@ public final class PrefixesClientImpl implements PrefixesClient {
     }
 
     /**
-     * Lists all prefixes under the given subscription, resource group and peering service.
+     * Lists the peerings prefix in the resource group.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param peeringServiceName The name of the peering service.
-     * @param expand The properties to be expanded.
+     * @param resourceGroupName The resource group name.
+     * @param peeringServiceName The peering service name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering service prefixes.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PeeringServicePrefixInner> listByPeeringServiceAsync(
-        String resourceGroupName, String peeringServiceName, String expand) {
-        return new PagedFlux<>(
-            () -> listByPeeringServiceSinglePageAsync(resourceGroupName, peeringServiceName, expand),
-            nextLink -> listByPeeringServiceNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Lists all prefixes under the given subscription, resource group and peering service.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param peeringServiceName The name of the peering service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering service prefixes.
+     * @return the paginated list of [T].
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PeeringServicePrefixInner> listByPeeringServiceAsync(
         String resourceGroupName, String peeringServiceName) {
-        final String expand = null;
         return new PagedFlux<>(
-            () -> listByPeeringServiceSinglePageAsync(resourceGroupName, peeringServiceName, expand),
+            () -> listByPeeringServiceSinglePageAsync(resourceGroupName, peeringServiceName),
             nextLink -> listByPeeringServiceNextSinglePageAsync(nextLink));
     }
 
     /**
-     * Lists all prefixes under the given subscription, resource group and peering service.
+     * Lists the peerings prefix in the resource group.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param peeringServiceName The name of the peering service.
-     * @param expand The properties to be expanded.
+     * @param resourceGroupName The resource group name.
+     * @param peeringServiceName The peering service name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering service prefixes.
+     * @return the paginated list of [T].
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PeeringServicePrefixInner> listByPeeringServiceAsync(
-        String resourceGroupName, String peeringServiceName, String expand, Context context) {
+        String resourceGroupName, String peeringServiceName, Context context) {
         return new PagedFlux<>(
-            () -> listByPeeringServiceSinglePageAsync(resourceGroupName, peeringServiceName, expand, context),
+            () -> listByPeeringServiceSinglePageAsync(resourceGroupName, peeringServiceName, context),
             nextLink -> listByPeeringServiceNextSinglePageAsync(nextLink, context));
     }
 
     /**
-     * Lists all prefixes under the given subscription, resource group and peering service.
+     * Lists the peerings prefix in the resource group.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param peeringServiceName The name of the peering service.
+     * @param resourceGroupName The resource group name.
+     * @param peeringServiceName The peering service name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering service prefixes.
+     * @return the paginated list of [T].
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PeeringServicePrefixInner> listByPeeringService(
         String resourceGroupName, String peeringServiceName) {
-        final String expand = null;
-        return new PagedIterable<>(listByPeeringServiceAsync(resourceGroupName, peeringServiceName, expand));
+        return new PagedIterable<>(listByPeeringServiceAsync(resourceGroupName, peeringServiceName));
     }
 
     /**
-     * Lists all prefixes under the given subscription, resource group and peering service.
+     * Lists the peerings prefix in the resource group.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param peeringServiceName The name of the peering service.
-     * @param expand The properties to be expanded.
+     * @param resourceGroupName The resource group name.
+     * @param peeringServiceName The peering service name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering service prefixes.
+     * @return the paginated list of [T].
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PeeringServicePrefixInner> listByPeeringService(
-        String resourceGroupName, String peeringServiceName, String expand, Context context) {
-        return new PagedIterable<>(listByPeeringServiceAsync(resourceGroupName, peeringServiceName, expand, context));
+        String resourceGroupName, String peeringServiceName, Context context) {
+        return new PagedIterable<>(listByPeeringServiceAsync(resourceGroupName, peeringServiceName, context));
     }
 
     /**
@@ -925,7 +275,7 @@ public final class PrefixesClientImpl implements PrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering service prefixes.
+     * @return the paginated list of [T].
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PeeringServicePrefixInner>> listByPeeringServiceNextSinglePageAsync(String nextLink) {
@@ -962,7 +312,7 @@ public final class PrefixesClientImpl implements PrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering service prefixes.
+     * @return the paginated list of [T].
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PeeringServicePrefixInner>> listByPeeringServiceNextSinglePageAsync(

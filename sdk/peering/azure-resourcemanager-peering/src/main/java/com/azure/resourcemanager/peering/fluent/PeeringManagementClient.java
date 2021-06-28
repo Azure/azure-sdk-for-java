@@ -45,13 +45,6 @@ public interface PeeringManagementClient {
     Duration getDefaultPollInterval();
 
     /**
-     * Gets the CdnPeeringPrefixesClient object to access its operations.
-     *
-     * @return the CdnPeeringPrefixesClient object.
-     */
-    CdnPeeringPrefixesClient getCdnPeeringPrefixes();
-
-    /**
      * Gets the ResourceProvidersClient object to access its operations.
      *
      * @return the ResourceProvidersClient object.
@@ -87,20 +80,6 @@ public interface PeeringManagementClient {
     PeeringLocationsClient getPeeringLocations();
 
     /**
-     * Gets the RegisteredAsnsClient object to access its operations.
-     *
-     * @return the RegisteredAsnsClient object.
-     */
-    RegisteredAsnsClient getRegisteredAsns();
-
-    /**
-     * Gets the RegisteredPrefixesClient object to access its operations.
-     *
-     * @return the RegisteredPrefixesClient object.
-     */
-    RegisteredPrefixesClient getRegisteredPrefixes();
-
-    /**
      * Gets the PeeringsClient object to access its operations.
      *
      * @return the PeeringsClient object.
@@ -108,25 +87,18 @@ public interface PeeringManagementClient {
     PeeringsClient getPeerings();
 
     /**
-     * Gets the ReceivedRoutesClient object to access its operations.
-     *
-     * @return the ReceivedRoutesClient object.
-     */
-    ReceivedRoutesClient getReceivedRoutes();
-
-    /**
-     * Gets the PeeringServiceCountriesClient object to access its operations.
-     *
-     * @return the PeeringServiceCountriesClient object.
-     */
-    PeeringServiceCountriesClient getPeeringServiceCountries();
-
-    /**
      * Gets the PeeringServiceLocationsClient object to access its operations.
      *
      * @return the PeeringServiceLocationsClient object.
      */
     PeeringServiceLocationsClient getPeeringServiceLocations();
+
+    /**
+     * Gets the PeeringServicePrefixesClient object to access its operations.
+     *
+     * @return the PeeringServicePrefixesClient object.
+     */
+    PeeringServicePrefixesClient getPeeringServicePrefixes();
 
     /**
      * Gets the PrefixesClient object to access its operations.

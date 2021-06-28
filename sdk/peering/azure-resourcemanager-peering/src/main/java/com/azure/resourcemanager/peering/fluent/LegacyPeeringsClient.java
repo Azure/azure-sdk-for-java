@@ -31,7 +31,6 @@ public interface LegacyPeeringsClient {
      *
      * @param peeringLocation The location of the peering.
      * @param kind The kind of the peering.
-     * @param asn The ASN number associated with a legacy peering.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -39,5 +38,5 @@ public interface LegacyPeeringsClient {
      * @return the paginated list of peerings.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PeeringInner> list(String peeringLocation, LegacyPeeringsKind kind, Integer asn, Context context);
+    PagedIterable<PeeringInner> list(String peeringLocation, LegacyPeeringsKind kind, Context context);
 }

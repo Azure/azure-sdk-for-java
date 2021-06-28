@@ -6,7 +6,6 @@ package com.azure.resourcemanager.peering.models;
 
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.peering.fluent.models.PeerAsnInner;
-import java.util.List;
 
 /** An immutable client-side representation of PeerAsn. */
 public interface PeerAsn {
@@ -39,11 +38,11 @@ public interface PeerAsn {
     Integer peerAsn();
 
     /**
-     * Gets the peerContactDetail property: The contact details of the peer.
+     * Gets the peerContactInfo property: The contact information of the peer.
      *
-     * @return the peerContactDetail value.
+     * @return the peerContactInfo value.
      */
-    List<ContactDetail> peerContactDetail();
+    ContactInfo peerContactInfo();
 
     /**
      * Gets the peerName property: The name of the peer.
@@ -58,13 +57,6 @@ public interface PeerAsn {
      * @return the validationState value.
      */
     ValidationState validationState();
-
-    /**
-     * Gets the errorMessage property: The error message for the validation state.
-     *
-     * @return the errorMessage value.
-     */
-    String errorMessage();
 
     /**
      * Gets the inner com.azure.resourcemanager.peering.fluent.models.PeerAsnInner object.
@@ -87,7 +79,7 @@ public interface PeerAsn {
          */
         interface WithCreate
             extends DefinitionStages.WithPeerAsn,
-                DefinitionStages.WithPeerContactDetail,
+                DefinitionStages.WithPeerContactInfo,
                 DefinitionStages.WithPeerName,
                 DefinitionStages.WithValidationState {
             /**
@@ -115,15 +107,15 @@ public interface PeerAsn {
              */
             WithCreate withPeerAsn(Integer peerAsn);
         }
-        /** The stage of the PeerAsn definition allowing to specify peerContactDetail. */
-        interface WithPeerContactDetail {
+        /** The stage of the PeerAsn definition allowing to specify peerContactInfo. */
+        interface WithPeerContactInfo {
             /**
-             * Specifies the peerContactDetail property: The contact details of the peer..
+             * Specifies the peerContactInfo property: The contact information of the peer..
              *
-             * @param peerContactDetail The contact details of the peer.
+             * @param peerContactInfo The contact information of the peer.
              * @return the next definition stage.
              */
-            WithCreate withPeerContactDetail(List<ContactDetail> peerContactDetail);
+            WithCreate withPeerContactInfo(ContactInfo peerContactInfo);
         }
         /** The stage of the PeerAsn definition allowing to specify peerName. */
         interface WithPeerName {
@@ -156,7 +148,7 @@ public interface PeerAsn {
     /** The template for PeerAsn update. */
     interface Update
         extends UpdateStages.WithPeerAsn,
-            UpdateStages.WithPeerContactDetail,
+            UpdateStages.WithPeerContactInfo,
             UpdateStages.WithPeerName,
             UpdateStages.WithValidationState {
         /**
@@ -186,15 +178,15 @@ public interface PeerAsn {
              */
             Update withPeerAsn(Integer peerAsn);
         }
-        /** The stage of the PeerAsn update allowing to specify peerContactDetail. */
-        interface WithPeerContactDetail {
+        /** The stage of the PeerAsn update allowing to specify peerContactInfo. */
+        interface WithPeerContactInfo {
             /**
-             * Specifies the peerContactDetail property: The contact details of the peer..
+             * Specifies the peerContactInfo property: The contact information of the peer..
              *
-             * @param peerContactDetail The contact details of the peer.
+             * @param peerContactInfo The contact information of the peer.
              * @return the next definition stage.
              */
-            Update withPeerContactDetail(List<ContactDetail> peerContactDetail);
+            Update withPeerContactInfo(ContactInfo peerContactInfo);
         }
         /** The stage of the PeerAsn update allowing to specify peerName. */
         interface WithPeerName {

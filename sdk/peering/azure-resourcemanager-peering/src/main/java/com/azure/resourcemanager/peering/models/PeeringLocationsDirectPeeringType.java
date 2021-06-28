@@ -22,12 +22,6 @@ public final class PeeringLocationsDirectPeeringType extends ExpandableStringEnu
     /** Static value Internal for PeeringLocationsDirectPeeringType. */
     public static final PeeringLocationsDirectPeeringType INTERNAL = fromString("Internal");
 
-    /** Static value Ix for PeeringLocationsDirectPeeringType. */
-    public static final PeeringLocationsDirectPeeringType IX = fromString("Ix");
-
-    /** Static value IxRs for PeeringLocationsDirectPeeringType. */
-    public static final PeeringLocationsDirectPeeringType IX_RS = fromString("IxRs");
-
     /**
      * Creates or finds a PeeringLocationsDirectPeeringType from its string representation.
      *

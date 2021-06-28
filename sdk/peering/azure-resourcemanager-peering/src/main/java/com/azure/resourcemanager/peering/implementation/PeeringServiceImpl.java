@@ -8,7 +8,6 @@ import com.azure.core.management.Region;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.peering.fluent.models.PeeringServiceInner;
 import com.azure.resourcemanager.peering.models.PeeringService;
-import com.azure.resourcemanager.peering.models.PeeringServiceSku;
 import com.azure.resourcemanager.peering.models.ProvisioningState;
 import com.azure.resourcemanager.peering.models.ResourceTags;
 import java.util.Collections;
@@ -29,10 +28,6 @@ public final class PeeringServiceImpl implements PeeringService, PeeringService.
 
     public String type() {
         return this.innerModel().type();
-    }
-
-    public PeeringServiceSku sku() {
-        return this.innerModel().sku();
     }
 
     public String location() {
@@ -58,14 +53,6 @@ public final class PeeringServiceImpl implements PeeringService, PeeringService.
 
     public ProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
-    }
-
-    public String providerPrimaryPeeringLocation() {
-        return this.innerModel().providerPrimaryPeeringLocation();
-    }
-
-    public String providerBackupPeeringLocation() {
-        return this.innerModel().providerBackupPeeringLocation();
     }
 
     public Region region() {
@@ -194,11 +181,6 @@ public final class PeeringServiceImpl implements PeeringService, PeeringService.
         }
     }
 
-    public PeeringServiceImpl withSku(PeeringServiceSku sku) {
-        this.innerModel().withSku(sku);
-        return this;
-    }
-
     public PeeringServiceImpl withPeeringServiceLocation(String peeringServiceLocation) {
         this.innerModel().withPeeringServiceLocation(peeringServiceLocation);
         return this;
@@ -206,16 +188,6 @@ public final class PeeringServiceImpl implements PeeringService, PeeringService.
 
     public PeeringServiceImpl withPeeringServiceProvider(String peeringServiceProvider) {
         this.innerModel().withPeeringServiceProvider(peeringServiceProvider);
-        return this;
-    }
-
-    public PeeringServiceImpl withProviderPrimaryPeeringLocation(String providerPrimaryPeeringLocation) {
-        this.innerModel().withProviderPrimaryPeeringLocation(providerPrimaryPeeringLocation);
-        return this;
-    }
-
-    public PeeringServiceImpl withProviderBackupPeeringLocation(String providerBackupPeeringLocation) {
-        this.innerModel().withProviderBackupPeeringLocation(providerBackupPeeringLocation);
         return this;
     }
 

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.peering.models;
 
 import com.azure.resourcemanager.peering.fluent.models.PeeringServiceProviderInner;
-import java.util.List;
 
 /** An immutable client-side representation of PeeringServiceProvider. */
 public interface PeeringServiceProvider {
@@ -36,13 +35,6 @@ public interface PeeringServiceProvider {
      * @return the serviceProviderName value.
      */
     String serviceProviderName();
-
-    /**
-     * Gets the peeringLocations property: The list of locations at which the service provider peers with Microsoft.
-     *
-     * @return the peeringLocations value.
-     */
-    List<String> peeringLocations();
 
     /**
      * Gets the inner com.azure.resourcemanager.peering.fluent.models.PeeringServiceProviderInner object.

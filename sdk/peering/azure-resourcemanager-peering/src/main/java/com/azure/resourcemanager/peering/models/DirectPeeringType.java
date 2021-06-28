@@ -22,12 +22,6 @@ public final class DirectPeeringType extends ExpandableStringEnum<DirectPeeringT
     /** Static value Internal for DirectPeeringType. */
     public static final DirectPeeringType INTERNAL = fromString("Internal");
 
-    /** Static value Ix for DirectPeeringType. */
-    public static final DirectPeeringType IX = fromString("Ix");
-
-    /** Static value IxRs for DirectPeeringType. */
-    public static final DirectPeeringType IX_RS = fromString("IxRs");
-
     /**
      * Creates or finds a DirectPeeringType from its string representation.
      *

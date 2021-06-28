@@ -9,7 +9,6 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -17,40 +16,33 @@ import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.peering.fluent.PeeringManagementClient;
-import com.azure.resourcemanager.peering.implementation.CdnPeeringPrefixesImpl;
 import com.azure.resourcemanager.peering.implementation.LegacyPeeringsImpl;
 import com.azure.resourcemanager.peering.implementation.OperationsImpl;
 import com.azure.resourcemanager.peering.implementation.PeerAsnsImpl;
 import com.azure.resourcemanager.peering.implementation.PeeringLocationsImpl;
 import com.azure.resourcemanager.peering.implementation.PeeringManagementClientBuilder;
-import com.azure.resourcemanager.peering.implementation.PeeringServiceCountriesImpl;
 import com.azure.resourcemanager.peering.implementation.PeeringServiceLocationsImpl;
+import com.azure.resourcemanager.peering.implementation.PeeringServicePrefixesImpl;
 import com.azure.resourcemanager.peering.implementation.PeeringServiceProvidersImpl;
 import com.azure.resourcemanager.peering.implementation.PeeringServicesImpl;
 import com.azure.resourcemanager.peering.implementation.PeeringsImpl;
 import com.azure.resourcemanager.peering.implementation.PrefixesImpl;
-import com.azure.resourcemanager.peering.implementation.ReceivedRoutesImpl;
-import com.azure.resourcemanager.peering.implementation.RegisteredAsnsImpl;
-import com.azure.resourcemanager.peering.implementation.RegisteredPrefixesImpl;
 import com.azure.resourcemanager.peering.implementation.ResourceProvidersImpl;
-import com.azure.resourcemanager.peering.models.CdnPeeringPrefixes;
 import com.azure.resourcemanager.peering.models.LegacyPeerings;
 import com.azure.resourcemanager.peering.models.Operations;
 import com.azure.resourcemanager.peering.models.PeerAsns;
 import com.azure.resourcemanager.peering.models.PeeringLocations;
-import com.azure.resourcemanager.peering.models.PeeringServiceCountries;
 import com.azure.resourcemanager.peering.models.PeeringServiceLocations;
+import com.azure.resourcemanager.peering.models.PeeringServicePrefixes;
 import com.azure.resourcemanager.peering.models.PeeringServiceProviders;
 import com.azure.resourcemanager.peering.models.PeeringServices;
 import com.azure.resourcemanager.peering.models.Peerings;
 import com.azure.resourcemanager.peering.models.Prefixes;
-import com.azure.resourcemanager.peering.models.ReceivedRoutes;
-import com.azure.resourcemanager.peering.models.RegisteredAsns;
-import com.azure.resourcemanager.peering.models.RegisteredPrefixes;
 import com.azure.resourcemanager.peering.models.ResourceProviders;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
@@ -60,8 +52,6 @@ import java.util.Objects;
 
 /** Entry point to PeeringManager. Peering Client. */
 public final class PeeringManager {
-    private CdnPeeringPrefixes cdnPeeringPrefixes;
-
     private ResourceProviders resourceProviders;
 
     private LegacyPeerings legacyPeerings;
@@ -72,17 +62,11 @@ public final class PeeringManager {
 
     private PeeringLocations peeringLocations;
 
-    private RegisteredAsns registeredAsns;
-
-    private RegisteredPrefixes registeredPrefixes;
-
     private Peerings peerings;
 
-    private ReceivedRoutes receivedRoutes;
-
-    private PeeringServiceCountries peeringServiceCountries;
-
     private PeeringServiceLocations peeringServiceLocations;
+
+    private PeeringServicePrefixes peeringServicePrefixes;
 
     private Prefixes prefixes;
 
@@ -133,6 +117,7 @@ public final class PeeringManager {
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
         private final List<HttpPipelinePolicy> policies = new ArrayList<>();
+        private final List<String> scopes = new ArrayList<>();
         private RetryPolicy retryPolicy;
         private Duration defaultPollInterval;
 
@@ -169,6 +154,17 @@ public final class PeeringManager {
          */
         public Configurable withPolicy(HttpPipelinePolicy policy) {
             this.policies.add(Objects.requireNonNull(policy, "'policy' cannot be null."));
+            return this;
+        }
+
+        /**
+         * Adds the scope to permission sets.
+         *
+         * @param scope the scope.
+         * @return the configurable object itself.
+         */
+        public Configurable withScope(String scope) {
+            this.scopes.add(Objects.requireNonNull(scope, "'scope' cannot be null."));
             return this;
         }
 
@@ -228,6 +224,9 @@ public final class PeeringManager {
                 userAgentBuilder.append(" (auto-generated)");
             }
 
+            if (scopes.isEmpty()) {
+                scopes.add(profile.getEnvironment().getManagementEndpoint() + "/.default");
+            }
             if (retryPolicy == null) {
                 retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
             }
@@ -237,10 +236,7 @@ public final class PeeringManager {
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
-            policies
-                .add(
-                    new BearerTokenAuthenticationPolicy(
-                        credential, profile.getEnvironment().getManagementEndpoint() + "/.default"));
+            policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
             policies.addAll(this.policies);
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
@@ -251,14 +247,6 @@ public final class PeeringManager {
                     .build();
             return new PeeringManager(httpPipeline, profile, defaultPollInterval);
         }
-    }
-
-    /** @return Resource collection API of CdnPeeringPrefixes. */
-    public CdnPeeringPrefixes cdnPeeringPrefixes() {
-        if (this.cdnPeeringPrefixes == null) {
-            this.cdnPeeringPrefixes = new CdnPeeringPrefixesImpl(clientObject.getCdnPeeringPrefixes(), this);
-        }
-        return cdnPeeringPrefixes;
     }
 
     /** @return Resource collection API of ResourceProviders. */
@@ -301,45 +289,12 @@ public final class PeeringManager {
         return peeringLocations;
     }
 
-    /** @return Resource collection API of RegisteredAsns. */
-    public RegisteredAsns registeredAsns() {
-        if (this.registeredAsns == null) {
-            this.registeredAsns = new RegisteredAsnsImpl(clientObject.getRegisteredAsns(), this);
-        }
-        return registeredAsns;
-    }
-
-    /** @return Resource collection API of RegisteredPrefixes. */
-    public RegisteredPrefixes registeredPrefixes() {
-        if (this.registeredPrefixes == null) {
-            this.registeredPrefixes = new RegisteredPrefixesImpl(clientObject.getRegisteredPrefixes(), this);
-        }
-        return registeredPrefixes;
-    }
-
     /** @return Resource collection API of Peerings. */
     public Peerings peerings() {
         if (this.peerings == null) {
             this.peerings = new PeeringsImpl(clientObject.getPeerings(), this);
         }
         return peerings;
-    }
-
-    /** @return Resource collection API of ReceivedRoutes. */
-    public ReceivedRoutes receivedRoutes() {
-        if (this.receivedRoutes == null) {
-            this.receivedRoutes = new ReceivedRoutesImpl(clientObject.getReceivedRoutes(), this);
-        }
-        return receivedRoutes;
-    }
-
-    /** @return Resource collection API of PeeringServiceCountries. */
-    public PeeringServiceCountries peeringServiceCountries() {
-        if (this.peeringServiceCountries == null) {
-            this.peeringServiceCountries =
-                new PeeringServiceCountriesImpl(clientObject.getPeeringServiceCountries(), this);
-        }
-        return peeringServiceCountries;
     }
 
     /** @return Resource collection API of PeeringServiceLocations. */
@@ -349,6 +304,15 @@ public final class PeeringManager {
                 new PeeringServiceLocationsImpl(clientObject.getPeeringServiceLocations(), this);
         }
         return peeringServiceLocations;
+    }
+
+    /** @return Resource collection API of PeeringServicePrefixes. */
+    public PeeringServicePrefixes peeringServicePrefixes() {
+        if (this.peeringServicePrefixes == null) {
+            this.peeringServicePrefixes =
+                new PeeringServicePrefixesImpl(clientObject.getPeeringServicePrefixes(), this);
+        }
+        return peeringServicePrefixes;
     }
 
     /** @return Resource collection API of Prefixes. */

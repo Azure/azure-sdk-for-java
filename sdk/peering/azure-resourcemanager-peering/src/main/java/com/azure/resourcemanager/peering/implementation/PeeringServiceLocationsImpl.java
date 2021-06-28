@@ -31,8 +31,8 @@ public final class PeeringServiceLocationsImpl implements PeeringServiceLocation
         return Utils.mapPage(inner, inner1 -> new PeeringServiceLocationImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<PeeringServiceLocation> list(String country, Context context) {
-        PagedIterable<PeeringServiceLocationInner> inner = this.serviceClient().list(country, context);
+    public PagedIterable<PeeringServiceLocation> list(Context context) {
+        PagedIterable<PeeringServiceLocationInner> inner = this.serviceClient().list(context);
         return Utils.mapPage(inner, inner1 -> new PeeringServiceLocationImpl(inner1, this.manager()));
     }
 

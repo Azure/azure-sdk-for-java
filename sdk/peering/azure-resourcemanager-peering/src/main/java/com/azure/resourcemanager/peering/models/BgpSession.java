@@ -29,13 +29,13 @@ public final class BgpSession {
     /*
      * The IPv4 session address on Microsoft's end.
      */
-    @JsonProperty(value = "microsoftSessionIPv4Address")
+    @JsonProperty(value = "microsoftSessionIPv4Address", access = JsonProperty.Access.WRITE_ONLY)
     private String microsoftSessionIPv4Address;
 
     /*
      * The IPv6 session address on Microsoft's end.
      */
-    @JsonProperty(value = "microsoftSessionIPv6Address")
+    @JsonProperty(value = "microsoftSessionIPv6Address", access = JsonProperty.Access.WRITE_ONLY)
     private String microsoftSessionIPv6Address;
 
     /*
@@ -130,34 +130,12 @@ public final class BgpSession {
     }
 
     /**
-     * Set the microsoftSessionIPv4Address property: The IPv4 session address on Microsoft's end.
-     *
-     * @param microsoftSessionIPv4Address the microsoftSessionIPv4Address value to set.
-     * @return the BgpSession object itself.
-     */
-    public BgpSession withMicrosoftSessionIPv4Address(String microsoftSessionIPv4Address) {
-        this.microsoftSessionIPv4Address = microsoftSessionIPv4Address;
-        return this;
-    }
-
-    /**
      * Get the microsoftSessionIPv6Address property: The IPv6 session address on Microsoft's end.
      *
      * @return the microsoftSessionIPv6Address value.
      */
     public String microsoftSessionIPv6Address() {
         return this.microsoftSessionIPv6Address;
-    }
-
-    /**
-     * Set the microsoftSessionIPv6Address property: The IPv6 session address on Microsoft's end.
-     *
-     * @param microsoftSessionIPv6Address the microsoftSessionIPv6Address value to set.
-     * @return the BgpSession object itself.
-     */
-    public BgpSession withMicrosoftSessionIPv6Address(String microsoftSessionIPv6Address) {
-        this.microsoftSessionIPv6Address = microsoftSessionIPv6Address;
-        return this;
     }
 
     /**

@@ -15,19 +15,19 @@ public final class CheckServiceProviderAvailabilityInput {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CheckServiceProviderAvailabilityInput.class);
 
     /*
-     * Gets or sets the peering service location.
+     * Gets or sets the PeeringServiceLocation
      */
     @JsonProperty(value = "peeringServiceLocation")
     private String peeringServiceLocation;
 
     /*
-     * Gets or sets the peering service provider.
+     * Gets or sets the PeeringServiceProvider
      */
     @JsonProperty(value = "peeringServiceProvider")
     private String peeringServiceProvider;
 
     /**
-     * Get the peeringServiceLocation property: Gets or sets the peering service location.
+     * Get the peeringServiceLocation property: Gets or sets the PeeringServiceLocation.
      *
      * @return the peeringServiceLocation value.
      */
@@ -36,7 +36,7 @@ public final class CheckServiceProviderAvailabilityInput {
     }
 
     /**
-     * Set the peeringServiceLocation property: Gets or sets the peering service location.
+     * Set the peeringServiceLocation property: Gets or sets the PeeringServiceLocation.
      *
      * @param peeringServiceLocation the peeringServiceLocation value to set.
      * @return the CheckServiceProviderAvailabilityInput object itself.
@@ -47,7 +47,7 @@ public final class CheckServiceProviderAvailabilityInput {
     }
 
     /**
-     * Get the peeringServiceProvider property: Gets or sets the peering service provider.
+     * Get the peeringServiceProvider property: Gets or sets the PeeringServiceProvider.
      *
      * @return the peeringServiceProvider value.
      */
@@ -56,7 +56,7 @@ public final class CheckServiceProviderAvailabilityInput {
     }
 
     /**
-     * Set the peeringServiceProvider property: Gets or sets the peering service provider.
+     * Set the peeringServiceProvider property: Gets or sets the PeeringServiceProvider.
      *
      * @param peeringServiceProvider the peeringServiceProvider value to set.
      * @return the CheckServiceProviderAvailabilityInput object itself.

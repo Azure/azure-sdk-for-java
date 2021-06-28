@@ -6,8 +6,6 @@ package com.azure.resourcemanager.peering.implementation;
 
 import com.azure.resourcemanager.peering.fluent.models.PeeringServiceProviderInner;
 import com.azure.resourcemanager.peering.models.PeeringServiceProvider;
-import java.util.Collections;
-import java.util.List;
 
 public final class PeeringServiceProviderImpl implements PeeringServiceProvider {
     private PeeringServiceProviderInner innerObject;
@@ -34,15 +32,6 @@ public final class PeeringServiceProviderImpl implements PeeringServiceProvider 
 
     public String serviceProviderName() {
         return this.innerModel().serviceProviderName();
-    }
-
-    public List<String> peeringLocations() {
-        List<String> inner = this.innerModel().peeringLocations();
-        if (inner != null) {
-            return Collections.unmodifiableList(inner);
-        } else {
-            return Collections.emptyList();
-        }
     }
 
     public PeeringServiceProviderInner innerModel() {

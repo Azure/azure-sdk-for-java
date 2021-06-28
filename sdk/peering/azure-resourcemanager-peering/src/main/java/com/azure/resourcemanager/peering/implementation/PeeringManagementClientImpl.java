@@ -21,21 +21,17 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.resourcemanager.peering.fluent.CdnPeeringPrefixesClient;
 import com.azure.resourcemanager.peering.fluent.LegacyPeeringsClient;
 import com.azure.resourcemanager.peering.fluent.OperationsClient;
 import com.azure.resourcemanager.peering.fluent.PeerAsnsClient;
 import com.azure.resourcemanager.peering.fluent.PeeringLocationsClient;
 import com.azure.resourcemanager.peering.fluent.PeeringManagementClient;
-import com.azure.resourcemanager.peering.fluent.PeeringServiceCountriesClient;
 import com.azure.resourcemanager.peering.fluent.PeeringServiceLocationsClient;
+import com.azure.resourcemanager.peering.fluent.PeeringServicePrefixesClient;
 import com.azure.resourcemanager.peering.fluent.PeeringServiceProvidersClient;
 import com.azure.resourcemanager.peering.fluent.PeeringServicesClient;
 import com.azure.resourcemanager.peering.fluent.PeeringsClient;
 import com.azure.resourcemanager.peering.fluent.PrefixesClient;
-import com.azure.resourcemanager.peering.fluent.ReceivedRoutesClient;
-import com.azure.resourcemanager.peering.fluent.RegisteredAsnsClient;
-import com.azure.resourcemanager.peering.fluent.RegisteredPrefixesClient;
 import com.azure.resourcemanager.peering.fluent.ResourceProvidersClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -124,18 +120,6 @@ public final class PeeringManagementClientImpl implements PeeringManagementClien
         return this.defaultPollInterval;
     }
 
-    /** The CdnPeeringPrefixesClient object to access its operations. */
-    private final CdnPeeringPrefixesClient cdnPeeringPrefixes;
-
-    /**
-     * Gets the CdnPeeringPrefixesClient object to access its operations.
-     *
-     * @return the CdnPeeringPrefixesClient object.
-     */
-    public CdnPeeringPrefixesClient getCdnPeeringPrefixes() {
-        return this.cdnPeeringPrefixes;
-    }
-
     /** The ResourceProvidersClient object to access its operations. */
     private final ResourceProvidersClient resourceProviders;
 
@@ -196,30 +180,6 @@ public final class PeeringManagementClientImpl implements PeeringManagementClien
         return this.peeringLocations;
     }
 
-    /** The RegisteredAsnsClient object to access its operations. */
-    private final RegisteredAsnsClient registeredAsns;
-
-    /**
-     * Gets the RegisteredAsnsClient object to access its operations.
-     *
-     * @return the RegisteredAsnsClient object.
-     */
-    public RegisteredAsnsClient getRegisteredAsns() {
-        return this.registeredAsns;
-    }
-
-    /** The RegisteredPrefixesClient object to access its operations. */
-    private final RegisteredPrefixesClient registeredPrefixes;
-
-    /**
-     * Gets the RegisteredPrefixesClient object to access its operations.
-     *
-     * @return the RegisteredPrefixesClient object.
-     */
-    public RegisteredPrefixesClient getRegisteredPrefixes() {
-        return this.registeredPrefixes;
-    }
-
     /** The PeeringsClient object to access its operations. */
     private final PeeringsClient peerings;
 
@@ -232,30 +192,6 @@ public final class PeeringManagementClientImpl implements PeeringManagementClien
         return this.peerings;
     }
 
-    /** The ReceivedRoutesClient object to access its operations. */
-    private final ReceivedRoutesClient receivedRoutes;
-
-    /**
-     * Gets the ReceivedRoutesClient object to access its operations.
-     *
-     * @return the ReceivedRoutesClient object.
-     */
-    public ReceivedRoutesClient getReceivedRoutes() {
-        return this.receivedRoutes;
-    }
-
-    /** The PeeringServiceCountriesClient object to access its operations. */
-    private final PeeringServiceCountriesClient peeringServiceCountries;
-
-    /**
-     * Gets the PeeringServiceCountriesClient object to access its operations.
-     *
-     * @return the PeeringServiceCountriesClient object.
-     */
-    public PeeringServiceCountriesClient getPeeringServiceCountries() {
-        return this.peeringServiceCountries;
-    }
-
     /** The PeeringServiceLocationsClient object to access its operations. */
     private final PeeringServiceLocationsClient peeringServiceLocations;
 
@@ -266,6 +202,18 @@ public final class PeeringManagementClientImpl implements PeeringManagementClien
      */
     public PeeringServiceLocationsClient getPeeringServiceLocations() {
         return this.peeringServiceLocations;
+    }
+
+    /** The PeeringServicePrefixesClient object to access its operations. */
+    private final PeeringServicePrefixesClient peeringServicePrefixes;
+
+    /**
+     * Gets the PeeringServicePrefixesClient object to access its operations.
+     *
+     * @return the PeeringServicePrefixesClient object.
+     */
+    public PeeringServicePrefixesClient getPeeringServicePrefixes() {
+        return this.peeringServicePrefixes;
     }
 
     /** The PrefixesClient object to access its operations. */
@@ -326,19 +274,15 @@ public final class PeeringManagementClientImpl implements PeeringManagementClien
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-01-01";
-        this.cdnPeeringPrefixes = new CdnPeeringPrefixesClientImpl(this);
+        this.apiVersion = "2019-08-01-preview";
         this.resourceProviders = new ResourceProvidersClientImpl(this);
         this.legacyPeerings = new LegacyPeeringsClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.peerAsns = new PeerAsnsClientImpl(this);
         this.peeringLocations = new PeeringLocationsClientImpl(this);
-        this.registeredAsns = new RegisteredAsnsClientImpl(this);
-        this.registeredPrefixes = new RegisteredPrefixesClientImpl(this);
         this.peerings = new PeeringsClientImpl(this);
-        this.receivedRoutes = new ReceivedRoutesClientImpl(this);
-        this.peeringServiceCountries = new PeeringServiceCountriesClientImpl(this);
         this.peeringServiceLocations = new PeeringServiceLocationsClientImpl(this);
+        this.peeringServicePrefixes = new PeeringServicePrefixesClientImpl(this);
         this.prefixes = new PrefixesClientImpl(this);
         this.peeringServiceProviders = new PeeringServiceProvidersClientImpl(this);
         this.peeringServices = new PeeringServicesClientImpl(this);

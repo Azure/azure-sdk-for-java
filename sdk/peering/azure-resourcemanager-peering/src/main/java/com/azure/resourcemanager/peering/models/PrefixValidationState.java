@@ -25,9 +25,6 @@ public final class PrefixValidationState extends ExpandableStringEnum<PrefixVali
     /** Static value Pending for PrefixValidationState. */
     public static final PrefixValidationState PENDING = fromString("Pending");
 
-    /** Static value Warning for PrefixValidationState. */
-    public static final PrefixValidationState WARNING = fromString("Warning");
-
     /** Static value Unknown for PrefixValidationState. */
     public static final PrefixValidationState UNKNOWN = fromString("Unknown");
 
