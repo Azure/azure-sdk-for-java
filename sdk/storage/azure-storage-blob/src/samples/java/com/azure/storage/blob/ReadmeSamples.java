@@ -2,7 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.storage.blob;
 
-import com.azure.core.http.RequestConditions;
+import com.azure.core.http.ProxyOptions;
+import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
@@ -11,12 +12,23 @@ import com.azure.storage.blob.models.BlobCopyInfo;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.options.BlobParallelUploadOptions;
+import com.azure.storage.blob.sas.BlobContainerSasPermission;
+import com.azure.storage.blob.sas.BlobSasPermission;
+import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
+import com.azure.storage.blob.specialized.BlobInputStream;
+import com.azure.storage.blob.specialized.BlobOutputStream;
 import com.azure.storage.blob.specialized.BlockBlobClient;
+import com.azure.storage.common.sas.AccountSasPermission;
+import com.azure.storage.common.sas.AccountSasResourceType;
+import com.azure.storage.common.sas.AccountSasService;
+import com.azure.storage.common.sas.AccountSasSignatureValues;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.time.Duration;
+import java.time.OffsetDateTime;
 
 /**
  * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS
@@ -165,8 +177,8 @@ public class ReadmeSamples {
 
     public void uploadIfNotExists() {
         /*
-       Rather than use an if block conditioned on an exists call, there are three ways to upload-if-not-exists in one
-       line.
+       Rather than use an if block conditioned on an exists call, there are three ways to upload-if-not-exists using one
+       network call instead of two.
          */
         // 1. The minimal upload method defaults to no overwriting
         String dataSample = "samples";
@@ -183,7 +195,7 @@ public class ReadmeSamples {
             e.printStackTrace();
         }
 
-        // 3. If the max overload is needed, access conditions must be used to prevent overwriting.
+        // 3. If the max overload is needed, access conditions must be used to prevent overwriting
         try (ByteArrayInputStream dataStream = new ByteArrayInputStream(dataSample.getBytes())) {
             BlobParallelUploadOptions options =
                 new BlobParallelUploadOptions(dataStream, dataSample.length());
@@ -198,7 +210,7 @@ public class ReadmeSamples {
     public void overwriteBlob() {
         /*
        Rather than use an if block conditioned on an exists call, there are three ways to upload-if-exists in one
-       line.
+       network call instead of two.
          */
         String dataSample = "samples";
 
@@ -228,7 +240,6 @@ public class ReadmeSamples {
         try (ByteArrayInputStream dataStream = new ByteArrayInputStream(dataSample.getBytes())) {
             BlobParallelUploadOptions options =
                 new BlobParallelUploadOptions(dataStream, dataSample.length());
-
             // Setting IfMatch="*" ensures the upload will succeed only if there is already a blob at the destination.
             options.setRequestConditions(new BlobRequestConditions().setIfMatch("*"));
             blobClient.uploadWithResponse(options, null, Context.NONE);
@@ -238,14 +249,22 @@ public class ReadmeSamples {
     }
 
     public void setProxy() {
-
+        ProxyOptions options = new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 888));
+        BlobServiceClient client = new BlobServiceClientBuilder()
+            .httpClient(new NettyAsyncHttpClientBuilder().proxy(options).build())
+            .buildClient();
     }
 
     public void openBlobInputStream() {
         /*
         Opening a blob input stream allows you to read from a blob through a normal stream interface. It is also
         markable.
-         */
+        */
+        try (BlobInputStream blobIS = blobClient.openInputStream()) {
+            blobIS.read();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void openBlobOutputStream() {
@@ -253,11 +272,40 @@ public class ReadmeSamples {
         Opening a blob input stream allows you to write to a blob through a normal stream interface. It will not be
         committed until the stream is closed.
         This option is convenient when the length of the data is unknown.
+        This can only be done for block blobs. If the target blob already exists as another type of blob, it will fail.
          */
+        try (BlobOutputStream blobOS = blobClient.getBlockBlobClient().getBlobOutputStream()) {
+            blobOS.write(new byte[0]);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void generateSas() {
+        /*
+        Generate an account sas. Other samples in this file will demonstrate how to create a client with the sas token.
+         */
+        // Configure the sas parameters. This is the minimal set.
+        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
+        AccountSasPermission accountSasPermission = new AccountSasPermission().setReadPermission(true);
+        AccountSasService services = new AccountSasService().setBlobAccess(true);
+        AccountSasResourceType resourceTypes = new AccountSasResourceType().setObject(true);
 
+        // Generate the account sas.
+        AccountSasSignatureValues accountSasValues =
+            new AccountSasSignatureValues(expiryTime, accountSasPermission, services, resourceTypes);
+        String sasToken = blobServiceClient.generateAccountSas(accountSasValues);
+
+        // Generate a sas using a container client
+        BlobContainerSasPermission containerSasPermission = new BlobContainerSasPermission().setCreatePermission(true);
+        BlobServiceSasSignatureValues serviceSasValues =
+            new BlobServiceSasSignatureValues(expiryTime, containerSasPermission);
+        blobContainerClient.generateSas(serviceSasValues);
+
+        // Generate a sas using a blob client
+        BlobSasPermission blobSasPermission =  new BlobSasPermission().setReadPermission(true);
+        serviceSasValues = new BlobServiceSasSignatureValues(expiryTime, blobSasPermission);
+        blobClient.generateSas(serviceSasValues);
     }
 }
 
