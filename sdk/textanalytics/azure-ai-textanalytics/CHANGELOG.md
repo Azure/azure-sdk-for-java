@@ -49,6 +49,7 @@
   - `RecognizePiiEntitiesOption` changed to new type `RecognizePiiEntitiesAction`.
   - `RecognizeLinkedEntitiesOption` changed to new type `RecognizeLinkedEntitiesAction`.
   - `AnalyzeSentimentOption` changed to new type `AnalyzeSentimentAction`.
+- Changed enum types `EntityCertainty` and `EntityConditionality` to `ExpandableStringEnum` types.
 
 ## 5.1.0-beta.7 (2021-05-19)
 ### Features Added
