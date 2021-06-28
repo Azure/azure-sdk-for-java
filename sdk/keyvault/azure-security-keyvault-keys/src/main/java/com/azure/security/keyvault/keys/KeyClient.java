@@ -895,12 +895,12 @@ public final class KeyClient {
      *
      * {@codesnippet com.azure.security.keyvault.keys.KeyClient.getRandomBytes#int}
      *
-     * @param amount The requested number of random bytes.
+     * @param count The requested number of random bytes.
      *
      * @return The requested number of bytes containing random values from a managed HSM.
      */
-    public RandomBytes getRandomBytes(int amount) {
-        return client.getRandomBytes(amount).block();
+    public RandomBytes getRandomBytes(int count) {
+        return client.getRandomBytes(count).block();
     }
 
     /**
@@ -912,12 +912,12 @@ public final class KeyClient {
      *
      * {@codesnippet com.azure.security.keyvault.keys.KeyClient.getRandomBytesWithResponse#int-Context}
      *
-     * @param amount The requested number of random bytes.
+     * @param count The requested number of random bytes.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return The requested number of bytes containing random values from a managed HSM.
      */
-    public Response<RandomBytes> getRandomBytesWithResponse(int amount, Context context) {
-        return client.getRandomBytesWithResponse(amount, context).block();
+    public Response<RandomBytes> getRandomBytesWithResponse(int count, Context context) {
+        return client.getRandomBytesWithResponse(count, context).block();
     }
 }

@@ -1377,14 +1377,14 @@ public final class KeyAsyncClient {
      *
      * {@codesnippet com.azure.security.keyvault.keys.KeyAsyncClient.getRandomBytes#int}
      *
-     * @param amount The requested number of random bytes.
+     * @param count The requested number of random bytes.
      *
      * @return The requested number of bytes containing random values from a managed HSM.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RandomBytes> getRandomBytes(int amount) {
+    public Mono<RandomBytes> getRandomBytes(int count) {
         try {
-            return withContext(context -> getRandomBytesWithResponse(amount, context)
+            return withContext(context -> getRandomBytesWithResponse(count, context)
                 .flatMap(FluxUtil::toMono));
         } catch (RuntimeException e) {
             return monoError(logger, e);
@@ -1400,14 +1400,14 @@ public final class KeyAsyncClient {
      *
      * {@codesnippet com.azure.security.keyvault.keys.KeyAsyncClient.getRandomBytesWithResponse#int}
      *
-     * @param amount The requested number of random bytes.
+     * @param count The requested number of random bytes.
      *
      * @return The requested number of bytes containing random values from a managed HSM.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RandomBytes>> getRandomBytesWithResponse(int amount) {
+    public Mono<Response<RandomBytes>> getRandomBytesWithResponse(int count) {
         try {
-            return withContext(context -> getRandomBytesWithResponse(amount, context));
+            return withContext(context -> getRandomBytesWithResponse(count, context));
         } catch (RuntimeException e) {
             return monoError(logger, e);
         }
@@ -1418,7 +1418,7 @@ public final class KeyAsyncClient {
             return service.getRandomBytes(vaultUrl, apiVersion, null, "application/json",
                 context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
                 .doOnRequest(ignored -> logger.verbose("Getting {} random bytes.", count))
-                .doOnSuccess(response -> logger.verbose("Got {} random bytes."))
+                .doOnSuccess(response -> logger.verbose("Got {} random bytes.", count))
                 .doOnError(error -> logger.warning("Failed to get random bytes - {}", error));
         } catch (RuntimeException e) {
             return monoError(logger, e);
