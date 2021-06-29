@@ -10,7 +10,6 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
-import com.azure.core.test.implementation.ImplUtils;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -47,7 +46,7 @@ public class RegistryArtifactAsyncIntegrationTests extends ContainerRegistryClie
     @BeforeEach
     void beforeEach() {
         TestUtils.importImage(
-            ImplUtils.getTestMode(),
+            getTestMode(),
             HELLO_WORLD_REPOSITORY_NAME,
             Arrays.asList(
                 LATEST_TAG_NAME,

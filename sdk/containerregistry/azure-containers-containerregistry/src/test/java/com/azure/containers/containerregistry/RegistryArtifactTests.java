@@ -9,6 +9,7 @@ import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
@@ -27,7 +28,6 @@ import static com.azure.containers.containerregistry.TestUtils.V2_TAG_NAME;
 import static com.azure.containers.containerregistry.TestUtils.V3_TAG_NAME;
 import static com.azure.containers.containerregistry.TestUtils.V4_TAG_NAME;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Execution(ExecutionMode.SAME_THREAD)
 public class RegistryArtifactTests extends ContainerRegistryClientsTestBase {
@@ -103,7 +103,7 @@ public class RegistryArtifactTests extends ContainerRegistryClientsTestBase {
                     .onErrorResume(err -> Mono.just(false))));
 
         StepVerifier.create(delete)
-            .assertNext(res -> assertTrue(res))
+            .assertNext(Assertions::assertTrue)
             .verifyComplete();
     }
 
@@ -122,7 +122,7 @@ public class RegistryArtifactTests extends ContainerRegistryClientsTestBase {
                     .onErrorResume(err -> Mono.just(false))));
 
         StepVerifier.create(delete)
-            .assertNext(res -> assertTrue(res))
+            .assertNext(Assertions::assertTrue)
             .verifyComplete();
     }
 
@@ -141,7 +141,7 @@ public class RegistryArtifactTests extends ContainerRegistryClientsTestBase {
                     .onErrorResume(err -> Mono.just(false))));
 
         StepVerifier.create(delete)
-            .assertNext(res -> assertTrue(res))
+            .assertNext(Assertions::assertTrue)
             .verifyComplete();
     }
 
@@ -159,7 +159,7 @@ public class RegistryArtifactTests extends ContainerRegistryClientsTestBase {
                     .onErrorResume(err -> Mono.just(false))));
 
         StepVerifier.create(delete)
-            .assertNext(res -> assertTrue(res))
+            .assertNext(Assertions::assertTrue)
             .verifyComplete();
     }
 
@@ -195,7 +195,7 @@ public class RegistryArtifactTests extends ContainerRegistryClientsTestBase {
         digest = V1_TAG_NAME;
 
         StepVerifier.create(asyncClient.updateManifestProperties(manifestWriteableProperties))
-            .assertNext(res -> validateManifestContentProperties(res))
+            .assertNext(this::validateManifestContentProperties)
             .verifyComplete();
 
         StepVerifier.create(asyncClient.updateManifestPropertiesWithResponse(manifestWriteableProperties))
@@ -217,7 +217,7 @@ public class RegistryArtifactTests extends ContainerRegistryClientsTestBase {
         reupdateTagProperties = true;
 
         StepVerifier.create(asyncClient.updateTagProperties(V2_TAG_NAME, tagWriteableProperties))
-            .assertNext(res -> validateTagContentProperties(res))
+            .assertNext(this::validateTagContentProperties)
             .verifyComplete();
 
         StepVerifier.create(asyncClient.updateTagPropertiesWithResponse(V2_TAG_NAME, tagWriteableProperties))

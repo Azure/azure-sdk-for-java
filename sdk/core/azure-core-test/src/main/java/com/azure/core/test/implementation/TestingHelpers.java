@@ -12,7 +12,7 @@ import java.util.Locale;
 /**
  * Implementation utility class.
  */
-public final class ImplUtils {
+public final class TestingHelpers {
     public static final String AZURE_TEST_MODE = "AZURE_TEST_MODE";
 
     /**
@@ -21,7 +21,7 @@ public final class ImplUtils {
      * @return The {@link TestMode} being used to run tests.
      */
     public static TestMode getTestMode() {
-        final ClientLogger logger = new ClientLogger(ImplUtils.class);
+        final ClientLogger logger = new ClientLogger(TestingHelpers.class);
         final String azureTestMode = Configuration.getGlobalConfiguration().get(AZURE_TEST_MODE);
 
         if (azureTestMode != null) {
