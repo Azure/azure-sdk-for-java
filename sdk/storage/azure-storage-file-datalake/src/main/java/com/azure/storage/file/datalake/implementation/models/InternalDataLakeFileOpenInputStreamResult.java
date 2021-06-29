@@ -6,7 +6,6 @@ package com.azure.storage.file.datalake.implementation.models;
 import com.azure.storage.file.datalake.models.DataLakeFileOpenInputStreamResult;
 import com.azure.storage.file.datalake.models.PathProperties;
 
-import java.io.IOException;
 import java.io.InputStream;
 
 public class InternalDataLakeFileOpenInputStreamResult implements DataLakeFileOpenInputStreamResult {
@@ -27,10 +26,5 @@ public class InternalDataLakeFileOpenInputStreamResult implements DataLakeFileOp
     @Override
     public PathProperties getProperties() {
         return properties;
-    }
-
-    @Override
-    public void close() throws IOException {
-        inputStream.close();
     }
 }
