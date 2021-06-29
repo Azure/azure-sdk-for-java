@@ -3,7 +3,6 @@
 
 package com.azure.storage.file.datalake.models;
 
-import java.io.Closeable;
 import java.io.InputStream;
 
 /**
