@@ -392,9 +392,9 @@ public abstract class KeyClientTestBase extends TestBase {
     }
 
     void getRandomBytesRunner(Consumer<Integer> testRunner) {
-        int amountOfBytes = 12;
+        int count = 12;
 
-        testRunner.accept(amountOfBytes);
+        testRunner.accept(count);
     }
 
     String generateResourceId(String suffix) {

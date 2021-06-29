@@ -3,11 +3,14 @@
 package com.azure.security.keyvault.keys.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.Base64Url;
-import com.azure.core.util.CoreUtils;
 import com.azure.security.keyvault.keys.KeyAsyncClient;
 import com.azure.security.keyvault.keys.KeyClient;
+import com.azure.security.keyvault.keys.implementation.Base64UrlJsonDeserializer;
+import com.azure.security.keyvault.keys.implementation.Base64UrlJsonSerializer;
+import com.azure.security.keyvault.keys.implementation.ByteExtensions;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 /**
  * A class containing random bytes obtained by calling {@link KeyClient#getRandomBytes(int)} or
@@ -19,7 +22,9 @@ public class RandomBytes {
      * The bytes encoded as a base64url string.
      */
     @JsonProperty(value = "value")
-    private Base64Url bytes;
+    @JsonSerialize(using = Base64UrlJsonSerializer.class)
+    @JsonDeserialize(using = Base64UrlJsonDeserializer.class)
+    private byte[] bytes;
 
     /**
      * Get the bytes encoded as a base64url string.
@@ -27,11 +32,7 @@ public class RandomBytes {
      * @return The bytes encoded as a base64url string.
      */
     public byte[] getBytes() {
-        if (this.bytes == null) {
-            return null;
-        }
-
-        return this.bytes.decodedBytes();
+        return ByteExtensions.clone(this.bytes);
     }
 
     /**
@@ -41,11 +42,7 @@ public class RandomBytes {
      * @return The updated {@link RandomBytes} object.
      */
     public RandomBytes setValue(byte[] bytes) {
-        if (bytes == null) {
-            this.bytes = null;
-        } else {
-            this.bytes = Base64Url.encode(CoreUtils.clone(bytes));
-        }
+        this.bytes = ByteExtensions.clone(bytes);
 
         return this;
     }

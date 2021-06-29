@@ -24,7 +24,7 @@ public class KeyClientManagedHsmTest extends KeyClientTest {
 
     @Override
     protected void beforeTest() {
-        Assumptions.assumeTrue(isManagedHsmTest && getTestMode() != TestMode.PLAYBACK);
+        Assumptions.assumeTrue(isManagedHsmTest || getTestMode() == TestMode.PLAYBACK);
 
         super.beforeTest();
     }
@@ -38,6 +38,7 @@ public class KeyClientManagedHsmTest extends KeyClientTest {
         createKeyClient(httpClient, serviceVersion);
         createRsaKeyWithPublicExponentRunner((createRsaKeyOptions) -> {
             KeyVaultKey rsaKey = client.createRsaKey(createRsaKeyOptions);
+
             assertEquals(createRsaKeyOptions.getName(), rsaKey.getName());
             assertEquals(KeyType.RSA_HSM, rsaKey.getKey().getKeyType());
             assertEquals(createRsaKeyOptions.getExpiresOn(), rsaKey.getProperties().getExpiresOn());
@@ -74,10 +75,10 @@ public class KeyClientManagedHsmTest extends KeyClientTest {
     @MethodSource("getTestParameters")
     public void getRandomBytes(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         createKeyClient(httpClient, serviceVersion);
-        getRandomBytesRunner((amountOfBytes) -> {
-            RandomBytes randomBytes = client.getRandomBytes(amountOfBytes);
+        getRandomBytesRunner((count) -> {
+            RandomBytes randomBytes = client.getRandomBytes(count);
 
-            assertEquals(amountOfBytes, randomBytes.getBytes().length);
+            assertEquals(count, randomBytes.getBytes().length);
         });
     }
 }

@@ -1,20 +1,20 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.security.keyvault.keys.implementation;
+package com.azure.security.keyvault.keys.implementation.models;
 
 import com.azure.core.http.rest.Page;
 import com.azure.core.util.IterableStream;
-import com.azure.security.keyvault.keys.models.KeyProperties;
+import com.azure.security.keyvault.keys.models.DeletedKey;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
 /**
- * A page of Azure App Configuration {@link KeyProperties} resources and a link to get the next page of
+ * A page of Deleted Secret {@link DeletedKey} resources and a link to get the next page of
  * resources, if any.
  */
-public final class KeyPropertiesPage implements Page<KeyProperties> {
+public final class DeletedKeyPage implements Page<DeletedKey> {
 
     /**
      * The link to the next page.
@@ -26,7 +26,7 @@ public final class KeyPropertiesPage implements Page<KeyProperties> {
      * The list of items.
      */
     @JsonProperty("value")
-    private List<KeyProperties> items;
+    private List<DeletedKey> items;
 
     /**
      * Gets the link to the next page. Or {@code null} if there are no more resources to fetch.
@@ -39,13 +39,12 @@ public final class KeyPropertiesPage implements Page<KeyProperties> {
     }
 
     /**
-     * Gets the iterable stream of {@link KeyProperties KeyProperties} on this page.
+     * Gets the iterable stream of {@link DeletedKey deletedSecrets} on this page.
      *
      * @return The iterable stream of items in {@link List}.
      */
     @Override
-    public IterableStream<KeyProperties> getElements() {
+    public IterableStream<DeletedKey> getElements() {
         return IterableStream.of(items);
     }
 }
-

@@ -3,11 +3,9 @@
 package com.azure.security.keyvault.keys.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.Base64Url;
-import com.azure.core.util.CoreUtils;
 import com.azure.security.keyvault.keys.KeyAsyncClient;
 import com.azure.security.keyvault.keys.KeyClient;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.security.keyvault.keys.implementation.ByteExtensions;
 
 /**
  * A class containing random bytes obtained by calling {@link KeyClient#getRandomBytes(int)} or
@@ -18,8 +16,7 @@ public class RandomBytes {
     /*
      * The bytes encoded as a base64url string.
      */
-    @JsonProperty(value = "value")
-    private final Base64Url bytes;
+    private final byte[] bytes;
 
     /**
      * Creates and instance of {@link RandomBytes}.
@@ -27,11 +24,7 @@ public class RandomBytes {
      * @param bytes The bytes.
      */
     public RandomBytes(byte[] bytes) {
-        if (bytes == null) {
-            this.bytes = null;
-        } else {
-            this.bytes = Base64Url.encode(CoreUtils.clone(bytes));
-        }
+        this.bytes = ByteExtensions.clone(bytes);
     }
 
     /**
@@ -40,10 +33,6 @@ public class RandomBytes {
      * @return The bytes encoded as a base64url string.
      */
     public byte[] getBytes() {
-        if (this.bytes == null) {
-            return null;
-        }
-
-        return this.bytes.decodedBytes();
+        return ByteExtensions.clone(this.bytes);
     }
 }
