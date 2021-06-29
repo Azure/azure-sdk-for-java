@@ -75,13 +75,228 @@ public final class FilesImpl {
     @Host("{url}")
     @ServiceInterface(name = "AzureFileStorageFile")
     public interface FilesService {
-        @Put("/{shareName}/{filePath}")
+        @Put("/{shareName}/{directory}/{fileName}")
+        @ExpectedResponses({200})
+        Mono<FilesSetMetadataResponse> setMetadata(
+                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+                        @HostParam("url")
+                        String url,
+                @PathParam("shareName") String shareName,
+                @PathParam("directory") String directory,
+                @PathParam("fileName") String fileName,
+                @QueryParam("comp") String comp,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-meta-") Map<String, String> metadata,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-lease-id") String leaseId,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Put("/{shareName}/{directory}/{fileName}")
         @ExpectedResponses({201})
+        Mono<FilesAcquireLeaseResponse> acquireLease(
+                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+                        @HostParam("url")
+                        String url,
+                @PathParam("shareName") String shareName,
+                @PathParam("directory") String directory,
+                @PathParam("fileName") String fileName,
+                @QueryParam("comp") String comp,
+                @HeaderParam("x-ms-lease-action") String action,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-lease-duration") Integer duration,
+                @HeaderParam("x-ms-proposed-lease-id") String proposedLeaseId,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Put("/{shareName}/{directory}/{fileName}")
+        @ExpectedResponses({200})
+        Mono<FilesReleaseLeaseResponse> releaseLease(
+                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+                        @HostParam("url")
+                        String url,
+                @PathParam("shareName") String shareName,
+                @PathParam("directory") String directory,
+                @PathParam("fileName") String fileName,
+                @QueryParam("comp") String comp,
+                @HeaderParam("x-ms-lease-action") String action,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-lease-id") String leaseId,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Put("/{shareName}/{directory}/{fileName}")
+        @ExpectedResponses({200})
+        Mono<FilesChangeLeaseResponse> changeLease(
+                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+                        @HostParam("url")
+                        String url,
+                @PathParam("shareName") String shareName,
+                @PathParam("directory") String directory,
+                @PathParam("fileName") String fileName,
+                @QueryParam("comp") String comp,
+                @HeaderParam("x-ms-lease-action") String action,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-lease-id") String leaseId,
+                @HeaderParam("x-ms-proposed-lease-id") String proposedLeaseId,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Put("/{shareName}/{directory}/{fileName}")
+        @ExpectedResponses({202})
+        Mono<FilesBreakLeaseResponse> breakLease(
+                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+                        @HostParam("url")
+                        String url,
+                @PathParam("shareName") String shareName,
+                @PathParam("directory") String directory,
+                @PathParam("fileName") String fileName,
+                @QueryParam("comp") String comp,
+                @HeaderParam("x-ms-lease-action") String action,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-lease-id") String leaseId,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Put("/{shareName}/{directory}/{fileName}")
+        @ExpectedResponses({201})
+        Mono<FilesUploadRangeFromURLResponse> uploadRangeFromURL(
+                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+                        @HostParam("url")
+                        String url,
+                @PathParam("shareName") String shareName,
+                @PathParam("directory") String directory,
+                @PathParam("fileName") String fileName,
+                @QueryParam("comp") String comp,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-range") String range,
+                @HeaderParam("x-ms-copy-source") String copySource,
+                @HeaderParam("x-ms-source-range") String sourceRange,
+                @HeaderParam("x-ms-write") String fileRangeWriteFromUrl,
+                @HeaderParam("Content-Length") long contentLength,
+                @HeaderParam("x-ms-source-content-crc64") String sourceContentCrc64,
+                @HeaderParam("x-ms-source-if-match-crc64") String sourceIfMatchCrc64,
+                @HeaderParam("x-ms-source-if-none-match-crc64") String sourceIfNoneMatchCrc64,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-lease-id") String leaseId,
+                @HeaderParam("x-ms-copy-source-authorization") String copySourceAuthorization,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("/{shareName}/{directory}/{fileName}")
+        @ExpectedResponses({200})
+        Mono<FilesGetRangeListResponse> getRangeList(
+                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+                        @HostParam("url")
+                        String url,
+                @PathParam("shareName") String shareName,
+                @PathParam("directory") String directory,
+                @PathParam("fileName") String fileName,
+                @QueryParam("comp") String comp,
+                @QueryParam("sharesnapshot") String sharesnapshot,
+                @QueryParam("prevsharesnapshot") String prevsharesnapshot,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-range") String range,
+                @HeaderParam("x-ms-lease-id") String leaseId,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Put("/{shareName}/{directory}/{fileName}")
+        @ExpectedResponses({202})
+        Mono<FilesStartCopyResponse> startCopy(
+                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+                        @HostParam("url")
+                        String url,
+                @PathParam("shareName") String shareName,
+                @PathParam("directory") String directory,
+                @PathParam("fileName") String fileName,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-meta-") Map<String, String> metadata,
+                @HeaderParam("x-ms-copy-source") String copySource,
+                @HeaderParam("x-ms-file-permission") String filePermission,
+                @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
+                @HeaderParam("x-ms-file-permission-copy-mode") PermissionCopyModeType filePermissionCopyMode,
+                @HeaderParam("x-ms-file-copy-ignore-read-only") Boolean ignoreReadOnly,
+                @HeaderParam("x-ms-file-attributes") String fileAttributes,
+                @HeaderParam("x-ms-file-creation-time") String fileCreationTime,
+                @HeaderParam("x-ms-file-last-write-time") String fileLastWriteTime,
+                @HeaderParam("x-ms-file-copy-set-archive") Boolean setArchiveAttribute,
+                @HeaderParam("x-ms-lease-id") String leaseId,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Put("/{shareName}/{directory}/{fileName}")
+        @ExpectedResponses({204})
+        Mono<FilesAbortCopyResponse> abortCopy(
+                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+                        @HostParam("url")
+                        String url,
+                @PathParam("shareName") String shareName,
+                @PathParam("directory") String directory,
+                @PathParam("fileName") String fileName,
+                @QueryParam("comp") String comp,
+                @QueryParam("copyid") String copyId,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-copy-action") String copyActionAbortConstant,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-lease-id") String leaseId,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("/{shareName}/{directory}/{fileName}")
+        @ExpectedResponses({200})
+        Mono<FilesListHandlesResponse> listHandles(
+                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+                        @HostParam("url")
+                        String url,
+                @PathParam("shareName") String shareName,
+                @PathParam("directory") String directory,
+                @PathParam("fileName") String fileName,
+                @QueryParam("comp") String comp,
+                @QueryParam("marker") String marker,
+                @QueryParam("maxresults") Integer maxresults,
+                @QueryParam("timeout") Integer timeout,
+                @QueryParam("sharesnapshot") String sharesnapshot,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Put("/{shareName}/{directory}/{fileName}")
+        @ExpectedResponses({200})
+        Mono<FilesForceCloseHandlesResponse> forceCloseHandles(
+                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+                        @HostParam("url")
+                        String url,
+                @PathParam("shareName") String shareName,
+                @PathParam("directory") String directory,
+                @PathParam("fileName") String fileName,
+                @QueryParam("comp") String comp,
+                @QueryParam("timeout") Integer timeout,
+                @QueryParam("marker") String marker,
+                @QueryParam("sharesnapshot") String sharesnapshot,
+                @HeaderParam("x-ms-handle-id") String handleId,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Put("/{shareName}/{filePath}")
         @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+        @ExpectedResponses({201})
         Mono<FilesCreateResponse> create(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
-                @PathParam("filePath") String filePath,
+                @PathParam("directory") String directory,
+                @PathParam("fileName") String fileName,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-content-length") long fileContentLength,
@@ -104,11 +319,13 @@ public final class FilesImpl {
 
         @Get("/{shareName}/{filePath}")
         @ExpectedResponses({200, 206})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<StreamResponse> download(
-                @HostParam("url") String url,
+                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+                        @HostParam("url")
+                        String url,
                 @PathParam("shareName") String shareName,
-                @PathParam("filePath") String filePath,
+                @PathParam("directory") String directory,
+                @PathParam("fileName") String fileName,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-range") String range,
@@ -119,11 +336,13 @@ public final class FilesImpl {
 
         @Head("/{shareName}/{filePath}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<FilesGetPropertiesResponse> getProperties(
-                @HostParam("url") String url,
+                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+                        @HostParam("url")
+                        String url,
                 @PathParam("shareName") String shareName,
-                @PathParam("filePath") String filePath,
+                @PathParam("directory") String directory,
+                @PathParam("fileName") String fileName,
                 @QueryParam("sharesnapshot") String sharesnapshot,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
@@ -133,11 +352,13 @@ public final class FilesImpl {
 
         @Delete("/{shareName}/{filePath}")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<FilesDeleteResponse> delete(
-                @HostParam("url") String url,
+                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+                        @HostParam("url")
+                        String url,
                 @PathParam("shareName") String shareName,
-                @PathParam("filePath") String filePath,
+                @PathParam("directory") String directory,
+                @PathParam("fileName") String fileName,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-lease-id") String leaseId,
@@ -146,12 +367,14 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{filePath}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<FilesSetHttpHeadersResponse> setHttpHeaders(
-                @HostParam("url") String url,
-                @QueryParam("comp") String comp,
+                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+                        @HostParam("url")
+                        String url,
                 @PathParam("shareName") String shareName,
-                @PathParam("filePath") String filePath,
+                @PathParam("directory") String directory,
+                @PathParam("fileName") String fileName,
+                @QueryParam("comp") String comp,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-content-length") Long fileContentLength,
@@ -171,28 +394,15 @@ public final class FilesImpl {
                 Context context);
 
         @Put("/{shareName}/{filePath}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
-        Mono<FilesSetMetadataResponse> setMetadata(
-                @HostParam("url") String url,
-                @QueryParam("comp") String comp,
-                @PathParam("shareName") String shareName,
-                @PathParam("filePath") String filePath,
-                @QueryParam("timeout") Integer timeout,
-                @HeaderParam("x-ms-meta-") Map<String, String> metadata,
-                @HeaderParam("x-ms-version") String version,
-                @HeaderParam("x-ms-lease-id") String leaseId,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
-        @Put("/{shareName}/{filePath}")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<FilesUploadRangeResponse> uploadRange(
-                @HostParam("url") String url,
-                @QueryParam("comp") String comp,
+                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+                        @HostParam("url")
+                        String url,
                 @PathParam("shareName") String shareName,
-                @PathParam("filePath") String filePath,
+                @PathParam("directory") String directory,
+                @PathParam("fileName") String fileName,
+                @QueryParam("comp") String comp,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-range") String range,
                 @HeaderParam("x-ms-write") ShareFileRangeWriteType fileRangeWrite,
@@ -203,190 +413,622 @@ public final class FilesImpl {
                 @BodyParam("application/octet-stream") Flux<ByteBuffer> optionalbody,
                 @HeaderParam("Accept") String accept,
                 Context context);
+    }
 
-        @Put("/{shareName}/{filePath}")
-        @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
-        Mono<FilesUploadRangeFromURLResponse> uploadRangeFromURL(
-                @HostParam("url") String url,
-                @QueryParam("comp") String comp,
-                @PathParam("shareName") String shareName,
-                @PathParam("filePath") String filePath,
-                @QueryParam("timeout") Integer timeout,
-                @HeaderParam("x-ms-range") String range,
-                @HeaderParam("x-ms-copy-source") String copySource,
-                @HeaderParam("x-ms-source-range") String sourceRange,
-                @HeaderParam("x-ms-write") String fileRangeWriteFromUrl,
-                @HeaderParam("Content-Length") long contentLength,
-                @HeaderParam("x-ms-source-content-crc64") String sourceContentCrc64,
-                @HeaderParam("x-ms-source-if-match-crc64") String sourceIfMatchCrc64,
-                @HeaderParam("x-ms-source-if-none-match-crc64") String sourceIfNoneMatchCrc64,
-                @HeaderParam("x-ms-version") String version,
-                @HeaderParam("x-ms-lease-id") String leaseId,
-                @HeaderParam("x-ms-copy-source-authorization") String copySourceAuthorization,
-                @HeaderParam("Accept") String accept,
-                Context context);
+    /**
+     * Updates user-defined metadata for the specified file.
+     *
+     * @param shareName The name of the target share.
+     * @param directory The path of the target directory.
+     * @param fileName The path of the target file.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     *     Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param metadata A name-value pair to associate with a file storage object.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<FilesSetMetadataResponse> setMetadataWithResponseAsync(
+            String shareName,
+            String directory,
+            String fileName,
+            Integer timeout,
+            Map<String, String> metadata,
+            String leaseId,
+            Context context) {
+        final String comp = "metadata";
+        final String accept = "application/xml";
+        return service.setMetadata(
+                this.client.getUrl(),
+                shareName,
+                directory,
+                fileName,
+                comp,
+                timeout,
+                metadata,
+                this.client.getVersion(),
+                leaseId,
+                accept,
+                context);
+    }
 
-        @Get("/{shareName}/{filePath}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
-        Mono<FilesGetRangeListResponse> getRangeList(
-                @HostParam("url") String url,
-                @QueryParam("comp") String comp,
-                @PathParam("shareName") String shareName,
-                @PathParam("filePath") String filePath,
-                @QueryParam("sharesnapshot") String sharesnapshot,
-                @QueryParam("prevsharesnapshot") String prevsharesnapshot,
-                @QueryParam("timeout") Integer timeout,
-                @HeaderParam("x-ms-version") String version,
-                @HeaderParam("x-ms-range") String range,
-                @HeaderParam("x-ms-lease-id") String leaseId,
-                @HeaderParam("Accept") String accept,
-                Context context);
+    /**
+     * [Update] The Lease File operation establishes and manages a lock on a file for write and delete operations.
+     *
+     * @param shareName The name of the target share.
+     * @param directory The path of the target directory.
+     * @param fileName The path of the target file.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     *     Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param duration Specifies the duration of the lease, in seconds, or negative one (-1) for a lease that never
+     *     expires. A non-infinite lease can be between 15 and 60 seconds. A lease duration cannot be changed using
+     *     renew or change.
+     * @param proposedLeaseId Proposed lease ID, in a GUID string format. The File service returns 400 (Invalid request)
+     *     if the proposed lease ID is not in the correct format. See Guid Constructor (String) for a list of valid GUID
+     *     string formats.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<FilesAcquireLeaseResponse> acquireLeaseWithResponseAsync(
+            String shareName,
+            String directory,
+            String fileName,
+            Integer timeout,
+            Integer duration,
+            String proposedLeaseId,
+            String requestId,
+            Context context) {
+        final String comp = "lease";
+        final String action = "acquire";
+        final String accept = "application/xml";
+        return service.acquireLease(
+                this.client.getUrl(),
+                shareName,
+                directory,
+                fileName,
+                comp,
+                action,
+                timeout,
+                duration,
+                proposedLeaseId,
+                this.client.getVersion(),
+                requestId,
+                accept,
+                context);
+    }
 
-        @Put("/{shareName}/{filePath}")
-        @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
-        Mono<FilesStartCopyResponse> startCopy(
-                @HostParam("url") String url,
-                @PathParam("shareName") String shareName,
-                @PathParam("filePath") String filePath,
-                @QueryParam("timeout") Integer timeout,
-                @HeaderParam("x-ms-version") String version,
-                @HeaderParam("x-ms-meta-") Map<String, String> metadata,
-                @HeaderParam("x-ms-copy-source") String copySource,
-                @HeaderParam("x-ms-file-permission") String filePermission,
-                @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
-                @HeaderParam("x-ms-file-permission-copy-mode") PermissionCopyModeType filePermissionCopyMode,
-                @HeaderParam("x-ms-file-copy-ignore-read-only") Boolean ignoreReadOnly,
-                @HeaderParam("x-ms-file-attributes") String fileAttributes,
-                @HeaderParam("x-ms-file-creation-time") String fileCreationTime,
-                @HeaderParam("x-ms-file-last-write-time") String fileLastWriteTime,
-                @HeaderParam("x-ms-file-copy-set-archive") Boolean setArchiveAttribute,
-                @HeaderParam("x-ms-lease-id") String leaseId,
-                @HeaderParam("Accept") String accept,
-                Context context);
+    /**
+     * [Update] The Lease File operation establishes and manages a lock on a file for write and delete operations.
+     *
+     * @param shareName The name of the target share.
+     * @param directory The path of the target directory.
+     * @param fileName The path of the target file.
+     * @param leaseId Specifies the current lease ID on the resource.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     *     Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<FilesReleaseLeaseResponse> releaseLeaseWithResponseAsync(
+            String shareName,
+            String directory,
+            String fileName,
+            String leaseId,
+            Integer timeout,
+            String requestId,
+            Context context) {
+        final String comp = "lease";
+        final String action = "release";
+        final String accept = "application/xml";
+        return service.releaseLease(
+                this.client.getUrl(),
+                shareName,
+                directory,
+                fileName,
+                comp,
+                action,
+                timeout,
+                leaseId,
+                this.client.getVersion(),
+                requestId,
+                accept,
+                context);
+    }
 
-        @Put("/{shareName}/{filePath}")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
-        Mono<FilesAbortCopyResponse> abortCopy(
-                @HostParam("url") String url,
-                @QueryParam("comp") String comp,
-                @PathParam("shareName") String shareName,
-                @PathParam("filePath") String filePath,
-                @QueryParam("copyid") String copyId,
-                @QueryParam("timeout") Integer timeout,
-                @HeaderParam("x-ms-copy-action") String copyActionAbortConstant,
-                @HeaderParam("x-ms-version") String version,
-                @HeaderParam("x-ms-lease-id") String leaseId,
-                @HeaderParam("Accept") String accept,
-                Context context);
+    /**
+     * [Update] The Lease File operation establishes and manages a lock on a file for write and delete operations.
+     *
+     * @param shareName The name of the target share.
+     * @param directory The path of the target directory.
+     * @param fileName The path of the target file.
+     * @param leaseId Specifies the current lease ID on the resource.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     *     Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param proposedLeaseId Proposed lease ID, in a GUID string format. The File service returns 400 (Invalid request)
+     *     if the proposed lease ID is not in the correct format. See Guid Constructor (String) for a list of valid GUID
+     *     string formats.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<FilesChangeLeaseResponse> changeLeaseWithResponseAsync(
+            String shareName,
+            String directory,
+            String fileName,
+            String leaseId,
+            Integer timeout,
+            String proposedLeaseId,
+            String requestId,
+            Context context) {
+        final String comp = "lease";
+        final String action = "change";
+        final String accept = "application/xml";
+        return service.changeLease(
+                this.client.getUrl(),
+                shareName,
+                directory,
+                fileName,
+                comp,
+                action,
+                timeout,
+                leaseId,
+                proposedLeaseId,
+                this.client.getVersion(),
+                requestId,
+                accept,
+                context);
+    }
 
-        @Get("/{shareName}/{filePath}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
-        Mono<FilesListHandlesResponse> listHandles(
-                @HostParam("url") String url,
-                @QueryParam("comp") String comp,
-                @PathParam("shareName") String shareName,
-                @PathParam("filePath") String filePath,
-                @QueryParam("marker") String marker,
-                @QueryParam("maxresults") Integer maxresults,
-                @QueryParam("timeout") Integer timeout,
-                @QueryParam("sharesnapshot") String sharesnapshot,
-                @HeaderParam("x-ms-version") String version,
-                @HeaderParam("Accept") String accept,
-                Context context);
+    /**
+     * [Update] The Lease File operation establishes and manages a lock on a file for write and delete operations.
+     *
+     * @param shareName The name of the target share.
+     * @param directory The path of the target directory.
+     * @param fileName The path of the target file.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     *     Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<FilesBreakLeaseResponse> breakLeaseWithResponseAsync(
+            String shareName,
+            String directory,
+            String fileName,
+            Integer timeout,
+            String leaseId,
+            String requestId,
+            Context context) {
+        final String comp = "lease";
+        final String action = "break";
+        final String accept = "application/xml";
+        return service.breakLease(
+                this.client.getUrl(),
+                shareName,
+                directory,
+                fileName,
+                comp,
+                action,
+                timeout,
+                leaseId,
+                this.client.getVersion(),
+                requestId,
+                accept,
+                context);
+    }
 
-        @Put("/{shareName}/{filePath}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
-        Mono<FilesForceCloseHandlesResponse> forceCloseHandles(
-                @HostParam("url") String url,
-                @QueryParam("comp") String comp,
-                @PathParam("shareName") String shareName,
-                @PathParam("filePath") String filePath,
-                @QueryParam("timeout") Integer timeout,
-                @QueryParam("marker") String marker,
-                @QueryParam("sharesnapshot") String sharesnapshot,
-                @HeaderParam("x-ms-handle-id") String handleId,
-                @HeaderParam("x-ms-version") String version,
-                @HeaderParam("Accept") String accept,
-                Context context);
+    /**
+     * Upload a range of bytes to a file where the contents are read from a URL.
+     *
+     * @param shareName The name of the target share.
+     * @param directory The path of the target directory.
+     * @param fileName The path of the target file.
+     * @param range Writes data to the specified byte range in the file.
+     * @param copySource Specifies the URL of the source file or blob, up to 2 KB in length. To copy a file to another
+     *     file within the same storage account, you may use Shared Key to authenticate the source file. If you are
+     *     copying a file from another storage account, or if you are copying a blob from the same storage account or
+     *     another storage account, then you must authenticate the source file or blob using a shared access signature.
+     *     If the source is a public blob, no authentication is required to perform the copy operation. A file in a
+     *     share snapshot can also be specified as a copy source.
+     * @param contentLength Specifies the number of bytes being transmitted in the request body. When the x-ms-write
+     *     header is set to clear, the value of this header must be set to zero.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     *     Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param sourceRange Bytes of source data in the specified range.
+     * @param sourceContentCrc64 Specify the crc64 calculated for the range of bytes that must be read from the copy
+     *     source.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param copySourceAuthorization Only Bearer type is supported. Credentials should be a valid OAuth access token to
+     *     copy source.
+     * @param sourceModifiedAccessConditions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<FilesUploadRangeFromURLResponse> uploadRangeFromURLWithResponseAsync(
+            String shareName,
+            String directory,
+            String fileName,
+            String range,
+            String copySource,
+            long contentLength,
+            Integer timeout,
+            String sourceRange,
+            byte[] sourceContentCrc64,
+            String leaseId,
+            String copySourceAuthorization,
+            SourceModifiedAccessConditions sourceModifiedAccessConditions,
+            Context context) {
+        final String comp = "range";
+        final String fileRangeWriteFromUrl = "update";
+        final String accept = "application/xml";
+        byte[] sourceIfMatchCrc64Internal = null;
+        if (sourceModifiedAccessConditions != null) {
+            sourceIfMatchCrc64Internal = sourceModifiedAccessConditions.getSourceIfMatchCrc64();
+        }
+        byte[] sourceIfMatchCrc64 = sourceIfMatchCrc64Internal;
+        byte[] sourceIfNoneMatchCrc64Internal = null;
+        if (sourceModifiedAccessConditions != null) {
+            sourceIfNoneMatchCrc64Internal = sourceModifiedAccessConditions.getSourceIfNoneMatchCrc64();
+        }
+        byte[] sourceIfNoneMatchCrc64 = sourceIfNoneMatchCrc64Internal;
+        String sourceContentCrc64Converted = Base64Util.encodeToString(sourceContentCrc64);
+        String sourceIfMatchCrc64Converted = Base64Util.encodeToString(sourceIfMatchCrc64);
+        String sourceIfNoneMatchCrc64Converted = Base64Util.encodeToString(sourceIfNoneMatchCrc64);
+        return service.uploadRangeFromURL(
+                this.client.getUrl(),
+                shareName,
+                directory,
+                fileName,
+                comp,
+                timeout,
+                range,
+                copySource,
+                sourceRange,
+                fileRangeWriteFromUrl,
+                contentLength,
+                sourceContentCrc64Converted,
+                sourceIfMatchCrc64Converted,
+                sourceIfNoneMatchCrc64Converted,
+                this.client.getVersion(),
+                leaseId,
+                copySourceAuthorization,
+                accept,
+                context);
+    }
 
-        @Put("/{shareName}/{filePath}")
-        @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
-        Mono<FilesAcquireLeaseResponse> acquireLease(
-                @HostParam("url") String url,
-                @QueryParam("comp") String comp,
-                @HeaderParam("x-ms-lease-action") String action,
-                @PathParam("shareName") String shareName,
-                @PathParam("filePath") String filePath,
-                @QueryParam("timeout") Integer timeout,
-                @HeaderParam("x-ms-lease-duration") Integer duration,
-                @HeaderParam("x-ms-proposed-lease-id") String proposedLeaseId,
-                @HeaderParam("x-ms-version") String version,
-                @HeaderParam("x-ms-client-request-id") String requestId,
-                @HeaderParam("Accept") String accept,
-                Context context);
+    /**
+     * Returns the list of valid ranges for a file.
+     *
+     * @param shareName The name of the target share.
+     * @param directory The path of the target directory.
+     * @param fileName The path of the target file.
+     * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
+     *     snapshot to query.
+     * @param prevsharesnapshot The previous snapshot parameter is an opaque DateTime value that, when present,
+     *     specifies the previous snapshot.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     *     Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param range Specifies the range of bytes over which to list ranges, inclusively.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of file ranges.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<FilesGetRangeListResponse> getRangeListWithResponseAsync(
+            String shareName,
+            String directory,
+            String fileName,
+            String sharesnapshot,
+            String prevsharesnapshot,
+            Integer timeout,
+            String range,
+            String leaseId,
+            Context context) {
+        final String comp = "rangelist";
+        final String accept = "application/xml";
+        return service.getRangeList(
+                this.client.getUrl(),
+                shareName,
+                directory,
+                fileName,
+                comp,
+                sharesnapshot,
+                prevsharesnapshot,
+                timeout,
+                this.client.getVersion(),
+                range,
+                leaseId,
+                accept,
+                context);
+    }
 
-        @Put("/{shareName}/{filePath}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
-        Mono<FilesReleaseLeaseResponse> releaseLease(
-                @HostParam("url") String url,
-                @QueryParam("comp") String comp,
-                @HeaderParam("x-ms-lease-action") String action,
-                @PathParam("shareName") String shareName,
-                @PathParam("filePath") String filePath,
-                @QueryParam("timeout") Integer timeout,
-                @HeaderParam("x-ms-lease-id") String leaseId,
-                @HeaderParam("x-ms-version") String version,
-                @HeaderParam("x-ms-client-request-id") String requestId,
-                @HeaderParam("Accept") String accept,
-                Context context);
+    /**
+     * Copies a blob or file to a destination file within the storage account.
+     *
+     * @param shareName The name of the target share.
+     * @param directory The path of the target directory.
+     * @param fileName The path of the target file.
+     * @param copySource Specifies the URL of the source file or blob, up to 2 KB in length. To copy a file to another
+     *     file within the same storage account, you may use Shared Key to authenticate the source file. If you are
+     *     copying a file from another storage account, or if you are copying a blob from the same storage account or
+     *     another storage account, then you must authenticate the source file or blob using a shared access signature.
+     *     If the source is a public blob, no authentication is required to perform the copy operation. A file in a
+     *     share snapshot can also be specified as a copy source.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     *     Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param metadata A name-value pair to associate with a file storage object.
+     * @param filePermission If specified the permission (security descriptor) shall be set for the directory/file. This
+     *     header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used.
+     *     Default value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of
+     *     the x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
+     *     x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param copyFileSmbInfo Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<FilesStartCopyResponse> startCopyWithResponseAsync(
+            String shareName,
+            String directory,
+            String fileName,
+            String copySource,
+            Integer timeout,
+            Map<String, String> metadata,
+            String filePermission,
+            String filePermissionKey,
+            String leaseId,
+            CopyFileSmbInfo copyFileSmbInfo,
+            Context context) {
+        final String accept = "application/xml";
+        PermissionCopyModeType filePermissionCopyModeInternal = null;
+        if (copyFileSmbInfo != null) {
+            filePermissionCopyModeInternal = copyFileSmbInfo.getFilePermissionCopyMode();
+        }
+        PermissionCopyModeType filePermissionCopyMode = filePermissionCopyModeInternal;
+        Boolean ignoreReadOnlyInternal = null;
+        if (copyFileSmbInfo != null) {
+            ignoreReadOnlyInternal = copyFileSmbInfo.isIgnoreReadOnly();
+        }
+        Boolean ignoreReadOnly = ignoreReadOnlyInternal;
+        String fileAttributesInternal = null;
+        if (copyFileSmbInfo != null) {
+            fileAttributesInternal = copyFileSmbInfo.getFileAttributes();
+        }
+        String fileAttributes = fileAttributesInternal;
+        String fileCreationTimeInternal = null;
+        if (copyFileSmbInfo != null) {
+            fileCreationTimeInternal = copyFileSmbInfo.getFileCreationTime();
+        }
+        String fileCreationTime = fileCreationTimeInternal;
+        String fileLastWriteTimeInternal = null;
+        if (copyFileSmbInfo != null) {
+            fileLastWriteTimeInternal = copyFileSmbInfo.getFileLastWriteTime();
+        }
+        String fileLastWriteTime = fileLastWriteTimeInternal;
+        Boolean setArchiveAttributeInternal = null;
+        if (copyFileSmbInfo != null) {
+            setArchiveAttributeInternal = copyFileSmbInfo.isSetArchiveAttribute();
+        }
+        Boolean setArchiveAttribute = setArchiveAttributeInternal;
+        return service.startCopy(
+                this.client.getUrl(),
+                shareName,
+                directory,
+                fileName,
+                timeout,
+                this.client.getVersion(),
+                metadata,
+                copySource,
+                filePermission,
+                filePermissionKey,
+                filePermissionCopyMode,
+                ignoreReadOnly,
+                fileAttributes,
+                fileCreationTime,
+                fileLastWriteTime,
+                setArchiveAttribute,
+                leaseId,
+                accept,
+                context);
+    }
 
-        @Put("/{shareName}/{filePath}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
-        Mono<FilesChangeLeaseResponse> changeLease(
-                @HostParam("url") String url,
-                @QueryParam("comp") String comp,
-                @HeaderParam("x-ms-lease-action") String action,
-                @PathParam("shareName") String shareName,
-                @PathParam("filePath") String filePath,
-                @QueryParam("timeout") Integer timeout,
-                @HeaderParam("x-ms-lease-id") String leaseId,
-                @HeaderParam("x-ms-proposed-lease-id") String proposedLeaseId,
-                @HeaderParam("x-ms-version") String version,
-                @HeaderParam("x-ms-client-request-id") String requestId,
-                @HeaderParam("Accept") String accept,
-                Context context);
+    /**
+     * Aborts a pending Copy File operation, and leaves a destination file with zero length and full metadata.
+     *
+     * @param shareName The name of the target share.
+     * @param directory The path of the target directory.
+     * @param fileName The path of the target file.
+     * @param copyId The copy identifier provided in the x-ms-copy-id header of the original Copy File operation.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     *     Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<FilesAbortCopyResponse> abortCopyWithResponseAsync(
+            String shareName,
+            String directory,
+            String fileName,
+            String copyId,
+            Integer timeout,
+            String leaseId,
+            Context context) {
+        final String comp = "copy";
+        final String copyActionAbortConstant = "abort";
+        final String accept = "application/xml";
+        return service.abortCopy(
+                this.client.getUrl(),
+                shareName,
+                directory,
+                fileName,
+                comp,
+                copyId,
+                timeout,
+                copyActionAbortConstant,
+                this.client.getVersion(),
+                leaseId,
+                accept,
+                context);
+    }
 
-        @Put("/{shareName}/{filePath}")
-        @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
-        Mono<FilesBreakLeaseResponse> breakLease(
-                @HostParam("url") String url,
-                @QueryParam("comp") String comp,
-                @HeaderParam("x-ms-lease-action") String action,
-                @PathParam("shareName") String shareName,
-                @PathParam("filePath") String filePath,
-                @QueryParam("timeout") Integer timeout,
-                @HeaderParam("x-ms-lease-id") String leaseId,
-                @HeaderParam("x-ms-version") String version,
-                @HeaderParam("x-ms-client-request-id") String requestId,
-                @HeaderParam("Accept") String accept,
-                Context context);
+    /**
+     * Lists handles for file.
+     *
+     * @param shareName The name of the target share.
+     * @param directory The path of the target directory.
+     * @param fileName The path of the target file.
+     * @param marker A string value that identifies the portion of the list to be returned with the next list operation.
+     *     The operation returns a marker value within the response body if the list returned was not complete. The
+     *     marker value may then be used in a subsequent call to request the next set of list items. The marker value is
+     *     opaque to the client.
+     * @param maxresults Specifies the maximum number of entries to return. If the request does not specify maxresults,
+     *     or specifies a value greater than 5,000, the server will return up to 5,000 items.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     *     Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
+     *     snapshot to query.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an enumeration of handles.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<FilesListHandlesResponse> listHandlesWithResponseAsync(
+            String shareName,
+            String directory,
+            String fileName,
+            String marker,
+            Integer maxresults,
+            Integer timeout,
+            String sharesnapshot,
+            Context context) {
+        final String comp = "listhandles";
+        final String accept = "application/xml";
+        return service.listHandles(
+                this.client.getUrl(),
+                shareName,
+                directory,
+                fileName,
+                comp,
+                marker,
+                maxresults,
+                timeout,
+                sharesnapshot,
+                this.client.getVersion(),
+                accept,
+                context);
+    }
+
+    /**
+     * Closes all handles open for given file.
+     *
+     * @param shareName The name of the target share.
+     * @param directory The path of the target directory.
+     * @param fileName The path of the target file.
+     * @param handleId Specifies handle ID opened on the file or directory to be closed. Asterisk (‘*’) is a wildcard
+     *     that specifies all handles.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     *     Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param marker A string value that identifies the portion of the list to be returned with the next list operation.
+     *     The operation returns a marker value within the response body if the list returned was not complete. The
+     *     marker value may then be used in a subsequent call to request the next set of list items. The marker value is
+     *     opaque to the client.
+     * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
+     *     snapshot to query.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<FilesForceCloseHandlesResponse> forceCloseHandlesWithResponseAsync(
+            String shareName,
+            String directory,
+            String fileName,
+            String handleId,
+            Integer timeout,
+            String marker,
+            String sharesnapshot,
+            Context context) {
+        final String comp = "forceclosehandles";
+        final String accept = "application/xml";
+        return service.forceCloseHandles(
+                this.client.getUrl(),
+                shareName,
+                directory,
+                fileName,
+                comp,
+                timeout,
+                marker,
+                sharesnapshot,
+                handleId,
+                this.client.getVersion(),
+                accept,
+                context);
     }
 
     /**
      * Creates a new file or replaces a file. Note it only initializes the file with no content.
      *
      * @param shareName The name of the target share.
-     * @param filePath The path of the target file.
+     * @param directory The path of the target directory.
+     * @param fileName The path of the target file.
      * @param fileContentLength Specifies the maximum size for the file, up to 4 TB.
      * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
      *     and ‘Directory’ for directory. ‘None’ can also be specified as default.
@@ -413,7 +1055,8 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FilesCreateResponse> createWithResponseAsync(
             String shareName,
-            String filePath,
+            String directory,
+            String fileName,
             long fileContentLength,
             String fileAttributes,
             String fileCreationTime,
@@ -461,7 +1104,8 @@ public final class FilesImpl {
         return service.create(
                 this.client.getUrl(),
                 shareName,
-                filePath,
+                directory,
+                fileName,
                 timeout,
                 this.client.getVersion(),
                 fileContentLength,
@@ -487,7 +1131,8 @@ public final class FilesImpl {
      * Reads or downloads a file from the system, including its metadata and properties.
      *
      * @param shareName The name of the target share.
-     * @param filePath The path of the target file.
+     * @param directory The path of the target directory.
+     * @param fileName The path of the target file.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      *     Timeouts for File Service Operations.&lt;/a&gt;.
@@ -504,7 +1149,8 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StreamResponse> downloadWithResponseAsync(
             String shareName,
-            String filePath,
+            String directory,
+            String fileName,
             Integer timeout,
             String range,
             Boolean rangeGetContentMD5,
@@ -514,7 +1160,8 @@ public final class FilesImpl {
         return service.download(
                 this.client.getUrl(),
                 shareName,
-                filePath,
+                directory,
+                fileName,
                 timeout,
                 this.client.getVersion(),
                 range,
@@ -529,7 +1176,8 @@ public final class FilesImpl {
      * return the content of the file.
      *
      * @param shareName The name of the target share.
-     * @param filePath The path of the target file.
+     * @param directory The path of the target directory.
+     * @param fileName The path of the target file.
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
      *     snapshot to query.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -544,12 +1192,19 @@ public final class FilesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FilesGetPropertiesResponse> getPropertiesWithResponseAsync(
-            String shareName, String filePath, String sharesnapshot, Integer timeout, String leaseId, Context context) {
+            String shareName,
+            String directory,
+            String fileName,
+            String sharesnapshot,
+            Integer timeout,
+            String leaseId,
+            Context context) {
         final String accept = "application/xml";
         return service.getProperties(
                 this.client.getUrl(),
                 shareName,
-                filePath,
+                directory,
+                fileName,
                 sharesnapshot,
                 timeout,
                 this.client.getVersion(),
@@ -562,7 +1217,8 @@ public final class FilesImpl {
      * removes the file from the storage account.
      *
      * @param shareName The name of the target share.
-     * @param filePath The path of the target file.
+     * @param directory The path of the target directory.
+     * @param fileName The path of the target file.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      *     Timeouts for File Service Operations.&lt;/a&gt;.
@@ -575,17 +1231,26 @@ public final class FilesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FilesDeleteResponse> deleteWithResponseAsync(
-            String shareName, String filePath, Integer timeout, String leaseId, Context context) {
+            String shareName, String directory, String fileName, Integer timeout, String leaseId, Context context) {
         final String accept = "application/xml";
         return service.delete(
-                this.client.getUrl(), shareName, filePath, timeout, this.client.getVersion(), leaseId, accept, context);
+                this.client.getUrl(),
+                shareName,
+                directory,
+                fileName,
+                timeout,
+                this.client.getVersion(),
+                leaseId,
+                accept,
+                context);
     }
 
     /**
      * Sets HTTP headers on the file.
      *
      * @param shareName The name of the target share.
-     * @param filePath The path of the target file.
+     * @param directory The path of the target directory.
+     * @param fileName The path of the target file.
      * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
      *     and ‘Directory’ for directory. ‘None’ can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
@@ -612,7 +1277,8 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FilesSetHttpHeadersResponse> setHttpHeadersWithResponseAsync(
             String shareName,
-            String filePath,
+            String directory,
+            String fileName,
             String fileAttributes,
             String fileCreationTime,
             String fileLastWriteTime,
@@ -658,9 +1324,10 @@ public final class FilesImpl {
         String contentMd5Converted = Base64Util.encodeToString(contentMd5);
         return service.setHttpHeaders(
                 this.client.getUrl(),
-                comp,
                 shareName,
-                filePath,
+                directory,
+                fileName,
+                comp,
                 timeout,
                 this.client.getVersion(),
                 fileContentLength,
@@ -681,49 +1348,11 @@ public final class FilesImpl {
     }
 
     /**
-     * Updates user-defined metadata for the specified file.
-     *
-     * @param shareName The name of the target share.
-     * @param filePath The path of the target file.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
-     *     Timeouts for File Service Operations.&lt;/a&gt;.
-     * @param metadata A name-value pair to associate with a file storage object.
-     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FilesSetMetadataResponse> setMetadataWithResponseAsync(
-            String shareName,
-            String filePath,
-            Integer timeout,
-            Map<String, String> metadata,
-            String leaseId,
-            Context context) {
-        final String comp = "metadata";
-        final String accept = "application/xml";
-        return service.setMetadata(
-                this.client.getUrl(),
-                comp,
-                shareName,
-                filePath,
-                timeout,
-                metadata,
-                this.client.getVersion(),
-                leaseId,
-                accept,
-                context);
-    }
-
-    /**
      * Upload a range of bytes to a file.
      *
      * @param shareName The name of the target share.
-     * @param filePath The path of the target file.
+     * @param directory The path of the target directory.
+     * @param fileName The path of the target file.
      * @param range Specifies the range of bytes to be written. Both the start and end of the range must be specified.
      *     For an update operation, the range can be up to 4 MB in size. For a clear operation, the range can be up to
      *     the value of the file's full size. The File service accepts only a single byte range for the Range and
@@ -753,7 +1382,8 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FilesUploadRangeResponse> uploadRangeWithResponseAsync(
             String shareName,
-            String filePath,
+            String directory,
+            String fileName,
             String range,
             ShareFileRangeWriteType fileRangeWrite,
             long contentLength,
@@ -767,9 +1397,10 @@ public final class FilesImpl {
         String contentMD5Converted = Base64Util.encodeToString(contentMD5);
         return service.uploadRange(
                 this.client.getUrl(),
-                comp,
                 shareName,
-                filePath,
+                directory,
+                fileName,
+                comp,
                 timeout,
                 range,
                 fileRangeWrite,
@@ -778,527 +1409,6 @@ public final class FilesImpl {
                 this.client.getVersion(),
                 leaseId,
                 optionalbody,
-                accept,
-                context);
-    }
-
-    /**
-     * Upload a range of bytes to a file where the contents are read from a URL.
-     *
-     * @param shareName The name of the target share.
-     * @param filePath The path of the target file.
-     * @param range Writes data to the specified byte range in the file.
-     * @param copySource Specifies the URL of the source file or blob, up to 2 KB in length. To copy a file to another
-     *     file within the same storage account, you may use Shared Key to authenticate the source file. If you are
-     *     copying a file from another storage account, or if you are copying a blob from the same storage account or
-     *     another storage account, then you must authenticate the source file or blob using a shared access signature.
-     *     If the source is a public blob, no authentication is required to perform the copy operation. A file in a
-     *     share snapshot can also be specified as a copy source.
-     * @param contentLength Specifies the number of bytes being transmitted in the request body. When the x-ms-write
-     *     header is set to clear, the value of this header must be set to zero.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
-     *     Timeouts for File Service Operations.&lt;/a&gt;.
-     * @param sourceRange Bytes of source data in the specified range.
-     * @param sourceContentCrc64 Specify the crc64 calculated for the range of bytes that must be read from the copy
-     *     source.
-     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-     * @param copySourceAuthorization Only Bearer type is supported. Credentials should be a valid OAuth access token to
-     *     copy source.
-     * @param sourceModifiedAccessConditions Parameter group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FilesUploadRangeFromURLResponse> uploadRangeFromURLWithResponseAsync(
-            String shareName,
-            String filePath,
-            String range,
-            String copySource,
-            long contentLength,
-            Integer timeout,
-            String sourceRange,
-            byte[] sourceContentCrc64,
-            String leaseId,
-            String copySourceAuthorization,
-            SourceModifiedAccessConditions sourceModifiedAccessConditions,
-            Context context) {
-        final String comp = "range";
-        final String fileRangeWriteFromUrl = "update";
-        final String accept = "application/xml";
-        byte[] sourceIfMatchCrc64Internal = null;
-        if (sourceModifiedAccessConditions != null) {
-            sourceIfMatchCrc64Internal = sourceModifiedAccessConditions.getSourceIfMatchCrc64();
-        }
-        byte[] sourceIfMatchCrc64 = sourceIfMatchCrc64Internal;
-        byte[] sourceIfNoneMatchCrc64Internal = null;
-        if (sourceModifiedAccessConditions != null) {
-            sourceIfNoneMatchCrc64Internal = sourceModifiedAccessConditions.getSourceIfNoneMatchCrc64();
-        }
-        byte[] sourceIfNoneMatchCrc64 = sourceIfNoneMatchCrc64Internal;
-        String sourceContentCrc64Converted = Base64Util.encodeToString(sourceContentCrc64);
-        String sourceIfMatchCrc64Converted = Base64Util.encodeToString(sourceIfMatchCrc64);
-        String sourceIfNoneMatchCrc64Converted = Base64Util.encodeToString(sourceIfNoneMatchCrc64);
-        return service.uploadRangeFromURL(
-                this.client.getUrl(),
-                comp,
-                shareName,
-                filePath,
-                timeout,
-                range,
-                copySource,
-                sourceRange,
-                fileRangeWriteFromUrl,
-                contentLength,
-                sourceContentCrc64Converted,
-                sourceIfMatchCrc64Converted,
-                sourceIfNoneMatchCrc64Converted,
-                this.client.getVersion(),
-                leaseId,
-                copySourceAuthorization,
-                accept,
-                context);
-    }
-
-    /**
-     * Returns the list of valid ranges for a file.
-     *
-     * @param shareName The name of the target share.
-     * @param filePath The path of the target file.
-     * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
-     *     snapshot to query.
-     * @param prevsharesnapshot The previous snapshot parameter is an opaque DateTime value that, when present,
-     *     specifies the previous snapshot.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
-     *     Timeouts for File Service Operations.&lt;/a&gt;.
-     * @param range Specifies the range of bytes over which to list ranges, inclusively.
-     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of file ranges.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FilesGetRangeListResponse> getRangeListWithResponseAsync(
-            String shareName,
-            String filePath,
-            String sharesnapshot,
-            String prevsharesnapshot,
-            Integer timeout,
-            String range,
-            String leaseId,
-            Context context) {
-        final String comp = "rangelist";
-        final String accept = "application/xml";
-        return service.getRangeList(
-                this.client.getUrl(),
-                comp,
-                shareName,
-                filePath,
-                sharesnapshot,
-                prevsharesnapshot,
-                timeout,
-                this.client.getVersion(),
-                range,
-                leaseId,
-                accept,
-                context);
-    }
-
-    /**
-     * Copies a blob or file to a destination file within the storage account.
-     *
-     * @param shareName The name of the target share.
-     * @param filePath The path of the target file.
-     * @param copySource Specifies the URL of the source file or blob, up to 2 KB in length. To copy a file to another
-     *     file within the same storage account, you may use Shared Key to authenticate the source file. If you are
-     *     copying a file from another storage account, or if you are copying a blob from the same storage account or
-     *     another storage account, then you must authenticate the source file or blob using a shared access signature.
-     *     If the source is a public blob, no authentication is required to perform the copy operation. A file in a
-     *     share snapshot can also be specified as a copy source.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
-     *     Timeouts for File Service Operations.&lt;/a&gt;.
-     * @param metadata A name-value pair to associate with a file storage object.
-     * @param filePermission If specified the permission (security descriptor) shall be set for the directory/file. This
-     *     header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used.
-     *     Default value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of
-     *     the x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
-     *     x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-     * @param copyFileSmbInfo Parameter group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FilesStartCopyResponse> startCopyWithResponseAsync(
-            String shareName,
-            String filePath,
-            String copySource,
-            Integer timeout,
-            Map<String, String> metadata,
-            String filePermission,
-            String filePermissionKey,
-            String leaseId,
-            CopyFileSmbInfo copyFileSmbInfo,
-            Context context) {
-        final String accept = "application/xml";
-        PermissionCopyModeType filePermissionCopyModeInternal = null;
-        if (copyFileSmbInfo != null) {
-            filePermissionCopyModeInternal = copyFileSmbInfo.getFilePermissionCopyMode();
-        }
-        PermissionCopyModeType filePermissionCopyMode = filePermissionCopyModeInternal;
-        Boolean ignoreReadOnlyInternal = null;
-        if (copyFileSmbInfo != null) {
-            ignoreReadOnlyInternal = copyFileSmbInfo.isIgnoreReadOnly();
-        }
-        Boolean ignoreReadOnly = ignoreReadOnlyInternal;
-        String fileAttributesInternal = null;
-        if (copyFileSmbInfo != null) {
-            fileAttributesInternal = copyFileSmbInfo.getFileAttributes();
-        }
-        String fileAttributes = fileAttributesInternal;
-        String fileCreationTimeInternal = null;
-        if (copyFileSmbInfo != null) {
-            fileCreationTimeInternal = copyFileSmbInfo.getFileCreationTime();
-        }
-        String fileCreationTime = fileCreationTimeInternal;
-        String fileLastWriteTimeInternal = null;
-        if (copyFileSmbInfo != null) {
-            fileLastWriteTimeInternal = copyFileSmbInfo.getFileLastWriteTime();
-        }
-        String fileLastWriteTime = fileLastWriteTimeInternal;
-        Boolean setArchiveAttributeInternal = null;
-        if (copyFileSmbInfo != null) {
-            setArchiveAttributeInternal = copyFileSmbInfo.isSetArchiveAttribute();
-        }
-        Boolean setArchiveAttribute = setArchiveAttributeInternal;
-        return service.startCopy(
-                this.client.getUrl(),
-                shareName,
-                filePath,
-                timeout,
-                this.client.getVersion(),
-                metadata,
-                copySource,
-                filePermission,
-                filePermissionKey,
-                filePermissionCopyMode,
-                ignoreReadOnly,
-                fileAttributes,
-                fileCreationTime,
-                fileLastWriteTime,
-                setArchiveAttribute,
-                leaseId,
-                accept,
-                context);
-    }
-
-    /**
-     * Aborts a pending Copy File operation, and leaves a destination file with zero length and full metadata.
-     *
-     * @param shareName The name of the target share.
-     * @param filePath The path of the target file.
-     * @param copyId The copy identifier provided in the x-ms-copy-id header of the original Copy File operation.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
-     *     Timeouts for File Service Operations.&lt;/a&gt;.
-     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FilesAbortCopyResponse> abortCopyWithResponseAsync(
-            String shareName, String filePath, String copyId, Integer timeout, String leaseId, Context context) {
-        final String comp = "copy";
-        final String copyActionAbortConstant = "abort";
-        final String accept = "application/xml";
-        return service.abortCopy(
-                this.client.getUrl(),
-                comp,
-                shareName,
-                filePath,
-                copyId,
-                timeout,
-                copyActionAbortConstant,
-                this.client.getVersion(),
-                leaseId,
-                accept,
-                context);
-    }
-
-    /**
-     * Lists handles for file.
-     *
-     * @param shareName The name of the target share.
-     * @param filePath The path of the target file.
-     * @param marker A string value that identifies the portion of the list to be returned with the next list operation.
-     *     The operation returns a marker value within the response body if the list returned was not complete. The
-     *     marker value may then be used in a subsequent call to request the next set of list items. The marker value is
-     *     opaque to the client.
-     * @param maxresults Specifies the maximum number of entries to return. If the request does not specify maxresults,
-     *     or specifies a value greater than 5,000, the server will return up to 5,000 items.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
-     *     Timeouts for File Service Operations.&lt;/a&gt;.
-     * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
-     *     snapshot to query.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an enumeration of handles.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FilesListHandlesResponse> listHandlesWithResponseAsync(
-            String shareName,
-            String filePath,
-            String marker,
-            Integer maxresults,
-            Integer timeout,
-            String sharesnapshot,
-            Context context) {
-        final String comp = "listhandles";
-        final String accept = "application/xml";
-        return service.listHandles(
-                this.client.getUrl(),
-                comp,
-                shareName,
-                filePath,
-                marker,
-                maxresults,
-                timeout,
-                sharesnapshot,
-                this.client.getVersion(),
-                accept,
-                context);
-    }
-
-    /**
-     * Closes all handles open for given file.
-     *
-     * @param shareName The name of the target share.
-     * @param filePath The path of the target file.
-     * @param handleId Specifies handle ID opened on the file or directory to be closed. Asterisk (‘*’) is a wildcard
-     *     that specifies all handles.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
-     *     Timeouts for File Service Operations.&lt;/a&gt;.
-     * @param marker A string value that identifies the portion of the list to be returned with the next list operation.
-     *     The operation returns a marker value within the response body if the list returned was not complete. The
-     *     marker value may then be used in a subsequent call to request the next set of list items. The marker value is
-     *     opaque to the client.
-     * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
-     *     snapshot to query.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FilesForceCloseHandlesResponse> forceCloseHandlesWithResponseAsync(
-            String shareName,
-            String filePath,
-            String handleId,
-            Integer timeout,
-            String marker,
-            String sharesnapshot,
-            Context context) {
-        final String comp = "forceclosehandles";
-        final String accept = "application/xml";
-        return service.forceCloseHandles(
-                this.client.getUrl(),
-                comp,
-                shareName,
-                filePath,
-                timeout,
-                marker,
-                sharesnapshot,
-                handleId,
-                this.client.getVersion(),
-                accept,
-                context);
-    }
-
-    /**
-     * [Update] The Lease File operation establishes and manages a lock on a file for write and delete operations.
-     *
-     * @param shareName The name of the target share.
-     * @param filePath The path of the target file.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
-     *     Timeouts for File Service Operations.&lt;/a&gt;.
-     * @param duration Specifies the duration of the lease, in seconds, or negative one (-1) for a lease that never
-     *     expires. A non-infinite lease can be between 15 and 60 seconds. A lease duration cannot be changed using
-     *     renew or change.
-     * @param proposedLeaseId Proposed lease ID, in a GUID string format. The File service returns 400 (Invalid request)
-     *     if the proposed lease ID is not in the correct format. See Guid Constructor (String) for a list of valid GUID
-     *     string formats.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when storage analytics logging is enabled.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FilesAcquireLeaseResponse> acquireLeaseWithResponseAsync(
-            String shareName,
-            String filePath,
-            Integer timeout,
-            Integer duration,
-            String proposedLeaseId,
-            String requestId,
-            Context context) {
-        final String comp = "lease";
-        final String action = "acquire";
-        final String accept = "application/xml";
-        return service.acquireLease(
-                this.client.getUrl(),
-                comp,
-                action,
-                shareName,
-                filePath,
-                timeout,
-                duration,
-                proposedLeaseId,
-                this.client.getVersion(),
-                requestId,
-                accept,
-                context);
-    }
-
-    /**
-     * [Update] The Lease File operation establishes and manages a lock on a file for write and delete operations.
-     *
-     * @param shareName The name of the target share.
-     * @param filePath The path of the target file.
-     * @param leaseId Specifies the current lease ID on the resource.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
-     *     Timeouts for File Service Operations.&lt;/a&gt;.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when storage analytics logging is enabled.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FilesReleaseLeaseResponse> releaseLeaseWithResponseAsync(
-            String shareName, String filePath, String leaseId, Integer timeout, String requestId, Context context) {
-        final String comp = "lease";
-        final String action = "release";
-        final String accept = "application/xml";
-        return service.releaseLease(
-                this.client.getUrl(),
-                comp,
-                action,
-                shareName,
-                filePath,
-                timeout,
-                leaseId,
-                this.client.getVersion(),
-                requestId,
-                accept,
-                context);
-    }
-
-    /**
-     * [Update] The Lease File operation establishes and manages a lock on a file for write and delete operations.
-     *
-     * @param shareName The name of the target share.
-     * @param filePath The path of the target file.
-     * @param leaseId Specifies the current lease ID on the resource.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
-     *     Timeouts for File Service Operations.&lt;/a&gt;.
-     * @param proposedLeaseId Proposed lease ID, in a GUID string format. The File service returns 400 (Invalid request)
-     *     if the proposed lease ID is not in the correct format. See Guid Constructor (String) for a list of valid GUID
-     *     string formats.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when storage analytics logging is enabled.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FilesChangeLeaseResponse> changeLeaseWithResponseAsync(
-            String shareName,
-            String filePath,
-            String leaseId,
-            Integer timeout,
-            String proposedLeaseId,
-            String requestId,
-            Context context) {
-        final String comp = "lease";
-        final String action = "change";
-        final String accept = "application/xml";
-        return service.changeLease(
-                this.client.getUrl(),
-                comp,
-                action,
-                shareName,
-                filePath,
-                timeout,
-                leaseId,
-                proposedLeaseId,
-                this.client.getVersion(),
-                requestId,
-                accept,
-                context);
-    }
-
-    /**
-     * [Update] The Lease File operation establishes and manages a lock on a file for write and delete operations.
-     *
-     * @param shareName The name of the target share.
-     * @param filePath The path of the target file.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
-     *     Timeouts for File Service Operations.&lt;/a&gt;.
-     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when storage analytics logging is enabled.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FilesBreakLeaseResponse> breakLeaseWithResponseAsync(
-            String shareName, String filePath, Integer timeout, String leaseId, String requestId, Context context) {
-        final String comp = "lease";
-        final String action = "break";
-        final String accept = "application/xml";
-        return service.breakLease(
-                this.client.getUrl(),
-                comp,
-                action,
-                shareName,
-                filePath,
-                timeout,
-                leaseId,
-                this.client.getVersion(),
-                requestId,
                 accept,
                 context);
     }

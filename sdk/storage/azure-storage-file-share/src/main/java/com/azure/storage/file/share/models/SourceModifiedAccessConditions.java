@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /** Parameter group. */
+@JacksonXmlRootElement(localName = "SourceModifiedAccessConditions")
 @Fluent
 @JacksonXmlRootElement(localName = "source-modified-access-conditions")
 public final class SourceModifiedAccessConditions {

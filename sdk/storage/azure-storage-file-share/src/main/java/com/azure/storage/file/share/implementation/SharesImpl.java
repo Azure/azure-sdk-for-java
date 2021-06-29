@@ -73,12 +73,12 @@ public final class SharesImpl {
     @ServiceInterface(name = "AzureFileStorageShar")
     public interface SharesService {
         @Put("/{shareName}")
-        @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+        @ExpectedResponses({201})
         Mono<SharesCreateResponse> create(
                 @HostParam("url") String url,
-                @QueryParam("restype") String restype,
                 @PathParam("shareName") String shareName,
+                @QueryParam("restype") String restype,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-meta-") Map<String, String> metadata,
                 @HeaderParam("x-ms-share-quota") Integer quota,
@@ -91,11 +91,12 @@ public final class SharesImpl {
 
         @Get("/{shareName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<SharesGetPropertiesResponse> getProperties(
-                @HostParam("url") String url,
-                @QueryParam("restype") String restype,
+                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+                        @HostParam("url")
+                        String url,
                 @PathParam("shareName") String shareName,
+                @QueryParam("restype") String restype,
                 @QueryParam("sharesnapshot") String sharesnapshot,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
@@ -105,11 +106,12 @@ public final class SharesImpl {
 
         @Delete("/{shareName}")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<SharesDeleteResponse> delete(
-                @HostParam("url") String url,
-                @QueryParam("restype") String restype,
+                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+                        @HostParam("url")
+                        String url,
                 @PathParam("shareName") String shareName,
+                @QueryParam("restype") String restype,
                 @QueryParam("sharesnapshot") String sharesnapshot,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
@@ -120,13 +122,14 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<SharesAcquireLeaseResponse> acquireLease(
-                @HostParam("url") String url,
+                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+                        @HostParam("url")
+                        String url,
+                @PathParam("shareName") String shareName,
                 @QueryParam("comp") String comp,
                 @HeaderParam("x-ms-lease-action") String action,
                 @QueryParam("restype") String restype,
-                @PathParam("shareName") String shareName,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-lease-duration") Integer duration,
                 @HeaderParam("x-ms-proposed-lease-id") String proposedLeaseId,
@@ -138,13 +141,14 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<SharesReleaseLeaseResponse> releaseLease(
-                @HostParam("url") String url,
+                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+                        @HostParam("url")
+                        String url,
+                @PathParam("shareName") String shareName,
                 @QueryParam("comp") String comp,
                 @HeaderParam("x-ms-lease-action") String action,
                 @QueryParam("restype") String restype,
-                @PathParam("shareName") String shareName,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-lease-id") String leaseId,
                 @HeaderParam("x-ms-version") String version,
@@ -155,13 +159,14 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<SharesChangeLeaseResponse> changeLease(
-                @HostParam("url") String url,
+                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+                        @HostParam("url")
+                        String url,
+                @PathParam("shareName") String shareName,
                 @QueryParam("comp") String comp,
                 @HeaderParam("x-ms-lease-action") String action,
                 @QueryParam("restype") String restype,
-                @PathParam("shareName") String shareName,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-lease-id") String leaseId,
                 @HeaderParam("x-ms-proposed-lease-id") String proposedLeaseId,
@@ -173,13 +178,14 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<SharesRenewLeaseResponse> renewLease(
-                @HostParam("url") String url,
+                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+                        @HostParam("url")
+                        String url,
+                @PathParam("shareName") String shareName,
                 @QueryParam("comp") String comp,
                 @HeaderParam("x-ms-lease-action") String action,
                 @QueryParam("restype") String restype,
-                @PathParam("shareName") String shareName,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-lease-id") String leaseId,
                 @HeaderParam("x-ms-version") String version,
@@ -190,13 +196,14 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<SharesBreakLeaseResponse> breakLease(
-                @HostParam("url") String url,
+                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+                        @HostParam("url")
+                        String url,
+                @PathParam("shareName") String shareName,
                 @QueryParam("comp") String comp,
                 @HeaderParam("x-ms-lease-action") String action,
                 @QueryParam("restype") String restype,
-                @PathParam("shareName") String shareName,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-lease-break-period") Integer breakPeriod,
                 @HeaderParam("x-ms-lease-id") String leaseId,
@@ -208,12 +215,13 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<SharesCreateSnapshotResponse> createSnapshot(
-                @HostParam("url") String url,
+                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+                        @HostParam("url")
+                        String url,
+                @PathParam("shareName") String shareName,
                 @QueryParam("restype") String restype,
                 @QueryParam("comp") String comp,
-                @PathParam("shareName") String shareName,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-meta-") Map<String, String> metadata,
                 @HeaderParam("x-ms-version") String version,
@@ -222,12 +230,13 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<SharesCreatePermissionResponse> createPermission(
-                @HostParam("url") String url,
+                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+                        @HostParam("url")
+                        String url,
+                @PathParam("shareName") String shareName,
                 @QueryParam("restype") String restype,
                 @QueryParam("comp") String comp,
-                @PathParam("shareName") String shareName,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
                 @BodyParam("application/json") SharePermission sharePermission,
@@ -236,12 +245,13 @@ public final class SharesImpl {
 
         @Get("/{shareName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<SharesGetPermissionResponse> getPermission(
-                @HostParam("url") String url,
+                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+                        @HostParam("url")
+                        String url,
+                @PathParam("shareName") String shareName,
                 @QueryParam("restype") String restype,
                 @QueryParam("comp") String comp,
-                @PathParam("shareName") String shareName,
                 @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
@@ -250,12 +260,13 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<SharesSetPropertiesResponse> setProperties(
-                @HostParam("url") String url,
+                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+                        @HostParam("url")
+                        String url,
+                @PathParam("shareName") String shareName,
                 @QueryParam("restype") String restype,
                 @QueryParam("comp") String comp,
-                @PathParam("shareName") String shareName,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-share-quota") Integer quota,
@@ -267,12 +278,13 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<SharesSetMetadataResponse> setMetadata(
-                @HostParam("url") String url,
+                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+                        @HostParam("url")
+                        String url,
+                @PathParam("shareName") String shareName,
                 @QueryParam("restype") String restype,
                 @QueryParam("comp") String comp,
-                @PathParam("shareName") String shareName,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-meta-") Map<String, String> metadata,
                 @HeaderParam("x-ms-version") String version,
@@ -282,12 +294,13 @@ public final class SharesImpl {
 
         @Get("/{shareName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<SharesGetAccessPolicyResponse> getAccessPolicy(
-                @HostParam("url") String url,
+                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+                        @HostParam("url")
+                        String url,
+                @PathParam("shareName") String shareName,
                 @QueryParam("restype") String restype,
                 @QueryParam("comp") String comp,
-                @PathParam("shareName") String shareName,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-lease-id") String leaseId,
@@ -296,12 +309,13 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<SharesSetAccessPolicyResponse> setAccessPolicy(
-                @HostParam("url") String url,
+                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+                        @HostParam("url")
+                        String url,
+                @PathParam("shareName") String shareName,
                 @QueryParam("restype") String restype,
                 @QueryParam("comp") String comp,
-                @PathParam("shareName") String shareName,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-lease-id") String leaseId,
@@ -311,12 +325,13 @@ public final class SharesImpl {
 
         @Get("/{shareName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<SharesGetStatisticsResponse> getStatistics(
-                @HostParam("url") String url,
+                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+                        @HostParam("url")
+                        String url,
+                @PathParam("shareName") String shareName,
                 @QueryParam("restype") String restype,
                 @QueryParam("comp") String comp,
-                @PathParam("shareName") String shareName,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-lease-id") String leaseId,
@@ -325,12 +340,13 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<SharesRestoreResponse> restore(
-                @HostParam("url") String url,
+                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+                        @HostParam("url")
+                        String url,
+                @PathParam("shareName") String shareName,
                 @QueryParam("restype") String restype,
                 @QueryParam("comp") String comp,
-                @PathParam("shareName") String shareName,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-client-request-id") String requestId,
@@ -373,8 +389,8 @@ public final class SharesImpl {
         final String accept = "application/xml";
         return service.create(
                 this.client.getUrl(),
-                restype,
                 shareName,
+                restype,
                 timeout,
                 metadata,
                 quota,
@@ -410,8 +426,8 @@ public final class SharesImpl {
         final String accept = "application/xml";
         return service.getProperties(
                 this.client.getUrl(),
-                restype,
                 shareName,
+                restype,
                 sharesnapshot,
                 timeout,
                 this.client.getVersion(),
@@ -450,8 +466,8 @@ public final class SharesImpl {
         final String accept = "application/xml";
         return service.delete(
                 this.client.getUrl(),
-                restype,
                 shareName,
+                restype,
                 sharesnapshot,
                 timeout,
                 this.client.getVersion(),
@@ -500,10 +516,10 @@ public final class SharesImpl {
         final String accept = "application/xml";
         return service.acquireLease(
                 this.client.getUrl(),
+                shareName,
                 comp,
                 action,
                 restype,
-                shareName,
                 timeout,
                 duration,
                 proposedLeaseId,
@@ -547,10 +563,10 @@ public final class SharesImpl {
         final String accept = "application/xml";
         return service.releaseLease(
                 this.client.getUrl(),
+                shareName,
                 comp,
                 action,
                 restype,
-                shareName,
                 timeout,
                 leaseId,
                 this.client.getVersion(),
@@ -597,10 +613,10 @@ public final class SharesImpl {
         final String accept = "application/xml";
         return service.changeLease(
                 this.client.getUrl(),
+                shareName,
                 comp,
                 action,
                 restype,
-                shareName,
                 timeout,
                 leaseId,
                 proposedLeaseId,
@@ -644,10 +660,10 @@ public final class SharesImpl {
         final String accept = "application/xml";
         return service.renewLease(
                 this.client.getUrl(),
+                shareName,
                 comp,
                 action,
                 restype,
-                shareName,
                 timeout,
                 leaseId,
                 this.client.getVersion(),
@@ -697,10 +713,10 @@ public final class SharesImpl {
         final String accept = "application/xml";
         return service.breakLease(
                 this.client.getUrl(),
+                shareName,
                 comp,
                 action,
                 restype,
-                shareName,
                 timeout,
                 breakPeriod,
                 leaseId,
@@ -733,9 +749,9 @@ public final class SharesImpl {
         final String accept = "application/xml";
         return service.createSnapshot(
                 this.client.getUrl(),
+                shareName,
                 restype,
                 comp,
-                shareName,
                 timeout,
                 metadata,
                 this.client.getVersion(),
@@ -765,9 +781,9 @@ public final class SharesImpl {
         final String accept = "application/xml";
         return service.createPermission(
                 this.client.getUrl(),
+                shareName,
                 restype,
                 comp,
-                shareName,
                 timeout,
                 this.client.getVersion(),
                 sharePermission,
@@ -797,9 +813,9 @@ public final class SharesImpl {
         final String accept = "application/json";
         return service.getPermission(
                 this.client.getUrl(),
+                shareName,
                 restype,
                 comp,
-                shareName,
                 filePermissionKey,
                 timeout,
                 this.client.getVersion(),
@@ -838,9 +854,9 @@ public final class SharesImpl {
         final String accept = "application/xml";
         return service.setProperties(
                 this.client.getUrl(),
+                shareName,
                 restype,
                 comp,
-                shareName,
                 timeout,
                 this.client.getVersion(),
                 quota,
@@ -874,9 +890,9 @@ public final class SharesImpl {
         final String accept = "application/xml";
         return service.setMetadata(
                 this.client.getUrl(),
+                shareName,
                 restype,
                 comp,
-                shareName,
                 timeout,
                 metadata,
                 this.client.getVersion(),
@@ -907,9 +923,9 @@ public final class SharesImpl {
         final String accept = "application/xml";
         return service.getAccessPolicy(
                 this.client.getUrl(),
+                shareName,
                 restype,
                 comp,
-                shareName,
                 timeout,
                 this.client.getVersion(),
                 leaseId,
@@ -941,9 +957,9 @@ public final class SharesImpl {
         SignedIdentifiersWrapper shareAclConverted = new SignedIdentifiersWrapper(shareAcl);
         return service.setAccessPolicy(
                 this.client.getUrl(),
+                shareName,
                 restype,
                 comp,
-                shareName,
                 timeout,
                 this.client.getVersion(),
                 leaseId,
@@ -974,9 +990,9 @@ public final class SharesImpl {
         final String accept = "application/xml";
         return service.getStatistics(
                 this.client.getUrl(),
+                shareName,
                 restype,
                 comp,
-                shareName,
                 timeout,
                 this.client.getVersion(),
                 leaseId,
@@ -993,8 +1009,8 @@ public final class SharesImpl {
      *     Timeouts for File Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      *     analytics logs when storage analytics logging is enabled.
-     * @param deletedShareName Specifies the name of the preivously-deleted share.
-     * @param deletedShareVersion Specifies the version of the preivously-deleted share.
+     * @param deletedShareName Specifies the name of the previously-deleted share.
+     * @param deletedShareVersion Specifies the version of the previously-deleted share.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws StorageErrorException thrown if the request is rejected by server.
@@ -1014,9 +1030,9 @@ public final class SharesImpl {
         final String accept = "application/xml";
         return service.restore(
                 this.client.getUrl(),
+                shareName,
                 restype,
                 comp,
-                shareName,
                 timeout,
                 this.client.getVersion(),
                 requestId,

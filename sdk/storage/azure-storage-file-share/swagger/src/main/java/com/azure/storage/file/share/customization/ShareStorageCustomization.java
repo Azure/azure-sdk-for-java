@@ -76,9 +76,9 @@ public class ShareStorageCustomization extends Customization {
         // Add these annotations since the default deserializer does not handle these cases correctly.
         PackageCustomization implementationModels = customization.getPackage("com.azure.storage.file.share.implementation.models");
         implementationModels.getClass("FilesAndDirectoriesListSegment").addAnnotation("@JsonDeserialize(using = com.azure.storage.file.share.implementation.util.FilesAndDirectoriesListSegmentDeserializer.class)");
-        implementationModels.getClass("CopyFileSmbInfo")
-            .removeAnnotation("@JacksonXmlRootElement(localName = \"CopyFileSmbInfo\")")
-            .addAnnotation("@JacksonXmlRootElement(localName = \"copy-file-smb-info\")");
+//        implementationModels.getClass("CopyFileSmbInfo")
+//            .removeAnnotation("@JacksonXmlRootElement(localName = \"CopyFileSmbInfo\")")
+//            .addAnnotation("@JacksonXmlRootElement(localName = \"copy-file-smb-info\")");
 
         PackageCustomization models = customization.getPackage("com.azure.storage.file.share.models");
         models.getClass("ShareFileRangeList").addAnnotation("@JsonDeserialize(using = ShareFileRangeListDeserializer.class)");
@@ -88,9 +88,9 @@ public class ShareStorageCustomization extends Customization {
         shareFileHttpHeaders.removeAnnotation("@JacksonXmlRootElement(localName = \"ShareFileHttpHeaders\")");
         shareFileHttpHeaders.addAnnotation("@JacksonXmlRootElement(localName = \"share-file-http-headers\")");
 
-        ClassCustomization sourceModifiedAccessConditions = models.getClass("SourceModifiedAccessConditions");
-        sourceModifiedAccessConditions.removeAnnotation("@JacksonXmlRootElement(localName = \"SourceModifiedAccessConditions\")");
-        sourceModifiedAccessConditions.addAnnotation("@JacksonXmlRootElement(localName = \"source-modified-access-conditions\")");
+//        ClassCustomization sourceModifiedAccessConditions = models.getClass("SourceModifiedAccessConditions");
+//        sourceModifiedAccessConditions.removeAnnotation("@JacksonXmlRootElement(localName = \"SourceModifiedAccessConditions\")");
+//        sourceModifiedAccessConditions.addAnnotation("@JacksonXmlRootElement(localName = \"source-modified-access-conditions\")");
 
         // Update incorrect JsonProperty of Metrics
         ClassCustomization shareServiceProperties = models.getClass("ShareServiceProperties");

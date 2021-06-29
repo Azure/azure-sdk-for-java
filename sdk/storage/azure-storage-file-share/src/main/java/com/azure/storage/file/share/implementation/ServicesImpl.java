@@ -60,8 +60,8 @@ public final class ServicesImpl {
     @ServiceInterface(name = "AzureFileStorageServ")
     public interface ServicesService {
         @Put("/")
-        @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+        @ExpectedResponses({202})
         Mono<ServicesSetPropertiesResponse> setProperties(
                 @HostParam("url") String url,
                 @QueryParam("restype") String restype,
@@ -74,9 +74,10 @@ public final class ServicesImpl {
 
         @Get("/")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<ServicesGetPropertiesResponse> getProperties(
-                @HostParam("url") String url,
+                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+                        @HostParam("url")
+                        String url,
                 @QueryParam("restype") String restype,
                 @QueryParam("comp") String comp,
                 @QueryParam("timeout") Integer timeout,
@@ -86,9 +87,10 @@ public final class ServicesImpl {
 
         @Get("/")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<ServicesListSharesSegmentResponse> listSharesSegment(
-                @HostParam("url") String url,
+                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+                        @HostParam("url")
+                        String url,
                 @QueryParam("comp") String comp,
                 @QueryParam("prefix") String prefix,
                 @QueryParam("marker") String marker,
@@ -101,9 +103,10 @@ public final class ServicesImpl {
 
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<ServicesListSharesSegmentNextResponse> listSharesSegmentNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+                        @PathParam(value = "nextLink", encoded = true)
+                        String nextLink,
                 @HostParam("url") String url,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("Accept") String accept,
