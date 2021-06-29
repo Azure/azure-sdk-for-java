@@ -4,18 +4,83 @@
 
 package com.azure.resourcemanager.machinelearningservices;
 
+import com.azure.core.management.serializer.SerializerFactory;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.machinelearningservices.models.CreateServiceRequestEnvironmentImageRequest;
+import com.azure.resourcemanager.machinelearningservices.models.EnvironmentImageRequestEnvironment;
+import com.azure.resourcemanager.machinelearningservices.models.ImageAsset;
+import com.azure.resourcemanager.machinelearningservices.models.Model;
+import com.azure.resourcemanager.machinelearningservices.models.ModelDockerSectionBaseImageRegistry;
+import com.azure.resourcemanager.machinelearningservices.models.ModelEnvironmentDefinitionDocker;
+import com.azure.resourcemanager.machinelearningservices.models.ModelEnvironmentDefinitionPython;
+import com.azure.resourcemanager.machinelearningservices.models.ModelEnvironmentDefinitionSpark;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public final class MachineLearningServiceCreateOrUpdateSamples {
     public static void createOrUpdateService(
-        com.azure.resourcemanager.machinelearningservices.MachineLearningServicesManager
-            machineLearningServicesManager) {
+        com.azure.resourcemanager.machinelearningservices.MachineLearningServicesManager machineLearningServicesManager)
+        throws IOException {
         machineLearningServicesManager
             .machineLearningServices()
             .define("service456")
             .withExistingWorkspace("testrg123", "workspaces123")
             .withRegion("eastus2")
-            .withEnvironmentImageRequest(new CreateServiceRequestEnvironmentImageRequest())
+            .withEnvironmentImageRequest(
+                new CreateServiceRequestEnvironmentImageRequest()
+                    .withDriverProgram("score.py")
+                    .withAssets(
+                        Arrays
+                            .asList(
+                                new ImageAsset()
+                                    .withMimeType("application/x-python")
+                                    .withUrl("aml://storage/azureml/score.py")
+                                    .withUnpack(false)))
+                    .withModels(
+                        Arrays
+                            .asList(
+                                new Model()
+                                    .withName("sklearn_regression_model.pkl")
+                                    .withUrl("aml://storage/azureml/sklearn_regression_model.pkl")
+                                    .withMimeType("application/x-python")))
+                    .withEnvironment(
+                        new EnvironmentImageRequestEnvironment()
+                            .withName("AzureML-Scikit-learn-0.20.3")
+                            .withVersion("3")
+                            .withPython(
+                                new ModelEnvironmentDefinitionPython()
+                                    .withInterpreterPath("python")
+                                    .withUserManagedDependencies(false)
+                                    .withCondaDependencies(
+                                        SerializerFactory
+                                            .createDefaultManagementSerializerAdapter()
+                                            .deserialize(
+                                                "{\"name\":\"azureml_ae1acbe6e1e6aabbad900b53c491a17c\",\"channels\":[\"conda-forge\"],\"dependencies\":[\"python=3.6.2\",{\"pip\":[\"azureml-core==1.0.69\",\"azureml-defaults==1.0.69\",\"azureml-telemetry==1.0.69\",\"azureml-train-restclients-hyperdrive==1.0.69\",\"azureml-train-core==1.0.69\",\"scikit-learn==0.20.3\",\"scipy==1.2.1\",\"numpy==1.16.2\",\"joblib==0.13.2\"]}]}",
+                                                Object.class,
+                                                SerializerEncoding.JSON)))
+                            .withEnvironmentVariables(mapOf("EXAMPLE_ENV_VAR", "EXAMPLE_VALUE"))
+                            .withDocker(
+                                new ModelEnvironmentDefinitionDocker()
+                                    .withBaseImage("mcr.microsoft.com/azureml/base:openmpi3.1.2-ubuntu16.04")
+                                    .withBaseImageRegistry(new ModelDockerSectionBaseImageRegistry()))
+                            .withSpark(
+                                new ModelEnvironmentDefinitionSpark()
+                                    .withRepositories(Arrays.asList())
+                                    .withPackages(Arrays.asList())
+                                    .withPrecachePackages(true))))
             .create();
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

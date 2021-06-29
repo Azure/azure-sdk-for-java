@@ -34,7 +34,12 @@ public final class MachineLearningComputeCreateOrUpdateSamples {
             .define("compute123")
             .withRegion("eastus")
             .withExistingWorkspace("testrg123", "workspaces123")
-            .withProperties(new Aks().withProperties(new AksProperties().withAgentCount(4)))
+            .withProperties(
+                new Aks()
+                    .withDescription("some compute")
+                    .withResourceId(
+                        "/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourcegroups/testrg123/providers/Microsoft.ContainerService/managedClusters/compute123-56826-c9b00420020b2")
+                    .withProperties(new AksProperties().withAgentCount(4)))
             .create();
     }
 
@@ -118,6 +123,7 @@ public final class MachineLearningComputeCreateOrUpdateSamples {
             .withExistingWorkspace("testrg123", "workspaces123")
             .withProperties(
                 new AmlCompute()
+                    .withDescription("some compute")
                     .withProperties(
                         new AmlComputeProperties()
                             .withScaleSettings(
