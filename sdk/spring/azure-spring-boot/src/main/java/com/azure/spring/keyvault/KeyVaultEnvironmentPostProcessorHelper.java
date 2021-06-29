@@ -12,6 +12,7 @@ import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.azure.security.keyvault.secrets.SecretServiceVersion;
+import com.azure.spring.core.AzureSpringProperties;
 import com.azure.spring.keyvault.KeyVaultProperties.Property;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +29,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.azure.spring.core.ApplicationId.AZURE_SPRING_KEY_VAULT;
+import static com.azure.spring.core.Constants.AZURE_SPRING_PROPERTIES;
 import static com.azure.spring.utils.Constants.VERSION;
 import static com.azure.spring.utils.Constants.AZURE_KEYVAULT_PROPERTYSOURCE_NAME;
 import static com.azure.spring.utils.Constants.DEFAULT_REFRESH_INTERVAL_MS;
@@ -132,17 +134,18 @@ class KeyVaultEnvironmentPostProcessorHelper {
      */
     public TokenCredential getCredentials(String normalizedName) {
         //use service principle to authenticate
-        final String clientId = getProperty(normalizedName, Property.CLIENT_ID);
-        final String clientKey = getPropertyValue(normalizedName, Property.CLIENT_KEY);
-        final String tenantId = getProperty(normalizedName, Property.TENANT_ID);
-        final String certificatePath = getProperty(normalizedName, Property.CERTIFICATE_PATH);
-        final String certificatePassword = getProperty(normalizedName, Property.CERTIFICATE_PASSWORD);
-        final String authorityHost = getProperty(normalizedName, Property.AUTHORITY_HOST, DEFAULT_AUTHORITY_HOST);
-        if (clientId != null && tenantId != null && clientKey != null) {
+        final String clientId = getPropertyValue(normalizedName, Property.CLIENT_ID);
+        final String clientSecret = Optional.ofNullable(getPropertyValue(normalizedName, Property.CLIENT_SECRET))
+                                            .orElse(getPropertyValue(normalizedName, Property.CLIENT_KEY));
+        final String tenantId = getPropertyValue(normalizedName, Property.TENANT_ID);
+        final String certificatePath = getPropertyValue(normalizedName, Property.CERTIFICATE_PATH);
+        final String certificatePassword = getPropertyValue(normalizedName, Property.CERTIFICATE_PASSWORD);
+        final String authorityHost = getPropertyValue(normalizedName, Property.AUTHORITY_HOST, DEFAULT_AUTHORITY_HOST);
+        if (clientId != null && tenantId != null && clientSecret != null) {
             LOGGER.debug("Will use custom credentials");
             return new ClientSecretCredentialBuilder()
                     .clientId(clientId)
-                    .clientSecret(clientKey)
+                    .clientSecret(clientSecret)
                     .tenantId(tenantId)
                     .authorityHost(authorityHost)
                     .build();
@@ -180,27 +183,17 @@ class KeyVaultEnvironmentPostProcessorHelper {
     }
 
     private String getPropertyValue(final String normalizedName, final Property property, String defaultValue) {
-        return Optional.of(KeyVaultProperties.getPropertyName(normalizedName, property))
+        String keyVaultPropertyValue = Optional.of(KeyVaultProperties.getPropertyName(normalizedName, property))
             .map(environment::getProperty)
             .orElse(defaultValue);
-    }
-
-    private String getPropertyValueFromAzureProperties(final Property property, String defaultValue) {
-        return Optional.of(KeyVaultProperties.getPropertyNameFromAzureProperties(property))
-            .map(environment::getProperty)
-            .orElse(defaultValue);
-    }
-
-    private String getProperty(final String normalizedName, final Property property) {
-        return getProperty(normalizedName, property, null);
-    }
-
-    private String getProperty(final String normalizedName, final Property property, String defaultValue) {
-        if (!normalizedName.equals("")) {
-            return getPropertyValue(normalizedName, property, defaultValue);
+        if (keyVaultPropertyValue != null) {
+            return keyVaultPropertyValue;
         }
-
-        return Optional.ofNullable(getPropertyValue(normalizedName, property, defaultValue))
-            .orElse(getPropertyValueFromAzureProperties(property, defaultValue));
+        if (normalizedName.equals("") && AZURE_SPRING_PROPERTIES.contains(property.getName())) {
+            return Optional.of(AzureSpringProperties.PREFIX + property.getName())
+                .map(environment::getProperty)
+                .orElse(defaultValue);
+        }
+        return null;
     }
 }

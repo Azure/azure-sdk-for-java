@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.autoconfigure.b2c;
 
-import com.azure.spring.core.AzureProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -21,7 +20,7 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 @Configuration
 @ConditionalOnResource(resources = "classpath:aadb2c.enable.config")
 @Conditional({ AADB2CConditions.CommonCondition.class, AADB2CConditions.UserFlowCondition.class })
-@EnableConfigurationProperties({AADB2CProperties.class, AzureProperties.class})
+@EnableConfigurationProperties(AADB2CProperties.class)
 @Import(AADB2COAuth2ClientConfiguration.class)
 public class AADB2CAutoConfiguration {
 

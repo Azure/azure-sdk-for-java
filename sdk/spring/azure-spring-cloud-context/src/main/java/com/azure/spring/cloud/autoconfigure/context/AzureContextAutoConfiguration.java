@@ -8,7 +8,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.context.core.api.CredentialsProvider;
 import com.azure.spring.cloud.context.core.api.EnvironmentProvider;
-import com.azure.spring.core.AzureProperties;
+import com.azure.spring.core.AzureSpringProperties;
 import com.azure.spring.core.CredentialProperties;
 import com.azure.spring.identity.DefaultSpringCredentialBuilder;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -25,7 +25,7 @@ import org.springframework.context.annotation.Import;
  * @author Warren Zhu
  */
 @Configuration
-@EnableConfigurationProperties({AzureContextProperties.class, AzureProperties.class})
+@EnableConfigurationProperties(AzureContextProperties.class)
 @ConditionalOnClass(AzureResourceManager.class)
 // TODO (yiliu6) Can the property be changed to auto-created?
 @ConditionalOnProperty(prefix = "spring.cloud.azure", value = { "resource-group" })

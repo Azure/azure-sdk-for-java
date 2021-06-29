@@ -58,17 +58,6 @@ public class AzureStorageQueueAutoConfigurationTest {
     }
 
     @Test
-    public void testAzurePropertiesConfigured() {
-        this.contextRunner.withPropertyValues(
-            "spring.cloud.azure.storage.account=squeue",
-            "spring.cloud.azure.resource-group=fake"
-        ).run(context -> {
-            assertThat(context).hasSingleBean(AzureStorageProperties.class);
-            assertThat(context.getBean(AzureStorageProperties.class).getResourceGroup()).isEqualTo("fake");
-        });
-    }
-
-    @Test
     public void testAzureStoragePropertiesOtherItemsConfigured() {
         this.contextRunner.withPropertyValues(
             "spring.cloud.azure.storage.account=squeue",

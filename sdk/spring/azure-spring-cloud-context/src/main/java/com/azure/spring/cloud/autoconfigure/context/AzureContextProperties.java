@@ -3,10 +3,12 @@
 
 package com.azure.spring.cloud.autoconfigure.context;
 
-import com.azure.spring.core.AzureProperties;
+import com.azure.spring.core.AzureSpringProperties;
+import com.azure.spring.core.CredentialProperties;
 import com.google.common.base.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Import;
 import org.springframework.util.Assert;
 import org.springframework.validation.annotation.Validated;
 
@@ -17,12 +19,13 @@ import javax.annotation.PostConstruct;
  */
 @Validated
 @ConfigurationProperties(AzureContextProperties.PREFIX)
+@Import(AzureSpringProperties.class)
 public class AzureContextProperties {
 
     public static final String PREFIX = "spring.cloud.azure";
 
     @Autowired
-    private AzureProperties azureProperties;
+    private CredentialProperties credentialProperties;
 
     /**
      * Flag to automatically create resources.
@@ -41,12 +44,12 @@ public class AzureContextProperties {
 
     private String subscriptionId;
 
-    public AzureProperties getAzureProperties() {
-        return azureProperties;
+    public CredentialProperties getCredentialProperties() {
+        return credentialProperties;
     }
 
-    public void setAzureProperties(AzureProperties azureProperties) {
-        this.azureProperties = azureProperties;
+    public void setCredentialProperties(CredentialProperties credentialProperties) {
+        this.credentialProperties = credentialProperties;
     }
 
     public String getRegion() {
@@ -88,7 +91,7 @@ public class AzureContextProperties {
                 "When auto create resources is enabled, spring.cloud.azure.region must be provided");
         }
 
-        if (azureProperties.getCredentialProperties().isMsiEnabled() && Strings.isNullOrEmpty(getSubscriptionId())) {
+        if (credentialProperties.isMsiEnabled() && Strings.isNullOrEmpty(getSubscriptionId())) {
             Assert.hasText(getSubscriptionId(), "When msi is enabled, "
                 + "spring.cloud.azure.subscription-id must be provided");
         }

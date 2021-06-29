@@ -5,11 +5,11 @@ package com.azure.spring.cloud.context.core.impl;
 
 import com.azure.core.management.AzureEnvironment;
 import com.azure.spring.cloud.context.core.api.EnvironmentProvider;
-import com.azure.spring.core.AzureProperties;
+import com.azure.spring.core.AzureSpringProperties;
 
 /**
  * A {@link EnvironmentProvider} implementation that based on {@link
- * AzureProperties}.
+ * AzureSpringProperties}.
  *
  * @author Warren Zhu
  */

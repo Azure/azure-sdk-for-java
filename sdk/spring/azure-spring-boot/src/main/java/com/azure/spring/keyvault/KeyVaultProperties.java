@@ -3,8 +3,10 @@
 
 package com.azure.spring.keyvault;
 
-import com.azure.spring.core.AzureProperties;
+import com.azure.spring.core.AzureSpringProperties;
 import com.azure.spring.utils.Constants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.util.List;
@@ -18,9 +20,10 @@ import org.springframework.boot.context.properties.DeprecatedConfigurationProper
 @ConfigurationProperties(value = KeyVaultProperties.PREFIX)
 public class KeyVaultProperties {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(KeyVaultProperties.class);
+
     public static final String PREFIX = "azure.keyvault";
     public static final String DELIMITER = ".";
-
     public String getClientId() {
         return clientId;
     }
@@ -33,8 +36,19 @@ public class KeyVaultProperties {
         return clientKey;
     }
 
+    @Deprecated
     public void setClientKey(String clientKey) {
         this.clientKey = clientKey;
+    }
+
+    public String getClientSecret() {
+        return clientSecret;
+    }
+
+    public void setClientSecret(String clientSecret) {
+        LOGGER.warn("Property of azure.keyvault.client-key has been deprecated,"
+            + " please use azure.keyvault-client-secret instead.");
+        this.clientSecret = clientSecret;
     }
 
     public String getTenantId() {
@@ -132,6 +146,7 @@ public class KeyVaultProperties {
     private String certificatePath;
     private String clientId;
     private String clientKey;
+    private String clientSecret;
     /**
      * The constant used to define the order of the key vaults you are
      * delivering (comma delimited, e.g 'my-vault, my-vault-2').
@@ -151,6 +166,7 @@ public class KeyVaultProperties {
         CERTIFICATE_PATH("certificate-path"),
         CLIENT_ID("client-id"),
         CLIENT_KEY("client-key"),
+        CLIENT_SECRET("client-secret"),
         ENABLED("enabled"),
         ORDER("order"),
         REFRESH_INTERVAL("refresh-interval"),
@@ -175,13 +191,6 @@ public class KeyVaultProperties {
 
     public static String getPropertyName(String normalizedName, Property property) {
         return Stream.of(PREFIX, normalizedName, property.getName())
-            .map(String::trim)
-            .filter(s -> !s.isEmpty())
-            .collect(Collectors.joining(DELIMITER));
-    }
-
-    public static String getPropertyNameFromAzureProperties(Property property) {
-        return Stream.of(AzureProperties.PREFIX, property.getName())
             .map(String::trim)
             .filter(s -> !s.isEmpty())
             .collect(Collectors.joining(DELIMITER));

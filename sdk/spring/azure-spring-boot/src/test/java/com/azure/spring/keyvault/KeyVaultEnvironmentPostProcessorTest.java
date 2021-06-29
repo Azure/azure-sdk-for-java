@@ -150,7 +150,7 @@ public class KeyVaultEnvironmentPostProcessorTest {
 
     @Test
     public void testGetPropertyFromAzureProperties() {
-        testProperties.put(KeyVaultProperties.getPropertyNameFromAzureProperties(CLIENT_ID), "fake-client-id");
+        testProperties.put("spring.cloud.azure.client-id", "fake-client-id");
         propertySources.addLast(new MapPropertySource("Test_Properties", testProperties));
 
         keyVaultEnvironmentPostProcessorHelper = new KeyVaultEnvironmentPostProcessorHelper(environment);

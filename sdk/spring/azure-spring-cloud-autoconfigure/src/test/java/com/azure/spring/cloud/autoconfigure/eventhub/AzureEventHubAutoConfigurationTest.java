@@ -10,7 +10,7 @@ import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.models.StorageAccountKey;
 import com.azure.resourcemanager.storage.models.StorageAccounts;
-import com.azure.spring.core.AzureProperties;
+import com.azure.spring.core.AzureSpringProperties;
 import com.azure.spring.cloud.context.core.impl.EventHubNamespaceManager;
 import com.azure.spring.cloud.context.core.impl.StorageAccountManager;
 import com.azure.spring.integration.eventhub.api.EventHubClientFactory;
@@ -106,7 +106,7 @@ public class AzureEventHubAutoConfigurationTest {
     }
 
     @Configuration
-    @EnableConfigurationProperties(AzureProperties.class)
+    @EnableConfigurationProperties(AzureSpringProperties.class)
     public static class TestConfigWithAzureResourceManagerAndConnectionProvider {
 
         @Bean

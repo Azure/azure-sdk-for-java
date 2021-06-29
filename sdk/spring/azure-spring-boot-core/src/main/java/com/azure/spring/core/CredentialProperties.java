@@ -8,7 +8,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 /**
  * Azure properties used for getting token credential.
  */
-@ConfigurationProperties(AzureProperties.PREFIX)
+@ConfigurationProperties(AzureSpringProperties.PREFIX)
 public class CredentialProperties {
     /**
      * The Azure Active Directory endpoint to connect to.
@@ -28,7 +28,7 @@ public class CredentialProperties {
     /**
      * Path of a PEM certificate file to use when performing service principal authentication with Azure.
      */
-    private String clientCertificatePath;
+    private String certificatePath;
 
     /**
      * Flag to enable MSI.
@@ -64,12 +64,12 @@ public class CredentialProperties {
         this.clientSecret = clientSecret;
     }
 
-    public String getClientCertificatePath() {
-        return clientCertificatePath;
+    public String getCertificatePath() {
+        return certificatePath;
     }
 
-    public void setClientCertificatePath(String clientCertificatePath) {
-        this.clientCertificatePath = clientCertificatePath;
+    public void setCertificatePath(String certificatePath) {
+        this.certificatePath = certificatePath;
     }
 
     public boolean isMsiEnabled() {

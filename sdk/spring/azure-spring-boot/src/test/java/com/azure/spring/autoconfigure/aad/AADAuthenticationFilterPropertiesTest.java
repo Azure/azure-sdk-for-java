@@ -3,7 +3,7 @@
 
 package com.azure.spring.autoconfigure.aad;
 
-import com.azure.spring.core.AzureProperties;
+import com.azure.spring.core.AzureSpringProperties;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -117,7 +117,7 @@ public class AADAuthenticationFilterPropertiesTest {
     }
 
     @Configuration
-    @EnableConfigurationProperties({AADAuthenticationProperties.class, AzureProperties.class})
+    @EnableConfigurationProperties(AADAuthenticationProperties.class)
     static class Config {
     }
 }

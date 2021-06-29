@@ -15,8 +15,8 @@ public class EventHubNamespaceManager extends AzureManager<EventHubNamespace, St
 
     private final AzureResourceManager azureResourceManager;
 
-    public EventHubNamespaceManager(AzureResourceManager azureResourceManager, AzureContextProperties azureContextPropertiesProperties) {
-        super(azureContextPropertiesProperties);
+    public EventHubNamespaceManager(AzureResourceManager azureResourceManager, AzureContextProperties azureContextProperties) {
+        super(azureContextProperties);
         this.azureResourceManager = azureResourceManager;
     }
 

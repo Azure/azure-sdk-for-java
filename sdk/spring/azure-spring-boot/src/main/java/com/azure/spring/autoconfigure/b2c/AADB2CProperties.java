@@ -9,6 +9,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
+import org.springframework.context.annotation.Import;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
@@ -27,6 +28,7 @@ import static com.azure.spring.aad.AADAuthorizationGrantType.CLIENT_CREDENTIALS;
  */
 @Validated
 @ConfigurationProperties(prefix = AADB2CProperties.PREFIX)
+@Import(CredentialProperties.class)
 public class AADB2CProperties implements InitializingBean {
 
     public static final String DEFAULT_LOGOUT_SUCCESS_URL = "http://localhost:8080/login";

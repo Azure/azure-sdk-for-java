@@ -20,7 +20,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplicat
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import com.azure.spring.core.AzureProperties;
 
 import java.util.concurrent.TimeUnit;
 
@@ -37,7 +36,7 @@ import java.util.concurrent.TimeUnit;
 @ConditionalOnResource(resources = "classpath:aad.enable.config")
 @ConditionalOnMissingClass({ "org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken" })
 @ConditionalOnProperty(prefix = AADAuthenticationFilterAutoConfiguration.PROPERTY_PREFIX, value = { "client-id" })
-@EnableConfigurationProperties({ AADAuthenticationProperties.class, AzureProperties.class })
+@EnableConfigurationProperties(AADAuthenticationProperties.class)
 public class AADAuthenticationFilterAutoConfiguration {
     public static final String PROPERTY_PREFIX = "azure.activedirectory";
     private static final Logger LOG = LoggerFactory.getLogger(AADAuthenticationProperties.class);

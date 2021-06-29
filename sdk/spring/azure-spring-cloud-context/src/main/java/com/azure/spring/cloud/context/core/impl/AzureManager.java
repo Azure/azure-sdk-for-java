@@ -27,7 +27,7 @@ public abstract class AzureManager<T, K> implements ResourceManager<T, K> {
 
     public AzureManager(@NonNull AzureContextProperties azureContextProperties) {
         this.azureContextProperties = azureContextProperties;
-        this.resourceGroup = azureContextProperties.getAzureProperties().getResourceGroup();
+        this.resourceGroup = azureContextProperties.getResourceGroup();
         this.region = azureContextProperties.getRegion();
     }
 

@@ -48,8 +48,8 @@ public class AzureEventHubAutoConfiguration {
     @ConditionalOnMissingBean
     @ConditionalOnBean(AzureResourceManager.class)
     public EventHubNamespaceManager eventHubNamespaceManager(AzureResourceManager azureResourceManager,
-                                                             AzureContextProperties azureContextPropertiesProperties) {
-        return new EventHubNamespaceManager(azureResourceManager, azureContextPropertiesProperties);
+                                                             AzureContextProperties azureContextProperties) {
+        return new EventHubNamespaceManager(azureResourceManager, azureContextProperties);
     }
 
     @Bean

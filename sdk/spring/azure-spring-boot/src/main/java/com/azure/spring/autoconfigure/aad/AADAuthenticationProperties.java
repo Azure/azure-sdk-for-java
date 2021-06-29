@@ -11,6 +11,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
+import org.springframework.context.annotation.Import;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 
@@ -30,6 +31,7 @@ import java.util.concurrent.TimeUnit;
  */
 @Validated
 @ConfigurationProperties("azure.activedirectory")
+@Import(CredentialProperties.class)
 public class AADAuthenticationProperties implements InitializingBean {
 
     private static final long DEFAULT_JWK_SET_CACHE_LIFESPAN = TimeUnit.MINUTES.toMillis(5);

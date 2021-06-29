@@ -13,7 +13,7 @@ import com.azure.resourcemanager.eventhubs.models.EventHubAuthorizationKey;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespace;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespaceAuthorizationRule;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespaces;
-import com.azure.spring.core.AzureProperties;
+import com.azure.spring.core.AzureSpringProperties;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -82,7 +82,7 @@ public class AzureEventHubKafkaAutoConfigurationTest {
     }
 
     @Configuration
-    @EnableConfigurationProperties(AzureProperties.class)
+    @EnableConfigurationProperties(AzureSpringProperties.class)
     public static class TestConfigurationWithResourceManager {
 
         @Bean

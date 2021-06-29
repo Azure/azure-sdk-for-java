@@ -4,20 +4,17 @@
 package com.azure.spring.core;
 
 
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.util.logging.LogLevel;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Import;
 import org.springframework.validation.annotation.Validated;
 
 /**
- * Azure related properties.
+ * Common properties for Azure SDK clients.
  */
 @Validated
-@ConfigurationProperties(AzureProperties.PREFIX)
-@Import({CredentialProperties.class, LogProperties.class})
-public class AzureProperties {
+@ConfigurationProperties(AzureSpringProperties.PREFIX)
+@Import(CredentialProperties.class)
+public class AzureSpringProperties {
 
     public static final String PREFIX = "spring.cloud.azure";
 
