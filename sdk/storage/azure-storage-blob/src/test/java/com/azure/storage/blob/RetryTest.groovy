@@ -109,6 +109,21 @@ class RetryTest extends Specification {
             }).verifyComplete()
     }
 
+    def "Retries wrapped timeout error"() {
+        setup:
+        RequestRetryTestFactory retryTestFactory = new RequestRetryTestFactory(RequestRetryTestFactory.RETRY_TEST_SCENARIO_WRAPPED_TIMEOUT_ERROR, retryTestOptions)
+
+        when:
+        def responseMono = Mono.defer { retryTestFactory.send(retryTestURL) }
+
+        then:
+        StepVerifier.create(responseMono)
+            .assertNext({
+                assert it.getStatusCode() == 200
+                assert retryTestFactory.getTryNumber() == 3
+            }).verifyComplete()
+    }
+
     def "Retries try timeout"() {
         setup:
         RequestRetryTestFactory retryTestFactory = new RequestRetryTestFactory(RequestRetryTestFactory.RETRY_TEST_SCENARIO_TRY_TIMEOUT, retryTestOptions)
