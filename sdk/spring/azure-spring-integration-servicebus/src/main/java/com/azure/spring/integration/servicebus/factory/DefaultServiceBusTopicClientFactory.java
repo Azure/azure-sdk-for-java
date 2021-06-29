@@ -31,7 +31,7 @@ public class DefaultServiceBusTopicClientFactory extends AbstractServiceBusSende
     private final Map<String, ServiceBusSenderAsyncClient> topicSenderMap = new ConcurrentHashMap<>();
 
     public DefaultServiceBusTopicClientFactory(String connectionString) {
-       this(connectionString, AmqpTransportType.AMQP);
+        this(connectionString, AmqpTransportType.AMQP);
     }
 
     public DefaultServiceBusTopicClientFactory(String connectionString, AmqpTransportType amqpTransportType) {
