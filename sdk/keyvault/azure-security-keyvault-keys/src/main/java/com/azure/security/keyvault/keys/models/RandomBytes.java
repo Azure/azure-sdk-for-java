@@ -14,23 +14,23 @@ import com.azure.security.keyvault.keys.implementation.ByteExtensions;
 @Immutable
 public class RandomBytes {
     /*
-     * The bytes encoded as a base64url string.
+     * The random bytes.
      */
     private final byte[] bytes;
 
     /**
      * Creates and instance of {@link RandomBytes}.
      *
-     * @param bytes The bytes.
+     * @param bytes The random bytes.
      */
     public RandomBytes(byte[] bytes) {
         this.bytes = ByteExtensions.clone(bytes);
     }
 
     /**
-     * Get the bytes encoded as a base64url string.
+     * Get the random bytes.
      *
-     * @return The bytes encoded as a base64url string.
+     * @return The random bytes.
      */
     public byte[] getBytes() {
         return ByteExtensions.clone(this.bytes);

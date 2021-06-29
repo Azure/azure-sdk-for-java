@@ -19,7 +19,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 @Fluent
 public class RandomBytes {
     /*
-     * The bytes encoded as a base64url string.
+     * The random bytes.
      */
     @JsonProperty(value = "value")
     @JsonSerialize(using = Base64UrlJsonSerializer.class)
@@ -27,9 +27,9 @@ public class RandomBytes {
     private byte[] bytes;
 
     /**
-     * Get the bytes encoded as a base64url string.
+     * Get the random bytes.
      *
-     * @return The bytes encoded as a base64url string.
+     * @return The random bytes.
      */
     public byte[] getBytes() {
         return ByteExtensions.clone(this.bytes);
