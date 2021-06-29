@@ -63,10 +63,9 @@ public final class DirectoriesImpl {
     public interface DirectoriesService {
         @Put("/{shareName}/{directory}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<DirectoriesSetMetadataResponse> setMetadata(
-                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @PathParam("directory") String directory,
                 @QueryParam("restype") String restype,
@@ -79,10 +78,9 @@ public final class DirectoriesImpl {
 
         @Get("/{shareName}/{directory}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<DirectoriesListFilesAndDirectoriesSegmentResponse> listFilesAndDirectoriesSegment(
-                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @PathParam("directory") String directory,
                 @QueryParam("restype") String restype,
@@ -100,10 +98,9 @@ public final class DirectoriesImpl {
 
         @Get("/{shareName}/{directory}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<DirectoriesListHandlesResponse> listHandles(
-                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @PathParam("directory") String directory,
                 @QueryParam("comp") String comp,
@@ -118,10 +115,9 @@ public final class DirectoriesImpl {
 
         @Put("/{shareName}/{directory}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<DirectoriesForceCloseHandlesResponse> forceCloseHandles(
-                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @PathParam("directory") String directory,
                 @QueryParam("comp") String comp,
@@ -135,8 +131,8 @@ public final class DirectoriesImpl {
                 Context context);
 
         @Put("/{shareName}/{directoryPath}")
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<DirectoriesCreateResponse> create(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
@@ -155,10 +151,9 @@ public final class DirectoriesImpl {
 
         @Get("/{shareName}/{directoryPath}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<DirectoriesGetPropertiesResponse> getProperties(
-                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @PathParam("directory") String directory,
                 @QueryParam("restype") String restype,
@@ -170,10 +165,9 @@ public final class DirectoriesImpl {
 
         @Delete("/{shareName}/{directoryPath}")
         @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<DirectoriesDeleteResponse> delete(
-                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @PathParam("directory") String directory,
                 @QueryParam("restype") String restype,
@@ -184,10 +178,9 @@ public final class DirectoriesImpl {
 
         @Put("/{shareName}/{directoryPath}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<DirectoriesSetPropertiesResponse> setProperties(
-                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @PathParam("directory") String directory,
                 @QueryParam("restype") String restype,

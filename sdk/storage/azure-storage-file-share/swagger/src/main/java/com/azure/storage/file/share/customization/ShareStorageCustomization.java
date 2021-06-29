@@ -76,35 +76,35 @@ public class ShareStorageCustomization extends Customization {
         // Add these annotations since the default deserializer does not handle these cases correctly.
         PackageCustomization implementationModels = customization.getPackage("com.azure.storage.file.share.implementation.models");
         implementationModels.getClass("FilesAndDirectoriesListSegment").addAnnotation("@JsonDeserialize(using = com.azure.storage.file.share.implementation.util.FilesAndDirectoriesListSegmentDeserializer.class)");
-//        implementationModels.getClass("CopyFileSmbInfo")
-//            .removeAnnotation("@JacksonXmlRootElement(localName = \"CopyFileSmbInfo\")")
-//            .addAnnotation("@JacksonXmlRootElement(localName = \"copy-file-smb-info\")");
+        implementationModels.getClass("CopyFileSmbInfo")
+            .removeAnnotation("@JacksonXmlRootElement\\(localName = \"CopyFileSmbInfo\"\\)")
+            .addAnnotation("@JacksonXmlRootElement(localName = \"copy-file-smb-info\")");
 
         PackageCustomization models = customization.getPackage("com.azure.storage.file.share.models");
         models.getClass("ShareFileRangeList").addAnnotation("@JsonDeserialize(using = ShareFileRangeListDeserializer.class)");
 
         // Replace JacksonXmlRootElement annotations that are causing a semantic breaking change.
         ClassCustomization shareFileHttpHeaders = models.getClass("ShareFileHttpHeaders");
-        shareFileHttpHeaders.removeAnnotation("@JacksonXmlRootElement(localName = \"ShareFileHttpHeaders\")");
-        shareFileHttpHeaders.addAnnotation("@JacksonXmlRootElement(localName = \"share-file-http-headers\")");
+        shareFileHttpHeaders.removeAnnotation("@JacksonXmlRootElement\\(localName = \"ShareFileHttpHeaders\"\\)")
+            .addAnnotation("@JacksonXmlRootElement(localName = \"share-file-http-headers\")");
 
-//        ClassCustomization sourceModifiedAccessConditions = models.getClass("SourceModifiedAccessConditions");
-//        sourceModifiedAccessConditions.removeAnnotation("@JacksonXmlRootElement(localName = \"SourceModifiedAccessConditions\")");
-//        sourceModifiedAccessConditions.addAnnotation("@JacksonXmlRootElement(localName = \"source-modified-access-conditions\")");
+        ClassCustomization sourceModifiedAccessConditions = models.getClass("SourceModifiedAccessConditions");
+        sourceModifiedAccessConditions.removeAnnotation("@JacksonXmlRootElement\\(localName = \"SourceModifiedAccessConditions\"\\)")
+            .addAnnotation("@JacksonXmlRootElement(localName = \"source-modified-access-conditions\")");
 
         // Update incorrect JsonProperty of Metrics
         ClassCustomization shareServiceProperties = models.getClass("ShareServiceProperties");
         PropertyCustomization hourMetrics = shareServiceProperties.getProperty("hourMetrics");
-        hourMetrics.removeAnnotation("@JsonProperty(value = \"Metrics\")");
-        hourMetrics.addAnnotation("@JsonProperty(value = \"HourMetrics\")");
+        hourMetrics.removeAnnotation("@JsonProperty\\(value = \"Metrics\"\\)")
+            .addAnnotation("@JsonProperty(value = \"HourMetrics\")");
         PropertyCustomization minuteMetrics = shareServiceProperties.getProperty("minuteMetrics");
-        minuteMetrics.removeAnnotation("@JsonProperty(value = \"Metrics\")");
-        minuteMetrics.addAnnotation("@JsonProperty(value = \"MinuteMetrics\")");
+        minuteMetrics.removeAnnotation("@JsonProperty\\(value = \"Metrics\"\\)")
+            .addAnnotation("@JsonProperty(value = \"MinuteMetrics\")");
 
     }
 
     private void modifyUnexpectedResponseExceptionType(MethodCustomization method) {
-        method.removeAnnotation("@UnexpectedResponseExceptionType(StorageErrorException.class)");
-        method.addAnnotation("@UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)");
+        method.removeAnnotation("@UnexpectedResponseExceptionType(StorageErrorException.class)")
+            .addAnnotation("@UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)");
     }
 }

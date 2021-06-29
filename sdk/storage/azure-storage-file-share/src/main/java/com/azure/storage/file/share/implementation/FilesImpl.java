@@ -77,10 +77,9 @@ public final class FilesImpl {
     public interface FilesService {
         @Put("/{shareName}/{directory}/{fileName}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<FilesSetMetadataResponse> setMetadata(
-                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @PathParam("directory") String directory,
                 @PathParam("fileName") String fileName,
@@ -94,10 +93,9 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{directory}/{fileName}")
         @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<FilesAcquireLeaseResponse> acquireLease(
-                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @PathParam("directory") String directory,
                 @PathParam("fileName") String fileName,
@@ -113,10 +111,9 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{directory}/{fileName}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<FilesReleaseLeaseResponse> releaseLease(
-                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @PathParam("directory") String directory,
                 @PathParam("fileName") String fileName,
@@ -131,10 +128,9 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{directory}/{fileName}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<FilesChangeLeaseResponse> changeLease(
-                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @PathParam("directory") String directory,
                 @PathParam("fileName") String fileName,
@@ -150,10 +146,9 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{directory}/{fileName}")
         @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<FilesBreakLeaseResponse> breakLease(
-                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @PathParam("directory") String directory,
                 @PathParam("fileName") String fileName,
@@ -168,10 +163,9 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{directory}/{fileName}")
         @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<FilesUploadRangeFromURLResponse> uploadRangeFromURL(
-                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @PathParam("directory") String directory,
                 @PathParam("fileName") String fileName,
@@ -193,10 +187,9 @@ public final class FilesImpl {
 
         @Get("/{shareName}/{directory}/{fileName}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<FilesGetRangeListResponse> getRangeList(
-                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @PathParam("directory") String directory,
                 @PathParam("fileName") String fileName,
@@ -212,10 +205,9 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{directory}/{fileName}")
         @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<FilesStartCopyResponse> startCopy(
-                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @PathParam("directory") String directory,
                 @PathParam("fileName") String fileName,
@@ -237,10 +229,9 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{directory}/{fileName}")
         @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<FilesAbortCopyResponse> abortCopy(
-                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @PathParam("directory") String directory,
                 @PathParam("fileName") String fileName,
@@ -255,10 +246,9 @@ public final class FilesImpl {
 
         @Get("/{shareName}/{directory}/{fileName}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<FilesListHandlesResponse> listHandles(
-                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @PathParam("directory") String directory,
                 @PathParam("fileName") String fileName,
@@ -273,10 +263,9 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{directory}/{fileName}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<FilesForceCloseHandlesResponse> forceCloseHandles(
-                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @PathParam("directory") String directory,
                 @PathParam("fileName") String fileName,
@@ -290,8 +279,8 @@ public final class FilesImpl {
                 Context context);
 
         @Put("/{shareName}/{filePath}")
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<FilesCreateResponse> create(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
@@ -319,10 +308,9 @@ public final class FilesImpl {
 
         @Get("/{shareName}/{filePath}")
         @ExpectedResponses({200, 206})
+        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<StreamResponse> download(
-                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @PathParam("directory") String directory,
                 @PathParam("fileName") String fileName,
@@ -336,10 +324,9 @@ public final class FilesImpl {
 
         @Head("/{shareName}/{filePath}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<FilesGetPropertiesResponse> getProperties(
-                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @PathParam("directory") String directory,
                 @PathParam("fileName") String fileName,
@@ -352,10 +339,9 @@ public final class FilesImpl {
 
         @Delete("/{shareName}/{filePath}")
         @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<FilesDeleteResponse> delete(
-                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @PathParam("directory") String directory,
                 @PathParam("fileName") String fileName,
@@ -367,10 +353,9 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{filePath}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<FilesSetHttpHeadersResponse> setHttpHeaders(
-                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @PathParam("directory") String directory,
                 @PathParam("fileName") String fileName,
@@ -395,10 +380,9 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{filePath}")
         @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<FilesUploadRangeResponse> uploadRange(
-                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @PathParam("directory") String directory,
                 @PathParam("fileName") String fileName,

@@ -73,8 +73,8 @@ public final class SharesImpl {
     @ServiceInterface(name = "AzureFileStorageShar")
     public interface SharesService {
         @Put("/{shareName}")
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<SharesCreateResponse> create(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
@@ -91,10 +91,9 @@ public final class SharesImpl {
 
         @Get("/{shareName}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<SharesGetPropertiesResponse> getProperties(
-                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @QueryParam("restype") String restype,
                 @QueryParam("sharesnapshot") String sharesnapshot,
@@ -106,10 +105,9 @@ public final class SharesImpl {
 
         @Delete("/{shareName}")
         @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<SharesDeleteResponse> delete(
-                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @QueryParam("restype") String restype,
                 @QueryParam("sharesnapshot") String sharesnapshot,
@@ -122,10 +120,9 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<SharesAcquireLeaseResponse> acquireLease(
-                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @QueryParam("comp") String comp,
                 @HeaderParam("x-ms-lease-action") String action,
@@ -141,10 +138,9 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<SharesReleaseLeaseResponse> releaseLease(
-                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @QueryParam("comp") String comp,
                 @HeaderParam("x-ms-lease-action") String action,
@@ -159,10 +155,9 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<SharesChangeLeaseResponse> changeLease(
-                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @QueryParam("comp") String comp,
                 @HeaderParam("x-ms-lease-action") String action,
@@ -178,10 +173,9 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<SharesRenewLeaseResponse> renewLease(
-                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @QueryParam("comp") String comp,
                 @HeaderParam("x-ms-lease-action") String action,
@@ -196,10 +190,9 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<SharesBreakLeaseResponse> breakLease(
-                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @QueryParam("comp") String comp,
                 @HeaderParam("x-ms-lease-action") String action,
@@ -215,10 +208,9 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<SharesCreateSnapshotResponse> createSnapshot(
-                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @QueryParam("restype") String restype,
                 @QueryParam("comp") String comp,
@@ -230,10 +222,9 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<SharesCreatePermissionResponse> createPermission(
-                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @QueryParam("restype") String restype,
                 @QueryParam("comp") String comp,
@@ -245,10 +236,9 @@ public final class SharesImpl {
 
         @Get("/{shareName}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<SharesGetPermissionResponse> getPermission(
-                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @QueryParam("restype") String restype,
                 @QueryParam("comp") String comp,
@@ -260,10 +250,9 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<SharesSetPropertiesResponse> setProperties(
-                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @QueryParam("restype") String restype,
                 @QueryParam("comp") String comp,
@@ -278,10 +267,9 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<SharesSetMetadataResponse> setMetadata(
-                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @QueryParam("restype") String restype,
                 @QueryParam("comp") String comp,
@@ -294,10 +282,9 @@ public final class SharesImpl {
 
         @Get("/{shareName}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<SharesGetAccessPolicyResponse> getAccessPolicy(
-                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @QueryParam("restype") String restype,
                 @QueryParam("comp") String comp,
@@ -309,10 +296,9 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<SharesSetAccessPolicyResponse> setAccessPolicy(
-                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @QueryParam("restype") String restype,
                 @QueryParam("comp") String comp,
@@ -325,10 +311,9 @@ public final class SharesImpl {
 
         @Get("/{shareName}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<SharesGetStatisticsResponse> getStatistics(
-                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @QueryParam("restype") String restype,
                 @QueryParam("comp") String comp,
@@ -340,10 +325,9 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<SharesRestoreResponse> restore(
-                @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @QueryParam("restype") String restype,
                 @QueryParam("comp") String comp,
