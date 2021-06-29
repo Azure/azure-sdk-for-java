@@ -12,6 +12,7 @@ import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.implementation.models.DeleteSnapshotsOptionType;
 import com.azure.storage.file.share.implementation.models.FileProperty;
+import com.azure.storage.file.share.implementation.models.InternalShareFileItemProperties;
 import com.azure.storage.file.share.implementation.models.ServicesListSharesSegmentHeaders;
 import com.azure.storage.file.share.implementation.models.ShareItemInternal;
 import com.azure.storage.file.share.implementation.models.SharePropertiesInternal;
@@ -199,7 +200,7 @@ public class ModelHelper {
         if (property == null) {
             return null;
         }
-        return new ShareFileItemProperties(property.getCreationTime(), property.getLastAccessTime(),
+        return new InternalShareFileItemProperties(property.getCreationTime(), property.getLastAccessTime(),
             property.getLastWriteTime(), property.getChangeTime(), property.getLastModified(), property.getEtag());
     }
 }

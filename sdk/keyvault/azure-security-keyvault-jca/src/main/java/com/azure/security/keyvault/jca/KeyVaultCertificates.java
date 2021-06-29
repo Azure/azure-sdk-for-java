@@ -39,11 +39,6 @@ public class KeyVaultCertificates implements AzureCertificates {
      */
     private Date lastRefreshTime;
 
-    /**
-     * Stores the last force refresh time.
-     */
-    private static volatile Date forceRefreshTime = new Date();
-
     private KeyVaultClient keyVaultClient;
 
     private final long refreshInterval;
@@ -88,13 +83,8 @@ public class KeyVaultCertificates implements AzureCertificates {
         if (keyVaultClient == null) {
             return false;
         }
-        if (lastRefreshTime == null || forceRefreshTime.after(lastRefreshTime)) {
-            return true;
-        }
-        if (refreshInterval > 0) {
-            return lastRefreshTime.getTime() + refreshInterval < new Date().getTime();
-        }
-        return false;
+        return refreshInterval > 0
+            && (lastRefreshTime == null || lastRefreshTime.getTime() + refreshInterval < new Date().getTime());
     }
 
     /**
@@ -131,12 +121,21 @@ public class KeyVaultCertificates implements AzureCertificates {
     }
 
     private void refreshCertificatesIfNeeded() {
-        if (certificatesNeedRefresh()) {
-            refreshCertificates();
+        if (certificatesNeedRefresh()) { // Avoid acquiring the lock as much as possible.
+            synchronized (this) {
+                if (certificatesNeedRefresh()) { // After obtaining the lock, avoid doing too many operations.
+                    refreshCertificates();
+                }
+            }
         }
     }
 
-    private void refreshCertificates() {
+    /**
+     * Refresh certificates. Including certificates, aliases, certificate keys.
+     *
+     */
+    public synchronized void refreshCertificates() {
+        // When refreshing certificates, the update of the 3 variables should be an atomic operation.
         aliases = keyVaultClient.getAliases();
         certificateKeys.clear();
         certificates.clear();
@@ -162,7 +161,7 @@ public class KeyVaultCertificates implements AzureCertificates {
      * @return certificate' alias if exist.
      */
     String refreshAndGetAliasByCertificate(Certificate certificate) {
-        updateForceRefreshTime();
+        refreshCertificates();
         return getCertificates().entrySet()
                                 .stream()
                                 .filter(entry -> certificate.equals(entry.getValue()))
@@ -184,13 +183,6 @@ public class KeyVaultCertificates implements AzureCertificates {
         }
         certificates.remove(alias);
         certificateKeys.remove(alias);
-    }
-
-    /**
-     * Overall refresh certificates' info
-     */
-    public static void updateForceRefreshTime() {
-        forceRefreshTime = new Date();
     }
 
 }

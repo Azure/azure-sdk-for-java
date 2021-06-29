@@ -50,7 +50,6 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -648,7 +647,7 @@ public class ShareDirectoryAsyncClient {
         final ShareListFilesAndDirectoriesOptions modifiedOptions = options == null
             ? new ShareListFilesAndDirectoriesOptions() : options;
 
-        List<ListFilesIncludeType> includeTypes = new LinkedList<>();
+        List<ListFilesIncludeType> includeTypes = new ArrayList<>();
         if (modifiedOptions.includeAttributes()) {
             includeTypes.add(ListFilesIncludeType.ATTRIBUTES);
         }
