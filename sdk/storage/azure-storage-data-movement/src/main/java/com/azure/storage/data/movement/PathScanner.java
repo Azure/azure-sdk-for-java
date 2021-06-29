@@ -26,6 +26,8 @@ public final class PathScanner {
      * Constructor for {@link PathScanner}.
      *
      * TODO: Replace placeholder Javadoc
+     *
+     * @param path The local path to be scanned, either relative to execution location or absolute.
      */
     public PathScanner(String path) {
         try {
@@ -52,7 +54,7 @@ public final class PathScanner {
      *
      * @param skipSubdirectories Sets whether to continue enumerating with warnings or throw through the
      *                           Flux when a folder can't be accessed.
-     * @return a {@link Flux<String>} containing the absolute paths of all matching entries.
+     * @return a {@link Flux} containing the absolute paths of all matching entries.
      */
     public Flux<String> scan(boolean skipSubdirectories) {
         // Set up Mono for recursing through directories

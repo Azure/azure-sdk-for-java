@@ -22,8 +22,8 @@ public final class PathScannerFactory {
      * TODO: Replace placeholder Javadoc comment
      *
      * @return a {@link PathScanner} created from the path passed to this factory.
-     * @throws IllegalArgumentException If multiple credentials have been specified.
-     * @throws java.nio.file.InvalidPathException If multiple credentials have been specified.
+     * @throws IllegalArgumentException if the provided path does not point to anything.
+     * @throws java.nio.file.InvalidPathException if the provided path is malformed/cannot be resolved to absolute.
      */
     public PathScanner getPathScanner() {
         return new PathScanner(path);
