@@ -7,12 +7,10 @@ import com.azure.ai.textanalytics.implementation.SentenceSentimentPropertiesHelp
 import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetail;
-import com.azure.ai.textanalytics.models.AnalyzeSentimentAction;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.EntityConditionality;
-import com.azure.ai.textanalytics.models.ExtractKeyPhrasesAction;
 import com.azure.ai.textanalytics.models.HealthcareEntityAssertion;
 import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
 import com.azure.ai.textanalytics.models.LinkedEntity;
@@ -20,7 +18,6 @@ import com.azure.ai.textanalytics.models.PiiEntityCategory;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
 import com.azure.ai.textanalytics.models.PiiEntityDomain;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesAction;
-import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesAction;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
@@ -56,18 +53,9 @@ import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.TestUtils.CATEGORIZED_ENTITY_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
-import static com.azure.ai.textanalytics.TestUtils.ENTITIES_RECOGNITION_DEFAULT_NAME;
-import static com.azure.ai.textanalytics.TestUtils.ENTITIES_RECOGNITION_NAME;
 import static com.azure.ai.textanalytics.TestUtils.HEALTHCARE_ENTITY_OFFSET_INPUT;
-import static com.azure.ai.textanalytics.TestUtils.KEY_PHRASES_EXTRACTION_DEFAULT_NAME;
-import static com.azure.ai.textanalytics.TestUtils.KEY_PHRASES_EXTRACTION_NAME;
-import static com.azure.ai.textanalytics.TestUtils.LINKED_ENTITIES_RECOGNITION_DEFAULT_NAME;
-import static com.azure.ai.textanalytics.TestUtils.LINKED_ENTITIES_RECOGNITION_NAME;
 import static com.azure.ai.textanalytics.TestUtils.LINKED_ENTITY_INPUTS;
-import static com.azure.ai.textanalytics.TestUtils.PII_ENTITIES_RECOGNITION_NAME;
 import static com.azure.ai.textanalytics.TestUtils.PII_ENTITY_OFFSET_INPUT;
-import static com.azure.ai.textanalytics.TestUtils.SENTIMENT_ANALYSIS_DEFAULT_NAME;
-import static com.azure.ai.textanalytics.TestUtils.SENTIMENT_ANALYSIS_NAME;
 import static com.azure.ai.textanalytics.TestUtils.SENTIMENT_OFFSET_INPUT;
 import static com.azure.ai.textanalytics.TestUtils.TIME_NOW;
 import static com.azure.ai.textanalytics.TestUtils.getAnalyzeSentimentResultCollectionForActions;
@@ -2203,15 +2191,15 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             validateAnalyzeBatchActionsResultList(false, false,
                 Arrays.asList(getExpectedAnalyzeBatchActionsResult(
                     IterableStream.of(asList(getExpectedRecognizeEntitiesActionResult(false,
-                        ENTITIES_RECOGNITION_NAME, TIME_NOW, getRecognizeEntitiesResultCollection(), null))),
+                        TIME_NOW, getRecognizeEntitiesResultCollection(), null))),
                     IterableStream.of(asList(getExpectedRecognizeLinkedEntitiesActionResult(false,
-                        LINKED_ENTITIES_RECOGNITION_NAME, TIME_NOW, getRecognizeLinkedEntitiesResultCollectionForActions(), null))),
+                        TIME_NOW, getRecognizeLinkedEntitiesResultCollectionForActions(), null))),
                     IterableStream.of(asList(getExpectedRecognizePiiEntitiesActionResult(false,
-                        PII_ENTITIES_RECOGNITION_NAME, TIME_NOW, getRecognizePiiEntitiesResultCollection(), null))),
+                        TIME_NOW, getRecognizePiiEntitiesResultCollection(), null))),
                     IterableStream.of(asList(getExpectedExtractKeyPhrasesActionResult(false,
-                        KEY_PHRASES_EXTRACTION_NAME, TIME_NOW, getExtractKeyPhrasesResultCollection(), null))),
+                        TIME_NOW, getExtractKeyPhrasesResultCollection(), null))),
                     IterableStream.of(asList(getExpectedAnalyzeSentimentActionResult(false,
-                        SENTIMENT_ANALYSIS_NAME, TIME_NOW, getAnalyzeSentimentResultCollectionForActions(), null)))
+                        TIME_NOW, getAnalyzeSentimentResultCollectionForActions(), null)))
                 )),
                 result.stream().collect(Collectors.toList()));
         });
@@ -2264,33 +2252,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                 validateAnalyzeBatchActionsResultList(false, false,
                     Arrays.asList(getExpectedAnalyzeBatchActionsResult(
                         IterableStream.of(asList(getExpectedRecognizeEntitiesActionResult(false,
-                            ENTITIES_RECOGNITION_NAME, TIME_NOW, getRecognizeEntitiesResultCollection(), null))),
-                        IterableStream.of(Collections.emptyList()),
-                        IterableStream.of(Collections.emptyList()),
-                        IterableStream.of(Collections.emptyList()),
-                        IterableStream.of(Collections.emptyList()))),
-                    result.stream().collect(Collectors.toList()));
-            }
-        );
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void analyzeEntitiesRecognitionActionWithNoActionName(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
-        client = getTextAnalyticsClient(httpClient, serviceVersion);
-        analyzeEntitiesRecognitionRunner(
-            (documents, tasks) -> {
-                SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedIterable> syncPoller =
-                    client.beginAnalyzeActions(documents, tasks.setRecognizeEntitiesActions(new RecognizeEntitiesAction()),
-                        new AnalyzeActionsOptions().setIncludeStatistics(false), Context.NONE);
-                syncPoller = setPollInterval(syncPoller);
-                syncPoller.waitForCompletion();
-                AnalyzeActionsResultPagedIterable result = syncPoller.getFinalResult();
-
-                validateAnalyzeBatchActionsResultList(false, false,
-                    Arrays.asList(getExpectedAnalyzeBatchActionsResult(
-                        IterableStream.of(asList(getExpectedRecognizeEntitiesActionResult(false,
-                            ENTITIES_RECOGNITION_DEFAULT_NAME, TIME_NOW, getRecognizeEntitiesResultCollection(), null))),
+                            TIME_NOW, getRecognizeEntitiesResultCollection(), null))),
                         IterableStream.of(Collections.emptyList()),
                         IterableStream.of(Collections.emptyList()),
                         IterableStream.of(Collections.emptyList()),
@@ -2319,7 +2281,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                         IterableStream.of(Collections.emptyList()),
                         IterableStream.of(Collections.emptyList()),
                         IterableStream.of(asList(getExpectedRecognizePiiEntitiesActionResult(false,
-                            PII_ENTITIES_RECOGNITION_NAME, TIME_NOW, getExpectedBatchPiiEntitiesForCategoriesFilter(), null))),
+                            TIME_NOW, getExpectedBatchPiiEntitiesForCategoriesFilter(), null))),
                         IterableStream.of(Collections.emptyList()),
                         IterableStream.of(Collections.emptyList()))),
                     result.stream().collect(Collectors.toList()));
@@ -2348,7 +2310,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                         IterableStream.of(Collections.emptyList()),
                         IterableStream.of(Collections.emptyList()),
                         IterableStream.of(asList(getExpectedRecognizePiiEntitiesActionResult(false,
-                            PII_ENTITIES_RECOGNITION_NAME, TIME_NOW, getExpectedBatchPiiEntitiesForDomainFilter(), null))),
+                            TIME_NOW, getExpectedBatchPiiEntitiesForDomainFilter(), null))),
                         IterableStream.of(Collections.emptyList()),
                         IterableStream.of(Collections.emptyList()))),
                     result.stream().collect(Collectors.toList()));
@@ -2373,34 +2335,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                 asList(getExpectedAnalyzeBatchActionsResult(
                     IterableStream.of(Collections.emptyList()),
                     IterableStream.of(asList(getExpectedRecognizeLinkedEntitiesActionResult(false,
-                        LINKED_ENTITIES_RECOGNITION_NAME, TIME_NOW, getRecognizeLinkedEntitiesResultCollection(), null))),
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList()))),
-                result.stream().collect(Collectors.toList()));
-        });
-    }
-
-    @Disabled("Linked entity recognition action doesn't contains bingId property. https://github.com/Azure/azure-sdk-for-java/issues/22208")
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void analyzeLinkedEntityActionWithNoActionName(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
-        client = getTextAnalyticsClient(httpClient, serviceVersion);
-        analyzeLinkedEntityRecognitionRunner((documents, tasks) -> {
-            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedIterable> syncPoller =
-                client.beginAnalyzeActions(documents,
-                    tasks.setRecognizeLinkedEntitiesActions(new RecognizeLinkedEntitiesAction()), "en",
-                    new AnalyzeActionsOptions().setIncludeStatistics(false));
-            syncPoller = setPollInterval(syncPoller);
-            syncPoller.waitForCompletion();
-            AnalyzeActionsResultPagedIterable result = syncPoller.getFinalResult();
-
-            validateAnalyzeBatchActionsResultList(false, false,
-                asList(getExpectedAnalyzeBatchActionsResult(
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(asList(getExpectedRecognizeLinkedEntitiesActionResult(false,
-                        LINKED_ENTITIES_RECOGNITION_DEFAULT_NAME, TIME_NOW,
-                        getRecognizeLinkedEntitiesResultCollection(), null))),
+                        TIME_NOW, getRecognizeLinkedEntitiesResultCollection(), null))),
                     IterableStream.of(Collections.emptyList()),
                     IterableStream.of(Collections.emptyList()),
                     IterableStream.of(Collections.emptyList()))),
@@ -2426,31 +2361,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                     IterableStream.of(Collections.emptyList()),
                     IterableStream.of(Collections.emptyList()),
                     IterableStream.of(asList(getExpectedExtractKeyPhrasesActionResult(false,
-                        KEY_PHRASES_EXTRACTION_NAME, TIME_NOW, getExtractKeyPhrasesResultCollection(), null))),
-                    IterableStream.of(Collections.emptyList()))),
-                result.stream().collect(Collectors.toList()));
-        });
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void analyzeKeyPhrasesExtractionActionWithNoActionName(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
-        client = getTextAnalyticsClient(httpClient, serviceVersion);
-        extractKeyPhrasesRunner((documents, tasks) -> {
-            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedIterable> syncPoller =
-                client.beginAnalyzeActions(documents, tasks.setExtractKeyPhrasesActions(new ExtractKeyPhrasesAction()),
-                    "en", new AnalyzeActionsOptions().setIncludeStatistics(false));
-            syncPoller = setPollInterval(syncPoller);
-            syncPoller.waitForCompletion();
-            AnalyzeActionsResultPagedIterable result = syncPoller.getFinalResult();
-
-            validateAnalyzeBatchActionsResultList(false, false,
-                asList(getExpectedAnalyzeBatchActionsResult(
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(asList(getExpectedExtractKeyPhrasesActionResult(false,
-                        KEY_PHRASES_EXTRACTION_DEFAULT_NAME, TIME_NOW, getExtractKeyPhrasesResultCollection(), null))),
+                        TIME_NOW, getExtractKeyPhrasesResultCollection(), null))),
                     IterableStream.of(Collections.emptyList()))),
                 result.stream().collect(Collectors.toList()));
         });
@@ -2475,31 +2386,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                     IterableStream.of(Collections.emptyList()),
                     IterableStream.of(Collections.emptyList()),
                     IterableStream.of(asList(getExpectedAnalyzeSentimentActionResult(false,
-                        SENTIMENT_ANALYSIS_NAME, TIME_NOW, getExpectedBatchTextSentiment(), null))))),
-                result.stream().collect(Collectors.toList()));
-        });
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void analyzeSentimentActionWithNoActionName(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
-        client = getTextAnalyticsClient(httpClient, serviceVersion);
-        analyzeSentimentRunner((documents, tasks) -> {
-            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedIterable> syncPoller =
-                client.beginAnalyzeActions(documents, tasks.setAnalyzeSentimentActions(new AnalyzeSentimentAction()), "en",
-                    new AnalyzeActionsOptions().setIncludeStatistics(false));
-            syncPoller = setPollInterval(syncPoller);
-            syncPoller.waitForCompletion();
-            AnalyzeActionsResultPagedIterable result = syncPoller.getFinalResult();
-
-            validateAnalyzeBatchActionsResultList(false, false,
-                asList(getExpectedAnalyzeBatchActionsResult(
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(asList(getExpectedAnalyzeSentimentActionResult(false,
-                        SENTIMENT_ANALYSIS_DEFAULT_NAME, TIME_NOW, getExpectedBatchTextSentiment(), null))))),
+                        TIME_NOW, getExpectedBatchTextSentiment(), null))))),
                 result.stream().collect(Collectors.toList()));
         });
     }
