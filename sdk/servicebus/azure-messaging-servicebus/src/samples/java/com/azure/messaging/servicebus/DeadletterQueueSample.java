@@ -21,6 +21,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 public class DeadletterQueueSample {
     String connectionString = System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
     String queueName = System.getenv("AZURE_SERVICEBUS_SAMPLE_QUEUE_NAME");
+    static final ObjectMapper objectMapper = new ObjectMapper();
 
     /**
      * Main method to show how to dead letter within an Azure Service Bus Queue.
@@ -111,7 +112,7 @@ public class DeadletterQueueSample {
         receiverAsyncClient.receiveMessages().subscribe(receiveMessage -> {
             System.out.printf("Picked up message; DeliveryCount %d\n", receiveMessage.getDeliveryCount());
             // return message back to the queue
-            receiverAsyncClient.abandon(receiveMessage);
+            receiverAsyncClient.abandon(receiveMessage).subscribe();
         });
         Thread.sleep(10000);
         receiverAsyncClient.close();
