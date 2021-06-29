@@ -909,8 +909,7 @@ public class ShareFileAsyncClient {
                                 new ShareFileRange(offset, range.getEnd()), getRangeContentMd5,
                                 requestConditions, context).flatMapMany(r -> {
                                     String receivedETag = ModelHelper.getETag(r.getHeaders());
-                                    if ((eTag == null && receivedETag == null)
-                                        || (eTag != null && eTag.equals(receivedETag))) {
+                                    if (eTag != null && eTag.equals(receivedETag)) {
                                         return r.getValue().timeout(TIMEOUT_VALUE);
                                     } else {
                                         return Flux.<ByteBuffer>error(
