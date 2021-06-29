@@ -13,10 +13,10 @@ import java.util.HashSet;
 import java.util.Arrays;
 import java.util.Set;
 import java.util.regex.Pattern;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.azure.digitaltwins.parser.ContextHistory;
 import com.azure.digitaltwins.parser.VersionedContext;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.azure.digitaltwins.parser.Dtmi;
 
 /**
  * Class for parsing and storing information from JSON-LD context blocks.

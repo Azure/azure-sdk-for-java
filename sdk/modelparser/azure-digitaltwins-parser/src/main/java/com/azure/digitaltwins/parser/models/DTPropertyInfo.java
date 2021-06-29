@@ -14,6 +14,9 @@ import java.util.Arrays;
 import java.util.Set;
 import java.util.regex.Pattern;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.azure.digitaltwins.parser.ContextHistory;
+import com.azure.digitaltwins.parser.VersionedContext;
+import com.azure.digitaltwins.parser.Dtmi;
 
 /**
  * Class {@link DTPropertyInfo} corresponds to an element of type Property in a DTDL model.

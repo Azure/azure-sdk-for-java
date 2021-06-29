@@ -3,5 +3,10 @@
 
 package com.azure.digitaltwins.parser;
 
+import java.util.List;
+
 public class ContextHistory {
+    public ContextHistory(List<VersionedContext> versionedContextList) {
+
+    }
 }

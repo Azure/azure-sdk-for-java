@@ -85,6 +85,7 @@ public final class CodeGeneratorTask {
         parserLibrary.jImport("com.fasterxml.jackson.databind.ObjectMapper");
         parserLibrary.jImport("com.azure.digitaltwins.parser.ContextHistory");
         parserLibrary.jImport("com.azure.digitaltwins.parser.VersionedContext");
+        parserLibrary.jImport("com.azure.digitaltwins.parser.Dtmi");
 
         logger.info("Base class is " + metamodelDigest.getBaseClass());
 

@@ -3,12 +3,8 @@
 
 package com.azure.digitaltwins.parser;
 
-public class VersionedContext {
-    public VersionedContext(int a, int b) {
-
-    }
-
-    public void addDefinition(String a, Dtmi dtmi) {
+public class Dtmi {
+    public Dtmi(String dtmi) {
 
     }
 }

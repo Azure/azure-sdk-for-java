@@ -138,8 +138,8 @@
           <configuration>
             <mainClass>com.azure.digitaltwins.codegen.ParserCodeGenerator</mainClass>
             <arguments>
-              <argument>./digest.json</argument>
-              <argument>../azure-digitaltwins-parser/src/main/java/com/azure/digitaltwins/parser/models/</argument>
+              <argument>${project.basedir}/digest.json</argument>
+              <argument>${project.basedir}/../azure-digitaltwins-parser/src/main/java/com/azure/digitaltwins/parser/models/</argument>
             </arguments>
           </configuration>
         </plugin>

@@ -1,0 +1,1 @@
+mvn -f ..\azure-digitaltwins-codegen\pom.xml compile exec:java
