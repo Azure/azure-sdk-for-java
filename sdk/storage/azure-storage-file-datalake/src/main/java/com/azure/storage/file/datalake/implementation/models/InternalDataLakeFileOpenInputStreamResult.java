@@ -14,7 +14,7 @@ public class InternalDataLakeFileOpenInputStreamResult implements DataLakeFileOp
     private final InputStream inputStream;
     private final PathProperties properties;
 
-    public InternalDataLakeFileOpenInputStreamResult(InputStream inputStream, PathProperties properties){
+    public InternalDataLakeFileOpenInputStreamResult(InputStream inputStream, PathProperties properties) {
         this.inputStream = inputStream;
         this.properties = properties;
     }

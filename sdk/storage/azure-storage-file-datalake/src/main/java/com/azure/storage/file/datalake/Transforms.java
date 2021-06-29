@@ -248,8 +248,9 @@ class Transforms {
                 return ConsistentReadControl.NONE;
             case ETAG:
                 return ConsistentReadControl.ETAG;
+            default:
+                throw new IllegalArgumentException("Could not convert ConsistentReadControl");
         }
-        throw new IllegalArgumentException("Could not convert ConsistentReadControl");
     }
 
     static BlobRange toBlobRange(FileRange fileRange) {
