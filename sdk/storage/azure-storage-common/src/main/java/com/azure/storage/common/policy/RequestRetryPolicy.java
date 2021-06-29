@@ -181,7 +181,7 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
                     A Timeout Exception is a client-side timeout coming from Rx.
                      */
                 String action;
-                if (throwable instanceof IOException) {
+                if (throwable instanceof IOException || throwable.getCause() instanceof IOException) {
                     action = "Retry: Network error";
                 } else if (throwable instanceof TimeoutException) {
                     action = "Retry: Client timeout";
