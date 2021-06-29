@@ -31,12 +31,12 @@ public class DefaultServiceBusTopicClientFactory extends AbstractServiceBusSende
     private final Map<String, ServiceBusSenderAsyncClient> topicSenderMap = new ConcurrentHashMap<>();
 
     public DefaultServiceBusTopicClientFactory(String connectionString) {
-        super(connectionString);
-        this.serviceBusClientBuilder = new ServiceBusClientBuilder().connectionString(connectionString);
+       this(connectionString, AmqpTransportType.AMQP);
     }
 
     public DefaultServiceBusTopicClientFactory(String connectionString, AmqpTransportType amqpTransportType) {
-        this(connectionString);
+        super(connectionString);
+        this.serviceBusClientBuilder = new ServiceBusClientBuilder().connectionString(connectionString);
         this.serviceBusClientBuilder.transportType(amqpTransportType);
     }
 

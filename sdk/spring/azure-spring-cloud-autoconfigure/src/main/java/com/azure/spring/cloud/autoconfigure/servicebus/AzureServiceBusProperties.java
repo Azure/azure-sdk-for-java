@@ -6,8 +6,6 @@ package com.azure.spring.cloud.autoconfigure.servicebus;
 import com.azure.core.amqp.AmqpTransportType;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-import java.util.stream.Stream;
-
 /**
  * @author Warren Zhu
  */
@@ -40,10 +38,7 @@ public class AzureServiceBusProperties {
         return transportType;
     }
 
-    public void setTransportType(String transportType) {
-        this.transportType = Stream.of(transportType)
-                                   .map(AmqpTransportType::fromString)
-                                   .findFirst()
-                                   .orElse(AmqpTransportType.AMQP);
+    public void setTransportType(AmqpTransportType transportType) {
+        this.transportType = transportType;
     }
 }
