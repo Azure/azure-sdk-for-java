@@ -4,13 +4,13 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
-import com.nimbusds.oauth2.sdk.ParseException;
-import com.nimbusds.oauth2.sdk.util.JSONObjectUtils;
-import net.minidev.json.JSONObject;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -29,7 +29,7 @@ public class DeadletterQueueSample {
      * @param args Unused arguments to the program.
      * @throws InterruptedException If the program is unable to sleep while waiting for the receive to complete.
      */
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException, JsonProcessingException {
         DeadletterQueueSample sample = new DeadletterQueueSample();
         sample.run();
     }
@@ -40,7 +40,7 @@ public class DeadletterQueueSample {
      * @throws InterruptedException If the program is unable to sleep while waiting for the receive to complete.
      */
     @Test
-    public void run() throws InterruptedException {
+    public void run() throws InterruptedException, JsonProcessingException {
         ServiceBusSenderClient senderClient = new ServiceBusClientBuilder()
             .connectionString(connectionString)
             .sender()
@@ -48,13 +48,13 @@ public class DeadletterQueueSample {
             .buildClient();
 
         // max delivery-count scenario
-        sendMessagesAsync(senderClient, 1);
+        sendMessages(senderClient, 1);
         deadLetterByExceedingMaxDelivery(connectionString, queueName);
 
         // fix-up scenario
-        sendMessagesAsync(senderClient, Integer.MAX_VALUE);
-        this.receiveAndDeadletterMessagesAsync(connectionString, queueName);
-        this.pickUpAndFixDeadletters(connectionString, queueName, senderClient);
+        sendMessages(senderClient, Integer.MAX_VALUE);
+        this.receiveAndDeadletterMessagesAsync(connectionString, queueName).block();
+        this.pickUpAndFixDeadletters(connectionString, queueName, senderClient).block();
 
         senderClient.close();
     }
@@ -65,29 +65,29 @@ public class DeadletterQueueSample {
      * @Param senderAsyncClient Service Bus Sender Client
      * @Param maxMessages Maximum Number Of Messages
      */
-    void sendMessagesAsync(ServiceBusSenderClient senderClient, int maxMessages) {
-        List<ServiceBusMessage> messageList = new ArrayList<ServiceBusMessage>();
-        messageList.add(createServiceBusMessage("{\"name\" : \"Einstein\", \"firstName\" : \"Albert\"}"));
-        messageList.add(createServiceBusMessage("{\"name\" : \"Heisenberg\", \"firstName\" : \"Werner\"}"));
-        messageList.add(createServiceBusMessage("{\"name\" : \"Curie\", \"firstName\" : \"Marie\"}"));
-        messageList.add(createServiceBusMessage("{\"name\" : \"Hawking\", \"firstName\" : \"Steven\"}"));
-        messageList.add(createServiceBusMessage("{\"name\" : \"Newton\", \"firstName\" : \"Isaac\"}"));
-        messageList.add(createServiceBusMessage("{\"name\" : \"Bohr\", \"firstName\" : \"Niels\"}"));
-        messageList.add(createServiceBusMessage("{\"name\" : \"Faraday\", \"firstName\" : \"Michael\"}"));
-        messageList.add(createServiceBusMessage("{\"name\" : \"Galilei\", \"firstName\" : \"Galileo\"}"));
-        messageList.add(createServiceBusMessage("{\"name\" : \"Kepler\", \"firstName\" : \"Johannes\"}"));
-        messageList.add(createServiceBusMessage("{\"name\" : \"Kopernikus\", \"firstName\" : \"Nikolaus\"}"));
-
+    void sendMessages(ServiceBusSenderClient senderClient, int maxMessages) throws JsonProcessingException {
+        List<Person> messageList = Arrays.asList(
+            new Person("Einstein", "Albert"),
+            new Person("Heisenberg", "Werner"),
+            new Person("Curie", "Marie"),
+            new Person("Hawking", "Steven"),
+            new Person("Newton", "Isaac"),
+            new Person("Bohr", "Niels"),
+            new Person("Faraday", "Michael"),
+            new Person("Galilei", "Galileo"),
+            new Person("Kepler", "Johannes"),
+            new Person("Kopernikus", "Nikolaus")
+        );
         for (int i = 0; i < Math.min(messageList.size(), maxMessages); i++) {
             final String messageId = Integer.toString(i);
-            ServiceBusMessage message = messageList.get(i);
+            ServiceBusMessage message = new ServiceBusMessage(objectMapper.writeValueAsString(messageList.get(i)));
             message.setContentType("application/json");
             message.setSubject(i % 2 == 0 ? "Scientist" : "Physicist");
             message.setMessageId(messageId);
             message.setTimeToLive(Duration.ofMinutes(2));
-            System.out.printf("\tMessage sending: Id = %s\n", message.getMessageId());
+            System.out.printf("\tMessage sending: Id = %s%n", message.getMessageId());
             senderClient.sendMessage(message);
-            System.out.printf("\tMessage acknowledged: Id = %s\n", message.getMessageId());
+            System.out.printf("\tMessage acknowledged: Id = %s%n", message.getMessageId());
         }
     }
 
@@ -102,15 +102,14 @@ public class DeadletterQueueSample {
      * @throws InterruptedException If the program is unable to sleep while waiting for the receive to complete.
      */
     void deadLetterByExceedingMaxDelivery(String connectionString, String queueName) throws InterruptedException {
-        ServiceBusReceiverAsyncClient receiverAsyncClient
-            = new ServiceBusClientBuilder()
+        ServiceBusReceiverAsyncClient receiverAsyncClient = new ServiceBusClientBuilder()
             .connectionString(connectionString)
             .receiver()
             .queueName(queueName)
             .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
             .buildAsyncClient();
         receiverAsyncClient.receiveMessages().subscribe(receiveMessage -> {
-            System.out.printf("Picked up message; DeliveryCount %d\n", receiveMessage.getDeliveryCount());
+            System.out.printf("Picked up message; DeliveryCount %d%n", receiveMessage.getDeliveryCount());
             // return message back to the queue
             receiverAsyncClient.abandon(receiveMessage).subscribe();
         });
@@ -127,9 +126,9 @@ public class DeadletterQueueSample {
             .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
             .buildAsyncClient();
         deadletterReceiverAsyncClient.receiveMessages().subscribe(receiveMessage -> {
-            System.out.printf("\nDeadletter message:\n");
-            receiveMessage.getApplicationProperties().keySet().forEach(key -> System.out.printf("\t%s=%s\n", key, receiveMessage.getApplicationProperties().get(key)));
-            deadletterReceiverAsyncClient.complete(receiveMessage);
+            System.out.printf("%nDeadletter message:%n");
+            receiveMessage.getApplicationProperties().keySet().forEach(key -> System.out.printf("\t%s=%s%n", key, receiveMessage.getApplicationProperties().get(key)));
+            deadletterReceiverAsyncClient.complete(receiveMessage).subscribe();
         });
         Thread.sleep(10000);
         deadletterReceiverAsyncClient.close();
@@ -141,41 +140,47 @@ public class DeadletterQueueSample {
      * @Param connectionString Service Bus Connection String
      * @Param queueName Queue Name
      */
-    void receiveAndDeadletterMessagesAsync(String connectionString, String queueName) {
-        ServiceBusReceiverAsyncClient receiverAsyncClient
-            = new ServiceBusClientBuilder()
-            .connectionString(connectionString)
-            .receiver()
-            .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
-            .queueName(queueName)
-            .buildAsyncClient();
+    Mono<Void> receiveAndDeadletterMessagesAsync(String connectionString, String queueName) {
+        Mono<ServiceBusReceiverAsyncClient> createReceiver = Mono.fromCallable(() -> {
+            return new ServiceBusClientBuilder()
+                .connectionString(connectionString)
+                .receiver()
+                .queueName(queueName)
+                .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
+                .buildAsyncClient();
+        });
 
-        receiverAsyncClient.receiveMessages().subscribe(receiveMessage -> {
-            if (receiveMessage.getSubject() != null
-                && receiveMessage.getContentType() != null
-                && receiveMessage.getSubject().contentEquals("Scientist")
-                && receiveMessage.getContentType().contentEquals("application/json")) {
-                byte[] body = receiveMessage.getBody().toBytes();
-                JSONObject jsonObject = null;
-                try {
-                    jsonObject = JSONObjectUtils.parse(new String(body, UTF_8));
-                } catch (ParseException e) {
-                    e.printStackTrace();
+        return Mono.usingWhen(createReceiver, receiver -> {
+            return receiver.receiveMessages().flatMap(receiveMessage -> {
+                if (receiveMessage.getSubject() != null
+                    && receiveMessage.getContentType() != null
+                    && receiveMessage.getSubject().contentEquals("Scientist")
+                    && receiveMessage.getContentType().contentEquals("application/json")) {
+                    byte[] body = receiveMessage.getBody().toBytes();
+                    Person person = null;
+                    try {
+                        person = objectMapper.readValue(new String(body, UTF_8), Person.class);
+                    } catch (JsonProcessingException e) {
+                        e.printStackTrace();
+                    }
+                    System.out.printf(
+                        "%n\t\t\t\tMessage received: %n\t\t\t\t\t\tMessageId = %s, %n\t\t\t\t\t\tSequenceNumber = %s, %n\t\t\t\t\t\tEnqueuedTimeUtc = %s,"
+                            + "%n\t\t\t\t\t\tExpiresAtUtc = %s, %n\t\t\t\t\t\tContentType = \"%s\",  %n\t\t\t\t\t\tContent: [ firstName = %s, name = %s ]%n",
+                        receiveMessage.getMessageId(),
+                        receiveMessage.getSequenceNumber(),
+                        receiveMessage.getEnqueuedTime(),
+                        receiveMessage.getExpiresAt(),
+                        receiveMessage.getContentType(),
+                        person != null ? person.getFirstName() : "",
+                        person != null ? person.getName() : "");
+                } else {
+                    return receiver.deadLetter(receiveMessage);
                 }
-                System.out.printf(
-                    "\n\t\t\t\tMessage received: \n\t\t\t\t\t\tMessageId = %s, \n\t\t\t\t\t\tSequenceNumber = %s, \n\t\t\t\t\t\tEnqueuedTimeUtc = %s,"
-                        + "\n\t\t\t\t\t\tExpiresAtUtc = %s, \n\t\t\t\t\t\tContentType = \"%s\",  \n\t\t\t\t\t\tContent: [ firstName = %s, name = %s ]\n",
-                    receiveMessage.getMessageId(),
-                    receiveMessage.getSequenceNumber(),
-                    receiveMessage.getEnqueuedTime(),
-                    receiveMessage.getExpiresAt(),
-                    receiveMessage.getContentType(),
-                    jsonObject != null ? jsonObject.get("firstName") : "",
-                    jsonObject != null ? jsonObject.get("name") : "");
-            } else {
-                receiverAsyncClient.deadLetter(receiveMessage);
-            }
-            receiverAsyncClient.complete(receiveMessage);
+                return receiver.complete(receiveMessage);
+            }).then();
+        }, receiver -> {
+            receiver.close();
+            return Mono.empty();
         });
     }
 
@@ -186,38 +191,65 @@ public class DeadletterQueueSample {
      * @Param queueName Queue Name
      * @Param resubmitSender Service Bus Send Client
      */
-    void pickUpAndFixDeadletters(String connectionString, String queueName, ServiceBusSenderClient resubmitSender) {
-        ServiceBusReceiverAsyncClient receiverAsyncClient
-            = new ServiceBusClientBuilder()
-            .connectionString(connectionString)
-            .receiver()
-            .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
-            .queueName(queueName.concat("/$deadletterqueue"))
-            .buildAsyncClient();
+    Mono<Void> pickUpAndFixDeadletters(String connectionString, String queueName, ServiceBusSenderClient resubmitSender) {
+        Mono<ServiceBusReceiverAsyncClient> createReceiver = Mono.fromCallable(() -> {
+            return new ServiceBusClientBuilder()
+                .connectionString(connectionString)
+                .receiver()
+                .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
+                .queueName(queueName.concat("/$deadletterqueue"))
+                .buildAsyncClient();
+        });
 
-        receiverAsyncClient.receiveMessages().subscribe(receiveMessage -> {
-            if (receiveMessage.getSubject() != null && receiveMessage.getSubject().contentEquals("Physicist")) {
-                ServiceBusMessage resubmitMessage = new ServiceBusMessage(receiveMessage.getBody());
-                System.out.printf(
-                    "\n\t\tFixing: \n\t\t\tMessageId = %s, \n\t\t\tSequenceNumber = %s, \n\t\t\tLabel = %s\n",
-                    receiveMessage.getMessageId(),
-                    receiveMessage.getSequenceNumber(),
-                    receiveMessage.getSubject());
-                resubmitMessage.setMessageId(receiveMessage.getMessageId());
-                resubmitMessage.setSubject("Scientist");
-                resubmitMessage.setContentType(receiveMessage.getContentType());
-                resubmitMessage.setTimeToLive(Duration.ofMinutes(2));
-                resubmitSender.sendMessage(resubmitMessage);
-            }
-            receiverAsyncClient.complete(receiveMessage);
+        return Mono.usingWhen(createReceiver, receiver -> {
+            return receiver.receiveMessages().flatMap(receiveMessage -> {
+                if (receiveMessage.getSubject() != null && receiveMessage.getSubject().contentEquals("Physicist")) {
+                    ServiceBusMessage resubmitMessage = new ServiceBusMessage(receiveMessage.getBody());
+                    System.out.printf(
+                        "%n\t\tFixing: %n\t\t\tMessageId = %s, %n\t\t\tSequenceNumber = %s, %n\t\t\tLabel = %s%n",
+                        receiveMessage.getMessageId(),
+                        receiveMessage.getSequenceNumber(),
+                        receiveMessage.getSubject());
+                    resubmitMessage.setMessageId(receiveMessage.getMessageId());
+                    resubmitMessage.setSubject("Scientist");
+                    resubmitMessage.setContentType(receiveMessage.getContentType());
+                    resubmitMessage.setTimeToLive(Duration.ofMinutes(2));
+                    resubmitSender.sendMessage(resubmitMessage);
+                }
+                return receiver.complete(receiveMessage);
+            }).then();
+        }, receiver -> {
+            receiver.close();
+            return Mono.empty();
         });
     }
 
-    /**
-     * Create a {@link ServiceBusMessage} for add to a {@link ServiceBusMessageBatch}.
-     */
-    static ServiceBusMessage createServiceBusMessage(String label) {
-        ServiceBusMessage message = new ServiceBusMessage(label.getBytes(UTF_8));
-        return message;
+    private static final class Person {
+        private String name;
+        private String firstName;
+
+        Person() {
+        }
+
+        Person(String name, String firstName) {
+            this.name = name;
+            this.firstName = firstName;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public String getFirstName() {
+            return firstName;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public void setFirstName(String firstName) {
+            this.firstName = firstName;
+        }
     }
 }
