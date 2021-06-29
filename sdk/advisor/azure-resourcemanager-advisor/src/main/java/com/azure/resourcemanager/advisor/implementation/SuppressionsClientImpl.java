@@ -77,7 +77,7 @@ public final class SuppressionsClientImpl implements SuppressionsClient {
 
         @Headers({"Content-Type: application/json"})
         @Put("/{resourceUri}/providers/Microsoft.Advisor/recommendations/{recommendationId}/suppressions/{name}")
-        @ExpectedResponses({200, 404})
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SuppressionContractInner>> create(
             @HostParam("$host") String endpoint,
