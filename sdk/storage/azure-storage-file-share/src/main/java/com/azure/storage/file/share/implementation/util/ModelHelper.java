@@ -192,12 +192,9 @@ public class ModelHelper {
     }
 
     public static String getETag(HttpHeaders headers) {
-        if (headers == null) {
-            return null;
-        }
         return headers.getValue("ETag");
     }
-    
+
     public static ShareFileItemProperties transformFileProperty(FileProperty property) {
         if (property == null) {
             return null;
