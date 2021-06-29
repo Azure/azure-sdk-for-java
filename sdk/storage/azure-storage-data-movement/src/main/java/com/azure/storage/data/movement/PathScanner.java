@@ -28,6 +28,7 @@ public final class PathScanner {
      * TODO: Replace placeholder Javadoc
      *
      * @param path The local path to be scanned, either relative to execution location or absolute.
+     * @throws IllegalArgumentException if the provided path does not point to anything.
      */
     public PathScanner(String path) {
         try {
@@ -62,28 +63,28 @@ public final class PathScanner {
 
         // Return a Flux constructed from expanding path
         return basePath.expand(path -> {
-                // Return an empty publisher when the path is not a directory
-                // (files will cause errors when being used with Files::list)
-                if (!Files.isDirectory(path)) {
-                    return Mono.empty();
-                } else {
-                    return Flux.using(() -> Files.list(path),
-                        Flux::fromStream,
-                        BaseStream::close)
-                        .onErrorResume(e -> {
-                            // If set to skip subdirectories, continue processing; else,
-                            // pass an error which will stop the Flux stream
-                            if (skipSubdirectories) {
-                                logger.warning(e.getMessage(), e);
-                                return Mono.empty();
-                            } else {
-                                return Mono.error(logger.logThrowableAsError(e));
-                            }
-                        });
-                }
-            })
-            // Return the paths as strings
-            .map(path -> path.toAbsolutePath().toString())
-            .subscribeOn(Schedulers.boundedElastic());
+            // Return an empty publisher when the path is not a directory
+            // (files will cause errors when being used with Files::list)
+            if (!Files.isDirectory(path)) {
+                return Mono.empty();
+            } else {
+                return Flux.using(() -> Files.list(path),
+                    Flux::fromStream,
+                    BaseStream::close)
+                    .onErrorResume(e -> {
+                        // If set to skip subdirectories, continue processing; else,
+                        // pass an error which will stop the Flux stream
+                        if (skipSubdirectories) {
+                            logger.warning(e.getMessage(), e);
+                            return Mono.empty();
+                        } else {
+                            return Mono.error(logger.logThrowableAsError(e));
+                        }
+                    });
+            }
+        })
+        // Return the paths as strings
+        .map(path -> path.toAbsolutePath().toString())
+        .subscribeOn(Schedulers.boundedElastic());
     }
 }

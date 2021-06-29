@@ -12,6 +12,13 @@ package com.azure.storage.data.movement;
 public final class PathScannerFactory {
     private final String path;
 
+    /**
+     * Constructor for {@link PathScannerFactory}.
+     *
+     * TODO: Replace placeholder Javadoc
+     *
+     * @param path The local path to be scanned, either relative to execution location or absolute.
+     */
     public PathScannerFactory(String path) {
         this.path = path;
     }
@@ -22,8 +29,6 @@ public final class PathScannerFactory {
      * TODO: Replace placeholder Javadoc comment
      *
      * @return a {@link PathScanner} created from the path passed to this factory.
-     * @throws IllegalArgumentException if the provided path does not point to anything.
-     * @throws java.nio.file.InvalidPathException if the provided path is malformed/cannot be resolved to absolute.
      */
     public PathScanner getPathScanner() {
         return new PathScanner(path);
