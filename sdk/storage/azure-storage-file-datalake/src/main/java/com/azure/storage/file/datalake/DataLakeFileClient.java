@@ -26,13 +26,12 @@ import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.FluxInputStream;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.UploadUtils;
-import com.azure.storage.file.datalake.implementation.models.InternalFileOpenInputStreamResult;
+import com.azure.storage.file.datalake.implementation.models.InternalDataLakeFileOpenInputStreamResult;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
-import com.azure.storage.file.datalake.models.ConsistentReadControl;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
-import com.azure.storage.file.datalake.models.FileOpenInputStreamResult;
+import com.azure.storage.file.datalake.models.DataLakeFileOpenInputStreamResult;
 import com.azure.storage.file.datalake.models.FileQueryAsyncResponse;
 import com.azure.storage.file.datalake.options.DataLakeFileInputStreamOptions;
 import com.azure.storage.file.datalake.options.FileParallelUploadOptions;
@@ -508,7 +507,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      * @return An {@link InputStream} object that represents the stream to use for reading from the file.
      * @throws DataLakeStorageException If a storage service error occurred.
      */
-    public FileOpenInputStreamResult openInputStream() {
+    public DataLakeFileOpenInputStreamResult openInputStream() {
         return openInputStream(null);
     }
 
@@ -517,13 +516,13 @@ public class DataLakeFileClient extends DataLakePathClient {
      * is not specified.
      *
      * @param options {@link DataLakeFileInputStreamOptions}
-     * @return A {@link FileOpenInputStreamResult} object that contains the stream to use for reading from the file.
+     * @return A {@link DataLakeFileOpenInputStreamResult} object that contains the stream to use for reading from the file.
      * @throws DataLakeStorageException If a storage service error occurred.
      */
-    public FileOpenInputStreamResult openInputStream(DataLakeFileInputStreamOptions options) {
+    public DataLakeFileOpenInputStreamResult openInputStream(DataLakeFileInputStreamOptions options) {
         BlobInputStreamOptions convertedOptions = Transforms.toBlobInputStreamOptions(options);
         BlobInputStream inputStream = blockBlobClient.openInputStream(convertedOptions);
-        return new InternalFileOpenInputStreamResult(inputStream,
+        return new InternalDataLakeFileOpenInputStreamResult(inputStream,
             Transforms.toPathProperties(inputStream.getProperties()));
     }
 

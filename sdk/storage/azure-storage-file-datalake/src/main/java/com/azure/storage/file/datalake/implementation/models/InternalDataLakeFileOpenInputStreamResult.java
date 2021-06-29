@@ -3,17 +3,18 @@
 
 package com.azure.storage.file.datalake.implementation.models;
 
-import com.azure.storage.file.datalake.models.FileOpenInputStreamResult;
+import com.azure.storage.file.datalake.models.DataLakeFileOpenInputStreamResult;
 import com.azure.storage.file.datalake.models.PathProperties;
 
+import java.io.IOException;
 import java.io.InputStream;
 
-public class InternalFileOpenInputStreamResult implements FileOpenInputStreamResult {
+public class InternalDataLakeFileOpenInputStreamResult implements DataLakeFileOpenInputStreamResult {
 
     private final InputStream inputStream;
     private final PathProperties properties;
 
-    public InternalFileOpenInputStreamResult(InputStream inputStream, PathProperties properties){
+    public InternalDataLakeFileOpenInputStreamResult(InputStream inputStream, PathProperties properties){
         this.inputStream = inputStream;
         this.properties = properties;
     }
@@ -26,5 +27,10 @@ public class InternalFileOpenInputStreamResult implements FileOpenInputStreamRes
     @Override
     public PathProperties getProperties() {
         return properties;
+    }
+
+    @Override
+    public void close() throws IOException {
+        inputStream.close();
     }
 }

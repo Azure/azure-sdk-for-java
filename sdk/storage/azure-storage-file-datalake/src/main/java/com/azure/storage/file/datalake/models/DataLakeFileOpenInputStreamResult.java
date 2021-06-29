@@ -3,12 +3,13 @@
 
 package com.azure.storage.file.datalake.models;
 
+import java.io.Closeable;
 import java.io.InputStream;
 
 /**
  * Result of opening an {@link InputStream} to a datalake file.
  */
-public interface FileOpenInputStreamResult {
+public interface DataLakeFileOpenInputStreamResult extends Closeable {
     /**
      * @return the {@link InputStream} of the target file.
      */

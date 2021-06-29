@@ -15,6 +15,26 @@ class FileInputStreamTest extends APISpec {
         fc.create()
     }
 
+    def "Read InputStream"() {
+        setup:
+        byte[] randomBytes = getRandomByteArray(length)
+        fc.upload(new ByteArrayInputStream(randomBytes), length, true)
+
+        when:
+        def is = fc.openInputStream(new DataLakeFileInputStreamOptions().setBlockSize(blockSize)).getInputStream()
+        def downloadedData = new byte[length]
+        is.read(downloadedData)
+
+        then:
+        randomBytes == downloadedData
+
+        where:
+        length               | blockSize
+        Constants.KB         | null
+        4 * Constants.KB     | Constants.KB
+        4 * Constants.KB + 5 | Constants.KB
+    }
+
     @Unroll
     def "BlobInputStream read to large buffer"() {
         setup:
