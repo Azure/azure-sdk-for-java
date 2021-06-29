@@ -37,14 +37,6 @@ public final class EventSummaryImpl implements EventSummary {
         return this.innerModel().type();
     }
 
-    public String creditCurrency() {
-        return this.innerModel().creditCurrency();
-    }
-
-    public String billingCurrency() {
-        return this.innerModel().billingCurrency();
-    }
-
     public OffsetDateTime transactionDate() {
         return this.innerModel().transactionDate();
     }
@@ -57,40 +49,20 @@ public final class EventSummaryImpl implements EventSummary {
         return this.innerModel().newCredit();
     }
 
-    public AmountWithExchangeRate newCreditInBillingCurrency() {
-        return this.innerModel().newCreditInBillingCurrency();
-    }
-
     public Amount adjustments() {
         return this.innerModel().adjustments();
-    }
-
-    public AmountWithExchangeRate adjustmentsInBillingCurrency() {
-        return this.innerModel().adjustmentsInBillingCurrency();
     }
 
     public Amount creditExpired() {
         return this.innerModel().creditExpired();
     }
 
-    public AmountWithExchangeRate creditExpiredInBillingCurrency() {
-        return this.innerModel().creditExpiredInBillingCurrency();
-    }
-
     public Amount charges() {
         return this.innerModel().charges();
     }
 
-    public AmountWithExchangeRate chargesInBillingCurrency() {
-        return this.innerModel().chargesInBillingCurrency();
-    }
-
     public Amount closedBalance() {
         return this.innerModel().closedBalance();
-    }
-
-    public AmountWithExchangeRate closedBalanceInBillingCurrency() {
-        return this.innerModel().closedBalanceInBillingCurrency();
     }
 
     public EventType eventType() {
@@ -101,8 +73,56 @@ public final class EventSummaryImpl implements EventSummary {
         return this.innerModel().invoiceNumber();
     }
 
+    public String billingProfileId() {
+        return this.innerModel().billingProfileId();
+    }
+
+    public String billingProfileDisplayName() {
+        return this.innerModel().billingProfileDisplayName();
+    }
+
+    public String lotId() {
+        return this.innerModel().lotId();
+    }
+
+    public String lotSource() {
+        return this.innerModel().lotSource();
+    }
+
+    public Amount canceledCredit() {
+        return this.innerModel().canceledCredit();
+    }
+
+    public String creditCurrency() {
+        return this.innerModel().creditCurrency();
+    }
+
+    public String billingCurrency() {
+        return this.innerModel().billingCurrency();
+    }
+
     public Reseller reseller() {
         return this.innerModel().reseller();
+    }
+
+    public AmountWithExchangeRate creditExpiredInBillingCurrency() {
+        return this.innerModel().creditExpiredInBillingCurrency();
+    }
+
+    public AmountWithExchangeRate newCreditInBillingCurrency() {
+        return this.innerModel().newCreditInBillingCurrency();
+    }
+
+    public AmountWithExchangeRate adjustmentsInBillingCurrency() {
+        return this.innerModel().adjustmentsInBillingCurrency();
+    }
+
+    public AmountWithExchangeRate chargesInBillingCurrency() {
+        return this.innerModel().chargesInBillingCurrency();
+    }
+
+    public AmountWithExchangeRate closedBalanceInBillingCurrency() {
+        return this.innerModel().closedBalanceInBillingCurrency();
     }
 
     public String etag() {

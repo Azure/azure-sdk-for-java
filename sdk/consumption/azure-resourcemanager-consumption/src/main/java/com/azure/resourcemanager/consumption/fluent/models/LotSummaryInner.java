@@ -12,6 +12,7 @@ import com.azure.resourcemanager.consumption.models.Amount;
 import com.azure.resourcemanager.consumption.models.AmountWithExchangeRate;
 import com.azure.resourcemanager.consumption.models.LotSource;
 import com.azure.resourcemanager.consumption.models.Reseller;
+import com.azure.resourcemanager.consumption.models.Status;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -24,73 +25,86 @@ public class LotSummaryInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(LotSummaryInner.class);
 
     /*
-     * Credit Currency
-     */
-    @JsonProperty(value = "properties.creditCurrency", access = JsonProperty.Access.WRITE_ONLY)
-    private String creditCurrency;
-
-    /*
-     * Billing Currency.
-     */
-    @JsonProperty(value = "properties.billingCurrency", access = JsonProperty.Access.WRITE_ONLY)
-    private String billingCurrency;
-
-    /*
-     * Original amount.
+     * The original amount of a lot.
      */
     @JsonProperty(value = "properties.originalAmount", access = JsonProperty.Access.WRITE_ONLY)
     private Amount originalAmount;
 
     /*
-     * Current balance.
-     */
-    @JsonProperty(value = "properties.originalAmountInBillingCurrency", access = JsonProperty.Access.WRITE_ONLY)
-    private AmountWithExchangeRate originalAmountInBillingCurrency;
-
-    /*
-     * Closed balance.
+     * The balance as of the last invoice.
      */
     @JsonProperty(value = "properties.closedBalance", access = JsonProperty.Access.WRITE_ONLY)
     private Amount closedBalance;
 
     /*
-     * Current balance.
-     */
-    @JsonProperty(value = "properties.closedBalanceInBillingCurrency", access = JsonProperty.Access.WRITE_ONLY)
-    private AmountWithExchangeRate closedBalanceInBillingCurrency;
-
-    /*
-     * Lot source.
+     * The source of the lot.
      */
     @JsonProperty(value = "properties.source", access = JsonProperty.Access.WRITE_ONLY)
     private LotSource source;
 
     /*
-     * Start date.
+     * The date when the lot became effective.
      */
     @JsonProperty(value = "properties.startDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime startDate;
 
     /*
-     * Expiration date.
+     * The expiration date of a lot.
      */
     @JsonProperty(value = "properties.expirationDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime expirationDate;
 
     /*
-     * PO number.
+     * The po number of the invoice on which the lot was added. This property
+     * is not available for ConsumptionCommitment lots.
      */
     @JsonProperty(value = "properties.poNumber", access = JsonProperty.Access.WRITE_ONLY)
     private String poNumber;
 
     /*
-     * Reseller details.
+     * The date when the lot was added.
+     */
+    @JsonProperty(value = "properties.purchaseDate", access = JsonProperty.Access.WRITE_ONLY)
+    private OffsetDateTime purchaseDate;
+
+    /*
+     * The status of the lot.
+     */
+    @JsonProperty(value = "properties.status", access = JsonProperty.Access.WRITE_ONLY)
+    private Status status;
+
+    /*
+     * The currency of the lot.
+     */
+    @JsonProperty(value = "properties.creditCurrency", access = JsonProperty.Access.WRITE_ONLY)
+    private String creditCurrency;
+
+    /*
+     * The billing currency of the lot.
+     */
+    @JsonProperty(value = "properties.billingCurrency", access = JsonProperty.Access.WRITE_ONLY)
+    private String billingCurrency;
+
+    /*
+     * The original amount of a lot in billing currency.
+     */
+    @JsonProperty(value = "properties.originalAmountInBillingCurrency", access = JsonProperty.Access.WRITE_ONLY)
+    private AmountWithExchangeRate originalAmountInBillingCurrency;
+
+    /*
+     * The balance as of the last invoice in billing currency.
+     */
+    @JsonProperty(value = "properties.closedBalanceInBillingCurrency", access = JsonProperty.Access.WRITE_ONLY)
+    private AmountWithExchangeRate closedBalanceInBillingCurrency;
+
+    /*
+     * The reseller of the lot.
      */
     @JsonProperty(value = "properties.reseller", access = JsonProperty.Access.WRITE_ONLY)
     private Reseller reseller;
 
     /*
-     * Resource etag.
+     * The etag for the resource.
      */
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
@@ -102,25 +116,7 @@ public class LotSummaryInner extends ProxyResource {
     private Map<String, String> tags;
 
     /**
-     * Get the creditCurrency property: Credit Currency.
-     *
-     * @return the creditCurrency value.
-     */
-    public String creditCurrency() {
-        return this.creditCurrency;
-    }
-
-    /**
-     * Get the billingCurrency property: Billing Currency.
-     *
-     * @return the billingCurrency value.
-     */
-    public String billingCurrency() {
-        return this.billingCurrency;
-    }
-
-    /**
-     * Get the originalAmount property: Original amount.
+     * Get the originalAmount property: The original amount of a lot.
      *
      * @return the originalAmount value.
      */
@@ -129,16 +125,7 @@ public class LotSummaryInner extends ProxyResource {
     }
 
     /**
-     * Get the originalAmountInBillingCurrency property: Current balance.
-     *
-     * @return the originalAmountInBillingCurrency value.
-     */
-    public AmountWithExchangeRate originalAmountInBillingCurrency() {
-        return this.originalAmountInBillingCurrency;
-    }
-
-    /**
-     * Get the closedBalance property: Closed balance.
+     * Get the closedBalance property: The balance as of the last invoice.
      *
      * @return the closedBalance value.
      */
@@ -147,16 +134,7 @@ public class LotSummaryInner extends ProxyResource {
     }
 
     /**
-     * Get the closedBalanceInBillingCurrency property: Current balance.
-     *
-     * @return the closedBalanceInBillingCurrency value.
-     */
-    public AmountWithExchangeRate closedBalanceInBillingCurrency() {
-        return this.closedBalanceInBillingCurrency;
-    }
-
-    /**
-     * Get the source property: Lot source.
+     * Get the source property: The source of the lot.
      *
      * @return the source value.
      */
@@ -165,7 +143,7 @@ public class LotSummaryInner extends ProxyResource {
     }
 
     /**
-     * Get the startDate property: Start date.
+     * Get the startDate property: The date when the lot became effective.
      *
      * @return the startDate value.
      */
@@ -174,7 +152,7 @@ public class LotSummaryInner extends ProxyResource {
     }
 
     /**
-     * Get the expirationDate property: Expiration date.
+     * Get the expirationDate property: The expiration date of a lot.
      *
      * @return the expirationDate value.
      */
@@ -183,7 +161,8 @@ public class LotSummaryInner extends ProxyResource {
     }
 
     /**
-     * Get the poNumber property: PO number.
+     * Get the poNumber property: The po number of the invoice on which the lot was added. This property is not
+     * available for ConsumptionCommitment lots.
      *
      * @return the poNumber value.
      */
@@ -192,7 +171,61 @@ public class LotSummaryInner extends ProxyResource {
     }
 
     /**
-     * Get the reseller property: Reseller details.
+     * Get the purchaseDate property: The date when the lot was added.
+     *
+     * @return the purchaseDate value.
+     */
+    public OffsetDateTime purchaseDate() {
+        return this.purchaseDate;
+    }
+
+    /**
+     * Get the status property: The status of the lot.
+     *
+     * @return the status value.
+     */
+    public Status status() {
+        return this.status;
+    }
+
+    /**
+     * Get the creditCurrency property: The currency of the lot.
+     *
+     * @return the creditCurrency value.
+     */
+    public String creditCurrency() {
+        return this.creditCurrency;
+    }
+
+    /**
+     * Get the billingCurrency property: The billing currency of the lot.
+     *
+     * @return the billingCurrency value.
+     */
+    public String billingCurrency() {
+        return this.billingCurrency;
+    }
+
+    /**
+     * Get the originalAmountInBillingCurrency property: The original amount of a lot in billing currency.
+     *
+     * @return the originalAmountInBillingCurrency value.
+     */
+    public AmountWithExchangeRate originalAmountInBillingCurrency() {
+        return this.originalAmountInBillingCurrency;
+    }
+
+    /**
+     * Get the closedBalanceInBillingCurrency property: The balance as of the last invoice in billing currency.
+     *
+     * @return the closedBalanceInBillingCurrency value.
+     */
+    public AmountWithExchangeRate closedBalanceInBillingCurrency() {
+        return this.closedBalanceInBillingCurrency;
+    }
+
+    /**
+     * Get the reseller property: The reseller of the lot.
      *
      * @return the reseller value.
      */
@@ -201,7 +234,7 @@ public class LotSummaryInner extends ProxyResource {
     }
 
     /**
-     * Get the etag property: Resource etag.
+     * Get the etag property: The etag for the resource.
      *
      * @return the etag value.
      */
@@ -227,11 +260,11 @@ public class LotSummaryInner extends ProxyResource {
         if (originalAmount() != null) {
             originalAmount().validate();
         }
-        if (originalAmountInBillingCurrency() != null) {
-            originalAmountInBillingCurrency().validate();
-        }
         if (closedBalance() != null) {
             closedBalance().validate();
+        }
+        if (originalAmountInBillingCurrency() != null) {
+            originalAmountInBillingCurrency().validate();
         }
         if (closedBalanceInBillingCurrency() != null) {
             closedBalanceInBillingCurrency().validate();

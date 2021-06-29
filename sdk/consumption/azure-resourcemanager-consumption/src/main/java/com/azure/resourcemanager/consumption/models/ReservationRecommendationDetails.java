@@ -12,13 +12,13 @@ public interface ReservationRecommendationDetails {
     /**
      * Details of a reservation recommendation for what-if analysis of reserved instances.
      *
-     * @param billingScope The scope associated with reservation recommendation details operations. This includes
+     * @param scope The scope associated with reservation recommendation details operations. This includes
      *     '/subscriptions/{subscriptionId}/' for subscription scope,
      *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resource group scope,
      *     /providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for BillingAccount scope, and
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
      *     billingProfile scope.
-     * @param scope Scope of the reservation.
+     * @param scope1 Scope of the reservation.
      * @param region Used to select the region the recommendation should be generated for.
      * @param term Specify length of reservation recommendation term.
      * @param lookBackPeriod Filter the time period on which reservation recommendation results are based.
@@ -30,18 +30,18 @@ public interface ReservationRecommendationDetails {
      * @return reservation recommendation details.
      */
     ReservationRecommendationDetailsModel get(
-        String billingScope, Scope scope, String region, Term term, LookBackPeriod lookBackPeriod, String product);
+        String scope, Scope scope1, String region, Term term, LookBackPeriod lookBackPeriod, String product);
 
     /**
      * Details of a reservation recommendation for what-if analysis of reserved instances.
      *
-     * @param billingScope The scope associated with reservation recommendation details operations. This includes
+     * @param scope The scope associated with reservation recommendation details operations. This includes
      *     '/subscriptions/{subscriptionId}/' for subscription scope,
      *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resource group scope,
      *     /providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for BillingAccount scope, and
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
      *     billingProfile scope.
-     * @param scope Scope of the reservation.
+     * @param scope1 Scope of the reservation.
      * @param region Used to select the region the recommendation should be generated for.
      * @param term Specify length of reservation recommendation term.
      * @param lookBackPeriod Filter the time period on which reservation recommendation results are based.
@@ -54,8 +54,8 @@ public interface ReservationRecommendationDetails {
      * @return reservation recommendation details.
      */
     Response<ReservationRecommendationDetailsModel> getWithResponse(
-        String billingScope,
-        Scope scope,
+        String scope,
+        Scope scope1,
         String region,
         Term term,
         LookBackPeriod lookBackPeriod,

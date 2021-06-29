@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 
 /** The amount plus currency . */
 @Immutable
-public class Amount {
+public final class Amount {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(Amount.class);
 
     /*

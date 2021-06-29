@@ -13,19 +13,17 @@ import com.azure.resourcemanager.consumption.fluent.models.PriceSheetResultInner
 /** An instance of this class provides access to all the operations defined in PriceSheetsClient. */
 public interface PriceSheetsClient {
     /**
-     * Gets the price sheet for a scope by subscriptionId. Price sheet is available via this API only for May 1, 2014 or
-     * later.
+     * Gets the price sheet for a subscription. Price sheet is available via this API only for May 1, 2014 or later.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the price sheet for a scope by subscriptionId.
+     * @return the price sheet for a subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     PriceSheetResultInner get();
 
     /**
-     * Gets the price sheet for a scope by subscriptionId. Price sheet is available via this API only for May 1, 2014 or
-     * later.
+     * Gets the price sheet for a subscription. Price sheet is available via this API only for May 1, 2014 or later.
      *
      * @param expand May be used to expand the properties/meterDetails within a price sheet. By default, these fields
      *     are not included when returning price sheet.
@@ -37,7 +35,7 @@ public interface PriceSheetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the price sheet for a scope by subscriptionId.
+     * @return the price sheet for a subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<PriceSheetResultInner> getWithResponse(String expand, String skiptoken, Integer top, Context context);

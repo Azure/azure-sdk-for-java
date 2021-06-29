@@ -10,6 +10,7 @@ import com.azure.resourcemanager.consumption.models.AmountWithExchangeRate;
 import com.azure.resourcemanager.consumption.models.LotSource;
 import com.azure.resourcemanager.consumption.models.LotSummary;
 import com.azure.resourcemanager.consumption.models.Reseller;
+import com.azure.resourcemanager.consumption.models.Status;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.Map;
@@ -37,28 +38,12 @@ public final class LotSummaryImpl implements LotSummary {
         return this.innerModel().type();
     }
 
-    public String creditCurrency() {
-        return this.innerModel().creditCurrency();
-    }
-
-    public String billingCurrency() {
-        return this.innerModel().billingCurrency();
-    }
-
     public Amount originalAmount() {
         return this.innerModel().originalAmount();
     }
 
-    public AmountWithExchangeRate originalAmountInBillingCurrency() {
-        return this.innerModel().originalAmountInBillingCurrency();
-    }
-
     public Amount closedBalance() {
         return this.innerModel().closedBalance();
-    }
-
-    public AmountWithExchangeRate closedBalanceInBillingCurrency() {
-        return this.innerModel().closedBalanceInBillingCurrency();
     }
 
     public LotSource source() {
@@ -75,6 +60,30 @@ public final class LotSummaryImpl implements LotSummary {
 
     public String poNumber() {
         return this.innerModel().poNumber();
+    }
+
+    public OffsetDateTime purchaseDate() {
+        return this.innerModel().purchaseDate();
+    }
+
+    public Status status() {
+        return this.innerModel().status();
+    }
+
+    public String creditCurrency() {
+        return this.innerModel().creditCurrency();
+    }
+
+    public String billingCurrency() {
+        return this.innerModel().billingCurrency();
+    }
+
+    public AmountWithExchangeRate originalAmountInBillingCurrency() {
+        return this.innerModel().originalAmountInBillingCurrency();
+    }
+
+    public AmountWithExchangeRate closedBalanceInBillingCurrency() {
+        return this.innerModel().closedBalanceInBillingCurrency();
     }
 
     public Reseller reseller() {

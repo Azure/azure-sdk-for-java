@@ -24,109 +24,151 @@ public class EventSummaryInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(EventSummaryInner.class);
 
     /*
-     * Credit Currency
-     */
-    @JsonProperty(value = "properties.creditCurrency", access = JsonProperty.Access.WRITE_ONLY)
-    private String creditCurrency;
-
-    /*
-     * Billing Currency.
-     */
-    @JsonProperty(value = "properties.billingCurrency", access = JsonProperty.Access.WRITE_ONLY)
-    private String billingCurrency;
-
-    /*
-     * Transaction date.
+     * The date of the event.
      */
     @JsonProperty(value = "properties.transactionDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime transactionDate;
 
     /*
-     * Transaction description.
+     * The description of the event.
      */
     @JsonProperty(value = "properties.description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
     /*
-     * New Credit.
+     * The amount of new credit or commitment for NewCredit or SettleCharges
+     * event.
      */
     @JsonProperty(value = "properties.newCredit", access = JsonProperty.Access.WRITE_ONLY)
     private Amount newCredit;
 
     /*
-     * Current balance.
-     */
-    @JsonProperty(value = "properties.newCreditInBillingCurrency", access = JsonProperty.Access.WRITE_ONLY)
-    private AmountWithExchangeRate newCreditInBillingCurrency;
-
-    /*
-     * Adjustments amount.
+     * The amount of balance adjustment. The property is not available for
+     * ConsumptionCommitment lots.
      */
     @JsonProperty(value = "properties.adjustments", access = JsonProperty.Access.WRITE_ONLY)
     private Amount adjustments;
 
     /*
-     * Current balance.
-     */
-    @JsonProperty(value = "properties.adjustmentsInBillingCurrency", access = JsonProperty.Access.WRITE_ONLY)
-    private AmountWithExchangeRate adjustmentsInBillingCurrency;
-
-    /*
-     * Credit expired.
+     * The amount of expired credit or commitment for NewCredit or
+     * SettleCharges event.
      */
     @JsonProperty(value = "properties.creditExpired", access = JsonProperty.Access.WRITE_ONLY)
     private Amount creditExpired;
 
     /*
-     * Current balance.
-     */
-    @JsonProperty(value = "properties.creditExpiredInBillingCurrency", access = JsonProperty.Access.WRITE_ONLY)
-    private AmountWithExchangeRate creditExpiredInBillingCurrency;
-
-    /*
-     * Charges amount.
+     * The amount of charges for events of type SettleCharges and
+     * PendingEligibleCharges.
      */
     @JsonProperty(value = "properties.charges", access = JsonProperty.Access.WRITE_ONLY)
     private Amount charges;
 
     /*
-     * Current balance.
-     */
-    @JsonProperty(value = "properties.chargesInBillingCurrency", access = JsonProperty.Access.WRITE_ONLY)
-    private AmountWithExchangeRate chargesInBillingCurrency;
-
-    /*
-     * Closed balance.
+     * The balance after the event.
      */
     @JsonProperty(value = "properties.closedBalance", access = JsonProperty.Access.WRITE_ONLY)
     private Amount closedBalance;
 
     /*
-     * Current balance.
-     */
-    @JsonProperty(value = "properties.closedBalanceInBillingCurrency", access = JsonProperty.Access.WRITE_ONLY)
-    private AmountWithExchangeRate closedBalanceInBillingCurrency;
-
-    /*
-     * The type of event.
+     * Identifies the type of the event.
      */
     @JsonProperty(value = "properties.eventType")
     private EventType eventType;
 
     /*
-     * Invoice number.
+     * The number which uniquely identifies the invoice on which the event was
+     * billed. This will be empty for unbilled events.
      */
     @JsonProperty(value = "properties.invoiceNumber", access = JsonProperty.Access.WRITE_ONLY)
     private String invoiceNumber;
 
     /*
-     * Reseller details.
+     * The ID that uniquely identifies the billing profile for which the event
+     * happened. The property is only available for billing account of type
+     * MicrosoftCustomerAgreement.
+     */
+    @JsonProperty(value = "properties.billingProfileId", access = JsonProperty.Access.WRITE_ONLY)
+    private String billingProfileId;
+
+    /*
+     * The display name of the billing profile for which the event happened.
+     * The property is only available for billing account of type
+     * MicrosoftCustomerAgreement.
+     */
+    @JsonProperty(value = "properties.billingProfileDisplayName", access = JsonProperty.Access.WRITE_ONLY)
+    private String billingProfileDisplayName;
+
+    /*
+     * The ID that uniquely identifies the lot for which the event happened.
+     */
+    @JsonProperty(value = "properties.lotId", access = JsonProperty.Access.WRITE_ONLY)
+    private String lotId;
+
+    /*
+     * Identifies the source of the lot for which the event happened.
+     */
+    @JsonProperty(value = "properties.lotSource", access = JsonProperty.Access.WRITE_ONLY)
+    private String lotSource;
+
+    /*
+     * Amount of canceled credit.
+     */
+    @JsonProperty(value = "properties.canceledCredit", access = JsonProperty.Access.WRITE_ONLY)
+    private Amount canceledCredit;
+
+    /*
+     * The credit currency of the event.
+     */
+    @JsonProperty(value = "properties.creditCurrency", access = JsonProperty.Access.WRITE_ONLY)
+    private String creditCurrency;
+
+    /*
+     * The billing currency of the event.
+     */
+    @JsonProperty(value = "properties.billingCurrency", access = JsonProperty.Access.WRITE_ONLY)
+    private String billingCurrency;
+
+    /*
+     * The reseller of the event.
      */
     @JsonProperty(value = "properties.reseller", access = JsonProperty.Access.WRITE_ONLY)
     private Reseller reseller;
 
     /*
-     * Resource etag.
+     * The amount of expired credit or commitment for NewCredit or
+     * SettleCharges event in billing currency.
+     */
+    @JsonProperty(value = "properties.creditExpiredInBillingCurrency", access = JsonProperty.Access.WRITE_ONLY)
+    private AmountWithExchangeRate creditExpiredInBillingCurrency;
+
+    /*
+     * The amount of new credit or commitment for NewCredit or SettleCharges
+     * event in billing currency.
+     */
+    @JsonProperty(value = "properties.newCreditInBillingCurrency", access = JsonProperty.Access.WRITE_ONLY)
+    private AmountWithExchangeRate newCreditInBillingCurrency;
+
+    /*
+     * The amount of balance adjustment in billing currency.
+     */
+    @JsonProperty(value = "properties.adjustmentsInBillingCurrency", access = JsonProperty.Access.WRITE_ONLY)
+    private AmountWithExchangeRate adjustmentsInBillingCurrency;
+
+    /*
+     * The amount of charges for events of type SettleCharges and
+     * PendingEligibleCharges in billing currency.
+     */
+    @JsonProperty(value = "properties.chargesInBillingCurrency", access = JsonProperty.Access.WRITE_ONLY)
+    private AmountWithExchangeRate chargesInBillingCurrency;
+
+    /*
+     * The balance in billing currency after the event.
+     */
+    @JsonProperty(value = "properties.closedBalanceInBillingCurrency", access = JsonProperty.Access.WRITE_ONLY)
+    private AmountWithExchangeRate closedBalanceInBillingCurrency;
+
+    /*
+     * The etag for the resource.
      */
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
@@ -138,25 +180,7 @@ public class EventSummaryInner extends ProxyResource {
     private Map<String, String> tags;
 
     /**
-     * Get the creditCurrency property: Credit Currency.
-     *
-     * @return the creditCurrency value.
-     */
-    public String creditCurrency() {
-        return this.creditCurrency;
-    }
-
-    /**
-     * Get the billingCurrency property: Billing Currency.
-     *
-     * @return the billingCurrency value.
-     */
-    public String billingCurrency() {
-        return this.billingCurrency;
-    }
-
-    /**
-     * Get the transactionDate property: Transaction date.
+     * Get the transactionDate property: The date of the event.
      *
      * @return the transactionDate value.
      */
@@ -165,7 +189,7 @@ public class EventSummaryInner extends ProxyResource {
     }
 
     /**
-     * Get the description property: Transaction description.
+     * Get the description property: The description of the event.
      *
      * @return the description value.
      */
@@ -174,7 +198,7 @@ public class EventSummaryInner extends ProxyResource {
     }
 
     /**
-     * Get the newCredit property: New Credit.
+     * Get the newCredit property: The amount of new credit or commitment for NewCredit or SettleCharges event.
      *
      * @return the newCredit value.
      */
@@ -183,16 +207,8 @@ public class EventSummaryInner extends ProxyResource {
     }
 
     /**
-     * Get the newCreditInBillingCurrency property: Current balance.
-     *
-     * @return the newCreditInBillingCurrency value.
-     */
-    public AmountWithExchangeRate newCreditInBillingCurrency() {
-        return this.newCreditInBillingCurrency;
-    }
-
-    /**
-     * Get the adjustments property: Adjustments amount.
+     * Get the adjustments property: The amount of balance adjustment. The property is not available for
+     * ConsumptionCommitment lots.
      *
      * @return the adjustments value.
      */
@@ -201,16 +217,7 @@ public class EventSummaryInner extends ProxyResource {
     }
 
     /**
-     * Get the adjustmentsInBillingCurrency property: Current balance.
-     *
-     * @return the adjustmentsInBillingCurrency value.
-     */
-    public AmountWithExchangeRate adjustmentsInBillingCurrency() {
-        return this.adjustmentsInBillingCurrency;
-    }
-
-    /**
-     * Get the creditExpired property: Credit expired.
+     * Get the creditExpired property: The amount of expired credit or commitment for NewCredit or SettleCharges event.
      *
      * @return the creditExpired value.
      */
@@ -219,16 +226,7 @@ public class EventSummaryInner extends ProxyResource {
     }
 
     /**
-     * Get the creditExpiredInBillingCurrency property: Current balance.
-     *
-     * @return the creditExpiredInBillingCurrency value.
-     */
-    public AmountWithExchangeRate creditExpiredInBillingCurrency() {
-        return this.creditExpiredInBillingCurrency;
-    }
-
-    /**
-     * Get the charges property: Charges amount.
+     * Get the charges property: The amount of charges for events of type SettleCharges and PendingEligibleCharges.
      *
      * @return the charges value.
      */
@@ -237,16 +235,7 @@ public class EventSummaryInner extends ProxyResource {
     }
 
     /**
-     * Get the chargesInBillingCurrency property: Current balance.
-     *
-     * @return the chargesInBillingCurrency value.
-     */
-    public AmountWithExchangeRate chargesInBillingCurrency() {
-        return this.chargesInBillingCurrency;
-    }
-
-    /**
-     * Get the closedBalance property: Closed balance.
+     * Get the closedBalance property: The balance after the event.
      *
      * @return the closedBalance value.
      */
@@ -255,16 +244,7 @@ public class EventSummaryInner extends ProxyResource {
     }
 
     /**
-     * Get the closedBalanceInBillingCurrency property: Current balance.
-     *
-     * @return the closedBalanceInBillingCurrency value.
-     */
-    public AmountWithExchangeRate closedBalanceInBillingCurrency() {
-        return this.closedBalanceInBillingCurrency;
-    }
-
-    /**
-     * Get the eventType property: The type of event.
+     * Get the eventType property: Identifies the type of the event.
      *
      * @return the eventType value.
      */
@@ -273,7 +253,7 @@ public class EventSummaryInner extends ProxyResource {
     }
 
     /**
-     * Set the eventType property: The type of event.
+     * Set the eventType property: Identifies the type of the event.
      *
      * @param eventType the eventType value to set.
      * @return the EventSummaryInner object itself.
@@ -284,7 +264,8 @@ public class EventSummaryInner extends ProxyResource {
     }
 
     /**
-     * Get the invoiceNumber property: Invoice number.
+     * Get the invoiceNumber property: The number which uniquely identifies the invoice on which the event was billed.
+     * This will be empty for unbilled events.
      *
      * @return the invoiceNumber value.
      */
@@ -293,7 +274,72 @@ public class EventSummaryInner extends ProxyResource {
     }
 
     /**
-     * Get the reseller property: Reseller details.
+     * Get the billingProfileId property: The ID that uniquely identifies the billing profile for which the event
+     * happened. The property is only available for billing account of type MicrosoftCustomerAgreement.
+     *
+     * @return the billingProfileId value.
+     */
+    public String billingProfileId() {
+        return this.billingProfileId;
+    }
+
+    /**
+     * Get the billingProfileDisplayName property: The display name of the billing profile for which the event happened.
+     * The property is only available for billing account of type MicrosoftCustomerAgreement.
+     *
+     * @return the billingProfileDisplayName value.
+     */
+    public String billingProfileDisplayName() {
+        return this.billingProfileDisplayName;
+    }
+
+    /**
+     * Get the lotId property: The ID that uniquely identifies the lot for which the event happened.
+     *
+     * @return the lotId value.
+     */
+    public String lotId() {
+        return this.lotId;
+    }
+
+    /**
+     * Get the lotSource property: Identifies the source of the lot for which the event happened.
+     *
+     * @return the lotSource value.
+     */
+    public String lotSource() {
+        return this.lotSource;
+    }
+
+    /**
+     * Get the canceledCredit property: Amount of canceled credit.
+     *
+     * @return the canceledCredit value.
+     */
+    public Amount canceledCredit() {
+        return this.canceledCredit;
+    }
+
+    /**
+     * Get the creditCurrency property: The credit currency of the event.
+     *
+     * @return the creditCurrency value.
+     */
+    public String creditCurrency() {
+        return this.creditCurrency;
+    }
+
+    /**
+     * Get the billingCurrency property: The billing currency of the event.
+     *
+     * @return the billingCurrency value.
+     */
+    public String billingCurrency() {
+        return this.billingCurrency;
+    }
+
+    /**
+     * Get the reseller property: The reseller of the event.
      *
      * @return the reseller value.
      */
@@ -302,7 +348,55 @@ public class EventSummaryInner extends ProxyResource {
     }
 
     /**
-     * Get the etag property: Resource etag.
+     * Get the creditExpiredInBillingCurrency property: The amount of expired credit or commitment for NewCredit or
+     * SettleCharges event in billing currency.
+     *
+     * @return the creditExpiredInBillingCurrency value.
+     */
+    public AmountWithExchangeRate creditExpiredInBillingCurrency() {
+        return this.creditExpiredInBillingCurrency;
+    }
+
+    /**
+     * Get the newCreditInBillingCurrency property: The amount of new credit or commitment for NewCredit or
+     * SettleCharges event in billing currency.
+     *
+     * @return the newCreditInBillingCurrency value.
+     */
+    public AmountWithExchangeRate newCreditInBillingCurrency() {
+        return this.newCreditInBillingCurrency;
+    }
+
+    /**
+     * Get the adjustmentsInBillingCurrency property: The amount of balance adjustment in billing currency.
+     *
+     * @return the adjustmentsInBillingCurrency value.
+     */
+    public AmountWithExchangeRate adjustmentsInBillingCurrency() {
+        return this.adjustmentsInBillingCurrency;
+    }
+
+    /**
+     * Get the chargesInBillingCurrency property: The amount of charges for events of type SettleCharges and
+     * PendingEligibleCharges in billing currency.
+     *
+     * @return the chargesInBillingCurrency value.
+     */
+    public AmountWithExchangeRate chargesInBillingCurrency() {
+        return this.chargesInBillingCurrency;
+    }
+
+    /**
+     * Get the closedBalanceInBillingCurrency property: The balance in billing currency after the event.
+     *
+     * @return the closedBalanceInBillingCurrency value.
+     */
+    public AmountWithExchangeRate closedBalanceInBillingCurrency() {
+        return this.closedBalanceInBillingCurrency;
+    }
+
+    /**
+     * Get the etag property: The etag for the resource.
      *
      * @return the etag value.
      */
@@ -328,35 +422,38 @@ public class EventSummaryInner extends ProxyResource {
         if (newCredit() != null) {
             newCredit().validate();
         }
-        if (newCreditInBillingCurrency() != null) {
-            newCreditInBillingCurrency().validate();
-        }
         if (adjustments() != null) {
             adjustments().validate();
-        }
-        if (adjustmentsInBillingCurrency() != null) {
-            adjustmentsInBillingCurrency().validate();
         }
         if (creditExpired() != null) {
             creditExpired().validate();
         }
-        if (creditExpiredInBillingCurrency() != null) {
-            creditExpiredInBillingCurrency().validate();
-        }
         if (charges() != null) {
             charges().validate();
-        }
-        if (chargesInBillingCurrency() != null) {
-            chargesInBillingCurrency().validate();
         }
         if (closedBalance() != null) {
             closedBalance().validate();
         }
-        if (closedBalanceInBillingCurrency() != null) {
-            closedBalanceInBillingCurrency().validate();
+        if (canceledCredit() != null) {
+            canceledCredit().validate();
         }
         if (reseller() != null) {
             reseller().validate();
+        }
+        if (creditExpiredInBillingCurrency() != null) {
+            creditExpiredInBillingCurrency().validate();
+        }
+        if (newCreditInBillingCurrency() != null) {
+            newCreditInBillingCurrency().validate();
+        }
+        if (adjustmentsInBillingCurrency() != null) {
+            adjustmentsInBillingCurrency().validate();
+        }
+        if (chargesInBillingCurrency() != null) {
+            chargesInBillingCurrency().validate();
+        }
+        if (closedBalanceInBillingCurrency() != null) {
+            closedBalanceInBillingCurrency().validate();
         }
     }
 }

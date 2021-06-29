@@ -15,27 +15,21 @@ public interface CreditsClient {
     /**
      * The credit summary by billingAccountId and billingProfileId.
      *
-     * @param scope The scope associated with credits operations. This includes
-     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfile/{billingProfileId}' for
-     *     Billing Profile scope, and
-     *     'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}' specific for
-     *     partners.
+     * @param billingAccountId BillingAccount ID.
+     * @param billingProfileId Azure Billing Profile ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a credit summary resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CreditSummaryInner get(String scope);
+    CreditSummaryInner get(String billingAccountId, String billingProfileId);
 
     /**
      * The credit summary by billingAccountId and billingProfileId.
      *
-     * @param scope The scope associated with credits operations. This includes
-     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfile/{billingProfileId}' for
-     *     Billing Profile scope, and
-     *     'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}' specific for
-     *     partners.
+     * @param billingAccountId BillingAccount ID.
+     * @param billingProfileId Azure Billing Profile ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -43,5 +37,5 @@ public interface CreditsClient {
      * @return a credit summary resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CreditSummaryInner> getWithResponse(String scope, Context context);
+    Response<CreditSummaryInner> getWithResponse(String billingAccountId, String billingProfileId, Context context);
 }

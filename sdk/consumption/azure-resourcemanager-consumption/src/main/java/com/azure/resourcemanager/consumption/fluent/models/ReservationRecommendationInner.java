@@ -32,7 +32,7 @@ public class ReservationRecommendationInner extends ResourceAttributes {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ReservationRecommendationInner.class);
 
     /*
-     * Resource etag.
+     * The etag for the resource.
      */
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
@@ -44,7 +44,7 @@ public class ReservationRecommendationInner extends ResourceAttributes {
     private Map<String, String> tags;
 
     /**
-     * Get the etag property: Resource etag.
+     * Get the etag property: The etag for the resource.
      *
      * @return the etag value.
      */

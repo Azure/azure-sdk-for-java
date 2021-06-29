@@ -151,7 +151,7 @@ public interface ReservationSummary {
     BigDecimal utilizedPercentage();
 
     /**
-     * Gets the etag property: Resource etag.
+     * Gets the etag property: The etag for the resource.
      *
      * @return the etag value.
      */

@@ -14,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.UUID;
 
 /** Modern usage detail. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
@@ -97,7 +98,7 @@ public class ModernUsageDetail extends UsageDetailInner {
      * see productOrderName.
      */
     @JsonProperty(value = "properties.meterId", access = JsonProperty.Access.WRITE_ONLY)
-    private String meterId;
+    private UUID meterId;
 
     /*
      * Identifies the name of the meter against which consumption is measured.
@@ -186,13 +187,13 @@ public class ModernUsageDetail extends UsageDetailInner {
     private String consumedService;
 
     /*
-     * Service Info 1.
+     * Service-specific metadata.
      */
     @JsonProperty(value = "properties.serviceInfo1", access = JsonProperty.Access.WRITE_ONLY)
     private String serviceInfo1;
 
     /*
-     * Service Info 2.
+     * Legacy field with optional service-specific metadata.
      */
     @JsonProperty(value = "properties.serviceInfo2", access = JsonProperty.Access.WRITE_ONLY)
     private String serviceInfo2;
@@ -569,7 +570,7 @@ public class ModernUsageDetail extends UsageDetailInner {
      *
      * @return the meterId value.
      */
-    public String meterId() {
+    public UUID meterId() {
         return this.meterId;
     }
 
@@ -696,7 +697,7 @@ public class ModernUsageDetail extends UsageDetailInner {
     }
 
     /**
-     * Get the serviceInfo1 property: Service Info 1.
+     * Get the serviceInfo1 property: Service-specific metadata.
      *
      * @return the serviceInfo1 value.
      */
@@ -705,7 +706,7 @@ public class ModernUsageDetail extends UsageDetailInner {
     }
 
     /**
-     * Get the serviceInfo2 property: Service Info 2.
+     * Get the serviceInfo2 property: Legacy field with optional service-specific metadata.
      *
      * @return the serviceInfo2 value.
      */

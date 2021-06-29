@@ -166,7 +166,7 @@ public class LegacyUsageDetail extends UsageDetailInner {
     private String consumedService;
 
     /*
-     * Azure resource manager resource identifier.
+     * Unique identifier of the Azure Resource Manager usage detail resource.
      */
     @JsonProperty(value = "properties.resourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceId;
@@ -178,13 +178,13 @@ public class LegacyUsageDetail extends UsageDetailInner {
     private String resourceName;
 
     /*
-     * Service Info 1.
+     * Service-specific metadata.
      */
     @JsonProperty(value = "properties.serviceInfo1", access = JsonProperty.Access.WRITE_ONLY)
     private String serviceInfo1;
 
     /*
-     * Service Info 2.
+     * Legacy field with optional service-specific metadata.
      */
     @JsonProperty(value = "properties.serviceInfo2", access = JsonProperty.Access.WRITE_ONLY)
     private String serviceInfo2;
@@ -500,7 +500,7 @@ public class LegacyUsageDetail extends UsageDetailInner {
     }
 
     /**
-     * Get the resourceId property: Azure resource manager resource identifier.
+     * Get the resourceId property: Unique identifier of the Azure Resource Manager usage detail resource.
      *
      * @return the resourceId value.
      */
@@ -518,7 +518,7 @@ public class LegacyUsageDetail extends UsageDetailInner {
     }
 
     /**
-     * Get the serviceInfo1 property: Service Info 1.
+     * Get the serviceInfo1 property: Service-specific metadata.
      *
      * @return the serviceInfo1 value.
      */
@@ -527,7 +527,7 @@ public class LegacyUsageDetail extends UsageDetailInner {
     }
 
     /**
-     * Get the serviceInfo2 property: Service Info 2.
+     * Get the serviceInfo2 property: Legacy field with optional service-specific metadata.
      *
      * @return the serviceInfo2 value.
      */

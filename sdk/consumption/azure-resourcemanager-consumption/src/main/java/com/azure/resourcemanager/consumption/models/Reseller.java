@@ -9,25 +9,25 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Reseller details. */
+/** The reseller properties. */
 @Immutable
 public final class Reseller {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(Reseller.class);
 
     /*
-     * Reseller id.
+     * The reseller property ID.
      */
     @JsonProperty(value = "resellerId", access = JsonProperty.Access.WRITE_ONLY)
     private String resellerId;
 
     /*
-     * Reseller Description.
+     * The reseller property description.
      */
     @JsonProperty(value = "resellerDescription", access = JsonProperty.Access.WRITE_ONLY)
     private String resellerDescription;
 
     /**
-     * Get the resellerId property: Reseller id.
+     * Get the resellerId property: The reseller property ID.
      *
      * @return the resellerId value.
      */
@@ -36,7 +36,7 @@ public final class Reseller {
     }
 
     /**
-     * Get the resellerDescription property: Reseller Description.
+     * Get the resellerDescription property: The reseller property description.
      *
      * @return the resellerDescription value.
      */

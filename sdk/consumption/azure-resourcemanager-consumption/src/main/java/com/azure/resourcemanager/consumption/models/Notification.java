@@ -66,12 +66,6 @@ public final class Notification {
     @JsonProperty(value = "thresholdType")
     private ThresholdType thresholdType;
 
-    /*
-     * Language in which the recipient will receive the notification
-     */
-    @JsonProperty(value = "locale")
-    private CultureCode locale;
-
     /**
      * Get the enabled property: The notification is enabled or not.
      *
@@ -217,26 +211,6 @@ public final class Notification {
      */
     public Notification withThresholdType(ThresholdType thresholdType) {
         this.thresholdType = thresholdType;
-        return this;
-    }
-
-    /**
-     * Get the locale property: Language in which the recipient will receive the notification.
-     *
-     * @return the locale value.
-     */
-    public CultureCode locale() {
-        return this.locale;
-    }
-
-    /**
-     * Set the locale property: Language in which the recipient will receive the notification.
-     *
-     * @param locale the locale value to set.
-     * @return the Notification object itself.
-     */
-    public Notification withLocale(CultureCode locale) {
-        this.locale = locale;
         return this;
     }
 

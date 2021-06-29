@@ -35,14 +35,6 @@ public final class CreditSummaryImpl implements CreditSummary {
         return this.innerModel().type();
     }
 
-    public String creditCurrency() {
-        return this.innerModel().creditCurrency();
-    }
-
-    public String billingCurrency() {
-        return this.innerModel().billingCurrency();
-    }
-
     public CreditBalanceSummary balanceSummary() {
         return this.innerModel().balanceSummary();
     }
@@ -57,6 +49,14 @@ public final class CreditSummaryImpl implements CreditSummary {
 
     public Amount pendingEligibleCharges() {
         return this.innerModel().pendingEligibleCharges();
+    }
+
+    public String creditCurrency() {
+        return this.innerModel().creditCurrency();
+    }
+
+    public String billingCurrency() {
+        return this.innerModel().billingCurrency();
     }
 
     public Reseller reseller() {

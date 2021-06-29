@@ -15,7 +15,7 @@ import java.time.OffsetDateTime;
 import java.util.Map;
 import java.util.UUID;
 
-/** An marketplace resource. */
+/** A marketplace resource. */
 @JsonFlatten
 @Immutable
 public class MarketplaceInner extends ProxyResource {
@@ -180,7 +180,7 @@ public class MarketplaceInner extends ProxyResource {
     private Boolean isRecurringCharge;
 
     /*
-     * Resource etag.
+     * The etag for the resource.
      */
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
@@ -427,7 +427,7 @@ public class MarketplaceInner extends ProxyResource {
     }
 
     /**
-     * Get the etag property: Resource etag.
+     * Get the etag property: The etag for the resource.
      *
      * @return the etag value.
      */

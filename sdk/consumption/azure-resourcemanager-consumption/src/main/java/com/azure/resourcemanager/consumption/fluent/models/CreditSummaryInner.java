@@ -22,18 +22,6 @@ public class CreditSummaryInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CreditSummaryInner.class);
 
     /*
-     * Credit Currency
-     */
-    @JsonProperty(value = "properties.creditCurrency", access = JsonProperty.Access.WRITE_ONLY)
-    private String creditCurrency;
-
-    /*
-     * Billing Currency.
-     */
-    @JsonProperty(value = "properties.billingCurrency", access = JsonProperty.Access.WRITE_ONLY)
-    private String billingCurrency;
-
-    /*
      * Summary of balances associated with this credit summary.
      */
     @JsonProperty(value = "properties.balanceSummary", access = JsonProperty.Access.WRITE_ONLY)
@@ -58,13 +46,25 @@ public class CreditSummaryInner extends ProxyResource {
     private Amount pendingEligibleCharges;
 
     /*
-     * Reseller details.
+     * The credit currency.
+     */
+    @JsonProperty(value = "properties.creditCurrency", access = JsonProperty.Access.WRITE_ONLY)
+    private String creditCurrency;
+
+    /*
+     * The billing currency.
+     */
+    @JsonProperty(value = "properties.billingCurrency", access = JsonProperty.Access.WRITE_ONLY)
+    private String billingCurrency;
+
+    /*
+     * Credit's reseller.
      */
     @JsonProperty(value = "properties.reseller", access = JsonProperty.Access.WRITE_ONLY)
     private Reseller reseller;
 
     /*
-     * Resource etag.
+     * The etag for the resource.
      */
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
@@ -74,24 +74,6 @@ public class CreditSummaryInner extends ProxyResource {
      */
     @JsonProperty(value = "tags", access = JsonProperty.Access.WRITE_ONLY)
     private Map<String, String> tags;
-
-    /**
-     * Get the creditCurrency property: Credit Currency.
-     *
-     * @return the creditCurrency value.
-     */
-    public String creditCurrency() {
-        return this.creditCurrency;
-    }
-
-    /**
-     * Get the billingCurrency property: Billing Currency.
-     *
-     * @return the billingCurrency value.
-     */
-    public String billingCurrency() {
-        return this.billingCurrency;
-    }
 
     /**
      * Get the balanceSummary property: Summary of balances associated with this credit summary.
@@ -130,7 +112,25 @@ public class CreditSummaryInner extends ProxyResource {
     }
 
     /**
-     * Get the reseller property: Reseller details.
+     * Get the creditCurrency property: The credit currency.
+     *
+     * @return the creditCurrency value.
+     */
+    public String creditCurrency() {
+        return this.creditCurrency;
+    }
+
+    /**
+     * Get the billingCurrency property: The billing currency.
+     *
+     * @return the billingCurrency value.
+     */
+    public String billingCurrency() {
+        return this.billingCurrency;
+    }
+
+    /**
+     * Get the reseller property: Credit's reseller.
      *
      * @return the reseller value.
      */
@@ -139,7 +139,7 @@ public class CreditSummaryInner extends ProxyResource {
     }
 
     /**
-     * Get the etag property: Resource etag.
+     * Get the etag property: The etag for the resource.
      *
      * @return the etag value.
      */

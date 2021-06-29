@@ -40,7 +40,7 @@ public class PriceSheetResultInner extends ProxyResource {
     private MeterDetails download;
 
     /*
-     * Resource etag.
+     * The etag for the resource.
      */
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
@@ -79,7 +79,7 @@ public class PriceSheetResultInner extends ProxyResource {
     }
 
     /**
-     * Get the etag property: Resource etag.
+     * Get the etag property: The etag for the resource.
      *
      * @return the etag value.
      */

@@ -32,9 +32,9 @@ public final class ReservationRecommendationDetailsImpl implements ReservationRe
     }
 
     public ReservationRecommendationDetailsModel get(
-        String billingScope, Scope scope, String region, Term term, LookBackPeriod lookBackPeriod, String product) {
+        String scope, Scope scope1, String region, Term term, LookBackPeriod lookBackPeriod, String product) {
         ReservationRecommendationDetailsModelInner inner =
-            this.serviceClient().get(billingScope, scope, region, term, lookBackPeriod, product);
+            this.serviceClient().get(scope, scope1, region, term, lookBackPeriod, product);
         if (inner != null) {
             return new ReservationRecommendationDetailsModelImpl(inner, this.manager());
         } else {
@@ -43,15 +43,15 @@ public final class ReservationRecommendationDetailsImpl implements ReservationRe
     }
 
     public Response<ReservationRecommendationDetailsModel> getWithResponse(
-        String billingScope,
-        Scope scope,
+        String scope,
+        Scope scope1,
         String region,
         Term term,
         LookBackPeriod lookBackPeriod,
         String product,
         Context context) {
         Response<ReservationRecommendationDetailsModelInner> inner =
-            this.serviceClient().getWithResponse(billingScope, scope, region, term, lookBackPeriod, product, context);
+            this.serviceClient().getWithResponse(scope, scope1, region, term, lookBackPeriod, product, context);
         if (inner != null) {
             return new SimpleResponse<>(
                 inner.getRequest(),
