@@ -454,24 +454,6 @@ public class KeyClientTest extends KeyClientTestBase {
         });
     }
 
-    /**
-     * Tests that random bytes can be retrieved from a Managed HSM.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getTestParameters")
-    public void getRandomBytes(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        if (!isManagedHsmTest) {
-            return;
-        }
-
-        createKeyClient(httpClient, serviceVersion);
-        getRandomBytesRunner((amountOfBytes) -> {
-            RandomBytes randomBytes = client.getRandomBytes(amountOfBytes);
-
-            assertEquals(amountOfBytes, randomBytes.getBytes().length);
-        });
-    }
-
     private DeletedKey pollOnKeyPurge(String keyName) {
         int pendingPollCount = 0;
         while (pendingPollCount < 10) {

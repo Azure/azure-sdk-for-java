@@ -1419,7 +1419,8 @@ public final class KeyAsyncClient {
                 context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
                 .doOnRequest(ignored -> logger.verbose("Getting {} random bytes.", count))
                 .doOnSuccess(response -> logger.verbose("Got {} random bytes.", count))
-                .doOnError(error -> logger.warning("Failed to get random bytes - {}", error));
+                .doOnError(error -> logger.warning("Failed to get random bytes - {}", error))
+                .map(response -> new SimpleResponse<>(response, new RandomBytes(response.getValue().getBytes())));
         } catch (RuntimeException e) {
             return monoError(logger, e);
         }

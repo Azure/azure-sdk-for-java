@@ -392,7 +392,7 @@ public abstract class KeyClientTestBase extends TestBase {
     }
 
     void getRandomBytesRunner(Consumer<Integer> testRunner) {
-        int amountOfBytes = 16;
+        int amountOfBytes = 12;
 
         testRunner.accept(amountOfBytes);
     }
