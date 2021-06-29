@@ -100,11 +100,11 @@ public class DatafeedAsyncSample {
                     .setOptions(new DataFeedOptions().setAdminEmails(Collections.singletonList("admin1@admin.com"))))
                     .doOnSubscribe(__ ->
                         System.out.printf("Updating data feed: %s%n", dataFeed.getId()))
-                    .doOnSuccess(config -> {
-
+                    .doOnSuccess(updatedDataFeed -> {
 
                         System.out.printf("Updated data feed%n");
-                        System.out.printf("Updated data feed admin list: %s%n", dataFeed.getOptions().getAdminEmails());
+                        System.out.printf("Updated data feed admin list: %s%n",
+                            String.join(",", updatedDataFeed.getOptions().getAdminEmails()));
                     });
             });
 

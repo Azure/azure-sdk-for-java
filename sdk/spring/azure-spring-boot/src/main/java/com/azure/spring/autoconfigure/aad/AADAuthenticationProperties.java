@@ -7,6 +7,8 @@ import com.azure.spring.aad.AADAuthorizationGrantType;
 import com.azure.spring.aad.webapp.AuthorizationClientProperties;
 import com.azure.spring.core.CredentialProperties;
 import com.nimbusds.jose.jwk.source.RemoteJWKSet;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -139,6 +141,8 @@ public class AADAuthenticationProperties implements InitializingBean {
      */
     public static class UserGroupProperties {
 
+        private final Log logger = LogFactory.getLog(UserGroupProperties.class);
+
         /**
          * Expected UserGroups that an authority will be granted to if found in the response from the MemeberOf Graph
          * API Call.
@@ -181,7 +185,10 @@ public class AADAuthenticationProperties implements InitializingBean {
             return enableFullList;
         }
 
+        @Deprecated
         public void setEnableFullList(Boolean enableFullList) {
+            logger.warn(" 'azure.activedirectory.user-group.enable-full-list' property detected! "
+                + "Use 'azure.activedirectory.user-group.allowed-group-ids: all' instead!");
             this.enableFullList = enableFullList;
         }
 
@@ -196,6 +203,8 @@ public class AADAuthenticationProperties implements InitializingBean {
 
         @Deprecated
         public void setAllowedGroups(List<String> allowedGroups) {
+            logger.warn(" 'azure.activedirectory.user-group.allowed-groups' property detected! " + " Use 'azure"
+                + ".activedirectory.user-group.allowed-group-names' instead!");
             this.allowedGroupNames = allowedGroups;
         }
 

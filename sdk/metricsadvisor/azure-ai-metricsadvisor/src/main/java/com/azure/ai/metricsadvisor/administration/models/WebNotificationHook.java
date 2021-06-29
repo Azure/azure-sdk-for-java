@@ -6,6 +6,8 @@ package com.azure.ai.metricsadvisor.administration.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.HttpHeaders;
 
+import java.util.List;
+
 /**
  * A hook that describes web-hook based incident alerts notification.
  */
@@ -30,7 +32,6 @@ public final class WebNotificationHook extends NotificationHook {
     public WebNotificationHook(String name, String endpoint) {
         this.name = name;
         this.endpoint = endpoint;
-        this.httpHeaders = new HttpHeaders();
     }
 
     @Override
@@ -103,7 +104,11 @@ public final class WebNotificationHook extends NotificationHook {
      * @return The HTTP headers.
      */
     public HttpHeaders getHttpHeaders() {
-        return new HttpHeaders(this.httpHeaders.toMap());
+        if (this.httpHeaders != null) {
+            return new HttpHeaders(this.httpHeaders.toMap());
+        } else {
+            return new HttpHeaders();
+        }
     }
 
     /**
@@ -183,11 +188,23 @@ public final class WebNotificationHook extends NotificationHook {
      * @return The WebNotificationHook object itself.
      */
     public WebNotificationHook setHttpHeaders(HttpHeaders httpHeaders) {
-        if (httpHeaders == null) {
-            this.httpHeaders = new HttpHeaders();
-            return this;
-        }
         this.httpHeaders = httpHeaders;
         return this;
+    }
+
+    /**
+     * Sets the user e-mails with administrative rights to manage the hook.
+     *
+     * @param emails The emails.
+     * @return The WebNotificationHook object itself.
+     */
+    public WebNotificationHook setAdminEmails(List<String> emails) {
+        super.setAdministratorEmails(emails);
+        return this;
+    }
+
+    HttpHeaders getHttpHeadersRaw() {
+        // package private method that won't translate null headers to empty-headers.
+        return this.httpHeaders;
     }
 }

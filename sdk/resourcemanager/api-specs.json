@@ -170,7 +170,7 @@
     "args": "--tag=package-features-2015-12"
   },
   "graphrbac": {
-    "spec": "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/resourcemanager",
+    "spec": "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/resourcemanager",
     "dir": "azure-resourcemanager-authorization",
     "source": "azure-resourcemanager-authorization/swagger/swagger.md",
     "package": "com.azure.resourcemanager.authorization",

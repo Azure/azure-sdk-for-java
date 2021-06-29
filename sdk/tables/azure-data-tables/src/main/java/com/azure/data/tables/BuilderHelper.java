@@ -69,11 +69,13 @@ final class BuilderHelper {
             CoreUtils.getApplicationId(clientOptions, logOptions), CLIENT_NAME, CLIENT_VERSION, configuration));
         policies.add(new RequestIdPolicy());
 
-        List<HttpHeader> httpHeaderList = new ArrayList<>();
-
         if (clientOptions != null) {
+            List<HttpHeader> httpHeaderList = new ArrayList<>();
+
             clientOptions.getHeaders().forEach(header ->
                 httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
+
+            policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
         }
 
         // Add per call additional policies.
@@ -145,11 +147,14 @@ final class BuilderHelper {
                     return;
                 } else {
                     throw logger.logExceptionAsError(new IllegalStateException("'connectionString' contains a SAS token"
-                        + " with different settings than 'sasToken'."));
+                        + " with different settings than the one provided using the builder's 'sasToken()' method."));
                 }
+            } else if (authSettings.getType() == StorageAuthenticationSettings.Type.ACCOUNT_NAME_KEY) {
+                throw logger.logExceptionAsError(new IllegalStateException("A 'connectionString' containing an account"
+                    + "name and key cannot be provided alongside a 'sasToken'."));
             }
 
-            // If the 'connectionString' auth type is not SAS_TOKEN and a 'sasToken' was provided, then multiplte
+            // If the 'connectionString' auth type is not SAS_TOKEN and a 'sasToken' was provided, then multiple
             // incompatible forms of authentication were specified in the client builder.
         }
 

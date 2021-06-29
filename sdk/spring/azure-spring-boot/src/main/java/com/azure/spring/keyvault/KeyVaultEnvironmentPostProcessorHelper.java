@@ -153,7 +153,7 @@ class KeyVaultEnvironmentPostProcessorHelper {
         // Use certificate to authenticate
         // Password can be empty
         if (clientId != null && tenantId != null && certificatePath != null) {
-            if (StringUtils.isEmpty(certificatePassword)) {
+            if (!StringUtils.hasText(certificatePassword)) {
                 return new ClientCertificateCredentialBuilder()
                         .tenantId(tenantId)
                         .clientId(clientId)

@@ -58,7 +58,7 @@ parameters:
   default: []
 - name: TestMode
   type: string
-  default: 'RECORD'
+  default: 'LIVE'
 - name: TestStepMavenInputs
   type: object
   default:

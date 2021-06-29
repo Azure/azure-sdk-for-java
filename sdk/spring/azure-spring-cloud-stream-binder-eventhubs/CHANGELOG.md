@@ -1,6 +1,9 @@
 # Release History
 
-## 2.6.0-beta.1 (Unreleased)
+## 2.7.0-beta.1 (Unreleased)
+
+
+## 2.6.0 (2021-06-23)
 ### Breaking Changes
 - Removed `TelemetryCollector` usage.
 
@@ -17,7 +20,7 @@
 ## 2.3.0 (2021-03-22)
 ### New Features
 - Upgrade to `Spring Boot` [2.4.3](https://github.com/spring-projects/spring-boot/releases/tag/v2.4.3).
-- Upgrade to `azure-messaging-eventhubs` [5.6.0](https://github.com/azure-sdk/azure-sdk-for-java/blob/master/sdk/eventhubs/azure-messaging-eventhubs/CHANGELOG.md#560-2021-03-10).
+- Upgrade to `azure-messaging-eventhubs` [5.6.0](https://github.com/azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/CHANGELOG.md#560-2021-03-10).
 
 ## 2.2.0 (2021-03-03)
 
