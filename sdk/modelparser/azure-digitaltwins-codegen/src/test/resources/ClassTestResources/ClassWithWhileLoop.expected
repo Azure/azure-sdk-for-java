@@ -1,0 +1,16 @@
+public class ClassWithWhileLoop {
+    /**
+     * Converts input to lowercase.
+     * @param input String input.
+     * @return Converted input in lowercase.
+     */
+    public String toLower(String input) {
+        while (input.size() > 0) {
+            if (input != null) {
+                continue;
+            }
+
+            input = input.substring(1);
+        }
+    }
+}

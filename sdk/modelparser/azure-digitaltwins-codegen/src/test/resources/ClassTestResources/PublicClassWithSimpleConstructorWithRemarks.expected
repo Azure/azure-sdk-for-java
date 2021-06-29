@@ -1,0 +1,12 @@
+public class PublicClassWithSimpleConstructorWithRemarks {
+    /**
+     * Initializes a new instance of the {@link PublicClassWithSimpleConstructorWithRemarks} class.
+     * This is more information.
+     * This is even more information.
+     * <p>
+     * This is remarks.
+     * </p>
+     */
+    public PublicClassWithSimpleConstructorWithRemarks() {
+    }
+}

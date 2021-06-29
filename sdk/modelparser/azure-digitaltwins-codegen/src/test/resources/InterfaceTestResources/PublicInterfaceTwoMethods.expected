@@ -1,0 +1,22 @@
+/**
+ * This is an interface.
+ * This is a second line of docs.
+ * <p>
+ * This is remarks section.
+ * </p>
+ */
+private interface PublicInterfaceTwoMethods implements RandomType {
+    /**
+     * This returns nothing.
+     * This returns something.
+     * @param input input description.
+     * @param value value description.
+     */
+    public String getNothing(String input, int value);
+
+    /**
+     * @param input input description.
+     * @param value value description.
+     */
+    private int getSomething(String input, int value);
+}

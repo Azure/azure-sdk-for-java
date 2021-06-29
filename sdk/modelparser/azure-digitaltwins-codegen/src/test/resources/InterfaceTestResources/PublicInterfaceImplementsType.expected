@@ -1,0 +1,9 @@
+/**
+ * This is an interface.
+ * This is a second line of docs.
+ * <p>
+ * This is remarks section.
+ * </p>
+ */
+private interface PublicInterfaceImplementsType implements RandomType {
+}

@@ -1,0 +1,11 @@
+public class ClassWithMethodsAndParameters {
+    /**
+     * This is method summary.
+     * <p>
+     * This is remarks.
+     * </p>
+     * @param name Name of the thing.
+     */
+    public String getNothing(String name, int howMany) {
+    }
+}

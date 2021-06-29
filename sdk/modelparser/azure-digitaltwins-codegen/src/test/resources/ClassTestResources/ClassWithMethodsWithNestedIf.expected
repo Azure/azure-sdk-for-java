@@ -1,0 +1,23 @@
+public class ClassWithMethodsWithNestedIf {
+    /**
+     * Converts string to upper case.
+     * @param input String to convert case.
+     * @return Input in upper case.
+     */
+    public static String toUpper(String input) {
+        if (input != null) {
+            if (input.startsWith("a")) {
+                return input.toUpperCase();
+                if (input.startsWith("ab")) {
+                    return null;
+                }
+            }
+
+            return input.toUpperCase();
+        } else {
+            return input;
+        }
+
+        return null;
+    }
+}

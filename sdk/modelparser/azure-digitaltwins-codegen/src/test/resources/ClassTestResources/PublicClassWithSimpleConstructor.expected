@@ -1,0 +1,7 @@
+public class PublicClassWithSimpleConstructor {
+    /**
+     * Initializes a new instance of the {@link PublicClassWithSimpleConstructor} class.
+     */
+    public PublicClassWithSimpleConstructor() {
+    }
+}

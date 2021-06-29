@@ -1,0 +1,14 @@
+public class PublicClassWithConstructorAndTwoParams {
+    /**
+     * Initializes a new instance of the {@link PublicClassWithConstructorAndTwoParams} class.
+     * This is more information.
+     * This is even more information.
+     * <p>
+     * This is remarks.
+     * </p>
+     * @param firstParam This is my first parameter.
+     * @param secondParam This is my second parameter.
+     */
+    public PublicClassWithConstructorAndTwoParams(String firstParam, int secondParam) {
+    }
+}

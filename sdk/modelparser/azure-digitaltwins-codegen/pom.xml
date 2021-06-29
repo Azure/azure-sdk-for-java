@@ -12,11 +12,11 @@
   </parent>
 
   <groupId>com.azure</groupId>
-  <artifactId>azure-digitaltwins-parser</artifactId>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-digitaltwins-parser;current} -->
+  <artifactId>azure-digitaltwins-codegen</artifactId>
+  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-digitaltwins-codegen;current} -->
 
-  <name>Microsoft Azure client library for DigitalTwins Model Parser</name>
-  <description>This package contains the Microsoft Azure DigitalTwins Model Parser client library.</description>
+  <name>Microsoft Azure client library for DigitalTwins Model Parser Code Generator</name>
+  <description>This package contains the Microsoft Azure DigitalTwins Model Parser code generator.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <distributionManagement>
@@ -128,8 +128,19 @@
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>exec-maven-plugin</artifactId>
           <version>1.2.1</version> <!-- {x-version-update;org.codehaus.mojo:exec-maven-plugin;external_dependency} -->
+          <executions>
+            <execution>
+              <goals>
+                <goal>exec</goal>
+              </goals>
+            </execution>
+          </executions>
           <configuration>
-            <mainClass>com.azure.digitaltwins.parser.ParserCodeGenerator</mainClass>
+            <mainClass>com.azure.digitaltwins.codegen.ParserCodeGenerator</mainClass>
+            <arguments>
+              <argument>./digest.json</argument>
+              <argument>../azure-digitaltwins-parser/src/main/java/com/azure/digitaltwins/parser/models/</argument>
+            </arguments>
           </configuration>
         </plugin>
       </plugins>
@@ -149,7 +160,7 @@
             <configuration>
               <argLine>
                 --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
-                --add-opens com.azure.digitaltwins.parser/com.azure.digitaltwins.parser=ALL-UNNAMED
+                --add-opens com.azure.digitaltwins.codegen/com.azure.digitaltwins.codegen=ALL-UNNAMED
               </argLine>
             </configuration>
           </plugin>
