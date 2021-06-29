@@ -253,7 +253,6 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
 
     /**
      * Creates a new file.
-     * <p>
      * To avoid overwriting, pass "*" to {@link DataLakeRequestConditions#setIfNoneMatch(String)}.
      *
      * <p><strong>Code Samples</strong></p>
