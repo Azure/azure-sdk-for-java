@@ -20,7 +20,6 @@ public final class ShareServiceProperties {
      * A summary of request statistics grouped by API in hourly aggregates for
      * files.
      */
-    @JsonProperty(value = "Metrics")
     @JsonProperty(value = "HourMetrics")
     private ShareMetrics hourMetrics;
 
@@ -28,7 +27,6 @@ public final class ShareServiceProperties {
      * A summary of request statistics grouped by API in minute aggregates for
      * files.
      */
-    @JsonProperty(value = "Metrics")
     @JsonProperty(value = "MinuteMetrics")
     private ShareMetrics minuteMetrics;
 

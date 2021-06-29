@@ -95,10 +95,10 @@ public class ShareStorageCustomization extends Customization {
         // Update incorrect JsonProperty of Metrics
         ClassCustomization shareServiceProperties = models.getClass("ShareServiceProperties");
         PropertyCustomization hourMetrics = shareServiceProperties.getProperty("hourMetrics");
-        hourMetrics.removeAnnotation("@JsonProperty\\(value = \"Metrics\"\\)")
+        hourMetrics.removeAnnotation("@JsonProperty(value = \"Metrics\")")
             .addAnnotation("@JsonProperty(value = \"HourMetrics\")");
         PropertyCustomization minuteMetrics = shareServiceProperties.getProperty("minuteMetrics");
-        minuteMetrics.removeAnnotation("@JsonProperty\\(value = \"Metrics\"\\)")
+        minuteMetrics.removeAnnotation("@JsonProperty(value = \"Metrics\")")
             .addAnnotation("@JsonProperty(value = \"MinuteMetrics\")");
 
     }
