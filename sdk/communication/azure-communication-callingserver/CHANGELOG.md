@@ -1,5 +1,11 @@
 # Release History
 
+## 1.0.0-beta.2 (2021-06-25)
+- Updated sdk and apis documentation.
+
+### Bug Fixes
+- Fixed bug with AddParticipant api.
+
 ## 1.0.0-beta.1 (2021-06-24)
 This is the first release of Azure Communication Service Calling Server. For more information, please see the [README][read_me].
 

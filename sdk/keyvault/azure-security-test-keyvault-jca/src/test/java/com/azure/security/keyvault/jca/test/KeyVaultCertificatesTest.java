@@ -3,7 +3,6 @@
 
 package com.azure.security.keyvault.jca.test;
 
-import com.azure.security.keyvault.jca.KeyVaultCertificates;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
@@ -94,14 +93,4 @@ public class KeyVaultCertificatesTest {
         assertNotNull(keyStore.getCertificate(certificateName));
     }
 
-    @Test
-    public void testUpdateLastForceRefreshTime() throws Exception {
-        KeyStore keyStore = PropertyConvertorUtils.getKeyVaultKeyStore();
-        assertNotNull(keyStore.getCertificate(certificateName));
-        keyStore.deleteEntry(certificateName);
-        assertNull(keyStore.getCertificate(certificateName));
-        Thread.sleep(10);
-        KeyVaultCertificates.updateForceRefreshTime();
-        assertNotNull(keyStore.getCertificate(certificateName));
-    }
 }
