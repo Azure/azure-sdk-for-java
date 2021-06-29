@@ -65,16 +65,4 @@ public class KeyVaultCertificatesTest {
         Assertions.assertFalse(keyVaultCertificates.getAliases().contains("myalias"));
     }
 
-    @Test
-    public void testCertificatesNeedRefresh() throws InterruptedException {
-        keyVaultCertificates = new KeyVaultCertificates(1000, keyVaultClient);
-        Assertions.assertTrue(keyVaultCertificates.certificatesNeedRefresh());
-        keyVaultCertificates.getAliases();
-        Assertions.assertFalse(keyVaultCertificates.certificatesNeedRefresh());
-        keyVaultCertificates.refreshCertificates();
-        Assertions.assertFalse(keyVaultCertificates.certificatesNeedRefresh());
-        Thread.sleep(2000);
-        Assertions.assertTrue(keyVaultCertificates.certificatesNeedRefresh());
-    }
-
 }
