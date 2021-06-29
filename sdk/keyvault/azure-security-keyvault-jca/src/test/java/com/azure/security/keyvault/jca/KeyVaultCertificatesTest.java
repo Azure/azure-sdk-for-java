@@ -26,13 +26,12 @@ public class KeyVaultCertificatesTest {
 
     @BeforeEach
     public void beforeEach() {
-
         List<String> aliases = new ArrayList<>();
         aliases.add("myalias");
         when(keyVaultClient.getAliases()).thenReturn(aliases);
         when(keyVaultClient.getKey("myalias", null)).thenReturn(key);
         when(keyVaultClient.getCertificate("myalias")).thenReturn(certificate);
-        keyVaultCertificates = new KeyVaultCertificates(0, keyVaultClient);
+        keyVaultCertificates = new KeyVaultCertificates(60_000, keyVaultClient);
     }
 
     @Test
@@ -55,9 +54,8 @@ public class KeyVaultCertificatesTest {
         Assertions.assertEquals(keyVaultCertificates.refreshAndGetAliasByCertificate(certificate), "myalias");
         Assertions.assertEquals(keyVaultCertificates.getCertificates().get("myalias"), certificate);
         when(keyVaultClient.getAliases()).thenReturn(null);
-        // TODO (rujche) Fix this
-        // Assertions.assertNotEquals(keyVaultCertificates.refreshAndGetAliasByCertificate(certificate), "myalias");
-        // Assertions.assertNull(keyVaultCertificates.getCertificates().get("myalias"));
+        Assertions.assertNotEquals(keyVaultCertificates.refreshAndGetAliasByCertificate(certificate), "myalias");
+        Assertions.assertNull(keyVaultCertificates.getCertificates().get("myalias"));
     }
 
     @Test
@@ -65,19 +63,6 @@ public class KeyVaultCertificatesTest {
         Assertions.assertTrue(keyVaultCertificates.getAliases().contains("myalias"));
         keyVaultCertificates.deleteEntry("myalias");
         Assertions.assertFalse(keyVaultCertificates.getAliases().contains("myalias"));
-    }
-
-    @Test
-    public void testCertificatesNeedRefresh() throws InterruptedException {
-        keyVaultCertificates = new KeyVaultCertificates(1000, keyVaultClient);
-        Assertions.assertTrue(keyVaultCertificates.certificatesNeedRefresh());
-        keyVaultCertificates.getAliases();
-        Assertions.assertFalse(keyVaultCertificates.certificatesNeedRefresh());
-        KeyVaultCertificates.updateForceRefreshTime();
-        keyVaultCertificates.getAliases();
-        Assertions.assertFalse(keyVaultCertificates.certificatesNeedRefresh());
-        Thread.sleep(2000);
-        Assertions.assertTrue(keyVaultCertificates.certificatesNeedRefresh());
     }
 
 }
