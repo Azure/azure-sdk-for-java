@@ -125,10 +125,7 @@ public final class MetricBoundaryCondition {
      *
      * @return True if alert is triggered for missing data-points, false otherwise.
      */
-    public boolean shouldAlertIfDataPointMissing() {
-        if (this.alertIfMissing == null) {
-            return false;
-        }
+    public Boolean shouldAlertIfDataPointMissing() {
         return this.alertIfMissing;
     }
 
