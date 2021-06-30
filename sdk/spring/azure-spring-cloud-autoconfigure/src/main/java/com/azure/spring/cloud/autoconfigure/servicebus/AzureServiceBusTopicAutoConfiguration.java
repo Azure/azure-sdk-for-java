@@ -3,6 +3,8 @@
 
 package com.azure.spring.cloud.autoconfigure.servicebus;
 
+import com.azure.core.amqp.ProxyOptions;
+import com.azure.core.util.ClientOptions;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.spring.cloud.context.core.config.AzureProperties;
 import com.azure.spring.cloud.context.core.impl.ServiceBusNamespaceManager;
@@ -39,6 +41,15 @@ public class AzureServiceBusTopicAutoConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureServiceBusTopicAutoConfiguration.class);
 
+    @Autowired
+    private ProxyOptions proxyOptions;
+
+    @Autowired
+    private com.azure.core.util.Configuration configuration;
+
+    @Autowired
+    private ClientOptions clientOptions;
+
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnBean(ServiceBusNamespaceManager.class)
@@ -72,6 +83,11 @@ public class AzureServiceBusTopicAutoConfiguration {
         Assert.notNull(connectionString, "Service Bus connection string must not be null");
 
         DefaultServiceBusTopicClientFactory clientFactory = new DefaultServiceBusTopicClientFactory(connectionString);
+        clientFactory.retryOptions(properties.getRetryOptions());
+        clientFactory.transportType(properties.getTransportType());
+        clientFactory.proxyOptions(proxyOptions);
+        clientFactory.configuration(configuration);
+        clientFactory.clientOptions(clientOptions);
         clientFactory.setNamespace(properties.getNamespace());
         clientFactory.setServiceBusNamespaceManager(namespaceManager);
         clientFactory.setServiceBusTopicManager(topicManager);

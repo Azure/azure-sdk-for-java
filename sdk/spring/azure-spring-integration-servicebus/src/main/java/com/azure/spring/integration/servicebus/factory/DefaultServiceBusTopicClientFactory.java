@@ -3,6 +3,11 @@
 
 package com.azure.spring.integration.servicebus.factory;
 
+import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.amqp.AmqpTransportType;
+import com.azure.core.amqp.ProxyOptions;
+import com.azure.core.util.ClientOptions;
+import com.azure.core.util.Configuration;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusErrorContext;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
@@ -89,4 +94,25 @@ public class DefaultServiceBusTopicClientFactory extends AbstractServiceBusSende
     private ServiceBusSenderAsyncClient createTopicSender(String name) {
         return serviceBusClientBuilder.sender().topicName(name).buildAsyncClient();
     }
+
+    public void proxyOptions(ProxyOptions proxyOptions) {
+        serviceBusClientBuilder.proxyOptions(proxyOptions);
+    }
+
+    public void retryOptions(AmqpRetryOptions amqpRetryOptions) {
+        serviceBusClientBuilder.retryOptions(amqpRetryOptions);
+    }
+
+    public void transportType(AmqpTransportType transportType) {
+        serviceBusClientBuilder.transportType(transportType);
+    }
+
+    public void configuration(Configuration configuration) {
+        serviceBusClientBuilder.configuration(configuration);
+    }
+
+    public void clientOptions(ClientOptions clientOptions) {
+        serviceBusClientBuilder.clientOptions(clientOptions);
+    }
+
 }
