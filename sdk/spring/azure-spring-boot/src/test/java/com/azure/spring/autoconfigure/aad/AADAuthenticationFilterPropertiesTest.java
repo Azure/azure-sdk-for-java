@@ -43,18 +43,21 @@ public class AADAuthenticationFilterPropertiesTest {
     }
 
     @Test
-    public void loadPropertiesFromAzureProperties() {
+    public void loadPropertiesFromCredentialProperties() {
 
         try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext()) {
-            configureAllRequiredProperties(context);
-            System.clearProperty("azure.activedirectory.tenant-id");
             System.setProperty("spring.cloud.azure.tenant-id", "azure-tenant-id");
+            System.setProperty("spring.cloud.azure.client-id", "azure-client-id");
+            System.setProperty(AAD_PROPERTY_PREFIX + "client-id=", TestConstants.CLIENT_ID);
+            System.setProperty(AAD_PROPERTY_PREFIX + "client-secret=", TestConstants.CLIENT_SECRET);
             context.register(Config.class);
             context.refresh();
 
             final AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
 
             assertThat(properties.getTenantId()).isEqualTo("azure-tenant-id");
+            assertThat(properties.getClientId()).isEqualTo(TestConstants.CLIENT_ID);
+            assertThat(properties.getClientSecret()).isEqualTo(TestConstants.CLIENT_SECRET);
         }
     }
 
