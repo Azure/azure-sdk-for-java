@@ -522,6 +522,78 @@
           "code": "java.method.added",
           "new": "method com.azure.core.util.HttpClientOptions com.azure.core.util.HttpClientOptions::setResponseTimeout(java.time.Duration)",
           "justification": "New Setter method."
+      },
+      {
+        "code": "java.annotation.attributeValueChanged",
+        "old": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getD()",
+        "new": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getD()",
+        "justification": "The class used by the serialization/deserialization annotations is package private and moving it is not a breaking change."
+      },
+      {
+        "code": "java.annotation.attributeValueChanged",
+        "old": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getDp()",
+        "new": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getDp()",
+        "justification": "The class used by the serialization/deserialization annotations is package private and moving it is not a breaking change."
+      },
+      {
+        "code": "java.annotation.attributeValueChanged",
+        "old": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getDq()",
+        "new": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getDq()",
+        "justification": "The class used by the serialization/deserialization annotations is package private and moving it is not a breaking change."
+      },
+      {
+        "code": "java.annotation.attributeValueChanged",
+        "old": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getE()",
+        "new": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getE()",
+        "justification": "The class used by the serialization/deserialization annotations is package private and moving it is not a breaking change."
+      },
+      {
+        "code": "java.annotation.attributeValueChanged",
+        "old": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getK()",
+        "new": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getK()",
+        "justification": "The class used by the serialization/deserialization annotations is package private and moving it is not a breaking change."
+      },
+      {
+        "code": "java.annotation.attributeValueChanged",
+        "old": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getN()",
+        "new": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getN()",
+        "justification": "The class used by the serialization/deserialization annotations is package private and moving it is not a breaking change."
+      },
+      {
+        "code": "java.annotation.attributeValueChanged",
+        "old": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getP()",
+        "new": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getP()",
+        "justification": "The class used by the serialization/deserialization annotations is package private and moving it is not a breaking change."
+      },
+      {
+        "code": "java.annotation.attributeValueChanged",
+        "old": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getQ()",
+        "new": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getQ()",
+        "justification": "The class used by the serialization/deserialization annotations is package private and moving it is not a breaking change."
+      },
+      {
+        "code": "java.annotation.attributeValueChanged",
+        "old": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getQi()",
+        "new": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getQi()",
+        "justification": "The class used by the serialization/deserialization annotations is package private and moving it is not a breaking change."
+      },
+      {
+        "code": "java.annotation.attributeValueChanged",
+        "old": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getT()",
+        "new": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getT()",
+        "justification": "The class used by the serialization/deserialization annotations is package private and moving it is not a breaking change."
+      },
+      {
+        "code": "java.annotation.attributeValueChanged",
+        "old": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getX()",
+        "new": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getX()",
+        "justification": "The class used by the serialization/deserialization annotations is package private and moving it is not a breaking change."
+      },
+      {
+        "code": "java.annotation.attributeValueChanged",
+        "old": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getY()",
+        "new": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getY()",
+        "justification": "The class used by the serialization/deserialization annotations is package private and moving it is not a breaking change."
       }
     ]
   }
