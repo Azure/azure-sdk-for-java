@@ -21,7 +21,7 @@ import java.util.Map;
 /**
  * Implements a message serializer for EventData.
  */
-public class PerfMessageSerializer implements MessageSerializer {
+class PerfMessageSerializer implements MessageSerializer {
 
     /**
      * Gets the serialized size of the AMQP message.
