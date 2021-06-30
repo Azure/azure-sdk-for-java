@@ -40,13 +40,13 @@ public class AzureServiceBusQueueAutoConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureServiceBusQueueAutoConfiguration.class);
 
-    @Autowired
+    @Autowired(required = false)
     private ProxyOptions proxyOptions;
 
-    @Autowired
+    @Autowired(required = false)
     private com.azure.core.util.Configuration configuration;
 
-    @Autowired
+    @Autowired(required = false)
     private ClientOptions clientOptions;
 
     @Bean
