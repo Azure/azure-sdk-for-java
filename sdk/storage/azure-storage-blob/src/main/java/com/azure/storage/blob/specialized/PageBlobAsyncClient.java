@@ -1079,7 +1079,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         }
         context = context == null ? Context.NONE : context;
 
-        return this.azureBlobStorage.getPageBlobs().copyIncrementalWithResponseAsync(containerName, blobName, options.getSource(), null,
+        return this.azureBlobStorage.getPageBlobs().copyIncrementalWithResponseAsync(containerName, blobName, builder.toString(), null,
             modifiedRequestConditions.getIfModifiedSince(), modifiedRequestConditions.getIfUnmodifiedSince(),
             modifiedRequestConditions.getIfMatch(), modifiedRequestConditions.getIfNoneMatch(),
             modifiedRequestConditions.getTagsConditions(), null,
