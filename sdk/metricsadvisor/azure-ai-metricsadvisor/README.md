@@ -8,7 +8,7 @@ of business dataFeedMetrics.
 ## Getting started
 
 ### Prerequisites
-- Java Development Kit [JDK][jdk_link] with version 8 or above
+- [Java Development Kit (JDK)][jdk_link] with version 8 or later
 - [Azure Subscription][azure_subscription]
 - [Cognitive Services or Metrics Advisor account][metrics_advisor_account] to use this package.
 
@@ -169,7 +169,7 @@ A notification hook is the entry point that allows the users to subscribe to rea
 * [Check ingestion status](#check-ingestion-status "Check ingestion status")
 * [Configure anomaly detection configuration](#configure-anomaly-detection-configuration "Configure anomaly detection configuration")
 * [Add hooks for receiving anomaly alerts](#add-hooks-for-receiving-anomaly-alerts "Add hooks for receiving anomaly alerts")
-* [Configure an anomaly alert configuration](#configure-anomaly-alert-configuration "Configure anomalyAlert configuration")
+* [Configure an anomaly alert configuration](#configure-an-anomaly-alert-configuration "Configure anomalyAlert configuration")
 * [Query anomaly detection results](#query-anomaly-detection-results "Query anomaly detection results")
 
 #### Add a data feed from a sample or data source
@@ -386,7 +386,7 @@ MetricsAdvisorAsyncClient metricsAdvisorAsyncClient = new MetricsAdvisorClientBu
 
 For more extensive documentation on Azure Cognitive Services Metrics Advisor, see the [Metrics Advisor documentation][metrics_advisor_doc].
 
-## Contributing
+## Contributing 
 
 This project welcomes contributions and suggestions. Most contributions require you to agree to a [Contributor License Agreement (CLA)][cla] declaring that you have the right to, and actually do, grant us the rights to use your contribution.
 
@@ -409,8 +409,10 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
 [create_new_resource]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows#create-a-new-azure-cognitive-services-resource
+[grant_access]: https://docs.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
 [http_clients_wiki]: https://github.com/Azure/azure-sdk-for-java/wiki/HTTP-clients
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[logging]:  https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
 [register_AAD_application]: https://docs.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
 [metrics_advisor_account]: https://ms.portal.azure.com/#create/Microsoft.CognitiveServicesMetricsAdvisor
 [metrics_advisor_doc]: https://docs.microsoft.com/azure/cognitive-services/Metrics-advisor/glossary
