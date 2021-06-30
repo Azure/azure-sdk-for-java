@@ -22,14 +22,14 @@ public class EventProcessorOptions extends EventHubsReceiveOptions {
     @Parameter(names = {"-e", "--eventsToSend"}, description = "Number of events to send per partition.")
     private int eventsToSend = 1000;
 
+    @Parameter(names = {"--publish"}, description = "Switch to indicate whether to publish messages or not.")
+    private boolean publishMessages = false;
+
     @Parameter(names = {"-b", "--batchSize"}, description = "Number of events to receive as a batch.")
     private int batchSize = 100;
 
     @Parameter(names = {"--batch"}, description = "Use batched receive.")
     private boolean isBatched = false;
-
-    @Parameter(names = {"--publish"}, description = "Switch to indicate whether to publish messages or not.")
-    private boolean publishMessages = false;
 
     /**
      * Gets the connection string for the storage account.
@@ -59,6 +59,15 @@ public class EventProcessorOptions extends EventHubsReceiveOptions {
     }
 
     /**
+     * Gets whether to publish messages or not.
+     *
+     * @return Gets whether to publish messages to the event hub before running the test.
+     */
+    public boolean publishMessages() {
+        return publishMessages;
+    }
+
+    /**
      * Gets the number of events to receive per batch.
      *
      * @return The number of events to receive per batch.
@@ -74,14 +83,5 @@ public class EventProcessorOptions extends EventHubsReceiveOptions {
      */
     public boolean isBatched() {
         return isBatched;
-    }
-
-    /**
-     * Gets whether to publish messages or not.
-     *
-     * @return Gets whether to publish messages to the event hub before running the test.
-     */
-    public boolean publishMessages() {
-        return publishMessages;
     }
 }
