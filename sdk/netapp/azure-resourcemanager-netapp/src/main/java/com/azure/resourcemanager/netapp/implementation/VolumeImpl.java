@@ -156,6 +156,18 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         return this.innerModel().ldapEnabled();
     }
 
+    public Boolean coolAccess() {
+        return this.innerModel().coolAccess();
+    }
+
+    public Integer coolnessPeriod() {
+        return this.innerModel().coolnessPeriod();
+    }
+
+    public String unixPermissions() {
+        return this.innerModel().unixPermissions();
+    }
+
     public Region region() {
         return Region.fromName(this.regionName());
     }
@@ -449,6 +461,21 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
 
     public VolumeImpl withLdapEnabled(Boolean ldapEnabled) {
         this.innerModel().withLdapEnabled(ldapEnabled);
+        return this;
+    }
+
+    public VolumeImpl withCoolAccess(Boolean coolAccess) {
+        this.innerModel().withCoolAccess(coolAccess);
+        return this;
+    }
+
+    public VolumeImpl withCoolnessPeriod(Integer coolnessPeriod) {
+        this.innerModel().withCoolnessPeriod(coolnessPeriod);
+        return this;
+    }
+
+    public VolumeImpl withUnixPermissions(String unixPermissions) {
+        this.innerModel().withUnixPermissions(unixPermissions);
         return this;
     }
 

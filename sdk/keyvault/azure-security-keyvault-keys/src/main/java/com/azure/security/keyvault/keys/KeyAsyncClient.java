@@ -67,6 +67,7 @@ public final class KeyAsyncClient {
     static final int DEFAULT_MAX_PAGE_RESULTS = 25;
     static final String CONTENT_TYPE_HEADER_VALUE = "application/json";
     static final String KEY_VAULT_SCOPE = "https://vault.azure.net/.default";
+    static final String MHSM_SCOPE = "https://managedhsm.azure.net/.default";
     // Please see <a href=https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
     // for more information on Azure resource provider namespaces.
     private static final String KEYVAULT_TRACING_NAMESPACE_VALUE = "Microsoft.KeyVault";
@@ -1339,7 +1340,7 @@ public final class KeyAsyncClient {
                 CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
                 .doOnRequest(ignored -> logger.verbose("Listing key versions - {}", name))
                 .doOnSuccess(response -> logger.verbose("Listed key versions - {}", name))
-                .doOnError(error -> logger.warning(String.format("Failed to list key versions - %s", name), error));
+                .doOnError(error -> logger.warning("Failed to list key versions - {}", name, error));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

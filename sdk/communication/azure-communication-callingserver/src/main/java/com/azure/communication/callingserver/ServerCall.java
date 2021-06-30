@@ -3,7 +3,9 @@
 
 package com.azure.communication.callingserver;
 
-import com.azure.communication.callingserver.models.CallRecordingStateResult;
+import com.azure.communication.callingserver.models.AddParticipantResult;
+import com.azure.communication.callingserver.models.CallRecordingProperties;
+import com.azure.communication.callingserver.models.CallingServerErrorException;
 import com.azure.communication.callingserver.models.PlayAudioOptions;
 import com.azure.communication.callingserver.models.PlayAudioResult;
 import com.azure.communication.callingserver.models.StartCallRecordingResult;
@@ -14,7 +16,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
 /**
- * Sync Client that supports server call operations.
+ * Synchronous Client that supports server call operations.
  */
 public final class ServerCall {
     private final ServerCallAsync serverCallAsync;
@@ -24,9 +26,9 @@ public final class ServerCall {
     }
 
     /**
-     * Get the server call id property
+     * Get server call id property.
      *
-     * @return the id value.
+     * @return Server call id value.
      */
     public String getServerCallId() {
         return serverCallAsync.getServerCallId();
@@ -35,40 +37,44 @@ public final class ServerCall {
     /**
      * Add a participant to the call.
      *
-     * @param participant Invited participant.
-     * @param callBackUri callBackUri to get notifications.
-     * @param alternateCallerId The phone number to use when adding a phone number participant.
-     * @param operationContext The value to identify context of the operation. This is used to co-relate other
+     * @param participant Added participant.
+     * @param callBackUri CallBackUri to get notifications.
+     * @param alternateCallerId Phone number to use when adding a phone number participant.
+     * @param operationContext Value to identify context of the operation. This is used to co-relate other
      *                         communications related to this operation
-     * @return response for a successful add participant request.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void addParticipant(
+    public AddParticipantResult addParticipant(
         CommunicationIdentifier participant,
         String callBackUri,
         String alternateCallerId,
         String operationContext) {
-        return serverCallAsync.addParticipant(participant, alternateCallerId, operationContext, callBackUri).block();
+        return serverCallAsync.addParticipant(participant, callBackUri, alternateCallerId, operationContext).block();
     }
 
     /**
      * Add a participant to the call.
      *
-     * @param participant Invited participant.
-     * @param callBackUri callBackUri to get notifications.
-     * @param alternateCallerId The phone number to use when adding a phone number participant.
-     * @param operationContext The value to identify context of the operation. This is used to co-relate other
+     * @param participant Added participant.
+     * @param callBackUri CallBackUri to get notifications.
+     * @param alternateCallerId Phone number to use when adding a phone number participant.
+     * @param operationContext Value to identify context of the operation. This is used to co-relate other
      *                         communications related to this operation
      * @param context A {@link Context} representing the request context.
-     * @return response for a successful add participant request.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> addParticipantWithResponse(
+    public Response<AddParticipantResult> addParticipantWithResponse(
         CommunicationIdentifier participant,
         String callBackUri,
         String alternateCallerId,
         String operationContext,
-        Context context) {
+        final Context context) {
         return serverCallAsync.addParticipantWithResponse(
                 participant,
                 callBackUri,
@@ -81,30 +87,33 @@ public final class ServerCall {
      * Remove a participant from the call.
      *
      * @param participantId Participant id.
-     * @return response for a successful remove participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void removeParticipant(String participantId) {
-        return serverCallAsync.removeParticipant(participantId).block();
+    public void removeParticipant(String participantId) {
+        serverCallAsync.removeParticipant(participantId).block();
     }
 
     /**
      * Remove a participant from the call.
      *
      * @param participantId Participant id.
-     * @param context A {@link Context} representing the request context.
-     * @return response for a successful remove participant request.
+     * @param context {@link Context} representing the request context.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful remove participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> removeParticipantWithResponse(String participantId, Context context) {
+    public Response<Void> removeParticipantWithResponse(String participantId, final Context context) {
         return serverCallAsync.removeParticipantWithResponse(participantId, context).block();
     }
 
     /**
-     * Start recording
+     * Start recording of the call.
      *
-     * @param recordingStateCallbackUri The uri to send state change callbacks.
-     * @return result for a successful start recording request.
+     * @param recordingStateCallbackUri Uri to send state change callbacks.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Result for a successful start recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StartCallRecordingResult startRecording(String recordingStateCallbackUri) {
@@ -112,122 +121,139 @@ public final class ServerCall {
     }
 
     /**
-     * Start recording
+     * Start recording of the call.
      *
-     * @param recordingStateCallbackUri The uri to send state change callbacks.
+     * @param recordingStateCallbackUri Uri to send state change callbacks.
      * @param context A {@link Context} representing the request context.
-     * @return result for a successful start recording request.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Result for a successful start recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StartCallRecordingResult> startRecordingWithResponse(
         String recordingStateCallbackUri,
-        Context context) {
+        final Context context) {
         return serverCallAsync.startRecordingWithResponse(recordingStateCallbackUri, context).block();
     }
 
     /**
-     * Stop recording
+     * Stop recording of the call.
      *
-     * @param recordingId The recording id to stop.
-     * @return response for a successful stop recording request.
+     * @param recordingId Recording id to stop.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void stopRecording(String recordingId) {
-        return serverCallAsync.stopRecording(recordingId).block();
+    public void stopRecording(String recordingId) {
+        serverCallAsync.stopRecording(recordingId).block();
     }
 
     /**
-     * Stop recording
+     * Stop recording of the call.
      *
-     * @param recordingId The recording id to stop.
+     * @param recordingId Recording id to stop.
      * @param context A {@link Context} representing the request context.
-     * @return response for a successful stop recording request.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful stop recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> stopRecordingWithResponse(String recordingId, Context context) {
+    public Response<Void> stopRecordingWithResponse(String recordingId, final Context context) {
         return serverCallAsync.stopRecordingWithResponse(recordingId, context).block();
     }
 
     /**
-     * Pause recording
+     * Pause recording of the call.
      *
-     * @param recordingId The recording id to stop.
-     * @return response for a successful pause recording request.
+     * @param recordingId Recording id to stop.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void pauseRecording(String recordingId) {
-        return serverCallAsync.pauseRecording(recordingId).block();
+    public void pauseRecording(String recordingId) {
+        serverCallAsync.pauseRecording(recordingId).block();
     }
 
     /**
-     * Pause recording
+     * Pause recording of the call.
      *
-     * @param recordingId The recording id to stop.
+     * @param recordingId Recording id to stop.
      * @param context A {@link Context} representing the request context.
-     * @return response for a successful pause recording request.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful pause recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> pauseRecordingWithResponse(String recordingId, Context context) {
+    public Response<Void> pauseRecordingWithResponse(String recordingId, final Context context) {
         return serverCallAsync.pauseRecordingWithResponse(recordingId, context).block();
     }
 
     /**
-     * Resume recording
+     * Resume recording of the call.
      *
      * @param recordingId The recording id to stop.
-     * @return response for a successful resume recording request.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void resumeRecording(String recordingId) {
-        return serverCallAsync.resumeRecording(recordingId).block();
+    public void resumeRecording(String recordingId) {
+        serverCallAsync.resumeRecording(recordingId).block();
     }
 
     /**
-     * Resume recording
+     * Resume recording of the call.
      *
      * @param recordingId The recording id to stop.
      * @param context A {@link Context} representing the request context.
-     * @return response for a successful resume recording request.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful resume recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> resumeRecordingWithResponse(String recordingId, Context context) {
+    public Response<Void> resumeRecordingWithResponse(String recordingId, final Context context) {
         return serverCallAsync.resumeRecordingWithResponse(recordingId, context).block();
     }
 
     /**
-     * Get recording state
+     * Get the current recording state by recording id.
      *
      * @param recordingId The recording id to stop.
-     * @return response for a successful get recording state request.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful get recording state request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CallRecordingStateResult getRecordingState(String recordingId) {
+    public CallRecordingProperties getRecordingState(String recordingId) {
         return serverCallAsync.getRecordingState(recordingId).block();
     }
 
     /**
-     * Get recording state
+     * Get the current recording state by recording id.
      *
      * @param recordingId The recording id to stop.
      * @param context A {@link Context} representing the request context.
-     * @return response for a successful get recording state request.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful get recording state request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CallRecordingStateResult> getRecordingStateWithResponse(String recordingId, Context context) {
+    public Response<CallRecordingProperties> getRecordingStateWithResponse(String recordingId, final Context context) {
         return serverCallAsync.getRecordingStateWithResponse(recordingId, context).block();
     }
 
     /**
      * Play audio in a call.
      *
-     * @param audioFileUri The media resource uri of the play audio request. Currently only Wave file (.wav) format
+     * @param audioFileUri Media resource uri of the play audio request. Currently only Wave file (.wav) format
      *                     audio prompts are supported. More specifically, the audio content in the wave file must
      *                     be mono (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
-     * @param audioFileId An id for the media in the AudioFileUri, using which we cache the media.
-     * @param callbackUri The callback Uri to receive PlayAudio status notifications.
-     * @param operationContext The value to identify context of the operation. This is used to co-relate other
+     * @param audioFileId Id for the media in the AudioFileUri, using which we cache the media.
+     * @param callbackUri Callback Uri to receive PlayAudio status notifications.
+     * @param operationContext Value to identify context of the operation. This is used to co-relate other
      *                         communications related to this operation
-     * @return the response payload for play audio operation.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PlayAudioResult playAudio(
@@ -241,11 +267,13 @@ public final class ServerCall {
     /**
      * Play audio in a call.
      *
-     * @param audioFileUri The media resource uri of the play audio request. Currently only Wave file (.wav) format
+     * @param audioFileUri Media resource uri of the play audio request. Currently only Wave file (.wav) format
      *                     audio prompts are supported. More specifically, the audio content in the wave file must
      *                     be mono (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
      * @param playAudioOptions Options for play audio.
-     * @return the response payload for play audio operation.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PlayAudioResult playAudio(String audioFileUri, PlayAudioOptions playAudioOptions) {
@@ -255,47 +283,20 @@ public final class ServerCall {
     /**
      * Play audio in a call.
      *
-     * @param audioFileUri The media resource uri of the play audio request. Currently only Wave file (.wav) format
-     *                     audio prompts are supported. More specifically, the audio content in the wave file must
-     *                     be mono (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
-     * @param audioFileId An id for the media in the AudioFileUri, using which we cache the media.
-     * @param callbackUri The callback Uri to receive PlayAudio status notifications.
-     * @param operationContext The value to identify context of the operation. This is used to co-relate other
-     *                         communications related to this operation
-     * @param context A {@link Context} representing the request context.
-     * @return the response payload for play audio operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PlayAudioResult> playAudioWithResponse(
-        String audioFileUri,
-        String audioFileId,
-        String callbackUri,
-        String operationContext,
-        Context context) {
-        return serverCallAsync
-            .playAudioWithResponseInternal(
-                audioFileUri,
-                audioFileId,
-                callbackUri,
-                operationContext,
-                context).block();
-    }
-
-    /**
-     * Play audio in a call.
-     *
-     * @param audioFileUri The media resource uri of the play audio request. Currently only Wave file (.wav) format
+     * @param audioFileUri Media resource uri of the play audio request. Currently only Wave file (.wav) format
      *                     audio prompts are supported. More specifically, the audio content in the wave file must
      *                     be mono (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
      * @param playAudioOptions Options for play audio.
      * @param context A {@link Context} representing the request context.
-     * @return the response payload for play audio operation.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PlayAudioResult> playAudioWithResponse(
         String audioFileUri,
         PlayAudioOptions playAudioOptions,
-        Context context) {
+        final Context context) {
         return serverCallAsync.playAudioWithResponseInternal(audioFileUri, playAudioOptions, context).block();
     }
 }

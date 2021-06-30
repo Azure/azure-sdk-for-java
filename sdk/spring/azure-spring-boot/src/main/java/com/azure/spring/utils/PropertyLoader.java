@@ -39,8 +39,4 @@ public class PropertyLoader {
     public static String getProjectVersion() {
         return getProperty(PROJECT_PROPERTY_FILE, "project.version");
     }
-
-    public static String getTelemetryInstrumentationKey() {
-        return getProperty(TELEMETRY_CONFIG_FILE, "telemetry.instrumentationKey");
-    }
 }

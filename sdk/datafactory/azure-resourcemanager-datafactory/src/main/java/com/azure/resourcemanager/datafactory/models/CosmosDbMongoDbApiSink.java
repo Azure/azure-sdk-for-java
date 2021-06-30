@@ -86,6 +86,13 @@ public final class CosmosDbMongoDbApiSink extends CopySink {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public CosmosDbMongoDbApiSink withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

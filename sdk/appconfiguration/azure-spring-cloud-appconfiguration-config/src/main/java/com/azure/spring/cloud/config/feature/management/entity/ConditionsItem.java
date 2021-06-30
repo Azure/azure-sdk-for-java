@@ -7,6 +7,9 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * Object used when transforming Azure App Configuration Feature Flags to Client Feature Flags.
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ConditionsItem {
 

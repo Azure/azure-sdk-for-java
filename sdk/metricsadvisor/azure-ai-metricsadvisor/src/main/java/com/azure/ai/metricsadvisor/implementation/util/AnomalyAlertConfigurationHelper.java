@@ -6,6 +6,8 @@ package com.azure.ai.metricsadvisor.implementation.util;
 
 import com.azure.ai.metricsadvisor.administration.models.AnomalyAlertConfiguration;
 
+import java.util.List;
+
 /**
  * The helper class to set the non-public properties of an {@link AnomalyAlertConfiguration} instance.
  */
@@ -19,6 +21,8 @@ public final class AnomalyAlertConfigurationHelper {
      */
     public interface AnomalyAlertConfigurationAccessor {
         void setId(AnomalyAlertConfiguration configuration, String id);
+        List<String> getHookIdsToAlertRaw(AnomalyAlertConfiguration configuration);
+        List<String> getDimensionsToSplitAlertRaw(AnomalyAlertConfiguration configuration);
     }
 
     /**
@@ -32,5 +36,13 @@ public final class AnomalyAlertConfigurationHelper {
 
     static void setId(AnomalyAlertConfiguration configuration, String id) {
         accessor.setId(configuration, id);
+    }
+
+    static List<String> getHookIdsToAlertRaw(AnomalyAlertConfiguration configuration) {
+        return accessor.getHookIdsToAlertRaw(configuration);
+    }
+
+    static List<String> getDimensionsToSplitAlertRaw(AnomalyAlertConfiguration configuration) {
+        return accessor.getDimensionsToSplitAlertRaw(configuration);
     }
 }

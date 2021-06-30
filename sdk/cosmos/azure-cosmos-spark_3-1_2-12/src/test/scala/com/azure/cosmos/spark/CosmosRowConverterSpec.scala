@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.{ArrayNode, BinaryNode, BooleanNode, ObjectNode}
 import org.apache.spark.sql.Row
@@ -18,7 +19,7 @@ import java.time.{LocalDateTime, OffsetDateTime, ZoneOffset}
 import org.apache.spark.sql.types._
 // scalastyle:on underscore.import
 
-class CosmosRowConverterSpec extends UnitSpec with CosmosLoggingTrait {
+class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
   //scalastyle:off null
   //scalastyle:off multiple.string.literals
 
@@ -705,12 +706,25 @@ class CosmosRowConverterSpec extends UnitSpec with CosmosLoggingTrait {
     val nestedObjectNode: ObjectNode = objectNode.putObject(colName1)
     nestedObjectNode.put(colName1, colVal1)
     objectNode.put(colName2, colVal2)
+
+    // with struct
     val schema = StructType(Seq(StructField(colName1, StructType(Seq(StructField(colName1, StringType)))),
       StructField(colName2, StringType)))
     val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode, SchemaConversionModes.Relaxed)
     val asStruct = row.getStruct(0)
     asStruct.getString(0) shouldEqual colVal1
     row.getString(1) shouldEqual colVal2
+
+    // with map
+    val schemaWithMap = StructType(Seq(
+      StructField(colName1, MapType(keyType = StringType, valueType = StringType, valueContainsNull = false)),
+      StructField(colName2, StringType)))
+
+    val rowWithMap = CosmosRowConverter.fromObjectNodeToRow(schemaWithMap, objectNode, SchemaConversionModes.Relaxed)
+
+    val convertedMap = rowWithMap.getMap[String, String](0)
+    convertedMap(colName1) shouldEqual colVal1
+    rowWithMap.getString(1) shouldEqual colVal2
   }
 
   "raw in ObjectNode" should "translate to Row" in {

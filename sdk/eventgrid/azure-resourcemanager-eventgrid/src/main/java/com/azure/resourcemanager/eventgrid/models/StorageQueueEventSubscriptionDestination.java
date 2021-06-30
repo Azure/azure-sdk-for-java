@@ -34,6 +34,12 @@ public class StorageQueueEventSubscriptionDestination extends EventSubscriptionD
     @JsonProperty(value = "properties.queueName")
     private String queueName;
 
+    /*
+     * Storage queue message time to live in seconds.
+     */
+    @JsonProperty(value = "properties.queueMessageTimeToLiveInSeconds")
+    private Long queueMessageTimeToLiveInSeconds;
+
     /**
      * Get the resourceId property: The Azure Resource ID of the storage account that contains the queue that is the
      * destination of an event subscription.
@@ -75,6 +81,27 @@ public class StorageQueueEventSubscriptionDestination extends EventSubscriptionD
      */
     public StorageQueueEventSubscriptionDestination withQueueName(String queueName) {
         this.queueName = queueName;
+        return this;
+    }
+
+    /**
+     * Get the queueMessageTimeToLiveInSeconds property: Storage queue message time to live in seconds.
+     *
+     * @return the queueMessageTimeToLiveInSeconds value.
+     */
+    public Long queueMessageTimeToLiveInSeconds() {
+        return this.queueMessageTimeToLiveInSeconds;
+    }
+
+    /**
+     * Set the queueMessageTimeToLiveInSeconds property: Storage queue message time to live in seconds.
+     *
+     * @param queueMessageTimeToLiveInSeconds the queueMessageTimeToLiveInSeconds value to set.
+     * @return the StorageQueueEventSubscriptionDestination object itself.
+     */
+    public StorageQueueEventSubscriptionDestination withQueueMessageTimeToLiveInSeconds(
+        Long queueMessageTimeToLiveInSeconds) {
+        this.queueMessageTimeToLiveInSeconds = queueMessageTimeToLiveInSeconds;
         return this;
     }
 

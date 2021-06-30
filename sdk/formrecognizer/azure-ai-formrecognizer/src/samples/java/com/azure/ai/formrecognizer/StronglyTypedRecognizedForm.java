@@ -18,7 +18,7 @@ import java.util.List;
  * <a href="https://aka.ms/formrecognizer/receiptfields"></a>
  * for information on the strongly typed fields returned by service when recognizing receipts.
  * More information on the Receipt used in the example below can be found
- * <a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/resources/java/com/azure/ai/formrecognizer/Receipt.java">here</a>
+ * <a href="https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/resources/java/com/azure/ai/formrecognizer/Receipt.java">here</a>
  */
 public class StronglyTypedRecognizedForm {
 
@@ -35,7 +35,7 @@ public class StronglyTypedRecognizedForm {
             .buildClient();
 
         String receiptUrl =
-            "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/formrecognizer"
+            "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/formrecognizer"
                 + "/azure-ai-formrecognizer/src/samples/resources/sample-forms/receipts/contoso-allinone.jpg";
         SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> recognizeReceiptPoller =
             client.beginRecognizeReceiptsFromUrl(receiptUrl,

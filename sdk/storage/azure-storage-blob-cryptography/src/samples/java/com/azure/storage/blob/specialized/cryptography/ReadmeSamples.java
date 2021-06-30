@@ -29,6 +29,8 @@ public class ReadmeSamples {
 
     private BlobClient blobClient;
     private String connectionString;
+    private String containerName;
+    private String blobName;
     private AsyncKeyEncryptionKey key;
     private AsyncKeyEncryptionKeyResolver keyResolver;
     private String keyWrapAlgorithm;
@@ -51,6 +53,8 @@ public class ReadmeSamples {
             .key(key, keyWrapAlgorithm)
             .keyResolver(keyResolver)
             .connectionString(connectionString)
+            .containerName(containerName)
+            .blobName(blobName)
             .buildEncryptedBlobClient();
     }
 
@@ -64,6 +68,8 @@ public class ReadmeSamples {
         EncryptedBlobClient client = new EncryptedBlobClientBuilder()
             .key(akek, keyWrapAlgorithm)
             .connectionString(connectionString)
+            .containerName(containerName)
+            .blobName(blobName)
             .buildEncryptedBlobClient();
     }
 
@@ -83,9 +89,9 @@ public class ReadmeSamples {
         EncryptedBlobClient client = new EncryptedBlobClientBuilder()
             .key(akek, keyWrapAlgorithm)
             .connectionString(connectionString)
+            .containerName(containerName)
+            .blobName(blobName)
             .buildEncryptedBlobClient();
     }
-
-
 }
 

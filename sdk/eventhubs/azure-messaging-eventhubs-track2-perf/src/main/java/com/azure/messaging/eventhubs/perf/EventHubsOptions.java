@@ -24,9 +24,6 @@ public class EventHubsOptions extends PerfStressOptions {
     @Parameter(names = {"-n", "--name"}, description = "Name of the Event Hub.", required = true)
     private String eventHubName;
 
-    @Parameter(names = {"--partitionId"}, description = "Partition to send events to or receive from.")
-    private String partitionId;
-
     /**
      * Creates an instance with the default options.
      */
@@ -61,15 +58,6 @@ public class EventHubsOptions extends PerfStressOptions {
      */
     public String getEventHubName() {
         return eventHubName;
-    }
-
-    /**
-     * Gets the partition to receive events from or send events to.
-     *
-     * @return The partition to receive events from or send events to.
-     */
-    public String getPartitionId() {
-        return partitionId;
     }
 
     /**

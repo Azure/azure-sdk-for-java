@@ -3,7 +3,7 @@ trigger: none
 pr:
   branches:
     include:
-      - master
+      - main
   paths:
     include:
       - eng/pipelines/aggregate-reports.yml
@@ -15,7 +15,7 @@ jobs:
     variables:
       - template: /eng/pipelines/templates/variables/globals.yml
     pool:
-      vmImage: 'ubuntu-18.04'
+      vmImage: 'ubuntu-20.04'
     steps:
     - template: /eng/pipelines/templates/steps/cache-maven-repository.yml
       parameters:
@@ -142,7 +142,7 @@ jobs:
             message = $_.message
             properties = $_.properties
             rank = $_.rank
-            fileName = $_.analysisTarget.uri -replace ".*$pathMatchRegex(.*)", "https://github.com/Azure/azure-sdk-for-java/blob/master/`$1"
+            fileName = $_.analysisTarget.uri -replace ".*$pathMatchRegex(.*)", "https://github.com/Azure/azure-sdk-for-java/blob/main/`$1"
             startLine = $_.locations.physicalLocation.region.startLine
             startColumn = $_.locations.physicalLocation.region.startColumn
             endLine = $_.locations.physicalLocation.region.endLine
