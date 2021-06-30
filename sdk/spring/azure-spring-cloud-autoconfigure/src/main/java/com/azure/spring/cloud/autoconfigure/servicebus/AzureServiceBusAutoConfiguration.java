@@ -7,7 +7,6 @@ import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.autoconfigure.context.AzureContextAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.context.AzureContextProperties;
-import com.azure.spring.core.AzureSpringProperties;
 import com.azure.spring.cloud.context.core.impl.ServiceBusNamespaceManager;
 import com.azure.spring.integration.servicebus.factory.ServiceBusConnectionStringProvider;
 import org.slf4j.Logger;
