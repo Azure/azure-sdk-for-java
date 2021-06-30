@@ -33,7 +33,6 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -41,7 +40,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
-import java.util.TreeMap;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -235,7 +233,7 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
             }
 
             // propertyOnlyFlattenSerialize(value, gen, provider, node);
-            propertyOnlyFlattenSerialize(value, gen, provider, convertedValue);
+            propertyOnlyFlattenSerialize(value, gen, convertedValue);
         }
     }
 
@@ -252,8 +250,8 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
     }
 
     @SuppressWarnings("unchecked")
-    private void propertyOnlyFlattenSerialize(Object value, JsonGenerator gen, SerializerProvider provider,
-        /*ObjectNode node*/ Map<String, Object> convertedValue) throws IOException {
+    private void propertyOnlyFlattenSerialize(Object value, JsonGenerator gen, Map<String, Object> convertedValue)
+        throws IOException {
         for (BeanPropertyDefinition beanProp : beanDescription.findProperties()) {
             // ObjectNode nodeToUse = node;
             Map<String, Object> convertedValueToUse = convertedValue;
@@ -287,25 +285,11 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
                 for (int i = 0; i < splitNames.length - 1; i++) {
                     convertedValueToUse = (Map<String, Object>) convertedValueToUse.computeIfAbsent(splitNames[i],
                         key -> new LinkedHashMap<String, Object>());
-
-//                    nodeToUse = (nodeToUse.has(splitNames[i]))
-//                        ? (ObjectNode) nodeToUse.get(splitNames[i])
-//                        : nodeToUse.putObject(splitNames[i]);
                 }
             }
 
-            // nodeToUse.putPOJO(propertyName, beanProp.getField().getValue(value));
             convertedValueToUse.put(propertyName, beanProp.getField().getValue(value));
         }
-
-        // gen.writeStartObject();
-
-//        Iterator<Map.Entry<String, JsonNode>> fields = node.fields();
-//        while (fields.hasNext()) {
-//            Map.Entry<String, JsonNode> field = fields.next();
-//            gen.writeFieldName(field.getKey());
-//            gen.writeTree(field.getValue());
-//        }
 
         // Attempt to find if the class has a method with @JsonAnyGetter.
         //
@@ -317,21 +301,8 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
             if (!CoreUtils.isNullOrEmpty(anyValue)) {
                 anyValue.forEach(convertedValue::put);
             }
-
-//            BeanProperty.Std anyProperty = new BeanProperty.Std(PropertyName.construct(anyGetter.getName()),
-//                anyGetter.getType(), null, anyGetter, PropertyMetadata.STD_OPTIONAL);
-//            JsonSerializer<Object> anySerializer = provider.findTypedValueSerializer(anyGetter.getType(), true,
-//                anyProperty);
-//            AnyGetterWriter anyGetterWriter = new AnyGetterWriter(anyProperty, anyGetter, anySerializer);
-//
-//            try {
-//                anyGetterWriter.getAndSerialize(value, gen, provider);
-//            } catch (Exception exception) {
-//                throw logger.logThrowableAsError(new IOException(exception));
-//            }
         }
 
-        // gen.writeEndObject();
         gen.writeObject(convertedValue);
     }
 
