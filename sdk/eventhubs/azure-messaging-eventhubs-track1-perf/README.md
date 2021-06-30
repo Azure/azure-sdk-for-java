@@ -15,7 +15,7 @@ Represents performance tests for legacy Event Hubs client.
 
 ### Create the jar package
 
-Execute: `mvn package -f ./sdk/eventhubs/azure-messaging-eventhubs-track1-perf/pom.xml`
+Execute: `mvn package -pl com.azure:azure-messaging-eventhubs-track1-perf`
 
 ## Key concepts
 

@@ -19,7 +19,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.StreamSupport;
 
 /**
- * Receives a single set of events then stops. {@link EventHubsOptions#getCount()} represents the batch size to
+ * Receives a single set of events then stops. {@link EventHubsReceiveOptions#getCount()} represents the batch size to
  * receive.
  */
 public class ReceiveEventsTest extends ServiceTest<EventHubsReceiveOptions> {
@@ -32,13 +32,10 @@ public class ReceiveEventsTest extends ServiceTest<EventHubsReceiveOptions> {
      */
     public ReceiveEventsTest(EventHubsReceiveOptions options) {
         super(options);
-
-        Objects.requireNonNull(options.getConsumerGroup(), "'getConsumerGroup' requires a value.");
-        Objects.requireNonNull(options.getPartitionId(), "'getPartitionId' requires a value.");
     }
 
     /**
-     * Creates a client and sends messages to the given {@link EventHubsOptions#getPartitionId()}.
+     * Creates a client and sends messages to the given {@link EventHubsReceiveOptions#getPartitionId()}.
      *
      * @return A Mono that completes when messages are sent.
      */

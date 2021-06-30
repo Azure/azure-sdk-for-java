@@ -12,7 +12,7 @@ import com.beust.jcommander.Parameter;
  * @see ReceiveEventsTest
  * @see EventProcessorTest
  */
-public class EventHubsReceiveOptions extends EventHubsOptions {
+public class EventHubsReceiveOptions extends EventHubsPartitionOptions {
     @Parameter(names = {"-cg", "--consumerGroup"}, description = "Name of the consumer group.")
     private String consumerGroup;
 

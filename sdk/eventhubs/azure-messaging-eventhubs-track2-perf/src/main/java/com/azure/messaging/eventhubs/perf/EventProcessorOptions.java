@@ -20,7 +20,7 @@ public class EventProcessorOptions extends EventHubsReceiveOptions {
     private String storageEndpoint;
 
     @Parameter(names = {"-e", "--eventsToSend"}, description = "Number of events to send per partition.")
-    private int eventsToSend = 1000;
+    private int eventsToSend = 100000;
 
     @Parameter(names = {"--publish"}, description = "Switch to indicate whether to publish messages or not.")
     private boolean publishMessages = false;

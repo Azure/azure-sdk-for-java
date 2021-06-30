@@ -15,7 +15,7 @@ Represents performance tests for newer Event Hubs client.
 
 ### Create the jar package
 
-Execute: `mvn package -f ./sdk/eventhubs/azure-messaging-eventhubs-track2-perf/pom.xml`
+Execute: `mvn package -pl com.azure:azure-messaging-eventhubs-track2-perf`
 
 ## Key concepts
 
@@ -33,8 +33,6 @@ The command below runs the scenario for sending messages.
 - `-c` is the number of EventData to send, 500 events.
 - `-d` is the test duration, 60 seconds.
 - `--warmup` is the warm-up time, 0 seconds.
-- Specifying `--partitionId` will change from publishing messages round-robin to publishing messages to a specific
-  partition.
 
 ```bash
 java -jar azure-messaging-eventhubs-track2-perf-1.0.0-beta.1-jar-with-dependencies.jar \
