@@ -12,6 +12,7 @@
 - [Restart](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/machinelearningservices/azure-resourcemanager-machinelearningservices/src/samples/java/com/azure/resourcemanager/machinelearningservices/MachineLearningComputeRestartSamples.java)
 - [Start](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/machinelearningservices/azure-resourcemanager-machinelearningservices/src/samples/java/com/azure/resourcemanager/machinelearningservices/MachineLearningComputeStartSamples.java)
 - [Stop](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/machinelearningservices/azure-resourcemanager-machinelearningservices/src/samples/java/com/azure/resourcemanager/machinelearningservices/MachineLearningComputeStopSamples.java)
+- [Update](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/machinelearningservices/azure-resourcemanager-machinelearningservices/src/samples/java/com/azure/resourcemanager/machinelearningservices/MachineLearningComputeUpdateSamples.java)
 
 ### MachineLearningService
 
@@ -77,3 +78,4 @@
 - [ListKeys](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/machinelearningservices/azure-resourcemanager-machinelearningservices/src/samples/java/com/azure/resourcemanager/machinelearningservices/WorkspacesListKeysSamples.java)
 - [ListNotebookAccessToken](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/machinelearningservices/azure-resourcemanager-machinelearningservices/src/samples/java/com/azure/resourcemanager/machinelearningservices/WorkspacesListNotebookAccessTokenSamples.java)
 - [ResyncKeys](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/machinelearningservices/azure-resourcemanager-machinelearningservices/src/samples/java/com/azure/resourcemanager/machinelearningservices/WorkspacesResyncKeysSamples.java)
+- [Update](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/machinelearningservices/azure-resourcemanager-machinelearningservices/src/samples/java/com/azure/resourcemanager/machinelearningservices/WorkspacesUpdateSamples.java)
