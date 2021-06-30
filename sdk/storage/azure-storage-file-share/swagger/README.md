@@ -74,6 +74,21 @@ directive:
     }
 ```
 
+### Remove directoryPath from path params
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]
+  transform: >
+    for (const property in $)
+    {
+        if (property.includes("/{shareName}/{directory}/{fileName}"))
+        {
+            $[property]["parameters"] = $[property]["parameters"].filter(function(param) {return (typeof param['$ref'] === "undefined") || (false == param['$ref'].endsWith("#/parameters/DirectoryPath"))});
+        }
+    }
+```
+
 ### /{shareName}/{directoryPath}?restype=directory
 ``` yaml
 directive:
@@ -108,14 +123,6 @@ directive:
 ```
 
 ### /{shareName}/{filePath}
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]
-  transform: >
-    $["/{shareName}/{directory}/{fileName}"]["parameters"] = $["/{shareName}/{directory}/{fileName}"]["parameters"].filter(function(param) {return (false == param['$ref'].endsWith("#/parameters/DirectoryPath"))});
-```
-
 ``` yaml
 directive:
 - from: swagger-document
