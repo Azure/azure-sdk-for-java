@@ -634,6 +634,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         Assert.hasText(containerName, "container should not be null, empty or only whitespaces");
 
         final List<JsonNode> results = findItemsAsFlux(query, containerName, domainType).collectList().block();
+        assert results != null;
         return results.stream()
                       .map(item -> deleteItem(item, containerName, domainType))
                       .collect(Collectors.toList());

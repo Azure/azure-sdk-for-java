@@ -5,9 +5,11 @@ package com.azure.spring.data.cosmos.core.query;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.query.parser.Part;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -114,14 +116,19 @@ public class CosmosQuery {
         final Optional<Criteria> criteria = this.getSubjectCriteria(this.criteria, keyName);
 
         return criteria.map(criteria1 -> {
+            //  If there is equal criteria, then it is a single partition query
             if (isEqualCriteria(criteria1)) {
                 return false;
-            } else if (hasKeywordAnd()) {
-                return false;
-            } else {
-                return criteria1.getType() != CriteriaType.IN
-                    || criteria1.getSubjectValues().size() != 1;
             }
+            //  IN is a special case, where we want to first check if the partition key is used with IN clause
+            if (criteria1.getType() == CriteriaType.IN && criteria1.getSubjectValues().size() == 1) {
+                @SuppressWarnings("unchecked")
+                Collection<Object> collection = (Collection<Object>) criteria1.getSubjectValues().get(0);
+                //  IN query types can have multiple values,
+                //  so we are checking the internal collection of the criteria
+                return collection.size() != 1;
+            }
+            return !hasKeywordAnd();
         }).orElse(true);
     }
 
@@ -187,10 +194,21 @@ public class CosmosQuery {
 
         final Optional<Criteria> criteria = this.getSubjectCriteria(this.criteria, partitionKeyFieldName);
         return criteria.map(criteria1 -> {
-            if (criteria1.getType() == CriteriaType.IN) {
+            //  If the criteria has ignoreCase, then we cannot set the partition key
+            //  because of case sensitivity of partition key
+            if (!criteria1.getIgnoreCase().equals(Part.IgnoreCaseType.NEVER)) {
+                return null;
+            }
+            if (criteria1.getType() == CriteriaType.IN && criteria1.getSubjectValues().size() == 1) {
                 @SuppressWarnings("unchecked")
-                List<Object> list = (List<Object>) criteria1.getSubjectValues().get(0);
-                return list.get(0);
+                Collection<Object> collection = (Collection<Object>) criteria1.getSubjectValues().get(0);
+                //  IN query types can have multiple values,
+                //  so we are checking the internal collection of the criteria
+                if (collection.size() == 1) {
+                    return collection.iterator().next();
+                } else {
+                    return null;
+                }
             }
             return criteria1.getSubjectValues().get(0);
         });
