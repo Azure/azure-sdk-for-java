@@ -178,7 +178,7 @@ public class ReadmeSamples {
     public void uploadIfNotExists() {
         /*
        Rather than use an if block conditioned on an exists call, there are three ways to upload-if-not-exists using one
-       network call instead of two.
+       network call instead of two. Equivalent options are present on all upload methods.
          */
         // 1. The minimal upload method defaults to no overwriting
         String dataSample = "samples";
@@ -210,7 +210,7 @@ public class ReadmeSamples {
     public void overwriteBlob() {
         /*
        Rather than use an if block conditioned on an exists call, there are three ways to upload-if-exists in one
-       network call instead of two.
+       network call instead of two. Equivalent options are present on all upload methods.
          */
         String dataSample = "samples";
 
