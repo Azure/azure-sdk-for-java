@@ -26,7 +26,6 @@ import com.azure.resourcemanager.mediaservices.fluent.AssetFiltersClient;
 import com.azure.resourcemanager.mediaservices.fluent.AssetsClient;
 import com.azure.resourcemanager.mediaservices.fluent.AzureMediaServices;
 import com.azure.resourcemanager.mediaservices.fluent.ContentKeyPoliciesClient;
-import com.azure.resourcemanager.mediaservices.fluent.JobsClient;
 import com.azure.resourcemanager.mediaservices.fluent.LiveEventsClient;
 import com.azure.resourcemanager.mediaservices.fluent.LiveOutputsClient;
 import com.azure.resourcemanager.mediaservices.fluent.LocationsClient;
@@ -37,7 +36,6 @@ import com.azure.resourcemanager.mediaservices.fluent.PrivateLinkResourcesClient
 import com.azure.resourcemanager.mediaservices.fluent.StreamingEndpointsClient;
 import com.azure.resourcemanager.mediaservices.fluent.StreamingLocatorsClient;
 import com.azure.resourcemanager.mediaservices.fluent.StreamingPoliciesClient;
-import com.azure.resourcemanager.mediaservices.fluent.TransformsClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -77,6 +75,18 @@ public final class AzureMediaServicesImpl implements AzureMediaServices {
         return this.endpoint;
     }
 
+    /** Api Version. */
+    private final String apiVersion;
+
+    /**
+     * Gets Api Version.
+     *
+     * @return the apiVersion value.
+     */
+    public String getApiVersion() {
+        return this.apiVersion;
+    }
+
     /** The HTTP pipeline to send requests through. */
     private final HttpPipeline httpPipeline;
 
@@ -111,18 +121,6 @@ public final class AzureMediaServicesImpl implements AzureMediaServices {
      */
     public Duration getDefaultPollInterval() {
         return this.defaultPollInterval;
-    }
-
-    /** The AccountFiltersClient object to access its operations. */
-    private final AccountFiltersClient accountFilters;
-
-    /**
-     * Gets the AccountFiltersClient object to access its operations.
-     *
-     * @return the AccountFiltersClient object.
-     */
-    public AccountFiltersClient getAccountFilters() {
-        return this.accountFilters;
     }
 
     /** The OperationsClient object to access its operations. */
@@ -185,6 +183,18 @@ public final class AzureMediaServicesImpl implements AzureMediaServices {
         return this.locations;
     }
 
+    /** The AccountFiltersClient object to access its operations. */
+    private final AccountFiltersClient accountFilters;
+
+    /**
+     * Gets the AccountFiltersClient object to access its operations.
+     *
+     * @return the AccountFiltersClient object.
+     */
+    public AccountFiltersClient getAccountFilters() {
+        return this.accountFilters;
+    }
+
     /** The AssetsClient object to access its operations. */
     private final AssetsClient assets;
 
@@ -219,30 +229,6 @@ public final class AzureMediaServicesImpl implements AzureMediaServices {
      */
     public ContentKeyPoliciesClient getContentKeyPolicies() {
         return this.contentKeyPolicies;
-    }
-
-    /** The TransformsClient object to access its operations. */
-    private final TransformsClient transforms;
-
-    /**
-     * Gets the TransformsClient object to access its operations.
-     *
-     * @return the TransformsClient object.
-     */
-    public TransformsClient getTransforms() {
-        return this.transforms;
-    }
-
-    /** The JobsClient object to access its operations. */
-    private final JobsClient jobs;
-
-    /**
-     * Gets the JobsClient object to access its operations.
-     *
-     * @return the JobsClient object.
-     */
-    public JobsClient getJobs() {
-        return this.jobs;
     }
 
     /** The StreamingPoliciesClient object to access its operations. */
@@ -327,17 +313,16 @@ public final class AzureMediaServicesImpl implements AzureMediaServices {
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.accountFilters = new AccountFiltersClientImpl(this);
+        this.apiVersion = "2021-06-01";
         this.operations = new OperationsClientImpl(this);
         this.mediaservices = new MediaservicesClientImpl(this);
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
         this.locations = new LocationsClientImpl(this);
+        this.accountFilters = new AccountFiltersClientImpl(this);
         this.assets = new AssetsClientImpl(this);
         this.assetFilters = new AssetFiltersClientImpl(this);
         this.contentKeyPolicies = new ContentKeyPoliciesClientImpl(this);
-        this.transforms = new TransformsClientImpl(this);
-        this.jobs = new JobsClientImpl(this);
         this.streamingPolicies = new StreamingPoliciesClientImpl(this);
         this.streamingLocators = new StreamingLocatorsClientImpl(this);
         this.liveEvents = new LiveEventsClientImpl(this);

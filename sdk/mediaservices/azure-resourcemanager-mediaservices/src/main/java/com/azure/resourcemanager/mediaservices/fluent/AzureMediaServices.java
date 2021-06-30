@@ -24,6 +24,13 @@ public interface AzureMediaServices {
     String getEndpoint();
 
     /**
+     * Gets Api Version.
+     *
+     * @return the apiVersion value.
+     */
+    String getApiVersion();
+
+    /**
      * Gets The HTTP pipeline to send requests through.
      *
      * @return the httpPipeline value.
@@ -36,13 +43,6 @@ public interface AzureMediaServices {
      * @return the defaultPollInterval value.
      */
     Duration getDefaultPollInterval();
-
-    /**
-     * Gets the AccountFiltersClient object to access its operations.
-     *
-     * @return the AccountFiltersClient object.
-     */
-    AccountFiltersClient getAccountFilters();
 
     /**
      * Gets the OperationsClient object to access its operations.
@@ -80,6 +80,13 @@ public interface AzureMediaServices {
     LocationsClient getLocations();
 
     /**
+     * Gets the AccountFiltersClient object to access its operations.
+     *
+     * @return the AccountFiltersClient object.
+     */
+    AccountFiltersClient getAccountFilters();
+
+    /**
      * Gets the AssetsClient object to access its operations.
      *
      * @return the AssetsClient object.
@@ -99,20 +106,6 @@ public interface AzureMediaServices {
      * @return the ContentKeyPoliciesClient object.
      */
     ContentKeyPoliciesClient getContentKeyPolicies();
-
-    /**
-     * Gets the TransformsClient object to access its operations.
-     *
-     * @return the TransformsClient object.
-     */
-    TransformsClient getTransforms();
-
-    /**
-     * Gets the JobsClient object to access its operations.
-     *
-     * @return the JobsClient object.
-     */
-    JobsClient getJobs();
 
     /**
      * Gets the StreamingPoliciesClient object to access its operations.
