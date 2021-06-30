@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.BulkProcessingOptions;
 import com.azure.cosmos.BulkProcessingThresholds;
 import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosBulkOperationResponse;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.batch.PartitionScopeThresholds;
@@ -88,7 +89,7 @@ public class ImplementationBridgeHelpers {
 
         private CosmosQueryRequestOptionsHelper() {}
         static {
-            ensureClassLoaded(CosmosQueryRequestOptionsHelper.class);
+            ensureClassLoaded(CosmosQueryRequestOptions.class);
         }
 
         public static void setCosmosQueryRequestOptionsAccessor(final CosmosQueryRequestOptionsAccessor newAccessor) {
@@ -118,7 +119,7 @@ public class ImplementationBridgeHelpers {
 
         private CosmosItemRequestOptionsHelper() {}
         static {
-            ensureClassLoaded(CosmosQueryRequestOptionsHelper.class);
+            ensureClassLoaded(CosmosItemRequestOptions.class);
         }
 
         public static void setCosmosItemRequestOptionsAccessor(final CosmosItemRequestOptionsAccessor newAccessor) {
@@ -149,7 +150,7 @@ public class ImplementationBridgeHelpers {
 
         private CosmosBulkProcessingOptionsHelper() {}
         static {
-            ensureClassLoaded(CosmosQueryRequestOptionsHelper.class);
+            ensureClassLoaded(BulkProcessingOptions.class);
         }
 
         public static void setCosmosBulkProcessingOptionAccessor(final CosmosBulkProcessingOptionAccessor newAccessor) {
@@ -249,7 +250,7 @@ public class ImplementationBridgeHelpers {
 
         private BulkProcessingThresholdsHelper() {}
         static {
-            ensureClassLoaded(BulkProcessingThresholdsHelper.class);
+            ensureClassLoaded(BulkProcessingThresholds.class);
         }
 
         public static void setBulkProcessingThresholdsAccessor(final BulkProcessingThresholdsAccessor newAccessor) {
