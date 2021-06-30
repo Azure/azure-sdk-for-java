@@ -10,7 +10,6 @@ import com.beust.jcommander.Parameter;
  * Options for performance tests related to receiving.
  *
  * @see ReceiveEventsTest
- * @see EventProcessorTest
  */
 public class EventHubsReceiveOptions extends EventHubsPartitionOptions {
     @Parameter(names = {"-cg", "--consumerGroup"}, description = "Name of the consumer group.")

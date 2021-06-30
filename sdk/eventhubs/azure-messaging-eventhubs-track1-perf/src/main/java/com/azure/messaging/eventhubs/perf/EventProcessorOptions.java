@@ -10,7 +10,13 @@ import com.beust.jcommander.Parameter;
  *
  * @see EventProcessorTest
  */
-public class EventProcessorOptions extends EventHubsReceiveOptions {
+public class EventProcessorOptions extends EventHubsOptions {
+    @Parameter(names = {"-cg", "--consumerGroup"}, description = "Name of the consumer group.")
+    private String consumerGroup = "$Default";
+
+    @Parameter(names = { "--prefetch" }, description = "Prefetch for the receiver.")
+    private int prefetch = 500;
+
     @Parameter(names = {"-scs", "--storageConnectionString"}, description = "Connection string for Storage account.",
         required = true)
     private String storageConnectionString;
@@ -24,6 +30,24 @@ public class EventProcessorOptions extends EventHubsReceiveOptions {
 
     @Parameter(names = {"--publish"}, description = "Switch to indicate whether to publish messages or not.")
     private boolean publishMessages = false;
+
+    /**
+     * Gets the consumer group for receiving messages.
+     *
+     * @return The consumer group for receiving messages.
+     */
+    public String getConsumerGroup() {
+        return consumerGroup;
+    }
+
+    /**
+     * Gets the prefetch for the receiver.
+     *
+     * @return The prefetch for the receiver.
+     */
+    public int getPrefetch() {
+        return prefetch;
+    }
 
     /**
      * Gets the connection string for the storage account.

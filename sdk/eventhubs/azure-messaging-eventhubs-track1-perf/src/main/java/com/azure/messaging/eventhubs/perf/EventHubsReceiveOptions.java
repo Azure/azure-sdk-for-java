@@ -9,7 +9,7 @@ import com.microsoft.azure.eventhubs.EventHubClient;
 /**
  * Options for performance tests related to receiving.
  *
- * @see EventProcessorTest
+ * @see ReceiveEventsTest
  */
 public class EventHubsReceiveOptions extends EventHubsPartitionOptions {
     @Parameter(names = {"-cg", "--consumerGroup"}, description = "Name of the consumer group.")
