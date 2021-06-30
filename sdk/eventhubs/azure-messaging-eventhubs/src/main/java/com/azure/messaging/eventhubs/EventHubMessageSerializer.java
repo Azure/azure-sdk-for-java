@@ -128,10 +128,6 @@ class EventHubMessageSerializer implements MessageSerializer {
             message.setApplicationProperties(new ApplicationProperties(eventData.getProperties()));
         }
 
-        if (eventData.getTimeToLive() != null) {
-            message.setTtl(eventData.getTimeToLive().toMillis());
-        }
-
         if (message.getProperties() == null) {
             message.setProperties(new Properties());
         }
@@ -139,10 +135,6 @@ class EventHubMessageSerializer implements MessageSerializer {
         message.setMessageId(eventData.getMessageId());
         message.setContentType(eventData.getContentType());
         message.setCorrelationId(eventData.getCorrelationId());
-        message.setSubject(eventData.getSubject());
-        message.setReplyTo(eventData.getReplyTo());
-        message.setReplyToGroupId(eventData.getReplyToSessionId());
-        message.setGroupId(eventData.getSessionId());
 
         final AmqpMessageProperties brokeredProperties = eventData.getRawAmqpMessage().getProperties();
 
@@ -150,7 +142,6 @@ class EventHubMessageSerializer implements MessageSerializer {
         if (brokeredProperties.getGroupSequence() != null) {
             message.setGroupSequence(brokeredProperties.getGroupSequence());
         }
-        message.getProperties().setTo(eventData.getTo());
         message.getProperties().setUserId(new Binary(brokeredProperties.getUserId()));
 
         if (brokeredProperties.getAbsoluteExpiryTime() != null) {
@@ -183,10 +174,6 @@ class EventHubMessageSerializer implements MessageSerializer {
         }
 
         final Map<Symbol, Object> messageAnnotationsMap = new HashMap<>();
-        if (eventData.getScheduledEnqueueTime() != null) {
-            messageAnnotationsMap.put(Symbol.valueOf(SCHEDULED_ENQUEUE_UTC_TIME_NAME.getValue()),
-                Date.from(eventData.getScheduledEnqueueTime().toInstant()));
-        }
 
         final String partitionKey = eventData.getPartitionKey();
         if (partitionKey != null && !partitionKey.isEmpty()) {

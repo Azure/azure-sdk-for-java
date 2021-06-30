@@ -247,7 +247,7 @@ public class MyEventProcessor implements IEventProcessor {
     public void onEvents(PartitionContext context, Iterable<EventData> events) {
         System.out.println("Received events from partition: " + context.getPartitionId());
         for (EventData event : events) {
-            System.out.println("Sequence number: " + event.getSequenceNumber());
+            System.out.println("Sequence number: " + event.getSystemProperties().getSequenceNumber());
             System.out.println("Contents: " + new String(event.getBytes(), StandardCharsets.UTF_8));
         }
     }
