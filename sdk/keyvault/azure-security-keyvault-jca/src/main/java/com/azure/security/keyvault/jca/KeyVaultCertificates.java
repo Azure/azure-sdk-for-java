@@ -83,8 +83,10 @@ public class KeyVaultCertificates implements AzureCertificates {
         if (keyVaultClient == null) {
             return false;
         }
-        return refreshInterval > 0
-            && (lastRefreshTime == null || lastRefreshTime.getTime() + refreshInterval < new Date().getTime());
+        if (lastRefreshTime == null) {
+            return true;
+        }
+        return refreshInterval > 0 && lastRefreshTime.getTime() + refreshInterval < new Date().getTime();
     }
 
     /**
