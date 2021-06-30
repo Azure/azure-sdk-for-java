@@ -3,6 +3,11 @@
 
 package com.azure.spring.cloud.autoconfigure.servicebus;
 
+import com.azure.core.amqp.ProxyAuthenticationType;
+import com.azure.core.amqp.ProxyOptions;
+import com.azure.core.util.ClientOptions;
+import com.azure.core.util.CoreUtils;
+import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.autoconfigure.context.AzureContextAutoConfiguration;
@@ -21,6 +26,12 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.StringUtils;
+import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
+
+import java.net.InetSocketAddress;
+import java.net.Proxy;
+import java.util.regex.Pattern;
 
 /**
  * An auto-configuration for Service Bus
@@ -35,6 +46,8 @@ import org.springframework.util.StringUtils;
 public class AzureServiceBusAutoConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureServiceBusAutoConfiguration.class);
+
+    private static final Pattern HOST_PORT_PATTERN = Pattern.compile("^[^:]+:\\d+");
 
     @Bean
     @ConditionalOnMissingBean
@@ -77,4 +90,49 @@ public class AzureServiceBusAutoConfiguration {
         return null;
     }
 
+    @Bean
+    @ConditionalOnMissingBean
+    public com.azure.core.util.Configuration configuration() {
+        return com.azure.core.util.Configuration.getGlobalConfiguration().clone();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public ProxyOptions proxyOptions(com.azure.core.util.Configuration configuration) {
+
+        ProxyAuthenticationType authentication = ProxyAuthenticationType.NONE;
+
+        String proxyAddress = configuration.get(com.azure.core.util.Configuration.PROPERTY_HTTP_PROXY);
+
+        if (CoreUtils.isNullOrEmpty(proxyAddress)) {
+            return ProxyOptions.SYSTEM_DEFAULTS;
+        }
+
+        return getProxyOptions(authentication, proxyAddress, configuration);
+    }
+
+    private ProxyOptions getProxyOptions(ProxyAuthenticationType authentication, String proxyAddress, com.azure.core.util.Configuration configuration) {
+        String host;
+        int port;
+        if (HOST_PORT_PATTERN.matcher(proxyAddress.trim()).find()) {
+            final String[] hostPort = proxyAddress.split(":");
+            host = hostPort[0];
+            port = Integer.parseInt(hostPort[1]);
+            final Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(host, port));
+            final String username = configuration.get(ProxyOptions.PROXY_USERNAME);
+            final String password = configuration.get(ProxyOptions.PROXY_PASSWORD);
+            return new ProxyOptions(authentication, proxy, username, password);
+        } else {
+            com.azure.core.http.ProxyOptions coreProxyOptions = com.azure.core.http.ProxyOptions
+                .fromConfiguration(configuration);
+            return new ProxyOptions(authentication, new Proxy(coreProxyOptions.getType().toProxyType(),
+                coreProxyOptions.getAddress()), coreProxyOptions.getUsername(), coreProxyOptions.getPassword());
+        }
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public ClientOptions clientOptions() {
+        return new ClientOptions();
+    }
 }
