@@ -920,13 +920,13 @@ public final class MetricsAdvisorAdministrationClient {
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createDataSourceCredential#DatasourceCredentialEntity}
      *
-     * @param datasourceCredential The credential entity.
+     * @param dataSourceCredential The credential entity.
      * @return The created {@link DataSourceCredentialEntity}.
      * @throws NullPointerException thrown if the {@code credentialEntity} is null
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DataSourceCredentialEntity createDataSourceCredential(DataSourceCredentialEntity datasourceCredential) {
-        return createDataSourceCredentialWithResponse(datasourceCredential, Context.NONE).getValue();
+    public DataSourceCredentialEntity createDataSourceCredential(DataSourceCredentialEntity dataSourceCredential) {
+        return createDataSourceCredentialWithResponse(dataSourceCredential, Context.NONE).getValue();
     }
 
     /**
@@ -935,7 +935,7 @@ public final class MetricsAdvisorAdministrationClient {
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createDataSourceCredentialWithResponse#DatasourceCredentialEntity-Context}
      *
-     * @param datasourceCredential The credential entity.
+     * @param dataSourceCredential The credential entity.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
      * @return A {@link Response} containing the created {@link DataSourceCredentialEntity}.
@@ -943,8 +943,8 @@ public final class MetricsAdvisorAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataSourceCredentialEntity> createDataSourceCredentialWithResponse(
-            DataSourceCredentialEntity datasourceCredential, Context context) {
-        return client.createDataSourceCredentialWithResponse(datasourceCredential, context).block();
+            DataSourceCredentialEntity dataSourceCredential, Context context) {
+        return client.createDataSourceCredentialWithResponse(dataSourceCredential, context).block();
     }
 
     /**
@@ -989,14 +989,14 @@ public final class MetricsAdvisorAdministrationClient {
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.updateDataSourceCredential#DatasourceCredentialEntity}
      *
-     * @param datasourceCredential The credential entity.
+     * @param dataSourceCredential The credential entity.
      *
      * @return The updated {@link DataSourceCredentialEntity}.
      * @throws NullPointerException thrown if the {@code credentialEntity} is null
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DataSourceCredentialEntity updateDataSourceCredential(DataSourceCredentialEntity datasourceCredential) {
-        return updateDataSourceCredentialWithResponse(datasourceCredential, Context.NONE).getValue();
+    public DataSourceCredentialEntity updateDataSourceCredential(DataSourceCredentialEntity dataSourceCredential) {
+        return updateDataSourceCredentialWithResponse(dataSourceCredential, Context.NONE).getValue();
     }
 
     /**
@@ -1005,7 +1005,7 @@ public final class MetricsAdvisorAdministrationClient {
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.updateDataSourceCredentialWithResponse#DatasourceCredentialEntity-Context}
      *
-     * @param datasourceCredential The credential entity.
+     * @param dataSourceCredential The credential entity.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
      * @return A {@link Response} containing the updated {@link DataSourceCredentialEntity}.
@@ -1013,8 +1013,8 @@ public final class MetricsAdvisorAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataSourceCredentialEntity> updateDataSourceCredentialWithResponse(
-            DataSourceCredentialEntity datasourceCredential, Context context) {
-        return client.updateDataSourceCredentialWithResponse(datasourceCredential, context).block();
+            DataSourceCredentialEntity dataSourceCredential, Context context) {
+        return client.updateDataSourceCredentialWithResponse(dataSourceCredential, context).block();
     }
 
     /**
