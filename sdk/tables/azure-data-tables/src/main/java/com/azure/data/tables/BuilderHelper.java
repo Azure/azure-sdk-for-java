@@ -5,6 +5,7 @@ package com.azure.data.tables;
 
 import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
@@ -13,6 +14,7 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.AzureSasCredentialPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -28,7 +30,10 @@ import com.azure.data.tables.implementation.CosmosPatchTransformPolicy;
 import com.azure.data.tables.implementation.NullHttpClient;
 import com.azure.data.tables.implementation.StorageAuthenticationSettings;
 import com.azure.data.tables.implementation.StorageConnectionString;
+import com.azure.data.tables.implementation.StorageConstants;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -44,12 +49,13 @@ final class BuilderHelper {
     private static final String CLIENT_VERSION = PROPERTIES.getOrDefault("version", "UnknownVersion");
     private static final String COSMOS_ENDPOINT_SUFFIX = "cosmos.azure.com";
 
-    static HttpPipeline buildPipeline(
-        AzureNamedKeyCredential azureNamedKeyCredential, AzureSasCredential azureSasCredential, String sasToken,
-        String endpoint, RetryPolicy retryPolicy, HttpLogOptions logOptions, ClientOptions clientOptions,
-        HttpClient httpClient, List<HttpPipelinePolicy> perCallAdditionalPolicies,
-        List<HttpPipelinePolicy> perRetryAdditionalPolicies, Configuration configuration, ClientLogger logger) {
-
+    static HttpPipeline buildPipeline(AzureNamedKeyCredential azureNamedKeyCredential,
+                                      AzureSasCredential azureSasCredential, TokenCredential tokenCredential,
+                                      String sasToken, String endpoint, RetryPolicy retryPolicy,
+                                      HttpLogOptions logOptions, ClientOptions clientOptions, HttpClient httpClient,
+                                      List<HttpPipelinePolicy> perCallAdditionalPolicies,
+                                      List<HttpPipelinePolicy> perRetryAdditionalPolicies, Configuration configuration,
+                                      ClientLogger logger) {
         configuration = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
         retryPolicy = (retryPolicy == null) ? new RetryPolicy() : retryPolicy;
         logOptions = (logOptions == null) ? new HttpLogOptions() : logOptions;
@@ -95,6 +101,9 @@ final class BuilderHelper {
             credentialPolicy = new AzureSasCredentialPolicy(azureSasCredential, false);
         } else if (sasToken != null) {
             credentialPolicy = new AzureSasCredentialPolicy(new AzureSasCredential(sasToken), false);
+        } else if (tokenCredential != null) {
+            httpsValidation(tokenCredential, "TokenCredential", endpoint, logger);
+            credentialPolicy =  new BearerTokenAuthenticationPolicy(tokenCredential, StorageConstants.STORAGE_SCOPE);
         } else {
             throw logger.logExceptionAsError(
                 new IllegalStateException("A form of authentication is required to create a client. Use a builder's "
@@ -128,10 +137,10 @@ final class BuilderHelper {
     }
 
     static void validateCredentials(AzureNamedKeyCredential azureNamedKeyCredential,
-                                    AzureSasCredential azureSasCredential, String sasToken, String connectionString,
-                                    ClientLogger logger) {
+                                    AzureSasCredential azureSasCredential, TokenCredential tokenCredential,
+                                    String sasToken, String connectionString, ClientLogger logger) {
         List<Object> usedCredentials =
-            Stream.of(azureNamedKeyCredential, azureSasCredential, sasToken, connectionString)
+            Stream.of(azureNamedKeyCredential, azureSasCredential, tokenCredential, sasToken, connectionString)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
 
@@ -169,6 +178,10 @@ final class BuilderHelper {
                 usedCredentialsStringBuilder.add("azureSasCredential");
             }
 
+            if (tokenCredential != null) {
+                usedCredentialsStringBuilder.add("tokenCredential");
+            }
+
             if (sasToken != null) {
                 usedCredentialsStringBuilder.add("sasToken");
             }
@@ -180,6 +193,24 @@ final class BuilderHelper {
             throw logger.logExceptionAsError(new IllegalStateException(
                 "Only one form of authentication should be used. The authentication forms present are: "
                     + usedCredentialsStringBuilder + "."));
+        }
+    }
+
+    /**
+     * Validates that the client is properly configured to use https.
+     *
+     * @param objectToCheck The object to check for.
+     * @param objectName The name of the object.
+     * @param endpoint The endpoint for the client.
+     */
+    public static void httpsValidation(Object objectToCheck, String objectName, String endpoint, ClientLogger logger) {
+        try {
+            if (objectToCheck != null && !new URI(endpoint).getScheme().equals(StorageConstants.HTTPS)) {
+                throw logger.logExceptionAsError(new IllegalArgumentException(
+                    "Using a(n) " + objectName + " requires https."));
+            }
+        } catch (URISyntaxException e) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("Endpoint provided is not a valid URI", e));
         }
     }
 }
