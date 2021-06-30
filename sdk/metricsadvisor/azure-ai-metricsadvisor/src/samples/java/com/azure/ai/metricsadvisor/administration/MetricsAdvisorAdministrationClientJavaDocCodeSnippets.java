@@ -24,6 +24,7 @@ import com.azure.ai.metricsadvisor.administration.models.DataFeedStatus;
 import com.azure.ai.metricsadvisor.administration.models.DatasourceCredentialEntity;
 import com.azure.ai.metricsadvisor.administration.models.DatasourceServicePrincipalInKeyVault;
 import com.azure.ai.metricsadvisor.administration.models.DetectionConditionOperator;
+import com.azure.ai.metricsadvisor.administration.models.SeverityCondition;
 import com.azure.ai.metricsadvisor.models.DimensionKey;
 import com.azure.ai.metricsadvisor.administration.models.EmailNotificationHook;
 import com.azure.ai.metricsadvisor.administration.models.HardThresholdCondition;
@@ -44,7 +45,6 @@ import com.azure.ai.metricsadvisor.administration.models.MetricWholeSeriesDetect
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
 import com.azure.ai.metricsadvisor.administration.models.MySqlDataFeedSource;
 import com.azure.ai.metricsadvisor.administration.models.NotificationHook;
-import com.azure.ai.metricsadvisor.administration.models.SeverityCondition;
 import com.azure.ai.metricsadvisor.administration.models.SmartDetectionCondition;
 import com.azure.ai.metricsadvisor.administration.models.SuppressCondition;
 import com.azure.ai.metricsadvisor.administration.models.WebNotificationHook;
@@ -114,12 +114,12 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
             .setGranularity(new DataFeedGranularity().setGranularityType(DataFeedGranularityType.DAILY))
             .setSchema(new DataFeedSchema(
                 Arrays.asList(
-                    new DataFeedMetric().setName("cost"),
-                    new DataFeedMetric().setName("revenue")
+                    new DataFeedMetric("cost"),
+                    new DataFeedMetric("revenue")
                 )).setDimensions(
                 Arrays.asList(
-                    new DataFeedDimension().setName("city"),
-                    new DataFeedDimension().setName("category")
+                    new DataFeedDimension("city"),
+                    new DataFeedDimension("category")
                 ))
             )
             .setIngestionSettings(new DataFeedIngestionSettings(OffsetDateTime.parse("2020-01-01T00:00:00Z")))
@@ -148,12 +148,12 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
             .setGranularity(new DataFeedGranularity().setGranularityType(DataFeedGranularityType.DAILY))
             .setSchema(new DataFeedSchema(
                 Arrays.asList(
-                    new DataFeedMetric().setName("cost"),
-                    new DataFeedMetric().setName("revenue")
+                    new DataFeedMetric("cost"),
+                    new DataFeedMetric("revenue")
                 )).setDimensions(
                 Arrays.asList(
-                    new DataFeedDimension().setName("city"),
-                    new DataFeedDimension().setName("category")
+                    new DataFeedDimension("city"),
+                    new DataFeedDimension("category")
                 ))
             )
             .setIngestionSettings(new DataFeedIngestionSettings(OffsetDateTime.parse("2020-01-01T00:00:00Z")))
@@ -648,21 +648,21 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createDetectionConfig#String-AnomalyDetectionConfiguration
         final MetricWholeSeriesDetectionCondition wholeSeriesCondition = new MetricWholeSeriesDetectionCondition()
             .setConditionOperator(DetectionConditionOperator.OR)
-            .setSmartDetectionCondition(new SmartDetectionCondition()
-                .setSensitivity(50)
-                .setAnomalyDetectorDirection(AnomalyDetectorDirection.BOTH)
-                .setSuppressCondition(new SuppressCondition().setMinNumber(50).setMinRatio(50)))
-            .setHardThresholdCondition(new HardThresholdCondition()
+            .setSmartDetectionCondition(new SmartDetectionCondition(
+                50,
+                AnomalyDetectorDirection.BOTH,
+                new SuppressCondition(50, 50)))
+            .setHardThresholdCondition(new HardThresholdCondition(
+                AnomalyDetectorDirection.BOTH,
+                new SuppressCondition(5, 5))
                 .setLowerBound(0.0)
-                .setUpperBound(100.0)
-                .setAnomalyDetectorDirection(AnomalyDetectorDirection.BOTH)
-                .setSuppressCondition(new SuppressCondition().setMinNumber(5).setMinRatio(5)))
-            .setChangeThresholdCondition(new ChangeThresholdCondition()
-                .setChangePercentage(50)
-                .setShiftPoint(30)
-                .setWithinRange(true)
-                .setAnomalyDetectorDirection(AnomalyDetectorDirection.BOTH)
-                .setSuppressCondition(new SuppressCondition().setMinNumber(2).setMinRatio(2)));
+                .setUpperBound(100.0))
+            .setChangeThresholdCondition(new ChangeThresholdCondition(
+                50,
+                30,
+                true,
+                AnomalyDetectorDirection.BOTH,
+                new SuppressCondition(2, 2)));
 
         final String detectionConfigName = "my_detection_config";
         final String detectionConfigDescription = "anomaly detection config for metric";
@@ -689,21 +689,21 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createDetectionConfigWithResponse#String-AnomalyDetectionConfiguration-Context
         final MetricWholeSeriesDetectionCondition wholeSeriesCondition = new MetricWholeSeriesDetectionCondition()
             .setConditionOperator(DetectionConditionOperator.OR)
-            .setSmartDetectionCondition(new SmartDetectionCondition()
-                .setSensitivity(50)
-                .setAnomalyDetectorDirection(AnomalyDetectorDirection.BOTH)
-                .setSuppressCondition(new SuppressCondition().setMinNumber(50).setMinRatio(50)))
-            .setHardThresholdCondition(new HardThresholdCondition()
+            .setSmartDetectionCondition(new SmartDetectionCondition(
+                50,
+                AnomalyDetectorDirection.BOTH,
+                new SuppressCondition(50, 50)))
+            .setHardThresholdCondition(new HardThresholdCondition(
+                AnomalyDetectorDirection.BOTH,
+                new SuppressCondition(5, 5))
                 .setLowerBound(0.0)
-                .setUpperBound(100.0)
-                .setAnomalyDetectorDirection(AnomalyDetectorDirection.BOTH)
-                .setSuppressCondition(new SuppressCondition().setMinNumber(5).setMinRatio(5)))
-            .setChangeThresholdCondition(new ChangeThresholdCondition()
-                .setChangePercentage(50)
-                .setShiftPoint(30)
-                .setWithinRange(true)
-                .setAnomalyDetectorDirection(AnomalyDetectorDirection.BOTH)
-                .setSuppressCondition(new SuppressCondition().setMinNumber(2).setMinRatio(2)));
+                .setUpperBound(100.0))
+            .setChangeThresholdCondition(new ChangeThresholdCondition(
+                50,
+                30,
+                true,
+                AnomalyDetectorDirection.BOTH,
+                new SuppressCondition(2, 2)));
 
         final String detectionConfigName = "my_detection_config";
         final String detectionConfigDescription = "anomaly detection config for metric";
@@ -1134,10 +1134,10 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
             .put("city", "Seoul");
         detectionConfig.addSeriesGroupDetectionCondition(
             new MetricSeriesGroupDetectionCondition(seriesGroupKey)
-                .setSmartDetectionCondition(new SmartDetectionCondition()
-                    .setSensitivity(10.0)
-                    .setAnomalyDetectorDirection(AnomalyDetectorDirection.UP)
-                    .setSuppressCondition(new SuppressCondition().setMinNumber(2).setMinRatio(2))));
+                .setSmartDetectionCondition(new SmartDetectionCondition(
+                    10.0,
+                    AnomalyDetectorDirection.UP,
+                    new SuppressCondition(2, 2))));
 
         AnomalyDetectionConfiguration updatedDetectionConfig = metricsAdvisorAdminClient
             .updateDetectionConfig(detectionConfig);
@@ -1164,10 +1164,10 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
             .put("city", "Seoul");
         detectionConfig.addSeriesGroupDetectionCondition(
             new MetricSeriesGroupDetectionCondition(seriesGroupKey)
-                .setSmartDetectionCondition(new SmartDetectionCondition()
-                    .setSensitivity(10.0)
-                    .setAnomalyDetectorDirection(AnomalyDetectorDirection.UP)
-                    .setSuppressCondition(new SuppressCondition().setMinNumber(2).setMinRatio(2))));
+                .setSmartDetectionCondition(new SmartDetectionCondition(
+                    10.0,
+                    AnomalyDetectorDirection.UP,
+                    new SuppressCondition(2, 2))));
 
         Response<AnomalyDetectionConfiguration> updateResponse = metricsAdvisorAdminClient
             .updateDetectionConfigWithResponse(detectionConfig, Context.NONE);
@@ -1224,8 +1224,8 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
                     new MetricAlertConfiguration(detectionConfigurationId2,
                         MetricAnomalyAlertScope.forWholeSeries())
                         .setAlertConditions(new MetricAnomalyAlertConditions()
-                            .setSeverityRangeCondition(new SeverityCondition()
-                                .setMaxAlertSeverity(AnomalySeverity.HIGH)))))
+                            .setSeverityRangeCondition(new SeverityCondition(AnomalySeverity.HIGH,
+                                AnomalySeverity.HIGH)))))
                 .setCrossMetricsOperator(MetricAlertConfigurationsOperator.AND)
                 .setHookIdsToAlert(Arrays.asList(hookId1, hookId2)));
 
@@ -1261,8 +1261,8 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
                     new MetricAlertConfiguration(detectionConfigurationId2,
                         MetricAnomalyAlertScope.forWholeSeries())
                         .setAlertConditions(new MetricAnomalyAlertConditions()
-                            .setSeverityRangeCondition(new SeverityCondition()
-                                .setMaxAlertSeverity(AnomalySeverity.HIGH)))))
+                            .setSeverityRangeCondition(new SeverityCondition(AnomalySeverity.HIGH,
+                                AnomalySeverity.HIGH)))))
                 .setCrossMetricsOperator(MetricAlertConfigurationsOperator.AND)
                 .setHookIdsToAlert(Arrays.asList(hookId1, hookId2)), Context.NONE);
 

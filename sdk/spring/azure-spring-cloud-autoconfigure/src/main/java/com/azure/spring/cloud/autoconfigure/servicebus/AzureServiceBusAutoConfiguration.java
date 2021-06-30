@@ -39,7 +39,7 @@ public class AzureServiceBusAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnBean({ AzureResourceManager.class, AzureSpringProperties.class })
+    @ConditionalOnBean({ AzureResourceManager.class, AzureContextProperties.class })
     public ServiceBusNamespaceManager serviceBusNamespaceManager(AzureResourceManager azureResourceManager,
                                                                  AzureContextProperties azureContextProperties) {
         return new ServiceBusNamespaceManager(azureResourceManager, azureContextProperties);

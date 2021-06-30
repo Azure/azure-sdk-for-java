@@ -32,6 +32,7 @@ public final class AADB2CConditions {
          * Web application scenario condition.
          */
         @ConditionalOnWebApplication
+        // TODO (yiliu6) Use java instead of SpEL as the condition expression
         @ConditionalOnExpression("(!'${azure.activedirectory.b2c.client-id:}'.empty || !'${spring.cloud.azure.client-id:}'.empty)"
             + "&& (!'${azure.activedirectory.b2c.client-secret:}'.empty || !'${spring.cloud.azure.client-secret:}'.empty)")
         static class WebAppMode {

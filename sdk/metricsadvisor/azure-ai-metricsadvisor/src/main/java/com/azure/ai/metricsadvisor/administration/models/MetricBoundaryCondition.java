@@ -7,8 +7,7 @@ import com.azure.ai.metricsadvisor.implementation.util.MetricBoundaryConditionHe
 import com.azure.core.annotation.Fluent;
 
 /**
- * Defines the boundary conditions for the anomaly (abnormal data points)
- * to be included in the alert.
+ * Defines the boundary conditions for the anomaly (abnormal data points) to be included in the alert.
  */
 @Fluent
 public final class MetricBoundaryCondition {
@@ -86,37 +85,22 @@ public final class MetricBoundaryCondition {
     }
 
     /**
-     * Sets either upper or lower boundary.
+     * Sets the boundary.
      *
-     * @param direction The boundary direction.
-     * @param boundaryValue The boundary value.
+     * @param direction Both {@code lowerBoundary} and {@code upperBoundary} must be specified
+     *     when the direction is {@link BoundaryDirection#BOTH}. The {@code lowerBoundary}
+     *     must be specified for {@link BoundaryDirection#LOWER}, similarly {@code upperBoundary}
+     *     must set specified for {@link BoundaryDirection#UPPER}.
+     * @param lowerBoundary The lower boundary value.
+     * @param upperBoundary The upper boundary value.
      * @return The MetricBoundaryCondition object itself.
      */
-    public MetricBoundaryCondition setSingleBoundary(SingleBoundaryDirection direction,
-                                                     double boundaryValue) {
-        if (direction == SingleBoundaryDirection.LOWER) {
-            this.boundaryDirection = BoundaryDirection.LOWER;
-            this.lowerBoundary = boundaryValue;
-            this.upperBoundary = null;
-        } else {
-            this.boundaryDirection = BoundaryDirection.UPPER;
-            this.upperBoundary = boundaryValue;
-            this.lowerBoundary = null;
-        }
-        return this;
-    }
-
-    /**
-     * Sets both upper and lower boundary.
-     *
-     * @param lower The lower boundary value.
-     * @param upper The upper boundary value.
-     * @return The MetricBoundaryCondition object itself.
-     */
-    public MetricBoundaryCondition setBothBoundary(double lower, double upper) {
-        this.lowerBoundary = lower;
-        this.upperBoundary = upper;
-        this.boundaryDirection = BoundaryDirection.BOTH;
+    public MetricBoundaryCondition setBoundary(BoundaryDirection direction,
+                                               Double lowerBoundary,
+                                               Double upperBoundary) {
+        this.lowerBoundary = lowerBoundary;
+        this.upperBoundary = upperBoundary;
+        this.boundaryDirection = direction;
         return this;
     }
 
@@ -141,10 +125,7 @@ public final class MetricBoundaryCondition {
      *
      * @return True if alert is triggered for missing data-points, false otherwise.
      */
-    public boolean shouldAlertIfDataPointMissing() {
-        if (this.alertIfMissing == null) {
-            return false;
-        }
+    public Boolean shouldAlertIfDataPointMissing() {
         return this.alertIfMissing;
     }
 

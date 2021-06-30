@@ -47,12 +47,14 @@ public class AADAuthenticationProperties implements InitializingBean {
     private UserGroupProperties userGroup = new UserGroupProperties();
 
     /**
-     * Registered application ID in Azure AD. Must be configured when OAuth2 authentication is done in front end
+     * Registered application ID in Azure AD. Could be configured by spring.cloud.azure.client-id as alternative.
+     * A property of client-id must be configured when OAuth2 authentication is done in front end.
      */
     private String clientId;
 
     /**
-     * API Access Key of the registered application. Must be configured when OAuth2 authentication is done in front end
+     * API Access Key of the registered application. Could be configured by spring.cloud.azure.client-secret as alternative.
+     * A property of client-secret must be configured when OAuth2 authentication is done in front end.
      */
     private String clientSecret;
 
@@ -103,7 +105,7 @@ public class AADAuthenticationProperties implements InitializingBean {
     private long jwkSetCacheRefreshTime = DEFAULT_JWK_SET_CACHE_REFRESH_TIME;
 
     /**
-     * Azure Tenant ID.
+     * Azure Tenant ID. Could be configured by spring.cloud.azure.tenant-id as alternative.
      */
     private String tenantId;
 
