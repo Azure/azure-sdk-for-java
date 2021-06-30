@@ -23,7 +23,7 @@ import java.time.Duration
 import java.time.OffsetDateTime
 
 class KeyvaultKeyTest extends APISpec {
-
+    KeyServiceVersion keyServiceVersion = KeyServiceVersion.V7_2;
     BlobContainerClient cc
     EncryptedBlobClient bec // encrypted client for download
     KeyClient keyClient
@@ -36,9 +36,10 @@ class KeyvaultKeyTest extends APISpec {
         }
 
         keyClient = new KeyClientBuilder()
-            .pipeline(getHttpPipeline(KeyServiceVersion.V7_2))
+            .pipeline(getHttpPipeline(keyServiceVersion))
             .httpClient(getHttpClient())
             .vaultUrl(keyVaultUrl)
+            .serviceVersion(keyServiceVersion)
             .buildClient()
 
         keyId = namer.getRandomName(50)
@@ -48,8 +49,9 @@ class KeyvaultKeyTest extends APISpec {
             .setKeySize(2048))
 
         AsyncKeyEncryptionKey akek = new KeyEncryptionKeyClientBuilder()
-            .pipeline(getHttpPipeline(KeyServiceVersion.V7_2))
+            .pipeline(getHttpPipeline(keyServiceVersion))
             .httpClient(getHttpClient())
+            .serviceVersion(keyServiceVersion)
             .buildAsyncKeyEncryptionKey(keyVaultKey.getId())
             .block()
 
