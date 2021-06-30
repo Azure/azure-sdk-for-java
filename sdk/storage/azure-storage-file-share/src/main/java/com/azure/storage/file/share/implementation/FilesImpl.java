@@ -362,7 +362,7 @@ public final class FilesImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Put("/{shareName}/{filePath}")
+        @Put("/{shareName}/{fileName}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<FilesUploadRangeResponse> uploadRange(

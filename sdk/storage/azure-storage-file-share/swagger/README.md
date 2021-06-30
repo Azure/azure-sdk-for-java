@@ -174,8 +174,8 @@ directive:
 - from: swagger-document
   where: $["x-ms-paths"]
   transform: >
-    if (!$["/{shareName}/{filePath}?comp=range"]) {
-        const op = $["/{shareName}/{filePath}?comp=range"] = $["/{shareName}/{directory}/{fileName}?comp=range"];
+    if (!$["/{shareName}/{fileName}?comp=range"]) {
+        const op = $["/{shareName}/{fileName}?comp=range"] = $["/{shareName}/{directory}/{fileName}?comp=range"];
         op.put.parameters[3]["x-ms-enum"].name = "ShareFileRangeWriteType";
         delete $["/{shareName}/{directory}/{fileName}?comp=range"];
     }
