@@ -3,6 +3,14 @@
 
 package com.azure.perf.test.core;
 
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import io.netty.handler.ssl.SslContext;
+import io.netty.handler.ssl.SslContextBuilder;
+import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
+import java.util.ArrayList;
+import javax.net.ssl.SSLException;
 import reactor.core.publisher.Mono;
 
 /**
@@ -21,12 +29,42 @@ import reactor.core.publisher.Mono;
 public abstract class PerfStressTest<TOptions extends PerfStressOptions> {
     protected final TOptions options;
 
+    protected final HttpClient httpClient;
+    protected final Iterable<HttpPipelinePolicy> policies;
+
     /**
      * Creates an instance of performance test.
      * @param options the options configured for the test.
      */
     public PerfStressTest(TOptions options) {
         this.options = options;
+
+        if (options.isInsecure()) {
+            SslContext sslContext;
+            try {
+                sslContext = SslContextBuilder.forClient()
+                    .trustManager(InsecureTrustManagerFactory.INSTANCE)
+                    .build();
+            }
+            catch (SSLException e) {
+                throw new RuntimeException(e);
+            }
+
+            reactor.netty.http.client.HttpClient nettyHttpClient = reactor.netty.http.client.HttpClient.create()
+                .secure(sslContextSpec -> sslContextSpec.sslContext(sslContext));
+            
+            httpClient = new NettyAsyncHttpClientBuilder(nettyHttpClient).build();
+        }
+        else {
+            httpClient = null;
+        }
+
+        if (options.getTestProxy() != null) {
+            policies = new ArrayList<HttpPipelinePolicy>();
+        }
+        else {
+            policies = null;
+        }
     }
 
     /**
