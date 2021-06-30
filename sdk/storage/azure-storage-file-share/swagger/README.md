@@ -113,8 +113,16 @@ directive:
 - from: swagger-document
   where: $["x-ms-paths"]
   transform: >
-    if (!$["/{shareName}/{filePath}"]) {
-        const op = $["/{shareName}/{filePath}"] = $["/{shareName}/{directory}/{fileName}"];
+    $["/{shareName}/{directory}/{fileName}"]["parameters"] = $["/{shareName}/{directory}/{fileName}"]["parameters"].filter(function(param) {return (false == param['$ref'].endsWith("#/parameters/DirectoryPath"))});
+```
+
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]
+  transform: >
+    if (!$["/{shareName}/{fileName}"]) {
+        const op = $["/{shareName}/{fileName}"] = $["/{shareName}/{directory}/{fileName}"];
         const path = op.put.parameters[0].$ref.replace(/[#].*$/, "#/parameters/");
         op.get.responses["200"].headers["Content-MD5"]["x-ms-client-name"] = "contentMd5";
         op.get.responses["206"].headers["Content-MD5"]["x-ms-client-name"] = "contentMd5";
@@ -144,8 +152,8 @@ directive:
 - from: swagger-document
   where: $["x-ms-paths"]
   transform: >
-    if (!$["/{shareName}/{filePath}?comp=properties"]) {
-        const op = $["/{shareName}/{filePath}?comp=properties"] = $["/{shareName}/{directory}/{fileName}?comp=properties"];
+    if (!$["/{shareName}/{fileName}?comp=properties"]) {
+        const op = $["/{shareName}/{fileName}?comp=properties"] = $["/{shareName}/{directory}/{fileName}?comp=properties"];
         delete $["/{shareName}/{directory}/{fileName}?comp=properties"];
         op.put.responses["200"].headers["x-ms-file-creation-time"].format = "date-time";
         op.put.responses["200"].headers["x-ms-file-last-write-time"].format = "date-time";

@@ -278,13 +278,12 @@ public final class FilesImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Put("/{shareName}/{filePath}")
+        @Put("/{shareName}/{fileName}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<FilesCreateResponse> create(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
-                @PathParam("directory") String directory,
                 @PathParam("fileName") String fileName,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
@@ -306,13 +305,12 @@ public final class FilesImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Get("/{shareName}/{filePath}")
+        @Get("/{shareName}/{fileName}")
         @ExpectedResponses({200, 206})
         @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<StreamResponse> download(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
-                @PathParam("directory") String directory,
                 @PathParam("fileName") String fileName,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
@@ -322,13 +320,12 @@ public final class FilesImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Head("/{shareName}/{filePath}")
+        @Head("/{shareName}/{fileName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<FilesGetPropertiesResponse> getProperties(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
-                @PathParam("directory") String directory,
                 @PathParam("fileName") String fileName,
                 @QueryParam("sharesnapshot") String sharesnapshot,
                 @QueryParam("timeout") Integer timeout,
@@ -337,13 +334,12 @@ public final class FilesImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Delete("/{shareName}/{filePath}")
+        @Delete("/{shareName}/{fileName}")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<FilesDeleteResponse> delete(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
-                @PathParam("directory") String directory,
                 @PathParam("fileName") String fileName,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
@@ -1011,7 +1007,6 @@ public final class FilesImpl {
      * Creates a new file or replaces a file. Note it only initializes the file with no content.
      *
      * @param shareName The name of the target share.
-     * @param directory The path of the target directory.
      * @param fileName The path of the target file.
      * @param fileContentLength Specifies the maximum size for the file, up to 4 TB.
      * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
@@ -1039,7 +1034,6 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FilesCreateResponse> createWithResponseAsync(
             String shareName,
-            String directory,
             String fileName,
             long fileContentLength,
             String fileAttributes,
@@ -1088,7 +1082,6 @@ public final class FilesImpl {
         return service.create(
                 this.client.getUrl(),
                 shareName,
-                directory,
                 fileName,
                 timeout,
                 this.client.getVersion(),
@@ -1115,7 +1108,6 @@ public final class FilesImpl {
      * Reads or downloads a file from the system, including its metadata and properties.
      *
      * @param shareName The name of the target share.
-     * @param directory The path of the target directory.
      * @param fileName The path of the target file.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -1133,7 +1125,6 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StreamResponse> downloadWithResponseAsync(
             String shareName,
-            String directory,
             String fileName,
             Integer timeout,
             String range,
@@ -1144,7 +1135,6 @@ public final class FilesImpl {
         return service.download(
                 this.client.getUrl(),
                 shareName,
-                directory,
                 fileName,
                 timeout,
                 this.client.getVersion(),
@@ -1160,7 +1150,6 @@ public final class FilesImpl {
      * return the content of the file.
      *
      * @param shareName The name of the target share.
-     * @param directory The path of the target directory.
      * @param fileName The path of the target file.
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
      *     snapshot to query.
@@ -1176,18 +1165,11 @@ public final class FilesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FilesGetPropertiesResponse> getPropertiesWithResponseAsync(
-            String shareName,
-            String directory,
-            String fileName,
-            String sharesnapshot,
-            Integer timeout,
-            String leaseId,
-            Context context) {
+            String shareName, String fileName, String sharesnapshot, Integer timeout, String leaseId, Context context) {
         final String accept = "application/xml";
         return service.getProperties(
                 this.client.getUrl(),
                 shareName,
-                directory,
                 fileName,
                 sharesnapshot,
                 timeout,
@@ -1201,7 +1183,6 @@ public final class FilesImpl {
      * removes the file from the storage account.
      *
      * @param shareName The name of the target share.
-     * @param directory The path of the target directory.
      * @param fileName The path of the target file.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -1215,18 +1196,10 @@ public final class FilesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FilesDeleteResponse> deleteWithResponseAsync(
-            String shareName, String directory, String fileName, Integer timeout, String leaseId, Context context) {
+            String shareName, String fileName, Integer timeout, String leaseId, Context context) {
         final String accept = "application/xml";
         return service.delete(
-                this.client.getUrl(),
-                shareName,
-                directory,
-                fileName,
-                timeout,
-                this.client.getVersion(),
-                leaseId,
-                accept,
-                context);
+                this.client.getUrl(), shareName, fileName, timeout, this.client.getVersion(), leaseId, accept, context);
     }
 
     /**
