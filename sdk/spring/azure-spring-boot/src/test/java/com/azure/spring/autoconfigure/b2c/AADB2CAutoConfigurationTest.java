@@ -29,8 +29,9 @@ import static org.mockito.Mockito.verify;
 
 public class AADB2CAutoConfigurationTest extends AbstractAADB2COAuth2ClientTestConfiguration {
 
-    public AADB2CAutoConfigurationTest() {
-        contextRunner = new WebApplicationContextRunner()
+    @Override
+    public WebApplicationContextRunner getDefaultContextRunner() {
+        return new WebApplicationContextRunner()
             .withConfiguration(AutoConfigurations.of(WebOAuth2ClientApp.class, AADB2CAutoConfiguration.class))
             .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
             .withPropertyValues(getWebappCommonPropertyValues());
@@ -57,7 +58,7 @@ public class AADB2CAutoConfigurationTest extends AbstractAADB2COAuth2ClientTestC
 
     @Test
     public void testAutoConfigurationBean() {
-        this.contextRunner.run(c -> {
+        getDefaultContextRunner().run(c -> {
             final AADB2CAutoConfiguration autoConfig = c.getBean(AADB2CAutoConfiguration.class);
             Assertions.assertNotNull(autoConfig);
         });
@@ -65,7 +66,7 @@ public class AADB2CAutoConfigurationTest extends AbstractAADB2COAuth2ClientTestC
 
     @Test
     public void testPropertiesBean() {
-        this.contextRunner.run(c -> {
+        getDefaultContextRunner().run(c -> {
             final AADB2CProperties properties = c.getBean(AADB2CProperties.class);
 
             Assertions.assertNotNull(properties);
@@ -90,7 +91,7 @@ public class AADB2CAutoConfigurationTest extends AbstractAADB2COAuth2ClientTestC
 
     @Test
     public void testAADB2CAuthorizationRequestResolverBean() {
-        this.contextRunner.run(c -> {
+        getDefaultContextRunner().run(c -> {
             final AADB2CAuthorizationRequestResolver resolver = c.getBean(AADB2CAuthorizationRequestResolver.class);
             Assertions.assertNotNull(resolver);
         });
@@ -98,7 +99,7 @@ public class AADB2CAutoConfigurationTest extends AbstractAADB2COAuth2ClientTestC
 
     @Test
     public void testLogoutSuccessHandlerBean() {
-        this.contextRunner.run(c -> {
+        getDefaultContextRunner().run(c -> {
             final AADB2CLogoutSuccessHandler handler = c.getBean(AADB2CLogoutSuccessHandler.class);
             Assertions.assertNotNull(handler);
         });
@@ -114,7 +115,7 @@ public class AADB2CAutoConfigurationTest extends AbstractAADB2COAuth2ClientTestC
                      .thenReturn(userFlowCondition);
             beanUtils.when(() -> BeanUtils.instantiateClass(AADB2CConditions.ClientRegistrationCondition.class))
                      .thenReturn(clientRegistrationCondition);
-            this.contextRunner
+            getDefaultContextRunner()
                 .run(c -> {
                     Assertions.assertTrue(c.getResource(AAD_B2C_ENABLE_CONFIG_FILE_NAME).exists());
                     verify(userFlowCondition, atLeastOnce()).getMatchOutcome(any(), any());

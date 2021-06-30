@@ -32,7 +32,7 @@ import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 
 /**
- * Async client that supports call connection operations.
+ * Asynchronous client that supports call connection operations.
  */
 public final class CallConnectionAsync {
 
@@ -46,9 +46,9 @@ public final class CallConnectionAsync {
     }
 
     /**
-     * Get the call connection id property
+     * Get the call connection id property.
      *
-     * @return the id value.
+     * @return Call connection id value.
      */
     public String getCallConnectionId() {
         return callConnectionId;
@@ -67,7 +67,7 @@ public final class CallConnectionAsync {
      *                         communications related to this operation
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response payload for play audio operation.
+     * @return Response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PlayAudioResult> playAudio(
@@ -88,7 +88,7 @@ public final class CallConnectionAsync {
      * @param playAudioOptions Options for play audio.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response payload for play audio operation.
+     * @return Response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PlayAudioResult> playAudio(String audioFileUri, PlayAudioOptions playAudioOptions) {
@@ -153,7 +153,7 @@ public final class CallConnectionAsync {
      * @param playAudioOptions Options for play audio.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response payload for play audio operation.
+     * @return Response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PlayAudioResult>> playAudioWithResponse(
@@ -204,7 +204,7 @@ public final class CallConnectionAsync {
      *
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for a successful hangup request.
+     * @return Response for a successful hangup request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> hangup() {
@@ -222,7 +222,7 @@ public final class CallConnectionAsync {
      *
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for a successful hangup request.
+     * @return Response for a successful hangup request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> hangupWithResponse() {
@@ -248,7 +248,7 @@ public final class CallConnectionAsync {
      *                         communications related to this operation
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response payload of the cancel all media operations.
+     * @return Response payload of the cancel all media operations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CancelAllMediaOperationsResult> cancelAllMediaOperations(String operationContext) {
@@ -270,7 +270,7 @@ public final class CallConnectionAsync {
      *                         communications related to this operation
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response payload of the cancel all media operations.
+     * @return Response payload of the cancel all media operations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CancelAllMediaOperationsResult>> cancelAllMediaOperationsWithResponse(String operationContext) {
@@ -305,7 +305,7 @@ public final class CallConnectionAsync {
      *                         communications related to this operation
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for a successful add participant request.
+     * @return Response for a successful add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AddParticipantResult> addParticipant(
@@ -335,7 +335,7 @@ public final class CallConnectionAsync {
      *                         communications related to this operation
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for a successful add participant request.
+     * @return Response for a successful add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AddParticipantResult>> addParticipantWithResponse(
@@ -374,7 +374,7 @@ public final class CallConnectionAsync {
      * @param participantId Participant id.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for a successful remove participant request.
+     * @return Response for a successful remove participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> removeParticipant(String participantId) {
@@ -393,7 +393,7 @@ public final class CallConnectionAsync {
      * @param participantId Participant id.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for a successful remove participant request.
+     * @return Response for a successful remove participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> removeParticipantWithResponse(String participantId) {

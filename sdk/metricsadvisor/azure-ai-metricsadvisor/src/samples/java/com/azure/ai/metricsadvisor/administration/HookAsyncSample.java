@@ -72,8 +72,9 @@ public class HookAsyncSample {
                 return advisorAdministrationAsyncClient.updateHook(emailHookToUpdate)
                     .doOnSubscribe(__ ->
                         System.out.printf("Updating Notification Hook: %s%n", hook.getId()))
-                    .doOnSuccess(config ->
-                        System.out.printf("Updated Notification Hook%n"));
+                    .doOnSuccess(notificationHook ->
+                        System.out.printf("Updated Notification Hook emails: %s%n",
+                            String.join(",", ((EmailNotificationHook) notificationHook).getEmailsToAlert())));
             });
 
         // Delete the hook.
