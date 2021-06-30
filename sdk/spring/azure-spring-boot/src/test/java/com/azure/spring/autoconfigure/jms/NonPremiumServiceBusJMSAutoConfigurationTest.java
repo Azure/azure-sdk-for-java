@@ -4,7 +4,8 @@
 package com.azure.spring.autoconfigure.jms;
 
 import org.apache.qpid.jms.JmsConnectionFactory;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.jms.JmsAutoConfiguration;
 import org.springframework.boot.test.context.FilteredClassLoader;
@@ -34,19 +35,22 @@ public class NonPremiumServiceBusJMSAutoConfigurationTest {
                      .run(context -> assertThat(context).hasSingleBean(AzureServiceBusJMSProperties.class));
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void testAzureServiceBusJMSPropertiesConnectionStringValidation() {
         ApplicationContextRunner contextRunner = getEmptyContextRunner();
-        contextRunner.run(context -> context.getBean(AzureServiceBusJMSProperties.class));
+        contextRunner.run(
+            context -> Assertions.assertThrows(IllegalStateException.class,
+                () -> context.getBean(AzureServiceBusJMSProperties.class)));
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void testAzureServiceBusJMSPropertiesPricingTireValidation() {
         ApplicationContextRunner contextRunner = getEmptyContextRunner();
         contextRunner.withPropertyValues(
             "spring.jms.servicebus.pricing-tier=fake",
             "spring.jms.servicebus.connection-string=" + CONNECTION_STRING)
-                     .run(context -> context.getBean(AzureServiceBusJMSProperties.class));
+                     .run(context -> Assertions.assertThrows(IllegalStateException.class,
+                         () -> context.getBean(AzureServiceBusJMSProperties.class)));
     }
 
     @Test
@@ -90,7 +94,8 @@ public class NonPremiumServiceBusJMSAutoConfigurationTest {
     private ApplicationContextRunner getEmptyContextRunner() {
 
         return new ApplicationContextRunner()
-            .withConfiguration(AutoConfigurations.of(NonPremiumServiceBusJMSAutoConfiguration.class, JmsAutoConfiguration.class))
+            .withConfiguration(AutoConfigurations.of(NonPremiumServiceBusJMSAutoConfiguration.class,
+                JmsAutoConfiguration.class))
             .withPropertyValues(
                 "spring.jms.servicebus.pricing-tier=basic"
             );
@@ -99,7 +104,8 @@ public class NonPremiumServiceBusJMSAutoConfigurationTest {
     private ApplicationContextRunner getContextRunnerWithProperties() {
 
         return new ApplicationContextRunner()
-            .withConfiguration(AutoConfigurations.of(NonPremiumServiceBusJMSAutoConfiguration.class, JmsAutoConfiguration.class))
+            .withConfiguration(AutoConfigurations.of(NonPremiumServiceBusJMSAutoConfiguration.class,
+                JmsAutoConfiguration.class))
             .withPropertyValues(
                 "spring.jms.servicebus.connection-string=" + CONNECTION_STRING,
                 "spring.jms.servicebus.topic-client-id=cid",

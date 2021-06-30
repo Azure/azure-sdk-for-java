@@ -7,6 +7,9 @@ import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.PackageCustomization;
 import org.slf4j.Logger;
 
+/**
+ * Contains customizations for Azure Search's index swagger code generation.
+ */
 public class SearchIndexCustomizations extends Customization {
     private static final String VARARG_METHOD_TEMPLATE =
         "this.%s = (%s == null) ? null : java.util.Arrays.asList(%s);\n"
@@ -16,11 +19,6 @@ public class SearchIndexCustomizations extends Customization {
     private static final String IMPLEMENTATION_MODELS = "com.azure.search.documents.implementation.models";
     private static final String MODELS = "com.azure.search.documents.models";
 
-    // Classes
-    private static final String SEARCH_OPTIONS = "SearchOptions";
-    private static final String AUTOCOMPLETE_OPTIONS = "AutocompleteOptions";
-    private static final String SUGGEST_OPTIONS = "SuggestOptions";
-
     @Override
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
         customizeModelsPackage(libraryCustomization.getPackage(MODELS));
@@ -28,8 +26,8 @@ public class SearchIndexCustomizations extends Customization {
     }
 
     private void customizeModelsPackage(PackageCustomization packageCustomization) {
-        customizeAutocompleteOptions(packageCustomization.getClass(AUTOCOMPLETE_OPTIONS));
-        customizeSuggestOptions(packageCustomization.getClass(SUGGEST_OPTIONS));
+        customizeAutocompleteOptions(packageCustomization.getClass("AutocompleteOptions"));
+        customizeSuggestOptions(packageCustomization.getClass("SuggestOptions"));
     }
 
     private void customizeAutocompleteOptions(ClassCustomization classCustomization) {
@@ -49,7 +47,7 @@ public class SearchIndexCustomizations extends Customization {
     }
 
     private void customizeImplementationModelsPackage(PackageCustomization packageCustomization) {
-        customizeSearchOptions(packageCustomization.getClass(SEARCH_OPTIONS));
+        customizeSearchOptions(packageCustomization.getClass("SearchOptions"));
     }
 
     private void customizeSearchOptions(ClassCustomization classCustomization) {

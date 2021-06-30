@@ -7,7 +7,7 @@ import com.azure.ai.metricsadvisor.implementation.models.AnomalyResult;
 import com.azure.ai.metricsadvisor.implementation.models.DetectionAnomalyFilterCondition;
 import com.azure.ai.metricsadvisor.implementation.models.DimensionGroupIdentity;
 import com.azure.ai.metricsadvisor.implementation.models.SeverityFilterCondition;
-import com.azure.ai.metricsadvisor.models.AnomalySeverity;
+import com.azure.ai.metricsadvisor.administration.models.AnomalySeverity;
 import com.azure.ai.metricsadvisor.models.DataPointAnomaly;
 import com.azure.ai.metricsadvisor.models.DimensionKey;
 import com.azure.ai.metricsadvisor.models.ListAnomaliesDetectedFilter;
@@ -36,7 +36,7 @@ public class AnomalyTransforms {
                 .setMin(minSeverity).
                     setMax(maxSeverity));
         }
-        List<DimensionKey> seriesKeys = filter.getSeriesKeys();
+        List<DimensionKey> seriesKeys = filter.getSeriesGroupKeys();
         if (seriesKeys != null && !seriesKeys.isEmpty()) {
             innerFilter.setDimensionFilter(seriesKeys
                 .stream()
@@ -76,6 +76,9 @@ public class AnomalyTransforms {
 
     private static DataPointAnomaly fromInner(AnomalyResult innerAnomaly) {
         DataPointAnomaly dataPointAnomaly = new DataPointAnomaly();
+        if (innerAnomaly.getDataFeedId() != null) {
+            AnomalyHelper.setDataFeedId(dataPointAnomaly, innerAnomaly.getDataFeedId().toString());
+        }
         if (innerAnomaly.getMetricId() != null) {
             AnomalyHelper.setMetricId(dataPointAnomaly, innerAnomaly.getMetricId().toString());
         }
@@ -89,6 +92,8 @@ public class AnomalyTransforms {
         if (innerAnomaly.getProperty() != null) {
             AnomalyHelper.setSeverity(dataPointAnomaly, innerAnomaly.getProperty().getAnomalySeverity());
             AnomalyHelper.setStatus(dataPointAnomaly, innerAnomaly.getProperty().getAnomalyStatus());
+            AnomalyHelper.setValue(dataPointAnomaly, innerAnomaly.getProperty().getValue());
+            AnomalyHelper.setExpectedValue(dataPointAnomaly, innerAnomaly.getProperty().getExpectedValue());
         }
 
         AnomalyHelper.setTimeStamp(dataPointAnomaly, innerAnomaly.getTimestamp());

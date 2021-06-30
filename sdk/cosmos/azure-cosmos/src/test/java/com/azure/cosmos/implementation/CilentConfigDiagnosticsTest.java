@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
@@ -29,6 +30,7 @@ public class CilentConfigDiagnosticsTest {
 
         DiagnosticsClientContext.DiagnosticsClientConfig diagnosticsClientConfig = new DiagnosticsClientContext.DiagnosticsClientConfig();
         diagnosticsClientConfig.withClientId(1);
+        diagnosticsClientConfig.withConnectionMode(ConnectionMode.DIRECT);
         diagnosticsClientConfig.withActiveClientCounter(new AtomicInteger(2));
 
         Mockito.doReturn(diagnosticsClientConfig).when(clientContext).getConfig();
@@ -55,6 +57,7 @@ public class CilentConfigDiagnosticsTest {
 
         DiagnosticsClientContext.DiagnosticsClientConfig diagnosticsClientConfig = new DiagnosticsClientContext.DiagnosticsClientConfig();
         diagnosticsClientConfig.withClientId(1);
+        diagnosticsClientConfig.withConnectionMode(ConnectionMode.DIRECT);
         diagnosticsClientConfig.withActiveClientCounter(new AtomicInteger(2));
         diagnosticsClientConfig.withRntbdOptions( new RntbdTransportClient.Options.Builder(ConnectionPolicy.getDefaultPolicy()).build());
         diagnosticsClientConfig.withGatewayHttpClientConfig(new HttpClientConfig(new Configs()));
@@ -83,6 +86,7 @@ public class CilentConfigDiagnosticsTest {
 
         DiagnosticsClientContext.DiagnosticsClientConfig diagnosticsClientConfig = new DiagnosticsClientContext.DiagnosticsClientConfig();
         diagnosticsClientConfig.withClientId(1);
+        diagnosticsClientConfig.withConnectionMode(ConnectionMode.DIRECT);
         diagnosticsClientConfig.withActiveClientCounter(new AtomicInteger(2));
         HttpClientConfig httpConfig = new HttpClientConfig(new Configs());
         httpConfig.withPoolSize(500);
@@ -113,6 +117,7 @@ public class CilentConfigDiagnosticsTest {
 
         DiagnosticsClientContext.DiagnosticsClientConfig diagnosticsClientConfig = new DiagnosticsClientContext.DiagnosticsClientConfig();
         diagnosticsClientConfig.withClientId(1);
+        diagnosticsClientConfig.withConnectionMode(ConnectionMode.DIRECT);
         diagnosticsClientConfig.withActiveClientCounter(new AtomicInteger(2));
         HttpClientConfig httpConfig = new HttpClientConfig(new Configs());
         httpConfig.withPoolSize(500);

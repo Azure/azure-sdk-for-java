@@ -13,12 +13,20 @@ import com.azure.resourcemanager.keyvault.models.PrivateEndpointConnectionProvis
 import com.azure.resourcemanager.keyvault.models.PrivateLinkServiceConnectionState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /** Private endpoint connection resource. */
 @JsonFlatten
 @Fluent
 public class PrivateEndpointConnectionInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionInner.class);
+
+    /*
+     * Modified whenever there is a change in the state of private endpoint
+     * connection.
+     */
+    @JsonProperty(value = "etag")
+    private String etag;
 
     /*
      * Properties of the private endpoint object.
@@ -37,6 +45,26 @@ public class PrivateEndpointConnectionInner extends Resource {
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private PrivateEndpointConnectionProvisioningState provisioningState;
+
+    /**
+     * Get the etag property: Modified whenever there is a change in the state of private endpoint connection.
+     *
+     * @return the etag value.
+     */
+    public String etag() {
+        return this.etag;
+    }
+
+    /**
+     * Set the etag property: Modified whenever there is a change in the state of private endpoint connection.
+     *
+     * @param etag the etag value to set.
+     * @return the PrivateEndpointConnectionInner object itself.
+     */
+    public PrivateEndpointConnectionInner withEtag(String etag) {
+        this.etag = etag;
+        return this;
+    }
 
     /**
      * Get the privateEndpoint property: Properties of the private endpoint object.
@@ -86,6 +114,20 @@ public class PrivateEndpointConnectionInner extends Resource {
      */
     public PrivateEndpointConnectionProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public PrivateEndpointConnectionInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public PrivateEndpointConnectionInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
     }
 
     /**

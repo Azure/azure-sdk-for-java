@@ -139,6 +139,13 @@ public class UsageInner extends ProxyOnlyResource {
         return this.siteMode;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public UsageInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

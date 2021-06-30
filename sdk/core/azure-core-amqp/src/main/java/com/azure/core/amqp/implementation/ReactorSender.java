@@ -12,6 +12,7 @@ import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.OperationCancelledException;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
+import com.azure.core.util.AsyncCloseable;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
@@ -62,7 +63,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 /**
  * Handles scheduling and transmitting events through proton-j to Event Hubs service.
  */
-class ReactorSender implements AmqpSendLink, AsyncAutoCloseable {
+class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
     private final String entityPath;
     private final Sender sender;
     private final SendLinkHandler handler;
@@ -371,6 +372,7 @@ class ReactorSender implements AmqpSendLink, AsyncAutoCloseable {
             }
 
             sender.close();
+            sendTimeoutTimer.cancel();
         };
 
         return Mono.fromRunnable(() -> {

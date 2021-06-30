@@ -43,6 +43,13 @@ public class DomainOwnershipIdentifierInner extends ProxyOnlyResource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public DomainOwnershipIdentifierInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

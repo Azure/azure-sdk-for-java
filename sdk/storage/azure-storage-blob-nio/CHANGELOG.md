@@ -1,5 +1,15 @@
 # Release History
 
+## 12.0.0-beta.8 (Unreleased)
+
+
+## 12.0.0-beta.7 (2021-06-09)
+### Dependency Updates
+- Updated `azure-storage-blob` to version `12.12.0`
+
+## 12.0.0-beta.6 (2021-04-29)
+- Update `azure-storage-blob` to version `12.11.0`
+
 ## 12.0.0-beta.5 (2021-04-16)
 - Fixed a bug where a file would be determined to be a directory if another file with the same prefix exists
 

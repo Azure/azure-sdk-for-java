@@ -10,8 +10,8 @@ import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.models.EnforcementMode;
 import com.azure.resourcemanager.resources.models.Identity;
+import com.azure.resourcemanager.resources.models.NonComplianceMessage;
 import com.azure.resourcemanager.resources.models.ParameterValuesValue;
-import com.azure.resourcemanager.resources.models.PolicySku;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -22,13 +22,6 @@ import java.util.Map;
 @Fluent
 public class PolicyAssignmentInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PolicyAssignmentInner.class);
-
-    /*
-     * The policy sku. This property is optional, obsolete, and will be
-     * ignored.
-     */
-    @JsonProperty(value = "sku")
-    private PolicySku sku;
 
     /*
      * The location of the policy assignment. Only required when utilizing
@@ -58,7 +51,7 @@ public class PolicyAssignmentInner extends ProxyResource {
     /*
      * The scope for the policy assignment.
      */
-    @JsonProperty(value = "properties.scope")
+    @JsonProperty(value = "properties.scope", access = JsonProperty.Access.WRITE_ONLY)
     private String scope;
 
     /*
@@ -94,25 +87,12 @@ public class PolicyAssignmentInner extends ProxyResource {
     @JsonProperty(value = "properties.enforcementMode")
     private EnforcementMode enforcementMode;
 
-    /**
-     * Get the sku property: The policy sku. This property is optional, obsolete, and will be ignored.
-     *
-     * @return the sku value.
+    /*
+     * The messages that describe why a resource is non-compliant with the
+     * policy.
      */
-    public PolicySku sku() {
-        return this.sku;
-    }
-
-    /**
-     * Set the sku property: The policy sku. This property is optional, obsolete, and will be ignored.
-     *
-     * @param sku the sku value to set.
-     * @return the PolicyAssignmentInner object itself.
-     */
-    public PolicyAssignmentInner withSku(PolicySku sku) {
-        this.sku = sku;
-        return this;
-    }
+    @JsonProperty(value = "properties.nonComplianceMessages")
+    private List<NonComplianceMessage> nonComplianceMessages;
 
     /**
      * Get the location property: The location of the policy assignment. Only required when utilizing managed identity.
@@ -201,17 +181,6 @@ public class PolicyAssignmentInner extends ProxyResource {
      */
     public String scope() {
         return this.scope;
-    }
-
-    /**
-     * Set the scope property: The scope for the policy assignment.
-     *
-     * @param scope the scope value to set.
-     * @return the PolicyAssignmentInner object itself.
-     */
-    public PolicyAssignmentInner withScope(String scope) {
-        this.scope = scope;
-        return this;
     }
 
     /**
@@ -319,14 +288,33 @@ public class PolicyAssignmentInner extends ProxyResource {
     }
 
     /**
+     * Get the nonComplianceMessages property: The messages that describe why a resource is non-compliant with the
+     * policy.
+     *
+     * @return the nonComplianceMessages value.
+     */
+    public List<NonComplianceMessage> nonComplianceMessages() {
+        return this.nonComplianceMessages;
+    }
+
+    /**
+     * Set the nonComplianceMessages property: The messages that describe why a resource is non-compliant with the
+     * policy.
+     *
+     * @param nonComplianceMessages the nonComplianceMessages value to set.
+     * @return the PolicyAssignmentInner object itself.
+     */
+    public PolicyAssignmentInner withNonComplianceMessages(List<NonComplianceMessage> nonComplianceMessages) {
+        this.nonComplianceMessages = nonComplianceMessages;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (sku() != null) {
-            sku().validate();
-        }
         if (identity() != null) {
             identity().validate();
         }
@@ -339,6 +327,9 @@ public class PolicyAssignmentInner extends ProxyResource {
                             e.validate();
                         }
                     });
+        }
+        if (nonComplianceMessages() != null) {
+            nonComplianceMessages().forEach(e -> e.validate());
         }
     }
 }

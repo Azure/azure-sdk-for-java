@@ -201,6 +201,38 @@ public interface ContainerGroup
      */
     Mono<ContainerExecResponse> executeCommandAsync(String containerName, String command, int row, int column);
 
+    /**
+     * Attaches to the output stream of a specific container instance in a specified container group.
+     *
+     * @param containerName the name of the container instance
+     * @return the information for the output stream
+     */
+    ContainerAttachResult attachOutputStream(String containerName);
+
+    /**
+     * Attaches to the output stream of a specific container instance in a specified container group.
+     *
+     * @param containerName the name of the container instance
+     * @return the information for the output stream
+     */
+    Mono<ContainerAttachResult> attachOutputStreamAsync(String containerName);
+
+    /**
+     * Attaches to the output stream of a specific container instance in a specified container group.
+     *
+     * @param container the container instance
+     * @return the information for the output stream
+     */
+    ContainerAttachResult attachOutputStream(Container container);
+
+    /**
+     * Attaches to the output stream of a specific container instance in a specified container group.
+     *
+     * @param container the container instance
+     * @return the information for the output stream
+     */
+    Mono<ContainerAttachResult> attachOutputStreamAsync(Container container);
+
     /** Starts the exec command for a specific container instance within the current group asynchronously. */
     interface Definition
         extends DefinitionStages.Blank,
@@ -1038,6 +1070,18 @@ public interface ContainerGroup
              * @return the next stage of the definition
              */
             DnsConfigFork withNewNetworkProfileOnExistingVirtualNetwork(String virtualNetworkId, String subnetName);
+
+            /**
+             * Specifies the virtual network in network profile for a container group.
+             *
+             * @param networkProfileName the name of the network profile.
+             * @param virtualNetworkId the ID of the virtual network
+             * @param subnetName the name of the subnet within the virtual network.;
+             *                   the subnet must have delegation for 'Microsoft.ContainerInstance/containerGroups'.
+             * @return the next stage of the definition
+             */
+            DnsConfigFork withNewNetworkProfileOnExistingVirtualNetwork(String networkProfileName,
+                                                                        String virtualNetworkId, String subnetName);
 
             /**
              * Creates a new virtual network to associate with network profile in a container group.

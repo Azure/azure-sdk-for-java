@@ -6,6 +6,7 @@ package com.azure.resourcemanager.maintenance.fluent;
 
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.maintenance.fluent.models.ApplyUpdateInner;
@@ -188,4 +189,26 @@ public interface ApplyUpdatesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ApplyUpdateInner> createOrUpdateWithResponse(
         String resourceGroupName, String providerName, String resourceType, String resourceName, Context context);
+
+    /**
+     * Get Configuration records within a subscription.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return configuration records within a subscription.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ApplyUpdateInner> list();
+
+    /**
+     * Get Configuration records within a subscription.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return configuration records within a subscription.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ApplyUpdateInner> list(Context context);
 }

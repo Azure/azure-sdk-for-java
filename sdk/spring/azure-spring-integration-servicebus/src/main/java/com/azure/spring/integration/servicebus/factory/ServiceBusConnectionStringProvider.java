@@ -3,10 +3,10 @@
 
 package com.azure.spring.integration.servicebus.factory;
 
+//import com.azure.messaging.servicebus.ConnectionStringBuilder;
 import com.azure.resourcemanager.servicebus.models.AuthorizationKeys;
 import com.azure.resourcemanager.servicebus.models.AuthorizationRule;
 import com.azure.resourcemanager.servicebus.models.ServiceBusNamespace;
-import com.microsoft.azure.servicebus.primitives.ConnectionStringBuilder;
 import org.springframework.lang.NonNull;
 
 /**
@@ -36,7 +36,7 @@ public class ServiceBusConnectionStringProvider {
                                   .findFirst()
                                   .map(AuthorizationRule::getKeys)
                                   .map(AuthorizationKeys::primaryConnectionString)
-                                  .map(s -> new ConnectionStringBuilder(s, serviceBusNamespace.name()).toString())
+//                                  .map(s -> new ConnectionStringBuilder(s, serviceBusNamespace.name()).toString())  //TODO (xiada) may need to find an equivalent of ConnectionStringBuilder
                                   .orElseThrow(
                                       () -> new RuntimeException(
                                           String.format("Service bus namespace '%s' key is empty",

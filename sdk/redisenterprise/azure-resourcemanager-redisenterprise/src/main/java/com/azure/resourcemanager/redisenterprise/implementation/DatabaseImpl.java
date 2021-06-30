@@ -6,7 +6,6 @@ package com.azure.resourcemanager.redisenterprise.implementation;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager;
 import com.azure.resourcemanager.redisenterprise.fluent.models.DatabaseInner;
 import com.azure.resourcemanager.redisenterprise.models.AccessKeys;
 import com.azure.resourcemanager.redisenterprise.models.ClusteringPolicy;
@@ -27,7 +26,7 @@ import java.util.List;
 public final class DatabaseImpl implements Database, Database.Definition, Database.Update {
     private DatabaseInner innerObject;
 
-    private final RedisEnterpriseManager serviceManager;
+    private final com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -82,7 +81,7 @@ public final class DatabaseImpl implements Database, Database.Definition, Databa
         return this.innerObject;
     }
 
-    private RedisEnterpriseManager manager() {
+    private com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager() {
         return this.serviceManager;
     }
 
@@ -118,7 +117,7 @@ public final class DatabaseImpl implements Database, Database.Definition, Databa
         return this;
     }
 
-    DatabaseImpl(String name, RedisEnterpriseManager serviceManager) {
+    DatabaseImpl(String name, com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager serviceManager) {
         this.innerObject = new DatabaseInner();
         this.serviceManager = serviceManager;
         this.databaseName = name;
@@ -147,7 +146,8 @@ public final class DatabaseImpl implements Database, Database.Definition, Databa
         return this;
     }
 
-    DatabaseImpl(DatabaseInner innerObject, RedisEnterpriseManager serviceManager) {
+    DatabaseImpl(
+        DatabaseInner innerObject, com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");

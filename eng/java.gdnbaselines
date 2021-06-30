@@ -2984,6 +2984,448 @@
       "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
+    },
+    "d1fd105dd5fd404a29405d09ae69fc0c057a362782c99011f852b7b5b3346544": {
+      "signature": "d1fd105dd5fd404a29405d09ae69fc0c057a362782c99011f852b7b5b3346544",
+      "target": "sdk/storage/azure-storage-blob-cryptography/src/test/resources/session-records/EncyptedBlockBlobAPITestdownloadacfail[3].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-04-24 01:27:17Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "c9188b449c96b9167bc18e83580a09a163a63cb99dbde143c0db7c8a41496ba9": {
+      "signature": "c9188b449c96b9167bc18e83580a09a163a63cb99dbde143c0db7c8a41496ba9",
+      "target": "sdk/storage/azure-storage-blob-cryptography/src/test/resources/session-records/EncyptedBlockBlobAPITestdownloadac[0].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-04-24 01:27:17Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "4bad8b275d47d6e1098c475a6c8f260413a98c6e862b078320d724bace053722": {
+      "signature": "4bad8b275d47d6e1098c475a6c8f260413a98c6e862b078320d724bace053722",
+      "target": "sdk/storage/azure-storage-blob-cryptography/src/test/resources/session-records/EncyptedBlockBlobAPITestdownloadac[1].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-04-24 01:27:17Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "6b7591ed61ab544b35267263d230b844894cb53d511de7a3ca4511bba7fa04fb": {
+      "signature": "6b7591ed61ab544b35267263d230b844894cb53d511de7a3ca4511bba7fa04fb",
+      "target": "sdk/storage/azure-storage-blob-cryptography/src/test/resources/session-records/EncyptedBlockBlobAPITestdownloadac[2].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-04-24 01:27:17Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "6506a12097bb15fff7b73658f5b5804c4a47603971b61fe1db4ea0fd5ab0f715": {
+      "signature": "6506a12097bb15fff7b73658f5b5804c4a47603971b61fe1db4ea0fd5ab0f715",
+      "target": "sdk/storage/azure-storage-blob-cryptography/src/test/resources/session-records/EncyptedBlockBlobAPITestdownloadac[3].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-04-24 01:27:17Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "a8ea893ce995038a4c5e1bbd91e7227b1701eafd0aeeec509bfb1ac4874390b4": {
+      "signature": "a8ea893ce995038a4c5e1bbd91e7227b1701eafd0aeeec509bfb1ac4874390b4",
+      "target": "sdk/storage/azure-storage-blob-cryptography/src/test/resources/session-records/EncyptedBlockBlobAPITestdownloadac[4].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-04-24 01:27:17Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "6ccdbb1f7cad63f3e84afbb39d67e03b98fda63220ce13c813dea840ba94e6a0": {
+      "signature": "6ccdbb1f7cad63f3e84afbb39d67e03b98fda63220ce13c813dea840ba94e6a0",
+      "target": "sdk/storage/azure-storage-blob-cryptography/src/test/resources/session-records/EncyptedBlockBlobAPITestdownloadac[5].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-04-24 01:27:17Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "a0c9d515fafe9df83d1e4620e6013e2b14cfb6749e6a922152c8c7e3d01856d8": {
+      "signature": "a0c9d515fafe9df83d1e4620e6013e2b14cfb6749e6a922152c8c7e3d01856d8",
+      "target": "sdk/storage/azure-storage-blob-cryptography/src/test/resources/session-records/EncyptedBlockBlobAPITestdownloadrange[0].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-04-24 01:27:17Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "fe1b6c025d6cebfd009299f3de3047c9fefef7bbff648c6fbf69c23d89a508d1": {
+      "signature": "fe1b6c025d6cebfd009299f3de3047c9fefef7bbff648c6fbf69c23d89a508d1",
+      "target": "sdk/storage/azure-storage-blob-cryptography/src/test/resources/session-records/EncyptedBlockBlobAPITestdownloadrange[1].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-04-24 01:27:17Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "4524641b4f5b2ee53b881ac15589e8a73a9aaa21417b4c256ccd96817355cc0a": {
+      "signature": "4524641b4f5b2ee53b881ac15589e8a73a9aaa21417b4c256ccd96817355cc0a",
+      "target": "sdk/storage/azure-storage-blob-cryptography/src/test/resources/session-records/EncyptedBlockBlobAPITestdownloadrange[2].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-04-24 01:27:17Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "16843d324269d1ba510e3ea44b6bb88c8aaa6d40603c5545415ce66a7c5195eb": {
+      "signature": "16843d324269d1ba510e3ea44b6bb88c8aaa6d40603c5545415ce66a7c5195eb",
+      "target": "sdk/storage/azure-storage-blob-cryptography/src/test/resources/session-records/EncyptedBlockBlobAPITestencryptionacfail[3].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-04-24 01:27:17Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "e1ce279e3e2ff0d8fbd0677e12a0d4b460c62ff0ca68dd336d44ffa68e30cb3f": {
+      "signature": "e1ce279e3e2ff0d8fbd0677e12a0d4b460c62ff0ca68dd336d44ffa68e30cb3f",
+      "target": "sdk/storage/azure-storage-blob-cryptography/src/test/resources/session-records/EncyptedBlockBlobAPITestencryptionac[3].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-04-24 01:27:17Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "15608f16cb8016f27fb3f8039c0aea8391973df4df3df76b418d09a43bd34df8": {
+      "signature": "15608f16cb8016f27fb3f8039c0aea8391973df4df3df76b418d09a43bd34df8",
+      "target": "sdk/storage/azure-storage-blob-cryptography/src/test/resources/session-records/EncyptedBlockBlobAPITestencryptionac[3].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-04-24 01:27:17Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "64cc7b771de2c2bbd557954259ce30cb85bd62da73e35822f2070cb54bc474a8": {
+      "signature": "64cc7b771de2c2bbd557954259ce30cb85bd62da73e35822f2070cb54bc474a8",
+      "target": "sdk/storage/azure-storage-blob-cryptography/src/test/resources/session-records/EncyptedBlockBlobAPITestencryptionhttpheaders[0].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-04-24 01:27:17Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "b403e1e3304c90c5424b12619e16f7df0df82bc58a9484c3827df9bbeb682668": {
+      "signature": "b403e1e3304c90c5424b12619e16f7df0df82bc58a9484c3827df9bbeb682668",
+      "target": "sdk/storage/azure-storage-blob-cryptography/src/test/resources/session-records/EncyptedBlockBlobAPITestencryptionhttpheaders[1].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-04-24 01:27:17Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "8890f535b983e95786f64f93a405fe0e37bc3f1cff49ef4e07f0dd417b220d54": {
+      "signature": "8890f535b983e95786f64f93a405fe0e37bc3f1cff49ef4e07f0dd417b220d54",
+      "target": "sdk/storage/azure-storage-blob-cryptography/src/test/resources/session-records/EncyptedBlockBlobAPITestencryption[0].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-04-24 01:27:17Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "c8202cb60c2abf6314becf47896bdf717174153bde5a6a7877e94bc16d763f58": {
+      "signature": "c8202cb60c2abf6314becf47896bdf717174153bde5a6a7877e94bc16d763f58",
+      "target": "sdk/storage/azure-storage-blob-cryptography/src/test/resources/session-records/EncyptedBlockBlobAPITestencryption[1].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-04-24 01:27:17Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "77efed38467a9bfa402e5efcac6ac596c385d958fdc3b1f07f592a8555c27254": {
+      "signature": "77efed38467a9bfa402e5efcac6ac596c385d958fdc3b1f07f592a8555c27254",
+      "target": "sdk/storage/azure-storage-blob-cryptography/src/test/resources/session-records/EncyptedBlockBlobAPITestencryption[2].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-04-24 01:27:17Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "90ba7fe2536ca5fb1ec7e2450258b7f3d91c923d5465acce3396c88915150658": {
+      "signature": "90ba7fe2536ca5fb1ec7e2450258b7f3d91c923d5465acce3396c88915150658",
+      "target": "sdk/storage/azure-storage-blob-cryptography/src/test/resources/session-records/EncyptedBlockBlobAPITestencryption[3].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-04-24 01:27:17Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "7cec01570d861a0ad5d612dbc2253ef77d2919996ae4ce27f99ec5082f19e01a": {
+      "signature": "7cec01570d861a0ad5d612dbc2253ef77d2919996ae4ce27f99ec5082f19e01a",
+      "target": "sdk/storage/azure-storage-blob-cryptography/src/test/resources/session-records/EncyptedBlockBlobAPITestencryption[4].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-04-24 01:27:17Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "847ad7dca45b88447ab150453c15d6d000614bd1b63e4aa3216d3f64d84f933c": {
+      "signature": "847ad7dca45b88447ab150453c15d6d000614bd1b63e4aa3216d3f64d84f933c",
+      "target": "sdk/storage/azure-storage-blob-cryptography/src/test/resources/session-records/EncyptedBlockBlobAPITestencryption[5].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-04-24 01:27:17Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "62625f1e953d9a38ea81c3456243b5de38880643c9bccb56d3b35d2c0351e551": {
+      "signature": "62625f1e953d9a38ea81c3456243b5de38880643c9bccb56d3b35d2c0351e551",
+      "target": "sdk/storage/azure-storage-blob-cryptography/src/test/resources/session-records/EncyptedBlockBlobAPITestencryption[6].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-04-24 01:27:17Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "9dfef2ca71985d68e80823c7539eb269068f02cafe39ca823842dd3c13bcb3f7": {
+      "signature": "9dfef2ca71985d68e80823c7539eb269068f02cafe39ca823842dd3c13bcb3f7",
+      "target": "sdk/storage/azure-storage-blob-cryptography/src/test/resources/session-records/EncyptedBlockBlobAPITestencryption[7].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-04-24 01:27:17Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "3eb92e900f2cd3a2f97cb0ca18bf70440ca231ab4d272439c96a70092e2c082f": {
+      "signature": "3eb92e900f2cd3a2f97cb0ca18bf70440ca231ab4d272439c96a70092e2c082f",
+      "target": "sdk/storage/azure-storage-blob-cryptography/src/test/resources/session-records/EncyptedBlockBlobAPITestencryption[8].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-04-24 01:27:17Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "554c4928e7c14c1bff3674ec0e5795e2459b680ca02a3e37b374557fe69b6905": {
+      "signature": "554c4928e7c14c1bff3674ec0e5795e2459b680ca02a3e37b374557fe69b6905",
+      "target": "sdk/storage/azure-storage-blob-cryptography/src/test/resources/session-records/EncyptedBlockBlobAPITestkeyresolverusedtodecryptdata[0].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-04-24 01:27:17Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "b101fbb2fe89dbe2bdb7bce5d1f4d08e180d182b0f97af9b49c88e524790db3f": {
+      "signature": "b101fbb2fe89dbe2bdb7bce5d1f4d08e180d182b0f97af9b49c88e524790db3f",
+      "target": "sdk/storage/azure-storage-blob-cryptography/src/test/resources/session-records/EncyptedBlockBlobAPITestkeyresolverusedtodecryptdata[1].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-04-24 01:27:17Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "42473b74d499ffd1afcb10999d5cb814eaa8fb2b7ba0a192366804ab419e7c47": {
+      "signature": "42473b74d499ffd1afcb10999d5cb814eaa8fb2b7ba0a192366804ab419e7c47",
+      "target": "sdk/storage/azure-storage-blob-cryptography/src/test/resources/session-records/EncyptedBlockBlobAPITestkeyresolverusedtodecryptdata[2].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-04-24 01:27:17Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "35988c4af10138a8746fb74c0470a8c7d5306bfeec152fbc837557a32cc87703": {
+      "signature": "35988c4af10138a8746fb74c0470a8c7d5306bfeec152fbc837557a32cc87703",
+      "target": "sdk/storage/azure-storage-blob-cryptography/src/test/resources/session-records/EncyptedBlockBlobAPITestkeyresolverusedtodecryptdata[3].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-04-24 01:27:17Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "4339c99b7243e08b759fa67989491c7eb45773b4b5ffc36021f4fd751c28b782": {
+      "signature": "4339c99b7243e08b759fa67989491c7eb45773b4b5ffc36021f4fd751c28b782",
+      "target": "sdk/storage/azure-storage-blob-cryptography/src/test/resources/session-records/EncyptedBlockBlobAPITestkeyresolverusedtodecryptdata[4].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-04-24 01:27:17Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "2c0b216728ad9a79131b753c8388b374e3265b97fa32370ff19a62465b1541dd": {
+      "signature": "2c0b216728ad9a79131b753c8388b374e3265b97fa32370ff19a62465b1541dd",
+      "target": "sdk/storage/azure-storage-blob-cryptography/src/test/resources/session-records/EncyptedBlockBlobAPITestkeyresolverusedtodecryptdata[5].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-04-24 01:27:17Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "6133165e8e37edcb4b01eb120d23c4b1920e1079f4e98c74fe023caa1370e351": {
+      "signature": "6133165e8e37edcb4b01eb120d23c4b1920e1079f4e98c74fe023caa1370e351",
+      "target": "sdk/storage/azure-storage-blob-cryptography/src/test/resources/session-records/EncyptedBlockBlobAPITestkeyresolverusedtodecryptdata[6].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-04-24 01:27:17Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "0ed53a4da31083af9f86cc52d0781b15ed8233439f74d55ada679b249c371edf": {
+      "signature": "0ed53a4da31083af9f86cc52d0781b15ed8233439f74d55ada679b249c371edf",
+      "target": "sdk/storage/azure-storage-blob-cryptography/src/test/resources/session-records/EncyptedBlockBlobAPITestkeyresolverusedtodecryptdata[7].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-04-24 01:27:17Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "3b07c1c024ef430ee78e5d0e91a457bb29c34e8735961fb5dede900541b0e93f": {
+      "signature": "3b07c1c024ef430ee78e5d0e91a457bb29c34e8735961fb5dede900541b0e93f",
+      "target": "sdk/storage/azure-storage-blob-cryptography/src/test/resources/session-records/EncyptedBlockBlobAPITestkeyresolverusedtodecryptdata[8].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-04-24 01:27:17Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "51cd2b9309075e5ad6d5c191a453e77dbbf3746bfc1960ea9660c602e4edf870": {
+      "signature": "51cd2b9309075e5ad6d5c191a453e77dbbf3746bfc1960ea9660c602e4edf870",
+      "target": "sdk/cosmos/azure-cosmos-encryption/src/test/java/com/azure/cosmos/encryption/implementation/EncryptionProcessorAndSettingsTest.java",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0130",
+      "justification": null,
+      "createdDate": "2021-04-24 01:27:17Z",
+      "expirationDate": null,
+      "type": null
     }
   }
 }

@@ -55,4 +55,9 @@ public class PartTreeReactiveCosmosQuery extends AbstractReactiveCosmosQuery {
     protected boolean isExistsQuery() {
         return tree.isExistsProjection();
     }
+
+    protected boolean isCountQuery() {
+        return tree.isCountProjection();
+    }
+
 }

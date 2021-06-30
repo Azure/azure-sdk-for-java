@@ -29,6 +29,12 @@ public final class ProviderResourceType {
     private List<String> locations;
 
     /*
+     * The location mappings that are supported by this resource type.
+     */
+    @JsonProperty(value = "locationMappings")
+    private List<ProviderExtendedLocation> locationMappings;
+
+    /*
      * The aliases that are supported by this resource type.
      */
     @JsonProperty(value = "aliases")
@@ -101,6 +107,26 @@ public final class ProviderResourceType {
      */
     public ProviderResourceType withLocations(List<String> locations) {
         this.locations = locations;
+        return this;
+    }
+
+    /**
+     * Get the locationMappings property: The location mappings that are supported by this resource type.
+     *
+     * @return the locationMappings value.
+     */
+    public List<ProviderExtendedLocation> locationMappings() {
+        return this.locationMappings;
+    }
+
+    /**
+     * Set the locationMappings property: The location mappings that are supported by this resource type.
+     *
+     * @param locationMappings the locationMappings value to set.
+     * @return the ProviderResourceType object itself.
+     */
+    public ProviderResourceType withLocationMappings(List<ProviderExtendedLocation> locationMappings) {
+        this.locationMappings = locationMappings;
         return this;
     }
 
@@ -208,6 +234,9 @@ public final class ProviderResourceType {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (locationMappings() != null) {
+            locationMappings().forEach(e -> e.validate());
+        }
         if (aliases() != null) {
             aliases().forEach(e -> e.validate());
         }

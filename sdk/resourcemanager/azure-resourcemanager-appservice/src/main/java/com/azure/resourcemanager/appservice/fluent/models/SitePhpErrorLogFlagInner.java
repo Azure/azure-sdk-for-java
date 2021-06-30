@@ -121,6 +121,13 @@ public class SitePhpErrorLogFlagInner extends ProxyOnlyResource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public SitePhpErrorLogFlagInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

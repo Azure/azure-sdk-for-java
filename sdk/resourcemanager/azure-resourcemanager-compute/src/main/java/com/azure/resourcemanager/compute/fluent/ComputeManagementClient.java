@@ -144,6 +144,20 @@ public interface ComputeManagementClient {
     ImagesClient getImages();
 
     /**
+     * Gets the RestorePointCollectionsClient object to access its operations.
+     *
+     * @return the RestorePointCollectionsClient object.
+     */
+    RestorePointCollectionsClient getRestorePointCollections();
+
+    /**
+     * Gets the RestorePointsClient object to access its operations.
+     *
+     * @return the RestorePointsClient object.
+     */
+    RestorePointsClient getRestorePoints();
+
+    /**
      * Gets the VirtualMachineScaleSetExtensionsClient object to access its operations.
      *
      * @return the VirtualMachineScaleSetExtensionsClient object.
@@ -268,6 +282,34 @@ public interface ComputeManagementClient {
      * @return the GalleryApplicationVersionsClient object.
      */
     GalleryApplicationVersionsClient getGalleryApplicationVersions();
+
+    /**
+     * Gets the GallerySharingProfilesClient object to access its operations.
+     *
+     * @return the GallerySharingProfilesClient object.
+     */
+    GallerySharingProfilesClient getGallerySharingProfiles();
+
+    /**
+     * Gets the SharedGalleriesClient object to access its operations.
+     *
+     * @return the SharedGalleriesClient object.
+     */
+    SharedGalleriesClient getSharedGalleries();
+
+    /**
+     * Gets the SharedGalleryImagesClient object to access its operations.
+     *
+     * @return the SharedGalleryImagesClient object.
+     */
+    SharedGalleryImagesClient getSharedGalleryImages();
+
+    /**
+     * Gets the SharedGalleryImageVersionsClient object to access its operations.
+     *
+     * @return the SharedGalleryImageVersionsClient object.
+     */
+    SharedGalleryImageVersionsClient getSharedGalleryImageVersions();
 
     /**
      * Gets the CloudServiceRoleInstancesClient object to access its operations.

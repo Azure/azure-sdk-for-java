@@ -71,6 +71,13 @@ public class StaticSiteResetPropertiesArmResource extends ProxyOnlyResource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public StaticSiteResetPropertiesArmResource withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

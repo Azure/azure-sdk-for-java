@@ -35,7 +35,7 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
      *
      * @param resourceGroupName The name of the Resource Group to which the server belongs.
      * @param vaultName Name of the vault.
-     * @param parameters Parameters for creating or updating a vault.
+     * @param parameters Parameters to create or update the vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -50,7 +50,7 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
      *
      * @param resourceGroupName The name of the Resource Group to which the server belongs.
      * @param vaultName Name of the vault.
-     * @param parameters Parameters for creating or updating a vault.
+     * @param parameters Parameters to create or update the vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -65,7 +65,7 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
      *
      * @param resourceGroupName The name of the Resource Group to which the server belongs.
      * @param vaultName Name of the vault.
-     * @param parameters Parameters for creating or updating a vault.
+     * @param parameters Parameters to create or update the vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -80,7 +80,7 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
      *
      * @param resourceGroupName The name of the Resource Group to which the server belongs.
      * @param vaultName Name of the vault.
-     * @param parameters Parameters for creating or updating a vault.
+     * @param parameters Parameters to create or update the vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -96,7 +96,7 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
      *
      * @param resourceGroupName The name of the Resource Group to which the server belongs.
      * @param vaultName Name of the vault.
-     * @param parameters Parameters for creating or updating a vault.
+     * @param parameters Parameters to create or update the vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -111,7 +111,7 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
      *
      * @param resourceGroupName The name of the Resource Group to which the server belongs.
      * @param vaultName Name of the vault.
-     * @param parameters Parameters for creating or updating a vault.
+     * @param parameters Parameters to create or update the vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -125,7 +125,7 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
      *
      * @param resourceGroupName The name of the Resource Group to which the server belongs.
      * @param vaultName Name of the vault.
-     * @param parameters Parameters for creating or updating a vault.
+     * @param parameters Parameters to create or update the vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -141,7 +141,7 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
      *
      * @param resourceGroupName The name of the Resource Group to which the server belongs.
      * @param vaultName Name of the vault.
-     * @param parameters Parameters for creating or updating a vault.
+     * @param parameters Parameters to patch the vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -156,7 +156,7 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
      *
      * @param resourceGroupName The name of the Resource Group to which the server belongs.
      * @param vaultName Name of the vault.
-     * @param parameters Parameters for creating or updating a vault.
+     * @param parameters Parameters to patch the vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -170,7 +170,7 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
      *
      * @param resourceGroupName The name of the Resource Group to which the server belongs.
      * @param vaultName Name of the vault.
-     * @param parameters Parameters for creating or updating a vault.
+     * @param parameters Parameters to patch the vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -184,7 +184,7 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
      *
      * @param resourceGroupName The name of the Resource Group to which the server belongs.
      * @param vaultName Name of the vault.
-     * @param parameters Parameters for creating or updating a vault.
+     * @param parameters Parameters to patch the vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -306,7 +306,7 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @param vaultName Name of the vault.
      * @param operationKind Name of the operation.
-     * @param properties Properties of the vault access policy.
+     * @param properties Properties of the access policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -325,7 +325,7 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @param vaultName Name of the vault.
      * @param operationKind Name of the operation.
-     * @param properties Properties of the vault access policy.
+     * @param properties Properties of the access policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -344,7 +344,7 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @param vaultName Name of the vault.
      * @param operationKind Name of the operation.
-     * @param properties Properties of the vault access policy.
+     * @param properties Properties of the access policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -363,7 +363,7 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @param vaultName Name of the vault.
      * @param operationKind Name of the operation.
-     * @param properties Properties of the vault access policy.
+     * @param properties Properties of the access policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -410,6 +410,19 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
      * resource group.
      *
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of vaults.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<VaultInner> listByResourceGroup(String resourceGroupName);
+
+    /**
+     * The List operation gets information about the vaults associated with the subscription and within the specified
+     * resource group.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @param top Maximum number of results to return.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -419,19 +432,6 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<VaultInner> listByResourceGroup(String resourceGroupName, Integer top, Context context);
-
-    /**
-     * The List operation gets information about the vaults associated with the subscription and within the specified
-     * resource group.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the vault belongs.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of vaults.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<VaultInner> listByResourceGroup(String resourceGroupName);
 
     /**
      * The List operation gets information about the vaults associated with the subscription.
@@ -458,6 +458,16 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
     /**
      * The List operation gets information about the vaults associated with the subscription.
      *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of vaults.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<VaultInner> listBySubscription();
+
+    /**
+     * The List operation gets information about the vaults associated with the subscription.
+     *
      * @param top Maximum number of results to return.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -467,16 +477,6 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<VaultInner> listBySubscription(Integer top, Context context);
-
-    /**
-     * The List operation gets information about the vaults associated with the subscription.
-     *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of vaults.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<VaultInner> listBySubscription();
 
     /**
      * Gets information about the deleted vaults in a subscription.
@@ -679,6 +679,16 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
     /**
      * The List operation gets information about the vaults associated with the subscription.
      *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of vault resources.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<Resource> list();
+
+    /**
+     * The List operation gets information about the vaults associated with the subscription.
+     *
      * @param top Maximum number of results to return.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -688,16 +698,6 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<Resource> list(Integer top, Context context);
-
-    /**
-     * The List operation gets information about the vaults associated with the subscription.
-     *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of vault resources.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<Resource> list();
 
     /**
      * Checks that the vault name is valid and is not already in use.

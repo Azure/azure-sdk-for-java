@@ -3,13 +3,12 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.implementation.TextAppearanceHelper;
 import com.azure.ai.formrecognizer.implementation.FormLineHelper;
 import com.azure.ai.formrecognizer.implementation.FormPageHelper;
 import com.azure.ai.formrecognizer.implementation.FormSelectionMarkHelper;
 import com.azure.ai.formrecognizer.implementation.FormTableHelper;
 import com.azure.ai.formrecognizer.implementation.RecognizedFormHelper;
-import com.azure.ai.formrecognizer.implementation.TextStyleHelper;
+import com.azure.ai.formrecognizer.implementation.TextAppearanceHelper;
 import com.azure.ai.formrecognizer.implementation.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.implementation.models.DocumentResult;
 import com.azure.ai.formrecognizer.implementation.models.FieldValue;
@@ -20,7 +19,6 @@ import com.azure.ai.formrecognizer.implementation.models.ReadResult;
 import com.azure.ai.formrecognizer.implementation.models.SelectionMarkState;
 import com.azure.ai.formrecognizer.implementation.models.TextLine;
 import com.azure.ai.formrecognizer.implementation.models.TextWord;
-import com.azure.ai.formrecognizer.models.TextAppearance;
 import com.azure.ai.formrecognizer.models.FieldBoundingBox;
 import com.azure.ai.formrecognizer.models.FieldData;
 import com.azure.ai.formrecognizer.models.FieldValueType;
@@ -36,7 +34,7 @@ import com.azure.ai.formrecognizer.models.FormWord;
 import com.azure.ai.formrecognizer.models.LengthUnit;
 import com.azure.ai.formrecognizer.models.Point;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
-import com.azure.ai.formrecognizer.models.TextStyle;
+import com.azure.ai.formrecognizer.models.TextAppearance;
 import com.azure.ai.formrecognizer.models.TextStyleName;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -54,7 +52,6 @@ import java.util.stream.Collectors;
 
 import static com.azure.ai.formrecognizer.implementation.Utility.forEachWithIndex;
 import static com.azure.ai.formrecognizer.implementation.models.FieldValueType.ARRAY;
-import static com.azure.ai.formrecognizer.implementation.models.FieldValueType.OBJECT;
 
 /**
  * Helper class to convert service level models to SDK exposed models.
@@ -275,21 +272,20 @@ final class Transforms {
 
     /**
      * Private method to get the appearance from the service side text line object.
+     *
      * @param textLine The service side text line object.
-     * @return the custom type Appearance model.
+     * @return the custom type TextAppearance model.
      */
     private static TextAppearance getTextAppearance(TextLine textLine) {
-        TextStyle textStyle = new TextStyle();
+        TextAppearance textAppearance = new TextAppearance();
         if (textLine.getAppearance() != null && textLine.getAppearance().getStyle() != null) {
             if (textLine.getAppearance().getStyle().getName() != null) {
-                TextStyleHelper.setName(textStyle,
+                TextAppearanceHelper.setStyleName(textAppearance,
                     TextStyleName.fromString(textLine.getAppearance().getStyle().getName().toString()));
             }
-            TextStyleHelper.setConfidence(textStyle, textLine.getAppearance().getStyle().getConfidence());
+            TextAppearanceHelper.setStyleConfidence(textAppearance,
+                textLine.getAppearance().getStyle().getConfidence());
         }
-
-        TextAppearance textAppearance = new TextAppearance();
-        TextAppearanceHelper.setStyle(textAppearance, textStyle);
         return textAppearance;
     }
 
@@ -395,24 +391,15 @@ final class Transforms {
                 } else if (FieldValueSelectionMark.UNSELECTED.equals(fieldValueSelectionMarkState)) {
                     selectionMarkState = com.azure.ai.formrecognizer.models.SelectionMarkState.UNSELECTED;
                 } else {
-                    // TODO: (ServiceBug) https://github.com/Azure/azure-sdk-for-java/issues/18967
-                    // Currently, the fieldValue's valueSelectionMark is null which is incorrect.
-                    // Use the fieldValue's text as the temperately solution.
                     selectionMarkState = com.azure.ai.formrecognizer.models.SelectionMarkState.fromString(
-                        fieldValue.getText());
-                    //        throw LOGGER.logThrowableAsError(new RuntimeException(
-                    //                String.format("%s, unsupported selection mark state.", selectionMarkState)));
+                        fieldValue.getValueSelectionMark().toString());
                 }
                 value = new com.azure.ai.formrecognizer.models.FieldValue(selectionMarkState,
                     FieldValueType.SELECTION_MARK_STATE);
                 break;
-            case GENDER:
-                value = new com.azure.ai.formrecognizer.models.FieldValue(fieldValue.getValueGender(),
-                    FieldValueType.GENDER);
-                break;
-            case COUNTRY:
-                value = new com.azure.ai.formrecognizer.models.FieldValue(fieldValue.getValueCountry(),
-                    FieldValueType.COUNTRY);
+            case COUNTRY_REGION:
+                value = new com.azure.ai.formrecognizer.models.FieldValue(fieldValue.getValueCountryRegion(),
+                    FieldValueType.COUNTRY_REGION);
                 break;
             default:
                 throw LOGGER.logExceptionAsError(new RuntimeException("FieldValue Type not supported"));

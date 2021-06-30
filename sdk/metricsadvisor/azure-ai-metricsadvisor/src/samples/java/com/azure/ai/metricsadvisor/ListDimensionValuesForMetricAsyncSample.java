@@ -21,7 +21,7 @@ public class ListDimensionValuesForMetricAsyncSample {
 
         advisorAsyncClient.listMetricDimensionValues(metricId, "category",
             new ListMetricDimensionValuesOptions()
-                .setTop(10)
+                .setMaxPageSize(10)
                 .setDimensionValueToFilter("Electronics"), Context.NONE)
             .doOnNext(System.out::println)
             .blockLast();

@@ -3,19 +3,19 @@ spring:
     banner-mode: off
   cloud:
     azure:
-      client-id: ${SPRING_CLIENT_ID_KAFKA}
-      client-secret: ${SPRING_CLIENT_SECRET_KAFKA}
-      tenant-id: ${SPRING_TENANT_ID_KAFKA}
-      resource-group: ${SPRING_RESOURCE_GROUP_KAFKA}
-      subscription-id: ${SPRING_SUBSCRIPTION_ID_KAFKA}
+      client-id: ${SPRING_CLIENT_ID}
+      client-secret: ${SPRING_CLIENT_SECRET}
+      tenant-id: ${SPRING_TENANT_ID}
+      resource-group: ${SPRING_RESOURCE_GROUP}
+      subscription-id: ${SPRING_SUBSCRIPTION_ID}
       eventhub:
-        namespace: ${EVENTHUB_NAMESPACE_NAME_KAFKA}
+        namespace: ${EVENTHUB_NAMESPACE_NAME_SAMPLE_EVENTHUBS_KAFKA}
     stream:
       function:
         definition: consume;supply
       bindings:
         consume-in-0:
-          destination: kafka-test
+          destination: sample-eventhubs-kafka
           group: $Default
         supply-out-0:
-          destination: kafka-test
+          destination: sample-eventhubs-kafka

@@ -9,20 +9,20 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 /** Defines values for Certainty. */
 public enum Certainty {
-    /** Enum value Positive. */
-    POSITIVE("Positive"),
+    /** Enum value positive. */
+    POSITIVE("positive"),
 
-    /** Enum value Positive Possible. */
-    POSITIVE_POSSIBLE("Positive Possible"),
+    /** Enum value positivePossible. */
+    POSITIVE_POSSIBLE("positivePossible"),
 
-    /** Enum value Neutral Possible. */
-    NEUTRAL_POSSIBLE("Neutral Possible"),
+    /** Enum value neutralPossible. */
+    NEUTRAL_POSSIBLE("neutralPossible"),
 
-    /** Enum value Negative Possible. */
-    NEGATIVE_POSSIBLE("Negative Possible"),
+    /** Enum value negativePossible. */
+    NEGATIVE_POSSIBLE("negativePossible"),
 
-    /** Enum value Negative. */
-    NEGATIVE("Negative");
+    /** Enum value negative. */
+    NEGATIVE("negative");
 
     /** The actual serialized value for a Certainty instance. */
     private final String value;

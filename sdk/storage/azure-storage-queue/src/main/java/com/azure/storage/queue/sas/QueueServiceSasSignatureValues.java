@@ -3,11 +3,11 @@
 
 package com.azure.storage.queue.sas;
 
+import com.azure.core.util.Configuration;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.sas.SasProtocol;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.sas.SasIpRange;
-import com.azure.core.util.CoreUtils;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.queue.QueueServiceVersion;
 
@@ -24,7 +24,8 @@ import java.time.OffsetDateTime;
  * SAS</a>
  */
 public final class QueueServiceSasSignatureValues {
-    private String version;
+    private static final String VERSION = Configuration.getGlobalConfiguration()
+        .get(Constants.PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION, QueueServiceVersion.getLatest().getVersion());
 
     private SasProtocol protocol;
 
@@ -77,7 +78,7 @@ public final class QueueServiceSasSignatureValues {
      * targeted by the library.
      */
     public String getVersion() {
-        return version;
+        return VERSION;
     }
 
     /**
@@ -86,9 +87,12 @@ public final class QueueServiceSasSignatureValues {
      *
      * @param version Version to target
      * @return the updated QueueServiceSasSignatureValues object
+     * @deprecated The version is set to the latest version of sas. Users should stop calling this API as it is now
+     * treated as a no-op.
      */
+    @Deprecated
     public QueueServiceSasSignatureValues setVersion(String version) {
-        this.version = version;
+        // no-op
         return this;
     }
 
@@ -178,6 +182,7 @@ public final class QueueServiceSasSignatureValues {
     /**
      * Sets the {@link SasIpRange} which determines the IP ranges that are allowed to use the SAS.
      *
+     * @see <a href=https://docs.microsoft.com/rest/api/storageservices/create-service-sas#specifying-ip-address-or-ip-range>Specifying IP Address or IP range</a>
      * @param sasIpRange Allowed IP range to set
      * @return the updated QueueServiceSasSignatureValues object
      */
@@ -250,8 +255,6 @@ public final class QueueServiceSasSignatureValues {
      *
      * <p><strong>Notes on SAS generation</strong></p>
      * <ul>
-     * <li>If {@link #setVersion(String) version} is not set, the {@link QueueServiceVersion#getLatest() latest service
-     * version} is used.</li>
      * <li>If {@link #setIdentifier(String) identifier} is set, {@link #setExpiryTime(OffsetDateTime) expiryTime} and
      * permissions should not be set. These values are inherited from the stored access policy.</li>
      * <li>Otherwise, {@link #setExpiryTime(OffsetDateTime) expiryTime} and {@link #getPermissions() permissions} must
@@ -273,16 +276,12 @@ public final class QueueServiceSasSignatureValues {
         StorageSharedKeyCredential storageSharedKeyCredentials) {
         StorageImplUtils.assertNotNull("storageSharedKeyCredentials", storageSharedKeyCredentials);
 
-        if (CoreUtils.isNullOrEmpty(version)) {
-            version = QueueServiceVersion.getLatest().getVersion();
-        }
-
         // Signature is generated on the un-url-encoded values.
         String canonicalName = getCanonicalName(storageSharedKeyCredentials.getAccountName(), queueName);
         String stringToSign = stringToSign(canonicalName);
         String signature = storageSharedKeyCredentials.computeHmac256(stringToSign);
 
-        return new QueueServiceSasQueryParameters(this.version, this.protocol, this.startTime, this.expiryTime,
+        return new QueueServiceSasQueryParameters(VERSION, this.protocol, this.startTime, this.expiryTime,
             this.sasIpRange, this.identifier, this.permissions, signature);
     }
 
@@ -306,7 +305,7 @@ public final class QueueServiceSasSignatureValues {
             this.identifier == null ? "" : this.identifier,
             this.sasIpRange == null ? "" : this.sasIpRange.toString(),
             this.protocol == null ? "" : protocol.toString(),
-            this.version == null ? "" : this.version
+            VERSION == null ? "" : VERSION
         );
     }
 }

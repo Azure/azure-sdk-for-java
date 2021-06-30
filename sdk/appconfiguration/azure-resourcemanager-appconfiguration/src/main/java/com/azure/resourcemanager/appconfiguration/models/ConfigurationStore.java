@@ -7,6 +7,7 @@ package com.azure.resourcemanager.appconfiguration.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.appconfiguration.fluent.models.ConfigurationStoreInner;
 import java.time.OffsetDateTime;
@@ -65,6 +66,13 @@ public interface ConfigurationStore {
     Sku sku();
 
     /**
+     * Gets the systemData property: Resource system metadata.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
+
+    /**
      * Gets the provisioningState property: The provisioning state of the configuration store.
      *
      * @return the provisioningState value.
@@ -107,6 +115,13 @@ public interface ConfigurationStore {
      * @return the publicNetworkAccess value.
      */
     PublicNetworkAccess publicNetworkAccess();
+
+    /**
+     * Gets the disableLocalAuth property: Disables all authentication methods other than AAD authentication.
+     *
+     * @return the disableLocalAuth value.
+     */
+    Boolean disableLocalAuth();
 
     /**
      * Gets the region of the resource.
@@ -188,7 +203,8 @@ public interface ConfigurationStore {
             extends DefinitionStages.WithTags,
                 DefinitionStages.WithIdentity,
                 DefinitionStages.WithEncryption,
-                DefinitionStages.WithPublicNetworkAccess {
+                DefinitionStages.WithPublicNetworkAccess,
+                DefinitionStages.WithDisableLocalAuth {
             /**
              * Executes the create request.
              *
@@ -246,6 +262,17 @@ public interface ConfigurationStore {
              */
             WithCreate withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess);
         }
+        /** The stage of the ConfigurationStore definition allowing to specify disableLocalAuth. */
+        interface WithDisableLocalAuth {
+            /**
+             * Specifies the disableLocalAuth property: Disables all authentication methods other than AAD
+             * authentication..
+             *
+             * @param disableLocalAuth Disables all authentication methods other than AAD authentication.
+             * @return the next definition stage.
+             */
+            WithCreate withDisableLocalAuth(Boolean disableLocalAuth);
+        }
     }
     /**
      * Begins update for the ConfigurationStore resource.
@@ -260,7 +287,7 @@ public interface ConfigurationStore {
             UpdateStages.WithIdentity,
             UpdateStages.WithSku,
             UpdateStages.WithEncryption,
-            UpdateStages.WithPublicNetworkAccess {
+            UpdateStages.WithDisableLocalAuth {
         /**
          * Executes the update request.
          *
@@ -318,17 +345,16 @@ public interface ConfigurationStore {
              */
             Update withEncryption(EncryptionProperties encryption);
         }
-        /** The stage of the ConfigurationStore update allowing to specify publicNetworkAccess. */
-        interface WithPublicNetworkAccess {
+        /** The stage of the ConfigurationStore update allowing to specify disableLocalAuth. */
+        interface WithDisableLocalAuth {
             /**
-             * Specifies the publicNetworkAccess property: Control permission for data plane traffic coming from public
-             * networks while private endpoint is enabled..
+             * Specifies the disableLocalAuth property: Disables all authentication methods other than AAD
+             * authentication..
              *
-             * @param publicNetworkAccess Control permission for data plane traffic coming from public networks while
-             *     private endpoint is enabled.
+             * @param disableLocalAuth Disables all authentication methods other than AAD authentication.
              * @return the next definition stage.
              */
-            Update withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess);
+            Update withDisableLocalAuth(Boolean disableLocalAuth);
         }
     }
     /**
@@ -391,27 +417,4 @@ public interface ConfigurationStore {
      * @return an API key used for authenticating with a configuration store endpoint.
      */
     Response<ApiKey> regenerateKeyWithResponse(RegenerateKeyParameters regenerateKeyParameters, Context context);
-
-    /**
-     * Lists a configuration store key-value.
-     *
-     * @param listKeyValueParameters The parameters for retrieving a key-value.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to retrieve a key-value from the specified configuration store.
-     */
-    KeyValue listKeyValue(ListKeyValueParameters listKeyValueParameters);
-
-    /**
-     * Lists a configuration store key-value.
-     *
-     * @param listKeyValueParameters The parameters for retrieving a key-value.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to retrieve a key-value from the specified configuration store.
-     */
-    Response<KeyValue> listKeyValueWithResponse(ListKeyValueParameters listKeyValueParameters, Context context);
 }

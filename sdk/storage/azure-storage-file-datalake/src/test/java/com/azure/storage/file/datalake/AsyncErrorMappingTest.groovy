@@ -12,7 +12,7 @@ class AsyncErrorMappingTest extends APISpec {
 
     def setup() {
         fileSystemName = generateFileSystemName()
-        fsac = getServiceAsyncClient(primaryCredential).createFileSystem(fileSystemName).block()
+        fsac = getServiceAsyncClient(env.dataLakeAccount).createFileSystem(fileSystemName).block()
     }
 
     def "Read file"() {
@@ -80,7 +80,7 @@ class AsyncErrorMappingTest extends APISpec {
 
     def "Create file system"() {
         when:
-        def fsac = getServiceAsyncClient(primaryCredential).getFileSystemAsyncClient(fileSystemName)
+        def fsac = getServiceAsyncClient(env.dataLakeAccount).getFileSystemAsyncClient(fileSystemName)
         def createVerifier = StepVerifier.create(fsac.createWithResponse(null, null))
         then:
         createVerifier.verifyError(DataLakeStorageException)
@@ -89,7 +89,7 @@ class AsyncErrorMappingTest extends APISpec {
     def "Get file system properties"() {
         when:
         def fileSystemName = generateFileSystemName()
-        def fsac = getServiceAsyncClient(primaryCredential).getFileSystemAsyncClient(fileSystemName)
+        def fsac = getServiceAsyncClient(env.dataLakeAccount).getFileSystemAsyncClient(fileSystemName)
         def getPropertiesVerifier = StepVerifier.create(fsac.getPropertiesWithResponse(null))
         then:
         getPropertiesVerifier.verifyError(DataLakeStorageException)
@@ -98,7 +98,7 @@ class AsyncErrorMappingTest extends APISpec {
     def "Set file system metadata"() {
         when:
         def fileSystemName = generateFileSystemName()
-        def fsac = getServiceAsyncClient(primaryCredential).getFileSystemAsyncClient(fileSystemName)
+        def fsac = getServiceAsyncClient(env.dataLakeAccount).getFileSystemAsyncClient(fileSystemName)
         def setMetadataVerifier = StepVerifier.create(fsac.setMetadataWithResponse(null, null))
         then:
         setMetadataVerifier.verifyError(DataLakeStorageException)
@@ -107,7 +107,7 @@ class AsyncErrorMappingTest extends APISpec {
     def "Delete file system"() {
         when:
         def fileSystemName = generateFileSystemName()
-        def fsac = getServiceAsyncClient(primaryCredential).getFileSystemAsyncClient(fileSystemName)
+        def fsac = getServiceAsyncClient(env.dataLakeAccount).getFileSystemAsyncClient(fileSystemName)
         def setMetadataVerifier = StepVerifier.create(fsac.deleteWithResponse(null))
         then:
         setMetadataVerifier.verifyError(DataLakeStorageException)
@@ -116,7 +116,7 @@ class AsyncErrorMappingTest extends APISpec {
     def "Get file system access policy"() {
         when:
         def fileSystemName = generateFileSystemName()
-        def fsac = getServiceAsyncClient(primaryCredential).getFileSystemAsyncClient(fileSystemName)
+        def fsac = getServiceAsyncClient(env.dataLakeAccount).getFileSystemAsyncClient(fileSystemName)
         def getAccessPolicyVerifier = StepVerifier.create(fsac.getAccessPolicyWithResponse(null))
         then:
         getAccessPolicyVerifier.verifyError(DataLakeStorageException)
@@ -125,7 +125,7 @@ class AsyncErrorMappingTest extends APISpec {
     def "Set file system access policy"() {
         when:
         def fileSystemName = generateFileSystemName()
-        def fsac = getServiceAsyncClient(primaryCredential).getFileSystemAsyncClient(fileSystemName)
+        def fsac = getServiceAsyncClient(env.dataLakeAccount).getFileSystemAsyncClient(fileSystemName)
         def setAccessPolicyVerifier = StepVerifier.create(fsac.setAccessPolicyWithResponse(null, null, null))
         then:
         setAccessPolicyVerifier.verifyError(DataLakeStorageException)
@@ -134,7 +134,7 @@ class AsyncErrorMappingTest extends APISpec {
 
     def "List file systems"() {
         when:
-        PagedFlux<FileSystemItem> items = getServiceAsyncClient(primaryCredential).listFileSystems()
+        PagedFlux<FileSystemItem> items = getServiceAsyncClient(env.dataLakeAccount).listFileSystems()
         def listFileSystemsVerifier = StepVerifier.create(items.byPage("garbage continuation token").count())
         then:
         listFileSystemsVerifier.verifyError(DataLakeStorageException)

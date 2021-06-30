@@ -89,18 +89,6 @@ interface KeyService {
                                           @HeaderParam("Content-Type") String type,
                                           Context context);
 
-    @Post("keys/{key-name}/{key-version}/export")
-    @ExpectedResponses({200})
-    @UnexpectedResponseExceptionType(HttpResponseException.class)
-    Mono<Response<KeyVaultKey>> exportKey(@HostParam("url") String url,
-                                          @PathParam("key-name") String keyName,
-                                          @PathParam("key-version") String keyVersion,
-                                          @QueryParam("api-version") String apiVersion,
-                                          @HeaderParam("accept-language") String acceptLanguage,
-                                          @BodyParam("application/json") KeyExportRequestParameters parameters,
-                                          @HeaderParam("Content-Type") String type,
-                                          Context context);
-
     @Delete("keys/{key-name}")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)

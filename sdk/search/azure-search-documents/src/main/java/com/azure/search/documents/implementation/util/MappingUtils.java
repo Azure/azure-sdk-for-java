@@ -13,8 +13,6 @@ import com.azure.search.documents.implementation.converters.IndexDocumentsResult
 import com.azure.search.documents.implementation.converters.SearchIndexConverter;
 import com.azure.search.documents.implementation.converters.SearchIndexerConverter;
 import com.azure.search.documents.implementation.converters.SearchIndexerDataSourceConverter;
-import com.azure.search.documents.implementation.converters.SearchIndexerSkillsetConverter;
-import com.azure.search.documents.implementation.converters.SynonymMapConverter;
 import com.azure.search.documents.implementation.models.IndexDocumentsResult;
 import com.azure.search.documents.indexes.implementation.models.AnalyzeResult;
 import com.azure.search.documents.indexes.implementation.models.ListDataSourcesResult;
@@ -84,6 +82,7 @@ public class MappingUtils {
             indexResponse.getStatusCode(), indexResponse.getHeaders(), pageItems,
             indexResponse.getContinuationToken(), null);
     }
+
     public static PagedResponse<SearchIndexer> mappingPagingSearchIndexer(
         Response<ListIndexersResult> searchIndexerResponse) {
         List<SearchIndexer> searchIndexers = searchIndexerResponse.getValue().getIndexers().stream()
@@ -107,48 +106,33 @@ public class MappingUtils {
         return new SimpleResponse<>(indexerResponse, SearchIndexerConverter.map(indexerResponse.getValue()));
     }
 
-    public static Response<SearchIndexerSkillset> mappingExternalSkillset(
-        Response<com.azure.search.documents.indexes.implementation.models.SearchIndexerSkillset> skillsetResponse) {
-        return new SimpleResponse<>(skillsetResponse,
-            SearchIndexerSkillsetConverter.map(skillsetResponse.getValue()));
-    }
-
     public static PagedResponse<SearchIndexerSkillset> mappingPagingSkillset(
         Response<ListSkillsetsResult> skillsetResponse) {
-        List<SearchIndexerSkillset> skillsets = skillsetResponse.getValue().getSkillsets().stream()
-            .map(SearchIndexerSkillsetConverter::map).collect(toList());
         return new PagedResponseBase<HttpHeaders, SearchIndexerSkillset>(
             skillsetResponse.getRequest(), skillsetResponse.getStatusCode(), skillsetResponse.getHeaders(),
-            skillsets, null, null);
+            skillsetResponse.getValue().getSkillsets(), null, null);
     }
 
     public static PagedResponse<String> mappingPagingSkillsetNames(
         Response<ListSkillsetsResult> skillsetResponse) {
         List<String> skillsetNames = skillsetResponse.getValue().getSkillsets().stream()
-            .map(SearchIndexerSkillsetConverter::map).map(SearchIndexerSkillset::getName).collect(toList());
+            .map(SearchIndexerSkillset::getName).collect(toList());
         return new PagedResponseBase<HttpHeaders, String>(
             skillsetResponse.getRequest(), skillsetResponse.getStatusCode(), skillsetResponse.getHeaders(),
             skillsetNames, null, null);
     }
 
-    public static Response<SynonymMap> mappingExternalSynonymMap(
-        Response<com.azure.search.documents.indexes.implementation.models.SynonymMap> synonymMapResponse) {
-        return new SimpleResponse<>(synonymMapResponse, SynonymMapConverter.map(synonymMapResponse.getValue()));
-    }
-
     public static PagedResponse<SynonymMap> mappingPagingSynonymMap(
         Response<ListSynonymMapsResult> synonymMapResponse) {
-        List<SynonymMap> synonymMaps = synonymMapResponse.getValue().getSynonymMaps().stream()
-            .map(SynonymMapConverter::map).collect(toList());
         return new PagedResponseBase<HttpHeaders, SynonymMap>(
             synonymMapResponse.getRequest(), synonymMapResponse.getStatusCode(), synonymMapResponse.getHeaders(),
-            synonymMaps, null, null);
+            synonymMapResponse.getValue().getSynonymMaps(), null, null);
     }
 
     public static PagedResponse<String> mappingPagingSynonymMapNames(
         Response<ListSynonymMapsResult> synonymMapsResponse) {
         List<String> synonymMapNames = synonymMapsResponse.getValue().getSynonymMaps().stream()
-            .map(SynonymMapConverter::map).map(SynonymMap::getName).collect(toList());
+            .map(SynonymMap::getName).collect(toList());
         return new PagedResponseBase<HttpHeaders, String>(
             synonymMapsResponse.getRequest(), synonymMapsResponse.getStatusCode(), synonymMapsResponse.getHeaders(),
             synonymMapNames, null, null);

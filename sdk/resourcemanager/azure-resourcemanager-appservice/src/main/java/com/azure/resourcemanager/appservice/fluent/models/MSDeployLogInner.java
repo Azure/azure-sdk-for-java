@@ -34,6 +34,13 @@ public class MSDeployLogInner extends ProxyOnlyResource {
         return this.entries;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public MSDeployLogInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

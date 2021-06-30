@@ -31,7 +31,7 @@ public class TokenCacheTests {
         Flux.range(1, 10)
             .flatMap(i -> Mono.just(OffsetDateTime.now())
                 // Runs cache.getToken() on 10 different threads
-                .subscribeOn(Schedulers.newParallel("pool", 10))
+                .publishOn(Schedulers.parallel())
                 .flatMap(start -> cache.getToken()
                     .map(t -> Duration.between(start, OffsetDateTime.now()).toMillis())
                     .doOnNext(millis -> {
@@ -45,8 +45,11 @@ public class TokenCacheTests {
             .subscribe();
 
         latch.await();
-        Assertions.assertTrue(maxMillis.get() > 1000);
-        Assertions.assertTrue(maxMillis.get() < 2000); // Big enough for any latency, small enough to make sure no get token is called twice
+        long maxMs = maxMillis.get();
+        Assertions.assertTrue(maxMs > 1000, () -> String.format("maxMillis was less than 1000ms. Was %d.", maxMs));
+
+        // Big enough for any latency, small enough to make sure no get token is called twice
+        Assertions.assertTrue(maxMs < 2000, () -> String.format("maxMillis was greater than 2000ms. Was %d.", maxMs));
     }
 
     @Test
@@ -66,7 +69,7 @@ public class TokenCacheTests {
             .take(100)
             .flatMap(i -> Mono.just(OffsetDateTime.now())
                 // Runs cache.getToken() on 10 different threads
-                .subscribeOn(Schedulers.newParallel("pool", 10))
+                .subscribeOn(Schedulers.parallel())
                 .flatMap(start -> cache.getToken()
                     .map(t -> Duration.between(start, OffsetDateTime.now()).toMillis())
                     .doOnNext(millis -> {

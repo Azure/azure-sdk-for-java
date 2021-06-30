@@ -4,6 +4,7 @@
 package com.azure.resourcemanager.storage.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.storage.fluent.BlobContainersClient;
@@ -117,7 +118,8 @@ public class BlobContainersImpl extends WrapperImpl<BlobContainersClient> implem
     @Override
     public Mono<Void> deleteImmutabilityPolicyAsync(
         String resourceGroupName, String accountName, String containerName, String eTagValue) {
-        return innerModel().deleteImmutabilityPolicyAsync(resourceGroupName, accountName, containerName, eTagValue).then();
+        return innerModel().deleteImmutabilityPolicyAsync(resourceGroupName, accountName, containerName, eTagValue)
+            .then();
     }
 
     @Override
@@ -169,5 +171,58 @@ public class BlobContainersImpl extends WrapperImpl<BlobContainersClient> implem
                 immutabilityPeriodSinceCreationInDays,
                 allowProtectedAppendWrites)
             .map(policyInner -> new ImmutabilityPolicyImpl(policyInner, this.manager));
+    }
+
+    @Override
+    public PagedIterable<ListContainerItemInner> list(String resourceGroupName, String accountName) {
+        return new PagedIterable<>(this.listAsync(resourceGroupName, accountName));
+    }
+
+    @Override
+    public BlobContainer get(String resourceGroupName, String accountName, String containerName) {
+        return this.getAsync(resourceGroupName, accountName, containerName).block();
+    }
+
+    @Override
+    public void delete(String resourceGroupName, String accountName, String containerName) {
+        this.deleteAsync(resourceGroupName, accountName, containerName).block();
+    }
+
+    @Override
+    public LegalHold setLegalHold(String resourceGroupName, String accountName, String containerName,
+                                  List<String> tags) {
+        return this.setLegalHoldAsync(resourceGroupName, accountName, containerName, tags).block();
+    }
+
+    @Override
+    public LegalHold clearLegalHold(String resourceGroupName, String accountName, String containerName,
+                                    List<String> tags) {
+        return this.clearLegalHoldAsync(resourceGroupName, accountName, containerName, tags).block();
+    }
+
+    @Override
+    public ImmutabilityPolicy getImmutabilityPolicy(String resourceGroupName, String accountName,
+                                                    String containerName) {
+        return this.getImmutabilityPolicyAsync(resourceGroupName, accountName, containerName).block();
+    }
+
+    @Override
+    public void deleteImmutabilityPolicy(String resourceGroupName, String accountName,
+                                                       String containerName) {
+        this.deleteImmutabilityPolicyAsync(resourceGroupName, accountName, containerName).block();
+    }
+
+    @Override
+    public ImmutabilityPolicy lockImmutabilityPolicy(String resourceGroupName, String accountName,
+                                                     String containerName) {
+        return this.lockImmutabilityPolicyAsync(resourceGroupName, accountName, containerName).block();
+    }
+
+    @Override
+    public ImmutabilityPolicy extendImmutabilityPolicy(String resourceGroupName, String accountName,
+                                                       String containerName, int immutabilityPeriodSinceCreationInDays,
+                                                       Boolean allowProtectedAppendWrites) {
+        return this.extendImmutabilityPolicyAsync(resourceGroupName, accountName, containerName,
+            immutabilityPeriodSinceCreationInDays, allowProtectedAppendWrites).block();
     }
 }

@@ -12,8 +12,11 @@ import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareFileProperties;
 import com.azure.storage.file.share.models.ShareFileRange;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
+import com.azure.storage.file.share.models.ShareFileUploadOptions;
+import com.azure.storage.file.share.models.ShareFileUploadRangeOptions;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.options.ShareFileListRangesDiffOptions;
+import com.azure.storage.file.share.options.ShareFileUploadRangeFromUrlOptions;
 import com.azure.storage.file.share.sas.ShareFileSasPermission;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 import reactor.core.publisher.Flux;
@@ -297,7 +300,71 @@ public class ShareFileAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareFileAsyncClient#uploadWithResponse(Flux, long, Long, ShareRequestConditions)}
+     * Generates a code sample for using {@link ShareFileAsyncClient#uploadRange(Flux, long)}
+     */
+    public void uploadRange() {
+        ShareFileAsyncClient shareFileAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.uploadRange#Flux-long
+        ByteBuffer defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8));
+        shareFileAsyncClient.uploadRange(Flux.just(defaultData), defaultData.remaining()).subscribe(
+                response -> { },
+                error -> System.err.print(error.toString()),
+                () -> System.out.println("Complete deleting the file!")
+        );
+        // END: com.azure.storage.file.share.ShareFileAsyncClient.uploadRange#Flux-long
+    }
+
+    /**
+     * Generates a code sample for using
+     * {@link ShareFileAsyncClient#uploadRangeWithResponse(ShareFileUploadRangeOptions)}
+     */
+    public void uploadRangeWithResponse() {
+        ShareFileAsyncClient shareFileAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.uploadRangeWithResponse#ShareFileUploadRangeOptions
+        ByteBuffer defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8));
+        shareFileAsyncClient.uploadRangeWithResponse(new ShareFileUploadRangeOptions(
+            Flux.just(defaultData), defaultData.remaining())).subscribe(
+                response -> { },
+                error -> System.err.print(error.toString()),
+                () -> System.out.println("Complete deleting the file!"));
+        // END: com.azure.storage.file.share.ShareFileAsyncClient.uploadRangeWithResponse#ShareFileUploadRangeOptions
+    }
+
+    /**
+     * Generates a code sample for using
+     * {@link ShareFileAsyncClient#upload(Flux, com.azure.storage.common.ParallelTransferOptions)}
+     */
+    public void upload() {
+        ShareFileAsyncClient shareFileAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.upload#Flux-ParallelTransferOptions
+        ByteBuffer defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8));
+        shareFileAsyncClient.upload(Flux.just(defaultData), null).subscribe(
+                response -> { },
+                error -> System.err.print(error.toString()),
+                () -> System.out.println("Complete deleting the file!"));
+        // END: com.azure.storage.file.share.ShareFileAsyncClient.upload#Flux-ParallelTransferOptions
+    }
+
+    /**
+     * Generates a code sample for using
+     * {@link ShareFileAsyncClient#uploadWithResponse(ShareFileUploadOptions)}
+     */
+    public void uploadBufferedRangeWithResponse() {
+        ShareFileAsyncClient shareFileAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.uploadWithResponse#ShareFileUploadOptions
+        ByteBuffer defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8));
+        shareFileAsyncClient.uploadWithResponse(new ShareFileUploadOptions(
+            Flux.just(defaultData))).subscribe(
+                response -> { },
+                error -> System.err.print(error.toString()),
+                () -> System.out.println("Complete deleting the file!")
+        );
+        // END: com.azure.storage.file.share.ShareFileAsyncClient.uploadWithResponse#ShareFileUploadOptions
+    }
+
+    /**
+     * Generates a code sample for using
+     * {@link ShareFileAsyncClient#uploadWithResponse(Flux, long, Long, ShareRequestConditions)}
      */
     public void uploadDataWithLease() {
         ShareFileAsyncClient shareFileAsyncClient = createAsyncClientWithSASToken();
@@ -411,6 +478,21 @@ public class ShareFileAsyncJavaDocCodeSamples {
             () -> System.out.println("Completed upload range from url!")
         );
         // END: com.azure.storage.file.share.ShareFileAsyncClient.uploadRangeFromUrlWithResponse#long-long-long-String
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareFileAsyncClient#uploadRangeFromUrlWithResponse(long, long, long, String)}
+     */
+    public void uploadFileFromURLOptionsBagWithResponseAsync() {
+        ShareFileAsyncClient shareFileAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.uploadRangeFromUrlWithResponse#ShareFileUploadRangeFromUrlOptions
+        shareFileAsyncClient.uploadRangeFromUrlWithResponse(
+            new ShareFileUploadRangeFromUrlOptions(6, "sourceUrl").setDestinationOffset(8))
+            .subscribe(
+                response -> { },
+                error -> System.err.print(error.toString()),
+                () -> System.out.println("Completed upload range from url!"));
+        // END: com.azure.storage.file.share.ShareFileAsyncClient.uploadRangeFromUrlWithResponse#ShareFileUploadRangeFromUrlOptions
     }
 
     /**

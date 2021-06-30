@@ -11,15 +11,14 @@ import java.nio.file.attribute.FileStoreAttributeView
 import java.nio.file.attribute.PosixFileAttributeView
 
 class AzureFileStoreTest extends APISpec {
-    @Shared
     AzureFileSystem fs
 
     // Just need one fs instance for creating the stores.
     def setup() {
         def config = initializeConfigMap()
-        config[AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL] = primaryCredential
+        config[AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL] = env.primaryAccount.credential
         config[AzureFileSystem.AZURE_STORAGE_FILE_STORES] = generateContainerName() + "," + generateContainerName()
-        fs = new AzureFileSystem(new AzureFileSystemProvider(), getAccountUri(), config)
+        fs = new AzureFileSystem(new AzureFileSystemProvider(), env.primaryAccount.blobEndpoint, config)
     }
 
     // The constructor is implicitly tested by creating a file system.

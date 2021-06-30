@@ -321,7 +321,7 @@ public class AddressResolverTest {
         this.collectionCacheRefreshedCount = 0;
 
         Mockito.doAnswer(invocationOnMock -> {
-            RxDocumentServiceRequest request = invocationOnMock.getArgumentAt(1, RxDocumentServiceRequest.class);
+            RxDocumentServiceRequest request = invocationOnMock.getArgument(1, RxDocumentServiceRequest.class);
             if (request.forceNameCacheRefresh && collectionAfterRefresh != null) {
                 currentCollection.setValue(collectionAfterRefresh);
                 AddressResolverTest.this.collectionCacheRefreshedCount++;
@@ -354,20 +354,20 @@ public class AddressResolverTest {
         this.routingMapRefreshCount = new HashMap<>();
 
         Mockito.doAnswer(invocationOnMock -> {
-            String collectionRid = invocationOnMock.getArgumentAt(1, String.class);
-            CollectionRoutingMap previousValue = invocationOnMock.getArgumentAt(2, CollectionRoutingMap.class);
+            String collectionRid = invocationOnMock.getArgument(1, String.class);
+            CollectionRoutingMap previousValue = invocationOnMock.getArgument(2, CollectionRoutingMap.class);
 
             return collectionRoutingMapCache.tryLookupAsync(null, collectionRid, previousValue, false, null);
         }).when(this.collectionRoutingMapCache).tryLookupAsync(
-            Mockito.any(MetadataDiagnosticsContext.class),
-            Mockito.anyString(),
-            Mockito.any(CollectionRoutingMap.class),
-            Mockito.anyMapOf(String.class, Object.class));
+            Mockito.any(),
+            Mockito.any(),
+            Mockito.any(),
+            Mockito.any());
 
         // Refresh case
         Mockito.doAnswer(invocationOnMock -> {
-            String collectionRid = invocationOnMock.getArgumentAt(1, String.class);
-            CollectionRoutingMap previousValue = invocationOnMock.getArgumentAt(2, CollectionRoutingMap.class);
+            String collectionRid = invocationOnMock.getArgument(1, String.class);
+            CollectionRoutingMap previousValue = invocationOnMock.getArgument(2, CollectionRoutingMap.class);
 
             if (previousValue == null) {
                 return Mono.just(new Utils.ValueHolder<>(currentRoutingMap.get(collectionRid)));
@@ -399,11 +399,11 @@ public class AddressResolverTest {
 
             return Mono.error(new NotImplementedException("not mocked"));
         }).when(this.collectionRoutingMapCache).tryLookupAsync(
-            Mockito.any(MetadataDiagnosticsContext.class),
-            Mockito.anyString(),
-            Mockito.any(CollectionRoutingMap.class),
+            Mockito.any(),
+            Mockito.any(),
+            Mockito.any(),
             Mockito.anyBoolean(),
-            Mockito.anyMapOf(String.class, Object.class));
+            Mockito.any());
 
 
         // Fabric Address Cache
@@ -414,9 +414,9 @@ public class AddressResolverTest {
         // No refresh case
         //
         Mockito.doAnswer(invocationOnMock -> {
-            RxDocumentServiceRequest request = invocationOnMock.getArgumentAt(0, RxDocumentServiceRequest.class);
-            PartitionKeyRangeIdentity pkri = invocationOnMock.getArgumentAt(1, PartitionKeyRangeIdentity.class);
-            Boolean forceRefresh = invocationOnMock.getArgumentAt(2, Boolean.class);
+            RxDocumentServiceRequest request = invocationOnMock.getArgument(0, RxDocumentServiceRequest.class);
+            PartitionKeyRangeIdentity pkri = invocationOnMock.getArgument(1, PartitionKeyRangeIdentity.class);
+            Boolean forceRefresh = invocationOnMock.getArgument(2, Boolean.class);
 
             if (!forceRefresh) {
                 return Mono.just(new Utils.ValueHolder<>(currentAddresses.get(findMatchingServiceIdentity(currentAddresses, pkri))));

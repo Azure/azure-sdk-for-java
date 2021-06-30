@@ -6,7 +6,7 @@ package com.azure.ai.formrecognizer.models;
 import com.azure.core.annotation.Immutable;
 
 /**
- * The FormWord model.
+ * Represents a word recognized from the input document.
  */
 @Immutable
 public final class FormWord extends FormElement {

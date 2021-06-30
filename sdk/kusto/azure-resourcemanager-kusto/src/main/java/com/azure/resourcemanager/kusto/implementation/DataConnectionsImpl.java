@@ -9,7 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.kusto.KustoManager;
 import com.azure.resourcemanager.kusto.fluent.DataConnectionsClient;
 import com.azure.resourcemanager.kusto.fluent.models.CheckNameResultInner;
 import com.azure.resourcemanager.kusto.fluent.models.DataConnectionInner;
@@ -27,9 +26,10 @@ public final class DataConnectionsImpl implements DataConnections {
 
     private final DataConnectionsClient innerClient;
 
-    private final KustoManager serviceManager;
+    private final com.azure.resourcemanager.kusto.KustoManager serviceManager;
 
-    public DataConnectionsImpl(DataConnectionsClient innerClient, KustoManager serviceManager) {
+    public DataConnectionsImpl(
+        DataConnectionsClient innerClient, com.azure.resourcemanager.kusto.KustoManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -38,14 +38,14 @@ public final class DataConnectionsImpl implements DataConnections {
         String resourceGroupName, String clusterName, String databaseName) {
         PagedIterable<DataConnectionInner> inner =
             this.serviceClient().listByDatabase(resourceGroupName, clusterName, databaseName);
-        return inner.mapPage(inner1 -> new DataConnectionImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new DataConnectionImpl(inner1, this.manager()));
     }
 
     public PagedIterable<DataConnection> listByDatabase(
         String resourceGroupName, String clusterName, String databaseName, Context context) {
         PagedIterable<DataConnectionInner> inner =
             this.serviceClient().listByDatabase(resourceGroupName, clusterName, databaseName, context);
-        return inner.mapPage(inner1 -> new DataConnectionImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new DataConnectionImpl(inner1, this.manager()));
     }
 
     public DataConnectionValidationListResult dataConnectionValidation(
@@ -223,7 +223,7 @@ public final class DataConnectionsImpl implements DataConnections {
         return this.innerClient;
     }
 
-    private KustoManager manager() {
+    private com.azure.resourcemanager.kusto.KustoManager manager() {
         return this.serviceManager;
     }
 }

@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.regex.Pattern;
 
 /**
  * HTTP client that plays back {@link NetworkCallRecord NetworkCallRecords}.
@@ -28,6 +29,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 public final class PlaybackClient implements HttpClient {
     private static final String X_MS_CLIENT_REQUEST_ID = "x-ms-client-request-id";
     private static final String X_MS_ENCRYPTION_KEY_SHA256 = "x-ms-encryption-key-sha256";
+
+    // Pattern that matches all '//' in a URL that aren't prefixed by 'http:' or 'https:'.
+    private static final Pattern DOUBLE_SLASH_CLEANER = Pattern.compile("(?<!https?:)\\/\\/");
+
     private final ClientLogger logger = new ClientLogger(PlaybackClient.class);
     private final AtomicInteger count = new AtomicInteger(0);
     private final Map<String, String> textReplacementRules;
@@ -61,8 +66,20 @@ public final class PlaybackClient implements HttpClient {
 
         final String matchingUrl = removeHost(incomingUrl);
 
-        NetworkCallRecord networkCallRecord = recordedData.findFirstAndRemoveNetworkCall(record ->
-            record.getMethod().equalsIgnoreCase(incomingMethod) && removeHost(record.getUri()).equalsIgnoreCase(matchingUrl));
+        NetworkCallRecord networkCallRecord = recordedData.findFirstAndRemoveNetworkCall(record -> {
+            if (!record.getMethod().equalsIgnoreCase(incomingMethod)) {
+                return false;
+            }
+
+            String removedHostUri = removeHost(record.getUri());
+
+            // There is an upcoming change in azure-core to fix a scenario with '//' being used instead of '/'.
+            // For now both recording formats need to be supported.
+            String cleanedHostUri = DOUBLE_SLASH_CLEANER.matcher(removedHostUri).replaceAll("/");
+            String cleanedMatchingUrl = DOUBLE_SLASH_CLEANER.matcher(matchingUrl).replaceAll("/");
+
+            return cleanedHostUri.equalsIgnoreCase(cleanedMatchingUrl);
+        });
 
         count.incrementAndGet();
 

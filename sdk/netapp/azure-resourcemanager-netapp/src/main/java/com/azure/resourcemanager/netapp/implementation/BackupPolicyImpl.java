@@ -145,8 +145,7 @@ public final class BackupPolicyImpl implements BackupPolicy, BackupPolicy.Defini
             serviceManager
                 .serviceClient()
                 .getBackupPolicies()
-                .updateWithResponse(resourceGroupName, accountName, backupPolicyName, updateBody, Context.NONE)
-                .getValue();
+                .update(resourceGroupName, accountName, backupPolicyName, updateBody, Context.NONE);
         return this;
     }
 
@@ -155,8 +154,7 @@ public final class BackupPolicyImpl implements BackupPolicy, BackupPolicy.Defini
             serviceManager
                 .serviceClient()
                 .getBackupPolicies()
-                .updateWithResponse(resourceGroupName, accountName, backupPolicyName, updateBody, context)
-                .getValue();
+                .update(resourceGroupName, accountName, backupPolicyName, updateBody, context);
         return this;
     }
 

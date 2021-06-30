@@ -52,6 +52,13 @@ public interface WebSiteManagementClient {
     AppServiceCertificateOrdersClient getAppServiceCertificateOrders();
 
     /**
+     * Gets the CertificateOrdersDiagnosticsClient object to access its operations.
+     *
+     * @return the CertificateOrdersDiagnosticsClient object.
+     */
+    CertificateOrdersDiagnosticsClient getCertificateOrdersDiagnostics();
+
+    /**
      * Gets the CertificateRegistrationProvidersClient object to access its operations.
      *
      * @return the CertificateRegistrationProvidersClient object.
@@ -99,6 +106,13 @@ public interface WebSiteManagementClient {
      * @return the DiagnosticsClient object.
      */
     DiagnosticsClient getDiagnostics();
+
+    /**
+     * Gets the GlobalsClient object to access its operations.
+     *
+     * @return the GlobalsClient object.
+     */
+    GlobalsClient getGlobals();
 
     /**
      * Gets the ProvidersClient object to access its operations.

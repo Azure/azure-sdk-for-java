@@ -60,7 +60,7 @@ import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
 import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.PrebuiltType.BUSINESS_CARD;
-import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.PrebuiltType.ID;
+import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.PrebuiltType.IDENTITY;
 import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.PrebuiltType.INVOICE;
 import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.PrebuiltType.RECEIPT;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.AZURE_FORM_RECOGNIZER_ENDPOINT;
@@ -88,7 +88,6 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     private static final String EXPECTED_MULTIPAGE_RECEIPT_PHONE_NUMBER_VALUE = "+19876543210";
     private static final String ITEMIZED_RECEIPT_VALUE = "Itemized";
     static final String RECEIPT_CONTOSO_JPG = "contoso-allinone.jpg";
-    // TODO (Service pending) Disabled, service to provide a different png file.
     static final String RECEIPT_CONTOSO_PNG = "contoso-receipt.png";
     static final String INVOICE_6_PDF = "Invoice_6.pdf";
     static final String MULTIPAGE_INVOICE_PDF = "multipage_invoice1.pdf";
@@ -111,7 +110,10 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     static final String HTTPS_EXCEPTION_MESSAGE =
         "Max retries 3 times exceeded. Error Details: Key credentials require HTTPS to prevent leaking the key.";
     static final String INVALID_UUID_EXCEPTION_MESSAGE = "Invalid UUID string: ";
+    static final String INVALID_SOURCE_URL_EXCEPTION_MESSAGE = "Failed to download the image from the submitted URL. "
+        + "The URL may either be invalid or the server hosting the image is experiencing some technical difficulties.";
     static final String MODEL_ID_IS_REQUIRED_EXCEPTION_MESSAGE = "'modelId' is required and cannot be null.";
+    static final String COPY_OPERATION_FAILED_STATUS_MESSAGE = "Copy operation failed";
 
     static final String INVALID_ENDPOINT = "https://notreal.azure.com";
     static final String LOCAL_FILE_PATH = "src/test/resources/sample_files/Test/";
@@ -129,13 +131,13 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     static final List<String> INVOICE_FIELDS = Arrays.asList("CustomerAddressRecipient", "InvoiceId", "VendorName",
         "VendorAddress", "CustomerAddress", "CustomerName", "InvoiceTotal", "DueDate", "InvoiceDate");
 
-    // ID Document fields
+    // Identity Document fields
     static final List<String> ID_DOCUMENT_FIELDS = Arrays.asList("Country", "DateOfBirth", "DateOfExpiration",
         "DocumentNumber", "FirstName", "LastName", "Nationality", "Sex", "MachineReadableZone", "DocumentType",
         "Address", "Region");
 
     enum PrebuiltType {
-        RECEIPT, BUSINESS_CARD, INVOICE, ID
+        RECEIPT, BUSINESS_CARD, INVOICE, IDENTITY
     }
 
     Duration durationTestMode;
@@ -231,7 +233,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
             assertEquals(expectedTable.getColumns(), actualTable.getColumnCount());
             validateCellData(expectedTable.getCells(), actualTable.getCells(), readResults, includeFieldElements);
             assertEquals(expectedTable.getRows(), actualTable.getRowCount());
-            validateBoundingBoxData(expectedTable.getBoundingBox(), actualTable.getFieldBoundingBox());
+            validateBoundingBoxData(expectedTable.getBoundingBox(), actualTable.getBoundingBox());
         }
     }
 
@@ -463,6 +465,9 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     @Test
     abstract void recognizeContentWithSelectionMarks(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion);
+
+    @Test
+    abstract void recognizeContentAppearance(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     // Content - URL
 
@@ -728,14 +733,14 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
                         rawReadResults,
                         includeFieldElements);
                 });
-            } else if (ID.equals(prebuiltType)) {
+            } else if (IDENTITY.equals(prebuiltType)) {
                 assertTrue(actualForm.getFormType().startsWith("prebuilt:idDocument"));
-                ID_DOCUMENT_FIELDS.forEach(idDocumentField -> {
+                ID_DOCUMENT_FIELDS.forEach(identityDocumentField -> {
                     final Map<String, FormField> actualRecognizedDocumentFields = actualForm.getFields();
-                    Map<String, FieldValue> expectedIDDocumentFields = rawDocumentResult.getFields();
+                    Map<String, FieldValue> expectedIdentityDocumentFields = rawDocumentResult.getFields();
 
-                    validateFieldValueTransforms(expectedIDDocumentFields.get(idDocumentField),
-                        actualRecognizedDocumentFields.get(idDocumentField),
+                    validateFieldValueTransforms(expectedIdentityDocumentFields.get(identityDocumentField),
+                        actualRecognizedDocumentFields.get(identityDocumentField),
                         rawReadResults,
                         includeFieldElements);
                 });

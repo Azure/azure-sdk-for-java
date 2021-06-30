@@ -2,21 +2,17 @@ package com.azure.storage.blob.implementation.util
 
 import com.azure.storage.common.implementation.Constants
 import reactor.core.publisher.Sinks
+import reactor.core.scheduler.Schedulers
 import reactor.test.StepVerifier
 import spock.lang.Specification
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
 import java.time.Duration
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
 
 class StorageBlockingSinkTest extends Specification {
-
-    def setup() {
-        String fullTestName = specificationContext.getCurrentIteration().getName().replace(' ', '').toLowerCase()
-        String className = specificationContext.getCurrentSpec().getName()
-        // Print out the test name to create breadcrumbs in our test logging in case anything hangs.
-        System.out.printf("========================= %s.%s =========================%n", className, fullTestName)
-    }
 
     def "min"() {
         setup:
@@ -195,11 +191,14 @@ class StorageBlockingSinkTest extends Specification {
         def blockingSink = new StorageBlockingSink()
 
         when:
+        CountDownLatch latch = new CountDownLatch(1)
         blockingSink.asFlux()
             .timeout(Duration.ofMillis(100))
+            .doFinally({s -> latch.countDown()})
+            .subscribeOn(Schedulers.boundedElastic())
             .subscribe()
 
-        sleep(200)
+        latch.await(1, TimeUnit.MINUTES)
 
         blockingSink.emitNext(ByteBuffer.wrap(new byte[0]))
 
@@ -209,11 +208,14 @@ class StorageBlockingSinkTest extends Specification {
 
         when:
         blockingSink = new StorageBlockingSink()
+        latch = new CountDownLatch(1)
         blockingSink.asFlux()
             .timeout(Duration.ofMillis(100))
+            .doFinally({s -> latch.countDown()})
+            .subscribeOn(Schedulers.boundedElastic())
             .subscribe()
 
-        sleep(200)
+        latch.await(1, TimeUnit.MINUTES)
 
         blockingSink.emitCompleteOrThrow()
 

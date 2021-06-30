@@ -19,7 +19,7 @@ public final class RecognizeContentOptions {
     private Duration pollInterval = DEFAULT_POLL_INTERVAL;
     private FormRecognizerLanguage language;
     private List<String> pages;
-    private ReadingOrder readingOrder;
+    private FormReadingOrder readingOrder;
 
     /**
      * Get the type of the form. Supported Media types including .pdf, .jpg, .png or .tiff type file stream.
@@ -67,10 +67,8 @@ public final class RecognizeContentOptions {
 
     /**
      * Get the BCP-47 language code of the text in the document.
-     * See supported language codes here:
-     * <a>
-     * https://docs.microsoft.com/azure/cognitive-services/form-recognizer/language-support.
-     * </a>
+     * See supported language codes
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/form-recognizer/language-support?tabs=v2-1">here</a>.
      *
      * @return the language code for the text in the document.
      */
@@ -80,10 +78,8 @@ public final class RecognizeContentOptions {
 
     /**
      * Set the BCP-47 language code of the text in the document.
-     * See supported language codes here:
-     * <a>
-     * https://docs.microsoft.com/azure/cognitive-services/form-recognizer/language-support.
-     * </a>
+     * See supported language codes
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/form-recognizer/language-support?tabs=v2-1">here</a>.
      *
      * @param language the language code value to set.
      * @return the updated {@code RecognizeContentOptions} value.
@@ -124,7 +120,7 @@ public final class RecognizeContentOptions {
      *
      * @return the order in which the recognized lines are returned.
      */
-    public ReadingOrder getReadingOrder() {
+    public FormReadingOrder getReadingOrder() {
         return readingOrder;
     }
 
@@ -136,7 +132,7 @@ public final class RecognizeContentOptions {
      * @param readingOrder the order specifies in which text lines are returned
      * @return the updated {@code RecognizeContentOptions} value.
      */
-    public RecognizeContentOptions setReadingOrder(ReadingOrder readingOrder) {
+    public RecognizeContentOptions setReadingOrder(FormReadingOrder readingOrder) {
         this.readingOrder = readingOrder;
         return this;
     }

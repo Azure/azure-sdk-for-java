@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.network.models.VM;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -19,7 +19,7 @@ public final class BastionShareableLinkInner {
      * Reference of the virtual machine resource.
      */
     @JsonProperty(value = "vm", required = true)
-    private Resource vm;
+    private VM vm;
 
     /*
      * The unique Bastion Shareable Link to the virtual machine.
@@ -45,7 +45,7 @@ public final class BastionShareableLinkInner {
      *
      * @return the vm value.
      */
-    public Resource vm() {
+    public VM vm() {
         return this.vm;
     }
 
@@ -55,7 +55,7 @@ public final class BastionShareableLinkInner {
      * @param vm the vm value to set.
      * @return the BastionShareableLinkInner object itself.
      */
-    public BastionShareableLinkInner withVm(Resource vm) {
+    public BastionShareableLinkInner withVm(VM vm) {
         this.vm = vm;
         return this;
     }
@@ -98,6 +98,8 @@ public final class BastionShareableLinkInner {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property vm in model BastionShareableLinkInner"));
+        } else {
+            vm().validate();
         }
     }
 }

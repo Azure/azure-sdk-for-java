@@ -4,25 +4,17 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedStartFromInternal;
-import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedStartFromInternalDeserializer;
-import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedState;
-import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedStateDeserializer;
-import com.azure.cosmos.implementation.feedranges.FeedRangeContinuation;
-import com.azure.cosmos.implementation.feedranges.FeedRangeContinuationDeserializer;
-import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
-import com.azure.cosmos.implementation.feedranges.FeedRangeInternalDeserializer;
 import com.azure.cosmos.implementation.uuid.EthernetAddress;
 import com.azure.cosmos.implementation.uuid.Generators;
 import com.azure.cosmos.implementation.uuid.impl.TimeBasedGenerator;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.DedicatedGatewayRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
 import io.netty.buffer.ByteBuf;
@@ -39,6 +31,7 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
@@ -614,7 +607,7 @@ public class Utils {
             return getSimpleObjectMapper().readValue(itemResponseBodyAsString, itemClassType);
         } catch (IOException e) {
             throw new IllegalStateException(
-                String.format("Failed to parse string [%s] to POJO.", itemResponseBodyAsString, e));
+                String.format("Failed to parse string [%s] to POJO.", itemResponseBodyAsString), e);
         }
     }
 
@@ -740,5 +733,16 @@ public class Utils {
         ObjectOutputStream os = new ObjectOutputStream(out);
         os.writeObject(obj);
         return out.toByteArray();
+    }
+
+    public static long getMaxIntegratedCacheStalenessInMillis(DedicatedGatewayRequestOptions dedicatedGatewayRequestOptions) {
+        Duration maxIntegratedCacheStaleness = dedicatedGatewayRequestOptions.getMaxIntegratedCacheStaleness();
+        if (maxIntegratedCacheStaleness.toNanos() > 0 && maxIntegratedCacheStaleness.toMillis() <= 0) {
+            throw new IllegalArgumentException("MaxIntegratedCacheStaleness granularity is milliseconds");
+        }
+        if (maxIntegratedCacheStaleness.toMillis() < 0) {
+            throw new IllegalArgumentException("MaxIntegratedCacheStaleness duration cannot be negative");
+        }
+        return maxIntegratedCacheStaleness.toMillis();
     }
 }

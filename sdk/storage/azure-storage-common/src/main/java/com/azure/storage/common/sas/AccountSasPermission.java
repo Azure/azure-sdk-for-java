@@ -45,6 +45,8 @@ public final class AccountSasPermission {
 
     private boolean filterTagsPermission;
 
+    private boolean immutabilityPolicyPermission;
+
     /**
      * Initializes an {@link AccountSasPermission} object with all fields set to false.
      */
@@ -55,18 +57,18 @@ public final class AccountSasPermission {
      * Creates an {@link AccountSasPermission} from the specified permissions string. This method will throw an {@link
      * IllegalArgumentException} if it encounters a character that does not correspond to a valid permission.
      *
-     * @param permString A {@code String} which represents the {@link AccountSasPermission}.
+     * @param permissionString A {@code String} which represents the {@link AccountSasPermission}.
      *
      * @return An {@link AccountSasPermission} object generated from the given {@link String}.
      *
      * @throws IllegalArgumentException If {@code permString} contains a character other than r, w, d, x, l, a, c, u, p,
-     * t or f.
+     * t, f or i.
      */
-    public static AccountSasPermission parse(String permString) {
+    public static AccountSasPermission parse(String permissionString) {
         AccountSasPermission permissions = new AccountSasPermission();
 
-        for (int i = 0; i < permString.length(); i++) {
-            char c = permString.charAt(i);
+        for (int i = 0; i < permissionString.length(); i++) {
+            char c = permissionString.charAt(i);
             switch (c) {
                 case 'r':
                     permissions.readPermission = true;
@@ -101,10 +103,13 @@ public final class AccountSasPermission {
                 case 'f':
                     permissions.filterTagsPermission = true;
                     break;
+                case 'i':
+                    permissions.immutabilityPolicyPermission = true;
+                    break;
                 default:
                     throw new IllegalArgumentException(
                         String.format(Locale.ROOT, Constants.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE,
-                            "Permissions", permString, c));
+                            "Permissions", permissionString, c));
             }
         }
         return permissions;
@@ -304,7 +309,6 @@ public final class AccountSasPermission {
         return this;
     }
 
-
     /**
      * @return the filter tags permission status.
      */
@@ -320,6 +324,24 @@ public final class AccountSasPermission {
      */
     public AccountSasPermission setFilterTagsPermission(boolean filterTagsPermission) {
         this.filterTagsPermission = filterTagsPermission;
+        return this;
+    }
+
+    /**
+     * @return the set immutability policy permission status.
+     */
+    public boolean hasImmutabilityPolicyPermission() {
+        return immutabilityPolicyPermission;
+    }
+
+    /**
+     * Sets the set immutability policy permission status.
+     *
+     * @param immutabilityPolicyPermission Permission status to set
+     * @return the updated AccountSasPermission object.
+     */
+    public AccountSasPermission setImmutabilityPolicyPermission(boolean immutabilityPolicyPermission) {
+        this.immutabilityPolicyPermission = immutabilityPolicyPermission;
         return this;
     }
 
@@ -377,6 +399,10 @@ public final class AccountSasPermission {
 
         if (this.filterTagsPermission) {
             builder.append('f');
+        }
+
+        if (this.immutabilityPolicyPermission) {
+            builder.append('i');
         }
 
         return builder.toString();

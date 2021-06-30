@@ -11,8 +11,10 @@ import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.AzureFirewallThreatIntelMode;
 import com.azure.resourcemanager.network.models.DnsSettings;
+import com.azure.resourcemanager.network.models.FirewallPolicyInsights;
 import com.azure.resourcemanager.network.models.FirewallPolicyIntrusionDetection;
 import com.azure.resourcemanager.network.models.FirewallPolicySku;
+import com.azure.resourcemanager.network.models.FirewallPolicySnat;
 import com.azure.resourcemanager.network.models.FirewallPolicyThreatIntelWhitelist;
 import com.azure.resourcemanager.network.models.FirewallPolicyTransportSecurity;
 import com.azure.resourcemanager.network.models.ManagedServiceIdentity;
@@ -82,6 +84,18 @@ public class FirewallPolicyInner extends Resource {
      */
     @JsonProperty(value = "properties.threatIntelWhitelist")
     private FirewallPolicyThreatIntelWhitelist threatIntelWhitelist;
+
+    /*
+     * Insights on Firewall Policy.
+     */
+    @JsonProperty(value = "properties.insights")
+    private FirewallPolicyInsights insights;
+
+    /*
+     * The private IP addresses/IP ranges to which traffic will not be SNAT.
+     */
+    @JsonProperty(value = "properties.snat")
+    private FirewallPolicySnat snat;
 
     /*
      * DNS Proxy Settings definition.
@@ -239,6 +253,46 @@ public class FirewallPolicyInner extends Resource {
     }
 
     /**
+     * Get the insights property: Insights on Firewall Policy.
+     *
+     * @return the insights value.
+     */
+    public FirewallPolicyInsights insights() {
+        return this.insights;
+    }
+
+    /**
+     * Set the insights property: Insights on Firewall Policy.
+     *
+     * @param insights the insights value to set.
+     * @return the FirewallPolicyInner object itself.
+     */
+    public FirewallPolicyInner withInsights(FirewallPolicyInsights insights) {
+        this.insights = insights;
+        return this;
+    }
+
+    /**
+     * Get the snat property: The private IP addresses/IP ranges to which traffic will not be SNAT.
+     *
+     * @return the snat value.
+     */
+    public FirewallPolicySnat snat() {
+        return this.snat;
+    }
+
+    /**
+     * Set the snat property: The private IP addresses/IP ranges to which traffic will not be SNAT.
+     *
+     * @param snat the snat value to set.
+     * @return the FirewallPolicyInner object itself.
+     */
+    public FirewallPolicyInner withSnat(FirewallPolicySnat snat) {
+        this.snat = snat;
+        return this;
+    }
+
+    /**
      * Get the dnsSettings property: DNS Proxy Settings definition.
      *
      * @return the dnsSettings value.
@@ -363,6 +417,12 @@ public class FirewallPolicyInner extends Resource {
         }
         if (threatIntelWhitelist() != null) {
             threatIntelWhitelist().validate();
+        }
+        if (insights() != null) {
+            insights().validate();
+        }
+        if (snat() != null) {
+            snat().validate();
         }
         if (dnsSettings() != null) {
             dnsSettings().validate();
