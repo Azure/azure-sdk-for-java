@@ -7,7 +7,6 @@ import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.CoreUtils;
-import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.autoconfigure.context.AzureContextAutoConfiguration;
@@ -26,8 +25,6 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.StringUtils;
-import reactor.core.scheduler.Scheduler;
-import reactor.core.scheduler.Schedulers;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;

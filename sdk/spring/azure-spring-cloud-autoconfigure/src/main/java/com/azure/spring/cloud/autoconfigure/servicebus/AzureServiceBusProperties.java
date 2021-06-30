@@ -5,9 +5,7 @@ package com.azure.spring.cloud.autoconfigure.servicebus;
 
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
-import com.azure.core.util.ClientOptions;
 import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
-import org.apache.qpid.proton.engine.SslDomain;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
