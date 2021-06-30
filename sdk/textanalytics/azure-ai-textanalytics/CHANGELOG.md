@@ -5,9 +5,7 @@
 - We are now targeting the service's v3.1 API as the default instead of v3.1-preview.4.
 - Added a new class, `HealthcareEntityCategory` to replace the `String` type of property `category` in the `HealthcareEntity`.
 - Added the new types, `ExtractKeyPhrasesAction`, `RecognizeEntitiesAction`, `RecognizePiiEntitiesAction`,
-  `RecognizeLinkedEntitiesAction`, and `AnalyzeSentimentAction`. These types should include all the properties in the
-  `***Options` option bags but also could have additional properties, such as `actionName`.
-- Added a new property, `actionName` into the `TextAnalyticsActionResult`.
+  `RecognizeLinkedEntitiesAction`, and `AnalyzeSentimentAction`.
 - Added new customized `***PagedFlux`, `***PagedIterable` types, `AnalyzeActionsResultPagedFlux`,
   `AnalyzeActionsResultPagedIterable`, `AnalyzeHealthcareEntitiesPagedFlux`, and `AnalyzeHealthcareEntitiesPagedIterable`.
   

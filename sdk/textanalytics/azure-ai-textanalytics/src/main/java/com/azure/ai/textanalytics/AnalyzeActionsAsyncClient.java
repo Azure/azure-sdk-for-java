@@ -202,7 +202,6 @@ class AnalyzeActionsAsyncClient {
                             new EntitiesTaskParameters()
                                 .setModelVersion(action.getModelVersion())
                                 .setStringIndexType(StringIndexType.UTF16CODE_UNIT));
-                        entitiesTask.setTaskName(action.getActionName());
                         return entitiesTask;
                     }).collect(Collectors.toList()))
             .setEntityRecognitionPiiTasks(actions.getRecognizePiiEntitiesActions() == null ? null
@@ -221,7 +220,6 @@ class AnalyzeActionsAsyncClient {
                                 .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
                                 .setPiiCategories(toCategoriesFilter(action.getCategoriesFilter()))
                         );
-                        piiTask.setTaskName(action.getActionName());
                         return piiTask;
                     }).collect(Collectors.toList()))
             .setKeyPhraseExtractionTasks(actions.getExtractKeyPhrasesActions() == null ? null
@@ -235,7 +233,6 @@ class AnalyzeActionsAsyncClient {
                             new KeyPhrasesTaskParameters()
                                 .setModelVersion(action.getModelVersion())
                         );
-                        keyPhrasesTask.setTaskName(action.getActionName());
                         return keyPhrasesTask;
                     }).collect(Collectors.toList()))
             .setEntityLinkingTasks(actions.getRecognizeLinkedEntitiesActions() == null ? null
@@ -249,7 +246,6 @@ class AnalyzeActionsAsyncClient {
                             new EntityLinkingTaskParameters()
                                 .setModelVersion(action.getModelVersion())
                         );
-                        entityLinkingTask.setTaskName(action.getActionName());
                         return entityLinkingTask;
                     }).collect(Collectors.toList()))
             .setSentimentAnalysisTasks(actions.getAnalyzeSentimentActions() == null ? null
@@ -263,7 +259,6 @@ class AnalyzeActionsAsyncClient {
                             new SentimentAnalysisTaskParameters()
                                 .setModelVersion(action.getModelVersion())
                         );
-                        sentimentAnalysisTask.setTaskName(action.getActionName());
                         return sentimentAnalysisTask;
                     }).collect(Collectors.toList()));
     }
@@ -393,8 +388,6 @@ class AnalyzeActionsAsyncClient {
                 }
                 TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult,
                     taskItem.getLastUpdateDateTime());
-                TextAnalyticsActionResultPropertiesHelper.setActionName(actionResult,
-                    taskItem.getTaskName());
                 recognizeEntitiesActionResults.add(actionResult);
             }
         }
@@ -409,8 +402,6 @@ class AnalyzeActionsAsyncClient {
                 }
                 TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult,
                     taskItem.getLastUpdateDateTime());
-                TextAnalyticsActionResultPropertiesHelper.setActionName(actionResult,
-                    taskItem.getTaskName());
                 recognizePiiEntitiesActionResults.add(actionResult);
             }
         }
@@ -425,8 +416,6 @@ class AnalyzeActionsAsyncClient {
                 }
                 TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult,
                     taskItem.getLastUpdateDateTime());
-                TextAnalyticsActionResultPropertiesHelper.setActionName(actionResult,
-                    taskItem.getTaskName());
                 extractKeyPhrasesActionResults.add(actionResult);
             }
         }
@@ -442,8 +431,6 @@ class AnalyzeActionsAsyncClient {
                 }
                 TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult,
                     taskItem.getLastUpdateDateTime());
-                TextAnalyticsActionResultPropertiesHelper.setActionName(actionResult,
-                    taskItem.getTaskName());
                 recognizeLinkedEntitiesActionResults.add(actionResult);
             }
         }
@@ -459,8 +446,6 @@ class AnalyzeActionsAsyncClient {
                 }
                 TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult,
                     taskItem.getLastUpdateDateTime());
-                TextAnalyticsActionResultPropertiesHelper.setActionName(actionResult,
-                    taskItem.getTaskName());
                 analyzeSentimentActionResults.add(actionResult);
             }
         }
