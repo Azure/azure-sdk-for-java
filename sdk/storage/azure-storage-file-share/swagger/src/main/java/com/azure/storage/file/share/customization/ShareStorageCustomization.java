@@ -77,7 +77,7 @@ public class ShareStorageCustomization extends Customization {
         PackageCustomization implementationModels = customization.getPackage("com.azure.storage.file.share.implementation.models");
         implementationModels.getClass("FilesAndDirectoriesListSegment").addAnnotation("@JsonDeserialize(using = com.azure.storage.file.share.implementation.util.FilesAndDirectoriesListSegmentDeserializer.class)");
         implementationModels.getClass("CopyFileSmbInfo")
-            .removeAnnotation("@JacksonXmlRootElement\\(localName = \"CopyFileSmbInfo\"\\)")
+            .removeAnnotation("@JacksonXmlRootElement(localName = \"CopyFileSmbInfo\")")
             .addAnnotation("@JacksonXmlRootElement(localName = \"copy-file-smb-info\")");
 
         PackageCustomization models = customization.getPackage("com.azure.storage.file.share.models");
@@ -85,7 +85,6 @@ public class ShareStorageCustomization extends Customization {
 
         // Replace JacksonXmlRootElement annotations that are causing a semantic breaking change.
         ClassCustomization shareFileHttpHeaders = models.getClass("ShareFileHttpHeaders");
-
         shareFileHttpHeaders.removeAnnotation("@JacksonXmlRootElement(localName = \"ShareFileHttpHeaders\")");
         shareFileHttpHeaders.addAnnotation("@JacksonXmlRootElement(localName = \"share-file-http-headers\")");
 
