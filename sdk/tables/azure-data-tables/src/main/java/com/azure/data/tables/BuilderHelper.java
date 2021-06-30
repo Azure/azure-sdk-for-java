@@ -32,8 +32,6 @@ import com.azure.data.tables.implementation.StorageAuthenticationSettings;
 import com.azure.data.tables.implementation.StorageConnectionString;
 import com.azure.data.tables.implementation.StorageConstants;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
