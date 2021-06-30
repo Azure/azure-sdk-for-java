@@ -10,7 +10,7 @@ import com.azure.core.annotation.Fluent;
  * The service principal stored in a key vault representing the credential entity for a data source.
  */
 @Fluent
-public final class DatasourceServicePrincipalInKeyVault extends DatasourceCredentialEntity {
+public final class DataSourceServicePrincipalInKeyVault extends DataSourceCredentialEntity {
     private String id;
     private String name;
     private String description;
@@ -25,12 +25,12 @@ public final class DatasourceServicePrincipalInKeyVault extends DatasourceCreden
         DataSourceServicePrincipalInKeyVaultAccessor.setAccessor(
             new DataSourceServicePrincipalInKeyVaultAccessor.Accessor() {
                 @Override
-                public void setId(DatasourceServicePrincipalInKeyVault entity, String id) {
+                public void setId(DataSourceServicePrincipalInKeyVault entity, String id) {
                     entity.setId(id);
                 }
 
                 @Override
-                public String getKeyVaultClientSecret(DatasourceServicePrincipalInKeyVault entity) {
+                public String getKeyVaultClientSecret(DataSourceServicePrincipalInKeyVault entity) {
                     return entity.getKeyVaultClientSecret();
                 }
             });
@@ -83,7 +83,7 @@ public final class DatasourceServicePrincipalInKeyVault extends DatasourceCreden
      *
      * @return The name of the KeyVault secret holding client secret
      */
-    public String getSecretNameForDatasourceClientId() {
+    public String getSecretNameForDataSourceClientId() {
         return this.clientIdSecretName;
     }
 
@@ -92,7 +92,7 @@ public final class DatasourceServicePrincipalInKeyVault extends DatasourceCreden
      *
      * @return The name of the KeyVault secret holding client secret
      */
-    public String getSecretNameForDatasourceClientSecret() {
+    public String getSecretNameForDataSourceClientSecret() {
         return this.clientSecretName;
     }
 
@@ -102,7 +102,7 @@ public final class DatasourceServicePrincipalInKeyVault extends DatasourceCreden
      * @param name The name
      * @return an updated object with name set
      */
-    public DatasourceServicePrincipalInKeyVault setName(String name) {
+    public DataSourceServicePrincipalInKeyVault setName(String name) {
         this.name = name;
         return this;
     }
@@ -115,7 +115,7 @@ public final class DatasourceServicePrincipalInKeyVault extends DatasourceCreden
      * @param keyVaultClientSecret The client secret to access the keyVault
      * @return an updated object
      */
-    public DatasourceServicePrincipalInKeyVault setKeyVaultForDatasourceSecrets(String keyVaultEndpoint,
+    public DataSourceServicePrincipalInKeyVault setKeyVaultForDataSourceSecrets(String keyVaultEndpoint,
                                                                                 String keyVaultClientId,
                                                                                 String keyVaultClientSecret) {
         this.keyVaultEndpoint = keyVaultEndpoint;
@@ -130,7 +130,7 @@ public final class DatasourceServicePrincipalInKeyVault extends DatasourceCreden
      * @param clientIdSecretName The secret name
      * @return an updated object with client id secret name set
      */
-    public DatasourceServicePrincipalInKeyVault setSecretNameForDatasourceClientId(String clientIdSecretName) {
+    public DataSourceServicePrincipalInKeyVault setSecretNameForDataSourceClientId(String clientIdSecretName) {
         this.clientIdSecretName = clientIdSecretName;
         return this;
     }
@@ -141,7 +141,7 @@ public final class DatasourceServicePrincipalInKeyVault extends DatasourceCreden
      * @param clientSecretName The secret name
      * @return an updated object with client secret name set
      */
-    public DatasourceServicePrincipalInKeyVault setSecretNameForDatasourceClientSecret(String clientSecretName) {
+    public DataSourceServicePrincipalInKeyVault setSecretNameForDataSourceClientSecret(String clientSecretName) {
         this.clientSecretName = clientSecretName;
         return this;
     }
@@ -152,7 +152,7 @@ public final class DatasourceServicePrincipalInKeyVault extends DatasourceCreden
      * @param tenantId The tenant id
      * @return an updated object with client tenant id set
      */
-    public DatasourceServicePrincipalInKeyVault setTenantId(String tenantId) {
+    public DataSourceServicePrincipalInKeyVault setTenantId(String tenantId) {
         this.tenantId = tenantId;
         return this;
     }
@@ -163,7 +163,7 @@ public final class DatasourceServicePrincipalInKeyVault extends DatasourceCreden
      * @param description The description
      * @return an updated object with description set
      */
-    public DatasourceServicePrincipalInKeyVault setDescription(String description) {
+    public DataSourceServicePrincipalInKeyVault setDescription(String description) {
         this.description = description;
         return this;
     }
