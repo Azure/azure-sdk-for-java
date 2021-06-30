@@ -102,7 +102,6 @@ final class BuilderHelper {
         } else if (sasToken != null) {
             credentialPolicy = new AzureSasCredentialPolicy(new AzureSasCredential(sasToken), false);
         } else if (tokenCredential != null) {
-            httpsValidation(tokenCredential, "TokenCredential", endpoint, logger);
             credentialPolicy =  new BearerTokenAuthenticationPolicy(tokenCredential, StorageConstants.STORAGE_SCOPE);
         } else {
             throw logger.logExceptionAsError(
@@ -193,24 +192,6 @@ final class BuilderHelper {
             throw logger.logExceptionAsError(new IllegalStateException(
                 "Only one form of authentication should be used. The authentication forms present are: "
                     + usedCredentialsStringBuilder + "."));
-        }
-    }
-
-    /**
-     * Validates that the client is properly configured to use https.
-     *
-     * @param objectToCheck The object to check for.
-     * @param objectName The name of the object.
-     * @param endpoint The endpoint for the client.
-     */
-    public static void httpsValidation(Object objectToCheck, String objectName, String endpoint, ClientLogger logger) {
-        try {
-            if (objectToCheck != null && !new URI(endpoint).getScheme().equals(StorageConstants.HTTPS)) {
-                throw logger.logExceptionAsError(new IllegalArgumentException(
-                    "Using a(n) " + objectName + " requires https."));
-            }
-        } catch (URISyntaxException e) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Endpoint provided is not a valid URI", e));
         }
     }
 }
