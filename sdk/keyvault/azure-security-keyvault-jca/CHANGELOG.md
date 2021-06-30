@@ -2,7 +2,7 @@
 
 ## 1.0.1 (Unreleased)
 ### Bug Fixes
-- Fixed bug: not get certificates from key vault when `azure.keyvault.jca.certificates-refresh-interval` is not set. [#22666](https://github.com/Azure/azure-sdk-for-java/pull/22666)
+- Fixed bug: Not get certificates from Key Vault when `azure.keyvault.jca.certificates-refresh-interval` is not set. [#22666](https://github.com/Azure/azure-sdk-for-java/pull/22666)
 
 
 ## 1.0.0 (2021-06-23)
