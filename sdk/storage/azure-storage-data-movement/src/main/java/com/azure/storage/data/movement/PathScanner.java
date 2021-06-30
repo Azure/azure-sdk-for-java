@@ -18,7 +18,7 @@ import java.util.stream.BaseStream;
  *
  * TODO: Replace placeholder Javadoc
  */
-public final class PathScanner {
+public class PathScanner {
     private final ClientLogger logger = new ClientLogger(PathScanner.class);
     private final String basePath;
 
@@ -27,23 +27,17 @@ public final class PathScanner {
      *
      * TODO: Replace placeholder Javadoc
      *
-     * @param path The local path to be scanned, either relative to execution location or absolute.
-     * @throws IllegalArgumentException if the provided path does not point to anything.
+     * @param path The local path to be scanned, either relative to execution location or absolute.\
      */
     public PathScanner(String path) {
-        try {
-            // Resolve the given path to an absolute path in case it isn't one already
-            Path pathObj = Paths.get(path);
-            basePath = pathObj.toAbsolutePath().toString();
+        // Resolve the given path to an absolute path in case it isn't one already
+        Path pathObj = Paths.get(path);
+        basePath = pathObj.toAbsolutePath().toString();
 
-            // Check if the path exists; throw an error if there's nothing
-            // present at the given path
-            if (!(Files.isDirectory(pathObj) || Files.isRegularFile(pathObj))) {
-                throw new IllegalArgumentException(String.format("No item(s) located at the path '%s'.", basePath));
-            }
-        } catch (RuntimeException e) {
-            // Possible throws: nonexistent item, malformed path
-            throw logger.logExceptionAsError(e);
+        // Check if the path exists; throw an error if there's nothing
+        // present at the given path
+        if (!(Files.isDirectory(pathObj) || Files.isRegularFile(pathObj))) {
+            throw logger.logExceptionAsWarning(new IllegalArgumentException(String.format("No item(s) located at the path '%s'.", basePath)));
         }
     }
 
@@ -53,11 +47,11 @@ public final class PathScanner {
      *
      * TODO: Replace placeholder Javadoc comment
      *
-     * @param skipSubdirectories Sets whether to continue enumerating with warnings or throw through the
+     * @param continueOnError Sets whether to continue enumerating with warnings or throw through the
      *                           Flux when a folder can't be accessed.
      * @return a {@link Flux} containing the absolute paths of all matching entries.
      */
-    public Flux<String> scan(boolean skipSubdirectories) {
+    public Flux<String> scan(boolean continueOnError) {
         // Set up Mono for recursing through directories
         Mono<Path> basePath = Mono.just(Paths.get(this.basePath));
 
@@ -74,7 +68,7 @@ public final class PathScanner {
                     .onErrorResume(e -> {
                         // If set to skip subdirectories, continue processing; else,
                         // pass an error which will stop the Flux stream
-                        if (skipSubdirectories) {
+                        if (continueOnError) {
                             logger.warning(e.getMessage(), e);
                             return Mono.empty();
                         } else {
