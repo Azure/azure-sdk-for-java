@@ -63,9 +63,14 @@ receiveevents -cs "<<event-hubs-namespace-connection-string>>" -n "<<event-hub-n
 
 ### Receive using EventProcessorHost
 
-The command below runs the scenario for receiving messages via EventProcessorHost. This is comparable to EventProcessor
-in our new library. **NOTE:** The results print out differently because we added some custom counting that is not
-available in the base performance library.
+The command below runs the scenario for receiving messages via EventProcessorHost. This is comparable to
+EventProcessorClient in our new library.
+
+**NOTE: Assumes that there are many events in the Event Hub already.**
+
+This test runs for `--duration` period of time, and aggregates how many events were received from each partition during
+that time.  The results print out differently because we added some custom counting that is not available in the base
+performance library.
 
 - (REQUIRED) `-cs` is the connection string for the Event Hubs namespace.
 - (REQUIRED) `-n` is the name of the Event Hub.
@@ -82,6 +87,14 @@ eventprocessor -cs "<<event-hubs-namespace-connection-string>>" -n "<<event-hub-
 --storageConnectionString "<<storage-account-connection-string>>" \
 --duration 600 --warmup 0
 ```
+
+#### Publish events before running EventProcessorHost
+
+Events can be published to the Event Hub prior to running the EventProcessorClient test. Adding `--publish` and
+`--eventsToSend <# of Events>` will publish that number of events to each partition before starting the run.
+
+`--publish` is off by default because an Event Hub can store events for many days and receiving events starts from the
+beginning of a stream.
 
 ## Troubleshooting
 
