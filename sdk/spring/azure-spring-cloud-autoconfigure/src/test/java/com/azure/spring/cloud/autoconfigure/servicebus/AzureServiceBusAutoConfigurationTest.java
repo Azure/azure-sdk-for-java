@@ -91,7 +91,7 @@ public class AzureServiceBusAutoConfigurationTest {
 
     @Test
     public void testTransportTypeWithAmqpWebSockets() {
-        this.contextRunner.withPropertyValues(SERVICE_BUS_PROPERTY_PREFIX + "transport-type=AmqpWebSockets")
+        this.contextRunner.withPropertyValues(SERVICE_BUS_PROPERTY_PREFIX + "transport-type=AMQP_WEB_SOCKETS")
             .run(context -> {
                 assertThat(context.getBean(AzureServiceBusProperties.class).getTransportType()).isEqualTo(AmqpTransportType.AMQP_WEB_SOCKETS);
             });
