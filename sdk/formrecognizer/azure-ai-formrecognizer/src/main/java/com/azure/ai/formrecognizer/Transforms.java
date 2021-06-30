@@ -288,6 +288,8 @@ final class Transforms {
             }
             TextAppearanceHelper.setStyleConfidence(textAppearance,
                 textLine.getAppearance().getStyle().getConfidence());
+        } else {
+            return null;
         }
         return textAppearance;
     }
