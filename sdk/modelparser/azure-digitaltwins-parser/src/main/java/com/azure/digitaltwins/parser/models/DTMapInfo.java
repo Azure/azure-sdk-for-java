@@ -17,11 +17,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.azure.digitaltwins.parser.ContextHistory;
 import com.azure.digitaltwins.parser.VersionedContext;
 import com.azure.digitaltwins.parser.Dtmi;
+import com.azure.digitaltwins.parser.TypeChecker;
+import com.azure.digitaltwins.parser.PropertyValueConstrainer;
+import com.azure.digitaltwins.parser.PropertyInstanceBinder;
+import com.azure.digitaltwins.parser.ValueConstraints;
 
 /**
  * Class {@link DTMapInfo} corresponds to an element of type Map in a DTDL model.
  */
-public class DTMapInfo extends DTComplexSchemaInfo implements TypeChecker, PropertyValueConstrainer, PropertyInstanceBinder, Equatable<DTMapInfo> {
+public class DTMapInfo extends DTComplexSchemaInfo implements TypeChecker, PropertyValueConstrainer, PropertyInstanceBinder {
     private static final Map<Integer, String> BAD_TYPE_ACTION_FORMAT = new HashMap<>();
 
     private static final Map<Integer, String> BAD_TYPE_CAUSE_FORMAT = new HashMap<>();
@@ -74,7 +78,7 @@ public class DTMapInfo extends DTComplexSchemaInfo implements TypeChecker, Prope
      * @return mapKey.
      */
     public DTMapKeyInfo getMapKey() {
-        return this.mapKey
+        return this.mapKey;
     }
 
     /**
@@ -82,7 +86,7 @@ public class DTMapInfo extends DTComplexSchemaInfo implements TypeChecker, Prope
      * @return mapValue.
      */
     public DTMapValueInfo getMapValue() {
-        return this.mapValue
+        return this.mapValue;
     }
 
     /**

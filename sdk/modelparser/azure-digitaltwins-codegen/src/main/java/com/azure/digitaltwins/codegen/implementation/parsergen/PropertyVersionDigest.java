@@ -18,7 +18,7 @@ public class PropertyVersionDigest {
 
     private final String classType;
     private final String defaultLanguage;
-    private final String pattern;
+    private String pattern;
 
     private final Integer maxCount;
     private final Integer minCount;
@@ -48,6 +48,7 @@ public class PropertyVersionDigest {
         this.value = JsonNodeHelper.getNullableIntegerValue(propertyVersionObject, DtdlStrings.VALUE);
 
         this.pattern = JsonNodeHelper.getTextValue(propertyVersionObject, DtdlStrings.PATTERN);
+        this.pattern = this.pattern != null ? this.pattern.replace("\\", "\\\\") : null;
         this.classType = JsonNodeHelper.getTextValue(propertyVersionObject, DtdlStrings.CLASS);
         this.defaultLanguage = JsonNodeHelper.getTextValue(propertyVersionObject, DtdlStrings.DEFAULT_LANGUAGE);
 

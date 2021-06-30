@@ -77,7 +77,7 @@ public class JavaProperty extends JavaStatement {
 
         JavaScope bodyScope = new JavaScope(null);
         bodyScope.addStatement(
-            new JavaLine("return this." + propertyName));
+            new JavaLine("return this." + propertyName + ";"));
 
         getterMethod.body(bodyScope);
 

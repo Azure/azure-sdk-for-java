@@ -3,14 +3,7 @@
 
 package com.azure.digitaltwins.codegen.implementation.parsergen;
 
-import com.azure.digitaltwins.codegen.implementation.codegen.JavaMethod;
-import com.azure.digitaltwins.codegen.implementation.codegen.JavaConstructor;
-import com.azure.digitaltwins.codegen.implementation.codegen.JavaLibrary;
-import com.azure.digitaltwins.codegen.implementation.codegen.Access;
-import com.azure.digitaltwins.codegen.implementation.codegen.Novelty;
-import com.azure.digitaltwins.codegen.implementation.codegen.JavaClass;
-import com.azure.digitaltwins.codegen.implementation.codegen.Multiplicity;
-import com.azure.digitaltwins.codegen.implementation.codegen.Mutability;
+import com.azure.digitaltwins.codegen.implementation.codegen.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +45,7 @@ public class MaterialTypeNameCollectionGenerator implements TypeGenerator {
             Access.PACKAGE_PRIVATE,
             Novelty.NORMAL,
             "MaterialTypeNameCollection",
-            Multiplicity.STATIC,
+            Multiplicity.INSTANCE,
             null,
             null);
 
@@ -66,10 +59,10 @@ public class MaterialTypeNameCollectionGenerator implements TypeGenerator {
             Mutability.FINAL,
             null);
 
-        JavaConstructor constructor = collectionClass.constructor(Access.PACKAGE_PRIVATE, Multiplicity.STATIC);
+        JavaScope staticDeclaration = collectionClass.staticDeclaration();
 
         for (String typeName : this.typeNames) {
-            constructor.getBody().line("TYPE_NAMES.add(\"" + typeName + "\");");
+            staticDeclaration.line("TYPE_NAMES.add(\"" + typeName + "\");");
         }
 
         JavaMethod isMaterialTypeMethod = collectionClass.method(

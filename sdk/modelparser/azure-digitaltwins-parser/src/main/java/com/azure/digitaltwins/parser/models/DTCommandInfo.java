@@ -17,11 +17,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.azure.digitaltwins.parser.ContextHistory;
 import com.azure.digitaltwins.parser.VersionedContext;
 import com.azure.digitaltwins.parser.Dtmi;
+import com.azure.digitaltwins.parser.TypeChecker;
+import com.azure.digitaltwins.parser.PropertyValueConstrainer;
+import com.azure.digitaltwins.parser.PropertyInstanceBinder;
+import com.azure.digitaltwins.parser.ValueConstraints;
 
 /**
  * Class {@link DTCommandInfo} corresponds to an element of type Command in a DTDL model.
  */
-public class DTCommandInfo extends DTContentInfo implements TypeChecker, PropertyValueConstrainer, PropertyInstanceBinder, Equatable<DTCommandInfo> {
+public class DTCommandInfo extends DTContentInfo implements TypeChecker, PropertyValueConstrainer, PropertyInstanceBinder {
     private static final Map<Integer, String> BAD_TYPE_ACTION_FORMAT = new HashMap<>();
 
     private static final Map<Integer, String> BAD_TYPE_CAUSE_FORMAT = new HashMap<>();
@@ -84,7 +88,7 @@ public class DTCommandInfo extends DTContentInfo implements TypeChecker, Propert
      * @return commandType.
      */
     public DTCommandTypeInfo getCommandType() {
-        return this.commandType
+        return this.commandType;
     }
 
     /**
@@ -92,7 +96,7 @@ public class DTCommandInfo extends DTContentInfo implements TypeChecker, Propert
      * @return request.
      */
     public DTCommandPayloadInfo getRequest() {
-        return this.request
+        return this.request;
     }
 
     /**
@@ -100,7 +104,7 @@ public class DTCommandInfo extends DTContentInfo implements TypeChecker, Propert
      * @return response.
      */
     public DTCommandPayloadInfo getResponse() {
-        return this.response
+        return this.response;
     }
 
     /**

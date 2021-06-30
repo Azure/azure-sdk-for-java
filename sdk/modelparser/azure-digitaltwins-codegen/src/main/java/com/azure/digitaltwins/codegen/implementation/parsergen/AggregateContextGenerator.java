@@ -69,14 +69,32 @@ public class AggregateContextGenerator implements TypeGenerator {
             Multiplicity.STATIC,
             Mutability.FINAL,
             null);
+
+        contextClass.field(
+            Access.PRIVATE,
+            "Map<String, ContextHistory>",
+            "AFFILIATE_CONTEXT_HISTORIES",
+            null,
+            Multiplicity.STATIC,
+            Mutability.FINAL,
+            null);
+
+        contextClass.field(
+            Access.PRIVATE,
+            "ContextHistory",
+            "DTDL_CONTEXT_HISTORY",
+            null,
+            Multiplicity.STATIC,
+            Mutability.FINAL,
+            null);
     }
 
     private void generateStaticConstructor(JavaClass contextClass) {
         JavaScope staticDeclaration = contextClass.staticDeclaration();
         staticDeclaration
-            .line("dtdlContextHistory = getDtdlContextHistory();")
+            .line("DTDL_CONTEXT_HISTORY = getDtdlContextHistory();")
             .jBreak()
-            .line("affiliateContextHistories = new HashMap<String, ContextHistory>();")
+            .line("AFFILIATE_CONTEXT_HISTORIES = new HashMap<String, ContextHistory>();")
             .jBreak();
 
         JavaMethod dtdlContextMethod = contextClass.method(
@@ -135,7 +153,7 @@ public class AggregateContextGenerator implements TypeGenerator {
 
         for (Map.Entry<String, Integer> affiliateIndex : affiliateIndices.entrySet()) {
             staticDeclaration
-                .line("affiliateContextHistories.put(\"" + affiliateIndex.getKey() + "\", getAffiliate" + affiliateIndex.getValue() + "ContextHistory());");
+                .line("AFFILIATE_CONTEXT_HISTORIES.put(\"" + affiliateIndex.getKey() + "\", getAffiliate" + affiliateIndex.getValue() + "ContextHistory());");
         }
     }
 

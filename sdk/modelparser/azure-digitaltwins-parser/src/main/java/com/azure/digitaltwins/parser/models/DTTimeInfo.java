@@ -17,11 +17,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.azure.digitaltwins.parser.ContextHistory;
 import com.azure.digitaltwins.parser.VersionedContext;
 import com.azure.digitaltwins.parser.Dtmi;
+import com.azure.digitaltwins.parser.TypeChecker;
+import com.azure.digitaltwins.parser.PropertyValueConstrainer;
+import com.azure.digitaltwins.parser.PropertyInstanceBinder;
+import com.azure.digitaltwins.parser.ValueConstraints;
 
 /**
  * Class {@link DTTimeInfo} corresponds to an element of type Time in a DTDL model.
  */
-public class DTTimeInfo extends DTTemporalSchemaInfo implements TypeChecker, Equatable<DTTimeInfo> {
+public class DTTimeInfo extends DTTemporalSchemaInfo implements TypeChecker {
     private static final Map<Integer, String> BAD_TYPE_ACTION_FORMAT = new HashMap<>();
 
     private static final Map<Integer, String> BAD_TYPE_CAUSE_FORMAT = new HashMap<>();

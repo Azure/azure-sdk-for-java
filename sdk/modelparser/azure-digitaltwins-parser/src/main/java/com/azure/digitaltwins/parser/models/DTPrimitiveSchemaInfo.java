@@ -17,11 +17,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.azure.digitaltwins.parser.ContextHistory;
 import com.azure.digitaltwins.parser.VersionedContext;
 import com.azure.digitaltwins.parser.Dtmi;
+import com.azure.digitaltwins.parser.TypeChecker;
+import com.azure.digitaltwins.parser.PropertyValueConstrainer;
+import com.azure.digitaltwins.parser.PropertyInstanceBinder;
+import com.azure.digitaltwins.parser.ValueConstraints;
 
 /**
  * Class {@link DTPrimitiveSchemaInfo} corresponds to an element of type PrimitiveSchema in a DTDL model.
  */
-public abstract class DTPrimitiveSchemaInfo extends DTSchemaInfo implements TypeChecker, Equatable<DTPrimitiveSchemaInfo> {
+public abstract class DTPrimitiveSchemaInfo extends DTSchemaInfo implements TypeChecker {
     private static final Map<Integer, String> BAD_TYPE_ACTION_FORMAT = new HashMap<>();
 
     private static final Map<Integer, String> BAD_TYPE_CAUSE_FORMAT = new HashMap<>();

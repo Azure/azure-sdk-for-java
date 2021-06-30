@@ -37,10 +37,10 @@ public class MaterialPropertyFactory {
         this.contexts = contexts;
         this.baseClassName = baseClassName;
 
-        // TODO: remove once class is fully implemented.
-        logger.info(String.format("%s", this.dtdlVersions));
-        logger.info(String.format("%s", this.contexts));
-        logger.info(String.format("%s", this.baseClassName));
+//        // TODO: remove once class is fully implemented.
+//        logger.info(String.format("%s", this.dtdlVersions));
+//        logger.info(String.format("%s", this.contexts));
+//        logger.info(String.format("%s", this.baseClassName));
     }
 
     /**

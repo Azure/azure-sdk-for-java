@@ -28,9 +28,9 @@ public class DescendantControlFactory {
         this.kindEnum = kindEnum;
         this.kindProperty = kindProperty;
 
-        // TODO: remove once class is fully implemented.
-        logger.info(String.format("%s", this.kindProperty));
-        logger.info(String.format("%s", this.kindEnum));
+//        // TODO: remove once class is fully implemented.
+//        logger.info(String.format("%s", this.kindProperty));
+//        logger.info(String.format("%s", this.kindEnum));
     }
 
     /**

@@ -66,14 +66,14 @@ public abstract class MaterialProperty {
             : "this.".concat(obversePropertyName);
 
         // TODO: remove once class is fully implemented.
-        this.keyProperty = "";
-        this.representation = PropertyRepresentation.ITEM;
-        this.propertyKind = PropertyKind.INTERNAL;
-
-        logger.info(String.format("%s", this.keyProperty));
-        logger.info(String.format("%s", this.representation));
-        logger.info(String.format("%s", this.propertyKind));
-        logger.info(String.format("%s", this.propertyRestrictions));
+//        this.keyProperty = "";
+//        this.representation = PropertyRepresentation.ITEM;
+//        this.propertyKind = PropertyKind.INTERNAL;
+//
+//        logger.info(String.format("%s", this.keyProperty));
+//        logger.info(String.format("%s", this.representation));
+//        logger.info(String.format("%s", this.propertyKind));
+//        logger.info(String.format("%s", this.propertyRestrictions));
     }
 
     /**

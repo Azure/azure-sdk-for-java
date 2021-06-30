@@ -59,12 +59,12 @@ public class ConcreteSubclass {
         }
 
         // TODO: remove once class is fully implemented.
-        logger.info(String.format("%s", this.dtdlVersion));
-        logger.info(String.format("%s", this.subclassType));
-        logger.info(String.format("%s", this.kindValue));
-        logger.info(String.format("%s", this.subclassTypeUri));
-        logger.info(String.format("%s", this.maxIdLength));
-        logger.info(String.format("%s", this.pattern));
+//        logger.info(String.format("%s", this.dtdlVersion));
+//        logger.info(String.format("%s", this.subclassType));
+//        logger.info(String.format("%s", this.kindValue));
+//        logger.info(String.format("%s", this.subclassTypeUri));
+//        logger.info(String.format("%s", this.maxIdLength));
+//        logger.info(String.format("%s", this.pattern));
     }
 
     /**

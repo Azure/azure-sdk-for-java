@@ -17,11 +17,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.azure.digitaltwins.parser.ContextHistory;
 import com.azure.digitaltwins.parser.VersionedContext;
 import com.azure.digitaltwins.parser.Dtmi;
+import com.azure.digitaltwins.parser.TypeChecker;
+import com.azure.digitaltwins.parser.PropertyValueConstrainer;
+import com.azure.digitaltwins.parser.PropertyInstanceBinder;
+import com.azure.digitaltwins.parser.ValueConstraints;
 
 /**
  * Class {@link DTRelationshipInfo} corresponds to an element of type Relationship in a DTDL model.
  */
-public class DTRelationshipInfo extends DTContentInfo implements TypeChecker, PropertyValueConstrainer, PropertyInstanceBinder, Equatable<DTRelationshipInfo> {
+public class DTRelationshipInfo extends DTContentInfo implements TypeChecker, PropertyValueConstrainer, PropertyInstanceBinder {
     private static final Map<Integer, String> BAD_TYPE_ACTION_FORMAT = new HashMap<>();
 
     private static final Map<Integer, String> BAD_TYPE_CAUSE_FORMAT = new HashMap<>();
@@ -36,7 +40,7 @@ public class DTRelationshipInfo extends DTContentInfo implements TypeChecker, Pr
     /**
      * Regular expression pattern for values of property 'target' for DTDLv3.
      */
-    protected static final Pattern TARGET_PROPERTY_REGEX_PATTERN_V3 = Pattern.compile("^dtmi:[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?(?::[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?)*(?:;[1-9][0-9]{0,8}(?:\.[1-9][0-9]{0,5})?)?$");
+    protected static final Pattern TARGET_PROPERTY_REGEX_PATTERN_V3 = Pattern.compile("^dtmi:[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?(?::[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?)*(?:;[1-9][0-9]{0,8}(?:\\.[1-9][0-9]{0,5})?)?$");
 
     private static final HashSet<String> VERSION_LESS_TYPES = new HashSet<>();
 
@@ -82,7 +86,7 @@ public class DTRelationshipInfo extends DTContentInfo implements TypeChecker, Pr
      * @return maxMultiplicity.
      */
     public Integer getMaxMultiplicity() {
-        return this.maxMultiplicity
+        return this.maxMultiplicity;
     }
 
     /**
@@ -90,7 +94,7 @@ public class DTRelationshipInfo extends DTContentInfo implements TypeChecker, Pr
      * @return minMultiplicity.
      */
     public Integer getMinMultiplicity() {
-        return this.minMultiplicity
+        return this.minMultiplicity;
     }
 
     /**
@@ -98,7 +102,7 @@ public class DTRelationshipInfo extends DTContentInfo implements TypeChecker, Pr
      * @return properties.
      */
     public List<DTPropertyInfo> getProperties() {
-        return this.properties
+        return this.properties;
     }
 
     /**
@@ -106,7 +110,7 @@ public class DTRelationshipInfo extends DTContentInfo implements TypeChecker, Pr
      * @return target.
      */
     public Dtmi getTarget() {
-        return this.target
+        return this.target;
     }
 
     /**
@@ -114,7 +118,7 @@ public class DTRelationshipInfo extends DTContentInfo implements TypeChecker, Pr
      * @return writable.
      */
     public Boolean getWritable() {
-        return this.writable
+        return this.writable;
     }
 
     /**

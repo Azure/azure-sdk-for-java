@@ -17,17 +17,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.azure.digitaltwins.parser.ContextHistory;
 import com.azure.digitaltwins.parser.VersionedContext;
 import com.azure.digitaltwins.parser.Dtmi;
+import com.azure.digitaltwins.parser.TypeChecker;
+import com.azure.digitaltwins.parser.PropertyValueConstrainer;
+import com.azure.digitaltwins.parser.PropertyInstanceBinder;
+import com.azure.digitaltwins.parser.ValueConstraints;
 
 /**
  * A collection of all material type names.
  */
-static class MaterialTypeNameCollection {
+class MaterialTypeNameCollection {
     private static final HashSet<String> TYPE_NAMES = new HashSet<>();
 
-    /**
-     * Initializes a new instance of the {@link MaterialTypeNameCollection} class.
-     */
-    static MaterialTypeNameCollection() {
+    static {
         TYPE_NAMES.add("Enum");
         TYPE_NAMES.add("dtmi:dtdl:class:Enum;2");
         TYPE_NAMES.add("dtmi:dtdl:class:Enum;3");

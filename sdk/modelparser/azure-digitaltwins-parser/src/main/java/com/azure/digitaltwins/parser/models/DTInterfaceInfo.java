@@ -17,11 +17,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.azure.digitaltwins.parser.ContextHistory;
 import com.azure.digitaltwins.parser.VersionedContext;
 import com.azure.digitaltwins.parser.Dtmi;
+import com.azure.digitaltwins.parser.TypeChecker;
+import com.azure.digitaltwins.parser.PropertyValueConstrainer;
+import com.azure.digitaltwins.parser.PropertyInstanceBinder;
+import com.azure.digitaltwins.parser.ValueConstraints;
 
 /**
  * Class {@link DTInterfaceInfo} corresponds to an element of type Interface in a DTDL model.
  */
-public class DTInterfaceInfo extends DTEntityInfo implements TypeChecker, PropertyValueConstrainer, PropertyInstanceBinder, Equatable<DTInterfaceInfo> {
+public class DTInterfaceInfo extends DTEntityInfo implements TypeChecker, PropertyValueConstrainer, PropertyInstanceBinder {
     private static final Map<Integer, String> BAD_TYPE_ACTION_FORMAT = new HashMap<>();
 
     private static final Map<Integer, String> BAD_TYPE_CAUSE_FORMAT = new HashMap<>();
@@ -40,15 +44,15 @@ public class DTInterfaceInfo extends DTEntityInfo implements TypeChecker, Proper
 
     private List<ValueConstraints> contentsValueConstraints = null;
 
-    private List<DTInterfaceInfo> extends;
+    private List<DTInterfaceInfo> extend;
 
-    private Set<Integer> extendsAllowedVersionsV2 = new HashSet<>(Arrays.asList(2));
+    private Set<Integer> extendAllowedVersionsV2 = new HashSet<>(Arrays.asList(2));
 
-    private Set<Integer> extendsAllowedVersionsV3 = new HashSet<>(Arrays.asList(3, 2));
+    private Set<Integer> extendAllowedVersionsV3 = new HashSet<>(Arrays.asList(3, 2));
 
-    private List<String> extendsInstanceProperties = null;
+    private List<String> extendInstanceProperties = null;
 
-    private List<ValueConstraints> extendsValueConstraints = null;
+    private List<ValueConstraints> extendValueConstraints = null;
 
     private List<DTComplexSchemaInfo> schemas;
 
@@ -82,15 +86,15 @@ public class DTInterfaceInfo extends DTEntityInfo implements TypeChecker, Proper
      * @return contents.
      */
     public Map<String, DTContentInfo> getContents() {
-        return this.contents
+        return this.contents;
     }
 
     /**
-     * Get The value of the 'extends' property of the DTDL element that corresponds to this object.
-     * @return extends.
+     * Get The value of the 'extend' property of the DTDL element that corresponds to this object.
+     * @return extend.
      */
-    public List<DTInterfaceInfo> getExtends() {
-        return this.extends
+    public List<DTInterfaceInfo> getExtend() {
+        return this.extend;
     }
 
     /**
@@ -98,7 +102,7 @@ public class DTInterfaceInfo extends DTEntityInfo implements TypeChecker, Proper
      * @return schemas.
      */
     public List<DTComplexSchemaInfo> getSchemas() {
-        return this.schemas
+        return this.schemas;
     }
 
     /**
@@ -110,11 +114,11 @@ public class DTInterfaceInfo extends DTEntityInfo implements TypeChecker, Proper
     }
 
     /**
-     * Set The value of the 'extends' property of the DTDL element that corresponds to this object.
+     * Set The value of the 'extend' property of the DTDL element that corresponds to this object.
      * @param value Property value.
      */
-    void setExtends(List<DTInterfaceInfo> value) {
-        this.extends = value;
+    void setExtend(List<DTInterfaceInfo> value) {
+        this.extend = value;
     }
 
     /**

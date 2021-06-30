@@ -38,10 +38,10 @@ public class InternalProperty extends MaterialProperty {
         this.description = description;
         this.isRelevantToIdentity = isRelevantToIdentity;
 
-        // TODO: remove once class is fully implemented.
-        logger.info(String.format("%s", this.access));
-        logger.info(String.format("%s", this.description));
-        logger.info(String.format("%s", this.isRelevantToIdentity));
+//        // TODO: remove once class is fully implemented.
+//        logger.info(String.format("%s", this.access));
+//        logger.info(String.format("%s", this.description));
+//        logger.info(String.format("%s", this.isRelevantToIdentity));
     }
 
     /**

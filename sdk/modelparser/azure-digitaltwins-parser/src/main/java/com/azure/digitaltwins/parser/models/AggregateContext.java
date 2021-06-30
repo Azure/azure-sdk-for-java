@@ -17,22 +17,30 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.azure.digitaltwins.parser.ContextHistory;
 import com.azure.digitaltwins.parser.VersionedContext;
 import com.azure.digitaltwins.parser.Dtmi;
+import com.azure.digitaltwins.parser.TypeChecker;
+import com.azure.digitaltwins.parser.PropertyValueConstrainer;
+import com.azure.digitaltwins.parser.PropertyInstanceBinder;
+import com.azure.digitaltwins.parser.ValueConstraints;
 
 /**
  * Class for parsing and storing information from JSON-LD context blocks.
  */
 class AggregateContext {
+    private static final Map<String, ContextHistory> AFFILIATE_CONTEXT_HISTORIES;
+
+    private static final ContextHistory DTDL_CONTEXT_HISTORY;
+
     private static final HashSet<Integer> DTDL_VERSIONS_ALLOWING_LOCAL_TERMS = new HashSet<>(Arrays.asList(3));
 
     static {
-        dtdlContextHistory = getDtdlContextHistory();
+        DTDL_CONTEXT_HISTORY = getDtdlContextHistory();
 
-        affiliateContextHistories = new HashMap<String, ContextHistory>();
+        AFFILIATE_CONTEXT_HISTORIES = new HashMap<String, ContextHistory>();
 
-        affiliateContextHistories.put("dtmi:dtdl:extension:historization", getAffiliate2ContextHistory());
-        affiliateContextHistories.put("dtmi:dtdl:extension:initialization", getAffiliate0ContextHistory());
-        affiliateContextHistories.put("dtmi:dtdl:extension:layering", getAffiliate3ContextHistory());
-        affiliateContextHistories.put("dtmi:iotcentral:context", getAffiliate1ContextHistory());
+        AFFILIATE_CONTEXT_HISTORIES.put("dtmi:dtdl:extension:historization", getAffiliate2ContextHistory());
+        AFFILIATE_CONTEXT_HISTORIES.put("dtmi:dtdl:extension:initialization", getAffiliate0ContextHistory());
+        AFFILIATE_CONTEXT_HISTORIES.put("dtmi:dtdl:extension:layering", getAffiliate3ContextHistory());
+        AFFILIATE_CONTEXT_HISTORIES.put("dtmi:iotcentral:context", getAffiliate1ContextHistory());
     }
 
     private static ContextHistory getAffiliate0ContextHistory() {

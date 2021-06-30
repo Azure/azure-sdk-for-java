@@ -172,16 +172,16 @@ public class MaterialClass implements TypeGenerator {
         }
 
         // TODO: remove once class is fully implemented.
-        logger.info(String.format("%s", this.kindProperty));
-        logger.info(String.format("%s", this.kindValue));
-        logger.info(String.format("%s", this.extensibleMaterialClasses));
-        logger.info(String.format("%s", this.descendantControls));
-        logger.info(String.format("%s", this.isOvert));
-        logger.info(String.format("%s", this.isAugmentable));
-        logger.info(String.format("%s", this.isPartition));
-        logger.info(String.format("%s", this.typeIds));
-        logger.info(String.format("%s", this.extensibleMaterialSubtypes));
-        logger.info(String.format("%s", this.standardElementIds));
+//        logger.info(String.format("%s", this.kindProperty));
+//        logger.info(String.format("%s", this.kindValue));
+//        logger.info(String.format("%s", this.extensibleMaterialClasses));
+//        logger.info(String.format("%s", this.descendantControls));
+//        logger.info(String.format("%s", this.isOvert));
+//        logger.info(String.format("%s", this.isAugmentable));
+//        logger.info(String.format("%s", this.isPartition));
+//        logger.info(String.format("%s", this.typeIds));
+//        logger.info(String.format("%s", this.extensibleMaterialSubtypes));
+//        logger.info(String.format("%s", this.standardElementIds));
     }
 
     /**
@@ -314,13 +314,11 @@ public class MaterialClass implements TypeGenerator {
     private String getImplementingInterfaces() {
         StringBuilder implementingBuilder = new StringBuilder();
 
-        implementingBuilder.append("TypeChecker, ");
+        implementingBuilder.append("TypeChecker");
 
         if (this.isAugmentable && this.properties.stream().anyMatch(p -> p.getPropertyKind() == PropertyKind.OBJECT)) {
-            implementingBuilder.append("PropertyValueConstrainer, PropertyInstanceBinder, ");
+            implementingBuilder.append(", PropertyValueConstrainer, PropertyInstanceBinder");
         }
-
-        implementingBuilder.append("Equatable<").append(this.className).append(">");
 
         return implementingBuilder.toString();
     }

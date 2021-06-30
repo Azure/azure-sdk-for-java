@@ -17,11 +17,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.azure.digitaltwins.parser.ContextHistory;
 import com.azure.digitaltwins.parser.VersionedContext;
 import com.azure.digitaltwins.parser.Dtmi;
+import com.azure.digitaltwins.parser.TypeChecker;
+import com.azure.digitaltwins.parser.PropertyValueConstrainer;
+import com.azure.digitaltwins.parser.PropertyInstanceBinder;
+import com.azure.digitaltwins.parser.ValueConstraints;
 
 /**
  * Class {@link DTObjectInfo} corresponds to an element of type Object in a DTDL model.
  */
-public class DTObjectInfo extends DTComplexSchemaInfo implements TypeChecker, PropertyValueConstrainer, PropertyInstanceBinder, Equatable<DTObjectInfo> {
+public class DTObjectInfo extends DTComplexSchemaInfo implements TypeChecker, PropertyValueConstrainer, PropertyInstanceBinder {
     private static final Map<Integer, String> BAD_TYPE_ACTION_FORMAT = new HashMap<>();
 
     private static final Map<Integer, String> BAD_TYPE_CAUSE_FORMAT = new HashMap<>();
@@ -64,7 +68,7 @@ public class DTObjectInfo extends DTComplexSchemaInfo implements TypeChecker, Pr
      * @return fields.
      */
     public List<DTFieldInfo> getFields() {
-        return this.fields
+        return this.fields;
     }
 
     /**

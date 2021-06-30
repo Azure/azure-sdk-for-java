@@ -4620,7 +4620,7 @@
             "typeRequired": true
           }
         },
-        "extends": {
+        "extend": {
           "_": {
             "literal": false,
             "class": "Interface",

@@ -36,12 +36,12 @@ public class ExtensibleMaterialClass {
         this.kindValue = NameFormatter.formatNameAsEnumValue(typeName);
 
         // TODO: remove once class is fully implemented.
-        logger.info(String.format("%s", this.dtdlVersion));
-        logger.info(String.format("%s", this.kindValue));
-        logger.info(String.format("%s", this.typeName));
-        logger.info(String.format("%s", this.className));
-        logger.info(String.format("%s", this.kindEnum));
-        logger.info(String.format("%s", this.kindValue));
+//        logger.info(String.format("%s", this.dtdlVersion));
+//        logger.info(String.format("%s", this.kindValue));
+//        logger.info(String.format("%s", this.typeName));
+//        logger.info(String.format("%s", this.className));
+//        logger.info(String.format("%s", this.kindEnum));
+//        logger.info(String.format("%s", this.kindValue));
     }
 
     /**

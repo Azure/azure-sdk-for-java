@@ -17,11 +17,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.azure.digitaltwins.parser.ContextHistory;
 import com.azure.digitaltwins.parser.VersionedContext;
 import com.azure.digitaltwins.parser.Dtmi;
+import com.azure.digitaltwins.parser.TypeChecker;
+import com.azure.digitaltwins.parser.PropertyValueConstrainer;
+import com.azure.digitaltwins.parser.PropertyInstanceBinder;
+import com.azure.digitaltwins.parser.ValueConstraints;
 
 /**
  * Class {@link DTEnumInfo} corresponds to an element of type Enum in a DTDL model.
  */
-public class DTEnumInfo extends DTComplexSchemaInfo implements TypeChecker, PropertyValueConstrainer, PropertyInstanceBinder, Equatable<DTEnumInfo> {
+public class DTEnumInfo extends DTComplexSchemaInfo implements TypeChecker, PropertyValueConstrainer, PropertyInstanceBinder {
     private static final Map<Integer, String> BAD_TYPE_ACTION_FORMAT = new HashMap<>();
 
     private static final Map<Integer, String> BAD_TYPE_CAUSE_FORMAT = new HashMap<>();
@@ -74,7 +78,7 @@ public class DTEnumInfo extends DTComplexSchemaInfo implements TypeChecker, Prop
      * @return enumValues.
      */
     public List<DTEnumValueInfo> getEnumValues() {
-        return this.enumValues
+        return this.enumValues;
     }
 
     /**
@@ -82,7 +86,7 @@ public class DTEnumInfo extends DTComplexSchemaInfo implements TypeChecker, Prop
      * @return valueSchema.
      */
     public DTPrimitiveSchemaInfo getValueSchema() {
-        return this.valueSchema
+        return this.valueSchema;
     }
 
     /**

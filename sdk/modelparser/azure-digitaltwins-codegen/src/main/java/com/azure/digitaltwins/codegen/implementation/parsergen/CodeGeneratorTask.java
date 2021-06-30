@@ -86,6 +86,10 @@ public final class CodeGeneratorTask {
         parserLibrary.jImport("com.azure.digitaltwins.parser.ContextHistory");
         parserLibrary.jImport("com.azure.digitaltwins.parser.VersionedContext");
         parserLibrary.jImport("com.azure.digitaltwins.parser.Dtmi");
+        parserLibrary.jImport("com.azure.digitaltwins.parser.TypeChecker");
+        parserLibrary.jImport("com.azure.digitaltwins.parser.PropertyValueConstrainer");
+        parserLibrary.jImport("com.azure.digitaltwins.parser.PropertyInstanceBinder");
+        parserLibrary.jImport("com.azure.digitaltwins.parser.ValueConstraints");
 
         logger.info("Base class is " + metamodelDigest.getBaseClass());
 

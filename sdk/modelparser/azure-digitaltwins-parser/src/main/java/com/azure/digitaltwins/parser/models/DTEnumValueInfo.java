@@ -17,11 +17,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.azure.digitaltwins.parser.ContextHistory;
 import com.azure.digitaltwins.parser.VersionedContext;
 import com.azure.digitaltwins.parser.Dtmi;
+import com.azure.digitaltwins.parser.TypeChecker;
+import com.azure.digitaltwins.parser.PropertyValueConstrainer;
+import com.azure.digitaltwins.parser.PropertyInstanceBinder;
+import com.azure.digitaltwins.parser.ValueConstraints;
 
 /**
  * Class {@link DTEnumValueInfo} corresponds to an element of type EnumValue in a DTDL model.
  */
-public class DTEnumValueInfo extends DTNamedEntityInfo implements TypeChecker, Equatable<DTEnumValueInfo> {
+public class DTEnumValueInfo extends DTNamedEntityInfo implements TypeChecker {
     private static final Map<Integer, String> BAD_TYPE_ACTION_FORMAT = new HashMap<>();
 
     private static final Map<Integer, String> BAD_TYPE_CAUSE_FORMAT = new HashMap<>();
@@ -55,7 +59,7 @@ public class DTEnumValueInfo extends DTNamedEntityInfo implements TypeChecker, E
      * @return enumValue.
      */
     public Object getEnumValue() {
-        return this.enumValue
+        return this.enumValue;
     }
 
     /**
