@@ -55,9 +55,7 @@ public final class MetricAnomalyAlertConditions {
      * @return The MetricAnomalyAlertConditions object itself.
      */
     public MetricAnomalyAlertConditions setSeverityCondition(AnomalySeverity min, AnomalySeverity max) {
-        return setSeverityRangeCondition(new SeverityCondition()
-            .setMinAlertSeverity(min)
-            .setMaxAlertSeverity(max));
+        return setSeverityRangeCondition(new SeverityCondition(min, max));
     }
 
     /**

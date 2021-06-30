@@ -884,6 +884,8 @@ public class BlobAsyncClientBase {
         } catch (MalformedURLException ex) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'copySource' is not a valid url."));
         }
+        String sourceAuth = options.getSourceAuthorization() == null
+            ? null : options.getSourceAuthorization().toString();
 
         return this.azureBlobStorage.getBlobs().copyFromURLWithResponseAsync(
             containerName, blobName, url, null, options.getMetadata(), options.getTier(),
@@ -894,7 +896,7 @@ public class BlobAsyncClientBase {
             destRequestConditions.getIfNoneMatch(), destRequestConditions.getTagsConditions(),
             destRequestConditions.getLeaseId(), null, null,
             tagsToString(options.getTags()), immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(),
-            options.isLegalHold(), null, context)
+            options.isLegalHold(), sourceAuth, context)
             .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getXMsCopyId()));
     }
 

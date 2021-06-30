@@ -28,7 +28,7 @@ public class HookSample {
 
         // Create email notificationHook.
         System.out.printf("Creating NotificationHook%n");
-        NotificationHook emailNotificationHookToCreate = new EmailNotificationHook("email notification Hook")
+        NotificationHook emailNotificationHookToCreate = new EmailNotificationHook("email notification Hook1")
             .setDescription("my email notification Hook")
             .setEmailsToAlert(emails)
             .setExternalLink("https://adwiki.azurewebsites.net/articles/howto/alerts/create-hooks.html");
@@ -56,8 +56,10 @@ public class HookSample {
 
         emailHookToUpdate
             .setEmailsToAlert(emailsToUpdate);
-        advisorAdministrationClient.updateHook(emailHookToUpdate);
+        notificationHook = advisorAdministrationClient.updateHook(emailHookToUpdate);
         System.out.printf("Updated notification Hook: %s%n", notificationHook.getId());
+        System.out.printf("Updated Email Hook Emails: %s%n",
+            String.join(",", ((EmailNotificationHook) notificationHook).getEmailsToAlert()));
 
         // Delete the notificationHook.
         System.out.printf("Deleting Notification Hook: %s%n", notificationHook.getId());

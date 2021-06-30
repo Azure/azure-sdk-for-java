@@ -13,13 +13,6 @@ import java.nio.ByteBuffer
 
 class FluxInputStreamTest extends Specification {
 
-    def setup() {
-        String fullTestName = specificationContext.getCurrentIteration().getName().replace(' ', '').toLowerCase()
-        String className = specificationContext.getCurrentSpec().getName()
-        // Print out the test name to create breadcrumbs in our test logging in case anything hangs.
-        System.out.printf("========================= %s.%s =========================%n", className, fullTestName)
-    }
-
     /* Network tests to be performed by implementors of the FluxInputStream. */
     Flux<ByteBuffer> generateData(int num) {
         List<ByteBuffer> buffers = new ArrayList<>()
