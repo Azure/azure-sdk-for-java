@@ -308,7 +308,7 @@ final class Transforms {
                 if (fieldValue != null) {
                     List<FormElement> formElementList = setReferenceElements(fieldValue.getElements(), readResults);
                     FieldData valueData;
-                    // Bounding box and page an are not returned by the service in two scenarios:
+                    // Bounding box and page are not returned by the service in two scenarios:
                     //   - When this field is global and not associated with a specific page (e.g. ReceiptType).
                     //   - When this field is a collection, such as a list or dictionary.
                     //
