@@ -695,7 +695,10 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
 
         final CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
         cosmosQueryRequestOptions.setQueryMetricsEnabled(this.queryMetricsEnabled);
-        partitionKeyValue.ifPresent(o -> cosmosQueryRequestOptions.setPartitionKey(new PartitionKey(o)));
+        partitionKeyValue.ifPresent(o -> {
+            LOGGER.debug("Setting partition key {}", o);
+            cosmosQueryRequestOptions.setPartitionKey(new PartitionKey(o));
+        });
 
         CosmosAsyncContainer container =
             cosmosAsyncClient.getDatabase(this.databaseName).getContainer(containerName);
@@ -852,7 +855,10 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         final CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
         cosmosQueryRequestOptions.setQueryMetricsEnabled(this.queryMetricsEnabled);
         Optional<Object> partitionKeyValue = query.getPartitionKeyValue(domainType);
-        partitionKeyValue.ifPresent(o -> cosmosQueryRequestOptions.setPartitionKey(new PartitionKey(o)));
+        partitionKeyValue.ifPresent(o -> {
+            LOGGER.debug("Setting partition key {}", o);
+            cosmosQueryRequestOptions.setPartitionKey(new PartitionKey(o));
+        });
 
         return cosmosAsyncClient
             .getDatabase(this.databaseName)

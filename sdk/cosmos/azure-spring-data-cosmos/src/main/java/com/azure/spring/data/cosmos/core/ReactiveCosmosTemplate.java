@@ -28,6 +28,8 @@ import com.azure.spring.data.cosmos.core.query.CriteriaType;
 import com.azure.spring.data.cosmos.exception.CosmosExceptionUtils;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import com.fasterxml.jackson.databind.JsonNode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -48,6 +50,8 @@ import java.util.UUID;
  */
 @SuppressWarnings("unchecked")
 public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, ApplicationContextAware {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ReactiveCosmosTemplate.class);
 
     private final MappingCosmosConverter mappingCosmosConverter;
     private final String databaseName;
@@ -718,7 +722,10 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         final CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
         cosmosQueryRequestOptions.setQueryMetricsEnabled(this.queryMetricsEnabled);
         Optional<Object> partitionKeyValue = query.getPartitionKeyValue(domainType);
-        partitionKeyValue.ifPresent(o -> cosmosQueryRequestOptions.setPartitionKey(new PartitionKey(o)));
+        partitionKeyValue.ifPresent(o -> {
+            LOGGER.debug("Setting partition key {}", o);
+            cosmosQueryRequestOptions.setPartitionKey(new PartitionKey(o));
+        });
 
         return cosmosAsyncClient
             .getDatabase(this.databaseName)
