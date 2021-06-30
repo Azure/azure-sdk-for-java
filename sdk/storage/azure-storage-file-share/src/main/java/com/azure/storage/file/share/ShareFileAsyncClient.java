@@ -71,6 +71,7 @@ import com.azure.storage.file.share.models.ShareFileUploadRangeFromUrlInfo;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.options.ShareFileListRangesDiffOptions;
+import com.azure.storage.file.share.options.ShareFileUploadRangeFromUrlOptions;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
@@ -1417,11 +1418,19 @@ public class ShareFileAsyncClient {
                     stream, validatedParallelTransferOptions.getProgressReceiver()), length)
                     .setOffset(options.getOffset()).setRequestConditions(validatedRequestConditions), context);
 
-            Flux<ByteBuffer> data = options.getDataFlux() == null ? Utility.convertStreamToByteBuffer(
-                options.getDataStream(), options.getLength(),
+            Flux<ByteBuffer> data = options.getDataFlux();
+            // no specified length: use azure.core's converter
+            if (data == null && options.getLength() == null) {
                 // We can only buffer up to max int due to restrictions in ByteBuffer.
-                (int) Math.min(Integer.MAX_VALUE, validatedParallelTransferOptions.getBlockSizeLong()), false)
-                : options.getDataFlux();
+                int chunkSize = (int) Math.min(Integer.MAX_VALUE, validatedParallelTransferOptions.getBlockSizeLong());
+                data = FluxUtil.toFluxByteBuffer(options.getDataStream(), chunkSize);
+            // specified length (legacy requirement): use custom converter. no marking because we buffer anyway.
+            } else if (data == null) {
+                // We can only buffer up to max int due to restrictions in ByteBuffer.
+                int chunkSize = (int) Math.min(Integer.MAX_VALUE, validatedParallelTransferOptions.getBlockSizeLong());
+                data = Utility.convertStreamToByteBuffer(
+                    options.getDataStream(), options.getLength(), chunkSize, false);
+            }
 
             return UploadUtils.uploadFullOrChunked(data, validatedParallelTransferOptions, uploadInChunks, uploadFull);
         } catch (RuntimeException ex) {
@@ -1635,28 +1644,57 @@ public class ShareFileAsyncClient {
     public Mono<Response<ShareFileUploadRangeFromUrlInfo>> uploadRangeFromUrlWithResponse(long length,
         long destinationOffset, long sourceOffset, String sourceUrl,
         ShareRequestConditions destinationRequestConditions) {
+        return this.uploadRangeFromUrlWithResponse(new ShareFileUploadRangeFromUrlOptions(length, sourceUrl)
+            .setDestinationOffset(destinationOffset).setSourceOffset(sourceOffset)
+            .setDestinationRequestConditions(destinationRequestConditions));
+    }
+
+    /**
+     * Uploads a range of bytes from one file to another file.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Upload a number of bytes from a file at defined source and destination offsets </p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareFileAsyncClient.uploadRangeFromUrlWithResponse#ShareFileUploadRangeFromUrlOptions}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-range">Azure Docs</a>.</p>
+     *
+     * @param options argument collection
+     * @return A response containing the {@link ShareFileUploadRangeFromUrlInfo file upload range from url info} with
+     * headers and response status code.
+     */
+    // TODO: (gapra) Fix put range from URL link. Service docs have not been updated to show this API
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ShareFileUploadRangeFromUrlInfo>> uploadRangeFromUrlWithResponse(
+        ShareFileUploadRangeFromUrlOptions options) {
         try {
             return withContext(context ->
-                uploadRangeFromUrlWithResponse(length, destinationOffset, sourceOffset, sourceUrl,
-                    destinationRequestConditions, context));
+                uploadRangeFromUrlWithResponse(options, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<ShareFileUploadRangeFromUrlInfo>> uploadRangeFromUrlWithResponse(long length, long destinationOffset,
-        long sourceOffset, String sourceUrl, ShareRequestConditions destinationRequestConditions, Context context) {
-        destinationRequestConditions = destinationRequestConditions == null
-            ? new ShareRequestConditions() : destinationRequestConditions;
-        ShareFileRange destinationRange = new ShareFileRange(destinationOffset, destinationOffset + length - 1);
-        ShareFileRange sourceRange = new ShareFileRange(sourceOffset, sourceOffset + length - 1);
+    Mono<Response<ShareFileUploadRangeFromUrlInfo>> uploadRangeFromUrlWithResponse(
+        ShareFileUploadRangeFromUrlOptions options, Context context) {
+        ShareRequestConditions modifiedRequestConditions = options.getDestinationRequestConditions() == null
+            ? new ShareRequestConditions() : options.getDestinationRequestConditions();
+        ShareFileRange destinationRange = new ShareFileRange(options.getDestinationOffset(),
+            options.getDestinationOffset() + options.getLength() - 1);
+        ShareFileRange sourceRange = new ShareFileRange(options.getSourceOffset(),
+            options.getSourceOffset() + options.getLength() - 1);
         context = context == null ? Context.NONE : context;
 
-        final String copySource = Utility.encodeUrlPath(sourceUrl);
+        String sourceAuth = options.getSourceAuthorization() == null
+            ? null : options.getSourceAuthorization().toString();
+
+        final String copySource = Utility.encodeUrlPath(options.getSourceUrl());
 
         return azureFileStorageClient.getFiles()
             .uploadRangeFromURLWithResponseAsync(shareName, filePath, destinationRange.toString(), copySource, 0,
-                null, sourceRange.toString(), null, destinationRequestConditions.getLeaseId(), null,
+                null, sourceRange.toString(), null, modifiedRequestConditions.getLeaseId(), sourceAuth, null,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(this::uploadRangeFromUrlResponse);
     }

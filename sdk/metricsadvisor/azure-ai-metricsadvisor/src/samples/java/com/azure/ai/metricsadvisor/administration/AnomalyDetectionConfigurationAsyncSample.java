@@ -6,10 +6,10 @@ package com.azure.ai.metricsadvisor.administration;
 import com.azure.ai.metricsadvisor.administration.models.AnomalyDetectionConfiguration;
 import com.azure.ai.metricsadvisor.administration.models.AnomalyDetectorDirection;
 import com.azure.ai.metricsadvisor.administration.models.ChangeThresholdCondition;
-import com.azure.ai.metricsadvisor.administration.models.DetectionConditionsOperator;
+import com.azure.ai.metricsadvisor.administration.models.DetectionConditionOperator;
 import com.azure.ai.metricsadvisor.models.DimensionKey;
 import com.azure.ai.metricsadvisor.administration.models.HardThresholdCondition;
-import com.azure.ai.metricsadvisor.administration.models.ListMetricAnomalyDetectionConfigsOptions;
+import com.azure.ai.metricsadvisor.administration.models.ListDetectionConfigsOptions;
 import com.azure.ai.metricsadvisor.administration.models.MetricSeriesGroupDetectionCondition;
 import com.azure.ai.metricsadvisor.administration.models.MetricSingleSeriesDetectionCondition;
 import com.azure.ai.metricsadvisor.administration.models.MetricWholeSeriesDetectionCondition;
@@ -38,7 +38,7 @@ public class AnomalyDetectionConfigurationAsyncSample {
         // Create the detection configuration.
         Mono<AnomalyDetectionConfiguration> createDetectionConfigMono
             = advisorAdministrationAsyncClient
-            .createMetricAnomalyDetectionConfig(metricId, prepareDetectionConfigurationObject());
+            .createDetectionConfig(metricId, prepareDetectionConfigurationObject());
 
         createDetectionConfigMono
             .doOnSubscribe(__ ->
@@ -49,7 +49,7 @@ public class AnomalyDetectionConfigurationAsyncSample {
         // Retrieve the detection configuration that just created.
         Mono<AnomalyDetectionConfiguration> fetchDetectionConfigMono = createDetectionConfigMono
             .flatMap(createdDetectionConfig -> {
-                return advisorAdministrationAsyncClient.getMetricAnomalyDetectionConfig(
+                return advisorAdministrationAsyncClient.getDetectionConfig(
                     createdDetectionConfig.getId())
                     .doOnSubscribe(__ ->
                         System.out.printf("Fetching detection configuration: %s%n", createdDetectionConfig.getId()))
@@ -65,7 +65,7 @@ public class AnomalyDetectionConfigurationAsyncSample {
             .flatMap(detectionConfig -> {
                 final String detectionConfigId = detectionConfig.getId();
                 detectionConfig = updateDetectionConfigurationObject(detectionConfig);
-                return advisorAdministrationAsyncClient.updateMetricAnomalyDetectionConfig(detectionConfig)
+                return advisorAdministrationAsyncClient.updateDetectionConfig(detectionConfig)
                     .doOnSubscribe(__ ->
                         System.out.printf("Updating detection configuration: %s%n", detectionConfigId))
                     .doOnSuccess(config ->
@@ -75,15 +75,15 @@ public class AnomalyDetectionConfigurationAsyncSample {
         // List configurations
         System.out.printf("Listing detection configurations%n");
         PagedFlux<AnomalyDetectionConfiguration> detectionConfigsFlux
-            = advisorAdministrationAsyncClient.listMetricAnomalyDetectionConfigs(metricId,
-                new ListMetricAnomalyDetectionConfigsOptions());
+            = advisorAdministrationAsyncClient.listDetectionConfigs(metricId,
+                new ListDetectionConfigsOptions());
 
         detectionConfigsFlux.doOnNext(detectionConfig -> printDetectionConfiguration(detectionConfig))
             .blockLast();
 
         // Delete the detection configuration.
         Mono<Void> deleteDetectionConfigMono = updateDetectionConfigMono.flatMap(detectionConfig -> {
-            return advisorAdministrationAsyncClient.deleteMetricAnomalyDetectionConfiguration(detectionConfig.getId())
+            return advisorAdministrationAsyncClient.deleteDetectionConfig(detectionConfig.getId())
                 .doOnSubscribe(__ ->
                     System.out.printf("Deleting detection configuration: %s%n", detectionConfig.getId()))
                 .doOnSuccess(config ->
@@ -100,22 +100,22 @@ public class AnomalyDetectionConfigurationAsyncSample {
 
     private static AnomalyDetectionConfiguration prepareDetectionConfigurationObject() {
         final MetricWholeSeriesDetectionCondition wholeSeriesCondition = new MetricWholeSeriesDetectionCondition()
-            .setCrossConditionOperator(DetectionConditionsOperator.OR)
-            .setSmartDetectionCondition(new SmartDetectionCondition()
-                .setSensitivity(50)
-                .setAnomalyDetectorDirection(AnomalyDetectorDirection.BOTH)
-                .setSuppressCondition(new SuppressCondition().setMinNumber(50).setMinRatio(50)))
-            .setHardThresholdCondition(new HardThresholdCondition()
+            .setConditionOperator(DetectionConditionOperator.OR)
+            .setSmartDetectionCondition(new SmartDetectionCondition(
+                50,
+                AnomalyDetectorDirection.BOTH,
+                new SuppressCondition(50, 50)))
+            .setHardThresholdCondition(new HardThresholdCondition(
+                AnomalyDetectorDirection.BOTH,
+                new SuppressCondition(5, 5))
                 .setLowerBound(0.0)
-                .setUpperBound(100.0)
-                .setAnomalyDetectorDirection(AnomalyDetectorDirection.BOTH)
-                .setSuppressCondition(new SuppressCondition().setMinNumber(5).setMinRatio(5)))
-            .setChangeThresholdCondition(new ChangeThresholdCondition()
-                .setChangePercentage(50)
-                .setShiftPoint(30)
-                .setWithinRange(true)
-                .setAnomalyDetectorDirection(AnomalyDetectorDirection.BOTH)
-                .setSuppressCondition(new SuppressCondition().setMinNumber(2).setMinRatio(2)));
+                .setUpperBound(100.0))
+            .setChangeThresholdCondition(new ChangeThresholdCondition(
+                50,
+                30,
+                true,
+                AnomalyDetectorDirection.BOTH,
+                new SuppressCondition(2, 2)));
 
         final String detectionConfigName = "my_detection_config";
         final String detectionConfigDescription = "anomaly detection config for metric";
@@ -134,10 +134,10 @@ public class AnomalyDetectionConfigurationAsyncSample {
             .put("city", "Seoul");
         detectionConfig.addSeriesGroupDetectionCondition(
             new MetricSeriesGroupDetectionCondition(seriesGroupKey)
-                .setSmartDetectionCondition(new SmartDetectionCondition()
-                    .setSensitivity(10.0)
-                    .setAnomalyDetectorDirection(AnomalyDetectorDirection.UP)
-                    .setSuppressCondition(new SuppressCondition().setMinNumber(2).setMinRatio(2))));
+                .setSmartDetectionCondition(new SmartDetectionCondition(
+                    10.0,
+                    AnomalyDetectorDirection.UP,
+                    new SuppressCondition(2, 2))));
         return detectionConfig;
     }
 
@@ -154,7 +154,7 @@ public class AnomalyDetectionConfigurationAsyncSample {
             = detectionConfig.getWholeSeriesDetectionCondition();
 
         System.out.printf("- Use %s operator for multiple detection conditions:%n",
-            wholeSeriesDetectionCondition.getCrossConditionsOperator());
+            wholeSeriesDetectionCondition.getConditionOperator());
 
         System.out.printf("- Smart Detection Condition:%n");
         System.out.printf(" - Sensitivity: %s%n",
@@ -205,9 +205,9 @@ public class AnomalyDetectionConfigurationAsyncSample {
             DimensionKey seriesKey = seriesDetectionCondition.getSeriesKey();
             final String seriesKeyStr
                 = Arrays.toString(seriesKey.asMap().entrySet().stream().toArray());
-            System.out.printf("- Series Key:%n", seriesKeyStr);
+            System.out.printf("- Series Key: %s%n", seriesKeyStr);
             System.out.printf(" - Use %s operator for multiple detection conditions:%n",
-                seriesDetectionCondition.getCrossConditionsOperator());
+                seriesDetectionCondition.getConditionOperator());
 
             System.out.printf(" - Smart Detection Condition:%n");
             System.out.printf("  - Sensitivity: %s%n",
@@ -260,9 +260,9 @@ public class AnomalyDetectionConfigurationAsyncSample {
             DimensionKey seriesGroupKey = seriesGroupDetectionCondition.getSeriesGroupKey();
             final String seriesGroupKeyStr
                 = Arrays.toString(seriesGroupKey.asMap().entrySet().stream().toArray());
-            System.out.printf("- Series Group Key:%n", seriesGroupKeyStr);
+            System.out.printf("- Series Group Key: %s%n", seriesGroupKeyStr);
             System.out.printf(" - Use %s operator for multiple detection conditions:%n",
-                seriesGroupDetectionCondition.getCrossConditionsOperator());
+                seriesGroupDetectionCondition.getConditionOperator());
 
             System.out.printf(" - Smart Detection Condition:%n");
             System.out.printf("  - Sensitivity: %s%n",

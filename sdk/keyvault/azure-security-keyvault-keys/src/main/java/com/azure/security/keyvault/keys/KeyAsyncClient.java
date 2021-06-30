@@ -1340,7 +1340,7 @@ public final class KeyAsyncClient {
                 CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
                 .doOnRequest(ignored -> logger.verbose("Listing key versions - {}", name))
                 .doOnSuccess(response -> logger.verbose("Listed key versions - {}", name))
-                .doOnError(error -> logger.warning(String.format("Failed to list key versions - %s", name), error));
+                .doOnError(error -> logger.warning("Failed to list key versions - {}", name, error));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

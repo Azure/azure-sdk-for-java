@@ -36,7 +36,7 @@ public class DownloadContentAsyncLiveTests extends CallingServerTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(
-        named = "RUN_CALLINGSERVER_TEST_RECORD",
+        named = "SKIP_LIVE_TEST",
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void downloadMetadataAsync(HttpClient httpClient) {
@@ -58,12 +58,12 @@ public class DownloadContentAsyncLiveTests extends CallingServerTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(
-        named = "RUN_CALLINGSERVER_TEST_RECORD",
+        named = "SKIP_LIVE_TEST",
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void downloadMetadataRetryingAsync(HttpClient httpClient) {
         CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
-        CallingServerAsyncClient conversationAsyncClient = setupAsyncClient(builder, "downloadMetadataAsync");
+        CallingServerAsyncClient conversationAsyncClient = setupAsyncClient(builder, "downloadMetadataRetryingAsync");
 
         try {
             Flux<ByteBuffer> content = conversationAsyncClient.downloadStream(METADATA_URL);
@@ -80,7 +80,7 @@ public class DownloadContentAsyncLiveTests extends CallingServerTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(
-        named = "RUN_CALLINGSERVER_TEST_RECORD",
+        named = "SKIP_LIVE_TEST",
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void downloadVideoAsync(HttpClient httpClient) {
@@ -102,7 +102,7 @@ public class DownloadContentAsyncLiveTests extends CallingServerTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(
-        named = "RUN_CALLINGSERVER_TEST_RECORD",
+        named = "SKIP_LIVE_TEST",
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void downloadToFileAsync(HttpClient httpClient) {
@@ -127,7 +127,7 @@ public class DownloadContentAsyncLiveTests extends CallingServerTestBase {
             .downloadToWithResponse(METADATA_URL,
                 Paths.get("dummyPath"),
                 channel,
-                new ParallelDownloadOptions().setBlockSizeLong(479L),
+                new ParallelDownloadOptions().setBlockSize(479L),
                 null).block();
 
         Mockito.verify(channel, times(2)).write(any(ByteBuffer.class), anyLong(),
@@ -137,12 +137,12 @@ public class DownloadContentAsyncLiveTests extends CallingServerTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(
-        named = "RUN_CALLINGSERVER_TEST_RECORD",
+        named = "SKIP_LIVE_TEST",
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void downloadToFileRetryingAsync(HttpClient httpClient) {
         CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
-        CallingServerAsyncClient conversationAsyncClient = setupAsyncClient(builder, "downloadToFileAsync");
+        CallingServerAsyncClient conversationAsyncClient = setupAsyncClient(builder, "downloadToFileRetryingAsync");
         AsynchronousFileChannel channel = Mockito.mock(AsynchronousFileChannel.class);
 
         doAnswer(invocation -> {
@@ -171,6 +171,10 @@ public class DownloadContentAsyncLiveTests extends CallingServerTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @DisabledIfEnvironmentVariable(
+        named = "SKIP_LIVE_TEST",
+        matches = "(?i)(true)",
+        disabledReason = "Requires human intervention")
     public void downloadContent404Async(HttpClient httpClient) {
         CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
         CallingServerAsyncClient conversationAsyncClient = setupAsyncClient(builder, "downloadContent404Async");

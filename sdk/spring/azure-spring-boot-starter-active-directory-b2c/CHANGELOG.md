@@ -1,6 +1,9 @@
 # Release History
 
-## 3.6.0-beta.1 (Unreleased)
+## 3.7.0-beta.1 (Unreleased)
+
+
+## 3.6.0 (2021-06-23)
 ### Breaking Changes
 - Remove class `AADB2COAuth2AuthenticatedPrincipal`, use class `AADOAuth2AuthenticatedPrincipal` instead.
 

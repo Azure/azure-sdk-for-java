@@ -1,7 +1,7 @@
-:azure-spring-boot-starter-storage: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-storage
+:azure-spring-boot-starter-storage: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot-starter-storage
 :azure-storage: https://docs.microsoft.com/azure/storage/
-:application-properties: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-sample-storage-resource/src/main/resources/application.properties
-:ready-to-run-checklist: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist
+:application-properties: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot-sample-storage-resource/src/main/resources/application.properties
+:ready-to-run-checklist: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist
 :microsoft-account: https://azure.microsoft.com/account/
 :storage-howto-blob: https://docs.microsoft.com/azure/storage/storage-java-how-to-use-blob-storage
 :storage-howto-file: https://docs.microsoft.com/azure/storage/storage-java-how-to-use-file-storage

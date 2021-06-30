@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.databricks.models;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.databricks.fluent.models.WorkspaceInner;
 import java.time.OffsetDateTime;
@@ -54,6 +55,13 @@ public interface Workspace {
      * @return the sku value.
      */
     Sku sku();
+
+    /**
+     * Gets the systemData property: The system metadata relating to this resource.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
 
     /**
      * Gets the managedResourceGroupId property: The managed resource group Id.
@@ -134,6 +142,37 @@ public interface Workspace {
      * @return the storageAccountIdentity value.
      */
     ManagedIdentityConfiguration storageAccountIdentity();
+
+    /**
+     * Gets the encryption property: Encryption properties for databricks workspace.
+     *
+     * @return the encryption value.
+     */
+    WorkspacePropertiesEncryption encryption();
+
+    /**
+     * Gets the privateEndpointConnections property: Private endpoint connections created on the workspace.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    List<PrivateEndpointConnection> privateEndpointConnections();
+
+    /**
+     * Gets the publicNetworkAccess property: The network access type for accessing workspace. Set value to disabled to
+     * access workspace only via private link.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    PublicNetworkAccess publicNetworkAccess();
+
+    /**
+     * Gets the requiredNsgRules property: Gets or sets a value indicating whether data plane (clusters) to control
+     * plane communication happen over private endpoint. Supported values are 'AllRules' and 'NoAzureDatabricksRules'.
+     * 'NoAzureServiceRules' value is for internal use only.
+     *
+     * @return the requiredNsgRules value.
+     */
+    RequiredNsgRules requiredNsgRules();
 
     /**
      * Gets the region of the resource.
@@ -219,7 +258,10 @@ public interface Workspace {
                 DefinitionStages.WithAuthorizations,
                 DefinitionStages.WithCreatedBy,
                 DefinitionStages.WithUpdatedBy,
-                DefinitionStages.WithStorageAccountIdentity {
+                DefinitionStages.WithStorageAccountIdentity,
+                DefinitionStages.WithEncryption,
+                DefinitionStages.WithPublicNetworkAccess,
+                DefinitionStages.WithRequiredNsgRules {
             /**
              * Executes the create request.
              *
@@ -317,6 +359,42 @@ public interface Workspace {
              * @return the next definition stage.
              */
             WithCreate withStorageAccountIdentity(ManagedIdentityConfiguration storageAccountIdentity);
+        }
+        /** The stage of the Workspace definition allowing to specify encryption. */
+        interface WithEncryption {
+            /**
+             * Specifies the encryption property: Encryption properties for databricks workspace.
+             *
+             * @param encryption Encryption properties for databricks workspace.
+             * @return the next definition stage.
+             */
+            WithCreate withEncryption(WorkspacePropertiesEncryption encryption);
+        }
+        /** The stage of the Workspace definition allowing to specify publicNetworkAccess. */
+        interface WithPublicNetworkAccess {
+            /**
+             * Specifies the publicNetworkAccess property: The network access type for accessing workspace. Set value to
+             * disabled to access workspace only via private link..
+             *
+             * @param publicNetworkAccess The network access type for accessing workspace. Set value to disabled to
+             *     access workspace only via private link.
+             * @return the next definition stage.
+             */
+            WithCreate withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess);
+        }
+        /** The stage of the Workspace definition allowing to specify requiredNsgRules. */
+        interface WithRequiredNsgRules {
+            /**
+             * Specifies the requiredNsgRules property: Gets or sets a value indicating whether data plane (clusters) to
+             * control plane communication happen over private endpoint. Supported values are 'AllRules' and
+             * 'NoAzureDatabricksRules'. 'NoAzureServiceRules' value is for internal use only..
+             *
+             * @param requiredNsgRules Gets or sets a value indicating whether data plane (clusters) to control plane
+             *     communication happen over private endpoint. Supported values are 'AllRules' and
+             *     'NoAzureDatabricksRules'. 'NoAzureServiceRules' value is for internal use only.
+             * @return the next definition stage.
+             */
+            WithCreate withRequiredNsgRules(RequiredNsgRules requiredNsgRules);
         }
     }
     /**

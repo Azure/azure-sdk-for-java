@@ -9,6 +9,7 @@ import com.azure.core.util.Context;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
+import com.azure.storage.blob.models.BlobImmutabilityPolicy;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -26,7 +27,7 @@ import java.util.Map;
 public class BlobParallelUploadOptions {
     private final Flux<ByteBuffer> dataFlux;
     private final InputStream dataStream;
-    private final long length;
+    private final Long length;
     private ParallelTransferOptions parallelTransferOptions;
     private BlobHttpHeaders headers;
     private Map<String, String> metadata;
@@ -35,9 +36,11 @@ public class BlobParallelUploadOptions {
     private BlobRequestConditions requestConditions;
     private boolean computeMd5;
     private Duration timeout;
+    private BlobImmutabilityPolicy immutabilityPolicy;
+    private Boolean legalHold;
 
     /**
-     * Constructs a new {@code BlobParallelUploadOptions}.
+     * Constructs a new {@link BlobParallelUploadOptions}.
      *
      * @param dataFlux The data to write to the blob. Unlike other upload methods, this method does not require that
      * the {@code Flux} be replayable. In other words, it does not have to support multiple subscribers and is not
@@ -47,25 +50,48 @@ public class BlobParallelUploadOptions {
         StorageImplUtils.assertNotNull("dataFlux", dataFlux);
         this.dataFlux = dataFlux;
         this.dataStream = null;
-        this.length = -1;
+        this.length = null;
     }
 
     /**
-     * Constructs a new {@code BlobParalleUploadOptions}.
+     * Constructs a new {@link BlobParallelUploadOptions}.
      *
-     * @param dataStream The data to write to the blob. The data must be markable. This is in order to support retries.
-     * If the data is not markable, consider opening a {@link com.azure.storage.blob.specialized.BlobOutputStream} and
-     * writing to the returned stream. Alternatively, consider wrapping your data source in a
-     * {@link java.io.BufferedInputStream} to add mark support.
+     * Use {@link #BlobParallelUploadOptions(InputStream)} instead to supply an InputStream without knowing the exact
+     * length beforehand.
+     *
+     * @param dataStream The data to write to the blob.
      * @param length The exact length of the data. It is important that this value match precisely the length of the
      * data provided in the {@link InputStream}.
+     * @deprecated length is no longer necessary; use {@link #BlobParallelUploadOptions(InputStream)} instead.
      */
+    @Deprecated
     public BlobParallelUploadOptions(InputStream dataStream, long length) {
+        this(dataStream, Long.valueOf(length));
+    }
+
+    /**
+     * Constructs a new {@link BlobParallelUploadOptions}.
+     *
+     * @param dataStream The data to write to the blob.
+     */
+    public BlobParallelUploadOptions(InputStream dataStream) {
+        this(dataStream, null);
+    }
+
+    /**
+     * Common constructor for building options from InputStream.
+     *
+     * @param dataStream The data to write to the blob.
+     * @param length Optional known length of the data, affects reactive behavior for backwards compatibility.
+     */
+    private BlobParallelUploadOptions(InputStream dataStream, Long length) {
         StorageImplUtils.assertNotNull("dataStream", dataStream);
-        StorageImplUtils.assertInBounds("length", length, 0, Long.MAX_VALUE);
+        if (length != null) {
+            StorageImplUtils.assertInBounds("length", length, 0, Long.MAX_VALUE);
+        }
         this.dataStream = dataStream;
-        this.length = length;
         this.dataFlux = null;
+        this.length = length;
     }
 
     /**
@@ -77,7 +103,7 @@ public class BlobParallelUploadOptions {
         StorageImplUtils.assertNotNull("data", data);
         this.dataFlux = Flux.just(data.toByteBuffer());
         this.dataStream = null;
-        this.length = -1;
+        this.length = null;
     }
 
     /**
@@ -103,8 +129,20 @@ public class BlobParallelUploadOptions {
      *
      * @return The exact length of the data. It is important that this value match precisely the length of the
      * data provided in the {@link InputStream}.
+     * @deprecated use {@link #getOptionalLength()} to have safe access to a length that will not always exist.
      */
+    @Deprecated
     public long getLength() {
+        return length;
+    }
+
+    /**
+     * Gets the length of the data.
+     *
+     * @return The exact length of the data. It is important that this value match precisely the length of the
+     * data provided in the {@link InputStream}.
+     */
+    public Long getOptionalLength() {
         return length;
     }
 
@@ -272,6 +310,42 @@ public class BlobParallelUploadOptions {
     @Deprecated
     public BlobParallelUploadOptions setTimeout(Duration timeout) {
         this.timeout = timeout;
+        return this;
+    }
+
+    /**
+     * @return {@link BlobImmutabilityPolicy}
+     */
+    public BlobImmutabilityPolicy getImmutabilityPolicy() {
+        return immutabilityPolicy;
+    }
+
+    /**
+     * Note that this parameter is only applicable to a blob within a container that has immutable storage with
+     * versioning enabled.
+     * @param immutabilityPolicy {@link BlobImmutabilityPolicy}
+     * @return The updated options.
+     */
+    public BlobParallelUploadOptions setImmutabilityPolicy(BlobImmutabilityPolicy immutabilityPolicy) {
+        this.immutabilityPolicy = immutabilityPolicy;
+        return this;
+    }
+
+    /**
+     * @return If a legal hold should be placed on the blob.
+     */
+    public Boolean isLegalHold() {
+        return legalHold;
+    }
+
+    /**
+     * Note that this parameter is only applicable to a blob within a container that has immutable storage with
+     * versioning enabled.
+     * @param legalHold Indicates if a legal hold should be placed on the blob.
+     * @return The updated options.
+     */
+    public BlobParallelUploadOptions setLegalHold(Boolean legalHold) {
+        this.legalHold = legalHold;
         return this;
     }
 }

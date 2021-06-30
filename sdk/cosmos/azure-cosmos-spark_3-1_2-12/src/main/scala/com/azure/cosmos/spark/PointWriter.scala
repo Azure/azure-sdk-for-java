@@ -61,6 +61,7 @@ class PointWriter(container: CosmosAsyncContainer, cosmosWriteConfig: CosmosWrit
   private  val taskDiagnosticsContext = SparkTaskContext(diagnosticsContext.correlationActivityId,
     taskContext.stageId(),
     taskContext.partitionId(),
+    taskContext.taskAttemptId(),
     "PointWriter")
 
   override def scheduleWrite(partitionKeyValue: PartitionKey, objectNode: ObjectNode): Unit = {
@@ -287,9 +288,11 @@ class PointWriter(container: CosmosAsyncContainer, cosmosWriteConfig: CosmosWrit
   private def getOptions(): CosmosItemRequestOptions = {
     val options =  new CosmosItemRequestOptions()
     if (diagnosticsConfig.mode.isDefined) {
-      val taskDiagnosticsContext = SparkTaskContext(diagnosticsContext.correlationActivityId,
+      val taskDiagnosticsContext = SparkTaskContext(
+        diagnosticsContext.correlationActivityId,
         taskContext.stageId(),
         taskContext.partitionId(),
+        taskContext.taskAttemptId(),
         "")
 
       val listener: OperationListener =

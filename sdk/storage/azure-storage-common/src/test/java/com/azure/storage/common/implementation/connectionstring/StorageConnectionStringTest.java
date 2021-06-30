@@ -341,8 +341,7 @@ public class StorageConnectionStringTest {
                         blobEndpointStr,
                         fileEndpointStr,
                         SAS_TOKEN,
-                        ACCOUNT_NAME_VALUE,
-                        ACCOUNT_KEY_VALUE);
+                        ACCOUNT_NAME_VALUE);
         StorageConnectionString.create(connectionString, logger);
     }
 
