@@ -4,6 +4,7 @@
 package com.azure.storage.blob.options;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.experimental.http.HttpAuthorization;
 import com.azure.core.http.RequestConditions;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobImmutabilityPolicy;
@@ -23,6 +24,7 @@ public class BlobCopyFromUrlOptions {
     private AccessTier tier;
     private RequestConditions sourceRequestConditions;
     private BlobRequestConditions destinationRequestConditions;
+    private HttpAuthorization sourceAuthorization;
     private BlobImmutabilityPolicy immutabilityPolicy;
     private Boolean legalHold;
 
@@ -119,6 +121,25 @@ public class BlobCopyFromUrlOptions {
      */
     public BlobCopyFromUrlOptions setDestinationRequestConditions(BlobRequestConditions destinationRequestConditions) {
         this.destinationRequestConditions = destinationRequestConditions;
+        return this;
+    }
+
+    /**
+     * @return auth header for access to source.
+     */
+    public HttpAuthorization getSourceAuthorization() {
+        return sourceAuthorization;
+    }
+
+    /**
+     * Sets "Authorization" header for accessing source URL. Currently only "Bearer" authentication is accepted by
+     * Storage.
+     *
+     * @param sourceAuthorization auth header for access to source.
+     * @return The updated options.
+     */
+    public BlobCopyFromUrlOptions setSourceAuthorization(HttpAuthorization sourceAuthorization) {
+        this.sourceAuthorization = sourceAuthorization;
         return this;
     }
 

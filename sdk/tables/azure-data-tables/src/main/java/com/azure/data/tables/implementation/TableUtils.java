@@ -4,7 +4,6 @@ package com.azure.data.tables.implementation;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.CoreUtils;
@@ -120,18 +119,6 @@ public final class TableUtils {
      */
     public static <T> Flux<T> applyOptionalTimeout(Flux<T> publisher, Duration timeout) {
         return timeout == null ? publisher : publisher.timeout(timeout);
-    }
-
-    /**
-     * Applies a timeout to a {@link PagedFlux publisher} if the given timeout is not null.
-     *
-     * @param publisher {@link PagedFlux} to apply optional timeout to.
-     * @param timeout Optional timeout.
-     * @param <T> Return type of the {@link PagedFlux}.
-     * @return {@link PagedFlux} with an applied timeout, if any.
-     */
-    public static <T> PagedFlux<T> applyOptionalTimeout(PagedFlux<T> publisher, Duration timeout) {
-        return timeout == null ? publisher : (PagedFlux<T>) publisher.timeout(timeout);
     }
 
     /**

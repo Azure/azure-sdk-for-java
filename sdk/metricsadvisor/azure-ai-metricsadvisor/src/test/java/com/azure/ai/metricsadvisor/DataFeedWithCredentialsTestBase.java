@@ -113,11 +113,11 @@ public abstract class DataFeedWithCredentialsTestBase extends MetricsAdvisorAdmi
 
     protected DataFeed initDataFeed() {
         return new DataFeed().setSchema(new DataFeedSchema(Arrays.asList(
-            new DataFeedMetric().setName("cost").setDisplayName("cost"),
-            new DataFeedMetric().setName("revenue").setDisplayName("revenue")))
+            new DataFeedMetric("cost").setDisplayName("cost"),
+            new DataFeedMetric("revenue").setDisplayName("revenue")))
             .setDimensions(Arrays.asList(
-                new DataFeedDimension().setName("city").setDisplayName("city"),
-                new DataFeedDimension().setName("category").setDisplayName("category"))))
+                new DataFeedDimension("city").setDisplayName("city"),
+                new DataFeedDimension("category").setDisplayName("category"))))
             .setName("java_create_data_feed_test_sample" + UUID.randomUUID())
             .setGranularity(new DataFeedGranularity().setGranularityType(DataFeedGranularityType.DAILY))
             .setIngestionSettings(new DataFeedIngestionSettings(INGESTION_START_TIME));

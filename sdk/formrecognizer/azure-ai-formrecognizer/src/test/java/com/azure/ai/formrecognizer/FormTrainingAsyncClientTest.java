@@ -388,8 +388,8 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
                 FormRecognizerException formRecognizerException = assertThrows(FormRecognizerException.class,
                     () -> client.beginCopyModel(actualModel.getModelId(), target, durationTestMode)
                         .getSyncPoller().getFinalResult());
-                FormRecognizerErrorInformation errorInformation = formRecognizerException.getErrorInformation().get(0);
-                // assertTrue(formRecognizerException.getMessage().startsWith(COPY_OPERATION_FAILED_STATUS_MESSAGE));
+                assertTrue(formRecognizerException.getMessage().startsWith(
+                    FormRecognizerClientTestBase.COPY_OPERATION_FAILED_STATUS_MESSAGE));
             });
         });
     }
@@ -774,9 +774,9 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
     //     });
     // }
 
-    // /**
-    //  * Verifies the result contains the user defined model display name for unlabeled model.
-    //  */
+    /**
+     * Verifies the result contains the user defined model display name for unlabeled model.
+     */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void beginTrainingUnlabeledModelName(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {

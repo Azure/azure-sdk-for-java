@@ -3,6 +3,7 @@
 
 package com.azure.ai.metricsadvisor.implementation.util;
 
+import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertSnoozeCondition;
 import com.azure.ai.metricsadvisor.implementation.models.AnomalyAlertingConfiguration;
 import com.azure.ai.metricsadvisor.implementation.models.AnomalyAlertingConfigurationLogicType;
 import com.azure.ai.metricsadvisor.implementation.models.AnomalyAlertingConfigurationPatch;
@@ -10,6 +11,7 @@ import com.azure.ai.metricsadvisor.implementation.models.AnomalyScope;
 import com.azure.ai.metricsadvisor.implementation.models.DimensionGroupIdentity;
 import com.azure.ai.metricsadvisor.implementation.models.Direction;
 import com.azure.ai.metricsadvisor.implementation.models.MetricAlertingConfiguration;
+import com.azure.ai.metricsadvisor.implementation.models.SeverityCondition;
 import com.azure.ai.metricsadvisor.implementation.models.ValueCondition;
 import com.azure.ai.metricsadvisor.administration.models.AnomalyAlertConfiguration;
 import com.azure.ai.metricsadvisor.administration.models.BoundaryDirection;
@@ -22,6 +24,7 @@ import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertScope
 import com.azure.ai.metricsadvisor.administration.models.MetricBoundaryCondition;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
+import com.azure.ai.metricsadvisor.administration.models.TopNGroupScope;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.util.ArrayList;
@@ -143,13 +146,22 @@ public final class AlertConfigurationTransforms {
                 innerMetricAlertConfiguration.setDimensionAnomalyScope(innerId);
             } else if (alertScope.getScopeType() == MetricAnomalyAlertScopeType.TOP_N) {
                 innerMetricAlertConfiguration.setAnomalyScopeType(AnomalyScope.TOPN);
-                innerMetricAlertConfiguration.setTopNAnomalyScope(alertScope.getTopNGroupInScope());
+                com.azure.ai.metricsadvisor.implementation.models.TopNGroupScope innerTopNGroupScope =
+                    new com.azure.ai.metricsadvisor.implementation.models.TopNGroupScope()
+                        .setTop(alertScope.getTopNGroupInScope().getTop())
+                        .setPeriod(alertScope.getTopNGroupInScope().getPeriod())
+                        .setMinTopCount(alertScope.getTopNGroupInScope().getMinTopCount());
+                innerMetricAlertConfiguration.setTopNAnomalyScope(innerTopNGroupScope);
             }
 
             // 2. Set alert conditions (boundary and boundary conditions).
             final MetricAnomalyAlertConditions alertConditions = metricAnomalyAlertConfiguration.getAlertConditions();
             if (alertConditions != null) {
-                innerMetricAlertConfiguration.setSeverityFilter(alertConditions.getSeverityCondition());
+                if (alertConditions.getSeverityCondition() != null) {
+                    innerMetricAlertConfiguration.setSeverityFilter(new SeverityCondition()
+                        .setMaxAlertSeverity(alertConditions.getSeverityCondition().getMinAlertSeverity())
+                        .setMaxAlertSeverity(alertConditions.getSeverityCondition().getMaxAlertSeverity()));
+                }
                 final MetricBoundaryCondition boundaryConditions = alertConditions.getMetricBoundaryCondition();
                 ValueCondition innerValueCondition = new ValueCondition();
                 if (boundaryConditions != null) {
@@ -176,7 +188,17 @@ public final class AlertConfigurationTransforms {
             }
 
             // 3. Set alert snooze conditions
-            innerMetricAlertConfiguration.setSnoozeFilter(metricAnomalyAlertConfiguration.getAlertSnoozeCondition());
+            if (metricAnomalyAlertConfiguration.getAlertSnoozeCondition() != null) {
+                com.azure.ai.metricsadvisor.implementation.models.MetricAnomalyAlertSnoozeCondition innerSnoozeCondition
+                    = new com.azure.ai.metricsadvisor.implementation.models.MetricAnomalyAlertSnoozeCondition();
+
+                innerSnoozeCondition
+                    .setAutoSnooze(metricAnomalyAlertConfiguration.getAlertSnoozeCondition().getAutoSnooze())
+                    .setSnoozeScope(metricAnomalyAlertConfiguration.getAlertSnoozeCondition().getSnoozeScope())
+                    .setOnlyForSuccessive(metricAnomalyAlertConfiguration.getAlertSnoozeCondition().isOnlyForSuccessive());
+
+                innerMetricAlertConfiguration.setSnoozeFilter(innerSnoozeCondition);
+            }
             innerMetricAlertConfigurations.add(innerMetricAlertConfiguration);
         }
         return innerMetricAlertConfigurations;
@@ -248,8 +270,13 @@ public final class AlertConfigurationTransforms {
                     }
                     alertScope = MetricAnomalyAlertScope.forSeriesGroup(seriesGroupId);
                 } else if (innerMetricAlertConfiguration.getAnomalyScopeType() == AnomalyScope.TOPN) {
+                    com.azure.ai.metricsadvisor.implementation.models.TopNGroupScope innerTopNGroupScope
+                        = innerMetricAlertConfiguration.getTopNAnomalyScope();
+
                     alertScope =
-                        MetricAnomalyAlertScope.forTopNGroup(innerMetricAlertConfiguration.getTopNAnomalyScope());
+                        MetricAnomalyAlertScope.forTopNGroup(new TopNGroupScope(innerTopNGroupScope.getTop(),
+                            innerTopNGroupScope.getPeriod(),
+                            innerTopNGroupScope.getMinTopCount()));
                 }
                 MetricAlertConfiguration metricAlertConfiguration
                     = new MetricAlertConfiguration(
@@ -260,7 +287,12 @@ public final class AlertConfigurationTransforms {
                     || innerMetricAlertConfiguration.getValueFilter() != null) {
                     MetricAnomalyAlertConditions alertConditions = new MetricAnomalyAlertConditions();
                     // Set severity based condition.
-                    alertConditions.setSeverityRangeCondition(innerMetricAlertConfiguration.getSeverityFilter());
+                    if (innerMetricAlertConfiguration.getSeverityFilter() != null) {
+                        alertConditions.setSeverityRangeCondition(
+                            new com.azure.ai.metricsadvisor.administration.models.SeverityCondition(
+                                innerMetricAlertConfiguration.getSeverityFilter().getMinAlertSeverity(),
+                                innerMetricAlertConfiguration.getSeverityFilter().getMaxAlertSeverity()));
+                    }
                     // Set boundary based condition.
                     ValueCondition innerValueCondition = innerMetricAlertConfiguration.getValueFilter();
                     if (innerValueCondition != null) {
@@ -289,7 +321,16 @@ public final class AlertConfigurationTransforms {
                     }
                     metricAlertConfiguration.setAlertConditions(alertConditions);
                 }
-                metricAlertConfiguration.setAlertSnoozeCondition(innerMetricAlertConfiguration.getSnoozeFilter());
+
+                com.azure.ai.metricsadvisor.implementation.models.MetricAnomalyAlertSnoozeCondition
+                    innerSnoozeCondition = innerMetricAlertConfiguration.getSnoozeFilter();
+
+                if (innerSnoozeCondition != null) {
+                    metricAlertConfiguration.setAlertSnoozeCondition(new MetricAnomalyAlertSnoozeCondition(
+                        innerSnoozeCondition.getAutoSnooze(),
+                        innerSnoozeCondition.getSnoozeScope(),
+                        innerSnoozeCondition.isOnlyForSuccessive()));
+                }
                 metricAlertConfigurations.add(metricAlertConfiguration);
             }
             alertConfiguration.setMetricAlertConfigurations(metricAlertConfigurations);

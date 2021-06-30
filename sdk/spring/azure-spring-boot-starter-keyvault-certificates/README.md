@@ -281,6 +281,19 @@ spring:
           useInsecureTrustManager: true
 ```
 
+### Refresh certificate periodically
+
+KeyVaultKeyStore can fetch certificates from KeyVault periodically if following property is configured:
+
+```yaml
+azure:
+  keyvault:
+    jca:
+       certificates-refresh-interval: 1800000
+```
+
+Its value is 0(ms) by default, and certificate will not automatically refresh when its value <= 0.
+
 ### Refresh certificates when have un trust certificate
 
 When the inbound certificate is not trusted, the KeyVaultKeyStore can fetch 
@@ -295,26 +308,6 @@ azure:
 
 Note: If you set refresh-certificates-when-have-un-trust-certificate=true, your server will be vulnerable
 to attack, because every untrusted certificate will cause your application to send a re-acquire certificate request.
-
-### Refresh certificate periodically
-
-KeyVaultKeyStore can fetch certificates from KeyVault periodically if following property is configured:
-
-```yaml
-azure:
-  keyvault:
-    jca:
-       certificates-refresh-interval: 1800000
-```
-
-Its value is 0(ms) by default, and certificate will not automatically refresh when its value <= 0.
-
-### Refresh certificate by java code
-
-You can also manually refresh the certificate by calling this method:
-```java
-KeyVaultCertificates.refreshCertsInfo();
-```
 
 ### Specific path certificates
 AzureKeyVault keystore will load certificates in the specific path:
