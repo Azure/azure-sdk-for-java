@@ -42,17 +42,17 @@ sendeventdata -cs "<<event-hubs-namespace-connection-string>>" -n "<<event-hub-n
 -c 500 -d 60 --warmup 0
 ```
 
-### Receive using EventConsumerAsyncClient
+### Receive using EventHubConsumerAsyncClient
 
 The command below runs the scenario for receiving messages from a single partition. This uses the low level receiver.
 
 - (REQUIRED) `-cs` is the connection string for the Event Hubs namespace.
 - (REQUIRED) `-n` is the name of the Event Hub.
 - (REQUIRED) `--partitionId` is the partition to receive events from.
-- `--count` is the number of EventData to receive, 100.
-- `--duration` is the test duration, 60 seconds.
 - `--consumerGroup` is the consumer group to use when receiving messages. If none is specified the default, "$DEFAULT"
   is used.
+- `--count` is the number of EventData to receive, 100.
+- `--duration` is the test duration, 60 seconds.
 - `--warmup` is the warm-up time, 0 seconds.
 
 ```bash
@@ -75,7 +75,8 @@ performance library.
 - (REQUIRED) `-n` is the name of the Event Hub.
 - (REQUIRED) `--storageEndpoint` is the endpoint for the storage account.
 - (REQUIRED) `--storageConnectionString` is the connection string for the storage account.
-- `--prefetch` is the number of credits to initially add to each partition receiver when they begin receiving, 750 credits.
+- `--prefetch` is the number of credits to initially add to each partition receiver when they begin receiving, 750
+  credits.
 - `--duration` is the test duration, 600 seconds.
 - `--warmup` is the warm-up time, 0 seconds.
 - The consumer group was not specified, so the default, "$DEFAULT" is used.
@@ -96,6 +97,29 @@ Events can be published to the Event Hub prior to running the EventProcessorClie
 `--publish` is off by default because an Event Hub can store events for many days and receiving events starts from the
 beginning of a stream.
 
+### Receive using ReactorReceiver
+
+This removes the cost of filtering events through EventHubConsumerAsyncClient and EventProcessorClient.
+
+- (REQUIRED) `-cs` is the connection string for the Event Hubs namespace.
+- (REQUIRED) `-n` is the name of the Event Hub.
+- (REQUIRED) `--partitionId` is the partition to receive events from.
+- `--consumerGroup` is the consumer group to use when receiving messages. If none is specified the default, "$DEFAULT"
+  is used.
+- `--count` is the number of EventData to receive, 1500.
+- `--prefetch` is the number of credits to initially add to each partition receiver when they begin receiving, 250
+  credits.
+- `--credits` is the number of credits to add **after** the "prefetch" credits have been consumed. In this case,
+  continue to add 500 credits after the initial 250 are consumed.
+- `--duration` is the test duration, 60 seconds.
+- `--warmup` is the warm-up time, 0 seconds.
+
+```bash
+java -jar azure-messaging-eventhubs-track2-perf-1.0.0-beta.1-jar-with-dependencies.jar \
+reactorreceiveevents -cs "<<event-hubs-namespace-connection-string>>" -n "<<event-hub-name>>" \
+--consumerGroup "my-consumer-group" --partitionId "1" --count 1500 --prefetch 250 --credits 500 \
+--duration 60 --warmup 0
+```
 
 ## Troubleshooting
 

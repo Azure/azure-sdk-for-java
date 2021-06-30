@@ -19,7 +19,8 @@ public class EventHubsReceiveOptions extends EventHubsOptions {
     @Parameter(names = { "--prefetch" }, description = "Prefetch for the receiver.")
     private int prefetch = 500;
 
-    @Parameter(names = { "--credits" }, description = "Number of credits to add when link is empty.")
+    @Parameter(names = { "--credits" },
+        description = "Used in ReactorReceiverTest. Number of credits to add when link is empty.")
     private int creditsAfterPrefetch = 500;
 
     /**
