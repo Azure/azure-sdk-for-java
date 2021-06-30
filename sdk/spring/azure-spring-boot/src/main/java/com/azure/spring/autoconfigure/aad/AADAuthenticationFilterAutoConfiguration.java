@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
@@ -34,7 +33,7 @@ import java.util.concurrent.TimeUnit;
 @Configuration
 @ConditionalOnWebApplication
 @ConditionalOnResource(resources = "classpath:aad.enable.config")
-@ConditionalOnMissingClass({ "org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken" })
+@ConditionalOnExpression("${azure.activedirectory.enable-authentication-filter:false} == true")
 @ConditionalOnProperty(prefix = AADAuthenticationFilterAutoConfiguration.PROPERTY_PREFIX, value = { "client-id" })
 @EnableConfigurationProperties({ AADAuthenticationProperties.class })
 public class AADAuthenticationFilterAutoConfiguration {

@@ -20,10 +20,13 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+
+import static com.azure.spring.aad.AADAuthorizationGrantType.AUTHORIZATION_CODE;
+import static com.azure.spring.aad.AADAuthorizationGrantType.CLIENT_CREDENTIALS;
+import static com.azure.spring.aad.AADAuthorizationGrantType.ON_BEHALF_OF;
 
 /**
  * Configuration properties for Azure Active Directory Authentication.
@@ -121,6 +124,8 @@ public class AADAuthenticationProperties implements InitializingBean {
     private String graphMembershipUri;
 
     private Map<String, AuthorizationClientProperties> authorizationClients = new HashMap<>();
+
+    private Boolean enableWebAppResourceServer = false;
 
     @DeprecatedConfigurationProperty(
         reason = "Configuration moved to UserGroup class to keep UserGroup properties together",
@@ -397,6 +402,14 @@ public class AADAuthenticationProperties implements InitializingBean {
                        .contains(group);
     }
 
+    public Boolean getEnableWebAppResourceServer() {
+        return enableWebAppResourceServer;
+    }
+
+    public void setEnableWebAppResourceServer(Boolean enableWebAppResourceServer) {
+        this.enableWebAppResourceServer = enableWebAppResourceServer;
+    }
+
     @Override
     public void afterPropertiesSet() {
 
@@ -454,16 +467,32 @@ public class AADAuthenticationProperties implements InitializingBean {
                 + ", and azure.activedirectory.user-group.allowed-group-ids=" + userGroup.getAllowedGroupIds());
         }
 
-        authorizationClients.values()
-                            .stream()
-                            .filter(AuthorizationClientProperties::isOnDemand)
-                            .map(AuthorizationClientProperties::getAuthorizationGrantType)
-                            .filter(Objects::nonNull)
-                            .filter(type -> !AADAuthorizationGrantType.AUTHORIZATION_CODE.equals(type))
-                            .findAny()
-                            .ifPresent(notUsed -> {
-                                throw new IllegalStateException("onDemand only support authorization_code grant type. ");
-                            });
+        authorizationClients.forEach(this::validateAuthorizationClientProperties);
+    }
+
+    private void validateAuthorizationClientProperties(String registrationId,
+                                                       AuthorizationClientProperties properties) {
+        String type = Optional.of(properties)
+                              .map(AuthorizationClientProperties::getAuthorizationGrantType)
+                              .map(AADAuthorizationGrantType::getValue)
+                              .orElse(null);
+        if (type != null && !AUTHORIZATION_CODE.getValue().equals(type)
+            && !CLIENT_CREDENTIALS.getValue().equals(type)
+            && !ON_BEHALF_OF.getValue().equals(type)) {
+            throw new IllegalStateException("Valid values are: authorization_code, client_credentials, on-behalf-of");
+        }
+
+        if (type != null && properties.isOnDemand()
+            && !AUTHORIZATION_CODE.getValue().equals(type)) {
+            throw new IllegalStateException("onDemand only support authorization_code grant type. Please set "
+                + "'azure.activedirectory.authorization-clients." + registrationId
+                + ".authorization-grant-type=authorization_code'"
+                + " or 'azure.activedirectory.authorization-clients." + registrationId + ".on-demand=false'.");
+        }
+        if (properties.getScopes() == null || properties.getScopes().isEmpty()) {
+            throw new IllegalStateException(
+                "'azure.activedirectory.authorization-clients." + registrationId + ".scopes' must be configured");
+        }
     }
 
     private boolean isMultiTenantsApplication(String tenantId) {

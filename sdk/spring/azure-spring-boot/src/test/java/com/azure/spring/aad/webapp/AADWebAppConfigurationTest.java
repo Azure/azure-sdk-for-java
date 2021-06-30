@@ -4,6 +4,7 @@
 package com.azure.spring.aad.webapp;
 
 import com.azure.spring.aad.AADAuthorizationServerEndpoints;
+import com.azure.spring.aad.AADClientRegistrationRepository;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
@@ -17,7 +18,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static com.azure.spring.aad.webapp.AADWebAppConfiguration.resourceServerCount;
+import static com.azure.spring.aad.AADClientRegistrationRepository.resourceServerCount;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -35,20 +36,20 @@ public class AADWebAppConfigurationTest {
                 "azure.activedirectory.authorization-clients.graph.scopes = Calendars.Read"
             )
             .run(context -> {
-                AADWebAppClientRegistrationRepository clientRepo =
-                    context.getBean(AADWebAppClientRegistrationRepository.class);
+                AADClientRegistrationRepository clientRepo =
+                    context.getBean(AADClientRegistrationRepository.class);
                 ClientRegistration azure = clientRepo.findByRegistrationId("azure");
                 ClientRegistration graph = clientRepo.findByRegistrationId("graph");
                 assertDefaultScopes(
-                    clientRepo.getAzureClient(),
+                    clientRepo.getAzureClientRegistration(),
                     "openid", "profile", "offline_access"
                 );
-                assertEquals(clientRepo.getAzureClient().getClient(), azure);
+                assertEquals(clientRepo.getAzureClientRegistration().getClient(), azure);
 
-                assertFalse(clientRepo.isClientNeedConsentWhenLogin(azure));
-                assertTrue(clientRepo.isClientNeedConsentWhenLogin(graph));
-                assertFalse(clientRepo.isClientNeedConsentWhenLogin("azure"));
-                assertTrue(clientRepo.isClientNeedConsentWhenLogin("graph"));
+                assertFalse(clientRepo.isAzureDelegatedClientRegistrations(azure));
+                assertTrue(clientRepo.isAzureDelegatedClientRegistrations(graph));
+                assertFalse(clientRepo.isAzureDelegatedClientRegistrations("azure"));
+                assertTrue(clientRepo.isAzureDelegatedClientRegistrations("graph"));
 
                 List<ClientRegistration> clients = collectClients(clientRepo);
                 assertEquals(1, clients.size());
@@ -61,7 +62,7 @@ public class AADWebAppConfigurationTest {
         WebApplicationContextRunnerUtils
             .getContextRunnerWithRequiredProperties()
             .run(context -> {
-                ClientRegistrationRepository clientRepo = context.getBean(AADWebAppClientRegistrationRepository.class);
+                ClientRegistrationRepository clientRepo = context.getBean(AADClientRegistrationRepository.class);
                 ClientRegistration azure = clientRepo.findByRegistrationId("azure");
 
                 assertNotNull(azure);
@@ -89,7 +90,7 @@ public class AADWebAppConfigurationTest {
                     + "https://management.core.windows.net/user_impersonation"
             )
             .run(context -> {
-                ClientRegistrationRepository clientRepo = context.getBean(AADWebAppClientRegistrationRepository.class);
+                ClientRegistrationRepository clientRepo = context.getBean(AADClientRegistrationRepository.class);
                 ClientRegistration azure = clientRepo.findByRegistrationId("azure");
                 ClientRegistration graph = clientRepo.findByRegistrationId("graph");
                 assertDefaultScopes(
@@ -114,8 +115,8 @@ public class AADWebAppConfigurationTest {
                     + "https://management.core.windows.net/user_impersonation"
             )
             .run(context -> {
-                AADWebAppClientRegistrationRepository repo =
-                    context.getBean(AADWebAppClientRegistrationRepository.class);
+                AADClientRegistrationRepository repo =
+                    context.getBean(AADClientRegistrationRepository.class);
                 ClientRegistration azure = repo.findByRegistrationId("azure");
                 ClientRegistration graph = repo.findByRegistrationId("graph");
                 ClientRegistration arm = repo.findByRegistrationId("arm");
@@ -128,10 +129,10 @@ public class AADWebAppConfigurationTest {
                     "offline_access",
                     "https://management.core.windows.net/user_impersonation");
 
-                assertFalse(repo.isClientNeedConsentWhenLogin(graph));
-                assertTrue(repo.isClientNeedConsentWhenLogin(arm));
-                assertFalse(repo.isClientNeedConsentWhenLogin("graph"));
-                assertTrue(repo.isClientNeedConsentWhenLogin("arm"));
+                assertFalse(repo.isAzureDelegatedClientRegistrations(graph));
+                assertTrue(repo.isAzureDelegatedClientRegistrations(arm));
+                assertFalse(repo.isAzureDelegatedClientRegistrations("graph"));
+                assertTrue(repo.isAzureDelegatedClientRegistrations("arm"));
             });
     }
 
@@ -144,8 +145,8 @@ public class AADWebAppConfigurationTest {
                 "azure.activedirectory.authorization-clients.graph.authorizationGrantType = client_credentials"
             )
             .run(context -> {
-                AADWebAppClientRegistrationRepository repo =
-                    context.getBean(AADWebAppClientRegistrationRepository.class);
+                AADClientRegistrationRepository repo =
+                    context.getBean(AADClientRegistrationRepository.class);
 
                 assertEquals(repo.findByRegistrationId("azure").getAuthorizationGrantType(),
                     AuthorizationGrantType.AUTHORIZATION_CODE);
@@ -187,7 +188,7 @@ public class AADWebAppConfigurationTest {
                 "azure.activedirectory.authorization-clients.graph.scopes = Calendars.Read"
             )
             .run(context -> {
-                ClientRegistrationRepository clientRepo = context.getBean(AADWebAppClientRegistrationRepository.class);
+                ClientRegistrationRepository clientRepo = context.getBean(AADClientRegistrationRepository.class);
                 ClientRegistration azure = clientRepo.findByRegistrationId("azure");
                 assertDefaultScopes(azure,
                     "openid", "profile", "offline_access", "Calendars.Read");
@@ -202,7 +203,7 @@ public class AADWebAppConfigurationTest {
                 "azure.activedirectory.authorization-clients.graph.scopes = Calendars.Read"
             )
             .run(context -> {
-                ClientRegistrationRepository clientRepo = context.getBean(AADWebAppClientRegistrationRepository.class);
+                ClientRegistrationRepository clientRepo = context.getBean(AADClientRegistrationRepository.class);
                 ClientRegistration azure = clientRepo.findByRegistrationId("azure");
                 ClientRegistration graph = clientRepo.findByRegistrationId("graph");
 
@@ -218,7 +219,7 @@ public class AADWebAppConfigurationTest {
         WebApplicationContextRunnerUtils
             .getContextRunnerWithRequiredProperties()
             .run(context -> {
-                assertThat(context).hasSingleBean(AADWebAppClientRegistrationRepository.class);
+                assertThat(context).hasSingleBean(AADClientRegistrationRepository.class);
                 assertThat(context).hasSingleBean(OAuth2AuthorizedClientRepository.class);
                 assertThat(context).hasSingleBean(OAuth2UserService.class);
             });
@@ -232,8 +233,8 @@ public class AADWebAppConfigurationTest {
                 "azure.activedirectory.base-uri = http://localhost/"
             )
             .run(context -> {
-                AADWebAppClientRegistrationRepository clientRepo =
-                    context.getBean(AADWebAppClientRegistrationRepository.class);
+                AADClientRegistrationRepository clientRepo =
+                    context.getBean(AADClientRegistrationRepository.class);
                 ClientRegistration azure = clientRepo.findByRegistrationId("azure");
                 AADAuthorizationServerEndpoints endpoints = new AADAuthorizationServerEndpoints(
                     "http://localhost/", "fake-tenant-id");
@@ -250,10 +251,10 @@ public class AADWebAppConfigurationTest {
             .getContextRunnerWithRequiredProperties().withPropertyValues(
             "azure.activedirectory.authorization-clients.azure.scopes = Calendars.Read")
             .run(context -> {
-                AADWebAppClientRegistrationRepository clientRepo =
-                    context.getBean(AADWebAppClientRegistrationRepository.class);
+                AADClientRegistrationRepository clientRepo =
+                    context.getBean(AADClientRegistrationRepository.class);
                 assertDefaultScopes(
-                    clientRepo.getAzureClient(),
+                    clientRepo.getAzureClientRegistration(),
                     "openid", "profile", "offline_access", "Calendars.Read"
                 );
             });
@@ -449,10 +450,10 @@ public class AADWebAppConfigurationTest {
             .getContextRunnerWithRequiredProperties()
             .withPropertyValues("azure.activedirectory.user-group.allowed-groups = group1, group2")
             .run(context -> {
-                AADWebAppClientRegistrationRepository clientRepo =
-                    context.getBean(AADWebAppClientRegistrationRepository.class);
+                AADClientRegistrationRepository clientRepo =
+                    context.getBean(AADClientRegistrationRepository.class);
                 assertDefaultScopes(
-                    clientRepo.getAzureClient(),
+                    clientRepo.getAzureClientRegistration(),
                     "openid", "profile", "https://graph.microsoft.com/User.Read",
                     "https://graph.microsoft.com/Directory.Read.All"
                 );
@@ -467,10 +468,10 @@ public class AADWebAppConfigurationTest {
                 "azure.activedirectory.user-group.allowed-group-ids = 7c3a5d22-9093-42d7-b2eb-e72d06bf3718, "
                     + "39087533-2593-4b5b-ad05-4a73a01ea6a9")
             .run(context -> {
-                AADWebAppClientRegistrationRepository clientRepo =
-                    context.getBean(AADWebAppClientRegistrationRepository.class);
+                AADClientRegistrationRepository clientRepo =
+                    context.getBean(AADClientRegistrationRepository.class);
                 assertDefaultScopes(
-                    clientRepo.getAzureClient(),
+                    clientRepo.getAzureClientRegistration(),
                     "openid", "profile", "https://graph.microsoft.com/User.Read",
                     "https://graph.microsoft.com/Directory.Read.All"
                 );
@@ -488,9 +489,9 @@ public class AADWebAppConfigurationTest {
                     + "https://management.core.windows.net/user_impersonation"
             )
             .run(context -> {
-                AADWebAppClientRegistrationRepository repo =
-                    context.getBean(AADWebAppClientRegistrationRepository.class);
-                AzureClientRegistration azure = repo.getAzureClient();
+                AADClientRegistrationRepository repo =
+                    context.getBean(AADClientRegistrationRepository.class);
+                AzureClientRegistration azure = repo.getAzureClientRegistration();
                 assertNotNull(azure);
                 int resourceServerCountInAuthCode = resourceServerCount(azure.getClient().getScopes());
                 assertTrue(resourceServerCountInAuthCode > 1);
@@ -504,7 +505,7 @@ public class AADWebAppConfigurationTest {
         WebApplicationContextRunnerUtils
             .getContextRunner()
             .run(context -> {
-                assertThat(context).doesNotHaveBean(AADWebAppClientRegistrationRepository.class);
+                assertThat(context).doesNotHaveBean(AADClientRegistrationRepository.class);
                 assertThat(context).doesNotHaveBean(OAuth2AuthorizedClientRepository.class);
                 assertThat(context).doesNotHaveBean(OAuth2UserService.class);
             });

@@ -3,6 +3,8 @@
 
 package com.azure.spring.aad.webapi;
 
+import com.azure.spring.aad.AADClientConfiguration;
+import com.azure.spring.aad.AADClientRegistrationRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,12 +37,6 @@ public class AADOAuth2AuthorizedOboClientRepositoryTest {
         OAuth2AuthorizedClientService authorizedClientService(ClientRegistrationRepository clientRegistrationRepository) {
             return new InMemoryOAuth2AuthorizedClientService(clientRegistrationRepository);
         }
-
-        @Bean
-        public OAuth2AuthorizedClientRepository oAuth2AuthorizedClientRepository(
-            OAuth2AuthorizedClientService oAuth2AuthorizedClientService) {
-            return new AuthenticatedPrincipalOAuth2AuthorizedClientRepository(oAuth2AuthorizedClientService);
-        }
     }
 
     private static final String OBO_ACCESS_TOKEN_1 =
@@ -51,7 +47,7 @@ public class AADOAuth2AuthorizedOboClientRepositoryTest {
     public static final String FAKE_PRINCIPAL_NAME = "fake-principal-name";
     public static final String FAKE_TOKEN_VALUE = "fake-token-value";
 
-    private InMemoryClientRegistrationRepository clientRegistrationsRepo;
+    private AADClientRegistrationRepository clientRegistrationsRepo;
     private OAuth2AuthorizedClient client;
     private InMemoryOAuth2AuthorizedClientService inMemoryOAuth2AuthorizedClientService;
     private JwtAuthenticationToken jwtAuthenticationToken;
@@ -68,10 +64,10 @@ public class AADOAuth2AuthorizedOboClientRepositoryTest {
             AAD_PROPERTY_PREFIX + "client-secret = fake-client-secret",
             AAD_PROPERTY_PREFIX + "authorization-clients.fake-graph.scopes = https://graph.microsoft.com/.default"
         );
-        context.register(WebOAuth2ClientConfiguration.class, AADResourceServerClientConfiguration.class);
+        context.register(WebOAuth2ClientConfiguration.class, AADClientConfiguration.class);
         context.refresh();
 
-        clientRegistrationsRepo = context.getBean(InMemoryClientRegistrationRepository.class);
+        clientRegistrationsRepo = context.getBean(AADClientRegistrationRepository.class);
         setupForAzureAuthorizedClient();
     }
 
@@ -81,7 +77,7 @@ public class AADOAuth2AuthorizedOboClientRepositoryTest {
         OAuth2AccessToken mockAccessToken = mock(OAuth2AccessToken.class);
         when(mockAccessToken.getTokenValue()).thenReturn(OBO_ACCESS_TOKEN_1);
 
-        InMemoryClientRegistrationRepository mockClientRegistrationsRepo = mock(InMemoryClientRegistrationRepository.class);
+        AADClientRegistrationRepository mockClientRegistrationsRepo = mock(AADClientRegistrationRepository.class);
 
         when(mockClientRegistrationsRepo.findByRegistrationId(any())).thenReturn(ClientRegistration
             .withRegistrationId(FAKE_GRAPH)

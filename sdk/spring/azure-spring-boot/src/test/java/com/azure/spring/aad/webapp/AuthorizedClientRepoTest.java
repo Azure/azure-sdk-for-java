@@ -3,12 +3,17 @@
 
 package com.azure.spring.aad.webapp;
 
+import com.azure.spring.aad.AADClientRegistrationRepository;
+import com.azure.spring.aad.AADOAuth2AuthorizedClientRepository;
+import com.azure.spring.aad.JacksonHttpSessionOAuth2AuthorizedClientRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
+import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.client.InMemoryOAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.OAuth2AuthorizationContext;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
@@ -16,6 +21,7 @@ import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepo
 import org.springframework.security.oauth2.core.AbstractOAuth2Token;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.core.OAuth2RefreshToken;
+import org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -38,17 +44,21 @@ public class AuthorizedClientRepoTest {
                  mockStatic(RequestContextHolder.class, Mockito.CALLS_REAL_METHODS)) {
             WebApplicationContextRunnerUtils
                 .getContextRunnerWithRequiredProperties()
+                .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
                 .withPropertyValues(
                     "azure.activedirectory.authorization-clients.graph.scopes = Calendars.Read",
                     "azure.activedirectory.base-uri = fake-uri")
                 .run(context -> {
-                    AADWebAppClientRegistrationRepository clientRepo =
-                        context.getBean(AADWebAppClientRegistrationRepository.class);
+                    AADClientRegistrationRepository clientRepo =
+                        context.getBean(AADClientRegistrationRepository.class);
+                    InMemoryOAuth2AuthorizedClientService authorizedClientService =
+                        context.getBean(InMemoryOAuth2AuthorizedClientService.class);
                     ClientRegistration azure = clientRepo.findByRegistrationId("azure");
                     OAuth2AuthorizedClientRepository authorizedRepo = new AADOAuth2AuthorizedClientRepository(
                         clientRepo,
                         new JacksonHttpSessionOAuth2AuthorizedClientRepository(),
-                        OAuth2AuthorizationContext::getAuthorizedClient);
+                        OAuth2AuthorizationContext::getAuthorizedClient,
+                        authorizedClientService);
                     MockHttpServletRequest request = new MockHttpServletRequest();
                     MockHttpServletResponse response = new MockHttpServletResponse();
 
@@ -80,18 +90,22 @@ public class AuthorizedClientRepoTest {
                  mockStatic(RequestContextHolder.class, Mockito.CALLS_REAL_METHODS)) {
             WebApplicationContextRunnerUtils
                 .getContextRunnerWithRequiredProperties()
+                .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
                 .withPropertyValues(
                     "azure.activedirectory.authorization-clients.graph.scopes = Calendars.Read",
                     "azure.activedirectory.base-uri = fake-uri")
                 .run(context -> {
-                    AADWebAppClientRegistrationRepository clientRepo =
-                        context.getBean(AADWebAppClientRegistrationRepository.class);
+                    AADClientRegistrationRepository clientRepo =
+                        context.getBean(AADClientRegistrationRepository.class);
+                    InMemoryOAuth2AuthorizedClientService authorizedClientService =
+                        context.getBean(InMemoryOAuth2AuthorizedClientService.class);
                     ClientRegistration graph = clientRepo.findByRegistrationId("graph");
 
                     OAuth2AuthorizedClientRepository authorizedRepo = new AADOAuth2AuthorizedClientRepository(
                         clientRepo,
                         new JacksonHttpSessionOAuth2AuthorizedClientRepository(),
-                        OAuth2AuthorizationContext::getAuthorizedClient);
+                        OAuth2AuthorizationContext::getAuthorizedClient,
+                        authorizedClientService);
                     MockHttpServletRequest request = new MockHttpServletRequest();
                     MockHttpServletResponse response = new MockHttpServletResponse();
                     ServletRequestAttributes attributes = mock(ServletRequestAttributes.class);
