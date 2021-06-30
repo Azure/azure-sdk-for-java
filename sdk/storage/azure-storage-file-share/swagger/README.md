@@ -175,6 +175,23 @@ directive:
     }
 ```
 
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]
+  transform: >
+    for (const property in $)
+    {
+        if (property.includes("/{shareName}/{directory}/{fileName}"))
+        {
+            var oldName = property;
+            var newName = property.replace('/{shareName}/{directory}/{fileName}', '/{shareName}/{fileName}');
+            $[newName] = $[oldName];
+            delete $[oldName];
+        }
+    }
+```
+
 ### SharePropertiesInternal
 ``` yaml
 directive:
