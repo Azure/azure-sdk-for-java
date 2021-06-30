@@ -95,16 +95,13 @@ directive:
 - from: swagger-document
   where: $["x-ms-paths"]
   transform: >
-    if (!$["/{shareName}/{directoryPath}?restype=directory"]) {
-        const op = $["/{shareName}/{directoryPath}?restype=directory"] = $["/{shareName}/{directory}?restype=directory"];
-        delete $["/{shareName}/{directory}?restype=directory"];
+        const op = $["/{shareName}/{directory}?restype=directory"];
         op.put.responses["201"].headers["x-ms-file-creation-time"].format = "date-time";
         op.put.responses["201"].headers["x-ms-file-last-write-time"].format = "date-time";
         op.put.responses["201"].headers["x-ms-file-change-time"].format = "date-time";
         op.get.responses["200"].headers["x-ms-file-creation-time"].format = "date-time";
         op.get.responses["200"].headers["x-ms-file-last-write-time"].format = "date-time";
         op.get.responses["200"].headers["x-ms-file-change-time"].format = "date-time";
-    }
 ```
 
 ### /{shareName}/{directoryPath}?restype=directory&comp=properties
@@ -113,13 +110,10 @@ directive:
 - from: swagger-document
   where: $["x-ms-paths"]
   transform: >
-    if (!$["/{shareName}/{directoryPath}?restype=directory&comp=properties"]) {
-        const op = $["/{shareName}/{directoryPath}?restype=directory&comp=properties"] = $["/{shareName}/{directory}?restype=directory&comp=properties"];
-        delete $["/{shareName}/{directory}?restype=directory&comp=properties"];
+        const op = $["/{shareName}/{directory}?restype=directory&comp=properties"];
         op.put.responses["200"].headers["x-ms-file-creation-time"].format = "date-time";
         op.put.responses["200"].headers["x-ms-file-last-write-time"].format = "date-time";
         op.put.responses["200"].headers["x-ms-file-change-time"].format = "date-time";
-    }
 ```
 
 ### /{shareName}/{filePath}

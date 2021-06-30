@@ -62,6 +62,71 @@ public final class DirectoriesImpl {
     @ServiceInterface(name = "AzureFileStorageDire")
     public interface DirectoriesService {
         @Put("/{shareName}/{directory}")
+        @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+        Mono<DirectoriesCreateResponse> create(
+                @HostParam("url") String url,
+                @PathParam("shareName") String shareName,
+                @PathParam("directory") String directory,
+                @QueryParam("restype") String restype,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-meta-") Map<String, String> metadata,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-file-permission") String filePermission,
+                @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
+                @HeaderParam("x-ms-file-attributes") String fileAttributes,
+                @HeaderParam("x-ms-file-creation-time") String fileCreationTime,
+                @HeaderParam("x-ms-file-last-write-time") String fileLastWriteTime,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("/{shareName}/{directory}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+        Mono<DirectoriesGetPropertiesResponse> getProperties(
+                @HostParam("url") String url,
+                @PathParam("shareName") String shareName,
+                @PathParam("directory") String directory,
+                @QueryParam("restype") String restype,
+                @QueryParam("sharesnapshot") String sharesnapshot,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Delete("/{shareName}/{directory}")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+        Mono<DirectoriesDeleteResponse> delete(
+                @HostParam("url") String url,
+                @PathParam("shareName") String shareName,
+                @PathParam("directory") String directory,
+                @QueryParam("restype") String restype,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Put("/{shareName}/{directory}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
+        Mono<DirectoriesSetPropertiesResponse> setProperties(
+                @HostParam("url") String url,
+                @PathParam("shareName") String shareName,
+                @PathParam("directory") String directory,
+                @QueryParam("restype") String restype,
+                @QueryParam("comp") String comp,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-file-permission") String filePermission,
+                @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
+                @HeaderParam("x-ms-file-attributes") String fileAttributes,
+                @HeaderParam("x-ms-file-creation-time") String fileCreationTime,
+                @HeaderParam("x-ms-file-last-write-time") String fileLastWriteTime,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Put("/{shareName}/{directory}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<DirectoriesSetMetadataResponse> setMetadata(
@@ -129,71 +194,181 @@ public final class DirectoriesImpl {
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("Accept") String accept,
                 Context context);
+    }
 
-        @Put("/{shareName}/{directoryPath}")
-        @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
-        Mono<DirectoriesCreateResponse> create(
-                @HostParam("url") String url,
-                @PathParam("shareName") String shareName,
-                @PathParam("directory") String directory,
-                @QueryParam("restype") String restype,
-                @QueryParam("timeout") Integer timeout,
-                @HeaderParam("x-ms-meta-") Map<String, String> metadata,
-                @HeaderParam("x-ms-version") String version,
-                @HeaderParam("x-ms-file-permission") String filePermission,
-                @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
-                @HeaderParam("x-ms-file-attributes") String fileAttributes,
-                @HeaderParam("x-ms-file-creation-time") String fileCreationTime,
-                @HeaderParam("x-ms-file-last-write-time") String fileLastWriteTime,
-                @HeaderParam("Accept") String accept,
-                Context context);
+    /**
+     * Creates a new directory under the specified share or parent directory.
+     *
+     * @param shareName The name of the target share.
+     * @param directory The path of the target directory.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
+     *     and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param fileCreationTime Creation time for the file/directory. Default value: Now.
+     * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     *     Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param metadata A name-value pair to associate with a file storage object.
+     * @param filePermission If specified the permission (security descriptor) shall be set for the directory/file. This
+     *     header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used.
+     *     Default value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of
+     *     the x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
+     *     x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DirectoriesCreateResponse> createWithResponseAsync(
+            String shareName,
+            String directory,
+            String fileAttributes,
+            String fileCreationTime,
+            String fileLastWriteTime,
+            Integer timeout,
+            Map<String, String> metadata,
+            String filePermission,
+            String filePermissionKey,
+            Context context) {
+        final String restype = "directory";
+        final String accept = "application/xml";
+        return service.create(
+                this.client.getUrl(),
+                shareName,
+                directory,
+                restype,
+                timeout,
+                metadata,
+                this.client.getVersion(),
+                filePermission,
+                filePermissionKey,
+                fileAttributes,
+                fileCreationTime,
+                fileLastWriteTime,
+                accept,
+                context);
+    }
 
-        @Get("/{shareName}/{directoryPath}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
-        Mono<DirectoriesGetPropertiesResponse> getProperties(
-                @HostParam("url") String url,
-                @PathParam("shareName") String shareName,
-                @PathParam("directory") String directory,
-                @QueryParam("restype") String restype,
-                @QueryParam("sharesnapshot") String sharesnapshot,
-                @QueryParam("timeout") Integer timeout,
-                @HeaderParam("x-ms-version") String version,
-                @HeaderParam("Accept") String accept,
-                Context context);
+    /**
+     * Returns all system properties for the specified directory, and can also be used to check the existence of a
+     * directory. The data returned does not include the files in the directory or any subdirectories.
+     *
+     * @param shareName The name of the target share.
+     * @param directory The path of the target directory.
+     * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
+     *     snapshot to query.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     *     Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DirectoriesGetPropertiesResponse> getPropertiesWithResponseAsync(
+            String shareName, String directory, String sharesnapshot, Integer timeout, Context context) {
+        final String restype = "directory";
+        final String accept = "application/xml";
+        return service.getProperties(
+                this.client.getUrl(),
+                shareName,
+                directory,
+                restype,
+                sharesnapshot,
+                timeout,
+                this.client.getVersion(),
+                accept,
+                context);
+    }
 
-        @Delete("/{shareName}/{directoryPath}")
-        @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
-        Mono<DirectoriesDeleteResponse> delete(
-                @HostParam("url") String url,
-                @PathParam("shareName") String shareName,
-                @PathParam("directory") String directory,
-                @QueryParam("restype") String restype,
-                @QueryParam("timeout") Integer timeout,
-                @HeaderParam("x-ms-version") String version,
-                @HeaderParam("Accept") String accept,
-                Context context);
+    /**
+     * Removes the specified empty directory. Note that the directory must be empty before it can be deleted.
+     *
+     * @param shareName The name of the target share.
+     * @param directory The path of the target directory.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     *     Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DirectoriesDeleteResponse> deleteWithResponseAsync(
+            String shareName, String directory, Integer timeout, Context context) {
+        final String restype = "directory";
+        final String accept = "application/xml";
+        return service.delete(
+                this.client.getUrl(),
+                shareName,
+                directory,
+                restype,
+                timeout,
+                this.client.getVersion(),
+                accept,
+                context);
+    }
 
-        @Put("/{shareName}/{directoryPath}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
-        Mono<DirectoriesSetPropertiesResponse> setProperties(
-                @HostParam("url") String url,
-                @PathParam("shareName") String shareName,
-                @PathParam("directory") String directory,
-                @QueryParam("restype") String restype,
-                @QueryParam("comp") String comp,
-                @QueryParam("timeout") Integer timeout,
-                @HeaderParam("x-ms-version") String version,
-                @HeaderParam("x-ms-file-permission") String filePermission,
-                @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
-                @HeaderParam("x-ms-file-attributes") String fileAttributes,
-                @HeaderParam("x-ms-file-creation-time") String fileCreationTime,
-                @HeaderParam("x-ms-file-last-write-time") String fileLastWriteTime,
-                @HeaderParam("Accept") String accept,
-                Context context);
+    /**
+     * Sets properties on the directory.
+     *
+     * @param shareName The name of the target share.
+     * @param directory The path of the target directory.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
+     *     and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param fileCreationTime Creation time for the file/directory. Default value: Now.
+     * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     *     Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param filePermission If specified the permission (security descriptor) shall be set for the directory/file. This
+     *     header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used.
+     *     Default value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of
+     *     the x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
+     *     x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DirectoriesSetPropertiesResponse> setPropertiesWithResponseAsync(
+            String shareName,
+            String directory,
+            String fileAttributes,
+            String fileCreationTime,
+            String fileLastWriteTime,
+            Integer timeout,
+            String filePermission,
+            String filePermissionKey,
+            Context context) {
+        final String restype = "directory";
+        final String comp = "properties";
+        final String accept = "application/xml";
+        return service.setProperties(
+                this.client.getUrl(),
+                shareName,
+                directory,
+                restype,
+                comp,
+                timeout,
+                this.client.getVersion(),
+                filePermission,
+                filePermissionKey,
+                fileAttributes,
+                fileCreationTime,
+                fileLastWriteTime,
+                accept,
+                context);
     }
 
     /**
@@ -389,181 +564,6 @@ public final class DirectoriesImpl {
                 handleId,
                 recursive,
                 this.client.getVersion(),
-                accept,
-                context);
-    }
-
-    /**
-     * Creates a new directory under the specified share or parent directory.
-     *
-     * @param shareName The name of the target share.
-     * @param directory The path of the target directory.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
-     *     and ‘Directory’ for directory. ‘None’ can also be specified as default.
-     * @param fileCreationTime Creation time for the file/directory. Default value: Now.
-     * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
-     *     Timeouts for File Service Operations.&lt;/a&gt;.
-     * @param metadata A name-value pair to associate with a file storage object.
-     * @param filePermission If specified the permission (security descriptor) shall be set for the directory/file. This
-     *     header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used.
-     *     Default value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of
-     *     the x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
-     *     x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DirectoriesCreateResponse> createWithResponseAsync(
-            String shareName,
-            String directory,
-            String fileAttributes,
-            String fileCreationTime,
-            String fileLastWriteTime,
-            Integer timeout,
-            Map<String, String> metadata,
-            String filePermission,
-            String filePermissionKey,
-            Context context) {
-        final String restype = "directory";
-        final String accept = "application/xml";
-        return service.create(
-                this.client.getUrl(),
-                shareName,
-                directory,
-                restype,
-                timeout,
-                metadata,
-                this.client.getVersion(),
-                filePermission,
-                filePermissionKey,
-                fileAttributes,
-                fileCreationTime,
-                fileLastWriteTime,
-                accept,
-                context);
-    }
-
-    /**
-     * Returns all system properties for the specified directory, and can also be used to check the existence of a
-     * directory. The data returned does not include the files in the directory or any subdirectories.
-     *
-     * @param shareName The name of the target share.
-     * @param directory The path of the target directory.
-     * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
-     *     snapshot to query.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
-     *     Timeouts for File Service Operations.&lt;/a&gt;.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DirectoriesGetPropertiesResponse> getPropertiesWithResponseAsync(
-            String shareName, String directory, String sharesnapshot, Integer timeout, Context context) {
-        final String restype = "directory";
-        final String accept = "application/xml";
-        return service.getProperties(
-                this.client.getUrl(),
-                shareName,
-                directory,
-                restype,
-                sharesnapshot,
-                timeout,
-                this.client.getVersion(),
-                accept,
-                context);
-    }
-
-    /**
-     * Removes the specified empty directory. Note that the directory must be empty before it can be deleted.
-     *
-     * @param shareName The name of the target share.
-     * @param directory The path of the target directory.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
-     *     Timeouts for File Service Operations.&lt;/a&gt;.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DirectoriesDeleteResponse> deleteWithResponseAsync(
-            String shareName, String directory, Integer timeout, Context context) {
-        final String restype = "directory";
-        final String accept = "application/xml";
-        return service.delete(
-                this.client.getUrl(),
-                shareName,
-                directory,
-                restype,
-                timeout,
-                this.client.getVersion(),
-                accept,
-                context);
-    }
-
-    /**
-     * Sets properties on the directory.
-     *
-     * @param shareName The name of the target share.
-     * @param directory The path of the target directory.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
-     *     and ‘Directory’ for directory. ‘None’ can also be specified as default.
-     * @param fileCreationTime Creation time for the file/directory. Default value: Now.
-     * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
-     *     Timeouts for File Service Operations.&lt;/a&gt;.
-     * @param filePermission If specified the permission (security descriptor) shall be set for the directory/file. This
-     *     header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used.
-     *     Default value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of
-     *     the x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
-     *     x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DirectoriesSetPropertiesResponse> setPropertiesWithResponseAsync(
-            String shareName,
-            String directory,
-            String fileAttributes,
-            String fileCreationTime,
-            String fileLastWriteTime,
-            Integer timeout,
-            String filePermission,
-            String filePermissionKey,
-            Context context) {
-        final String restype = "directory";
-        final String comp = "properties";
-        final String accept = "application/xml";
-        return service.setProperties(
-                this.client.getUrl(),
-                shareName,
-                directory,
-                restype,
-                comp,
-                timeout,
-                this.client.getVersion(),
-                filePermission,
-                filePermissionKey,
-                fileAttributes,
-                fileCreationTime,
-                fileLastWriteTime,
                 accept,
                 context);
     }
