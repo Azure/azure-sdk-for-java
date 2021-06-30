@@ -707,6 +707,7 @@
         <module>eng/code-quality-reports</module>
         <module>eng/jacoco-test-coverage</module>
         <module>sdk/advisor</module>
+        <module>sdk/agrifood</module>
         <module>sdk/anomalydetector</module>
         <module>sdk/apimanagement</module>
         <module>sdk/appconfiguration</module>
@@ -749,9 +750,9 @@
         <module>sdk/devspaces</module>
         <module>sdk/devtestlabs</module>
         <module>sdk/digitaltwins</module>
+        <module>sdk/elastic</module>
         <module>sdk/eventgrid</module>
         <module>sdk/eventhubs</module>
-        <module>sdk/agrifood</module>
         <module>sdk/formrecognizer</module>
         <module>sdk/frontdoor</module>
         <module>sdk/hanaonazure</module>
