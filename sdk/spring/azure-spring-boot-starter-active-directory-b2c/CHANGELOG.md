@@ -1,11 +1,23 @@
 # Release History
 
 ## 3.7.0-beta.1 (Unreleased)
-
+### New Features
+- Support unified properties as below when the associated "azure.activedirectory.b2c.*" properties are not configured.([#22396](https://github.com/Azure/azure-sdk-for-java/issues/22396))
+    ```
+    spring:
+      cloud:
+        azure:
+          client-id:
+          client-secret:
+          tenant-id:
+    ```
 
 ## 3.6.0 (2021-06-23)
 ### Breaking Changes
-- Deprecated `allowTelemetry` configuration item.
+- Remove class `AADB2COAuth2AuthenticatedPrincipal`, use class `AADOAuth2AuthenticatedPrincipal` instead.
+
+### Deprecations
+- Deprecate `allowTelemetry` configuration item.
 
 ## 3.5.0 (2021-05-24)
 ### New Features

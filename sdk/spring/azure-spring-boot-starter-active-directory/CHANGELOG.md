@@ -1,12 +1,23 @@
 # Release History
 
 ## 3.7.0-beta.1 (Unreleased)
-
+### New Features
+- Support unified properties as below when the associated "azure.activedirectory.*" properties are not configured.([#22396](https://github.com/Azure/azure-sdk-for-java/issues/22396))
+    ```
+    spring:
+      cloud:
+        azure:
+          client-id:
+          client-secret:
+          tenant-id:
+    ```
 
 ## 3.6.0 (2021-06-23)
 ### Breaking Changes
+
+### Deprecations
 - Deprecate aad.group.enable-full-list, use aad.group.allowed-group-ids=all instead.
-- Deprecated `allowTelemetry` configuration item.
+- Deprecate `allowTelemetry` configuration item.
 
 ### New Features
 - Support domain_hint in aad-starter.([#21517](https://github.com/Azure/azure-sdk-for-java/issues/21517))

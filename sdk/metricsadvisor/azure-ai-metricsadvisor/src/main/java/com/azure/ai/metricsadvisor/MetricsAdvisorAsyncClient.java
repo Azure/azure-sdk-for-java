@@ -610,7 +610,7 @@ public final class MetricsAdvisorAsyncClient {
      * Fetch the anomalies identified by an anomaly detection configuration.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listAnomaliesForDetectionConfiguration#String-OffsetDateTime-OffsetDateTime}
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listAnomaliesForDetectionConfig#String-OffsetDateTime-OffsetDateTime}
      *
      * @param detectionConfigurationId The anomaly detection configuration id.
      * @param startTime The start time of the time range within which the anomalies were detected.
@@ -624,17 +624,17 @@ public final class MetricsAdvisorAsyncClient {
      *     or {@code startTime} or {@code endTime} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DataPointAnomaly> listAnomaliesForDetectionConfiguration(
+    public PagedFlux<DataPointAnomaly> listAnomaliesForDetectionConfig(
         String detectionConfigurationId,
         OffsetDateTime startTime, OffsetDateTime endTime) {
-        return listAnomaliesForDetectionConfiguration(detectionConfigurationId, startTime, endTime, null);
+        return listAnomaliesForDetectionConfig(detectionConfigurationId, startTime, endTime, null);
     }
 
     /**
      * Fetch the anomalies identified by an anomaly detection configuration.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listAnomaliesForDetectionConfiguration#String-OffsetDateTime-OffsetDateTime-ListAnomaliesDetectedOptions}
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listAnomaliesForDetectionConfig#String-OffsetDateTime-OffsetDateTime-ListAnomaliesDetectedOptions}
      *
      * @param detectionConfigurationId The anomaly detection configuration id.
      * @param startTime The start time of the time range within which the anomalies were detected.
@@ -649,7 +649,7 @@ public final class MetricsAdvisorAsyncClient {
      *     or {@code startTime} or {@code endTime} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DataPointAnomaly> listAnomaliesForDetectionConfiguration(
+    public PagedFlux<DataPointAnomaly> listAnomaliesForDetectionConfig(
         String detectionConfigurationId,
         OffsetDateTime startTime, OffsetDateTime endTime, ListAnomaliesDetectedOptions options) {
         try {
@@ -665,7 +665,7 @@ public final class MetricsAdvisorAsyncClient {
         }
     }
 
-    PagedFlux<DataPointAnomaly> listAnomaliesForDetectionConfiguration(
+    PagedFlux<DataPointAnomaly> listAnomaliesForDetectionConfig(
         String detectionConfigurationId,
         OffsetDateTime startTime, OffsetDateTime endTime, ListAnomaliesDetectedOptions options, Context context) {
         return new PagedFlux<>(() ->
@@ -753,7 +753,7 @@ public final class MetricsAdvisorAsyncClient {
      * Fetch the incidents identified by an anomaly detection configuration.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listIncidentsForDetectionConfiguration#String-OffsetDateTime-OffsetDateTime}
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listIncidentsForDetectionConfig#String-OffsetDateTime-OffsetDateTime}
      *
      * @param detectionConfigurationId The anomaly detection configuration id.
      * @param startTime The start time of the time range within which the incidents were detected.
@@ -765,17 +765,17 @@ public final class MetricsAdvisorAsyncClient {
      *     or {@code startTime} or {@code endTime} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<AnomalyIncident> listIncidentsForDetectionConfiguration(
+    public PagedFlux<AnomalyIncident> listIncidentsForDetectionConfig(
         String detectionConfigurationId,
         OffsetDateTime startTime, OffsetDateTime endTime) {
-        return listIncidentsForDetectionConfiguration(detectionConfigurationId, startTime, endTime, null);
+        return listIncidentsForDetectionConfig(detectionConfigurationId, startTime, endTime, null);
     }
 
     /**
      * Fetch the incidents identified by an anomaly detection configuration.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listIncidentsForDetectionConfiguration#String-OffsetDateTime-OffsetDateTime-ListIncidentsDetectedOptions}
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listIncidentsForDetectionConfig#String-OffsetDateTime-OffsetDateTime-ListIncidentsDetectedOptions}
      *
      * @param detectionConfigurationId The anomaly detection configuration id.
      * @param startTime The start time of the time range within which the incidents were detected.
@@ -788,7 +788,7 @@ public final class MetricsAdvisorAsyncClient {
      *     or {@code startTime} or {@code endTime} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<AnomalyIncident> listIncidentsForDetectionConfiguration(
+    public PagedFlux<AnomalyIncident> listIncidentsForDetectionConfig(
         String detectionConfigurationId,
         OffsetDateTime startTime, OffsetDateTime endTime, ListIncidentsDetectedOptions options) {
         try {
@@ -805,7 +805,7 @@ public final class MetricsAdvisorAsyncClient {
         }
     }
 
-    PagedFlux<AnomalyIncident> listIncidentsForDetectionConfiguration(
+    PagedFlux<AnomalyIncident> listIncidentsForDetectionConfig(
         String detectionConfigurationId,
         OffsetDateTime startTime, OffsetDateTime endTime, ListIncidentsDetectedOptions options, Context context) {
         return new PagedFlux<>(() ->

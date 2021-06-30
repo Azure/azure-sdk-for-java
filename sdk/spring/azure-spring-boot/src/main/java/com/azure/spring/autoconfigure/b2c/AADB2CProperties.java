@@ -58,7 +58,7 @@ public class AADB2CProperties implements InitializingBean {
     private String tenant;
 
     /**
-     * The name of the b2c tenant id.
+     * The name of the b2c tenant id. Could be configured by spring.cloud.azure.tenant-id as alternative.
      */
     private String tenantId;
 
@@ -83,12 +83,12 @@ public class AADB2CProperties implements InitializingBean {
     private int jwtSizeLimit = RemoteJWKSet.DEFAULT_HTTP_SIZE_LIMIT; /* bytes */
 
     /**
-     * The application ID that registered under b2c tenant.
+     * The application ID that registered under b2c tenant. Could be configured by spring.cloud.azure.client-id as alternative.
      */
     private String clientId;
 
     /**
-     * The application secret that registered under b2c tenant.
+     * The application secret that registered under b2c tenant. Could be configured by spring.cloud.azure.client-secret as alternative.
      */
     private String clientSecret;
 

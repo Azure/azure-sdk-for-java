@@ -34,8 +34,10 @@ import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobRetentionPolicy;
 import com.azure.storage.blob.models.BlobServiceProperties;
 import com.azure.storage.blob.models.BlobSignedIdentifier;
+import com.azure.storage.blob.models.ConsistentReadControl;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.StaticWebsite;
+import com.azure.storage.blob.options.BlobInputStreamOptions;
 import com.azure.storage.blob.options.BlobQueryOptions;
 import com.azure.storage.blob.options.UndeleteBlobContainerOptions;
 import com.azure.storage.file.datalake.implementation.models.BlobItemInternal;
@@ -84,6 +86,7 @@ import com.azure.storage.file.datalake.models.PathItem;
 import com.azure.storage.file.datalake.models.PathProperties;
 import com.azure.storage.file.datalake.models.PublicAccessType;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
+import com.azure.storage.file.datalake.options.DataLakeFileInputStreamOptions;
 import com.azure.storage.file.datalake.options.FileQueryOptions;
 import com.azure.storage.file.datalake.options.FileSystemUndeleteOptions;
 
@@ -222,6 +225,32 @@ class Transforms {
             .setContentLanguage(pathHTTPHeaders.getContentLanguage())
             .setContentType(pathHTTPHeaders.getContentType())
             .setContentMd5(pathHTTPHeaders.getContentMd5());
+    }
+
+    static BlobInputStreamOptions toBlobInputStreamOptions(DataLakeFileInputStreamOptions options) {
+        if (options == null) {
+            return null;
+        }
+        return new BlobInputStreamOptions()
+            .setBlockSize(options.getBlockSize())
+            .setRange(toBlobRange(options.getRange()))
+            .setRequestConditions(toBlobRequestConditions(options.getRequestConditions()))
+            .setConsistentReadControl(toBlobConsistentReadControl(options.getConsistentReadControl()));
+    }
+
+    static com.azure.storage.blob.models.ConsistentReadControl toBlobConsistentReadControl(
+        com.azure.storage.file.datalake.models.ConsistentReadControl datalakeConsistentReadControl) {
+        if (datalakeConsistentReadControl == null) {
+            return null;
+        }
+        switch (datalakeConsistentReadControl) {
+            case NONE:
+                return ConsistentReadControl.NONE;
+            case ETAG:
+                return ConsistentReadControl.ETAG;
+            default:
+                throw new IllegalArgumentException("Could not convert ConsistentReadControl");
+        }
     }
 
     static BlobRange toBlobRange(FileRange fileRange) {
