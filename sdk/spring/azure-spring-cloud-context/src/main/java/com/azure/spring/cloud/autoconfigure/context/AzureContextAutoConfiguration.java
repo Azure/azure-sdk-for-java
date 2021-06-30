@@ -28,7 +28,6 @@ import org.springframework.context.annotation.Import;
 @Configuration
 @EnableConfigurationProperties(AzureContextProperties.class)
 @ConditionalOnClass(AzureResourceManager.class)
-// TODO (yiliu6) Can the property be changed to auto-created?
 @ConditionalOnProperty(prefix = "spring.cloud.azure", value = { "resource-group" })
 @Import(AzureEnvironmentAutoConfiguration.class)
 public class AzureContextAutoConfiguration {

@@ -42,9 +42,9 @@ public abstract class SpringCredentialBuilderBase<T extends SpringCredentialBuil
 
     private TokenCredential populateTokenCredential(String prefix, boolean createDefault) {
         String tenantId = getPropertyValue(prefix + "tenant-id");
-        String clientId = getPropertyValue(prefix +"client-id");
+        String clientId = getPropertyValue(prefix + "client-id");
         String clientSecret = getPropertyValue(prefix + "client-secret");
-        String authorityHost = getPropertyValue(prefix +"authority-host", DEFAULT_AUTHORITY_HOST);
+        String authorityHost = getPropertyValue(prefix + "authority-host", DEFAULT_AUTHORITY_HOST);
 
         if (tenantId != null && clientId != null && clientSecret != null) {
             return new ClientSecretCredentialBuilder()

@@ -410,7 +410,7 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-boot-core</artifactId>
-      <version>1.7.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-identity-spring;current} -->
+      <version>1.7.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-core;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>

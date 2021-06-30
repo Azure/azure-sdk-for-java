@@ -3,16 +3,15 @@
 
 package com.azure.spring.keyvault;
 
-import com.azure.spring.core.AzureSpringProperties;
 import com.azure.spring.utils.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
 
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
 
 /**
  * KeyVaultProperties
@@ -144,14 +143,30 @@ public class KeyVaultProperties {
     private String caseSensitiveKeys;
     private String certificatePassword;
     private String certificatePath;
+
+    /**
+     * Could be configured by spring.cloud.azure.client-id as alternative.
+     */
     private String clientId;
+
+    /**
+     * This property has been deprecated, please use azure.keyvault.client-secret or spring.cloud.azure.client-secret instead.
+     */
     private String clientKey;
+
+    /**
+     * Could be configured by spring.cloud.azure.client-secret as alternative.
+     */
     private String clientSecret;
     /**
      * The constant used to define the order of the key vaults you are
      * delivering (comma delimited, e.g 'my-vault, my-vault-2').
      */
     private String order;
+
+    /**
+     * Could be configured by spring.cloud.azure.tenant-id as alternative.
+     */
     private String tenantId;
     private String uri;
 

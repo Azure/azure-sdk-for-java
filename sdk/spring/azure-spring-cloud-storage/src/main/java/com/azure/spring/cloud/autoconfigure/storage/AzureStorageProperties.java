@@ -14,7 +14,7 @@ import javax.validation.constraints.Pattern;
  */
 @Validated
 @ConfigurationProperties("spring.cloud.azure.storage")
-public class AzureStorageProperties{
+public class AzureStorageProperties {
 
     @NotEmpty
     @Pattern(regexp = "^[a-z0-9]{3,24}$",

@@ -5,7 +5,7 @@ package com.azure.spring.cloud.autoconfigure.servicebus;
 
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.resourcemanager.AzureResourceManager;
-import com.azure.spring.core.AzureSpringProperties;
+import com.azure.spring.cloud.autoconfigure.context.AzureContextProperties;
 import com.azure.spring.cloud.context.core.impl.ServiceBusNamespaceManager;
 import com.azure.spring.cloud.context.core.impl.ServiceBusTopicManager;
 import com.azure.spring.cloud.context.core.impl.ServiceBusTopicSubscriptionManager;
@@ -138,7 +138,7 @@ public class AzureServiceBusTopicAutoConfigurationTest {
     }
 
     @Configuration
-    @EnableConfigurationProperties(AzureSpringProperties.class)
+    @EnableConfigurationProperties(AzureContextProperties.class)
     public static class TestConfigWithServiceBusNamespaceManager {
 
         @Bean
@@ -160,7 +160,7 @@ public class AzureServiceBusTopicAutoConfigurationTest {
     }
 
     @Configuration
-    @EnableConfigurationProperties(AzureSpringProperties.class)
+    @EnableConfigurationProperties(AzureContextProperties.class)
     public static class TestConfigWithAzureResourceManager {
 
         @Bean
@@ -172,7 +172,7 @@ public class AzureServiceBusTopicAutoConfigurationTest {
     }
 
     @Configuration
-    @EnableConfigurationProperties(AzureSpringProperties.class)
+    @EnableConfigurationProperties(AzureContextProperties.class)
     public static class TestConfigWithMessageConverter {
 
         @Bean

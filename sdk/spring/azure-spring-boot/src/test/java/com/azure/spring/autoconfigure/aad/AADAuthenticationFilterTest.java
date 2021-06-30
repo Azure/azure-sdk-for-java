@@ -8,6 +8,7 @@ import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.proc.BadJOSEException;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
@@ -33,6 +34,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class AADAuthenticationFilterTest {
     private static final String TOKEN = "dummy-token";
     private final WebApplicationContextRunner contextRunner = new WebApplicationContextRunner()
@@ -134,16 +136,29 @@ public class AADAuthenticationFilterTest {
     }
 
     @Test
-    public void testAADAuthenticationFilterAutoConfigurationBean() {
+    public void testAutoConfigurationWithNoClientId() {
 
-        this.contextRunner.withPropertyValues(
-            "azure.activedirectory.client-id=" + TestConstants.CLIENT_ID
-        ).run(context -> assertThat(context).hasSingleBean(AADAuthenticationFilterAutoConfiguration.class));
+        this.contextRunner.run(
+            context -> assertThat(context).doesNotHaveBean(AADAuthenticationFilterAutoConfiguration.class)
+        );
+
+    }
+
+    @Test
+    public void testAutoConfigurationWithAADProperties() {
 
         this.contextRunner.withPropertyValues(
             "spring.cloud.azure.client-id=" + TestConstants.CLIENT_ID
         ).run(context -> assertThat(context).hasSingleBean(AADAuthenticationFilterAutoConfiguration.class));
 
-        this.contextRunner.run(context -> assertThat(context).doesNotHaveBean(AADAuthenticationFilterAutoConfiguration.class));
+    }
+
+    @Test
+    public void testAutoConfigurationWithCommonProperties() {
+
+        this.contextRunner.withPropertyValues(
+            "spring.cloud.azure.client-id=" + TestConstants.CLIENT_ID
+        ).run(context -> assertThat(context).hasSingleBean(AADAuthenticationFilterAutoConfiguration.class));
+
     }
 }
