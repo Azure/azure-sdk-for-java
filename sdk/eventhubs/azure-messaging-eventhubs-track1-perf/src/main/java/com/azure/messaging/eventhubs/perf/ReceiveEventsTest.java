@@ -15,6 +15,8 @@ import reactor.core.publisher.Mono;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.StreamSupport;
 
 /**
  * Receives a single set of events then stops. {@link EventHubsOptions#getCount()} represents the batch size to
@@ -144,11 +146,11 @@ public class ReceiveEventsTest extends ServiceTest<EventHubsReceiveOptions> {
 
     private static final class EventsHandler implements PartitionReceiveHandler {
         private final CompletableFuture<Void> completableFuture = new CompletableFuture<>();
-        private final AtomicInteger numberOfEvents;
+        private final AtomicLong numberOfEvents;
         private final int prefetch;
 
         private EventsHandler(int numberOfEvents, int prefetch) {
-            this.numberOfEvents = new AtomicInteger(numberOfEvents);
+            this.numberOfEvents = new AtomicLong(numberOfEvents);
             this.prefetch = prefetch;
         }
 
@@ -163,11 +165,10 @@ public class ReceiveEventsTest extends ServiceTest<EventHubsReceiveOptions> {
                 return;
             }
 
-            for (EventData event : events) {
-                numberOfEvents.decrementAndGet();
-            }
+            final long count = StreamSupport.stream(events.spliterator(), false).count();
+            final long left = numberOfEvents.addAndGet(-count);
 
-            if (numberOfEvents.get() <= 0) {
+            if (left <= 0) {
                 completableFuture.complete(null);
             }
         }
