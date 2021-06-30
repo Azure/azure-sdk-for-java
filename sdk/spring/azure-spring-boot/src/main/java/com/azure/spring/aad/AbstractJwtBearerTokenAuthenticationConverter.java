@@ -15,8 +15,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.azure.spring.aad.AADJwtGrantedAuthoritiesConverter.DEFAULT_CLAIM_TO_AUTHORITY_PREFIX_MAP;
-
 /**
  * An abstract {@link Converter} that takes a {@link Jwt} and converts it into a {@link BearerTokenAuthentication}.
  */
