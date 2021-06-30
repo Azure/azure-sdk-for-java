@@ -4,6 +4,8 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
+import com.azure.messaging.servicebus.models.SubQueue;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -12,244 +14,376 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
-
-import static java.nio.charset.StandardCharsets.UTF_8;
+import java.util.concurrent.TimeoutException;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
- * Sample demonstrates how to dead letter within an Azure Service Bus Queue.
+ * The sample demonstrates how to use dead letter queues:
+ * <ul>
+ * <li>
+ * <b>Scenario 1:</b> Send a message and then retrieve and abandon the message until the maximum delivery count is
+ * exhausted and the message is automatically dead-lettered.
+ * </li>
+ * <li>
+ * <b>Scenario 2:</b> Send a set of messages, and explicitly dead-letter messages that do not match a certain criterion
+ * and would therefore not be processed correctly. The messages are then picked up from the dead-letter queue, are
+ * automatically corrected, and resubmitted.
+ * </li>
+ * </ul>
+ *
+ * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-dead-letter-queues">Dead-letter
+ *     Queue</a>
  */
 public class DeadletterQueueSample {
-    String connectionString = System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
-    String queueName = System.getenv("AZURE_SERVICEBUS_SAMPLE_QUEUE_NAME");
-    static final ObjectMapper objectMapper = new ObjectMapper();
+    private final List<Person> personList = Arrays.asList(
+        new Person("Einstein", "Albert"),
+        new Person("Heisenberg", "Werner"),
+        new Person("Curie", "Marie"),
+        new Person("Hawking", "Steven"),
+        new Person("Newton", "Isaac"),
+        new Person("Bohr", "Niels"),
+        new Person("Faraday", "Michael"),
+        new Person("Galilei", "Galileo"),
+        new Person("Kepler", "Johannes"),
+        new Person("Kopernikus", "Nikolaus")
+    );
 
     /**
      * Main method to show how to dead letter within an Azure Service Bus Queue.
      *
      * @param args Unused arguments to the program.
-     * @throws InterruptedException If the program is unable to sleep while waiting for the receive to complete.
      */
-    public static void main(String[] args) throws InterruptedException, JsonProcessingException {
-        DeadletterQueueSample sample = new DeadletterQueueSample();
+    public static void main(String[] args) {
+        final DeadletterQueueSample sample = new DeadletterQueueSample();
         sample.run();
     }
 
     /**
      * Run method to invoke this demo on how to dead letter within an Azure Service Bus Queue.
-     *
-     * @throws InterruptedException If the program is unable to sleep while waiting for the receive to complete.
      */
     @Test
-    public void run() throws InterruptedException, JsonProcessingException {
-        ServiceBusSenderClient senderClient = new ServiceBusClientBuilder()
-            .connectionString(connectionString)
-            .sender()
-            .queueName(queueName)
-            .buildClient();
+    public void run() {
+        // The connection string value can be obtained by:
+        // 1. Going to your Service Bus namespace in Azure Portal.
+        // 2. Go to "Shared access policies"
+        // 3. Copy the connection string for the "RootManageSharedAccessKey" policy.
+        // The 'connectionString' format is shown below.
+        // 1. "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}"
+        // 2. "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
+        // 3. "queueName" will be the name of the Service Bus queue instance you created
+        //    inside the Service Bus namespace.
+        final String connectionString = System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
+        final String queueName = System.getenv("AZURE_SERVICEBUS_SAMPLE_QUEUE_NAME");
 
-        // max delivery-count scenario
-        sendMessages(senderClient, 1);
-        deadLetterByExceedingMaxDelivery(connectionString, queueName);
+        final ServiceBusClientBuilder builder = new ServiceBusClientBuilder().connectionString(connectionString);
 
-        // fix-up scenario
-        sendMessages(senderClient, Integer.MAX_VALUE);
-        this.receiveAndDeadletterMessagesAsync(connectionString, queueName).block();
-        this.pickUpAndFixDeadletters(connectionString, queueName, senderClient).block();
+        try (ServiceBusSenderClient sender = builder.sender().queueName(queueName).buildClient()) {
+            // Scenario 1: Dead letters a message by abandoning it until the MaxDeliveryCount is exceeded.
+            sendMessages(sender, 1);
+            deadLetterByExceedingMaxDelivery(builder, queueName).block();
+            receiveAndCompleteDeadLetterQueueMessages(builder, queueName).block();
 
-        senderClient.close();
-    }
-
-    /**
-     * Send {@link ServiceBusMessage messages} to an Azure Service Bus Queue.
-     *
-     * @Param senderAsyncClient Service Bus Sender Client
-     * @Param maxMessages Maximum Number Of Messages
-     */
-    void sendMessages(ServiceBusSenderClient senderClient, int maxMessages) throws JsonProcessingException {
-        List<Person> messageList = Arrays.asList(
-            new Person("Einstein", "Albert"),
-            new Person("Heisenberg", "Werner"),
-            new Person("Curie", "Marie"),
-            new Person("Hawking", "Steven"),
-            new Person("Newton", "Isaac"),
-            new Person("Bohr", "Niels"),
-            new Person("Faraday", "Michael"),
-            new Person("Galilei", "Galileo"),
-            new Person("Kepler", "Johannes"),
-            new Person("Kopernikus", "Nikolaus")
-        );
-        for (int i = 0; i < Math.min(messageList.size(), maxMessages); i++) {
-            final String messageId = Integer.toString(i);
-            ServiceBusMessage message = new ServiceBusMessage(objectMapper.writeValueAsString(messageList.get(i)));
-            message.setContentType("application/json");
-            message.setSubject(i % 2 == 0 ? "Scientist" : "Physicist");
-            message.setMessageId(messageId);
-            message.setTimeToLive(Duration.ofMinutes(2));
-            System.out.printf("\tMessage sending: Id = %s%n", message.getMessageId());
-            senderClient.sendMessage(message);
-            System.out.printf("\tMessage acknowledged: Id = %s%n", message.getMessageId());
+            // Scenario 2: Dead letters a message by explicitly invoking receiver.deadLetter().
+            sendMessages(sender, personList.size());
+            receiveAndDeadletterMessages(builder, queueName).block();
+            receiveAndFixDeadLetterQueueMessages(builder, queueName, sender).block();
         }
     }
 
     /**
-     * Receive {@link ServiceBusMessage messages} and return {@link ServiceBusMessage messages} back to the queue.
-     * When the time to life of the {@link ServiceBusMessage messages} expires,
-     * the {@link ServiceBusMessage messages} will be dumped as dead letters into the dead letter queue.
-     * We can receive these {@link ServiceBusMessage messages} from the dead letter queue.
+     * Sends {@link ServiceBusMessage messages} to an Azure Service Bus Queue.
      *
-     * @Param connectionString Service Bus Connection String
-     * @Param queueName Queue Name
-     * @throws InterruptedException If the program is unable to sleep while waiting for the receive to complete.
+     * @param sender Sender client.
+     * @param maxMessages Maximum number of messages to send.
      */
-    void deadLetterByExceedingMaxDelivery(String connectionString, String queueName) throws InterruptedException {
-        ServiceBusReceiverAsyncClient receiverAsyncClient = new ServiceBusClientBuilder()
-            .connectionString(connectionString)
-            .receiver()
-            .queueName(queueName)
-            .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
-            .buildAsyncClient();
-        receiverAsyncClient.receiveMessages().subscribe(receiveMessage -> {
-            System.out.printf("Picked up message; DeliveryCount %d%n", receiveMessage.getDeliveryCount());
-            // return message back to the queue
-            receiverAsyncClient.abandon(receiveMessage).subscribe();
-        });
-        Thread.sleep(10000);
-        receiverAsyncClient.close();
+    private void sendMessages(ServiceBusSenderClient sender, int maxMessages) {
+        final int numberOfMessages = Math.min(personList.size(), maxMessages);
 
-        Thread.sleep(120000);
+        final List<ServiceBusMessage> serviceBusMessages = IntStream.range(0, numberOfMessages)
+            .mapToObj(index -> {
+                final Person person = personList.get(index);
 
-        ServiceBusReceiverAsyncClient deadletterReceiverAsyncClient
-            = new ServiceBusClientBuilder()
-            .connectionString(connectionString)
-            .receiver()
-            .queueName(queueName.concat("/$deadletterqueue"))
-            .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
-            .buildAsyncClient();
-        deadletterReceiverAsyncClient.receiveMessages().subscribe(receiveMessage -> {
-            System.out.printf("%nDeadletter message:%n");
-            receiveMessage.getApplicationProperties().keySet().forEach(key -> System.out.printf("\t%s=%s%n", key, receiveMessage.getApplicationProperties().get(key)));
-            deadletterReceiverAsyncClient.complete(receiveMessage).subscribe();
-        });
-        Thread.sleep(10000);
-        deadletterReceiverAsyncClient.close();
+                return new ServiceBusMessage(person.toJson())
+                    .setContentType("application/json")
+                    .setSubject(index % 2 == 0 ? "Scientist" : "Physicist")
+                    .setMessageId(Integer.toString(index))
+                    .setTimeToLive(Duration.ofMinutes(2));
+            }).collect(Collectors.toList());
+
+        sender.sendMessages(serviceBusMessages);
     }
 
     /**
-     * Receive {@link ServiceBusMessage messages} and transfer to the dead letter queue as a dead letter.
+     * <strong>Scenario 1: Part 1</strong>
      *
-     * @Param connectionString Service Bus Connection String
-     * @Param queueName Queue Name
+     * <p>
+     * Receive {@link ServiceBusMessage messages} and return the {@link ServiceBusMessage messages} back to the queue.
+     * When the max number of deliveries for each {@link ServiceBusMessage message} expires, then it is moved into the
+     * dead letter queue.
+     * </p>
+     *
+     * @param builder Service Bus client builder.
+     * @param queueName Name of the queue to receive from.
+     *
+     * @return A Mono that completes when all messages in queue have been processed.(because a message has not been
+     *     received in the last 30 seconds).
      */
-    Mono<Void> receiveAndDeadletterMessagesAsync(String connectionString, String queueName) {
-        Mono<ServiceBusReceiverAsyncClient> createReceiver = Mono.fromCallable(() -> {
-            return new ServiceBusClientBuilder()
-                .connectionString(connectionString)
-                .receiver()
+    private Mono<Void> deadLetterByExceedingMaxDelivery(ServiceBusClientBuilder builder, String queueName) {
+        // This Mono creates an async receiver, and continues receiving from that queue until it has not seen a message
+        // for 30 seconds.
+        //
+        // When it receives any messages, it abandons them so they are returned to the queue to be re-received again.
+        // When a message is abandoned, its delivery count is incremented. If the delivery count exceeds the
+        // MaxDeliveryCount for a queue, the message is placed in the deadletter queue for that particular queue.
+        return Mono.using(() -> {
+            return builder.receiver()
                 .queueName(queueName)
                 .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
                 .buildAsyncClient();
-        });
-
-        return Mono.usingWhen(createReceiver, receiver -> {
-            return receiver.receiveMessages().flatMap(receiveMessage -> {
-                if (receiveMessage.getSubject() != null
-                    && receiveMessage.getContentType() != null
-                    && receiveMessage.getSubject().contentEquals("Scientist")
-                    && receiveMessage.getContentType().contentEquals("application/json")) {
-                    byte[] body = receiveMessage.getBody().toBytes();
-                    Person person = null;
-                    try {
-                        person = objectMapper.readValue(new String(body, UTF_8), Person.class);
-                    } catch (JsonProcessingException e) {
-                        e.printStackTrace();
-                    }
-                    System.out.printf(
-                        "%n\t\t\t\tMessage received: %n\t\t\t\t\t\tMessageId = %s, %n\t\t\t\t\t\tSequenceNumber = %s, %n\t\t\t\t\t\tEnqueuedTimeUtc = %s,"
-                            + "%n\t\t\t\t\t\tExpiresAtUtc = %s, %n\t\t\t\t\t\tContentType = \"%s\",  %n\t\t\t\t\t\tContent: [ firstName = %s, name = %s ]%n",
-                        receiveMessage.getMessageId(),
-                        receiveMessage.getSequenceNumber(),
-                        receiveMessage.getEnqueuedTime(),
-                        receiveMessage.getExpiresAt(),
-                        receiveMessage.getContentType(),
-                        person != null ? person.getFirstName() : "",
-                        person != null ? person.getName() : "");
-                } else {
-                    return receiver.deadLetter(receiveMessage);
-                }
-                return receiver.complete(receiveMessage);
-            }).then();
         }, receiver -> {
+            // Continue to receive messages until no message has been seen for 30 seconds.
+            return receiver.receiveMessages()
+                .timeout(Duration.ofSeconds(30))
+                .flatMap(message -> {
+                    System.out.printf("Received message. Sequence # %s; DeliveryCount %d%n", message.getSequenceNumber(),
+                        message.getDeliveryCount());
+
+                    return receiver.abandon(message);
+                })
+                .onErrorResume(TimeoutException.class, exception -> {
+                    System.out.println("No messages received after 30 seconds. Queue is empty.");
+                    return Mono.empty();
+                })
+                .then();
+        }, receiver -> {
+            // When the receiving operation is completed, close the client.
             receiver.close();
-            return Mono.empty();
         });
     }
 
     /**
-     * Receive dead letter {@link ServiceBusMessage messages} and resend its.
+     * <strong>Scenario 1: Part 2</strong>
      *
-     * @Param connectionString Service Bus Connection String
-     * @Param queueName Queue Name
-     * @Param resubmitSender Service Bus Send Client
+     * <p>
+     * This method continues to receive messages from the dead letter queue, then completes them.
+     * </p>
+     *
+     * @param builder Service Bus client builder.
+     * @param queueName Name of the queue to receive from.
+     *
+     * @return A Mono that completes when all messages in queue have been processed (because a message has not been
+     *     received in the last 30 seconds).
      */
-    Mono<Void> pickUpAndFixDeadletters(String connectionString, String queueName, ServiceBusSenderClient resubmitSender) {
-        Mono<ServiceBusReceiverAsyncClient> createReceiver = Mono.fromCallable(() -> {
-            return new ServiceBusClientBuilder()
-                .connectionString(connectionString)
-                .receiver()
-                .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
-                .queueName(queueName.concat("/$deadletterqueue"))
+    private Mono<Void> receiveAndCompleteDeadLetterQueueMessages(ServiceBusClientBuilder builder, String queueName) {
+        return Mono.using(() -> {
+            return builder.receiver()
+                .queueName(queueName)
+                .subQueue(SubQueue.DEAD_LETTER_QUEUE)
                 .buildAsyncClient();
-        });
+        }, deadLetterQueueReceiver -> {
+            // Continue to receive messages until no message has been seen for 30 seconds.
+            return deadLetterQueueReceiver.receiveMessages()
+                .timeout(Duration.ofSeconds(30))
+                .flatMap(message -> {
+                    System.out.printf("Received message from dead-letter queue. Sequence #: %s. DeliveryCount %d%n",
+                        message.getSequenceNumber(), message.getDeliveryCount());
 
-        return Mono.usingWhen(createReceiver, receiver -> {
-            return receiver.receiveMessages().flatMap(receiveMessage -> {
-                if (receiveMessage.getSubject() != null && receiveMessage.getSubject().contentEquals("Physicist")) {
-                    ServiceBusMessage resubmitMessage = new ServiceBusMessage(receiveMessage.getBody());
-                    System.out.printf(
-                        "%n\t\tFixing: %n\t\t\tMessageId = %s, %n\t\t\tSequenceNumber = %s, %n\t\t\tLabel = %s%n",
-                        receiveMessage.getMessageId(),
-                        receiveMessage.getSequenceNumber(),
-                        receiveMessage.getSubject());
-                    resubmitMessage.setMessageId(receiveMessage.getMessageId());
-                    resubmitMessage.setSubject("Scientist");
-                    resubmitMessage.setContentType(receiveMessage.getContentType());
-                    resubmitMessage.setTimeToLive(Duration.ofMinutes(2));
-                    resubmitSender.sendMessage(resubmitMessage);
-                }
-                return receiver.complete(receiveMessage);
-            }).then();
-        }, receiver -> {
-            receiver.close();
-            return Mono.empty();
+                    // When messages are dead lettered, there are system properties that can be set to denote the
+                    // reason why via fields such as dead-letter reason and dead-letter description.
+                    System.out.printf("Dead-Letter Reason: %s. Description: %s. Source: %s%n",
+                        message.getDeadLetterReason(), message.getDeadLetterErrorDescription(),
+                        message.getDeadLetterSource());
+
+                    System.out.println("Application properties:");
+                    message.getApplicationProperties().forEach((key, value) ->
+                        System.out.printf("\t%s=%s%n", key, value));
+
+                    // We complete the messages we received from the queue.
+                    // In a real example, you may do some sort of computation to understand why previous attempts to
+                    // process the message failed. This is shown in Scenario 2.
+                    return deadLetterQueueReceiver.complete(message);
+                })
+                .onErrorResume(TimeoutException.class, exception -> {
+                    System.out.println("No messages received after 30 seconds. Dead-letter queue is empty.");
+                    return Mono.empty();
+                })
+                .then();
+        }, deadLetterQueueReceiver -> {
+            // When the receiving operation is completed, close the client.
+            deadLetterQueueReceiver.close();
+        });
+    }
+
+    /**
+     * <strong>Scenario 2: Part 1</strong>
+     *
+     * <p>
+     * Receives {@link ServiceBusMessage messages} and dead letters them if it has a subject of "Scientist" and content
+     * type of "application/json". This is to simulate that the message may be malformed or didn't contain the right
+     * content, so we dead letter it so other receivers don't process this message.
+     * </p>
+     *
+     * @param builder Service Bus client builder.
+     * @param queueName Name of queue to receive messages from.
+     *
+     * @return A Mono that completes when all the messages in the queue have been processed (because a message has not
+     *     been received in the last 30 seconds).
+     */
+    private Mono<Void> receiveAndDeadletterMessages(ServiceBusClientBuilder builder, String queueName) {
+        return Mono.using(
+            () -> {
+                // Creates the async receiver.
+                return builder.receiver()
+                    .queueName(queueName)
+                    .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
+                    .buildAsyncClient();
+            },
+            receiver -> {
+                // The scope of the receiver resource is to receive messages for a duration of `receiveDuration` then
+                // complete or dead-letter the message based on its content-type and subject.
+                return receiver.receiveMessages()
+                    .timeout(Duration.ofSeconds(30))
+                    .flatMap(message -> {
+                        final String subject = message.getSubject();
+                        final String contentType = message.getContentType();
+                        final Person person;
+                        try {
+                            person = Person.fromJson(message.getBody().toString());
+                        } catch (RuntimeException e) {
+                            return Mono.error(new RuntimeException("Could not deserialize message: "
+                                + message.getSequenceNumber(), e));
+                        }
+
+                        System.out.printf("Received message. SequenceNumber = %s. EnqueuedTimeUtc = %s. "
+                                + "ExpiresAtUtc = %s. ContentType = %s. Content: [ %s ]%n",
+                            message.getSequenceNumber(), message.getEnqueuedTime(), message.getExpiresAt(),
+                            message.getContentType(), person);
+
+                        // Simulates that something could not be processed in the message, so we dead letter it.
+                        if ("Scientist".equals(subject) && "application/json".equals(contentType)) {
+                            return receiver.complete(message);
+                        } else {
+                            return receiver.deadLetter(message);
+                        }
+                    })
+                    .onErrorResume(TimeoutException.class, exception -> {
+                        System.out.println("No messages received after 30 seconds. Queue is empty.");
+                        return Mono.empty();
+                    })
+                    .then();
+            },
+            receiver -> {
+                // When the receiving operation is completed, close the client.
+                receiver.close();
+            });
+    }
+
+    /**
+     * <strong>Scenario 2: Part 2</strong>
+     *
+     * <p>
+     * Receives {@link ServiceBusMessage messages} from the dead letter queue, it fixes up the message then resends the
+     * fixed message to the queue again. This simulates messages that may have errors in them, were dead-lettered,
+     * and reprocessed in the dead-letter queue so the data is correct again.
+     * </p>
+     *
+     * @param builder Service Bus client builder.
+     * @param queueName Name of queue to receive messages from.
+     * @param resubmitSender Service Bus sender client. When messages are fixed, they are published via this sender.
+     *
+     * @return A Mono that completes when all the messages in the queue have been processed (because a message has not
+     *     been received in the last 30 seconds).
+     */
+    private Mono<Void> receiveAndFixDeadLetterQueueMessages(ServiceBusClientBuilder builder, String queueName,
+        ServiceBusSenderClient resubmitSender) {
+
+        return Mono.using(() -> {
+            return builder.receiver()
+                .queueName(queueName)
+                .subQueue(SubQueue.DEAD_LETTER_QUEUE)
+                .buildAsyncClient();
+        }, deadLetterQueueReceiver -> {
+            // Continue to receive messages until no message has been seen for 30 seconds.
+            return deadLetterQueueReceiver.receiveMessages()
+                .timeout(Duration.ofSeconds(30))
+                .flatMap(message -> {
+                    if ("Physicist".equals(message.getSubject())) {
+                        System.out.printf("Fixing DLQ message. MessageId = %s. SequenceNumber = %s. Subject = %s%n",
+                            message.getMessageId(), message.getSequenceNumber(), message.getSubject());
+
+                        // Create a copy of this message and then set the subject to the correct one.
+                        ServiceBusMessage resubmitMessage = new ServiceBusMessage(message)
+                            .setSubject("Scientist");
+
+                        // Sending that corrected message.
+                        resubmitSender.sendMessage(resubmitMessage);
+                    } else {
+                        System.out.printf("Message resubmission is not required. MessageId = %s. SequenceNumber = %s. "
+                                + "Subject = %s%n",
+                            message.getMessageId(), message.getSequenceNumber(), message.getSubject());
+                    }
+
+                    return deadLetterQueueReceiver.complete(message);
+                })
+                .onErrorResume(TimeoutException.class, exception -> {
+                    System.out.println("No messages received after 30 seconds. Dead-letter queue is empty.");
+                    return Mono.empty();
+                })
+                .then();
+        }, deadLetterQueueReceiver -> {
+            // When the receiving operation is completed, close the client.
+            deadLetterQueueReceiver.close();
         });
     }
 
     private static final class Person {
-        private String name;
-        private String firstName;
+        private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
-        Person() {
-        }
+        private final String lastName;
+        private final String firstName;
 
-        Person(String name, String firstName) {
-            this.name = name;
+        Person(@JsonProperty String lastName, @JsonProperty String firstName) {
+            this.lastName = lastName;
             this.firstName = firstName;
         }
 
-        public String getName() {
-            return name;
+        String getLastName() {
+            return lastName;
         }
 
-        public String getFirstName() {
+        String getFirstName() {
             return firstName;
         }
 
-        public void setName(String name) {
-            this.name = name;
+        /**
+         * Serializes an item into its JSON string equivalent.
+         *
+         * @return The JSON representation.
+         *
+         * @throws RuntimeException if the person could not be serialized.
+         */
+        String toJson() {
+            try {
+                return OBJECT_MAPPER.writeValueAsString(this);
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException("Could not serialize object.", e);
+            }
         }
 
-        public void setFirstName(String firstName) {
-            this.firstName = firstName;
+        /**
+         * Deserializes a JSON string into a Person.
+         *
+         * @return The corresponding person.
+         *
+         * @throws RuntimeException if the JSON string could not be deserialized.
+         */
+        private static Person fromJson(String json) {
+            try {
+                return OBJECT_MAPPER.readValue(json, Person.class);
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException("Could not deserialize object.", e);
+            }
         }
     }
 }
