@@ -330,7 +330,7 @@ consumer.setReceiveHandler(new PartitionReceiveHandler() {
     @Override
     public void onReceive(Iterable<EventData> events) {
         for (EventData event : events) {
-            System.out.println("Sequence number: " + event.getSequenceNumber());
+            System.out.println("Sequence number: " + event.getSystemProperties().getSequenceNumber());
             System.out.println("Contents: " + new String(event.getBytes(), StandardCharsets.UTF_8));
         }
     }
