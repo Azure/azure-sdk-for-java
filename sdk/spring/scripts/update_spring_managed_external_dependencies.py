@@ -6,7 +6,7 @@
 # 1. Update ROOT_POMS' version manually.
 # 2. Run command "python .\sdk\spring\scripts\update_spring_managed_external_dependencies.py".
 # 3. Run command "python .\eng\versioning\update_versions.py --ut external_dependency --sr".
-# 4. Fix errors reported by command ".\eng\versioning\pom_file_version_scanner.ps1".
+# 4. Run command ".\eng\versioning\pom_file_version_scanner.ps1 -Debug". If there is error, fix it.
 
 import argparse
 import os
