@@ -138,18 +138,28 @@ public class AADAuthenticationFilterTest {
     @Test
     public void testAutoConfiguration() {
 
-        this.contextRunner.withPropertyValues(
-            "spring.cloud.azure.client-secret=" + TestConstants.CLIENT_SECRET
-        ).run(
-            context -> assertThat(context).doesNotHaveBean(AADAuthenticationFilterAutoConfiguration.class)
-        );
-        this.contextRunner.withPropertyValues(
-            "spring.cloud.azure.client-id=" + TestConstants.CLIENT_ID
-        ).run(context -> assertThat(context).hasSingleBean(AADAuthenticationFilterAutoConfiguration.class));
+        new WebApplicationContextRunner()
+            .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
+            .withConfiguration(AutoConfigurations.of(AADAuthenticationFilterAutoConfiguration.class))
+            .withPropertyValues(
+                "spring.cloud.azure.client-secret=" + TestConstants.CLIENT_SECRET
+            ).run(
+                context -> assertThat(context).doesNotHaveBean(AADAuthenticationFilterAutoConfiguration.class)
+            );
 
-        this.contextRunner.withPropertyValues(
-            "spring.cloud.azure.client-id=" + TestConstants.CLIENT_ID
-        ).run(context -> assertThat(context).hasSingleBean(AADAuthenticationFilterAutoConfiguration.class));
+        new WebApplicationContextRunner()
+            .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
+            .withConfiguration(AutoConfigurations.of(AADAuthenticationFilterAutoConfiguration.class))
+            .withPropertyValues(
+                "spring.cloud.azure.client-id=" + TestConstants.CLIENT_ID
+            ).run(context -> assertThat(context).hasSingleBean(AADAuthenticationFilterAutoConfiguration.class));
+
+        new WebApplicationContextRunner()
+            .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
+            .withConfiguration(AutoConfigurations.of(AADAuthenticationFilterAutoConfiguration.class))
+            .withPropertyValues(
+                "spring.cloud.azure.client-id=" + TestConstants.CLIENT_ID
+            ).run(context -> assertThat(context).hasSingleBean(AADAuthenticationFilterAutoConfiguration.class));
 
     }
 }
