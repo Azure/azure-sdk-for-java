@@ -144,18 +144,31 @@ public class AADAuthenticationFilterTest {
     public void testAutoConfiguration() {
 
         this.contextRunner.run(context -> {
+            LOG.info("================1==================");
             LOG.info("azure.activedirectory.client-id = {}", context.getEnvironment().getProperty("azure.activedirectory.client-id"));
             LOG.info("spring.cloud.azure.client-id = {}", context.getEnvironment().getProperty("spring.cloud.azure.client-id"));
             assertThat(context).doesNotHaveBean(AADAuthenticationFilterAutoConfiguration.class);
         });
 
-//        this.contextRunner.withPropertyValues(
-//                "azure.activedirectory.client-id=" + TestConstants.CLIENT_ID
-//            ).run(context -> assertThat(context).hasSingleBean(AADAuthenticationFilterAutoConfiguration.class));
-//
+        this.contextRunner.withPropertyValues(
+                "azure.activedirectory.client-id=" + TestConstants.CLIENT_ID
+            ).run(context -> {
+            LOG.info("================2==================");
+            LOG.info("azure.activedirectory.client-id = {}", context.getEnvironment().getProperty("azure.activedirectory.client-id"));
+            LOG.info("spring.cloud.azure.client-id = {}", context.getEnvironment().getProperty("spring.cloud.azure.client-id"));
+
+            assertThat(context).hasSingleBean(AADAuthenticationFilterAutoConfiguration.class);
+            });
+
 //        this.contextRunner.withPropertyValues(
 //                "spring.cloud.azure.client-id=" + TestConstants.CLIENT_ID
-//            ).run(context -> assertThat(context).hasSingleBean(AADAuthenticationFilterAutoConfiguration.class));
+//            ).run(context -> {
+//            LOG.info("================3==================");
+//            LOG.info("azure.activedirectory.client-id = {}", context.getEnvironment().getProperty("azure.activedirectory.client-id"));
+//            LOG.info("spring.cloud.azure.client-id = {}", context.getEnvironment().getProperty("spring.cloud.azure.client-id"));
+//
+//            assertThat(context).hasSingleBean(AADAuthenticationFilterAutoConfiguration.class);
+//            });
 
     }
 }
