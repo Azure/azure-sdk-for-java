@@ -17,8 +17,6 @@ import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.ItemDeserializer;
-import com.azure.cosmos.implementation.OperationType;
-import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.guava25.base.Preconditions;
 import com.azure.cosmos.implementation.query.Transformer;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
@@ -268,7 +266,8 @@ public class CosmosEncryptionAsyncContainer {
                 listMono.flatMap(ignoreVoids -> Mono.just(EncryptionModelBridgeInternal.getSqlQuerySpec(sqlQuerySpecWithEncryption)));
             return queryItemsHelperWithMonoSqlQuerySpec(sqlQuerySpecMono, options, classType, false);
         } else {
-            return queryItemsHelper(EncryptionModelBridgeInternal.getSqlQuerySpec(sqlQuerySpecWithEncryption), options, classType,false);
+            return queryItemsHelper(EncryptionModelBridgeInternal.getSqlQuerySpec(sqlQuerySpecWithEncryption),
+                options, classType, false);
         }
     }
 
@@ -360,9 +359,7 @@ public class CosmosEncryptionAsyncContainer {
             final Throwable unwrappedException = Exceptions.unwrap(exception);
             if (!isRetry && unwrappedException instanceof CosmosException) {
                 final CosmosException cosmosException = (CosmosException) unwrappedException;
-                if (cosmosException.getStatusCode() == HttpConstants.StatusCodes.BADREQUEST &&
-                    cosmosException.getResponseHeaders().get(HttpConstants.HttpHeaders.SUB_STATUS)
-                        .equals(Constants.INCORRECT_CONTAINER_RID_SUB_STATUS)) {
+                if (isIncorrectContainerRid(cosmosException)) {
                     this.encryptionProcessor.getIsEncryptionSettingsInitDone().set(false);
                     return this.encryptionProcessor.initializeEncryptionSettingsAsync(true).then(Mono.defer(() -> readItemHelper(id, partitionKey, requestOptions, true)
                     ));
@@ -391,9 +388,7 @@ public class CosmosEncryptionAsyncContainer {
                     final Throwable unwrappedException = Exceptions.unwrap(exception);
                     if (!isRetry && unwrappedException instanceof CosmosException) {
                         final CosmosException cosmosException = (CosmosException) unwrappedException;
-                        if (cosmosException.getStatusCode() == HttpConstants.StatusCodes.BADREQUEST &&
-                            cosmosException.getResponseHeaders().get(HttpConstants.HttpHeaders.SUB_STATUS)
-                                .equals(Constants.INCORRECT_CONTAINER_RID_SUB_STATUS)) {
+                        if (isIncorrectContainerRid(cosmosException)) {
                             this.encryptionProcessor.getIsEncryptionSettingsInitDone().set(false);
                             return this.encryptionProcessor.initializeEncryptionSettingsAsync(true).then
                                 (Mono.defer(() -> createItemHelper(streamPayload, partitionKey, requestOptions,
@@ -423,9 +418,7 @@ public class CosmosEncryptionAsyncContainer {
                     final Throwable unwrappedException = Exceptions.unwrap(exception);
                     if (!isRetry && unwrappedException instanceof CosmosException) {
                         final CosmosException cosmosException = (CosmosException) unwrappedException;
-                        if (cosmosException.getStatusCode() == HttpConstants.StatusCodes.BADREQUEST &&
-                            cosmosException.getResponseHeaders().get(HttpConstants.HttpHeaders.SUB_STATUS)
-                                .equals(Constants.INCORRECT_CONTAINER_RID_SUB_STATUS)) {
+                        if (isIncorrectContainerRid(cosmosException)) {
                             this.encryptionProcessor.getIsEncryptionSettingsInitDone().set(false);
                             return this.encryptionProcessor.initializeEncryptionSettingsAsync(true).then
                                 (Mono.defer(() -> upsertItemHelper(streamPayload, partitionKey, requestOptions,
@@ -457,9 +450,7 @@ public class CosmosEncryptionAsyncContainer {
                     final Throwable unwrappedException = Exceptions.unwrap(exception);
                     if (!isRetry && unwrappedException instanceof CosmosException) {
                         final CosmosException cosmosException = (CosmosException) unwrappedException;
-                        if (cosmosException.getStatusCode() == HttpConstants.StatusCodes.BADREQUEST &&
-                            cosmosException.getResponseHeaders().get(HttpConstants.HttpHeaders.SUB_STATUS)
-                                .equals(Constants.INCORRECT_CONTAINER_RID_SUB_STATUS)) {
+                        if (isIncorrectContainerRid(cosmosException)) {
                             this.encryptionProcessor.getIsEncryptionSettingsInitDone().set(false);
                             return this.encryptionProcessor.initializeEncryptionSettingsAsync(true).then
                                 (Mono.defer(() -> replaceItemHelper(streamPayload, itemId, partitionKey, requestOptions,
@@ -470,12 +461,12 @@ public class CosmosEncryptionAsyncContainer {
                 }));
     }
 
-    public void setRequestHeaders(CosmosItemRequestOptions requestOptions) {
+    private void setRequestHeaders(CosmosItemRequestOptions requestOptions) {
         this.cosmosItemRequestOptionsAccessor.setHeader(requestOptions, Constants.IS_CLIENT_ENCRYPTED_HEADER, "true");
         this.cosmosItemRequestOptionsAccessor.setHeader(requestOptions, Constants.INTENDED_COLLECTION_RID_HEADER, this.encryptionProcessor.getContainerRid());
     }
 
-    public void setRequestHeaders(CosmosQueryRequestOptions requestOptions) {
+    private void setRequestHeaders(CosmosQueryRequestOptions requestOptions) {
         this.cosmosQueryRequestOptionsAccessor.setHeader(requestOptions, Constants.IS_CLIENT_ENCRYPTED_HEADER, "true");
         this.cosmosQueryRequestOptionsAccessor.setHeader(requestOptions, Constants.INTENDED_COLLECTION_RID_HEADER, this.encryptionProcessor.getContainerRid());
     }
@@ -496,9 +487,7 @@ public class CosmosEncryptionAsyncContainer {
             final Throwable unwrappedException = Exceptions.unwrap(exception);
             if (unwrappedException instanceof CosmosException) {
                 final CosmosException cosmosException = (CosmosException) unwrappedException;
-                if (!isRetry && cosmosException.getStatusCode() == HttpConstants.StatusCodes.BADREQUEST &&
-                    cosmosException.getResponseHeaders().get(HttpConstants.HttpHeaders.SUB_STATUS)
-                        .equals(Constants.INCORRECT_CONTAINER_RID_SUB_STATUS)) {
+                if (!isRetry && isIncorrectContainerRid(cosmosException)) {
                     this.encryptionProcessor.getIsEncryptionSettingsInitDone().set(false);
                     return this.encryptionProcessor.initializeEncryptionSettingsAsync(true).thenMany(
                         (CosmosPagedFlux.defer(() -> queryItemsHelper(sqlQuerySpec,finalOptions, classType, true).byPage())));
@@ -508,13 +497,8 @@ public class CosmosEncryptionAsyncContainer {
         });
 
 
-        CosmosQueryRequestOptions finalOptions3 = options;
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
-            //We need to set the tracer again, because we are re wrapping the pagedFluxOptions
-            String spanName = this.queryItemsSpanName;
-            pagedFluxOptions.setTracerAndTelemetryInformation(spanName, this.container.getDatabase().getId(),
-                this.container.getId(), OperationType.Query, ResourceType.Document, this.cosmosAsyncDatabaseAccessor.getCosmosAsyncClient(this.container.getDatabase()));
-            setContinuationTokenAndMaxItemCount(pagedFluxOptions, finalOptions3);
+            setContinuationTokenAndMaxItemCount(pagedFluxOptions, finalOptions);
             return tFlux;
         });
     }
@@ -539,9 +523,7 @@ public class CosmosEncryptionAsyncContainer {
             final Throwable unwrappedException = Exceptions.unwrap(exception);
             if (unwrappedException instanceof CosmosException) {
                 final CosmosException cosmosException = (CosmosException) unwrappedException;
-                if (!isRetry && cosmosException.getStatusCode() == HttpConstants.StatusCodes.BADREQUEST &&
-                    cosmosException.getResponseHeaders().get(HttpConstants.HttpHeaders.SUB_STATUS)
-                        .equals(Constants.INCORRECT_CONTAINER_RID_SUB_STATUS)) {
+                if (!isRetry && isIncorrectContainerRid(cosmosException)) {
                     this.encryptionProcessor.getIsEncryptionSettingsInitDone().set(false);
                     return this.encryptionProcessor.initializeEncryptionSettingsAsync(true).thenMany(
                         (CosmosPagedFlux.defer(() -> queryItemsHelperWithMonoSqlQuerySpec(sqlQuerySpecMono,finalOptions, classType, true).byPage())));
@@ -550,14 +532,15 @@ public class CosmosEncryptionAsyncContainer {
             return Mono.error(unwrappedException);
         });
 
-        CosmosQueryRequestOptions finalOptions3 = options;
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
-            //We need to set the tracer again, because we are re wrapping the pagedFluxOptions
-            String spanName = this.queryItemsSpanName;
-            pagedFluxOptions.setTracerAndTelemetryInformation(spanName, this.container.getDatabase().getId(),
-                this.container.getId(), OperationType.Query, ResourceType.Document, this.cosmosAsyncDatabaseAccessor.getCosmosAsyncClient(this.container.getDatabase()));
-            setContinuationTokenAndMaxItemCount(pagedFluxOptions, finalOptions3);
+            setContinuationTokenAndMaxItemCount(pagedFluxOptions, finalOptions);
             return tFlux;
         });
+    }
+
+    boolean isIncorrectContainerRid(CosmosException cosmosException) {
+        return cosmosException.getStatusCode() == HttpConstants.StatusCodes.BADREQUEST &&
+            cosmosException.getResponseHeaders().get(HttpConstants.HttpHeaders.SUB_STATUS)
+                .equals(Constants.INCORRECT_CONTAINER_RID_SUB_STATUS);
     }
 }

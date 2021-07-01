@@ -9,6 +9,7 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.batch.PartitionScopeThresholds;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
@@ -25,6 +26,7 @@ import reactor.core.publisher.Flux;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 
 public class ImplementationBridgeHelpers {
@@ -127,12 +129,12 @@ public class ImplementationBridgeHelpers {
 
         private CosmosItemRequestOptionsHelper() {}
         static {
-            ensureClassLoaded(CosmosQueryRequestOptionsHelper.class);
+            ensureClassLoaded(CosmosItemRequestOptions.class);
         }
 
         public static void setCosmosItemRequestOptionsAccessor(final CosmosItemRequestOptionsAccessor newAccessor) {
             if (accessor != null) {
-                throw new IllegalStateException("CosmosQueryRequestOptionsHelper accessor already initialized!");
+                throw new IllegalStateException("CosmosItemRequestOptions accessor already initialized!");
             }
 
             accessor = newAccessor;
@@ -140,7 +142,7 @@ public class ImplementationBridgeHelpers {
 
         public static CosmosItemRequestOptionsAccessor getCosmosItemRequestOptionsAccessor() {
             if (accessor == null) {
-                throw new IllegalStateException("CosmosQueryRequestOptionsHelper accessor is not initialized yet!");
+                throw new IllegalStateException("CosmosItemRequestOptions accessor is not initialized yet!");
             }
 
             return accessor;
@@ -378,6 +380,37 @@ public class ImplementationBridgeHelpers {
         public interface BulkProcessingThresholdsAccessor {
             <T> ConcurrentMap<String, PartitionScopeThresholds<T>> getPartitionScopeThresholds(
                 BulkProcessingThresholds<T> thresholds);
+        }
+    }
+
+    public static final class CosmosDiagnosticsHelper {
+        private static CosmosDiagnosticsAccessor accessor;
+
+        private CosmosDiagnosticsHelper() {
+        }
+
+        static {
+            ensureClassLoaded(CosmosDiagnostics.class);
+        }
+
+        public static void setCosmosDiagnosticsAccessor(final CosmosDiagnosticsAccessor newAccessor) {
+            if (accessor != null) {
+                throw new IllegalStateException("CosmosDiagnosticsAccessor already initialized!");
+            }
+
+            accessor = newAccessor;
+        }
+
+        public static CosmosDiagnosticsAccessor getCosmosDiagnosticsAccessor() {
+            if (accessor == null) {
+                throw new IllegalStateException("CosmosDiagnosticsAccessor is not initialized yet!");
+            }
+
+            return accessor;
+        }
+
+        public interface CosmosDiagnosticsAccessor {
+            AtomicBoolean IsDiagnosticCapturedInPagedFlux(CosmosDiagnostics cosmosDiagnostics);
         }
     }
 
