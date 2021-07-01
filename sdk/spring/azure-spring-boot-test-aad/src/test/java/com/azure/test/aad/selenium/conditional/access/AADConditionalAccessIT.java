@@ -32,7 +32,7 @@ import static org.springframework.security.oauth2.client.web.reactive.function.c
 
 
 /**
- * Before running this test case, follow the <a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-test-aad/README.md#what-is-aad-conditional-access-in-aad">guide</a> to start <a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-test-aad-obo/src/test/java/com/azure/test/aad/webapi/conditional/access/webapi/a/ConditionalAccessPolicyTestWebApiA.java">WebapiA</a> and  <a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-test-aad-resource-server/src/test/java/com/azure/test/aad/conditional/access/webapi/b/ConditionalAccessPolicyTestWebApiB.java">webapiB</a>.
+ * Before running this test case, follow the <a href="https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot-test-aad/README.md#what-is-aad-conditional-access-in-aad">guide</a> to start <a href="https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot-test-aad-obo/src/test/java/com/azure/test/aad/webapi/conditional/access/webapi/a/ConditionalAccessPolicyTestWebApiA.java">WebapiA</a> and  <a href="https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot-test-aad-resource-server/src/test/java/com/azure/test/aad/conditional/access/webapi/b/ConditionalAccessPolicyTestWebApiB.java">webapiB</a>.
  */
 @Disabled
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)

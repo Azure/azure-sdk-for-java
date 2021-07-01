@@ -182,12 +182,12 @@ DataFeed dataFeed = new DataFeed()
     .setGranularity(new DataFeedGranularity().setGranularityType(DataFeedGranularityType.DAILY))
     .setSchema(new DataFeedSchema(
         Arrays.asList(
-            new DataFeedMetric().setName("cost"),
-            new DataFeedMetric().setName("revenue")
+            new DataFeedMetric("cost"),
+            new DataFeedMetric("revenue")
         )).setDimensions(
         Arrays.asList(
-            new DataFeedDimension().setName("city"),
-            new DataFeedDimension().setName("category")
+            new DataFeedDimension("city"),
+            new DataFeedDimension("category")
         ))
     )
     .setIngestionSettings(new DataFeedIngestionSettings(OffsetDateTime.parse("2020-01-01T00:00:00Z")))
@@ -239,22 +239,22 @@ This example demonstrates how a user can configure an anomaly detection configur
 ```java
 String metricId = "3d48er30-6e6e-4391-b78f-b00dfee1e6f5";
 
-ChangeThresholdCondition changeThresholdCondition = new ChangeThresholdCondition()
-    .setAnomalyDetectorDirection(AnomalyDetectorDirection.BOTH)
-    .setChangePercentage(20)
-    .setShiftPoint(10)
-    .setWithinRange(true)
-    .setSuppressCondition(new SuppressCondition().setMinNumber(1).setMinRatio(2));
+ChangeThresholdCondition changeThresholdCondition = new ChangeThresholdCondition(
+        20, 
+        10, 
+        true, 
+        AnomalyDetectorDirection.BOTH, 
+        new SuppressCondition(1, 2));
 
-HardThresholdCondition hardThresholdCondition = new HardThresholdCondition()
-    .setAnomalyDetectorDirection(AnomalyDetectorDirection.DOWN)
-    .setLowerBound(5.0)
-    .setSuppressCondition(new SuppressCondition().setMinNumber(1).setMinRatio(1));
+HardThresholdCondition hardThresholdCondition = new HardThresholdCondition(
+        AnomalyDetectorDirection.DOWN, 
+        new SuppressCondition(1, 1))
+    .setLowerBound(5.0);
 
-SmartDetectionCondition smartDetectionCondition = new SmartDetectionCondition()
-    .setAnomalyDetectorDirection(AnomalyDetectorDirection.UP)
-    .setSensitivity(10.0)
-    .setSuppressCondition(new SuppressCondition().setMinNumber(1).setMinRatio(2));
+SmartDetectionCondition smartDetectionCondition = new SmartDetectionCondition(
+        10.0, 
+        AnomalyDetectorDirection.UP,
+        new SuppressCondition(1, 2));
 
 final AnomalyDetectionConfiguration anomalyDetectionConfiguration =
     metricsAdvisorAdminClient.createMetricAnomalyDetectionConfig(

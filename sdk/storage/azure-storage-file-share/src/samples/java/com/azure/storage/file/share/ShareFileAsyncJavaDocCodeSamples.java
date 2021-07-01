@@ -16,6 +16,7 @@ import com.azure.storage.file.share.models.ShareFileUploadOptions;
 import com.azure.storage.file.share.models.ShareFileUploadRangeOptions;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.options.ShareFileListRangesDiffOptions;
+import com.azure.storage.file.share.options.ShareFileUploadRangeFromUrlOptions;
 import com.azure.storage.file.share.sas.ShareFileSasPermission;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 import reactor.core.publisher.Flux;
@@ -477,6 +478,21 @@ public class ShareFileAsyncJavaDocCodeSamples {
             () -> System.out.println("Completed upload range from url!")
         );
         // END: com.azure.storage.file.share.ShareFileAsyncClient.uploadRangeFromUrlWithResponse#long-long-long-String
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareFileAsyncClient#uploadRangeFromUrlWithResponse(long, long, long, String)}
+     */
+    public void uploadFileFromURLOptionsBagWithResponseAsync() {
+        ShareFileAsyncClient shareFileAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.uploadRangeFromUrlWithResponse#ShareFileUploadRangeFromUrlOptions
+        shareFileAsyncClient.uploadRangeFromUrlWithResponse(
+            new ShareFileUploadRangeFromUrlOptions(6, "sourceUrl").setDestinationOffset(8))
+            .subscribe(
+                response -> { },
+                error -> System.err.print(error.toString()),
+                () -> System.out.println("Completed upload range from url!"));
+        // END: com.azure.storage.file.share.ShareFileAsyncClient.uploadRangeFromUrlWithResponse#ShareFileUploadRangeFromUrlOptions
     }
 
     /**

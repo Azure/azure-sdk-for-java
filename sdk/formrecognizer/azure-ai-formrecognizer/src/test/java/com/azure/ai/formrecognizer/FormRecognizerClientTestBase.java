@@ -88,7 +88,6 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     private static final String EXPECTED_MULTIPAGE_RECEIPT_PHONE_NUMBER_VALUE = "+19876543210";
     private static final String ITEMIZED_RECEIPT_VALUE = "Itemized";
     static final String RECEIPT_CONTOSO_JPG = "contoso-allinone.jpg";
-    // TODO (Service pending) Disabled, service to provide a different png file.
     static final String RECEIPT_CONTOSO_PNG = "contoso-receipt.png";
     static final String INVOICE_6_PDF = "Invoice_6.pdf";
     static final String MULTIPAGE_INVOICE_PDF = "multipage_invoice1.pdf";
@@ -97,6 +96,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     static final String BUSINESS_CARD_PNG = "businessCard.png";
     static final String MULTIPAGE_BUSINESS_CARD_PDF = "business-card-multipage.pdf";
     static final String INVOICE_PDF = "Invoice_1.pdf";
+    static final String INVOICE_NO_SUB_LINE_PDF = "ErrorImage.tiff";
     static final String MULTIPAGE_VENDOR_INVOICE_PDF = "multipage_vendor_invoice.pdf";
     static final String LICENSE_CARD_JPG = "license.jpg";
 
@@ -111,7 +111,10 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     static final String HTTPS_EXCEPTION_MESSAGE =
         "Max retries 3 times exceeded. Error Details: Key credentials require HTTPS to prevent leaking the key.";
     static final String INVALID_UUID_EXCEPTION_MESSAGE = "Invalid UUID string: ";
+    static final String INVALID_SOURCE_URL_EXCEPTION_MESSAGE = "Failed to download the image from the submitted URL. "
+        + "The URL may either be invalid or the server hosting the image is experiencing some technical difficulties.";
     static final String MODEL_ID_IS_REQUIRED_EXCEPTION_MESSAGE = "'modelId' is required and cannot be null.";
+    static final String COPY_OPERATION_FAILED_STATUS_MESSAGE = "Copy operation failed";
 
     static final String INVALID_ENDPOINT = "https://notreal.azure.com";
     static final String LOCAL_FILE_PATH = "src/test/resources/sample_files/Test/";

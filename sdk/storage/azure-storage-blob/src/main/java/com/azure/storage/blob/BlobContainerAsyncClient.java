@@ -505,7 +505,7 @@ public final class BlobContainerAsyncClient {
                     hd.getLastModified(), hd.getXMsLeaseDuration(), hd.getXMsLeaseState(), hd.getXMsLeaseStatus(),
                     hd.getXMsBlobPublicAccess(), Boolean.TRUE.equals(hd.isXMsHasImmutabilityPolicy()),
                     Boolean.TRUE.equals(hd.isXMsHasLegalHold()), hd.getXMsDefaultEncryptionScope(),
-                    hd.isXMsDenyEncryptionScopeOverride());
+                    hd.isXMsDenyEncryptionScopeOverride(), hd.isXMsImmutableStorageWithVersioningEnabled());
                 return new SimpleResponse<>(rb, properties);
             });
     }

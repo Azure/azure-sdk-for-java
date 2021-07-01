@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.preprod.core.windows.net/cc6a6a5f0cc6a6a5f9822127170a77059f1094174a08?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2020-08-04",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.12.0-beta.2 azsdk-java-azure-storage-file-datalake/12.6.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "df7766dc-f6f9-4b15-ac19-4a9fd89ad051"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2020-08-04",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8D925EABEB91657",
+      "Last-Modified" : "Wed, 02 Jun 2021 17:20:40 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "a876e5f3-d01e-0011-11d3-57f814000000",
+      "x-ms-client-request-id" : "df7766dc-f6f9-4b15-ac19-4a9fd89ad051",
+      "Date" : "Wed, 02 Jun 2021 17:20:39 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.dfs.preprod.core.windows.net/cc6a6a5f0cc6a6a5f9822127170a77059f1094174a08/cc6a6a5f1cc6a6a5f9828975162aad6e755064580b84?resource=file",
+    "Headers" : {
+      "x-ms-version" : "2020-10-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.6.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "906eab91-c8b4-42fa-944a-2e689bd59b2f"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2020-10-02",
+      "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8D925EABF1BE8F0",
+      "Last-Modified" : "Wed, 02 Jun 2021 17:20:40 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "x-ms-request-id" : "3a459b71-e01f-0012-01d3-57fb13000000",
+      "x-ms-client-request-id" : "906eab91-c8b4-42fa-944a-2e689bd59b2f",
+      "Date" : "Wed, 02 Jun 2021 17:20:40 GMT"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "cc6a6a5f0cc6a6a5f9822127170a77059f1094174a08", "cc6a6a5f1cc6a6a5f9828975162aad6e755064580b84" ]
+}
