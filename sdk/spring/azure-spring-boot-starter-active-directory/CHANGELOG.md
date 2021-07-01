@@ -70,7 +70,12 @@
     azure.activedirectory.user-group.value
     azure.activedirectory.user-group.object-id-key
     ```
-- Stop support of Azure Active Directory Endpoints.
+- Not support `AAD v1` anymore, only support `AAD v2`.
+  1. `AAD v1`. Also named `Azure Active Directory`, its endpoint is like this: https://login.microsoftonline.com/common/oauth2/authorize.
+  2. `AAD v2`. Also named `Microsoft Identity Platform`, its endpoint is like this: https://login.microsoftonline.com/common/oauth2/v2.0/authorize.
+  
+  Refer [this doc](https://github.com/MicrosoftDocs/azure-docs/blob/master/articles/active-directory/azuread-dev/azure-ad-endpoint-comparison.md) to get more information about `AAD v1` and `AAD v2`.
+
 
 ### New Features
 - Support consent of multiple client registrations during user login.
