@@ -11,6 +11,7 @@ import com.azure.resourcemanager.network.samples.ManageInternetFacingLoadBalance
 import com.azure.resourcemanager.network.samples.ManageNetworkInterface;
 import com.azure.resourcemanager.network.samples.ManageNetworkPeeringInSameSubscription;
 import com.azure.resourcemanager.network.samples.ManageNetworkSecurityGroup;
+import com.azure.resourcemanager.network.samples.ManagePrivateLink;
 import com.azure.resourcemanager.network.samples.ManageSimpleApplicationGateway;
 import com.azure.resourcemanager.network.samples.ManageVirtualMachinesInParallelWithNetwork;
 import com.azure.resourcemanager.network.samples.ManageVirtualNetwork;
@@ -25,6 +26,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
 
 public class NetworkSampleTests extends SamplesTestBase {
 
@@ -102,5 +104,10 @@ public class NetworkSampleTests extends SamplesTestBase {
     @Disabled("Need root certificate file and client certificate thumbprint to run the sample")
     public void testManageVpnGatewayPoint2SiteConnection() throws IOException {
         Assertions.assertTrue(ManageVpnGatewayPoint2SiteConnection.runSample(azureResourceManager));
+    }
+
+    @Test
+    public void testManagePrivateLink() throws JSchException, UnsupportedEncodingException, MalformedURLException {
+        Assertions.assertTrue(ManagePrivateLink.runSample(azureResourceManager));
     }
 }

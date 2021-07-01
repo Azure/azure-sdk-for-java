@@ -1,0 +1,18 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.api.prod.adu.microsoft.com/deviceupdate/blue/v2/management/devices",
+    "Headers" : { },
+    "Response" : {
+      "traceparent" : "00-4b08245d0557dc4fb07eb96c59f7b052-9025ae59de4f884a-00",
+      "retry-after" : "0",
+      "Content-Length" : "1917",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[{\"deviceId\":\"functionaltests-device1\",\"moduleId\":null,\"deviceClassId\":\"c97c9c774a1c541ecc88e8c65b6431fd8b7eafc3\",\"manufacturer\":\"Microsoft-Corporation\",\"model\":\"Virtual-Machine\",\"lastAttemptedUpdateId\":null,\"installedUpdateId\":{\"provider\":\"Microsoft-Corporation\",\"name\":\"Virtual-Machine\",\"version\":\"111.0\"},\"onLatestUpdate\":true,\"deploymentStatus\":\"InProgress\",\"groupId\":\"functionaltests-groupname1\",\"lastDeploymentId\":\"6f11870c-79b4-4d4e-85c4-b60e796ed283\"},{\"deviceId\":\"adu-raspi-e2etest-raps-prod-wus2\",\"moduleId\":null,\"deviceClassId\":\"86705631a06a6d4745a516778f7e2e261a72c5b8\",\"manufacturer\":\"ADUTeam\",\"model\":\"RefDevice\",\"lastAttemptedUpdateId\":{\"provider\":\"ADUTeam\",\"name\":\"RefDevice\",\"version\":\"1.0.3750.1\"},\"installedUpdateId\":{\"provider\":\"ADUTeam\",\"name\":\"RefDevice\",\"version\":\"1.0.3779.1\"},\"onLatestUpdate\":false,\"deploymentStatus\":\"Failed\",\"groupId\":null,\"lastDeploymentId\":\"[ManagementE2ETest] 9134a970-df08-4fe7-8cb6-10d32a0a61f7\"},{\"deviceId\":\"Pi13279821\",\"moduleId\":null,\"deviceClassId\":\"634a0b52a6e1fb54fe6b98e5b55534bb4800b77b\",\"manufacturer\":\"ADUTeam\",\"model\":\"E2ETestDevice\",\"lastAttemptedUpdateId\":{\"provider\":\"ADUTeam\",\"name\":\"E2ETestDevice\",\"version\":\"1.0.3750.1\"},\"installedUpdateId\":{\"provider\":\"ADUTeam\",\"name\":\"E2ETestDevice\",\"version\":\"1.0.3750.1\"},\"onLatestUpdate\":false,\"deploymentStatus\":\"Succeeded\",\"groupId\":null,\"lastDeploymentId\":\"[ManagementE2ETest] 043b16d7-35c4-4556-bdea-766c39686f25\"},{\"deviceId\":\"dpokluda-test\",\"moduleId\":null,\"deviceClassId\":\"b83e3c87fbf98063c20c3269f1c9e58d255906dd\",\"manufacturer\":\"Contoso\",\"model\":\"Virtual-Machine\",\"lastAttemptedUpdateId\":{\"provider\":\"Contoso\",\"name\":\"Virtual-Machine\",\"version\":\"2021.302.1323.55\"},\"installedUpdateId\":{\"provider\":\"Contoso\",\"name\":\"Virtual-Machine\",\"version\":\"2021.302.1304.12\"},\"onLatestUpdate\":false,\"deploymentStatus\":\"Failed\",\"groupId\":\"dpokluda-test\",\"lastDeploymentId\":\"dpokluda-test-2021-302-1323-55\"}]}",
+      "Date" : "Tue, 02 Mar 2021 21:29:02 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

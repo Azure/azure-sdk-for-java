@@ -46,6 +46,12 @@ public class SsisPackageLocation {
     private Object configurationPath;
 
     /*
+     * The configuration file access credential.
+     */
+    @JsonProperty(value = "typeProperties.configurationAccessCredential")
+    private SsisAccessCredential configurationAccessCredential;
+
+    /*
      * The package name.
      */
     @JsonProperty(value = "typeProperties.packageName")
@@ -169,6 +175,26 @@ public class SsisPackageLocation {
      */
     public SsisPackageLocation setConfigurationPath(Object configurationPath) {
         this.configurationPath = configurationPath;
+        return this;
+    }
+
+    /**
+     * Get the configurationAccessCredential property: The configuration file access credential.
+     *
+     * @return the configurationAccessCredential value.
+     */
+    public SsisAccessCredential getConfigurationAccessCredential() {
+        return this.configurationAccessCredential;
+    }
+
+    /**
+     * Set the configurationAccessCredential property: The configuration file access credential.
+     *
+     * @param configurationAccessCredential the configurationAccessCredential value to set.
+     * @return the SsisPackageLocation object itself.
+     */
+    public SsisPackageLocation setConfigurationAccessCredential(SsisAccessCredential configurationAccessCredential) {
+        this.configurationAccessCredential = configurationAccessCredential;
         return this;
     }
 

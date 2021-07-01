@@ -4,9 +4,6 @@
 
 package com.azure.ai.metricsadvisor.implementation.models;
 
-import com.azure.ai.metricsadvisor.models.ChangeThresholdCondition;
-import com.azure.ai.metricsadvisor.models.HardThresholdCondition;
-import com.azure.ai.metricsadvisor.models.SmartDetectionCondition;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -25,7 +22,7 @@ public final class DimensionGroupConfiguration {
      * should be specified when combining multiple detection conditions
      */
     @JsonProperty(value = "conditionOperator")
-    private DimensionGroupConfigurationConditionOperator conditionOperator;
+    private AnomalyDetectionConfigurationLogicType conditionOperator;
 
     /*
      * The smartDetectionCondition property.
@@ -72,7 +69,7 @@ public final class DimensionGroupConfiguration {
      *
      * @return the conditionOperator value.
      */
-    public DimensionGroupConfigurationConditionOperator getConditionOperator() {
+    public AnomalyDetectionConfigurationLogicType getConditionOperator() {
         return this.conditionOperator;
     }
 
@@ -84,8 +81,7 @@ public final class DimensionGroupConfiguration {
      * @param conditionOperator the conditionOperator value to set.
      * @return the DimensionGroupConfiguration object itself.
      */
-    public DimensionGroupConfiguration setConditionOperator(
-            DimensionGroupConfigurationConditionOperator conditionOperator) {
+    public DimensionGroupConfiguration setConditionOperator(AnomalyDetectionConfigurationLogicType conditionOperator) {
         this.conditionOperator = conditionOperator;
         return this;
     }

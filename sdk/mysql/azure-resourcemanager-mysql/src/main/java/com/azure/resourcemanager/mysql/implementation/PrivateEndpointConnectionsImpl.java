@@ -9,7 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.mysql.MySqlManager;
 import com.azure.resourcemanager.mysql.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.mysql.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.mysql.models.PrivateEndpointConnection;
@@ -21,9 +20,10 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
 
     private final PrivateEndpointConnectionsClient innerClient;
 
-    private final MySqlManager serviceManager;
+    private final com.azure.resourcemanager.mysql.MySqlManager serviceManager;
 
-    public PrivateEndpointConnectionsImpl(PrivateEndpointConnectionsClient innerClient, MySqlManager serviceManager) {
+    public PrivateEndpointConnectionsImpl(
+        PrivateEndpointConnectionsClient innerClient, com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -66,14 +66,14 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
     public PagedIterable<PrivateEndpointConnection> listByServer(String resourceGroupName, String serverName) {
         PagedIterable<PrivateEndpointConnectionInner> inner =
             this.serviceClient().listByServer(resourceGroupName, serverName);
-        return inner.mapPage(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()));
     }
 
     public PagedIterable<PrivateEndpointConnection> listByServer(
         String resourceGroupName, String serverName, Context context) {
         PagedIterable<PrivateEndpointConnectionInner> inner =
             this.serviceClient().listByServer(resourceGroupName, serverName, context);
-        return inner.mapPage(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()));
     }
 
     public PrivateEndpointConnection getById(String id) {
@@ -198,7 +198,7 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
         return this.innerClient;
     }
 
-    private MySqlManager manager() {
+    private com.azure.resourcemanager.mysql.MySqlManager manager() {
         return this.serviceManager;
     }
 

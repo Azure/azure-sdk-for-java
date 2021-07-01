@@ -399,6 +399,21 @@ public interface QueuesClient {
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of all the queues under the specified storage account.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ListQueueInner> list(String resourceGroupName, String accountName);
+
+    /**
+     * Gets a list of all the queues under the specified storage account.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param maxpagesize Optional, a maximum number of queues that should be included in a list queue response.
      * @param filter Optional, When specified, only the queues with a name starting with the given filter will be
      *     listed.
@@ -411,19 +426,4 @@ public interface QueuesClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ListQueueInner> list(
         String resourceGroupName, String accountName, String maxpagesize, String filter, Context context);
-
-    /**
-     * Gets a list of all the queues under the specified storage account.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all the queues under the specified storage account.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ListQueueInner> list(String resourceGroupName, String accountName);
 }

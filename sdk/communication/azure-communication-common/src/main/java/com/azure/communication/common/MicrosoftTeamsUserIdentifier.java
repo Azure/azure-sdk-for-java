@@ -8,27 +8,13 @@ import com.azure.core.util.CoreUtils;
 /**
  * Communication identifier for Microsoft Teams User
  */
-public class MicrosoftTeamsUserIdentifier extends CommunicationIdentifier {
+public final class MicrosoftTeamsUserIdentifier extends CommunicationIdentifier {
 
     private final String userId;
     private final boolean isAnonymous;
     private CommunicationCloudEnvironment cloudEnvironment = CommunicationCloudEnvironment.PUBLIC;
 
     private String rawId;
-
-    /**
-     * Creates a MicrosoftTeamsUserIdentifier object
-     *
-     * @param userId Id of the Microsoft Teams user. If the user isn't anonymous, the id is the AAD object id of the user.
-     * @param isAnonymous set this to true if the user is anonymous,
-     *                    for example when joining a meeting with a share link
-     * @param cloudEnvironment the cloud environment in which this identifier is created
-     * @throws IllegalArgumentException thrown if userId parameter fail the validation.
-     */
-    public MicrosoftTeamsUserIdentifier(String userId, boolean isAnonymous, CommunicationCloudEnvironment  cloudEnvironment) {
-        this(userId, isAnonymous);
-        this.cloudEnvironment = cloudEnvironment;
-    }
 
     /**
      * Creates a MicrosoftTeamsUserIdentifier object
@@ -76,7 +62,7 @@ public class MicrosoftTeamsUserIdentifier extends CommunicationIdentifier {
      * @param cloudEnvironment the cloud environment in which this identifier is created
      * @return this object
      */
-    public MicrosoftTeamsUserIdentifier setCloudEnvironment(CommunicationCloudEnvironment  cloudEnvironment) {
+    public MicrosoftTeamsUserIdentifier setCloudEnvironment(CommunicationCloudEnvironment cloudEnvironment) {
         this.cloudEnvironment = cloudEnvironment;
         return this;
     }

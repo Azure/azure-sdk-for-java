@@ -8,26 +8,24 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/**
- * The BlobTag model.
- */
+/** The BlobTag model. */
 @JacksonXmlRootElement(localName = "Tag")
 @Fluent
 public final class BlobTag {
     /*
-     * The key property.
+     * The Key property.
      */
     @JsonProperty(value = "Key", required = true)
     private String key;
 
     /*
-     * The value property.
+     * The Value property.
      */
     @JsonProperty(value = "Value", required = true)
     private String value;
 
     /**
-     * Get the key property: The key property.
+     * Get the key property: The Key property.
      *
      * @return the key value.
      */
@@ -36,7 +34,7 @@ public final class BlobTag {
     }
 
     /**
-     * Set the key property: The key property.
+     * Set the key property: The Key property.
      *
      * @param key the key value to set.
      * @return the BlobTag object itself.
@@ -47,7 +45,7 @@ public final class BlobTag {
     }
 
     /**
-     * Get the value property: The value property.
+     * Get the value property: The Value property.
      *
      * @return the value value.
      */
@@ -56,7 +54,7 @@ public final class BlobTag {
     }
 
     /**
-     * Set the value property: The value property.
+     * Set the value property: The Value property.
      *
      * @param value the value value to set.
      * @return the BlobTag object itself.

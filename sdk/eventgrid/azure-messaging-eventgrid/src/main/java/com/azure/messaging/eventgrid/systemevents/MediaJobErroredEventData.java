@@ -7,8 +7,11 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
-/** The MediaJobErroredEventData model. */
+/**
+ * Job error state event data. Schema of the data property of an EventGridEvent for a Microsoft.Media.JobErrored event.
+ */
 @Fluent
 public final class MediaJobErroredEventData extends MediaJobStateChangeEventData {
     /*
@@ -34,6 +37,13 @@ public final class MediaJobErroredEventData extends MediaJobStateChangeEventData
      */
     public MediaJobErroredEventData setOutputs(List<MediaJobOutput> outputs) {
         this.outputs = outputs;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MediaJobErroredEventData setCorrelationData(Map<String, String> correlationData) {
+        super.setCorrelationData(correlationData);
         return this;
     }
 }

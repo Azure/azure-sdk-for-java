@@ -10,15 +10,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
 
-/**
- * Geo-Replication information for the Secondary Storage Service.
- */
+/** Geo-Replication information for the Secondary Storage Service. */
 @JacksonXmlRootElement(localName = "GeoReplication")
 @Fluent
 public final class GeoReplication {
     /*
-     * The status of the secondary location. Possible values include: 'live',
-     * 'bootstrap', 'unavailable'
+     * The status of the secondary location
      */
     @JsonProperty(value = "Status", required = true)
     private GeoReplicationStatus status;
@@ -33,8 +30,7 @@ public final class GeoReplication {
     private DateTimeRfc1123 lastSyncTime;
 
     /**
-     * Get the status property: The status of the secondary location. Possible
-     * values include: 'live', 'bootstrap', 'unavailable'.
+     * Get the status property: The status of the secondary location.
      *
      * @return the status value.
      */
@@ -43,8 +39,7 @@ public final class GeoReplication {
     }
 
     /**
-     * Set the status property: The status of the secondary location. Possible
-     * values include: 'live', 'bootstrap', 'unavailable'.
+     * Set the status property: The status of the secondary location.
      *
      * @param status the status value to set.
      * @return the GeoReplication object itself.
@@ -55,10 +50,9 @@ public final class GeoReplication {
     }
 
     /**
-     * Get the lastSyncTime property: A GMT date/time value, to the second. All
-     * primary writes preceding this value are guaranteed to be available for
-     * read operations at the secondary. Primary writes after this point in
-     * time may or may not be available for reads.
+     * Get the lastSyncTime property: A GMT date/time value, to the second. All primary writes preceding this value are
+     * guaranteed to be available for read operations at the secondary. Primary writes after this point in time may or
+     * may not be available for reads.
      *
      * @return the lastSyncTime value.
      */
@@ -70,10 +64,9 @@ public final class GeoReplication {
     }
 
     /**
-     * Set the lastSyncTime property: A GMT date/time value, to the second. All
-     * primary writes preceding this value are guaranteed to be available for
-     * read operations at the secondary. Primary writes after this point in
-     * time may or may not be available for reads.
+     * Set the lastSyncTime property: A GMT date/time value, to the second. All primary writes preceding this value are
+     * guaranteed to be available for read operations at the secondary. Primary writes after this point in time may or
+     * may not be available for reads.
      *
      * @param lastSyncTime the lastSyncTime value to set.
      * @return the GeoReplication object itself.

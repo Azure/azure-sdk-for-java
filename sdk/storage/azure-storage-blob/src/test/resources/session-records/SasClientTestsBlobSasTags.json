@@ -1,0 +1,91 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/ddff4dbd0ddff4dbded16446158925fbbb1ca42e8ad4?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2020-10-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.12.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "0d3424ee-500a-459f-8ff2-c60a785bb041"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2020-10-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8D9171686A8B1DF",
+      "Last-Modified" : "Fri, 14 May 2021 20:26:16 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "18c67924-001e-0034-08ff-48e90a000000",
+      "x-ms-client-request-id" : "0d3424ee-500a-459f-8ff2-c60a785bb041",
+      "Date" : "Fri, 14 May 2021 20:26:16 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/ddff4dbd0ddff4dbded16446158925fbbb1ca42e8ad4/ddff4dbd1ddff4dbded1002048e7e7c0ffb444313bb4",
+    "Headers" : {
+      "x-ms-version" : "2020-10-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.12.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "0debdab2-dc4a-4c75-9280-7393d91b99d1",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2020-10-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-content-crc64" : "6RYQPwaVsyQ=",
+      "Last-Modified" : "Fri, 14 May 2021 20:26:17 GMT",
+      "x-ms-version-id" : "2021-05-14T20:26:17.4160341Z",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Fri, 14 May 2021 20:26:16 GMT",
+      "Content-MD5" : "wh+Wm18D0z1D4E+PE252gg==",
+      "eTag" : "0x8D91716872BF5D5",
+      "x-ms-request-id" : "acc12455-e01e-0095-66ff-483277000000",
+      "x-ms-client-request-id" : "0debdab2-dc4a-4c75-9280-7393d91b99d1"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/ddff4dbd0ddff4dbded16446158925fbbb1ca42e8ad4/ddff4dbd1ddff4dbded1002048e7e7c0ffb444313bb4?comp=tags&sv=2020-10-02&spr=https%2Chttp&st=2021-05-13T20%3A26%3A17Z&se=2021-05-15T20%3A26%3A17Z&sr=b&sp=racwdt&sig=REDACTED&rscc=cache&rscd=disposition&rsce=encoding&rscl=language&rsct=type",
+    "Headers" : {
+      "x-ms-version" : "2020-10-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.12.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "57057885-cb32-4c1f-9ddf-bbf835635a44",
+      "Content-Type" : "application/xml"
+    },
+    "Response" : {
+      "x-ms-version" : "2020-10-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "x-ms-request-id" : "48752ff2-701e-0011-74ff-484076000000",
+      "x-ms-client-request-id" : "57057885-cb32-4c1f-9ddf-bbf835635a44",
+      "Date" : "Fri, 14 May 2021 20:26:17 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.blob.core.windows.net/ddff4dbd0ddff4dbded16446158925fbbb1ca42e8ad4/ddff4dbd1ddff4dbded1002048e7e7c0ffb444313bb4?comp=tags&sv=2020-10-02&spr=https%2Chttp&st=2021-05-13T20%3A26%3A17Z&se=2021-05-15T20%3A26%3A17Z&sr=b&sp=racwdt&sig=REDACTED&rscc=cache&rscd=disposition&rsce=encoding&rscl=language&rsct=type",
+    "Headers" : {
+      "x-ms-version" : "2020-10-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.12.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "da51b5ea-bc2b-4c08-9ca2-4b6c1da191dd"
+    },
+    "Response" : {
+      "content-length" : "115",
+      "x-ms-version" : "2020-10-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "a1f88626-e01e-005e-46ff-483122000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<Tags><TagSet><Tag><Key>foo</Key><Value>bar</Value></Tag></TagSet></Tags>",
+      "x-ms-client-request-id" : "da51b5ea-bc2b-4c08-9ca2-4b6c1da191dd",
+      "Date" : "Fri, 14 May 2021 20:26:17 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "ddff4dbd0ddff4dbded16446158925fbbb1ca42e8ad4", "ddff4dbd1ddff4dbded1002048e7e7c0ffb444313bb4", "2021-05-14T20:26:17.526688Z", "2021-05-14T20:26:17.527685500Z" ]
+}

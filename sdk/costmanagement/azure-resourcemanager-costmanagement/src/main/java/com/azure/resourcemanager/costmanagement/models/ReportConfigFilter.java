@@ -28,22 +28,28 @@ public final class ReportConfigFilter {
     private List<ReportConfigFilter> or;
 
     /*
-     * The logical "NOT" expression.
-     */
-    @JsonProperty(value = "not")
-    private ReportConfigFilter not;
-
-    /*
      * Has comparison expression for a dimension
      */
-    @JsonProperty(value = "dimension")
-    private ReportConfigComparisonExpression dimension;
+    @JsonProperty(value = "dimensions")
+    private ReportConfigComparisonExpression dimensions;
 
     /*
      * Has comparison expression for a tag
      */
-    @JsonProperty(value = "tag")
-    private ReportConfigComparisonExpression tag;
+    @JsonProperty(value = "tags")
+    private ReportConfigComparisonExpression tags;
+
+    /*
+     * Has comparison expression for a tag key
+     */
+    @JsonProperty(value = "tagKey")
+    private ReportConfigComparisonExpression tagKey;
+
+    /*
+     * Has comparison expression for a tag value
+     */
+    @JsonProperty(value = "tagValue")
+    private ReportConfigComparisonExpression tagValue;
 
     /**
      * Get the and property: The logical "AND" expression. Must have at least 2 items.
@@ -86,62 +92,82 @@ public final class ReportConfigFilter {
     }
 
     /**
-     * Get the not property: The logical "NOT" expression.
+     * Get the dimensions property: Has comparison expression for a dimension.
      *
-     * @return the not value.
+     * @return the dimensions value.
      */
-    public ReportConfigFilter not() {
-        return this.not;
+    public ReportConfigComparisonExpression dimensions() {
+        return this.dimensions;
     }
 
     /**
-     * Set the not property: The logical "NOT" expression.
+     * Set the dimensions property: Has comparison expression for a dimension.
      *
-     * @param not the not value to set.
+     * @param dimensions the dimensions value to set.
      * @return the ReportConfigFilter object itself.
      */
-    public ReportConfigFilter withNot(ReportConfigFilter not) {
-        this.not = not;
+    public ReportConfigFilter withDimensions(ReportConfigComparisonExpression dimensions) {
+        this.dimensions = dimensions;
         return this;
     }
 
     /**
-     * Get the dimension property: Has comparison expression for a dimension.
+     * Get the tags property: Has comparison expression for a tag.
      *
-     * @return the dimension value.
+     * @return the tags value.
      */
-    public ReportConfigComparisonExpression dimension() {
-        return this.dimension;
+    public ReportConfigComparisonExpression tags() {
+        return this.tags;
     }
 
     /**
-     * Set the dimension property: Has comparison expression for a dimension.
+     * Set the tags property: Has comparison expression for a tag.
      *
-     * @param dimension the dimension value to set.
+     * @param tags the tags value to set.
      * @return the ReportConfigFilter object itself.
      */
-    public ReportConfigFilter withDimension(ReportConfigComparisonExpression dimension) {
-        this.dimension = dimension;
+    public ReportConfigFilter withTags(ReportConfigComparisonExpression tags) {
+        this.tags = tags;
         return this;
     }
 
     /**
-     * Get the tag property: Has comparison expression for a tag.
+     * Get the tagKey property: Has comparison expression for a tag key.
      *
-     * @return the tag value.
+     * @return the tagKey value.
      */
-    public ReportConfigComparisonExpression tag() {
-        return this.tag;
+    public ReportConfigComparisonExpression tagKey() {
+        return this.tagKey;
     }
 
     /**
-     * Set the tag property: Has comparison expression for a tag.
+     * Set the tagKey property: Has comparison expression for a tag key.
      *
-     * @param tag the tag value to set.
+     * @param tagKey the tagKey value to set.
      * @return the ReportConfigFilter object itself.
      */
-    public ReportConfigFilter withTag(ReportConfigComparisonExpression tag) {
-        this.tag = tag;
+    public ReportConfigFilter withTagKey(ReportConfigComparisonExpression tagKey) {
+        this.tagKey = tagKey;
+        return this;
+    }
+
+    /**
+     * Get the tagValue property: Has comparison expression for a tag value.
+     *
+     * @return the tagValue value.
+     */
+    public ReportConfigComparisonExpression tagValue() {
+        return this.tagValue;
+    }
+
+    /**
+     * Set the tagValue property: Has comparison expression for a tag value.
+     *
+     * @param tagValue the tagValue value to set.
+     * @return the ReportConfigFilter object itself.
+     */
+    public ReportConfigFilter withTagValue(ReportConfigComparisonExpression tagValue) {
+        this.tagValue = tagValue;
         return this;
     }
 
@@ -157,14 +183,17 @@ public final class ReportConfigFilter {
         if (or() != null) {
             or().forEach(e -> e.validate());
         }
-        if (not() != null) {
-            not().validate();
+        if (dimensions() != null) {
+            dimensions().validate();
         }
-        if (dimension() != null) {
-            dimension().validate();
+        if (tags() != null) {
+            tags().validate();
         }
-        if (tag() != null) {
-            tag().validate();
+        if (tagKey() != null) {
+            tagKey().validate();
+        }
+        if (tagValue() != null) {
+            tagValue().validate();
         }
     }
 }

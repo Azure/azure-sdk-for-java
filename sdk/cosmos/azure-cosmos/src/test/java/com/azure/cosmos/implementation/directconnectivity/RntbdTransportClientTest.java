@@ -648,7 +648,7 @@ public final class RntbdTransportClientTest {
                 builder.build()
             );
 
-            final Mono<StoreResponse> responseMono = transportClient.invokeStoreAsync(physicalAddress, request);
+            final Mono<StoreResponse> responseMono = transportClient.invokeResourceOperationAsync(physicalAddress, request);
 
             responseMono.subscribe(response -> { }, error -> {
                 final String format = "Expected %s, not %s";
@@ -710,7 +710,7 @@ public final class RntbdTransportClientTest {
             final Mono<StoreResponse> responseMono;
 
             try {
-                responseMono = client.invokeStoreAsync(physicalAddress, request);
+                responseMono = client.invokeResourceOperationAsync(physicalAddress, request);
             } catch (final Exception error) {
                 throw new AssertionError(String.format("%s: %s", error.getClass(), error));
             }

@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -62,23 +63,24 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     @Host("{$host}")
     @ServiceInterface(name = "RedisManagementClien")
     private interface FirewallRulesService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/Redis"
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis"
                 + "/{cacheName}/firewallRules")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RedisFirewallRuleListResult>> listByRedisResource(
+        Mono<Response<RedisFirewallRuleListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("cacheName") String cacheName,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/Redis"
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis"
                 + "/{cacheName}/firewallRules/{ruleName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -90,11 +92,12 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") RedisFirewallRuleCreateParameters parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/Redis"
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis"
                 + "/{cacheName}/firewallRules/{ruleName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -105,11 +108,12 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
             @PathParam("ruleName") String ruleName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/Redis"
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis"
                 + "/{cacheName}/firewallRules/{ruleName}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -120,14 +124,18 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
             @PathParam("ruleName") String ruleName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RedisFirewallRuleListResult>> listByRedisResourceNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+        Mono<Response<RedisFirewallRuleListResult>> listNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -141,7 +149,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @return all firewall rules in the specified redis cache.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RedisFirewallRuleInner>> listByRedisResourceSinglePageAsync(
+    private Mono<PagedResponse<RedisFirewallRuleInner>> listSinglePageAsync(
         String resourceGroupName, String cacheName) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -162,16 +170,18 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
         if (cacheName == null) {
             return Mono.error(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
                     service
-                        .listByRedisResource(
+                        .list(
                             this.client.getEndpoint(),
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             cacheName,
+                            accept,
                             context))
             .<PagedResponse<RedisFirewallRuleInner>>map(
                 res ->
@@ -182,7 +192,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -197,7 +207,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @return all firewall rules in the specified redis cache.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RedisFirewallRuleInner>> listByRedisResourceSinglePageAsync(
+    private Mono<PagedResponse<RedisFirewallRuleInner>> listSinglePageAsync(
         String resourceGroupName, String cacheName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -218,14 +228,16 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
         if (cacheName == null) {
             return Mono.error(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByRedisResource(
+            .list(
                 this.client.getEndpoint(),
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 cacheName,
+                accept,
                 context)
             .map(
                 res ->
@@ -249,10 +261,9 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @return all firewall rules in the specified redis cache.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<RedisFirewallRuleInner> listByRedisResourceAsync(String resourceGroupName, String cacheName) {
+    public PagedFlux<RedisFirewallRuleInner> listAsync(String resourceGroupName, String cacheName) {
         return new PagedFlux<>(
-            () -> listByRedisResourceSinglePageAsync(resourceGroupName, cacheName),
-            nextLink -> listByRedisResourceNextSinglePageAsync(nextLink));
+            () -> listSinglePageAsync(resourceGroupName, cacheName), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -267,11 +278,10 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @return all firewall rules in the specified redis cache.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<RedisFirewallRuleInner> listByRedisResourceAsync(
-        String resourceGroupName, String cacheName, Context context) {
+    private PagedFlux<RedisFirewallRuleInner> listAsync(String resourceGroupName, String cacheName, Context context) {
         return new PagedFlux<>(
-            () -> listByRedisResourceSinglePageAsync(resourceGroupName, cacheName, context),
-            nextLink -> listByRedisResourceNextSinglePageAsync(nextLink, context));
+            () -> listSinglePageAsync(resourceGroupName, cacheName, context),
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -285,8 +295,8 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @return all firewall rules in the specified redis cache.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RedisFirewallRuleInner> listByRedisResource(String resourceGroupName, String cacheName) {
-        return new PagedIterable<>(listByRedisResourceAsync(resourceGroupName, cacheName));
+    public PagedIterable<RedisFirewallRuleInner> list(String resourceGroupName, String cacheName) {
+        return new PagedIterable<>(listAsync(resourceGroupName, cacheName));
     }
 
     /**
@@ -301,9 +311,8 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @return all firewall rules in the specified redis cache.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RedisFirewallRuleInner> listByRedisResource(
-        String resourceGroupName, String cacheName, Context context) {
-        return new PagedIterable<>(listByRedisResourceAsync(resourceGroupName, cacheName, context));
+    public PagedIterable<RedisFirewallRuleInner> list(String resourceGroupName, String cacheName, Context context) {
+        return new PagedIterable<>(listAsync(resourceGroupName, cacheName, context));
     }
 
     /**
@@ -312,7 +321,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @param resourceGroupName The name of the resource group.
      * @param cacheName The name of the Redis cache.
      * @param ruleName The name of the firewall rule.
-     * @param parameters Parameters required for creating a firewall rule on redis cache.
+     * @param parameters Parameters supplied to the create or update redis firewall rule operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -349,6 +358,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
         } else {
             parameters.validate();
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -361,8 +371,9 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             parameters,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -371,7 +382,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @param resourceGroupName The name of the resource group.
      * @param cacheName The name of the Redis cache.
      * @param ruleName The name of the firewall rule.
-     * @param parameters Parameters required for creating a firewall rule on redis cache.
+     * @param parameters Parameters supplied to the create or update redis firewall rule operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -413,6 +424,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
         } else {
             parameters.validate();
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
@@ -423,6 +435,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 parameters,
+                accept,
                 context);
     }
 
@@ -432,7 +445,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @param resourceGroupName The name of the resource group.
      * @param cacheName The name of the Redis cache.
      * @param ruleName The name of the firewall rule.
-     * @param parameters Parameters required for creating a firewall rule on redis cache.
+     * @param parameters Parameters supplied to the create or update redis firewall rule operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -459,7 +472,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @param resourceGroupName The name of the resource group.
      * @param cacheName The name of the Redis cache.
      * @param ruleName The name of the firewall rule.
-     * @param parameters Parameters required for creating a firewall rule on redis cache.
+     * @param parameters Parameters supplied to the create or update redis firewall rule operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -478,7 +491,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @param resourceGroupName The name of the resource group.
      * @param cacheName The name of the Redis cache.
      * @param ruleName The name of the firewall rule.
-     * @param parameters Parameters required for creating a firewall rule on redis cache.
+     * @param parameters Parameters supplied to the create or update redis firewall rule operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -532,6 +545,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -543,8 +557,9 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
                             ruleName,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -584,6 +599,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -593,6 +609,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
                 ruleName,
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -689,6 +706,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -700,8 +718,9 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
                             ruleName,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -741,6 +760,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -750,6 +770,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
                 ruleName,
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -813,12 +834,19 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @return the response of list firewall rules Redis operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RedisFirewallRuleInner>> listByRedisResourceNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<RedisFirewallRuleInner>> listNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByRedisResourceNext(nextLink, context))
+            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<RedisFirewallRuleInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -828,7 +856,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -842,14 +870,20 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @return the response of list firewall rules Redis operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RedisFirewallRuleInner>> listByRedisResourceNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<RedisFirewallRuleInner>> listNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByRedisResourceNext(nextLink, context)
+            .listNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

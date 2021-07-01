@@ -11,9 +11,11 @@ spring:
       eventhub:
         namespace: [eventhub-namespace]
     stream:
+      function:
+        definition: consume;supply
       bindings:
-        input:
+        consume-in-0:
           destination: [eventhub-name]
           group: [consumer-group]
-        output:
+        supply-out-0:
           destination: [the-same-eventhub-name-as-above]

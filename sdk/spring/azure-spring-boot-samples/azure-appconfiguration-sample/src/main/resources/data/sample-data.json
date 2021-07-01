@@ -1,0 +1,6 @@
+{
+  "/application/config.message": "hello from default application",
+  "/application_dev/config.message": "hello from default application dev profile",
+  "/foo/config.message": "hello from foo application",
+  "/foo_dev/config.message": "hello from foo application dev profile"
+}

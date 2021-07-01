@@ -15,6 +15,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.concurrent.Queues;
 
+import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -63,6 +64,7 @@ public class Paginator {
     public static <T extends Resource> Flux<FeedResponse<T>> getChangeFeedQueryResultAsObservable(
         RxDocumentClientImpl client,
         ChangeFeedState changeFeedState,
+        Map<String, Object> requestOptionProperties,
         Supplier<RxDocumentServiceRequest> createRequestFunc,
         Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc,
         Class<T> resourceType,
@@ -77,6 +79,7 @@ public class Paginator {
                 createRequestFunc,
                 executeFunc,
                 changeFeedState,
+                requestOptionProperties,
                 top,
                 maxPageSize,
                 isSplitHandlingDisabled),

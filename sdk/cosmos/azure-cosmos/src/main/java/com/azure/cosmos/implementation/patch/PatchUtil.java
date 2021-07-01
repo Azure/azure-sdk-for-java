@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.patch;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosPatchOperations;
+import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.Utils;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -13,16 +14,12 @@ import java.util.List;
 
 public final class PatchUtil {
 
-    public static <T> JsonSerializable serializableBatchPatchOperation(T item) {
-        if (item instanceof CosmosPatchOperations) {
-            return cosmosPatchToJsonSerializable((CosmosPatchOperations) item);
-        } else {
-            throw new UnsupportedOperationException("Unknown Patch operations.");
-        }
+    public static JsonSerializable serializableBatchPatchOperation(CosmosPatchOperations patchOperations, RequestOptions requestOptions) {
+        return cosmosPatchToJsonSerializable(patchOperations, requestOptions);
     }
 
-    public static byte[] serializeCosmosPatchToByteArray(CosmosPatchOperations cosmosPatchOperations) {
-        JsonSerializable jsonSerializable = cosmosPatchToJsonSerializable(cosmosPatchOperations);
+    public static byte[] serializeCosmosPatchToByteArray(CosmosPatchOperations patchOperations, RequestOptions requestOptions) {
+        JsonSerializable jsonSerializable = cosmosPatchToJsonSerializable(patchOperations, requestOptions);
 
         byte[] serializedBody;
         try {
@@ -35,12 +32,12 @@ public final class PatchUtil {
         return serializedBody;
     }
 
-    private static JsonSerializable cosmosPatchToJsonSerializable(CosmosPatchOperations cosmosPatchOperations) {
+    private static JsonSerializable cosmosPatchToJsonSerializable(CosmosPatchOperations patchOperations, RequestOptions requestOptions) {
         JsonSerializable jsonSerializable = new JsonSerializable();
         ArrayNode operations = Utils.getSimpleObjectMapper().createArrayNode();
-        List<PatchOperation> patchOperations = BridgeInternal.getPatchOperationsFromCosmosPatch(cosmosPatchOperations);
+        List<PatchOperation> patchOperationList = BridgeInternal.getPatchOperationsFromCosmosPatch(patchOperations);
 
-        for (PatchOperation patchOperation : patchOperations) {
+        for (PatchOperation patchOperation : patchOperationList) {
 
             JsonSerializable operationJsonSerializable = new JsonSerializable();
             operationJsonSerializable.set(PatchConstants.PropertyNames_OperationType, patchOperation.getOperationType().getOperationValue());
@@ -55,7 +52,16 @@ public final class PatchUtil {
             operations.add(operationJsonSerializable.getPropertyBag());
         }
 
-        jsonSerializable.set("operations", operations);
+        jsonSerializable.set(PatchConstants.OPERATIONS, operations);
+
+        if(requestOptions != null) {
+            String filterPredicate = requestOptions.getFilterPredicate();
+            if(filterPredicate != null) {
+                if (!filterPredicate.isEmpty()) {
+                    jsonSerializable.set(PatchConstants.CONDITION, filterPredicate);
+                }
+            }
+        }
 
         return jsonSerializable;
     }

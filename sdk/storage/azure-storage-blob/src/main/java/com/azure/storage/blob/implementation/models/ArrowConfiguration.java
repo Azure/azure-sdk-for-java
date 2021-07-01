@@ -12,9 +12,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * arrow configuration.
- */
+/** Groups the settings used for formatting the response if the response should be Arrow formatted. */
 @JacksonXmlRootElement(localName = "ArrowConfiguration")
 @Fluent
 public final class ArrowConfiguration {
@@ -29,13 +27,13 @@ public final class ArrowConfiguration {
     }
 
     /*
-     * The schema property.
+     * The Schema property.
      */
     @JsonProperty(value = "Schema", required = true)
     private SchemaWrapper schema;
 
     /**
-     * Get the schema property: The schema property.
+     * Get the schema property: The Schema property.
      *
      * @return the schema value.
      */
@@ -47,7 +45,7 @@ public final class ArrowConfiguration {
     }
 
     /**
-     * Set the schema property: The schema property.
+     * Set the schema property: The Schema property.
      *
      * @param schema the schema value to set.
      * @return the ArrowConfiguration object itself.

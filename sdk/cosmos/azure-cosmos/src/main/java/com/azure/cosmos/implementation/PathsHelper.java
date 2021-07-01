@@ -98,6 +98,8 @@ public class PathsHelper {
             return resourceFullName + "/" + Paths.PARTITION_KEY_RANGES_PATH_SEGMENT;
         } else if (resourceType == ResourceType.Schema) {
             resourcePath = resourceFullName + "/" + Paths.SCHEMAS_PATH_SEGMENT;
+        } else if (resourceType == ResourceType.ClientEncryptionKey) {
+            resourcePath = resourceFullName + "/" + Paths.CLIENT_ENCRYPTION_KEY_PATH_SEGMENT;
         } else {
             String errorMessage = String.format(RMResources.UnknownResourceType, resourceType.toString());
             assert false : errorMessage;
@@ -271,6 +273,10 @@ public class PathsHelper {
             return Paths.DATABASE_ACCOUNT_PATH_SEGMENT;
         } else if (resourceType == ResourceType.DatabaseAccount) {
             return Paths.DATABASE_ACCOUNT_PATH_SEGMENT + "/" + ownerOrResourceId;
+        } else if (resourceType == ResourceType.ClientEncryptionKey) {
+            ResourceId clientEncryptionKeyId = ResourceId.parse(ownerOrResourceId);
+            return Paths.DATABASES_PATH_SEGMENT + "/" + clientEncryptionKeyId.getDatabaseId().toString() + "/" +
+                Paths.CLIENT_ENCRYPTION_KEY_PATH_SEGMENT + "/" + clientEncryptionKeyId.getClientEncryptionKeyId().toString();
         }
 
         String errorMessage = "invalid resource type";
@@ -517,6 +523,7 @@ public class PathsHelper {
             case Paths.TOPOLOGY_PATH_SEGMENT:
             case Paths.PARTITION_KEY_RANGES_PATH_SEGMENT:
             case Paths.SCHEMAS_PATH_SEGMENT:
+            case Paths.CLIENT_ENCRYPTION_KEY_PATH_SEGMENT:
                 return true;
             default:
                 return false;
@@ -746,6 +753,8 @@ public class PathsHelper {
             if (resourceType == ResourceType.Permission) {
                 segments.add(Paths.PERMISSIONS_PATH_SEGMENT);
             }
+        } else if (resourceType == ResourceType.ClientEncryptionKey) {
+            segments.add(Paths.CLIENT_ENCRYPTION_KEY_PATH_SEGMENT);
         } else if (resourceType == ResourceType.DocumentCollection ||
                     resourceType == ResourceType.StoredProcedure ||
                     resourceType == ResourceType.UserDefinedFunction ||
@@ -802,7 +811,9 @@ public class PathsHelper {
             return PathsHelper.validateUserId(resourceId);
         } else if (resourceType == ResourceType.Attachment) {
             return PathsHelper.validateAttachmentId(resourceId);
-        } else {
+        } else if (resourceType == ResourceType.ClientEncryptionKey) {
+            return PathsHelper.validateClientEncryptionKeyId(resourceId);
+        }else {
             logger.error(String.format("ValidateResourceId not implemented for Type %s in ResourceRequestHandler", resourceType.toString()));
             return false;
         }
@@ -858,6 +869,10 @@ public class PathsHelper {
         return pair.getLeft() && pair.getRight().getUser() != 0;
     }
 
+    public static boolean validateClientEncryptionKeyId(String resourceIdString) {
+        Pair<Boolean, ResourceId> pair = ResourceId.tryParse(resourceIdString);
+        return pair.getLeft() && pair.getRight().getClientEncryptionKey() != 0;
+    }
 
     public static boolean isPublicResource(Resource resourceType) {
         if (resourceType instanceof Database ||

@@ -9,6 +9,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.ArchiveStatus;
+import com.azure.storage.blob.models.BlobImmutabilityPolicyMode;
 import com.azure.storage.blob.models.BlobType;
 import com.azure.storage.blob.models.CopyStatusType;
 import com.azure.storage.blob.models.LeaseDurationType;
@@ -19,26 +20,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
 
-/**
- * Properties of a blob.
- */
+/** Properties of a blob. */
 @JacksonXmlRootElement(localName = "Properties")
 @Fluent
 public final class BlobItemPropertiesInternal {
     /*
-     * The creationTime property.
+     * The Creation-Time property.
      */
     @JsonProperty(value = "Creation-Time")
     private DateTimeRfc1123 creationTime;
 
     /*
-     * The lastModified property.
+     * The Last-Modified property.
      */
     @JsonProperty(value = "Last-Modified", required = true)
     private DateTimeRfc1123 lastModified;
 
     /*
-     * The eTag property.
+     * The Etag property.
      */
     @JsonProperty(value = "Etag", required = true)
     private String eTag;
@@ -50,160 +49,157 @@ public final class BlobItemPropertiesInternal {
     private Long contentLength;
 
     /*
-     * The contentType property.
+     * The Content-Type property.
      */
     @JsonProperty(value = "Content-Type")
     private String contentType;
 
     /*
-     * The contentEncoding property.
+     * The Content-Encoding property.
      */
     @JsonProperty(value = "Content-Encoding")
     private String contentEncoding;
 
     /*
-     * The contentLanguage property.
+     * The Content-Language property.
      */
     @JsonProperty(value = "Content-Language")
     private String contentLanguage;
 
     /*
-     * The contentMd5 property.
+     * The Content-MD5 property.
      */
     @JsonProperty(value = "Content-MD5")
     private byte[] contentMd5;
 
     /*
-     * The contentDisposition property.
+     * The Content-Disposition property.
      */
     @JsonProperty(value = "Content-Disposition")
     private String contentDisposition;
 
     /*
-     * The cacheControl property.
+     * The Cache-Control property.
      */
     @JsonProperty(value = "Cache-Control")
     private String cacheControl;
 
     /*
-     * The blobSequenceNumber property.
+     * The x-ms-blob-sequence-number property.
      */
     @JsonProperty(value = "x-ms-blob-sequence-number")
     private Long blobSequenceNumber;
 
     /*
-     * Possible values include: 'BlockBlob', 'PageBlob', 'AppendBlob'
+     * The BlobType property.
      */
     @JsonProperty(value = "BlobType")
     private BlobType blobType;
 
     /*
-     * Possible values include: 'locked', 'unlocked'
+     * The LeaseStatus property.
      */
     @JsonProperty(value = "LeaseStatus")
     private LeaseStatusType leaseStatus;
 
     /*
-     * Possible values include: 'available', 'leased', 'expired', 'breaking',
-     * 'broken'
+     * The LeaseState property.
      */
     @JsonProperty(value = "LeaseState")
     private LeaseStateType leaseState;
 
     /*
-     * Possible values include: 'infinite', 'fixed'
+     * The LeaseDuration property.
      */
     @JsonProperty(value = "LeaseDuration")
     private LeaseDurationType leaseDuration;
 
     /*
-     * The copyId property.
+     * The CopyId property.
      */
     @JsonProperty(value = "CopyId")
     private String copyId;
 
     /*
-     * Possible values include: 'pending', 'success', 'aborted', 'failed'
+     * The CopyStatus property.
      */
     @JsonProperty(value = "CopyStatus")
     private CopyStatusType copyStatus;
 
     /*
-     * The copySource property.
+     * The CopySource property.
      */
     @JsonProperty(value = "CopySource")
     private String copySource;
 
     /*
-     * The copyProgress property.
+     * The CopyProgress property.
      */
     @JsonProperty(value = "CopyProgress")
     private String copyProgress;
 
     /*
-     * The copyCompletionTime property.
+     * The CopyCompletionTime property.
      */
     @JsonProperty(value = "CopyCompletionTime")
     private DateTimeRfc1123 copyCompletionTime;
 
     /*
-     * The copyStatusDescription property.
+     * The CopyStatusDescription property.
      */
     @JsonProperty(value = "CopyStatusDescription")
     private String copyStatusDescription;
 
     /*
-     * The serverEncrypted property.
+     * The ServerEncrypted property.
      */
     @JsonProperty(value = "ServerEncrypted")
     private Boolean serverEncrypted;
 
     /*
-     * The incrementalCopy property.
+     * The IncrementalCopy property.
      */
     @JsonProperty(value = "IncrementalCopy")
     private Boolean incrementalCopy;
 
     /*
-     * The destinationSnapshot property.
+     * The DestinationSnapshot property.
      */
     @JsonProperty(value = "DestinationSnapshot")
     private String destinationSnapshot;
 
     /*
-     * The deletedTime property.
+     * The DeletedTime property.
      */
     @JsonProperty(value = "DeletedTime")
     private DateTimeRfc1123 deletedTime;
 
     /*
-     * The remainingRetentionDays property.
+     * The RemainingRetentionDays property.
      */
     @JsonProperty(value = "RemainingRetentionDays")
     private Integer remainingRetentionDays;
 
     /*
-     * Possible values include: 'P4', 'P6', 'P10', 'P15', 'P20', 'P30', 'P40',
-     * 'P50', 'P60', 'P70', 'P80', 'Hot', 'Cool', 'Archive'
+     * The AccessTier property.
      */
     @JsonProperty(value = "AccessTier")
     private AccessTier accessTier;
 
     /*
-     * The accessTierInferred property.
+     * The AccessTierInferred property.
      */
     @JsonProperty(value = "AccessTierInferred")
     private Boolean accessTierInferred;
 
     /*
-     * Possible values include: 'rehydrate-pending-to-hot',
-     * 'rehydrate-pending-to-cool'
+     * The ArchiveStatus property.
      */
     @JsonProperty(value = "ArchiveStatus")
     private ArchiveStatus archiveStatus;
 
     /*
-     * The customerProvidedKeySha256 property.
+     * The CustomerProvidedKeySha256 property.
      */
     @JsonProperty(value = "CustomerProvidedKeySha256")
     private String customerProvidedKeySha256;
@@ -215,43 +211,62 @@ public final class BlobItemPropertiesInternal {
     private String encryptionScope;
 
     /*
-     * The accessTierChangeTime property.
+     * The AccessTierChangeTime property.
      */
     @JsonProperty(value = "AccessTierChangeTime")
     private DateTimeRfc1123 accessTierChangeTime;
 
     /*
-     * The tagCount property.
+     * The TagCount property.
      */
     @JsonProperty(value = "TagCount")
     private Integer tagCount;
 
     /*
-     * The expiresOn property.
+     * The Expiry-Time property.
      */
     @JsonProperty(value = "Expiry-Time")
     private DateTimeRfc1123 expiresOn;
 
     /*
-     * The isSealed property.
+     * The Sealed property.
      */
     @JsonProperty(value = "Sealed")
     private Boolean isSealed;
 
     /*
-     * Possible values include: 'High', 'Standard'
+     * If an object is in rehydrate pending state then this header is returned
+     * with priority of rehydrate. Valid values are High and Standard.
      */
     @JsonProperty(value = "RehydratePriority")
     private RehydratePriority rehydratePriority;
 
     /*
-     * The lastAccessedOn property.
+     * The LastAccessTime property.
      */
     @JsonProperty(value = "LastAccessTime")
     private DateTimeRfc1123 lastAccessedOn;
 
+    /*
+     * The ImmutabilityPolicyUntilDate property.
+     */
+    @JsonProperty(value = "ImmutabilityPolicyUntilDate")
+    private DateTimeRfc1123 immutabilityPolicyExpiresOn;
+
+    /*
+     * The ImmutabilityPolicyMode property.
+     */
+    @JsonProperty(value = "ImmutabilityPolicyMode")
+    private BlobImmutabilityPolicyMode immutabilityPolicyMode;
+
+    /*
+     * The LegalHold property.
+     */
+    @JsonProperty(value = "LegalHold")
+    private Boolean legalHold;
+
     /**
-     * Get the creationTime property: The creationTime property.
+     * Get the creationTime property: The Creation-Time property.
      *
      * @return the creationTime value.
      */
@@ -263,7 +278,7 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Set the creationTime property: The creationTime property.
+     * Set the creationTime property: The Creation-Time property.
      *
      * @param creationTime the creationTime value to set.
      * @return the BlobItemPropertiesInternal object itself.
@@ -278,7 +293,7 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Get the lastModified property: The lastModified property.
+     * Get the lastModified property: The Last-Modified property.
      *
      * @return the lastModified value.
      */
@@ -290,7 +305,7 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Set the lastModified property: The lastModified property.
+     * Set the lastModified property: The Last-Modified property.
      *
      * @param lastModified the lastModified value to set.
      * @return the BlobItemPropertiesInternal object itself.
@@ -305,7 +320,7 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Get the eTag property: The eTag property.
+     * Get the eTag property: The Etag property.
      *
      * @return the eTag value.
      */
@@ -314,7 +329,7 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Set the eTag property: The eTag property.
+     * Set the eTag property: The Etag property.
      *
      * @param eTag the eTag value to set.
      * @return the BlobItemPropertiesInternal object itself.
@@ -345,7 +360,7 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Get the contentType property: The contentType property.
+     * Get the contentType property: The Content-Type property.
      *
      * @return the contentType value.
      */
@@ -354,7 +369,7 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Set the contentType property: The contentType property.
+     * Set the contentType property: The Content-Type property.
      *
      * @param contentType the contentType value to set.
      * @return the BlobItemPropertiesInternal object itself.
@@ -365,7 +380,7 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Get the contentEncoding property: The contentEncoding property.
+     * Get the contentEncoding property: The Content-Encoding property.
      *
      * @return the contentEncoding value.
      */
@@ -374,7 +389,7 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Set the contentEncoding property: The contentEncoding property.
+     * Set the contentEncoding property: The Content-Encoding property.
      *
      * @param contentEncoding the contentEncoding value to set.
      * @return the BlobItemPropertiesInternal object itself.
@@ -385,7 +400,7 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Get the contentLanguage property: The contentLanguage property.
+     * Get the contentLanguage property: The Content-Language property.
      *
      * @return the contentLanguage value.
      */
@@ -394,7 +409,7 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Set the contentLanguage property: The contentLanguage property.
+     * Set the contentLanguage property: The Content-Language property.
      *
      * @param contentLanguage the contentLanguage value to set.
      * @return the BlobItemPropertiesInternal object itself.
@@ -405,7 +420,7 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Get the contentMd5 property: The contentMd5 property.
+     * Get the contentMd5 property: The Content-MD5 property.
      *
      * @return the contentMd5 value.
      */
@@ -414,7 +429,7 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Set the contentMd5 property: The contentMd5 property.
+     * Set the contentMd5 property: The Content-MD5 property.
      *
      * @param contentMd5 the contentMd5 value to set.
      * @return the BlobItemPropertiesInternal object itself.
@@ -425,7 +440,7 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Get the contentDisposition property: The contentDisposition property.
+     * Get the contentDisposition property: The Content-Disposition property.
      *
      * @return the contentDisposition value.
      */
@@ -434,7 +449,7 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Set the contentDisposition property: The contentDisposition property.
+     * Set the contentDisposition property: The Content-Disposition property.
      *
      * @param contentDisposition the contentDisposition value to set.
      * @return the BlobItemPropertiesInternal object itself.
@@ -445,7 +460,7 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Get the cacheControl property: The cacheControl property.
+     * Get the cacheControl property: The Cache-Control property.
      *
      * @return the cacheControl value.
      */
@@ -454,7 +469,7 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Set the cacheControl property: The cacheControl property.
+     * Set the cacheControl property: The Cache-Control property.
      *
      * @param cacheControl the cacheControl value to set.
      * @return the BlobItemPropertiesInternal object itself.
@@ -465,7 +480,7 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Get the blobSequenceNumber property: The blobSequenceNumber property.
+     * Get the blobSequenceNumber property: The x-ms-blob-sequence-number property.
      *
      * @return the blobSequenceNumber value.
      */
@@ -474,7 +489,7 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Set the blobSequenceNumber property: The blobSequenceNumber property.
+     * Set the blobSequenceNumber property: The x-ms-blob-sequence-number property.
      *
      * @param blobSequenceNumber the blobSequenceNumber value to set.
      * @return the BlobItemPropertiesInternal object itself.
@@ -485,8 +500,7 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Get the blobType property: Possible values include: 'BlockBlob',
-     * 'PageBlob', 'AppendBlob'.
+     * Get the blobType property: The BlobType property.
      *
      * @return the blobType value.
      */
@@ -495,8 +509,7 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Set the blobType property: Possible values include: 'BlockBlob',
-     * 'PageBlob', 'AppendBlob'.
+     * Set the blobType property: The BlobType property.
      *
      * @param blobType the blobType value to set.
      * @return the BlobItemPropertiesInternal object itself.
@@ -507,8 +520,7 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Get the leaseStatus property: Possible values include: 'locked',
-     * 'unlocked'.
+     * Get the leaseStatus property: The LeaseStatus property.
      *
      * @return the leaseStatus value.
      */
@@ -517,8 +529,7 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Set the leaseStatus property: Possible values include: 'locked',
-     * 'unlocked'.
+     * Set the leaseStatus property: The LeaseStatus property.
      *
      * @param leaseStatus the leaseStatus value to set.
      * @return the BlobItemPropertiesInternal object itself.
@@ -529,8 +540,7 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Get the leaseState property: Possible values include: 'available',
-     * 'leased', 'expired', 'breaking', 'broken'.
+     * Get the leaseState property: The LeaseState property.
      *
      * @return the leaseState value.
      */
@@ -539,8 +549,7 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Set the leaseState property: Possible values include: 'available',
-     * 'leased', 'expired', 'breaking', 'broken'.
+     * Set the leaseState property: The LeaseState property.
      *
      * @param leaseState the leaseState value to set.
      * @return the BlobItemPropertiesInternal object itself.
@@ -551,8 +560,7 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Get the leaseDuration property: Possible values include: 'infinite',
-     * 'fixed'.
+     * Get the leaseDuration property: The LeaseDuration property.
      *
      * @return the leaseDuration value.
      */
@@ -561,8 +569,7 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Set the leaseDuration property: Possible values include: 'infinite',
-     * 'fixed'.
+     * Set the leaseDuration property: The LeaseDuration property.
      *
      * @param leaseDuration the leaseDuration value to set.
      * @return the BlobItemPropertiesInternal object itself.
@@ -573,7 +580,7 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Get the copyId property: The copyId property.
+     * Get the copyId property: The CopyId property.
      *
      * @return the copyId value.
      */
@@ -582,7 +589,7 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Set the copyId property: The copyId property.
+     * Set the copyId property: The CopyId property.
      *
      * @param copyId the copyId value to set.
      * @return the BlobItemPropertiesInternal object itself.
@@ -593,8 +600,7 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Get the copyStatus property: Possible values include: 'pending',
-     * 'success', 'aborted', 'failed'.
+     * Get the copyStatus property: The CopyStatus property.
      *
      * @return the copyStatus value.
      */
@@ -603,8 +609,7 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Set the copyStatus property: Possible values include: 'pending',
-     * 'success', 'aborted', 'failed'.
+     * Set the copyStatus property: The CopyStatus property.
      *
      * @param copyStatus the copyStatus value to set.
      * @return the BlobItemPropertiesInternal object itself.
@@ -615,7 +620,7 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Get the copySource property: The copySource property.
+     * Get the copySource property: The CopySource property.
      *
      * @return the copySource value.
      */
@@ -624,7 +629,7 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Set the copySource property: The copySource property.
+     * Set the copySource property: The CopySource property.
      *
      * @param copySource the copySource value to set.
      * @return the BlobItemPropertiesInternal object itself.
@@ -635,7 +640,7 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Get the copyProgress property: The copyProgress property.
+     * Get the copyProgress property: The CopyProgress property.
      *
      * @return the copyProgress value.
      */
@@ -644,7 +649,7 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Set the copyProgress property: The copyProgress property.
+     * Set the copyProgress property: The CopyProgress property.
      *
      * @param copyProgress the copyProgress value to set.
      * @return the BlobItemPropertiesInternal object itself.
@@ -655,7 +660,7 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Get the copyCompletionTime property: The copyCompletionTime property.
+     * Get the copyCompletionTime property: The CopyCompletionTime property.
      *
      * @return the copyCompletionTime value.
      */
@@ -667,7 +672,7 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Set the copyCompletionTime property: The copyCompletionTime property.
+     * Set the copyCompletionTime property: The CopyCompletionTime property.
      *
      * @param copyCompletionTime the copyCompletionTime value to set.
      * @return the BlobItemPropertiesInternal object itself.
@@ -682,8 +687,7 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Get the copyStatusDescription property: The copyStatusDescription
-     * property.
+     * Get the copyStatusDescription property: The CopyStatusDescription property.
      *
      * @return the copyStatusDescription value.
      */
@@ -692,8 +696,7 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Set the copyStatusDescription property: The copyStatusDescription
-     * property.
+     * Set the copyStatusDescription property: The CopyStatusDescription property.
      *
      * @param copyStatusDescription the copyStatusDescription value to set.
      * @return the BlobItemPropertiesInternal object itself.
@@ -704,7 +707,7 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Get the serverEncrypted property: The serverEncrypted property.
+     * Get the serverEncrypted property: The ServerEncrypted property.
      *
      * @return the serverEncrypted value.
      */
@@ -713,7 +716,7 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Set the serverEncrypted property: The serverEncrypted property.
+     * Set the serverEncrypted property: The ServerEncrypted property.
      *
      * @param serverEncrypted the serverEncrypted value to set.
      * @return the BlobItemPropertiesInternal object itself.
@@ -724,7 +727,7 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Get the incrementalCopy property: The incrementalCopy property.
+     * Get the incrementalCopy property: The IncrementalCopy property.
      *
      * @return the incrementalCopy value.
      */
@@ -733,7 +736,7 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Set the incrementalCopy property: The incrementalCopy property.
+     * Set the incrementalCopy property: The IncrementalCopy property.
      *
      * @param incrementalCopy the incrementalCopy value to set.
      * @return the BlobItemPropertiesInternal object itself.
@@ -744,7 +747,7 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Get the destinationSnapshot property: The destinationSnapshot property.
+     * Get the destinationSnapshot property: The DestinationSnapshot property.
      *
      * @return the destinationSnapshot value.
      */
@@ -753,7 +756,7 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Set the destinationSnapshot property: The destinationSnapshot property.
+     * Set the destinationSnapshot property: The DestinationSnapshot property.
      *
      * @param destinationSnapshot the destinationSnapshot value to set.
      * @return the BlobItemPropertiesInternal object itself.
@@ -764,7 +767,7 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Get the deletedTime property: The deletedTime property.
+     * Get the deletedTime property: The DeletedTime property.
      *
      * @return the deletedTime value.
      */
@@ -776,7 +779,7 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Set the deletedTime property: The deletedTime property.
+     * Set the deletedTime property: The DeletedTime property.
      *
      * @param deletedTime the deletedTime value to set.
      * @return the BlobItemPropertiesInternal object itself.
@@ -791,8 +794,7 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Get the remainingRetentionDays property: The remainingRetentionDays
-     * property.
+     * Get the remainingRetentionDays property: The RemainingRetentionDays property.
      *
      * @return the remainingRetentionDays value.
      */
@@ -801,8 +803,7 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Set the remainingRetentionDays property: The remainingRetentionDays
-     * property.
+     * Set the remainingRetentionDays property: The RemainingRetentionDays property.
      *
      * @param remainingRetentionDays the remainingRetentionDays value to set.
      * @return the BlobItemPropertiesInternal object itself.
@@ -813,9 +814,7 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Get the accessTier property: Possible values include: 'P4', 'P6', 'P10',
-     * 'P15', 'P20', 'P30', 'P40', 'P50', 'P60', 'P70', 'P80', 'Hot', 'Cool',
-     * 'Archive'.
+     * Get the accessTier property: The AccessTier property.
      *
      * @return the accessTier value.
      */
@@ -824,9 +823,7 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Set the accessTier property: Possible values include: 'P4', 'P6', 'P10',
-     * 'P15', 'P20', 'P30', 'P40', 'P50', 'P60', 'P70', 'P80', 'Hot', 'Cool',
-     * 'Archive'.
+     * Set the accessTier property: The AccessTier property.
      *
      * @param accessTier the accessTier value to set.
      * @return the BlobItemPropertiesInternal object itself.
@@ -837,7 +834,7 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Get the accessTierInferred property: The accessTierInferred property.
+     * Get the accessTierInferred property: The AccessTierInferred property.
      *
      * @return the accessTierInferred value.
      */
@@ -846,7 +843,7 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Set the accessTierInferred property: The accessTierInferred property.
+     * Set the accessTierInferred property: The AccessTierInferred property.
      *
      * @param accessTierInferred the accessTierInferred value to set.
      * @return the BlobItemPropertiesInternal object itself.
@@ -857,8 +854,7 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Get the archiveStatus property: Possible values include:
-     * 'rehydrate-pending-to-hot', 'rehydrate-pending-to-cool'.
+     * Get the archiveStatus property: The ArchiveStatus property.
      *
      * @return the archiveStatus value.
      */
@@ -867,8 +863,7 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Set the archiveStatus property: Possible values include:
-     * 'rehydrate-pending-to-hot', 'rehydrate-pending-to-cool'.
+     * Set the archiveStatus property: The ArchiveStatus property.
      *
      * @param archiveStatus the archiveStatus value to set.
      * @return the BlobItemPropertiesInternal object itself.
@@ -879,8 +874,7 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Get the customerProvidedKeySha256 property: The
-     * customerProvidedKeySha256 property.
+     * Get the customerProvidedKeySha256 property: The CustomerProvidedKeySha256 property.
      *
      * @return the customerProvidedKeySha256 value.
      */
@@ -889,11 +883,9 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Set the customerProvidedKeySha256 property: The
-     * customerProvidedKeySha256 property.
+     * Set the customerProvidedKeySha256 property: The CustomerProvidedKeySha256 property.
      *
-     * @param customerProvidedKeySha256 the customerProvidedKeySha256 value to
-     * set.
+     * @param customerProvidedKeySha256 the customerProvidedKeySha256 value to set.
      * @return the BlobItemPropertiesInternal object itself.
      */
     public BlobItemPropertiesInternal setCustomerProvidedKeySha256(String customerProvidedKeySha256) {
@@ -902,8 +894,7 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Get the encryptionScope property: The name of the encryption scope under
-     * which the blob is encrypted.
+     * Get the encryptionScope property: The name of the encryption scope under which the blob is encrypted.
      *
      * @return the encryptionScope value.
      */
@@ -912,8 +903,7 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Set the encryptionScope property: The name of the encryption scope under
-     * which the blob is encrypted.
+     * Set the encryptionScope property: The name of the encryption scope under which the blob is encrypted.
      *
      * @param encryptionScope the encryptionScope value to set.
      * @return the BlobItemPropertiesInternal object itself.
@@ -924,8 +914,7 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Get the accessTierChangeTime property: The accessTierChangeTime
-     * property.
+     * Get the accessTierChangeTime property: The AccessTierChangeTime property.
      *
      * @return the accessTierChangeTime value.
      */
@@ -937,8 +926,7 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Set the accessTierChangeTime property: The accessTierChangeTime
-     * property.
+     * Set the accessTierChangeTime property: The AccessTierChangeTime property.
      *
      * @param accessTierChangeTime the accessTierChangeTime value to set.
      * @return the BlobItemPropertiesInternal object itself.
@@ -953,7 +941,7 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Get the tagCount property: The tagCount property.
+     * Get the tagCount property: The TagCount property.
      *
      * @return the tagCount value.
      */
@@ -962,7 +950,7 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Set the tagCount property: The tagCount property.
+     * Set the tagCount property: The TagCount property.
      *
      * @param tagCount the tagCount value to set.
      * @return the BlobItemPropertiesInternal object itself.
@@ -973,7 +961,7 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Get the expiresOn property: The expiresOn property.
+     * Get the expiresOn property: The Expiry-Time property.
      *
      * @return the expiresOn value.
      */
@@ -985,7 +973,7 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Set the expiresOn property: The expiresOn property.
+     * Set the expiresOn property: The Expiry-Time property.
      *
      * @param expiresOn the expiresOn value to set.
      * @return the BlobItemPropertiesInternal object itself.
@@ -1000,7 +988,7 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Get the isSealed property: The isSealed property.
+     * Get the isSealed property: The Sealed property.
      *
      * @return the isSealed value.
      */
@@ -1009,7 +997,7 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Set the isSealed property: The isSealed property.
+     * Set the isSealed property: The Sealed property.
      *
      * @param isSealed the isSealed value to set.
      * @return the BlobItemPropertiesInternal object itself.
@@ -1020,8 +1008,8 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Get the rehydratePriority property: Possible values include: 'High',
-     * 'Standard'.
+     * Get the rehydratePriority property: If an object is in rehydrate pending state then this header is returned with
+     * priority of rehydrate. Valid values are High and Standard.
      *
      * @return the rehydratePriority value.
      */
@@ -1030,8 +1018,8 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Set the rehydratePriority property: Possible values include: 'High',
-     * 'Standard'.
+     * Set the rehydratePriority property: If an object is in rehydrate pending state then this header is returned with
+     * priority of rehydrate. Valid values are High and Standard.
      *
      * @param rehydratePriority the rehydratePriority value to set.
      * @return the BlobItemPropertiesInternal object itself.
@@ -1042,7 +1030,7 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Get the lastAccessedOn property: The lastAccessedOn property.
+     * Get the lastAccessedOn property: The LastAccessTime property.
      *
      * @return the lastAccessedOn value.
      */
@@ -1054,7 +1042,7 @@ public final class BlobItemPropertiesInternal {
     }
 
     /**
-     * Set the lastAccessedOn property: The lastAccessedOn property.
+     * Set the lastAccessedOn property: The LastAccessTime property.
      *
      * @param lastAccessedOn the lastAccessedOn value to set.
      * @return the BlobItemPropertiesInternal object itself.
@@ -1065,6 +1053,73 @@ public final class BlobItemPropertiesInternal {
         } else {
             this.lastAccessedOn = new DateTimeRfc1123(lastAccessedOn);
         }
+        return this;
+    }
+
+    /**
+     * Get the immutabilityPolicyExpiresOn property: The ImmutabilityPolicyUntilDate property.
+     *
+     * @return the immutabilityPolicyExpiresOn value.
+     */
+    public OffsetDateTime getImmutabilityPolicyExpiresOn() {
+        if (this.immutabilityPolicyExpiresOn == null) {
+            return null;
+        }
+        return this.immutabilityPolicyExpiresOn.getDateTime();
+    }
+
+    /**
+     * Set the immutabilityPolicyExpiresOn property: The ImmutabilityPolicyUntilDate property.
+     *
+     * @param immutabilityPolicyExpiresOn the immutabilityPolicyExpiresOn value to set.
+     * @return the BlobItemPropertiesInternal object itself.
+     */
+    public BlobItemPropertiesInternal setImmutabilityPolicyExpiresOn(OffsetDateTime immutabilityPolicyExpiresOn) {
+        if (immutabilityPolicyExpiresOn == null) {
+            this.immutabilityPolicyExpiresOn = null;
+        } else {
+            this.immutabilityPolicyExpiresOn = new DateTimeRfc1123(immutabilityPolicyExpiresOn);
+        }
+        return this;
+    }
+
+    /**
+     * Get the immutabilityPolicyMode property: The ImmutabilityPolicyMode property.
+     *
+     * @return the immutabilityPolicyMode value.
+     */
+    public BlobImmutabilityPolicyMode getImmutabilityPolicyMode() {
+        return this.immutabilityPolicyMode;
+    }
+
+    /**
+     * Set the immutabilityPolicyMode property: The ImmutabilityPolicyMode property.
+     *
+     * @param immutabilityPolicyMode the immutabilityPolicyMode value to set.
+     * @return the BlobItemPropertiesInternal object itself.
+     */
+    public BlobItemPropertiesInternal setImmutabilityPolicyMode(BlobImmutabilityPolicyMode immutabilityPolicyMode) {
+        this.immutabilityPolicyMode = immutabilityPolicyMode;
+        return this;
+    }
+
+    /**
+     * Get the legalHold property: The LegalHold property.
+     *
+     * @return the legalHold value.
+     */
+    public Boolean isLegalHold() {
+        return this.legalHold;
+    }
+
+    /**
+     * Set the legalHold property: The LegalHold property.
+     *
+     * @param legalHold the legalHold value to set.
+     * @return the BlobItemPropertiesInternal object itself.
+     */
+    public BlobItemPropertiesInternal setLegalHold(Boolean legalHold) {
+        this.legalHold = legalHold;
         return this;
     }
 }

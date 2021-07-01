@@ -27,7 +27,7 @@ public class QueryTests extends QueryTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.digitaltwins.core.TestHelper#getTestParameters")
     @Override
-    public void validQuerySucceeds(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) {
+    public void validQuerySucceeds(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws InterruptedException {
         DigitalTwinsClient client = getClient(httpClient, serviceVersion);
         int pageSize = 3;
         String floorModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.FLOOR_MODEL_ID_PREFIX, client, randomIntegerStringGenerator);
@@ -45,6 +45,8 @@ public class QueryTests extends QueryTestBase {
                 roomTwinIds.add(roomTwinId);
                 client.createOrReplaceDigitalTwinWithResponse(roomTwinId, roomTwin, String.class, null, Context.NONE);
             }
+
+            waitIfLive();
 
             String queryString = "SELECT * FROM digitaltwins where IsOccupied = true";
 
@@ -64,7 +66,7 @@ public class QueryTests extends QueryTestBase {
             for (Page<BasicDigitalTwin> digitalTwinsPage : pagedQueryResponse.iterableByPage()) {
                 pageCount++;
                 int elementsPerPage = 0;
-                for (BasicDigitalTwin basicDigitalTwin : digitalTwinsPage.getElements()) {
+                for (BasicDigitalTwin ignored : digitalTwinsPage.getElements()) {
                     elementsPerPage++;
                 }
 

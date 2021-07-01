@@ -7,6 +7,7 @@ import com.azure.spring.aad.AADClientRegistrationRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.client.ClientAuthorizationRequiredException;
 import org.springframework.security.oauth2.client.OAuth2AuthorizationContext;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientProvider;
@@ -62,12 +63,15 @@ public class AADOAuth2AuthorizedClientRepository implements OAuth2AuthorizedClie
                                                                      Authentication principal,
                                                                      HttpServletRequest request) {
         OAuth2AuthorizedClient result = delegate.loadAuthorizedClient(id, principal, request);
-        if (result != null) {
+        if (result != null || repo.isClientCredentials(id)) {
             return (T) result;
         }
 
         if (repo.isClientNeedConsentWhenLogin(id)) {
             OAuth2AuthorizedClient azureClient = loadAuthorizedClient(getAzureClientId(), principal, request);
+            if (azureClient == null) {
+                throw new ClientAuthorizationRequiredException(AADClientRegistrationRepository.AZURE_CLIENT_REGISTRATION_ID);
+            }
             OAuth2AuthorizedClient fakeAuthzClient = createFakeAuthzClient(azureClient, id, principal);
             OAuth2AuthorizationContext.Builder contextBuilder =
                 OAuth2AuthorizationContext.withAuthorizedClient(fakeAuthzClient);

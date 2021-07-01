@@ -20,7 +20,7 @@ class Base64UrlJsonDeserializer extends JsonDeserializer<byte[]> {
     public byte[] deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException, JsonProcessingException {
         String text = jp.getText();
         if (text != null) {
-            return Base64.getDecoder().decode(text);
+            return Base64.getUrlDecoder().decode(text);
         }
         return null;
     }

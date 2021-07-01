@@ -3,11 +3,13 @@
 
 package com.azure.resourcemanager.network;
 
+import com.azure.resourcemanager.network.models.ApplicationSecurityGroup;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.NetworkInterface;
 import com.azure.resourcemanager.network.models.NetworkInterfaces;
 import com.azure.resourcemanager.network.models.Networks;
 import com.azure.resourcemanager.network.models.NicIpConfiguration;
+import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.models.ResourceGroups;
 import com.azure.core.management.Region;
@@ -16,10 +18,13 @@ import com.azure.resourcemanager.resources.fluentcore.model.CreatedResources;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -310,6 +315,75 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
             }
         }
         Assertions.assertTrue(found.size() == 4);
+    }
+
+    @Test
+    public void canCreateNicWithApplicationSecurityGroup() {
+        Network network =
+            networkManager
+                .networks()
+                .define("vnet1")
+                .withRegion(Region.US_EAST)
+                .withNewResourceGroup(rgName)
+                .withAddressSpace("10.0.0.0/27")
+                .withSubnet("subnet1", "10.0.0.0/28")
+                .withSubnet("subnet2", "10.0.0.16/28")
+                .create();
+
+        ApplicationSecurityGroup asg1 = networkManager.applicationSecurityGroups().define("asg1")
+            .withRegion(Region.US_EAST)
+            .withExistingResourceGroup(rgName)
+            .create();
+
+        NetworkInterface nic = networkManager.networkInterfaces().define("nic1")
+            .withRegion(Region.US_EAST)
+            .withExistingResourceGroup(rgName)
+            .withExistingPrimaryNetwork(network)
+            .withSubnet("subnet1")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withExistingApplicationSecurityGroup(asg1)
+            .create();
+
+        List<ApplicationSecurityGroup> applicationSecurityGroups = nic.primaryIPConfiguration().listAssociatedApplicationSecurityGroups();
+        Assertions.assertEquals(1, applicationSecurityGroups.size());
+        Assertions.assertEquals("asg1", applicationSecurityGroups.iterator().next().name());
+
+        ApplicationSecurityGroup asg2 = networkManager.applicationSecurityGroups().define("asg2")
+            .withRegion(Region.US_EAST)
+            .withExistingResourceGroup(rgName)
+            .create();
+
+        nic.update()
+            .withoutApplicationSecurityGroup(asg1.name())
+            .withExistingApplicationSecurityGroup(asg2)
+            .defineSecondaryIPConfiguration("nicip2")
+                .withExistingNetwork(network)
+                .withSubnet("subnet1")
+                .withPrivateIpAddressDynamic()
+                .attach()
+            .apply();
+
+        applicationSecurityGroups = nic.primaryIPConfiguration().listAssociatedApplicationSecurityGroups();
+        Assertions.assertEquals(1, applicationSecurityGroups.size());
+        Assertions.assertEquals("asg2", applicationSecurityGroups.iterator().next().name());
+
+        nic.update()
+            .withoutApplicationSecurityGroup(asg1.name())
+            .withExistingApplicationSecurityGroup(asg1)
+            .apply();
+
+        Assertions.assertEquals(2, nic.ipConfigurations().get("nicip2").innerModel().applicationSecurityGroups().size());
+        Assertions.assertEquals(
+            new HashSet<>(Arrays.asList("asg1", "asg2")),
+            nic.ipConfigurations().get("nicip2").innerModel().applicationSecurityGroups().stream().map(inner -> ResourceUtils.nameFromResourceId(inner.id())).collect(Collectors.toSet()));
+        if (!isPlaybackMode()) {
+            // avoid concurrent request in playback
+            applicationSecurityGroups = nic.ipConfigurations().get("nicip2").listAssociatedApplicationSecurityGroups();
+            Assertions.assertEquals(2, applicationSecurityGroups.size());
+            Assertions.assertEquals(
+                new HashSet<>(Arrays.asList("asg1", "asg2")),
+                applicationSecurityGroups.stream().map(ApplicationSecurityGroup::name).collect(Collectors.toSet()));
+        }
     }
 
     @Test

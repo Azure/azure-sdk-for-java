@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.changefeed.implementation;
 
+import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.changefeed.CancellationToken;
 import com.azure.cosmos.implementation.changefeed.CancellationTokenSource;
 import com.azure.cosmos.implementation.changefeed.Lease;
@@ -123,7 +124,7 @@ class PartitionLoadBalancerImpl implements PartitionLoadBalancer {
 
                             Instant stopTimer = Instant.now().plus(this.leaseAcquireInterval);
                             return Mono.just(value)
-                                .delayElement(Duration.ofMillis(100))
+                                .delayElement(Duration.ofMillis(100), CosmosSchedulers.COSMOS_PARALLEL)
                                 .repeat( () -> {
                                     Instant currentTime = Instant.now();
                                     return !cancellationToken.isCancellationRequested() && currentTime.isBefore(stopTimer);

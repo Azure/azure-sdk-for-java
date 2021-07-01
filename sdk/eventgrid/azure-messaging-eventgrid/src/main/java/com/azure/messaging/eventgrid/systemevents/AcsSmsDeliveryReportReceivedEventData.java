@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The AcsSmsDeliveryReportReceivedEventData model. */
+/** Schema of the Data property of an EventGridEvent for a Microsoft.Communication.SMSDeliveryReportReceived event. */
 @Fluent
 public final class AcsSmsDeliveryReportReceivedEventData extends AcsSmsEventBaseProperties {
     /*
@@ -35,6 +35,12 @@ public final class AcsSmsDeliveryReportReceivedEventData extends AcsSmsEventBase
      */
     @JsonProperty(value = "receivedTimestamp")
     private OffsetDateTime receivedTimestamp;
+
+    /*
+     * Customer Content
+     */
+    @JsonProperty(value = "tag")
+    private String tag;
 
     /**
      * Get the deliveryStatus property: Status of Delivery.
@@ -114,6 +120,47 @@ public final class AcsSmsDeliveryReportReceivedEventData extends AcsSmsEventBase
      */
     public AcsSmsDeliveryReportReceivedEventData setReceivedTimestamp(OffsetDateTime receivedTimestamp) {
         this.receivedTimestamp = receivedTimestamp;
+        return this;
+    }
+
+    /**
+     * Get the tag property: Customer Content.
+     *
+     * @return the tag value.
+     */
+    public String getTag() {
+        return this.tag;
+    }
+
+    /**
+     * Set the tag property: Customer Content.
+     *
+     * @param tag the tag value to set.
+     * @return the AcsSmsDeliveryReportReceivedEventData object itself.
+     */
+    public AcsSmsDeliveryReportReceivedEventData setTag(String tag) {
+        this.tag = tag;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AcsSmsDeliveryReportReceivedEventData setMessageId(String messageId) {
+        super.setMessageId(messageId);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AcsSmsDeliveryReportReceivedEventData setFrom(String from) {
+        super.setFrom(from);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AcsSmsDeliveryReportReceivedEventData setTo(String to) {
+        super.setTo(to);
         return this;
     }
 }

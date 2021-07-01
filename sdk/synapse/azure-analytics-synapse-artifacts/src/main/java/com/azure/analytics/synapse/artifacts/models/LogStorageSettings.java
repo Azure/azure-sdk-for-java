@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Log storage settings. */
+/** (Deprecated. Please use LogSettings) Log storage settings. */
 @Fluent
 public final class LogStorageSettings {
     /*
@@ -29,7 +29,21 @@ public final class LogStorageSettings {
     private Object path;
 
     /*
-     * Log storage settings.
+     * Gets or sets the log level, support: Info, Warning. Type: string (or
+     * Expression with resultType string).
+     */
+    @JsonProperty(value = "logLevel")
+    private Object logLevel;
+
+    /*
+     * Specifies whether to enable reliable logging. Type: boolean (or
+     * Expression with resultType boolean).
+     */
+    @JsonProperty(value = "enableReliableLogging")
+    private Object enableReliableLogging;
+
+    /*
+     * (Deprecated. Please use LogSettings) Log storage settings.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
@@ -76,7 +90,51 @@ public final class LogStorageSettings {
     }
 
     /**
-     * Get the additionalProperties property: Log storage settings.
+     * Get the logLevel property: Gets or sets the log level, support: Info, Warning. Type: string (or Expression with
+     * resultType string).
+     *
+     * @return the logLevel value.
+     */
+    public Object getLogLevel() {
+        return this.logLevel;
+    }
+
+    /**
+     * Set the logLevel property: Gets or sets the log level, support: Info, Warning. Type: string (or Expression with
+     * resultType string).
+     *
+     * @param logLevel the logLevel value to set.
+     * @return the LogStorageSettings object itself.
+     */
+    public LogStorageSettings setLogLevel(Object logLevel) {
+        this.logLevel = logLevel;
+        return this;
+    }
+
+    /**
+     * Get the enableReliableLogging property: Specifies whether to enable reliable logging. Type: boolean (or
+     * Expression with resultType boolean).
+     *
+     * @return the enableReliableLogging value.
+     */
+    public Object getEnableReliableLogging() {
+        return this.enableReliableLogging;
+    }
+
+    /**
+     * Set the enableReliableLogging property: Specifies whether to enable reliable logging. Type: boolean (or
+     * Expression with resultType boolean).
+     *
+     * @param enableReliableLogging the enableReliableLogging value to set.
+     * @return the LogStorageSettings object itself.
+     */
+    public LogStorageSettings setEnableReliableLogging(Object enableReliableLogging) {
+        this.enableReliableLogging = enableReliableLogging;
+        return this;
+    }
+
+    /**
+     * Get the additionalProperties property: (Deprecated. Please use LogSettings) Log storage settings.
      *
      * @return the additionalProperties value.
      */
@@ -86,7 +144,7 @@ public final class LogStorageSettings {
     }
 
     /**
-     * Set the additionalProperties property: Log storage settings.
+     * Set the additionalProperties property: (Deprecated. Please use LogSettings) Log storage settings.
      *
      * @param additionalProperties the additionalProperties value to set.
      * @return the LogStorageSettings object itself.

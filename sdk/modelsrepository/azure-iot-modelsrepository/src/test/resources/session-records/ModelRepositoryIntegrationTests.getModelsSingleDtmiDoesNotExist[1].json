@@ -1,0 +1,50 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.azure.com/%2Fdtmi%2Fcom%2Fexample%2Fthermostatddd-1.expanded.json",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-iot-modelsrepository/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "a8905328-6bf9-4a21-92bd-e78de3658d58"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-03-28",
+      "Server" : "Windows-Azure-Web/1.0 Microsoft-HTTPAPI/2.0",
+      "Access-Control-Allow-Methods" : "GET, HEAD, OPTIONS",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "Access-Control-Allow-Headers" : "*",
+      "Date" : "Tue, 23 Mar 2021 22:20:07 GMT",
+      "Access-Control-Expose-Headers" : "*",
+      "x-ms-error-code" : "WebContentNotFound",
+      "Content-Length" : "321",
+      "x-ms-request-id" : "3c9fb664-c01e-004b-3232-20c175000000",
+      "Body" : "<!DOCTYPE html><html><head><title>WebContentNotFound</title></head><body><h1>The requested content does not exist.</h1><p><ul><li>HttpStatusCode: 404</li><li>ErrorCode: WebContentNotFound</li><li>RequestId : 3c9fb664-c01e-004b-3232-20c175000000</li><li>TimeStamp : 2021-03-23T22:20:07.2215660Z</li></ul></p></body></html>",
+      "Content-Type" : "text/html"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.azure.com/%2Fdtmi%2Fcom%2Fexample%2Fthermostatddd-1.json",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-iot-modelsrepository/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "e833bda3-456a-470f-862b-b11625f09186"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-03-28",
+      "Server" : "Windows-Azure-Web/1.0 Microsoft-HTTPAPI/2.0",
+      "Access-Control-Allow-Methods" : "GET, HEAD, OPTIONS",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "Access-Control-Allow-Headers" : "*",
+      "Date" : "Tue, 23 Mar 2021 22:20:06 GMT",
+      "Access-Control-Expose-Headers" : "*",
+      "x-ms-error-code" : "WebContentNotFound",
+      "Content-Length" : "321",
+      "x-ms-request-id" : "5b308299-601e-0051-0632-207f42000000",
+      "Body" : "<!DOCTYPE html><html><head><title>WebContentNotFound</title></head><body><h1>The requested content does not exist.</h1><p><ul><li>HttpStatusCode: 404</li><li>ErrorCode: WebContentNotFound</li><li>RequestId : 5b308299-601e-0051-0632-207f42000000</li><li>TimeStamp : 2021-03-23T22:20:07.3151755Z</li></ul></p></body></html>",
+      "Content-Type" : "text/html"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

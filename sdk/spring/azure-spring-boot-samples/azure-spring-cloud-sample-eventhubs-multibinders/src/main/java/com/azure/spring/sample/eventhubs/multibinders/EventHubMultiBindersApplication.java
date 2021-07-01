@@ -31,7 +31,7 @@ public class EventHubMultiBindersApplication {
             LOGGER.info("New message1 received: '{}'", message);
             checkpointer.success()
                         .doOnSuccess(success -> LOGGER.info("Message1 '{}' successfully checkpointed", message))
-                        .doOnError(error -> LOGGER.error("Exception: {}", error.getMessage()))
+                        .doOnError(error -> LOGGER.error("Exception found", error))
                         .subscribe();
         };
     }
@@ -43,7 +43,7 @@ public class EventHubMultiBindersApplication {
             LOGGER.info("New message2 received: '{}'", message);
             checkpointer.success()
                         .doOnSuccess(success -> LOGGER.info("Message2 '{}' successfully checkpointed", message))
-                        .doOnError(error -> LOGGER.error("Exception: {}", error.getMessage()))
+                        .doOnError(error -> LOGGER.error("Exception found", error))
                         .subscribe();
         };
     }

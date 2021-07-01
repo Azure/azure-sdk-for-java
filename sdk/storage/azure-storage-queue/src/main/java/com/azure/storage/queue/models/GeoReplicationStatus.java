@@ -8,23 +8,15 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines values for GeoReplicationStatus.
- */
+/** Defines values for GeoReplicationStatus. */
 public final class GeoReplicationStatus extends ExpandableStringEnum<GeoReplicationStatus> {
-    /**
-     * Static value live for GeoReplicationStatus.
-     */
+    /** Static value live for GeoReplicationStatus. */
     public static final GeoReplicationStatus LIVE = fromString("live");
 
-    /**
-     * Static value bootstrap for GeoReplicationStatus.
-     */
+    /** Static value bootstrap for GeoReplicationStatus. */
     public static final GeoReplicationStatus BOOTSTRAP = fromString("bootstrap");
 
-    /**
-     * Static value unavailable for GeoReplicationStatus.
-     */
+    /** Static value unavailable for GeoReplicationStatus. */
     public static final GeoReplicationStatus UNAVAILABLE = fromString("unavailable");
 
     /**
@@ -38,9 +30,7 @@ public final class GeoReplicationStatus extends ExpandableStringEnum<GeoReplicat
         return fromString(name, GeoReplicationStatus.class);
     }
 
-    /**
-     * @return known GeoReplicationStatus values.
-     */
+    /** @return known GeoReplicationStatus values. */
     public static Collection<GeoReplicationStatus> values() {
         return values(GeoReplicationStatus.class);
     }

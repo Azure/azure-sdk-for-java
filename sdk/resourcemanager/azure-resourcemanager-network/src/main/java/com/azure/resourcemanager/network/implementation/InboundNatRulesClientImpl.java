@@ -176,7 +176,7 @@ public final class InboundNatRulesClientImpl implements InboundNatRulesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -199,7 +199,7 @@ public final class InboundNatRulesClientImpl implements InboundNatRulesClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -236,7 +236,7 @@ public final class InboundNatRulesClientImpl implements InboundNatRulesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -364,7 +364,7 @@ public final class InboundNatRulesClientImpl implements InboundNatRulesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -379,7 +379,7 @@ public final class InboundNatRulesClientImpl implements InboundNatRulesClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -421,7 +421,7 @@ public final class InboundNatRulesClientImpl implements InboundNatRulesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -623,7 +623,7 @@ public final class InboundNatRulesClientImpl implements InboundNatRulesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -639,7 +639,7 @@ public final class InboundNatRulesClientImpl implements InboundNatRulesClient {
                             expand,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -682,7 +682,7 @@ public final class InboundNatRulesClientImpl implements InboundNatRulesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -792,7 +792,7 @@ public final class InboundNatRulesClientImpl implements InboundNatRulesClient {
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param inboundNatRuleName The name of the inbound nat rule.
-     * @param inboundNatRuleParameters Inbound NAT rule of the load balancer.
+     * @param inboundNatRuleParameters Parameters supplied to the create or update inbound nat rule operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -835,7 +835,7 @@ public final class InboundNatRulesClientImpl implements InboundNatRulesClient {
         } else {
             inboundNatRuleParameters.validate();
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -851,7 +851,7 @@ public final class InboundNatRulesClientImpl implements InboundNatRulesClient {
                             inboundNatRuleParameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -860,7 +860,7 @@ public final class InboundNatRulesClientImpl implements InboundNatRulesClient {
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param inboundNatRuleName The name of the inbound nat rule.
-     * @param inboundNatRuleParameters Inbound NAT rule of the load balancer.
+     * @param inboundNatRuleParameters Parameters supplied to the create or update inbound nat rule operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -905,7 +905,7 @@ public final class InboundNatRulesClientImpl implements InboundNatRulesClient {
         } else {
             inboundNatRuleParameters.validate();
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -927,7 +927,7 @@ public final class InboundNatRulesClientImpl implements InboundNatRulesClient {
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param inboundNatRuleName The name of the inbound nat rule.
-     * @param inboundNatRuleParameters Inbound NAT rule of the load balancer.
+     * @param inboundNatRuleParameters Parameters supplied to the create or update inbound nat rule operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -958,7 +958,7 @@ public final class InboundNatRulesClientImpl implements InboundNatRulesClient {
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param inboundNatRuleName The name of the inbound nat rule.
-     * @param inboundNatRuleParameters Inbound NAT rule of the load balancer.
+     * @param inboundNatRuleParameters Parameters supplied to the create or update inbound nat rule operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -988,7 +988,7 @@ public final class InboundNatRulesClientImpl implements InboundNatRulesClient {
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param inboundNatRuleName The name of the inbound nat rule.
-     * @param inboundNatRuleParameters Inbound NAT rule of the load balancer.
+     * @param inboundNatRuleParameters Parameters supplied to the create or update inbound nat rule operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1011,7 +1011,7 @@ public final class InboundNatRulesClientImpl implements InboundNatRulesClient {
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param inboundNatRuleName The name of the inbound nat rule.
-     * @param inboundNatRuleParameters Inbound NAT rule of the load balancer.
+     * @param inboundNatRuleParameters Parameters supplied to the create or update inbound nat rule operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1036,7 +1036,7 @@ public final class InboundNatRulesClientImpl implements InboundNatRulesClient {
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param inboundNatRuleName The name of the inbound nat rule.
-     * @param inboundNatRuleParameters Inbound NAT rule of the load balancer.
+     * @param inboundNatRuleParameters Parameters supplied to the create or update inbound nat rule operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1060,7 +1060,7 @@ public final class InboundNatRulesClientImpl implements InboundNatRulesClient {
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param inboundNatRuleName The name of the inbound nat rule.
-     * @param inboundNatRuleParameters Inbound NAT rule of the load balancer.
+     * @param inboundNatRuleParameters Parameters supplied to the create or update inbound nat rule operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1086,7 +1086,7 @@ public final class InboundNatRulesClientImpl implements InboundNatRulesClient {
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param inboundNatRuleName The name of the inbound nat rule.
-     * @param inboundNatRuleParameters Inbound NAT rule of the load balancer.
+     * @param inboundNatRuleParameters Parameters supplied to the create or update inbound nat rule operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1108,7 +1108,7 @@ public final class InboundNatRulesClientImpl implements InboundNatRulesClient {
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param inboundNatRuleName The name of the inbound nat rule.
-     * @param inboundNatRuleParameters Inbound NAT rule of the load balancer.
+     * @param inboundNatRuleParameters Parameters supplied to the create or update inbound nat rule operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1159,7 +1159,7 @@ public final class InboundNatRulesClientImpl implements InboundNatRulesClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

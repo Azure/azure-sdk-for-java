@@ -4,9 +4,10 @@
 
 package com.azure.resourcemanager.eventgrid.fluent.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventgrid.models.DomainTopicProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -14,15 +15,30 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Domain Topic. */
 @JsonFlatten
-@Fluent
+@Immutable
 public class DomainTopicInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DomainTopicInner.class);
 
     /*
+     * The system metadata relating to Domain Topic resource.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
+    /*
      * Provisioning state of the domain topic.
      */
-    @JsonProperty(value = "properties.provisioningState")
+    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private DomainTopicProvisioningState provisioningState;
+
+    /**
+     * Get the systemData property: The system metadata relating to Domain Topic resource.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
 
     /**
      * Get the provisioningState property: Provisioning state of the domain topic.
@@ -31,17 +47,6 @@ public class DomainTopicInner extends ProxyResource {
      */
     public DomainTopicProvisioningState provisioningState() {
         return this.provisioningState;
-    }
-
-    /**
-     * Set the provisioningState property: Provisioning state of the domain topic.
-     *
-     * @param provisioningState the provisioningState value to set.
-     * @return the DomainTopicInner object itself.
-     */
-    public DomainTopicInner withProvisioningState(DomainTopicProvisioningState provisioningState) {
-        this.provisioningState = provisioningState;
-        return this;
     }
 
     /**

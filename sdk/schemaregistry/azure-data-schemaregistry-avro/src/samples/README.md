@@ -4,7 +4,7 @@ languages:
   - java
 products:
   - azure
-  - azure-data-schemaregistry-avro
+  - azure-event-hubs
 urlFragment: schemaregistry-avro-samples
 ---
 
@@ -35,12 +35,12 @@ See [Next steps][sdk_readme_next_steps].
 This project welcomes contributions and suggestions. See [Contributing][sdk_readme_contributing] for guidelines.
 
 <!-- Links -->
-[sdk_readme_key_concepts]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/schemaregistry/azure-data-schemaregistry-avro/README.md#key-concepts
-[sdk_readme_getting_started]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/schemaregistry/azure-data-schemaregistry-avro/README.md#getting-started
-[sdk_readme_troubleshooting]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/schemaregistry/azure-data-schemaregistry-avro/README.md#troubleshooting
-[sdk_readme_next_steps]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/schemaregistry/azure-data-schemaregistry-avro/README.md#next-steps
-[sdk_readme_contributing]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/schemaregistry/azure-data-schemaregistry-avro/README.md#contributing
-[sample_avro_serialization]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/schemaregistry/azure-data-schemaregistry-avro/src/samples/java/com/azure/data/schemaregistry/avro/SchemaRegistryAvroSerializationSample.java
-[sample_avro_deserialization]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/schemaregistry/azure-data-schemaregistry-avro/src/samples/java/com/azure/data/schemaregistry/avro/SchemaRegistryAvroSerializationSample.java
+[sdk_readme_key_concepts]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/schemaregistry/azure-data-schemaregistry-avro/README.md#key-concepts
+[sdk_readme_getting_started]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/schemaregistry/azure-data-schemaregistry-avro/README.md#getting-started
+[sdk_readme_troubleshooting]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/schemaregistry/azure-data-schemaregistry-avro/README.md#troubleshooting
+[sdk_readme_next_steps]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/schemaregistry/azure-data-schemaregistry-avro/README.md#next-steps
+[sdk_readme_contributing]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/schemaregistry/azure-data-schemaregistry-avro/README.md#contributing
+[sample_avro_serialization]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/schemaregistry/azure-data-schemaregistry-avro/src/samples/java/com/azure/data/schemaregistry/avro/SchemaRegistryAvroSerializationSample.java
+[sample_avro_deserialization]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/schemaregistry/azure-data-schemaregistry-avro/src/samples/java/com/azure/data/schemaregistry/avro/SchemaRegistryAvroSerializationSample.java
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%schemaregistry%2Fazure-data-schemaregistry-avro%2Fsrc%2Fsamples%2README.png)

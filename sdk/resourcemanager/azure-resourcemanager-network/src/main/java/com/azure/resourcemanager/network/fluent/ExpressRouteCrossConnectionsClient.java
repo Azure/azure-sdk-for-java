@@ -157,7 +157,7 @@ public interface ExpressRouteCrossConnectionsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
-     * @param parameters ExpressRouteCrossConnection resource.
+     * @param parameters Parameters supplied to the update express route crossConnection operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -172,7 +172,7 @@ public interface ExpressRouteCrossConnectionsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
-     * @param parameters ExpressRouteCrossConnection resource.
+     * @param parameters Parameters supplied to the update express route crossConnection operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -187,7 +187,7 @@ public interface ExpressRouteCrossConnectionsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
-     * @param parameters ExpressRouteCrossConnection resource.
+     * @param parameters Parameters supplied to the update express route crossConnection operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -202,7 +202,7 @@ public interface ExpressRouteCrossConnectionsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
-     * @param parameters ExpressRouteCrossConnection resource.
+     * @param parameters Parameters supplied to the update express route crossConnection operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -221,7 +221,7 @@ public interface ExpressRouteCrossConnectionsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
-     * @param parameters ExpressRouteCrossConnection resource.
+     * @param parameters Parameters supplied to the update express route crossConnection operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -236,7 +236,7 @@ public interface ExpressRouteCrossConnectionsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
-     * @param parameters ExpressRouteCrossConnection resource.
+     * @param parameters Parameters supplied to the update express route crossConnection operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -251,7 +251,7 @@ public interface ExpressRouteCrossConnectionsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
-     * @param parameters ExpressRouteCrossConnection resource.
+     * @param parameters Parameters supplied to the update express route crossConnection operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

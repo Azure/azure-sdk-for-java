@@ -49,13 +49,13 @@ public class DelimitedTextDataset extends Dataset {
      * The compressionCodec property.
      */
     @JsonProperty(value = "typeProperties.compressionCodec")
-    private DelimitedTextCompressionCodec compressionCodec;
+    private CompressionCodec compressionCodec;
 
     /*
      * The data compression method used for DelimitedText.
      */
     @JsonProperty(value = "typeProperties.compressionLevel")
-    private DatasetCompressionLevel compressionLevel;
+    private Object compressionLevel;
 
     /*
      * The quote character. Type: string (or Expression with resultType
@@ -178,7 +178,7 @@ public class DelimitedTextDataset extends Dataset {
      *
      * @return the compressionCodec value.
      */
-    public DelimitedTextCompressionCodec getCompressionCodec() {
+    public CompressionCodec getCompressionCodec() {
         return this.compressionCodec;
     }
 
@@ -188,7 +188,7 @@ public class DelimitedTextDataset extends Dataset {
      * @param compressionCodec the compressionCodec value to set.
      * @return the DelimitedTextDataset object itself.
      */
-    public DelimitedTextDataset setCompressionCodec(DelimitedTextCompressionCodec compressionCodec) {
+    public DelimitedTextDataset setCompressionCodec(CompressionCodec compressionCodec) {
         this.compressionCodec = compressionCodec;
         return this;
     }
@@ -198,7 +198,7 @@ public class DelimitedTextDataset extends Dataset {
      *
      * @return the compressionLevel value.
      */
-    public DatasetCompressionLevel getCompressionLevel() {
+    public Object getCompressionLevel() {
         return this.compressionLevel;
     }
 
@@ -208,7 +208,7 @@ public class DelimitedTextDataset extends Dataset {
      * @param compressionLevel the compressionLevel value to set.
      * @return the DelimitedTextDataset object itself.
      */
-    public DelimitedTextDataset setCompressionLevel(DatasetCompressionLevel compressionLevel) {
+    public DelimitedTextDataset setCompressionLevel(Object compressionLevel) {
         this.compressionLevel = compressionLevel;
         return this;
     }

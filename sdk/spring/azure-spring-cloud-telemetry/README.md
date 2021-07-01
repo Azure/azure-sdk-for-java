@@ -1,8 +1,8 @@
 # Azure Spring cloud azure telemetry client library for Java
-This package is an internal package sending telemetry data for Azure Spring Cloud services.
+We are deprecating this starter, use HTTP header User Agent instead. 
 
-## Getting started
 ## Key concepts
+## Getting started
 ## Examples
 ## Troubleshooting
 ## Next steps

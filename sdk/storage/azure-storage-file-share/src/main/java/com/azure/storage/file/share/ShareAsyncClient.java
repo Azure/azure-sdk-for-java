@@ -21,10 +21,10 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
-import com.azure.storage.file.share.implementation.models.ShareCreateSnapshotHeaders;
-import com.azure.storage.file.share.implementation.models.ShareGetPropertiesHeaders;
 import com.azure.storage.file.share.implementation.models.SharePermission;
+import com.azure.storage.file.share.implementation.models.SharesCreateSnapshotHeaders;
 import com.azure.storage.file.share.implementation.models.SharesCreateSnapshotResponse;
+import com.azure.storage.file.share.implementation.models.SharesGetPropertiesHeaders;
 import com.azure.storage.file.share.implementation.models.SharesGetPropertiesResponse;
 import com.azure.storage.file.share.implementation.models.SharesGetStatisticsResponse;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
@@ -44,8 +44,8 @@ import com.azure.storage.file.share.options.ShareGetAccessPolicyOptions;
 import com.azure.storage.file.share.options.ShareGetPropertiesOptions;
 import com.azure.storage.file.share.options.ShareGetStatisticsOptions;
 import com.azure.storage.file.share.options.ShareSetAccessPolicyOptions;
-import com.azure.storage.file.share.options.ShareSetPropertiesOptions;
 import com.azure.storage.file.share.options.ShareSetMetadataOptions;
+import com.azure.storage.file.share.options.ShareSetPropertiesOptions;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 import reactor.core.publisher.Mono;
 
@@ -107,6 +107,15 @@ public class ShareAsyncClient {
     }
 
     /**
+     * Get the url of the storage account.
+     *
+     * @return the URL of the storage account
+     */
+    public String getAccountUrl() {
+        return azureFileStorageClient.getUrl();
+    }
+
+    /**
      * Get the url of the storage share client.
      *
      * @return the url of the Storage Share.
@@ -150,6 +159,9 @@ public class ShareAsyncClient {
      * @return a {@link ShareDirectoryAsyncClient} that interacts with the directory in the share
      */
     public ShareDirectoryAsyncClient getDirectoryClient(String directoryName) {
+        directoryName = "/".equals(directoryName)
+            ? ""
+            : directoryName;
         return new ShareDirectoryAsyncClient(azureFileStorageClient, shareName, directoryName, snapshot, accountName,
             serviceVersion);
     }
@@ -312,8 +324,8 @@ public class ShareAsyncClient {
         options = options == null ? new ShareCreateOptions() : options;
         String enabledProtocol = options.getProtocols() == null ? null : options.getProtocols().toString();
         enabledProtocol = "".equals(enabledProtocol) ? null : enabledProtocol;
-        return azureFileStorageClient.shares()
-            .createWithRestResponseAsync(shareName, null, options.getMetadata(), options.getQuotaInGb(),
+        return azureFileStorageClient.getShares()
+            .createWithResponseAsync(shareName, null, options.getMetadata(), options.getQuotaInGb(),
                 options.getAccessTier(), enabledProtocol, options.getRootSquash(),
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(this::mapToShareInfoResponse);
@@ -373,7 +385,7 @@ public class ShareAsyncClient {
 
     Mono<Response<ShareSnapshotInfo>> createSnapshotWithResponse(Map<String, String> metadata, Context context) {
         context = context == null ? Context.NONE : context;
-        return azureFileStorageClient.shares().createSnapshotWithRestResponseAsync(shareName, null, metadata,
+        return azureFileStorageClient.getShares().createSnapshotWithResponseAsync(shareName, null, metadata,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(this::mapCreateSnapshotResponse);
     }
@@ -456,8 +468,8 @@ public class ShareAsyncClient {
         ShareRequestConditions requestConditions = options.getRequestConditions() == null
             ? new ShareRequestConditions() : options.getRequestConditions();
         context = context == null ? Context.NONE : context;
-        return azureFileStorageClient.shares()
-            .deleteWithRestResponseAsync(shareName, snapshot, null,
+        return azureFileStorageClient.getShares()
+            .deleteWithResponseAsync(shareName, snapshot, null,
                 ModelHelper.toDeleteSnapshotsOptionType(options.getDeleteSnapshotsOptions()),
                 requestConditions.getLeaseId(),
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
@@ -547,8 +559,8 @@ public class ShareAsyncClient {
         ShareRequestConditions requestConditions = options.getRequestConditions() == null
             ? new ShareRequestConditions() : options.getRequestConditions();
         context = context == null ? Context.NONE : context;
-        return azureFileStorageClient.shares()
-            .getPropertiesWithRestResponseAsync(shareName, snapshot, null, requestConditions.getLeaseId(),
+        return azureFileStorageClient.getShares()
+            .getPropertiesWithResponseAsync(shareName, snapshot, null, requestConditions.getLeaseId(),
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(this::mapGetPropertiesResponse);
     }
@@ -658,7 +670,7 @@ public class ShareAsyncClient {
         ShareRequestConditions requestConditions = options.getRequestConditions() == null
             ? new ShareRequestConditions() : options.getRequestConditions();
         context = context == null ? Context.NONE : context;
-        return azureFileStorageClient.shares().setPropertiesWithRestResponseAsync(shareName, null,
+        return azureFileStorageClient.getShares().setPropertiesWithResponseAsync(shareName, null,
             options.getQuotaInGb(), options.getAccessTier(), requestConditions.getLeaseId(), options.getRootSquash(),
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(this::mapToShareInfoResponse);
@@ -758,7 +770,7 @@ public class ShareAsyncClient {
         ShareRequestConditions requestConditions = options.getRequestConditions() == null
             ? new ShareRequestConditions() : options.getRequestConditions();
         context = context == null ? Context.NONE : context;
-        return azureFileStorageClient.shares().setMetadataWithRestResponseAsync(shareName, null,
+        return azureFileStorageClient.getShares().setMetadataWithResponseAsync(shareName, null,
             options.getMetadata(), requestConditions.getLeaseId(),
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(this::mapToShareInfoResponse);
@@ -811,8 +823,8 @@ public class ShareAsyncClient {
             ? new ShareRequestConditions() : finalOptions.getRequestConditions();
         try {
             Function<String, Mono<PagedResponse<ShareSignedIdentifier>>> retriever =
-                marker -> this.azureFileStorageClient.shares()
-                    .getAccessPolicyWithRestResponseAsync(shareName, null, requestConditions.getLeaseId(),
+                marker -> this.azureFileStorageClient.getShares()
+                    .getAccessPolicyWithResponseAsync(shareName, null, requestConditions.getLeaseId(),
                         Context.NONE)
                     .map(response -> new PagedResponseBase<>(response.getRequest(),
                         response.getStatusCode(),
@@ -933,8 +945,8 @@ public class ShareAsyncClient {
         }
         context = context == null ? Context.NONE : context;
 
-        return azureFileStorageClient.shares()
-            .setAccessPolicyWithRestResponseAsync(shareName, permissions, null, requestConditions.getLeaseId(),
+        return azureFileStorageClient.getShares()
+            .setAccessPolicyWithResponseAsync(shareName, null, requestConditions.getLeaseId(), permissions,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(this::mapToShareInfoResponse);
     }
@@ -1016,7 +1028,7 @@ public class ShareAsyncClient {
         ShareRequestConditions requestConditions = options.getRequestConditions() == null
             ? new ShareRequestConditions() : options.getRequestConditions();
         context = context == null ? Context.NONE : context;
-        return azureFileStorageClient.shares().getStatisticsWithRestResponseAsync(shareName, null,
+        return azureFileStorageClient.getShares().getStatisticsWithResponseAsync(shareName, null,
             requestConditions.getLeaseId(), context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(this::mapGetStatisticsResponse);
     }
@@ -1387,9 +1399,10 @@ public class ShareAsyncClient {
     Mono<Response<String>> createPermissionWithResponse(String filePermission, Context context) {
         // NOTE: Should we check for null or empty?
         SharePermission sharePermission = new SharePermission().setPermission(filePermission);
-        return azureFileStorageClient.shares()
-            .createPermissionWithRestResponseAsync(shareName, sharePermission, null, context)
-            .map(response -> new SimpleResponse<>(response, response.getDeserializedHeaders().getFilePermissionKey()));
+        return azureFileStorageClient.getShares()
+            .createPermissionWithResponseAsync(shareName, sharePermission, null, context)
+            .map(response -> new SimpleResponse<>(response,
+                response.getDeserializedHeaders().getXMsFilePermissionKey()));
     }
 
     /**
@@ -1431,8 +1444,8 @@ public class ShareAsyncClient {
     }
 
     Mono<Response<String>> getPermissionWithResponse(String filePermissionKey, Context context) {
-        return azureFileStorageClient.shares()
-            .getPermissionWithRestResponseAsync(shareName, filePermissionKey, null, context)
+        return azureFileStorageClient.getShares()
+            .getPermissionWithResponseAsync(shareName, filePermissionKey, null, context)
             .map(response -> new SimpleResponse<>(response, response.getValue().getPermission()));
     }
 
@@ -1529,32 +1542,32 @@ public class ShareAsyncClient {
     }
 
     private Response<ShareSnapshotInfo> mapCreateSnapshotResponse(SharesCreateSnapshotResponse response) {
-        ShareCreateSnapshotHeaders headers = response.getDeserializedHeaders();
+        SharesCreateSnapshotHeaders headers = response.getDeserializedHeaders();
         ShareSnapshotInfo snapshotInfo =
-            new ShareSnapshotInfo(headers.getSnapshot(), headers.getETag(), headers.getLastModified());
+            new ShareSnapshotInfo(headers.getXMsSnapshot(), headers.getETag(), headers.getLastModified());
 
         return new SimpleResponse<>(response, snapshotInfo);
     }
 
     private Response<ShareProperties> mapGetPropertiesResponse(SharesGetPropertiesResponse response) {
-        ShareGetPropertiesHeaders headers = response.getDeserializedHeaders();
+        SharesGetPropertiesHeaders headers = response.getDeserializedHeaders();
         ShareProperties shareProperties = new ShareProperties()
             .setETag(headers.getETag())
             .setLastModified(headers.getLastModified())
-            .setMetadata(headers.getMetadata())
-            .setQuota(headers.getQuota())
-            .setNextAllowedQuotaDowngradeTime(headers.getNextAllowedQuotaDowngradeTime())
-            .setProvisionedEgressMBps(headers.getProvisionedEgressMBps())
-            .setProvisionedIngressMBps(headers.getProvisionedIngressMBps())
-            .setProvisionedIops(headers.getProvisionedIops())
-            .setLeaseDuration(headers.getLeaseDuration())
-            .setLeaseState(headers.getLeaseState())
-            .setLeaseStatus(headers.getLeaseStatus())
-            .setAccessTier(headers.getAccessTier())
-            .setAccessTierChangeTime(headers.getAccessTierChangeTime())
-            .setAccessTierTransitionState(headers.getAccessTierTransitionState())
-            .setProtocols(ModelHelper.parseShareProtocols(headers.getEnabledProtocols()))
-            .setRootSquash(headers.getRootSquash());
+            .setMetadata(headers.getXMsMeta())
+            .setQuota(headers.getXMsShareQuota())
+            .setNextAllowedQuotaDowngradeTime(headers.getXMsShareNextAllowedQuotaDowngradeTime())
+            .setProvisionedEgressMBps(headers.getXMsShareProvisionedEgressMbps())
+            .setProvisionedIngressMBps(headers.getXMsShareProvisionedIngressMbps())
+            .setProvisionedIops(headers.getXMsShareProvisionedIops())
+            .setLeaseDuration(headers.getXMsLeaseDuration())
+            .setLeaseState(headers.getXMsLeaseState())
+            .setLeaseStatus(headers.getXMsLeaseStatus())
+            .setAccessTier(headers.getXMsAccessTier())
+            .setAccessTierChangeTime(headers.getXMsAccessTierChangeTime())
+            .setAccessTierTransitionState(headers.getXMsAccessTierTransitionState())
+            .setProtocols(ModelHelper.parseShareProtocols(headers.getXMsEnabledProtocols()))
+            .setRootSquash(headers.getXMsRootSquash());
 
         return new SimpleResponse<>(response, shareProperties);
     }

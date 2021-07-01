@@ -19,7 +19,10 @@ public class EncryptionSetIdentity {
 
     /*
      * The type of Managed Identity used by the DiskEncryptionSet. Only
-     * SystemAssigned is supported.
+     * SystemAssigned is supported for new creations. Disk Encryption Sets can
+     * be updated with Identity type None during migration of subscription to a
+     * new Azure Active Directory tenant; it will cause the encrypted resources
+     * to lose access to the keys.
      */
     @JsonProperty(value = "type")
     private DiskEncryptionSetIdentityType type;
@@ -42,7 +45,9 @@ public class EncryptionSetIdentity {
 
     /**
      * Get the type property: The type of Managed Identity used by the DiskEncryptionSet. Only SystemAssigned is
-     * supported.
+     * supported for new creations. Disk Encryption Sets can be updated with Identity type None during migration of
+     * subscription to a new Azure Active Directory tenant; it will cause the encrypted resources to lose access to the
+     * keys.
      *
      * @return the type value.
      */
@@ -52,7 +57,9 @@ public class EncryptionSetIdentity {
 
     /**
      * Set the type property: The type of Managed Identity used by the DiskEncryptionSet. Only SystemAssigned is
-     * supported.
+     * supported for new creations. Disk Encryption Sets can be updated with Identity type None during migration of
+     * subscription to a new Azure Active Directory tenant; it will cause the encrypted resources to lose access to the
+     * keys.
      *
      * @param type the type value to set.
      * @return the EncryptionSetIdentity object itself.

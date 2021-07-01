@@ -58,6 +58,13 @@ public class CustomActivity extends ExecutionActivity {
     @JsonProperty(value = "typeProperties.retentionTimeInDays")
     private Object retentionTimeInDays;
 
+    /*
+     * Elevation level and scope for the user, default is nonadmin task. Type:
+     * string (or Expression with resultType double).
+     */
+    @JsonProperty(value = "typeProperties.autoUserSpecification")
+    private Object autoUserSpecification;
+
     /**
      * Get the command property: Command for custom activity Type: string (or Expression with resultType string).
      *
@@ -181,6 +188,28 @@ public class CustomActivity extends ExecutionActivity {
      */
     public CustomActivity setRetentionTimeInDays(Object retentionTimeInDays) {
         this.retentionTimeInDays = retentionTimeInDays;
+        return this;
+    }
+
+    /**
+     * Get the autoUserSpecification property: Elevation level and scope for the user, default is nonadmin task. Type:
+     * string (or Expression with resultType double).
+     *
+     * @return the autoUserSpecification value.
+     */
+    public Object getAutoUserSpecification() {
+        return this.autoUserSpecification;
+    }
+
+    /**
+     * Set the autoUserSpecification property: Elevation level and scope for the user, default is nonadmin task. Type:
+     * string (or Expression with resultType double).
+     *
+     * @param autoUserSpecification the autoUserSpecification value to set.
+     * @return the CustomActivity object itself.
+     */
+    public CustomActivity setAutoUserSpecification(Object autoUserSpecification) {
+        this.autoUserSpecification = autoUserSpecification;
         return this;
     }
 }

@@ -180,9 +180,9 @@ public final class TopicsClientImpl implements TopicsClient {
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics"
                 + "/{topicName}/regenerateKey")
-        @ExpectedResponses({200})
+        @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<TopicSharedAccessKeysInner>> regenerateKey(
+        Mono<Response<Flux<ByteBuffer>>> regenerateKey(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -274,7 +274,7 @@ public final class TopicsClientImpl implements TopicsClient {
                             this.client.getApiVersion(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -430,7 +430,7 @@ public final class TopicsClientImpl implements TopicsClient {
                             topicInfo,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -681,7 +681,7 @@ public final class TopicsClientImpl implements TopicsClient {
                             topicName,
                             this.client.getApiVersion(),
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -913,7 +913,7 @@ public final class TopicsClientImpl implements TopicsClient {
                             topicUpdateParameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1176,7 +1176,7 @@ public final class TopicsClientImpl implements TopicsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1388,7 +1388,7 @@ public final class TopicsClientImpl implements TopicsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1604,7 +1604,7 @@ public final class TopicsClientImpl implements TopicsClient {
                             this.client.getApiVersion(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1720,7 +1720,7 @@ public final class TopicsClientImpl implements TopicsClient {
      * @return shared access keys of the Topic.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<TopicSharedAccessKeysInner>> regenerateKeyWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> regenerateKeyWithResponseAsync(
         String resourceGroupName, String topicName, TopicRegenerateKeyRequest regenerateKeyRequest) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1761,7 +1761,7 @@ public final class TopicsClientImpl implements TopicsClient {
                             regenerateKeyRequest,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1777,7 +1777,7 @@ public final class TopicsClientImpl implements TopicsClient {
      * @return shared access keys of the Topic.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<TopicSharedAccessKeysInner>> regenerateKeyWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> regenerateKeyWithResponseAsync(
         String resourceGroupName, String topicName, TopicRegenerateKeyRequest regenerateKeyRequest, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1830,17 +1830,120 @@ public final class TopicsClientImpl implements TopicsClient {
      * @return shared access keys of the Topic.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    private PollerFlux<PollResult<TopicSharedAccessKeysInner>, TopicSharedAccessKeysInner> beginRegenerateKeyAsync(
+        String resourceGroupName, String topicName, TopicRegenerateKeyRequest regenerateKeyRequest) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            regenerateKeyWithResponseAsync(resourceGroupName, topicName, regenerateKeyRequest);
+        return this
+            .client
+            .<TopicSharedAccessKeysInner, TopicSharedAccessKeysInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                TopicSharedAccessKeysInner.class,
+                TopicSharedAccessKeysInner.class,
+                Context.NONE);
+    }
+
+    /**
+     * Regenerate a shared access key for a topic.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param topicName Name of the topic.
+     * @param regenerateKeyRequest Request body to regenerate key.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return shared access keys of the Topic.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PollerFlux<PollResult<TopicSharedAccessKeysInner>, TopicSharedAccessKeysInner> beginRegenerateKeyAsync(
+        String resourceGroupName, String topicName, TopicRegenerateKeyRequest regenerateKeyRequest, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            regenerateKeyWithResponseAsync(resourceGroupName, topicName, regenerateKeyRequest, context);
+        return this
+            .client
+            .<TopicSharedAccessKeysInner, TopicSharedAccessKeysInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                TopicSharedAccessKeysInner.class,
+                TopicSharedAccessKeysInner.class,
+                context);
+    }
+
+    /**
+     * Regenerate a shared access key for a topic.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param topicName Name of the topic.
+     * @param regenerateKeyRequest Request body to regenerate key.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return shared access keys of the Topic.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<TopicSharedAccessKeysInner>, TopicSharedAccessKeysInner> beginRegenerateKey(
+        String resourceGroupName, String topicName, TopicRegenerateKeyRequest regenerateKeyRequest) {
+        return beginRegenerateKeyAsync(resourceGroupName, topicName, regenerateKeyRequest).getSyncPoller();
+    }
+
+    /**
+     * Regenerate a shared access key for a topic.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param topicName Name of the topic.
+     * @param regenerateKeyRequest Request body to regenerate key.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return shared access keys of the Topic.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<TopicSharedAccessKeysInner>, TopicSharedAccessKeysInner> beginRegenerateKey(
+        String resourceGroupName, String topicName, TopicRegenerateKeyRequest regenerateKeyRequest, Context context) {
+        return beginRegenerateKeyAsync(resourceGroupName, topicName, regenerateKeyRequest, context).getSyncPoller();
+    }
+
+    /**
+     * Regenerate a shared access key for a topic.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param topicName Name of the topic.
+     * @param regenerateKeyRequest Request body to regenerate key.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return shared access keys of the Topic.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<TopicSharedAccessKeysInner> regenerateKeyAsync(
         String resourceGroupName, String topicName, TopicRegenerateKeyRequest regenerateKeyRequest) {
-        return regenerateKeyWithResponseAsync(resourceGroupName, topicName, regenerateKeyRequest)
-            .flatMap(
-                (Response<TopicSharedAccessKeysInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return beginRegenerateKeyAsync(resourceGroupName, topicName, regenerateKeyRequest)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Regenerate a shared access key for a topic.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param topicName Name of the topic.
+     * @param regenerateKeyRequest Request body to regenerate key.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return shared access keys of the Topic.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<TopicSharedAccessKeysInner> regenerateKeyAsync(
+        String resourceGroupName, String topicName, TopicRegenerateKeyRequest regenerateKeyRequest, Context context) {
+        return beginRegenerateKeyAsync(resourceGroupName, topicName, regenerateKeyRequest, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1873,9 +1976,9 @@ public final class TopicsClientImpl implements TopicsClient {
      * @return shared access keys of the Topic.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TopicSharedAccessKeysInner> regenerateKeyWithResponse(
+    public TopicSharedAccessKeysInner regenerateKey(
         String resourceGroupName, String topicName, TopicRegenerateKeyRequest regenerateKeyRequest, Context context) {
-        return regenerateKeyWithResponseAsync(resourceGroupName, topicName, regenerateKeyRequest, context).block();
+        return regenerateKeyAsync(resourceGroupName, topicName, regenerateKeyRequest, context).block();
     }
 
     /**
@@ -1939,7 +2042,7 @@ public final class TopicsClientImpl implements TopicsClient {
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2129,7 +2232,7 @@ public final class TopicsClientImpl implements TopicsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2201,7 +2304,7 @@ public final class TopicsClientImpl implements TopicsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

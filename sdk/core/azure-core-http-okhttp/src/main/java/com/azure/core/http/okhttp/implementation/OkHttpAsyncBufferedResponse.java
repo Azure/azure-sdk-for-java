@@ -4,6 +4,7 @@
 package com.azure.core.http.okhttp.implementation;
 
 import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
 import okhttp3.Response;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -29,5 +30,10 @@ public final class OkHttpAsyncBufferedResponse extends OkHttpAsyncResponseBase {
     @Override
     public Mono<byte[]> getBodyAsByteArray() {
         return Mono.defer(() -> Mono.just(body));
+    }
+
+    @Override
+    public HttpResponse buffer() {
+        return this; // This response is already buffered.
     }
 }

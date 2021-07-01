@@ -31,14 +31,14 @@ public abstract class DigitalTwinsRelationshipTestBase extends DigitalTwinsTestB
 
     // Relationships list operation default max item count is 10. We create 31 to make sure we will get over 3 pages of response.
     // Ideally, service team would let us set max items per page when listing, but that isn't a feature yet
-    static final int BULK_RELATIONSHIP_COUNT = 31;
+    static final int BULK_RELATIONSHIP_COUNT = 21;
     static final int RELATIONSHIP_PAGE_SIZE_DEFAULT = 10;
 
     @Test
     public abstract void relationshipLifecycleTest(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException;
 
     @Test
-    public abstract void relationshipListOperationWithMultiplePages(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException;
+    public abstract void relationshipListOperationWithMultiplePages(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException, InterruptedException;
 
     @Test
     public abstract void createOrReplaceRelationshipFailsWhenIfNoneMatchStar(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException;
@@ -84,5 +84,4 @@ public abstract class DigitalTwinsRelationshipTestBase extends DigitalTwinsTestB
     void createTwinRunner(String twinId, BasicDigitalTwin twin, BiConsumer<String, BasicDigitalTwin> createTwinTestRunner) {
         createTwinTestRunner.accept(twinId, twin);
     }
-
 }

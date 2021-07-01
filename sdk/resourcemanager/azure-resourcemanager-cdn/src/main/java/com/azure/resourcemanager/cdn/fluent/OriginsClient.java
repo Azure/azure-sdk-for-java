@@ -135,9 +135,7 @@ public interface OriginsClient {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param originName Name of the origin that is unique within the endpoint.
-     * @param origin CDN origin is the source of the content being delivered via CDN. When the edge nodes represented by
-     *     an endpoint do not have the requested content cached, they attempt to fetch it from one or more of the
-     *     configured origins.
+     * @param origin Origin properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -154,9 +152,7 @@ public interface OriginsClient {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param originName Name of the origin that is unique within the endpoint.
-     * @param origin CDN origin is the source of the content being delivered via CDN. When the edge nodes represented by
-     *     an endpoint do not have the requested content cached, they attempt to fetch it from one or more of the
-     *     configured origins.
+     * @param origin Origin properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -173,9 +169,7 @@ public interface OriginsClient {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param originName Name of the origin that is unique within the endpoint.
-     * @param origin CDN origin is the source of the content being delivered via CDN. When the edge nodes represented by
-     *     an endpoint do not have the requested content cached, they attempt to fetch it from one or more of the
-     *     configured origins.
+     * @param origin Origin properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -192,9 +186,7 @@ public interface OriginsClient {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param originName Name of the origin that is unique within the endpoint.
-     * @param origin CDN origin is the source of the content being delivered via CDN. When the edge nodes represented by
-     *     an endpoint do not have the requested content cached, they attempt to fetch it from one or more of the
-     *     configured origins.
+     * @param origin Origin properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -217,9 +209,7 @@ public interface OriginsClient {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param originName Name of the origin that is unique within the endpoint.
-     * @param origin CDN origin is the source of the content being delivered via CDN. When the edge nodes represented by
-     *     an endpoint do not have the requested content cached, they attempt to fetch it from one or more of the
-     *     configured origins.
+     * @param origin Origin properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -236,9 +226,7 @@ public interface OriginsClient {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param originName Name of the origin that is unique within the endpoint.
-     * @param origin CDN origin is the source of the content being delivered via CDN. When the edge nodes represented by
-     *     an endpoint do not have the requested content cached, they attempt to fetch it from one or more of the
-     *     configured origins.
+     * @param origin Origin properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -255,9 +243,7 @@ public interface OriginsClient {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param originName Name of the origin that is unique within the endpoint.
-     * @param origin CDN origin is the source of the content being delivered via CDN. When the edge nodes represented by
-     *     an endpoint do not have the requested content cached, they attempt to fetch it from one or more of the
-     *     configured origins.
+     * @param origin Origin properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -280,7 +266,7 @@ public interface OriginsClient {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param originName Name of the origin which is unique within the endpoint.
-     * @param originUpdateProperties Origin properties needed for origin update.
+     * @param originUpdateProperties Origin properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -301,7 +287,7 @@ public interface OriginsClient {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param originName Name of the origin which is unique within the endpoint.
-     * @param originUpdateProperties Origin properties needed for origin update.
+     * @param originUpdateProperties Origin properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -322,7 +308,7 @@ public interface OriginsClient {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param originName Name of the origin which is unique within the endpoint.
-     * @param originUpdateProperties Origin properties needed for origin update.
+     * @param originUpdateProperties Origin properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -343,7 +329,7 @@ public interface OriginsClient {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param originName Name of the origin which is unique within the endpoint.
-     * @param originUpdateProperties Origin properties needed for origin update.
+     * @param originUpdateProperties Origin properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -366,7 +352,7 @@ public interface OriginsClient {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param originName Name of the origin which is unique within the endpoint.
-     * @param originUpdateProperties Origin properties needed for origin update.
+     * @param originUpdateProperties Origin properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -387,7 +373,7 @@ public interface OriginsClient {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param originName Name of the origin which is unique within the endpoint.
-     * @param originUpdateProperties Origin properties needed for origin update.
+     * @param originUpdateProperties Origin properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -408,7 +394,7 @@ public interface OriginsClient {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param originName Name of the origin which is unique within the endpoint.
-     * @param originUpdateProperties Origin properties needed for origin update.
+     * @param originUpdateProperties Origin properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

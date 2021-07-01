@@ -4,6 +4,7 @@
 package com.azure.core.util;
 
 import com.azure.core.http.HttpMethod;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -46,9 +47,16 @@ public class AuthorizationChallengeHandlerTests {
     private static final String EXPECTED_BASIC = "Basic " + Base64.getEncoder()
         .encodeToString(String.format("%s:%s", DEFAULT_USERNAME, DEFAULT_PASSWORD).getBytes(StandardCharsets.UTF_8));
 
+    private AutoCloseable openMocks;
+
     @BeforeEach
     public void prepareForTest() {
-        MockitoAnnotations.initMocks(this);
+        this.openMocks = MockitoAnnotations.openMocks(this);
+    }
+
+    @AfterEach
+    public void clearMocks() throws Exception {
+        openMocks.close();
     }
 
     /**

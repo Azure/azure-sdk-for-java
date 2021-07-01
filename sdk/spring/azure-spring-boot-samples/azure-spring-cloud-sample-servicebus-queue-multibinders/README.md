@@ -1,3 +1,13 @@
+---
+page_type: sample
+languages:
+- java
+products:
+- azure-service-bus
+description: "Azure Spring Cloud Stream Binder Sample project for Multiple Service Bus Namespaces client library"
+urlFragment: "azure-spring-cloud-sample-service-bus-queue-multi-binders"
+---
+
 # Spring Cloud Azure Stream Binder for Multiple Service Bus Namespaces Code Sample shared library for Java
 
 ## Key concepts
@@ -12,11 +22,8 @@ The sample will also consume messages from the same service bus.
 Running this sample will be charged by Azure. You can check the usage
 and bill at [this link][azure-account].
 
-### Environment checklist
-
-We need to ensure that this 
-[environment checklist][ready-to-run-checklist] 
-is completed before the run.
+### Prerequisites
+- [Environment checklist][environment_checklist]
 
 ### Create Azure resources
 
@@ -40,6 +47,9 @@ is completed before the run.
     spring:
       cloud:
         stream:
+          #To specify which functional bean to bind to the external destination(s) exposed by the bindings
+          function:
+            definition: consume1;supply1;consume2;supply2
           bindings:
             consume1-in-0:
               destination: [servicebus-queue-1-name]
@@ -71,10 +81,6 @@ is completed before the run.
                     azure:
                       servicebus:
                         connection-string: [servicebus-namespace-2-connection-string]
-    
-          #To specify which functional bean to bind to the external destination(s) exposed by the bindings
-          function:
-            definition: consume1;supply1;consume2;supply2;
           poller:
             initial-delay: 0
             fixed-delay: 1000
@@ -126,11 +132,11 @@ processing.
 [azure-account]: https://azure.microsoft.com/account/
 [azure-portal]: https://ms.portal.azure.com/
 [create-service-bus]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-create-namespace-portal
-[create-sp-using-azure-cli]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/create-sp-using-azure-cli.md
-[create-managed-identity]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/create-managed-identity.md
+[create-sp-using-azure-cli]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot-samples/create-sp-using-azure-cli.md
+[create-managed-identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot-samples/create-managed-identity.md
 [deploy-spring-boot-application-to-app-service]: https://docs.microsoft.com/java/azure/spring-framework/deploy-spring-boot-java-app-with-maven-plugin?toc=%2Fazure%2Fapp-service%2Fcontainers%2Ftoc.json&view=azure-java-stable
 [deploy-to-app-service-via-ftp]: https://docs.microsoft.com/azure/app-service/deploy-ftp
 [managed-identities]: https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/
-[ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist
+[environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
 [role-assignment]: https://docs.microsoft.com/azure/role-based-access-control/role-assignments-portal
-[application.yaml]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-servicebus-queue-multibinders/src/main/resources/application.yaml
+[application.yaml]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-servicebus-queue-multibinders/src/main/resources/application.yaml

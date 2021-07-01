@@ -476,9 +476,10 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      * If "false", the values will be returned as Azure Active Directory Object IDs.
      * The default value is false. Note that group and application Object IDs are not translated because they do not
      * have unique friendly names.
-     * @param maxResults Specifies the maximum number of blobs to return, including all BlobPrefix elements. If the
-     * request does not specify maxResults or specifies a value greater than 5,000, the server will return up to
-     * 5,000 items.
+     * @param maxResults Specifies the maximum number of blobs to return per page, including all BlobPrefix elements. If
+     * the request does not specify maxResults or specifies a value greater than 5,000, the server will return up to
+     * 5,000 items per page. If iterating by page, the page size passed to byPage methods such as
+     * {@link PagedIterable#iterableByPage(int)} will be preferred over this value.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @return The list of files/directories.
      */

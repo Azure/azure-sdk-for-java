@@ -4,6 +4,20 @@ Azure Resource Manager HDInsight client library for Java.
 
 This package contains Microsoft Azure SDK for HDInsight Management SDK. HDInsight Management Client. Package tag package-2018-06-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
+## We'd love to hear your feedback
+
+We're always working on improving our products and the way we communicate with our users. So we'd love to learn what's working and how we can do better.
+
+If you haven't already, please take a few minutes to [complete this short survey][survey] we have put together.
+
+Thank you in advance for your collaboration. We really appreciate your time!
+
+## Documentation
+
+Various documentation is available to help you get started
+
+- [API reference documentation][docs]
+
 ## Getting started
 
 ### Prerequisites
@@ -18,7 +32,7 @@ This package contains Microsoft Azure SDK for HDInsight Management SDK. HDInsigh
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-hdinsight</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>1.0.0-beta.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -60,13 +74,103 @@ See [API design][design] for general introduction on design and key concepts on 
 
 ## Examples
 
+```java
+// network
+Network network = networkManager.networks().define("vn1")
+    .withRegion(REGION)
+    .withExistingResourceGroup(resourceGroupName)
+    .withAddressSpace("10.0.0.0/24")
+    .withSubnet("default", "10.0.0.0/24")
+    .create();
+Subnet subnet = network.subnets().values().iterator().next();
+
+// storage account
+com.azure.resourcemanager.storage.models.StorageAccount storageAccount = storageManager.storageAccounts().define(storageAccountName)
+    .withRegion(REGION)
+    .withExistingResourceGroup(resourceGroupName)
+    .create();
+final String storageAccountKey = storageAccount.getKeys().iterator().next().value();
+
+// container
+final String containerName = "hdinsight";
+storageManager.blobContainers().defineContainer(containerName)
+    .withExistingBlobService(resourceGroupName, storageAccountName)
+    .withPublicAccess(PublicAccess.NONE)
+    .create();
+
+// cluster
+manager.clusters().define("cluster" + randomPadding())
+    .withExistingResourceGroup(resourceGroupName)
+    .withRegion(REGION)
+    .withProperties(new ClusterCreateProperties()
+        .withClusterVersion("3.6")
+        .withOsType(OSType.LINUX)
+        .withTier(Tier.STANDARD)
+        .withClusterDefinition(new ClusterDefinition()
+            .withKind("Spark")
+            .withConfigurations(ImmutableMap.of(
+                "gateway", ImmutableMap.of(
+                    "restAuthCredential.isEnabled", "true",
+                    "restAuthCredential.username", "admin",
+                    "restAuthCredential.password", "Pa$s" + randomPadding()
+                )))
+        )
+        .withComputeProfile(new ComputeProfile()
+            .withRoles(ImmutableList.of(
+                new Role().withName("headnode")
+                    .withTargetInstanceCount(2)
+                    .withHardwareProfile(new HardwareProfile()
+                        .withVmSize("Large")
+                    )
+                    .withOsProfile(new OsProfile()
+                        .withLinuxOperatingSystemProfile(
+                            new LinuxOperatingSystemProfile()
+                                .withUsername("sshuser")
+                                .withPassword("Pa$s" + randomPadding())
+                        )
+                    )
+                    .withVirtualNetworkProfile(new VirtualNetworkProfile()
+                        .withId(network.id())
+                        .withSubnet(subnet.id())
+                    ),
+                new Role().withName("workernode")
+                    .withTargetInstanceCount(3)
+                    .withHardwareProfile(new HardwareProfile()
+                        .withVmSize("Large")
+                    )
+                    .withOsProfile(new OsProfile()
+                        .withLinuxOperatingSystemProfile(
+                            new LinuxOperatingSystemProfile()
+                                .withUsername("sshuser")
+                                .withPassword("Pa$s" + randomPadding())
+                        )
+                    )
+                    .withVirtualNetworkProfile(new VirtualNetworkProfile()
+                        .withId(network.id())
+                        .withSubnet(subnet.id())
+                    )
+            ))
+        )
+        .withStorageProfile(new StorageProfile()
+            .withStorageaccounts(ImmutableList.of(
+                new StorageAccount()
+                    .withName(new URL(storageAccount.endPoints().primary().blob()).getHost())
+                    .withKey(storageAccountKey)
+                    .withContainer(containerName)
+                    .withIsDefault(true)
+            ))
+        ))
+    .create();
+```
+
+
 ## Troubleshooting
 
 ## Next steps
 
 ## Contributing
 
-For details on contributing to this repository, see the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/master/CONTRIBUTING.md).
+For details on contributing to this repository, see the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md).
 
 1. Fork it
 1. Create your feature branch (`git checkout -b my-new-feature`)
@@ -75,9 +179,11 @@ For details on contributing to this repository, see the [contributing guide](htt
 1. Create new Pull Request
 
 <!-- LINKS -->
+[survey]: https://microsoft.qualtrics.com/jfe/form/SV_ehN0lIk2FKEBkwd?Q_CHL=DOCS
+[docs]: https://azure.github.io/azure-sdk-for-java/
 [jdk]: https://docs.microsoft.com/java/azure/jdk/
 [azure_subscription]: https://azure.microsoft.com/free/
-[azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/identity/azure-identity
-[azure_core_http_netty]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core-http-netty
-[authenticate]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/AUTH.md
-[design]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/DESIGN.md
+[azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity
+[azure_core_http_netty]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-http-netty
+[authenticate]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/AUTH.md
+[design]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/DESIGN.md

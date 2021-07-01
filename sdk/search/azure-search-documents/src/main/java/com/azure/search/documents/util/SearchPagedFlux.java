@@ -7,6 +7,7 @@ import com.azure.core.http.rest.PagedFluxBase;
 import com.azure.core.util.paging.ContinuablePagedFlux;
 import com.azure.search.documents.implementation.models.SearchFirstPageResponseWrapper;
 import com.azure.search.documents.implementation.models.SearchRequest;
+import com.azure.search.documents.models.AnswerResult;
 import com.azure.search.documents.models.FacetResult;
 import com.azure.search.documents.models.SearchResult;
 import reactor.core.publisher.Mono;
@@ -38,8 +39,8 @@ public final class SearchPagedFlux extends PagedFluxBase<SearchResult, SearchPag
      * Creates an instance of {@link SearchPagedFlux}.
      *
      * @param firstPageRetriever Supplied that handles retrieving {@link SearchPagedResponse SearchPagedResponses}.
-     * @param nextPageRetriever Function that retrieves the next {@link SearchPagedResponse SearchPagedResponses}
-     * given a continuation token.
+     * @param nextPageRetriever Function that retrieves the next {@link SearchPagedResponse SearchPagedResponses} given
+     * a continuation token.
      */
     public SearchPagedFlux(Supplier<Mono<SearchPagedResponse>> firstPageRetriever,
         Function<String, Mono<SearchPagedResponse>> nextPageRetriever) {
@@ -101,4 +102,20 @@ public final class SearchPagedFlux extends PagedFluxBase<SearchResult, SearchPag
             });
     }
 
+    /**
+     * The answer results based on the search request.
+     * <p>
+     * If {@code answers} wasn't supplied in the request this will be null.
+     *
+     * @return The answer results if {@code answers} were supplied in the request, otherwise null.
+     */
+    public Mono<List<AnswerResult>> getAnswers() {
+        return metadataSupplier.get()
+            .flatMap(metaData -> {
+                if (metaData.getFirstPageResponse().getAnswers() == null) {
+                    return Mono.empty();
+                }
+                return Mono.just(metaData.getFirstPageResponse().getAnswers());
+            });
+    }
 }

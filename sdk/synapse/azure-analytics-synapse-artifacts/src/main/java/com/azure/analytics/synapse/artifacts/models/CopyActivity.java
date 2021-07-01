@@ -91,6 +91,19 @@ public class CopyActivity extends ExecutionActivity {
     private RedirectIncompatibleRowSettings redirectIncompatibleRowSettings;
 
     /*
+     * (Deprecated. Please use LogSettings) Log storage settings customer need
+     * to provide when enabling session log.
+     */
+    @JsonProperty(value = "typeProperties.logStorageSettings")
+    private LogStorageSettings logStorageSettings;
+
+    /*
+     * Log settings customer needs provide when enabling log.
+     */
+    @JsonProperty(value = "typeProperties.logSettings")
+    private LogSettings logSettings;
+
+    /*
      * Preserve Rules.
      */
     @JsonProperty(value = "typeProperties.preserveRules")
@@ -101,6 +114,19 @@ public class CopyActivity extends ExecutionActivity {
      */
     @JsonProperty(value = "typeProperties.preserve")
     private List<Object> preserve;
+
+    /*
+     * Whether to enable Data Consistency validation. Type: boolean (or
+     * Expression with resultType boolean).
+     */
+    @JsonProperty(value = "typeProperties.validateDataConsistency")
+    private Object validateDataConsistency;
+
+    /*
+     * Specify the fault tolerance for data consistency.
+     */
+    @JsonProperty(value = "typeProperties.skipErrorFile")
+    private SkipErrorFile skipErrorFile;
 
     /**
      * Get the inputs property: List of inputs for the activity.
@@ -334,6 +360,48 @@ public class CopyActivity extends ExecutionActivity {
     }
 
     /**
+     * Get the logStorageSettings property: (Deprecated. Please use LogSettings) Log storage settings customer need to
+     * provide when enabling session log.
+     *
+     * @return the logStorageSettings value.
+     */
+    public LogStorageSettings getLogStorageSettings() {
+        return this.logStorageSettings;
+    }
+
+    /**
+     * Set the logStorageSettings property: (Deprecated. Please use LogSettings) Log storage settings customer need to
+     * provide when enabling session log.
+     *
+     * @param logStorageSettings the logStorageSettings value to set.
+     * @return the CopyActivity object itself.
+     */
+    public CopyActivity setLogStorageSettings(LogStorageSettings logStorageSettings) {
+        this.logStorageSettings = logStorageSettings;
+        return this;
+    }
+
+    /**
+     * Get the logSettings property: Log settings customer needs provide when enabling log.
+     *
+     * @return the logSettings value.
+     */
+    public LogSettings getLogSettings() {
+        return this.logSettings;
+    }
+
+    /**
+     * Set the logSettings property: Log settings customer needs provide when enabling log.
+     *
+     * @param logSettings the logSettings value to set.
+     * @return the CopyActivity object itself.
+     */
+    public CopyActivity setLogSettings(LogSettings logSettings) {
+        this.logSettings = logSettings;
+        return this;
+    }
+
+    /**
      * Get the preserveRules property: Preserve Rules.
      *
      * @return the preserveRules value.
@@ -370,6 +438,48 @@ public class CopyActivity extends ExecutionActivity {
      */
     public CopyActivity setPreserve(List<Object> preserve) {
         this.preserve = preserve;
+        return this;
+    }
+
+    /**
+     * Get the validateDataConsistency property: Whether to enable Data Consistency validation. Type: boolean (or
+     * Expression with resultType boolean).
+     *
+     * @return the validateDataConsistency value.
+     */
+    public Object getValidateDataConsistency() {
+        return this.validateDataConsistency;
+    }
+
+    /**
+     * Set the validateDataConsistency property: Whether to enable Data Consistency validation. Type: boolean (or
+     * Expression with resultType boolean).
+     *
+     * @param validateDataConsistency the validateDataConsistency value to set.
+     * @return the CopyActivity object itself.
+     */
+    public CopyActivity setValidateDataConsistency(Object validateDataConsistency) {
+        this.validateDataConsistency = validateDataConsistency;
+        return this;
+    }
+
+    /**
+     * Get the skipErrorFile property: Specify the fault tolerance for data consistency.
+     *
+     * @return the skipErrorFile value.
+     */
+    public SkipErrorFile getSkipErrorFile() {
+        return this.skipErrorFile;
+    }
+
+    /**
+     * Set the skipErrorFile property: Specify the fault tolerance for data consistency.
+     *
+     * @param skipErrorFile the skipErrorFile value to set.
+     * @return the CopyActivity object itself.
+     */
+    public CopyActivity setSkipErrorFile(SkipErrorFile skipErrorFile) {
+        this.skipErrorFile = skipErrorFile;
         return this;
     }
 }

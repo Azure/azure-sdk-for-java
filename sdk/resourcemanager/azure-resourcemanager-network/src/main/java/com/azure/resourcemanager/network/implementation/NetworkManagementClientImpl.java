@@ -84,6 +84,7 @@ import com.azure.resourcemanager.network.fluent.LoadBalancerProbesClient;
 import com.azure.resourcemanager.network.fluent.LoadBalancersClient;
 import com.azure.resourcemanager.network.fluent.LocalNetworkGatewaysClient;
 import com.azure.resourcemanager.network.fluent.NatGatewaysClient;
+import com.azure.resourcemanager.network.fluent.NatRulesClient;
 import com.azure.resourcemanager.network.fluent.NetworkInterfaceIpConfigurationsClient;
 import com.azure.resourcemanager.network.fluent.NetworkInterfaceLoadBalancersClient;
 import com.azure.resourcemanager.network.fluent.NetworkInterfaceTapConfigurationsClient;
@@ -122,6 +123,7 @@ import com.azure.resourcemanager.network.fluent.VirtualHubIpConfigurationsClient
 import com.azure.resourcemanager.network.fluent.VirtualHubRouteTableV2SClient;
 import com.azure.resourcemanager.network.fluent.VirtualHubsClient;
 import com.azure.resourcemanager.network.fluent.VirtualNetworkGatewayConnectionsClient;
+import com.azure.resourcemanager.network.fluent.VirtualNetworkGatewayNatRulesClient;
 import com.azure.resourcemanager.network.fluent.VirtualNetworkGatewaysClient;
 import com.azure.resourcemanager.network.fluent.VirtualNetworkPeeringsClient;
 import com.azure.resourcemanager.network.fluent.VirtualNetworkTapsClient;
@@ -361,6 +363,30 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      */
     public BastionHostsClient getBastionHosts() {
         return this.bastionHosts;
+    }
+
+    /** The NetworkInterfacesClient object to access its operations. */
+    private final NetworkInterfacesClient networkInterfaces;
+
+    /**
+     * Gets the NetworkInterfacesClient object to access its operations.
+     *
+     * @return the NetworkInterfacesClient object.
+     */
+    public NetworkInterfacesClient getNetworkInterfaces() {
+        return this.networkInterfaces;
+    }
+
+    /** The PublicIpAddressesClient object to access its operations. */
+    private final PublicIpAddressesClient publicIpAddresses;
+
+    /**
+     * Gets the PublicIpAddressesClient object to access its operations.
+     *
+     * @return the PublicIpAddressesClient object.
+     */
+    public PublicIpAddressesClient getPublicIpAddresses() {
+        return this.publicIpAddresses;
     }
 
     /** The CustomIpPrefixesClient object to access its operations. */
@@ -711,18 +737,6 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         return this.natGateways;
     }
 
-    /** The NetworkInterfacesClient object to access its operations. */
-    private final NetworkInterfacesClient networkInterfaces;
-
-    /**
-     * Gets the NetworkInterfacesClient object to access its operations.
-     *
-     * @return the NetworkInterfacesClient object.
-     */
-    public NetworkInterfacesClient getNetworkInterfaces() {
-        return this.networkInterfaces;
-    }
-
     /** The NetworkInterfaceIpConfigurationsClient object to access its operations. */
     private final NetworkInterfaceIpConfigurationsClient networkInterfaceIpConfigurations;
 
@@ -963,18 +977,6 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         return this.privateLinkServices;
     }
 
-    /** The PublicIpAddressesClient object to access its operations. */
-    private final PublicIpAddressesClient publicIpAddresses;
-
-    /**
-     * Gets the PublicIpAddressesClient object to access its operations.
-     *
-     * @return the PublicIpAddressesClient object.
-     */
-    public PublicIpAddressesClient getPublicIpAddresses() {
-        return this.publicIpAddresses;
-    }
-
     /** The PublicIpPrefixesClient object to access its operations. */
     private final PublicIpPrefixesClient publicIpPrefixes;
 
@@ -1203,6 +1205,18 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         return this.localNetworkGateways;
     }
 
+    /** The VirtualNetworkGatewayNatRulesClient object to access its operations. */
+    private final VirtualNetworkGatewayNatRulesClient virtualNetworkGatewayNatRules;
+
+    /**
+     * Gets the VirtualNetworkGatewayNatRulesClient object to access its operations.
+     *
+     * @return the VirtualNetworkGatewayNatRulesClient object.
+     */
+    public VirtualNetworkGatewayNatRulesClient getVirtualNetworkGatewayNatRules() {
+        return this.virtualNetworkGatewayNatRules;
+    }
+
     /** The VirtualNetworkTapsClient object to access its operations. */
     private final VirtualNetworkTapsClient virtualNetworkTaps;
 
@@ -1335,6 +1349,18 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         return this.vpnGateways;
     }
 
+    /** The VpnLinkConnectionsClient object to access its operations. */
+    private final VpnLinkConnectionsClient vpnLinkConnections;
+
+    /**
+     * Gets the VpnLinkConnectionsClient object to access its operations.
+     *
+     * @return the VpnLinkConnectionsClient object.
+     */
+    public VpnLinkConnectionsClient getVpnLinkConnections() {
+        return this.vpnLinkConnections;
+    }
+
     /** The VpnConnectionsClient object to access its operations. */
     private final VpnConnectionsClient vpnConnections;
 
@@ -1359,16 +1385,16 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         return this.vpnSiteLinkConnections;
     }
 
-    /** The VpnLinkConnectionsClient object to access its operations. */
-    private final VpnLinkConnectionsClient vpnLinkConnections;
+    /** The NatRulesClient object to access its operations. */
+    private final NatRulesClient natRules;
 
     /**
-     * Gets the VpnLinkConnectionsClient object to access its operations.
+     * Gets the NatRulesClient object to access its operations.
      *
-     * @return the VpnLinkConnectionsClient object.
+     * @return the NatRulesClient object.
      */
-    public VpnLinkConnectionsClient getVpnLinkConnections() {
-        return this.vpnLinkConnections;
+    public NatRulesClient getNatRules() {
+        return this.natRules;
     }
 
     /** The P2SVpnGatewaysClient object to access its operations. */
@@ -1517,6 +1543,8 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         this.azureFirewallFqdnTags = new AzureFirewallFqdnTagsClientImpl(this);
         this.webCategories = new WebCategoriesClientImpl(this);
         this.bastionHosts = new BastionHostsClientImpl(this);
+        this.networkInterfaces = new NetworkInterfacesClientImpl(this);
+        this.publicIpAddresses = new PublicIpAddressesClientImpl(this);
         this.customIpPrefixes = new CustomIpPrefixesClientImpl(this);
         this.ddosCustomPolicies = new DdosCustomPoliciesClientImpl(this);
         this.ddosProtectionPlans = new DdosProtectionPlansClientImpl(this);
@@ -1546,7 +1574,6 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         this.loadBalancerNetworkInterfaces = new LoadBalancerNetworkInterfacesClientImpl(this);
         this.loadBalancerProbes = new LoadBalancerProbesClientImpl(this);
         this.natGateways = new NatGatewaysClientImpl(this);
-        this.networkInterfaces = new NetworkInterfacesClientImpl(this);
         this.networkInterfaceIpConfigurations = new NetworkInterfaceIpConfigurationsClientImpl(this);
         this.networkInterfaceLoadBalancers = new NetworkInterfaceLoadBalancersClientImpl(this);
         this.networkInterfaceTapConfigurations = new NetworkInterfaceTapConfigurationsClientImpl(this);
@@ -1567,7 +1594,6 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         this.availablePrivateEndpointTypes = new AvailablePrivateEndpointTypesClientImpl(this);
         this.privateDnsZoneGroups = new PrivateDnsZoneGroupsClientImpl(this);
         this.privateLinkServices = new PrivateLinkServicesClientImpl(this);
-        this.publicIpAddresses = new PublicIpAddressesClientImpl(this);
         this.publicIpPrefixes = new PublicIpPrefixesClientImpl(this);
         this.routeFilters = new RouteFiltersClientImpl(this);
         this.routeFilterRules = new RouteFilterRulesClientImpl(this);
@@ -1587,6 +1613,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         this.virtualNetworkGateways = new VirtualNetworkGatewaysClientImpl(this);
         this.virtualNetworkGatewayConnections = new VirtualNetworkGatewayConnectionsClientImpl(this);
         this.localNetworkGateways = new LocalNetworkGatewaysClientImpl(this);
+        this.virtualNetworkGatewayNatRules = new VirtualNetworkGatewayNatRulesClientImpl(this);
         this.virtualNetworkTaps = new VirtualNetworkTapsClientImpl(this);
         this.virtualRouters = new VirtualRoutersClientImpl(this);
         this.virtualRouterPeerings = new VirtualRouterPeeringsClientImpl(this);
@@ -1598,9 +1625,10 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         this.virtualHubs = new VirtualHubsClientImpl(this);
         this.hubVirtualNetworkConnections = new HubVirtualNetworkConnectionsClientImpl(this);
         this.vpnGateways = new VpnGatewaysClientImpl(this);
+        this.vpnLinkConnections = new VpnLinkConnectionsClientImpl(this);
         this.vpnConnections = new VpnConnectionsClientImpl(this);
         this.vpnSiteLinkConnections = new VpnSiteLinkConnectionsClientImpl(this);
-        this.vpnLinkConnections = new VpnLinkConnectionsClientImpl(this);
+        this.natRules = new NatRulesClientImpl(this);
         this.p2SVpnGateways = new P2SVpnGatewaysClientImpl(this);
         this.vpnServerConfigurationsAssociatedWithVirtualWans =
             new VpnServerConfigurationsAssociatedWithVirtualWansClientImpl(this);
@@ -1821,7 +1849,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         if (vms != null) {
             vms.forEach(e -> e.validate());
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         BastionShareableLinkListRequest bslRequest = new BastionShareableLinkListRequest();
         bslRequest.withVms(vms);
@@ -1862,7 +1890,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                         res.getT2().value(),
                         res.getT2().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.getContext()).readOnly()));
     }
 
     /**
@@ -1900,7 +1928,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         if (vms != null) {
             vms.forEach(e -> e.validate());
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         BastionShareableLinkListRequest bslRequest = new BastionShareableLinkListRequest();
         bslRequest.withVms(vms);
@@ -2067,7 +2095,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         if (vms != null) {
             vms.forEach(e -> e.validate());
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         BastionShareableLinkListRequest bslRequest = new BastionShareableLinkListRequest();
         bslRequest.withVms(vms);
@@ -2084,7 +2112,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                             bslRequest,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.getContext()).readOnly()));
     }
 
     /**
@@ -2122,7 +2150,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         if (vms != null) {
             vms.forEach(e -> e.validate());
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         BastionShareableLinkListRequest bslRequest = new BastionShareableLinkListRequest();
         bslRequest.withVms(vms);
@@ -2353,7 +2381,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         if (vms != null) {
             vms.forEach(e -> e.validate());
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         BastionShareableLinkListRequest bslRequest = new BastionShareableLinkListRequest();
         bslRequest.withVms(vms);
@@ -2379,7 +2407,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.getContext()).readOnly()));
     }
 
     /**
@@ -2417,7 +2445,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         if (vms != null) {
             vms.forEach(e -> e.validate());
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         BastionShareableLinkListRequest bslRequest = new BastionShareableLinkListRequest();
         bslRequest.withVms(vms);
@@ -2566,7 +2594,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                 .error(
                     new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2604,7 +2632,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                         res.getT2().value(),
                         res.getT2().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.getContext()).readOnly()));
     }
 
     /**
@@ -2638,7 +2666,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                 .error(
                     new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         context = this.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -2776,7 +2804,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                 .error(
                     new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         SessionIds sessionIds = new SessionIds();
         sessionIds.withSessionIds(sessionIdsSessionIds);
@@ -2802,7 +2830,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.getContext()).readOnly()));
     }
 
     /**
@@ -2837,7 +2865,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                 .error(
                     new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         SessionIds sessionIds = new SessionIds();
         sessionIds.withSessionIds(sessionIdsSessionIds);
@@ -2990,7 +3018,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                 .error(
                     new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3004,7 +3032,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                             this.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.getContext()).readOnly()));
     }
 
     /**
@@ -3038,7 +3066,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                 .error(
                     new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         context = this.mergeContext(context);
         return service
@@ -3133,7 +3161,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         if (virtualWanName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualWanName is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3147,7 +3175,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                             apiVersion,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.getContext()).readOnly()));
     }
 
     /**
@@ -3180,7 +3208,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         if (virtualWanName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualWanName is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         context = this.mergeContext(context);
         return service
@@ -3257,7 +3285,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
-     * @param vpnClientParams Virtual Wan Vpn profile parameters Vpn profile generation.
+     * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3288,7 +3316,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             vpnClientParams.validate();
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3303,7 +3331,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                             vpnClientParams,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.getContext()).readOnly()));
     }
 
     /**
@@ -3312,7 +3340,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
-     * @param vpnClientParams Virtual Wan Vpn profile parameters Vpn profile generation.
+     * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3347,7 +3375,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             vpnClientParams.validate();
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         context = this.mergeContext(context);
         return service
@@ -3368,7 +3396,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
-     * @param vpnClientParams Virtual Wan Vpn profile parameters Vpn profile generation.
+     * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3396,7 +3424,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
-     * @param vpnClientParams Virtual Wan Vpn profile parameters Vpn profile generation.
+     * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3425,7 +3453,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
-     * @param vpnClientParams Virtual Wan Vpn profile parameters Vpn profile generation.
+     * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3446,7 +3474,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
-     * @param vpnClientParams Virtual Wan Vpn profile parameters Vpn profile generation.
+     * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3471,7 +3499,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
-     * @param vpnClientParams Virtual Wan Vpn profile parameters Vpn profile generation.
+     * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3492,7 +3520,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
-     * @param vpnClientParams Virtual Wan Vpn profile parameters Vpn profile generation.
+     * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3517,7 +3545,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
-     * @param vpnClientParams Virtual Wan Vpn profile parameters Vpn profile generation.
+     * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3537,7 +3565,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
-     * @param vpnClientParams Virtual Wan Vpn profile parameters Vpn profile generation.
+     * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3592,7 +3620,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.getContext()).readOnly()));
     }
 
     /**
@@ -3673,7 +3701,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.getContext()).readOnly()));
     }
 
     /**
@@ -3747,7 +3775,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.getContext()).readOnly()));
     }
 
     /**
@@ -3819,7 +3847,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.getContext()).readOnly()));
     }
 
     /**

@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.aad.webapi;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -11,12 +11,16 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken;
+
 import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class AADResourceServerConfigurationTest {
 
-    private final WebApplicationContextRunner contextRunner = new WebApplicationContextRunner();
+    private final WebApplicationContextRunner contextRunner = new WebApplicationContextRunner()
+        .withPropertyValues("azure.activedirectory.tenant-id=fake-tenant-id");
+
 
     @Test
     public void testNotExistBearerTokenAuthenticationToken() {

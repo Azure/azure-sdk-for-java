@@ -37,6 +37,9 @@ public final class RequestBodyOperator extends ExpandableStringEnum<RequestBodyO
     /** Static value GreaterThanOrEqual for RequestBodyOperator. */
     public static final RequestBodyOperator GREATER_THAN_OR_EQUAL = fromString("GreaterThanOrEqual");
 
+    /** Static value RegEx for RequestBodyOperator. */
+    public static final RequestBodyOperator REG_EX = fromString("RegEx");
+
     /**
      * Creates or finds a RequestBodyOperator from its string representation.
      *

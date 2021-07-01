@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.OffsetDateTime;
 
 /**
  * The key vault properties for the encryption scope. This is a required field if encryption scope 'source' attribute is
@@ -24,6 +25,18 @@ public final class EncryptionScopeKeyVaultProperties {
      */
     @JsonProperty(value = "keyUri")
     private String keyUri;
+
+    /*
+     * The object identifier of the current versioned Key Vault Key in use.
+     */
+    @JsonProperty(value = "currentVersionedKeyIdentifier", access = JsonProperty.Access.WRITE_ONLY)
+    private String currentVersionedKeyIdentifier;
+
+    /*
+     * Timestamp of last rotation of the Key Vault Key.
+     */
+    @JsonProperty(value = "lastKeyRotationTimestamp", access = JsonProperty.Access.WRITE_ONLY)
+    private OffsetDateTime lastKeyRotationTimestamp;
 
     /**
      * Get the keyUri property: The object identifier for a key vault key object. When applied, the encryption scope
@@ -45,6 +58,25 @@ public final class EncryptionScopeKeyVaultProperties {
     public EncryptionScopeKeyVaultProperties withKeyUri(String keyUri) {
         this.keyUri = keyUri;
         return this;
+    }
+
+    /**
+     * Get the currentVersionedKeyIdentifier property: The object identifier of the current versioned Key Vault Key in
+     * use.
+     *
+     * @return the currentVersionedKeyIdentifier value.
+     */
+    public String currentVersionedKeyIdentifier() {
+        return this.currentVersionedKeyIdentifier;
+    }
+
+    /**
+     * Get the lastKeyRotationTimestamp property: Timestamp of last rotation of the Key Vault Key.
+     *
+     * @return the lastKeyRotationTimestamp value.
+     */
+    public OffsetDateTime lastKeyRotationTimestamp() {
+        return this.lastKeyRotationTimestamp;
     }
 
     /**

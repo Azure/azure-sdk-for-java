@@ -4,16 +4,15 @@
 
 package com.azure.resourcemanager.eventgrid.implementation;
 
-import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.fluent.models.EventTypeInner;
 import com.azure.resourcemanager.eventgrid.models.EventType;
 
 public final class EventTypeImpl implements EventType {
     private EventTypeInner innerObject;
 
-    private final EventGridManager serviceManager;
+    private final com.azure.resourcemanager.eventgrid.EventGridManager serviceManager;
 
-    EventTypeImpl(EventTypeInner innerObject, EventGridManager serviceManager) {
+    EventTypeImpl(EventTypeInner innerObject, com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -50,7 +49,7 @@ public final class EventTypeImpl implements EventType {
         return this.innerObject;
     }
 
-    private EventGridManager manager() {
+    private com.azure.resourcemanager.eventgrid.EventGridManager manager() {
         return this.serviceManager;
     }
 }

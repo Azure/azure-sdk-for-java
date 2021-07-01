@@ -8,28 +8,18 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines values for BlobExpiryOptions.
- */
+/** Defines values for BlobExpiryOptions. */
 public final class BlobExpiryOptions extends ExpandableStringEnum<BlobExpiryOptions> {
-    /**
-     * Static value NeverExpire for BlobExpiryOptions.
-     */
+    /** Static value NeverExpire for BlobExpiryOptions. */
     public static final BlobExpiryOptions NEVER_EXPIRE = fromString("NeverExpire");
 
-    /**
-     * Static value RelativeToCreation for BlobExpiryOptions.
-     */
+    /** Static value RelativeToCreation for BlobExpiryOptions. */
     public static final BlobExpiryOptions RELATIVE_TO_CREATION = fromString("RelativeToCreation");
 
-    /**
-     * Static value RelativeToNow for BlobExpiryOptions.
-     */
+    /** Static value RelativeToNow for BlobExpiryOptions. */
     public static final BlobExpiryOptions RELATIVE_TO_NOW = fromString("RelativeToNow");
 
-    /**
-     * Static value Absolute for BlobExpiryOptions.
-     */
+    /** Static value Absolute for BlobExpiryOptions. */
     public static final BlobExpiryOptions ABSOLUTE = fromString("Absolute");
 
     /**
@@ -43,9 +33,7 @@ public final class BlobExpiryOptions extends ExpandableStringEnum<BlobExpiryOpti
         return fromString(name, BlobExpiryOptions.class);
     }
 
-    /**
-     * @return known BlobExpiryOptions values.
-     */
+    /** @return known BlobExpiryOptions values. */
     public static Collection<BlobExpiryOptions> values() {
         return values(BlobExpiryOptions.class);
     }

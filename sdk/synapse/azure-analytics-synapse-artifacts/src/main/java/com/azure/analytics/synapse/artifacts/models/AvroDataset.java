@@ -23,10 +23,10 @@ public class AvroDataset extends Dataset {
     private DatasetLocation location;
 
     /*
-     * The avroCompressionCodec property.
+     * A string from AvroCompressionCodecEnum or an expression
      */
     @JsonProperty(value = "typeProperties.avroCompressionCodec")
-    private AvroCompressionCodec avroCompressionCodec;
+    private Object avroCompressionCodec;
 
     /*
      * The avroCompressionLevel property.
@@ -55,21 +55,21 @@ public class AvroDataset extends Dataset {
     }
 
     /**
-     * Get the avroCompressionCodec property: The avroCompressionCodec property.
+     * Get the avroCompressionCodec property: A string from AvroCompressionCodecEnum or an expression.
      *
      * @return the avroCompressionCodec value.
      */
-    public AvroCompressionCodec getAvroCompressionCodec() {
+    public Object getAvroCompressionCodec() {
         return this.avroCompressionCodec;
     }
 
     /**
-     * Set the avroCompressionCodec property: The avroCompressionCodec property.
+     * Set the avroCompressionCodec property: A string from AvroCompressionCodecEnum or an expression.
      *
      * @param avroCompressionCodec the avroCompressionCodec value to set.
      * @return the AvroDataset object itself.
      */
-    public AvroDataset setAvroCompressionCodec(AvroCompressionCodec avroCompressionCodec) {
+    public AvroDataset setAvroCompressionCodec(Object avroCompressionCodec) {
         this.avroCompressionCodec = avroCompressionCodec;
         return this;
     }

@@ -8,10 +8,8 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 
-/**
- * Contains all response data for the create operation.
- */
-public final class PageBlobsCreateResponse extends ResponseBase<PageBlobCreateHeaders, Void> {
+/** Contains all response data for the create operation. */
+public final class PageBlobsCreateResponse extends ResponseBase<PageBlobsCreateHeaders, Void> {
     /**
      * Creates an instance of PageBlobsCreateResponse.
      *
@@ -21,7 +19,8 @@ public final class PageBlobsCreateResponse extends ResponseBase<PageBlobCreateHe
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public PageBlobsCreateResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, PageBlobCreateHeaders headers) {
+    public PageBlobsCreateResponse(
+            HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, PageBlobsCreateHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 }

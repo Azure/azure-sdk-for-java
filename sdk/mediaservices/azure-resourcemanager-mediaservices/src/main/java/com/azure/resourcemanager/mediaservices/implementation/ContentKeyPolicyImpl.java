@@ -4,11 +4,13 @@
 
 package com.azure.resourcemanager.mediaservices.implementation;
 
+import com.azure.core.http.rest.Response;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.mediaservices.MediaservicesManager;
 import com.azure.resourcemanager.mediaservices.fluent.models.ContentKeyPolicyInner;
 import com.azure.resourcemanager.mediaservices.models.ContentKeyPolicy;
 import com.azure.resourcemanager.mediaservices.models.ContentKeyPolicyOption;
+import com.azure.resourcemanager.mediaservices.models.ContentKeyPolicyProperties;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -18,7 +20,7 @@ public final class ContentKeyPolicyImpl
     implements ContentKeyPolicy, ContentKeyPolicy.Definition, ContentKeyPolicy.Update {
     private ContentKeyPolicyInner innerObject;
 
-    private final MediaservicesManager serviceManager;
+    private final com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -30,6 +32,10 @@ public final class ContentKeyPolicyImpl
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public UUID policyId() {
@@ -61,7 +67,7 @@ public final class ContentKeyPolicyImpl
         return this.innerObject;
     }
 
-    private MediaservicesManager manager() {
+    private com.azure.resourcemanager.mediaservices.MediaServicesManager manager() {
         return this.serviceManager;
     }
 
@@ -99,7 +105,7 @@ public final class ContentKeyPolicyImpl
         return this;
     }
 
-    ContentKeyPolicyImpl(String name, MediaservicesManager serviceManager) {
+    ContentKeyPolicyImpl(String name, com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
         this.innerObject = new ContentKeyPolicyInner();
         this.serviceManager = serviceManager;
         this.contentKeyPolicyName = name;
@@ -130,7 +136,9 @@ public final class ContentKeyPolicyImpl
         return this;
     }
 
-    ContentKeyPolicyImpl(ContentKeyPolicyInner innerObject, MediaservicesManager serviceManager) {
+    ContentKeyPolicyImpl(
+        ContentKeyPolicyInner innerObject,
+        com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -156,6 +164,18 @@ public final class ContentKeyPolicyImpl
                 .getWithResponse(resourceGroupName, accountName, contentKeyPolicyName, context)
                 .getValue();
         return this;
+    }
+
+    public ContentKeyPolicyProperties getPolicyPropertiesWithSecrets() {
+        return serviceManager
+            .contentKeyPolicies()
+            .getPolicyPropertiesWithSecrets(resourceGroupName, accountName, contentKeyPolicyName);
+    }
+
+    public Response<ContentKeyPolicyProperties> getPolicyPropertiesWithSecretsWithResponse(Context context) {
+        return serviceManager
+            .contentKeyPolicies()
+            .getPolicyPropertiesWithSecretsWithResponse(resourceGroupName, accountName, contentKeyPolicyName, context);
     }
 
     public ContentKeyPolicyImpl withDescription(String description) {

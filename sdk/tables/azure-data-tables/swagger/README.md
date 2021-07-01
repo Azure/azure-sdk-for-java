@@ -19,7 +19,7 @@ autorest --java --use=C:/work/autorest.java
 ```
 
 ### Code generation settings
-``` yaml
+```yaml
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/cosmos-db/data-plane/Microsoft.Tables/preview/2019-02-02/table.json
 java: true
 output-folder: ..\
@@ -31,4 +31,5 @@ license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
 models-subpackage: implementation.models
 context-client-method-parameter: true
+service-interface-as-public: true
 ```

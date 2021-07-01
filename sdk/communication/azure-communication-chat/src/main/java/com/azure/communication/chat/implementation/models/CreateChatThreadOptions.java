@@ -20,7 +20,7 @@ public final class CreateChatThreadOptions {
     /*
      * Participants to be added to the chat thread.
      */
-    @JsonProperty(value = "participants", required = true)
+    @JsonProperty(value = "participants")
     private List<ChatParticipant> participants;
 
     /**

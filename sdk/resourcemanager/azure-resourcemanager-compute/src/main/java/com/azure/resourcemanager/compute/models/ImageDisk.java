@@ -62,7 +62,7 @@ public class ImageDisk {
      * managed image disk.
      */
     @JsonProperty(value = "diskEncryptionSet")
-    private SubResource diskEncryptionSet;
+    private DiskEncryptionSetParameters diskEncryptionSet;
 
     /**
      * Get the snapshot property: The snapshot.
@@ -200,7 +200,7 @@ public class ImageDisk {
      *
      * @return the diskEncryptionSet value.
      */
-    public SubResource diskEncryptionSet() {
+    public DiskEncryptionSetParameters diskEncryptionSet() {
         return this.diskEncryptionSet;
     }
 
@@ -211,7 +211,7 @@ public class ImageDisk {
      * @param diskEncryptionSet the diskEncryptionSet value to set.
      * @return the ImageDisk object itself.
      */
-    public ImageDisk withDiskEncryptionSet(SubResource diskEncryptionSet) {
+    public ImageDisk withDiskEncryptionSet(DiskEncryptionSetParameters diskEncryptionSet) {
         this.diskEncryptionSet = diskEncryptionSet;
         return this;
     }
@@ -222,5 +222,8 @@ public class ImageDisk {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (diskEncryptionSet() != null) {
+            diskEncryptionSet().validate();
+        }
     }
 }

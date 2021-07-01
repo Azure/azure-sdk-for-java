@@ -23,7 +23,8 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class TopicSendController {
-    private static final Logger log = LoggerFactory.getLogger(TopicSendController.class);
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(TopicSendController.class);
     private static final String OUTPUT_CHANNEL = "topic.output";
     private static final String TOPIC_NAME = "topic1";
 
@@ -46,12 +47,12 @@ public class TopicSendController {
         handler.setSendCallback(new ListenableFutureCallback<Void>() {
             @Override
             public void onSuccess(Void result) {
-                log.info("Message was sent successfully.");
+                LOGGER.info("Message was sent successfully.");
             }
 
             @Override
             public void onFailure(Throwable ex) {
-                log.info("There was an error sending the message.");
+                LOGGER.info("There was an error sending the message.");
             }
         });
 

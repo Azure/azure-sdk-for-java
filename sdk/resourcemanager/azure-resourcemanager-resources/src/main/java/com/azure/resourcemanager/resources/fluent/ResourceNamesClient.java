@@ -18,7 +18,7 @@ public interface ResourceNamesClient {
      * A resource name is valid if it is not a reserved word, does not contains a reserved word and does not start with
      * a reserved word.
      *
-     * @param resourceNameDefinition Name and Type of the Resource.
+     * @param resourceNameDefinition Resource object with values for resource name and resource type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -33,7 +33,7 @@ public interface ResourceNamesClient {
      * A resource name is valid if it is not a reserved word, does not contains a reserved word and does not start with
      * a reserved word.
      *
-     * @param resourceNameDefinition Name and Type of the Resource.
+     * @param resourceNameDefinition Resource object with values for resource name and resource type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -71,7 +71,7 @@ public interface ResourceNamesClient {
      * A resource name is valid if it is not a reserved word, does not contains a reserved word and does not start with
      * a reserved word.
      *
-     * @param resourceNameDefinition Name and Type of the Resource.
+     * @param resourceNameDefinition Resource object with values for resource name and resource type.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

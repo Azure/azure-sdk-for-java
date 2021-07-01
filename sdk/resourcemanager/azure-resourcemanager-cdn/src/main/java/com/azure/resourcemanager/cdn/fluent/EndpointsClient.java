@@ -138,9 +138,7 @@ public interface EndpointsClient {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param endpoint CDN endpoint is the entity within a CDN profile containing configuration information such as
-     *     origin, protocol, content caching and delivery behavior. The CDN endpoint uses the URL format
-     *     &lt;endpointname&gt;.azureedge.net.
+     * @param endpoint Endpoint properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -158,9 +156,7 @@ public interface EndpointsClient {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param endpoint CDN endpoint is the entity within a CDN profile containing configuration information such as
-     *     origin, protocol, content caching and delivery behavior. The CDN endpoint uses the URL format
-     *     &lt;endpointname&gt;.azureedge.net.
+     * @param endpoint Endpoint properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -178,9 +174,7 @@ public interface EndpointsClient {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param endpoint CDN endpoint is the entity within a CDN profile containing configuration information such as
-     *     origin, protocol, content caching and delivery behavior. The CDN endpoint uses the URL format
-     *     &lt;endpointname&gt;.azureedge.net.
+     * @param endpoint Endpoint properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -198,9 +192,7 @@ public interface EndpointsClient {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param endpoint CDN endpoint is the entity within a CDN profile containing configuration information such as
-     *     origin, protocol, content caching and delivery behavior. The CDN endpoint uses the URL format
-     *     &lt;endpointname&gt;.azureedge.net.
+     * @param endpoint Endpoint properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -219,9 +211,7 @@ public interface EndpointsClient {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param endpoint CDN endpoint is the entity within a CDN profile containing configuration information such as
-     *     origin, protocol, content caching and delivery behavior. The CDN endpoint uses the URL format
-     *     &lt;endpointname&gt;.azureedge.net.
+     * @param endpoint Endpoint properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -239,9 +229,7 @@ public interface EndpointsClient {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param endpoint CDN endpoint is the entity within a CDN profile containing configuration information such as
-     *     origin, protocol, content caching and delivery behavior. The CDN endpoint uses the URL format
-     *     &lt;endpointname&gt;.azureedge.net.
+     * @param endpoint Endpoint properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -258,9 +246,7 @@ public interface EndpointsClient {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param endpoint CDN endpoint is the entity within a CDN profile containing configuration information such as
-     *     origin, protocol, content caching and delivery behavior. The CDN endpoint uses the URL format
-     *     &lt;endpointname&gt;.azureedge.net.
+     * @param endpoint Endpoint properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -281,7 +267,7 @@ public interface EndpointsClient {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param endpointUpdateProperties Properties required to create or update an endpoint.
+     * @param endpointUpdateProperties Endpoint update properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -304,7 +290,7 @@ public interface EndpointsClient {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param endpointUpdateProperties Properties required to create or update an endpoint.
+     * @param endpointUpdateProperties Endpoint update properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -327,7 +313,7 @@ public interface EndpointsClient {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param endpointUpdateProperties Properties required to create or update an endpoint.
+     * @param endpointUpdateProperties Endpoint update properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -350,7 +336,7 @@ public interface EndpointsClient {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param endpointUpdateProperties Properties required to create or update an endpoint.
+     * @param endpointUpdateProperties Endpoint update properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -375,7 +361,7 @@ public interface EndpointsClient {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param endpointUpdateProperties Properties required to create or update an endpoint.
+     * @param endpointUpdateProperties Endpoint update properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -398,7 +384,7 @@ public interface EndpointsClient {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param endpointUpdateProperties Properties required to create or update an endpoint.
+     * @param endpointUpdateProperties Endpoint update properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -421,7 +407,7 @@ public interface EndpointsClient {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param endpointUpdateProperties Properties required to create or update an endpoint.
+     * @param endpointUpdateProperties Endpoint update properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

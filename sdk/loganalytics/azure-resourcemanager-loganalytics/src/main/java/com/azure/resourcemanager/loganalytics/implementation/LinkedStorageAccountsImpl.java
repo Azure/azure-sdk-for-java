@@ -9,7 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.loganalytics.LogAnalyticsManager;
 import com.azure.resourcemanager.loganalytics.fluent.LinkedStorageAccountsClient;
 import com.azure.resourcemanager.loganalytics.fluent.models.LinkedStorageAccountsResourceInner;
 import com.azure.resourcemanager.loganalytics.models.DataSourceType;
@@ -22,9 +21,11 @@ public final class LinkedStorageAccountsImpl implements LinkedStorageAccounts {
 
     private final LinkedStorageAccountsClient innerClient;
 
-    private final LogAnalyticsManager serviceManager;
+    private final com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager;
 
-    public LinkedStorageAccountsImpl(LinkedStorageAccountsClient innerClient, LogAnalyticsManager serviceManager) {
+    public LinkedStorageAccountsImpl(
+        LinkedStorageAccountsClient innerClient,
+        com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -68,14 +69,14 @@ public final class LinkedStorageAccountsImpl implements LinkedStorageAccounts {
         String resourceGroupName, String workspaceName) {
         PagedIterable<LinkedStorageAccountsResourceInner> inner =
             this.serviceClient().listByWorkspace(resourceGroupName, workspaceName);
-        return inner.mapPage(inner1 -> new LinkedStorageAccountsResourceImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new LinkedStorageAccountsResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<LinkedStorageAccountsResource> listByWorkspace(
         String resourceGroupName, String workspaceName, Context context) {
         PagedIterable<LinkedStorageAccountsResourceInner> inner =
             this.serviceClient().listByWorkspace(resourceGroupName, workspaceName, context);
-        return inner.mapPage(inner1 -> new LinkedStorageAccountsResourceImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new LinkedStorageAccountsResourceImpl(inner1, this.manager()));
     }
 
     public LinkedStorageAccountsResource getById(String id) {
@@ -202,7 +203,7 @@ public final class LinkedStorageAccountsImpl implements LinkedStorageAccounts {
         return this.innerClient;
     }
 
-    private LogAnalyticsManager manager() {
+    private com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager() {
         return this.serviceManager;
     }
 

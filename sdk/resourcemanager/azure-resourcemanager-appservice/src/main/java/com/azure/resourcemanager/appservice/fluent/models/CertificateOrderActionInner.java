@@ -49,6 +49,13 @@ public class CertificateOrderActionInner extends ProxyOnlyResource {
         return this.createdAt;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public CertificateOrderActionInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

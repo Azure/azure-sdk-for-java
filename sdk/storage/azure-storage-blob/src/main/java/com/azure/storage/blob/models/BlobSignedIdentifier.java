@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/**
- * signed identifier.
- */
+/** signed identifier. */
 @JacksonXmlRootElement(localName = "SignedIdentifier")
 @Fluent
 public final class BlobSignedIdentifier {
@@ -21,7 +19,7 @@ public final class BlobSignedIdentifier {
     private String id;
 
     /*
-     * The accessPolicy property.
+     * An Access policy
      */
     @JsonProperty(value = "AccessPolicy", required = true)
     private BlobAccessPolicy accessPolicy;
@@ -47,7 +45,7 @@ public final class BlobSignedIdentifier {
     }
 
     /**
-     * Get the accessPolicy property: The accessPolicy property.
+     * Get the accessPolicy property: An Access policy.
      *
      * @return the accessPolicy value.
      */
@@ -56,7 +54,7 @@ public final class BlobSignedIdentifier {
     }
 
     /**
-     * Set the accessPolicy property: The accessPolicy property.
+     * Set the accessPolicy property: An Access policy.
      *
      * @param accessPolicy the accessPolicy value to set.
      * @return the BlobSignedIdentifier object itself.

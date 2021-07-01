@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -89,7 +90,7 @@ public final class AppServiceCertificateOrdersClientImpl
     @Host("{$host}")
     @ServiceInterface(name = "WebSiteManagementCli")
     private interface AppServiceCertificateOrdersService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.CertificateRegistration/certificateOrders")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
@@ -97,9 +98,10 @@ public final class AppServiceCertificateOrdersClientImpl
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/providers/Microsoft.CertificateRegistration"
                 + "/validateCertificateRegistrationInformation")
@@ -110,9 +112,10 @@ public final class AppServiceCertificateOrdersClientImpl
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") AppServiceCertificateOrderInner appServiceCertificateOrder,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.CertificateRegistration/certificateOrders")
@@ -123,9 +126,10 @@ public final class AppServiceCertificateOrdersClientImpl
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}")
@@ -137,9 +141,10 @@ public final class AppServiceCertificateOrdersClientImpl
             @PathParam("certificateOrderName") String certificateOrderName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}")
@@ -152,9 +157,10 @@ public final class AppServiceCertificateOrdersClientImpl
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") AppServiceCertificateOrderInner certificateDistinguishedName,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}")
@@ -166,9 +172,10 @@ public final class AppServiceCertificateOrdersClientImpl
             @PathParam("certificateOrderName") String certificateOrderName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Patch(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}")
@@ -181,9 +188,10 @@ public final class AppServiceCertificateOrdersClientImpl
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") AppServiceCertificateOrderPatchResource certificateDistinguishedName,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/certificates")
@@ -195,9 +203,10 @@ public final class AppServiceCertificateOrdersClientImpl
             @PathParam("certificateOrderName") String certificateOrderName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/certificates/{name}")
@@ -210,9 +219,10 @@ public final class AppServiceCertificateOrdersClientImpl
             @PathParam("name") String name,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/certificates/{name}")
@@ -226,9 +236,10 @@ public final class AppServiceCertificateOrdersClientImpl
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") AppServiceCertificateResourceInner keyVaultCertificate,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/certificates/{name}")
@@ -241,9 +252,10 @@ public final class AppServiceCertificateOrdersClientImpl
             @PathParam("name") String name,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Patch(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/certificates/{name}")
@@ -257,9 +269,10 @@ public final class AppServiceCertificateOrdersClientImpl
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") AppServiceCertificatePatchResource keyVaultCertificate,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/reissue")
@@ -272,9 +285,10 @@ public final class AppServiceCertificateOrdersClientImpl
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") ReissueCertificateOrderRequest reissueCertificateOrderRequest,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/renew")
@@ -287,9 +301,10 @@ public final class AppServiceCertificateOrdersClientImpl
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") RenewCertificateOrderRequest renewCertificateOrderRequest,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/resendEmail")
@@ -301,9 +316,10 @@ public final class AppServiceCertificateOrdersClientImpl
             @PathParam("certificateOrderName") String certificateOrderName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/resendRequestEmails")
@@ -316,9 +332,10 @@ public final class AppServiceCertificateOrdersClientImpl
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") NameIdentifierInner nameIdentifier,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/retrieveSiteSeal")
@@ -331,9 +348,10 @@ public final class AppServiceCertificateOrdersClientImpl
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") SiteSealRequest siteSealRequest,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/verifyDomainOwnership")
@@ -345,9 +363,10 @@ public final class AppServiceCertificateOrdersClientImpl
             @PathParam("certificateOrderName") String certificateOrderName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.CertificateRegistration/certificateOrders/{name}/retrieveCertificateActions")
@@ -359,9 +378,10 @@ public final class AppServiceCertificateOrdersClientImpl
             @PathParam("name") String name,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.CertificateRegistration/certificateOrders/{name}/retrieveEmailHistory")
@@ -373,28 +393,38 @@ public final class AppServiceCertificateOrdersClientImpl
             @PathParam("name") String name,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<AppServiceCertificateOrderCollection>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<AppServiceCertificateOrderCollection>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<AppServiceCertificateCollection>> listCertificatesNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -418,6 +448,7 @@ public final class AppServiceCertificateOrdersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -426,6 +457,7 @@ public final class AppServiceCertificateOrdersClientImpl
                             this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            accept,
                             context))
             .<PagedResponse<AppServiceCertificateOrderInner>>map(
                 res ->
@@ -436,7 +468,7 @@ public final class AppServiceCertificateOrdersClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -462,9 +494,15 @@ public final class AppServiceCertificateOrdersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), context)
+            .list(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                accept,
+                context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -532,7 +570,7 @@ public final class AppServiceCertificateOrdersClientImpl
     /**
      * Description for Validate information for a certificate order.
      *
-     * @param appServiceCertificateOrder SSL certificate purchase order.
+     * @param appServiceCertificateOrder Information for a certificate order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -561,6 +599,7 @@ public final class AppServiceCertificateOrdersClientImpl
         } else {
             appServiceCertificateOrder.validate();
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -570,14 +609,15 @@ public final class AppServiceCertificateOrdersClientImpl
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
                             appServiceCertificateOrder,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Description for Validate information for a certificate order.
      *
-     * @param appServiceCertificateOrder SSL certificate purchase order.
+     * @param appServiceCertificateOrder Information for a certificate order.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -607,6 +647,7 @@ public final class AppServiceCertificateOrdersClientImpl
         } else {
             appServiceCertificateOrder.validate();
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .validatePurchaseInformation(
@@ -614,13 +655,14 @@ public final class AppServiceCertificateOrdersClientImpl
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
                 appServiceCertificateOrder,
+                accept,
                 context);
     }
 
     /**
      * Description for Validate information for a certificate order.
      *
-     * @param appServiceCertificateOrder SSL certificate purchase order.
+     * @param appServiceCertificateOrder Information for a certificate order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -635,7 +677,7 @@ public final class AppServiceCertificateOrdersClientImpl
     /**
      * Description for Validate information for a certificate order.
      *
-     * @param appServiceCertificateOrder SSL certificate purchase order.
+     * @param appServiceCertificateOrder Information for a certificate order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -648,7 +690,7 @@ public final class AppServiceCertificateOrdersClientImpl
     /**
      * Description for Validate information for a certificate order.
      *
-     * @param appServiceCertificateOrder SSL certificate purchase order.
+     * @param appServiceCertificateOrder Information for a certificate order.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -689,6 +731,7 @@ public final class AppServiceCertificateOrdersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -698,6 +741,7 @@ public final class AppServiceCertificateOrdersClientImpl
                             resourceGroupName,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            accept,
                             context))
             .<PagedResponse<AppServiceCertificateOrderInner>>map(
                 res ->
@@ -708,7 +752,7 @@ public final class AppServiceCertificateOrdersClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -740,6 +784,7 @@ public final class AppServiceCertificateOrdersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByResourceGroup(
@@ -747,6 +792,7 @@ public final class AppServiceCertificateOrdersClientImpl
                 resourceGroupName,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
+                accept,
                 context)
             .map(
                 res ->
@@ -856,6 +902,7 @@ public final class AppServiceCertificateOrdersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -866,8 +913,9 @@ public final class AppServiceCertificateOrdersClientImpl
                             certificateOrderName,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -904,6 +952,7 @@ public final class AppServiceCertificateOrdersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getByResourceGroup(
@@ -912,6 +961,7 @@ public final class AppServiceCertificateOrdersClientImpl
                 certificateOrderName,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
+                accept,
                 context);
     }
 
@@ -976,7 +1026,7 @@ public final class AppServiceCertificateOrdersClientImpl
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
-     * @param certificateDistinguishedName SSL certificate purchase order.
+     * @param certificateDistinguishedName Distinguished name to use for the certificate order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1015,6 +1065,7 @@ public final class AppServiceCertificateOrdersClientImpl
         } else {
             certificateDistinguishedName.validate();
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1026,8 +1077,9 @@ public final class AppServiceCertificateOrdersClientImpl
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
                             certificateDistinguishedName,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1035,7 +1087,7 @@ public final class AppServiceCertificateOrdersClientImpl
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
-     * @param certificateDistinguishedName SSL certificate purchase order.
+     * @param certificateDistinguishedName Distinguished name to use for the certificate order.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1076,6 +1128,7 @@ public final class AppServiceCertificateOrdersClientImpl
         } else {
             certificateDistinguishedName.validate();
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
@@ -1085,6 +1138,7 @@ public final class AppServiceCertificateOrdersClientImpl
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
                 certificateDistinguishedName,
+                accept,
                 context);
     }
 
@@ -1093,7 +1147,7 @@ public final class AppServiceCertificateOrdersClientImpl
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
-     * @param certificateDistinguishedName SSL certificate purchase order.
+     * @param certificateDistinguishedName Distinguished name to use for the certificate order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1122,7 +1176,7 @@ public final class AppServiceCertificateOrdersClientImpl
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
-     * @param certificateDistinguishedName SSL certificate purchase order.
+     * @param certificateDistinguishedName Distinguished name to use for the certificate order.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1155,7 +1209,7 @@ public final class AppServiceCertificateOrdersClientImpl
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
-     * @param certificateDistinguishedName SSL certificate purchase order.
+     * @param certificateDistinguishedName Distinguished name to use for the certificate order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1175,7 +1229,7 @@ public final class AppServiceCertificateOrdersClientImpl
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
-     * @param certificateDistinguishedName SSL certificate purchase order.
+     * @param certificateDistinguishedName Distinguished name to use for the certificate order.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1197,7 +1251,7 @@ public final class AppServiceCertificateOrdersClientImpl
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
-     * @param certificateDistinguishedName SSL certificate purchase order.
+     * @param certificateDistinguishedName Distinguished name to use for the certificate order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1218,7 +1272,7 @@ public final class AppServiceCertificateOrdersClientImpl
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
-     * @param certificateDistinguishedName SSL certificate purchase order.
+     * @param certificateDistinguishedName Distinguished name to use for the certificate order.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1241,7 +1295,7 @@ public final class AppServiceCertificateOrdersClientImpl
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
-     * @param certificateDistinguishedName SSL certificate purchase order.
+     * @param certificateDistinguishedName Distinguished name to use for the certificate order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1260,7 +1314,7 @@ public final class AppServiceCertificateOrdersClientImpl
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
-     * @param certificateDistinguishedName SSL certificate purchase order.
+     * @param certificateDistinguishedName Distinguished name to use for the certificate order.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1309,6 +1363,7 @@ public final class AppServiceCertificateOrdersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1319,8 +1374,9 @@ public final class AppServiceCertificateOrdersClientImpl
                             certificateOrderName,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1357,6 +1413,7 @@ public final class AppServiceCertificateOrdersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -1365,6 +1422,7 @@ public final class AppServiceCertificateOrdersClientImpl
                 certificateOrderName,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
+                accept,
                 context);
     }
 
@@ -1419,7 +1477,7 @@ public final class AppServiceCertificateOrdersClientImpl
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
-     * @param certificateDistinguishedName ARM resource for a certificate order that is purchased through Azure.
+     * @param certificateDistinguishedName Distinguished name to use for the certificate order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1458,6 +1516,7 @@ public final class AppServiceCertificateOrdersClientImpl
         } else {
             certificateDistinguishedName.validate();
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1469,8 +1528,9 @@ public final class AppServiceCertificateOrdersClientImpl
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
                             certificateDistinguishedName,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1478,7 +1538,7 @@ public final class AppServiceCertificateOrdersClientImpl
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
-     * @param certificateDistinguishedName ARM resource for a certificate order that is purchased through Azure.
+     * @param certificateDistinguishedName Distinguished name to use for the certificate order.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1519,6 +1579,7 @@ public final class AppServiceCertificateOrdersClientImpl
         } else {
             certificateDistinguishedName.validate();
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .update(
@@ -1528,6 +1589,7 @@ public final class AppServiceCertificateOrdersClientImpl
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
                 certificateDistinguishedName,
+                accept,
                 context);
     }
 
@@ -1536,7 +1598,7 @@ public final class AppServiceCertificateOrdersClientImpl
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
-     * @param certificateDistinguishedName ARM resource for a certificate order that is purchased through Azure.
+     * @param certificateDistinguishedName Distinguished name to use for the certificate order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1563,7 +1625,7 @@ public final class AppServiceCertificateOrdersClientImpl
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
-     * @param certificateDistinguishedName ARM resource for a certificate order that is purchased through Azure.
+     * @param certificateDistinguishedName Distinguished name to use for the certificate order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1582,7 +1644,7 @@ public final class AppServiceCertificateOrdersClientImpl
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
-     * @param certificateDistinguishedName ARM resource for a certificate order that is purchased through Azure.
+     * @param certificateDistinguishedName Distinguished name to use for the certificate order.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1632,6 +1694,7 @@ public final class AppServiceCertificateOrdersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1642,6 +1705,7 @@ public final class AppServiceCertificateOrdersClientImpl
                             certificateOrderName,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            accept,
                             context))
             .<PagedResponse<AppServiceCertificateResourceInner>>map(
                 res ->
@@ -1652,7 +1716,7 @@ public final class AppServiceCertificateOrdersClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1689,6 +1753,7 @@ public final class AppServiceCertificateOrdersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listCertificates(
@@ -1697,6 +1762,7 @@ public final class AppServiceCertificateOrdersClientImpl
                 certificateOrderName,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
+                accept,
                 context)
             .map(
                 res ->
@@ -1816,6 +1882,7 @@ public final class AppServiceCertificateOrdersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1827,8 +1894,9 @@ public final class AppServiceCertificateOrdersClientImpl
                             name,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1869,6 +1937,7 @@ public final class AppServiceCertificateOrdersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getCertificate(
@@ -1878,6 +1947,7 @@ public final class AppServiceCertificateOrdersClientImpl
                 name,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
+                accept,
                 context);
     }
 
@@ -1947,7 +2017,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
-     * @param keyVaultCertificate Key Vault container ARM resource for a certificate that is purchased through Azure.
+     * @param keyVaultCertificate Key vault certificate resource Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1988,6 +2058,7 @@ public final class AppServiceCertificateOrdersClientImpl
         } else {
             keyVaultCertificate.validate();
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -2000,8 +2071,9 @@ public final class AppServiceCertificateOrdersClientImpl
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
                             keyVaultCertificate,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2010,7 +2082,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
-     * @param keyVaultCertificate Key Vault container ARM resource for a certificate that is purchased through Azure.
+     * @param keyVaultCertificate Key vault certificate resource Id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -2053,6 +2125,7 @@ public final class AppServiceCertificateOrdersClientImpl
         } else {
             keyVaultCertificate.validate();
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdateCertificate(
@@ -2063,6 +2136,7 @@ public final class AppServiceCertificateOrdersClientImpl
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
                 keyVaultCertificate,
+                accept,
                 context);
     }
 
@@ -2072,7 +2146,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
-     * @param keyVaultCertificate Key Vault container ARM resource for a certificate that is purchased through Azure.
+     * @param keyVaultCertificate Key vault certificate resource Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2104,7 +2178,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
-     * @param keyVaultCertificate Key Vault container ARM resource for a certificate that is purchased through Azure.
+     * @param keyVaultCertificate Key vault certificate resource Id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -2139,7 +2213,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
-     * @param keyVaultCertificate Key Vault container ARM resource for a certificate that is purchased through Azure.
+     * @param keyVaultCertificate Key vault certificate resource Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2162,7 +2236,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
-     * @param keyVaultCertificate Key Vault container ARM resource for a certificate that is purchased through Azure.
+     * @param keyVaultCertificate Key vault certificate resource Id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -2188,7 +2262,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
-     * @param keyVaultCertificate Key Vault container ARM resource for a certificate that is purchased through Azure.
+     * @param keyVaultCertificate Key vault certificate resource Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2211,7 +2285,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
-     * @param keyVaultCertificate Key Vault container ARM resource for a certificate that is purchased through Azure.
+     * @param keyVaultCertificate Key vault certificate resource Id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -2237,7 +2311,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
-     * @param keyVaultCertificate Key Vault container ARM resource for a certificate that is purchased through Azure.
+     * @param keyVaultCertificate Key vault certificate resource Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2259,7 +2333,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
-     * @param keyVaultCertificate Key Vault container ARM resource for a certificate that is purchased through Azure.
+     * @param keyVaultCertificate Key vault certificate resource Id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -2315,6 +2389,7 @@ public final class AppServiceCertificateOrdersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -2326,8 +2401,9 @@ public final class AppServiceCertificateOrdersClientImpl
                             name,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2368,6 +2444,7 @@ public final class AppServiceCertificateOrdersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .deleteCertificate(
@@ -2377,6 +2454,7 @@ public final class AppServiceCertificateOrdersClientImpl
                 name,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
+                accept,
                 context);
     }
 
@@ -2436,7 +2514,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
-     * @param keyVaultCertificate Key Vault container ARM resource for a certificate that is purchased through Azure.
+     * @param keyVaultCertificate Key vault certificate resource Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2477,6 +2555,7 @@ public final class AppServiceCertificateOrdersClientImpl
         } else {
             keyVaultCertificate.validate();
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -2489,8 +2568,9 @@ public final class AppServiceCertificateOrdersClientImpl
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
                             keyVaultCertificate,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2499,7 +2579,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
-     * @param keyVaultCertificate Key Vault container ARM resource for a certificate that is purchased through Azure.
+     * @param keyVaultCertificate Key vault certificate resource Id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -2542,6 +2622,7 @@ public final class AppServiceCertificateOrdersClientImpl
         } else {
             keyVaultCertificate.validate();
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .updateCertificate(
@@ -2552,6 +2633,7 @@ public final class AppServiceCertificateOrdersClientImpl
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
                 keyVaultCertificate,
+                accept,
                 context);
     }
 
@@ -2561,7 +2643,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
-     * @param keyVaultCertificate Key Vault container ARM resource for a certificate that is purchased through Azure.
+     * @param keyVaultCertificate Key vault certificate resource Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2590,7 +2672,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
-     * @param keyVaultCertificate Key Vault container ARM resource for a certificate that is purchased through Azure.
+     * @param keyVaultCertificate Key vault certificate resource Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2611,7 +2693,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
-     * @param keyVaultCertificate Key Vault container ARM resource for a certificate that is purchased through Azure.
+     * @param keyVaultCertificate Key vault certificate resource Id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -2635,7 +2717,7 @@ public final class AppServiceCertificateOrdersClientImpl
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
-     * @param reissueCertificateOrderRequest Class representing certificate reissue request.
+     * @param reissueCertificateOrderRequest Parameters for the reissue.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2674,6 +2756,7 @@ public final class AppServiceCertificateOrdersClientImpl
         } else {
             reissueCertificateOrderRequest.validate();
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -2685,8 +2768,9 @@ public final class AppServiceCertificateOrdersClientImpl
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
                             reissueCertificateOrderRequest,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2694,7 +2778,7 @@ public final class AppServiceCertificateOrdersClientImpl
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
-     * @param reissueCertificateOrderRequest Class representing certificate reissue request.
+     * @param reissueCertificateOrderRequest Parameters for the reissue.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -2735,6 +2819,7 @@ public final class AppServiceCertificateOrdersClientImpl
         } else {
             reissueCertificateOrderRequest.validate();
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .reissue(
@@ -2744,6 +2829,7 @@ public final class AppServiceCertificateOrdersClientImpl
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
                 reissueCertificateOrderRequest,
+                accept,
                 context);
     }
 
@@ -2752,7 +2838,7 @@ public final class AppServiceCertificateOrdersClientImpl
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
-     * @param reissueCertificateOrderRequest Class representing certificate reissue request.
+     * @param reissueCertificateOrderRequest Parameters for the reissue.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2772,7 +2858,7 @@ public final class AppServiceCertificateOrdersClientImpl
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
-     * @param reissueCertificateOrderRequest Class representing certificate reissue request.
+     * @param reissueCertificateOrderRequest Parameters for the reissue.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2790,7 +2876,7 @@ public final class AppServiceCertificateOrdersClientImpl
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
-     * @param reissueCertificateOrderRequest Class representing certificate reissue request.
+     * @param reissueCertificateOrderRequest Parameters for the reissue.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -2813,7 +2899,7 @@ public final class AppServiceCertificateOrdersClientImpl
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
-     * @param renewCertificateOrderRequest Class representing certificate renew request.
+     * @param renewCertificateOrderRequest Renew parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2852,6 +2938,7 @@ public final class AppServiceCertificateOrdersClientImpl
         } else {
             renewCertificateOrderRequest.validate();
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -2863,8 +2950,9 @@ public final class AppServiceCertificateOrdersClientImpl
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
                             renewCertificateOrderRequest,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2872,7 +2960,7 @@ public final class AppServiceCertificateOrdersClientImpl
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
-     * @param renewCertificateOrderRequest Class representing certificate renew request.
+     * @param renewCertificateOrderRequest Renew parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -2913,6 +3001,7 @@ public final class AppServiceCertificateOrdersClientImpl
         } else {
             renewCertificateOrderRequest.validate();
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .renew(
@@ -2922,6 +3011,7 @@ public final class AppServiceCertificateOrdersClientImpl
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
                 renewCertificateOrderRequest,
+                accept,
                 context);
     }
 
@@ -2930,7 +3020,7 @@ public final class AppServiceCertificateOrdersClientImpl
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
-     * @param renewCertificateOrderRequest Class representing certificate renew request.
+     * @param renewCertificateOrderRequest Renew parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2950,7 +3040,7 @@ public final class AppServiceCertificateOrdersClientImpl
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
-     * @param renewCertificateOrderRequest Class representing certificate renew request.
+     * @param renewCertificateOrderRequest Renew parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2968,7 +3058,7 @@ public final class AppServiceCertificateOrdersClientImpl
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
-     * @param renewCertificateOrderRequest Class representing certificate renew request.
+     * @param renewCertificateOrderRequest Renew parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -3017,6 +3107,7 @@ public final class AppServiceCertificateOrdersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -3027,8 +3118,9 @@ public final class AppServiceCertificateOrdersClientImpl
                             certificateOrderName,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3065,6 +3157,7 @@ public final class AppServiceCertificateOrdersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .resendEmail(
@@ -3073,6 +3166,7 @@ public final class AppServiceCertificateOrdersClientImpl
                 certificateOrderName,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
+                accept,
                 context);
     }
 
@@ -3157,6 +3251,7 @@ public final class AppServiceCertificateOrdersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         NameIdentifierInner nameIdentifier = new NameIdentifierInner();
         nameIdentifier.withName(name);
         return FluxUtil
@@ -3170,8 +3265,9 @@ public final class AppServiceCertificateOrdersClientImpl
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
                             nameIdentifier,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3209,6 +3305,7 @@ public final class AppServiceCertificateOrdersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         NameIdentifierInner nameIdentifier = new NameIdentifierInner();
         nameIdentifier.withName(name);
         context = this.client.mergeContext(context);
@@ -3220,6 +3317,7 @@ public final class AppServiceCertificateOrdersClientImpl
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
                 nameIdentifier,
+                accept,
                 context);
     }
 
@@ -3330,6 +3428,7 @@ public final class AppServiceCertificateOrdersClientImpl
         } else {
             siteSealRequest.validate();
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -3341,8 +3440,9 @@ public final class AppServiceCertificateOrdersClientImpl
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
                             siteSealRequest,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3386,6 +3486,7 @@ public final class AppServiceCertificateOrdersClientImpl
         } else {
             siteSealRequest.validate();
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .retrieveSiteSeal(
@@ -3395,6 +3496,7 @@ public final class AppServiceCertificateOrdersClientImpl
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
                 siteSealRequest,
+                accept,
                 context);
     }
 
@@ -3492,6 +3594,7 @@ public final class AppServiceCertificateOrdersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -3502,8 +3605,9 @@ public final class AppServiceCertificateOrdersClientImpl
                             certificateOrderName,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3540,6 +3644,7 @@ public final class AppServiceCertificateOrdersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .verifyDomainOwnership(
@@ -3548,6 +3653,7 @@ public final class AppServiceCertificateOrdersClientImpl
                 certificateOrderName,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
+                accept,
                 context);
     }
 
@@ -3630,6 +3736,7 @@ public final class AppServiceCertificateOrdersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -3640,8 +3747,9 @@ public final class AppServiceCertificateOrdersClientImpl
                             name,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3677,6 +3785,7 @@ public final class AppServiceCertificateOrdersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .retrieveCertificateActions(
@@ -3685,6 +3794,7 @@ public final class AppServiceCertificateOrdersClientImpl
                 name,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
+                accept,
                 context);
     }
 
@@ -3776,6 +3886,7 @@ public final class AppServiceCertificateOrdersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -3786,8 +3897,9 @@ public final class AppServiceCertificateOrdersClientImpl
                             name,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3823,6 +3935,7 @@ public final class AppServiceCertificateOrdersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .retrieveCertificateEmailHistory(
@@ -3831,6 +3944,7 @@ public final class AppServiceCertificateOrdersClientImpl
                 name,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
+                accept,
                 context);
     }
 
@@ -3904,8 +4018,15 @@ public final class AppServiceCertificateOrdersClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listNext(nextLink, context))
+            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<AppServiceCertificateOrderInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -3915,7 +4036,7 @@ public final class AppServiceCertificateOrdersClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3934,9 +4055,16 @@ public final class AppServiceCertificateOrdersClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listNext(nextLink, context)
+            .listNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -3963,8 +4091,16 @@ public final class AppServiceCertificateOrdersClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByResourceGroupNext(nextLink, context))
+            .withContext(
+                context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<AppServiceCertificateOrderInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -3974,7 +4110,7 @@ public final class AppServiceCertificateOrdersClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3993,9 +4129,16 @@ public final class AppServiceCertificateOrdersClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroupNext(nextLink, context)
+            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -4022,8 +4165,15 @@ public final class AppServiceCertificateOrdersClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listCertificatesNext(nextLink, context))
+            .withContext(context -> service.listCertificatesNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<AppServiceCertificateResourceInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -4033,7 +4183,7 @@ public final class AppServiceCertificateOrdersClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -4052,9 +4202,16 @@ public final class AppServiceCertificateOrdersClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listCertificatesNext(nextLink, context)
+            .listCertificatesNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

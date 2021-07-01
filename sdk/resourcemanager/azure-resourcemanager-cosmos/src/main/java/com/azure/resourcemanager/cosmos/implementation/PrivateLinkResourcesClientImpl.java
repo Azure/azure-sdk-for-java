@@ -124,7 +124,6 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -134,7 +133,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
                             this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accountName,
                             accept,
                             context))
@@ -142,7 +141,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -178,7 +177,6 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -186,7 +184,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
                 this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accountName,
                 accept,
                 context)
@@ -297,7 +295,6 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
         if (groupName == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupName is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -307,12 +304,12 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
                             this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accountName,
                             groupName,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -352,7 +349,6 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
         if (groupName == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupName is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -360,7 +356,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
                 this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accountName,
                 groupName,
                 accept,

@@ -120,9 +120,19 @@ public class TracerProvider {
     public Mono<TransactionalBatchResponse> traceEnabledBatchResponsePublisher(Mono<TransactionalBatchResponse> resultPublisher,
                                                                                Context context,
                                                                                String spanName,
+                                                                               String containerId,
                                                                                String databaseId,
-                                                                               String endpoint) {
-        return traceEnabledPublisher(resultPublisher, context, spanName, databaseId, endpoint,
+                                                                               CosmosAsyncClient client,
+                                                                               ConsistencyLevel consistencyLevel,
+                                                                               OperationType operationType,
+                                                                               ResourceType resourceType) {
+
+        return publisherWithClientTelemetry(resultPublisher, context, spanName, containerId, databaseId,
+            BridgeInternal.getServiceEndpoint(client),
+            client,
+            consistencyLevel,
+            operationType,
+            resourceType,
             TransactionalBatchResponse::getStatusCode);
     }
 
@@ -192,6 +202,13 @@ public class TracerProvider {
                         ModelBridgeInternal.getPayloadLength(itemResponse), containerId,
                         databaseId, operationType, resourceType, consistencyLevel,
                         (float) itemResponse.getRequestCharge());
+                } else if (Configs.isClientTelemetryEnabled(BridgeInternal.isClientTelemetryEnabled(client)) && response instanceof TransactionalBatchResponse) {
+                    @SuppressWarnings("unchecked")
+                    TransactionalBatchResponse transactionalBatchResponse = (TransactionalBatchResponse) response;
+                    fillClientTelemetry(client, transactionalBatchResponse.getDiagnostics(), transactionalBatchResponse.getStatusCode(),
+                        BridgeInternal.getPayloadLength(transactionalBatchResponse), containerId,
+                        databaseId, operationType, resourceType, consistencyLevel,
+                        (float) transactionalBatchResponse.getRequestCharge());
                 }
             }).doOnError(throwable -> {
                 if (Configs.isClientTelemetryEnabled(BridgeInternal.isClientTelemetryEnabled(client)) && throwable instanceof CosmosException) {

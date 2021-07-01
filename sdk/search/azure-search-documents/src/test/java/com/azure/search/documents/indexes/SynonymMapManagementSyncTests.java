@@ -2,14 +2,18 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.indexes;
 
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.TestMode;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.search.documents.SearchTestBase;
+import com.azure.search.documents.TestHelpers;
 import com.azure.search.documents.indexes.models.SynonymMap;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
@@ -32,6 +36,29 @@ public class SynonymMapManagementSyncTests extends SearchTestBase {
     private final List<String> synonymMapsToDelete = new ArrayList<>();
 
     private SearchIndexClient client;
+
+    @BeforeAll
+    public static void beforeAll() {
+        // When running against the live service ensure all synonym maps are deleted before running these tests.
+        if (TEST_MODE == TestMode.PLAYBACK) {
+            return; // Running in PLAYBACK, no need to cleanup.
+        }
+
+        SearchIndexClient cleanupClient = new SearchIndexClientBuilder()
+            .endpoint(ENDPOINT)
+            .credential(new AzureKeyCredential(API_KEY))
+            .buildClient();
+
+        boolean synonymMapDeleted = false;
+        for (String synonymMap : cleanupClient.listSynonymMapNames()) {
+            cleanupClient.deleteSynonymMap(synonymMap);
+            synonymMapDeleted = true;
+        }
+
+        if (synonymMapDeleted) {
+            TestHelpers.sleepIfRunningAgainstService(5000);
+        }
+    }
 
     @Override
     protected void beforeTest() {

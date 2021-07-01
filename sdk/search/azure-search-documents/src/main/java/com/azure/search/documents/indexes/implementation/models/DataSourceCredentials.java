@@ -13,13 +13,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class DataSourceCredentials {
     /*
-     * The connection string for the datasource.
+     * The connection string for the datasource. Set to '<unchanged>' if you do
+     * not want the connection string updated.
      */
     @JsonProperty(value = "connectionString")
     private String connectionString;
 
     /**
-     * Get the connectionString property: The connection string for the datasource.
+     * Get the connectionString property: The connection string for the datasource. Set to '&lt;unchanged&gt;' if you do
+     * not want the connection string updated.
      *
      * @return the connectionString value.
      */
@@ -28,7 +30,8 @@ public final class DataSourceCredentials {
     }
 
     /**
-     * Set the connectionString property: The connection string for the datasource.
+     * Set the connectionString property: The connection string for the datasource. Set to '&lt;unchanged&gt;' if you do
+     * not want the connection string updated.
      *
      * @param connectionString the connectionString value to set.
      * @return the DataSourceCredentials object itself.

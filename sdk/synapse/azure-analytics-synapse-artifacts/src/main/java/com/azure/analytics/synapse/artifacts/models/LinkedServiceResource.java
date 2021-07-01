@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Linked service resource type. */
 @Fluent
-public final class LinkedServiceResource extends AzureEntityResource {
+public final class LinkedServiceResource extends SubResource {
     /*
      * Properties of linked service.
      */

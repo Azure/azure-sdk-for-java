@@ -3,7 +3,7 @@ resources:
     - repository: azure-sdk-build-tools
       type: git
       name: internal/azure-sdk-build-tools
-      ref: refs/tags/azure-sdk-build-tools_20200916.1
+      ref: refs/tags/azure-sdk-build-tools_20210603.1
 
 parameters:
 - name: Artifacts
@@ -27,11 +27,28 @@ parameters:
 - name: TargetDocRepoName
   type: string
   default: azure-docs-sdk-java
+- name: MatrixConfigs
+  type: object
+  default:
+    - Name: Java_ci_test_base
+      Path: eng/pipelines/templates/stages/platform-matrix.json
+      Selection: sparse
+      NonSparseParameters: Agent
+      GenerateVMJobs: true
+- name: AdditionalMatrixConfigs
+  type: object
+  default: []
+- name: MatrixFilters
+  type: object
+  default: []
+- name: MatrixReplace
+  type: object
+  default: []
 
 stages:
   - stage: Build
     jobs:
-    - template: ../jobs/archetype-sdk-client.yml
+    - template: /eng/pipelines/templates/jobs/ci.yml
       parameters:
         ServiceDirectory: ${{ parameters.ServiceDirectory }}
         ${{ if eq(parameters.ServiceDirectory, 'template') }}:
@@ -39,12 +56,32 @@ stages:
         SDKType: ${{ parameters.SDKType }}
         Artifacts: ${{ parameters.Artifacts }}
         AdditionalModules: ${{ parameters.AdditionalModules }}
+        MatrixConfigs:
+          - ${{ each config in parameters.MatrixConfigs }}:
+            -  ${{ config }}
+          - ${{ each config in parameters.AdditionalMatrixConfigs }}:
+            -  ${{ config }}
+        MatrixFilters:
+          - ${{ each filter in parameters.MatrixFilters }}:
+            - ${{ filter }}
+          # Skip TestFromSource jobs for SDKType data
+          - ${{ if eq(parameters.SDKType, 'data') }}:
+            - TestFromSource=^(?!true).*
+        MatrixReplace:
+          - ${{ each replacement in parameters.MatrixReplace }}:
+            - ${{ replacement }}
+          - ${{ if eq(parameters.SDKType, 'data') }}:
+            - TestGoals=.*/verify
+            - TestOptions=.*/-am
+          - AZURE_TEST.*=.*/
+
 
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
   - ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
     - template: archetype-java-release.yml
       parameters:
-        DependsOn: Build
+        DependsOn:
+          - Build
         ServiceDirectory: ${{ parameters.ServiceDirectory }}
         SDKType: ${{ parameters.SDKType }}
         Artifacts: ${{ parameters.Artifacts }}
@@ -52,5 +89,5 @@ stages:
           TestPipeline: true
         ArtifactName: packages
         TargetDocRepoOwner: ${{ parameters.TargetDocRepoOwner }}
-        TargetDocRepoName: ${{ parameters.TargetDocRepoName }} 
+        TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
 

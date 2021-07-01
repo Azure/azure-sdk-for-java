@@ -708,12 +708,19 @@ public final class AzurePath implements Path {
         return Objects.hash(parentFileSystem, pathString);
     }
 
-    /*
-    We don't store the blob client because unlike other types in this package, a Path does not actually indicate the
-    existence or even validity of any remote resource. It is purely a representation of a path. Therefore, we do not
-    construct the client or perform any validation until it is requested.
+    /**
+     * Returns a {@link BlobClient} which references a blob pointed to by this path. Note that this does not guarantee
+     * the existence of the blob at this location.
+     *
+     * @return a {@link BlobClient}.
+     * @throws IOException If the path only contains a root component or is empty
      */
-    BlobClient toBlobClient() throws IOException {
+    public BlobClient toBlobClient() throws IOException {
+        /*
+        We don't store the blob client because unlike other types in this package, a Path does not actually indicate the
+        existence or even validity of any remote resource. It is purely a representation of a path. Therefore, we do not
+        construct the client or perform any validation until it is requested.
+        */
         // Converting to an absolute path ensures there is a container to operate on even if it is the default.
         // Normalizing ensures the path is clean.
         Path root = this.normalize().toAbsolutePath().getRoot();

@@ -2,23 +2,34 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.caches;
 
+import com.azure.cosmos.implementation.DocumentCollection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class AsyncCache<TKey, TValue> {
-
     private final Logger logger = LoggerFactory.getLogger(AsyncCache.class);
-    private final ConcurrentHashMap<TKey, AsyncLazy<TValue>> values = new ConcurrentHashMap<>();
-
+    private final ConcurrentHashMap<TKey, AsyncLazy<TValue>> values;
     private final IEqualityComparer<TValue> equalityComparer;
 
-    public AsyncCache(IEqualityComparer<TValue> equalityComparer) {
+    public AsyncCache(IEqualityComparer<TValue> equalityComparer, ConcurrentHashMap<TKey, AsyncLazy<TValue>> values) {
         this.equalityComparer = equalityComparer;
+        this.values = values;
+    }
+
+    public AsyncCache(IEqualityComparer<TValue> equalityComparer) {
+        this(equalityComparer, new ConcurrentHashMap<>());
     }
 
     public AsyncCache() {
@@ -132,6 +143,103 @@ public class AsyncCache<TKey, TValue> {
             // UPDATE the new task in the cache,
             values.merge(key, newLazyValue,
                     (lazyValue1, lazyValu2) -> lazyValue1 == initialLazyValue ? lazyValu2 : lazyValue1);
+        }
+    }
+
+    public abstract static class SerializableAsyncCache<TKey, TValue> implements Serializable {
+        private static final long serialVersionUID = 2l;
+        private static transient Logger logger = LoggerFactory.getLogger(SerializableAsyncCache.class);
+        protected transient AsyncCache<TKey, TValue> cache;
+
+        protected SerializableAsyncCache() {}
+
+        public static class SerializableAsyncCollectionCache extends SerializableAsyncCache<String, DocumentCollection> {
+            private static final long serialVersionUID = 2l;
+            private SerializableAsyncCollectionCache() {}
+
+            @Override
+            protected void serializeKey(ObjectOutputStream oos, String s) throws IOException {
+                oos.writeUTF(s);
+            }
+
+            @Override
+            protected void serializeValue(ObjectOutputStream oos, DocumentCollection documentCollection) throws IOException {
+                oos.writeObject(DocumentCollection.SerializableDocumentCollection.from(documentCollection));
+            }
+
+            @Override
+            protected String deserializeKey(ObjectInputStream ois) throws IOException {
+                return ois.readUTF();
+            }
+
+            @Override
+            protected DocumentCollection deserializeValue(ObjectInputStream ois) throws IOException,
+                ClassNotFoundException {
+                return ((DocumentCollection.SerializableDocumentCollection) ois.readObject()).getWrappedItem();
+            }
+        }
+
+        @SuppressWarnings("unchecked")
+        public static <TKey, TValue> SerializableAsyncCache<TKey, TValue> from(AsyncCache<TKey,
+            TValue> cache, Class<TKey> keyClass, Class<TValue> valueClass) {
+            if (keyClass == String.class && valueClass == DocumentCollection.class) {
+                SerializableAsyncCollectionCache sacc = new SerializableAsyncCollectionCache();
+                sacc.cache = (AsyncCache<String, DocumentCollection>) cache;
+                return (SerializableAsyncCache<TKey, TValue>) sacc;
+            } else {
+                throw new RuntimeException("not supported");
+            }
+        }
+
+        protected abstract void serializeKey(ObjectOutputStream oos, TKey key) throws IOException;
+
+        protected abstract void serializeValue(ObjectOutputStream oos, TValue value) throws IOException;
+
+        protected abstract TKey deserializeKey(ObjectInputStream oos) throws IOException;
+
+        protected abstract TValue deserializeValue(ObjectInputStream oos) throws IOException, ClassNotFoundException;
+
+        public AsyncCache<TKey, TValue> toAsyncCache() {
+            return this.cache;
+        }
+
+        private void writeObject(ObjectOutputStream oos)
+            throws IOException {
+            logger.info("Serializing {}", this.getClass());
+
+            Map<TKey, TValue> paris = new HashMap<>();
+            for (Map.Entry<TKey, AsyncLazy<TValue>> entry : cache.values.entrySet()) {
+                TKey key = entry.getKey();
+                Optional<TValue> value = entry.getValue().tryGet();
+                if (value.isPresent()) {
+                    paris.put(key, value.get());
+                }
+            }
+
+            oos.writeInt(paris.size());
+
+            for (Map.Entry<TKey, TValue> entry : paris.entrySet()) {
+                serializeKey(oos, entry.getKey());
+                serializeValue(oos, entry.getValue());
+            }
+
+            oos.writeObject(cache.equalityComparer);
+        }
+
+        private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {
+            logger.info("Deserializing {}", this.getClass());
+
+            int size = ois.readInt();
+            ConcurrentHashMap<TKey, AsyncLazy<TValue>> pairs = new ConcurrentHashMap<>();
+            for (int i = 0; i < size; i++) {
+                TKey key = deserializeKey(ois);
+                TValue value = deserializeValue(ois);
+                pairs.put(key, new AsyncLazy<>(value));
+            }
+
+            @SuppressWarnings("unchecked")
+            IEqualityComparer<TValue> equalityComparer = (IEqualityComparer<TValue>) ois.readObject();
+            this.cache = new AsyncCache<>(equalityComparer, pairs);
         }
     }
 }

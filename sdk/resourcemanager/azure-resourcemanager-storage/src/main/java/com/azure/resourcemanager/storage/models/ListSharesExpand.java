@@ -4,41 +4,31 @@
 
 package com.azure.resourcemanager.storage.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /** Defines values for ListSharesExpand. */
-public enum ListSharesExpand {
-    /** Enum value deleted. */
-    DELETED("deleted");
+public final class ListSharesExpand extends ExpandableStringEnum<ListSharesExpand> {
+    /** Static value deleted for ListSharesExpand. */
+    public static final ListSharesExpand DELETED = fromString("deleted");
 
-    /** The actual serialized value for a ListSharesExpand instance. */
-    private final String value;
-
-    ListSharesExpand(String value) {
-        this.value = value;
-    }
+    /** Static value snapshots for ListSharesExpand. */
+    public static final ListSharesExpand SNAPSHOTS = fromString("snapshots");
 
     /**
-     * Parses a serialized value to a ListSharesExpand instance.
+     * Creates or finds a ListSharesExpand from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed ListSharesExpand object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding ListSharesExpand.
      */
     @JsonCreator
-    public static ListSharesExpand fromString(String value) {
-        ListSharesExpand[] items = ListSharesExpand.values();
-        for (ListSharesExpand item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static ListSharesExpand fromString(String name) {
+        return fromString(name, ListSharesExpand.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /** @return known ListSharesExpand values. */
+    public static Collection<ListSharesExpand> values() {
+        return values(ListSharesExpand.class);
     }
 }

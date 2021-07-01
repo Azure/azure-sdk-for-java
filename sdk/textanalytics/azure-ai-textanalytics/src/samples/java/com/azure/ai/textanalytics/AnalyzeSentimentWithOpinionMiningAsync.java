@@ -4,8 +4,8 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
-import com.azure.ai.textanalytics.models.AspectSentiment;
-import com.azure.ai.textanalytics.models.OpinionSentiment;
+import com.azure.ai.textanalytics.models.TargetSentiment;
+import com.azure.ai.textanalytics.models.AssessmentSentiment;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
 import com.azure.core.credential.AzureKeyCredential;
 
@@ -43,13 +43,13 @@ public class AnalyzeSentimentWithOpinionMiningAsync {
                     System.out.printf("\tSentence sentiment: %s, positive score: %f, neutral score: %f, negative score: %f.%n",
                         sentenceSentiment.getSentiment(), sentenceScores.getPositive(), sentenceScores.getNeutral(), sentenceScores.getNegative());
 
-                    sentenceSentiment.getMinedOpinions().forEach(minedOpinions -> {
-                        AspectSentiment aspectSentiment = minedOpinions.getAspect();
-                        System.out.printf("\t\tAspect sentiment: %s, aspect text: %s%n", aspectSentiment.getSentiment(),
-                            aspectSentiment.getText());
-                        for (OpinionSentiment opinionSentiment : minedOpinions.getOpinions()) {
-                            System.out.printf("\t\t\t'%s' opinion sentiment because of \"%s\". Is the opinion negated: %s.%n",
-                                opinionSentiment.getSentiment(), opinionSentiment.getText(), opinionSentiment.isNegated());
+                    sentenceSentiment.getOpinions().forEach(opinion -> {
+                        TargetSentiment targetSentiment = opinion.getTarget();
+                        System.out.printf("\t\tTarget sentiment: %s, target text: %s%n", targetSentiment.getSentiment(),
+                            targetSentiment.getText());
+                        for (AssessmentSentiment assessmentSentiment : opinion.getAssessments()) {
+                            System.out.printf("\t\t\t'%s' assessment sentiment because of \"%s\". Is the assessment negated: %s.%n",
+                                assessmentSentiment.getSentiment(), assessmentSentiment.getText(), assessmentSentiment.isNegated());
                         }
                     });
                 });

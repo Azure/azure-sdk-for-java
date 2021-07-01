@@ -7,7 +7,10 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.Configuration;
+import com.azure.identity.AuthenticationRecord;
 import com.azure.identity.AzureAuthorityHosts;
+import com.azure.identity.RegionalAuthority;
+import com.azure.identity.TokenCachePersistenceOptions;
 import com.azure.identity.implementation.util.ValidationUtil;
 
 import java.time.Duration;
@@ -33,6 +36,9 @@ public final class IdentityClientOptions {
     private String keePassDatabasePath;
     private boolean includeX5c;
     private AuthenticationRecord authenticationRecord;
+    private TokenCachePersistenceOptions tokenCachePersistenceOptions;
+    private boolean cp1Disabled;
+    private RegionalAuthority regionalAuthority;
 
     /**
      * Creates an instance of IdentityClientOptions with default settings.
@@ -41,9 +47,12 @@ public final class IdentityClientOptions {
         Configuration configuration = Configuration.getGlobalConfiguration();
         authorityHost = configuration.get(Configuration.PROPERTY_AZURE_AUTHORITY_HOST,
             AzureAuthorityHosts.AZURE_PUBLIC_CLOUD);
+        cp1Disabled = configuration.get(Configuration.PROPERTY_AZURE_IDENTITY_DISABLE_CP1, false);
         ValidationUtil.validateAuthHost(getClass().getSimpleName(), authorityHost);
         maxRetry = MAX_RETRY_DEFAULT_LIMIT;
         retryTimeout = i -> Duration.ofSeconds((long) Math.pow(2, i.getSeconds() - 1));
+        regionalAuthority = RegionalAuthority.fromString(
+            configuration.get(Configuration.PROPERTY_AZURE_REGIONAL_AUTHORITY_NAME));
     }
 
     /**
@@ -242,7 +251,6 @@ public final class IdentityClientOptions {
         return this;
     }
 
-
     /**
      * Get the status whether x5c claim (public key of the certificate) should be included as part of the authentication
      * request or not.
@@ -271,5 +279,53 @@ public final class IdentityClientOptions {
      */
     public AuthenticationRecord getAuthenticationRecord() {
         return authenticationRecord;
+    }
+
+    /**
+     * Specifies the {@link TokenCachePersistenceOptions} to be used for token cache persistence.
+     *
+     * @param tokenCachePersistenceOptions the options configuration
+     * @return the updated identity client options
+     */
+    public IdentityClientOptions setTokenCacheOptions(TokenCachePersistenceOptions tokenCachePersistenceOptions) {
+        this.tokenCachePersistenceOptions = tokenCachePersistenceOptions;
+        return this;
+    }
+
+    /**
+     * Get the configured {@link TokenCachePersistenceOptions}
+     *
+     * @return the {@link TokenCachePersistenceOptions}
+     */
+    public TokenCachePersistenceOptions getTokenCacheOptions() {
+        return this.tokenCachePersistenceOptions;
+    }
+
+    /**
+     * Check whether CP1 client capability should be disabled.
+     *
+     * @return the status indicating if CP1 client capability should be disabled.
+     */
+    public boolean isCp1Disabled() {
+        return this.cp1Disabled;
+    }
+
+    /**
+     * Specifies either the specific regional authority, or use {@link RegionalAuthority#AUTO_DISCOVER_REGION} to attempt to auto-detect the region.
+     *
+     * @param regionalAuthority the regional authority
+     * @return the updated identity client options
+     */
+    public IdentityClientOptions setRegionalAuthority(RegionalAuthority regionalAuthority) {
+        this.regionalAuthority = regionalAuthority;
+        return this;
+    }
+
+    /**
+     * Gets the regional authority, or null if regional authority should not be used.
+     * @return the regional authority value if specified
+     */
+    public RegionalAuthority getRegionalAuthority() {
+        return regionalAuthority;
     }
 }

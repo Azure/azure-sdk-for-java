@@ -84,6 +84,21 @@ public class Configuration implements Cloneable {
     public static final String PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH = "AZURE_CLIENT_CERTIFICATE_PATH";
 
     /**
+     * Flag to disable the CP1 client capabilities in Azure Identity Token credentials.
+     */
+    public static final String PROPERTY_AZURE_IDENTITY_DISABLE_CP1 = "AZURE_IDENTITY_DISABLE_CP1";
+
+    /**
+     * URL used by Bridge To Kubernetes to redirect IMDS calls in the development environment.
+     */
+    public static final String PROPERTY_AZURE_POD_IDENTITY_TOKEN_URL = "AZURE_POD_IDENTITY_TOKEN_URL";
+
+    /*
+     * Name of Azure AAD regional authority.
+     */
+    public static final String PROPERTY_AZURE_REGIONAL_AUTHORITY_NAME = "AZURE_REGIONAL_AUTHORITY_NAME";
+
+    /**
      * Name of the Azure resource group.
      */
     public static final String PROPERTY_AZURE_RESOURCE_GROUP = "AZURE_RESOURCE_GROUP";
@@ -107,6 +122,11 @@ public class Configuration implements Cloneable {
      * Enables logging by setting a log level.
      */
     public static final String PROPERTY_AZURE_LOG_LEVEL = "AZURE_LOG_LEVEL";
+
+    /**
+     * Enables HTTP request/response logging by setting an HTTP log detail level.
+     */
+    public static final String PROPERTY_AZURE_HTTP_LOG_DETAIL_LEVEL = "AZURE_HTTP_LOG_DETAIL_LEVEL";
 
     /**
      * Disables tracing.
@@ -136,6 +156,7 @@ public class Configuration implements Cloneable {
         PROPERTY_AZURE_AUTHORITY_HOST,
         PROPERTY_AZURE_TELEMETRY_DISABLED,
         PROPERTY_AZURE_LOG_LEVEL,
+        PROPERTY_AZURE_HTTP_LOG_DETAIL_LEVEL,
         PROPERTY_AZURE_TRACING_DISABLED,
     };
 

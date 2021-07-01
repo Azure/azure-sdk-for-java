@@ -13,15 +13,23 @@ import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.ArgumentsProvider;
+import org.junit.jupiter.params.provider.ArgumentsSource;
 import org.junit.jupiter.params.provider.CsvSource;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.net.URL;
 import java.time.OffsetDateTime;
+import java.util.stream.Stream;
 
 public class CredentialsTests {
+
+    private static final String DUMMY_NAME = "Dummy-Name";
+    private static final String DUMMY_VALUE = "DummyValue";
 
     @Test
     public void basicCredentialsTest() throws Exception {
@@ -144,5 +152,66 @@ public class CredentialsTests {
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, new URL("http://localhost"));
         pipeline.send(request).block();
+    }
+
+
+    static class InvalidInputsArgumentProvider implements ArgumentsProvider {
+
+        InvalidInputsArgumentProvider() { }
+
+        @Override
+        public Stream<? extends Arguments> provideArguments(ExtensionContext context) {
+            return Stream.of(
+                Arguments.of(null, null, NullPointerException.class),
+                Arguments.of("", null, NullPointerException.class),
+                Arguments.of(null, "", NullPointerException.class),
+                Arguments.of("", "", IllegalArgumentException.class),
+                Arguments.of("DummyName", "", IllegalArgumentException.class),
+                Arguments.of("", "DummyValue", IllegalArgumentException.class)
+            );
+        }
+    }
+
+
+    @ParameterizedTest
+    @ArgumentsSource(InvalidInputsArgumentProvider.class)
+    public void namedKeyCredentialsInvalidArgumentTest(String name, String key, Class<Exception> excepionType) {
+        Assertions.assertThrows(excepionType, () -> {
+            new AzureNamedKeyCredential(name, key);
+        });
+    }
+
+    @ParameterizedTest
+    @ArgumentsSource(InvalidInputsArgumentProvider.class)
+    public void namedKeyCredentialsInvalidArgumentUpdateTest(String name, String key, Class<Exception> excepionType) {
+        AzureNamedKeyCredential azureNamedKeyCredential =
+            new AzureNamedKeyCredential(DUMMY_NAME, DUMMY_VALUE);
+
+        Assertions.assertThrows(excepionType, () -> {
+            azureNamedKeyCredential.update(name, key);
+        });
+    }
+
+    @Test
+    public void namedKeyCredentialValueTest() {
+        AzureNamedKeyCredential azureNamedKeyCredential =
+            new AzureNamedKeyCredential(DUMMY_NAME, DUMMY_VALUE);
+
+        Assertions.assertEquals(DUMMY_NAME, azureNamedKeyCredential.getAzureNamedKey().getName());
+        Assertions.assertEquals(DUMMY_VALUE, azureNamedKeyCredential.getAzureNamedKey().getKey());
+    }
+
+    @Test
+    public void namedKeyCredentialUpdateTest() {
+        AzureNamedKeyCredential azureNamedKeyCredential =
+            new AzureNamedKeyCredential(DUMMY_NAME, DUMMY_NAME);
+
+        String expectedName = "New-Name";
+        String expectedValue = "NewValue";
+
+        azureNamedKeyCredential.update(expectedName, expectedValue);
+
+        Assertions.assertEquals(expectedName, azureNamedKeyCredential.getAzureNamedKey().getName());
+        Assertions.assertEquals(expectedValue, azureNamedKeyCredential.getAzureNamedKey().getKey());
     }
 }

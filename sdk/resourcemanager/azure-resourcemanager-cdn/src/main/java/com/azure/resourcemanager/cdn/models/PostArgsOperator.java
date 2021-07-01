@@ -37,6 +37,9 @@ public final class PostArgsOperator extends ExpandableStringEnum<PostArgsOperato
     /** Static value GreaterThanOrEqual for PostArgsOperator. */
     public static final PostArgsOperator GREATER_THAN_OR_EQUAL = fromString("GreaterThanOrEqual");
 
+    /** Static value RegEx for PostArgsOperator. */
+    public static final PostArgsOperator REG_EX = fromString("RegEx");
+
     /**
      * Creates or finds a PostArgsOperator from its string representation.
      *

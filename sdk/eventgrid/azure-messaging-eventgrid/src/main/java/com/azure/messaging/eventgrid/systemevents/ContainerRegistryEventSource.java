@@ -7,7 +7,10 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ContainerRegistryEventSource model. */
+/**
+ * The registry node that generated the event. Put differently, while the actor initiates the event, the source
+ * generates it.
+ */
 @Fluent
 public final class ContainerRegistryEventSource {
     /*

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -28,7 +27,7 @@ public final class VirtualMachineScaleSetManagedDiskParameters {
      * managed disk.
      */
     @JsonProperty(value = "diskEncryptionSet")
-    private SubResource diskEncryptionSet;
+    private DiskEncryptionSetParameters diskEncryptionSet;
 
     /**
      * Get the storageAccountType property: Specifies the storage account type for the managed disk. NOTE: UltraSSD_LRS
@@ -58,7 +57,7 @@ public final class VirtualMachineScaleSetManagedDiskParameters {
      *
      * @return the diskEncryptionSet value.
      */
-    public SubResource diskEncryptionSet() {
+    public DiskEncryptionSetParameters diskEncryptionSet() {
         return this.diskEncryptionSet;
     }
 
@@ -69,7 +68,8 @@ public final class VirtualMachineScaleSetManagedDiskParameters {
      * @param diskEncryptionSet the diskEncryptionSet value to set.
      * @return the VirtualMachineScaleSetManagedDiskParameters object itself.
      */
-    public VirtualMachineScaleSetManagedDiskParameters withDiskEncryptionSet(SubResource diskEncryptionSet) {
+    public VirtualMachineScaleSetManagedDiskParameters withDiskEncryptionSet(
+        DiskEncryptionSetParameters diskEncryptionSet) {
         this.diskEncryptionSet = diskEncryptionSet;
         return this;
     }
@@ -80,5 +80,8 @@ public final class VirtualMachineScaleSetManagedDiskParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (diskEncryptionSet() != null) {
+            diskEncryptionSet().validate();
+        }
     }
 }

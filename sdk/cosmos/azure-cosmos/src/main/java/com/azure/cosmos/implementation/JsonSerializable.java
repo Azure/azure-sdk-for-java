@@ -3,6 +3,11 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.implementation.directconnectivity.Address;
+import com.azure.cosmos.implementation.query.PartitionedQueryExecutionInfoInternal;
+import com.azure.cosmos.implementation.query.QueryInfo;
+import com.azure.cosmos.implementation.query.QueryItem;
+import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.models.ChangeFeedPolicy;
 import com.azure.cosmos.models.CompositePath;
 import com.azure.cosmos.models.ConflictResolutionPolicy;
@@ -89,6 +94,59 @@ public class JsonSerializable {
 
     protected JsonSerializable(byte[] bytes) {
         this.propertyBag = fromJson(bytes);
+    }
+
+    public static JsonSerializable instantiateFromObjectNodeAndType(ObjectNode objectNode, Class<?> klassType) {
+        if (klassType.equals(Document.class)) {
+            return new Document(objectNode);
+        }
+        if (klassType.equals(InternalObjectNode.class)) {
+            return new InternalObjectNode(objectNode);
+        }
+        if (klassType.equals(PartitionKeyRange.class)) {
+            return new PartitionKeyRange(objectNode);
+        }
+        if (klassType.equals(Range.class)) {
+            return new Range<>(objectNode);
+        }
+        if (klassType.equals(QueryInfo.class)) {
+            return new QueryInfo(objectNode);
+        }
+        if (klassType.equals(PartitionedQueryExecutionInfoInternal.class)) {
+            return new PartitionedQueryExecutionInfoInternal(objectNode);
+        }
+        if (klassType.equals(QueryItem.class)) {
+            return new QueryItem(objectNode);
+        }
+        if (klassType.equals(Address.class)) {
+            return new Address(objectNode);
+        }
+        if (klassType.equals(DatabaseAccount.class)) {
+            return new DatabaseAccount(objectNode);
+        }
+        if (klassType.equals(DatabaseAccountLocation.class)) {
+            return new DatabaseAccountLocation(objectNode);
+        }
+        if (klassType.equals(ReplicationPolicy.class)) {
+            return new ReplicationPolicy(objectNode);
+        }
+        if (klassType.equals(ConsistencyPolicy.class)) {
+            return new ConsistencyPolicy(objectNode);
+        }
+        if (klassType.equals(DocumentCollection.class)) {
+            return new DocumentCollection(objectNode);
+        }
+        if (klassType.equals(Database.class)) {
+            return new Database(objectNode);
+        } else {
+            // This should rarely execute. Keeping this for sanity sake
+            try {
+                return (JsonSerializable) klassType.getDeclaredConstructor(String.class)
+                                              .newInstance(Utils.toJson(Utils.getSimpleObjectMapper(), objectNode));
+            } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                throw new IllegalArgumentException(e);
+            }
+        }
     }
 
     private static void checkForValidPOJO(Class<?> c) {
@@ -369,7 +427,7 @@ public class JsonSerializable {
                     throw new IllegalStateException("Failed to create enum.", e);
                 }
             } else if (JsonSerializable.class.isAssignableFrom(c)) {
-                return (T) ModelBridgeInternal.instantiateJsonSerializable((ObjectNode) jsonObj, c);
+                return (T) instantiateFromObjectNodeAndType((ObjectNode) jsonObj, c);
             } else if (containsJsonSerializable(c)) {
                 return ModelBridgeInternal.instantiateByObjectNode((ObjectNode) jsonObj, c);
             }
@@ -442,7 +500,7 @@ public class JsonSerializable {
                     }
                 } else if (isJsonSerializable) {
                     // JsonSerializable
-                    T t = (T) ModelBridgeInternal.instantiateJsonSerializable((ObjectNode) n, c);
+                    T t = (T) instantiateFromObjectNodeAndType((ObjectNode) n, c);
                     result.add(t);
 
                 } else if (containsJsonSerializable) {

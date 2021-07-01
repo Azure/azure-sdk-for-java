@@ -6,7 +6,6 @@ package com.azure.resourcemanager.loganalytics.implementation;
 
 import com.azure.core.management.Region;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.loganalytics.LogAnalyticsManager;
 import com.azure.resourcemanager.loganalytics.fluent.models.WorkspaceInner;
 import com.azure.resourcemanager.loganalytics.models.PrivateLinkScopedResource;
 import com.azure.resourcemanager.loganalytics.models.PublicNetworkAccessType;
@@ -22,7 +21,7 @@ import java.util.Map;
 public final class WorkspaceImpl implements Workspace, Workspace.Definition, Workspace.Update {
     private WorkspaceInner innerObject;
 
-    private final LogAnalyticsManager serviceManager;
+    private final com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -73,6 +72,14 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
         return this.innerModel().workspaceCapping();
     }
 
+    public String createdDate() {
+        return this.innerModel().createdDate();
+    }
+
+    public String modifiedDate() {
+        return this.innerModel().modifiedDate();
+    }
+
     public PublicNetworkAccessType publicNetworkAccessForIngestion() {
         return this.innerModel().publicNetworkAccessForIngestion();
     }
@@ -81,12 +88,25 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
         return this.innerModel().publicNetworkAccessForQuery();
     }
 
+    public Boolean forceCmkForQuery() {
+        return this.innerModel().forceCmkForQuery();
+    }
+
     public List<PrivateLinkScopedResource> privateLinkScopedResources() {
         List<PrivateLinkScopedResource> inner = this.innerModel().privateLinkScopedResources();
         if (inner != null) {
             return Collections.unmodifiableList(inner);
         } else {
             return Collections.emptyList();
+        }
+    }
+
+    public Map<String, Object> features() {
+        Map<String, Object> inner = this.innerModel().features();
+        if (inner != null) {
+            return Collections.unmodifiableMap(inner);
+        } else {
+            return Collections.emptyMap();
         }
     }
 
@@ -102,7 +122,7 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
         return this.innerObject;
     }
 
-    private LogAnalyticsManager manager() {
+    private com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager() {
         return this.serviceManager;
     }
 
@@ -135,7 +155,7 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
         return this;
     }
 
-    WorkspaceImpl(String name, LogAnalyticsManager serviceManager) {
+    WorkspaceImpl(String name, com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
         this.innerObject = new WorkspaceInner();
         this.serviceManager = serviceManager;
         this.workspaceName = name;
@@ -166,7 +186,8 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
         return this;
     }
 
-    WorkspaceImpl(WorkspaceInner innerObject, LogAnalyticsManager serviceManager) {
+    WorkspaceImpl(
+        WorkspaceInner innerObject, com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourcegroups");
@@ -274,6 +295,26 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
             return this;
         } else {
             this.updateParameters.withPublicNetworkAccessForQuery(publicNetworkAccessForQuery);
+            return this;
+        }
+    }
+
+    public WorkspaceImpl withForceCmkForQuery(Boolean forceCmkForQuery) {
+        if (isInCreateMode()) {
+            this.innerModel().withForceCmkForQuery(forceCmkForQuery);
+            return this;
+        } else {
+            this.updateParameters.withForceCmkForQuery(forceCmkForQuery);
+            return this;
+        }
+    }
+
+    public WorkspaceImpl withFeatures(Map<String, Object> features) {
+        if (isInCreateMode()) {
+            this.innerModel().withFeatures(features);
+            return this;
+        } else {
+            this.updateParameters.withFeatures(features);
             return this;
         }
     }

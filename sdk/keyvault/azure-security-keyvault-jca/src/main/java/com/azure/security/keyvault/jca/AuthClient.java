@@ -13,7 +13,7 @@ import static java.util.logging.Level.INFO;
 /**
  * The REST client specific to getting an access token for Azure REST APIs.
  */
-class AuthClient extends DelegateRestClient {
+public class AuthClient extends DelegateRestClient {
 
     /**
      * Stores the Client ID fragment.
@@ -63,7 +63,7 @@ class AuthClient extends DelegateRestClient {
      * The constructor creates a default RestClient.
      * </p>
      */
-    AuthClient() {
+    public AuthClient() {
         super(RestClientFactory.createClient());
     }
 
@@ -91,13 +91,14 @@ class AuthClient extends DelegateRestClient {
      *
      * @param resource the resource.
      * @param tenantId the tenant ID.
+     * @param aadAuthenticationUrl the AAD authentication url
      * @param clientId the client ID.
      * @param clientSecret the client secret.
      * @return the authorization token.
      */
     public String getAccessToken(String resource, String aadAuthenticationUrl,
             String tenantId, String clientId, String clientSecret) {
-        
+
         LOGGER.entering("AuthClient", "getAccessToken", new Object[]{
             resource, tenantId, clientId, clientSecret});
         LOGGER.info("Getting access token using client ID / client secret");
@@ -128,23 +129,21 @@ class AuthClient extends DelegateRestClient {
      * Get the access token on Azure App Service.
      *
      * @param resource the resource.
-     * @param identity the user-assigned identity (null if system-assigned).
+     * @param clientId the user-assigned managed identity (null if system-assigned).
      * @return the authorization token.
      */
-    private String getAccessTokenOnAppService(String resource, String identity) {
+    private String getAccessTokenOnAppService(String resource, String clientId) {
         LOGGER.entering("AuthClient", "getAccessTokenOnAppService", resource);
         LOGGER.info("Getting access token using managed identity based on MSI_SECRET");
-        if (identity != null) {
-            LOGGER.log(INFO, "Using managed identity with object ID: {0}", identity);
-        }
         String result = null;
 
         StringBuilder url = new StringBuilder();
         url.append(System.getenv("MSI_ENDPOINT"))
            .append("?api-version=2017-09-01")
            .append(RESOURCE_FRAGMENT).append(resource);
-        if (identity != null) {
-            url.append("&objectid=").append(identity);
+        if (clientId != null) {
+            url.append("&clientid=").append(clientId);
+            LOGGER.log(INFO, "Using managed identity with client ID: {0}", clientId);
         }
 
         HashMap<String, String> headers = new HashMap<>();

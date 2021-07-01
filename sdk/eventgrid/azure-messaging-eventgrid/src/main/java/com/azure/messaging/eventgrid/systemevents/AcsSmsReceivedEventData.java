@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The AcsSmsReceivedEventData model. */
+/** Schema of the Data property of an EventGridEvent for a Microsoft.Communication.SMSReceived event. */
 @Fluent
 public final class AcsSmsReceivedEventData extends AcsSmsEventBaseProperties {
     /*
@@ -60,6 +60,27 @@ public final class AcsSmsReceivedEventData extends AcsSmsEventBaseProperties {
      */
     public AcsSmsReceivedEventData setReceivedTimestamp(OffsetDateTime receivedTimestamp) {
         this.receivedTimestamp = receivedTimestamp;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AcsSmsReceivedEventData setMessageId(String messageId) {
+        super.setMessageId(messageId);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AcsSmsReceivedEventData setFrom(String from) {
+        super.setFrom(from);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AcsSmsReceivedEventData setTo(String to) {
+        super.setTo(to);
         return this;
     }
 }

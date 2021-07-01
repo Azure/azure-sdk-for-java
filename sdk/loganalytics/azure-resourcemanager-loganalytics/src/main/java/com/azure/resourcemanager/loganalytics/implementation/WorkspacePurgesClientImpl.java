@@ -149,7 +149,7 @@ public final class WorkspacePurgesClientImpl implements WorkspacePurgesClient {
                             body,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -279,7 +279,7 @@ public final class WorkspacePurgesClientImpl implements WorkspacePurgesClient {
      * @return response containing operationId for a specific purge action.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<WorkspacePurgeResponseInner> purgeWithResponse(
+    public WorkspacePurgesPurgeResponse purgeWithResponse(
         String resourceGroupName, String workspaceName, WorkspacePurgeBody body, Context context) {
         return purgeWithResponseAsync(resourceGroupName, workspaceName, body, context).block();
     }
@@ -334,7 +334,7 @@ public final class WorkspacePurgesClientImpl implements WorkspacePurgesClient {
                             purgeId,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

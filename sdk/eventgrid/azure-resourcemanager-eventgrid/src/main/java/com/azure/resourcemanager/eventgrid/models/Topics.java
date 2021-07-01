@@ -169,7 +169,7 @@ public interface Topics {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return shared access keys of the Topic.
      */
-    Response<TopicSharedAccessKeys> regenerateKeyWithResponse(
+    TopicSharedAccessKeys regenerateKey(
         String resourceGroupName, String topicName, TopicRegenerateKeyRequest regenerateKeyRequest, Context context);
 
     /**

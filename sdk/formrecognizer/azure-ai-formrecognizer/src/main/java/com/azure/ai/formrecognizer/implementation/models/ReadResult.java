@@ -45,12 +45,6 @@ public final class ReadResult {
     private LengthUnit unit;
 
     /*
-     * The detected language on the page overall.
-     */
-    @JsonProperty(value = "language")
-    private Language language;
-
-    /*
      * When includeTextDetails is set to true, a list of recognized text lines.
      * The maximum number of lines returned is 300 per page. The lines are
      * sorted top to bottom, left to right, although in certain cases proximity
@@ -169,26 +163,6 @@ public final class ReadResult {
      */
     public ReadResult setUnit(LengthUnit unit) {
         this.unit = unit;
-        return this;
-    }
-
-    /**
-     * Get the language property: The detected language on the page overall.
-     *
-     * @return the language value.
-     */
-    public Language getLanguage() {
-        return this.language;
-    }
-
-    /**
-     * Set the language property: The detected language on the page overall.
-     *
-     * @param language the language value to set.
-     * @return the ReadResult object itself.
-     */
-    public ReadResult setLanguage(Language language) {
-        this.language = language;
         return this;
     }
 

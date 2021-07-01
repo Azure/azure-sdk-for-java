@@ -15,19 +15,23 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.models.BlobContainerAccessPolicies;
 import com.azure.storage.blob.models.BlobContainerProperties;
+import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeSignedIdentifier;
 import com.azure.storage.file.datalake.models.FileSystemAccessPolicies;
 import com.azure.storage.file.datalake.models.FileSystemProperties;
 import com.azure.storage.file.datalake.models.ListPathsOptions;
+import com.azure.storage.file.datalake.models.PathDeletedItem;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathItem;
 import com.azure.storage.file.datalake.models.PublicAccessType;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
 import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -144,6 +148,16 @@ public class DataLakeFileSystemClient {
      */
     public String getFileSystemName() {
         return dataLakeFileSystemAsyncClient.getFileSystemName();
+    }
+
+
+    /**
+     * Get the url of the storage account.
+     *
+     * @return the URL of the storage account
+     */
+    public String getAccountUrl() {
+        return dataLakeFileSystemAsyncClient.getAccountUrl();
     }
 
     /**
@@ -359,13 +373,54 @@ public class DataLakeFileSystemClient {
      *
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.listPaths#ListPathsOptions-Duration}
      *
-     * @param options A {@link ListPathsOptions} which specifies what data should be returned by the service.
+     * @param options A {@link ListPathsOptions} which specifies what data should be returned by the service. If
+     * iterating by page, the page size passed to byPage methods such as
+     * {@link PagedIterable#iterableByPage(int)} will be preferred over the value set on these options.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @return The list of files/directories.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PathItem> listPaths(ListPathsOptions options, Duration timeout) {
         return new PagedIterable<>(dataLakeFileSystemAsyncClient.listPathsWithOptionalTimeout(options, timeout));
+    }
+
+    /**
+     * Returns a lazy loaded list of files/directories recently soft deleted in this file system. The returned
+     * {@link PagedIterable} can be consumed while new items are automatically retrieved as needed. For more
+     * information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/filesystem/list#filesystem">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.listDeletedPaths}
+     *
+     * @return The list of files/directories.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<PathDeletedItem> listDeletedPaths() {
+        return this.listDeletedPaths(null, null, null);
+    }
+
+    /**
+     * Returns a lazy loaded list of files/directories recently soft deleted in this account. The returned
+     * {@link PagedIterable} can be consumed while new items are automatically retrieved as needed. For more
+     * information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/filesystem/list#filesystem">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.listDeletedPaths#String-Duration-Context}
+     *
+     * @param prefix Specifies the path to filter the results to.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return The list of files/directories.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<PathDeletedItem> listDeletedPaths(String prefix, Duration timeout,
+        Context context) {
+        return new PagedIterable<>(dataLakeFileSystemAsyncClient.listDeletedPathsWithOptionalTimeout(prefix, timeout,
+            context));
     }
 
     /**
@@ -591,6 +646,69 @@ public class DataLakeFileSystemClient {
     public Response<Void> deleteDirectoryWithResponse(String directoryName, boolean recursive,
         DataLakeRequestConditions requestConditions, Duration timeout, Context context) {
         return getDirectoryClient(directoryName).deleteWithResponse(recursive, requestConditions, timeout, context);
+    }
+
+    /**
+     * Restores a soft deleted path in the file system. For more information see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
+     * Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.undeletePath#String-String}
+     *
+     * @param deletedPath The deleted path
+     * @param deletionId deletion ID associated with the soft deleted path that uniquely identifies a resource if
+     * multiple have been soft deleted at this location.
+     * You can get soft deleted paths and their associated deletion IDs with {@link #listDeletedPaths()}.
+     * @return A client pointing to the restored resource.
+     * @throws NullPointerException if deletedPath or deletionId is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DataLakePathClient undeletePath(String deletedPath, String deletionId) {
+        return undeletePathWithResponse(deletedPath, deletionId, null, Context.NONE).getValue();
+    }
+
+    /**
+     * Restores a soft deleted path in the file system. For more information see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
+     * Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.undeletePathWithResponse#String-String-Duration-Context}
+     *
+     * @param deletedPath The deleted path
+     * @param deletionId deletion ID associated with the soft deleted path that uniquely identifies a resource if
+     * multiple have been soft deleted at this location.
+     * You can get soft deleted paths and their associated deletion IDs with {@link #listDeletedPaths()}.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing a client pointing to the restored resource.
+     * @throws NullPointerException if deletedPath or deletionId is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DataLakePathClient> undeletePathWithResponse(String deletedPath, String deletionId,
+        Duration timeout, Context context) {
+        Mono<Response<DataLakePathAsyncClient>> response =
+            dataLakeFileSystemAsyncClient.undeletePathWithResponse(deletedPath, deletionId, context);
+
+        Response<DataLakePathAsyncClient> asyncClientResponse =
+            StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+        DataLakePathAsyncClient pathAsyncClient = asyncClientResponse.getValue();
+        BlockBlobClient blockBlobClient = blobContainerClient.getBlobClient(deletedPath).getBlockBlobClient();
+        if (pathAsyncClient instanceof DataLakeDirectoryAsyncClient) {
+            return new SimpleResponse<>(asyncClientResponse.getRequest(), asyncClientResponse.getStatusCode(),
+                asyncClientResponse.getHeaders(),
+                new DataLakeDirectoryClient((DataLakeDirectoryAsyncClient) pathAsyncClient, blockBlobClient));
+        } else if (pathAsyncClient instanceof DataLakeFileAsyncClient) {
+            return new SimpleResponse<>(asyncClientResponse.getRequest(), asyncClientResponse.getStatusCode(),
+                asyncClientResponse.getHeaders(),
+                new DataLakeFileClient((DataLakeFileAsyncClient) pathAsyncClient, blockBlobClient));
+        } else {
+            throw logger.logExceptionAsError(new IllegalStateException("'pathClient' expected to be either a file "
+                + "or directory client."));
+        }
     }
 
     /**

@@ -7,6 +7,7 @@ import java.lang.reflect.GenericDeclaration;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -112,6 +113,25 @@ public final class TypeUtil {
                 return ((Class<?>) type).getGenericSuperclass();
             }
         });
+    }
+
+    /**
+     * Returns whether the {@code type}, or its generic raw type, implements the interface.
+     *
+     * @param type Type to check if it implements an interface.
+     * @param interfaceClass The interface.
+     * @return Whether the type implements the interface.
+     */
+    public static boolean typeImplementsInterface(Type type, Class<?> interfaceClass) {
+        if (getRawClass(type) == interfaceClass) {
+            return true; // Type is already the interface.
+        } else if (type instanceof ParameterizedType) {
+            return typeImplementsInterface(((ParameterizedType) type).getRawType(), interfaceClass);
+        } else {
+            Class<?> clazz = (Class<?>) type;
+            return Arrays.stream(clazz.getInterfaces())
+                .anyMatch(implementedInterface -> implementedInterface == interfaceClass);
+        }
     }
 
     /**

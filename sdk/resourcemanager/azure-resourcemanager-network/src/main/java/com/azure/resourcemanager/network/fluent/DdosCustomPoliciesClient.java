@@ -173,7 +173,7 @@ public interface DdosCustomPoliciesClient extends InnerSupportsGet<DdosCustomPol
      *
      * @param resourceGroupName The name of the resource group.
      * @param ddosCustomPolicyName The name of the DDoS custom policy.
-     * @param parameters A DDoS custom policy in a resource group.
+     * @param parameters Parameters supplied to the create or update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -188,7 +188,7 @@ public interface DdosCustomPoliciesClient extends InnerSupportsGet<DdosCustomPol
      *
      * @param resourceGroupName The name of the resource group.
      * @param ddosCustomPolicyName The name of the DDoS custom policy.
-     * @param parameters A DDoS custom policy in a resource group.
+     * @param parameters Parameters supplied to the create or update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -203,7 +203,7 @@ public interface DdosCustomPoliciesClient extends InnerSupportsGet<DdosCustomPol
      *
      * @param resourceGroupName The name of the resource group.
      * @param ddosCustomPolicyName The name of the DDoS custom policy.
-     * @param parameters A DDoS custom policy in a resource group.
+     * @param parameters Parameters supplied to the create or update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -218,7 +218,7 @@ public interface DdosCustomPoliciesClient extends InnerSupportsGet<DdosCustomPol
      *
      * @param resourceGroupName The name of the resource group.
      * @param ddosCustomPolicyName The name of the DDoS custom policy.
-     * @param parameters A DDoS custom policy in a resource group.
+     * @param parameters Parameters supplied to the create or update operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -234,7 +234,7 @@ public interface DdosCustomPoliciesClient extends InnerSupportsGet<DdosCustomPol
      *
      * @param resourceGroupName The name of the resource group.
      * @param ddosCustomPolicyName The name of the DDoS custom policy.
-     * @param parameters A DDoS custom policy in a resource group.
+     * @param parameters Parameters supplied to the create or update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -249,7 +249,7 @@ public interface DdosCustomPoliciesClient extends InnerSupportsGet<DdosCustomPol
      *
      * @param resourceGroupName The name of the resource group.
      * @param ddosCustomPolicyName The name of the DDoS custom policy.
-     * @param parameters A DDoS custom policy in a resource group.
+     * @param parameters Parameters supplied to the create or update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -264,7 +264,7 @@ public interface DdosCustomPoliciesClient extends InnerSupportsGet<DdosCustomPol
      *
      * @param resourceGroupName The name of the resource group.
      * @param ddosCustomPolicyName The name of the DDoS custom policy.
-     * @param parameters A DDoS custom policy in a resource group.
+     * @param parameters Parameters supplied to the create or update operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

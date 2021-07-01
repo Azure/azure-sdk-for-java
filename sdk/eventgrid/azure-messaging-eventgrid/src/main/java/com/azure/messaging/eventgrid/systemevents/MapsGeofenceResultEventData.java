@@ -5,7 +5,37 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Immutable;
+import java.util.List;
 
-/** The MapsGeofenceResultEventData model. */
+/** Schema of the Data property of an EventGridEvent for a Microsoft.Maps.GeofenceResult event. */
 @Immutable
-public final class MapsGeofenceResultEventData extends MapsGeofenceEventProperties {}
+public final class MapsGeofenceResultEventData extends MapsGeofenceEventProperties {
+    /** {@inheritDoc} */
+    @Override
+    public MapsGeofenceResultEventData setExpiredGeofenceGeometryId(List<String> expiredGeofenceGeometryId) {
+        super.setExpiredGeofenceGeometryId(expiredGeofenceGeometryId);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MapsGeofenceResultEventData setGeometries(List<MapsGeofenceGeometry> geometries) {
+        super.setGeometries(geometries);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MapsGeofenceResultEventData setInvalidPeriodGeofenceGeometryId(
+            List<String> invalidPeriodGeofenceGeometryId) {
+        super.setInvalidPeriodGeofenceGeometryId(invalidPeriodGeofenceGeometryId);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MapsGeofenceResultEventData setIsEventPublished(Boolean isEventPublished) {
+        super.setIsEventPublished(isEventPublished);
+        return this;
+    }
+}

@@ -233,6 +233,13 @@ public class BackupItemInner extends ProxyOnlyResource {
         return this.websiteSizeInBytes;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public BackupItemInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

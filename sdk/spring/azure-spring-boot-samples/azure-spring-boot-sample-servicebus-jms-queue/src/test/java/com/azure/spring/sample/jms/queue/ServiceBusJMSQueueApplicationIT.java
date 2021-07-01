@@ -3,15 +3,15 @@
 
 package com.azure.spring.sample.jms.queue;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.system.OutputCaptureRule;
+import org.springframework.boot.test.system.CapturedOutput;
+import org.springframework.boot.test.system.OutputCaptureExtension;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.UUID;
@@ -21,20 +21,17 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest(classes = ServiceBusJMSQueueApplication.class)
 @AutoConfigureMockMvc
 @TestPropertySource(locations = "classpath:application-test.properties")
+@ExtendWith({ OutputCaptureExtension.class, MockitoExtension.class })
 public class ServiceBusJMSQueueApplicationIT {
 
     @Autowired
     private MockMvc mvc;
 
-    @Rule
-    public OutputCaptureRule outputCaptureRule = new OutputCaptureRule();
-
     @Test
-    public void testQueueSendAndReceiveMessage() throws Exception {
+    public void testQueueSendAndReceiveMessage(CapturedOutput capture) throws Exception {
         final String message = UUID.randomUUID().toString();
 
         mvc.perform(post("/queue?message=" + message)).andExpect(status().isOk())
@@ -45,7 +42,7 @@ public class ServiceBusJMSQueueApplicationIT {
         boolean messageReceived = false;
 
         for (int i = 0; i < 100; i++) {
-            final String output = outputCaptureRule.toString();
+            final String output = capture.toString();
             if (!messageReceived && output.contains(messageReceivedLog)) {
                 messageReceived = true;
             }

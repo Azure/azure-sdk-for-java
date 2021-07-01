@@ -7,12 +7,12 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.HasResourceGrou
 import com.azure.resourcemanager.resources.fluentcore.arm.models.IndependentChildResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.IndependentChildResourceImpl;
-import com.azure.resourcemanager.servicebus.fluent.models.ResourceListKeysInner;
-import com.azure.resourcemanager.servicebus.fluent.models.SharedAccessAuthorizationRuleResourceInner;
+import com.azure.resourcemanager.servicebus.fluent.models.AccessKeysInner;
+import com.azure.resourcemanager.servicebus.fluent.models.SBAuthorizationRuleInner;
 import com.azure.resourcemanager.servicebus.models.AccessRights;
 import com.azure.resourcemanager.servicebus.models.AuthorizationKeys;
-import com.azure.resourcemanager.servicebus.models.Policykey;
-import com.azure.resourcemanager.servicebus.models.SharedAccessAuthorizationRuleCreateOrUpdateParameters;
+import com.azure.resourcemanager.servicebus.models.KeyType;
+import com.azure.resourcemanager.servicebus.models.RegenerateAccessKeyParameters;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ import java.util.List;
 abstract class AuthorizationRuleBaseImpl<
         FluentModelT extends IndependentChildResource<ManagerT, InnerModelT>,
         FluentParentModelT extends Resource & HasResourceGroup,
-        InnerModelT extends SharedAccessAuthorizationRuleResourceInner,
+        InnerModelT extends SBAuthorizationRuleInner,
         FluentModelImplT extends IndependentChildResourceImpl<
             FluentModelT,
             FluentParentModelT,
@@ -62,25 +62,22 @@ abstract class AuthorizationRuleBaseImpl<
         return getKeysAsync().block();
     }
 
-    /**
-     * Regenerates primary or secondary keys.
-     *
-     * @param policykey the key to regenerate
-     * @return stream that emits primary, secondary keys and connection strings
-     */
-    public Mono<AuthorizationKeys> regenerateKeyAsync(Policykey policykey) {
-        return this.regenerateKeysInnerAsync(policykey)
-            .map(inner -> new AuthorizationKeysImpl(inner));
+    public Mono<AuthorizationKeys> regenerateKeyAsync(RegenerateAccessKeyParameters regenerateAccessKeyParameters) {
+        return this.regenerateKeysInnerAsync(regenerateAccessKeyParameters)
+            .map(AuthorizationKeysImpl::new);
     }
 
-    /**
-     * Regenerates primary or secondary keys.
-     *
-     * @param policykey the key to regenerate
-     * @return primary, secondary keys and connection strings
-     */
-    public AuthorizationKeys regenerateKey(Policykey policykey) {
-        return regenerateKeyAsync(policykey).block();
+    public AuthorizationKeys regenerateKey(RegenerateAccessKeyParameters regenerateAccessKeyParameters) {
+        return regenerateKeyAsync(regenerateAccessKeyParameters).block();
+    }
+
+    public Mono<AuthorizationKeys> regenerateKeyAsync(KeyType keyType) {
+        return this.regenerateKeysInnerAsync(new RegenerateAccessKeyParameters().withKeyType(keyType))
+            .map(AuthorizationKeysImpl::new);
+    }
+
+    public AuthorizationKeys regenerateKey(KeyType keyType) {
+        return regenerateKeyAsync(keyType).block();
     }
 
     public List<AccessRights> rights() {
@@ -122,11 +119,6 @@ abstract class AuthorizationRuleBaseImpl<
         return (FluentModelImplT) this;
     }
 
-    protected SharedAccessAuthorizationRuleCreateOrUpdateParameters prepareForCreate(
-        SharedAccessAuthorizationRuleResourceInner inner) {
-        return new SharedAccessAuthorizationRuleCreateOrUpdateParameters().withRights(inner.rights());
-    }
-
-    protected abstract Mono<ResourceListKeysInner> getKeysInnerAsync();
-    protected abstract Mono<ResourceListKeysInner> regenerateKeysInnerAsync(Policykey policykey);
+    protected abstract Mono<AccessKeysInner> getKeysInnerAsync();
+    protected abstract Mono<AccessKeysInner> regenerateKeysInnerAsync(RegenerateAccessKeyParameters regenerateAccessKeyParameters);
 }

@@ -16,6 +16,10 @@ public final class ValidateResourceTypes extends ExpandableStringEnum<ValidateRe
     /** Static value Site for ValidateResourceTypes. */
     public static final ValidateResourceTypes SITE = fromString("Site");
 
+    /** Static value Microsoft.Web/hostingEnvironments for ValidateResourceTypes. */
+    public static final ValidateResourceTypes MICROSOFT_WEB_HOSTING_ENVIRONMENTS =
+        fromString("Microsoft.Web/hostingEnvironments");
+
     /**
      * Creates or finds a ValidateResourceTypes from its string representation.
      *

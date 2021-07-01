@@ -38,6 +38,13 @@ public interface CostManagementClient {
     Duration getDefaultPollInterval();
 
     /**
+     * Gets the SettingsClient object to access its operations.
+     *
+     * @return the SettingsClient object.
+     */
+    SettingsClient getSettings();
+
+    /**
      * Gets the ViewsClient object to access its operations.
      *
      * @return the ViewsClient object.
@@ -71,6 +78,13 @@ public interface CostManagementClient {
      * @return the QueriesClient object.
      */
     QueriesClient getQueries();
+
+    /**
+     * Gets the GenerateReservationDetailsReportsClient object to access its operations.
+     *
+     * @return the GenerateReservationDetailsReportsClient object.
+     */
+    GenerateReservationDetailsReportsClient getGenerateReservationDetailsReports();
 
     /**
      * Gets the OperationsClient object to access its operations.

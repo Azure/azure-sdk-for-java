@@ -56,6 +56,12 @@ public class BillingMeterInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties.osType")
     private String osType;
 
+    /*
+     * Meter Multiplier
+     */
+    @JsonProperty(value = "properties.multiplier")
+    private Double multiplier;
+
     /**
      * Get the meterId property: Meter GUID onboarded in Commerce.
      *
@@ -173,6 +179,33 @@ public class BillingMeterInner extends ProxyOnlyResource {
      */
     public BillingMeterInner withOsType(String osType) {
         this.osType = osType;
+        return this;
+    }
+
+    /**
+     * Get the multiplier property: Meter Multiplier.
+     *
+     * @return the multiplier value.
+     */
+    public Double multiplier() {
+        return this.multiplier;
+    }
+
+    /**
+     * Set the multiplier property: Meter Multiplier.
+     *
+     * @param multiplier the multiplier value to set.
+     * @return the BillingMeterInner object itself.
+     */
+    public BillingMeterInner withMultiplier(Double multiplier) {
+        this.multiplier = multiplier;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public BillingMeterInner withKind(String kind) {
+        super.withKind(kind);
         return this;
     }
 

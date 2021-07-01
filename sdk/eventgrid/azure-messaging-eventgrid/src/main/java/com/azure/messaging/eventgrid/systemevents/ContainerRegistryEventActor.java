@@ -7,7 +7,9 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ContainerRegistryEventActor model. */
+/**
+ * The agent that initiated the event. For most situations, this could be from the authorization context of the request.
+ */
 @Fluent
 public final class ContainerRegistryEventActor {
     /*

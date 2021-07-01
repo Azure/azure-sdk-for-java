@@ -12,11 +12,11 @@ import com.azure.core.http.policy.UserAgentPolicy;
 
 /** Initializes a new instance of the AzureCommunicationSMSService type. */
 public final class AzureCommunicationSMSServiceImpl {
-    /** The endpoint of the Azure Communication resource. */
+    /** The communication resource, for example https://my-resource.communication.azure.com. */
     private final String endpoint;
 
     /**
-     * Gets The endpoint of the Azure Communication resource.
+     * Gets The communication resource, for example https://my-resource.communication.azure.com.
      *
      * @return the endpoint value.
      */
@@ -77,7 +77,7 @@ public final class AzureCommunicationSMSServiceImpl {
     AzureCommunicationSMSServiceImpl(HttpPipeline httpPipeline, String endpoint) {
         this.httpPipeline = httpPipeline;
         this.endpoint = endpoint;
-        this.apiVersion = "2020-07-20-preview1";
+        this.apiVersion = "2021-03-07";
         this.sms = new SmsImpl(this);
     }
 }

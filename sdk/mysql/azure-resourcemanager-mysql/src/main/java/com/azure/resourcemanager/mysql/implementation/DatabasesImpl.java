@@ -9,7 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.mysql.MySqlManager;
 import com.azure.resourcemanager.mysql.fluent.DatabasesClient;
 import com.azure.resourcemanager.mysql.fluent.models.DatabaseInner;
 import com.azure.resourcemanager.mysql.models.Database;
@@ -21,9 +20,9 @@ public final class DatabasesImpl implements Databases {
 
     private final DatabasesClient innerClient;
 
-    private final MySqlManager serviceManager;
+    private final com.azure.resourcemanager.mysql.MySqlManager serviceManager;
 
-    public DatabasesImpl(DatabasesClient innerClient, MySqlManager serviceManager) {
+    public DatabasesImpl(DatabasesClient innerClient, com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -62,12 +61,12 @@ public final class DatabasesImpl implements Databases {
 
     public PagedIterable<Database> listByServer(String resourceGroupName, String serverName) {
         PagedIterable<DatabaseInner> inner = this.serviceClient().listByServer(resourceGroupName, serverName);
-        return inner.mapPage(inner1 -> new DatabaseImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new DatabaseImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Database> listByServer(String resourceGroupName, String serverName, Context context) {
         PagedIterable<DatabaseInner> inner = this.serviceClient().listByServer(resourceGroupName, serverName, context);
-        return inner.mapPage(inner1 -> new DatabaseImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new DatabaseImpl(inner1, this.manager()));
     }
 
     public Database getById(String id) {
@@ -178,7 +177,7 @@ public final class DatabasesImpl implements Databases {
         return this.innerClient;
     }
 
-    private MySqlManager manager() {
+    private com.azure.resourcemanager.mysql.MySqlManager manager() {
         return this.serviceManager;
     }
 

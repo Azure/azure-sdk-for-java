@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -63,7 +64,7 @@ public final class QueuesClientImpl implements QueuesClient {
     @Host("{$host}")
     @ServiceInterface(name = "StorageManagementCli")
     private interface QueuesService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
                 + "/storageAccounts/{accountName}/queueServices/default/queues/{queueName}")
@@ -77,9 +78,10 @@ public final class QueuesClientImpl implements QueuesClient {
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("queueName") String queueName,
             @BodyParam("application/json") StorageQueueInner queue,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Patch(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
                 + "/storageAccounts/{accountName}/queueServices/default/queues/{queueName}")
@@ -93,9 +95,10 @@ public final class QueuesClientImpl implements QueuesClient {
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("queueName") String queueName,
             @BodyParam("application/json") StorageQueueInner queue,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
                 + "/storageAccounts/{accountName}/queueServices/default/queues/{queueName}")
@@ -108,9 +111,10 @@ public final class QueuesClientImpl implements QueuesClient {
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("queueName") String queueName,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
                 + "/storageAccounts/{accountName}/queueServices/default/queues/{queueName}")
@@ -123,9 +127,10 @@ public final class QueuesClientImpl implements QueuesClient {
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("queueName") String queueName,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
                 + "/storageAccounts/{accountName}/queueServices/default/queues")
@@ -139,14 +144,18 @@ public final class QueuesClientImpl implements QueuesClient {
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("$maxpagesize") String maxpagesize,
             @QueryParam("$filter") String filter,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ListQueueResource>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -190,6 +199,7 @@ public final class QueuesClientImpl implements QueuesClient {
         if (queueName == null) {
             return Mono.error(new IllegalArgumentException("Parameter queueName is required and cannot be null."));
         }
+        final String accept = "application/json";
         StorageQueueInner queue = new StorageQueueInner();
         queue.withMetadata(metadata);
         return FluxUtil
@@ -204,8 +214,9 @@ public final class QueuesClientImpl implements QueuesClient {
                             this.client.getSubscriptionId(),
                             queueName,
                             queue,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -250,6 +261,7 @@ public final class QueuesClientImpl implements QueuesClient {
         if (queueName == null) {
             return Mono.error(new IllegalArgumentException("Parameter queueName is required and cannot be null."));
         }
+        final String accept = "application/json";
         StorageQueueInner queue = new StorageQueueInner();
         queue.withMetadata(metadata);
         context = this.client.mergeContext(context);
@@ -262,6 +274,7 @@ public final class QueuesClientImpl implements QueuesClient {
                 this.client.getSubscriptionId(),
                 queueName,
                 queue,
+                accept,
                 context);
     }
 
@@ -409,6 +422,7 @@ public final class QueuesClientImpl implements QueuesClient {
         if (queueName == null) {
             return Mono.error(new IllegalArgumentException("Parameter queueName is required and cannot be null."));
         }
+        final String accept = "application/json";
         StorageQueueInner queue = new StorageQueueInner();
         queue.withMetadata(metadata);
         return FluxUtil
@@ -423,8 +437,9 @@ public final class QueuesClientImpl implements QueuesClient {
                             this.client.getSubscriptionId(),
                             queueName,
                             queue,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -469,6 +484,7 @@ public final class QueuesClientImpl implements QueuesClient {
         if (queueName == null) {
             return Mono.error(new IllegalArgumentException("Parameter queueName is required and cannot be null."));
         }
+        final String accept = "application/json";
         StorageQueueInner queue = new StorageQueueInner();
         queue.withMetadata(metadata);
         context = this.client.mergeContext(context);
@@ -481,6 +497,7 @@ public final class QueuesClientImpl implements QueuesClient {
                 this.client.getSubscriptionId(),
                 queueName,
                 queue,
+                accept,
                 context);
     }
 
@@ -627,6 +644,7 @@ public final class QueuesClientImpl implements QueuesClient {
         if (queueName == null) {
             return Mono.error(new IllegalArgumentException("Parameter queueName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -638,8 +656,9 @@ public final class QueuesClientImpl implements QueuesClient {
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             queueName,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -683,6 +702,7 @@ public final class QueuesClientImpl implements QueuesClient {
         if (queueName == null) {
             return Mono.error(new IllegalArgumentException("Parameter queueName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -692,6 +712,7 @@ public final class QueuesClientImpl implements QueuesClient {
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 queueName,
+                accept,
                 context);
     }
 
@@ -805,6 +826,7 @@ public final class QueuesClientImpl implements QueuesClient {
         if (queueName == null) {
             return Mono.error(new IllegalArgumentException("Parameter queueName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -816,8 +838,9 @@ public final class QueuesClientImpl implements QueuesClient {
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             queueName,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -861,6 +884,7 @@ public final class QueuesClientImpl implements QueuesClient {
         if (queueName == null) {
             return Mono.error(new IllegalArgumentException("Parameter queueName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -870,6 +894,7 @@ public final class QueuesClientImpl implements QueuesClient {
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 queueName,
+                accept,
                 context);
     }
 
@@ -972,6 +997,7 @@ public final class QueuesClientImpl implements QueuesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -984,6 +1010,7 @@ public final class QueuesClientImpl implements QueuesClient {
                             this.client.getSubscriptionId(),
                             maxpagesize,
                             filter,
+                            accept,
                             context))
             .<PagedResponse<ListQueueInner>>map(
                 res ->
@@ -994,7 +1021,7 @@ public final class QueuesClientImpl implements QueuesClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1035,6 +1062,7 @@ public final class QueuesClientImpl implements QueuesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(
@@ -1045,6 +1073,7 @@ public final class QueuesClientImpl implements QueuesClient {
                 this.client.getSubscriptionId(),
                 maxpagesize,
                 filter,
+                accept,
                 context)
             .map(
                 res ->
@@ -1132,6 +1161,25 @@ public final class QueuesClientImpl implements QueuesClient {
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of all the queues under the specified storage account.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ListQueueInner> list(String resourceGroupName, String accountName) {
+        final String maxpagesize = null;
+        final String filter = null;
+        return new PagedIterable<>(listAsync(resourceGroupName, accountName, maxpagesize, filter));
+    }
+
+    /**
+     * Gets a list of all the queues under the specified storage account.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param maxpagesize Optional, a maximum number of queues that should be included in a list queue response.
      * @param filter Optional, When specified, only the queues with a name starting with the given filter will be
      *     listed.
@@ -1148,25 +1196,6 @@ public final class QueuesClientImpl implements QueuesClient {
     }
 
     /**
-     * Gets a list of all the queues under the specified storage account.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all the queues under the specified storage account.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ListQueueInner> list(String resourceGroupName, String accountName) {
-        final String maxpagesize = null;
-        final String filter = null;
-        return new PagedIterable<>(listAsync(resourceGroupName, accountName, maxpagesize, filter));
-    }
-
-    /**
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
@@ -1180,8 +1209,15 @@ public final class QueuesClientImpl implements QueuesClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listNext(nextLink, context))
+            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<ListQueueInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1191,7 +1227,7 @@ public final class QueuesClientImpl implements QueuesClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1209,9 +1245,16 @@ public final class QueuesClientImpl implements QueuesClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listNext(nextLink, context)
+            .listNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

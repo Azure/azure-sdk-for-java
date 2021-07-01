@@ -1,3 +1,13 @@
+---
+page_type: sample
+languages:
+- java
+products:
+- azure-event-hubs
+description: "Azure Spring Cloud Stream Binder Sample project for Multiple Event Hub Namespace client library"
+urlFragment: "azure-spring-cloud-sample-eventhubs-multibinders"
+---
+
 # Spring Cloud Azure Stream Binder for Multiple Event Hub Namespace Code Sample shared library for Java
 
 ## Key concepts
@@ -12,11 +22,8 @@ These messages are published to an event hub. The sample will also consume messa
 Running this sample will be charged by Azure. You can check the usage
 and bill at [this link][azure-account].
 
-### Environment checklist
-
-We need to ensure that this 
-[environment checklist][ready-to-run-checklist] 
-is completed before the run.
+### Prerequisites
+- [Environment checklist][environment_checklist]
 
 ### Create Azure resources
 
@@ -39,11 +46,13 @@ is completed before the run.
     service principal or managed identity, update the `application-sp.yaml` or 
     `application-mi.yaml` respectively.
 
-
     ```yaml
     spring:
       cloud:
         stream:
+          # To specify which functional bean to bind to the external destination(s) exposed by the bindings
+          function:
+            definition: consume1;supply1;consume2;supply2
           bindings:
             consume1-in-0:
               destination: [eventhub-1-name]
@@ -52,7 +61,7 @@ is completed before the run.
               destination: [the-same-eventhub-1-name-as-above]
             consume2-in-0:
               binder: eventhub-2
-              destination: [eventhub-1-name]
+              destination: [eventhub-2-name]
               group: [consumer-group]
             supply2-out-0:
               binder: eventhub-2
@@ -91,14 +100,9 @@ is completed before the run.
               consume2-in-0:
                 consumer:
                   checkpoint-mode: MANUAL
-    
-          #To specify which functional bean to bind to the external destination(s) exposed by the bindings
-          function:
-            definition: consume1;supply1;consume2;supply2;
           poller:
             initial-delay: 0
             fixed-delay: 1000
-           
     ```
 
 > The **defaultCandidate** configuration item:
@@ -147,11 +151,11 @@ processing.
 [azure-portal]: https://ms.portal.azure.com/
 [create-event-hubs]: https://docs.microsoft.com/azure/event-hubs/
 [create-azure-storage]: https://docs.microsoft.com/azure/storage/
-[create-sp-using-azure-cli]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/create-sp-using-azure-cli.md
-[create-managed-identity]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/create-managed-identity.md
+[create-sp-using-azure-cli]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot-samples/create-sp-using-azure-cli.md
+[create-managed-identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot-samples/create-managed-identity.md
 [deploy-spring-boot-application-to-app-service]: https://docs.microsoft.com/java/azure/spring-framework/deploy-spring-boot-java-app-with-maven-plugin?toc=%2Fazure%2Fapp-service%2Fcontainers%2Ftoc.json&view=azure-java-stable
 [deploy-to-app-service-via-ftp]: https://docs.microsoft.com/azure/app-service/deploy-ftp
 [managed-identities]: https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/
-[ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist
+[environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
 [role-assignment]: https://docs.microsoft.com/azure/role-based-access-control/role-assignments-portal
-[application.yaml]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-multibinders/src/main/resources/application.yaml
+[application.yaml]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-multibinders/src/main/resources/application.yaml

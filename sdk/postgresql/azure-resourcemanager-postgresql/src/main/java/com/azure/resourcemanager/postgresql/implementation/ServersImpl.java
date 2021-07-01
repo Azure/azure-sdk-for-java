@@ -9,7 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.postgresql.PostgreSqlManager;
 import com.azure.resourcemanager.postgresql.fluent.ServersClient;
 import com.azure.resourcemanager.postgresql.fluent.models.ServerInner;
 import com.azure.resourcemanager.postgresql.models.Server;
@@ -21,9 +20,10 @@ public final class ServersImpl implements Servers {
 
     private final ServersClient innerClient;
 
-    private final PostgreSqlManager serviceManager;
+    private final com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager;
 
-    public ServersImpl(ServersClient innerClient, PostgreSqlManager serviceManager) {
+    public ServersImpl(
+        ServersClient innerClient, com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -62,22 +62,22 @@ public final class ServersImpl implements Servers {
 
     public PagedIterable<Server> listByResourceGroup(String resourceGroupName) {
         PagedIterable<ServerInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return inner.mapPage(inner1 -> new ServerImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new ServerImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Server> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<ServerInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return inner.mapPage(inner1 -> new ServerImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new ServerImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Server> list() {
         PagedIterable<ServerInner> inner = this.serviceClient().list();
-        return inner.mapPage(inner1 -> new ServerImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new ServerImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Server> list(Context context) {
         PagedIterable<ServerInner> inner = this.serviceClient().list(context);
-        return inner.mapPage(inner1 -> new ServerImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new ServerImpl(inner1, this.manager()));
     }
 
     public void restart(String resourceGroupName, String serverName) {
@@ -168,7 +168,7 @@ public final class ServersImpl implements Servers {
         return this.innerClient;
     }
 
-    private PostgreSqlManager manager() {
+    private com.azure.resourcemanager.postgresql.PostgreSqlManager manager() {
         return this.serviceManager;
     }
 

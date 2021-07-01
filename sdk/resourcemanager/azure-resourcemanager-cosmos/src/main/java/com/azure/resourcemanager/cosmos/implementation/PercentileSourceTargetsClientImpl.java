@@ -129,7 +129,6 @@ public final class PercentileSourceTargetsClientImpl implements PercentileSource
         if (filter == null) {
             return Mono.error(new IllegalArgumentException("Parameter filter is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -142,7 +141,7 @@ public final class PercentileSourceTargetsClientImpl implements PercentileSource
                             accountName,
                             sourceRegion,
                             targetRegion,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             filter,
                             accept,
                             context))
@@ -150,7 +149,7 @@ public final class PercentileSourceTargetsClientImpl implements PercentileSource
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -208,7 +207,6 @@ public final class PercentileSourceTargetsClientImpl implements PercentileSource
         if (filter == null) {
             return Mono.error(new IllegalArgumentException("Parameter filter is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -219,7 +217,7 @@ public final class PercentileSourceTargetsClientImpl implements PercentileSource
                 accountName,
                 sourceRegion,
                 targetRegion,
-                apiVersion,
+                this.client.getApiVersion(),
                 filter,
                 accept,
                 context)

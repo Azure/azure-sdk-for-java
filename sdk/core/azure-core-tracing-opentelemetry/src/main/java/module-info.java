@@ -7,8 +7,6 @@ module com.azure.core.tracing.opentelemetry {
     requires io.opentelemetry.api;
     requires io.opentelemetry.context;
 
-    requires transitive io.opentelemetry.semconv;
-
     opens com.azure.core.tracing.opentelemetry to com.fasterxml.jackson.databind;
 
     exports com.azure.core.tracing.opentelemetry;

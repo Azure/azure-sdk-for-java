@@ -699,8 +699,9 @@ def main():
     args['readme'] = readme
     args['spec'] = spec
 
-    update_parameters(
-        args.get('suffix') or get_suffix_from_api_specs(api_specs_file, spec))
+    # update_parameters(
+    #     args.get('suffix') or get_suffix_from_api_specs(api_specs_file, spec))
+    update_parameters(args.get('suffix'))
     service = get_and_update_service_from_api_specs(api_specs_file, spec,
                                                     args['service'])
     args['service'] = service

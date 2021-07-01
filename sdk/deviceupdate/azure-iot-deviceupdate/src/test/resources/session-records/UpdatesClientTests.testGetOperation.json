@@ -1,0 +1,19 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.api.prod.adu.microsoft.com/deviceupdate/blue/v2/updates/operations/e3a75d1b-e359-4bbd-a84c-68fbfa8b7b9f%3Fapi-version=2",
+    "Headers" : { },
+    "Response" : {
+      "ETag" : "\"a1874484-e4be-4643-b992-c5d43ed6947c\"",
+      "traceparent" : "00-30c24c3ef9b4474896a6ffb9e7a16cad-46dd857091a35646-00",
+      "retry-after" : "0",
+      "Content-Length" : "487",
+      "StatusCode" : "200",
+      "Body" : "{\"operationId\":\"e3a75d1b-e359-4bbd-a84c-68fbfa8b7b9f\",\"status\":\"Succeeded\",\"updateId\":{\"provider\":\"Contoso\",\"name\":\"Virtual-Machine\",\"version\":\"2021.302.1202.48\"},\"resourceLocation\":\"/deviceupdate/blue/updates/providers/Contoso/names/Virtual-Machine/versions/2021.302.1202.48?api-version=2\",\"traceId\":\"c72d7514826f124fb37678796aa477ae\",\"lastActionDateTime\":\"2021-03-02T20:04:47.9517198Z\",\"createdDateTime\":\"2021-03-02T20:02:50.6192614Z\",\"etag\":\"\\\"a1874484-e4be-4643-b992-c5d43ed6947c\\\"\"}",
+      "Date" : "Tue, 02 Mar 2021 21:28:54 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

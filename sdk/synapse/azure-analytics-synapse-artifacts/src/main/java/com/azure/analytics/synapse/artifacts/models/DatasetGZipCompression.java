@@ -18,14 +18,14 @@ public final class DatasetGZipCompression extends DatasetCompression {
      * The GZip compression level.
      */
     @JsonProperty(value = "level")
-    private DatasetCompressionLevel level;
+    private Object level;
 
     /**
      * Get the level property: The GZip compression level.
      *
      * @return the level value.
      */
-    public DatasetCompressionLevel getLevel() {
+    public Object getLevel() {
         return this.level;
     }
 
@@ -35,7 +35,7 @@ public final class DatasetGZipCompression extends DatasetCompression {
      * @param level the level value to set.
      * @return the DatasetGZipCompression object itself.
      */
-    public DatasetGZipCompression setLevel(DatasetCompressionLevel level) {
+    public DatasetGZipCompression setLevel(Object level) {
         this.level = level;
         return this;
     }

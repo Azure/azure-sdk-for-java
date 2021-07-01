@@ -10,6 +10,7 @@ import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.CommissionedState;
+import com.azure.resourcemanager.network.models.ExtendedLocation;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -21,6 +22,12 @@ import java.util.Map;
 @Fluent
 public class CustomIpPrefixInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomIpPrefixInner.class);
+
+    /*
+     * The extended location of the custom IP prefix.
+     */
+    @JsonProperty(value = "extendedLocation")
+    private ExtendedLocation extendedLocation;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
@@ -43,6 +50,30 @@ public class CustomIpPrefixInner extends Resource {
     private String cidr;
 
     /*
+     * Signed message for WAN validation.
+     */
+    @JsonProperty(value = "properties.signedMessage")
+    private String signedMessage;
+
+    /*
+     * Authorization message for WAN validation.
+     */
+    @JsonProperty(value = "properties.authorizationMessage")
+    private String authorizationMessage;
+
+    /*
+     * The Parent CustomIpPrefix for IPv6 /64 CustomIpPrefix.
+     */
+    @JsonProperty(value = "properties.customIpPrefixParent")
+    private CustomIpPrefixInner customIpPrefixParent;
+
+    /*
+     * The list of all Children for IPv6 /48 CustomIpPrefix.
+     */
+    @JsonProperty(value = "properties.childCustomIpPrefixes", access = JsonProperty.Access.WRITE_ONLY)
+    private List<CustomIpPrefixInner> childCustomIpPrefixes;
+
+    /*
      * The commissioned state of the Custom IP Prefix.
      */
     @JsonProperty(value = "properties.commissionedState")
@@ -61,6 +92,12 @@ public class CustomIpPrefixInner extends Resource {
     private String resourceGuid;
 
     /*
+     * The reason why resource is in failed state.
+     */
+    @JsonProperty(value = "properties.failedReason", access = JsonProperty.Access.WRITE_ONLY)
+    private String failedReason;
+
+    /*
      * The provisioning state of the custom IP prefix resource.
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
@@ -71,6 +108,26 @@ public class CustomIpPrefixInner extends Resource {
      */
     @JsonProperty(value = "id")
     private String id;
+
+    /**
+     * Get the extendedLocation property: The extended location of the custom IP prefix.
+     *
+     * @return the extendedLocation value.
+     */
+    public ExtendedLocation extendedLocation() {
+        return this.extendedLocation;
+    }
+
+    /**
+     * Set the extendedLocation property: The extended location of the custom IP prefix.
+     *
+     * @param extendedLocation the extendedLocation value to set.
+     * @return the CustomIpPrefixInner object itself.
+     */
+    public CustomIpPrefixInner withExtendedLocation(ExtendedLocation extendedLocation) {
+        this.extendedLocation = extendedLocation;
+        return this;
+    }
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
@@ -124,6 +181,75 @@ public class CustomIpPrefixInner extends Resource {
     }
 
     /**
+     * Get the signedMessage property: Signed message for WAN validation.
+     *
+     * @return the signedMessage value.
+     */
+    public String signedMessage() {
+        return this.signedMessage;
+    }
+
+    /**
+     * Set the signedMessage property: Signed message for WAN validation.
+     *
+     * @param signedMessage the signedMessage value to set.
+     * @return the CustomIpPrefixInner object itself.
+     */
+    public CustomIpPrefixInner withSignedMessage(String signedMessage) {
+        this.signedMessage = signedMessage;
+        return this;
+    }
+
+    /**
+     * Get the authorizationMessage property: Authorization message for WAN validation.
+     *
+     * @return the authorizationMessage value.
+     */
+    public String authorizationMessage() {
+        return this.authorizationMessage;
+    }
+
+    /**
+     * Set the authorizationMessage property: Authorization message for WAN validation.
+     *
+     * @param authorizationMessage the authorizationMessage value to set.
+     * @return the CustomIpPrefixInner object itself.
+     */
+    public CustomIpPrefixInner withAuthorizationMessage(String authorizationMessage) {
+        this.authorizationMessage = authorizationMessage;
+        return this;
+    }
+
+    /**
+     * Get the customIpPrefixParent property: The Parent CustomIpPrefix for IPv6 /64 CustomIpPrefix.
+     *
+     * @return the customIpPrefixParent value.
+     */
+    public CustomIpPrefixInner customIpPrefixParent() {
+        return this.customIpPrefixParent;
+    }
+
+    /**
+     * Set the customIpPrefixParent property: The Parent CustomIpPrefix for IPv6 /64 CustomIpPrefix.
+     *
+     * @param customIpPrefixParent the customIpPrefixParent value to set.
+     * @return the CustomIpPrefixInner object itself.
+     */
+    public CustomIpPrefixInner withCustomIpPrefixParent(CustomIpPrefixInner customIpPrefixParent) {
+        this.customIpPrefixParent = customIpPrefixParent;
+        return this;
+    }
+
+    /**
+     * Get the childCustomIpPrefixes property: The list of all Children for IPv6 /48 CustomIpPrefix.
+     *
+     * @return the childCustomIpPrefixes value.
+     */
+    public List<CustomIpPrefixInner> childCustomIpPrefixes() {
+        return this.childCustomIpPrefixes;
+    }
+
+    /**
      * Get the commissionedState property: The commissioned state of the Custom IP Prefix.
      *
      * @return the commissionedState value.
@@ -159,6 +285,15 @@ public class CustomIpPrefixInner extends Resource {
      */
     public String resourceGuid() {
         return this.resourceGuid;
+    }
+
+    /**
+     * Get the failedReason property: The reason why resource is in failed state.
+     *
+     * @return the failedReason value.
+     */
+    public String failedReason() {
+        return this.failedReason;
     }
 
     /**
@@ -210,5 +345,14 @@ public class CustomIpPrefixInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (extendedLocation() != null) {
+            extendedLocation().validate();
+        }
+        if (customIpPrefixParent() != null) {
+            customIpPrefixParent().validate();
+        }
+        if (childCustomIpPrefixes() != null) {
+            childCustomIpPrefixes().forEach(e -> e.validate());
+        }
     }
 }

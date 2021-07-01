@@ -84,7 +84,9 @@ public interface TableServicesClient {
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param cors Sets the CORS rules. You can include up to five CorsRule elements in the request.
+     * @param cors Specifies CORS rules for the Table service. You can include up to five CorsRule elements in the
+     *     request. If no CorsRule elements are included in the request body, all CORS rules will be deleted, and CORS
+     *     will be disabled for the Table service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -102,7 +104,9 @@ public interface TableServicesClient {
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param cors Sets the CORS rules. You can include up to five CorsRule elements in the request.
+     * @param cors Specifies CORS rules for the Table service. You can include up to five CorsRule elements in the
+     *     request. If no CorsRule elements are included in the request body, all CORS rules will be deleted, and CORS
+     *     will be disabled for the Table service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -152,7 +156,9 @@ public interface TableServicesClient {
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param cors Sets the CORS rules. You can include up to five CorsRule elements in the request.
+     * @param cors Specifies CORS rules for the Table service. You can include up to five CorsRule elements in the
+     *     request. If no CorsRule elements are included in the request body, all CORS rules will be deleted, and CORS
+     *     will be disabled for the Table service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

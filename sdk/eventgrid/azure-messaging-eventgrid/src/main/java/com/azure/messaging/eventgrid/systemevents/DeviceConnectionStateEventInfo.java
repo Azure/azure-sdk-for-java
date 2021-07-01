@@ -7,7 +7,7 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The DeviceConnectionStateEventInfo model. */
+/** Information about the device connection state event. */
 @Fluent
 public final class DeviceConnectionStateEventInfo {
     /*

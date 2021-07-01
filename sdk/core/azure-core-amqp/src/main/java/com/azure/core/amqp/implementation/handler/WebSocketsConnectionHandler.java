@@ -7,6 +7,7 @@ import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.microsoft.azure.proton.transport.ws.impl.WebSocketImpl;
 import org.apache.qpid.proton.engine.Event;
+import org.apache.qpid.proton.engine.SslPeerDetails;
 import org.apache.qpid.proton.engine.impl.TransportInternal;
 
 /**
@@ -27,13 +28,11 @@ public class WebSocketsConnectionHandler extends ConnectionHandler {
      * Creates a handler that handles proton-j's connection events using web sockets.
      *
      * @param connectionId Identifier for this connection.
-     * @param productName The name of the product this connection handler is created for.
-     * @param clientVersion The version of the client library creating the connection handler.
      * @param connectionOptions Options used when creating the connection.
      */
-    public WebSocketsConnectionHandler(final String connectionId, final String productName, final String clientVersion,
-        final ConnectionOptions connectionOptions) {
-        super(connectionId, productName, clientVersion, connectionOptions);
+    public WebSocketsConnectionHandler(String connectionId, ConnectionOptions connectionOptions,
+        SslPeerDetails peerDetails) {
+        super(connectionId, connectionOptions, peerDetails);
     }
 
     /**

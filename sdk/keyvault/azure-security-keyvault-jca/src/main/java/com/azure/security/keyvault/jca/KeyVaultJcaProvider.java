@@ -15,6 +15,11 @@ import java.util.Collections;
 public class KeyVaultJcaProvider extends Provider {
 
     /**
+     * Stores the name.
+     */
+    public static final String PROVIDER_NAME = KeyVaultKeyStore.KEY_STORE_TYPE;
+
+    /**
      * Stores the serial version UID.
      */
     private static final long serialVersionUID = 1L;
@@ -25,11 +30,6 @@ public class KeyVaultJcaProvider extends Provider {
     private static final String INFO = "Azure Key Vault JCA Provider";
 
     /**
-     * Stores the name.
-     */
-    private static final String NAME = "AzureKeyVault";
-
-    /**
      * Stores the version.
      */
     private static final Double VERSION = 1.0;
@@ -38,7 +38,7 @@ public class KeyVaultJcaProvider extends Provider {
      * Constructor.
      */
     public KeyVaultJcaProvider() {
-        super(NAME, VERSION, INFO);
+        super(PROVIDER_NAME, VERSION, INFO);
         initialize();
     }
 
@@ -80,9 +80,9 @@ public class KeyVaultJcaProvider extends Provider {
                 new Provider.Service(
                     this,
                     "KeyStore",
-                    "AzureKeyVault",
+                    KeyVaultKeyStore.ALGORITHM_NAME,
                     KeyVaultKeyStore.class.getName(),
-                    Collections.singletonList("AzureKeyVault"),
+                    Collections.singletonList(KeyVaultKeyStore.ALGORITHM_NAME),
                     null
                 )
             );

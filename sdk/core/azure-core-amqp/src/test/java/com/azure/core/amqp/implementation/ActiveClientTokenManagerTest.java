@@ -36,6 +36,7 @@ class ActiveClientTokenManagerTest {
 
     @Mock
     private ClaimsBasedSecurityNode cbsNode;
+    private AutoCloseable mocksCloseable;
 
     @BeforeAll
     static void beforeAll() {
@@ -49,13 +50,16 @@ class ActiveClientTokenManagerTest {
 
     @BeforeEach
     void setup() {
-        MockitoAnnotations.initMocks(this);
+        mocksCloseable = MockitoAnnotations.openMocks(this);
     }
 
     @AfterEach
-    void teardown() {
+    void teardown() throws Exception {
         Mockito.framework().clearInlineMocks();
-        cbsNode = null;
+
+        if (mocksCloseable != null) {
+            mocksCloseable.close();
+        }
     }
 
     /**

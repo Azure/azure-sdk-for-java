@@ -8,10 +8,8 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 
-/**
- * Contains all response data for the uploadRange operation.
- */
-public final class FilesUploadRangeResponse extends ResponseBase<FileUploadRangeHeaders, Void> {
+/** Contains all response data for the uploadRange operation. */
+public final class FilesUploadRangeResponse extends ResponseBase<FilesUploadRangeHeaders, Void> {
     /**
      * Creates an instance of FilesUploadRangeResponse.
      *
@@ -21,7 +19,8 @@ public final class FilesUploadRangeResponse extends ResponseBase<FileUploadRange
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public FilesUploadRangeResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, FileUploadRangeHeaders headers) {
+    public FilesUploadRangeResponse(
+            HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, FilesUploadRangeHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 }

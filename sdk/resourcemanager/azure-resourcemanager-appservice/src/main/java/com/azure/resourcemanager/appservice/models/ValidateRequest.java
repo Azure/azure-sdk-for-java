@@ -115,6 +115,12 @@ public class ValidateRequest {
     @JsonProperty(value = "properties.containerImagePlatform")
     private String containerImagePlatform;
 
+    /*
+     * App Service Environment Properties
+     */
+    @JsonProperty(value = "properties.appServiceEnvironment")
+    private AppServiceEnvironment appServiceEnvironment;
+
     /**
      * Get the name property: Resource name to verify.
      *
@@ -442,6 +448,26 @@ public class ValidateRequest {
     }
 
     /**
+     * Get the appServiceEnvironment property: App Service Environment Properties.
+     *
+     * @return the appServiceEnvironment value.
+     */
+    public AppServiceEnvironment appServiceEnvironment() {
+        return this.appServiceEnvironment;
+    }
+
+    /**
+     * Set the appServiceEnvironment property: App Service Environment Properties.
+     *
+     * @param appServiceEnvironment the appServiceEnvironment value to set.
+     * @return the ValidateRequest object itself.
+     */
+    public ValidateRequest withAppServiceEnvironment(AppServiceEnvironment appServiceEnvironment) {
+        this.appServiceEnvironment = appServiceEnvironment;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -461,6 +487,9 @@ public class ValidateRequest {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property location in model ValidateRequest"));
+        }
+        if (appServiceEnvironment() != null) {
+            appServiceEnvironment().validate();
         }
     }
 }

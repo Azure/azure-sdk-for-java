@@ -19,7 +19,6 @@ import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.CreatedResources;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
-import com.azure.resourcemanager.storage.models.StorageAccount;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
@@ -49,7 +48,7 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
                 .withRegion(Region.US_CENTRAL)
                 .withNewResourceGroup(resourceGroups)
                 .withPremiumSku()
-                .withShardCount(10)
+                .withShardCount(2)
                 .withPatchSchedule(DayOfWeek.SUNDAY, 10, Duration.ofMinutes(302));
         Creatable<RedisCache> redisCacheDefinition3 =
             redisManager
@@ -68,18 +67,59 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
         CreatedResources<RedisCache> batchRedisCaches =
             redisManager.redisCaches().create(redisCacheDefinition1, redisCacheDefinition2, redisCacheDefinition3);
 
-        StorageAccount storageAccount =
-            storageManager
-                .storageAccounts()
-                .define(saName)
-                .withRegion(Region.US_CENTRAL)
-                .withExistingResourceGroup(rgNameSecond)
-                .create();
+//        StorageAccount storageAccount =
+//            storageManager
+//                .storageAccounts()
+//                .define(saName)
+//                .withRegion(Region.US_CENTRAL)
+//                .withExistingResourceGroup(rgNameSecond)
+//                .create();
 
         RedisCache redisCache = batchRedisCaches.get(redisCacheDefinition1.key());
         RedisCache redisCachePremium = batchRedisCaches.get(redisCacheDefinition3.key());
         Assertions.assertEquals(rgName, redisCache.resourceGroupName());
         Assertions.assertEquals(SkuName.BASIC, redisCache.sku().name());
+
+        // Premium SKU Functionality
+        RedisCachePremium premiumCache = redisCachePremium.asPremium();
+        Assertions.assertEquals(SkuFamily.P, premiumCache.sku().family());
+        Assertions.assertEquals(2, premiumCache.firewallRules().size());
+        Assertions.assertTrue(premiumCache.firewallRules().containsKey("rule1"));
+        Assertions.assertTrue(premiumCache.firewallRules().containsKey("rule2"));
+
+        // Redis configuration update
+        premiumCache
+            .update()
+            .withRedisConfiguration("maxclients", "3")
+            .withoutFirewallRule("rule1")
+            .withFirewallRule("rule3", "192.168.0.10", "192.168.0.104")
+            .withoutMinimumTlsVersion()
+            .apply();
+
+        Assertions.assertEquals(2, premiumCache.firewallRules().size());
+        Assertions.assertTrue(premiumCache.firewallRules().containsKey("rule2"));
+        Assertions.assertTrue(premiumCache.firewallRules().containsKey("rule3"));
+        Assertions.assertFalse(premiumCache.firewallRules().containsKey("rule1"));
+
+        premiumCache.update().withoutRedisConfiguration("maxclients").apply();
+
+        premiumCache.update().withoutRedisConfiguration().apply();
+
+        Assertions.assertEquals(0, premiumCache.patchSchedules().size());
+        premiumCache.update().withPatchSchedule(DayOfWeek.MONDAY, 1).withPatchSchedule(DayOfWeek.TUESDAY, 5).apply();
+
+        Assertions.assertEquals(2, premiumCache.patchSchedules().size());
+        // Reboot
+        premiumCache.forceReboot(RebootType.ALL_NODES);
+
+        // Patch Schedule
+        List<ScheduleEntry> patchSchedule = premiumCache.listPatchSchedules();
+        Assertions.assertEquals(2, patchSchedule.size());
+
+        premiumCache.deletePatchSchedule();
+
+        patchSchedule = redisManager.redisCaches().getById(premiumCache.id()).asPremium().listPatchSchedules();
+        Assertions.assertNull(patchSchedule);
 
         // List by Resource Group
         List<RedisCache> redisCaches =
@@ -148,47 +188,6 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
 
         // delete
         redisManager.redisCaches().deleteById(redisCache.id());
-
-        // Premium SKU Functionality
-        RedisCachePremium premiumCache = redisCachePremium.asPremium();
-        Assertions.assertEquals(SkuFamily.P, premiumCache.sku().family());
-        Assertions.assertEquals(2, premiumCache.firewallRules().size());
-        Assertions.assertTrue(premiumCache.firewallRules().containsKey("rule1"));
-        Assertions.assertTrue(premiumCache.firewallRules().containsKey("rule2"));
-
-        // Redis configuration update
-        premiumCache
-            .update()
-            .withRedisConfiguration("maxclients", "3")
-            .withoutFirewallRule("rule1")
-            .withFirewallRule("rule3", "192.168.0.10", "192.168.0.104")
-            .withoutMinimumTlsVersion()
-            .apply();
-
-        Assertions.assertEquals(2, premiumCache.firewallRules().size());
-        Assertions.assertTrue(premiumCache.firewallRules().containsKey("rule2"));
-        Assertions.assertTrue(premiumCache.firewallRules().containsKey("rule3"));
-        Assertions.assertFalse(premiumCache.firewallRules().containsKey("rule1"));
-
-        premiumCache.update().withoutRedisConfiguration("maxclients").apply();
-
-        premiumCache.update().withoutRedisConfiguration().apply();
-
-        Assertions.assertEquals(0, premiumCache.patchSchedules().size());
-        premiumCache.update().withPatchSchedule(DayOfWeek.MONDAY, 1).withPatchSchedule(DayOfWeek.TUESDAY, 5).apply();
-
-        Assertions.assertEquals(2, premiumCache.patchSchedules().size());
-        // Reboot
-        premiumCache.forceReboot(RebootType.ALL_NODES);
-
-        // Patch Schedule
-        List<ScheduleEntry> patchSchedule = premiumCache.listPatchSchedules();
-        Assertions.assertEquals(2, patchSchedule.size());
-
-        premiumCache.deletePatchSchedule();
-
-        patchSchedule = redisManager.redisCaches().getById(premiumCache.id()).asPremium().listPatchSchedules();
-        Assertions.assertNull(patchSchedule);
 
         // currently throws because SAS url of the container should be provided as
         // {"error":{

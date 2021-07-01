@@ -60,7 +60,11 @@ public interface Network
      */
     boolean isDdosProtectionEnabled();
 
-    /** @return whether VM protection is enabled for all the subnets in the virtual network */
+    /**
+     * @return whether VM protection is enabled for all the subnets in the virtual network
+     * @deprecated use {@link Network#isDdosProtectionEnabled()}
+     * */
+    @Deprecated
     boolean isVmProtectionEnabled();
 
     /** @return the DDoS protection plan id associated with the virtual network */
@@ -151,7 +155,9 @@ public interface Network
              * Enable VM protection for all the subnets in the virtual network.
              *
              * @return the next stage of the definition
+             * @deprecated use withNewDdosProtectionPlan() or withExistingDdosProtectionPlan()
              */
+            @Deprecated
             WithCreateAndSubnet withVmProtection();
         }
 
@@ -333,14 +339,18 @@ public interface Network
              * Enable VM protection for all the subnets in the virtual network.
              *
              * @return the next stage of the update
+             * @deprecated use withNewDdosProtectionPlan() or withExistingDdosProtectionPlan()
              */
+            @Deprecated
             Update withVmProtection();
 
             /**
              * Disable VM protection for all the subnets in the virtual network.
              *
              * @return the next stage of the update
+             * @deprecated use withoutDdosProtectionPlan()
              */
+            @Deprecated
             Update withoutVmProtection();
         }
     }

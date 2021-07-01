@@ -19,9 +19,11 @@ import java.util.stream.Stream;
 import static com.azure.core.http.ProxyOptions.fromConfiguration;
 import static java.util.regex.Pattern.compile;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * This class tests {@link ProxyOptions}.
@@ -71,6 +73,26 @@ public class ProxyOptionsTests {
         ProxyOptions proxyOptions = fromConfiguration(configuration);
 
         assertNotNull(proxyOptions);
+        assertFalse(proxyOptions.getAddress().isUnresolved());
+        assertEquals(expectedHost, proxyOptions.getAddress().getHostName());
+        assertEquals(expectedPort, proxyOptions.getAddress().getPort());
+        assertEquals(expectedUsername, proxyOptions.getUsername());
+        assertEquals(expectedPassword, proxyOptions.getPassword());
+        assertEquals(expectedNonProxyHosts, proxyOptions.getNonProxyHosts());
+    }
+
+    /**
+     * Tests that loading a basic configuration form the environment works and does not resolve the proxy when {@code
+     * resolveProxy} is false.
+     */
+    @ParameterizedTest
+    @MethodSource("loadFromEnvironmentSupplier")
+    public void loadFromEnvironmentUnresolved(Configuration configuration, String expectedHost, int expectedPort,
+        String expectedUsername, String expectedPassword, String expectedNonProxyHosts) {
+        ProxyOptions proxyOptions = fromConfiguration(configuration, true);
+
+        assertNotNull(proxyOptions);
+        assertTrue(proxyOptions.getAddress().isUnresolved());
         assertEquals(expectedHost, proxyOptions.getAddress().getHostName());
         assertEquals(expectedPort, proxyOptions.getAddress().getPort());
         assertEquals(expectedUsername, proxyOptions.getUsername());
@@ -162,6 +184,7 @@ public class ProxyOptionsTests {
     @Test
     public void loadFromEnvironmentThrowsWhenPassedConfigurationNone() {
         assertThrows(IllegalArgumentException.class, () -> fromConfiguration(Configuration.NONE));
+        assertThrows(IllegalArgumentException.class, () -> fromConfiguration(Configuration.NONE, true));
     }
 
     /**
@@ -171,6 +194,7 @@ public class ProxyOptionsTests {
     @MethodSource("javaProxiesRequireUseSystemProxiesSupplier")
     public void javaProxiesRequireUseSystemProxies(Configuration configuration) {
         assertNull(fromConfiguration(configuration));
+        assertNull(fromConfiguration(configuration, true));
     }
 
     private static Stream<Arguments> javaProxiesRequireUseSystemProxiesSupplier() {

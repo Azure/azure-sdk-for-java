@@ -32,7 +32,7 @@ public abstract class SendReceiveTests extends Tests {
     IMessageReceiver receiver;
     String receiveEntityPath;
 
-    private String entityName;
+    protected String entityName;
     private final String sessionId = null;
 
     @BeforeClass

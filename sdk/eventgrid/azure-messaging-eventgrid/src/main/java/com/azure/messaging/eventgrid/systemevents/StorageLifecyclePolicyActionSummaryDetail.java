@@ -7,7 +7,7 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The StorageLifecyclePolicyActionSummaryDetail model. */
+/** Execution statistics of a specific policy action in a Blob Management cycle. */
 @Fluent
 public final class StorageLifecyclePolicyActionSummaryDetail {
     /*

@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.changefeed.implementation;
 
+import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.changefeed.CancellationToken;
 import com.azure.cosmos.implementation.changefeed.CancellationTokenSource;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserver;
@@ -19,20 +20,17 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
-import java.io.Closeable;
-import java.io.IOException;
 import java.time.Duration;
 
 /**
  * Implementation for {@link PartitionSupervisor}.
  */
-class PartitionSupervisorImpl implements PartitionSupervisor, Closeable {
+class PartitionSupervisorImpl implements PartitionSupervisor {
     private final Lease lease;
     private final ChangeFeedObserver observer;
     private final PartitionProcessor processor;
     private final LeaseRenewer renewer;
-    private CancellationTokenSource renewerCancellation;
-    private CancellationTokenSource processorCancellation;
+    private CancellationTokenSource childShutdownCts;
 
     private volatile RuntimeException resultException;
 
@@ -46,8 +44,10 @@ class PartitionSupervisorImpl implements PartitionSupervisor, Closeable {
         this.scheduler = scheduler;
 
         if (scheduler == null) {
-            this.scheduler = Schedulers.elastic();
+            this.scheduler = Schedulers.boundedElastic();
         }
+
+        this.childShutdownCts = new CancellationTokenSource();
     }
 
     @Override
@@ -58,18 +58,14 @@ class PartitionSupervisorImpl implements PartitionSupervisor, Closeable {
 
         this.observer.open(context);
 
-        this.processorCancellation = new CancellationTokenSource();
-
-        this.scheduler.schedule(() -> this.processor.run(this.processorCancellation.getToken())
+        this.scheduler.schedule(() -> this.processor.run(this.childShutdownCts.getToken())
             .subscribe());
 
-        this.renewerCancellation = new CancellationTokenSource();
-
-        this.scheduler.schedule(() -> this.renewer.run(this.renewerCancellation.getToken())
+        this.scheduler.schedule(() -> this.renewer.run(this.childShutdownCts.getToken())
             .subscribe());
 
         return Mono.just(this)
-            .delayElement(Duration.ofMillis(100))
+            .delayElement(Duration.ofMillis(100), CosmosSchedulers.COSMOS_PARALLEL)
             .repeat( () -> !shutdownToken.isCancellationRequested() && this.processor.getResultException() == null && this.renewer.getResultException() == null)
             .last()
             .flatMap( value -> this.afterRun(context, shutdownToken));
@@ -80,8 +76,7 @@ class PartitionSupervisorImpl implements PartitionSupervisor, Closeable {
 
         try {
 
-            this.processorCancellation.cancel();
-            this.renewerCancellation.cancel();
+            this.childShutdownCts.cancel();
 
             if (this.processor.getResultException() != null) {
                 throw this.processor.getResultException();
@@ -126,11 +121,9 @@ class PartitionSupervisorImpl implements PartitionSupervisor, Closeable {
     }
 
     @Override
-    public void close() throws IOException {
-        if (this.processorCancellation != null) {
-            this.processorCancellation.close();
+    public void shutdown() {
+        if (this.childShutdownCts != null) {
+            this.childShutdownCts.cancel();
         }
-
-        this.renewerCancellation.close();
     }
 }

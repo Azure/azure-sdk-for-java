@@ -3,12 +3,12 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.implementation.directconnectivity.Address;
-import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.directconnectivity.Address;
+import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -73,6 +73,8 @@ public class RxDocumentServiceResponse {
             return InternalConstants.ResourceKeys.ADDRESSES;
         } else if (c.equals(PartitionKeyRange.class)) {
             return InternalConstants.ResourceKeys.PARTITION_KEY_RANGES;
+        } else if (c.equals(ClientEncryptionKey.class)) {
+            return InternalConstants.ResourceKeys.CLIENT_ENCRYPTION_KEYS;
         }
 
         throw new IllegalArgumentException("c");
@@ -143,7 +145,7 @@ public class RxDocumentServiceResponse {
                         ? fromJson(String.format("{\"%s\": %s}", Constants.Properties.VALUE, jToken.toString()))
                                 : jToken;
 
-               T resource = (T) ModelBridgeInternal.instantiateJsonSerializable((ObjectNode) resourceJson, c);
+               T resource = (T) JsonSerializable.instantiateFromObjectNodeAndType((ObjectNode) resourceJson, c);
                queryResults.add(resource);
             }
         }
@@ -191,5 +193,21 @@ public class RxDocumentServiceResponse {
 
     public DiagnosticsClientContext getDiagnosticsClientContext() {
         return diagnosticsClientContext;
+    }
+
+    /**
+     * Gets the request charge as request units (RU) consumed by the operation.
+     * <p>
+     * For more information about the RU and factors that can impact the effective charges please visit
+     * <a href="https://docs.microsoft.com/en-us/azure/cosmos-db/request-units">Request Units in Azure Cosmos DB</a>
+     *
+     * @return the request charge.
+     */
+    public double getRequestCharge() {
+        String value = this.getResponseHeaders().get(HttpConstants.HttpHeaders.REQUEST_CHARGE);
+        if (StringUtils.isEmpty(value)) {
+            return 0;
+        }
+        return Double.parseDouble(value);
     }
 }

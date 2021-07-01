@@ -14,6 +14,7 @@ import com.azure.resourcemanager.storage.fluent.models.FileShareInner;
 import com.azure.resourcemanager.storage.fluent.models.FileShareItemInner;
 import com.azure.resourcemanager.storage.models.GetShareExpand;
 import com.azure.resourcemanager.storage.models.ListSharesExpand;
+import com.azure.resourcemanager.storage.models.PutSharesExpand;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in FileSharesClient. */
@@ -59,6 +60,21 @@ public interface FileSharesClient {
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response schema.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<FileShareItemInner> list(String resourceGroupName, String accountName);
+
+    /**
+     * Lists all shares.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param maxpagesize Optional. Specified maximum number of shares that can be included in the list.
      * @param filter Optional. When specified, only share names starting with the filter will be listed.
      * @param expand Optional, used to expand the properties within share's properties.
@@ -78,21 +94,6 @@ public interface FileSharesClient {
         Context context);
 
     /**
-     * Lists all shares.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response schema.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<FileShareItemInner> list(String resourceGroupName, String accountName);
-
-    /**
      * Creates a new share under the specified account as described by request body. The share resource includes
      * metadata and properties for that share. It does not include a list of the files contained by the share.
      *
@@ -103,7 +104,8 @@ public interface FileSharesClient {
      * @param shareName The name of the file share within the specified storage account. File share names must be
      *     between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-)
      *     character must be immediately preceded and followed by a letter or number.
-     * @param fileShare Properties of the file share, including Id, resource name, resource type, Etag.
+     * @param fileShare Properties of the file share to create.
+     * @param expand Optional, used to create a snapshot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -111,7 +113,11 @@ public interface FileSharesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<FileShareInner>> createWithResponseAsync(
-        String resourceGroupName, String accountName, String shareName, FileShareInner fileShare);
+        String resourceGroupName,
+        String accountName,
+        String shareName,
+        FileShareInner fileShare,
+        PutSharesExpand expand);
 
     /**
      * Creates a new share under the specified account as described by request body. The share resource includes
@@ -124,7 +130,33 @@ public interface FileSharesClient {
      * @param shareName The name of the file share within the specified storage account. File share names must be
      *     between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-)
      *     character must be immediately preceded and followed by a letter or number.
-     * @param fileShare Properties of the file share, including Id, resource name, resource type, Etag.
+     * @param fileShare Properties of the file share to create.
+     * @param expand Optional, used to create a snapshot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties of the file share, including Id, resource name, resource type, Etag.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<FileShareInner> createAsync(
+        String resourceGroupName,
+        String accountName,
+        String shareName,
+        FileShareInner fileShare,
+        PutSharesExpand expand);
+
+    /**
+     * Creates a new share under the specified account as described by request body. The share resource includes
+     * metadata and properties for that share. It does not include a list of the files contained by the share.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param shareName The name of the file share within the specified storage account. File share names must be
+     *     between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-)
+     *     character must be immediately preceded and followed by a letter or number.
+     * @param fileShare Properties of the file share to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -145,7 +177,7 @@ public interface FileSharesClient {
      * @param shareName The name of the file share within the specified storage account. File share names must be
      *     between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-)
      *     character must be immediately preceded and followed by a letter or number.
-     * @param fileShare Properties of the file share, including Id, resource name, resource type, Etag.
+     * @param fileShare Properties of the file share to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -165,7 +197,8 @@ public interface FileSharesClient {
      * @param shareName The name of the file share within the specified storage account. File share names must be
      *     between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-)
      *     character must be immediately preceded and followed by a letter or number.
-     * @param fileShare Properties of the file share, including Id, resource name, resource type, Etag.
+     * @param fileShare Properties of the file share to create.
+     * @param expand Optional, used to create a snapshot.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -174,7 +207,12 @@ public interface FileSharesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<FileShareInner> createWithResponse(
-        String resourceGroupName, String accountName, String shareName, FileShareInner fileShare, Context context);
+        String resourceGroupName,
+        String accountName,
+        String shareName,
+        FileShareInner fileShare,
+        PutSharesExpand expand,
+        Context context);
 
     /**
      * Updates share properties as specified in request body. Properties not mentioned in the request will not be
@@ -187,7 +225,7 @@ public interface FileSharesClient {
      * @param shareName The name of the file share within the specified storage account. File share names must be
      *     between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-)
      *     character must be immediately preceded and followed by a letter or number.
-     * @param fileShare Properties of the file share, including Id, resource name, resource type, Etag.
+     * @param fileShare Properties to update for the file share.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -208,7 +246,7 @@ public interface FileSharesClient {
      * @param shareName The name of the file share within the specified storage account. File share names must be
      *     between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-)
      *     character must be immediately preceded and followed by a letter or number.
-     * @param fileShare Properties of the file share, including Id, resource name, resource type, Etag.
+     * @param fileShare Properties to update for the file share.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -229,7 +267,7 @@ public interface FileSharesClient {
      * @param shareName The name of the file share within the specified storage account. File share names must be
      *     between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-)
      *     character must be immediately preceded and followed by a letter or number.
-     * @param fileShare Properties of the file share, including Id, resource name, resource type, Etag.
+     * @param fileShare Properties to update for the file share.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -249,7 +287,7 @@ public interface FileSharesClient {
      * @param shareName The name of the file share within the specified storage account. File share names must be
      *     between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-)
      *     character must be immediately preceded and followed by a letter or number.
-     * @param fileShare Properties of the file share, including Id, resource name, resource type, Etag.
+     * @param fileShare Properties to update for the file share.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -271,6 +309,7 @@ public interface FileSharesClient {
      *     between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-)
      *     character must be immediately preceded and followed by a letter or number.
      * @param expand Optional, used to expand the properties within share's properties.
+     * @param xMsSnapshot Optional, used to retrieve properties of a snapshot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -278,7 +317,7 @@ public interface FileSharesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<FileShareInner>> getWithResponseAsync(
-        String resourceGroupName, String accountName, String shareName, GetShareExpand expand);
+        String resourceGroupName, String accountName, String shareName, GetShareExpand expand, String xMsSnapshot);
 
     /**
      * Gets properties of a specified share.
@@ -291,6 +330,7 @@ public interface FileSharesClient {
      *     between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-)
      *     character must be immediately preceded and followed by a letter or number.
      * @param expand Optional, used to expand the properties within share's properties.
+     * @param xMsSnapshot Optional, used to retrieve properties of a snapshot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -298,7 +338,7 @@ public interface FileSharesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<FileShareInner> getAsync(
-        String resourceGroupName, String accountName, String shareName, GetShareExpand expand);
+        String resourceGroupName, String accountName, String shareName, GetShareExpand expand, String xMsSnapshot);
 
     /**
      * Gets properties of a specified share.
@@ -347,6 +387,7 @@ public interface FileSharesClient {
      *     between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-)
      *     character must be immediately preceded and followed by a letter or number.
      * @param expand Optional, used to expand the properties within share's properties.
+     * @param xMsSnapshot Optional, used to retrieve properties of a snapshot.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -355,7 +396,12 @@ public interface FileSharesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<FileShareInner> getWithResponse(
-        String resourceGroupName, String accountName, String shareName, GetShareExpand expand, Context context);
+        String resourceGroupName,
+        String accountName,
+        String shareName,
+        GetShareExpand expand,
+        String xMsSnapshot,
+        Context context);
 
     /**
      * Deletes specified share under its account.
@@ -367,13 +413,34 @@ public interface FileSharesClient {
      * @param shareName The name of the file share within the specified storage account. File share names must be
      *     between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-)
      *     character must be immediately preceded and followed by a letter or number.
+     * @param xMsSnapshot Optional, used to delete a snapshot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String accountName, String shareName);
+    Mono<Response<Void>> deleteWithResponseAsync(
+        String resourceGroupName, String accountName, String shareName, String xMsSnapshot);
+
+    /**
+     * Deletes specified share under its account.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param shareName The name of the file share within the specified storage account. File share names must be
+     *     between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-)
+     *     character must be immediately preceded and followed by a letter or number.
+     * @param xMsSnapshot Optional, used to delete a snapshot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> deleteAsync(String resourceGroupName, String accountName, String shareName, String xMsSnapshot);
 
     /**
      * Deletes specified share under its account.
@@ -420,6 +487,7 @@ public interface FileSharesClient {
      * @param shareName The name of the file share within the specified storage account. File share names must be
      *     between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-)
      *     character must be immediately preceded and followed by a letter or number.
+     * @param xMsSnapshot Optional, used to delete a snapshot.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -427,7 +495,8 @@ public interface FileSharesClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String shareName, Context context);
+    Response<Void> deleteWithResponse(
+        String resourceGroupName, String accountName, String shareName, String xMsSnapshot, Context context);
 
     /**
      * Restore a file share within a valid retention days if share soft delete is enabled.

@@ -16,7 +16,7 @@ import java.util.Map;
 @JsonTypeName("ExecutePipeline")
 @JsonFlatten
 @Fluent
-public class ExecutePipelineActivity extends Activity {
+public class ExecutePipelineActivity extends ControlActivity {
     /*
      * Pipeline reference.
      */

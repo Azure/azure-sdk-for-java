@@ -4,6 +4,8 @@
 
 package com.azure.resourcemanager.mediaservices.models;
 
+import com.azure.core.http.rest.Response;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mediaservices.fluent.models.AssetInner;
 import java.time.OffsetDateTime;
@@ -31,6 +33,13 @@ public interface Asset {
      * @return the type value.
      */
     String type();
+
+    /**
+     * Gets the systemData property: The system metadata relating to this resource.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
 
     /**
      * Gets the assetId property: The Asset ID.
@@ -265,4 +274,69 @@ public interface Asset {
      * @return the refreshed resource.
      */
     Asset refresh(Context context);
+
+    /**
+     * Lists storage container URLs with shared access signatures (SAS) for uploading and downloading Asset content. The
+     * signatures are derived from the storage account keys.
+     *
+     * @param parameters The request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Asset Storage container SAS URLs.
+     */
+    AssetContainerSas listContainerSas(ListContainerSasInput parameters);
+
+    /**
+     * Lists storage container URLs with shared access signatures (SAS) for uploading and downloading Asset content. The
+     * signatures are derived from the storage account keys.
+     *
+     * @param parameters The request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Asset Storage container SAS URLs.
+     */
+    Response<AssetContainerSas> listContainerSasWithResponse(ListContainerSasInput parameters, Context context);
+
+    /**
+     * Gets the Asset storage encryption keys used to decrypt content created by version 2 of the Media Services API.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Asset storage encryption keys used to decrypt content created by version 2 of the Media Services API.
+     */
+    StorageEncryptedAssetDecryptionData getEncryptionKey();
+
+    /**
+     * Gets the Asset storage encryption keys used to decrypt content created by version 2 of the Media Services API.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Asset storage encryption keys used to decrypt content created by version 2 of the Media Services API.
+     */
+    Response<StorageEncryptedAssetDecryptionData> getEncryptionKeyWithResponse(Context context);
+
+    /**
+     * Lists Streaming Locators which are associated with this asset.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Streaming Locators associated with this Asset.
+     */
+    ListStreamingLocatorsResponse listStreamingLocators();
+
+    /**
+     * Lists Streaming Locators which are associated with this asset.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Streaming Locators associated with this Asset.
+     */
+    Response<ListStreamingLocatorsResponse> listStreamingLocatorsWithResponse(Context context);
 }

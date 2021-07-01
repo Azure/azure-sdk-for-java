@@ -9,7 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.loganalytics.LogAnalyticsManager;
 import com.azure.resourcemanager.loganalytics.fluent.ClustersClient;
 import com.azure.resourcemanager.loganalytics.fluent.models.ClusterInner;
 import com.azure.resourcemanager.loganalytics.models.Cluster;
@@ -21,31 +20,32 @@ public final class ClustersImpl implements Clusters {
 
     private final ClustersClient innerClient;
 
-    private final LogAnalyticsManager serviceManager;
+    private final com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager;
 
-    public ClustersImpl(ClustersClient innerClient, LogAnalyticsManager serviceManager) {
+    public ClustersImpl(
+        ClustersClient innerClient, com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<Cluster> listByResourceGroup(String resourceGroupName) {
         PagedIterable<ClusterInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return inner.mapPage(inner1 -> new ClusterImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new ClusterImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Cluster> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<ClusterInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return inner.mapPage(inner1 -> new ClusterImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new ClusterImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Cluster> list() {
         PagedIterable<ClusterInner> inner = this.serviceClient().list();
-        return inner.mapPage(inner1 -> new ClusterImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new ClusterImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Cluster> list(Context context) {
         PagedIterable<ClusterInner> inner = this.serviceClient().list(context);
-        return inner.mapPage(inner1 -> new ClusterImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new ClusterImpl(inner1, this.manager()));
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String clusterName) {
@@ -160,7 +160,7 @@ public final class ClustersImpl implements Clusters {
         return this.innerClient;
     }
 
-    private LogAnalyticsManager manager() {
+    private com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager() {
         return this.serviceManager;
     }
 

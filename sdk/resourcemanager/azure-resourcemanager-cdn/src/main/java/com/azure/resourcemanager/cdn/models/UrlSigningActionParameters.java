@@ -18,15 +18,8 @@ public final class UrlSigningActionParameters {
     /*
      * The @odata.type property.
      */
-    @JsonProperty(value = "@odata.type")
-    private UrlSigningActionParametersOdataType odataType;
-
-    /*
-     * Id reference of the key to be used to verify the hash and should be
-     * defined in UrlSigningKeys
-     */
-    @JsonProperty(value = "keyId", required = true)
-    private String keyId;
+    @JsonProperty(value = "@odata.type", required = true)
+    private String odataType;
 
     /*
      * Algorithm to use for URL signing
@@ -41,19 +34,17 @@ public final class UrlSigningActionParameters {
     @JsonProperty(value = "parameterNameOverride")
     private List<UrlSigningParamIdentifier> parameterNameOverride;
 
-    /*
-     * Match values to match against. Supports CIDR ranges (both IPv4 and
-     * IPv6).
-     */
-    @JsonProperty(value = "ipSubnets")
-    private List<String> ipSubnets;
+    /** Creates an instance of UrlSigningActionParameters class. */
+    public UrlSigningActionParameters() {
+        odataType = "#Microsoft.Azure.Cdn.Models.DeliveryRuleUrlSigningActionParameters";
+    }
 
     /**
      * Get the odataType property: The @odata.type property.
      *
      * @return the odataType value.
      */
-    public UrlSigningActionParametersOdataType odataType() {
+    public String odataType() {
         return this.odataType;
     }
 
@@ -63,30 +54,8 @@ public final class UrlSigningActionParameters {
      * @param odataType the odataType value to set.
      * @return the UrlSigningActionParameters object itself.
      */
-    public UrlSigningActionParameters withOdataType(UrlSigningActionParametersOdataType odataType) {
+    public UrlSigningActionParameters withOdataType(String odataType) {
         this.odataType = odataType;
-        return this;
-    }
-
-    /**
-     * Get the keyId property: Id reference of the key to be used to verify the hash and should be defined in
-     * UrlSigningKeys.
-     *
-     * @return the keyId value.
-     */
-    public String keyId() {
-        return this.keyId;
-    }
-
-    /**
-     * Set the keyId property: Id reference of the key to be used to verify the hash and should be defined in
-     * UrlSigningKeys.
-     *
-     * @param keyId the keyId value to set.
-     * @return the UrlSigningActionParameters object itself.
-     */
-    public UrlSigningActionParameters withKeyId(String keyId) {
-        this.keyId = keyId;
         return this;
     }
 
@@ -133,37 +102,11 @@ public final class UrlSigningActionParameters {
     }
 
     /**
-     * Get the ipSubnets property: Match values to match against. Supports CIDR ranges (both IPv4 and IPv6).
-     *
-     * @return the ipSubnets value.
-     */
-    public List<String> ipSubnets() {
-        return this.ipSubnets;
-    }
-
-    /**
-     * Set the ipSubnets property: Match values to match against. Supports CIDR ranges (both IPv4 and IPv6).
-     *
-     * @param ipSubnets the ipSubnets value to set.
-     * @return the UrlSigningActionParameters object itself.
-     */
-    public UrlSigningActionParameters withIpSubnets(List<String> ipSubnets) {
-        this.ipSubnets = ipSubnets;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (keyId() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property keyId in model UrlSigningActionParameters"));
-        }
         if (parameterNameOverride() != null) {
             parameterNameOverride().forEach(e -> e.validate());
         }

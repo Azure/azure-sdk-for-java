@@ -1,12 +1,10 @@
 trigger: none
 
 stages:
-  - template: ../../eng/pipelines/templates/stages/archetype-sdk-tests.yml
+  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
       ServiceDirectory: appconfiguration
       Artifacts:
         - name: azure-sdk-template
           groupId: com.azure
           safeName: azuresdktemplate
-      EnvVars:
-        AZURE_TEST_MODE: RECORD

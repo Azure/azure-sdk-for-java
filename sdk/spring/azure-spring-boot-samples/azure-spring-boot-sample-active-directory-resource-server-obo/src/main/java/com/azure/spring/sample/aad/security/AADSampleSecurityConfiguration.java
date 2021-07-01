@@ -3,21 +3,21 @@
 
 package com.azure.spring.sample.aad.security;
 
+import com.azure.spring.aad.webapi.AADResourceServerWebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
-public class AADSampleSecurityConfiguration extends WebSecurityConfigurerAdapter {
+public class AADSampleSecurityConfiguration extends AADResourceServerWebSecurityConfigurerAdapter {
 
+    /**
+     * Add configuration logic as needed.
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests()
-            .anyRequest().authenticated()
-            .and()
-            .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
+        super.configure(http);
+        http.authorizeRequests((requests) -> requests.anyRequest().authenticated());
     }
 }

@@ -9,7 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.mysql.MySqlManager;
 import com.azure.resourcemanager.mysql.fluent.WaitStatisticsClient;
 import com.azure.resourcemanager.mysql.fluent.models.WaitStatisticInner;
 import com.azure.resourcemanager.mysql.models.WaitStatistic;
@@ -22,9 +21,10 @@ public final class WaitStatisticsImpl implements WaitStatistics {
 
     private final WaitStatisticsClient innerClient;
 
-    private final MySqlManager serviceManager;
+    private final com.azure.resourcemanager.mysql.MySqlManager serviceManager;
 
-    public WaitStatisticsImpl(WaitStatisticsClient innerClient, MySqlManager serviceManager) {
+    public WaitStatisticsImpl(
+        WaitStatisticsClient innerClient, com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -57,21 +57,21 @@ public final class WaitStatisticsImpl implements WaitStatistics {
         String resourceGroupName, String serverName, WaitStatisticsInput parameters) {
         PagedIterable<WaitStatisticInner> inner =
             this.serviceClient().listByServer(resourceGroupName, serverName, parameters);
-        return inner.mapPage(inner1 -> new WaitStatisticImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new WaitStatisticImpl(inner1, this.manager()));
     }
 
     public PagedIterable<WaitStatistic> listByServer(
         String resourceGroupName, String serverName, WaitStatisticsInput parameters, Context context) {
         PagedIterable<WaitStatisticInner> inner =
             this.serviceClient().listByServer(resourceGroupName, serverName, parameters, context);
-        return inner.mapPage(inner1 -> new WaitStatisticImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new WaitStatisticImpl(inner1, this.manager()));
     }
 
     private WaitStatisticsClient serviceClient() {
         return this.innerClient;
     }
 
-    private MySqlManager manager() {
+    private com.azure.resourcemanager.mysql.MySqlManager manager() {
         return this.serviceManager;
     }
 }

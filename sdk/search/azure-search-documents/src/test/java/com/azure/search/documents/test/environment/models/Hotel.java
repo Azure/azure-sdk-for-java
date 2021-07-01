@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.test.environment.models;
 
+import com.azure.core.models.GeoPoint;
 import com.azure.search.documents.indexes.FieldBuilderIgnore;
 import com.azure.search.documents.indexes.SearchableField;
 import com.azure.search.documents.indexes.SimpleField;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@SuppressWarnings("UseOfObsoleteDateTimeApi")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Hotel {
     @SimpleField(isKey = true, isSortable = true)
@@ -50,9 +52,8 @@ public class Hotel {
     @JsonProperty(value = "Rating")
     private Integer rating;
 
-//    @SimpleFieldProperty
-//    @JsonIgnoreProperties(ignoreUnknown = true)
-//    private PointGeometry location;
+    @JsonProperty(value = "Location")
+    private GeoPoint location;
 
     @JsonProperty(value = "Address")
     private HotelAddress address;
@@ -144,6 +145,15 @@ public class Hotel {
 
     public Hotel lastRenovationDate(Date lastRenovationDate) {
         this.lastRenovationDate = lastRenovationDate;
+        return this;
+    }
+
+    public GeoPoint location() {
+        return location;
+    }
+
+    public Hotel location(GeoPoint location) {
+        this.location = location;
         return this;
     }
 

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.postgresql.implementation;
 
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.postgresql.PostgreSqlManager;
 import com.azure.resourcemanager.postgresql.fluent.models.ServerSecurityAlertPolicyInner;
 import com.azure.resourcemanager.postgresql.models.SecurityAlertPolicyName;
 import com.azure.resourcemanager.postgresql.models.ServerSecurityAlertPolicy;
@@ -17,7 +16,7 @@ public final class ServerSecurityAlertPolicyImpl
     implements ServerSecurityAlertPolicy, ServerSecurityAlertPolicy.Definition, ServerSecurityAlertPolicy.Update {
     private ServerSecurityAlertPolicyInner innerObject;
 
-    private final PostgreSqlManager serviceManager;
+    private final com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -73,7 +72,7 @@ public final class ServerSecurityAlertPolicyImpl
         return this.innerObject;
     }
 
-    private PostgreSqlManager manager() {
+    private com.azure.resourcemanager.postgresql.PostgreSqlManager manager() {
         return this.serviceManager;
     }
 
@@ -108,7 +107,8 @@ public final class ServerSecurityAlertPolicyImpl
         return this;
     }
 
-    ServerSecurityAlertPolicyImpl(SecurityAlertPolicyName name, PostgreSqlManager serviceManager) {
+    ServerSecurityAlertPolicyImpl(
+        SecurityAlertPolicyName name, com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager) {
         this.innerObject = new ServerSecurityAlertPolicyInner();
         this.serviceManager = serviceManager;
         this.securityAlertPolicyName = name;
@@ -137,7 +137,9 @@ public final class ServerSecurityAlertPolicyImpl
         return this;
     }
 
-    ServerSecurityAlertPolicyImpl(ServerSecurityAlertPolicyInner innerObject, PostgreSqlManager serviceManager) {
+    ServerSecurityAlertPolicyImpl(
+        ServerSecurityAlertPolicyInner innerObject,
+        com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");

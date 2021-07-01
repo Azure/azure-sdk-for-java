@@ -4,38 +4,44 @@
 
 package com.azure.communication.chat.models;
 
+import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
 
-/** Content of a chat message. */
+
+/**
+ * Content of a chat message.
+ */
 @Fluent
 public final class ChatMessageContent {
-    /*
-     * Chat message content for messages of types text or html.
-     */
+
     @JsonProperty(value = "message")
     private String message;
 
-    /*
-     * Chat message content for messages of type topicUpdated.
-     */
     @JsonProperty(value = "topic")
     private String topic;
 
-    /*
-     * Chat message content for messages of types participantAdded or
-     * participantRemoved.
-     */
     @JsonProperty(value = "participants")
-    private List<ChatParticipant> participants;
+    private Iterable<ChatParticipant> participants;
 
-    /*
-     * Chat message content for messages of types participantAdded or
-     * participantRemoved.
+    @JsonProperty(value = "initiatorCommunicationIdentifier")
+    private CommunicationIdentifier initiator;
+
+    /**
+     * Constructs a new ChatMessageContent
+     * @param message The message
+     * @param topic The topic
+     * @param participants The participants
+     * @param initiator The initiator
      */
-    @JsonProperty(value = "initiator")
-    private String initiator;
+    public ChatMessageContent(
+        String message, String topic, Iterable<ChatParticipant> participants, CommunicationIdentifier initiator) {
+
+        this.message = message;
+        this.topic = topic;
+        this.participants = participants;
+        this.initiator = initiator;
+    }
 
     /**
      * Get the message property: Chat message content for messages of types text or html.
@@ -44,17 +50,6 @@ public final class ChatMessageContent {
      */
     public String getMessage() {
         return this.message;
-    }
-
-    /**
-     * Set the message property: Chat message content for messages of types text or html.
-     *
-     * @param message the message value to set.
-     * @return the ChatMessageContent object itself.
-     */
-    public ChatMessageContent setMessage(String message) {
-        this.message = message;
-        return this;
     }
 
     /**
@@ -67,34 +62,12 @@ public final class ChatMessageContent {
     }
 
     /**
-     * Set the topic property: Chat message content for messages of type topicUpdated.
-     *
-     * @param topic the topic value to set.
-     * @return the ChatMessageContent object itself.
-     */
-    public ChatMessageContent setTopic(String topic) {
-        this.topic = topic;
-        return this;
-    }
-
-    /**
      * Get the participants property: Chat message content for messages of types participantAdded or participantRemoved.
      *
      * @return the participants value.
      */
-    public List<ChatParticipant> getParticipants() {
+    public Iterable<ChatParticipant> getParticipants() {
         return this.participants;
-    }
-
-    /**
-     * Set the participants property: Chat message content for messages of types participantAdded or participantRemoved.
-     *
-     * @param participants the participants value to set.
-     * @return the ChatMessageContent object itself.
-     */
-    public ChatMessageContent setParticipants(List<ChatParticipant> participants) {
-        this.participants = participants;
-        return this;
     }
 
     /**
@@ -102,18 +75,8 @@ public final class ChatMessageContent {
      *
      * @return the initiator value.
      */
-    public String getInitiator() {
+    public CommunicationIdentifier getInitiator() {
         return this.initiator;
     }
 
-    /**
-     * Set the initiator property: Chat message content for messages of types participantAdded or participantRemoved.
-     *
-     * @param initiator the initiator value to set.
-     * @return the ChatMessageContent object itself.
-     */
-    public ChatMessageContent setInitiator(String initiator) {
-        this.initiator = initiator;
-        return this;
-    }
 }

@@ -7,23 +7,15 @@ package com.azure.storage.blob.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Defines values for PathRenameMode.
- */
+/** Defines values for PathRenameMode. */
 public enum PathRenameMode {
-    /**
-     * Enum value legacy.
-     */
+    /** Enum value legacy. */
     LEGACY("legacy"),
 
-    /**
-     * Enum value posix.
-     */
+    /** Enum value posix. */
     POSIX("posix");
 
-    /**
-     * The actual serialized value for a PathRenameMode instance.
-     */
+    /** The actual serialized value for a PathRenameMode instance. */
     private final String value;
 
     PathRenameMode(String value) {

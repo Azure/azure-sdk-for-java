@@ -12,7 +12,6 @@ import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
 import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
-import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -21,11 +20,10 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.serializer.SerializerFactory;
-import com.azure.core.util.Context;
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.AppServiceManager;
+import com.azure.resourcemanager.appservice.fluent.models.HostKeysInner;
 import com.azure.resourcemanager.appservice.fluent.models.SiteConfigResourceInner;
 import com.azure.resourcemanager.appservice.fluent.models.SiteInner;
 import com.azure.resourcemanager.appservice.fluent.models.SiteLogsConfigInner;
@@ -83,11 +81,9 @@ class FunctionAppImpl
     private Creatable<StorageAccount> storageAccountCreatable;
     private StorageAccount storageAccountToSet;
     private StorageAccount currentStorageAccount;
-    private final FunctionAppKeyService functionAppKeyService;
     private FunctionService functionService;
     private FunctionDeploymentSlots deploymentSlots;
 
-    private final String functionAppKeyServiceHost;
     private String functionServiceHost;
 
     FunctionAppImpl(
@@ -97,8 +93,6 @@ class FunctionAppImpl
         SiteLogsConfigInner logConfig,
         AppServiceManager manager) {
         super(name, innerObject, siteConfig, logConfig, manager);
-        functionAppKeyServiceHost = manager.environment().getResourceManagerEndpoint();
-        functionAppKeyService = RestProxy.create(FunctionAppKeyService.class, manager.httpPipeline());
         if (!isInCreateMode()) {
             initializeFunctionService();
         }
@@ -428,22 +422,8 @@ class FunctionAppImpl
 
     @Override
     public Mono<String> getMasterKeyAsync() {
-        Context context1 = (this.manager().serviceClient() instanceof WebSiteManagementClientImpl)
-            ? ((WebSiteManagementClientImpl) this.manager().serviceClient()).getContext()
-            : Context.NONE;
-        return FluxUtil
-            .withContext(
-                context ->
-                    functionAppKeyService
-                        .listKeys(
-                            functionAppKeyServiceHost,
-                            resourceGroupName(),
-                            name(),
-                            manager().subscriptionId(),
-                            "2019-08-01"))
-            .map(ListKeysResult::getMasterKey)
-            .subscriberContext(
-                context -> context.putAll(FluxUtil.toReactorContext(context1)));
+        return this.manager().serviceClient().getWebApps().listHostKeysAsync(resourceGroupName(), name())
+            .map(HostKeysInner::masterKey);
     }
 
     @Override
@@ -619,39 +599,6 @@ class FunctionAppImpl
             initializeFunctionService();
         }
         return super.afterPostRunAsync(isGroupFaulted);
-    }
-
-    private static class ListKeysResult {
-        @JsonProperty("masterKey")
-        private String masterKey;
-
-        @JsonProperty("functionKeys")
-        private Map<String, String> functionKeys;
-
-        @JsonProperty("systemKeys")
-        private Map<String, String> systemKeys;
-
-        public String getMasterKey() {
-            return masterKey;
-        }
-    }
-
-    @Host("{$host}")
-    @ServiceInterface(name = "FunctionKeyService")
-    private interface FunctionAppKeyService {
-        @Headers({
-            "Accept: application/json",
-            "Content-Type: application/json; charset=utf-8"
-        })
-        @Post(
-            "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}"
-                + "/host/default/listkeys")
-        Mono<ListKeysResult> listKeys(
-            @HostParam("$host") String host,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion);
     }
 
     @Host("{$host}")

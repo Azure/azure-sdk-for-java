@@ -9,7 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.mediaservices.MediaservicesManager;
 import com.azure.resourcemanager.mediaservices.fluent.LiveEventsClient;
 import com.azure.resourcemanager.mediaservices.fluent.models.LiveEventInner;
 import com.azure.resourcemanager.mediaservices.models.LiveEvent;
@@ -22,21 +21,22 @@ public final class LiveEventsImpl implements LiveEvents {
 
     private final LiveEventsClient innerClient;
 
-    private final MediaservicesManager serviceManager;
+    private final com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager;
 
-    public LiveEventsImpl(LiveEventsClient innerClient, MediaservicesManager serviceManager) {
+    public LiveEventsImpl(
+        LiveEventsClient innerClient, com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<LiveEvent> list(String resourceGroupName, String accountName) {
         PagedIterable<LiveEventInner> inner = this.serviceClient().list(resourceGroupName, accountName);
-        return inner.mapPage(inner1 -> new LiveEventImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new LiveEventImpl(inner1, this.manager()));
     }
 
     public PagedIterable<LiveEvent> list(String resourceGroupName, String accountName, Context context) {
         PagedIterable<LiveEventInner> inner = this.serviceClient().list(resourceGroupName, accountName, context);
-        return inner.mapPage(inner1 -> new LiveEventImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new LiveEventImpl(inner1, this.manager()));
     }
 
     public LiveEvent get(String resourceGroupName, String accountName, String liveEventName) {
@@ -217,7 +217,7 @@ public final class LiveEventsImpl implements LiveEvents {
         return this.innerClient;
     }
 
-    private MediaservicesManager manager() {
+    private com.azure.resourcemanager.mediaservices.MediaServicesManager manager() {
         return this.serviceManager;
     }
 

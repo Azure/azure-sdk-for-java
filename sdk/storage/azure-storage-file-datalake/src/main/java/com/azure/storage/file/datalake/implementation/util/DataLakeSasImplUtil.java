@@ -3,6 +3,7 @@
 
 package com.azure.storage.file.datalake.implementation.util;
 
+import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -44,9 +45,10 @@ public class DataLakeSasImplUtil {
      */
     private static final String SAS_CONTAINER_CONSTANT = "c";
 
-    private final ClientLogger logger = new ClientLogger(DataLakeSasImplUtil.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DataLakeSasImplUtil.class);
 
-    private static String version = DataLakeServiceVersion.getLatest().getVersion();
+    private static final String VERSION = Configuration.getGlobalConfiguration()
+        .get(Constants.PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION, DataLakeServiceVersion.getLatest().getVersion());
 
     private SasProtocol protocol;
 
@@ -141,7 +143,7 @@ public class DataLakeSasImplUtil {
         // Signature is generated on the un-url-encoded values.
         final String canonicalName = getCanonicalName(storageSharedKeyCredentials.getAccountName());
         final String stringToSign = stringToSign(canonicalName);
-        StorageImplUtils.logStringToSign(logger, stringToSign, context);
+        StorageImplUtils.logStringToSign(LOGGER, stringToSign, context);
         final String signature = storageSharedKeyCredentials.computeHmac256(stringToSign);
 
         return encode(null /* userDelegationKey */, signature);
@@ -164,7 +166,7 @@ public class DataLakeSasImplUtil {
         // Signature is generated on the un-url-encoded values.
         final String canonicalName = getCanonicalName(accountName);
         final String stringToSign = stringToSign(delegationKey, canonicalName);
-        StorageImplUtils.logStringToSign(logger, stringToSign, context);
+        StorageImplUtils.logStringToSign(LOGGER, stringToSign, context);
         String signature = StorageImplUtils.computeHMac256(delegationKey.getValue(), stringToSign);
 
         return encode(delegationKey, signature);
@@ -183,7 +185,7 @@ public class DataLakeSasImplUtil {
          */
         StringBuilder sb = new StringBuilder();
 
-        tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SERVICE_VERSION, version);
+        tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SERVICE_VERSION, VERSION);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_PROTOCOL, this.protocol);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_START_TIME, formatQueryParameterDate(this.startTime));
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_EXPIRY_TIME, formatQueryParameterDate(this.expiryTime));
@@ -242,12 +244,12 @@ public class DataLakeSasImplUtil {
      *
      * Taken from:
      * https://github.com/Azure/azure-storage-blob-go/blob/master/azblob/sas_service.go#L33
-     * https://github.com/Azure/azure-sdk-for-net/blob/master/sdk/storage/Azure.Storage.Blobs/src/Sas/BlobSasBuilder.cs
+     * https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/storage/Azure.Storage.Blobs/src/Sas/BlobSasBuilder.cs
      */
     private void ensureState() {
         if (identifier == null) {
             if (expiryTime == null || permissions == null) {
-                throw logger.logExceptionAsError(new IllegalStateException("If identifier is not set, expiry time "
+                throw LOGGER.logExceptionAsError(new IllegalStateException("If identifier is not set, expiry time "
                     + "and permissions must be set"));
             }
         }
@@ -274,13 +276,13 @@ public class DataLakeSasImplUtil {
                     break;
                 default:
                     // We won't reparse the permissions if we don't know the type.
-                    logger.info("Not re-parsing permissions. Resource type '{}' is unknown.", resource);
+                    LOGGER.info("Not re-parsing permissions. Resource type '{}' is unknown.", resource);
                     break;
             }
         }
 
         if (this.authorizedAadObjectId != null && this.unauthorizedAadObjectId != null) {
-            throw logger.logExceptionAsError(new IllegalStateException("agentObjectId and preauthorizedAgentObjectId "
+            throw LOGGER.logExceptionAsError(new IllegalStateException("agentObjectId and preauthorizedAgentObjectId "
                 + "can not both be set."));
         }
     }
@@ -305,7 +307,7 @@ public class DataLakeSasImplUtil {
             this.identifier == null ? "" : this.identifier,
             this.sasIpRange == null ? "" : this.sasIpRange.toString(),
             this.protocol == null ? "" : this.protocol.toString(),
-            version,
+            VERSION,
             resource,
             "", /* Version segment. */
             this.cacheControl == null ? "" : this.cacheControl,
@@ -317,30 +319,55 @@ public class DataLakeSasImplUtil {
     }
 
     private String stringToSign(final UserDelegationKey key, String canonicalName) {
-        return String.join("\n",
-            this.permissions == null ? "" : this.permissions,
-            this.startTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
-            this.expiryTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
-            canonicalName,
-            key.getSignedObjectId() == null ? "" : key.getSignedObjectId(),
-            key.getSignedTenantId() == null ? "" : key.getSignedTenantId(),
-            key.getSignedStart() == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(key.getSignedStart()),
-            key.getSignedExpiry() == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(key.getSignedExpiry()),
-            key.getSignedService() == null ? "" : key.getSignedService(),
-            key.getSignedVersion() == null ? "" : key.getSignedVersion(),
-            this.authorizedAadObjectId == null ? "" : this.authorizedAadObjectId,
-            this.unauthorizedAadObjectId == null ? "" : this.unauthorizedAadObjectId,
-            this.correlationId == null ? "" : this.correlationId,
-            this.sasIpRange == null ? "" : this.sasIpRange.toString(),
-            this.protocol == null ? "" : this.protocol.toString(),
-            version,
-            resource,
-            "", /* Version segment. */
-            this.cacheControl == null ? "" : this.cacheControl,
-            this.contentDisposition == null ? "" : this.contentDisposition,
-            this.contentEncoding == null ? "" : this.contentEncoding,
-            this.contentLanguage == null ? "" : this.contentLanguage,
-            this.contentType == null ? "" : this.contentType
-        );
+        if (VERSION.compareTo(DataLakeServiceVersion.V2019_12_12.getVersion()) <= 0) {
+            return String.join("\n",
+                this.permissions == null ? "" : this.permissions,
+                this.startTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
+                this.expiryTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
+                canonicalName,
+                key.getSignedObjectId() == null ? "" : key.getSignedObjectId(),
+                key.getSignedTenantId() == null ? "" : key.getSignedTenantId(),
+                key.getSignedStart() == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(key.getSignedStart()),
+                key.getSignedExpiry() == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(key.getSignedExpiry()),
+                key.getSignedService() == null ? "" : key.getSignedService(),
+                key.getSignedVersion() == null ? "" : key.getSignedVersion(),
+                this.sasIpRange == null ? "" : this.sasIpRange.toString(),
+                this.protocol == null ? "" : this.protocol.toString(),
+                VERSION,
+                resource,
+                "", /* Version segment. */
+                this.cacheControl == null ? "" : this.cacheControl,
+                this.contentDisposition == null ? "" : this.contentDisposition,
+                this.contentEncoding == null ? "" : this.contentEncoding,
+                this.contentLanguage == null ? "" : this.contentLanguage,
+                this.contentType == null ? "" : this.contentType
+            );
+        } else {
+            return String.join("\n",
+                this.permissions == null ? "" : this.permissions,
+                this.startTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
+                this.expiryTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
+                canonicalName,
+                key.getSignedObjectId() == null ? "" : key.getSignedObjectId(),
+                key.getSignedTenantId() == null ? "" : key.getSignedTenantId(),
+                key.getSignedStart() == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(key.getSignedStart()),
+                key.getSignedExpiry() == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(key.getSignedExpiry()),
+                key.getSignedService() == null ? "" : key.getSignedService(),
+                key.getSignedVersion() == null ? "" : key.getSignedVersion(),
+                this.authorizedAadObjectId == null ? "" : this.authorizedAadObjectId,
+                this.unauthorizedAadObjectId == null ? "" : this.unauthorizedAadObjectId,
+                this.correlationId == null ? "" : this.correlationId,
+                this.sasIpRange == null ? "" : this.sasIpRange.toString(),
+                this.protocol == null ? "" : this.protocol.toString(),
+                VERSION,
+                resource,
+                "", /* Version segment. */
+                this.cacheControl == null ? "" : this.cacheControl,
+                this.contentDisposition == null ? "" : this.contentDisposition,
+                this.contentEncoding == null ? "" : this.contentEncoding,
+                this.contentLanguage == null ? "" : this.contentLanguage,
+                this.contentType == null ? "" : this.contentType
+            );
+        }
     }
 }

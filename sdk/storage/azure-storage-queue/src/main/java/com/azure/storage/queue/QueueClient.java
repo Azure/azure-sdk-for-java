@@ -8,6 +8,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -67,6 +68,15 @@ public final class QueueClient {
      */
     public QueueServiceVersion getServiceVersion() {
         return client.getServiceVersion();
+    }
+
+    /**
+     * Gets the message encoding the client is using.
+     *
+     * @return the message encoding the client is using.
+     */
+    public QueueMessageEncoding getMessageEncoding() {
+        return client.getMessageEncoding();
     }
 
     /**
@@ -411,6 +421,29 @@ public final class QueueClient {
     }
 
     /**
+     * Sends a message that has a time-to-live of 7 days and is instantly visible.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Sends a message of "Hello, Azure"</p>
+     *
+     * {@codesnippet com.azure.storage.queue.queueClient.sendMessage#BinaryData}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-message">Azure Docs</a>.</p>
+     *
+     * @param message Message content
+     * @return A {@link SendMessageResult} value that contains the {@link SendMessageResult#getMessageId() messageId}
+     * and {@link SendMessageResult#getPopReceipt() popReceipt} that are used to interact with the message
+     * and other metadata about the enqueued message.
+     * @throws QueueStorageException If the queue doesn't exist
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SendMessageResult sendMessage(BinaryData message) {
+        return sendMessageWithResponse(message, null, null, null, Context.NONE).getValue();
+    }
+
+    /**
      * Sends a message with a given time-to-live and a timeout period where the message is invisible in the queue.
      *
      * <p><strong>Code Samples</strong></p>
@@ -431,7 +464,8 @@ public final class QueueClient {
      * unset the value will default to 0 and the message will be instantly visible. The timeout must be between 0
      * seconds and 7 days.
      * @param timeToLive Optional. How long the message will stay alive in the queue. If unset the value will default to
-     * 7 days, if -1 is passed the message will not expire. The time to live must be -1 or any positive number.
+     * 7 days, if {@code Duration.ofSeconds(-1)} is passed the message will not expire.
+     * The time to live must be {@code Duration.ofSeconds(-1)} or any positive number of seconds.
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -446,7 +480,49 @@ public final class QueueClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SendMessageResult> sendMessageWithResponse(String messageText, Duration visibilityTimeout,
         Duration timeToLive, Duration timeout, Context context) {
-        Mono<Response<SendMessageResult>> response = client.sendMessageWithResponse(messageText,
+        Mono<Response<SendMessageResult>> response = client.sendMessageWithResponse(BinaryData.fromString(messageText),
+            visibilityTimeout, timeToLive, context);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+    }
+
+    /**
+     * Sends a message with a given time-to-live and a timeout period where the message is invisible in the queue.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Add a message of "Hello, Azure" that has a timeout of 5 seconds</p>
+     *
+     * {@codesnippet com.azure.storage.queue.QueueClient.sendMessageWithResponse#BinaryData-Duration-Duration-Duration-Context1}
+     *
+     * <p>Add a message of "Goodbye, Azure" that has a time to live of 5 seconds</p>
+     *
+     * {@codesnippet com.azure.storage.queue.QueueClient.sendMessageWithResponse#BinaryData-Duration-Duration-Duration-Context2}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-message">Azure Docs</a>.</p>
+     *
+     * @param message Message content
+     * @param visibilityTimeout Optional. The timeout period for how long the message is invisible in the queue. If
+     * unset the value will default to 0 and the message will be instantly visible. The timeout must be between 0
+     * seconds and 7 days.
+     * @param timeToLive Optional. How long the message will stay alive in the queue. If unset the value will default to
+     * 7 days, if {@code Duration.ofSeconds(-1)} is passed the message will not expire.
+     * The time to live must be {@code Duration.ofSeconds(-1)} or any positive number of seconds.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing the {@link SendMessageResult} value that contains the
+     * {@link SendMessageResult#getMessageId() messageId} and
+     * {@link SendMessageResult#getPopReceipt() popReceipt} that are used to
+     * interact with the message and other metadata about the enqueued message.
+     * @throws QueueStorageException If the queue doesn't exist or the {@code visibilityTimeout} or {@code timeToLive}
+     * are outside of the allowed limits.
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SendMessageResult> sendMessageWithResponse(BinaryData message, Duration visibilityTimeout,
+                                                               Duration timeToLive, Duration timeout, Context context) {
+        Mono<Response<SendMessageResult>> response = client.sendMessageWithResponse(message,
             visibilityTimeout, timeToLive, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }

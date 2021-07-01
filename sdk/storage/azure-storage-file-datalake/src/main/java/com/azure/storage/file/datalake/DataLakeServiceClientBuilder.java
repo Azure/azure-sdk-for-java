@@ -22,6 +22,7 @@ import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.file.datalake.implementation.util.BuilderHelper;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.TransformUtils;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -74,6 +75,7 @@ public class DataLakeServiceClientBuilder {
     public DataLakeServiceClientBuilder() {
         logOptions = getDefaultHttpLogOptions();
         blobServiceClientBuilder = new BlobServiceClientBuilder();
+        blobServiceClientBuilder.addPolicy(BuilderHelper.getBlobUserAgentModificationPolicy());
     }
 
     /**

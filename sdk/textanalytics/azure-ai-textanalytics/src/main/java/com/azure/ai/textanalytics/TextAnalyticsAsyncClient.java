@@ -4,9 +4,9 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
-import com.azure.ai.textanalytics.models.AnalyzeBatchActionsOperationDetail;
-import com.azure.ai.textanalytics.models.AnalyzeBatchActionsOptions;
-import com.azure.ai.textanalytics.models.AnalyzeBatchActionsResult;
+import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
+import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
+import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
@@ -22,7 +22,6 @@ import com.azure.ai.textanalytics.models.PiiEntityCollection;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
-import com.azure.ai.textanalytics.models.StringIndexType;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
@@ -84,7 +83,7 @@ public final class TextAnalyticsAsyncClient {
     final RecognizePiiEntityAsyncClient recognizePiiEntityAsyncClient;
     final RecognizeLinkedEntityAsyncClient recognizeLinkedEntityAsyncClient;
     final AnalyzeHealthcareEntityAsyncClient analyzeHealthcareEntityAsyncClient;
-    final AnalyzeBatchActionsAsyncClient analyzeBatchActionsAsyncClient;
+    final AnalyzeActionsAsyncClient analyzeActionsAsyncClient;
 
     /**
      * Create a {@link TextAnalyticsAsyncClient} that sends requests to the Text Analytics services's endpoint. Each
@@ -108,7 +107,7 @@ public final class TextAnalyticsAsyncClient {
         this.recognizePiiEntityAsyncClient = new RecognizePiiEntityAsyncClient(service);
         this.recognizeLinkedEntityAsyncClient = new RecognizeLinkedEntityAsyncClient(service);
         this.analyzeHealthcareEntityAsyncClient = new AnalyzeHealthcareEntityAsyncClient(service);
-        this.analyzeBatchActionsAsyncClient = new AnalyzeBatchActionsAsyncClient(service);
+        this.analyzeActionsAsyncClient = new AnalyzeActionsAsyncClient(service);
     }
 
     /**
@@ -921,7 +920,7 @@ public final class TextAnalyticsAsyncClient {
      * <p><strong>Code Sample</strong></p>
      * <p>Analyze the sentiment and mine the opinions for each sentence in a document with a provided language
      * representation and {@link AnalyzeSentimentOptions} options. Subscribes to the call asynchronously and prints
-     * out the sentiment and mined opinions details when a response is received.</p>
+     * out the sentiment and sentence opinions details when a response is received.</p>
      *
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentiment#String-String-AnalyzeSentimentOptions}
      *
@@ -1000,7 +999,7 @@ public final class TextAnalyticsAsyncClient {
      * <p><strong>Code Sample</strong></p>
      * <p>Analyze the sentiments and mine the opinions for each sentence in a list of documents with a provided language
      * representation and {@link AnalyzeSentimentOptions} options. Subscribes to the call asynchronously and prints out
-     * the sentiment and mined opinions details when a response is received.</p>
+     * the sentiment and sentence opinions details when a response is received.</p>
      *
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentimentBatch#Iterable-String-AnalyzeSentimentOptions}
      *
@@ -1070,7 +1069,7 @@ public final class TextAnalyticsAsyncClient {
      * <p><strong>Code Sample</strong></p>
      * <p>Analyze sentiment and mine the opinions for each sentence in a list of
      * {@link TextDocumentInput document} with provided {@link AnalyzeSentimentOptions} options. Subscribes to the call
-     * asynchronously and prints out the sentiment and mined opinions details when a response is received.</p>
+     * asynchronously and prints out the sentiment and sentence opinions details when a response is received.</p>
      *
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentimentBatch#Iterable-AnalyzeSentimentOptions}
      *
@@ -1172,7 +1171,7 @@ public final class TextAnalyticsAsyncClient {
      * See <a href="https://aka.ms/talangs">this</a> supported languages in Text Analytics API.
      *
      * <p><strong>Code Sample</strong></p>
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.beginAnalyzeBatchActions#Iterable-TextAnalyticsActions-String-AnalyzeBatchActionsOptions}
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.beginAnalyzeActions#Iterable-TextAnalyticsActions-String-AnalyzeActionsOptions}
      *
      * @param documents A list of documents to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
@@ -1182,22 +1181,21 @@ public final class TextAnalyticsAsyncClient {
      * inputs.
      * @param language The 2 letter ISO 639-1 representation of language for the documents. If not set, uses "en" for
      * English as default.
-     * @param options The additional configurable {@link AnalyzeBatchActionsOptions options} that may be passed when
+     * @param options The additional configurable {@link AnalyzeActionsOptions options} that may be passed when
      * analyzing a collection of actions.
      *
      * @return A {@link PollerFlux} that polls the analyze a collection of actions operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns a {@link PagedFlux} of
-     * {@link AnalyzeBatchActionsResult}.
+     * {@link AnalyzeActionsResult}.
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<AnalyzeBatchActionsOperationDetail, PagedFlux<AnalyzeBatchActionsResult>>
-        beginAnalyzeBatchActions(Iterable<String> documents, TextAnalyticsActions actions, String language,
-            AnalyzeBatchActionsOptions options) {
-        return beginAnalyzeBatchActions(
+    public PollerFlux<AnalyzeActionsOperationDetail, PagedFlux<AnalyzeActionsResult>> beginAnalyzeActions(
+        Iterable<String> documents, TextAnalyticsActions actions, String language, AnalyzeActionsOptions options) {
+        return beginAnalyzeActions(
             mapByIndex(documents, (index, value) -> {
                 final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
                 textDocumentInput.setLanguage(language);
@@ -1212,27 +1210,26 @@ public final class TextAnalyticsAsyncClient {
      * See <a href="https://aka.ms/talangs">this</a> supported languages in Text Analytics API.
      *
      * <p><strong>Code Sample</strong></p>
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.beginAnalyzeBatchActions#Iterable-TextAnalyticsActions-AnalyzeBatchActionsOptions}
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.beginAnalyzeActions#Iterable-TextAnalyticsActions-AnalyzeActionsOptions}
      *
      * @param documents A list of {@link TextDocumentInput documents} to be analyzed.
      * @param actions The {@link TextAnalyticsActions actions} that contains all actions to be executed.
      * An action is one task of execution, such as a single task of 'Key Phrases Extraction' on the given document
      * inputs.
-     * @param options The additional configurable {@link AnalyzeBatchActionsOptions options} that may be passed when
+     * @param options The additional configurable {@link AnalyzeActionsOptions options} that may be passed when
      * analyzing a collection of tasks.
      *
      * @return A {@link PollerFlux} that polls the analyze a collection of tasks operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns a {@link PagedFlux} of
-     * {@link AnalyzeBatchActionsResult}.
+     * {@link AnalyzeActionsResult}.
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<AnalyzeBatchActionsOperationDetail, PagedFlux<AnalyzeBatchActionsResult>>
-        beginAnalyzeBatchActions(Iterable<TextDocumentInput> documents, TextAnalyticsActions actions,
-            AnalyzeBatchActionsOptions options) {
-        return analyzeBatchActionsAsyncClient.beginAnalyzeBatchActions(documents, actions, options, Context.NONE);
+    public PollerFlux<AnalyzeActionsOperationDetail, PagedFlux<AnalyzeActionsResult>> beginAnalyzeActions(
+        Iterable<TextDocumentInput> documents, TextAnalyticsActions actions, AnalyzeActionsOptions options) {
+        return analyzeActionsAsyncClient.beginAnalyzeActions(documents, actions, options, Context.NONE);
     }
 }

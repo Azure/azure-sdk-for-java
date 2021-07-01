@@ -1,23 +1,23 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.queue.core.windows.net?prefix=QueueServiceAPITestsListEmptyQueues&include=&comp=list",
+    "Uri" : "https://REDACTED.queue.core.windows.net?comp=list&prefix=0189c0b0&include=",
     "Headers" : {
-      "x-ms-version" : "2019-12-12",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.6.0-beta.1 (11.0.6; Windows 10 10.0)",
-      "x-ms-client-request-id" : "ec0724bd-2e71-4a6a-83b4-a677c6cfc72c"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "24c492a8-e612-439a-8f69-0d5aa56eb0a4"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-ms-version" : "2019-12-12",
-      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-version" : "2020-06-12",
       "Cache-Control" : "no-cache",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "37a3b053-3003-009b-4604-3a8ca5000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://seanmcccanary.queue.core.windows.net/\"><Prefix>QueueServiceAPITestsListEmptyQueues</Prefix><Queues /><NextMarker /></EnumerationResults>",
-      "Date" : "Thu, 04 Jun 2020 00:06:52 GMT",
-      "x-ms-client-request-id" : "ec0724bd-2e71-4a6a-83b4-a677c6cfc72c",
+      "x-ms-request-id" : "af9d2432-5003-0046-7e09-41c2a6000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://kasobolcanarytest2.queue.core.windows.net/\"><Prefix>0189c0b0</Prefix><Queues /><NextMarker /></EnumerationResults>",
+      "x-ms-client-request-id" : "24c492a8-e612-439a-8f69-0d5aa56eb0a4",
+      "Date" : "Tue, 04 May 2021 17:18:36 GMT",
       "Content-Type" : "application/xml"
     },
     "Exception" : null

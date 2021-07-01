@@ -66,6 +66,13 @@ public interface StorageManagementClient {
     StorageAccountsClient getStorageAccounts();
 
     /**
+     * Gets the DeletedAccountsClient object to access its operations.
+     *
+     * @return the DeletedAccountsClient object.
+     */
+    DeletedAccountsClient getDeletedAccounts();
+
+    /**
      * Gets the UsagesClient object to access its operations.
      *
      * @return the UsagesClient object.
@@ -78,6 +85,13 @@ public interface StorageManagementClient {
      * @return the ManagementPoliciesClient object.
      */
     ManagementPoliciesClient getManagementPolicies();
+
+    /**
+     * Gets the BlobInventoryPoliciesClient object to access its operations.
+     *
+     * @return the BlobInventoryPoliciesClient object.
+     */
+    BlobInventoryPoliciesClient getBlobInventoryPolicies();
 
     /**
      * Gets the PrivateEndpointConnectionsClient object to access its operations.

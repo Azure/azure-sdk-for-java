@@ -8,10 +8,9 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 
-/**
- * Contains all response data for the appendBlockFromUrl operation.
- */
-public final class AppendBlobsAppendBlockFromUrlResponse extends ResponseBase<AppendBlobAppendBlockFromUrlHeaders, Void> {
+/** Contains all response data for the appendBlockFromUrl operation. */
+public final class AppendBlobsAppendBlockFromUrlResponse
+        extends ResponseBase<AppendBlobsAppendBlockFromUrlHeaders, Void> {
     /**
      * Creates an instance of AppendBlobsAppendBlockFromUrlResponse.
      *
@@ -21,7 +20,12 @@ public final class AppendBlobsAppendBlockFromUrlResponse extends ResponseBase<Ap
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public AppendBlobsAppendBlockFromUrlResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, AppendBlobAppendBlockFromUrlHeaders headers) {
+    public AppendBlobsAppendBlockFromUrlResponse(
+            HttpRequest request,
+            int statusCode,
+            HttpHeaders rawHeaders,
+            Void value,
+            AppendBlobsAppendBlockFromUrlHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 }

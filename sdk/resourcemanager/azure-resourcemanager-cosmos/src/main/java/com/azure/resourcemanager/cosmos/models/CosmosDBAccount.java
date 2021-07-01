@@ -9,6 +9,7 @@ import com.azure.resourcemanager.cosmos.fluent.models.DatabaseAccountGetResultsI
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsUpdatingPrivateEndpointConnection;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
@@ -22,8 +23,9 @@ import java.util.Map;
 @Fluent
 public interface CosmosDBAccount
     extends GroupableResource<CosmosManager, DatabaseAccountGetResultsInner>,
-        Refreshable<CosmosDBAccount>,
-        Updatable<CosmosDBAccount.Update> {
+    Refreshable<CosmosDBAccount>,
+    Updatable<CosmosDBAccount.Update>,
+    SupportsUpdatingPrivateEndpointConnection {
 
     /** @return indicates the type of database account */
     DatabaseAccountKind kind();

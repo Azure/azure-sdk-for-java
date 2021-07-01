@@ -17,6 +17,7 @@ import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.CopyStatusType;
+import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.options.PageBlobCopyIncrementalOptions;
 import com.azure.storage.blob.options.PageBlobCreateOptions;
 import com.azure.storage.blob.models.PageBlobItem;
@@ -24,6 +25,7 @@ import com.azure.storage.blob.models.PageBlobRequestConditions;
 import com.azure.storage.blob.models.PageList;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.SequenceNumberActionType;
+import com.azure.storage.blob.options.PageBlobUploadPagesFromUrlOptions;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -69,6 +71,29 @@ public final class PageBlobClient extends BlobClientBase {
     PageBlobClient(PageBlobAsyncClient pageBlobAsyncClient) {
         super(pageBlobAsyncClient);
         this.pageBlobAsyncClient = pageBlobAsyncClient;
+    }
+
+    /**
+     * Creates a new {@link PageBlobClient} with the specified {@code encryptionScope}.
+     *
+     * @param encryptionScope the encryption scope for the blob, pass {@code null} to use no encryption scope.
+     * @return a {@link PageBlobClient} with the specified {@code encryptionScope}.
+     */
+    @Override
+    public PageBlobClient getEncryptionScopeClient(String encryptionScope) {
+        return new PageBlobClient(pageBlobAsyncClient.getEncryptionScopeClient(encryptionScope));
+    }
+
+    /**
+     * Creates a new {@link PageBlobClient} with the specified {@code customerProvidedKey}.
+     *
+     * @param customerProvidedKey the {@link CustomerProvidedKey} for the blob,
+     * pass {@code null} to use no customer provided key.
+     * @return a {@link PageBlobClient} with the specified {@code customerProvidedKey}.
+     */
+    @Override
+    public PageBlobClient getCustomerProvidedKeyClient(CustomerProvidedKey customerProvidedKey) {
+        return new PageBlobClient(pageBlobAsyncClient.getCustomerProvidedKeyClient(customerProvidedKey));
     }
 
     /**
@@ -320,8 +345,33 @@ public final class PageBlobClient extends BlobClientBase {
         byte[] sourceContentMd5, PageBlobRequestConditions destRequestConditions,
         BlobRequestConditions sourceRequestConditions, Duration timeout, Context context) {
 
-        Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.uploadPagesFromUrlWithResponse(range, sourceUrl,
-            sourceOffset, sourceContentMd5, destRequestConditions, sourceRequestConditions, context);
+        return uploadPagesFromUrlWithResponse(
+            new PageBlobUploadPagesFromUrlOptions(range, sourceUrl).setSourceOffset(sourceOffset)
+                .setSourceContentMd5(sourceContentMd5).setDestinationRequestConditions(destRequestConditions)
+                .setSourceRequestConditions(sourceRequestConditions),
+            timeout, context);
+    }
+
+    /**
+     * Writes one or more pages from the source page blob to this page blob. The write size must be a multiple of 512.
+     * For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.uploadPagesFromUrlWithResponse#PageBlobUploadPagesFromUrlOptions-Duration-Context}
+     *
+     * @param options Parameters for the operation.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return The information of the uploaded pages.
+     * @throws IllegalArgumentException If {@code sourceUrl} is a malformed {@link URL}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<PageBlobItem> uploadPagesFromUrlWithResponse(PageBlobUploadPagesFromUrlOptions options, Duration timeout,
+        Context context) {
+
+        Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.uploadPagesFromUrlWithResponse(options, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 

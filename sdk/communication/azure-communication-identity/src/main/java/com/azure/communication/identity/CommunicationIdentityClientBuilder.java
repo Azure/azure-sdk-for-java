@@ -18,8 +18,10 @@ import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -37,7 +39,7 @@ public final class CommunicationIdentityClientBuilder {
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
 
-    private static final String COMMUNICATION_IDENTITY_PROPERTIES = 
+    private static final String COMMUNICATION_IDENTITY_PROPERTIES =
         "azure-communication-identity.properties";
 
     private final ClientLogger logger = new ClientLogger(CommunicationIdentityClientBuilder.class);
@@ -47,8 +49,10 @@ public final class CommunicationIdentityClientBuilder {
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions = new HttpLogOptions();
     private HttpPipeline pipeline;
-    private Configuration configuration;    
-    private final Map<String, String> properties = CoreUtils.getProperties(COMMUNICATION_IDENTITY_PROPERTIES);    
+    private RetryPolicy retryPolicy;
+    private Configuration configuration;
+    private ClientOptions clientOptions;
+    private final Map<String, String> properties = CoreUtils.getProperties(COMMUNICATION_IDENTITY_PROPERTIES);
     private final List<HttpPipelinePolicy> customPolicies = new ArrayList<HttpPipelinePolicy>();
 
     /**
@@ -87,18 +91,18 @@ public final class CommunicationIdentityClientBuilder {
     }
 
     /**
-     * Set credential to use
+     * Sets the {@link AzureKeyCredential} used to authenticate HTTP requests.
      *
-     * @param accessKey access key for initalizing CommunicationClientCredential
-     * @return CommunicationIdentityClientBuilder
+    * @param keyCredential The {@link AzureKeyCredential} used to authenticate HTTP requests.
+     * @return The updated {@link CommunicationIdentityClientBuilder} object.
+     * @throws NullPointerException If {@code keyCredential} is null.
      */
-    public CommunicationIdentityClientBuilder accessKey(String accessKey) {
-        Objects.requireNonNull(accessKey, "'accessKey' cannot be null.");
-        this.azureKeyCredential = new AzureKeyCredential(accessKey);
+    public CommunicationIdentityClientBuilder credential(AzureKeyCredential keyCredential)  {
+        this.azureKeyCredential = Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null.");
         return this;
     }
 
-     /**
+    /**
      * Set endpoint and credential to use
      *
      * @param connectionString connection string for setting endpoint and initalizing CommunicationClientCredential
@@ -111,7 +115,7 @@ public final class CommunicationIdentityClientBuilder {
         String accessKey = connectionStringObject.getAccessKey();
         this
             .endpoint(endpoint)
-            .accessKey(accessKey);
+            .credential(new AzureKeyCredential(accessKey));
         return this;
     }
 
@@ -139,6 +143,18 @@ public final class CommunicationIdentityClientBuilder {
         return this;
     }
 
+        /**
+     * Sets the client options for all the requests made through the client.
+     *
+     * @param clientOptions {@link ClientOptions}.
+     * @return The updated {@link CommunicationIdentityClientBuilder} object.
+     * @throws NullPointerException If {@code clientOptions} is {@code null}.
+     */
+    public CommunicationIdentityClientBuilder clientOptions(ClientOptions clientOptions) {
+        this.clientOptions = Objects.requireNonNull(clientOptions, "'clientOptions' cannot be null.");
+        return this;
+    }
+
     /**
      * Sets the configuration object used to retrieve environment configuration values during building of the client.
      *
@@ -158,6 +174,18 @@ public final class CommunicationIdentityClientBuilder {
      */
     public CommunicationIdentityClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.httpLogOptions = Objects.requireNonNull(logOptions, "'logOptions' cannot be null.");
+        return this;
+    }
+
+    /**
+     * Sets the {@link RetryPolicy} that is used when each request is sent.
+     *
+     * @param retryPolicy User's retry policy applied to each request.
+     * @return The updated {@link CommunicationIdentityClientBuilder} object.
+     * @throws NullPointerException If the specified {@code retryPolicy} is null.
+     */
+    public CommunicationIdentityClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+        this.retryPolicy = Objects.requireNonNull(retryPolicy, "The retry policy cannot be null");
         return this;
     }
 
@@ -237,8 +265,7 @@ public final class CommunicationIdentityClientBuilder {
                                             List<HttpPipelinePolicy> customPolicies) {
 
         List<HttpPipelinePolicy> policies = new ArrayList<HttpPipelinePolicy>();
-        policies.add(authorizationPolicy);
-        applyRequiredPolicies(policies);
+        applyRequiredPolicies(policies, authorizationPolicy);
 
         if (customPolicies != null && customPolicies.size() > 0) {
             policies.addAll(customPolicies);
@@ -247,16 +274,30 @@ public final class CommunicationIdentityClientBuilder {
         return new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
+            .clientOptions(clientOptions)
             .build();
     }
 
-    private void applyRequiredPolicies(List<HttpPipelinePolicy> policies) {
+    private void applyRequiredPolicies(List<HttpPipelinePolicy> policies, HttpPipelinePolicy authorizationPolicy) {
         String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
         String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
 
-        policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion, configuration));
-        policies.add(new RetryPolicy());
+        ClientOptions buildClientOptions = (clientOptions == null) ? new ClientOptions() : clientOptions;
+        HttpLogOptions buildLogOptions = (httpLogOptions == null) ? new HttpLogOptions() : httpLogOptions;
+
+        String applicationId = null;
+        if (!CoreUtils.isNullOrEmpty(buildClientOptions.getApplicationId())) {
+            applicationId = buildClientOptions.getApplicationId();
+        } else if (!CoreUtils.isNullOrEmpty(buildLogOptions.getApplicationId())) {
+            applicationId = buildLogOptions.getApplicationId();
+        }
+
+        policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, configuration));
+        policies.add(new RequestIdPolicy());
+        policies.add(this.retryPolicy == null ? new RetryPolicy() : this.retryPolicy);
         policies.add(new CookiePolicy());
+        // auth policy is per request, should be after retry
+        policies.add(authorizationPolicy);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
     }
 }

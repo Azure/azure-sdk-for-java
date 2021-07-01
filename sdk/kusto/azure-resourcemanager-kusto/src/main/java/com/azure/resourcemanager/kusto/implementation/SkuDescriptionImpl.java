@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.kusto.implementation;
 
-import com.azure.resourcemanager.kusto.KustoManager;
 import com.azure.resourcemanager.kusto.fluent.models.SkuDescriptionInner;
 import com.azure.resourcemanager.kusto.models.SkuDescription;
 import com.azure.resourcemanager.kusto.models.SkuLocationInfoItem;
@@ -14,9 +13,9 @@ import java.util.List;
 public final class SkuDescriptionImpl implements SkuDescription {
     private SkuDescriptionInner innerObject;
 
-    private final KustoManager serviceManager;
+    private final com.azure.resourcemanager.kusto.KustoManager serviceManager;
 
-    SkuDescriptionImpl(SkuDescriptionInner innerObject, KustoManager serviceManager) {
+    SkuDescriptionImpl(SkuDescriptionInner innerObject, com.azure.resourcemanager.kusto.KustoManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -64,7 +63,7 @@ public final class SkuDescriptionImpl implements SkuDescription {
         return this.innerObject;
     }
 
-    private KustoManager manager() {
+    private com.azure.resourcemanager.kusto.KustoManager manager() {
         return this.serviceManager;
     }
 }

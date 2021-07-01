@@ -11,6 +11,8 @@ import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ExtendedLocation;
 import com.azure.resourcemanager.network.models.NetworkInterfaceDnsSettings;
+import com.azure.resourcemanager.network.models.NetworkInterfaceMigrationPhase;
+import com.azure.resourcemanager.network.models.NetworkInterfaceNicType;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -120,6 +122,30 @@ public class NetworkInterfaceInner extends Resource {
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
+
+    /*
+     * WorkloadType of the NetworkInterface for BareMetal resources
+     */
+    @JsonProperty(value = "properties.workloadType")
+    private String workloadType;
+
+    /*
+     * Type of Network Interface resource.
+     */
+    @JsonProperty(value = "properties.nicType")
+    private NetworkInterfaceNicType nicType;
+
+    /*
+     * Privatelinkservice of the network interface resource.
+     */
+    @JsonProperty(value = "properties.privateLinkService")
+    private PrivateLinkServiceInner privateLinkService;
+
+    /*
+     * Migration phase of Network Interface resource.
+     */
+    @JsonProperty(value = "properties.migrationPhase")
+    private NetworkInterfaceMigrationPhase migrationPhase;
 
     /*
      * Resource ID.
@@ -339,6 +365,86 @@ public class NetworkInterfaceInner extends Resource {
     }
 
     /**
+     * Get the workloadType property: WorkloadType of the NetworkInterface for BareMetal resources.
+     *
+     * @return the workloadType value.
+     */
+    public String workloadType() {
+        return this.workloadType;
+    }
+
+    /**
+     * Set the workloadType property: WorkloadType of the NetworkInterface for BareMetal resources.
+     *
+     * @param workloadType the workloadType value to set.
+     * @return the NetworkInterfaceInner object itself.
+     */
+    public NetworkInterfaceInner withWorkloadType(String workloadType) {
+        this.workloadType = workloadType;
+        return this;
+    }
+
+    /**
+     * Get the nicType property: Type of Network Interface resource.
+     *
+     * @return the nicType value.
+     */
+    public NetworkInterfaceNicType nicType() {
+        return this.nicType;
+    }
+
+    /**
+     * Set the nicType property: Type of Network Interface resource.
+     *
+     * @param nicType the nicType value to set.
+     * @return the NetworkInterfaceInner object itself.
+     */
+    public NetworkInterfaceInner withNicType(NetworkInterfaceNicType nicType) {
+        this.nicType = nicType;
+        return this;
+    }
+
+    /**
+     * Get the privateLinkService property: Privatelinkservice of the network interface resource.
+     *
+     * @return the privateLinkService value.
+     */
+    public PrivateLinkServiceInner privateLinkService() {
+        return this.privateLinkService;
+    }
+
+    /**
+     * Set the privateLinkService property: Privatelinkservice of the network interface resource.
+     *
+     * @param privateLinkService the privateLinkService value to set.
+     * @return the NetworkInterfaceInner object itself.
+     */
+    public NetworkInterfaceInner withPrivateLinkService(PrivateLinkServiceInner privateLinkService) {
+        this.privateLinkService = privateLinkService;
+        return this;
+    }
+
+    /**
+     * Get the migrationPhase property: Migration phase of Network Interface resource.
+     *
+     * @return the migrationPhase value.
+     */
+    public NetworkInterfaceMigrationPhase migrationPhase() {
+        return this.migrationPhase;
+    }
+
+    /**
+     * Set the migrationPhase property: Migration phase of Network Interface resource.
+     *
+     * @param migrationPhase the migrationPhase value to set.
+     * @return the NetworkInterfaceInner object itself.
+     */
+    public NetworkInterfaceInner withMigrationPhase(NetworkInterfaceMigrationPhase migrationPhase) {
+        this.migrationPhase = migrationPhase;
+        return this;
+    }
+
+    /**
      * Get the id property: Resource ID.
      *
      * @return the id value.
@@ -395,6 +501,9 @@ public class NetworkInterfaceInner extends Resource {
         }
         if (dnsSettings() != null) {
             dnsSettings().validate();
+        }
+        if (privateLinkService() != null) {
+            privateLinkService().validate();
         }
     }
 }

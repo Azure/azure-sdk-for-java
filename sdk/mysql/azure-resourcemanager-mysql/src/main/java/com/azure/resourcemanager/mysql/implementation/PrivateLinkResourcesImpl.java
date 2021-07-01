@@ -9,7 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.mysql.MySqlManager;
 import com.azure.resourcemanager.mysql.fluent.PrivateLinkResourcesClient;
 import com.azure.resourcemanager.mysql.fluent.models.PrivateLinkResourceInner;
 import com.azure.resourcemanager.mysql.models.PrivateLinkResource;
@@ -21,9 +20,10 @@ public final class PrivateLinkResourcesImpl implements PrivateLinkResources {
 
     private final PrivateLinkResourcesClient innerClient;
 
-    private final MySqlManager serviceManager;
+    private final com.azure.resourcemanager.mysql.MySqlManager serviceManager;
 
-    public PrivateLinkResourcesImpl(PrivateLinkResourcesClient innerClient, MySqlManager serviceManager) {
+    public PrivateLinkResourcesImpl(
+        PrivateLinkResourcesClient innerClient, com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -31,14 +31,14 @@ public final class PrivateLinkResourcesImpl implements PrivateLinkResources {
     public PagedIterable<PrivateLinkResource> listByServer(String resourceGroupName, String serverName) {
         PagedIterable<PrivateLinkResourceInner> inner =
             this.serviceClient().listByServer(resourceGroupName, serverName);
-        return inner.mapPage(inner1 -> new PrivateLinkResourceImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new PrivateLinkResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<PrivateLinkResource> listByServer(
         String resourceGroupName, String serverName, Context context) {
         PagedIterable<PrivateLinkResourceInner> inner =
             this.serviceClient().listByServer(resourceGroupName, serverName, context);
-        return inner.mapPage(inner1 -> new PrivateLinkResourceImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new PrivateLinkResourceImpl(inner1, this.manager()));
     }
 
     public PrivateLinkResource get(String resourceGroupName, String serverName, String groupName) {
@@ -69,7 +69,7 @@ public final class PrivateLinkResourcesImpl implements PrivateLinkResources {
         return this.innerClient;
     }
 
-    private MySqlManager manager() {
+    private com.azure.resourcemanager.mysql.MySqlManager manager() {
         return this.serviceManager;
     }
 }

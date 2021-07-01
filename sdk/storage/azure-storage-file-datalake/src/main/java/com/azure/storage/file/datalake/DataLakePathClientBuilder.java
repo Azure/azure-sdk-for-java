@@ -83,6 +83,7 @@ public final class DataLakePathClientBuilder {
     public DataLakePathClientBuilder() {
         logOptions = getDefaultHttpLogOptions();
         blobClientBuilder = new BlobClientBuilder();
+        blobClientBuilder.addPolicy(BuilderHelper.getBlobUserAgentModificationPolicy());
     }
 
     /**
@@ -131,9 +132,8 @@ public final class DataLakePathClientBuilder {
             endpoint, retryOptions, logOptions,
             clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, logger);
 
-        return new DataLakeFileAsyncClient(pipeline, String.format("%s/%s/%s", endpoint, dataLakeFileSystemName,
-            pathName), serviceVersion, accountName, dataLakeFileSystemName, pathName,
-            blobClientBuilder.buildAsyncClient().getBlockBlobAsyncClient());
+        return new DataLakeFileAsyncClient(pipeline, endpoint, serviceVersion, accountName, dataLakeFileSystemName,
+            pathName, blobClientBuilder.buildAsyncClient().getBlockBlobAsyncClient());
     }
 
     /**
@@ -180,9 +180,8 @@ public final class DataLakePathClientBuilder {
             retryOptions, logOptions,
             clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, logger);
 
-        return new DataLakeDirectoryAsyncClient(pipeline, String.format("%s/%s/%s", endpoint, dataLakeFileSystemName,
-            pathName), serviceVersion, accountName, dataLakeFileSystemName, pathName,
-            blobClientBuilder.buildAsyncClient().getBlockBlobAsyncClient());
+        return new DataLakeDirectoryAsyncClient(pipeline, endpoint, serviceVersion, accountName, dataLakeFileSystemName,
+            pathName, blobClientBuilder.buildAsyncClient().getBlockBlobAsyncClient());
     }
 
     /**

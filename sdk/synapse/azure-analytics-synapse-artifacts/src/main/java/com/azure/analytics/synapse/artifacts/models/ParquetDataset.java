@@ -23,10 +23,10 @@ public class ParquetDataset extends Dataset {
     private DatasetLocation location;
 
     /*
-     * The compressionCodec property.
+     * A string from ParquetCompressionCodecEnum or an expression
      */
     @JsonProperty(value = "typeProperties.compressionCodec")
-    private ParquetCompressionCodec compressionCodec;
+    private Object compressionCodec;
 
     /**
      * Get the location property: The location of the parquet storage.
@@ -49,21 +49,21 @@ public class ParquetDataset extends Dataset {
     }
 
     /**
-     * Get the compressionCodec property: The compressionCodec property.
+     * Get the compressionCodec property: A string from ParquetCompressionCodecEnum or an expression.
      *
      * @return the compressionCodec value.
      */
-    public ParquetCompressionCodec getCompressionCodec() {
+    public Object getCompressionCodec() {
         return this.compressionCodec;
     }
 
     /**
-     * Set the compressionCodec property: The compressionCodec property.
+     * Set the compressionCodec property: A string from ParquetCompressionCodecEnum or an expression.
      *
      * @param compressionCodec the compressionCodec value to set.
      * @return the ParquetDataset object itself.
      */
-    public ParquetDataset setCompressionCodec(ParquetCompressionCodec compressionCodec) {
+    public ParquetDataset setCompressionCodec(Object compressionCodec) {
         this.compressionCodec = compressionCodec;
         return this;
     }

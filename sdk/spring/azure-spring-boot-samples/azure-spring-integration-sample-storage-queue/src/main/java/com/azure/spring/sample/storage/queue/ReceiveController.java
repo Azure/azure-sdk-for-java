@@ -8,6 +8,8 @@ import com.azure.spring.integration.core.api.CheckpointMode;
 import com.azure.spring.integration.core.api.reactor.Checkpointer;
 import com.azure.spring.integration.storage.queue.StorageQueueOperation;
 import com.azure.spring.integration.storage.queue.inbound.StorageQueueMessageSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.integration.annotation.InboundChannelAdapter;
 import org.springframework.integration.annotation.Poller;
@@ -21,6 +23,8 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class ReceiveController {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ReceiveController.class);
     /*Storage queue name can only be made up of lowercase letters, the numbers and the hyphen(-).*/
     private static final String STORAGE_QUEUE_NAME = "example";
     private static final String INPUT_CHANNEL = "input";
@@ -41,10 +45,10 @@ public class ReceiveController {
     @ServiceActivator(inputChannel = INPUT_CHANNEL)
     public void messageReceiver(byte[] payload, @Header(AzureHeaders.CHECKPOINTER) Checkpointer checkpointer) {
         String message = new String(payload);
-        System.out.printf("New message received: '%s'%n", message);
+        LOGGER.info("New message received: '{}'", message);
         checkpointer.success()
             .doOnError(Throwable::printStackTrace)
-            .doOnSuccess(t -> System.out.printf("Message '%s' successfully checkpointed%n", message))
+            .doOnSuccess(t -> LOGGER.info("Message '{}' successfully checkpointed", message))
             .subscribe();
 
     }

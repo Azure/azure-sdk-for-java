@@ -36,6 +36,30 @@ public final class SqlSource extends TabularSource {
     @JsonProperty(value = "storedProcedureParameters")
     private Map<String, StoredProcedureParameter> storedProcedureParameters;
 
+    /*
+     * Specifies the transaction locking behavior for the SQL source. Allowed
+     * values:
+     * ReadCommitted/ReadUncommitted/RepeatableRead/Serializable/Snapshot. The
+     * default value is ReadCommitted. Type: string (or Expression with
+     * resultType string).
+     */
+    @JsonProperty(value = "isolationLevel")
+    private Object isolationLevel;
+
+    /*
+     * The partition mechanism that will be used for Sql read in parallel.
+     * Possible values include: "None", "PhysicalPartitionsOfTable",
+     * "DynamicRange".
+     */
+    @JsonProperty(value = "partitionOption")
+    private Object partitionOption;
+
+    /*
+     * The settings that will be leveraged for Sql source partitioning.
+     */
+    @JsonProperty(value = "partitionSettings")
+    private SqlPartitionSettings partitionSettings;
+
     /**
      * Get the sqlReaderQuery property: SQL reader query. Type: string (or Expression with resultType string).
      *
@@ -97,6 +121,72 @@ public final class SqlSource extends TabularSource {
      */
     public SqlSource setStoredProcedureParameters(Map<String, StoredProcedureParameter> storedProcedureParameters) {
         this.storedProcedureParameters = storedProcedureParameters;
+        return this;
+    }
+
+    /**
+     * Get the isolationLevel property: Specifies the transaction locking behavior for the SQL source. Allowed values:
+     * ReadCommitted/ReadUncommitted/RepeatableRead/Serializable/Snapshot. The default value is ReadCommitted. Type:
+     * string (or Expression with resultType string).
+     *
+     * @return the isolationLevel value.
+     */
+    public Object getIsolationLevel() {
+        return this.isolationLevel;
+    }
+
+    /**
+     * Set the isolationLevel property: Specifies the transaction locking behavior for the SQL source. Allowed values:
+     * ReadCommitted/ReadUncommitted/RepeatableRead/Serializable/Snapshot. The default value is ReadCommitted. Type:
+     * string (or Expression with resultType string).
+     *
+     * @param isolationLevel the isolationLevel value to set.
+     * @return the SqlSource object itself.
+     */
+    public SqlSource setIsolationLevel(Object isolationLevel) {
+        this.isolationLevel = isolationLevel;
+        return this;
+    }
+
+    /**
+     * Get the partitionOption property: The partition mechanism that will be used for Sql read in parallel. Possible
+     * values include: "None", "PhysicalPartitionsOfTable", "DynamicRange".
+     *
+     * @return the partitionOption value.
+     */
+    public Object getPartitionOption() {
+        return this.partitionOption;
+    }
+
+    /**
+     * Set the partitionOption property: The partition mechanism that will be used for Sql read in parallel. Possible
+     * values include: "None", "PhysicalPartitionsOfTable", "DynamicRange".
+     *
+     * @param partitionOption the partitionOption value to set.
+     * @return the SqlSource object itself.
+     */
+    public SqlSource setPartitionOption(Object partitionOption) {
+        this.partitionOption = partitionOption;
+        return this;
+    }
+
+    /**
+     * Get the partitionSettings property: The settings that will be leveraged for Sql source partitioning.
+     *
+     * @return the partitionSettings value.
+     */
+    public SqlPartitionSettings getPartitionSettings() {
+        return this.partitionSettings;
+    }
+
+    /**
+     * Set the partitionSettings property: The settings that will be leveraged for Sql source partitioning.
+     *
+     * @param partitionSettings the partitionSettings value to set.
+     * @return the SqlSource object itself.
+     */
+    public SqlSource setPartitionSettings(SqlPartitionSettings partitionSettings) {
+        this.partitionSettings = partitionSettings;
         return this;
     }
 }

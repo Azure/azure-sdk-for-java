@@ -37,6 +37,9 @@ public final class QueryStringOperator extends ExpandableStringEnum<QueryStringO
     /** Static value GreaterThanOrEqual for QueryStringOperator. */
     public static final QueryStringOperator GREATER_THAN_OR_EQUAL = fromString("GreaterThanOrEqual");
 
+    /** Static value RegEx for QueryStringOperator. */
+    public static final QueryStringOperator REG_EX = fromString("RegEx");
+
     /**
      * Creates or finds a QueryStringOperator from its string representation.
      *

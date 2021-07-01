@@ -7,7 +7,6 @@ package com.azure.resourcemanager.loganalytics.implementation;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.loganalytics.LogAnalyticsManager;
 import com.azure.resourcemanager.loganalytics.fluent.GatewaysClient;
 import com.azure.resourcemanager.loganalytics.models.Gateways;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,9 +16,10 @@ public final class GatewaysImpl implements Gateways {
 
     private final GatewaysClient innerClient;
 
-    private final LogAnalyticsManager serviceManager;
+    private final com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager;
 
-    public GatewaysImpl(GatewaysClient innerClient, LogAnalyticsManager serviceManager) {
+    public GatewaysImpl(
+        GatewaysClient innerClient, com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -37,7 +37,7 @@ public final class GatewaysImpl implements Gateways {
         return this.innerClient;
     }
 
-    private LogAnalyticsManager manager() {
+    private com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager() {
         return this.serviceManager;
     }
 }

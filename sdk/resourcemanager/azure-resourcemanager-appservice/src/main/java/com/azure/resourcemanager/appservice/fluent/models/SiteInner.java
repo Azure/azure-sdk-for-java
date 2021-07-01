@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.appservice.models.ClientCertMode;
 import com.azure.resourcemanager.appservice.models.CloningInfo;
 import com.azure.resourcemanager.appservice.models.HostingEnvironmentProfile;
 import com.azure.resourcemanager.appservice.models.HostnameSslState;
@@ -20,6 +21,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /** A web app, a mobile app backend, or an API app. */
@@ -167,6 +169,17 @@ public class SiteInner extends Resource {
     private Boolean clientCertEnabled;
 
     /*
+     * This composes with ClientCertEnabled setting.
+     * - ClientCertEnabled: false means ClientCert is ignored.
+     * - ClientCertEnabled: true and ClientCertMode: Required means ClientCert
+     * is required.
+     * - ClientCertEnabled: true and ClientCertMode: Optional means ClientCert
+     * is optional or accepted.
+     */
+    @JsonProperty(value = "properties.clientCertMode")
+    private ClientCertMode clientCertMode;
+
+    /*
      * client certificate authentication comma-separated exclusion paths
      */
     @JsonProperty(value = "properties.clientCertExclusionPaths")
@@ -180,6 +193,13 @@ public class SiteInner extends Resource {
      */
     @JsonProperty(value = "properties.hostNamesDisabled")
     private Boolean hostNamesDisabled;
+
+    /*
+     * Unique identifier that verifies the custom domains assigned to the app.
+     * Customer will add this id to a txt record for verification.
+     */
+    @JsonProperty(value = "properties.customDomainVerificationId")
+    private String customDomainVerificationId;
 
     /*
      * List of IP addresses that the app uses for outbound connections (e.g.
@@ -255,6 +275,12 @@ public class SiteInner extends Resource {
     private SlotSwapStatus slotSwapStatus;
 
     /*
+     * Identity to use for Key Vault Reference authentication.
+     */
+    @JsonProperty(value = "properties.keyVaultReferenceIdentity")
+    private String keyVaultReferenceIdentity;
+
+    /*
      * HttpsOnly: configures a web site to accept only https requests. Issues
      * redirect for
      * http requests
@@ -273,6 +299,12 @@ public class SiteInner extends Resource {
      */
     @JsonProperty(value = "properties.inProgressOperationId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID inProgressOperationId;
+
+    /*
+     * Checks if Customer provided storage account is required
+     */
+    @JsonProperty(value = "properties.storageAccountRequired")
+    private Boolean storageAccountRequired;
 
     /*
      * Kind of resource.
@@ -619,6 +651,30 @@ public class SiteInner extends Resource {
     }
 
     /**
+     * Get the clientCertMode property: This composes with ClientCertEnabled setting. - ClientCertEnabled: false means
+     * ClientCert is ignored. - ClientCertEnabled: true and ClientCertMode: Required means ClientCert is required. -
+     * ClientCertEnabled: true and ClientCertMode: Optional means ClientCert is optional or accepted.
+     *
+     * @return the clientCertMode value.
+     */
+    public ClientCertMode clientCertMode() {
+        return this.clientCertMode;
+    }
+
+    /**
+     * Set the clientCertMode property: This composes with ClientCertEnabled setting. - ClientCertEnabled: false means
+     * ClientCert is ignored. - ClientCertEnabled: true and ClientCertMode: Required means ClientCert is required. -
+     * ClientCertEnabled: true and ClientCertMode: Optional means ClientCert is optional or accepted.
+     *
+     * @param clientCertMode the clientCertMode value to set.
+     * @return the SiteInner object itself.
+     */
+    public SiteInner withClientCertMode(ClientCertMode clientCertMode) {
+        this.clientCertMode = clientCertMode;
+        return this;
+    }
+
+    /**
      * Get the clientCertExclusionPaths property: client certificate authentication comma-separated exclusion paths.
      *
      * @return the clientCertExclusionPaths value.
@@ -659,6 +715,28 @@ public class SiteInner extends Resource {
      */
     public SiteInner withHostNamesDisabled(Boolean hostNamesDisabled) {
         this.hostNamesDisabled = hostNamesDisabled;
+        return this;
+    }
+
+    /**
+     * Get the customDomainVerificationId property: Unique identifier that verifies the custom domains assigned to the
+     * app. Customer will add this id to a txt record for verification.
+     *
+     * @return the customDomainVerificationId value.
+     */
+    public String customDomainVerificationId() {
+        return this.customDomainVerificationId;
+    }
+
+    /**
+     * Set the customDomainVerificationId property: Unique identifier that verifies the custom domains assigned to the
+     * app. Customer will add this id to a txt record for verification.
+     *
+     * @param customDomainVerificationId the customDomainVerificationId value to set.
+     * @return the SiteInner object itself.
+     */
+    public SiteInner withCustomDomainVerificationId(String customDomainVerificationId) {
+        this.customDomainVerificationId = customDomainVerificationId;
         return this;
     }
 
@@ -798,6 +876,26 @@ public class SiteInner extends Resource {
     }
 
     /**
+     * Get the keyVaultReferenceIdentity property: Identity to use for Key Vault Reference authentication.
+     *
+     * @return the keyVaultReferenceIdentity value.
+     */
+    public String keyVaultReferenceIdentity() {
+        return this.keyVaultReferenceIdentity;
+    }
+
+    /**
+     * Set the keyVaultReferenceIdentity property: Identity to use for Key Vault Reference authentication.
+     *
+     * @param keyVaultReferenceIdentity the keyVaultReferenceIdentity value to set.
+     * @return the SiteInner object itself.
+     */
+    public SiteInner withKeyVaultReferenceIdentity(String keyVaultReferenceIdentity) {
+        this.keyVaultReferenceIdentity = keyVaultReferenceIdentity;
+        return this;
+    }
+
+    /**
      * Get the httpsOnly property: HttpsOnly: configures a web site to accept only https requests. Issues redirect for
      * http requests.
      *
@@ -849,6 +947,26 @@ public class SiteInner extends Resource {
     }
 
     /**
+     * Get the storageAccountRequired property: Checks if Customer provided storage account is required.
+     *
+     * @return the storageAccountRequired value.
+     */
+    public Boolean storageAccountRequired() {
+        return this.storageAccountRequired;
+    }
+
+    /**
+     * Set the storageAccountRequired property: Checks if Customer provided storage account is required.
+     *
+     * @param storageAccountRequired the storageAccountRequired value to set.
+     * @return the SiteInner object itself.
+     */
+    public SiteInner withStorageAccountRequired(Boolean storageAccountRequired) {
+        this.storageAccountRequired = storageAccountRequired;
+        return this;
+    }
+
+    /**
      * Get the kind property: Kind of resource.
      *
      * @return the kind value.
@@ -865,6 +983,20 @@ public class SiteInner extends Resource {
      */
     public SiteInner withKind(String kind) {
         this.kind = kind;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SiteInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SiteInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 

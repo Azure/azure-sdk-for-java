@@ -7,7 +7,7 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The DeviceTwinInfo model. */
+/** Information about the device twin, which is the cloud representation of application device metadata. */
 @Fluent
 public final class DeviceTwinInfo {
     /*

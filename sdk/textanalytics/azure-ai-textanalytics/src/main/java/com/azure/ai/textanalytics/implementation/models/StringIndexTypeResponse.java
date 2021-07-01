@@ -4,47 +4,34 @@
 
 package com.azure.ai.textanalytics.implementation.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /** Defines values for StringIndexTypeResponse. */
-public enum StringIndexTypeResponse {
-    /** Enum value TextElements_v8. */
-    TEXT_ELEMENTS_V8("TextElements_v8"),
+public final class StringIndexTypeResponse extends ExpandableStringEnum<StringIndexTypeResponse> {
+    /** Static value TextElements_v8 for StringIndexTypeResponse. */
+    public static final StringIndexTypeResponse TEXT_ELEMENTS_V8 = fromString("TextElements_v8");
 
-    /** Enum value UnicodeCodePoint. */
-    UNICODE_CODE_POINT("UnicodeCodePoint"),
+    /** Static value UnicodeCodePoint for StringIndexTypeResponse. */
+    public static final StringIndexTypeResponse UNICODE_CODE_POINT = fromString("UnicodeCodePoint");
 
-    /** Enum value Utf16CodeUnit. */
-    UTF16CODE_UNIT("Utf16CodeUnit");
-
-    /** The actual serialized value for a StringIndexTypeResponse instance. */
-    private final String value;
-
-    StringIndexTypeResponse(String value) {
-        this.value = value;
-    }
+    /** Static value Utf16CodeUnit for StringIndexTypeResponse. */
+    public static final StringIndexTypeResponse UTF16CODE_UNIT = fromString("Utf16CodeUnit");
 
     /**
-     * Parses a serialized value to a StringIndexTypeResponse instance.
+     * Creates or finds a StringIndexTypeResponse from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed StringIndexTypeResponse object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding StringIndexTypeResponse.
      */
     @JsonCreator
-    public static StringIndexTypeResponse fromString(String value) {
-        StringIndexTypeResponse[] items = StringIndexTypeResponse.values();
-        for (StringIndexTypeResponse item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static StringIndexTypeResponse fromString(String name) {
+        return fromString(name, StringIndexTypeResponse.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /** @return known StringIndexTypeResponse values. */
+    public static Collection<StringIndexTypeResponse> values() {
+        return values(StringIndexTypeResponse.class);
     }
 }

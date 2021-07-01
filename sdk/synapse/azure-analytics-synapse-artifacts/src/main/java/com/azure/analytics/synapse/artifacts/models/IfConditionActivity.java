@@ -19,7 +19,7 @@ import java.util.List;
 @JsonTypeName("IfCondition")
 @JsonFlatten
 @Fluent
-public class IfConditionActivity extends Activity {
+public class IfConditionActivity extends ControlActivity {
     /*
      * An expression that would evaluate to Boolean. This is used to determine
      * the block of activities (ifTrueActivities or ifFalseActivities) that

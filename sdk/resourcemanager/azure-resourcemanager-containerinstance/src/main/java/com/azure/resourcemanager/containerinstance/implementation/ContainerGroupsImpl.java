@@ -6,12 +6,14 @@ package com.azure.resourcemanager.containerinstance.implementation;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.containerinstance.ContainerInstanceManager;
 import com.azure.resourcemanager.containerinstance.fluent.ContainerGroupsClient;
 import com.azure.resourcemanager.containerinstance.fluent.models.ContainerGroupInner;
 import com.azure.resourcemanager.containerinstance.fluent.models.LogsInner;
 import com.azure.resourcemanager.containerinstance.models.CachedImages;
 import com.azure.resourcemanager.containerinstance.models.Capabilities;
+import com.azure.resourcemanager.containerinstance.models.ContainerAttachResult;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroup;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroups;
 import com.azure.resourcemanager.containerinstance.models.Operation;
@@ -67,7 +69,8 @@ public class ContainerGroupsImpl
                 .manager()
                 .serviceClient()
                 .getContainers()
-                .listLogsWithResponse(resourceGroupName, containerGroupName, containerName, tailLineCount, Context.NONE)
+                .listLogsWithResponse(resourceGroupName, containerGroupName, containerName, tailLineCount, null,
+                    Context.NONE)
                 .getValue();
 
         return logsInner != null ? logsInner.content() : null;
@@ -90,7 +93,7 @@ public class ContainerGroupsImpl
             .manager()
             .serviceClient()
             .getContainers()
-            .listLogsAsync(resourceGroupName, containerGroupName, containerName, tailLineCount)
+            .listLogsAsync(resourceGroupName, containerGroupName, containerName, tailLineCount, null)
             .map(LogsInner::content);
     }
 
@@ -135,12 +138,28 @@ public class ContainerGroupsImpl
     }
 
     @Override
+    public ContainerAttachResult attachOutputStream(String resourceGroupName, String containerGroupName, String containerName) {
+        return this.attachOutputStreamAsync(resourceGroupName, containerGroupName, containerName).block();
+    }
+
+    @Override
+    public Mono<ContainerAttachResult> attachOutputStreamAsync(String resourceGroupName, String containerGroupName, String containerName) {
+        return this.manager().serviceClient().getContainers()
+            .attachAsync(resourceGroupName, containerGroupName, containerName)
+            .map(ContainerAttachResultImpl::new);
+    }
+
+    @Override
     public PagedFlux<ContainerGroup> listAsync() {
         return wrapPageAsync(inner().listAsync());
     }
 
     @Override
     public PagedFlux<ContainerGroup> listByResourceGroupAsync(String resourceGroupName) {
+        if (CoreUtils.isNullOrEmpty(resourceGroupName)) {
+            return new PagedFlux<>(() -> Mono.error(
+                new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null.")));
+        }
         return wrapPageAsync(inner().listByResourceGroupAsync(resourceGroupName));
     }
 

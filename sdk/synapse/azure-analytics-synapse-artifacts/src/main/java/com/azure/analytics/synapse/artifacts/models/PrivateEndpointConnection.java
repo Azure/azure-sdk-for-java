@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** A private endpoint connection. */
 @JsonFlatten
 @Fluent
-public class PrivateEndpointConnection extends Resource {
+public class PrivateEndpointConnection extends ProxyResource {
     /*
      * The private endpoint which the connection belongs to.
      */

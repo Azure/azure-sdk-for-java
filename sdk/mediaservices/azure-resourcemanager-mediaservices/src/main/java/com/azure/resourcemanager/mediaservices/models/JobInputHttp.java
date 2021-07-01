@@ -81,6 +81,13 @@ public class JobInputHttp extends JobInputClip {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public JobInputHttp withInputDefinitions(List<InputDefinition> inputDefinitions) {
+        super.withInputDefinitions(inputDefinitions);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

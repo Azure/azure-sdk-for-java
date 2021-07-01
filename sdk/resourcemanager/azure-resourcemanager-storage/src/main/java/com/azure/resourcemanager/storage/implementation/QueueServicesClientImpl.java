@@ -7,6 +7,7 @@ package com.azure.resourcemanager.storage.implementation;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -57,7 +58,7 @@ public final class QueueServicesClientImpl implements QueueServicesClient {
     @Host("{$host}")
     @ServiceInterface(name = "StorageManagementCli")
     private interface QueueServicesService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
                 + "/storageAccounts/{accountName}/queueServices")
@@ -69,9 +70,10 @@ public final class QueueServicesClientImpl implements QueueServicesClient {
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
                 + "/storageAccounts/{accountName}/queueServices/{queueServiceName}")
@@ -85,9 +87,10 @@ public final class QueueServicesClientImpl implements QueueServicesClient {
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("queueServiceName") String queueServiceName,
             @BodyParam("application/json") QueueServicePropertiesInner parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
                 + "/storageAccounts/{accountName}/queueServices/{queueServiceName}")
@@ -100,6 +103,7 @@ public final class QueueServicesClientImpl implements QueueServicesClient {
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("queueServiceName") String queueServiceName,
+            @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -136,6 +140,7 @@ public final class QueueServicesClientImpl implements QueueServicesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -146,8 +151,9 @@ public final class QueueServicesClientImpl implements QueueServicesClient {
                             accountName,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -185,6 +191,7 @@ public final class QueueServicesClientImpl implements QueueServicesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(
@@ -193,6 +200,7 @@ public final class QueueServicesClientImpl implements QueueServicesClient {
                 accountName,
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -265,7 +273,9 @@ public final class QueueServicesClientImpl implements QueueServicesClient {
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param cors Sets the CORS rules. You can include up to five CorsRule elements in the request.
+     * @param cors Specifies CORS rules for the Queue service. You can include up to five CorsRule elements in the
+     *     request. If no CorsRule elements are included in the request body, all CORS rules will be deleted, and CORS
+     *     will be disabled for the Queue service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -297,6 +307,7 @@ public final class QueueServicesClientImpl implements QueueServicesClient {
             cors.validate();
         }
         final String queueServiceName = "default";
+        final String accept = "application/json";
         QueueServicePropertiesInner parameters = new QueueServicePropertiesInner();
         parameters.withCors(cors);
         return FluxUtil
@@ -311,8 +322,9 @@ public final class QueueServicesClientImpl implements QueueServicesClient {
                             this.client.getSubscriptionId(),
                             queueServiceName,
                             parameters,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -323,7 +335,9 @@ public final class QueueServicesClientImpl implements QueueServicesClient {
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param cors Sets the CORS rules. You can include up to five CorsRule elements in the request.
+     * @param cors Specifies CORS rules for the Queue service. You can include up to five CorsRule elements in the
+     *     request. If no CorsRule elements are included in the request body, all CORS rules will be deleted, and CORS
+     *     will be disabled for the Queue service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -356,6 +370,7 @@ public final class QueueServicesClientImpl implements QueueServicesClient {
             cors.validate();
         }
         final String queueServiceName = "default";
+        final String accept = "application/json";
         QueueServicePropertiesInner parameters = new QueueServicePropertiesInner();
         parameters.withCors(cors);
         context = this.client.mergeContext(context);
@@ -368,6 +383,7 @@ public final class QueueServicesClientImpl implements QueueServicesClient {
                 this.client.getSubscriptionId(),
                 queueServiceName,
                 parameters,
+                accept,
                 context);
     }
 
@@ -379,7 +395,9 @@ public final class QueueServicesClientImpl implements QueueServicesClient {
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param cors Sets the CORS rules. You can include up to five CorsRule elements in the request.
+     * @param cors Specifies CORS rules for the Queue service. You can include up to five CorsRule elements in the
+     *     request. If no CorsRule elements are included in the request body, all CORS rules will be deleted, and CORS
+     *     will be disabled for the Queue service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -453,7 +471,9 @@ public final class QueueServicesClientImpl implements QueueServicesClient {
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param cors Sets the CORS rules. You can include up to five CorsRule elements in the request.
+     * @param cors Specifies CORS rules for the Queue service. You can include up to five CorsRule elements in the
+     *     request. If no CorsRule elements are included in the request body, all CORS rules will be deleted, and CORS
+     *     will be disabled for the Queue service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -503,6 +523,7 @@ public final class QueueServicesClientImpl implements QueueServicesClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String queueServiceName = "default";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -514,8 +535,9 @@ public final class QueueServicesClientImpl implements QueueServicesClient {
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             queueServiceName,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -556,6 +578,7 @@ public final class QueueServicesClientImpl implements QueueServicesClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String queueServiceName = "default";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getServiceProperties(
@@ -565,6 +588,7 @@ public final class QueueServicesClientImpl implements QueueServicesClient {
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 queueServiceName,
+                accept,
                 context);
     }
 

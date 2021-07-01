@@ -26,8 +26,13 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class DeploymentsTests extends ResourceManagementTest {
     private ResourceGroups resourceGroups;
@@ -35,12 +40,12 @@ public class DeploymentsTests extends ResourceManagementTest {
 
     private String testId;
     private String rgName;
-    private static String templateUri = "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-vnet-two-subnets/azuredeploy.json";
-    private static String blankTemplateUri = "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json";
-    private static String parametersUri = "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-vnet-two-subnets/azuredeploy.parameters.json";
-    private static String updateTemplate = "{\"$schema\":\"https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#\",\"contentVersion\":\"1.0.0.0\",\"parameters\":{\"vnetName\":{\"type\":\"string\",\"defaultValue\":\"VNet2\",\"metadata\":{\"description\":\"VNet name\"}},\"vnetAddressPrefix\":{\"type\":\"string\",\"defaultValue\":\"10.0.0.0/16\",\"metadata\":{\"description\":\"Address prefix\"}},\"subnet1Prefix\":{\"type\":\"string\",\"defaultValue\":\"10.0.0.0/24\",\"metadata\":{\"description\":\"Subnet 1 Prefix\"}},\"subnet1Name\":{\"type\":\"string\",\"defaultValue\":\"Subnet1\",\"metadata\":{\"description\":\"Subnet 1 Name\"}},\"subnet2Prefix\":{\"type\":\"string\",\"defaultValue\":\"10.0.1.0/24\",\"metadata\":{\"description\":\"Subnet 2 Prefix\"}},\"subnet2Name\":{\"type\":\"string\",\"defaultValue\":\"Subnet222\",\"metadata\":{\"description\":\"Subnet 2 Name\"}}},\"variables\":{\"apiVersion\":\"2015-06-15\"},\"resources\":[{\"apiVersion\":\"[variables('apiVersion')]\",\"type\":\"Microsoft.Network/virtualNetworks\",\"name\":\"[parameters('vnetName')]\",\"location\":\"[resourceGroup().location]\",\"properties\":{\"addressSpace\":{\"addressPrefixes\":[\"[parameters('vnetAddressPrefix')]\"]},\"subnets\":[{\"name\":\"[parameters('subnet1Name')]\",\"properties\":{\"addressPrefix\":\"[parameters('subnet1Prefix')]\"}},{\"name\":\"[parameters('subnet2Name')]\",\"properties\":{\"addressPrefix\":\"[parameters('subnet2Prefix')]\"}}]}}]}";
-    private static String updateParameters = "{\"vnetAddressPrefix\":{\"value\":\"10.0.0.0/16\"},\"subnet1Name\":{\"value\":\"Subnet1\"},\"subnet1Prefix\":{\"value\":\"10.0.0.0/24\"}}";
-    private static String contentVersion = "1.0.0.0";
+    private static final String TEMPLATE_URI = "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-vnet-two-subnets/azuredeploy.json";
+    private static final String BLANK_TEMPLATE_URI = "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json";
+    private static final String PARAMETERS_URI = "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-vnet-two-subnets/azuredeploy.parameters.json";
+    private static final String UPDATE_TEMPLATE = "{\"$schema\":\"https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#\",\"contentVersion\":\"1.0.0.0\",\"parameters\":{\"vnetName\":{\"type\":\"string\",\"defaultValue\":\"VNet2\",\"metadata\":{\"description\":\"VNet name\"}},\"vnetAddressPrefix\":{\"type\":\"string\",\"defaultValue\":\"10.0.0.0/16\",\"metadata\":{\"description\":\"Address prefix\"}},\"subnet1Prefix\":{\"type\":\"string\",\"defaultValue\":\"10.0.0.0/24\",\"metadata\":{\"description\":\"Subnet 1 Prefix\"}},\"subnet1Name\":{\"type\":\"string\",\"defaultValue\":\"Subnet1\",\"metadata\":{\"description\":\"Subnet 1 Name\"}},\"subnet2Prefix\":{\"type\":\"string\",\"defaultValue\":\"10.0.1.0/24\",\"metadata\":{\"description\":\"Subnet 2 Prefix\"}},\"subnet2Name\":{\"type\":\"string\",\"defaultValue\":\"Subnet222\",\"metadata\":{\"description\":\"Subnet 2 Name\"}}},\"variables\":{\"apiVersion\":\"2015-06-15\"},\"resources\":[{\"apiVersion\":\"[variables('apiVersion')]\",\"type\":\"Microsoft.Network/virtualNetworks\",\"name\":\"[parameters('vnetName')]\",\"location\":\"[resourceGroup().location]\",\"properties\":{\"addressSpace\":{\"addressPrefixes\":[\"[parameters('vnetAddressPrefix')]\"]},\"subnets\":[{\"name\":\"[parameters('subnet1Name')]\",\"properties\":{\"addressPrefix\":\"[parameters('subnet1Prefix')]\"}},{\"name\":\"[parameters('subnet2Name')]\",\"properties\":{\"addressPrefix\":\"[parameters('subnet2Prefix')]\"}}]}}]}";
+    private static final String UPDATE_PARAMETERS = "{\"vnetAddressPrefix\":{\"value\":\"10.0.0.0/16\"},\"subnet1Name\":{\"value\":\"Subnet1\"},\"subnet1Prefix\":{\"value\":\"10.0.0.0/24\"}}";
+    private static final String CONTENT_VERSION = "1.0.0.0";
 
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
@@ -66,8 +71,8 @@ public class DeploymentsTests extends ResourceManagementTest {
         resourceClient.deployments()
             .define(dpName)
             .withExistingResourceGroup(rgName)
-            .withTemplateLink(templateUri, contentVersion)
-            .withParametersLink(parametersUri, contentVersion)
+            .withTemplateLink(TEMPLATE_URI, CONTENT_VERSION)
+            .withParametersLink(PARAMETERS_URI, CONTENT_VERSION)
             .withMode(DeploymentMode.COMPLETE)
             .create();
         // List
@@ -108,8 +113,8 @@ public class DeploymentsTests extends ResourceManagementTest {
         resourceClient.deployments()
             .define(dpName)
             .withExistingResourceGroup(rgName)
-            .withTemplateLink(templateUri, contentVersion)
-            .withParametersLink(parametersUri, contentVersion)
+            .withTemplateLink(TEMPLATE_URI, CONTENT_VERSION)
+            .withParametersLink(PARAMETERS_URI, CONTENT_VERSION)
             .withMode(DeploymentMode.COMPLETE)
             .create();
         // List
@@ -130,7 +135,7 @@ public class DeploymentsTests extends ResourceManagementTest {
         //What if
         WhatIfOperationResult result = deployment.prepareWhatIf()
             .withIncrementalMode()
-            .withWhatIfTemplateLink(templateUri, contentVersion)
+            .withWhatIfTemplateLink(TEMPLATE_URI, CONTENT_VERSION)
             .whatIf();
 
         Assertions.assertEquals("Succeeded", result.status());
@@ -147,8 +152,8 @@ public class DeploymentsTests extends ResourceManagementTest {
         resourceClient.deployments()
             .define(dpName)
             .withExistingResourceGroup(rgName)
-            .withTemplateLink(templateUri, contentVersion)
-            .withParametersLink(parametersUri, contentVersion)
+            .withTemplateLink(TEMPLATE_URI, CONTENT_VERSION)
+            .withParametersLink(PARAMETERS_URI, CONTENT_VERSION)
             .withMode(DeploymentMode.COMPLETE)
             .create();
         // List
@@ -170,7 +175,7 @@ public class DeploymentsTests extends ResourceManagementTest {
         WhatIfOperationResult result = deployment.prepareWhatIf()
             .withLocation("westus")
             .withIncrementalMode()
-            .withWhatIfTemplateLink(blankTemplateUri, contentVersion)
+            .withWhatIfTemplateLink(BLANK_TEMPLATE_URI, CONTENT_VERSION)
             .whatIfAtSubscriptionScope();
 
         Assertions.assertEquals("Succeeded", result.status());
@@ -188,8 +193,8 @@ public class DeploymentsTests extends ResourceManagementTest {
         resourceClient.deployments()
             .define(dp)
             .withExistingResourceGroup(rgName)
-            .withTemplateLink(templateUri, contentVersion)
-            .withParametersLink(parametersUri, contentVersion)
+            .withTemplateLink(TEMPLATE_URI, CONTENT_VERSION)
+            .withParametersLink(PARAMETERS_URI, CONTENT_VERSION)
             .withMode(DeploymentMode.COMPLETE)
             .beginCreate();
         Deployment deployment = resourceClient.deployments().getByResourceGroup(rgName, dp);
@@ -209,8 +214,8 @@ public class DeploymentsTests extends ResourceManagementTest {
         Accepted<Deployment> acceptedDeployment = resourceClient.deployments()
             .define(dp)
             .withExistingResourceGroup(rgName)
-            .withTemplateLink(templateUri, contentVersion)
-            .withParametersLink(parametersUri, contentVersion)
+            .withTemplateLink(TEMPLATE_URI, CONTENT_VERSION)
+            .withParametersLink(PARAMETERS_URI, CONTENT_VERSION)
             .withMode(DeploymentMode.COMPLETE)
             .beginCreate();
         Deployment createdDeployment = acceptedDeployment.getActivationResponse().getValue();
@@ -223,8 +228,8 @@ public class DeploymentsTests extends ResourceManagementTest {
         Assertions.assertEquals("Canceled", deployment.provisioningState());
         // Update
         deployment.update()
-            .withTemplate(updateTemplate)
-            .withParameters(updateParameters)
+            .withTemplate(UPDATE_TEMPLATE)
+            .withParameters(UPDATE_PARAMETERS)
             .withMode(DeploymentMode.INCREMENTAL)
             .apply();
         deployment = resourceClient.deployments().getByResourceGroup(rgName, dp);
@@ -245,8 +250,8 @@ public class DeploymentsTests extends ResourceManagementTest {
         Accepted<Deployment> acceptedDeployment = resourceClient.deployments()
             .define(dp)
             .withExistingResourceGroup(rgName)
-            .withTemplateLink(templateUri, contentVersion)
-            .withParametersLink(parametersUri, contentVersion)
+            .withTemplateLink(TEMPLATE_URI, CONTENT_VERSION)
+            .withParametersLink(PARAMETERS_URI, CONTENT_VERSION)
             .withMode(DeploymentMode.COMPLETE)
             .beginCreate();
         Deployment createdDeployment = acceptedDeployment.getActivationResponse().getValue();
@@ -369,5 +374,45 @@ public class DeploymentsTests extends ResourceManagementTest {
         } finally {
             resourceClient.resourceGroups().beginDeleteByName(newRgName);
         }
+    }
+
+    @Test
+    public void canGetErrorWhenDeploymentFail() throws Exception {
+        final String dpName = "dpG" + testId;
+
+        String templateJson;    // template fails at Subnet2
+        try (InputStream templateStream = this.getClass().getResourceAsStream("/deployTemplateWithError.json")) {
+            templateJson = new BufferedReader(new InputStreamReader(templateStream, StandardCharsets.UTF_8)).lines()
+                .collect(Collectors.joining("\n"));
+        }
+
+        ManagementError deploymentError = null;
+        try {
+            resourceClient.deployments()
+                .define(dpName)
+                .withExistingResourceGroup(rgName)
+                .withTemplate(templateJson)
+                .withParametersLink(PARAMETERS_URI, CONTENT_VERSION)
+                .withMode(DeploymentMode.COMPLETE)
+                .create();
+        } catch (ManagementException deploymentException) {
+            // verify ManagementException
+            Assertions.assertTrue(deploymentException.getValue().getDetails().stream()
+                .anyMatch(detail -> detail.getMessage().contains("Subnet2")));
+
+            Deployment failedDeployment = resourceClient.deployments()
+                .getByResourceGroup(rgName, dpName);
+            deploymentError = failedDeployment.error();
+
+            // verify deployment operations
+            PagedIterable<DeploymentOperation> operations = failedDeployment.deploymentOperations().list();
+            Assertions.assertTrue(operations.stream()
+                .anyMatch(operation -> "BadRequest".equals(operation.statusCode())
+                    && operation.targetResource().resourceName().contains("Subnet2")));
+        }
+        // verify Deployment.error()
+        Assertions.assertNotNull(deploymentError);
+        Assertions.assertTrue(deploymentError.getDetails().stream()
+            .anyMatch(detail -> detail.getMessage().contains("Subnet2")));
     }
 }

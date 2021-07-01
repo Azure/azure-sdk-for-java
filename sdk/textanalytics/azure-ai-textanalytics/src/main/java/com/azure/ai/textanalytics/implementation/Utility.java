@@ -3,62 +3,94 @@
 
 package com.azure.ai.textanalytics.implementation;
 
+import com.azure.ai.textanalytics.implementation.models.Association;
+import com.azure.ai.textanalytics.implementation.models.Certainty;
+import com.azure.ai.textanalytics.implementation.models.Conditionality;
 import com.azure.ai.textanalytics.implementation.models.DocumentError;
 import com.azure.ai.textanalytics.implementation.models.DocumentKeyPhrases;
+import com.azure.ai.textanalytics.implementation.models.DocumentSentiment;
+import com.azure.ai.textanalytics.implementation.models.DocumentSentimentValue;
 import com.azure.ai.textanalytics.implementation.models.DocumentStatistics;
 import com.azure.ai.textanalytics.implementation.models.EntitiesResult;
+import com.azure.ai.textanalytics.implementation.models.EntityLinkingResult;
 import com.azure.ai.textanalytics.implementation.models.ErrorCodeValue;
+import com.azure.ai.textanalytics.implementation.models.ErrorResponse;
 import com.azure.ai.textanalytics.implementation.models.ErrorResponseException;
+import com.azure.ai.textanalytics.implementation.models.HealthcareAssertion;
 import com.azure.ai.textanalytics.implementation.models.HealthcareResult;
 import com.azure.ai.textanalytics.implementation.models.InnerError;
 import com.azure.ai.textanalytics.implementation.models.InnerErrorCodeValue;
 import com.azure.ai.textanalytics.implementation.models.KeyPhraseResult;
 import com.azure.ai.textanalytics.implementation.models.LanguageInput;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageInput;
+import com.azure.ai.textanalytics.implementation.models.PiiCategory;
 import com.azure.ai.textanalytics.implementation.models.PiiResult;
+import com.azure.ai.textanalytics.implementation.models.RelationType;
 import com.azure.ai.textanalytics.implementation.models.RequestStatistics;
-import com.azure.ai.textanalytics.implementation.models.StringIndexType;
+import com.azure.ai.textanalytics.implementation.models.SentenceAssessment;
+import com.azure.ai.textanalytics.implementation.models.SentenceSentimentValue;
+import com.azure.ai.textanalytics.implementation.models.SentenceTarget;
+import com.azure.ai.textanalytics.implementation.models.SentimentConfidenceScorePerLabel;
+import com.azure.ai.textanalytics.implementation.models.SentimentResponse;
+import com.azure.ai.textanalytics.implementation.models.TargetConfidenceScoreLabel;
+import com.azure.ai.textanalytics.implementation.models.TargetRelationType;
 import com.azure.ai.textanalytics.implementation.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.implementation.models.WarningCodeValue;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesResult;
+import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
+import com.azure.ai.textanalytics.models.AssessmentSentiment;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
+import com.azure.ai.textanalytics.models.EntityAssociation;
 import com.azure.ai.textanalytics.models.EntityCategory;
+import com.azure.ai.textanalytics.models.EntityCertainty;
+import com.azure.ai.textanalytics.models.EntityConditionality;
 import com.azure.ai.textanalytics.models.EntityDataSource;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
+import com.azure.ai.textanalytics.models.HealthcareEntityAssertion;
+import com.azure.ai.textanalytics.models.HealthcareEntityRelation;
+import com.azure.ai.textanalytics.models.HealthcareEntityRelationRole;
 import com.azure.ai.textanalytics.models.HealthcareEntityRelationType;
 import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
+import com.azure.ai.textanalytics.models.LinkedEntity;
+import com.azure.ai.textanalytics.models.LinkedEntityCollection;
+import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.PiiEntity;
+import com.azure.ai.textanalytics.models.PiiEntityCategory;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
+import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
+import com.azure.ai.textanalytics.models.SentenceOpinion;
+import com.azure.ai.textanalytics.models.SentenceSentiment;
+import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
+import com.azure.ai.textanalytics.models.TargetSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsErrorCode;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextDocumentStatistics;
+import com.azure.ai.textanalytics.models.TextSentiment;
 import com.azure.ai.textanalytics.models.WarningCode;
+import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
+import com.azure.ai.textanalytics.util.RecognizeLinkedEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpResponse;
+import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
-import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -67,15 +99,27 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiFunction;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
  * Utility method class.
  */
 public final class Utility {
-    private static final ClientLogger LOGGER = new ClientLogger(Utility.class);
     // default time interval for polling
     public static final Duration DEFAULT_POLL_INTERVAL = Duration.ofSeconds(5);
+
+    private static final ClientLogger LOGGER = new ClientLogger(Utility.class);
+
+    private static final int NEUTRAL_SCORE_ZERO = 0;
+    private static final String DOCUMENT_SENTENCES_ASSESSMENTS_REG_EXP =
+        "#/documents/(\\d+)/sentences/(\\d+)/assessments/(\\d+)";
+    private static final Pattern PATTERN;
+
+    static {
+        PATTERN = Pattern.compile(DOCUMENT_SENTENCES_ASSESSMENTS_REG_EXP);
+    }
 
     private Utility() {
     }
@@ -97,62 +141,22 @@ public final class Utility {
     }
 
     /**
-     * Get a mock {@link HttpResponse} that only return status code 400.
-     *
-     * @param response A {@link SimpleResponse} with any type
-     * @return A mock {@link HttpResponse} that only return status code 400.
-     */
-    public static HttpResponse getEmptyErrorIdHttpResponse(SimpleResponse<?> response) {
-        return new HttpResponse(response.getRequest()) {
-            @Override
-            public int getStatusCode() {
-                return 400;
-            }
-
-            @Override
-            public String getHeaderValue(String s) {
-                return null;
-            }
-
-            @Override
-            public HttpHeaders getHeaders() {
-                return null;
-            }
-
-            @Override
-            public Flux<ByteBuffer> getBody() {
-                return null;
-            }
-
-            @Override
-            public Mono<byte[]> getBodyAsByteArray() {
-                return null;
-            }
-
-            @Override
-            public Mono<String> getBodyAsString() {
-                return null;
-            }
-
-            @Override
-            public Mono<String> getBodyAsString(Charset charset) {
-                return null;
-            }
-        };
-    }
-
-    /**
      * Mapping a {@link ErrorResponseException} to {@link HttpResponseException} if exist. Otherwise, return
      * original {@link Throwable}.
      *
      * @param throwable A {@link Throwable}.
      * @return A {@link HttpResponseException} or the original throwable type.
      */
-    public static Throwable mapToHttpResponseExceptionIfExist(Throwable throwable) {
+    public static Throwable mapToHttpResponseExceptionIfExists(Throwable throwable) {
         if (throwable instanceof ErrorResponseException) {
             ErrorResponseException errorException = (ErrorResponseException) throwable;
+            final ErrorResponse errorResponse = errorException.getValue();
+            com.azure.ai.textanalytics.models.TextAnalyticsError textAnalyticsError = null;
+            if (errorResponse != null && errorResponse.getError() != null) {
+                textAnalyticsError = toTextAnalyticsError(errorResponse.getError());
+            }
             return new HttpResponseException(errorException.getMessage(), errorException.getResponse(),
-                toTextAnalyticsError(errorException.getValue().getError()));
+                textAnalyticsError);
         }
         return throwable;
     }
@@ -295,26 +299,25 @@ public final class Utility {
      *
      * @return A map that holds the request parameter value of next pagination link.
      */
-    public static Map<String, Integer> parseNextLink(String nextLink) {
+    public static Map<String, Object> parseNextLink(String nextLink) {
         if (!CoreUtils.isNullOrEmpty(nextLink)) {
-            Map<String, Integer> parameterMap = new HashMap<>();
-            String[] strings = nextLink.split("\\?", 2);
-            String[] parameters = strings[1].split("&");
+            final Map<String, Object> parameterMap = new HashMap<>();
+            final String[] strings = nextLink.split("\\?", 2);
+            final String[] parameters = strings[1].split("&");
+
             for (String parameter : parameters) {
-                String[] parameterPair = parameter.split("=");
-                parameterMap.put(parameterPair[0], Integer.valueOf(parameterPair[1]));
+                final String[] parameterPair = parameter.split("=");
+                final String key = parameterPair[0];
+                final String value = parameterPair[1];
+                if ("showStats".equals(key)) {
+                    parameterMap.put(key, value);
+                } else if ("$skip".equals(key) || "$top".equals(key)) {
+                    parameterMap.put(key, Integer.valueOf(value));
+                }
             }
             return parameterMap;
         }
         return new HashMap<>();
-        // TODO: solve this SpotBugs
-        // [ERROR] Unchecked/unconfirmed cast from Throwable to RuntimeException of return value in
-        // com.azure.ai.textanalytics.implementation.Utility.parseNextLink(String)
-        // [com.azure.ai.textanalytics.implementation.Utility] At Utility.java:[line 302]
-        // BC_UNCONFIRMED_CAST_OF_RETURN_VALUE
-        //throw LOGGER.logThrowableAsError(
-        //    new RuntimeException(String.format("Failed to parse nextLink for pagination, nextLink: %s%n",
-        //        nextLink)));
     }
 
     public static RecognizeEntitiesResultCollection toRecognizeEntitiesResultCollectionResponse(
@@ -359,10 +362,15 @@ public final class Utility {
         final List<RecognizePiiEntitiesResult> recognizeEntitiesResults = new ArrayList<>();
         piiEntitiesResult.getDocuments().forEach(documentEntities -> {
             // Pii entities list
-            final List<PiiEntity> piiEntities = documentEntities.getEntities().stream().map(entity ->
-                new PiiEntity(entity.getText(), EntityCategory.fromString(entity.getCategory()),
-                    entity.getSubcategory(), entity.getConfidenceScore(), entity.getOffset()))
-                .collect(Collectors.toList());
+            final List<PiiEntity> piiEntities = documentEntities.getEntities().stream().map(entity -> {
+                final PiiEntity piiEntity = new PiiEntity();
+                PiiEntityPropertiesHelper.setText(piiEntity, entity.getText());
+                PiiEntityPropertiesHelper.setCategory(piiEntity, PiiEntityCategory.fromString(entity.getCategory()));
+                PiiEntityPropertiesHelper.setSubcategory(piiEntity, entity.getSubcategory());
+                PiiEntityPropertiesHelper.setConfidenceScore(piiEntity, entity.getConfidenceScore());
+                PiiEntityPropertiesHelper.setOffset(piiEntity, entity.getOffset());
+                return piiEntity;
+            }).collect(Collectors.toList());
             // Warnings
             final List<TextAnalyticsWarning> warnings = documentEntities.getWarnings().stream()
                 .map(warning -> {
@@ -420,6 +428,67 @@ public final class Utility {
             keyPhraseResult.getStatistics() == null ? null : toBatchStatistics(keyPhraseResult.getStatistics()));
     }
 
+    public static Response<RecognizeLinkedEntitiesResultCollection> toRecognizeLinkedEntitiesResultCollectionResponse(
+        final Response<EntityLinkingResult> response) {
+        final EntityLinkingResult entityLinkingResult = response.getValue();
+        return new SimpleResponse<>(response,
+            new RecognizeLinkedEntitiesResultCollection(toRecognizeLinkedEntitiesResultCollection(entityLinkingResult),
+                entityLinkingResult.getModelVersion(),
+                entityLinkingResult.getStatistics() == null ? null
+                    : toBatchStatistics(entityLinkingResult.getStatistics())));
+    }
+
+    public static RecognizeLinkedEntitiesResultCollection toRecognizeLinkedEntitiesResultCollection(
+        final EntityLinkingResult entityLinkingResult) {
+        // List of documents results
+        final List<RecognizeLinkedEntitiesResult> linkedEntitiesResults =
+            entityLinkingResult.getDocuments().stream().map(
+                documentLinkedEntities -> new RecognizeLinkedEntitiesResult(
+                    documentLinkedEntities.getId(),
+                    documentLinkedEntities.getStatistics() == null ? null
+                        : toTextDocumentStatistics(documentLinkedEntities.getStatistics()),
+                    null,
+                    new LinkedEntityCollection(new IterableStream<>(
+                        documentLinkedEntities.getEntities().stream().map(
+                            linkedEntity -> new LinkedEntity(
+                                linkedEntity.getName(),
+                                new IterableStream<>(
+                                    linkedEntity.getMatches().stream().map(
+                                        match -> {
+                                            final LinkedEntityMatch linkedEntityMatch = new LinkedEntityMatch(
+                                                match.getText(), match.getConfidenceScore(), match.getOffset());
+                                            LinkedEntityMatchPropertiesHelper.setLength(linkedEntityMatch,
+                                                match.getLength());
+                                            return linkedEntityMatch;
+                                        }).collect(Collectors.toList())),
+                                linkedEntity.getLanguage(),
+                                linkedEntity.getId(),
+                                linkedEntity.getUrl(),
+                                linkedEntity.getDataSource(),
+                                linkedEntity.getBingId())).collect(Collectors.toList())),
+                        new IterableStream<>(documentLinkedEntities.getWarnings().stream().map(
+                            warning -> {
+                                final WarningCodeValue warningCodeValue = warning.getCode();
+                                return new TextAnalyticsWarning(
+                                    WarningCode.fromString(warningCodeValue == null ? null
+                                                               : warningCodeValue.toString()),
+                                    warning.getMessage());
+                            }).collect(Collectors.toList())
+                        )
+                    )
+                )
+            ).collect(Collectors.toList());
+        // Document errors
+        for (DocumentError documentError : entityLinkingResult.getErrors()) {
+            linkedEntitiesResults.add(new RecognizeLinkedEntitiesResult(documentError.getId(), null,
+                toTextAnalyticsError(documentError.getError()), null));
+        }
+
+        return new RecognizeLinkedEntitiesResultCollection(linkedEntitiesResults, entityLinkingResult.getModelVersion(),
+                entityLinkingResult.getStatistics() == null ? null
+                    : toBatchStatistics(entityLinkingResult.getStatistics()));
+    }
+
     /**
      * Transfer {@link HealthcareResult} into {@link IterableStream} of {@link AnalyzeHealthcareEntitiesResult}.
      *
@@ -433,84 +502,89 @@ public final class Utility {
         List<AnalyzeHealthcareEntitiesResult> analyzeHealthcareEntitiesResults = new ArrayList<>();
         healthcareResult.getDocuments().forEach(
             documentEntities -> {
-                final List<TextAnalyticsWarning> warnings = Optional.ofNullable(documentEntities.getWarnings())
-                    .map(textAnalyticsWarnings -> textAnalyticsWarnings.stream().map(
-                        textAnalyticsWarning -> new TextAnalyticsWarning(
-                            Optional.ofNullable(textAnalyticsWarning.getCode())
-                                .map(warningCodeValue -> WarningCode.fromString(warningCodeValue.toString()))
-                                .orElse(null),
-                            textAnalyticsWarning.getMessage())
-                        ).collect(Collectors.toList())
-                    ).orElse(new ArrayList<>());
-
-                final List<HealthcareEntity> healthcareEntities = documentEntities.getEntities().stream().map(
-                    entity -> {
-                        final HealthcareEntity healthcareEntity = new HealthcareEntity();
-                        HealthcareEntityPropertiesHelper.setText(healthcareEntity, entity.getText());
-                        HealthcareEntityPropertiesHelper.setCategory(healthcareEntity, entity.getCategory());
-                        HealthcareEntityPropertiesHelper.setConfidenceScore(healthcareEntity,
-                            entity.getConfidenceScore());
-                        HealthcareEntityPropertiesHelper.setOffset(healthcareEntity, entity.getOffset());
-                        HealthcareEntityPropertiesHelper.setLength(healthcareEntity, entity.getLength());
-                        HealthcareEntityPropertiesHelper.setDataSources(healthcareEntity,
-                            entity.getLinks() == null ? null : IterableStream.of(entity.getLinks().stream()
-                                .map(healthcareEntityLink -> {
-                                    final EntityDataSource entityDataSourceOrigin =
-                                        new EntityDataSource();
-                                    EntityDataSourcePropertiesHelper.setName(entityDataSourceOrigin,
-                                        healthcareEntityLink.getDataSource());
-                                    EntityDataSourcePropertiesHelper.setEntityId(
-                                        entityDataSourceOrigin, healthcareEntityLink.getId());
-                                    return entityDataSourceOrigin;
-                                })
-                                .collect(Collectors.toList())));
-                        // TODO: can we keep 'null' value for the map or by default we need to use an empty map
-                        HealthcareEntityPropertiesHelper.setRelatedEntities(healthcareEntity,
-                            new HashMap<>());
-                        return healthcareEntity;
-                    }).collect(Collectors.toList());
-
-                Map<HealthcareEntity, Map<HealthcareEntity, HealthcareEntityRelationType>> entityRelationMap =
-                    new HashMap<>();
-                if (!CoreUtils.isNullOrEmpty(documentEntities.getRelations())) {
-                    documentEntities.getRelations().forEach(healthcareRelation -> {
-                        final HealthcareEntity targetEntity =
-                            healthcareEntities.get(getHealthcareEntityIndex(healthcareRelation.getTarget()));
-                        final HealthcareEntity sourceEntity =
-                            healthcareEntities.get(getHealthcareEntityIndex(healthcareRelation.getSource()));
-                        final HealthcareEntityRelationType relationType =
-                            HealthcareEntityRelationType.fromString(healthcareRelation.getRelationType());
-
-                        final Map<HealthcareEntity, HealthcareEntityRelationType> targetRelatedEntity =
-                            entityRelationMap.getOrDefault(targetEntity, new HashMap<>());
-                        targetRelatedEntity.putIfAbsent(sourceEntity, relationType);
-                        entityRelationMap.putIfAbsent(targetEntity, targetRelatedEntity);
-
-                        if (healthcareRelation.isBidirectional()) {
-                            final Map<HealthcareEntity, HealthcareEntityRelationType> sourceRelatedEntity =
-                                entityRelationMap.getOrDefault(sourceEntity, new HashMap<>());
-                            sourceRelatedEntity.putIfAbsent(targetEntity, relationType);
-                            entityRelationMap.putIfAbsent(sourceEntity, sourceRelatedEntity);
-                        }
-                    });
-                }
-                healthcareEntities.forEach(healthcareEntity -> {
-                    if (entityRelationMap.containsKey(healthcareEntity)) {
-                        HealthcareEntityPropertiesHelper.setRelatedEntities(healthcareEntity,
-                            entityRelationMap.get(healthcareEntity));
-                    }
-                });
-
                 final AnalyzeHealthcareEntitiesResult analyzeHealthcareEntitiesResult =
                     new AnalyzeHealthcareEntitiesResult(
                         documentEntities.getId(),
                         documentEntities.getStatistics() == null ? null
                             : toTextDocumentStatistics(documentEntities.getStatistics()),
                         null);
-                AnalyzeHealthcareEntitiesResultPropertiesHelper.setEntities(analyzeHealthcareEntitiesResult,
-                    IterableStream.of(healthcareEntities));
+                // Warnings
+                final List<TextAnalyticsWarning> warnings = documentEntities.getWarnings().stream().map(
+                    textAnalyticsWarning -> new TextAnalyticsWarning(
+                        Optional.ofNullable(textAnalyticsWarning.getCode())
+                            .map(warningCodeValue -> WarningCode.fromString(warningCodeValue.toString()))
+                            .orElse(null),
+                        textAnalyticsWarning.getMessage())
+                ).collect(Collectors.toList());
                 AnalyzeHealthcareEntitiesResultPropertiesHelper.setWarnings(analyzeHealthcareEntitiesResult,
                     IterableStream.of(warnings));
+                // Healthcare entities
+                final List<HealthcareEntity> healthcareEntities = documentEntities.getEntities().stream().map(
+                    entity -> {
+                        final HealthcareEntity healthcareEntity = new HealthcareEntity();
+                        HealthcareEntityPropertiesHelper.setText(healthcareEntity, entity.getText());
+                        HealthcareEntityPropertiesHelper.setNormalizedText(healthcareEntity, entity.getName());
+                        HealthcareEntityPropertiesHelper.setCategory(healthcareEntity, entity.getCategory());
+                        HealthcareEntityPropertiesHelper.setConfidenceScore(healthcareEntity,
+                            entity.getConfidenceScore());
+                        HealthcareEntityPropertiesHelper.setOffset(healthcareEntity, entity.getOffset());
+                        HealthcareEntityPropertiesHelper.setLength(healthcareEntity, entity.getLength());
+                        final List<EntityDataSource> entityDataSources =
+                            Optional.ofNullable(entity.getLinks()).map(
+                                links -> links.stream().map(
+                                    link -> {
+                                        final EntityDataSource dataSource = new EntityDataSource();
+                                        EntityDataSourcePropertiesHelper.setName(dataSource, link.getDataSource());
+                                        EntityDataSourcePropertiesHelper.setEntityId(dataSource, link.getId());
+                                        return dataSource;
+                                    }
+                                ).collect(Collectors.toList()))
+                                .orElse(new ArrayList<>());
+
+                        HealthcareEntityPropertiesHelper.setDataSources(healthcareEntity,
+                            IterableStream.of(entityDataSources));
+
+                        final HealthcareAssertion assertion = entity.getAssertion();
+                        if (assertion != null) {
+                            HealthcareEntityPropertiesHelper.setAssertion(healthcareEntity,
+                                toHealthcareEntityAssertion(assertion));
+                        }
+                        return healthcareEntity;
+                    }).collect(Collectors.toList());
+                AnalyzeHealthcareEntitiesResultPropertiesHelper.setEntities(analyzeHealthcareEntitiesResult,
+                    IterableStream.of(healthcareEntities));
+
+                // Healthcare Entity relations
+                final List<HealthcareEntityRelation> healthcareEntityRelations =
+                    documentEntities.getRelations().stream().map(
+                        healthcareRelation -> {
+                            final HealthcareEntityRelation entityRelation = new HealthcareEntityRelation();
+                            // Healthcare relation type
+                            final RelationType relationType = healthcareRelation.getRelationType();
+                            if (relationType != null) {
+                                HealthcareEntityRelationPropertiesHelper.setRelationType(entityRelation,
+                                    HealthcareEntityRelationType.fromString(relationType.toString()));
+                            }
+                            // Healthcare entity relation roles
+                            final List<HealthcareEntityRelationRole> relationRoles =
+                                healthcareRelation.getEntities().stream().map(
+                                    relationEntity -> {
+                                        final HealthcareEntityRelationRole relationRole =
+                                            new HealthcareEntityRelationRole();
+                                        HealthcareEntityRelationRolePropertiesHelper.setName(relationRole,
+                                            relationEntity.getRole());
+                                        HealthcareEntityRelationRolePropertiesHelper.setEntity(relationRole,
+                                            healthcareEntities.get(getHealthcareEntityIndex(relationEntity.getRef())));
+                                        return relationRole;
+                                    }).collect(Collectors.toList());
+                            HealthcareEntityRelationPropertiesHelper.setRoles(entityRelation,
+                                IterableStream.of(relationRoles));
+
+                            return entityRelation;
+                        }).collect(Collectors.toList());
+                AnalyzeHealthcareEntitiesResultPropertiesHelper.setEntityRelations(analyzeHealthcareEntitiesResult,
+                    IterableStream.of(healthcareEntityRelations));
+
                 analyzeHealthcareEntitiesResults.add(analyzeHealthcareEntitiesResult);
             });
         // Document errors
@@ -521,6 +595,66 @@ public final class Utility {
                 toTextAnalyticsError(documentError.getError())))
         );
         return IterableStream.of(analyzeHealthcareEntitiesResults);
+    }
+
+    public static HealthcareEntityAssertion toHealthcareEntityAssertion(HealthcareAssertion healthcareAssertion) {
+        final Association association = healthcareAssertion.getAssociation();
+        final Certainty certainty = healthcareAssertion.getCertainty();
+        final Conditionality conditionality = healthcareAssertion.getConditionality();
+
+        final HealthcareEntityAssertion entityAssertion = new HealthcareEntityAssertion();
+        if (association != null) {
+            HealthcareEntityAssertionPropertiesHelper.setAssociation(entityAssertion,
+                EntityAssociation.fromString(association.toString()));
+        }
+        if (certainty != null) {
+            HealthcareEntityAssertionPropertiesHelper.setCertainty(entityAssertion,
+                toCertainty(certainty));
+        }
+        if (conditionality != null) {
+            HealthcareEntityAssertionPropertiesHelper.setConditionality(entityAssertion,
+                toConditionality(conditionality));
+        }
+        return entityAssertion;
+    }
+
+    private static EntityCertainty toCertainty(Certainty certainty) {
+        EntityCertainty entityCertainty1 = null;
+        switch (certainty) {
+            case POSITIVE:
+                entityCertainty1 = EntityCertainty.POSITIVE;
+                break;
+            case POSITIVE_POSSIBLE:
+                entityCertainty1 = EntityCertainty.POSITIVE_POSSIBLE;
+                break;
+            case NEUTRAL_POSSIBLE:
+                entityCertainty1 = EntityCertainty.NEUTRAL_POSSIBLE;
+                break;
+            case NEGATIVE_POSSIBLE:
+                entityCertainty1 = EntityCertainty.NEGATIVE_POSSIBLE;
+                break;
+            case NEGATIVE:
+                entityCertainty1 = EntityCertainty.NEGATIVE;
+                break;
+            default:
+                break;
+        }
+        return entityCertainty1;
+    }
+
+    private static EntityConditionality toConditionality(Conditionality conditionality) {
+        EntityConditionality conditionality1 = null;
+        switch (conditionality) {
+            case HYPOTHETICAL:
+                conditionality1 = EntityConditionality.HYPOTHETICAL;
+                break;
+            case CONDITIONAL:
+                conditionality1 = EntityConditionality.CONDITIONAL;
+                break;
+            default:
+                break;
+        }
+        return conditionality1;
     }
 
     /**
@@ -543,20 +677,6 @@ public final class Utility {
     }
 
     /**
-     * Transfer {@link com.azure.ai.textanalytics.models.StringIndexType} into auto-generated {@link StringIndexType}.
-     * If value is null, use the default type for java, UTF16CODE_UNIT.
-     *
-     * @param stringIndexType The public explored StringIndexType.
-     *
-     * @return The autogenerated internally used StringIndexType.
-     */
-    public static StringIndexType getNonNullStringIndexType(
-        com.azure.ai.textanalytics.models.StringIndexType stringIndexType) {
-        return stringIndexType == null ? StringIndexType.UTF16CODE_UNIT
-                   : StringIndexType.fromString(stringIndexType.toString());
-    }
-
-    /**
      * Get the non-null {@link Context}. The default value is {@link Context#NONE}.
      *
      * @param context It offers a means of passing arbitrary data (key-value pairs) to pipeline policies.
@@ -566,5 +686,234 @@ public final class Utility {
      */
     public static Context getNotNullContext(Context context) {
         return context == null ? Context.NONE : context;
+    }
+
+    /**
+     * Helper function which retrieves the size of an {@link Iterable}.
+     *
+     * @param documents The iterable of documents.
+     * @return Count of documents in the iterable.
+     */
+    public static int getDocumentCount(Iterable<?> documents) {
+        if (documents instanceof Collection) {
+            return ((Collection<?>) documents).size();
+        } else {
+            final int[] count = new int[] { 0 };
+            documents.forEach(ignored -> count[0] += 1);
+            return count[0];
+        }
+    }
+
+    /**
+     * Helper function which convert the {@code Iterable<PiiEntityCategory>} to {@code List<PiiCategory>}.
+     *
+     * @param categoriesFilter the iterable of {@link PiiEntityCategory}.
+     * @return the list of {@link PiiCategory}.
+     */
+    public static List<PiiCategory> toCategoriesFilter(Iterable<PiiEntityCategory> categoriesFilter) {
+        // Corner case. Whenever the passing value is null, we use `null` as the default value pass to service.
+        if (categoriesFilter == null) {
+            return null;
+        }
+        final List<PiiCategory> piiCategories = new ArrayList<>();
+        categoriesFilter.forEach(category -> piiCategories.add(PiiCategory.fromString(category.toString())));
+        return piiCategories;
+    }
+
+    /**
+     * Helper method to convert {@link SentimentResponse} to {@link AnalyzeSentimentResultCollection}.
+     *
+     * @param sentimentResponse The {@link SentimentResponse}.
+     *
+     * @return A {@link AnalyzeSentimentResultCollection}.
+     */
+    public static AnalyzeSentimentResultCollection toAnalyzeSentimentResultCollection(
+        SentimentResponse sentimentResponse) {
+        final List<AnalyzeSentimentResult> analyzeSentimentResults = new ArrayList<>();
+        final List<DocumentSentiment> documentSentiments = sentimentResponse.getDocuments();
+        for (DocumentSentiment documentSentiment : documentSentiments) {
+            analyzeSentimentResults.add(convertToAnalyzeSentimentResult(documentSentiment, documentSentiments));
+        }
+        for (DocumentError documentError : sentimentResponse.getErrors()) {
+            analyzeSentimentResults.add(new AnalyzeSentimentResult(documentError.getId(), null,
+                toTextAnalyticsError(documentError.getError()), null));
+        }
+        return new AnalyzeSentimentResultCollection(analyzeSentimentResults, sentimentResponse.getModelVersion(),
+            sentimentResponse.getStatistics() == null ? null : toBatchStatistics(sentimentResponse.getStatistics()));
+    }
+
+    /**
+     * Helper method to convert the service response of {@link DocumentSentiment} to {@link AnalyzeSentimentResult}.
+     *
+     * @param documentSentiment The {@link DocumentSentiment} returned by the service.
+     * @param documentSentimentList The document sentiment list returned by the service.
+     *
+     * @return The {@link AnalyzeSentimentResult} to be returned by the SDK.
+     */
+    private static AnalyzeSentimentResult convertToAnalyzeSentimentResult(DocumentSentiment documentSentiment,
+        List<DocumentSentiment> documentSentimentList) {
+        // Document text sentiment
+        final SentimentConfidenceScorePerLabel confidenceScorePerLabel = documentSentiment.getConfidenceScores();
+        // Sentence text sentiment
+        final List<SentenceSentiment> sentenceSentiments = documentSentiment.getSentences().stream()
+            .map(sentenceSentiment -> {
+                final SentimentConfidenceScorePerLabel confidenceScorePerSentence =
+                    sentenceSentiment.getConfidenceScores();
+                final SentenceSentimentValue sentenceSentimentValue = sentenceSentiment.getSentiment();
+                final SentenceSentiment sentenceSentiment1 = new SentenceSentiment(sentenceSentiment.getText(),
+                    TextSentiment.fromString(sentenceSentimentValue == null ? null : sentenceSentimentValue.toString()),
+                    new SentimentConfidenceScores(confidenceScorePerSentence.getNegative(),
+                        confidenceScorePerSentence.getNeutral(), confidenceScorePerSentence.getPositive()));
+                SentenceSentimentPropertiesHelper.setOpinions(sentenceSentiment1,
+                    toSentenceOpinionList(sentenceSentiment, documentSentimentList));
+                SentenceSentimentPropertiesHelper.setOffset(sentenceSentiment1, sentenceSentiment.getOffset());
+                SentenceSentimentPropertiesHelper.setLength(sentenceSentiment1, sentenceSentiment.getLength());
+                return sentenceSentiment1;
+            }).collect(Collectors.toList());
+
+        // Warnings
+        final List<TextAnalyticsWarning> warnings = documentSentiment.getWarnings().stream().map(
+            warning -> {
+                final WarningCodeValue warningCodeValue = warning.getCode();
+                return new TextAnalyticsWarning(
+                    WarningCode.fromString(warningCodeValue == null ? null : warningCodeValue.toString()),
+                    warning.getMessage());
+            }).collect(Collectors.toList());
+
+        final DocumentSentimentValue documentSentimentValue = documentSentiment.getSentiment();
+        return new AnalyzeSentimentResult(
+            documentSentiment.getId(),
+            documentSentiment.getStatistics() == null
+                ? null : toTextDocumentStatistics(documentSentiment.getStatistics()),
+            null,
+            new com.azure.ai.textanalytics.models.DocumentSentiment(
+                TextSentiment.fromString(documentSentimentValue == null ? null : documentSentimentValue.toString()),
+                new SentimentConfidenceScores(
+                    confidenceScorePerLabel.getNegative(),
+                    confidenceScorePerLabel.getNeutral(),
+                    confidenceScorePerLabel.getPositive()),
+                new IterableStream<>(sentenceSentiments),
+                new IterableStream<>(warnings)));
+    }
+
+    /*
+     * Transform SentenceSentiment's opinion mining to output that user can use.
+     */
+    private static IterableStream<SentenceOpinion> toSentenceOpinionList(
+        com.azure.ai.textanalytics.implementation.models.SentenceSentiment sentenceSentiment,
+        List<DocumentSentiment> documentSentimentList) {
+        // If include opinion mining indicator is false, the service return null for the target list.
+        final List<SentenceTarget> sentenceTargets = sentenceSentiment.getTargets();
+        if (sentenceTargets == null) {
+            return null;
+        }
+        final List<SentenceOpinion> sentenceOpinions = new ArrayList<>();
+        sentenceTargets.forEach(sentenceTarget -> {
+            final List<AssessmentSentiment> assessmentSentiments = new ArrayList<>();
+            sentenceTarget.getRelations().forEach(targetRelation -> {
+                final TargetRelationType targetRelationType = targetRelation.getRelationType();
+                final String opinionPointer = targetRelation.getRef();
+                if (TargetRelationType.ASSESSMENT == targetRelationType) {
+                    assessmentSentiments.add(toAssessmentSentiment(
+                        findSentimentAssessment(opinionPointer, documentSentimentList)));
+                }
+            });
+            final TargetSentiment targetSentiment = new TargetSentiment();
+            TargetSentimentPropertiesHelper.setText(targetSentiment, sentenceTarget.getText());
+            TargetSentimentPropertiesHelper.setSentiment(targetSentiment,
+                TextSentiment.fromString(sentenceTarget.getSentiment().toString()));
+            TargetSentimentPropertiesHelper.setConfidenceScores(targetSentiment,
+                toSentimentConfidenceScores(sentenceTarget.getConfidenceScores()));
+            TargetSentimentPropertiesHelper.setOffset(targetSentiment, sentenceTarget.getOffset());
+            TargetSentimentPropertiesHelper.setLength(targetSentiment, sentenceTarget.getLength());
+
+            final SentenceOpinion sentenceOpinion = new SentenceOpinion();
+            SentenceOpinionPropertiesHelper.setTarget(sentenceOpinion, targetSentiment);
+            SentenceOpinionPropertiesHelper.setAssessments(sentenceOpinion, new IterableStream<>(assessmentSentiments));
+            sentenceOpinions.add(sentenceOpinion);
+        });
+
+        return new IterableStream<>(sentenceOpinions);
+    }
+
+    /*
+     * Transform type TargetConfidenceScoreLabel to SentimentConfidenceScores.
+     */
+    private static SentimentConfidenceScores toSentimentConfidenceScores(
+        TargetConfidenceScoreLabel targetConfidenceScoreLabel) {
+        return new SentimentConfidenceScores(targetConfidenceScoreLabel.getNegative(), NEUTRAL_SCORE_ZERO,
+            targetConfidenceScoreLabel.getPositive());
+    }
+
+    /*
+     * Transform type SentenceOpinion to OpinionSentiment.
+     */
+    private static AssessmentSentiment toAssessmentSentiment(SentenceAssessment sentenceAssessment) {
+        final AssessmentSentiment assessmentSentiment = new AssessmentSentiment();
+        AssessmentSentimentPropertiesHelper.setText(assessmentSentiment, sentenceAssessment.getText());
+        AssessmentSentimentPropertiesHelper.setSentiment(assessmentSentiment,
+            TextSentiment.fromString(sentenceAssessment.getSentiment().toString()));
+        AssessmentSentimentPropertiesHelper.setConfidenceScores(assessmentSentiment,
+            toSentimentConfidenceScores(sentenceAssessment.getConfidenceScores()));
+        AssessmentSentimentPropertiesHelper.setNegated(assessmentSentiment, sentenceAssessment.isNegated());
+        AssessmentSentimentPropertiesHelper.setOffset(assessmentSentiment, sentenceAssessment.getOffset());
+        AssessmentSentimentPropertiesHelper.setLength(assessmentSentiment, sentenceAssessment.getLength());
+        return assessmentSentiment;
+    }
+
+    /*
+     * Parses the reference pointer to an index array that contains document, sentence, and opinion indexes.
+     */
+    public static int[] parseRefPointerToIndexArray(String assessmentPointer) {
+        // The pattern always start with character '#', the assessment index will existing in specified sentence, which
+        // is under specified document.
+        // example: #/documents/0/sentences/0/assessments/0
+        final Matcher matcher = PATTERN.matcher(assessmentPointer);
+        final boolean isMatched = matcher.find();
+
+        // The first index represents the document index, second one represents the sentence index,
+        // third ond represents the assessment index.
+        final int[] result = new int[3];
+
+        if (isMatched) {
+            result[0] = Integer.parseInt(matcher.group(1));
+            result[1] = Integer.parseInt(matcher.group(2));
+            result[2] = Integer.parseInt(matcher.group(3));
+        } else {
+            throw LOGGER.logExceptionAsError(new IllegalStateException(
+                String.format("'%s' is not a valid assessment pointer.", assessmentPointer)));
+        }
+
+        return result;
+    }
+
+    /*
+     * Find the specific sentence assessment in the document sentiment list by given the assessment reference pointer.
+     */
+    public static SentenceAssessment findSentimentAssessment(String assessmentPointer,
+        List<DocumentSentiment> documentSentiments) {
+        final int[] assessmentIndexes = parseRefPointerToIndexArray(assessmentPointer);
+        final int documentIndex = assessmentIndexes[0];
+        final int sentenceIndex = assessmentIndexes[1];
+        final int assessmentIndex = assessmentIndexes[2];
+        if (documentIndex >= documentSentiments.size()) {
+            throw LOGGER.logExceptionAsError(new IllegalStateException(
+                String.format("Invalid document index '%s' in '%s'.", documentIndex, assessmentPointer)));
+        }
+        final DocumentSentiment documentsentiment = documentSentiments.get(documentIndex);
+
+        final List<com.azure.ai.textanalytics.implementation.models.SentenceSentiment> sentenceSentiments =
+            documentsentiment.getSentences();
+        if (sentenceIndex >= sentenceSentiments.size()) {
+            throw LOGGER.logExceptionAsError(new IllegalStateException(
+                String.format("Invalid sentence index '%s' in '%s'.", sentenceIndex, assessmentPointer)));
+        }
+
+        final List<SentenceAssessment> assessments = sentenceSentiments.get(sentenceIndex).getAssessments();
+        if (assessmentIndex >= assessments.size()) {
+            throw LOGGER.logExceptionAsError(new IllegalStateException(
+                String.format("Invalid assessment index '%s' in '%s'.", assessmentIndex, assessmentPointer)));
+        }
+        return assessments.get(assessmentIndex);
     }
 }

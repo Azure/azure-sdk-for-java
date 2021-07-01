@@ -3,7 +3,7 @@
 trigger:
   branches:
     include:
-      - master
+      - main
       - feature/*
       - hotfix/*
       - release/*
@@ -14,7 +14,7 @@ trigger:
 pr:
   branches:
     include:
-      - master
+      - main
       - feature/*
       - hotfix/*
       - release/*
@@ -30,9 +30,6 @@ extends:
       - name: azure-identity-spring
         groupId: com.azure.spring
         safeName: azureidentityspring
-      - name: azure-spring-data-gremlin
-        groupId: com.azure.spring
-        safeName: azurespringdatagremlin
       - name: azure-spring-boot
         groupId: com.azure.spring
         safeName: azurespringboot
@@ -51,10 +48,6 @@ extends:
       - name: azure-spring-boot-starter-cosmos
         groupId: com.azure.spring
         safeName: azurespringbootstartercosmos
-        skipUpdatePackageJson: true
-      - name: azure-spring-boot-starter-data-gremlin
-        groupId: com.azure.spring
-        safeName: azurespringbootstarterdatagremlin
         skipUpdatePackageJson: true
       - name: azure-spring-boot-starter-keyvault-certificates
         groupId: com.azure.spring
@@ -75,9 +68,6 @@ extends:
       - name: azure-spring-cloud-context
         groupId: com.azure.spring
         safeName: azurespringcloudcontext
-      - name: azure-spring-cloud-telemetry
-        groupId: com.azure.spring
-        safeName: azurespringcloudtelemetry
       - name: azure-spring-integration-core
         groupId: com.azure.spring
         safeName: azurespringintegrationcore
@@ -152,8 +142,6 @@ extends:
         groupId: com.azure.spring
       - name: azure-spring-boot-sample-cosmos
         groupId: com.azure.spring
-      - name: azure-spring-boot-sample-data-gremlin
-        groupId: com.azure.spring
       - name: azure-spring-boot-sample-keyvault-secrets
         groupId: com.azure.spring
       - name: azure-spring-boot-sample-mediaservices
@@ -166,9 +154,11 @@ extends:
         groupId: com.azure.spring
       - name: azure-spring-boot-sample-storage-resource
         groupId: com.azure.spring
-      - name: azure-spring-data-sample-gremlin
+      - name: spring-cloud-azure-appconfiguration-convert-sample-complete
         groupId: com.azure.spring
-      - name: azure-spring-data-sample-gremlin-web-service
+      - name: azure-appconfiguration-convert-sample-initial
+        groupId: com.azure.spring
+      - name: azure-appconfiguration-sample
         groupId: com.azure.spring
       - name: azure-spring-cloud-sample-cache
         groupId: com.azure.spring
@@ -182,7 +172,13 @@ extends:
         groupId: com.azure.spring
       - name: azure-spring-cloud-sample-eventhubs-operation
         groupId: com.azure.spring
-      - name: azure-spring-cloud-sample-messaging
+      - name: feature-management-sample
+        groupId: com.azure.spring
+      - name: feature-management-web-sample
+        groupId: com.azure.spring
+      - name: azure-spring-cloud-sample-messaging-eventhubs
+        groupId: com.azure.spring
+      - name: azure-spring-cloud-sample-messaging-servicebus
         groupId: com.azure.spring
       - name: azure-spring-cloud-sample-eventhubs-multibinders
         groupId: com.azure.spring

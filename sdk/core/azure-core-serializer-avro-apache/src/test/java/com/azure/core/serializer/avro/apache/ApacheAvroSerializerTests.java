@@ -221,9 +221,16 @@ public class ApacheAvroSerializerTests {
     }
 
     @Test
-    public void deserializeNullReturnsNull() {
+    public void deserializeNullInputStreamReturnsNull() {
         StepVerifier.create(getSerializer(schemaCreator("null"))
-            .deserializeAsync(null, createInstance(void.class)))
+            .deserializeAsync((InputStream) null, createInstance(void.class)))
+            .verifyComplete();
+    }
+
+    @Test
+    public void deserializeNullByteArrayReturnsNull() {
+        StepVerifier.create(getSerializer(schemaCreator("null"))
+            .deserializeFromBytesAsync((byte[]) null, createInstance(void.class)))
             .verifyComplete();
     }
 

@@ -73,6 +73,12 @@ public class VpnGatewayInner extends Resource {
     private Boolean isRoutingPreferenceInternet;
 
     /*
+     * List of all the nat Rules associated with the gateway.
+     */
+    @JsonProperty(value = "properties.natRules")
+    private List<VpnGatewayNatRuleInner> natRules;
+
+    /*
      * Resource ID.
      */
     @JsonProperty(value = "id")
@@ -208,6 +214,26 @@ public class VpnGatewayInner extends Resource {
     }
 
     /**
+     * Get the natRules property: List of all the nat Rules associated with the gateway.
+     *
+     * @return the natRules value.
+     */
+    public List<VpnGatewayNatRuleInner> natRules() {
+        return this.natRules;
+    }
+
+    /**
+     * Set the natRules property: List of all the nat Rules associated with the gateway.
+     *
+     * @param natRules the natRules value to set.
+     * @return the VpnGatewayInner object itself.
+     */
+    public VpnGatewayInner withNatRules(List<VpnGatewayNatRuleInner> natRules) {
+        this.natRules = natRules;
+        return this;
+    }
+
+    /**
      * Get the id property: Resource ID.
      *
      * @return the id value.
@@ -255,6 +281,9 @@ public class VpnGatewayInner extends Resource {
         }
         if (ipConfigurations() != null) {
             ipConfigurations().forEach(e -> e.validate());
+        }
+        if (natRules() != null) {
+            natRules().forEach(e -> e.validate());
         }
     }
 }

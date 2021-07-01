@@ -29,7 +29,7 @@ public interface VirtualMachineScaleSetExtensionsClient {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set where the extension should be create or updated.
      * @param vmssExtensionName The name of the VM scale set extension.
-     * @param extensionParameters Describes a Virtual Machine Scale Set Extension.
+     * @param extensionParameters Parameters supplied to the Create VM scale set Extension operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -48,7 +48,7 @@ public interface VirtualMachineScaleSetExtensionsClient {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set where the extension should be create or updated.
      * @param vmssExtensionName The name of the VM scale set extension.
-     * @param extensionParameters Describes a Virtual Machine Scale Set Extension.
+     * @param extensionParameters Parameters supplied to the Create VM scale set Extension operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -68,7 +68,7 @@ public interface VirtualMachineScaleSetExtensionsClient {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set where the extension should be create or updated.
      * @param vmssExtensionName The name of the VM scale set extension.
-     * @param extensionParameters Describes a Virtual Machine Scale Set Extension.
+     * @param extensionParameters Parameters supplied to the Create VM scale set Extension operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -88,7 +88,7 @@ public interface VirtualMachineScaleSetExtensionsClient {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set where the extension should be create or updated.
      * @param vmssExtensionName The name of the VM scale set extension.
-     * @param extensionParameters Describes a Virtual Machine Scale Set Extension.
+     * @param extensionParameters Parameters supplied to the Create VM scale set Extension operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -110,7 +110,7 @@ public interface VirtualMachineScaleSetExtensionsClient {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set where the extension should be create or updated.
      * @param vmssExtensionName The name of the VM scale set extension.
-     * @param extensionParameters Describes a Virtual Machine Scale Set Extension.
+     * @param extensionParameters Parameters supplied to the Create VM scale set Extension operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -129,7 +129,7 @@ public interface VirtualMachineScaleSetExtensionsClient {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set where the extension should be create or updated.
      * @param vmssExtensionName The name of the VM scale set extension.
-     * @param extensionParameters Describes a Virtual Machine Scale Set Extension.
+     * @param extensionParameters Parameters supplied to the Create VM scale set Extension operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -148,7 +148,7 @@ public interface VirtualMachineScaleSetExtensionsClient {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set where the extension should be create or updated.
      * @param vmssExtensionName The name of the VM scale set extension.
-     * @param extensionParameters Describes a Virtual Machine Scale Set Extension.
+     * @param extensionParameters Parameters supplied to the Create VM scale set Extension operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -169,7 +169,7 @@ public interface VirtualMachineScaleSetExtensionsClient {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set where the extension should be updated.
      * @param vmssExtensionName The name of the VM scale set extension.
-     * @param extensionParameters Describes a Virtual Machine Scale Set Extension.
+     * @param extensionParameters Parameters supplied to the Update VM scale set Extension operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -188,7 +188,7 @@ public interface VirtualMachineScaleSetExtensionsClient {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set where the extension should be updated.
      * @param vmssExtensionName The name of the VM scale set extension.
-     * @param extensionParameters Describes a Virtual Machine Scale Set Extension.
+     * @param extensionParameters Parameters supplied to the Update VM scale set Extension operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -207,7 +207,7 @@ public interface VirtualMachineScaleSetExtensionsClient {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set where the extension should be updated.
      * @param vmssExtensionName The name of the VM scale set extension.
-     * @param extensionParameters Describes a Virtual Machine Scale Set Extension.
+     * @param extensionParameters Parameters supplied to the Update VM scale set Extension operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -226,7 +226,7 @@ public interface VirtualMachineScaleSetExtensionsClient {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set where the extension should be updated.
      * @param vmssExtensionName The name of the VM scale set extension.
-     * @param extensionParameters Describes a Virtual Machine Scale Set Extension.
+     * @param extensionParameters Parameters supplied to the Update VM scale set Extension operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -247,7 +247,7 @@ public interface VirtualMachineScaleSetExtensionsClient {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set where the extension should be updated.
      * @param vmssExtensionName The name of the VM scale set extension.
-     * @param extensionParameters Describes a Virtual Machine Scale Set Extension.
+     * @param extensionParameters Parameters supplied to the Update VM scale set Extension operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -266,7 +266,7 @@ public interface VirtualMachineScaleSetExtensionsClient {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set where the extension should be updated.
      * @param vmssExtensionName The name of the VM scale set extension.
-     * @param extensionParameters Describes a Virtual Machine Scale Set Extension.
+     * @param extensionParameters Parameters supplied to the Update VM scale set Extension operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -285,7 +285,7 @@ public interface VirtualMachineScaleSetExtensionsClient {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set where the extension should be updated.
      * @param vmssExtensionName The name of the VM scale set extension.
-     * @param extensionParameters Describes a Virtual Machine Scale Set Extension.
+     * @param extensionParameters Parameters supplied to the Update VM scale set Extension operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

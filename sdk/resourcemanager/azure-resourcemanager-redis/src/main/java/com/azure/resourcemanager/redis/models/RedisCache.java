@@ -9,6 +9,9 @@ import com.azure.resourcemanager.redis.fluent.models.RedisResourceInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasId;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListingPrivateEndpointConnection;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListingPrivateLinkResource;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsUpdatingPrivateEndpointConnection;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
@@ -20,7 +23,10 @@ import java.util.Map;
 /** An immutable client-side representation of an Azure Redis Cache. */
 @Fluent
 public interface RedisCache
-    extends GroupableResource<RedisManager, RedisResourceInner>, Refreshable<RedisCache>, Updatable<RedisCache.Update> {
+    extends GroupableResource<RedisManager, RedisResourceInner>, Refreshable<RedisCache>, Updatable<RedisCache.Update>,
+    SupportsListingPrivateLinkResource,
+    SupportsListingPrivateEndpointConnection,
+    SupportsUpdatingPrivateEndpointConnection {
 
     /** @return exposes features available only to Premium Sku Redis Cache instances. */
     RedisCachePremium asPremium();

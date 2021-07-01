@@ -10,7 +10,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Api error. */
+/** An error response from the Compute service. */
 @Immutable
 public final class ApiError extends ManagementError {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ApiError.class);

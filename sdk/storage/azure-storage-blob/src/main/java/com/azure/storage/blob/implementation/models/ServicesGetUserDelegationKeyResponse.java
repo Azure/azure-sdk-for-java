@@ -9,10 +9,9 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.storage.blob.models.UserDelegationKey;
 
-/**
- * Contains all response data for the getUserDelegationKey operation.
- */
-public final class ServicesGetUserDelegationKeyResponse extends ResponseBase<ServiceGetUserDelegationKeyHeaders, UserDelegationKey> {
+/** Contains all response data for the getUserDelegationKey operation. */
+public final class ServicesGetUserDelegationKeyResponse
+        extends ResponseBase<ServicesGetUserDelegationKeyHeaders, UserDelegationKey> {
     /**
      * Creates an instance of ServicesGetUserDelegationKeyResponse.
      *
@@ -22,13 +21,16 @@ public final class ServicesGetUserDelegationKeyResponse extends ResponseBase<Ser
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public ServicesGetUserDelegationKeyResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, UserDelegationKey value, ServiceGetUserDelegationKeyHeaders headers) {
+    public ServicesGetUserDelegationKeyResponse(
+            HttpRequest request,
+            int statusCode,
+            HttpHeaders rawHeaders,
+            UserDelegationKey value,
+            ServicesGetUserDelegationKeyHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 
-    /**
-     * @return the deserialized response body.
-     */
+    /** @return the deserialized response body. */
     @Override
     public UserDelegationKey getValue() {
         return super.getValue();

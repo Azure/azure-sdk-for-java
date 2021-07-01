@@ -9,7 +9,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
-import com.azure.resourcemanager.servicebus.fluent.models.QueueResourceInner;
+import com.azure.resourcemanager.servicebus.fluent.models.SBQueueInner;
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
 
 import java.time.Duration;
@@ -20,7 +20,7 @@ import java.time.OffsetDateTime;
  */
 @Fluent
 public interface Queue extends
-    IndependentChildResource<ServiceBusManager, QueueResourceInner>,
+    IndependentChildResource<ServiceBusManager, SBQueueInner>,
     Refreshable<Queue>,
     Updatable<Queue.Update> {
     /**

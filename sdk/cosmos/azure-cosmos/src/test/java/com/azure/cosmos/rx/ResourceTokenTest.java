@@ -5,6 +5,9 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.implementation.FeedResponseListValidator;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.PermissionMode;
@@ -28,6 +31,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
@@ -229,6 +233,16 @@ public class ResourceTokenTest extends TestSuiteBase {
         };
     }
 
+    @DataProvider(name = "queryItemPermissionData")
+    public Object[][] queryItemPermissionData() {
+        return new Object[][]{
+            //This test will try to query collection from its own getPermission and validate it, both with request Id and getName.
+            { createdCollectionWithPartitionKey, createdColPermissionWithPartitionKey, new PartitionKey(PARTITION_KEY_VALUE) },
+            { createdCollectionWithPartitionKey, createdColPermissionWithPartitionKeyWithName, new PartitionKey(PARTITION_KEY_VALUE) },
+            { createdCollection, createdCollPermission, PartitionKey.NONE },
+        };
+    }
+
     /**
      * This test will try to read collection from permission and validate it.
      *
@@ -392,6 +406,40 @@ public class ResourceTokenTest extends TestSuiteBase {
                     .readDocument(createdDocumentWithPartitionKey.getSelfLink(), options);
             FailureValidator validator = new FailureValidator.Builder().resourceTokenNotFound().build();
             validateFailure(readObservable, validator);
+        } finally {
+            safeClose(asyncClientResourceToken);
+        }
+    }
+
+    @Test(groups = { "simple" }, dataProvider = "queryItemPermissionData", timeOut = TIMEOUT)
+    public void queryItemFromResourceToken(DocumentCollection documentCollection, Permission permission, PartitionKey partitionKey) throws Exception {
+
+        AsyncDocumentClient asyncClientResourceToken = null;
+        try {
+            List<Permission> permissionFeed = new ArrayList<>();
+            permissionFeed.add(permission);
+
+            asyncClientResourceToken = new AsyncDocumentClient.Builder()
+                .withServiceEndpoint(TestConfigurations.HOST)
+                .withConnectionPolicy(ConnectionPolicy.getDefaultPolicy())
+                .withConsistencyLevel(ConsistencyLevel.SESSION)
+                .withMasterKeyOrResourceToken(permission.getToken())
+                .build();
+
+            CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions();
+            queryRequestOptions.setPartitionKey(partitionKey);
+            Flux<FeedResponse<Document>> queryObservable =
+                asyncClientResourceToken.queryDocuments(
+                    documentCollection.getAltLink(),
+                    "select * from c",
+                    queryRequestOptions);
+
+            FeedResponseListValidator<Document> validator = new FeedResponseListValidator.Builder<Document>()
+                .totalSize(1)
+                .numberOfPagesIsGreaterThanOrEqualTo(1)
+                .build();
+
+            validateQuerySuccess(queryObservable, validator);
         } finally {
             safeClose(asyncClientResourceToken);
         }

@@ -3,6 +3,7 @@
 package com.azure.search.documents;
 
 import com.azure.core.http.rest.Response;
+import com.azure.core.models.GeoPoint;
 import com.azure.core.util.Context;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.models.IndexDocumentsBatch;
@@ -456,7 +457,7 @@ public class IndexingSyncTests extends SearchTestBase {
             .smokingAllowed(true)
             .lastRenovationDate(dateFormat.parse("2010-06-27T00:00:00Z"))
             .rating(4)
-            //.location(createPointGeometry(40.760586, -73.975403))
+            .location(new GeoPoint(-73.975403, 40.760586))
             .address(new HotelAddress()
                 .streetAddress("677 5th Ave")
                 .city("New York")
@@ -518,7 +519,7 @@ public class IndexingSyncTests extends SearchTestBase {
             .smokingAllowed(true)
             .lastRenovationDate(dateFormat.parse("2010-06-27T00:00:00Z"))
             .rating(3)
-            //.location(createPointGeometry(40.760586, -73.975403))
+            .location(new GeoPoint(-73.975403, 40.760586))
             .address(new HotelAddress()
                 .streetAddress("677 5th Ave")
                 .city("New York")
@@ -584,7 +585,7 @@ public class IndexingSyncTests extends SearchTestBase {
             .SMOKINGALLOWED(false)
             .LASTRENOVATIONDATE(dateFormat.parse("1970-01-18T05:00:00Z"))
             .RATING(4)
-            //.LOCATION(createPointGeometry(40.760586, -73.975403))
+            .LOCATION(new GeoPoint(-73.975403, 40.760586))
             .ADDRESS(new HotelAddress()
                 .streetAddress("677 5th Ave")
                 .city("New York")
@@ -698,7 +699,7 @@ public class IndexingSyncTests extends SearchTestBase {
         originalDoc.put("SmokingAllowed", true);
         originalDoc.put("LastRenovationDate", OffsetDateTime.parse("2010-06-27T00:00:00Z"));
         originalDoc.put("Rating", 4);
-        //originalDoc.put("Location", createPointGeometry(40.760586, -73.965403));
+        originalDoc.put("Location", new GeoPoint(-73.965403, 40.760586));
 
         SearchDocument originalAddress = new SearchDocument();
         originalAddress.put("StreetAddress", "677 5th Ave");
@@ -907,7 +908,7 @@ public class IndexingSyncTests extends SearchTestBase {
             .smokingAllowed(false)
             .lastRenovationDate(dateFormat.parse("2010-06-27T00:00:00Z"))
             .rating(5)
-            //.location(createPointGeometry(47.678581, -122.131577))
+            .location(new GeoPoint(-122.131577, 47.678581))
             .address(
                 new HotelAddress()
                     .streetAddress("1 Microsoft Way")
@@ -993,6 +994,7 @@ public class IndexingSyncTests extends SearchTestBase {
         assertEquals(expectedStatusCode, result.getStatusCode());
     }
 
+    @SuppressWarnings({"UseOfObsoleteDateTimeApi", "deprecation"})
     List<Hotel> getBoundaryValues() {
         Date maxEpoch = Date.from(Instant.ofEpochMilli(253402300799000L));
         Date minEpoch = Date.from(Instant.ofEpochMilli(-2208988800000L));
@@ -1001,65 +1003,48 @@ public class IndexingSyncTests extends SearchTestBase {
             new Hotel()
                 .hotelId("1")
                 .category("")
-                .lastRenovationDate(new Date(minEpoch.getYear(), minEpoch.getMonth(), minEpoch.getDate(), minEpoch.getHours(),
-                    minEpoch.getMinutes(), minEpoch.getSeconds()))
-                //.location(createPointGeometry(-90.0, -180.0))   // South pole, date line from the west
+                .lastRenovationDate(new Date(minEpoch.getYear(), minEpoch.getMonth(), minEpoch.getDate(),
+                    minEpoch.getHours(), minEpoch.getMinutes(), minEpoch.getSeconds()))
+                .location(new GeoPoint(-180.0, -90.0))   // South pole, date line from the west
                 .parkingIncluded(false)
                 .rating(Integer.MIN_VALUE)
                 .tags(Collections.emptyList())
                 .address(new HotelAddress())
-                .rooms(Collections.singletonList(
-                    new HotelRoom()
-                        .baseRate(Double.MIN_VALUE)
-                )),
+                .rooms(Collections.singletonList(new HotelRoom().baseRate(Double.MIN_VALUE))),
             // Maximum values
             new Hotel()
                 .hotelId("2")
                 .category("test")   // No meaningful string max since there is no length limit (other than payload size or term length).
-                .lastRenovationDate(new Date(maxEpoch.getYear(), maxEpoch.getMonth(), maxEpoch.getDate(), maxEpoch.getHours(),
-                    maxEpoch.getMinutes(), maxEpoch.getSeconds()))
-                //.location(createPointGeometry(90.0, 180.0))     // North pole, date line from the east
+                .lastRenovationDate(new Date(maxEpoch.getYear(), maxEpoch.getMonth(), maxEpoch.getDate(),
+                    maxEpoch.getHours(), maxEpoch.getMinutes(), maxEpoch.getSeconds()))
+                .location(new GeoPoint(180.0, 90.0))     // North pole, date line from the east
                 .parkingIncluded(true)
                 .rating(Integer.MAX_VALUE)
                 .tags(Collections.singletonList("test"))    // No meaningful string max; see above.
-                .address(new HotelAddress()
-                    .city("Maximum"))
-                .rooms(Collections.singletonList(
-                    new HotelRoom()
-                        .baseRate(Double.MAX_VALUE)
-                )),
+                .address(new HotelAddress().city("Maximum"))
+                .rooms(Collections.singletonList(new HotelRoom().baseRate(Double.MAX_VALUE))),
             // Other boundary values #1
             new Hotel()
                 .hotelId("3")
                 .category(null)
                 .lastRenovationDate(null)
-                //.location(createPointGeometry(0.0, 0.0))     // Equator, meridian
+                .location(new GeoPoint(0.0, 0.0))     // Equator, meridian
                 .parkingIncluded(null)
                 .rating(null)
                 .tags(Collections.emptyList())
-                .address(new HotelAddress()
-                    .city("Maximum"))
-                .rooms(Collections.singletonList(
-                    new HotelRoom()
-                        .baseRate(Double.NEGATIVE_INFINITY)
-                )),
+                .address(new HotelAddress().city("Maximum"))
+                .rooms(Collections.singletonList(new HotelRoom().baseRate(Double.NEGATIVE_INFINITY))),
             // Other boundary values #2
             new Hotel()
                 .hotelId("4")
-                //.location(null)
+                .location(null)
                 .tags(Collections.emptyList())
-                .rooms(Collections.singletonList(
-                    new HotelRoom()
-                        .baseRate(Double.POSITIVE_INFINITY)
-                )),
+                .rooms(Collections.singletonList(new HotelRoom().baseRate(Double.POSITIVE_INFINITY))),
             // Other boundary values #3
             new Hotel()
                 .hotelId("5")
                 .tags(Collections.emptyList())
-                .rooms(Collections.singletonList(
-                    new HotelRoom()
-                        .baseRate(Double.NaN)
-                )),
+                .rooms(Collections.singletonList(new HotelRoom().baseRate(Double.NaN))),
             // Other boundary values #4
             new Hotel()
                 .hotelId("6")

@@ -8,7 +8,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -53,13 +52,16 @@ public class PollerTests {
     @Mock
     private BiFunction<PollingContext<Response>, PollResponse<Response>, Mono<Response>> cancelOperation;
 
+    private AutoCloseable openMocks;
+
     @BeforeEach
     public void beforeTest() {
-        MockitoAnnotations.initMocks(this);
+        this.openMocks = MockitoAnnotations.openMocks(this);
     }
 
     @AfterEach
-    public void afterTest() {
+    public void afterTest() throws Exception {
+        openMocks.close();
         Mockito.framework().clearInlineMocks();
     }
 
@@ -889,29 +891,28 @@ public class PollerTests {
             .verifyComplete();
     }
 
-    @Disabled("Parallel test execution when at least one test uses StepVerifier.withVirtualTime is not supported - https://github.com/reactor/reactor-core/issues/1098")
     @Test
     public void testUpdatePollingInterval() {
-        PollerFlux<String, String> pollerFlux = PollerFlux.create(Duration.ofSeconds(1),
+        PollerFlux<String, String> pollerFlux = PollerFlux.create(Duration.ofMillis(10),
             context -> Mono.just(new PollResponse<>(IN_PROGRESS, "Activation")),
             context -> Mono.just(new PollResponse<>(IN_PROGRESS, "PollOperation")),
             (context, response) -> Mono.just("Cancel"),
             context -> Mono.just("FinalResult"));
 
-        StepVerifier.withVirtualTime(() -> pollerFlux.take(5))
-            .thenAwait(Duration.ofSeconds(5))
+        StepVerifier.create(pollerFlux.take(5))
+            .thenAwait(Duration.ofMillis(55))
             .expectNextCount(5)
             .verifyComplete();
 
-        pollerFlux.setPollInterval(Duration.ofSeconds(2));
-        StepVerifier.withVirtualTime(() -> pollerFlux.take(5))
-            .thenAwait(Duration.ofSeconds(10))
+        pollerFlux.setPollInterval(Duration.ofMillis(50));
+        StepVerifier.create(pollerFlux.take(5))
+            .thenAwait(Duration.ofMillis(255))
             .expectNextCount(5)
             .verifyComplete();
 
-        pollerFlux.setPollInterval(Duration.ofSeconds(10));
-        StepVerifier.withVirtualTime(() -> pollerFlux.take(5))
-            .thenAwait(Duration.ofSeconds(50))
+        pollerFlux.setPollInterval(Duration.ofMillis(195));
+        StepVerifier.create(pollerFlux.take(5))
+            .thenAwait(Duration.ofSeconds(1))
             .expectNextCount(5)
             .verifyComplete();
     }

@@ -157,6 +157,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -167,10 +168,10 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -206,6 +207,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -214,7 +216,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 accountName,
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }
@@ -310,6 +312,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -321,10 +324,10 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                             resourceGroupName,
                             accountName,
                             name,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -364,6 +367,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -373,7 +377,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                 resourceGroupName,
                 accountName,
                 name,
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }
@@ -478,6 +482,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -489,11 +494,11 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                             resourceGroupName,
                             accountName,
                             name,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -543,6 +548,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -552,7 +558,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                 resourceGroupName,
                 accountName,
                 name,
-                this.client.getApiVersion(),
+                apiVersion,
                 parameters,
                 accept,
                 context);
@@ -660,6 +666,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -671,10 +678,10 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                             resourceGroupName,
                             accountName,
                             name,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -714,6 +721,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -723,7 +731,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                 resourceGroupName,
                 accountName,
                 name,
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }

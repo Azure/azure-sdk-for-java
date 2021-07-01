@@ -88,6 +88,7 @@ public class AsyncCtlWorkload {
             .endpoint(cfg.getServiceEndpoint())
             .key(cfg.getMasterKey())
             .consistencyLevel(cfg.getConsistencyLevel())
+            .clientTelemetryEnabled(true)
             .contentResponseOnWriteEnabled(Boolean.parseBoolean(cfg.isContentResponseOnWriteEnabled()));
         if (cfg.getConnectionMode().equals(ConnectionMode.DIRECT)) {
             cosmosClientBuilder = cosmosClientBuilder.directMode(DirectConnectionConfig.getDefaultConfig());

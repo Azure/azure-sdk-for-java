@@ -19,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Map;
 
 /** Information about a domain. */
 @JsonFlatten
@@ -481,6 +482,20 @@ public class DomainInner extends Resource {
      */
     public DomainInner withKind(String kind) {
         this.kind = kind;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DomainInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DomainInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 

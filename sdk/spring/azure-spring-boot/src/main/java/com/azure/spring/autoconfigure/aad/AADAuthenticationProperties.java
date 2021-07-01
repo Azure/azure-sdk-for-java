@@ -3,21 +3,26 @@
 
 package com.azure.spring.autoconfigure.aad;
 
+import com.azure.spring.aad.AADAuthorizationGrantType;
 import com.azure.spring.aad.webapp.AuthorizationClientProperties;
 import com.nimbusds.jose.jwk.source.RemoteJWKSet;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
-import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -46,6 +51,11 @@ public class AADAuthenticationProperties implements InitializingBean {
     private String clientSecret;
 
     /**
+     * Decide which claim to be principal's name..
+     */
+    private String userNameAttribute;
+
+    /**
      * Redirection Endpoint: Used by the authorization server to return responses containing authorization credentials
      * to the client via the resource owner user-agent.
      */
@@ -55,6 +65,11 @@ public class AADAuthenticationProperties implements InitializingBean {
      * App ID URI which might be used in the <code>"aud"</code> claim of an <code>id_token</code>.
      */
     private String appIdUri;
+
+    /**
+     * Add additional parameters to the Authorization URL.
+     */
+    private Map<String, Object> authenticateAdditionalParameters;
 
     /**
      * Connection Timeout for the JWKSet Remote URL call.
@@ -109,7 +124,7 @@ public class AADAuthenticationProperties implements InitializingBean {
 
     @DeprecatedConfigurationProperty(
         reason = "Configuration moved to UserGroup class to keep UserGroup properties together",
-        replacement = "azure.activedirectory.user-group.allowed-groups")
+        replacement = "azure.activedirectory.user-group.allowed-group-names")
     public List<String> getActiveDirectoryGroups() {
         return userGroup.getAllowedGroups();
     }
@@ -120,40 +135,87 @@ public class AADAuthenticationProperties implements InitializingBean {
      */
     public static class UserGroupProperties {
 
+        private final Log logger = LogFactory.getLog(UserGroupProperties.class);
+
         /**
          * Expected UserGroups that an authority will be granted to if found in the response from the MemeberOf Graph
          * API Call.
          */
-        private List<String> allowedGroups = new ArrayList<>();
+        private List<String> allowedGroupNames = new ArrayList<>();
 
-        public List<String> getAllowedGroups() {
-            return allowedGroups;
+        private Set<String> allowedGroupIds = new HashSet<>();
+
+        /**
+         * enableFullList is used to control whether to list all group id, default is false
+         */
+        private Boolean enableFullList = false;
+
+        public Set<String> getAllowedGroupIds() {
+            return allowedGroupIds;
         }
 
+        /**
+         * Set the allowed group ids.
+         *
+         * @param allowedGroupIds Allowed group ids.
+         */
+        public void setAllowedGroupIds(Set<String> allowedGroupIds) {
+            this.allowedGroupIds = allowedGroupIds;
+        }
+
+        public List<String> getAllowedGroupNames() {
+            return allowedGroupNames;
+        }
+
+        public void setAllowedGroupNames(List<String> allowedGroupNames) {
+            this.allowedGroupNames = allowedGroupNames;
+        }
+
+        @Deprecated
+        @DeprecatedConfigurationProperty(
+            reason = "enable-full-list is not easy to understand.",
+            replacement = "allowed-group-ids: all")
+        public Boolean getEnableFullList() {
+            return enableFullList;
+        }
+
+        @Deprecated
+        public void setEnableFullList(Boolean enableFullList) {
+            logger.warn(" 'azure.activedirectory.user-group.enable-full-list' property detected! "
+                + "Use 'azure.activedirectory.user-group.allowed-group-ids: all' instead!");
+            this.enableFullList = enableFullList;
+        }
+
+        @Deprecated
+        @DeprecatedConfigurationProperty(
+            reason = "In order to distinguish between allowed-group-ids and allowed-group-names, set allowed-groups "
+                + "deprecated.",
+            replacement = "azure.activedirectory.user-group.allowed-group-names")
+        public List<String> getAllowedGroups() {
+            return allowedGroupNames;
+        }
+
+        @Deprecated
         public void setAllowedGroups(List<String> allowedGroups) {
-            this.allowedGroups = allowedGroups;
+            logger.warn(" 'azure.activedirectory.user-group.allowed-groups' property detected! " + " Use 'azure"
+                + ".activedirectory.user-group.allowed-group-names' instead!");
+            this.allowedGroupNames = allowedGroups;
         }
 
     }
 
-    public boolean allowedGroupsConfigured() {
-        return Optional.of(this)
-                       .map(AADAuthenticationProperties::getUserGroup)
-                       .map(AADAuthenticationProperties.UserGroupProperties::getAllowedGroups)
-                       .map(allowedGroups -> !allowedGroups.isEmpty())
+    public boolean allowedGroupNamesConfigured() {
+        return Optional.of(this.getUserGroup())
+                       .map(UserGroupProperties::getAllowedGroupNames)
+                       .map(allowedGroupNames -> !allowedGroupNames.isEmpty())
                        .orElse(false);
     }
 
-    public boolean isResourceServer() {
-        return ClassUtils.isPresent(
-            "org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken",
-            this.getClass().getClassLoader());
-    }
-
-    public boolean isWebApplication() {
-        return ClassUtils.isPresent(
-            "org.springframework.security.oauth2.client.registration.ClientRegistrationRepository",
-            this.getClass().getClassLoader());
+    public boolean allowedGroupIdsConfigured() {
+        return Optional.of(this.getUserGroup())
+                       .map(UserGroupProperties::getAllowedGroupIds)
+                       .map(allowedGroupIds -> !allowedGroupIds.isEmpty())
+                       .orElse(false);
     }
 
     public UserGroupProperties getUserGroup() {
@@ -180,6 +242,14 @@ public class AADAuthenticationProperties implements InitializingBean {
         this.clientSecret = clientSecret;
     }
 
+    public String getUserNameAttribute() {
+        return userNameAttribute;
+    }
+
+    public void setUserNameAttribute(String userNameAttribute) {
+        this.userNameAttribute = userNameAttribute;
+    }
+
     public String getRedirectUriTemplate() {
         return redirectUriTemplate;
     }
@@ -199,6 +269,14 @@ public class AADAuthenticationProperties implements InitializingBean {
 
     public void setAppIdUri(String appIdUri) {
         this.appIdUri = appIdUri;
+    }
+
+    public Map<String, Object> getAuthenticateAdditionalParameters() {
+        return authenticateAdditionalParameters;
+    }
+
+    public void setAuthenticateAdditionalParameters(Map<String, Object> authenticateAdditionalParameters) {
+        this.authenticateAdditionalParameters = authenticateAdditionalParameters;
     }
 
     public int getJwtConnectTimeout() {
@@ -257,6 +335,9 @@ public class AADAuthenticationProperties implements InitializingBean {
         this.postLogoutRedirectUri = postLogoutRedirectUri;
     }
 
+    @Deprecated
+    @DeprecatedConfigurationProperty(
+        reason = "Deprecate the telemetry endpoint and use HTTP header User Agent instead.")
     public boolean isAllowTelemetry() {
         return allowTelemetry;
     }
@@ -307,18 +388,26 @@ public class AADAuthenticationProperties implements InitializingBean {
 
     public boolean isAllowedGroup(String group) {
         return Optional.ofNullable(getUserGroup())
-                       .map(UserGroupProperties::getAllowedGroups)
+                       .map(UserGroupProperties::getAllowedGroupNames)
                        .orElseGet(Collections::emptyList)
+                       .contains(group)
+            || Optional.ofNullable(getUserGroup())
+                       .map(UserGroupProperties::getAllowedGroupIds)
+                       .orElseGet(Collections::emptySet)
                        .contains(group);
     }
 
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() {
 
         if (!StringUtils.hasText(baseUri)) {
             baseUri = "https://login.microsoftonline.com/";
         } else {
             baseUri = addSlash(baseUri);
+        }
+
+        if (!StringUtils.hasText(redirectUriTemplate)) {
+            redirectUriTemplate = "{baseUrl}/login/oauth2/code/";
         }
 
         if (!StringUtils.hasText(graphBaseUri)) {
@@ -338,15 +427,47 @@ public class AADAuthenticationProperties implements InitializingBean {
                 + "azure.activedirectory.graph-membership-uri = " + graphMembershipUri + ".");
         }
 
+        Set<String> allowedGroupIds = userGroup.getAllowedGroupIds();
+        if (allowedGroupIds.size() > 1 && allowedGroupIds.contains("all")) {
+            throw new IllegalStateException("When azure.activedirectory.user-group.allowed-group-ids contains 'all', "
+                + "no other group ids can be configured. "
+                + "But actually azure.activedirectory.user-group.allowed-group-ids="
+                + allowedGroupIds);
+        }
+
         if (!StringUtils.hasText(tenantId)) {
             tenantId = "common";
         }
-        if ("common".equals(tenantId) && !userGroup.getAllowedGroups().isEmpty()) {
-            throw new IllegalStateException("When azure.activedirectory.teannt-id=common, "
-                + "azure.activedirectory.user-group.allowed-groups should be empty. "
-                + "But actually azure.activedirectory.user-group.allowed-groups="
+
+        if (isMultiTenantsApplication(tenantId) && !userGroup.getAllowedGroups().isEmpty()) {
+            throw new IllegalStateException("When azure.activedirectory.tenant-id is 'common/organizations/consumers', "
+                + "azure.activedirectory.user-group.allowed-groups/allowed-group-names should be empty. "
+                + "But actually azure.activedirectory.tenant-id=" + tenantId
+                + ", and azure.activedirectory.user-group.allowed-groups/allowed-group-names="
                 + userGroup.getAllowedGroups());
         }
+
+        if (isMultiTenantsApplication(tenantId) && !userGroup.getAllowedGroupIds().isEmpty()) {
+            throw new IllegalStateException("When azure.activedirectory.tenant-id is 'common/organizations/consumers', "
+                + "azure.activedirectory.user-group.allowed-group-ids should be empty. "
+                + "But actually azure.activedirectory.tenant-id=" + tenantId
+                + ", and azure.activedirectory.user-group.allowed-group-ids=" + userGroup.getAllowedGroupIds());
+        }
+
+        authorizationClients.values()
+                            .stream()
+                            .filter(AuthorizationClientProperties::isOnDemand)
+                            .map(AuthorizationClientProperties::getAuthorizationGrantType)
+                            .filter(Objects::nonNull)
+                            .filter(type -> !AADAuthorizationGrantType.AUTHORIZATION_CODE.equals(type))
+                            .findAny()
+                            .ifPresent(notUsed -> {
+                                throw new IllegalStateException("onDemand only support authorization_code grant type. ");
+                            });
+    }
+
+    private boolean isMultiTenantsApplication(String tenantId) {
+        return "common".equals(tenantId) || "organizations".equals(tenantId) || "consumers".equals(tenantId);
     }
 
     private String addSlash(String uri) {

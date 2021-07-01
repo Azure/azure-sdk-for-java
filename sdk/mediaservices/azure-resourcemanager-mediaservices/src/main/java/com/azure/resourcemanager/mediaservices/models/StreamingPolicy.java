@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.mediaservices.models;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mediaservices.fluent.models.StreamingPolicyInner;
 import java.time.OffsetDateTime;
@@ -30,6 +31,13 @@ public interface StreamingPolicy {
      * @return the type value.
      */
     String type();
+
+    /**
+     * Gets the systemData property: The system metadata relating to this resource.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
 
     /**
      * Gets the created property: Creation time of Streaming Policy.

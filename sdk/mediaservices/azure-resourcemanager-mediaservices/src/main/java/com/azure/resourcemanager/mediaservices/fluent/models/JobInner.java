@@ -7,6 +7,7 @@ package com.azure.resourcemanager.mediaservices.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mediaservices.models.JobInput;
 import com.azure.resourcemanager.mediaservices.models.JobOutput;
@@ -26,6 +27,12 @@ import java.util.Map;
 @Fluent
 public class JobInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(JobInner.class);
+
+    /*
+     * The system metadata relating to this resource.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /*
      * The UTC date and time when the customer has created the Job, in
@@ -91,6 +98,15 @@ public class JobInner extends ProxyResource {
      */
     @JsonProperty(value = "properties.endTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime endTime;
+
+    /**
+     * Get the systemData property: The system metadata relating to this resource.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
 
     /**
      * Get the created property: The UTC date and time when the customer has created the Job, in 'YYYY-MM-DDThh:mm:ssZ'

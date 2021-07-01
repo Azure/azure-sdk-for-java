@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
 import com.azure.resourcemanager.servicebus.fluent.QueuesClient;
-import com.azure.resourcemanager.servicebus.fluent.models.SharedAccessAuthorizationRuleResourceInner;
+import com.azure.resourcemanager.servicebus.fluent.models.SBAuthorizationRuleInner;
 import com.azure.resourcemanager.servicebus.models.Queue;
 import com.azure.resourcemanager.servicebus.models.QueueAuthorizationRule;
 import com.azure.resourcemanager.servicebus.models.QueueAuthorizationRules;
@@ -22,7 +22,7 @@ class QueueAuthorizationRulesImpl
     extends ServiceBusChildResourcesImpl<
         QueueAuthorizationRule,
         QueueAuthorizationRuleImpl,
-        SharedAccessAuthorizationRuleResourceInner,
+        SBAuthorizationRuleInner,
         QueuesClient,
         ServiceBusManager,
         Queue>
@@ -60,7 +60,7 @@ class QueueAuthorizationRulesImpl
     }
 
     @Override
-    protected Mono<SharedAccessAuthorizationRuleResourceInner> getInnerByNameAsync(String name) {
+    protected Mono<SBAuthorizationRuleInner> getInnerByNameAsync(String name) {
         return this.innerModel().getAuthorizationRuleAsync(this.resourceGroupName,
                 this.namespaceName,
                 this.queueName,
@@ -68,13 +68,13 @@ class QueueAuthorizationRulesImpl
     }
 
     @Override
-    protected PagedFlux<SharedAccessAuthorizationRuleResourceInner> listInnerAsync() {
+    protected PagedFlux<SBAuthorizationRuleInner> listInnerAsync() {
         return this.innerModel().listAuthorizationRulesAsync(
             this.resourceGroupName, this.namespaceName, this.queueName);
     }
 
     @Override
-    protected PagedIterable<SharedAccessAuthorizationRuleResourceInner> listInner() {
+    protected PagedIterable<SBAuthorizationRuleInner> listInner() {
         return this.innerModel().listAuthorizationRules(this.resourceGroupName,
                 this.namespaceName,
                 this.queueName);
@@ -86,13 +86,12 @@ class QueueAuthorizationRulesImpl
                 this.namespaceName,
                 this.queueName,
                 name,
-                this.region,
-                new SharedAccessAuthorizationRuleResourceInner(),
+                new SBAuthorizationRuleInner(),
                 this.manager());
     }
 
     @Override
-    protected QueueAuthorizationRuleImpl wrapModel(SharedAccessAuthorizationRuleResourceInner inner) {
+    protected QueueAuthorizationRuleImpl wrapModel(SBAuthorizationRuleInner inner) {
         if (inner == null) {
             return null;
         }
@@ -100,7 +99,6 @@ class QueueAuthorizationRulesImpl
                 this.namespaceName,
                 this.queueName,
                 inner.name(),
-                this.region,
                 inner,
                 this.manager());
     }

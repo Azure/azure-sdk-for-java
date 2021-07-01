@@ -50,7 +50,8 @@ public class WorkspaceInner extends Resource {
     private WorkspaceSku sku;
 
     /*
-     * The workspace data retention in days, between 30 and 730.
+     * The workspace data retention in days. Allowed values are per pricing
+     * plan. See pricing tiers documentation for details.
      */
     @JsonProperty(value = "properties.retentionInDays")
     private Integer retentionInDays;
@@ -60,6 +61,18 @@ public class WorkspaceInner extends Resource {
      */
     @JsonProperty(value = "properties.workspaceCapping")
     private WorkspaceCapping workspaceCapping;
+
+    /*
+     * Workspace creation date.
+     */
+    @JsonProperty(value = "properties.createdDate", access = JsonProperty.Access.WRITE_ONLY)
+    private String createdDate;
+
+    /*
+     * Workspace modification date.
+     */
+    @JsonProperty(value = "properties.modifiedDate", access = JsonProperty.Access.WRITE_ONLY)
+    private String modifiedDate;
 
     /*
      * The network access type for accessing Log Analytics ingestion.
@@ -74,10 +87,23 @@ public class WorkspaceInner extends Resource {
     private PublicNetworkAccessType publicNetworkAccessForQuery;
 
     /*
+     * Indicates whether customer managed storage is mandatory for query
+     * management.
+     */
+    @JsonProperty(value = "properties.forceCmkForQuery")
+    private Boolean forceCmkForQuery;
+
+    /*
      * List of linked private link scope resources.
      */
     @JsonProperty(value = "properties.privateLinkScopedResources", access = JsonProperty.Access.WRITE_ONLY)
     private List<PrivateLinkScopedResource> privateLinkScopedResources;
+
+    /*
+     * Workspace features.
+     */
+    @JsonProperty(value = "properties.features")
+    private Map<String, Object> features;
 
     /**
      * Get the etag property: The ETag of the workspace.
@@ -149,7 +175,8 @@ public class WorkspaceInner extends Resource {
     }
 
     /**
-     * Get the retentionInDays property: The workspace data retention in days, between 30 and 730.
+     * Get the retentionInDays property: The workspace data retention in days. Allowed values are per pricing plan. See
+     * pricing tiers documentation for details.
      *
      * @return the retentionInDays value.
      */
@@ -158,7 +185,8 @@ public class WorkspaceInner extends Resource {
     }
 
     /**
-     * Set the retentionInDays property: The workspace data retention in days, between 30 and 730.
+     * Set the retentionInDays property: The workspace data retention in days. Allowed values are per pricing plan. See
+     * pricing tiers documentation for details.
      *
      * @param retentionInDays the retentionInDays value to set.
      * @return the WorkspaceInner object itself.
@@ -186,6 +214,24 @@ public class WorkspaceInner extends Resource {
     public WorkspaceInner withWorkspaceCapping(WorkspaceCapping workspaceCapping) {
         this.workspaceCapping = workspaceCapping;
         return this;
+    }
+
+    /**
+     * Get the createdDate property: Workspace creation date.
+     *
+     * @return the createdDate value.
+     */
+    public String createdDate() {
+        return this.createdDate;
+    }
+
+    /**
+     * Get the modifiedDate property: Workspace modification date.
+     *
+     * @return the modifiedDate value.
+     */
+    public String modifiedDate() {
+        return this.modifiedDate;
     }
 
     /**
@@ -229,12 +275,52 @@ public class WorkspaceInner extends Resource {
     }
 
     /**
+     * Get the forceCmkForQuery property: Indicates whether customer managed storage is mandatory for query management.
+     *
+     * @return the forceCmkForQuery value.
+     */
+    public Boolean forceCmkForQuery() {
+        return this.forceCmkForQuery;
+    }
+
+    /**
+     * Set the forceCmkForQuery property: Indicates whether customer managed storage is mandatory for query management.
+     *
+     * @param forceCmkForQuery the forceCmkForQuery value to set.
+     * @return the WorkspaceInner object itself.
+     */
+    public WorkspaceInner withForceCmkForQuery(Boolean forceCmkForQuery) {
+        this.forceCmkForQuery = forceCmkForQuery;
+        return this;
+    }
+
+    /**
      * Get the privateLinkScopedResources property: List of linked private link scope resources.
      *
      * @return the privateLinkScopedResources value.
      */
     public List<PrivateLinkScopedResource> privateLinkScopedResources() {
         return this.privateLinkScopedResources;
+    }
+
+    /**
+     * Get the features property: Workspace features.
+     *
+     * @return the features value.
+     */
+    public Map<String, Object> features() {
+        return this.features;
+    }
+
+    /**
+     * Set the features property: Workspace features.
+     *
+     * @param features the features value to set.
+     * @return the WorkspaceInner object itself.
+     */
+    public WorkspaceInner withFeatures(Map<String, Object> features) {
+        this.features = features;
+        return this;
     }
 
     /** {@inheritDoc} */

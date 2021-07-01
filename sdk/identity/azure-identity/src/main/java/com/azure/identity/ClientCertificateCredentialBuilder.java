@@ -94,6 +94,20 @@ public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase
     }
 
     /**
+     * Configures the persistent shared token cache options and enables the persistent token cache which is disabled
+     * by default. If configured, the credential will store tokens in a cache persisted to the machine, protected to
+     * the current user, which can be shared by other credentials and processes.
+     *
+     * @param tokenCachePersistenceOptions the token cache configuration options
+     * @return An updated instance of this builder with the token cache options configured.
+     */
+    public ClientCertificateCredentialBuilder tokenCachePersistenceOptions(TokenCachePersistenceOptions
+                                                                          tokenCachePersistenceOptions) {
+        this.identityClientOptions.setTokenCacheOptions(tokenCachePersistenceOptions);
+        return this;
+    }
+
+    /**
      * Specifies if the x5c claim (public key of the certificate) should be sent as part of the authentication request
      * and enable subject name / issuer based authentication. The default value is false.
      *
@@ -103,6 +117,19 @@ public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase
      */
     public ClientCertificateCredentialBuilder sendCertificateChain(boolean sendCertificateChain) {
         this.identityClientOptions.setIncludeX5c(sendCertificateChain);
+        return this;
+    }
+
+    /**
+     * Specifies either the specific regional authority, or use {@link RegionalAuthority#AUTO_DISCOVER_REGION} to
+     * attempt to auto-detect the region. If unset, a non-regional authority will be used. This argument should be used
+     * only by applications deployed to Azure VMs.
+     *
+     * @param regionalAuthority the regional authority
+     * @return An updated instance of this builder with the regional authority configured.
+     */
+    public ClientCertificateCredentialBuilder regionalAuthority(RegionalAuthority regionalAuthority) {
+        this.identityClientOptions.setRegionalAuthority(regionalAuthority);
         return this;
     }
 

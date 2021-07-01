@@ -8,7 +8,6 @@ import com.azure.ai.metricsadvisor.models.EnrichmentStatus;
 import com.azure.ai.metricsadvisor.models.ListMetricDimensionValuesOptions;
 import com.azure.ai.metricsadvisor.models.ListMetricSeriesDefinitionOptions;
 import com.azure.ai.metricsadvisor.models.MetricSeriesDefinition;
-import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.AfterAll;
@@ -52,7 +51,7 @@ public class MetricsSeriesTest extends MetricsSeriesTestBase {
         MetricsAdvisorServiceVersion serviceVersion) {
         client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildClient();
         List<String> actualDimensionValues = client.listMetricDimensionValues(METRIC_ID, DIMENSION_NAME,
-            new ListMetricDimensionValuesOptions().setTop(20).setSkip(20), Context.NONE)
+            new ListMetricDimensionValuesOptions().setMaxPageSize(20).setSkip(20), Context.NONE)
             .stream().sorted().collect(Collectors.toList());
 
         Assertions.assertIterableEquals(EXPECTED_DIMENSION_VALUES, actualDimensionValues);
@@ -96,6 +95,8 @@ public class MetricsSeriesTest extends MetricsSeriesTestBase {
         client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildClient();
         client.listMetricSeriesDefinitions(METRIC_ID,
                 TIME_SERIES_START_TIME)
+            .stream()
+            .limit(LISTING_SERIES_DEFINITIONS_LIMIT)
             .forEach(metricSeriesDefinition -> {
                 assertNotNull(metricSeriesDefinition.getMetricId());
                 assertNotNull(metricSeriesDefinition.getSeriesKey());
@@ -112,7 +113,7 @@ public class MetricsSeriesTest extends MetricsSeriesTestBase {
         client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildClient();
         List<MetricSeriesDefinition> actualMetricSeriesDefinitions
             = client.listMetricSeriesDefinitions(METRIC_ID, TIME_SERIES_START_TIME,
-            new ListMetricSeriesDefinitionOptions()
+                new ListMetricSeriesDefinitionOptions()
                 .setDimensionCombinationToFilter(new HashMap<String, List<String>>() {{
                         put("city", Collections.singletonList("Miami"));
                     }}), Context.NONE)

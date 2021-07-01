@@ -12,12 +12,14 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.appservice.fluent.AppServiceCertificateOrdersClient;
 import com.azure.resourcemanager.appservice.fluent.AppServiceEnvironmentsClient;
 import com.azure.resourcemanager.appservice.fluent.AppServicePlansClient;
+import com.azure.resourcemanager.appservice.fluent.CertificateOrdersDiagnosticsClient;
 import com.azure.resourcemanager.appservice.fluent.CertificateRegistrationProvidersClient;
 import com.azure.resourcemanager.appservice.fluent.CertificatesClient;
 import com.azure.resourcemanager.appservice.fluent.DeletedWebAppsClient;
 import com.azure.resourcemanager.appservice.fluent.DiagnosticsClient;
 import com.azure.resourcemanager.appservice.fluent.DomainRegistrationProvidersClient;
 import com.azure.resourcemanager.appservice.fluent.DomainsClient;
+import com.azure.resourcemanager.appservice.fluent.GlobalsClient;
 import com.azure.resourcemanager.appservice.fluent.ProvidersClient;
 import com.azure.resourcemanager.appservice.fluent.RecommendationsClient;
 import com.azure.resourcemanager.appservice.fluent.ResourceHealthMetadatasClient;
@@ -118,6 +120,18 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient implem
         return this.appServiceCertificateOrders;
     }
 
+    /** The CertificateOrdersDiagnosticsClient object to access its operations. */
+    private final CertificateOrdersDiagnosticsClient certificateOrdersDiagnostics;
+
+    /**
+     * Gets the CertificateOrdersDiagnosticsClient object to access its operations.
+     *
+     * @return the CertificateOrdersDiagnosticsClient object.
+     */
+    public CertificateOrdersDiagnosticsClient getCertificateOrdersDiagnostics() {
+        return this.certificateOrdersDiagnostics;
+    }
+
     /** The CertificateRegistrationProvidersClient object to access its operations. */
     private final CertificateRegistrationProvidersClient certificateRegistrationProviders;
 
@@ -200,6 +214,18 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient implem
      */
     public DiagnosticsClient getDiagnostics() {
         return this.diagnostics;
+    }
+
+    /** The GlobalsClient object to access its operations. */
+    private final GlobalsClient globals;
+
+    /**
+     * Gets the GlobalsClient object to access its operations.
+     *
+     * @return the GlobalsClient object.
+     */
+    public GlobalsClient getGlobals() {
+        return this.globals;
     }
 
     /** The ProvidersClient object to access its operations. */
@@ -322,8 +348,9 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient implem
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2019-08-01";
+        this.apiVersion = "2020-12-01";
         this.appServiceCertificateOrders = new AppServiceCertificateOrdersClientImpl(this);
+        this.certificateOrdersDiagnostics = new CertificateOrdersDiagnosticsClientImpl(this);
         this.certificateRegistrationProviders = new CertificateRegistrationProvidersClientImpl(this);
         this.domains = new DomainsClientImpl(this);
         this.topLevelDomains = new TopLevelDomainsClientImpl(this);
@@ -331,6 +358,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient implem
         this.certificates = new CertificatesClientImpl(this);
         this.deletedWebApps = new DeletedWebAppsClientImpl(this);
         this.diagnostics = new DiagnosticsClientImpl(this);
+        this.globals = new GlobalsClientImpl(this);
         this.providers = new ProvidersClientImpl(this);
         this.recommendations = new RecommendationsClientImpl(this);
         this.resourceProviders = new ResourceProvidersClientImpl(this);

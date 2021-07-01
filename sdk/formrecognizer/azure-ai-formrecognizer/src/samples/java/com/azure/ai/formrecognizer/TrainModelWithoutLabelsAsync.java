@@ -17,10 +17,12 @@ import java.util.concurrent.TimeUnit;
 /**
  * Async sample to train a model with unlabeled data.
  * For instructions on setting up forms for training in an Azure Storage Blob Container, see
- * https://docs.microsoft.com/azure/cognitive-services/form-recognizer/build-training-data-set#upload-your-training-data
+ * <a href="https://docs.microsoft.com/azure/cognitive-services/form-recognizer/build-training-data-set#upload-your-training-data">here</a>
+ *
  * For this sample, you can use the training forms found in
- * https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/sample-forms/training to
- * create your own custom models.
+ * <a href="https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/resources/sample-forms/training">here</a>
+ * to create your own custom models.
+ *
  * Further, see RecognizeCustomForms.java to recognize forms with your custom built model.
  */
 public class TrainModelWithoutLabelsAsync {
@@ -40,11 +42,10 @@ public class TrainModelWithoutLabelsAsync {
         // Train custom model
         String trainingFilesUrl = "{SAS_URL_of_your_container_in_blob_storage}";
         // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
-        PollerFlux<FormRecognizerOperationResult, CustomFormModel> trainingPoller
-            = client.beginTraining(trainingFilesUrl,
-            false,
-            new TrainingOptions()
-                .setModelName("model trained without labels"));
+        PollerFlux<FormRecognizerOperationResult, CustomFormModel> trainingPoller =
+            client.beginTraining(trainingFilesUrl,
+                false,
+                new TrainingOptions().setModelName("model trained without labels"));
 
         Mono<CustomFormModel> customFormModelResult = trainingPoller
             .last()

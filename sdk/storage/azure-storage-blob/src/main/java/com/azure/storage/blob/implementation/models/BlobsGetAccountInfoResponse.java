@@ -8,10 +8,8 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 
-/**
- * Contains all response data for the getAccountInfo operation.
- */
-public final class BlobsGetAccountInfoResponse extends ResponseBase<BlobGetAccountInfoHeaders, Void> {
+/** Contains all response data for the getAccountInfo operation. */
+public final class BlobsGetAccountInfoResponse extends ResponseBase<BlobsGetAccountInfoHeaders, Void> {
     /**
      * Creates an instance of BlobsGetAccountInfoResponse.
      *
@@ -21,7 +19,12 @@ public final class BlobsGetAccountInfoResponse extends ResponseBase<BlobGetAccou
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public BlobsGetAccountInfoResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, BlobGetAccountInfoHeaders headers) {
+    public BlobsGetAccountInfoResponse(
+            HttpRequest request,
+            int statusCode,
+            HttpHeaders rawHeaders,
+            Void value,
+            BlobsGetAccountInfoHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 }

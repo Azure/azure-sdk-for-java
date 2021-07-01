@@ -8,10 +8,8 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 
-/**
- * Contains all response data for the setAccessControl operation.
- */
-public final class PathsSetAccessControlResponse extends ResponseBase<PathSetAccessControlHeaders, Void> {
+/** Contains all response data for the setAccessControl operation. */
+public final class PathsSetAccessControlResponse extends ResponseBase<PathsSetAccessControlHeaders, Void> {
     /**
      * Creates an instance of PathsSetAccessControlResponse.
      *
@@ -21,7 +19,12 @@ public final class PathsSetAccessControlResponse extends ResponseBase<PathSetAcc
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public PathsSetAccessControlResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, PathSetAccessControlHeaders headers) {
+    public PathsSetAccessControlResponse(
+            HttpRequest request,
+            int statusCode,
+            HttpHeaders rawHeaders,
+            Void value,
+            PathsSetAccessControlHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 }

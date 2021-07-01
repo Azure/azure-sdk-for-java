@@ -59,7 +59,7 @@ const maxParallelism = parseInt(args['parallel'], 10) || os.cpus().length;
 var specRoot = args['spec-root'] || defaultSpecRoot;
 var sdkRoot = path.join(process.cwd(), '../..')
 var projects = args['projects'];
-var autoRestVersion = 'preview'; // default
+var autoRestVersion = '2.0.4417'; // default
 if (args['autorest'] !== undefined) {
     autoRestVersion = args['autorest'];
 }

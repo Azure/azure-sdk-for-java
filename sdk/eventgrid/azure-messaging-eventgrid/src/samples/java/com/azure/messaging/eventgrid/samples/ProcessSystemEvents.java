@@ -14,22 +14,22 @@ import java.util.List;
 
 public class ProcessSystemEvents {
     public static void main(String[] args) {
-        String eventGridJsonString = "[\n" +
-            "  {\n" +
-            "    \"id\": \"56afc886-767b-d359-d59e-0da7877166b2\",\n" +
-            "    \"topic\": \"/SUBSCRIPTIONS/ID/RESOURCEGROUPS/rg/PROVIDERS/MICROSOFT.ContainerRegistry/test1\",\n" +
-            "    \"subject\": \"test1\",\n" +
-            "    \"eventType\": \"Microsoft.AppConfiguration.KeyValueDeleted\",\n" +
-            "    \"eventTime\": \"2018-01-02T19:17:44.4383997Z\",\n" +
-            "    \"data\": {\n" +
-            "        \"key\":\"key1\",\n" +
-            "        \"label\":\"label1\",\n" +
-            "        \"etag\":\"etag1\"\n" +
-            "    },\n" +
-            "    \"dataVersion\": \"\",\n" +
-            "    \"metadataVersion\": \"1\"\n" +
-            "  }\n" +
-            "]\n";
+        String eventGridJsonString = "[\n"
+            + "  {\n"
+            + "    \"id\": \"56afc886-767b-d359-d59e-0da7877166b2\",\n"
+            + "    \"topic\": \"/SUBSCRIPTIONS/ID/RESOURCEGROUPS/rg/PROVIDERS/MICROSOFT.ContainerRegistry/test1\",\n"
+            + "    \"subject\": \"test1\",\n"
+            + "    \"eventType\": \"Microsoft.AppConfiguration.KeyValueDeleted\",\n"
+            + "    \"eventTime\": \"2018-01-02T19:17:44.4383997Z\",\n"
+            + "    \"data\": {\n"
+            + "        \"key\":\"key1\",\n"
+            + "        \"label\":\"label1\",\n"
+            + "        \"etag\":\"etag1\"\n"
+            + "    },\n"
+            + "    \"dataVersion\": \"\",\n"
+            + "    \"metadataVersion\": \"1\"\n"
+            + "  }\n"
+            + "]\n";
 
         List<EventGridEvent> eventGridEvents = EventGridEvent.fromString(eventGridJsonString);
 

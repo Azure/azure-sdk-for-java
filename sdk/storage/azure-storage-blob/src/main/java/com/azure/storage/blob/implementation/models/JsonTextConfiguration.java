@@ -8,20 +8,18 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/**
- * json text configuration.
- */
+/** json text configuration. */
 @JacksonXmlRootElement(localName = "JsonTextConfiguration")
 @Fluent
 public final class JsonTextConfiguration {
     /*
-     * record separator
+     * The string used to separate records.
      */
-    @JsonProperty(value = "RecordSeparator", required = true)
+    @JsonProperty(value = "RecordSeparator")
     private String recordSeparator;
 
     /**
-     * Get the recordSeparator property: record separator.
+     * Get the recordSeparator property: The string used to separate records.
      *
      * @return the recordSeparator value.
      */
@@ -30,7 +28,7 @@ public final class JsonTextConfiguration {
     }
 
     /**
-     * Set the recordSeparator property: record separator.
+     * Set the recordSeparator property: The string used to separate records.
      *
      * @param recordSeparator the recordSeparator value to set.
      * @return the JsonTextConfiguration object itself.

@@ -4,6 +4,7 @@ package com.azure.resourcemanager.compute.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.compute.ComputeManager;
 import com.azure.resourcemanager.compute.models.AvailabilitySet;
 import com.azure.resourcemanager.compute.models.AvailabilitySetSkuTypes;
@@ -26,7 +27,7 @@ public class AvailabilitySetsImpl
 
     @Override
     public PagedIterable<AvailabilitySet> list() {
-        return PagedConverter.mapPage(manager().serviceClient().getAvailabilitySets().list(), this::wrapModel);
+        return new PagedIterable<>(this.listAsync());
     }
 
     @Override
@@ -36,11 +37,15 @@ public class AvailabilitySetsImpl
 
     @Override
     public PagedIterable<AvailabilitySet> listByResourceGroup(String groupName) {
-        return wrapList(this.inner().listByResourceGroup(groupName));
+        return new PagedIterable<>(this.listByResourceGroupAsync(groupName));
     }
 
     @Override
     public PagedFlux<AvailabilitySet> listByResourceGroupAsync(String resourceGroupName) {
+        if (CoreUtils.isNullOrEmpty(resourceGroupName)) {
+            return new PagedFlux<>(() -> Mono.error(
+                new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null.")));
+        }
         return wrapPageAsync(this.inner().listByResourceGroupAsync(resourceGroupName));
     }
 

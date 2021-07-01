@@ -6,6 +6,7 @@ package com.azure.cosmos.benchmark.linkedin.impl;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.benchmark.linkedin.impl.exceptions.CosmosDBDataAccessorException;
 import com.azure.cosmos.benchmark.linkedin.impl.keyextractor.KeyExtractor;
+import com.azure.cosmos.benchmark.linkedin.impl.models.BatchGetResult;
 import com.azure.cosmos.benchmark.linkedin.impl.models.Entity;
 import com.azure.cosmos.benchmark.linkedin.impl.models.EntityAttributes;
 import com.azure.cosmos.benchmark.linkedin.impl.models.Result;
@@ -13,11 +14,15 @@ import com.azure.cosmos.benchmark.linkedin.impl.models.ResultMetadata;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.FeedResponse;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.base.Preconditions;
+import com.google.common.util.concurrent.AtomicDouble;
 import java.time.Duration;
+import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.ThreadSafe;
@@ -72,6 +77,11 @@ public class ResponseHandler<K, V> {
             .build();
     }
 
+    BatchGetResult<K, V> convertFeedResponse(final List<FeedResponse<ObjectNode>> responseList) {
+        Preconditions.checkNotNull(responseList, "The responseList from the CosmosDB SQL API is null!");
+        return convertFeedResponse(responseList, key -> false);
+    }
+
     Result<K, V> convertException(@Nonnull final K key, @Nonnull final CosmosException exception) {
         Preconditions.checkNotNull(exception,
             "Only a non-null CosmosException can be mapped to " + "the Result object representation.");
@@ -103,6 +113,28 @@ public class ResponseHandler<K, V> {
         return builder.build();
     }
 
+    private BatchGetResult<K, V> convertFeedResponse(@Nonnull final List<FeedResponse<ObjectNode>> responseList,
+        @Nonnull Predicate<K> includeTombstones) {
+
+        final AtomicDouble requestCharge = new AtomicDouble(0);
+        final BatchGetResult.Builder<K, V> resultBuilder = new BatchGetResult.Builder<>();
+        for (FeedResponse<ObjectNode> response : responseList) {
+            requestCharge.addAndGet(response.getRequestCharge());
+            response.getResults()
+                .forEach(objectNode -> Optional.ofNullable(objectNode)
+                    .map(_keyExtractor::getKey)
+                    // Set the result only if the entity is present after the tombstone filtering
+                    .ifPresent(key -> convertDocument(objectNode, includeTombstones.test(key))
+                        .ifPresent(entity -> resultBuilder.addResult(key, entity))));
+        }
+
+        // Capture all the meters corresponding to this request
+        final ResultMetadata.Builder metadata = new ResultMetadata.Builder()
+            .addCostUnits(requestCharge.get());
+        return resultBuilder.setMetadata(metadata.build())
+            .build();
+    }
+
     private Optional<Entity<V>> convertDocument(@Nullable final ObjectNode document,
         final boolean includeTombstone) {
 
@@ -122,8 +154,7 @@ public class ResponseHandler<K, V> {
                     .map(JsonNode::asLong)
                     .ifPresent(entityAttributes::setTs);
                 maybeDocument.map(doc -> doc.get(Constants.Properties.TTL))
-                    .map(Object::toString)
-                    .map(Long::parseLong)
+                    .map(JsonNode::asInt)
                     .map(Duration::ofSeconds)
                     .ifPresent(entityAttributes::setTtl);
 

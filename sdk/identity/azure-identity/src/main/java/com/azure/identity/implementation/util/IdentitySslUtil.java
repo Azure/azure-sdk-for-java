@@ -20,7 +20,7 @@ import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
-public class IdentitySslUtil {
+public final class IdentitySslUtil {
     public static final HostnameVerifier ALL_HOSTS_ACCEPT_HOSTNAME_VERIFIER;
 
     static {

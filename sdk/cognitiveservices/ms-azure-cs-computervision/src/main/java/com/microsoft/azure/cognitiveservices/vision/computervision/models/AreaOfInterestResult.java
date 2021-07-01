@@ -33,6 +33,12 @@ public class AreaOfInterestResult {
     private ImageMetadata metadata;
 
     /**
+     * The modelVersion property.
+     */
+    @JsonProperty(value = "modelVersion")
+    private String modelVersion;
+
+    /**
      * Get the areaOfInterest value.
      *
      * @return the areaOfInterest value
@@ -78,6 +84,26 @@ public class AreaOfInterestResult {
      */
     public AreaOfInterestResult withMetadata(ImageMetadata metadata) {
         this.metadata = metadata;
+        return this;
+    }
+
+    /**
+     * Get the modelVersion value.
+     *
+     * @return the modelVersion value
+     */
+    public String modelVersion() {
+        return this.modelVersion;
+    }
+
+    /**
+     * Set the modelVersion value.
+     *
+     * @param modelVersion the modelVersion value to set
+     * @return the AreaOfInterestResult object itself.
+     */
+    public AreaOfInterestResult withModelVersion(String modelVersion) {
+        this.modelVersion = modelVersion;
         return this;
     }
 

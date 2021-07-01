@@ -7,7 +7,7 @@ Azure Key Vault. It is built on four principles:
 3. Must not introduce any class loader hierarchy conflicts with Java app code dependencies.
 4. Must be ready for "never trust, always verify and credential-free" Zero Trust environments.
 
-[Source code][source_code] | [API reference documentation][api_documentation] | [Product documentation][azkeyvault_docs] | [Samples][certificates_samples]
+[Source code] | [API reference documentation] | [Product documentation] | [Samples]
 
 ## Getting started
 ### Adding the package to your project
@@ -18,7 +18,7 @@ Maven dependency for the Azure Key Vault JCA client library. Add it to your proj
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-jca</artifactId>
-    <version>1.0.0-beta.3</version>
+    <version>1.0.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -28,9 +28,9 @@ Maven dependency for the Azure Key Vault JCA client library. Add it to your proj
 - [Azure Subscription][azure_subscription]
 - An existing [Azure Key Vault][azure_keyvault]. If you need to create a Key Vault, you can use the [Azure Cloud Shell][azure_cloud_shell] to create one with this Azure CLI command. Replace `<your-resource-group-name>` and `<your-key-vault-name>` with your own, unique names:
 
-    ```Bash
-    az keyvault create --resource-group <your-resource-group-name> --name <your-key-vault-name>
-    ```
+```Bash
+az keyvault create --resource-group <your-resource-group-name> --name <your-key-vault-name>
+```
 
 ## Key concepts
 
@@ -38,26 +38,27 @@ Maven dependency for the Azure Key Vault JCA client library. Add it to your proj
 ### Server side SSL
 If you are looking to integrate the JCA provider to create an SSLServerSocket see the example below.
 
+<!-- embedme ./src/samples/java/com/azure/security/keyvault/jca/ServerSSLSample.java#L18-L36 -->
 ```java
 KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
 Security.addProvider(provider);
 
-KeyStore ks = KeyStore.getInstance("AzureKeyVault");
+KeyStore keyStore = KeyStore.getInstance("AzureKeyVault");
 KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
     System.getProperty("azure.keyvault.uri"),
     System.getProperty("azure.keyvault.tenant-id"),
     System.getProperty("azure.keyvault.client-id"),
     System.getProperty("azure.keyvault.client-secret"));
-ks.load(parameter);
+keyStore.load(parameter);
 
-KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
-kmf.init(ks, "".toCharArray());
+KeyManagerFactory managerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
+managerFactory.init(keyStore, "".toCharArray());
 
 SSLContext context = SSLContext.getInstance("TLS");
-context.init(kmf.getKeyManagers(), null, null);
+context.init(managerFactory.getKeyManagers(), null, null);
 
-SSLServerSocketFactory factory = context.getServerSocketFactory();
-SSLServerSocket serverSocket = (SSLServerSocket) factory.createServerSocket(8765);
+SSLServerSocketFactory socketFactory = context.getServerSocketFactory();
+SSLServerSocket serverSocket = (SSLServerSocket) socketFactory.createServerSocket(8765);
 ```
 
 Note if you want to use Azure Managed Identity, you should set the value of `azure.keyvault.uri`, and the rest of the parameters would be `null`.
@@ -65,40 +66,38 @@ Note if you want to use Azure Managed Identity, you should set the value of `azu
 ### Client side SSL
 If you are looking to integrate the JCA provider for client side socket connections, see the Apache HTTP client example below.
 
+<!-- embedme ./src/samples/java/com/azure/security/keyvault/jca/ClientSSLSample.java#L28-L67 -->
 ```java
 KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
 Security.addProvider(provider);
 
-KeyStore ks = KeyStore.getInstance("AzureKeyVault");
+KeyStore keyStore = KeyStore.getInstance("AzureKeyVault");
 KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
-        System.getProperty("azure.keyvault.uri"),
-        System.getProperty("azure.keyvault.tenant-id"),
-        System.getProperty("azure.keyvault.client-id"),
-        System.getProperty("azure.keyvault.client-secret"));
-ks.load(parameter);
+    System.getProperty("azure.keyvault.uri"),
+    System.getProperty("azure.keyvault.tenant-id"),
+    System.getProperty("azure.keyvault.client-id"),
+    System.getProperty("azure.keyvault.client-secret"));
+keyStore.load(parameter);
 
 SSLContext sslContext = SSLContexts
     .custom()
-    .loadTrustMaterial(ks, new TrustSelfSignedStrategy())
+    .loadTrustMaterial(keyStore, new TrustSelfSignedStrategy())
     .build();
 
-SSLConnectionSocketFactory sslSocketFactory = SSLConnectionSocketFactoryBuilder
-    .create()
-    .setSslContext(sslContext)
-    .setHostnameVerifier((hostname, session) -> true)
-    .build();
+SSLConnectionSocketFactory sslConnectionSocketFactory = new SSLConnectionSocketFactory(
+    sslContext, (hostname, session) -> true);
 
-PoolingHttpClientConnectionManager cm = PoolingHttpClientConnectionManagerBuilder
-    .create()
-    .setSSLSocketFactory(sslSocketFactory)
-    .build();
+PoolingHttpClientConnectionManager manager = new PoolingHttpClientConnectionManager(
+    RegistryBuilder.<ConnectionSocketFactory>create()
+        .register("https", sslConnectionSocketFactory)
+        .build());
 
 String result = null;
 
-try (CloseableHttpClient client = HttpClients.custom().setConnectionManager(cm).build()) {
+try (CloseableHttpClient client = HttpClients.custom().setConnectionManager(manager).build()) {
     HttpGet httpGet = new HttpGet("https://localhost:8766");
-    HttpClientResponseHandler<String> responseHandler = (ClassicHttpResponse response) -> {
-        int status = response.getCode();
+    ResponseHandler<String> responseHandler = (HttpResponse response) -> {
+        int status = response.getStatusLine().getStatusCode();
         String result1 = "Not success";
         if (status == 204) {
             result1 = "Success";
@@ -112,6 +111,16 @@ try (CloseableHttpClient client = HttpClients.custom().setConnectionManager(cm).
 ```
 
 Note if you want to use Azure managed identity, you should set the value of `azure.keyvault.uri`, and the rest of the parameters would be `null`.
+
+### File-System certificates
+You can load the certificate in the file system as a trusted certificate by configure the following properties.
+
+```yaml
+azure:
+  cert-path:
+    well-known:     # The file location where you store the well-known certificate
+    custom:         # The file location where you store the custom certificate
+```
 
 ## Troubleshooting
 ### General
@@ -137,7 +146,7 @@ For Spring Boot applications see our [Spring Boot starter][spring_boot_starter].
 1. [Java Cryptography Architecture (JCA) Reference Guide][jca_reference_guide]
 
 ### Additional documentation
-For more extensive documentation on Azure Key Vault, see the [API reference documentation][azkeyvault_rest].
+For more extensive documentation on Azure Key Vault, see the [API reference documentation].
 
 ## Contributing
 This project welcomes contributions and suggestions. Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
@@ -147,15 +156,15 @@ When you submit a pull request, a CLA-bot will automatically determine whether y
 This project has adopted the [Microsoft Open Source Code of Conduct][microsoft_code_of_conduct]. For more information see the Code of Conduct FAQ or contact <opencode@microsoft.com> with any additional questions or comments.
 
 <!-- LINKS -->
-[source_code]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-jca/src
-[api_documentation]: https://azure.github.io/azure-sdk-for-java
-[azkeyvault_docs]: https://docs.microsoft.com/azure/key-vault/
-[jca_samples]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-jca/src/samples/java/com/azure/security/keyvault/jca
+[Source code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-jca/src
+[API reference documentation]: https://azure.github.io/azure-sdk-for-java/keyvault.html#azure-security-keyvault-jca
+[Product documentation]: https://docs.microsoft.com/azure/key-vault/
+[Samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-jca/src/samples/java/com/azure/security/keyvault/jca
 [azure_subscription]: https://azure.microsoft.com/
 [azure_keyvault]: https://docs.microsoft.com/azure/key-vault/keys/quick-create-portal
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [azure_cloud_shell]: https://shell.azure.com/bash
-[spring_boot_starter]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-keyvault-certificates/README.md
+[spring_boot_starter]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot-starter-keyvault-certificates/README.md
 [jca_reference_guide]: https://docs.oracle.com/javase/8/docs/technotes/guides/security/crypto/CryptoSpec.html
 [microsoft_code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 

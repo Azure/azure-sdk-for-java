@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/anomalydetector/v1.0//timeseries/entire/detect",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/anomalydetector/v1.1-preview//timeseries/entire/detect",
     "Headers" : {
       "Content-Type" : "application/json"
     },

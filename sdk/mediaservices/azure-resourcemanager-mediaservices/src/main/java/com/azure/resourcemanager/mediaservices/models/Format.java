@@ -22,8 +22,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("Format")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "#Microsoft.Media.ImageFormat", value = ImageFormat.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Media.JpgFormat", value = JpgFormat.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Media.PngFormat", value = PngFormat.class),
     @JsonSubTypes.Type(name = "#Microsoft.Media.MultiBitrateFormat", value = MultiBitrateFormat.class)
 })
 @JsonFlatten
@@ -43,8 +41,8 @@ public class Format {
      * {Label} - The label assigned to the codec/layer. {Index} - A unique
      * index for thumbnails. Only applicable to thumbnails. {Bitrate} - The
      * audio/video bitrate. Not applicable to thumbnails. {Codec} - The type of
-     * the audio/video codec. Any unsubstituted macros will be collapsed and
-     * removed from the filename.
+     * the audio/video codec. {Resolution} - The video resolution. Any
+     * unsubstituted macros will be collapsed and removed from the filename.
      */
     @JsonProperty(value = "filenamePattern", required = true)
     private String filenamePattern;
@@ -57,8 +55,8 @@ public class Format {
      * characters, the base name is truncated to the first 32 characters in total length. {Extension} - The appropriate
      * extension for this format. {Label} - The label assigned to the codec/layer. {Index} - A unique index for
      * thumbnails. Only applicable to thumbnails. {Bitrate} - The audio/video bitrate. Not applicable to thumbnails.
-     * {Codec} - The type of the audio/video codec. Any unsubstituted macros will be collapsed and removed from the
-     * filename.
+     * {Codec} - The type of the audio/video codec. {Resolution} - The video resolution. Any unsubstituted macros will
+     * be collapsed and removed from the filename.
      *
      * @return the filenamePattern value.
      */
@@ -74,8 +72,8 @@ public class Format {
      * characters, the base name is truncated to the first 32 characters in total length. {Extension} - The appropriate
      * extension for this format. {Label} - The label assigned to the codec/layer. {Index} - A unique index for
      * thumbnails. Only applicable to thumbnails. {Bitrate} - The audio/video bitrate. Not applicable to thumbnails.
-     * {Codec} - The type of the audio/video codec. Any unsubstituted macros will be collapsed and removed from the
-     * filename.
+     * {Codec} - The type of the audio/video codec. {Resolution} - The video resolution. Any unsubstituted macros will
+     * be collapsed and removed from the filename.
      *
      * @param filenamePattern the filenamePattern value to set.
      * @return the Format object itself.

@@ -66,6 +66,25 @@ public final class KubeletConfig {
     @JsonProperty(value = "failSwapOn")
     private Boolean failSwapOn;
 
+    /*
+     * The maximum size (e.g. 10Mi) of container log file before it is rotated.
+     */
+    @JsonProperty(value = "containerLogMaxSizeMB")
+    private Integer containerLogMaxSizeMB;
+
+    /*
+     * The maximum number of container log files that can be present for a
+     * container. The number must be ≥ 2.
+     */
+    @JsonProperty(value = "containerLogMaxFiles")
+    private Integer containerLogMaxFiles;
+
+    /*
+     * The maximum number of processes per pod.
+     */
+    @JsonProperty(value = "podMaxPids")
+    private Integer podMaxPids;
+
     /**
      * Get the cpuManagerPolicy property: CPU Manager policy to use.
      *
@@ -229,6 +248,68 @@ public final class KubeletConfig {
      */
     public KubeletConfig withFailSwapOn(Boolean failSwapOn) {
         this.failSwapOn = failSwapOn;
+        return this;
+    }
+
+    /**
+     * Get the containerLogMaxSizeMB property: The maximum size (e.g. 10Mi) of container log file before it is rotated.
+     *
+     * @return the containerLogMaxSizeMB value.
+     */
+    public Integer containerLogMaxSizeMB() {
+        return this.containerLogMaxSizeMB;
+    }
+
+    /**
+     * Set the containerLogMaxSizeMB property: The maximum size (e.g. 10Mi) of container log file before it is rotated.
+     *
+     * @param containerLogMaxSizeMB the containerLogMaxSizeMB value to set.
+     * @return the KubeletConfig object itself.
+     */
+    public KubeletConfig withContainerLogMaxSizeMB(Integer containerLogMaxSizeMB) {
+        this.containerLogMaxSizeMB = containerLogMaxSizeMB;
+        return this;
+    }
+
+    /**
+     * Get the containerLogMaxFiles property: The maximum number of container log files that can be present for a
+     * container. The number must be ≥ 2.
+     *
+     * @return the containerLogMaxFiles value.
+     */
+    public Integer containerLogMaxFiles() {
+        return this.containerLogMaxFiles;
+    }
+
+    /**
+     * Set the containerLogMaxFiles property: The maximum number of container log files that can be present for a
+     * container. The number must be ≥ 2.
+     *
+     * @param containerLogMaxFiles the containerLogMaxFiles value to set.
+     * @return the KubeletConfig object itself.
+     */
+    public KubeletConfig withContainerLogMaxFiles(Integer containerLogMaxFiles) {
+        this.containerLogMaxFiles = containerLogMaxFiles;
+        return this;
+    }
+
+    /**
+     * Get the podMaxPids property: The maximum number of processes per pod.
+     *
+     * @return the podMaxPids value.
+     */
+    public Integer podMaxPids() {
+        return this.podMaxPids;
+    }
+
+    /**
+     * Set the podMaxPids property: The maximum number of processes per pod.
+     *
+     * @param podMaxPids the podMaxPids value to set.
+     * @return the KubeletConfig object itself.
+     */
+    public KubeletConfig withPodMaxPids(Integer podMaxPids) {
+        this.podMaxPids = podMaxPids;
         return this;
     }
 

@@ -12,6 +12,8 @@ spring:
     #      subscription-id: [subscription-id]
 
     stream:
+      function:
+        definition: consume1;supply1;consume2;supply2
       bindings:
         consume1-in-0:
           destination: [servicebus-queue-1-name]
@@ -52,8 +54,6 @@ spring:
             consume2-in-0:
               consumer:
                 checkpoint-mode: MANUAL
-      function:
-        definition: consume1;supply1;consume2;supply2;
       poller:
         initial-delay: 0
         fixed-delay: 1000

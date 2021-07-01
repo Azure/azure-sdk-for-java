@@ -9,62 +9,60 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/**
- * An enumeration of blobs.
- */
+/** An enumeration of blobs. */
 @JacksonXmlRootElement(localName = "EnumerationResults")
 @Fluent
 public final class ListBlobsHierarchySegmentResponse {
     /*
-     * The serviceEndpoint property.
+     * The ServiceEndpoint property.
      */
     @JacksonXmlProperty(localName = "ServiceEndpoint", isAttribute = true)
     private String serviceEndpoint;
 
     /*
-     * The containerName property.
+     * The ContainerName property.
      */
     @JacksonXmlProperty(localName = "ContainerName", isAttribute = true)
     private String containerName;
 
     /*
-     * The prefix property.
+     * The Prefix property.
      */
     @JsonProperty(value = "Prefix", required = true)
     private String prefix;
 
     /*
-     * The marker property.
+     * The Marker property.
      */
     @JsonProperty(value = "Marker", required = true)
     private String marker;
 
     /*
-     * The maxResults property.
+     * The MaxResults property.
      */
     @JsonProperty(value = "MaxResults", required = true)
     private int maxResults;
 
     /*
-     * The delimiter property.
+     * The Delimiter property.
      */
     @JsonProperty(value = "Delimiter", required = true)
     private String delimiter;
 
     /*
-     * The segment property.
+     * The Segment property.
      */
     @JsonProperty(value = "Blobs", required = true)
     private BlobHierarchyListSegment segment;
 
     /*
-     * The nextMarker property.
+     * The NextMarker property.
      */
     @JsonProperty(value = "NextMarker", required = true)
     private String nextMarker;
 
     /**
-     * Get the serviceEndpoint property: The serviceEndpoint property.
+     * Get the serviceEndpoint property: The ServiceEndpoint property.
      *
      * @return the serviceEndpoint value.
      */
@@ -73,7 +71,7 @@ public final class ListBlobsHierarchySegmentResponse {
     }
 
     /**
-     * Set the serviceEndpoint property: The serviceEndpoint property.
+     * Set the serviceEndpoint property: The ServiceEndpoint property.
      *
      * @param serviceEndpoint the serviceEndpoint value to set.
      * @return the ListBlobsHierarchySegmentResponse object itself.
@@ -84,7 +82,7 @@ public final class ListBlobsHierarchySegmentResponse {
     }
 
     /**
-     * Get the containerName property: The containerName property.
+     * Get the containerName property: The ContainerName property.
      *
      * @return the containerName value.
      */
@@ -93,7 +91,7 @@ public final class ListBlobsHierarchySegmentResponse {
     }
 
     /**
-     * Set the containerName property: The containerName property.
+     * Set the containerName property: The ContainerName property.
      *
      * @param containerName the containerName value to set.
      * @return the ListBlobsHierarchySegmentResponse object itself.
@@ -104,7 +102,7 @@ public final class ListBlobsHierarchySegmentResponse {
     }
 
     /**
-     * Get the prefix property: The prefix property.
+     * Get the prefix property: The Prefix property.
      *
      * @return the prefix value.
      */
@@ -113,7 +111,7 @@ public final class ListBlobsHierarchySegmentResponse {
     }
 
     /**
-     * Set the prefix property: The prefix property.
+     * Set the prefix property: The Prefix property.
      *
      * @param prefix the prefix value to set.
      * @return the ListBlobsHierarchySegmentResponse object itself.
@@ -124,7 +122,7 @@ public final class ListBlobsHierarchySegmentResponse {
     }
 
     /**
-     * Get the marker property: The marker property.
+     * Get the marker property: The Marker property.
      *
      * @return the marker value.
      */
@@ -133,7 +131,7 @@ public final class ListBlobsHierarchySegmentResponse {
     }
 
     /**
-     * Set the marker property: The marker property.
+     * Set the marker property: The Marker property.
      *
      * @param marker the marker value to set.
      * @return the ListBlobsHierarchySegmentResponse object itself.
@@ -144,7 +142,7 @@ public final class ListBlobsHierarchySegmentResponse {
     }
 
     /**
-     * Get the maxResults property: The maxResults property.
+     * Get the maxResults property: The MaxResults property.
      *
      * @return the maxResults value.
      */
@@ -153,7 +151,7 @@ public final class ListBlobsHierarchySegmentResponse {
     }
 
     /**
-     * Set the maxResults property: The maxResults property.
+     * Set the maxResults property: The MaxResults property.
      *
      * @param maxResults the maxResults value to set.
      * @return the ListBlobsHierarchySegmentResponse object itself.
@@ -164,7 +162,7 @@ public final class ListBlobsHierarchySegmentResponse {
     }
 
     /**
-     * Get the delimiter property: The delimiter property.
+     * Get the delimiter property: The Delimiter property.
      *
      * @return the delimiter value.
      */
@@ -173,7 +171,7 @@ public final class ListBlobsHierarchySegmentResponse {
     }
 
     /**
-     * Set the delimiter property: The delimiter property.
+     * Set the delimiter property: The Delimiter property.
      *
      * @param delimiter the delimiter value to set.
      * @return the ListBlobsHierarchySegmentResponse object itself.
@@ -184,7 +182,7 @@ public final class ListBlobsHierarchySegmentResponse {
     }
 
     /**
-     * Get the segment property: The segment property.
+     * Get the segment property: The Segment property.
      *
      * @return the segment value.
      */
@@ -193,7 +191,7 @@ public final class ListBlobsHierarchySegmentResponse {
     }
 
     /**
-     * Set the segment property: The segment property.
+     * Set the segment property: The Segment property.
      *
      * @param segment the segment value to set.
      * @return the ListBlobsHierarchySegmentResponse object itself.
@@ -204,7 +202,7 @@ public final class ListBlobsHierarchySegmentResponse {
     }
 
     /**
-     * Get the nextMarker property: The nextMarker property.
+     * Get the nextMarker property: The NextMarker property.
      *
      * @return the nextMarker value.
      */
@@ -213,7 +211,7 @@ public final class ListBlobsHierarchySegmentResponse {
     }
 
     /**
-     * Set the nextMarker property: The nextMarker property.
+     * Set the nextMarker property: The NextMarker property.
      *
      * @param nextMarker the nextMarker value to set.
      * @return the ListBlobsHierarchySegmentResponse object itself.

@@ -84,7 +84,7 @@ public class ConnectionStateListenerTest {
 
         Uri targetUri = new Uri(serverAddressPrefix + serverPort);
         try {
-            client.invokeStoreAsync(targetUri, req).block();
+            client.invokeResourceOperationAsync(targetUri, req).block();
         } catch (Exception e) {
             logger.info("expected failed request with reason {}", e);
         }

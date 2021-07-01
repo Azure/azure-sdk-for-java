@@ -20,6 +20,12 @@ public final class BinarySource extends CopySource {
     @JsonProperty(value = "storeSettings")
     private StoreReadSettings storeSettings;
 
+    /*
+     * Binary format settings.
+     */
+    @JsonProperty(value = "formatSettings")
+    private BinaryReadSettings formatSettings;
+
     /**
      * Get the storeSettings property: Binary store settings.
      *
@@ -37,6 +43,26 @@ public final class BinarySource extends CopySource {
      */
     public BinarySource setStoreSettings(StoreReadSettings storeSettings) {
         this.storeSettings = storeSettings;
+        return this;
+    }
+
+    /**
+     * Get the formatSettings property: Binary format settings.
+     *
+     * @return the formatSettings value.
+     */
+    public BinaryReadSettings getFormatSettings() {
+        return this.formatSettings;
+    }
+
+    /**
+     * Set the formatSettings property: Binary format settings.
+     *
+     * @param formatSettings the formatSettings value to set.
+     * @return the BinarySource object itself.
+     */
+    public BinarySource setFormatSettings(BinaryReadSettings formatSettings) {
+        this.formatSettings = formatSettings;
         return this;
     }
 }

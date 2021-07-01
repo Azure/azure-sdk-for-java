@@ -10,8 +10,7 @@ import com.azure.core.util.ServiceVersion;
  */
 public enum FormRecognizerServiceVersion implements ServiceVersion {
     V2_0("v2.0"),
-    V2_1_PREVIEW_1("v2.1-preview.1"),
-    V2_1_PREVIEW_2("v2.1-preview.2");
+    V2_1("v2.1");
 
     private final String version;
 
@@ -33,7 +32,6 @@ public enum FormRecognizerServiceVersion implements ServiceVersion {
      * @return the latest {@link FormRecognizerServiceVersion}
      */
     public static FormRecognizerServiceVersion getLatest() {
-        return V2_1_PREVIEW_2;
+        return V2_1;
     }
-
 }

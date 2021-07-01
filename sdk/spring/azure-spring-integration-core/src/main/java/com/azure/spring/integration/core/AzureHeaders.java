@@ -9,10 +9,15 @@ package com.azure.spring.integration.core;
  * @author Warren Zhu
  */
 public class AzureHeaders {
-    private static final String PREFIX = "azure_";
+
+    protected static final String PREFIX = "azure_";
 
     public static final String PARTITION_ID = PREFIX + "partition_id";
     public static final String RAW_PARTITION_ID = PREFIX + "raw_partition_id";
+    /**
+     * @deprecated Please use ServiceBusMessageHeaders.MESSAGE_ID instead.
+     */
+    @Deprecated
     public static final String RAW_ID = "raw_id";
 
     public static final String PARTITION_KEY = PREFIX + "partition_key";

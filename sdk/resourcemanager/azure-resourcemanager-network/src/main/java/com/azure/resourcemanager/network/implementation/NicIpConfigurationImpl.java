@@ -5,8 +5,10 @@ package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.NetworkManager;
+import com.azure.resourcemanager.network.fluent.models.ApplicationSecurityGroupInner;
 import com.azure.resourcemanager.network.models.ApplicationGateway;
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackendAddressPool;
+import com.azure.resourcemanager.network.models.ApplicationSecurityGroup;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
 import com.azure.resourcemanager.network.models.IpVersion;
 import com.azure.resourcemanager.network.models.LoadBalancer;
@@ -19,10 +21,12 @@ import com.azure.resourcemanager.network.fluent.models.InboundNatRuleInner;
 import com.azure.resourcemanager.network.fluent.models.NetworkInterfaceIpConfigurationInner;
 import com.azure.resourcemanager.network.fluent.models.PublicIpAddressInner;
 import com.azure.resourcemanager.network.fluent.models.SubnetInner;
+import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 /** Implementation for NicIPConfiguration and its create and update interfaces. */
 class NicIpConfigurationImpl extends NicIpConfigurationBaseImpl<NetworkInterfaceImpl, NetworkInterface>
@@ -366,6 +370,31 @@ class NicIpConfigurationImpl extends NicIpConfigurationBaseImpl<NetworkInterface
     @Override
     public NicIpConfigurationImpl withoutLoadBalancerInboundNatRules() {
         this.innerModel().withLoadBalancerInboundNatRules(null);
+        return this;
+    }
+
+    NicIpConfigurationImpl withExistingApplicationSecurityGroup(ApplicationSecurityGroup applicationSecurityGroup) {
+        this.withExistingApplicationSecurityGroup(applicationSecurityGroup.innerModel());
+        return this;
+    }
+
+    NicIpConfigurationImpl withExistingApplicationSecurityGroup(ApplicationSecurityGroupInner inner) {
+        if (this.innerModel().applicationSecurityGroups() == null) {
+            this.innerModel().withApplicationSecurityGroups(new ArrayList<>());
+        }
+        this.innerModel().applicationSecurityGroups().add(inner);
+        return this;
+    }
+
+    NicIpConfigurationImpl withoutApplicationSecurityGroup(String name) {
+        if (this.innerModel().applicationSecurityGroups() != null) {
+            this.innerModel().applicationSecurityGroups().removeIf(asg -> {
+                String asgName = asg.name() == null
+                    ? ResourceUtils.nameFromResourceId(asg.id())
+                    : asg.name();
+                return Objects.equals(name, asgName);
+            });
+        }
         return this;
     }
 }

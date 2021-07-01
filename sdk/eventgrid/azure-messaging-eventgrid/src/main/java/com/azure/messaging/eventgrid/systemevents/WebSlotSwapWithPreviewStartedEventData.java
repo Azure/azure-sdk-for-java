@@ -7,7 +7,7 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The WebSlotSwapWithPreviewStartedEventData model. */
+/** Schema of the Data property of an EventGridEvent for a Microsoft.Web.SlotSwapWithPreviewStarted event. */
 @Fluent
 public final class WebSlotSwapWithPreviewStartedEventData {
     /*

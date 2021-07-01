@@ -9,7 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.mediaservices.MediaservicesManager;
 import com.azure.resourcemanager.mediaservices.fluent.JobsClient;
 import com.azure.resourcemanager.mediaservices.fluent.models.JobInner;
 import com.azure.resourcemanager.mediaservices.models.Job;
@@ -21,16 +20,17 @@ public final class JobsImpl implements Jobs {
 
     private final JobsClient innerClient;
 
-    private final MediaservicesManager serviceManager;
+    private final com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager;
 
-    public JobsImpl(JobsClient innerClient, MediaservicesManager serviceManager) {
+    public JobsImpl(
+        JobsClient innerClient, com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<Job> list(String resourceGroupName, String accountName, String transformName) {
         PagedIterable<JobInner> inner = this.serviceClient().list(resourceGroupName, accountName, transformName);
-        return inner.mapPage(inner1 -> new JobImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new JobImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Job> list(
@@ -42,7 +42,7 @@ public final class JobsImpl implements Jobs {
         Context context) {
         PagedIterable<JobInner> inner =
             this.serviceClient().list(resourceGroupName, accountName, transformName, filter, orderby, context);
-        return inner.mapPage(inner1 -> new JobImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new JobImpl(inner1, this.manager()));
     }
 
     public Job get(String resourceGroupName, String accountName, String transformName, String jobName) {
@@ -225,7 +225,7 @@ public final class JobsImpl implements Jobs {
         return this.innerClient;
     }
 
-    private MediaservicesManager manager() {
+    private com.azure.resourcemanager.mediaservices.MediaServicesManager manager() {
         return this.serviceManager;
     }
 

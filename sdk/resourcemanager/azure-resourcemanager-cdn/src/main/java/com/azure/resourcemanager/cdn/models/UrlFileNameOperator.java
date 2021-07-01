@@ -37,6 +37,9 @@ public final class UrlFileNameOperator extends ExpandableStringEnum<UrlFileNameO
     /** Static value GreaterThanOrEqual for UrlFileNameOperator. */
     public static final UrlFileNameOperator GREATER_THAN_OR_EQUAL = fromString("GreaterThanOrEqual");
 
+    /** Static value RegEx for UrlFileNameOperator. */
+    public static final UrlFileNameOperator REG_EX = fromString("RegEx");
+
     /**
      * Creates or finds a UrlFileNameOperator from its string representation.
      *

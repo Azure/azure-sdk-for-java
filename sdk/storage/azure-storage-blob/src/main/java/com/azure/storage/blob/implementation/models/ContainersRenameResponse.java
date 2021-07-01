@@ -8,10 +8,8 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 
-/**
- * Contains all response data for the rename operation.
- */
-public final class ContainersRenameResponse extends ResponseBase<ContainerRenameHeaders, Void> {
+/** Contains all response data for the rename operation. */
+public final class ContainersRenameResponse extends ResponseBase<ContainersRenameHeaders, Void> {
     /**
      * Creates an instance of ContainersRenameResponse.
      *
@@ -21,7 +19,8 @@ public final class ContainersRenameResponse extends ResponseBase<ContainerRename
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public ContainersRenameResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, ContainerRenameHeaders headers) {
+    public ContainersRenameResponse(
+            HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, ContainersRenameHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 }

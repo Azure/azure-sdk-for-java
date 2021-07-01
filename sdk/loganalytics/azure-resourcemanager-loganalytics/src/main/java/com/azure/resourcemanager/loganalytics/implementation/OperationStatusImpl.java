@@ -5,16 +5,16 @@
 package com.azure.resourcemanager.loganalytics.implementation;
 
 import com.azure.core.management.exception.ManagementError;
-import com.azure.resourcemanager.loganalytics.LogAnalyticsManager;
 import com.azure.resourcemanager.loganalytics.fluent.models.OperationStatusInner;
 import com.azure.resourcemanager.loganalytics.models.OperationStatus;
 
 public final class OperationStatusImpl implements OperationStatus {
     private OperationStatusInner innerObject;
 
-    private final LogAnalyticsManager serviceManager;
+    private final com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager;
 
-    OperationStatusImpl(OperationStatusInner innerObject, LogAnalyticsManager serviceManager) {
+    OperationStatusImpl(
+        OperationStatusInner innerObject, com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -47,7 +47,7 @@ public final class OperationStatusImpl implements OperationStatus {
         return this.innerObject;
     }
 
-    private LogAnalyticsManager manager() {
+    private com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager() {
         return this.serviceManager;
     }
 }

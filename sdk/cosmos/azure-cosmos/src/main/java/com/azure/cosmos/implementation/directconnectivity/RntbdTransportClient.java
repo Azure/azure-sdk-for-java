@@ -52,7 +52,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkSt
 import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 
 @JsonSerialize(using = RntbdTransportClient.JsonSerializer.class)
-public final class RntbdTransportClient extends TransportClient {
+public class RntbdTransportClient extends TransportClient {
 
     // region Fields
 

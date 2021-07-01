@@ -7,13 +7,11 @@ import com.azure.core.amqp.implementation.handler.CustomIOHandler;
 import com.azure.core.amqp.implementation.handler.ReactorHandler;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.Proton;
-import org.apache.qpid.proton.engine.BaseHandler;
-import org.apache.qpid.proton.engine.Handler;
 import org.apache.qpid.proton.reactor.Reactor;
 import org.apache.qpid.proton.reactor.ReactorOptions;
 
 import java.io.IOException;
-import java.util.Objects;
+import java.nio.channels.Pipe;
 
 public class ReactorProvider {
     private final ClientLogger logger = new ClientLogger(ReactorProvider.class);
@@ -44,35 +42,25 @@ public class ReactorProvider {
         final CustomIOHandler globalHandler = new CustomIOHandler(connectionId);
         final ReactorHandler reactorHandler = new ReactorHandler(connectionId);
 
-        return createReactor(maxFrameSize, globalHandler, reactorHandler);
-    }
-
-    /**
-     * Creates a new reactor with the given reactor handler and IO handler.
-     *
-     * @param globalHandler The global handler for reactor instance. Useful for logging events that were missed.
-     * @param baseHandlers Handler for reactor instance. Usually: {@link ReactorHandler}
-     * @return A new reactor instance.
-     */
-    private Reactor createReactor(final int maxFrameSize, final Handler globalHandler,
-                                  final BaseHandler... baseHandlers) throws IOException {
-        Objects.requireNonNull(baseHandlers);
-        Objects.requireNonNull(globalHandler);
-
-        if (maxFrameSize <= 0) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'maxFrameSize' must be a positive number."));
-        }
-
-        final ReactorOptions reactorOptions = new ReactorOptions();
-        reactorOptions.setMaxFrameSize(maxFrameSize);
-        reactorOptions.setEnableSaslByDefault(true);
-
-        final Reactor reactor = Proton.reactor(reactorOptions, baseHandlers);
-        reactor.setGlobalHandler(globalHandler);
-
-        final ReactorDispatcher dispatcher = new ReactorDispatcher(reactor);
-
         synchronized (lock) {
+            if (this.reactor != null) {
+                return this.reactor;
+            }
+
+            if (maxFrameSize <= 0) {
+                throw logger.logExceptionAsError(new IllegalArgumentException("'maxFrameSize' must be a positive number."));
+            }
+
+            final ReactorOptions reactorOptions = new ReactorOptions();
+            reactorOptions.setMaxFrameSize(maxFrameSize);
+            reactorOptions.setEnableSaslByDefault(true);
+
+            final Reactor reactor = Proton.reactor(reactorOptions, globalHandler, reactorHandler);
+            reactor.setGlobalHandler(globalHandler);
+
+            final Pipe ioSignal = Pipe.open();
+            final ReactorDispatcher dispatcher = new ReactorDispatcher(connectionId, reactor, ioSignal);
+
             this.reactor = reactor;
             this.reactorDispatcher = dispatcher;
         }

@@ -12,7 +12,7 @@ import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import reactor.core.publisher.EmitterProcessor;
+import reactor.core.publisher.Sinks;
 
 import javax.annotation.Resource;
 
@@ -22,23 +22,23 @@ public class ServiceProducerController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusQueueMultiBindersApplication.class);
 
-    @Resource(name = "emitterProcessor1")
-    private EmitterProcessor<Message<String>> emitterProcessor1;
+    @Resource(name = "many1")
+    private Sinks.Many<Message<String>> many1;
 
-    @Resource(name = "emitterProcessor2")
-    private EmitterProcessor<Message<String>> emitterProcessor2;
+    @Resource(name = "many2")
+    private Sinks.Many<Message<String>> many2;
 
     @PostMapping("/messages1")
     public ResponseEntity<String> sendMessage1(@RequestParam String message) {
-        LOGGER.info("Going to add message {} to emitter1", message);
-        emitterProcessor1.onNext(MessageBuilder.withPayload(message).build());
+        LOGGER.info("Going to add message {} to Sinks.Many1.", message);
+        many1.emitNext(MessageBuilder.withPayload(message).build(), Sinks.EmitFailureHandler.FAIL_FAST);
         return ResponseEntity.ok("Sent1!");
     }
 
     @PostMapping("/messages2")
     public ResponseEntity<String> sendMessage2(@RequestParam String message) {
-        LOGGER.info("Going to add message {} to emitter2", message);
-        emitterProcessor2.onNext(MessageBuilder.withPayload(message).build());
+        LOGGER.info("Going to add message {} to Sinks.Many2.", message);
+        many2.emitNext(MessageBuilder.withPayload(message).build(), Sinks.EmitFailureHandler.FAIL_FAST);
         return ResponseEntity.ok("Sent2!");
     }
 }

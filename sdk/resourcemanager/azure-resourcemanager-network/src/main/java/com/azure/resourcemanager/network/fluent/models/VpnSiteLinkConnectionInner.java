@@ -12,6 +12,7 @@ import com.azure.resourcemanager.network.models.IpsecPolicy;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionProtocol;
 import com.azure.resourcemanager.network.models.VpnConnectionStatus;
+import com.azure.resourcemanager.network.models.VpnLinkConnectionMode;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -52,6 +53,12 @@ public class VpnSiteLinkConnectionInner extends SubResource {
      */
     @JsonProperty(value = "properties.routingWeight")
     private Integer routingWeight;
+
+    /*
+     * Vpn link connection mode.
+     */
+    @JsonProperty(value = "properties.vpnLinkConnectionMode")
+    private VpnLinkConnectionMode vpnLinkConnectionMode;
 
     /*
      * The connection status.
@@ -124,6 +131,18 @@ public class VpnSiteLinkConnectionInner extends SubResource {
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
+
+    /*
+     * List of ingress NatRules.
+     */
+    @JsonProperty(value = "properties.ingressNatRules")
+    private List<SubResource> ingressNatRules;
+
+    /*
+     * List of egress NatRules.
+     */
+    @JsonProperty(value = "properties.egressNatRules")
+    private List<SubResource> egressNatRules;
 
     /**
      * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
@@ -202,6 +221,26 @@ public class VpnSiteLinkConnectionInner extends SubResource {
      */
     public VpnSiteLinkConnectionInner withRoutingWeight(Integer routingWeight) {
         this.routingWeight = routingWeight;
+        return this;
+    }
+
+    /**
+     * Get the vpnLinkConnectionMode property: Vpn link connection mode.
+     *
+     * @return the vpnLinkConnectionMode value.
+     */
+    public VpnLinkConnectionMode vpnLinkConnectionMode() {
+        return this.vpnLinkConnectionMode;
+    }
+
+    /**
+     * Set the vpnLinkConnectionMode property: Vpn link connection mode.
+     *
+     * @param vpnLinkConnectionMode the vpnLinkConnectionMode value to set.
+     * @return the VpnSiteLinkConnectionInner object itself.
+     */
+    public VpnSiteLinkConnectionInner withVpnLinkConnectionMode(VpnLinkConnectionMode vpnLinkConnectionMode) {
+        this.vpnLinkConnectionMode = vpnLinkConnectionMode;
         return this;
     }
 
@@ -400,6 +439,46 @@ public class VpnSiteLinkConnectionInner extends SubResource {
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the ingressNatRules property: List of ingress NatRules.
+     *
+     * @return the ingressNatRules value.
+     */
+    public List<SubResource> ingressNatRules() {
+        return this.ingressNatRules;
+    }
+
+    /**
+     * Set the ingressNatRules property: List of ingress NatRules.
+     *
+     * @param ingressNatRules the ingressNatRules value to set.
+     * @return the VpnSiteLinkConnectionInner object itself.
+     */
+    public VpnSiteLinkConnectionInner withIngressNatRules(List<SubResource> ingressNatRules) {
+        this.ingressNatRules = ingressNatRules;
+        return this;
+    }
+
+    /**
+     * Get the egressNatRules property: List of egress NatRules.
+     *
+     * @return the egressNatRules value.
+     */
+    public List<SubResource> egressNatRules() {
+        return this.egressNatRules;
+    }
+
+    /**
+     * Set the egressNatRules property: List of egress NatRules.
+     *
+     * @param egressNatRules the egressNatRules value to set.
+     * @return the VpnSiteLinkConnectionInner object itself.
+     */
+    public VpnSiteLinkConnectionInner withEgressNatRules(List<SubResource> egressNatRules) {
+        this.egressNatRules = egressNatRules;
+        return this;
     }
 
     /** {@inheritDoc} */

@@ -4,11 +4,13 @@
 package com.azure.core.util.serializer;
 
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -37,13 +39,18 @@ class DateTimeDeserializer extends JsonDeserializer<OffsetDateTime> {
 
     @Override
     public OffsetDateTime deserialize(JsonParser parser, DeserializationContext context) throws IOException {
-        TemporalAccessor temporal = DateTimeFormatter.ISO_DATE_TIME
-            .parseBest(parser.getValueAsString(), OffsetDateTime::from, LocalDateTime::from);
-
-        if (temporal.query(TemporalQueries.offset()) == null) {
-            return LocalDateTime.from(temporal).atOffset(ZoneOffset.UTC);
+        JsonToken token = parser.currentToken();
+        if (token == JsonToken.VALUE_NUMBER_INT) {
+            return OffsetDateTime.ofInstant(Instant.ofEpochSecond(parser.getValueAsLong()), ZoneOffset.UTC);
         } else {
-            return OffsetDateTime.from(temporal);
+            TemporalAccessor temporal = DateTimeFormatter.ISO_DATE_TIME
+                .parseBest(parser.getValueAsString(), OffsetDateTime::from, LocalDateTime::from);
+
+            if (temporal.query(TemporalQueries.offset()) == null) {
+                return LocalDateTime.from(temporal).atOffset(ZoneOffset.UTC);
+            } else {
+                return OffsetDateTime.from(temporal);
+            }
         }
     }
 }

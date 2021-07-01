@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -67,7 +68,7 @@ public final class BindingsClientImpl implements BindingsClient {
     @Host("{$host}")
     @ServiceInterface(name = "AppPlatformManagemen")
     private interface BindingsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
                 + "/{serviceName}/apps/{appName}/bindings/{bindingName}")
@@ -81,9 +82,10 @@ public final class BindingsClientImpl implements BindingsClient {
             @PathParam("serviceName") String serviceName,
             @PathParam("appName") String appName,
             @PathParam("bindingName") String bindingName,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
                 + "/{serviceName}/apps/{appName}/bindings/{bindingName}")
@@ -98,9 +100,10 @@ public final class BindingsClientImpl implements BindingsClient {
             @PathParam("appName") String appName,
             @PathParam("bindingName") String bindingName,
             @BodyParam("application/json") BindingResourceInner bindingResource,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
                 + "/{serviceName}/apps/{appName}/bindings/{bindingName}")
@@ -114,9 +117,10 @@ public final class BindingsClientImpl implements BindingsClient {
             @PathParam("serviceName") String serviceName,
             @PathParam("appName") String appName,
             @PathParam("bindingName") String bindingName,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Patch(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
                 + "/{serviceName}/apps/{appName}/bindings/{bindingName}")
@@ -131,9 +135,10 @@ public final class BindingsClientImpl implements BindingsClient {
             @PathParam("appName") String appName,
             @PathParam("bindingName") String bindingName,
             @BodyParam("application/json") BindingResourceInner bindingResource,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
                 + "/{serviceName}/apps/{appName}/bindings")
@@ -146,14 +151,18 @@ public final class BindingsClientImpl implements BindingsClient {
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("serviceName") String serviceName,
             @PathParam("appName") String appName,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BindingResourceCollection>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -197,6 +206,7 @@ public final class BindingsClientImpl implements BindingsClient {
         if (bindingName == null) {
             return Mono.error(new IllegalArgumentException("Parameter bindingName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -209,6 +219,7 @@ public final class BindingsClientImpl implements BindingsClient {
                             serviceName,
                             appName,
                             bindingName,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -255,6 +266,7 @@ public final class BindingsClientImpl implements BindingsClient {
         if (bindingName == null) {
             return Mono.error(new IllegalArgumentException("Parameter bindingName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -265,6 +277,7 @@ public final class BindingsClientImpl implements BindingsClient {
                 serviceName,
                 appName,
                 bindingName,
+                accept,
                 context);
     }
 
@@ -341,7 +354,7 @@ public final class BindingsClientImpl implements BindingsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param bindingName The name of the Binding resource.
-     * @param properties Binding resource properties payload.
+     * @param properties Properties of the Binding resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -382,6 +395,7 @@ public final class BindingsClientImpl implements BindingsClient {
         if (properties != null) {
             properties.validate();
         }
+        final String accept = "application/json";
         BindingResourceInner bindingResource = new BindingResourceInner();
         bindingResource.withProperties(properties);
         return FluxUtil
@@ -397,6 +411,7 @@ public final class BindingsClientImpl implements BindingsClient {
                             appName,
                             bindingName,
                             bindingResource,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -409,7 +424,7 @@ public final class BindingsClientImpl implements BindingsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param bindingName The name of the Binding resource.
-     * @param properties Binding resource properties payload.
+     * @param properties Properties of the Binding resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -452,6 +467,7 @@ public final class BindingsClientImpl implements BindingsClient {
         if (properties != null) {
             properties.validate();
         }
+        final String accept = "application/json";
         BindingResourceInner bindingResource = new BindingResourceInner();
         bindingResource.withProperties(properties);
         context = this.client.mergeContext(context);
@@ -465,6 +481,7 @@ public final class BindingsClientImpl implements BindingsClient {
                 appName,
                 bindingName,
                 bindingResource,
+                accept,
                 context);
     }
 
@@ -476,7 +493,7 @@ public final class BindingsClientImpl implements BindingsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param bindingName The name of the Binding resource.
-     * @param properties Binding resource properties payload.
+     * @param properties Properties of the Binding resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -509,7 +526,7 @@ public final class BindingsClientImpl implements BindingsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param bindingName The name of the Binding resource.
-     * @param properties Binding resource properties payload.
+     * @param properties Properties of the Binding resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -541,7 +558,7 @@ public final class BindingsClientImpl implements BindingsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param bindingName The name of the Binding resource.
-     * @param properties Binding resource properties payload.
+     * @param properties Properties of the Binding resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -566,7 +583,7 @@ public final class BindingsClientImpl implements BindingsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param bindingName The name of the Binding resource.
-     * @param properties Binding resource properties payload.
+     * @param properties Properties of the Binding resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -593,7 +610,7 @@ public final class BindingsClientImpl implements BindingsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param bindingName The name of the Binding resource.
-     * @param properties Binding resource properties payload.
+     * @param properties Properties of the Binding resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -619,7 +636,29 @@ public final class BindingsClientImpl implements BindingsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param bindingName The name of the Binding resource.
-     * @param properties Binding resource properties payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return binding resource payload.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BindingResourceInner> createOrUpdateAsync(
+        String resourceGroupName, String serviceName, String appName, String bindingName) {
+        final BindingResourceProperties properties = null;
+        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, appName, bindingName, properties)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Create a new Binding or update an exiting Binding.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param bindingName The name of the Binding resource.
+     * @param properties Properties of the Binding resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -647,29 +686,7 @@ public final class BindingsClientImpl implements BindingsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param bindingName The name of the Binding resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return binding resource payload.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BindingResourceInner> createOrUpdateAsync(
-        String resourceGroupName, String serviceName, String appName, String bindingName) {
-        final BindingResourceProperties properties = null;
-        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, appName, bindingName, properties)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Create a new Binding or update an exiting Binding.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param bindingName The name of the Binding resource.
-     * @param properties Binding resource properties payload.
+     * @param properties Properties of the Binding resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -693,7 +710,27 @@ public final class BindingsClientImpl implements BindingsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param bindingName The name of the Binding resource.
-     * @param properties Binding resource properties payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return binding resource payload.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BindingResourceInner createOrUpdate(
+        String resourceGroupName, String serviceName, String appName, String bindingName) {
+        final BindingResourceProperties properties = null;
+        return createOrUpdateAsync(resourceGroupName, serviceName, appName, bindingName, properties).block();
+    }
+
+    /**
+     * Create a new Binding or update an exiting Binding.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param bindingName The name of the Binding resource.
+     * @param properties Properties of the Binding resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -709,26 +746,6 @@ public final class BindingsClientImpl implements BindingsClient {
         BindingResourceProperties properties,
         Context context) {
         return createOrUpdateAsync(resourceGroupName, serviceName, appName, bindingName, properties, context).block();
-    }
-
-    /**
-     * Create a new Binding or update an exiting Binding.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param bindingName The name of the Binding resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return binding resource payload.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BindingResourceInner createOrUpdate(
-        String resourceGroupName, String serviceName, String appName, String bindingName) {
-        final BindingResourceProperties properties = null;
-        return createOrUpdateAsync(resourceGroupName, serviceName, appName, bindingName, properties).block();
     }
 
     /**
@@ -772,6 +789,7 @@ public final class BindingsClientImpl implements BindingsClient {
         if (bindingName == null) {
             return Mono.error(new IllegalArgumentException("Parameter bindingName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -784,6 +802,7 @@ public final class BindingsClientImpl implements BindingsClient {
                             serviceName,
                             appName,
                             bindingName,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -830,6 +849,7 @@ public final class BindingsClientImpl implements BindingsClient {
         if (bindingName == null) {
             return Mono.error(new IllegalArgumentException("Parameter bindingName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -840,6 +860,7 @@ public final class BindingsClientImpl implements BindingsClient {
                 serviceName,
                 appName,
                 bindingName,
+                accept,
                 context);
     }
 
@@ -1016,7 +1037,7 @@ public final class BindingsClientImpl implements BindingsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param bindingName The name of the Binding resource.
-     * @param properties Binding resource properties payload.
+     * @param properties Properties of the Binding resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1057,6 +1078,7 @@ public final class BindingsClientImpl implements BindingsClient {
         if (properties != null) {
             properties.validate();
         }
+        final String accept = "application/json";
         BindingResourceInner bindingResource = new BindingResourceInner();
         bindingResource.withProperties(properties);
         return FluxUtil
@@ -1072,6 +1094,7 @@ public final class BindingsClientImpl implements BindingsClient {
                             appName,
                             bindingName,
                             bindingResource,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -1084,7 +1107,7 @@ public final class BindingsClientImpl implements BindingsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param bindingName The name of the Binding resource.
-     * @param properties Binding resource properties payload.
+     * @param properties Properties of the Binding resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1127,6 +1150,7 @@ public final class BindingsClientImpl implements BindingsClient {
         if (properties != null) {
             properties.validate();
         }
+        final String accept = "application/json";
         BindingResourceInner bindingResource = new BindingResourceInner();
         bindingResource.withProperties(properties);
         context = this.client.mergeContext(context);
@@ -1140,6 +1164,7 @@ public final class BindingsClientImpl implements BindingsClient {
                 appName,
                 bindingName,
                 bindingResource,
+                accept,
                 context);
     }
 
@@ -1151,7 +1176,7 @@ public final class BindingsClientImpl implements BindingsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param bindingName The name of the Binding resource.
-     * @param properties Binding resource properties payload.
+     * @param properties Properties of the Binding resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1184,7 +1209,7 @@ public final class BindingsClientImpl implements BindingsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param bindingName The name of the Binding resource.
-     * @param properties Binding resource properties payload.
+     * @param properties Properties of the Binding resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1216,7 +1241,7 @@ public final class BindingsClientImpl implements BindingsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param bindingName The name of the Binding resource.
-     * @param properties Binding resource properties payload.
+     * @param properties Properties of the Binding resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1240,7 +1265,7 @@ public final class BindingsClientImpl implements BindingsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param bindingName The name of the Binding resource.
-     * @param properties Binding resource properties payload.
+     * @param properties Properties of the Binding resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1267,7 +1292,7 @@ public final class BindingsClientImpl implements BindingsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param bindingName The name of the Binding resource.
-     * @param properties Binding resource properties payload.
+     * @param properties Properties of the Binding resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1293,7 +1318,29 @@ public final class BindingsClientImpl implements BindingsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param bindingName The name of the Binding resource.
-     * @param properties Binding resource properties payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return binding resource payload.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BindingResourceInner> updateAsync(
+        String resourceGroupName, String serviceName, String appName, String bindingName) {
+        final BindingResourceProperties properties = null;
+        return beginUpdateAsync(resourceGroupName, serviceName, appName, bindingName, properties)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Operation to update an exiting Binding.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param bindingName The name of the Binding resource.
+     * @param properties Properties of the Binding resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1321,29 +1368,7 @@ public final class BindingsClientImpl implements BindingsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param bindingName The name of the Binding resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return binding resource payload.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BindingResourceInner> updateAsync(
-        String resourceGroupName, String serviceName, String appName, String bindingName) {
-        final BindingResourceProperties properties = null;
-        return beginUpdateAsync(resourceGroupName, serviceName, appName, bindingName, properties)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Operation to update an exiting Binding.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param bindingName The name of the Binding resource.
-     * @param properties Binding resource properties payload.
+     * @param properties Properties of the Binding resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1367,7 +1392,27 @@ public final class BindingsClientImpl implements BindingsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param bindingName The name of the Binding resource.
-     * @param properties Binding resource properties payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return binding resource payload.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BindingResourceInner update(
+        String resourceGroupName, String serviceName, String appName, String bindingName) {
+        final BindingResourceProperties properties = null;
+        return updateAsync(resourceGroupName, serviceName, appName, bindingName, properties).block();
+    }
+
+    /**
+     * Operation to update an exiting Binding.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param bindingName The name of the Binding resource.
+     * @param properties Properties of the Binding resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1383,26 +1428,6 @@ public final class BindingsClientImpl implements BindingsClient {
         BindingResourceProperties properties,
         Context context) {
         return updateAsync(resourceGroupName, serviceName, appName, bindingName, properties, context).block();
-    }
-
-    /**
-     * Operation to update an exiting Binding.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param bindingName The name of the Binding resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return binding resource payload.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BindingResourceInner update(
-        String resourceGroupName, String serviceName, String appName, String bindingName) {
-        final BindingResourceProperties properties = null;
-        return updateAsync(resourceGroupName, serviceName, appName, bindingName, properties).block();
     }
 
     /**
@@ -1442,6 +1467,7 @@ public final class BindingsClientImpl implements BindingsClient {
         if (appName == null) {
             return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1453,6 +1479,7 @@ public final class BindingsClientImpl implements BindingsClient {
                             resourceGroupName,
                             serviceName,
                             appName,
+                            accept,
                             context))
             .<PagedResponse<BindingResourceInner>>map(
                 res ->
@@ -1504,6 +1531,7 @@ public final class BindingsClientImpl implements BindingsClient {
         if (appName == null) {
             return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(
@@ -1513,6 +1541,7 @@ public final class BindingsClientImpl implements BindingsClient {
                 resourceGroupName,
                 serviceName,
                 appName,
+                accept,
                 context)
             .map(
                 res ->
@@ -1615,8 +1644,15 @@ public final class BindingsClientImpl implements BindingsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listNext(nextLink, context))
+            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<BindingResourceInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1644,9 +1680,16 @@ public final class BindingsClientImpl implements BindingsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listNext(nextLink, context)
+            .listNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

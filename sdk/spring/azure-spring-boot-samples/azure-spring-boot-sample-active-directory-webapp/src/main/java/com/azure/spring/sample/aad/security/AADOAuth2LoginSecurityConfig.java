@@ -18,5 +18,8 @@ public class AADOAuth2LoginSecurityConfig extends AADWebSecurityConfigurerAdapte
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         super.configure(http);
+        http.authorizeRequests()
+                .anyRequest().authenticated();
+        // Do some custom configuration
     }
 }

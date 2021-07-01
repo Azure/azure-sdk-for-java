@@ -4,7 +4,8 @@
 package com.azure.communication.chat.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -14,16 +15,14 @@ public final class CreateChatThreadOptions {
     /*
      * The chat thread topic.
      */
-    @JsonProperty(value = "topic", required = true)
-    private String topic;
+    private final String topic;
 
     /*
      * Members to be added to the chat thread.
      */
-    @JsonProperty(value = "participants", required = true)
-    private List<ChatParticipant> participants;
+    private List<ChatParticipant> participants = new ArrayList<>();
 
-    private String repeatabilityRequestId;
+    private String idempotencyToken;
 
     /**
      * Get the topic property: The chat thread topic.
@@ -32,17 +31,6 @@ public final class CreateChatThreadOptions {
      */
     public String getTopic() {
         return this.topic;
-    }
-
-    /**
-     * Set the topic property: The chat thread topic.
-     *
-     * @param topic the topic value to set.
-     * @return the CreateChatThreadOptions object itself.
-     */
-    public CreateChatThreadOptions setTopic(String topic) {
-        this.topic = topic;
-        return this;
     }
 
     /**
@@ -66,34 +54,47 @@ public final class CreateChatThreadOptions {
     }
 
     /**
-     * Get the repeatabilityRequestID property
+     * Adds another participant to the list of participants to create the chat thread with
      *
-     * @return the repeatabilityRequestID.
+     * @param participant The participant to add
+     * @return the CreateChatThreadOptions object itself
      */
-    public String getRepeatabilityRequestId() {
-        return this.repeatabilityRequestId;
+    public CreateChatThreadOptions addParticipant(ChatParticipant participant) {
+        this.participants.add(participant);
+        return this;
     }
 
     /**
-     * Set the repeatabilityRequestID property: If specified, the client directs that the request is repeatable;
-     * that is, that the client can make the request multiple times with the same Repeatability-Request-ID
-     * and get back an appropriate response without the server executing the request multiple times.
-     * The value of the Repeatability-Request-ID is an opaque string representing a client-generated,
-     * globally unique for all time, identifier for the request.
-     * It is recommended to use version 4 (random) UUIDs.
+     * Get the idempotencyToken property
      *
-     * @param repeatabilityRequestId the repeatabilityRequestID.
+     * @return the idempotencyToken.
+     */
+    public String getIdempotencyToken() {
+        return this.idempotencyToken;
+    }
+
+    /**
+     * Set the idempotencyToken property:
+     * If specified, the client directs that the request is repeatable; that is, that the
+     * client can make the request multiple times with the same idempotencyToken and get back an appropriate
+     * response without the server executing the request multiple times. The value of the idempotencyToken
+     * is an opaque string representing a client-generated, globally unique for all time, identifier for the
+     * request. It is recommended to use version 4 (random) UUIDs.
+     *
+     * @param idempotencyToken the idempotencyToken.
      * @return the CreateChatThreadOptions object itself.
      */
-    public CreateChatThreadOptions setRepeatabilityRequestId(String repeatabilityRequestId) {
-        this.repeatabilityRequestId = repeatabilityRequestId;
+    public CreateChatThreadOptions setIdempotencyToken(String idempotencyToken) {
+        this.idempotencyToken = idempotencyToken;
         return this;
     }
 
     /**
      * Creates a new instance of CreateChatThreadOptions
+     * @param topic the topic value to set.
      */
-    public CreateChatThreadOptions() {
-        this.repeatabilityRequestId = UUID.randomUUID().toString();
+    public CreateChatThreadOptions(String topic) {
+        this.topic = topic;
+        this.idempotencyToken = UUID.randomUUID().toString();
     }
 }

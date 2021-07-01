@@ -17,6 +17,13 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public class SquareLinkedService extends LinkedService {
     /*
+     * Properties used to connect to Square. It is mutually exclusive with any
+     * other properties in the linked service. Type: object.
+     */
+    @JsonProperty(value = "typeProperties.connectionProperties")
+    private Object connectionProperties;
+
+    /*
      * The URL of the Square instance. (i.e. mystore.mysquare.com)
      */
     @JsonProperty(value = "typeProperties.host", required = true)
@@ -70,6 +77,28 @@ public class SquareLinkedService extends LinkedService {
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
+
+    /**
+     * Get the connectionProperties property: Properties used to connect to Square. It is mutually exclusive with any
+     * other properties in the linked service. Type: object.
+     *
+     * @return the connectionProperties value.
+     */
+    public Object getConnectionProperties() {
+        return this.connectionProperties;
+    }
+
+    /**
+     * Set the connectionProperties property: Properties used to connect to Square. It is mutually exclusive with any
+     * other properties in the linked service. Type: object.
+     *
+     * @param connectionProperties the connectionProperties value to set.
+     * @return the SquareLinkedService object itself.
+     */
+    public SquareLinkedService setConnectionProperties(Object connectionProperties) {
+        this.connectionProperties = connectionProperties;
+        return this;
+    }
 
     /**
      * Get the host property: The URL of the Square instance. (i.e. mystore.mysquare.com).

@@ -2,7 +2,7 @@
 
 **NOTE:** This is a legacy version that works with the V2.1 version of the service API. For the new set of libraries 
 that support newer service versions please see
-[azure-ai-textanalytics](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/textanalytics/azure-ai-textanalytics).
+[azure-ai-textanalytics](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/textanalytics/azure-ai-textanalytics).
 
 This is the Microsoft Azure Cognitive Services Text Analytics Client
 Library.

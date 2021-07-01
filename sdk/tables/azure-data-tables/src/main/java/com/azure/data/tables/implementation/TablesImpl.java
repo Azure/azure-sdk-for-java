@@ -22,11 +22,11 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
-import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.data.tables.implementation.models.OdataMetadataFormat;
 import com.azure.data.tables.implementation.models.QueryOptions;
 import com.azure.data.tables.implementation.models.ResponseFormat;
 import com.azure.data.tables.implementation.models.SignedIdentifier;
+import com.azure.data.tables.implementation.models.SignedIdentifiersWrapper;
 import com.azure.data.tables.implementation.models.TableProperties;
 import com.azure.data.tables.implementation.models.TableServiceErrorException;
 import com.azure.data.tables.implementation.models.TablesCreateResponse;
@@ -36,7 +36,7 @@ import com.azure.data.tables.implementation.models.TablesGetAccessPolicyResponse
 import com.azure.data.tables.implementation.models.TablesInsertEntityResponse;
 import com.azure.data.tables.implementation.models.TablesMergeEntityResponse;
 import com.azure.data.tables.implementation.models.TablesQueryEntitiesResponse;
-import com.azure.data.tables.implementation.models.TablesQueryEntitiesWithPartitionAndRowKeyResponse;
+import com.azure.data.tables.implementation.models.TablesQueryEntityWithPartitionAndRowKeyResponse;
 import com.azure.data.tables.implementation.models.TablesQueryResponse;
 import com.azure.data.tables.implementation.models.TablesSetAccessPolicyResponse;
 import com.azure.data.tables.implementation.models.TablesUpdateEntityResponse;
@@ -57,8 +57,8 @@ public final class TablesImpl {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    TablesImpl(AzureTableImpl client, SerializerAdapter serializerAdapter) {
-        this.service = RestProxy.create(TablesService.class, client.getHttpPipeline(), serializerAdapter);
+    TablesImpl(AzureTableImpl client) {
+        this.service = RestProxy.create(TablesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -68,7 +68,7 @@ public final class TablesImpl {
      */
     @Host("{url}")
     @ServiceInterface(name = "AzureTableTables")
-    private interface TablesService {
+    public interface TablesService {
         @Get("/Tables")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(TableServiceErrorException.class)
@@ -82,6 +82,7 @@ public final class TablesImpl {
                 @QueryParam("$select") String select,
                 @QueryParam("$filter") String filter,
                 @QueryParam("NextTableName") String nextTableName,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/Tables")
@@ -94,7 +95,8 @@ public final class TablesImpl {
                 @HeaderParam("DataServiceVersion") String dataServiceVersion,
                 @QueryParam("$format") OdataMetadataFormat format,
                 @HeaderParam("Prefer") ResponseFormat responsePreference,
-                @BodyParam("application/json") TableProperties tableProperties,
+                @BodyParam("application/json;odata=nometadata") TableProperties tableProperties,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Delete("/Tables('{table}')")
@@ -105,6 +107,7 @@ public final class TablesImpl {
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-client-request-id") String requestId,
                 @PathParam("table") String table,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("/{table}()")
@@ -123,12 +126,13 @@ public final class TablesImpl {
                 @PathParam("table") String table,
                 @QueryParam("NextPartitionKey") String nextPartitionKey,
                 @QueryParam("NextRowKey") String nextRowKey,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("/{table}(PartitionKey='{partitionKey}',RowKey='{rowKey}')")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(TableServiceErrorException.class)
-        Mono<TablesQueryEntitiesWithPartitionAndRowKeyResponse> queryEntitiesWithPartitionAndRowKey(
+        Mono<TablesQueryEntityWithPartitionAndRowKeyResponse> queryEntityWithPartitionAndRowKey(
                 @HostParam("url") String url,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
@@ -140,6 +144,7 @@ public final class TablesImpl {
                 @PathParam("table") String table,
                 @PathParam("partitionKey") String partitionKey,
                 @PathParam("rowKey") String rowKey,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Put("/{table}(PartitionKey='{partitionKey}',RowKey='{rowKey}')")
@@ -157,6 +162,7 @@ public final class TablesImpl {
                 @PathParam("rowKey") String rowKey,
                 @HeaderParam("If-Match") String ifMatch,
                 @BodyParam("application/json") Map<String, Object> tableEntityProperties,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Patch("/{table}(PartitionKey='{partitionKey}',RowKey='{rowKey}')")
@@ -174,6 +180,7 @@ public final class TablesImpl {
                 @PathParam("rowKey") String rowKey,
                 @HeaderParam("If-Match") String ifMatch,
                 @BodyParam("application/json") Map<String, Object> tableEntityProperties,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Delete("/{table}(PartitionKey='{partitionKey}',RowKey='{rowKey}')")
@@ -190,6 +197,7 @@ public final class TablesImpl {
                 @PathParam("partitionKey") String partitionKey,
                 @PathParam("rowKey") String rowKey,
                 @HeaderParam("If-Match") String ifMatch,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/{table}")
@@ -204,7 +212,8 @@ public final class TablesImpl {
                 @QueryParam("$format") OdataMetadataFormat format,
                 @PathParam("table") String table,
                 @HeaderParam("Prefer") ResponseFormat responsePreference,
-                @BodyParam("application/json") Map<String, Object> tableEntityProperties,
+                @BodyParam("application/json;odata=nometadata") Map<String, Object> tableEntityProperties,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("/{table}")
@@ -217,6 +226,7 @@ public final class TablesImpl {
                 @HeaderParam("x-ms-client-request-id") String requestId,
                 @PathParam("table") String table,
                 @QueryParam("comp") String comp,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Put("/{table}")
@@ -229,7 +239,8 @@ public final class TablesImpl {
                 @HeaderParam("x-ms-client-request-id") String requestId,
                 @PathParam("table") String table,
                 @QueryParam("comp") String comp,
-                @BodyParam("application/xml") List<SignedIdentifier> tableAcl,
+                @BodyParam("application/xml") SignedIdentifiersWrapper tableAcl,
+                @HeaderParam("Accept") String accept,
                 Context context);
     }
 
@@ -250,6 +261,7 @@ public final class TablesImpl {
     public Mono<TablesQueryResponse> queryWithResponseAsync(
             String requestId, String nextTableName, QueryOptions queryOptions, Context context) {
         final String dataServiceVersion = "3.0";
+        final String accept = "application/json;odata=minimalmetadata";
         OdataMetadataFormat formatInternal = null;
         if (queryOptions != null) {
             formatInternal = queryOptions.getFormat();
@@ -280,13 +292,14 @@ public final class TablesImpl {
                 select,
                 filter,
                 nextTableName,
+                accept,
                 context);
     }
 
     /**
      * Creates a new table under the given account.
      *
-     * @param tableProperties The properties for creating a table.
+     * @param tableProperties The Table properties.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      *     analytics logs when analytics logging is enabled.
      * @param responsePreference Specifies whether the response should include the inserted entity in the payload.
@@ -306,6 +319,7 @@ public final class TablesImpl {
             QueryOptions queryOptions,
             Context context) {
         final String dataServiceVersion = "3.0";
+        final String accept = "application/json;odata=minimalmetadata";
         OdataMetadataFormat formatInternal = null;
         if (queryOptions != null) {
             formatInternal = queryOptions.getFormat();
@@ -319,6 +333,7 @@ public final class TablesImpl {
                 format,
                 responsePreference,
                 tableProperties,
+                accept,
                 context);
     }
 
@@ -336,7 +351,8 @@ public final class TablesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TablesDeleteResponse> deleteWithResponseAsync(String table, String requestId, Context context) {
-        return service.delete(this.client.getUrl(), this.client.getVersion(), requestId, table, context);
+        final String accept = "application/json";
+        return service.delete(this.client.getUrl(), this.client.getVersion(), requestId, table, accept, context);
     }
 
     /**
@@ -365,6 +381,7 @@ public final class TablesImpl {
             QueryOptions queryOptions,
             Context context) {
         final String dataServiceVersion = "3.0";
+        final String accept = "application/json;odata=minimalmetadata";
         OdataMetadataFormat formatInternal = null;
         if (queryOptions != null) {
             formatInternal = queryOptions.getFormat();
@@ -398,11 +415,12 @@ public final class TablesImpl {
                 table,
                 nextPartitionKey,
                 nextRowKey,
+                accept,
                 context);
     }
 
     /**
-     * Queries entities in a table.
+     * Queries a single entity in a table.
      *
      * @param table The name of the table.
      * @param partitionKey The partition key of the entity.
@@ -415,10 +433,10 @@ public final class TablesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws TableServiceErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties for the table entity query response.
+     * @return the other properties of the table entity.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TablesQueryEntitiesWithPartitionAndRowKeyResponse> queryEntitiesWithPartitionAndRowKeyWithResponseAsync(
+    public Mono<TablesQueryEntityWithPartitionAndRowKeyResponse> queryEntityWithPartitionAndRowKeyWithResponseAsync(
             String table,
             String partitionKey,
             String rowKey,
@@ -427,6 +445,7 @@ public final class TablesImpl {
             QueryOptions queryOptions,
             Context context) {
         final String dataServiceVersion = "3.0";
+        final String accept = "application/json;odata=minimalmetadata";
         OdataMetadataFormat formatInternal = null;
         if (queryOptions != null) {
             formatInternal = queryOptions.getFormat();
@@ -442,7 +461,7 @@ public final class TablesImpl {
             filterInternal = queryOptions.getFilter();
         }
         String filter = filterInternal;
-        return service.queryEntitiesWithPartitionAndRowKey(
+        return service.queryEntityWithPartitionAndRowKey(
                 this.client.getUrl(),
                 timeout,
                 this.client.getVersion(),
@@ -454,6 +473,7 @@ public final class TablesImpl {
                 table,
                 partitionKey,
                 rowKey,
+                accept,
                 context);
     }
 
@@ -470,7 +490,7 @@ public final class TablesImpl {
      *     error will be raised. To force an unconditional update, set to the wildcard character (*). If not specified,
      *     an insert will be performed when no existing entity is found to update and a replace will be performed if an
      *     existing entity is found.
-     * @param tableEntityProperties The other properties of the table entity.
+     * @param tableEntityProperties The properties for the table entity.
      * @param queryOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -490,6 +510,7 @@ public final class TablesImpl {
             QueryOptions queryOptions,
             Context context) {
         final String dataServiceVersion = "3.0";
+        final String accept = "application/json";
         OdataMetadataFormat formatInternal = null;
         if (queryOptions != null) {
             formatInternal = queryOptions.getFormat();
@@ -507,6 +528,7 @@ public final class TablesImpl {
                 rowKey,
                 ifMatch,
                 tableEntityProperties,
+                accept,
                 context);
     }
 
@@ -523,7 +545,7 @@ public final class TablesImpl {
      *     error will be raised. To force an unconditional update, set to the wildcard character (*). If not specified,
      *     an insert will be performed when no existing entity is found to update and a merge will be performed if an
      *     existing entity is found.
-     * @param tableEntityProperties The other properties of the table entity.
+     * @param tableEntityProperties The properties for the table entity.
      * @param queryOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -543,6 +565,7 @@ public final class TablesImpl {
             QueryOptions queryOptions,
             Context context) {
         final String dataServiceVersion = "3.0";
+        final String accept = "application/json";
         OdataMetadataFormat formatInternal = null;
         if (queryOptions != null) {
             formatInternal = queryOptions.getFormat();
@@ -560,6 +583,7 @@ public final class TablesImpl {
                 rowKey,
                 ifMatch,
                 tableEntityProperties,
+                accept,
                 context);
     }
 
@@ -592,6 +616,7 @@ public final class TablesImpl {
             QueryOptions queryOptions,
             Context context) {
         final String dataServiceVersion = "3.0";
+        final String accept = "application/json;odata=minimalmetadata";
         OdataMetadataFormat formatInternal = null;
         if (queryOptions != null) {
             formatInternal = queryOptions.getFormat();
@@ -608,6 +633,7 @@ public final class TablesImpl {
                 partitionKey,
                 rowKey,
                 ifMatch,
+                accept,
                 context);
     }
 
@@ -620,7 +646,7 @@ public final class TablesImpl {
      *     analytics logs when analytics logging is enabled.
      * @param responsePreference Specifies whether the response should include the inserted entity in the payload.
      *     Possible values are return-no-content and return-content.
-     * @param tableEntityProperties The other properties of the table entity.
+     * @param tableEntityProperties The properties for the table entity.
      * @param queryOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -638,6 +664,7 @@ public final class TablesImpl {
             QueryOptions queryOptions,
             Context context) {
         final String dataServiceVersion = "3.0";
+        final String accept = "application/json;odata=minimalmetadata";
         OdataMetadataFormat formatInternal = null;
         if (queryOptions != null) {
             formatInternal = queryOptions.getFormat();
@@ -653,6 +680,7 @@ public final class TablesImpl {
                 table,
                 responsePreference,
                 tableEntityProperties,
+                accept,
                 context);
     }
 
@@ -674,8 +702,9 @@ public final class TablesImpl {
     public Mono<TablesGetAccessPolicyResponse> getAccessPolicyWithResponseAsync(
             String table, Integer timeout, String requestId, Context context) {
         final String comp = "acl";
+        final String accept = "application/xml";
         return service.getAccessPolicy(
-                this.client.getUrl(), timeout, this.client.getVersion(), requestId, table, comp, context);
+                this.client.getUrl(), timeout, this.client.getVersion(), requestId, table, comp, accept, context);
     }
 
     /**
@@ -685,7 +714,7 @@ public final class TablesImpl {
      * @param timeout The timeout parameter is expressed in seconds.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      *     analytics logs when analytics logging is enabled.
-     * @param tableAcl A collection of signed identifiers.
+     * @param tableAcl The acls for the table.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws TableServiceErrorException thrown if the request is rejected by server.
@@ -696,7 +725,19 @@ public final class TablesImpl {
     public Mono<TablesSetAccessPolicyResponse> setAccessPolicyWithResponseAsync(
             String table, Integer timeout, String requestId, List<SignedIdentifier> tableAcl, Context context) {
         final String comp = "acl";
+        final String accept = "application/xml";
+
+        SignedIdentifiersWrapper tableAclConverted = new SignedIdentifiersWrapper(tableAcl);
+
         return service.setAccessPolicy(
-                this.client.getUrl(), timeout, this.client.getVersion(), requestId, table, comp, tableAcl, context);
+                this.client.getUrl(),
+                timeout,
+                this.client.getVersion(),
+                requestId,
+                table,
+                comp,
+                tableAclConverted,
+                accept,
+                context);
     }
 }

@@ -10,7 +10,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The resource model definition for a Azure Resource Manager resource with an etag. */
+/** The resource model definition for an Azure Resource Manager resource with an etag. */
 @Immutable
 public class AzureEntityResource extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureEntityResource.class);

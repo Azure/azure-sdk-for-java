@@ -20,4 +20,9 @@ public interface PartitionSupervisor {
      * @return the inner exception if any, otherwise null.
      */
     RuntimeException getResultException();
+
+    /**
+     * Close partition supervisor and cancel all internal jobs.
+     */
+    void shutdown();
 }

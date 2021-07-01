@@ -129,7 +129,7 @@ class EventHubAsyncClient implements Closeable {
         }
 
         return new EventHubConsumerAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), getEventHubName(),
-            connectionProcessor, messageSerializer, consumerGroup, prefetchCount, scheduler, isSharedConnection,
+            connectionProcessor, messageSerializer, consumerGroup, prefetchCount, isSharedConnection,
             onClientClose);
     }
 

@@ -14,19 +14,24 @@ import com.azure.resourcemanager.storage.models.AzureFilesIdentityBasedAuthentic
 import com.azure.resourcemanager.storage.models.CustomDomain;
 import com.azure.resourcemanager.storage.models.Encryption;
 import com.azure.resourcemanager.storage.models.Endpoints;
+import com.azure.resourcemanager.storage.models.ExtendedLocation;
 import com.azure.resourcemanager.storage.models.GeoReplicationStats;
 import com.azure.resourcemanager.storage.models.Identity;
+import com.azure.resourcemanager.storage.models.KeyCreationTime;
+import com.azure.resourcemanager.storage.models.KeyPolicy;
 import com.azure.resourcemanager.storage.models.Kind;
 import com.azure.resourcemanager.storage.models.LargeFileSharesState;
 import com.azure.resourcemanager.storage.models.MinimumTlsVersion;
 import com.azure.resourcemanager.storage.models.NetworkRuleSet;
 import com.azure.resourcemanager.storage.models.ProvisioningState;
 import com.azure.resourcemanager.storage.models.RoutingPreference;
+import com.azure.resourcemanager.storage.models.SasPolicy;
 import com.azure.resourcemanager.storage.models.Sku;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Map;
 
 /** The storage account. */
 @JsonFlatten
@@ -51,6 +56,12 @@ public class StorageAccountInner extends Resource {
      */
     @JsonProperty(value = "identity")
     private Identity identity;
+
+    /*
+     * The extendedLocation of the resource.
+     */
+    @JsonProperty(value = "extendedLocation")
+    private ExtendedLocation extendedLocation;
 
     /*
      * Gets the status of the storage account at the time the operation was
@@ -116,6 +127,24 @@ public class StorageAccountInner extends Resource {
      */
     @JsonProperty(value = "properties.customDomain", access = JsonProperty.Access.WRITE_ONLY)
     private CustomDomain customDomain;
+
+    /*
+     * SasPolicy assigned to the storage account.
+     */
+    @JsonProperty(value = "properties.sasPolicy", access = JsonProperty.Access.WRITE_ONLY)
+    private SasPolicy sasPolicy;
+
+    /*
+     * KeyPolicy assigned to the storage account.
+     */
+    @JsonProperty(value = "properties.keyPolicy", access = JsonProperty.Access.WRITE_ONLY)
+    private KeyPolicy keyPolicy;
+
+    /*
+     * Storage account keys creation time.
+     */
+    @JsonProperty(value = "properties.keyCreationTime", access = JsonProperty.Access.WRITE_ONLY)
+    private KeyCreationTime keyCreationTime;
 
     /*
      * Gets the URLs that are used to perform a retrieval of a public blob,
@@ -217,6 +246,22 @@ public class StorageAccountInner extends Resource {
     @JsonProperty(value = "properties.minimumTlsVersion")
     private MinimumTlsVersion minimumTlsVersion;
 
+    /*
+     * Indicates whether the storage account permits requests to be authorized
+     * with the account access key via Shared Key. If false, then all requests,
+     * including shared access signatures, must be authorized with Azure Active
+     * Directory (Azure AD). The default value is null, which is equivalent to
+     * true.
+     */
+    @JsonProperty(value = "properties.allowSharedKeyAccess")
+    private Boolean allowSharedKeyAccess;
+
+    /*
+     * NFS 3.0 protocol support enabled if set to true.
+     */
+    @JsonProperty(value = "properties.isNfsV3Enabled")
+    private Boolean enableNfsV3;
+
     /**
      * Get the sku property: Gets the SKU.
      *
@@ -252,6 +297,26 @@ public class StorageAccountInner extends Resource {
      */
     public StorageAccountInner withIdentity(Identity identity) {
         this.identity = identity;
+        return this;
+    }
+
+    /**
+     * Get the extendedLocation property: The extendedLocation of the resource.
+     *
+     * @return the extendedLocation value.
+     */
+    public ExtendedLocation extendedLocation() {
+        return this.extendedLocation;
+    }
+
+    /**
+     * Set the extendedLocation property: The extendedLocation of the resource.
+     *
+     * @param extendedLocation the extendedLocation value to set.
+     * @return the StorageAccountInner object itself.
+     */
+    public StorageAccountInner withExtendedLocation(ExtendedLocation extendedLocation) {
+        this.extendedLocation = extendedLocation;
         return this;
     }
 
@@ -340,6 +405,33 @@ public class StorageAccountInner extends Resource {
      */
     public CustomDomain customDomain() {
         return this.customDomain;
+    }
+
+    /**
+     * Get the sasPolicy property: SasPolicy assigned to the storage account.
+     *
+     * @return the sasPolicy value.
+     */
+    public SasPolicy sasPolicy() {
+        return this.sasPolicy;
+    }
+
+    /**
+     * Get the keyPolicy property: KeyPolicy assigned to the storage account.
+     *
+     * @return the keyPolicy value.
+     */
+    public KeyPolicy keyPolicy() {
+        return this.keyPolicy;
+    }
+
+    /**
+     * Get the keyCreationTime property: Storage account keys creation time.
+     *
+     * @return the keyCreationTime value.
+     */
+    public KeyCreationTime keyCreationTime() {
+        return this.keyCreationTime;
     }
 
     /**
@@ -572,6 +664,64 @@ public class StorageAccountInner extends Resource {
     }
 
     /**
+     * Get the allowSharedKeyAccess property: Indicates whether the storage account permits requests to be authorized
+     * with the account access key via Shared Key. If false, then all requests, including shared access signatures, must
+     * be authorized with Azure Active Directory (Azure AD). The default value is null, which is equivalent to true.
+     *
+     * @return the allowSharedKeyAccess value.
+     */
+    public Boolean allowSharedKeyAccess() {
+        return this.allowSharedKeyAccess;
+    }
+
+    /**
+     * Set the allowSharedKeyAccess property: Indicates whether the storage account permits requests to be authorized
+     * with the account access key via Shared Key. If false, then all requests, including shared access signatures, must
+     * be authorized with Azure Active Directory (Azure AD). The default value is null, which is equivalent to true.
+     *
+     * @param allowSharedKeyAccess the allowSharedKeyAccess value to set.
+     * @return the StorageAccountInner object itself.
+     */
+    public StorageAccountInner withAllowSharedKeyAccess(Boolean allowSharedKeyAccess) {
+        this.allowSharedKeyAccess = allowSharedKeyAccess;
+        return this;
+    }
+
+    /**
+     * Get the enableNfsV3 property: NFS 3.0 protocol support enabled if set to true.
+     *
+     * @return the enableNfsV3 value.
+     */
+    public Boolean enableNfsV3() {
+        return this.enableNfsV3;
+    }
+
+    /**
+     * Set the enableNfsV3 property: NFS 3.0 protocol support enabled if set to true.
+     *
+     * @param enableNfsV3 the enableNfsV3 value to set.
+     * @return the StorageAccountInner object itself.
+     */
+    public StorageAccountInner withEnableNfsV3(Boolean enableNfsV3) {
+        this.enableNfsV3 = enableNfsV3;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public StorageAccountInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public StorageAccountInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -583,11 +733,23 @@ public class StorageAccountInner extends Resource {
         if (identity() != null) {
             identity().validate();
         }
+        if (extendedLocation() != null) {
+            extendedLocation().validate();
+        }
         if (primaryEndpoints() != null) {
             primaryEndpoints().validate();
         }
         if (customDomain() != null) {
             customDomain().validate();
+        }
+        if (sasPolicy() != null) {
+            sasPolicy().validate();
+        }
+        if (keyPolicy() != null) {
+            keyPolicy().validate();
+        }
+        if (keyCreationTime() != null) {
+            keyCreationTime().validate();
         }
         if (secondaryEndpoints() != null) {
             secondaryEndpoints().validate();

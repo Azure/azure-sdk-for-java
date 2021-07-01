@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -64,9 +65,9 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
     @Host("{$host}")
     @ServiceInterface(name = "RedisManagementClien")
     private interface PatchSchedulesService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/Redis"
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis"
                 + "/{cacheName}/patchSchedules")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -76,11 +77,12 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("cacheName") String cacheName,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/Redis/{name}"
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}"
                 + "/patchSchedules/{default}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -92,11 +94,12 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") RedisPatchScheduleInner parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/Redis/{name}"
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}"
                 + "/patchSchedules/{default}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -107,11 +110,12 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
             @PathParam("default") DefaultName defaultParameter,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/Redis/{name}"
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}"
                 + "/patchSchedules/{default}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -122,14 +126,18 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
             @PathParam("default") DefaultName defaultParameter,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RedisPatchScheduleListResult>> listByRedisResourceNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -164,6 +172,7 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
         if (cacheName == null) {
             return Mono.error(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -174,6 +183,7 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             cacheName,
+                            accept,
                             context))
             .<PagedResponse<RedisPatchScheduleInner>>map(
                 res ->
@@ -184,7 +194,7 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -220,6 +230,7 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
         if (cacheName == null) {
             return Mono.error(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByRedisResource(
@@ -228,6 +239,7 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 cacheName,
+                accept,
                 context)
             .map(
                 res ->
@@ -352,6 +364,7 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
         } else {
             scheduleEntries.forEach(e -> e.validate());
         }
+        final String accept = "application/json";
         RedisPatchScheduleInner parameters = new RedisPatchScheduleInner();
         parameters.withScheduleEntries(scheduleEntries);
         return FluxUtil
@@ -366,8 +379,9 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             parameters,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -419,6 +433,7 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
         } else {
             scheduleEntries.forEach(e -> e.validate());
         }
+        final String accept = "application/json";
         RedisPatchScheduleInner parameters = new RedisPatchScheduleInner();
         parameters.withScheduleEntries(scheduleEntries);
         context = this.client.mergeContext(context);
@@ -431,6 +446,7 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 parameters,
+                accept,
                 context);
     }
 
@@ -539,6 +555,7 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -550,8 +567,9 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
                             defaultParameter,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -592,6 +610,7 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -601,6 +620,7 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
                 defaultParameter,
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -691,6 +711,7 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -702,8 +723,9 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
                             defaultParameter,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -744,6 +766,7 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -753,6 +776,7 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
                 defaultParameter,
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -828,8 +852,16 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByRedisResourceNext(nextLink, context))
+            .withContext(
+                context -> service.listByRedisResourceNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<RedisPatchScheduleInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -839,7 +871,7 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -858,9 +890,16 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByRedisResourceNext(nextLink, context)
+            .listByRedisResourceNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

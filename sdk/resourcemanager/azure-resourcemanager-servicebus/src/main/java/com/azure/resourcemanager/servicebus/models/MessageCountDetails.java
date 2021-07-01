@@ -33,16 +33,16 @@ public final class MessageCountDetails {
     private Long scheduledMessageCount;
 
     /*
-     * Number of messages transferred into dead letters.
-     */
-    @JsonProperty(value = "transferDeadLetterMessageCount", access = JsonProperty.Access.WRITE_ONLY)
-    private Long transferDeadLetterMessageCount;
-
-    /*
      * Number of messages transferred to another queue, topic, or subscription.
      */
     @JsonProperty(value = "transferMessageCount", access = JsonProperty.Access.WRITE_ONLY)
     private Long transferMessageCount;
+
+    /*
+     * Number of messages transferred into dead letters.
+     */
+    @JsonProperty(value = "transferDeadLetterMessageCount", access = JsonProperty.Access.WRITE_ONLY)
+    private Long transferDeadLetterMessageCount;
 
     /**
      * Get the activeMessageCount property: Number of active messages in the queue, topic, or subscription.
@@ -72,21 +72,21 @@ public final class MessageCountDetails {
     }
 
     /**
-     * Get the transferDeadLetterMessageCount property: Number of messages transferred into dead letters.
-     *
-     * @return the transferDeadLetterMessageCount value.
-     */
-    public Long transferDeadLetterMessageCount() {
-        return this.transferDeadLetterMessageCount;
-    }
-
-    /**
      * Get the transferMessageCount property: Number of messages transferred to another queue, topic, or subscription.
      *
      * @return the transferMessageCount value.
      */
     public Long transferMessageCount() {
         return this.transferMessageCount;
+    }
+
+    /**
+     * Get the transferDeadLetterMessageCount property: Number of messages transferred into dead letters.
+     *
+     * @return the transferDeadLetterMessageCount value.
+     */
+    public Long transferDeadLetterMessageCount() {
+        return this.transferDeadLetterMessageCount;
     }
 
     /**

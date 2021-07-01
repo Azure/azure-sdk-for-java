@@ -7,6 +7,7 @@ package com.azure.resourcemanager.appservice.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.appservice.models.GitHubActionConfiguration;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -38,6 +39,12 @@ public class SiteSourceControlInner extends ProxyOnlyResource {
     private Boolean isManualIntegration;
 
     /*
+     * <code>true</code> if this is deployed via GitHub action.
+     */
+    @JsonProperty(value = "properties.isGitHubAction")
+    private Boolean isGitHubAction;
+
+    /*
      * <code>true</code> to enable deployment rollback; otherwise,
      * <code>false</code>.
      */
@@ -50,6 +57,12 @@ public class SiteSourceControlInner extends ProxyOnlyResource {
      */
     @JsonProperty(value = "properties.isMercurial")
     private Boolean isMercurial;
+
+    /*
+     * If GitHub Action is selected, than the associated configuration.
+     */
+    @JsonProperty(value = "properties.gitHubActionConfiguration")
+    private GitHubActionConfiguration gitHubActionConfiguration;
 
     /**
      * Get the repoUrl property: Repository or source control URL.
@@ -116,6 +129,26 @@ public class SiteSourceControlInner extends ProxyOnlyResource {
     }
 
     /**
+     * Get the isGitHubAction property: &lt;code&gt;true&lt;/code&gt; if this is deployed via GitHub action.
+     *
+     * @return the isGitHubAction value.
+     */
+    public Boolean isGitHubAction() {
+        return this.isGitHubAction;
+    }
+
+    /**
+     * Set the isGitHubAction property: &lt;code&gt;true&lt;/code&gt; if this is deployed via GitHub action.
+     *
+     * @param isGitHubAction the isGitHubAction value to set.
+     * @return the SiteSourceControlInner object itself.
+     */
+    public SiteSourceControlInner withIsGitHubAction(Boolean isGitHubAction) {
+        this.isGitHubAction = isGitHubAction;
+        return this;
+    }
+
+    /**
      * Get the deploymentRollbackEnabled property: &lt;code&gt;true&lt;/code&gt; to enable deployment rollback;
      * otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
@@ -160,6 +193,33 @@ public class SiteSourceControlInner extends ProxyOnlyResource {
     }
 
     /**
+     * Get the gitHubActionConfiguration property: If GitHub Action is selected, than the associated configuration.
+     *
+     * @return the gitHubActionConfiguration value.
+     */
+    public GitHubActionConfiguration gitHubActionConfiguration() {
+        return this.gitHubActionConfiguration;
+    }
+
+    /**
+     * Set the gitHubActionConfiguration property: If GitHub Action is selected, than the associated configuration.
+     *
+     * @param gitHubActionConfiguration the gitHubActionConfiguration value to set.
+     * @return the SiteSourceControlInner object itself.
+     */
+    public SiteSourceControlInner withGitHubActionConfiguration(GitHubActionConfiguration gitHubActionConfiguration) {
+        this.gitHubActionConfiguration = gitHubActionConfiguration;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SiteSourceControlInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -167,5 +227,8 @@ public class SiteSourceControlInner extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
+        if (gitHubActionConfiguration() != null) {
+            gitHubActionConfiguration().validate();
+        }
     }
 }

@@ -8,10 +8,8 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 
-/**
- * Contains all response data for the forceCloseHandles operation.
- */
-public final class FilesForceCloseHandlesResponse extends ResponseBase<FileForceCloseHandlesHeaders, Void> {
+/** Contains all response data for the forceCloseHandles operation. */
+public final class FilesForceCloseHandlesResponse extends ResponseBase<FilesForceCloseHandlesHeaders, Void> {
     /**
      * Creates an instance of FilesForceCloseHandlesResponse.
      *
@@ -21,7 +19,12 @@ public final class FilesForceCloseHandlesResponse extends ResponseBase<FileForce
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public FilesForceCloseHandlesResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, FileForceCloseHandlesHeaders headers) {
+    public FilesForceCloseHandlesResponse(
+            HttpRequest request,
+            int statusCode,
+            HttpHeaders rawHeaders,
+            Void value,
+            FilesForceCloseHandlesHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 }

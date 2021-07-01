@@ -12,9 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Specifies the Linux operating system settings on the virtual machine. &lt;br&gt;&lt;br&gt;For a list of supported
  * Linux distributions, see [Linux on Azure-Endorsed
- * Distributions](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-linux-endorsed-distros?toc=%2fazure%2fvirtual-machines%2flinux%2ftoc.json)
- * &lt;br&gt;&lt;br&gt; For running non-endorsed distributions, see [Information for Non-Endorsed
- * Distributions](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-linux-create-upload-generic?toc=%2fazure%2fvirtual-machines%2flinux%2ftoc.json).
+ * Distributions](https://docs.microsoft.com/azure/virtual-machines/linux/endorsed-distros).
  */
 @Fluent
 public final class LinuxConfiguration {
@@ -41,6 +39,13 @@ public final class LinuxConfiguration {
      */
     @JsonProperty(value = "provisionVMAgent")
     private Boolean provisionVMAgent;
+
+    /*
+     * [Preview Feature] Specifies settings related to VM Guest Patching on
+     * Linux.
+     */
+    @JsonProperty(value = "patchSettings")
+    private LinuxPatchSettings patchSettings;
 
     /**
      * Get the disablePasswordAuthentication property: Specifies whether password authentication should be disabled.
@@ -109,6 +114,26 @@ public final class LinuxConfiguration {
     }
 
     /**
+     * Get the patchSettings property: [Preview Feature] Specifies settings related to VM Guest Patching on Linux.
+     *
+     * @return the patchSettings value.
+     */
+    public LinuxPatchSettings patchSettings() {
+        return this.patchSettings;
+    }
+
+    /**
+     * Set the patchSettings property: [Preview Feature] Specifies settings related to VM Guest Patching on Linux.
+     *
+     * @param patchSettings the patchSettings value to set.
+     * @return the LinuxConfiguration object itself.
+     */
+    public LinuxConfiguration withPatchSettings(LinuxPatchSettings patchSettings) {
+        this.patchSettings = patchSettings;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -116,6 +141,9 @@ public final class LinuxConfiguration {
     public void validate() {
         if (ssh() != null) {
             ssh().validate();
+        }
+        if (patchSettings() != null) {
+            patchSettings().validate();
         }
     }
 }

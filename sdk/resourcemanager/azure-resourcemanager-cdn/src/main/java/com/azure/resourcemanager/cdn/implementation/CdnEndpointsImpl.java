@@ -62,7 +62,7 @@ class CdnEndpointsImpl extends
      * @param endpoint the endpoint
      */
     public void addEndpoint(CdnEndpointImpl endpoint) {
-        this.prepareInlineDefine(endpoint);
+        this.childCollection.put(endpoint.name(), endpoint);
     }
 
     public CdnEndpointImpl defineNewEndpoint(String endpointName, String originName, String endpointOriginHostname) {

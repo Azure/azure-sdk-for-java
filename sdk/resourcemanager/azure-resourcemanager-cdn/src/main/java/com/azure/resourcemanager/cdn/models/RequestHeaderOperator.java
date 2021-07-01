@@ -37,6 +37,9 @@ public final class RequestHeaderOperator extends ExpandableStringEnum<RequestHea
     /** Static value GreaterThanOrEqual for RequestHeaderOperator. */
     public static final RequestHeaderOperator GREATER_THAN_OR_EQUAL = fromString("GreaterThanOrEqual");
 
+    /** Static value RegEx for RequestHeaderOperator. */
+    public static final RequestHeaderOperator REG_EX = fromString("RegEx");
+
     /**
      * Creates or finds a RequestHeaderOperator from its string representation.
      *

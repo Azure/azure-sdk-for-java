@@ -4,14 +4,19 @@
 
 package com.azure.resourcemanager.eventgrid.implementation;
 
+import com.azure.core.http.rest.Response;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.fluent.models.EventSubscriptionInner;
 import com.azure.resourcemanager.eventgrid.models.DeadLetterDestination;
+import com.azure.resourcemanager.eventgrid.models.DeadLetterWithResourceIdentity;
+import com.azure.resourcemanager.eventgrid.models.DeliveryAttributeListResult;
+import com.azure.resourcemanager.eventgrid.models.DeliveryWithResourceIdentity;
 import com.azure.resourcemanager.eventgrid.models.EventDeliverySchema;
 import com.azure.resourcemanager.eventgrid.models.EventSubscription;
 import com.azure.resourcemanager.eventgrid.models.EventSubscriptionDestination;
 import com.azure.resourcemanager.eventgrid.models.EventSubscriptionFilter;
+import com.azure.resourcemanager.eventgrid.models.EventSubscriptionFullUrl;
 import com.azure.resourcemanager.eventgrid.models.EventSubscriptionProvisioningState;
 import com.azure.resourcemanager.eventgrid.models.EventSubscriptionUpdateParameters;
 import com.azure.resourcemanager.eventgrid.models.RetryPolicy;
@@ -23,7 +28,7 @@ public final class EventSubscriptionImpl
     implements EventSubscription, EventSubscription.Definition, EventSubscription.Update {
     private EventSubscriptionInner innerObject;
 
-    private final EventGridManager serviceManager;
+    private final com.azure.resourcemanager.eventgrid.EventGridManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -37,6 +42,10 @@ public final class EventSubscriptionImpl
         return this.innerModel().type();
     }
 
+    public SystemData systemData() {
+        return this.innerModel().systemData();
+    }
+
     public String topic() {
         return this.innerModel().topic();
     }
@@ -47,6 +56,10 @@ public final class EventSubscriptionImpl
 
     public EventSubscriptionDestination destination() {
         return this.innerModel().destination();
+    }
+
+    public DeliveryWithResourceIdentity deliveryWithResourceIdentity() {
+        return this.innerModel().deliveryWithResourceIdentity();
     }
 
     public EventSubscriptionFilter filter() {
@@ -78,11 +91,15 @@ public final class EventSubscriptionImpl
         return this.innerModel().deadLetterDestination();
     }
 
+    public DeadLetterWithResourceIdentity deadLetterWithResourceIdentity() {
+        return this.innerModel().deadLetterWithResourceIdentity();
+    }
+
     public EventSubscriptionInner innerModel() {
         return this.innerObject;
     }
 
-    private EventGridManager manager() {
+    private com.azure.resourcemanager.eventgrid.EventGridManager manager() {
         return this.serviceManager;
     }
 
@@ -115,7 +132,7 @@ public final class EventSubscriptionImpl
         return this;
     }
 
-    EventSubscriptionImpl(String name, EventGridManager serviceManager) {
+    EventSubscriptionImpl(String name, com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
         this.innerObject = new EventSubscriptionInner();
         this.serviceManager = serviceManager;
         this.eventSubscriptionName = name;
@@ -144,7 +161,8 @@ public final class EventSubscriptionImpl
         return this;
     }
 
-    EventSubscriptionImpl(EventSubscriptionInner innerObject, EventGridManager serviceManager) {
+    EventSubscriptionImpl(
+        EventSubscriptionInner innerObject, com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.scope =
@@ -181,12 +199,41 @@ public final class EventSubscriptionImpl
         return this;
     }
 
+    public EventSubscriptionFullUrl getFullUrl() {
+        return serviceManager.eventSubscriptions().getFullUrl(scope, eventSubscriptionName);
+    }
+
+    public Response<EventSubscriptionFullUrl> getFullUrlWithResponse(Context context) {
+        return serviceManager.eventSubscriptions().getFullUrlWithResponse(scope, eventSubscriptionName, context);
+    }
+
+    public DeliveryAttributeListResult getDeliveryAttributes() {
+        return serviceManager.eventSubscriptions().getDeliveryAttributes(scope, eventSubscriptionName);
+    }
+
+    public Response<DeliveryAttributeListResult> getDeliveryAttributesWithResponse(Context context) {
+        return serviceManager
+            .eventSubscriptions()
+            .getDeliveryAttributesWithResponse(scope, eventSubscriptionName, context);
+    }
+
     public EventSubscriptionImpl withDestination(EventSubscriptionDestination destination) {
         if (isInCreateMode()) {
             this.innerModel().withDestination(destination);
             return this;
         } else {
             this.updateEventSubscriptionUpdateParameters.withDestination(destination);
+            return this;
+        }
+    }
+
+    public EventSubscriptionImpl withDeliveryWithResourceIdentity(
+        DeliveryWithResourceIdentity deliveryWithResourceIdentity) {
+        if (isInCreateMode()) {
+            this.innerModel().withDeliveryWithResourceIdentity(deliveryWithResourceIdentity);
+            return this;
+        } else {
+            this.updateEventSubscriptionUpdateParameters.withDeliveryWithResourceIdentity(deliveryWithResourceIdentity);
             return this;
         }
     }
@@ -247,6 +294,19 @@ public final class EventSubscriptionImpl
             return this;
         } else {
             this.updateEventSubscriptionUpdateParameters.withDeadLetterDestination(deadLetterDestination);
+            return this;
+        }
+    }
+
+    public EventSubscriptionImpl withDeadLetterWithResourceIdentity(
+        DeadLetterWithResourceIdentity deadLetterWithResourceIdentity) {
+        if (isInCreateMode()) {
+            this.innerModel().withDeadLetterWithResourceIdentity(deadLetterWithResourceIdentity);
+            return this;
+        } else {
+            this
+                .updateEventSubscriptionUpdateParameters
+                .withDeadLetterWithResourceIdentity(deadLetterWithResourceIdentity);
             return this;
         }
     }

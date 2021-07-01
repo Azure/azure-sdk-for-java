@@ -15,6 +15,8 @@ import java.io.IOException;
  * Custom serializer for serializing {@link UnixTime} object into epoch formats.
  */
 final class UnixTimeSerializer extends JsonSerializer<UnixTime> {
+    private static final SimpleModule MODULE = new SimpleModule()
+        .addSerializer(UnixTime.class, new UnixTimeSerializer());
     /**
      * Gets a module wrapping this serializer as an adapter for the Jackson
      * ObjectMapper.
@@ -22,9 +24,7 @@ final class UnixTimeSerializer extends JsonSerializer<UnixTime> {
      * @return a simple module to be plugged onto Jackson ObjectMapper.
      */
     public static SimpleModule getModule() {
-        SimpleModule module = new SimpleModule();
-        module.addSerializer(UnixTime.class, new UnixTimeSerializer());
-        return module;
+        return MODULE;
     }
 
     @Override

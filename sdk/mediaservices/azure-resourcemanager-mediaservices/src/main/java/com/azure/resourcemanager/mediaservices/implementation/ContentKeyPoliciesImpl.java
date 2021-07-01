@@ -9,7 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.mediaservices.MediaservicesManager;
 import com.azure.resourcemanager.mediaservices.fluent.ContentKeyPoliciesClient;
 import com.azure.resourcemanager.mediaservices.fluent.models.ContentKeyPolicyInner;
 import com.azure.resourcemanager.mediaservices.fluent.models.ContentKeyPolicyPropertiesInner;
@@ -23,23 +22,25 @@ public final class ContentKeyPoliciesImpl implements ContentKeyPolicies {
 
     private final ContentKeyPoliciesClient innerClient;
 
-    private final MediaservicesManager serviceManager;
+    private final com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager;
 
-    public ContentKeyPoliciesImpl(ContentKeyPoliciesClient innerClient, MediaservicesManager serviceManager) {
+    public ContentKeyPoliciesImpl(
+        ContentKeyPoliciesClient innerClient,
+        com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<ContentKeyPolicy> list(String resourceGroupName, String accountName) {
         PagedIterable<ContentKeyPolicyInner> inner = this.serviceClient().list(resourceGroupName, accountName);
-        return inner.mapPage(inner1 -> new ContentKeyPolicyImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new ContentKeyPolicyImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ContentKeyPolicy> list(
         String resourceGroupName, String accountName, String filter, Integer top, String orderby, Context context) {
         PagedIterable<ContentKeyPolicyInner> inner =
             this.serviceClient().list(resourceGroupName, accountName, filter, top, orderby, context);
-        return inner.mapPage(inner1 -> new ContentKeyPolicyImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new ContentKeyPolicyImpl(inner1, this.manager()));
     }
 
     public ContentKeyPolicy get(String resourceGroupName, String accountName, String contentKeyPolicyName) {
@@ -220,7 +221,7 @@ public final class ContentKeyPoliciesImpl implements ContentKeyPolicies {
         return this.innerClient;
     }
 
-    private MediaservicesManager manager() {
+    private com.azure.resourcemanager.mediaservices.MediaServicesManager manager() {
         return this.serviceManager;
     }
 

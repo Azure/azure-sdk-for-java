@@ -21,6 +21,7 @@ import reactor.core.publisher.Mono;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -60,6 +61,8 @@ public abstract class FeedRangeContinuation extends JsonSerializable {
     public abstract boolean isDone();
 
     public abstract void validateContainer(String containerRid);
+
+    public abstract CompositeContinuationToken[] getCurrentContinuationTokens();
 
     public void populatePropertyBag() {
         super.populatePropertyBag();
@@ -115,7 +118,19 @@ public abstract class FeedRangeContinuation extends JsonSerializable {
         return new FeedRangeCompositeContinuationImpl(
             containerRid,
             feedRange,
-            ranges);
+            ranges,
+            null);
+    }
+
+    public static FeedRangeContinuation create(
+        String containerRid,
+        FeedRangeInternal feedRange,
+        List<CompositeContinuationToken> continuationTokens) {
+
+        return new FeedRangeCompositeContinuationImpl(
+            containerRid,
+            feedRange,
+            continuationTokens);
     }
 
     public abstract <T extends Resource> ShouldRetryResult handleChangeFeedNotModified(

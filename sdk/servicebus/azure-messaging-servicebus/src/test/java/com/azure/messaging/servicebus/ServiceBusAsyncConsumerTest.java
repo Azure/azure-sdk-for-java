@@ -34,6 +34,7 @@ import java.util.UUID;
 import java.util.function.Function;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -86,8 +87,9 @@ class ServiceBusAsyncConsumerTest {
 
         when(link.getEndpointStates()).thenReturn(endpointStateFlux);
         when(link.receive()).thenReturn(messageFlux);
-        linkProcessor = linkFlux.subscribeWith(new ServiceBusReceiveLinkProcessor(10, retryPolicy,
-            ServiceBusReceiveMode.RECEIVE_AND_DELETE));
+        when(link.addCredits(anyInt())).thenReturn(Mono.empty());
+
+        linkProcessor = linkFlux.subscribeWith(new ServiceBusReceiveLinkProcessor(10, retryPolicy));
 
         when(connection.getEndpointStates()).thenReturn(Flux.create(sink -> sink.next(AmqpEndpointState.ACTIVE)));
         when(link.updateDisposition(anyString(), any(DeliveryState.class))).thenReturn(Mono.empty());
@@ -211,6 +213,10 @@ class ServiceBusAsyncConsumerTest {
         final Message message1 = mock(Message.class);
         final ServiceBusReceivedMessage receivedMessage1 = mock(ServiceBusReceivedMessage.class);
 
+        /*
+         * Beginning in Mockito 3.4.0+ the default value for duration changed from null to Duration.ZERO
+         */
+        when(retryPolicy.calculateRetryDelay(any(), anyInt())).thenReturn(null);
         when(receivedMessage1.getLockToken()).thenReturn(lockToken);
         when(receivedMessage1.getLockedUntil()).thenReturn(lockedUntil);
         when(serializer.deserialize(message1, ServiceBusReceivedMessage.class)).thenReturn(receivedMessage1);

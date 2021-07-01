@@ -76,7 +76,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
     @Host("{$host}")
     @ServiceInterface(name = "StorageManagementCli")
     private interface BlobContainersService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
                 + "/storageAccounts/{accountName}/blobServices/default/containers")
@@ -91,9 +91,10 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
             @QueryParam("$maxpagesize") String maxpagesize,
             @QueryParam("$filter") String filter,
             @QueryParam("$include") ListContainersInclude include,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
                 + "/storageAccounts/{accountName}/blobServices/default/containers/{containerName}")
@@ -107,9 +108,10 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") BlobContainerInner blobContainer,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Patch(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
                 + "/storageAccounts/{accountName}/blobServices/default/containers/{containerName}")
@@ -123,9 +125,10 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") BlobContainerInner blobContainer,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
                 + "/storageAccounts/{accountName}/blobServices/default/containers/{containerName}")
@@ -138,6 +141,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
             @PathParam("containerName") String containerName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
@@ -155,7 +159,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
             @PathParam("subscriptionId") String subscriptionId,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
                 + "/storageAccounts/{accountName}/blobServices/default/containers/{containerName}/setLegalHold")
@@ -169,9 +173,10 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") LegalHoldInner legalHold,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
                 + "/storageAccounts/{accountName}/blobServices/default/containers/{containerName}/clearLegalHold")
@@ -185,9 +190,10 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") LegalHoldInner legalHold,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
                 + "/storageAccounts/{accountName}/blobServices/default/containers/{containerName}/immutabilityPolicies"
@@ -204,9 +210,10 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
             @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("If-Match") String ifMatch,
             @BodyParam("application/json") ImmutabilityPolicyInner parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
                 + "/storageAccounts/{accountName}/blobServices/default/containers/{containerName}/immutabilityPolicies"
@@ -222,9 +229,10 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("If-Match") String ifMatch,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
                 + "/storageAccounts/{accountName}/blobServices/default/containers/{containerName}/immutabilityPolicies"
@@ -240,9 +248,10 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("If-Match") String ifMatch,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
                 + "/storageAccounts/{accountName}/blobServices/default/containers/{containerName}/immutabilityPolicies"
@@ -257,9 +266,10 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("If-Match") String ifMatch,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
                 + "/storageAccounts/{accountName}/blobServices/default/containers/{containerName}/immutabilityPolicies"
@@ -275,9 +285,10 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
             @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("If-Match") String ifMatch,
             @BodyParam("application/json") ImmutabilityPolicyInner parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
                 + "/storageAccounts/{accountName}/blobServices/default/containers/{containerName}/lease")
@@ -291,14 +302,18 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") LeaseContainerRequest parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ListContainerItems>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -343,6 +358,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -356,6 +372,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
                             maxpagesize,
                             filter,
                             include,
+                            accept,
                             context))
             .<PagedResponse<ListContainerItemInner>>map(
                 res ->
@@ -366,7 +383,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -413,6 +430,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(
@@ -424,6 +442,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
                 maxpagesize,
                 filter,
                 include,
+                accept,
                 context)
             .map(
                 res ->
@@ -525,6 +544,27 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response schema.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ListContainerItemInner> list(String resourceGroupName, String accountName) {
+        final String maxpagesize = null;
+        final String filter = null;
+        final ListContainersInclude include = null;
+        return new PagedIterable<>(listAsync(resourceGroupName, accountName, maxpagesize, filter, include));
+    }
+
+    /**
+     * Lists all containers and does not support a prefix like data plane. Also SRP today does not return continuation
+     * token.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param maxpagesize Optional. Specified maximum number of containers that can be included in the list.
      * @param filter Optional. When specified, only container names starting with the filter will be listed.
      * @param include Optional, used to include the properties for soft deleted blob containers.
@@ -546,27 +586,6 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
     }
 
     /**
-     * Lists all containers and does not support a prefix like data plane. Also SRP today does not return continuation
-     * token.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response schema.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ListContainerItemInner> list(String resourceGroupName, String accountName) {
-        final String maxpagesize = null;
-        final String filter = null;
-        final ListContainersInclude include = null;
-        return new PagedIterable<>(listAsync(resourceGroupName, accountName, maxpagesize, filter, include));
-    }
-
-    /**
      * Creates a new container under the specified account as described by request body. The container resource includes
      * metadata and properties for that container. It does not include a list of the blobs contained by the container.
      *
@@ -577,7 +596,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @param containerName The name of the blob container within the specified storage account. Blob container names
      *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
      *     dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param blobContainer Properties of the blob container, including Id, resource name, resource type, Etag.
+     * @param blobContainer Properties of the blob container to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -613,6 +632,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
         } else {
             blobContainer.validate();
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -625,8 +645,9 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             blobContainer,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -640,7 +661,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @param containerName The name of the blob container within the specified storage account. Blob container names
      *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
      *     dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param blobContainer Properties of the blob container, including Id, resource name, resource type, Etag.
+     * @param blobContainer Properties of the blob container to create.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -681,6 +702,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
         } else {
             blobContainer.validate();
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .create(
@@ -691,6 +713,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 blobContainer,
+                accept,
                 context);
     }
 
@@ -705,7 +728,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @param containerName The name of the blob container within the specified storage account. Blob container names
      *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
      *     dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param blobContainer Properties of the blob container, including Id, resource name, resource type, Etag.
+     * @param blobContainer Properties of the blob container to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -736,7 +759,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @param containerName The name of the blob container within the specified storage account. Blob container names
      *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
      *     dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param blobContainer Properties of the blob container, including Id, resource name, resource type, Etag.
+     * @param blobContainer Properties of the blob container to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -759,7 +782,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @param containerName The name of the blob container within the specified storage account. Blob container names
      *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
      *     dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param blobContainer Properties of the blob container, including Id, resource name, resource type, Etag.
+     * @param blobContainer Properties of the blob container to create.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -787,7 +810,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @param containerName The name of the blob container within the specified storage account. Blob container names
      *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
      *     dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param blobContainer Properties of the blob container, including Id, resource name, resource type, Etag.
+     * @param blobContainer Properties to update for the blob container.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -823,6 +846,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
         } else {
             blobContainer.validate();
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -835,8 +859,9 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             blobContainer,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -850,7 +875,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @param containerName The name of the blob container within the specified storage account. Blob container names
      *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
      *     dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param blobContainer Properties of the blob container, including Id, resource name, resource type, Etag.
+     * @param blobContainer Properties to update for the blob container.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -891,6 +916,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
         } else {
             blobContainer.validate();
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .update(
@@ -901,6 +927,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 blobContainer,
+                accept,
                 context);
     }
 
@@ -915,7 +942,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @param containerName The name of the blob container within the specified storage account. Blob container names
      *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
      *     dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param blobContainer Properties of the blob container, including Id, resource name, resource type, Etag.
+     * @param blobContainer Properties to update for the blob container.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -946,7 +973,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @param containerName The name of the blob container within the specified storage account. Blob container names
      *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
      *     dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param blobContainer Properties of the blob container, including Id, resource name, resource type, Etag.
+     * @param blobContainer Properties to update for the blob container.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -969,7 +996,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @param containerName The name of the blob container within the specified storage account. Blob container names
      *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
      *     dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param blobContainer Properties of the blob container, including Id, resource name, resource type, Etag.
+     * @param blobContainer Properties to update for the blob container.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1026,6 +1053,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1037,8 +1065,9 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
                             containerName,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1082,6 +1111,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -1091,6 +1121,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
                 containerName,
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -1216,7 +1247,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1379,6 +1410,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
         if (tags == null) {
             return Mono.error(new IllegalArgumentException("Parameter tags is required and cannot be null."));
         }
+        final String accept = "application/json";
         LegalHoldInner legalHold = new LegalHoldInner();
         legalHold.withTags(tags);
         return FluxUtil
@@ -1393,8 +1425,9 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             legalHold,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1443,6 +1476,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
         if (tags == null) {
             return Mono.error(new IllegalArgumentException("Parameter tags is required and cannot be null."));
         }
+        final String accept = "application/json";
         LegalHoldInner legalHold = new LegalHoldInner();
         legalHold.withTags(tags);
         context = this.client.mergeContext(context);
@@ -1455,6 +1489,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 legalHold,
+                accept,
                 context);
     }
 
@@ -1581,6 +1616,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
         if (tags == null) {
             return Mono.error(new IllegalArgumentException("Parameter tags is required and cannot be null."));
         }
+        final String accept = "application/json";
         LegalHoldInner legalHold = new LegalHoldInner();
         legalHold.withTags(tags);
         return FluxUtil
@@ -1595,8 +1631,9 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             legalHold,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1645,6 +1682,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
         if (tags == null) {
             return Mono.error(new IllegalArgumentException("Parameter tags is required and cannot be null."));
         }
+        final String accept = "application/json";
         LegalHoldInner legalHold = new LegalHoldInner();
         legalHold.withTags(tags);
         context = this.client.mergeContext(context);
@@ -1657,6 +1695,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 legalHold,
+                accept,
                 context);
     }
 
@@ -1795,6 +1834,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String immutabilityPolicyName = "default";
+        final String accept = "application/json";
         ImmutabilityPolicyInner parametersInternal = null;
         if (immutabilityPeriodSinceCreationInDays != null || allowProtectedAppendWrites != null) {
             parametersInternal = new ImmutabilityPolicyInner();
@@ -1816,8 +1856,9 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
                             this.client.getSubscriptionId(),
                             ifMatch,
                             parameters,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1879,6 +1920,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String immutabilityPolicyName = "default";
+        final String accept = "application/json";
         ImmutabilityPolicyInner parametersInternal = null;
         if (immutabilityPeriodSinceCreationInDays != null || allowProtectedAppendWrites != null) {
             parametersInternal = new ImmutabilityPolicyInner();
@@ -1898,6 +1940,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
                 this.client.getSubscriptionId(),
                 ifMatch,
                 parameters,
+                accept,
                 context);
     }
 
@@ -2049,7 +2092,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ImmutabilityPolicyInner> createOrUpdateImmutabilityPolicyWithResponse(
+    public BlobContainersCreateOrUpdateImmutabilityPolicyResponse createOrUpdateImmutabilityPolicyWithResponse(
         String resourceGroupName,
         String accountName,
         String containerName,
@@ -2112,6 +2155,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String immutabilityPolicyName = "default";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -2125,8 +2169,9 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             ifMatch,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2174,6 +2219,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String immutabilityPolicyName = "default";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getImmutabilityPolicy(
@@ -2185,6 +2231,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 ifMatch,
+                accept,
                 context);
     }
 
@@ -2292,7 +2339,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @return the existing immutability policy along with the corresponding ETag in response headers and body.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ImmutabilityPolicyInner> getImmutabilityPolicyWithResponse(
+    public BlobContainersGetImmutabilityPolicyResponse getImmutabilityPolicyWithResponse(
         String resourceGroupName, String accountName, String containerName, String ifMatch, Context context) {
         return getImmutabilityPolicyWithResponseAsync(resourceGroupName, accountName, containerName, ifMatch, context)
             .block();
@@ -2347,6 +2394,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
             return Mono.error(new IllegalArgumentException("Parameter ifMatch is required and cannot be null."));
         }
         final String immutabilityPolicyName = "default";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -2360,8 +2408,9 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             ifMatch,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2414,6 +2463,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
             return Mono.error(new IllegalArgumentException("Parameter ifMatch is required and cannot be null."));
         }
         final String immutabilityPolicyName = "default";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .deleteImmutabilityPolicy(
@@ -2425,6 +2475,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 ifMatch,
+                accept,
                 context);
     }
 
@@ -2510,7 +2561,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ImmutabilityPolicyInner> deleteImmutabilityPolicyWithResponse(
+    public BlobContainersDeleteImmutabilityPolicyResponse deleteImmutabilityPolicyWithResponse(
         String resourceGroupName, String accountName, String containerName, String ifMatch, Context context) {
         return deleteImmutabilityPolicyWithResponseAsync(
                 resourceGroupName, accountName, containerName, ifMatch, context)
@@ -2564,6 +2615,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
         if (ifMatch == null) {
             return Mono.error(new IllegalArgumentException("Parameter ifMatch is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -2576,8 +2628,9 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             ifMatch,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2628,6 +2681,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
         if (ifMatch == null) {
             return Mono.error(new IllegalArgumentException("Parameter ifMatch is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .lockImmutabilityPolicy(
@@ -2638,6 +2692,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 ifMatch,
+                accept,
                 context);
     }
 
@@ -2720,7 +2775,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ImmutabilityPolicyInner> lockImmutabilityPolicyWithResponse(
+    public BlobContainersLockImmutabilityPolicyResponse lockImmutabilityPolicyWithResponse(
         String resourceGroupName, String accountName, String containerName, String ifMatch, Context context) {
         return lockImmutabilityPolicyWithResponseAsync(resourceGroupName, accountName, containerName, ifMatch, context)
             .block();
@@ -2784,6 +2839,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
         if (ifMatch == null) {
             return Mono.error(new IllegalArgumentException("Parameter ifMatch is required and cannot be null."));
         }
+        final String accept = "application/json";
         ImmutabilityPolicyInner parametersInternal = null;
         if (immutabilityPeriodSinceCreationInDays != null || allowProtectedAppendWrites != null) {
             parametersInternal = new ImmutabilityPolicyInner();
@@ -2804,8 +2860,9 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
                             this.client.getSubscriptionId(),
                             ifMatch,
                             parameters,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2868,6 +2925,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
         if (ifMatch == null) {
             return Mono.error(new IllegalArgumentException("Parameter ifMatch is required and cannot be null."));
         }
+        final String accept = "application/json";
         ImmutabilityPolicyInner parametersInternal = null;
         if (immutabilityPeriodSinceCreationInDays != null || allowProtectedAppendWrites != null) {
             parametersInternal = new ImmutabilityPolicyInner();
@@ -2886,6 +2944,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
                 this.client.getSubscriptionId(),
                 ifMatch,
                 parameters,
+                accept,
                 context);
     }
 
@@ -3041,7 +3100,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ImmutabilityPolicyInner> extendImmutabilityPolicyWithResponse(
+    public BlobContainersExtendImmutabilityPolicyResponse extendImmutabilityPolicyWithResponse(
         String resourceGroupName,
         String accountName,
         String containerName,
@@ -3071,7 +3130,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @param containerName The name of the blob container within the specified storage account. Blob container names
      *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
      *     dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param parameters Lease Container request schema.
+     * @param parameters Lease Container request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3105,6 +3164,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
         if (parameters != null) {
             parameters.validate();
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -3117,8 +3177,9 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             parameters,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3132,7 +3193,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @param containerName The name of the blob container within the specified storage account. Blob container names
      *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
      *     dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param parameters Lease Container request schema.
+     * @param parameters Lease Container request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3171,6 +3232,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
         if (parameters != null) {
             parameters.validate();
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .lease(
@@ -3181,6 +3243,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 parameters,
+                accept,
                 context);
     }
 
@@ -3195,7 +3258,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @param containerName The name of the blob container within the specified storage account. Blob container names
      *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
      *     dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param parameters Lease Container request schema.
+     * @param parameters Lease Container request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3279,7 +3342,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @param containerName The name of the blob container within the specified storage account. Blob container names
      *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
      *     dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param parameters Lease Container request schema.
+     * @param parameters Lease Container request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3310,8 +3373,15 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listNext(nextLink, context))
+            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<ListContainerItemInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -3321,7 +3391,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3339,9 +3409,16 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listNext(nextLink, context)
+            .listNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

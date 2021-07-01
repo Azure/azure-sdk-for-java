@@ -346,7 +346,7 @@ public final class TransactionalBatch {
         checkNotNull(id, "expected non-null id");
         checkNotNull(cosmosPatchOperations, "expected non-null cosmosPatchOperations");
 
-        return this.patchItemOperation(id, cosmosPatchOperations, new TransactionalBatchItemRequestOptions());
+        return this.patchItemOperation(id, cosmosPatchOperations, new TransactionalBatchPatchItemRequestOptions());
     }
 
     /**
@@ -362,13 +362,13 @@ public final class TransactionalBatch {
     public CosmosItemOperation patchItemOperation(
         String id,
         CosmosPatchOperations cosmosPatchOperations,
-        TransactionalBatchItemRequestOptions requestOptions) {
+        TransactionalBatchPatchItemRequestOptions requestOptions) {
 
         checkNotNull(id, "expected non-null id");
         checkNotNull(cosmosPatchOperations, "expected non-null cosmosPatchOperations");
 
         if (requestOptions == null) {
-            requestOptions = new TransactionalBatchItemRequestOptions();
+            requestOptions = new TransactionalBatchPatchItemRequestOptions();
         }
 
         ItemBatchOperation<?> operation = new ItemBatchOperation<>(

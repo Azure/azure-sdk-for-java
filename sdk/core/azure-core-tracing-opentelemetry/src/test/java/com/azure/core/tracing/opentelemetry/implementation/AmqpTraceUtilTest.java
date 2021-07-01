@@ -4,71 +4,64 @@ package com.azure.core.tracing.opentelemetry.implementation;
 
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.StatusCode;
-import io.opentelemetry.api.trace.Tracer;
-import io.opentelemetry.context.Scope;
-import io.opentelemetry.sdk.OpenTelemetrySdk;
-import io.opentelemetry.sdk.trace.ReadableSpan;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
-import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 
 public class AmqpTraceUtilTest {
 
-    private Tracer tracer;
+    @Mock
     private Span parentSpan;
-    private Scope scope;
+
+    private AutoCloseable openMocks;
 
     @BeforeEach
-    public void setUp() {
-        // Get the global singleton Tracer object.
-        tracer = OpenTelemetrySdk.builder().build().getTracer("TracerSdkTest");
-        // Start user parent span.
-        parentSpan = tracer.spanBuilder(PARENT_SPAN_KEY).startSpan();
-        scope = parentSpan.makeCurrent();
+    public void setup() {
+        this.openMocks = MockitoAnnotations.openMocks(this);
     }
 
     @AfterEach
-    public void tearDown() {
-        // Clear out tracer and tracingContext objects
-        scope.close();
-        tracer = null;
-        assertNull(tracer);
+    public void tearDown() throws Exception {
+        this.openMocks.close();
     }
 
     @Test
     public void parseUnknownStatusMessage() {
         // Act
-        ReadableSpan span2 = (ReadableSpan) AmqpTraceUtil.parseStatusMessage(parentSpan, "", null);
+        AmqpTraceUtil.parseStatusMessage(parentSpan, "", null);
 
         // Assert
-        assertNotNull(span2.toSpanData());
-        assertEquals(StatusCode.UNSET, span2.toSpanData().getStatus().getStatusCode());
+        verify(parentSpan, times(1))
+            .setStatus(StatusCode.UNSET, "");
+
     }
 
     @Test
     public void parseSuccessStatusMessage() {
         // Act
 
-        ReadableSpan span2 = (ReadableSpan) AmqpTraceUtil.parseStatusMessage(parentSpan, "success", null);
+        AmqpTraceUtil.parseStatusMessage(parentSpan, "success", null);
 
         // Assert
-        assertNotNull(span2.toSpanData());
-        assertEquals(StatusCode.OK, span2.toSpanData().getStatus().getStatusCode());
+        verify(parentSpan, times(1))
+            .setStatus(StatusCode.OK);
     }
 
     @Test
     public void parseStatusMessageOnError() {
+        Error error = new Error("testError");
+
         // Act
-        ReadableSpan span2 = (ReadableSpan) AmqpTraceUtil.parseStatusMessage(parentSpan, "", new Error("testError"));
+        AmqpTraceUtil.parseStatusMessage(parentSpan, "", error);
 
         // Assert
-        assertNotNull(span2.toSpanData());
-        assertEquals(StatusCode.ERROR, span2.toSpanData().getStatus().getStatusCode());
+        verify(parentSpan, times(1))
+            .recordException(error);
     }
 }

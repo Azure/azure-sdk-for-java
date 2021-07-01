@@ -7,7 +7,7 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The MediaJobErrorDetail model. */
+/** Details of JobOutput errors. */
 @Immutable
 public final class MediaJobErrorDetail {
     /*

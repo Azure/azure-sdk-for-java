@@ -34,6 +34,14 @@ public final class ManagementPolicyBaseBlob {
     @JsonProperty(value = "delete")
     private DateAfterModification delete;
 
+    /*
+     * This property enables auto tiering of a blob from cool to hot on a blob
+     * access. This property requires
+     * tierToCool.daysAfterLastAccessTimeGreaterThan.
+     */
+    @JsonProperty(value = "enableAutoTierToHotFromCool")
+    private Boolean enableAutoTierToHotFromCool;
+
     /**
      * Get the tierToCool property: The function to tier blobs to cool storage. Support blobs currently at Hot tier.
      *
@@ -93,6 +101,28 @@ public final class ManagementPolicyBaseBlob {
      */
     public ManagementPolicyBaseBlob withDelete(DateAfterModification delete) {
         this.delete = delete;
+        return this;
+    }
+
+    /**
+     * Get the enableAutoTierToHotFromCool property: This property enables auto tiering of a blob from cool to hot on a
+     * blob access. This property requires tierToCool.daysAfterLastAccessTimeGreaterThan.
+     *
+     * @return the enableAutoTierToHotFromCool value.
+     */
+    public Boolean enableAutoTierToHotFromCool() {
+        return this.enableAutoTierToHotFromCool;
+    }
+
+    /**
+     * Set the enableAutoTierToHotFromCool property: This property enables auto tiering of a blob from cool to hot on a
+     * blob access. This property requires tierToCool.daysAfterLastAccessTimeGreaterThan.
+     *
+     * @param enableAutoTierToHotFromCool the enableAutoTierToHotFromCool value to set.
+     * @return the ManagementPolicyBaseBlob object itself.
+     */
+    public ManagementPolicyBaseBlob withEnableAutoTierToHotFromCool(Boolean enableAutoTierToHotFromCool) {
+        this.enableAutoTierToHotFromCool = enableAutoTierToHotFromCool;
         return this;
     }
 

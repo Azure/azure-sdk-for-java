@@ -12,6 +12,7 @@ import com.github.tomakehurst.wiremock.http.Request;
 import com.github.tomakehurst.wiremock.http.Response;
 
 import static com.azure.core.http.netty.NettyAsyncHttpClientTests.EXPECTED_HEADER;
+import static com.azure.core.http.netty.NettyAsyncHttpClientTests.HTTP_HEADERS_PATH;
 import static com.azure.core.http.netty.NettyAsyncHttpClientTests.NO_DOUBLE_UA_PATH;
 import static com.azure.core.http.netty.NettyAsyncHttpClientTests.RETURN_HEADERS_AS_IS_PATH;
 
@@ -26,7 +27,7 @@ public final class NettyAsyncHttpClientResponseTransformer extends ResponseTrans
     public Response transform(Request request, Response response, FileSource fileSource, Parameters parameters) {
         String url = request.getUrl();
 
-        if ("/httpHeaders".equalsIgnoreCase(url)) {
+        if (HTTP_HEADERS_PATH.equalsIgnoreCase(url)) {
             return httpHeadersResponseHandler(request, response);
         } else if (NO_DOUBLE_UA_PATH.equalsIgnoreCase(url)) {
             if (EXPECTED_HEADER.equals(request.getHeader("User-Agent"))) {

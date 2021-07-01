@@ -8,7 +8,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.postgresql.PostgreSqlManager;
 import com.azure.resourcemanager.postgresql.fluent.CheckNameAvailabilitiesClient;
 import com.azure.resourcemanager.postgresql.fluent.models.NameAvailabilityInner;
 import com.azure.resourcemanager.postgresql.models.CheckNameAvailabilities;
@@ -21,9 +20,11 @@ public final class CheckNameAvailabilitiesImpl implements CheckNameAvailabilitie
 
     private final CheckNameAvailabilitiesClient innerClient;
 
-    private final PostgreSqlManager serviceManager;
+    private final com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager;
 
-    public CheckNameAvailabilitiesImpl(CheckNameAvailabilitiesClient innerClient, PostgreSqlManager serviceManager) {
+    public CheckNameAvailabilitiesImpl(
+        CheckNameAvailabilitiesClient innerClient,
+        com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -56,7 +57,7 @@ public final class CheckNameAvailabilitiesImpl implements CheckNameAvailabilitie
         return this.innerClient;
     }
 
-    private PostgreSqlManager manager() {
+    private com.azure.resourcemanager.postgresql.PostgreSqlManager manager() {
         return this.serviceManager;
     }
 }

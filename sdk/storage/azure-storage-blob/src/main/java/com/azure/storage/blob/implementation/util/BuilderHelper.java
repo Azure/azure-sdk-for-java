@@ -49,6 +49,8 @@ public final class BuilderHelper {
         CoreUtils.getProperties("azure-storage-blob.properties");
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
+    private static final String CLIENT_NAME = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
+    private static final String CLIENT_VERSION = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
 
     /**
      * Constructs a {@link HttpPipeline} from values passed from a builder.
@@ -184,12 +186,9 @@ public final class BuilderHelper {
     private static UserAgentPolicy getUserAgentPolicy(Configuration configuration, HttpLogOptions logOptions,
         ClientOptions clientOptions) {
         configuration = (configuration == null) ? Configuration.NONE : configuration;
-
-        String clientName = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
-        String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
         String applicationId = clientOptions.getApplicationId() != null ? clientOptions.getApplicationId()
             : logOptions.getApplicationId();
-        return new UserAgentPolicy(applicationId, clientName, clientVersion, configuration);
+        return new UserAgentPolicy(applicationId, CLIENT_NAME, CLIENT_VERSION, configuration);
     }
 
     /*

@@ -7,6 +7,7 @@ package com.azure.resourcemanager.storage.implementation;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -61,7 +62,7 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
     @Host("{$host}")
     @ServiceInterface(name = "StorageManagementCli")
     private interface EncryptionScopesService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
                 + "/storageAccounts/{accountName}/encryptionScopes/{encryptionScopeName}")
@@ -75,9 +76,10 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("encryptionScopeName") String encryptionScopeName,
             @BodyParam("application/json") EncryptionScopeInner encryptionScope,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Patch(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
                 + "/storageAccounts/{accountName}/encryptionScopes/{encryptionScopeName}")
@@ -91,9 +93,10 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("encryptionScopeName") String encryptionScopeName,
             @BodyParam("application/json") EncryptionScopeInner encryptionScope,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
                 + "/storageAccounts/{accountName}/encryptionScopes/{encryptionScopeName}")
@@ -106,9 +109,10 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("encryptionScopeName") String encryptionScopeName,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
                 + "/storageAccounts/{accountName}/encryptionScopes")
@@ -120,14 +124,18 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EncryptionScopeListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -142,7 +150,7 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
      * @param encryptionScopeName The name of the encryption scope within the specified storage account. Encryption
      *     scope names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-)
      *     only. Every dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param encryptionScope The Encryption Scope resource.
+     * @param encryptionScope Encryption scope properties to be used for the create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -183,6 +191,7 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
         } else {
             encryptionScope.validate();
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -195,8 +204,9 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
                             this.client.getSubscriptionId(),
                             encryptionScopeName,
                             encryptionScope,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -211,7 +221,7 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
      * @param encryptionScopeName The name of the encryption scope within the specified storage account. Encryption
      *     scope names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-)
      *     only. Every dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param encryptionScope The Encryption Scope resource.
+     * @param encryptionScope Encryption scope properties to be used for the create or update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -254,6 +264,7 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
         } else {
             encryptionScope.validate();
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .put(
@@ -264,6 +275,7 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
                 this.client.getSubscriptionId(),
                 encryptionScopeName,
                 encryptionScope,
+                accept,
                 context);
     }
 
@@ -279,7 +291,7 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
      * @param encryptionScopeName The name of the encryption scope within the specified storage account. Encryption
      *     scope names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-)
      *     only. Every dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param encryptionScope The Encryption Scope resource.
+     * @param encryptionScope Encryption scope properties to be used for the create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -314,7 +326,7 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
      * @param encryptionScopeName The name of the encryption scope within the specified storage account. Encryption
      *     scope names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-)
      *     only. Every dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param encryptionScope The Encryption Scope resource.
+     * @param encryptionScope Encryption scope properties to be used for the create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -341,7 +353,7 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
      * @param encryptionScopeName The name of the encryption scope within the specified storage account. Encryption
      *     scope names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-)
      *     only. Every dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param encryptionScope The Encryption Scope resource.
+     * @param encryptionScope Encryption scope properties to be used for the create or update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -370,7 +382,7 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
      * @param encryptionScopeName The name of the encryption scope within the specified storage account. Encryption
      *     scope names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-)
      *     only. Every dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param encryptionScope The Encryption Scope resource.
+     * @param encryptionScope Encryption scope properties to be used for the update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -411,6 +423,7 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
         } else {
             encryptionScope.validate();
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -423,8 +436,9 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
                             this.client.getSubscriptionId(),
                             encryptionScopeName,
                             encryptionScope,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -438,7 +452,7 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
      * @param encryptionScopeName The name of the encryption scope within the specified storage account. Encryption
      *     scope names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-)
      *     only. Every dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param encryptionScope The Encryption Scope resource.
+     * @param encryptionScope Encryption scope properties to be used for the update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -481,6 +495,7 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
         } else {
             encryptionScope.validate();
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .patch(
@@ -491,6 +506,7 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
                 this.client.getSubscriptionId(),
                 encryptionScopeName,
                 encryptionScope,
+                accept,
                 context);
     }
 
@@ -505,7 +521,7 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
      * @param encryptionScopeName The name of the encryption scope within the specified storage account. Encryption
      *     scope names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-)
      *     only. Every dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param encryptionScope The Encryption Scope resource.
+     * @param encryptionScope Encryption scope properties to be used for the update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -539,7 +555,7 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
      * @param encryptionScopeName The name of the encryption scope within the specified storage account. Encryption
      *     scope names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-)
      *     only. Every dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param encryptionScope The Encryption Scope resource.
+     * @param encryptionScope Encryption scope properties to be used for the update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -565,7 +581,7 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
      * @param encryptionScopeName The name of the encryption scope within the specified storage account. Encryption
      *     scope names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-)
      *     only. Every dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param encryptionScope The Encryption Scope resource.
+     * @param encryptionScope Encryption scope properties to be used for the update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -624,6 +640,7 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter encryptionScopeName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -635,8 +652,9 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             encryptionScopeName,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -681,6 +699,7 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter encryptionScopeName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -690,6 +709,7 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 encryptionScopeName,
+                accept,
                 context);
     }
 
@@ -799,6 +819,7 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -809,6 +830,7 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
                             accountName,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .<PagedResponse<EncryptionScopeInner>>map(
                 res ->
@@ -819,7 +841,7 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -858,6 +880,7 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(
@@ -866,6 +889,7 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
                 accountName,
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
+                accept,
                 context)
             .map(
                 res ->
@@ -970,8 +994,15 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listNext(nextLink, context))
+            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<EncryptionScopeInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -981,7 +1012,7 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1000,9 +1031,16 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listNext(nextLink, context)
+            .listNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

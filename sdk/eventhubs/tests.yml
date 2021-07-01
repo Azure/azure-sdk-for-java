@@ -1,7 +1,7 @@
 trigger: none
 
 stages:
-  - template: ../../eng/pipelines/templates/stages/archetype-sdk-tests.yml
+  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
       ServiceDirectory: eventhubs
       Artifacts:
@@ -14,5 +14,4 @@ stages:
       TimeoutInMinutes: 120
       Clouds: 'Public,Canary'
       EnvVars:
-        AZURE_TEST_MODE: RECORD
         AZURE_LOG_LEVEL: 2

@@ -8,7 +8,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.loganalytics.LogAnalyticsManager;
 import com.azure.resourcemanager.loganalytics.fluent.OperationStatusesClient;
 import com.azure.resourcemanager.loganalytics.fluent.models.OperationStatusInner;
 import com.azure.resourcemanager.loganalytics.models.OperationStatus;
@@ -20,9 +19,11 @@ public final class OperationStatusesImpl implements OperationStatuses {
 
     private final OperationStatusesClient innerClient;
 
-    private final LogAnalyticsManager serviceManager;
+    private final com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager;
 
-    public OperationStatusesImpl(OperationStatusesClient innerClient, LogAnalyticsManager serviceManager) {
+    public OperationStatusesImpl(
+        OperationStatusesClient innerClient,
+        com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -54,7 +55,7 @@ public final class OperationStatusesImpl implements OperationStatuses {
         return this.innerClient;
     }
 
-    private LogAnalyticsManager manager() {
+    private com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager() {
         return this.serviceManager;
     }
 }

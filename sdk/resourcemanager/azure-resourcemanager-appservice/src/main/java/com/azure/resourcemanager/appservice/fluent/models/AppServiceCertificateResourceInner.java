@@ -11,6 +11,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.KeyVaultSecretStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /** Key Vault container ARM resource for a certificate that is purchased through Azure. */
 @JsonFlatten
@@ -108,6 +109,20 @@ public class AppServiceCertificateResourceInner extends Resource {
      */
     public AppServiceCertificateResourceInner withKind(String kind) {
         this.kind = kind;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AppServiceCertificateResourceInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AppServiceCertificateResourceInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 

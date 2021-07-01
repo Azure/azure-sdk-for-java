@@ -11,9 +11,9 @@ Documentation for this SDK can be found at [Azure Key Vault Java Documentation](
 ## Getting started
 
 To get started with a specific library, see the **README.md** file located in the library's project folder. You can find service libraries in the `/sdk/keyvault/azure-security-keyvault-<subcomponent>` directory.
-- [Azure Keyvault Keys README](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-keys/README.md)
-- [Azure Keyvault Certificates README](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-certificates/README.md)
-- [Azure Keyvault Secrets README](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-secrets/README.md)
+- [Azure Keyvault Keys README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-keys/README.md)
+- [Azure Keyvault Certificates README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-certificates/README.md)
+- [Azure Keyvault Secrets README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-secrets/README.md)
 
 ## Sample code
 You can find sample code that illustrates key vault usage scenarios [here](https://azure.microsoft.com/resources/samples/?sort=0&service=key-vault&platform=java).
@@ -106,13 +106,13 @@ To get the binaries of this library as distributed by Microsoft, ready for use w
 Clone the repo, then run `mvn compile` from the root directory.
 
 To run the recorded tests:
-1. If you have not already, you need to install the [Java Cryptography Extension (JCE) Unlimited Strength Jurisdiction Policy Files](https://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html) package.
+1. If you have not already, you need to install the [Java Cryptography Extension (JCE) Unlimited Strength Jurisdiction Policy Files](https://www.oracle.com/java/technologies/javase-jce8-downloads.html) package.
 2. run `mvn jetty:run` to start a jetty server. This starts a service that will block the terminal so you will likely want to open a second terminal to run the actual tests.
 3. In your second terminal run `mvn test`.
 
 ## Contributing
 
-For details on contributing to this repository, see the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/master/CONTRIBUTING.md).
+For details on contributing to this repository, see the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md).
 
 1. Fork it
 2. Create your feature branch (`git checkout -b my-new-feature`)

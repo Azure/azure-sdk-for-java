@@ -10,7 +10,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
-import com.azure.resourcemanager.servicebus.fluent.models.SubscriptionResourceInner;
+import com.azure.resourcemanager.servicebus.fluent.models.SBSubscriptionInner;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -20,7 +20,7 @@ import java.time.OffsetDateTime;
  */
 @Fluent
 public interface ServiceBusSubscription extends
-    IndependentChildResource<ServiceBusManager, SubscriptionResourceInner>,
+    IndependentChildResource<ServiceBusManager, SBSubscriptionInner>,
     Refreshable<ServiceBusSubscription>,
     Updatable<ServiceBusSubscription.Update> {
     /**

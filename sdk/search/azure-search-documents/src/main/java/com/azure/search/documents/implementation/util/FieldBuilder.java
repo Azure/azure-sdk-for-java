@@ -3,6 +3,7 @@
 
 package com.azure.search.documents.implementation.util;
 
+import com.azure.core.models.GeoPoint;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.MemberNameConverter;
 import com.azure.core.util.serializer.MemberNameConverterProviders;
@@ -63,9 +64,10 @@ public final class FieldBuilder {
         SUPPORTED_NONE_PARAMETERIZED_TYPE.put(CharSequence.class, SearchFieldDataType.STRING);
         SUPPORTED_NONE_PARAMETERIZED_TYPE.put(Character.class, SearchFieldDataType.STRING);
         SUPPORTED_NONE_PARAMETERIZED_TYPE.put(char.class, SearchFieldDataType.STRING);
+        //noinspection UseOfObsoleteDateTimeApi
         SUPPORTED_NONE_PARAMETERIZED_TYPE.put(Date.class, SearchFieldDataType.DATE_TIME_OFFSET);
         SUPPORTED_NONE_PARAMETERIZED_TYPE.put(OffsetDateTime.class, SearchFieldDataType.DATE_TIME_OFFSET);
-        //SUPPORTED_NONE_PARAMETERIZED_TYPE.put(PointGeometry.class, SearchFieldDataType.GEOGRAPHY_POINT);
+        SUPPORTED_NONE_PARAMETERIZED_TYPE.put(GeoPoint.class, SearchFieldDataType.GEOGRAPHY_POINT);
 
         UNSUPPORTED_TYPES.add(byte.class);
         UNSUPPORTED_TYPES.add(Byte.class);
@@ -106,7 +108,7 @@ public final class FieldBuilder {
     private static List<SearchField> build(Class<?> currentClass, Stack<Class<?>> classChain,
         MemberNameConverter serializer) {
         if (classChain.contains(currentClass)) {
-            LOGGER.warning(String.format("There is circular dependencies %s, %s", classChain, currentClass));
+            LOGGER.warning("There is circular dependencies {}, {}", classChain, currentClass);
             return null;
         }
         if (classChain.size() > MAX_DEPTH) {

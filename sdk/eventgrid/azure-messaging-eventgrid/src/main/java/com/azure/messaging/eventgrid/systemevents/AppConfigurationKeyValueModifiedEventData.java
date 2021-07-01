@@ -7,7 +7,7 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The AppConfigurationKeyValueModifiedEventData model. */
+/** Schema of the Data property of an EventGridEvent for a Microsoft.AppConfiguration.KeyValueModified event. */
 @Fluent
 public final class AppConfigurationKeyValueModifiedEventData {
     /*
@@ -27,6 +27,12 @@ public final class AppConfigurationKeyValueModifiedEventData {
      */
     @JsonProperty(value = "etag")
     private String etag;
+
+    /*
+     * The sync token representing the server state after the event.
+     */
+    @JsonProperty(value = "syncToken")
+    private String syncToken;
 
     /**
      * Get the key property: The key used to identify the key-value that was modified.
@@ -85,6 +91,26 @@ public final class AppConfigurationKeyValueModifiedEventData {
      */
     public AppConfigurationKeyValueModifiedEventData setEtag(String etag) {
         this.etag = etag;
+        return this;
+    }
+
+    /**
+     * Get the syncToken property: The sync token representing the server state after the event.
+     *
+     * @return the syncToken value.
+     */
+    public String getSyncToken() {
+        return this.syncToken;
+    }
+
+    /**
+     * Set the syncToken property: The sync token representing the server state after the event.
+     *
+     * @param syncToken the syncToken value to set.
+     * @return the AppConfigurationKeyValueModifiedEventData object itself.
+     */
+    public AppConfigurationKeyValueModifiedEventData setSyncToken(String syncToken) {
+        this.syncToken = syncToken;
         return this;
     }
 }

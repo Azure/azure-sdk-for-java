@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The AcsChatMessageEventBaseProperties model. */
+/** Schema of common properties of all chat message events. */
 @Fluent
 public class AcsChatMessageEventBaseProperties extends AcsChatEventBaseProperties {
     /*
@@ -18,10 +18,10 @@ public class AcsChatMessageEventBaseProperties extends AcsChatEventBasePropertie
     private String messageId;
 
     /*
-     * The MRI of the sender
+     * The communication identifier of the sender
      */
-    @JsonProperty(value = "senderId")
-    private String senderId;
+    @JsonProperty(value = "senderCommunicationIdentifier")
+    private CommunicationIdentifierModel senderCommunicationIdentifier;
 
     /*
      * The display name of the sender
@@ -68,22 +68,23 @@ public class AcsChatMessageEventBaseProperties extends AcsChatEventBasePropertie
     }
 
     /**
-     * Get the senderId property: The MRI of the sender.
+     * Get the senderCommunicationIdentifier property: The communication identifier of the sender.
      *
-     * @return the senderId value.
+     * @return the senderCommunicationIdentifier value.
      */
-    public String getSenderId() {
-        return this.senderId;
+    public CommunicationIdentifierModel getSenderCommunicationIdentifier() {
+        return this.senderCommunicationIdentifier;
     }
 
     /**
-     * Set the senderId property: The MRI of the sender.
+     * Set the senderCommunicationIdentifier property: The communication identifier of the sender.
      *
-     * @param senderId the senderId value to set.
+     * @param senderCommunicationIdentifier the senderCommunicationIdentifier value to set.
      * @return the AcsChatMessageEventBaseProperties object itself.
      */
-    public AcsChatMessageEventBaseProperties setSenderId(String senderId) {
-        this.senderId = senderId;
+    public AcsChatMessageEventBaseProperties setSenderCommunicationIdentifier(
+            CommunicationIdentifierModel senderCommunicationIdentifier) {
+        this.senderCommunicationIdentifier = senderCommunicationIdentifier;
         return this;
     }
 
@@ -164,6 +165,28 @@ public class AcsChatMessageEventBaseProperties extends AcsChatEventBasePropertie
      */
     public AcsChatMessageEventBaseProperties setVersion(Long version) {
         this.version = version;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AcsChatMessageEventBaseProperties setRecipientCommunicationIdentifier(
+            CommunicationIdentifierModel recipientCommunicationIdentifier) {
+        super.setRecipientCommunicationIdentifier(recipientCommunicationIdentifier);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AcsChatMessageEventBaseProperties setTransactionId(String transactionId) {
+        super.setTransactionId(transactionId);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AcsChatMessageEventBaseProperties setThreadId(String threadId) {
+        super.setThreadId(threadId);
         return this;
     }
 }

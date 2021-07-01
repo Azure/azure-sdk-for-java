@@ -8,20 +8,18 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/**
- * Statistics for the storage service.
- */
+/** Statistics for the storage service. */
 @JacksonXmlRootElement(localName = "StorageServiceStats")
 @Fluent
 public final class BlobServiceStatistics {
     /*
-     * The geoReplication property.
+     * Geo-Replication information for the Secondary Storage Service
      */
     @JsonProperty(value = "GeoReplication")
     private GeoReplication geoReplication;
 
     /**
-     * Get the geoReplication property: The geoReplication property.
+     * Get the geoReplication property: Geo-Replication information for the Secondary Storage Service.
      *
      * @return the geoReplication value.
      */
@@ -30,7 +28,7 @@ public final class BlobServiceStatistics {
     }
 
     /**
-     * Set the geoReplication property: The geoReplication property.
+     * Set the geoReplication property: Geo-Replication information for the Secondary Storage Service.
      *
      * @param geoReplication the geoReplication value to set.
      * @return the BlobServiceStatistics object itself.

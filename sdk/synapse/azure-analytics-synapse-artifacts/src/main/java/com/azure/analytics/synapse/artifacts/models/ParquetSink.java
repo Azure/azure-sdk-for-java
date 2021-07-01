@@ -20,6 +20,12 @@ public final class ParquetSink extends CopySink {
     @JsonProperty(value = "storeSettings")
     private StoreWriteSettings storeSettings;
 
+    /*
+     * Parquet format settings.
+     */
+    @JsonProperty(value = "formatSettings")
+    private ParquetWriteSettings formatSettings;
+
     /**
      * Get the storeSettings property: Parquet store settings.
      *
@@ -37,6 +43,26 @@ public final class ParquetSink extends CopySink {
      */
     public ParquetSink setStoreSettings(StoreWriteSettings storeSettings) {
         this.storeSettings = storeSettings;
+        return this;
+    }
+
+    /**
+     * Get the formatSettings property: Parquet format settings.
+     *
+     * @return the formatSettings value.
+     */
+    public ParquetWriteSettings getFormatSettings() {
+        return this.formatSettings;
+    }
+
+    /**
+     * Set the formatSettings property: Parquet format settings.
+     *
+     * @param formatSettings the formatSettings value to set.
+     * @return the ParquetSink object itself.
+     */
+    public ParquetSink setFormatSettings(ParquetWriteSettings formatSettings) {
+        this.formatSettings = formatSettings;
         return this;
     }
 }

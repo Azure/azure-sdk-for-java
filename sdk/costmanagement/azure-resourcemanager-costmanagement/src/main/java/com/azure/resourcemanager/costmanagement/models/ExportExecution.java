@@ -4,109 +4,256 @@
 
 package com.azure.resourcemanager.costmanagement.models;
 
-import com.azure.core.management.exception.ManagementError;
-import com.azure.resourcemanager.costmanagement.fluent.models.ExportExecutionInner;
+import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.management.ProxyResource;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
+import java.util.Map;
 
-/** An immutable client-side representation of ExportExecution. */
-public interface ExportExecution {
-    /**
-     * Gets the id property: Fully qualified resource Id for the resource.
-     *
-     * @return the id value.
+/** A export execution. */
+@JsonFlatten
+@Fluent
+public class ExportExecution extends ProxyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExportExecution.class);
+
+    /*
+     * The type of the export execution.
      */
-    String id();
+    @JsonProperty(value = "properties.executionType")
+    private ExecutionType executionType;
 
-    /**
-     * Gets the name property: The name of the resource.
-     *
-     * @return the name value.
+    /*
+     * The status of the export execution.
      */
-    String name();
+    @JsonProperty(value = "properties.status")
+    private ExecutionStatus status;
 
-    /**
-     * Gets the type property: The type of the resource.
-     *
-     * @return the type value.
+    /*
+     * The identifier for the entity that executed the export. For OnDemand
+     * executions, it is the email id. For Scheduled executions, it is the
+     * constant value - System.
      */
-    String type();
+    @JsonProperty(value = "properties.submittedBy")
+    private String submittedBy;
+
+    /*
+     * The time when export was queued to be executed.
+     */
+    @JsonProperty(value = "properties.submittedTime")
+    private OffsetDateTime submittedTime;
+
+    /*
+     * The time when export was picked up to be executed.
+     */
+    @JsonProperty(value = "properties.processingStartTime")
+    private OffsetDateTime processingStartTime;
+
+    /*
+     * The time when export execution finished.
+     */
+    @JsonProperty(value = "properties.processingEndTime")
+    private OffsetDateTime processingEndTime;
+
+    /*
+     * The name of the file export got written to.
+     */
+    @JsonProperty(value = "properties.fileName")
+    private String fileName;
+
+    /*
+     * The common properties of the export.
+     */
+    @JsonProperty(value = "properties.runSettings")
+    private CommonExportProperties runSettings;
+
+    /*
+     * Resource tags.
+     */
+    @JsonProperty(value = "tags", access = JsonProperty.Access.WRITE_ONLY)
+    private Map<String, String> tags;
 
     /**
-     * Gets the executionType property: The type of the export execution.
+     * Get the executionType property: The type of the export execution.
      *
      * @return the executionType value.
      */
-    ExecutionType executionType();
+    public ExecutionType executionType() {
+        return this.executionType;
+    }
 
     /**
-     * Gets the status property: The last known status of the export execution.
+     * Set the executionType property: The type of the export execution.
+     *
+     * @param executionType the executionType value to set.
+     * @return the ExportExecution object itself.
+     */
+    public ExportExecution withExecutionType(ExecutionType executionType) {
+        this.executionType = executionType;
+        return this;
+    }
+
+    /**
+     * Get the status property: The status of the export execution.
      *
      * @return the status value.
      */
-    ExecutionStatus status();
+    public ExecutionStatus status() {
+        return this.status;
+    }
 
     /**
-     * Gets the submittedBy property: The identifier for the entity that executed the export. For OnDemand executions it
-     * is the user email. For scheduled executions it is 'System'.
+     * Set the status property: The status of the export execution.
+     *
+     * @param status the status value to set.
+     * @return the ExportExecution object itself.
+     */
+    public ExportExecution withStatus(ExecutionStatus status) {
+        this.status = status;
+        return this;
+    }
+
+    /**
+     * Get the submittedBy property: The identifier for the entity that executed the export. For OnDemand executions, it
+     * is the email id. For Scheduled executions, it is the constant value - System.
      *
      * @return the submittedBy value.
      */
-    String submittedBy();
+    public String submittedBy() {
+        return this.submittedBy;
+    }
 
     /**
-     * Gets the submittedTime property: The time when export was queued to be executed.
+     * Set the submittedBy property: The identifier for the entity that executed the export. For OnDemand executions, it
+     * is the email id. For Scheduled executions, it is the constant value - System.
+     *
+     * @param submittedBy the submittedBy value to set.
+     * @return the ExportExecution object itself.
+     */
+    public ExportExecution withSubmittedBy(String submittedBy) {
+        this.submittedBy = submittedBy;
+        return this;
+    }
+
+    /**
+     * Get the submittedTime property: The time when export was queued to be executed.
      *
      * @return the submittedTime value.
      */
-    OffsetDateTime submittedTime();
+    public OffsetDateTime submittedTime() {
+        return this.submittedTime;
+    }
 
     /**
-     * Gets the processingStartTime property: The time when export was picked up to be executed.
+     * Set the submittedTime property: The time when export was queued to be executed.
+     *
+     * @param submittedTime the submittedTime value to set.
+     * @return the ExportExecution object itself.
+     */
+    public ExportExecution withSubmittedTime(OffsetDateTime submittedTime) {
+        this.submittedTime = submittedTime;
+        return this;
+    }
+
+    /**
+     * Get the processingStartTime property: The time when export was picked up to be executed.
      *
      * @return the processingStartTime value.
      */
-    OffsetDateTime processingStartTime();
+    public OffsetDateTime processingStartTime() {
+        return this.processingStartTime;
+    }
 
     /**
-     * Gets the processingEndTime property: The time when the export execution finished.
+     * Set the processingStartTime property: The time when export was picked up to be executed.
+     *
+     * @param processingStartTime the processingStartTime value to set.
+     * @return the ExportExecution object itself.
+     */
+    public ExportExecution withProcessingStartTime(OffsetDateTime processingStartTime) {
+        this.processingStartTime = processingStartTime;
+        return this;
+    }
+
+    /**
+     * Get the processingEndTime property: The time when export execution finished.
      *
      * @return the processingEndTime value.
      */
-    OffsetDateTime processingEndTime();
+    public OffsetDateTime processingEndTime() {
+        return this.processingEndTime;
+    }
 
     /**
-     * Gets the fileName property: The name of the exported file.
+     * Set the processingEndTime property: The time when export execution finished.
+     *
+     * @param processingEndTime the processingEndTime value to set.
+     * @return the ExportExecution object itself.
+     */
+    public ExportExecution withProcessingEndTime(OffsetDateTime processingEndTime) {
+        this.processingEndTime = processingEndTime;
+        return this;
+    }
+
+    /**
+     * Get the fileName property: The name of the file export got written to.
      *
      * @return the fileName value.
      */
-    String fileName();
+    public String fileName() {
+        return this.fileName;
+    }
 
     /**
-     * Gets the runSettings property: The export settings that were in effect for this execution.
+     * Set the fileName property: The name of the file export got written to.
+     *
+     * @param fileName the fileName value to set.
+     * @return the ExportExecution object itself.
+     */
+    public ExportExecution withFileName(String fileName) {
+        this.fileName = fileName;
+        return this;
+    }
+
+    /**
+     * Get the runSettings property: The common properties of the export.
      *
      * @return the runSettings value.
      */
-    CommonExportProperties runSettings();
+    public CommonExportProperties runSettings() {
+        return this.runSettings;
+    }
 
     /**
-     * Gets the error property: The details of any error.
+     * Set the runSettings property: The common properties of the export.
      *
-     * @return the error value.
+     * @param runSettings the runSettings value to set.
+     * @return the ExportExecution object itself.
      */
-    ManagementError error();
+    public ExportExecution withRunSettings(CommonExportProperties runSettings) {
+        this.runSettings = runSettings;
+        return this;
+    }
 
     /**
-     * Gets the etag property: eTag of the resource. To handle concurrent update scenario, this field will be used to
-     * determine whether the user is updating the latest version or not.
+     * Get the tags property: Resource tags.
      *
-     * @return the etag value.
+     * @return the tags value.
      */
-    String etag();
+    public Map<String, String> tags() {
+        return this.tags;
+    }
 
     /**
-     * Gets the inner com.azure.resourcemanager.costmanagement.fluent.models.ExportExecutionInner object.
+     * Validates the instance.
      *
-     * @return the inner object.
+     * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    ExportExecutionInner innerModel();
+    public void validate() {
+        if (runSettings() != null) {
+            runSettings().validate();
+        }
+    }
 }

@@ -25,6 +25,7 @@ import com.azure.cosmos.implementation.SessionTokenHelper;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.math.NumberUtils;
+import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -74,6 +75,10 @@ public class StoreClient implements IStoreClient {
             useMultipleWriteLocations);
     }
 
+    public void enableThroughputControl(ThroughputControlStore throughputControlStore) {
+        this.replicatedResourceClient.enableThroughputControl(throughputControlStore);
+    }
+
     @Override
     public Mono<RxDocumentServiceResponse> processMessageAsync(RxDocumentServiceRequest request, IRetryPolicy retryPolicy, Function<RxDocumentServiceRequest, Mono<RxDocumentServiceRequest>> prepareRequestAsyncDelegate) {
         if (request == null) {
@@ -100,7 +105,7 @@ public class StoreClient implements IStoreClient {
                         return;
                     }
 
-                    BridgeInternal.recordRetryContext(request.requestContext.cosmosDiagnostics, request);
+                    BridgeInternal.recordRetryContextEndTime(request.requestContext.cosmosDiagnostics);
                     exception = BridgeInternal.setCosmosDiagnostics(exception, request.requestContext.cosmosDiagnostics);
 
                     handleUnsuccessfulStoreResponse(request, exception);
@@ -147,7 +152,7 @@ public class StoreClient implements IStoreClient {
 
         this.updateResponseHeader(request, headers);
         this.captureSessionToken(request, headers);
-        BridgeInternal.recordRetryContext(request.requestContext.cosmosDiagnostics, request);
+        BridgeInternal.recordRetryContextEndTime(request.requestContext.cosmosDiagnostics);
         storeResponse.setCosmosDiagnostics(request.requestContext.cosmosDiagnostics);
         return new RxDocumentServiceResponse(this.diagnosticsClientContext, storeResponse);
     }

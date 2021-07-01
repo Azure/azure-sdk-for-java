@@ -9,10 +9,9 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.storage.blob.models.PageList;
 
-/**
- * Contains all response data for the getPageRangesDiff operation.
- */
-public final class PageBlobsGetPageRangesDiffResponse extends ResponseBase<PageBlobGetPageRangesDiffHeaders, PageList> {
+/** Contains all response data for the getPageRangesDiff operation. */
+public final class PageBlobsGetPageRangesDiffResponse
+        extends ResponseBase<PageBlobsGetPageRangesDiffHeaders, PageList> {
     /**
      * Creates an instance of PageBlobsGetPageRangesDiffResponse.
      *
@@ -22,13 +21,16 @@ public final class PageBlobsGetPageRangesDiffResponse extends ResponseBase<PageB
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public PageBlobsGetPageRangesDiffResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, PageList value, PageBlobGetPageRangesDiffHeaders headers) {
+    public PageBlobsGetPageRangesDiffResponse(
+            HttpRequest request,
+            int statusCode,
+            HttpHeaders rawHeaders,
+            PageList value,
+            PageBlobsGetPageRangesDiffHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 
-    /**
-     * @return the deserialized response body.
-     */
+    /** @return the deserialized response body. */
     @Override
     public PageList getValue() {
         return super.getValue();

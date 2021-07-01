@@ -4,13 +4,13 @@
 
 package com.azure.resourcemanager.hdinsight.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ClusterIdentityUserAssignedIdentities model. */
-@Immutable
+@Fluent
 public final class ClusterIdentityUserAssignedIdentities {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterIdentityUserAssignedIdentities.class);
 
@@ -25,6 +25,12 @@ public final class ClusterIdentityUserAssignedIdentities {
      */
     @JsonProperty(value = "clientId", access = JsonProperty.Access.WRITE_ONLY)
     private String clientId;
+
+    /*
+     * The tenant id of user assigned identity.
+     */
+    @JsonProperty(value = "tenantId")
+    private String tenantId;
 
     /**
      * Get the principalId property: The principal id of user assigned identity.
@@ -42,6 +48,26 @@ public final class ClusterIdentityUserAssignedIdentities {
      */
     public String clientId() {
         return this.clientId;
+    }
+
+    /**
+     * Get the tenantId property: The tenant id of user assigned identity.
+     *
+     * @return the tenantId value.
+     */
+    public String tenantId() {
+        return this.tenantId;
+    }
+
+    /**
+     * Set the tenantId property: The tenant id of user assigned identity.
+     *
+     * @param tenantId the tenantId value to set.
+     * @return the ClusterIdentityUserAssignedIdentities object itself.
+     */
+    public ClusterIdentityUserAssignedIdentities withTenantId(String tenantId) {
+        this.tenantId = tenantId;
+        return this;
     }
 
     /**

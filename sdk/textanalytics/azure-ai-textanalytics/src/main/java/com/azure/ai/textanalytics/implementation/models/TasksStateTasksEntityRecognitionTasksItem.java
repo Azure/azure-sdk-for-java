@@ -13,7 +13,7 @@ public final class TasksStateTasksEntityRecognitionTasksItem extends TaskState {
     /*
      * The results property.
      */
-    @JsonProperty(value = "results", required = true)
+    @JsonProperty(value = "results")
     private EntitiesResult results;
 
     /**

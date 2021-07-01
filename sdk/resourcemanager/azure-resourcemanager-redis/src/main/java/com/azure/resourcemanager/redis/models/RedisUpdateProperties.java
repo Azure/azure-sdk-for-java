@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /** Patchable properties of the redis cache. */
 @Fluent
@@ -37,6 +38,55 @@ public final class RedisUpdateProperties extends RedisCommonProperties {
      */
     public RedisUpdateProperties withSku(Sku sku) {
         this.sku = sku;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RedisUpdateProperties withRedisConfiguration(Map<String, String> redisConfiguration) {
+        super.withRedisConfiguration(redisConfiguration);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RedisUpdateProperties withEnableNonSslPort(Boolean enableNonSslPort) {
+        super.withEnableNonSslPort(enableNonSslPort);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RedisUpdateProperties withReplicasPerMaster(Integer replicasPerMaster) {
+        super.withReplicasPerMaster(replicasPerMaster);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RedisUpdateProperties withTenantSettings(Map<String, String> tenantSettings) {
+        super.withTenantSettings(tenantSettings);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RedisUpdateProperties withShardCount(Integer shardCount) {
+        super.withShardCount(shardCount);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RedisUpdateProperties withMinimumTlsVersion(TlsVersion minimumTlsVersion) {
+        super.withMinimumTlsVersion(minimumTlsVersion);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RedisUpdateProperties withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        super.withPublicNetworkAccess(publicNetworkAccess);
         return this;
     }
 

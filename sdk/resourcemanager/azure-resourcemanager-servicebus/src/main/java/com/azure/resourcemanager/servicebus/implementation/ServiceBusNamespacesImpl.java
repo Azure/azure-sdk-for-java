@@ -6,7 +6,7 @@ package com.azure.resourcemanager.servicebus.implementation;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
 import com.azure.resourcemanager.servicebus.fluent.NamespacesClient;
-import com.azure.resourcemanager.servicebus.fluent.models.NamespaceResourceInner;
+import com.azure.resourcemanager.servicebus.fluent.models.SBNamespaceInner;
 import com.azure.resourcemanager.servicebus.models.CheckNameAvailabilityResult;
 import com.azure.resourcemanager.servicebus.models.ServiceBusNamespace;
 import com.azure.resourcemanager.servicebus.models.ServiceBusNamespaces;
@@ -18,7 +18,7 @@ import reactor.core.publisher.Mono;
 public final class ServiceBusNamespacesImpl extends TopLevelModifiableResourcesImpl<
     ServiceBusNamespace,
     ServiceBusNamespaceImpl,
-    NamespaceResourceInner,
+    SBNamespaceInner,
     NamespacesClient,
     ServiceBusManager>
     implements ServiceBusNamespaces {
@@ -46,12 +46,12 @@ public final class ServiceBusNamespacesImpl extends TopLevelModifiableResourcesI
     @Override
     protected ServiceBusNamespaceImpl wrapModel(String name) {
         return new ServiceBusNamespaceImpl(name,
-                new NamespaceResourceInner(),
+                new SBNamespaceInner(),
                 this.manager());
     }
 
     @Override
-    protected ServiceBusNamespaceImpl wrapModel(NamespaceResourceInner inner) {
+    protected ServiceBusNamespaceImpl wrapModel(SBNamespaceInner inner) {
         return new ServiceBusNamespaceImpl(inner.name(),
                 inner,
                 this.manager());

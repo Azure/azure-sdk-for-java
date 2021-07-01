@@ -16,14 +16,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Specifies information about the gallery Image Version that you want to create or update. */
+/** Specifies information about the gallery image version that you want to create or update. */
 @JsonFlatten
 @Fluent
 public class GalleryImageVersionInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryImageVersionInner.class);
 
     /*
-     * Describes the basic gallery artifact publishing profile.
+     * The publishing profile of a gallery image Version.
      */
     @JsonProperty(value = "properties.publishingProfile")
     private GalleryImageVersionPublishingProfile publishingProfile;
@@ -41,13 +41,13 @@ public class GalleryImageVersionInner extends Resource {
     private GalleryImageVersionStorageProfile storageProfile;
 
     /*
-     * This is the replication status of the gallery Image Version.
+     * This is the replication status of the gallery image version.
      */
     @JsonProperty(value = "properties.replicationStatus", access = JsonProperty.Access.WRITE_ONLY)
     private ReplicationStatus replicationStatus;
 
     /**
-     * Get the publishingProfile property: Describes the basic gallery artifact publishing profile.
+     * Get the publishingProfile property: The publishing profile of a gallery image Version.
      *
      * @return the publishingProfile value.
      */
@@ -56,7 +56,7 @@ public class GalleryImageVersionInner extends Resource {
     }
 
     /**
-     * Set the publishingProfile property: Describes the basic gallery artifact publishing profile.
+     * Set the publishingProfile property: The publishing profile of a gallery image Version.
      *
      * @param publishingProfile the publishingProfile value to set.
      * @return the GalleryImageVersionInner object itself.
@@ -96,7 +96,7 @@ public class GalleryImageVersionInner extends Resource {
     }
 
     /**
-     * Get the replicationStatus property: This is the replication status of the gallery Image Version.
+     * Get the replicationStatus property: This is the replication status of the gallery image version.
      *
      * @return the replicationStatus value.
      */

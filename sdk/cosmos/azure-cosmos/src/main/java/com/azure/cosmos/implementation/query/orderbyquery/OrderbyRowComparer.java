@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.query.orderbyquery;
 
+import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.query.ItemComparator;
 import com.azure.cosmos.implementation.query.ItemType;
 import com.azure.cosmos.implementation.query.ItemTypeHelper;
@@ -55,9 +56,6 @@ public final class OrderbyRowComparer<T> implements Comparator<OrderByRowResult<
                 }
             }
 
-            this.checkOrderByItemType(result1);
-            this.checkOrderByItemType(result2);
-
             for (int i = 0; i < result1.size(); ++i) {
                 int cmp = ItemComparator.getInstance().compare(result1.get(i).getItem(), result2.get(i).getItem());
                 if (cmp != 0) {
@@ -70,7 +68,8 @@ public final class OrderbyRowComparer<T> implements Comparator<OrderByRowResult<
                 }
             }
 
-            return r1.getSourcePartitionKeyRange().getMinInclusive().compareTo(r2.getSourcePartitionKeyRange().getMinInclusive());
+            return r1.getSourceRange().getRange().getMin()
+                       .compareTo(r2.getSourceRange().getRange().getMin());
         } catch (Exception e) {
             // Due to a bug in rxjava-extras <= 0.8.0.15 dependency,
             // if OrderbyRowComparer throws an unexpected exception,
@@ -80,16 +79,6 @@ public final class OrderbyRowComparer<T> implements Comparator<OrderByRowResult<
             // we are also capturing the exception stacktrace here
             logger.error("Orderby Row comparision failed {}, {}", r1.toJson(), r2.toJson(), e);
             throw e;
-        }
-    }
-
-    private void checkOrderByItemType(List<QueryItem> orderByItems) {
-        for (int i = 0; i < this.itemTypes.size(); ++i) {
-            ItemType type = ItemTypeHelper.getOrderByItemType(orderByItems.get(i).getItem());
-            if (type != this.itemTypes.get(i)) {
-                throw new UnsupportedOperationException(
-                        String.format("Expected %s, but got %s.", this.itemTypes.get(i).toString(), type.toString()));
-            }
         }
     }
 

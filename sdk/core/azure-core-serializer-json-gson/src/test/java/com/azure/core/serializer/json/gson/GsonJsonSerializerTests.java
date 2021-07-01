@@ -34,6 +34,20 @@ public class GsonJsonSerializerTests {
         .build();
 
     @Test
+    public void deserializeNullInputStreamReturnsNull() {
+        StepVerifier.create(DEFAULT_SERIALIZER
+            .deserializeAsync((InputStream) null, TypeReference.createInstance(Person.class)))
+            .verifyComplete();
+    }
+
+    @Test
+    public void deserializeNullByteArrayReturnsNull() {
+        StepVerifier.create(DEFAULT_SERIALIZER
+            .deserializeFromBytesAsync((byte[]) null, TypeReference.createInstance(Person.class)))
+            .verifyComplete();
+    }
+
+    @Test
     public void deserializeWithDefaultSerializer() {
         String json = "{\"name\":null,\"age\":50}";
         Person expected = new Person(null, 50);

@@ -7,6 +7,7 @@ package com.azure.resourcemanager.mediaservices.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mediaservices.models.CrossSiteAccessPolicies;
 import com.azure.resourcemanager.mediaservices.models.LiveEventEncoding;
@@ -26,6 +27,12 @@ import java.util.Map;
 @Fluent
 public class LiveEventInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(LiveEventInner.class);
+
+    /*
+     * The system metadata relating to this resource.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /*
      * A description for the live event.
@@ -119,6 +126,15 @@ public class LiveEventInner extends Resource {
      */
     @JsonProperty(value = "properties.lastModified", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastModified;
+
+    /**
+     * Get the systemData property: The system metadata relating to this resource.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
 
     /**
      * Get the description property: A description for the live event.

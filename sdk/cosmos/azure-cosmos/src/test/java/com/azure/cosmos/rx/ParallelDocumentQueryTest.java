@@ -50,7 +50,7 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-import static com.azure.cosmos.models.ModelBridgeInternal.partitionKeyRangeIdInternal;
+import static com.azure.cosmos.models.ModelBridgeInternal.setPartitionKeyRangeIdInternal;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
 import static org.testng.Assert.fail;
@@ -228,7 +228,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
                 .map(Resource::getId).collectList().single().block()) {
             String query = "SELECT * from root";
             CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
-            partitionKeyRangeIdInternal(options, partitionKeyRangeId);
+            setPartitionKeyRangeIdInternal(options, partitionKeyRangeId);
             int queryResultCount = createdCollection.queryItems(query, options, InternalObjectNode.class)
                 .byPage()
                 .flatMap(p -> Flux.fromIterable(p.getResults()))

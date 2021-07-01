@@ -8,10 +8,8 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 
-/**
- * Contains all response data for the getTags operation.
- */
-public final class BlobsGetTagsResponse extends ResponseBase<BlobGetTagsHeaders, BlobTags> {
+/** Contains all response data for the getTags operation. */
+public final class BlobsGetTagsResponse extends ResponseBase<BlobsGetTagsHeaders, BlobTags> {
     /**
      * Creates an instance of BlobsGetTagsResponse.
      *
@@ -21,13 +19,12 @@ public final class BlobsGetTagsResponse extends ResponseBase<BlobGetTagsHeaders,
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public BlobsGetTagsResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, BlobTags value, BlobGetTagsHeaders headers) {
+    public BlobsGetTagsResponse(
+            HttpRequest request, int statusCode, HttpHeaders rawHeaders, BlobTags value, BlobsGetTagsHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 
-    /**
-     * @return the deserialized response body.
-     */
+    /** @return the deserialized response body. */
     @Override
     public BlobTags getValue() {
         return super.getValue();

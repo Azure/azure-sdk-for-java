@@ -9,6 +9,8 @@ import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.redis.models.ProvisioningState;
+import com.azure.resourcemanager.redis.models.PublicNetworkAccess;
+import com.azure.resourcemanager.redis.models.RedisInstanceDetails;
 import com.azure.resourcemanager.redis.models.RedisLinkedServer;
 import com.azure.resourcemanager.redis.models.Sku;
 import com.azure.resourcemanager.redis.models.TlsVersion;
@@ -45,6 +47,12 @@ public class RedisResourceInner extends Resource {
     private Boolean enableNonSslPort;
 
     /*
+     * The number of replicas to be created per master.
+     */
+    @JsonProperty(value = "properties.replicasPerMaster")
+    private Integer replicasPerMaster;
+
+    /*
      * A dictionary of tenant settings
      */
     @JsonProperty(value = "properties.tenantSettings")
@@ -62,6 +70,15 @@ public class RedisResourceInner extends Resource {
      */
     @JsonProperty(value = "properties.minimumTlsVersion")
     private TlsVersion minimumTlsVersion;
+
+    /*
+     * Whether or not public endpoint access is allowed for this cache.  Value
+     * is optional but if passed in, must be 'Enabled' or 'Disabled'. If
+     * 'Disabled', private endpoints are the exclusive access method. Default
+     * value is 'Enabled'
+     */
+    @JsonProperty(value = "properties.publicNetworkAccess")
+    private PublicNetworkAccess publicNetworkAccess;
 
     /*
      * The SKU of the Redis cache to deploy.
@@ -126,6 +143,19 @@ public class RedisResourceInner extends Resource {
      */
     @JsonProperty(value = "properties.linkedServers", access = JsonProperty.Access.WRITE_ONLY)
     private List<RedisLinkedServer> linkedServers;
+
+    /*
+     * List of the Redis instances associated with the cache
+     */
+    @JsonProperty(value = "properties.instances", access = JsonProperty.Access.WRITE_ONLY)
+    private List<RedisInstanceDetails> instances;
+
+    /*
+     * List of private endpoint connection associated with the specified redis
+     * cache
+     */
+    @JsonProperty(value = "properties.privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
+    private List<PrivateEndpointConnectionInner> privateEndpointConnections;
 
     /**
      * Get the zones property: A list of availability zones denoting where the resource needs to come from.
@@ -192,6 +222,26 @@ public class RedisResourceInner extends Resource {
     }
 
     /**
+     * Get the replicasPerMaster property: The number of replicas to be created per master.
+     *
+     * @return the replicasPerMaster value.
+     */
+    public Integer replicasPerMaster() {
+        return this.replicasPerMaster;
+    }
+
+    /**
+     * Set the replicasPerMaster property: The number of replicas to be created per master.
+     *
+     * @param replicasPerMaster the replicasPerMaster value to set.
+     * @return the RedisResourceInner object itself.
+     */
+    public RedisResourceInner withReplicasPerMaster(Integer replicasPerMaster) {
+        this.replicasPerMaster = replicasPerMaster;
+        return this;
+    }
+
+    /**
      * Get the tenantSettings property: A dictionary of tenant settings.
      *
      * @return the tenantSettings value.
@@ -250,6 +300,30 @@ public class RedisResourceInner extends Resource {
      */
     public RedisResourceInner withMinimumTlsVersion(TlsVersion minimumTlsVersion) {
         this.minimumTlsVersion = minimumTlsVersion;
+        return this;
+    }
+
+    /**
+     * Get the publicNetworkAccess property: Whether or not public endpoint access is allowed for this cache. Value is
+     * optional but if passed in, must be 'Enabled' or 'Disabled'. If 'Disabled', private endpoints are the exclusive
+     * access method. Default value is 'Enabled'.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.publicNetworkAccess;
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Whether or not public endpoint access is allowed for this cache. Value is
+     * optional but if passed in, must be 'Enabled' or 'Disabled'. If 'Disabled', private endpoints are the exclusive
+     * access method. Default value is 'Enabled'.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the RedisResourceInner object itself.
+     */
+    public RedisResourceInner withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        this.publicNetworkAccess = publicNetworkAccess;
         return this;
     }
 
@@ -384,6 +458,39 @@ public class RedisResourceInner extends Resource {
     }
 
     /**
+     * Get the instances property: List of the Redis instances associated with the cache.
+     *
+     * @return the instances value.
+     */
+    public List<RedisInstanceDetails> instances() {
+        return this.instances;
+    }
+
+    /**
+     * Get the privateEndpointConnections property: List of private endpoint connection associated with the specified
+     * redis cache.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
+        return this.privateEndpointConnections;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RedisResourceInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RedisResourceInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -401,6 +508,12 @@ public class RedisResourceInner extends Resource {
         }
         if (linkedServers() != null) {
             linkedServers().forEach(e -> e.validate());
+        }
+        if (instances() != null) {
+            instances().forEach(e -> e.validate());
+        }
+        if (privateEndpointConnections() != null) {
+            privateEndpointConnections().forEach(e -> e.validate());
         }
     }
 }

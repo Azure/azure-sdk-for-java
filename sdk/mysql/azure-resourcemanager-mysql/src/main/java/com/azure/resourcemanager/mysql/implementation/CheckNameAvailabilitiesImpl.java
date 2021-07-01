@@ -8,7 +8,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.mysql.MySqlManager;
 import com.azure.resourcemanager.mysql.fluent.CheckNameAvailabilitiesClient;
 import com.azure.resourcemanager.mysql.fluent.models.NameAvailabilityInner;
 import com.azure.resourcemanager.mysql.models.CheckNameAvailabilities;
@@ -21,9 +20,10 @@ public final class CheckNameAvailabilitiesImpl implements CheckNameAvailabilitie
 
     private final CheckNameAvailabilitiesClient innerClient;
 
-    private final MySqlManager serviceManager;
+    private final com.azure.resourcemanager.mysql.MySqlManager serviceManager;
 
-    public CheckNameAvailabilitiesImpl(CheckNameAvailabilitiesClient innerClient, MySqlManager serviceManager) {
+    public CheckNameAvailabilitiesImpl(
+        CheckNameAvailabilitiesClient innerClient, com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -56,7 +56,7 @@ public final class CheckNameAvailabilitiesImpl implements CheckNameAvailabilitie
         return this.innerClient;
     }
 
-    private MySqlManager manager() {
+    private com.azure.resourcemanager.mysql.MySqlManager manager() {
         return this.serviceManager;
     }
 }

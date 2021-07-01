@@ -27,10 +27,22 @@ public final class SysctlConfig {
     private Integer netCoreNetdevMaxBacklog;
 
     /*
+     * Sysctl setting net.core.rmem_default.
+     */
+    @JsonProperty(value = "netCoreRmemDefault")
+    private Integer netCoreRmemDefault;
+
+    /*
      * Sysctl setting net.core.rmem_max.
      */
     @JsonProperty(value = "netCoreRmemMax")
     private Integer netCoreRmemMax;
+
+    /*
+     * Sysctl setting net.core.wmem_default.
+     */
+    @JsonProperty(value = "netCoreWmemDefault")
+    private Integer netCoreWmemDefault;
 
     /*
      * Sysctl setting net.core.wmem_max.
@@ -79,18 +91,6 @@ public final class SysctlConfig {
      */
     @JsonProperty(value = "netIpv4TcpkeepaliveIntvl")
     private Integer netIpv4TcpkeepaliveIntvl;
-
-    /*
-     * Sysctl setting net.ipv4.tcp_rmem.
-     */
-    @JsonProperty(value = "netIpv4TcpRmem")
-    private Integer netIpv4TcpRmem;
-
-    /*
-     * Sysctl setting net.ipv4.tcp_wmem.
-     */
-    @JsonProperty(value = "netIpv4TcpWmem")
-    private Integer netIpv4TcpWmem;
 
     /*
      * Sysctl setting net.ipv4.tcp_tw_reuse.
@@ -223,6 +223,26 @@ public final class SysctlConfig {
     }
 
     /**
+     * Get the netCoreRmemDefault property: Sysctl setting net.core.rmem_default.
+     *
+     * @return the netCoreRmemDefault value.
+     */
+    public Integer netCoreRmemDefault() {
+        return this.netCoreRmemDefault;
+    }
+
+    /**
+     * Set the netCoreRmemDefault property: Sysctl setting net.core.rmem_default.
+     *
+     * @param netCoreRmemDefault the netCoreRmemDefault value to set.
+     * @return the SysctlConfig object itself.
+     */
+    public SysctlConfig withNetCoreRmemDefault(Integer netCoreRmemDefault) {
+        this.netCoreRmemDefault = netCoreRmemDefault;
+        return this;
+    }
+
+    /**
      * Get the netCoreRmemMax property: Sysctl setting net.core.rmem_max.
      *
      * @return the netCoreRmemMax value.
@@ -239,6 +259,26 @@ public final class SysctlConfig {
      */
     public SysctlConfig withNetCoreRmemMax(Integer netCoreRmemMax) {
         this.netCoreRmemMax = netCoreRmemMax;
+        return this;
+    }
+
+    /**
+     * Get the netCoreWmemDefault property: Sysctl setting net.core.wmem_default.
+     *
+     * @return the netCoreWmemDefault value.
+     */
+    public Integer netCoreWmemDefault() {
+        return this.netCoreWmemDefault;
+    }
+
+    /**
+     * Set the netCoreWmemDefault property: Sysctl setting net.core.wmem_default.
+     *
+     * @param netCoreWmemDefault the netCoreWmemDefault value to set.
+     * @return the SysctlConfig object itself.
+     */
+    public SysctlConfig withNetCoreWmemDefault(Integer netCoreWmemDefault) {
+        this.netCoreWmemDefault = netCoreWmemDefault;
         return this;
     }
 
@@ -399,46 +439,6 @@ public final class SysctlConfig {
      */
     public SysctlConfig withNetIpv4TcpkeepaliveIntvl(Integer netIpv4TcpkeepaliveIntvl) {
         this.netIpv4TcpkeepaliveIntvl = netIpv4TcpkeepaliveIntvl;
-        return this;
-    }
-
-    /**
-     * Get the netIpv4TcpRmem property: Sysctl setting net.ipv4.tcp_rmem.
-     *
-     * @return the netIpv4TcpRmem value.
-     */
-    public Integer netIpv4TcpRmem() {
-        return this.netIpv4TcpRmem;
-    }
-
-    /**
-     * Set the netIpv4TcpRmem property: Sysctl setting net.ipv4.tcp_rmem.
-     *
-     * @param netIpv4TcpRmem the netIpv4TcpRmem value to set.
-     * @return the SysctlConfig object itself.
-     */
-    public SysctlConfig withNetIpv4TcpRmem(Integer netIpv4TcpRmem) {
-        this.netIpv4TcpRmem = netIpv4TcpRmem;
-        return this;
-    }
-
-    /**
-     * Get the netIpv4TcpWmem property: Sysctl setting net.ipv4.tcp_wmem.
-     *
-     * @return the netIpv4TcpWmem value.
-     */
-    public Integer netIpv4TcpWmem() {
-        return this.netIpv4TcpWmem;
-    }
-
-    /**
-     * Set the netIpv4TcpWmem property: Sysctl setting net.ipv4.tcp_wmem.
-     *
-     * @param netIpv4TcpWmem the netIpv4TcpWmem value to set.
-     * @return the SysctlConfig object itself.
-     */
-    public SysctlConfig withNetIpv4TcpWmem(Integer netIpv4TcpWmem) {
-        this.netIpv4TcpWmem = netIpv4TcpWmem;
         return this;
     }
 

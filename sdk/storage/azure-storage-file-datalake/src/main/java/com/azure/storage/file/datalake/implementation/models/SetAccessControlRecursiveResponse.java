@@ -6,11 +6,12 @@ package com.azure.storage.file.datalake.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import java.util.ArrayList;
 import java.util.List;
 
-/**
- * The SetAccessControlRecursiveResponse model.
- */
+/** The SetAccessControlRecursiveResponse model. */
+@JacksonXmlRootElement(localName = "SetAccessControlRecursiveResponse")
 @Fluent
 public final class SetAccessControlRecursiveResponse {
     /*
@@ -34,12 +35,11 @@ public final class SetAccessControlRecursiveResponse {
     /*
      * The failedEntries property.
      */
-    @JsonProperty(value = "failedEntries")
-    private List<AclFailedEntry> failedEntries;
+    @JsonProperty("failedEntries")
+    private List<AclFailedEntry> failedEntries = new ArrayList<>();
 
     /**
-     * Get the directoriesSuccessful property: The directoriesSuccessful
-     * property.
+     * Get the directoriesSuccessful property: The directoriesSuccessful property.
      *
      * @return the directoriesSuccessful value.
      */
@@ -48,8 +48,7 @@ public final class SetAccessControlRecursiveResponse {
     }
 
     /**
-     * Set the directoriesSuccessful property: The directoriesSuccessful
-     * property.
+     * Set the directoriesSuccessful property: The directoriesSuccessful property.
      *
      * @param directoriesSuccessful the directoriesSuccessful value to set.
      * @return the SetAccessControlRecursiveResponse object itself.

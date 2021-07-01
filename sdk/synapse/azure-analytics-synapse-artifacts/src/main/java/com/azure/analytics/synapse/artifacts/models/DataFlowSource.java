@@ -16,6 +16,18 @@ public final class DataFlowSource extends Transformation {
     @JsonProperty(value = "dataset")
     private DatasetReference dataset;
 
+    /*
+     * Linked service reference.
+     */
+    @JsonProperty(value = "linkedService")
+    private LinkedServiceReference linkedService;
+
+    /*
+     * Schema linked service reference.
+     */
+    @JsonProperty(value = "schemaLinkedService")
+    private LinkedServiceReference schemaLinkedService;
+
     /**
      * Get the dataset property: Dataset reference.
      *
@@ -33,6 +45,46 @@ public final class DataFlowSource extends Transformation {
      */
     public DataFlowSource setDataset(DatasetReference dataset) {
         this.dataset = dataset;
+        return this;
+    }
+
+    /**
+     * Get the linkedService property: Linked service reference.
+     *
+     * @return the linkedService value.
+     */
+    public LinkedServiceReference getLinkedService() {
+        return this.linkedService;
+    }
+
+    /**
+     * Set the linkedService property: Linked service reference.
+     *
+     * @param linkedService the linkedService value to set.
+     * @return the DataFlowSource object itself.
+     */
+    public DataFlowSource setLinkedService(LinkedServiceReference linkedService) {
+        this.linkedService = linkedService;
+        return this;
+    }
+
+    /**
+     * Get the schemaLinkedService property: Schema linked service reference.
+     *
+     * @return the schemaLinkedService value.
+     */
+    public LinkedServiceReference getSchemaLinkedService() {
+        return this.schemaLinkedService;
+    }
+
+    /**
+     * Set the schemaLinkedService property: Schema linked service reference.
+     *
+     * @param schemaLinkedService the schemaLinkedService value to set.
+     * @return the DataFlowSource object itself.
+     */
+    public DataFlowSource setSchemaLinkedService(LinkedServiceReference schemaLinkedService) {
+        this.schemaLinkedService = schemaLinkedService;
         return this;
     }
 }

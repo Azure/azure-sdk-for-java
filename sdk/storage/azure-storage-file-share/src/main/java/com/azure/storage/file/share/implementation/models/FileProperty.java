@@ -5,12 +5,12 @@
 package com.azure.storage.file.share.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.DateTimeRfc1123;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import java.time.OffsetDateTime;
 
-/**
- * File properties.
- */
+/** File properties. */
 @JacksonXmlRootElement(localName = "FileProperty")
 @Fluent
 public final class FileProperty {
@@ -24,12 +24,46 @@ public final class FileProperty {
     @JsonProperty(value = "Content-Length", required = true)
     private long contentLength;
 
+    /*
+     * The CreationTime property.
+     */
+    @JsonProperty(value = "CreationTime")
+    private OffsetDateTime creationTime;
+
+    /*
+     * The LastAccessTime property.
+     */
+    @JsonProperty(value = "LastAccessTime")
+    private OffsetDateTime lastAccessTime;
+
+    /*
+     * The LastWriteTime property.
+     */
+    @JsonProperty(value = "LastWriteTime")
+    private OffsetDateTime lastWriteTime;
+
+    /*
+     * The ChangeTime property.
+     */
+    @JsonProperty(value = "ChangeTime")
+    private OffsetDateTime changeTime;
+
+    /*
+     * The Last-Modified property.
+     */
+    @JsonProperty(value = "Last-Modified")
+    private DateTimeRfc1123 lastModified;
+
+    /*
+     * The Etag property.
+     */
+    @JsonProperty(value = "Etag")
+    private String etag;
+
     /**
-     * Get the contentLength property: Content length of the file. This value
-     * may not be up-to-date since an SMB client may have modified the file
-     * locally. The value of Content-Length may not reflect that fact until the
-     * handle is closed or the op-lock is broken. To retrieve current property
-     * values, call Get File Properties.
+     * Get the contentLength property: Content length of the file. This value may not be up-to-date since an SMB client
+     * may have modified the file locally. The value of Content-Length may not reflect that fact until the handle is
+     * closed or the op-lock is broken. To retrieve current property values, call Get File Properties.
      *
      * @return the contentLength value.
      */
@@ -38,17 +72,142 @@ public final class FileProperty {
     }
 
     /**
-     * Set the contentLength property: Content length of the file. This value
-     * may not be up-to-date since an SMB client may have modified the file
-     * locally. The value of Content-Length may not reflect that fact until the
-     * handle is closed or the op-lock is broken. To retrieve current property
-     * values, call Get File Properties.
+     * Set the contentLength property: Content length of the file. This value may not be up-to-date since an SMB client
+     * may have modified the file locally. The value of Content-Length may not reflect that fact until the handle is
+     * closed or the op-lock is broken. To retrieve current property values, call Get File Properties.
      *
      * @param contentLength the contentLength value to set.
      * @return the FileProperty object itself.
      */
     public FileProperty setContentLength(long contentLength) {
         this.contentLength = contentLength;
+        return this;
+    }
+
+    /**
+     * Get the creationTime property: The CreationTime property.
+     *
+     * @return the creationTime value.
+     */
+    public OffsetDateTime getCreationTime() {
+        return this.creationTime;
+    }
+
+    /**
+     * Set the creationTime property: The CreationTime property.
+     *
+     * @param creationTime the creationTime value to set.
+     * @return the FileProperty object itself.
+     */
+    public FileProperty setCreationTime(OffsetDateTime creationTime) {
+        this.creationTime = creationTime;
+        return this;
+    }
+
+    /**
+     * Get the lastAccessTime property: The LastAccessTime property.
+     *
+     * @return the lastAccessTime value.
+     */
+    public OffsetDateTime getLastAccessTime() {
+        return this.lastAccessTime;
+    }
+
+    /**
+     * Set the lastAccessTime property: The LastAccessTime property.
+     *
+     * @param lastAccessTime the lastAccessTime value to set.
+     * @return the FileProperty object itself.
+     */
+    public FileProperty setLastAccessTime(OffsetDateTime lastAccessTime) {
+        this.lastAccessTime = lastAccessTime;
+        return this;
+    }
+
+    /**
+     * Get the lastWriteTime property: The LastWriteTime property.
+     *
+     * @return the lastWriteTime value.
+     */
+    public OffsetDateTime getLastWriteTime() {
+        return this.lastWriteTime;
+    }
+
+    /**
+     * Set the lastWriteTime property: The LastWriteTime property.
+     *
+     * @param lastWriteTime the lastWriteTime value to set.
+     * @return the FileProperty object itself.
+     */
+    public FileProperty setLastWriteTime(OffsetDateTime lastWriteTime) {
+        this.lastWriteTime = lastWriteTime;
+        return this;
+    }
+
+    /**
+     * Get the changeTime property: The ChangeTime property.
+     *
+     * @return the changeTime value.
+     */
+    public OffsetDateTime getChangeTime() {
+        return this.changeTime;
+    }
+
+    /**
+     * Set the changeTime property: The ChangeTime property.
+     *
+     * @param changeTime the changeTime value to set.
+     * @return the FileProperty object itself.
+     */
+    public FileProperty setChangeTime(OffsetDateTime changeTime) {
+        this.changeTime = changeTime;
+        return this;
+    }
+
+    /**
+     * Get the lastModified property: The Last-Modified property.
+     *
+     * @return the lastModified value.
+     */
+    public OffsetDateTime getLastModified() {
+        if (this.lastModified == null) {
+            return null;
+        }
+        return this.lastModified.getDateTime();
+    }
+
+    /**
+     * Set the lastModified property: The Last-Modified property.
+     *
+     * @param lastModified the lastModified value to set.
+     * @return the FileProperty object itself.
+     */
+    public FileProperty setLastModified(OffsetDateTime lastModified) {
+        if (lastModified == null) {
+            this.lastModified = null;
+        } else {
+            this.lastModified = new DateTimeRfc1123(lastModified);
+        }
+        return this;
+    }
+
+    /**
+     * Get the etag property: The Etag property.
+     *
+     * @return the etag value.
+     */
+    public String getEtag() {
+        return this.etag;
+    }
+
+    /**
+     * Set the etag property: The Etag property.
+     *
+     * @param etag the etag value to set.
+     * @return the FileProperty object itself.
+     */
+    public FileProperty setEtag(String etag) {
+        this.etag = etag;
         return this;
     }
 }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.mysql.implementation;
 
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.mysql.MySqlManager;
 import com.azure.resourcemanager.mysql.fluent.models.VirtualNetworkRuleInner;
 import com.azure.resourcemanager.mysql.models.VirtualNetworkRule;
 import com.azure.resourcemanager.mysql.models.VirtualNetworkRuleState;
@@ -14,7 +13,7 @@ public final class VirtualNetworkRuleImpl
     implements VirtualNetworkRule, VirtualNetworkRule.Definition, VirtualNetworkRule.Update {
     private VirtualNetworkRuleInner innerObject;
 
-    private final MySqlManager serviceManager;
+    private final com.azure.resourcemanager.mysql.MySqlManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -44,7 +43,7 @@ public final class VirtualNetworkRuleImpl
         return this.innerObject;
     }
 
-    private MySqlManager manager() {
+    private com.azure.resourcemanager.mysql.MySqlManager manager() {
         return this.serviceManager;
     }
 
@@ -78,7 +77,7 @@ public final class VirtualNetworkRuleImpl
         return this;
     }
 
-    VirtualNetworkRuleImpl(String name, MySqlManager serviceManager) {
+    VirtualNetworkRuleImpl(String name, com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
         this.innerObject = new VirtualNetworkRuleInner();
         this.serviceManager = serviceManager;
         this.virtualNetworkRuleName = name;
@@ -106,7 +105,8 @@ public final class VirtualNetworkRuleImpl
         return this;
     }
 
-    VirtualNetworkRuleImpl(VirtualNetworkRuleInner innerObject, MySqlManager serviceManager) {
+    VirtualNetworkRuleImpl(
+        VirtualNetworkRuleInner innerObject, com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");

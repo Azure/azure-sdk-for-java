@@ -13,8 +13,10 @@ import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.Permission;
 import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdMetrics;
+import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
 import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
@@ -23,6 +25,7 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
+import com.azure.cosmos.util.Beta;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
 import io.micrometer.core.instrument.MeterRegistry;
@@ -30,12 +33,15 @@ import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ServiceLoader;
+import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
  * Provides a client-side logical representation of the Azure Cosmos DB service.
@@ -89,6 +95,17 @@ public final class CosmosAsyncClient implements Closeable {
         this.clientTelemetryEnabled = builder.isClientTelemetryEnabled();
         this.contentResponseOnWriteEnabled = builder.isContentResponseOnWriteEnabled();
         this.tracerProvider = new TracerProvider(TRACER);
+
+        List<Permission> permissionList = new ArrayList<>();
+        if (this.permissions != null) {
+            permissionList =
+                this.permissions
+                    .stream()
+                    .map(permissionProperties -> ModelBridgeInternal.getPermission(permissionProperties))
+                    .filter(permission -> permission != null)
+                    .collect(Collectors.toList());
+        }
+
         this.asyncDocumentClient = new AsyncDocumentClient.Builder()
                                        .withServiceEndpoint(this.serviceEndpoint)
                                        .withMasterKeyOrResourceToken(this.keyOrResourceToken)
@@ -101,6 +118,8 @@ public final class CosmosAsyncClient implements Closeable {
                                        .withTransportClientSharing(this.enableTransportClientSharing)
                                        .withContentResponseOnWriteEnabled(this.contentResponseOnWriteEnabled)
                                        .withTokenCredential(this.tokenCredential)
+                                       .withState(builder.metadataCaches())
+                                       .withPermissionFeed(permissionList)
                                        .build();
     }
 
@@ -462,6 +481,28 @@ public final class CosmosAsyncClient implements Closeable {
 
     TracerProvider getTracerProvider(){
         return this.tracerProvider;
+    }
+
+    /**
+     * Enable throughput control group.
+     *
+     * @param group Throughput control group going to be enabled.
+     */
+    void enableThroughputControlGroup(ThroughputControlGroupInternal group) {
+        checkNotNull(group, "Throughput control group cannot be null");
+        this.asyncDocumentClient.enableThroughputControlGroup(group);
+    }
+
+    /**
+     * Create global throughput control config builder which will be used to build {@link GlobalThroughputControlConfig}.
+     *
+     * @param databaseId The database id of the control container.
+     * @param containerId The container id of the control container.
+     * @return A {@link GlobalThroughputControlConfigBuilder}.
+     */
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public GlobalThroughputControlConfigBuilder createGlobalThroughputControlConfigBuilder(String databaseId, String containerId) {
+        return new GlobalThroughputControlConfigBuilder(this, databaseId, containerId);
     }
 
     private CosmosPagedFlux<CosmosDatabaseProperties> queryDatabasesInternal(SqlQuerySpec querySpec, CosmosQueryRequestOptions options){

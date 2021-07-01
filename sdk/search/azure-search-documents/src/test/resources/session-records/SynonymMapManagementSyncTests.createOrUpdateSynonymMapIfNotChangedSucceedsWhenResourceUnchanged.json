@@ -1,0 +1,82 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.search.windows.net/synonymmaps('test-synonym41466fa4b209')?api-version=2020-06-30-Preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "f4915e47-3f1d-457a-a008-5355f69bc1c9",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "f4915e47-3f1d-457a-a008-5355f69bc1c9",
+      "StatusCode" : "201",
+      "Date" : "Fri, 02 Apr 2021 22:40:29 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "ETag" : "W/\"0x8D8F628512B1D4C\"",
+      "client-request-id" : "f4915e47-3f1d-457a-a008-5355f69bc1c9",
+      "elapsed-time" : "56",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "225",
+      "Body" : "{\"@odata.context\":\"https://alzimmer-test.search.windows.net/$metadata#synonymmaps/$entity\",\"@odata.etag\":\"\\\"0x8D8F628512B1D4C\\\"\",\"name\":\"test-synonym41466fa4b209\",\"format\":\"solr\",\"synonyms\":\"word1,word2\",\"encryptionKey\":null}",
+      "x-ms-client-request-id" : "f4915e47-3f1d-457a-a008-5355f69bc1c9",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal",
+      "Location" : "https://alzimmer-test.search.windows.net/synonymmaps('test-synonym41466fa4b209')?api-version=2020-06-30-Preview"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.search.windows.net/synonymmaps('test-synonym41466fa4b209')?api-version=2020-06-30-Preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "b3fd7a07-b629-4db3-86ba-e33a0534fc29",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "b3fd7a07-b629-4db3-86ba-e33a0534fc29",
+      "StatusCode" : "200",
+      "Date" : "Fri, 02 Apr 2021 22:40:29 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "ETag" : "W/\"0x8D8F628513446A8\"",
+      "client-request-id" : "b3fd7a07-b629-4db3-86ba-e33a0534fc29",
+      "elapsed-time" : "29",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "232",
+      "Body" : "{\"@odata.context\":\"https://alzimmer-test.search.windows.net/$metadata#synonymmaps/$entity\",\"@odata.etag\":\"\\\"0x8D8F628513446A8\\\"\",\"name\":\"test-synonym41466fa4b209\",\"format\":\"solr\",\"synonyms\":\"mutated1, mutated2\",\"encryptionKey\":null}",
+      "x-ms-client-request-id" : "b3fd7a07-b629-4db3-86ba-e33a0534fc29",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.search.windows.net/synonymmaps('test-synonym41466fa4b209')?api-version=2020-06-30-Preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "a5ce469b-fbb7-44ac-b2c3-6fe6c037729b"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "a5ce469b-fbb7-44ac-b2c3-6fe6c037729b",
+      "elapsed-time" : "61",
+      "Pragma" : "no-cache",
+      "Expires" : "-1",
+      "retry-after" : "0",
+      "request-id" : "a5ce469b-fbb7-44ac-b2c3-6fe6c037729b",
+      "StatusCode" : "204",
+      "x-ms-client-request-id" : "a5ce469b-fbb7-44ac-b2c3-6fe6c037729b",
+      "Date" : "Fri, 02 Apr 2021 22:40:29 GMT"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "test-synonym41466fa4b209" ]
+}

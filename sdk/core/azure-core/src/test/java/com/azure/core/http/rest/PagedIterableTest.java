@@ -13,6 +13,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -21,6 +23,8 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Unit tests for {@link PagedIterable}.
@@ -66,7 +70,7 @@ public class PagedIterableTest {
         List<Integer> values = pagedIterable.stream().collect(Collectors.toList());
 
         assertEquals(numberOfPages * 3, values.size());
-        assertEquals(Stream.iterate(0, i -> i + 1).limit(numberOfPages * 3).collect(Collectors.toList()), values);
+        assertEquals(Stream.iterate(0, i -> i + 1).limit(numberOfPages * 3L).collect(Collectors.toList()), values);
     }
 
     @ParameterizedTest
@@ -78,7 +82,7 @@ public class PagedIterableTest {
         pagedIterable.iterator().forEachRemaining(values::add);
 
         assertEquals(numberOfPages * 3, values.size());
-        assertEquals(Stream.iterate(0, i -> i + 1).limit(numberOfPages * 3).collect(Collectors.toList()), values);
+        assertEquals(Stream.iterate(0, i -> i + 1).limit(numberOfPages * 3L).collect(Collectors.toList()), values);
     }
 
     @ParameterizedTest
@@ -117,7 +121,7 @@ public class PagedIterableTest {
         List<String> values = pagedIterable.mapPage(String::valueOf).stream().collect(Collectors.toList());
 
         assertEquals(numberOfPages * 3, values.size());
-        assertEquals(Stream.iterate(0, i -> i + 1).limit(numberOfPages * 3).map(String::valueOf)
+        assertEquals(Stream.iterate(0, i -> i + 1).limit(numberOfPages * 3L).map(String::valueOf)
             .collect(Collectors.toList()), values);
     }
 
@@ -130,7 +134,7 @@ public class PagedIterableTest {
         pagedIterable.mapPage(String::valueOf).iterator().forEachRemaining(values::add);
 
         assertEquals(numberOfPages * 3, values.size());
-        assertEquals(Stream.iterate(0, i -> i + 1).limit(numberOfPages * 3).map(String::valueOf)
+        assertEquals(Stream.iterate(0, i -> i + 1).limit(numberOfPages * 3L).map(String::valueOf)
             .collect(Collectors.toList()), values);
     }
 
@@ -173,6 +177,49 @@ public class PagedIterableTest {
         Integer firstValue = pagedResponses.get(0).getValue().get(0);
         assertEquals(firstValue, pagedIterable.iterator().next());
         assertEquals(0, pagedFlux.getNextPageRetrievals());
+    }
+
+    @Test
+    public void pagedIterableWithPageSize() {
+        final int expectedPageSize = 5;
+
+        HttpHeaders headers = new HttpHeaders();
+        HttpRequest request = new HttpRequest(HttpMethod.GET, "http://localhost");
+        final Function<String, PagedResponse<Integer>> pagedResponseSupplier = continuationToken ->
+            new PagedResponseBase<>(request, 200, headers, Collections.emptyList(), continuationToken, null);
+
+        PagedFlux<Integer> singlePageFlux = new PagedFlux<>(pageSize -> {
+            assertEquals(expectedPageSize, pageSize);
+            return Mono.just(pagedResponseSupplier.apply(null));
+        });
+
+        PagedIterable<Integer> singlePageIterable = new PagedIterable<>(singlePageFlux);
+        Iterator<PagedResponse<Integer>> pageIterator = singlePageIterable.iterableByPage(expectedPageSize).iterator();
+        assertTrue(pageIterator.hasNext());
+        pageIterator.next();
+        assertFalse(pageIterator.hasNext());
+
+        assertEquals(1L, singlePageIterable.streamByPage(expectedPageSize).count());
+
+        final String expectedContinuationToken = "0";
+        PagedFlux<Integer> multiPageFlux = new PagedFlux<>(pageSize -> {
+            assertEquals(expectedPageSize, pageSize);
+            return Mono.just(pagedResponseSupplier.apply(expectedContinuationToken));
+        }, (continuationToken, pageSize) -> {
+            assertEquals(expectedPageSize, pageSize);
+            assertEquals(expectedContinuationToken, continuationToken);
+            return Mono.just(pagedResponseSupplier.apply(null));
+        });
+
+        PagedIterable<Integer> multiPageIterator = new PagedIterable<>(multiPageFlux);
+        pageIterator = multiPageIterator.iterableByPage(expectedPageSize).iterator();
+        assertTrue(pageIterator.hasNext());
+        pageIterator.next();
+        assertTrue(pageIterator.hasNext());
+        pageIterator.next();
+        assertFalse(pageIterator.hasNext());
+
+        assertEquals(2L, multiPageIterator.streamByPage(expectedPageSize).count());
     }
 
     private PagedFlux<Integer> getIntegerPagedFlux(int numberOfPages) {
@@ -259,7 +306,7 @@ public class PagedIterableTest {
     }
 
     @Test
-    public void streamFindFirstOnlyRetrievesOnePage() throws InterruptedException {
+    public void streamFindFirstOnlyRetrievesOnePage() {
         OnlyOnePageRetriever pageRetriever = new OnlyOnePageRetriever(DEFAULT_PAGE_COUNT);
         OnlyOnePagedIterable pagedIterable = new OnlyOnePagedIterable(new OnlyOnePagedFlux(() -> pageRetriever));
 
@@ -267,9 +314,9 @@ public class PagedIterableTest {
         pagedIterable.stream().count();
         assertEquals(DEFAULT_PAGE_COUNT, pageRetriever.getGetCount());
 
-        Integer next = pagedIterable.stream().findFirst().get();
+        Integer next = pagedIterable.stream().findFirst().orElse(0);
 
-        Thread.sleep(2000);
+        sleep();
 
         /*
          * Given that each page contains more than one element we are able to only retrieve a single page.
@@ -293,7 +340,7 @@ public class PagedIterableTest {
     }
 
     @Test
-    public void iterateNextOnlyRetrievesOnePage() throws InterruptedException {
+    public void iterateNextOnlyRetrievesOnePage() {
         OnlyOnePageRetriever pageRetriever = new OnlyOnePageRetriever(DEFAULT_PAGE_COUNT);
         OnlyOnePagedIterable pagedIterable = new OnlyOnePagedIterable(new OnlyOnePagedFlux(() -> pageRetriever));
 
@@ -304,7 +351,7 @@ public class PagedIterableTest {
 
         Integer next = pagedIterable.iterator().next();
 
-        Thread.sleep(2000);
+        sleep();
 
         /*
          * Given that each page contains more than one element we are able to only retrieve a single page.
@@ -313,7 +360,7 @@ public class PagedIterableTest {
     }
 
     @Test
-    public void streamByPageFindFirstOnlyRetrievesOnePage() throws InterruptedException {
+    public void streamByPageFindFirstOnlyRetrievesOnePage() {
         OnlyOnePageRetriever pageRetriever = new OnlyOnePageRetriever(DEFAULT_PAGE_COUNT);
         OnlyOnePagedIterable pagedIterable = new OnlyOnePagedIterable(new OnlyOnePagedFlux(() -> pageRetriever));
 
@@ -323,7 +370,7 @@ public class PagedIterableTest {
 
         OnlyOneContinuablePage page = pagedIterable.streamByPage().findFirst().get();
 
-        Thread.sleep(2000);
+        sleep();
 
         /*
          * Given that Reactor maintains an internal buffer, and when it empties it will attempt to fill the buffer,
@@ -349,7 +396,7 @@ public class PagedIterableTest {
     }
 
     @Test
-    public void iterateByPageNextOnlyRetrievesOnePage() throws InterruptedException {
+    public void iterateByPageNextOnlyRetrievesOnePage() {
         OnlyOnePageRetriever pageRetriever = new OnlyOnePageRetriever(DEFAULT_PAGE_COUNT);
         OnlyOnePagedIterable pagedIterable = new OnlyOnePagedIterable(new OnlyOnePagedFlux(() -> pageRetriever));
 
@@ -360,7 +407,7 @@ public class PagedIterableTest {
 
         OnlyOneContinuablePage page = pagedIterable.iterableByPage().iterator().next();
 
-        Thread.sleep(2000);
+        sleep();
 
         /*
          * Given that Reactor maintains an internal buffer, and when it empties it will attempt to fill the buffer,
@@ -368,5 +415,13 @@ public class PagedIterableTest {
          * one to refill the buffer.
          */
         assertEquals(1, pageRetriever.getGetCount() - DEFAULT_PAGE_COUNT);
+    }
+
+    private static void sleep() {
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 }

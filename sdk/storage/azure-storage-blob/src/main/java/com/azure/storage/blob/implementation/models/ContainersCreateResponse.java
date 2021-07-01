@@ -8,10 +8,8 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 
-/**
- * Contains all response data for the create operation.
- */
-public final class ContainersCreateResponse extends ResponseBase<ContainerCreateHeaders, Void> {
+/** Contains all response data for the create operation. */
+public final class ContainersCreateResponse extends ResponseBase<ContainersCreateHeaders, Void> {
     /**
      * Creates an instance of ContainersCreateResponse.
      *
@@ -21,7 +19,8 @@ public final class ContainersCreateResponse extends ResponseBase<ContainerCreate
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public ContainersCreateResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, ContainerCreateHeaders headers) {
+    public ContainersCreateResponse(
+            HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, ContainersCreateHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 }

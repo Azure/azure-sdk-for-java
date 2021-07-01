@@ -13,7 +13,10 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.Map;
 
-/** Describes all the settings to be used when analyzing a video in order to detect all the faces present. */
+/**
+ * Describes all the settings to be used when analyzing a video in order to detect (and optionally redact) all the faces
+ * present.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Media.FaceDetectorPreset")
 @JsonFlatten
@@ -37,6 +40,26 @@ public class FaceDetectorPreset extends Preset {
      */
     @JsonProperty(value = "resolution")
     private AnalysisResolution resolution;
+
+    /*
+     * This mode provides the ability to choose between the following settings:
+     * 1) Analyze - For detection only.This mode generates a metadata JSON file
+     * marking appearances of faces throughout the video.Where possible,
+     * appearances of the same person are assigned the same ID. 2) Combined -
+     * Additionally redacts(blurs) detected faces. 3) Redact - This enables a
+     * 2-pass process, allowing for selective redaction of a subset of detected
+     * faces.It takes in the metadata file from a prior analyze pass, along
+     * with the source video, and a user-selected subset of IDs that require
+     * redaction.
+     */
+    @JsonProperty(value = "mode")
+    private FaceRedactorMode mode;
+
+    /*
+     * Blur type
+     */
+    @JsonProperty(value = "blurType")
+    private BlurType blurType;
 
     /*
      * Dictionary containing key value pairs for parameters not exposed in the
@@ -76,6 +99,56 @@ public class FaceDetectorPreset extends Preset {
      */
     public FaceDetectorPreset withResolution(AnalysisResolution resolution) {
         this.resolution = resolution;
+        return this;
+    }
+
+    /**
+     * Get the mode property: This mode provides the ability to choose between the following settings: 1) Analyze - For
+     * detection only.This mode generates a metadata JSON file marking appearances of faces throughout the video.Where
+     * possible, appearances of the same person are assigned the same ID. 2) Combined - Additionally redacts(blurs)
+     * detected faces. 3) Redact - This enables a 2-pass process, allowing for selective redaction of a subset of
+     * detected faces.It takes in the metadata file from a prior analyze pass, along with the source video, and a
+     * user-selected subset of IDs that require redaction.
+     *
+     * @return the mode value.
+     */
+    public FaceRedactorMode mode() {
+        return this.mode;
+    }
+
+    /**
+     * Set the mode property: This mode provides the ability to choose between the following settings: 1) Analyze - For
+     * detection only.This mode generates a metadata JSON file marking appearances of faces throughout the video.Where
+     * possible, appearances of the same person are assigned the same ID. 2) Combined - Additionally redacts(blurs)
+     * detected faces. 3) Redact - This enables a 2-pass process, allowing for selective redaction of a subset of
+     * detected faces.It takes in the metadata file from a prior analyze pass, along with the source video, and a
+     * user-selected subset of IDs that require redaction.
+     *
+     * @param mode the mode value to set.
+     * @return the FaceDetectorPreset object itself.
+     */
+    public FaceDetectorPreset withMode(FaceRedactorMode mode) {
+        this.mode = mode;
+        return this;
+    }
+
+    /**
+     * Get the blurType property: Blur type.
+     *
+     * @return the blurType value.
+     */
+    public BlurType blurType() {
+        return this.blurType;
+    }
+
+    /**
+     * Set the blurType property: Blur type.
+     *
+     * @param blurType the blurType value to set.
+     * @return the FaceDetectorPreset object itself.
+     */
+    public FaceDetectorPreset withBlurType(BlurType blurType) {
+        this.blurType = blurType;
         return this;
     }
 

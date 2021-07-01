@@ -37,9 +37,9 @@ public class AppRunner implements AutoCloseable {
         if (app == null) {
             final SpringApplicationBuilder builder = new SpringApplicationBuilder(appClass);
             builder.properties("spring.jmx.enabled=false");
-            int port = availableTcpPort();
-            LOGGER.info("port = {}.", port);
-            builder.properties(String.format("server.port=%d", port));
+            if (!props.containsKey("server.port")){
+                builder.properties(String.format("server.port=%d", availableTcpPort()));
+            }
             builder.properties(props());
             LOGGER.info("app begin to run.");
             app = builder.build().run();
@@ -55,7 +55,7 @@ public class AppRunner implements AutoCloseable {
     private String[] props() {
         final List<String> result = new ArrayList<>();
 
-        for (final Map.Entry<String, String> entry: props.entrySet()) {
+        for (final Map.Entry<String, String> entry : props.entrySet()) {
             result.add(String.format("%s=%s", entry.getKey(), entry.getValue()));
         }
 
@@ -103,7 +103,7 @@ public class AppRunner implements AutoCloseable {
         stop();
     }
 
-    private ConfigurableApplicationContext getApp()  {
+    private ConfigurableApplicationContext getApp() {
         if (app == null) {
             throw new ApplicationContextException("App is not running.");
         }

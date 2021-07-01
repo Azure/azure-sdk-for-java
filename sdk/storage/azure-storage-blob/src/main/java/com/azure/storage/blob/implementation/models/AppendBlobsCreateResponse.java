@@ -8,10 +8,8 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 
-/**
- * Contains all response data for the create operation.
- */
-public final class AppendBlobsCreateResponse extends ResponseBase<AppendBlobCreateHeaders, Void> {
+/** Contains all response data for the create operation. */
+public final class AppendBlobsCreateResponse extends ResponseBase<AppendBlobsCreateHeaders, Void> {
     /**
      * Creates an instance of AppendBlobsCreateResponse.
      *
@@ -21,7 +19,8 @@ public final class AppendBlobsCreateResponse extends ResponseBase<AppendBlobCrea
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public AppendBlobsCreateResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, AppendBlobCreateHeaders headers) {
+    public AppendBlobsCreateResponse(
+            HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, AppendBlobsCreateHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 }

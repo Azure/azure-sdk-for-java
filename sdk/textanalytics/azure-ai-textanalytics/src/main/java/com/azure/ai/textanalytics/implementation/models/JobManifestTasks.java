@@ -29,6 +29,18 @@ public final class JobManifestTasks {
     @JsonProperty(value = "keyPhraseExtractionTasks")
     private List<KeyPhrasesTask> keyPhraseExtractionTasks;
 
+    /*
+     * The entityLinkingTasks property.
+     */
+    @JsonProperty(value = "entityLinkingTasks")
+    private List<EntityLinkingTask> entityLinkingTasks;
+
+    /*
+     * The sentimentAnalysisTasks property.
+     */
+    @JsonProperty(value = "sentimentAnalysisTasks")
+    private List<SentimentAnalysisTask> sentimentAnalysisTasks;
+
     /**
      * Get the entityRecognitionTasks property: The entityRecognitionTasks property.
      *
@@ -86,6 +98,46 @@ public final class JobManifestTasks {
      */
     public JobManifestTasks setKeyPhraseExtractionTasks(List<KeyPhrasesTask> keyPhraseExtractionTasks) {
         this.keyPhraseExtractionTasks = keyPhraseExtractionTasks;
+        return this;
+    }
+
+    /**
+     * Get the entityLinkingTasks property: The entityLinkingTasks property.
+     *
+     * @return the entityLinkingTasks value.
+     */
+    public List<EntityLinkingTask> getEntityLinkingTasks() {
+        return this.entityLinkingTasks;
+    }
+
+    /**
+     * Set the entityLinkingTasks property: The entityLinkingTasks property.
+     *
+     * @param entityLinkingTasks the entityLinkingTasks value to set.
+     * @return the JobManifestTasks object itself.
+     */
+    public JobManifestTasks setEntityLinkingTasks(List<EntityLinkingTask> entityLinkingTasks) {
+        this.entityLinkingTasks = entityLinkingTasks;
+        return this;
+    }
+
+    /**
+     * Get the sentimentAnalysisTasks property: The sentimentAnalysisTasks property.
+     *
+     * @return the sentimentAnalysisTasks value.
+     */
+    public List<SentimentAnalysisTask> getSentimentAnalysisTasks() {
+        return this.sentimentAnalysisTasks;
+    }
+
+    /**
+     * Set the sentimentAnalysisTasks property: The sentimentAnalysisTasks property.
+     *
+     * @param sentimentAnalysisTasks the sentimentAnalysisTasks value to set.
+     * @return the JobManifestTasks object itself.
+     */
+    public JobManifestTasks setSentimentAnalysisTasks(List<SentimentAnalysisTask> sentimentAnalysisTasks) {
+        this.sentimentAnalysisTasks = sentimentAnalysisTasks;
         return this;
     }
 }

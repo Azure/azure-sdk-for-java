@@ -12,6 +12,9 @@ import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.cfg.MapperConfig;
+import com.fasterxml.jackson.databind.introspect.AnnotatedClass;
+import com.fasterxml.jackson.databind.introspect.AnnotatedClassResolver;
 import com.fasterxml.jackson.databind.introspect.AnnotatedMethod;
 import com.fasterxml.jackson.databind.introspect.VisibilityChecker;
 import com.fasterxml.jackson.databind.type.TypeFactory;
@@ -22,6 +25,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
 import java.lang.reflect.Field;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
@@ -31,6 +37,49 @@ import java.lang.reflect.Modifier;
  * Jackson based implementation of the {@link JsonSerializer} and {@link MemberNameConverter} interfaces.
  */
 public final class JacksonJsonSerializer implements JsonSerializer, MemberNameConverter {
+    private static final String ACCESSOR_NAMING_STRATEGY =
+        "com.fasterxml.jackson.databind.introspect.AccessorNamingStrategy";
+    private static final String ACCESSOR_NAMING_STRATEGY_PROVIDER = ACCESSOR_NAMING_STRATEGY + ".Provider";
+    private static final MethodHandle GET_ACCESSOR_NAMING;
+    private static final MethodHandle FOR_POJO;
+    private static final MethodHandle FIND_NAME_FOR_IS_GETTER;
+    private static final MethodHandle FIND_NAME_FOR_REGULAR_GETTER;
+    private static final boolean USE_REFLECTION_FOR_MEMBER_NAME;
+
+    static {
+        MethodHandles.Lookup publicLookup = MethodHandles.publicLookup();
+
+        MethodHandle getAccessorNaming = null;
+        MethodHandle forPojo = null;
+        MethodHandle findNameForIsGetter = null;
+        MethodHandle findNameForRegularGetter = null;
+        boolean useReflectionForMemberName = false;
+
+        try {
+            Class<?> accessorNamingStrategyProviderClass = Class.forName(ACCESSOR_NAMING_STRATEGY_PROVIDER);
+            Class<?> accessorNamingStrategyClass = Class.forName(ACCESSOR_NAMING_STRATEGY);
+            getAccessorNaming = publicLookup.findVirtual(MapperConfig.class, "getAccessorNaming",
+                MethodType.methodType(accessorNamingStrategyProviderClass));
+            forPojo = publicLookup.findVirtual(accessorNamingStrategyProviderClass, "forPOJO",
+                MethodType.methodType(accessorNamingStrategyClass, MapperConfig.class, AnnotatedClass.class));
+            findNameForIsGetter = publicLookup.findVirtual(accessorNamingStrategyClass, "findNameForIsGetter",
+                MethodType.methodType(String.class, AnnotatedMethod.class, String.class));
+            findNameForRegularGetter = publicLookup.findVirtual(accessorNamingStrategyClass, "findNameForRegularGetter",
+                MethodType.methodType(String.class, AnnotatedMethod.class, String.class));
+            useReflectionForMemberName = true;
+        } catch (Throwable ex) {
+            new ClientLogger(JacksonJsonSerializer.class)
+                .verbose("Failed to retrieve MethodHandles used to get naming strategy. Falling back to BeanUtils.",
+                    ex);
+        }
+
+        GET_ACCESSOR_NAMING = getAccessorNaming;
+        FOR_POJO = forPojo;
+        FIND_NAME_FOR_IS_GETTER = findNameForIsGetter;
+        FIND_NAME_FOR_REGULAR_GETTER = findNameForRegularGetter;
+        USE_REFLECTION_FOR_MEMBER_NAME = useReflectionForMemberName;
+    }
+
     private final ClientLogger logger = new ClientLogger(JacksonJsonSerializer.class);
 
     private final ObjectMapper mapper;
@@ -47,6 +96,19 @@ public final class JacksonJsonSerializer implements JsonSerializer, MemberNameCo
     }
 
     @Override
+    public <T> T deserializeFromBytes(byte[] data, TypeReference<T> typeReference) {
+        if (data == null) {
+            return null;
+        }
+
+        try {
+            return mapper.readValue(data, typeFactory.constructType(typeReference.getJavaType()));
+        } catch (IOException ex) {
+            throw logger.logExceptionAsError(new UncheckedIOException(ex));
+        }
+    }
+
+    @Override
     public <T> T deserialize(InputStream stream, TypeReference<T> typeReference) {
         if (stream == null) {
             return null;
@@ -60,8 +122,22 @@ public final class JacksonJsonSerializer implements JsonSerializer, MemberNameCo
     }
 
     @Override
+    public <T> Mono<T> deserializeFromBytesAsync(byte[] data, TypeReference<T> typeReference) {
+        return Mono.fromCallable(() -> deserializeFromBytes(data, typeReference));
+    }
+
+    @Override
     public <T> Mono<T> deserializeAsync(InputStream stream, TypeReference<T> typeReference) {
         return Mono.fromCallable(() -> deserialize(stream, typeReference));
+    }
+
+    @Override
+    public byte[] serializeToBytes(Object value) {
+        try {
+            return mapper.writeValueAsBytes(value);
+        } catch (IOException ex) {
+            throw logger.logExceptionAsError(new UncheckedIOException(ex));
+        }
     }
 
     @Override
@@ -71,6 +147,11 @@ public final class JacksonJsonSerializer implements JsonSerializer, MemberNameCo
         } catch (IOException ex) {
             throw logger.logExceptionAsError(new UncheckedIOException(ex));
         }
+    }
+
+    @Override
+    public Mono<byte[]> serializeToBytesAsync(Object value) {
+        return Mono.fromCallable(() -> this.serializeToBytes(value));
     }
 
     @Override
@@ -155,7 +236,47 @@ public final class JacksonJsonSerializer implements JsonSerializer, MemberNameCo
             && returnType != Void.class;
     }
 
-    private static String removePrefix(Method method) {
-        return BeanUtil.okNameForGetter(new AnnotatedMethod(null, method, null, null), false);
+    private String removePrefix(Method method) {
+        MapperConfig<?> config = mapper.getSerializationConfig();
+
+        AnnotatedClass annotatedClass = AnnotatedClassResolver.resolve(config,
+            mapper.constructType(method.getDeclaringClass()), null);
+
+        AnnotatedMethod annotatedMethod = new AnnotatedMethod(null, method, null, null);
+        String annotatedMethodName = annotatedMethod.getName();
+
+        String name = null;
+        if (USE_REFLECTION_FOR_MEMBER_NAME) {
+            name = removePrefixWithReflection(config, annotatedClass, annotatedMethod, annotatedMethodName, logger);
+        }
+
+        if (name == null) {
+            name = removePrefixWithBeanUtils(annotatedMethod);
+        }
+
+        return name;
+    }
+
+    private static String removePrefixWithReflection(MapperConfig<?> config, AnnotatedClass annotatedClass,
+        AnnotatedMethod method, String methodName, ClientLogger logger) {
+        try {
+            Object accessorNamingStrategy = FOR_POJO.invoke(GET_ACCESSOR_NAMING.invoke(config), config, annotatedClass);
+
+
+            String name = (String) FIND_NAME_FOR_IS_GETTER.invoke(accessorNamingStrategy, method, methodName);
+            if (name == null) {
+                name = (String) FIND_NAME_FOR_REGULAR_GETTER.invoke(accessorNamingStrategy, method, methodName);
+            }
+
+            return name;
+        } catch (Throwable ex) {
+            logger.verbose("Failed to find member name with AccessorNamingStrategy, returning null.", ex);
+            return null;
+        }
+    }
+
+    @SuppressWarnings("deprecation")
+    private static String removePrefixWithBeanUtils(AnnotatedMethod annotatedMethod) {
+        return BeanUtil.okNameForGetter(annotatedMethod, false);
     }
 }

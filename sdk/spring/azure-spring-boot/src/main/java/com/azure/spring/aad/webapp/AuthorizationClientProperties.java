@@ -3,6 +3,8 @@
 
 package com.azure.spring.aad.webapp;
 
+import com.azure.spring.aad.AADAuthorizationGrantType;
+
 import java.util.List;
 
 /**
@@ -13,6 +15,16 @@ public class AuthorizationClientProperties {
     private List<String> scopes;
 
     private boolean onDemand = false;
+
+    private AADAuthorizationGrantType authorizationGrantType;
+
+    public AADAuthorizationGrantType getAuthorizationGrantType() {
+        return authorizationGrantType;
+    }
+
+    public void setAuthorizationGrantType(AADAuthorizationGrantType authorizationGrantType) {
+        this.authorizationGrantType = authorizationGrantType;
+    }
 
     public void setScopes(List<String> scopes) {
         this.scopes = scopes;

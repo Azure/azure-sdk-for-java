@@ -13,6 +13,7 @@ import com.azure.storage.blob.options.BlockBlobListBlocksOptions;
 import com.azure.storage.blob.options.BlockBlobSimpleUploadOptions;
 import com.azure.storage.blob.models.BlockList;
 import com.azure.storage.blob.models.BlockListType;
+import com.azure.storage.blob.options.BlockBlobStageBlockFromUrlOptions;
 import reactor.core.publisher.Flux;
 
 import java.nio.ByteBuffer;
@@ -225,16 +226,31 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
+     * Code snippet for {@link BlockBlobAsyncClient#stageBlockFromUrlWithResponse(String, String, BlobRange, byte[], String, BlobRequestConditions)}
+     */
+    public void stageBlockFromUrlOptionsBag() {
+        // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockFromUrlWithResponse#BlockBlobStageBlockFromUrlOptions
+        BlobRequestConditions sourceRequestConditions = new BlobRequestConditions()
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
+
+        client.stageBlockFromUrlWithResponse(new BlockBlobStageBlockFromUrlOptions(base64BlockID, sourceUrl)
+            .setSourceRange(new BlobRange(offset, count)).setLeaseId(leaseId)
+            .setSourceRequestConditions(sourceRequestConditions)).subscribe(response ->
+            System.out.printf("Staging block from URL completed with status %d%n", response.getStatusCode()));
+        // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockFromUrlWithResponse#BlockBlobStageBlockFromUrlOptions
+    }
+
+    /**
      * Code snippet for {@link BlockBlobAsyncClient#listBlocks(BlockListType)}
      */
     public void listBlocks() {
         // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.listBlocks#BlockListType
         client.listBlocks(BlockListType.ALL).subscribe(block -> {
             System.out.println("Committed Blocks:");
-            block.getCommittedBlocks().forEach(b -> System.out.printf("Name: %s, Size: %d", b.getName(), b.getSize()));
+            block.getCommittedBlocks().forEach(b -> System.out.printf("Name: %s, Size: %d", b.getName(), b.getSizeLong()));
 
             System.out.println("Uncommitted Blocks:");
-            block.getUncommittedBlocks().forEach(b -> System.out.printf("Name: %s, Size: %d", b.getName(), b.getSize()));
+            block.getUncommittedBlocks().forEach(b -> System.out.printf("Name: %s, Size: %d", b.getName(), b.getSizeLong()));
         });
         // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.listBlocks#BlockListType
     }
@@ -247,10 +263,10 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
         client.listBlocksWithResponse(BlockListType.ALL, leaseId).subscribe(response -> {
             BlockList block = response.getValue();
             System.out.println("Committed Blocks:");
-            block.getCommittedBlocks().forEach(b -> System.out.printf("Name: %s, Size: %d", b.getName(), b.getSize()));
+            block.getCommittedBlocks().forEach(b -> System.out.printf("Name: %s, Size: %d", b.getName(), b.getSizeLong()));
 
             System.out.println("Uncommitted Blocks:");
-            block.getUncommittedBlocks().forEach(b -> System.out.printf("Name: %s, Size: %d", b.getName(), b.getSize()));
+            block.getUncommittedBlocks().forEach(b -> System.out.printf("Name: %s, Size: %d", b.getName(), b.getSizeLong()));
         });
         // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.listBlocksWithResponse#BlockListType-String
     }

@@ -3,10 +3,11 @@
 
 package com.azure.communication.chat.models;
 
-import com.azure.communication.common.CommunicationUserIdentifier;
+import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
+import java.util.Map;
 
 /** The ChatMessage model. */
 @Fluent
@@ -51,10 +52,13 @@ public final class ChatMessage {
     private OffsetDateTime createdOn;
 
     /*
-     * The chat message sender.
+     * Identifies a participant in Azure Communication services. A participant
+     * is, for example, a phone number or an Azure communication user. This
+     * model must be interpreted as a union: Apart from rawId, at most one
+     * further property may be set.
      */
-    @JsonProperty(value = "sender")
-    private CommunicationUserIdentifier sender;
+    @JsonProperty(value = "senderCommunicationIdentifier")
+    private CommunicationIdentifier sender;
 
     /*
      * The timestamp when the chat message was deleted. The timestamp is in
@@ -69,6 +73,12 @@ public final class ChatMessage {
      */
     @JsonProperty(value = "editedOn")
     private OffsetDateTime editedOn;
+
+    /*
+     * Message metadata.
+     */
+    @JsonProperty(value = "metadata")
+    private Map<String, String> metadata;
 
     /**
      * Get the id property: The id of the chat message. This id is server generated.
@@ -199,21 +209,25 @@ public final class ChatMessage {
     }
 
     /**
-     * Get the sender property: The chat message sender.
+     * Get the sender property: Identifies a participant in Azure Communication services. A
+     * participant is, for example, a phone number or an Azure communication user. This model must be interpreted as a
+     * union: Apart from rawId, at most one further property may be set.
      *
      * @return the sender value.
      */
-    public CommunicationUserIdentifier getSender() {
+    public CommunicationIdentifier getSender() {
         return this.sender;
     }
 
     /**
-     * Set the senderId property: The chat message sender.
+     * Set the sender property: Identifies a participant in Azure Communication services. A
+     * participant is, for example, a phone number or an Azure communication user. This model must be interpreted as a
+     * union: Apart from rawId, at most one further property may be set.
      *
      * @param sender the sender value to set.
      * @return the ChatMessage object itself.
      */
-    public ChatMessage setSender(CommunicationUserIdentifier sender) {
+    public ChatMessage setSender(CommunicationIdentifier sender) {
         this.sender = sender;
         return this;
     }
@@ -259,6 +273,26 @@ public final class ChatMessage {
      */
     public ChatMessage setEditedOn(OffsetDateTime editedOn) {
         this.editedOn = editedOn;
+        return this;
+    }
+
+    /**
+     * Get the metadata property: Message metadata.
+     *
+     * @return the metadata value.
+     */
+    public Map<String, String> getMetadata() {
+        return this.metadata;
+    }
+
+    /**
+     * Set the metadata property: Message metadata.
+     *
+     * @param metadata the metadata value to set.
+     * @return the ChatMessage object itself.
+     */
+    public ChatMessage setMetadata(Map<String, String> metadata) {
+        this.metadata = metadata;
         return this;
     }
 }

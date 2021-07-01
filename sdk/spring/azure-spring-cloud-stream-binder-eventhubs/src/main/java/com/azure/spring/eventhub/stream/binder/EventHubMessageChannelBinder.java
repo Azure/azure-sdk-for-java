@@ -3,9 +3,9 @@
 
 package com.azure.spring.eventhub.stream.binder;
 
+import com.azure.spring.eventhub.stream.binder.properties.EventHubConsumerProperties;
 import com.azure.spring.eventhub.stream.binder.properties.EventHubExtendedBindingProperties;
 import com.azure.spring.eventhub.stream.binder.properties.EventHubProducerProperties;
-import com.azure.spring.eventhub.stream.binder.properties.EventHubConsumerProperties;
 import com.azure.spring.eventhub.stream.binder.provisioning.EventHubChannelProvisioner;
 import com.azure.spring.integration.core.api.CheckpointConfig;
 import com.azure.spring.integration.core.api.StartPosition;
@@ -13,13 +13,15 @@ import com.azure.spring.integration.core.api.reactor.DefaultMessageHandler;
 import com.azure.spring.integration.eventhub.api.EventHubOperation;
 import com.azure.spring.integration.eventhub.inbound.EventHubInboundChannelAdapter;
 import org.springframework.cloud.stream.binder.AbstractMessageChannelBinder;
+import org.springframework.cloud.stream.binder.BinderHeaders;
+import org.springframework.cloud.stream.binder.BinderSpecificPropertiesProvider;
 import org.springframework.cloud.stream.binder.ExtendedConsumerProperties;
 import org.springframework.cloud.stream.binder.ExtendedProducerProperties;
 import org.springframework.cloud.stream.binder.ExtendedPropertiesBinder;
-import org.springframework.cloud.stream.binder.BinderHeaders;
-import org.springframework.cloud.stream.binder.BinderSpecificPropertiesProvider;
 import org.springframework.cloud.stream.provisioning.ConsumerDestination;
 import org.springframework.cloud.stream.provisioning.ProducerDestination;
+import org.springframework.expression.ExpressionParser;
+import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.integration.core.MessageProducer;
 import org.springframework.integration.expression.FunctionExpression;
 import org.springframework.messaging.Message;
@@ -27,7 +29,9 @@ import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHandler;
 import org.springframework.util.StringUtils;
 
+import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author Warren Zhu
@@ -37,9 +41,13 @@ public class EventHubMessageChannelBinder extends
                 ExtendedProducerProperties<EventHubProducerProperties>, EventHubChannelProvisioner>
         implements ExtendedPropertiesBinder<MessageChannel, EventHubConsumerProperties, EventHubProducerProperties> {
 
+    private static final ExpressionParser EXPRESSION_PARSER = new SpelExpressionParser();
+    
     private final EventHubOperation eventHubOperation;
 
     private EventHubExtendedBindingProperties bindingProperties = new EventHubExtendedBindingProperties();
+
+    private final Map<String, EventHubInformation> eventHubsInUse = new ConcurrentHashMap<>();
 
     public EventHubMessageChannelBinder(String[] headersToEmbed, EventHubChannelProvisioner provisioningProvider,
             EventHubOperation eventHubOperation) {
@@ -50,24 +58,27 @@ public class EventHubMessageChannelBinder extends
     @Override
     protected MessageHandler createProducerMessageHandler(ProducerDestination destination,
             ExtendedProducerProperties<EventHubProducerProperties> producerProperties, MessageChannel errorChannel) {
+        eventHubsInUse.put(destination.getName(), new EventHubInformation(null));
+
         DefaultMessageHandler handler = new DefaultMessageHandler(destination.getName(), this.eventHubOperation);
         handler.setBeanFactory(getBeanFactory());
         handler.setSync(producerProperties.getExtension().isSync());
         handler.setSendTimeout(producerProperties.getExtension().getSendTimeout());
         handler.setSendFailureChannel(errorChannel);
         if (producerProperties.isPartitioned()) {
-            handler.setPartitionKeyExpressionString(
-                    "'partitionKey-' + headers['" + BinderHeaders.PARTITION_HEADER + "']");
+            handler.setPartitionIdExpression(
+                EXPRESSION_PARSER.parseExpression("headers['" + BinderHeaders.PARTITION_HEADER + "']"));
         } else {
             handler.setPartitionKeyExpression(new FunctionExpression<Message<?>>(m -> m.getPayload().hashCode()));
         }
-
         return handler;
     }
 
     @Override
     protected MessageProducer createConsumerEndpoint(ConsumerDestination destination, String group,
             ExtendedConsumerProperties<EventHubConsumerProperties> properties) {
+        eventHubsInUse.put(destination.getName(), new EventHubInformation(group));
+
         this.eventHubOperation.setStartPosition(properties.getExtension().getStartPosition());
         CheckpointConfig checkpointConfig =
                 CheckpointConfig.builder().checkpointMode(properties.getExtension().getCheckpointMode())
@@ -112,4 +123,22 @@ public class EventHubMessageChannelBinder extends
     public void setBindingProperties(EventHubExtendedBindingProperties bindingProperties) {
         this.bindingProperties = bindingProperties;
     }
+
+    Map<String, EventHubInformation> getEventHubsInUse() {
+        return eventHubsInUse;
+    }
+
+    static class EventHubInformation {
+
+        private final String consumerGroup;
+
+        EventHubInformation(String consumerGroup) {
+            this.consumerGroup = consumerGroup;
+        }
+
+        public String getConsumerGroup() {
+            return consumerGroup;
+        }
+    }
+
 }

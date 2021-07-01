@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.resources.implementation;
 
+import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
@@ -170,6 +171,14 @@ public final class DeploymentImpl extends
             return null;
         }
         return innerModel().properties().mode();
+    }
+
+    @Override
+    public ManagementError error() {
+        if (this.innerModel().properties() == null) {
+            return null;
+        }
+        return innerModel().properties().error();
     }
 
     @Override

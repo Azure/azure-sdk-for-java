@@ -9,7 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.mediaservices.MediaservicesManager;
 import com.azure.resourcemanager.mediaservices.fluent.AssetFiltersClient;
 import com.azure.resourcemanager.mediaservices.fluent.models.AssetFilterInner;
 import com.azure.resourcemanager.mediaservices.models.AssetFilter;
@@ -21,23 +20,24 @@ public final class AssetFiltersImpl implements AssetFilters {
 
     private final AssetFiltersClient innerClient;
 
-    private final MediaservicesManager serviceManager;
+    private final com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager;
 
-    public AssetFiltersImpl(AssetFiltersClient innerClient, MediaservicesManager serviceManager) {
+    public AssetFiltersImpl(
+        AssetFiltersClient innerClient, com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<AssetFilter> list(String resourceGroupName, String accountName, String assetName) {
         PagedIterable<AssetFilterInner> inner = this.serviceClient().list(resourceGroupName, accountName, assetName);
-        return inner.mapPage(inner1 -> new AssetFilterImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new AssetFilterImpl(inner1, this.manager()));
     }
 
     public PagedIterable<AssetFilter> list(
         String resourceGroupName, String accountName, String assetName, Context context) {
         PagedIterable<AssetFilterInner> inner =
             this.serviceClient().list(resourceGroupName, accountName, assetName, context);
-        return inner.mapPage(inner1 -> new AssetFilterImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new AssetFilterImpl(inner1, this.manager()));
     }
 
     public AssetFilter get(String resourceGroupName, String accountName, String assetName, String filterName) {
@@ -209,7 +209,7 @@ public final class AssetFiltersImpl implements AssetFilters {
         return this.innerClient;
     }
 
-    private MediaservicesManager manager() {
+    private com.azure.resourcemanager.mediaservices.MediaServicesManager manager() {
         return this.serviceManager;
     }
 

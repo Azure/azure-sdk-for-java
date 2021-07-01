@@ -262,6 +262,10 @@ public class StoreReader {
                     }
                 }
 
+                if (srr.isThroughputControlRequestRateTooLargeException) {
+                    resultCollector.add(srr);
+                }
+
                 hasGoneException.v = hasGoneException.v || (srr.isGoneException && !srr.isInvalidPartitionException);
 
                 if (resultCollector.size() >= replicaCountToRead) {
@@ -688,6 +692,7 @@ public class StoreReader {
             int currentWriteQuorum = -1;
             long globalCommittedLSN = -1;
             int numberOfReadRegions = -1;
+            Double backendLatencyInMs = null;
             long itemLSN = -1;
             if ((headerValue = storeResponse.getHeaderValue(
                     useLocalLSNBasedHeaders ? WFConstants.BackendHeaders.QUORUM_ACKED_LOCAL_LSN : WFConstants.BackendHeaders.QUORUM_ACKED_LSN)) != null) {
@@ -720,6 +725,11 @@ public class StoreReader {
                 itemLSN = Long.parseLong(headerValue);
             }
 
+            headerValue = storeResponse.getHeaderValue(HttpConstants.HttpHeaders.BACKEND_REQUEST_DURATION_MILLISECONDS);
+            if (!Strings.isNullOrEmpty(headerValue)) {
+                backendLatencyInMs = Double.parseDouble(headerValue);
+            }
+
             long lsn = -1;
             if (useLocalLSNBasedHeaders) {
                 if ((headerValue = storeResponse.getHeaderValue(WFConstants.BackendHeaders.LOCAL_LSN)) != null) {
@@ -750,7 +760,8 @@ public class StoreReader {
                     /* globalCommittedLSN: */ globalCommittedLSN,
                     /* numberOfReadRegions: */ numberOfReadRegions,
                     /* itemLSN: */ itemLSN,
-                    /* getSessionToken: */ sessionToken);
+                    /* getSessionToken: */ sessionToken,
+                    /* backendLatencyInMs */ backendLatencyInMs);
         } else {
             Throwable unwrappedResponseExceptions = Exceptions.unwrap(responseException);
             CosmosException cosmosException = Utils.as(unwrappedResponseExceptions, CosmosException.class);
@@ -760,6 +771,7 @@ public class StoreReader {
                 int currentWriteQuorum = -1;
                 long globalCommittedLSN = -1;
                 int numberOfReadRegions = -1;
+                Double backendLatencyInMs = null;
                 String headerValue = cosmosException.getResponseHeaders().get(useLocalLSNBasedHeaders ? WFConstants.BackendHeaders.QUORUM_ACKED_LOCAL_LSN : WFConstants.BackendHeaders.QUORUM_ACKED_LSN);
                 if (!Strings.isNullOrEmpty(headerValue)) {
                     quorumAckedLSN = Long.parseLong(headerValue);
@@ -788,7 +800,12 @@ public class StoreReader {
 
                 headerValue = cosmosException.getResponseHeaders().get(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN);
                 if (!Strings.isNullOrEmpty(headerValue)) {
-                    globalCommittedLSN = Integer.parseInt(headerValue);
+                    globalCommittedLSN = Long.parseLong(headerValue);
+                }
+
+                headerValue = cosmosException.getResponseHeaders().get(HttpConstants.HttpHeaders.BACKEND_REQUEST_DURATION_MILLISECONDS);
+                if (!Strings.isNullOrEmpty(headerValue)) {
+                    backendLatencyInMs = Double.parseDouble(headerValue);
                 }
 
                 long lsn = -1;
@@ -827,7 +844,8 @@ public class StoreReader {
                         /* globalCommittedLSN: */ globalCommittedLSN,
                         /* numberOfReadRegions: */ numberOfReadRegions,
                         /* itemLSN: */ -1,
-                        sessionToken);
+                        /* getSessionToken: */ sessionToken,
+                        /* backendLatencyInMs */ backendLatencyInMs);
             } else {
                 logger.error("Unexpected exception {} received while reading from store.", responseException.getMessage(), responseException);
                 return new StoreResult(
@@ -844,14 +862,15 @@ public class StoreReader {
                         /* globalCommittedLSN: */-1,
                         /* numberOfReadRegions: */ 0,
                         /* itemLSN: */ -1,
-                        /* getSessionToken: */ null);
+                        /* getSessionToken: */ null,
+                        /* backendLatencyInMs */ null);
             }
         }
     }
 
     void startBackgroundAddressRefresh(RxDocumentServiceRequest request) {
         this.addressSelector.resolveAllUriAsync(request, true, true)
-                .publishOn(Schedulers.elastic())
+                .publishOn(Schedulers.boundedElastic())
                 .subscribe(
                         r -> {
                         },

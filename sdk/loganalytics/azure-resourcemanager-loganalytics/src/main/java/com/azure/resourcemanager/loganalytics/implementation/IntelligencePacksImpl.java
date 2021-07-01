@@ -8,7 +8,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.loganalytics.LogAnalyticsManager;
 import com.azure.resourcemanager.loganalytics.fluent.IntelligencePacksClient;
 import com.azure.resourcemanager.loganalytics.fluent.models.IntelligencePackInner;
 import com.azure.resourcemanager.loganalytics.models.IntelligencePack;
@@ -23,9 +22,11 @@ public final class IntelligencePacksImpl implements IntelligencePacks {
 
     private final IntelligencePacksClient innerClient;
 
-    private final LogAnalyticsManager serviceManager;
+    private final com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager;
 
-    public IntelligencePacksImpl(IntelligencePacksClient innerClient, LogAnalyticsManager serviceManager) {
+    public IntelligencePacksImpl(
+        IntelligencePacksClient innerClient,
+        com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -87,7 +88,7 @@ public final class IntelligencePacksImpl implements IntelligencePacks {
         return this.innerClient;
     }
 
-    private LogAnalyticsManager manager() {
+    private com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager() {
         return this.serviceManager;
     }
 }

@@ -1,12 +1,79 @@
 # Release History
 
-## 3.2.0-beta.1 (Unreleased)
+## 3.7.0-beta.1 (Unreleased)
 
+
+## 3.6.0 (2021-06-23)
+### Breaking Changes
+- Deprecate aad.group.enable-full-list, use aad.group.allowed-group-ids=all instead.
+- Deprecated `allowTelemetry` configuration item in each module property class.
+
+### New Features
+- Upgrade to [spring-boot-dependencies:2.5.0](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.5.0/spring-boot-dependencies-2.5.0.pom).
+- Support domain_hint in aad-starter.([#21517](https://github.com/Azure/azure-sdk-for-java/issues/21517))
+- "aad.group.allowed-group-ids=all" can be used to map all group ids to GrantedAuthority (ROLE_group_id). 
+  And it can work together with group names configured by "aad.group.allowed-group-names" (ROLE_group_name).[#21983](https://github.com/Azure/azure-sdk-for-java/issues/21983)
+
+## 3.5.0 (2021-05-24)
+### New Features
+- Add `AADB2CTrustedIssuerRepository` to manage the trusted issuer in AAD B2C.
+- Upgrade to [spring-boot-dependencies:2.4.5](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.4.5/spring-boot-dependencies-2.4.5.pom).
+- Upgrade to [spring-cloud-dependencies:2020.0.2](https://repo.maven.apache.org/maven2/org/springframework/cloud/spring-cloud-dependencies/2020.0.2/spring-cloud-dependencies-2020.0.2.pom).
+- Enable property azure.activedirectory.redirect-uri-template.([#21116](https://github.com/Azure/azure-sdk-for-java/issues/21116))
+- Support creating `GrantedAuthority` by groupId and groupName for web application.([#20218](https://github.com/Azure/azure-sdk-for-java/issues/20218))
+  ```yaml
+  user-group:
+      allowed-group-names: group1,group2
+      allowed-group-ids: <group1-id>,<group2-id>
+      enable-full-list: false  
+  ```
+  | Parameter           | Description                                             |
+  | ------------------- | ------------------------------------------------------------ |
+  | allowed-group-names | if `enable-full-list` is `false`, create `GrantedAuthority` with groupNames which belong to user and `allowed-group-names` |
+  | allowed-group-ids   | if `enable-full-list` is `false`, create `GrantedAuthority` with groupIds which belong to user and `allowed-group-ids` |
+  | enable-full-list    | default is `false`.<br> if the value is `true`, create `GrantedAuthority` only with user's  all groupIds, ignore group names|
+
+### Key Bug Fixes
+- Fix issue that where the AAD B2C starter cannot fetch the OpenID Connect metadata document via issuer. [#21036](https://github.com/Azure/azure-sdk-for-java/issues/21036)
+- Deprecate *addB2CIssuer*, *addB2CUserFlowIssuers*, *createB2CUserFlowIssuer* methods in `AADTrustedIssuerRepository`.
+
+## 3.4.0 (2021-04-19)
+### Key Bug Fixes
+- Fix bug of Keyvault refresh Timer task blocking application termination. ([#20014](https://github.com/Azure/azure-sdk-for-java/pull/20014))
+- Fix bug that user-name-attribute cannot be configured. ([#20209](https://github.com/Azure/azure-sdk-for-java/issues/20209))
+
+## 3.3.0 (2021-03-22)
+### New Features
+Updated to `Spring Boot` [2.4.3](https://github.com/spring-projects/spring-boot/releases/tag/v2.4.3).
+
+### Key Bug Fixes
+- Fix bug of using closed `MessageProducer` and `MessageConsumer` when a link is force detached in azure-spring-boot-starter-servicebus-jms.
+
+### New Features
+- Support creating `GrantedAuthority` by "roles" claim of id-token for web application in azure-spring-boot-starter-active-directory. 
+
+## 3.2.0 (2021-03-03)
+### Breaking Changes
+- Remove `azure.activedirectory.b2c.oidc-enabled` property.
+- Add `azure.activedirectory.b2c.login-flow` property. 
+- Change the type of `azure.activedirectory.b2c.user-flows` to map and below is the new structure:
+    ```yaml
+    azure:
+      activedirectory:
+        b2c:
+          login-flow: ${your-login-user-flow-key}               # default to sign-up-or-sign-in, will look up the user-flows map with provided key.
+          user-flows:
+            ${your-user-flow-key}: ${your-user-flow-name-defined-on-azure-portal}
+    ```
+- Require new property of `spring.jms.servicebus.pricing-tier` to set pricing tier of Azure Service Bus. Supported values are `premium`, `standard` and `basic`.
+### New Features
+- Enable MessageConverter bean customization.
+- Update the underpinning JMS library for the Premium pricing tier of Service Bus to JMS 2.0.
 
 ## 3.1.0 (2021-01-20)
 ### Breaking Changes
 - Exposed `userNameAttributeName` to configure the user's name.
-
+- Deprecated `tenant` configuration item, add `base-uri` item to support multi-cloud environments.
 
 ## 3.0.0 (2020-12-30)
 ### Breaking Changes
@@ -75,4 +142,3 @@
 
 ### Key Bug Fixes 
 - Address CVEs and cleaned up all warnings at build time. 
-

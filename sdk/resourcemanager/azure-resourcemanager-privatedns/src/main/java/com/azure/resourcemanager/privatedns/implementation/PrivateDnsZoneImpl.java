@@ -26,6 +26,10 @@ import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils
 import reactor.core.publisher.Mono;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+
 /** Implementation for {@link PrivateDnsZone}. */
 class PrivateDnsZoneImpl
     extends GroupableResourceImpl<PrivateDnsZone, PrivateZoneInner, PrivateDnsZoneImpl, PrivateDnsZoneManager>
@@ -41,6 +45,8 @@ class PrivateDnsZoneImpl
     private PrivateDnsRecordSetsImpl recordSets;
     private VirtualNetworkLinksImpl virtualNetworkLinks;
     private final ETagState etagState = new ETagState();
+
+    private Map<String, String> resourceTagsSnapshotOnUpdate = null;
 
     PrivateDnsZoneImpl(String name, final PrivateZoneInner innerModel, final PrivateDnsZoneManager manager) {
         super(name, innerModel, manager);
@@ -384,18 +390,46 @@ class PrivateDnsZoneImpl
 
     @Override
     public Mono<PrivateDnsZone> createResourceAsync() {
-        return manager().serviceClient().getPrivateZones()
-            .createOrUpdateAsync(
-                resourceGroupName(),
-                name(),
-                innerModel(),
-                etagState.ifMatchValueOnUpdate(innerModel().etag()),
-                etagState.ifNonMatchValueOnCreate())
-            .map(innerToFluentMap(this))
+        Mono<PrivateDnsZone> mono;
+        if (isInCreateMode()) {
+            mono = manager().serviceClient().getPrivateZones()
+                .createOrUpdateAsync(
+                    resourceGroupName(),
+                    name(),
+                    innerModel(),
+                    etagState.ifMatchValueOnUpdate(innerModel().etag()),
+                    etagState.ifNonMatchValueOnCreate())
+                .map(innerToFluentMap(this));
+        } else {
+            if (!Objects.equals(resourceTagsSnapshotOnUpdate, innerModel().tags())) {
+                mono = manager().serviceClient().getPrivateZones()
+                    .updateAsync(
+                        resourceGroupName(),
+                        name(),
+                        innerModel(),
+                        etagState.ifMatchValueOnUpdate(innerModel().etag()))
+                    .map(innerToFluentMap(this));
+            } else {
+                // skip update, as tags is the only property to update
+                mono = Mono.just(this);
+            }
+        }
+
+        return mono
             .map(privateDnsZone -> {
                 etagState.clear();
                 return privateDnsZone;
             });
+    }
+
+    @Override
+    public PrivateDnsZoneImpl update() {
+        if (innerModel() != null && innerModel().tags() != null) {
+            resourceTagsSnapshotOnUpdate = new HashMap<>(innerModel().tags());
+        } else {
+            resourceTagsSnapshotOnUpdate = null;
+        }
+        return super.update();
     }
 
     @Override

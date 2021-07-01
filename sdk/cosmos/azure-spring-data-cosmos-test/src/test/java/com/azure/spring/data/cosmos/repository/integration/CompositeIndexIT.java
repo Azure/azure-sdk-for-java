@@ -6,18 +6,17 @@ package com.azure.spring.data.cosmos.repository.integration;
 import com.azure.cosmos.models.CompositePath;
 import com.azure.cosmos.models.CompositePathSortOrder;
 import com.azure.cosmos.models.CosmosContainerProperties;
-import com.azure.cosmos.models.ExcludedPath;
-import com.azure.cosmos.models.IncludedPath;
 import com.azure.cosmos.models.IndexingPolicy;
+import com.azure.spring.data.cosmos.IntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.core.ReactiveCosmosTemplate;
-import com.azure.spring.data.cosmos.domain.ComplexIndexPolicyEntity;
 import com.azure.spring.data.cosmos.domain.CompositeIndexEntity;
-import com.azure.spring.data.cosmos.domain.IndexPolicyEntity;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import com.azure.spring.data.cosmos.repository.support.SimpleCosmosRepository;
 import com.azure.spring.data.cosmos.repository.support.SimpleReactiveCosmosRepository;
+import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -26,15 +25,16 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.in;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class CompositeIndexIT {
+
+    @ClassRule
+    public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
 
     @Autowired
     CosmosTemplate template;
@@ -43,6 +43,11 @@ public class CompositeIndexIT {
     ReactiveCosmosTemplate reactiveTemplate;
 
     CosmosEntityInformation<CompositeIndexEntity, String> information = new CosmosEntityInformation<>(CompositeIndexEntity.class);
+
+    @Before
+    public void setup() {
+        collectionManager.ensureContainersCreatedAndEmpty(template, CompositeIndexEntity.class);
+    }
 
     @Test
     public void canSetCompositeIndex() {

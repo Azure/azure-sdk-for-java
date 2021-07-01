@@ -8,7 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The MediaJobError model. */
+/** Details of JobOutput errors. */
 @Immutable
 public final class MediaJobError {
     /*

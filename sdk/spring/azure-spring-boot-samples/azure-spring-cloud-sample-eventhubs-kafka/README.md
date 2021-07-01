@@ -1,10 +1,20 @@
+---
+page_type: sample
+languages:
+- java
+products:
+- azure-event-hubs
+description: "Azure Spring Cloud Stream Binder Sample project for Event Hub client library"
+urlFragment: "azure-spring-cloud-sample-eventhubs-kafka"
+---
+
 # Spring Cloud Azure Stream Kafka Binder for Event Hub Code Sample shared library for Java
 
 ## Key concepts
 
 This code sample demonstrates how to use the Spring Cloud Stream Kafka
 binder for Azure Event Hub. The sample app exposes a RESTful API to receive
-string message. Then message is sent through Azure Event Hub to a `sink`
+string message. Then message is sent through Azure Event Hub to a bean `consumer`
 which simply logs the message.
 
 ## Getting started
@@ -14,10 +24,8 @@ Running this sample will be charged by Azure. You can check the usage and bill a
 [this link][azure-account].
 
 
-### Environment checklist
-
-We need to ensure that this [environment checklist][ready-to-run-checklist] is
-completed before the run.
+### Prerequisites
+- [Environment checklist][environment_checklist]
 
 
 ### Create Azure resources
@@ -44,11 +52,13 @@ completed before the run.
           eventhub:
             namespace: [eventhub-namespace]
         stream:
+          function:
+            definition: consume;supply
           bindings:
-            input:
+            consume-in-0:
               destination: [eventhub-name]
               group: [consumer-group]
-            output:
+            supply-out-0:
               destination: [the-same-eventhub-name-as-above]
     ```
 
@@ -64,9 +74,16 @@ completed before the run.
 
 1.  Delete the resources on [Azure Portal][azure-portal] to avoid unexpected charges.
 
-
-
 ## Troubleshooting
+
+- Meet with  `Creating topics with default partitions/replication factor are only supported in CreateTopicRequest version 4+` error.
+  
+  ```text
+  o.s.c.s.b.k.p.KafkaTopicProvisioner      : Failed to create topics
+    org.apache.kafka.common.errors.UnsupportedVersionException: Creating topics with default partitions/replication factor are only supported in CreateTopicRequest version 4+. The following topics need values for partitions and replicas
+  ```
+
+  When this error is found, add this configuration item `spring.cloud.stream.kafka.binder.replicationFactor`, with the value set to at least 1. For more information, see [Spring Cloud Stream Kafka Binder Reference Guide](https://docs.spring.io/spring-cloud-stream-binder-kafka/docs/current/reference/html/spring-cloud-stream-binder-kafka.html).
 
 ## Next steps
 
@@ -76,6 +93,6 @@ completed before the run.
 [azure-account]: https://azure.microsoft.com/account/
 [azure-portal]: https://ms.portal.azure.com/
 [create-event-hubs]: https://docs.microsoft.com/azure/event-hubs/
-[create-sp-using-azure-cli]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/create-sp-using-azure-cli.md
-[ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist
-[application.yaml]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-kafka/src/main/resources/application.yaml
+[create-sp-using-azure-cli]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot-samples/create-sp-using-azure-cli.md
+[environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
+[application.yaml]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-kafka/src/main/resources/application.yaml

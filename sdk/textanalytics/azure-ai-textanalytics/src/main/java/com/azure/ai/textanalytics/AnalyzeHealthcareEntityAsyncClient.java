@@ -13,6 +13,7 @@ import com.azure.ai.textanalytics.implementation.models.HealthcareJobState;
 import com.azure.ai.textanalytics.implementation.models.HealthcareResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
 import com.azure.ai.textanalytics.implementation.models.RequestStatistics;
+import com.azure.ai.textanalytics.implementation.models.StringIndexType;
 import com.azure.ai.textanalytics.implementation.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
@@ -46,7 +47,6 @@ import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.implementation.Utility.DEFAULT_POLL_INTERVAL;
-import static com.azure.ai.textanalytics.implementation.Utility.getNonNullStringIndexType;
 import static com.azure.ai.textanalytics.implementation.Utility.getNotNullContext;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.ai.textanalytics.implementation.Utility.parseNextLink;
@@ -80,13 +80,13 @@ class AnalyzeHealthcareEntityAsyncClient {
                                              .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE);
             final boolean finalIncludeStatistics = options.isIncludeStatistics();
             return new PollerFlux<>(
-                // TODO: after poller has the poll interval, use it.
-                // https://github.com/Azure/azure-sdk-for-java/issues/18827
                 DEFAULT_POLL_INTERVAL,
                 activationOperation(
                     service.healthWithResponseAsync(
                         new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
-                        options.getModelVersion(), getNonNullStringIndexType(options.getStringIndexType()),
+                        options.getModelVersion(),
+                        StringIndexType.UTF16CODE_UNIT,
+                        options.isServiceLogsDisabled(),
                         finalContext)
                         .map(healthResponse -> {
                             final AnalyzeHealthcareEntitiesOperationDetail operationDetail =
@@ -116,13 +116,13 @@ class AnalyzeHealthcareEntityAsyncClient {
                                              .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE);
             final boolean finalIncludeStatistics = options.isIncludeStatistics();
             return new PollerFlux<>(
-                // TODO: after poller has the poll interval, use it.
-                // https://github.com/Azure/azure-sdk-for-java/issues/18827
                 DEFAULT_POLL_INTERVAL,
                 activationOperation(
                     service.healthWithResponseAsync(
                         new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
-                        options.getModelVersion(), getNonNullStringIndexType(options.getStringIndexType()),
+                        options.getModelVersion(),
+                        StringIndexType.UTF16CODE_UNIT,
+                        options.isServiceLogsDisabled(),
                         finalContext)
                         .map(healthResponse -> {
                             final AnalyzeHealthcareEntitiesOperationDetail operationDetail =
@@ -153,16 +153,17 @@ class AnalyzeHealthcareEntityAsyncClient {
         UUID operationId, Integer top, Integer skip, boolean showStats, Context context) {
         try {
             if (continuationToken != null) {
-                final Map<String, Integer> continuationTokenMap = parseNextLink(continuationToken);
-                final Integer topValue = continuationTokenMap.getOrDefault("$top", null);
-                final Integer skipValue = continuationTokenMap.getOrDefault("$skip", null);
-                return service.healthStatusWithResponseAsync(operationId, topValue, skipValue, showStats, context)
+                final Map<String, Object> continuationTokenMap = parseNextLink(continuationToken);
+                final Integer topValue = (Integer) continuationTokenMap.getOrDefault("$top", null);
+                final Integer skipValue = (Integer) continuationTokenMap.getOrDefault("$skip", null);
+                final Boolean showStatsValue = (Boolean) continuationTokenMap.getOrDefault(showStats, false);
+                return service.healthStatusWithResponseAsync(operationId, topValue, skipValue, showStatsValue, context)
                            .map(this::toTextAnalyticsPagedResponse)
-                           .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
+                           .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
             } else {
                 return service.healthStatusWithResponseAsync(operationId, top, skip, showStats, context)
                            .map(this::toTextAnalyticsPagedResponse)
-                           .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
+                           .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
             }
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -215,7 +216,7 @@ class AnalyzeHealthcareEntityAsyncClient {
                             Mono<AnalyzeHealthcareEntitiesOperationDetail> operationResult) {
         return pollingContext -> {
             try {
-                return operationResult.onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
+                return operationResult.onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
             } catch (RuntimeException ex) {
                 return monoError(logger, ex);
             }
@@ -233,7 +234,7 @@ class AnalyzeHealthcareEntityAsyncClient {
                 final UUID resultUuid = UUID.fromString(operationResultPollResponse.getValue().getOperationId());
                 return pollingFunction.apply(resultUuid)
                     .flatMap(modelResponse -> processAnalyzeModelResponse(modelResponse, operationResultPollResponse))
-                    .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
+                    .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
             } catch (RuntimeException ex) {
                 return monoError(logger, ex);
             }
@@ -269,7 +270,7 @@ class AnalyzeHealthcareEntityAsyncClient {
                         AnalyzeHealthcareEntitiesOperationDetailPropertiesHelper.setOperationId(operationResult,
                             parseOperationId(cancelHealthJobResponse.getDeserializedHeaders().getOperationLocation()));
                         return operationResult;
-                    }).onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
+                    }).onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
             } catch (RuntimeException ex) {
                 return monoError(logger, ex);
             }

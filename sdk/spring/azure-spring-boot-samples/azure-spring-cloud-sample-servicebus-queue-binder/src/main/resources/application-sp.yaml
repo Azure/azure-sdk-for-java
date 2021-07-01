@@ -16,6 +16,8 @@ spring:
       servicebus:
         namespace: [servicebus-namespace]
     stream:
+      function:
+        definition: consume;supply
       bindings:
         consume-in-0:
           destination: [servicebus-queue-name]
@@ -27,8 +29,6 @@ spring:
             consume-in-0:
               consumer:
                 checkpoint-mode: MANUAL
-      function:
-        definition: consume;supply;
       poller:
         fixed-delay: 1000
         initial-delay: 0

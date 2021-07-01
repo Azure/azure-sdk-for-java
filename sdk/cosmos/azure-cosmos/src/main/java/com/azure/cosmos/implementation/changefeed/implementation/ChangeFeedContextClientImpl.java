@@ -53,7 +53,7 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
 
         this.cosmosContainer = cosmosContainer;
         this.documentClient = getContextClient(cosmosContainer);
-        this.rxScheduler = Schedulers.elastic();
+        this.rxScheduler = Schedulers.boundedElastic();
     }
 
     /**

@@ -5,10 +5,8 @@ package com.azure.ai.textanalytics.implementation;
 
 import com.azure.ai.textanalytics.models.EntityDataSource;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
-import com.azure.ai.textanalytics.models.HealthcareEntityRelationType;
+import com.azure.ai.textanalytics.models.HealthcareEntityAssertion;
 import com.azure.core.util.IterableStream;
-
-import java.util.Map;
 
 /**
  * The helper class to set the non-public properties of an {@link HealthcareEntity} instance.
@@ -23,15 +21,14 @@ public final class HealthcareEntityPropertiesHelper {
      */
     public interface HealthcareEntityAccessor {
         void setText(HealthcareEntity healthcareEntity, String text);
+        void setNormalizedText(HealthcareEntity healthcareEntity, String normalizedText);
         void setCategory(HealthcareEntity healthcareEntity, String category);
         void setSubcategory(HealthcareEntity healthcareEntity, String subcategory);
         void setConfidenceScore(HealthcareEntity healthcareEntity, double confidenceScore);
+        void setDataSources(HealthcareEntity healthcareEntity, IterableStream<EntityDataSource> dataSources);
+        void setAssertion(HealthcareEntity healthcareEntity, HealthcareEntityAssertion assertion);
         void setOffset(HealthcareEntity healthcareEntity, int offset);
         void setLength(HealthcareEntity healthcareEntity, int length);
-        void setNegated(HealthcareEntity healthcareEntity, boolean negated);
-        void setDataSources(HealthcareEntity healthcareEntity, IterableStream<EntityDataSource> dataSources);
-        void setRelatedEntities(HealthcareEntity healthcareEntity,
-            Map<HealthcareEntity, HealthcareEntityRelationType> relatedEntities);
     }
 
     /**
@@ -59,25 +56,24 @@ public final class HealthcareEntityPropertiesHelper {
         accessor.setConfidenceScore(healthcareEntity, confidenceScore);
     }
 
+    public static void setDataSources(HealthcareEntity healthcareEntity,
+        IterableStream<EntityDataSource> dataSources) {
+        accessor.setDataSources(healthcareEntity, dataSources);
+    }
+
+    public static void setNormalizedText(HealthcareEntity healthcareEntity, String normalizedText) {
+        accessor.setNormalizedText(healthcareEntity, normalizedText);
+    }
+
+    public static void setAssertion(HealthcareEntity healthcareEntity, HealthcareEntityAssertion assertion) {
+        accessor.setAssertion(healthcareEntity, assertion);
+    }
+
     public static void setOffset(HealthcareEntity healthcareEntity, int offset) {
         accessor.setOffset(healthcareEntity, offset);
     }
 
     public static void setLength(HealthcareEntity healthcareEntity, int length) {
         accessor.setLength(healthcareEntity, length);
-    }
-
-    public static void setNegated(HealthcareEntity healthcareEntity, boolean negated) {
-        accessor.setNegated(healthcareEntity, negated);
-    }
-
-    public static void setDataSources(HealthcareEntity healthcareEntity,
-        IterableStream<EntityDataSource> dataSources) {
-        accessor.setDataSources(healthcareEntity, dataSources);
-    }
-
-    public static void setRelatedEntities(HealthcareEntity healthcareEntity,
-        Map<HealthcareEntity, HealthcareEntityRelationType> relatedEntities) {
-        accessor.setRelatedEntities(healthcareEntity, relatedEntities);
     }
 }

@@ -6,6 +6,7 @@ package com.azure.core.amqp.implementation;
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpException;
+import com.azure.core.util.AsyncCloseable;
 import com.azure.core.util.logging.ClientLogger;
 import org.reactivestreams.Processor;
 import org.reactivestreams.Subscription;
@@ -108,9 +109,10 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
                         logger.info("namespace[{}] entityPath[{}]: Channel is disposed.",
                             fullyQualifiedNamespace, entityPath);
                     } else {
-                        logger.info("namespace[{}] entityPath[{}]: Channel is closed.",
+                        logger.info("namespace[{}] entityPath[{}]: Channel is closed. Requesting upstream. ",
                             fullyQualifiedNamespace, entityPath);
                         setAndClearChannel();
+                        requestUpstream();
                     }
                 });
         }
@@ -298,14 +300,20 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
     }
 
     private void close(T channel) {
-        if (channel instanceof AutoCloseable) {
+        if (channel instanceof AsyncCloseable) {
+            ((AsyncCloseable) channel).closeAsync().subscribe();
+        } else if (channel instanceof AutoCloseable) {
             try {
                 ((AutoCloseable) channel).close();
             } catch (Exception error) {
-                logger.warning("Error occurred closing item.", channel);
+                logger.warning("Error occurred closing AutoCloseable channel.", error);
             }
         } else if (channel instanceof Disposable) {
-            ((Disposable) channel).dispose();
+            try {
+                ((Disposable) channel).dispose();
+            } catch (Exception error) {
+                logger.warning("Error occurred closing Disposable channel.", error);
+            }
         }
     }
 
@@ -342,6 +350,7 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
         public void onComplete() {
             if (!isCancelled()) {
                 actual.onComplete();
+                processor.subscribers.remove(this);
             }
         }
 
@@ -356,6 +365,7 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
         public void onError(Throwable throwable) {
             if (!isCancelled()) {
                 actual.onError(throwable);
+                processor.subscribers.remove(this);
             } else {
                 Operators.onOperatorError(throwable, currentContext());
             }

@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.query;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.BadRequestException;
+import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.JsonSerializable;
@@ -79,12 +80,14 @@ public final class GroupByDocumentQueryExecutionContext<T extends Resource> impl
                 /* Do groupBy stuff here */
                 // Stage 1:
                 // Drain the groupings fully from all continuation and all partitions
+                List<ClientSideRequestStatistics> diagnosticsList = new ArrayList<>();
                 ConcurrentMap<String, QueryMetrics> queryMetrics = new ConcurrentHashMap<>();
                 for (FeedResponse<T> page : superList) {
                     List<Document> results = (List<Document>) page.getResults();
                     documentList.addAll(results);
                     requestCharge += page.getRequestCharge();
                     QueryMetrics.mergeQueryMetricsMap(queryMetrics, BridgeInternal.queryMetricsFromFeedResponse(page));
+                    diagnosticsList.addAll(BridgeInternal.getClientSideRequestStatisticsList(page.getCosmosDiagnostics()));
                 }
 
                 this.aggregateGroupings(documentList);
@@ -96,7 +99,8 @@ public final class GroupByDocumentQueryExecutionContext<T extends Resource> impl
                     groupByResults = this.groupingTable.drain(maxPageSize);
                 }
 
-                return createFeedResponseFromGroupingTable(maxPageSize, requestCharge, queryMetrics, groupByResults);
+                return createFeedResponseFromGroupingTable(maxPageSize, requestCharge, queryMetrics, groupByResults,
+                                                           diagnosticsList);
             }).expand(tFeedResponse -> {
                 // For groupBy query, we have already drained everything for the first page request
                 // so for following requests, we will just need to drain page by page from the grouping table
@@ -109,26 +113,27 @@ public final class GroupByDocumentQueryExecutionContext<T extends Resource> impl
                     return Mono.empty();
                 }
 
-                FeedResponse<T> response = createFeedResponseFromGroupingTable(maxPageSize, 0 , new ConcurrentHashMap<>(), groupByResults);
+                FeedResponse<T> response = createFeedResponseFromGroupingTable(maxPageSize, 0,
+                                                                               new ConcurrentHashMap<>(),
+                                                                               groupByResults, new ArrayList<>());
                 return Mono.just(response);
             });
     }
 
     @SuppressWarnings("unchecked") // safe to upcast
-    private FeedResponse<T> createFeedResponseFromGroupingTable(int pageSize,
-                                                                double requestCharge,
-                                                                ConcurrentMap<String, QueryMetrics> queryMetrics,
-                                                                List<Document> groupByResults) {
+    private FeedResponse<T> createFeedResponseFromGroupingTable(
+        int pageSize,
+        double requestCharge,
+        ConcurrentMap<String, QueryMetrics> queryMetrics,
+        List<Document> groupByResults,
+        List<ClientSideRequestStatistics> diagnosticsList) {
         if (this.groupingTable != null) {
             HashMap<String, String> headers = new HashMap<>();
             headers.put(HttpConstants.HttpHeaders.REQUEST_CHARGE, Double.toString(requestCharge));
-            FeedResponse<Document> frp = BridgeInternal.createFeedResponseWithQueryMetrics(
-                groupByResults,
-                headers,
-                queryMetrics,
-                null,
-                false,
-                false);
+            FeedResponse<Document> frp = BridgeInternal.createFeedResponseWithQueryMetrics(groupByResults, headers,
+                                                                                           queryMetrics, null, false,
+                                                                                           false, null);
+            BridgeInternal.addClientSideDiagnosticsToFeed(frp.getCosmosDiagnostics(), diagnosticsList);
             return (FeedResponse<T>) frp;
         }
 

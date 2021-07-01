@@ -59,6 +59,18 @@ public final class StorageAccount {
     @JsonProperty(value = "msiResourceId")
     private String msiResourceId;
 
+    /*
+     * The shared access signature key.
+     */
+    @JsonProperty(value = "saskey")
+    private String saskey;
+
+    /*
+     * The file share name.
+     */
+    @JsonProperty(value = "fileshare")
+    private String fileshare;
+
     /**
      * Get the name property: The name of the storage account.
      *
@@ -200,6 +212,46 @@ public final class StorageAccount {
      */
     public StorageAccount withMsiResourceId(String msiResourceId) {
         this.msiResourceId = msiResourceId;
+        return this;
+    }
+
+    /**
+     * Get the saskey property: The shared access signature key.
+     *
+     * @return the saskey value.
+     */
+    public String saskey() {
+        return this.saskey;
+    }
+
+    /**
+     * Set the saskey property: The shared access signature key.
+     *
+     * @param saskey the saskey value to set.
+     * @return the StorageAccount object itself.
+     */
+    public StorageAccount withSaskey(String saskey) {
+        this.saskey = saskey;
+        return this;
+    }
+
+    /**
+     * Get the fileshare property: The file share name.
+     *
+     * @return the fileshare value.
+     */
+    public String fileshare() {
+        return this.fileshare;
+    }
+
+    /**
+     * Set the fileshare property: The file share name.
+     *
+     * @param fileshare the fileshare value to set.
+     * @return the StorageAccount object itself.
+     */
+    public StorageAccount withFileshare(String fileshare) {
+        this.fileshare = fileshare;
         return this;
     }
 

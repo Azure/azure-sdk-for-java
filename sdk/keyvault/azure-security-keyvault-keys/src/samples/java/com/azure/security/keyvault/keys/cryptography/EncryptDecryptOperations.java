@@ -32,16 +32,17 @@ public class EncryptDecryptOperations {
             .keyIdentifier("<Your-Key-Id-From-Keyvault")
             .buildClient();
 
-        byte[] plainText = new byte[100];
-        new Random(0x1234567L).nextBytes(plainText);
+        byte[] plaintext = new byte[100];
+        new Random(0x1234567L).nextBytes(plaintext);
 
         // Let's encrypt a simple plain text of size 100 bytes.
-        EncryptResult encryptResult = cryptoClient.encrypt(EncryptionAlgorithm.RSA_OAEP, plainText);
-        System.out.printf("Returned cipherText size is %d bytes with algorithm %s \n", encryptResult.getCipherText().length, encryptResult.getAlgorithm().toString());
+        EncryptResult encryptResult = cryptoClient.encrypt(EncryptionAlgorithm.RSA_OAEP, plaintext);
+        System.out.printf("Returned ciphertext size is %d bytes with algorithm %s\n",
+            encryptResult.getCipherText().length, encryptResult.getAlgorithm().toString());
 
         //Let's decrypt the encrypted response.
         DecryptResult decryptResult = cryptoClient.decrypt(EncryptionAlgorithm.RSA_OAEP, encryptResult.getCipherText());
-        System.out.printf("Returned plainText size is %d bytes \n", decryptResult.getPlainText().length);
+        System.out.printf("Returned plaintext size is %d bytes \n", decryptResult.getPlainText().length);
     }
 }
 

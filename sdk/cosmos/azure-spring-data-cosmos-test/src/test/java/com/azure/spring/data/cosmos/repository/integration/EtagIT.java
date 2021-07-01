@@ -3,12 +3,15 @@
 
 package com.azure.spring.data.cosmos.repository.integration;
 
+import com.azure.spring.data.cosmos.IntegrationTestCollectionManager;
+import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.domain.PersonWithEtag;
 import com.azure.spring.data.cosmos.exception.CosmosAccessException;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.PersonWithEtagRepository;
-import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,12 +34,17 @@ import static com.azure.spring.data.cosmos.common.TestConstants.LAST_NAME;
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class EtagIT {
 
+    @ClassRule
+    public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
+
+    @Autowired
+    CosmosTemplate template;
     @Autowired
     PersonWithEtagRepository personWithEtagRepository;
 
-    @After
-    public void cleanup() {
-        personWithEtagRepository.deleteAll();
+    @Before
+    public void setup() {
+        collectionManager.ensureContainersCreatedAndEmpty(template, PersonWithEtag.class);
     }
 
     private static PersonWithEtag createPersonWithEtag() {

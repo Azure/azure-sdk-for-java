@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -67,7 +68,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
     @Host("{$host}")
     @ServiceInterface(name = "AppPlatformManagemen")
     private interface CertificatesService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
                 + "/{serviceName}/certificates/{certificateName}")
@@ -80,9 +81,10 @@ public final class CertificatesClientImpl implements CertificatesClient {
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("serviceName") String serviceName,
             @PathParam("certificateName") String certificateName,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
                 + "/{serviceName}/certificates/{certificateName}")
@@ -96,9 +98,10 @@ public final class CertificatesClientImpl implements CertificatesClient {
             @PathParam("serviceName") String serviceName,
             @PathParam("certificateName") String certificateName,
             @BodyParam("application/json") CertificateResourceInner certificateResource,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
                 + "/{serviceName}/certificates/{certificateName}")
@@ -111,9 +114,10 @@ public final class CertificatesClientImpl implements CertificatesClient {
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("serviceName") String serviceName,
             @PathParam("certificateName") String certificateName,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
                 + "/{serviceName}/certificates")
@@ -125,14 +129,18 @@ public final class CertificatesClientImpl implements CertificatesClient {
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("serviceName") String serviceName,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CertificateResourceCollection>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -173,6 +181,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter certificateName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -184,6 +193,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
                             resourceGroupName,
                             serviceName,
                             certificateName,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -227,6 +237,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter certificateName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -236,6 +247,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
                 resourceGroupName,
                 serviceName,
                 certificateName,
+                accept,
                 context);
     }
 
@@ -308,7 +320,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param certificateName The name of the certificate resource.
-     * @param properties Certificate resource payload.
+     * @param properties Properties of the certificate resource payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -343,6 +355,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
         if (properties != null) {
             properties.validate();
         }
+        final String accept = "application/json";
         CertificateResourceInner certificateResource = new CertificateResourceInner();
         certificateResource.withProperties(properties);
         return FluxUtil
@@ -357,6 +370,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
                             serviceName,
                             certificateName,
                             certificateResource,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -368,7 +382,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param certificateName The name of the certificate resource.
-     * @param properties Certificate resource payload.
+     * @param properties Properties of the certificate resource payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -408,6 +422,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
         if (properties != null) {
             properties.validate();
         }
+        final String accept = "application/json";
         CertificateResourceInner certificateResource = new CertificateResourceInner();
         certificateResource.withProperties(properties);
         context = this.client.mergeContext(context);
@@ -420,6 +435,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
                 serviceName,
                 certificateName,
                 certificateResource,
+                accept,
                 context);
     }
 
@@ -430,7 +446,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param certificateName The name of the certificate resource.
-     * @param properties Certificate resource payload.
+     * @param properties Properties of the certificate resource payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -458,7 +474,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param certificateName The name of the certificate resource.
-     * @param properties Certificate resource payload.
+     * @param properties Properties of the certificate resource payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -492,7 +508,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param certificateName The name of the certificate resource.
-     * @param properties Certificate resource payload.
+     * @param properties Properties of the certificate resource payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -511,7 +527,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param certificateName The name of the certificate resource.
-     * @param properties Certificate resource payload.
+     * @param properties Properties of the certificate resource payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -536,7 +552,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param certificateName The name of the certificate resource.
-     * @param properties Certificate resource payload.
+     * @param properties Properties of the certificate resource payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -557,7 +573,28 @@ public final class CertificatesClientImpl implements CertificatesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param certificateName The name of the certificate resource.
-     * @param properties Certificate resource payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return certificate resource payload.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<CertificateResourceInner> createOrUpdateAsync(
+        String resourceGroupName, String serviceName, String certificateName) {
+        final CertificateProperties properties = null;
+        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, certificateName, properties)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Create or update certificate resource.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param certificateName The name of the certificate resource.
+     * @param properties Properties of the certificate resource payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -583,28 +620,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param certificateName The name of the certificate resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return certificate resource payload.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CertificateResourceInner> createOrUpdateAsync(
-        String resourceGroupName, String serviceName, String certificateName) {
-        final CertificateProperties properties = null;
-        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, certificateName, properties)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Create or update certificate resource.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param certificateName The name of the certificate resource.
-     * @param properties Certificate resource payload.
+     * @param properties Properties of the certificate resource payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -623,7 +639,26 @@ public final class CertificatesClientImpl implements CertificatesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param certificateName The name of the certificate resource.
-     * @param properties Certificate resource payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return certificate resource payload.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CertificateResourceInner createOrUpdate(
+        String resourceGroupName, String serviceName, String certificateName) {
+        final CertificateProperties properties = null;
+        return createOrUpdateAsync(resourceGroupName, serviceName, certificateName, properties).block();
+    }
+
+    /**
+     * Create or update certificate resource.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param certificateName The name of the certificate resource.
+     * @param properties Properties of the certificate resource payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -638,25 +673,6 @@ public final class CertificatesClientImpl implements CertificatesClient {
         CertificateProperties properties,
         Context context) {
         return createOrUpdateAsync(resourceGroupName, serviceName, certificateName, properties, context).block();
-    }
-
-    /**
-     * Create or update certificate resource.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param certificateName The name of the certificate resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return certificate resource payload.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CertificateResourceInner createOrUpdate(
-        String resourceGroupName, String serviceName, String certificateName) {
-        final CertificateProperties properties = null;
-        return createOrUpdateAsync(resourceGroupName, serviceName, certificateName, properties).block();
     }
 
     /**
@@ -697,6 +713,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter certificateName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -708,6 +725,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
                             resourceGroupName,
                             serviceName,
                             certificateName,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -751,6 +769,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter certificateName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -760,6 +779,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
                 resourceGroupName,
                 serviceName,
                 certificateName,
+                accept,
                 context);
     }
 
@@ -952,6 +972,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
         if (serviceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -962,6 +983,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             serviceName,
+                            accept,
                             context))
             .<PagedResponse<CertificateResourceInner>>map(
                 res ->
@@ -1009,6 +1031,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
         if (serviceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(
@@ -1017,6 +1040,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 serviceName,
+                accept,
                 context)
             .map(
                 res ->
@@ -1113,8 +1137,15 @@ public final class CertificatesClientImpl implements CertificatesClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listNext(nextLink, context))
+            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<CertificateResourceInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1142,9 +1173,16 @@ public final class CertificatesClientImpl implements CertificatesClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listNext(nextLink, context)
+            .listNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

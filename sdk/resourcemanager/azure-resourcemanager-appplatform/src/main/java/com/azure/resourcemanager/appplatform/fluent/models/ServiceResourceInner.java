@@ -11,6 +11,7 @@ import com.azure.resourcemanager.appplatform.models.ClusterResourceProperties;
 import com.azure.resourcemanager.appplatform.models.Sku;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /** Service resource. */
 @Fluent
@@ -66,6 +67,20 @@ public final class ServiceResourceInner extends Resource {
      */
     public ServiceResourceInner withSku(Sku sku) {
         this.sku = sku;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ServiceResourceInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ServiceResourceInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 

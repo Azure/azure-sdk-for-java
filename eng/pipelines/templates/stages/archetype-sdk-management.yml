@@ -21,12 +21,9 @@ stages:
         Java 8:
           ArtifactName: 'packages'
           JavaVersion: '1.8'
-        Java 7:
-          ArtifactName: 'packages'
-          JavaVersion: '1.7'
 
     pool:
-      vmImage: 'ubuntu-18.04'
+      vmImage: 'ubuntu-20.04'
 
     steps:
       - task: Maven@3

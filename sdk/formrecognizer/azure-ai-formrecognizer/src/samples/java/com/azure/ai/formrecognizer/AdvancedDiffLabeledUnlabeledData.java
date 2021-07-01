@@ -23,7 +23,7 @@ import java.util.List;
  * The models used in this sample can be created using TrainModelsWithLabels.java and TrainModelsWithoutLabels.java.
  * <p>
  * See
- * <a href = "https://docs.microsoft.com/azure/cognitive-services/form-recognizer/overview#train-without-labels">here </a>
+ * <a href="https://docs.microsoft.com/azure/cognitive-services/form-recognizer/overview#train-without-labels">here</a>
  * for service documentation on training with and without labels.
  * </p>
  */
@@ -44,8 +44,8 @@ public class AdvancedDiffLabeledUnlabeledData {
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildClient();
 
-        File analyzeFile = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/java/sample-forms/"
-            + "forms/Form_1.jpg");
+        File analyzeFile = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/resources/"
+            + "java/sample-forms/forms/Form_1.jpg");
 
         List<RecognizedForm> formsWithLabeledModel =
             client.beginRecognizeCustomForms(

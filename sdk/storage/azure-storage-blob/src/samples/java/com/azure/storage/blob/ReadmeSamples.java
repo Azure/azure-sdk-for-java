@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.storage.blob;
 
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.blob.models.BlobCopyInfo;
@@ -104,7 +105,7 @@ public class ReadmeSamples {
 
     public void downloadBlobToStream() {
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
-            blobClient.download(outputStream);
+            blobClient.downloadStream(outputStream);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -134,6 +135,16 @@ public class ReadmeSamples {
 
     public void copyBlob2() {
         blobClient.copyFromUrl("url-to-blob");
+    }
+
+    public void uploadBinaryDataToBlob() {
+        BlobClient blobClient = blobContainerClient.getBlobClient("myblockblob");
+        String dataSample = "samples";
+        blobClient.upload(BinaryData.fromString(dataSample));
+    }
+
+    public void downloadDataFromBlob() {
+        BinaryData content = blobClient.downloadContent();
     }
 }
 

@@ -10,14 +10,14 @@ import java.util.Collection;
 
 /** Defines values for IndexingMode. */
 public final class IndexingMode extends ExpandableStringEnum<IndexingMode> {
-    /** Static value Consistent for IndexingMode. */
-    public static final IndexingMode CONSISTENT = fromString("Consistent");
+    /** Static value consistent for IndexingMode. */
+    public static final IndexingMode CONSISTENT = fromString("consistent");
 
-    /** Static value Lazy for IndexingMode. */
-    public static final IndexingMode LAZY = fromString("Lazy");
+    /** Static value lazy for IndexingMode. */
+    public static final IndexingMode LAZY = fromString("lazy");
 
-    /** Static value None for IndexingMode. */
-    public static final IndexingMode NONE = fromString("None");
+    /** Static value none for IndexingMode. */
+    public static final IndexingMode NONE = fromString("none");
 
     /**
      * Creates or finds a IndexingMode from its string representation.

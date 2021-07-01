@@ -7,6 +7,7 @@ package com.azure.resourcemanager.compute.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.compute.models.ExtendedLocation;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -35,6 +36,12 @@ public class VirtualMachineImageResourceInner extends SubResource {
      */
     @JsonProperty(value = "tags")
     private Map<String, String> tags;
+
+    /*
+     * The extended location of the Virtual Machine.
+     */
+    @JsonProperty(value = "extendedLocation")
+    private ExtendedLocation extendedLocation;
 
     /**
      * Get the name property: The name of the resource.
@@ -100,6 +107,26 @@ public class VirtualMachineImageResourceInner extends SubResource {
         return this;
     }
 
+    /**
+     * Get the extendedLocation property: The extended location of the Virtual Machine.
+     *
+     * @return the extendedLocation value.
+     */
+    public ExtendedLocation extendedLocation() {
+        return this.extendedLocation;
+    }
+
+    /**
+     * Set the extendedLocation property: The extended location of the Virtual Machine.
+     *
+     * @param extendedLocation the extendedLocation value to set.
+     * @return the VirtualMachineImageResourceInner object itself.
+     */
+    public VirtualMachineImageResourceInner withExtendedLocation(ExtendedLocation extendedLocation) {
+        this.extendedLocation = extendedLocation;
+        return this;
+    }
+
     /** {@inheritDoc} */
     @Override
     public VirtualMachineImageResourceInner withId(String id) {
@@ -124,6 +151,9 @@ public class VirtualMachineImageResourceInner extends SubResource {
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property location in model VirtualMachineImageResourceInner"));
+        }
+        if (extendedLocation() != null) {
+            extendedLocation().validate();
         }
     }
 }

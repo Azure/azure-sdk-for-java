@@ -44,7 +44,7 @@ public interface RoleAssignments
      * List role assignments in a scope.
      *
      * @param scope the scope of the role assignments
-     * @return an observable of role assignments
+     * @return a list of role assignments
      */
     PagedFlux<RoleAssignment> listByScopeAsync(String scope);
 
@@ -55,4 +55,37 @@ public interface RoleAssignments
      * @return a list of role assignments
      */
     PagedIterable<RoleAssignment> listByScope(String scope);
+
+    /**
+     * List role assignments for a service principal.
+     *
+     * @param servicePrincipal the service principal
+     * @return a list of role assignments
+     */
+    PagedFlux<RoleAssignment> listByServicePrincipalAsync(ServicePrincipal servicePrincipal);
+
+    /**
+     * List role assignments for a service principal.
+     *
+     * @param servicePrincipal the service principal
+     * @return a list of role assignments
+     */
+    PagedIterable<RoleAssignment> listByServicePrincipal(ServicePrincipal servicePrincipal);
+
+
+    /**
+     * List role assignments for a service principal.
+     *
+     * @param principalId the ID of the service principal
+     * @return a list of role assignments
+     */
+    PagedFlux<RoleAssignment> listByServicePrincipalAsync(String principalId);
+
+    /**
+     * List role assignments for a service principal.
+     *
+     * @param principalId the ID of the service principal
+     * @return a list of role assignments
+     */
+    PagedIterable<RoleAssignment> listByServicePrincipal(String principalId);
 }

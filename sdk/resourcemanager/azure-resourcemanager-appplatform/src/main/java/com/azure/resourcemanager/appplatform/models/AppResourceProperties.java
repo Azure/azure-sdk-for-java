@@ -52,6 +52,12 @@ public final class AppResourceProperties {
     private Boolean httpsOnly;
 
     /*
+     * Indicate if end to end TLS is enabled.
+     */
+    @JsonProperty(value = "enableEndToEndTLS")
+    private Boolean enableEndToEndTls;
+
+    /*
      * Date time when the resource is created
      */
     @JsonProperty(value = "createdTime", access = JsonProperty.Access.WRITE_ONLY)
@@ -164,6 +170,26 @@ public final class AppResourceProperties {
      */
     public AppResourceProperties withHttpsOnly(Boolean httpsOnly) {
         this.httpsOnly = httpsOnly;
+        return this;
+    }
+
+    /**
+     * Get the enableEndToEndTls property: Indicate if end to end TLS is enabled.
+     *
+     * @return the enableEndToEndTls value.
+     */
+    public Boolean enableEndToEndTls() {
+        return this.enableEndToEndTls;
+    }
+
+    /**
+     * Set the enableEndToEndTls property: Indicate if end to end TLS is enabled.
+     *
+     * @param enableEndToEndTls the enableEndToEndTls value to set.
+     * @return the AppResourceProperties object itself.
+     */
+    public AppResourceProperties withEnableEndToEndTls(Boolean enableEndToEndTls) {
+        this.enableEndToEndTls = enableEndToEndTls;
         return this;
     }
 

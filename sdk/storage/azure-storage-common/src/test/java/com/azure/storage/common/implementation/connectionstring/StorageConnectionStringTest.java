@@ -4,8 +4,14 @@
 package com.azure.storage.common.implementation.connectionstring;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.common.implementation.SasImplUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -51,8 +57,20 @@ public class StorageConnectionStringTest {
         Assertions.assertEquals(StorageAuthenticationSettings.Type.SAS_TOKEN,
                 authSettings.getType());
         Assertions.assertNotNull(authSettings.getSasToken());
-        Assertions.assertTrue(authSettings.getSasToken().equalsIgnoreCase(SAS_TOKEN));
+        assertSasTokensEqual(authSettings.getSasToken(), SAS_TOKEN);
         Assertions.assertNull(storageConnectionString.getAccountName());
+    }
+
+    private static void assertSasTokensEqual(String left, String right) {
+        Map<String, String[]> leftMap = SasImplUtils.parseQueryString(left);
+        Map<String, String[]> rightMap = SasImplUtils.parseQueryString(right);
+
+        Assertions.assertEquals(leftMap.keySet(), rightMap.keySet());
+        for (String key : leftMap.keySet()) {
+            Set<String> leftValues = new HashSet<>(Arrays.asList(leftMap.get(key)));
+            Set<String> rightValues = new HashSet<>(Arrays.asList(rightMap.get(key)));
+            Assertions.assertEquals(leftValues, rightValues);
+        }
     }
 
     @Test
@@ -323,8 +341,7 @@ public class StorageConnectionStringTest {
                         blobEndpointStr,
                         fileEndpointStr,
                         SAS_TOKEN,
-                        ACCOUNT_NAME_VALUE,
-                        ACCOUNT_KEY_VALUE);
+                        ACCOUNT_NAME_VALUE);
         StorageConnectionString.create(connectionString, logger);
     }
 

@@ -4,9 +4,8 @@
 package com.azure.ai.metricsadvisor;
 
 import com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient;
-import com.azure.ai.metricsadvisor.models.NotificationHook;
-import com.azure.ai.metricsadvisor.models.ListHookOptions;
-import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
+import com.azure.ai.metricsadvisor.administration.models.ListHookOptions;
+import com.azure.ai.metricsadvisor.administration.models.NotificationHook;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.util.Context;
@@ -61,10 +60,8 @@ public final class NotificationHookTest extends NotificationHookTestBase {
         client.deleteHook(createdNotificationHook.getId());
     }
 
-    // Track this with https://github.com/Azure/azure-sdk-for-java/issues/16932
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
-    @Override
     void testListHook(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         MetricsAdvisorAdministrationClient client
             = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
@@ -79,14 +76,17 @@ public final class NotificationHookTest extends NotificationHookTestBase {
         Assertions.assertNotNull(hookId[0]);
         Assertions.assertNotNull(hookId[1]);
 
-        List<NotificationHook> notificationHookList = client.listHooks()
+        List<NotificationHook> notificationHookList = client.listHooks(new ListHookOptions()
+            .setHookNameFilter("java_test"), Context.NONE)
             .stream()
             .collect(Collectors.toList());
 
         assertListHookOutput(notificationHookList);
 
         List<PagedResponse<NotificationHook>> hookPageList
-            = client.listHooks(new ListHookOptions().setTop(ListHookInput.INSTANCE.pageSize), Context.NONE)
+            = client.listHooks(new ListHookOptions()
+            .setHookNameFilter("java_test")
+            .setMaxPageSize(ListHookInput.INSTANCE.pageSize), Context.NONE)
             .streamByPage()
             .collect(Collectors.toList());
 

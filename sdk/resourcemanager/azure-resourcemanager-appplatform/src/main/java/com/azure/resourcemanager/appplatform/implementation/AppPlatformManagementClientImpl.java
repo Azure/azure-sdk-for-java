@@ -261,7 +261,7 @@ public final class AppPlatformManagementClientImpl extends AzureServiceClient im
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2020-07-01";
+        this.apiVersion = "2020-11-01-preview";
         this.services = new ServicesClientImpl(this);
         this.configServers = new ConfigServersClientImpl(this);
         this.monitoringSettings = new MonitoringSettingsClientImpl(this);

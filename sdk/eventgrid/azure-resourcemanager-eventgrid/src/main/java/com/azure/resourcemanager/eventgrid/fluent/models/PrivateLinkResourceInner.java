@@ -24,13 +24,13 @@ public class PrivateLinkResourceInner {
     private String id;
 
     /*
-     * Name of the resource
+     * Name of the resource.
      */
     @JsonProperty(value = "name")
     private String name;
 
     /*
-     * Type of the resource
+     * Type of the resource.
      */
     @JsonProperty(value = "type")
     private String type;

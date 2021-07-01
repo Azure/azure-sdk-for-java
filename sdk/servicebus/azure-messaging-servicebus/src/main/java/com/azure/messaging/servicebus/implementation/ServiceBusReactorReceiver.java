@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus.implementation;
 
+import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
@@ -33,6 +34,7 @@ import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.MonoSink;
+import reactor.core.scheduler.Schedulers;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -79,9 +81,11 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
     private final Mono<String> sessionIdMono;
     private final Mono<OffsetDateTime> sessionLockedUntil;
 
-    public ServiceBusReactorReceiver(String entityPath, Receiver receiver, ReceiveLinkHandler handler,
-        TokenManager tokenManager, ReactorProvider provider, Duration timeout, AmqpRetryPolicy retryPolicy) {
-        super(entityPath, receiver, handler, tokenManager, provider.getReactorDispatcher());
+    public ServiceBusReactorReceiver(AmqpConnection connection, String entityPath, Receiver receiver,
+        ReceiveLinkHandler handler, TokenManager tokenManager, ReactorProvider provider, Duration timeout,
+        AmqpRetryPolicy retryPolicy) {
+        super(connection, entityPath, receiver, handler, tokenManager, provider.getReactorDispatcher(),
+            retryPolicy.getRetryOptions());
         this.receiver = receiver;
         this.handler = handler;
         this.provider = provider;
@@ -132,7 +136,9 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
     @Override
     public Flux<Message> receive() {
         // Remove empty update disposition messages. The deliveries themselves are ACKs with no message.
-        return super.receive().filter(message -> message != EMPTY_MESSAGE);
+        return super.receive()
+            .filter(message -> message != EMPTY_MESSAGE)
+            .publishOn(Schedulers.boundedElastic());
     }
 
     @Override
@@ -146,13 +152,14 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
     }
 
     @Override
-    public void dispose() {
+    public Mono<Void> closeAsync() {
         if (isDisposed.getAndSet(true)) {
-            return;
+            return super.closeAsync();
         }
 
         cleanupWorkItems();
 
+        final Mono<Void> disposeMono;
         if (!pendingUpdates.isEmpty()) {
             final List<Mono<Void>> pending = new ArrayList<>();
             final StringJoiner builder = new StringJoiner(", ");
@@ -171,14 +178,15 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
             }
 
             logger.info("Waiting for pending updates to complete. Locks: {}", builder.toString());
-            try {
-                Mono.when(pending).block(timeout);
-            } catch (IllegalStateException ignored) {
-            }
+            disposeMono = Mono.when(pending);
+        } else {
+            disposeMono = Mono.empty();
         }
 
-        subscription.dispose();
-        super.dispose();
+        return disposeMono.onErrorResume(error -> {
+            logger.info("There was an exception while disposing of all links.", error);
+            return Mono.empty();
+        }).doFinally(signal -> subscription.dispose()).then(super.closeAsync());
     }
 
     @Override
@@ -231,7 +239,7 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
         }
 
         final UpdateDispositionWorkItem workItem = new UpdateDispositionWorkItem(lockToken, deliveryState, timeout);
-        final Mono<Void> result = Mono.create(sink -> {
+        final Mono<Void> result = Mono.<Void>create(sink -> {
             workItem.start(sink);
             try {
                 provider.getReactorDispatcher().invoke(() -> {
@@ -242,7 +250,7 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
                 sink.error(new AmqpException(false, "updateDisposition failed while dispatching to Reactor.",
                     error, handler.getErrorContext(receiver)));
             }
-        });
+        }).cache();  // cache because closeAsync use `when` to subscribe this Mono again.
 
         workItem.setMono(result);
 

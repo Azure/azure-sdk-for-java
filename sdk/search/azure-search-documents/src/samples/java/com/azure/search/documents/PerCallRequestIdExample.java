@@ -43,7 +43,7 @@ public class PerCallRequestIdExample {
 
         // Setup context to pass custom x-ms-client-request-id.
         HttpHeaders headers = new HttpHeaders();
-        headers.put("x-ms-client-request-id", UUID.randomUUID().toString());
+        headers.set("x-ms-client-request-id", UUID.randomUUID().toString());
 
         Context context = new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers);
 
@@ -74,7 +74,7 @@ public class PerCallRequestIdExample {
 
         // Setup context to pass custom x-ms-client-request-id.
         HttpHeaders headers = new HttpHeaders();
-        headers.put("x-ms-client-request-id", UUID.randomUUID().toString());
+        headers.set("x-ms-client-request-id", UUID.randomUUID().toString());
 
         reactor.util.context.Context subscriberContext = reactor.util.context.Context.of(
             AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers);

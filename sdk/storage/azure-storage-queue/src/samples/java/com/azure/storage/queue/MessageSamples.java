@@ -36,7 +36,7 @@ public class MessageSamples {
 
         // Peek all messages in queue. It is supposed to print "Hello World" 3 times.
         queueClient.peekMessages(count, null, null).forEach(
-            peekedMessage -> System.out.println("Here is the msg: " + peekedMessage.getMessageText()));
+            peekedMessage -> System.out.println("Here is the msg: " + peekedMessage.getBody().toString()));
 
         // Received all messages in queue and update the message "Hello World" to Hello, world!"
         queueClient.receiveMessages(count, Duration.ofSeconds(30), Duration.ofSeconds(50), null).forEach(

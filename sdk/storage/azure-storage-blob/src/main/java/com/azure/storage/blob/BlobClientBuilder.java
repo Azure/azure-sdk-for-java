@@ -25,6 +25,7 @@ import com.azure.storage.common.implementation.connectionstring.StorageAuthentic
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
 import com.azure.storage.common.implementation.connectionstring.StorageEndpoint;
 import com.azure.storage.common.policy.RequestRetryOptions;
+
 import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -139,9 +140,8 @@ public final class BlobClientBuilder {
             endpoint, retryOptions, logOptions,
             clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, logger);
 
-        return new BlobAsyncClient(pipeline, String.format("%s/%s/%s", endpoint, blobContainerName, blobName),
-            serviceVersion, accountName, blobContainerName, blobName, snapshot, customerProvidedKey, encryptionScope,
-            versionId);
+        return new BlobAsyncClient(pipeline, endpoint, serviceVersion, accountName, blobContainerName, blobName,
+            snapshot, customerProvidedKey, encryptionScope, versionId);
     }
 
     /**

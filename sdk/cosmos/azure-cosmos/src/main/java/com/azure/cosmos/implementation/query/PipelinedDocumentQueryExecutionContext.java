@@ -176,10 +176,13 @@ public class PipelinedDocumentQueryExecutionContext<T extends Resource> implemen
         Map<PartitionKeyRange, SqlQuerySpec> rangeQueryMap, CosmosQueryRequestOptions cosmosQueryRequestOptions,
         String resourceId, String collectionLink, UUID activityId, Class<T> klass,
         ResourceType resourceTypeEnum) {
-        Flux<IDocumentQueryExecutionComponent<T>> documentQueryExecutionComponentFlux = ParallelDocumentQueryExecutionContext
-                                                                                            .createReadManyQueryAsync(diagnosticsClientContext, queryClient,
-                                                                                                                      collectionResourceId, sqlQuery, rangeQueryMap,
-                                                                                                cosmosQueryRequestOptions, resourceId, collectionLink, activityId, klass, resourceTypeEnum);
+        Flux<IDocumentQueryExecutionComponent<T>> documentQueryExecutionComponentFlux =
+            ParallelDocumentQueryExecutionContext.createReadManyQueryAsync(diagnosticsClientContext, queryClient,
+                                                                           collectionResourceId, sqlQuery,
+                                                                           rangeQueryMap,
+                                                                           cosmosQueryRequestOptions, resourceId,
+                                                                           collectionLink, activityId, klass,
+                                                                           resourceTypeEnum);
 
         // TODO: Making pagesize -1. Should be reviewed
         return documentQueryExecutionComponentFlux.map(c -> new PipelinedDocumentQueryExecutionContext<>(c, -1,

@@ -76,7 +76,8 @@ public interface Workspace {
     WorkspaceSku sku();
 
     /**
-     * Gets the retentionInDays property: The workspace data retention in days, between 30 and 730.
+     * Gets the retentionInDays property: The workspace data retention in days. Allowed values are per pricing plan. See
+     * pricing tiers documentation for details.
      *
      * @return the retentionInDays value.
      */
@@ -88,6 +89,20 @@ public interface Workspace {
      * @return the workspaceCapping value.
      */
     WorkspaceCapping workspaceCapping();
+
+    /**
+     * Gets the createdDate property: Workspace creation date.
+     *
+     * @return the createdDate value.
+     */
+    String createdDate();
+
+    /**
+     * Gets the modifiedDate property: Workspace modification date.
+     *
+     * @return the modifiedDate value.
+     */
+    String modifiedDate();
 
     /**
      * Gets the publicNetworkAccessForIngestion property: The network access type for accessing Log Analytics ingestion.
@@ -104,11 +119,25 @@ public interface Workspace {
     PublicNetworkAccessType publicNetworkAccessForQuery();
 
     /**
+     * Gets the forceCmkForQuery property: Indicates whether customer managed storage is mandatory for query management.
+     *
+     * @return the forceCmkForQuery value.
+     */
+    Boolean forceCmkForQuery();
+
+    /**
      * Gets the privateLinkScopedResources property: List of linked private link scope resources.
      *
      * @return the privateLinkScopedResources value.
      */
     List<PrivateLinkScopedResource> privateLinkScopedResources();
+
+    /**
+     * Gets the features property: Workspace features.
+     *
+     * @return the features value.
+     */
+    Map<String, Object> features();
 
     /**
      * Gets the region of the resource.
@@ -183,7 +212,9 @@ public interface Workspace {
                 DefinitionStages.WithRetentionInDays,
                 DefinitionStages.WithWorkspaceCapping,
                 DefinitionStages.WithPublicNetworkAccessForIngestion,
-                DefinitionStages.WithPublicNetworkAccessForQuery {
+                DefinitionStages.WithPublicNetworkAccessForQuery,
+                DefinitionStages.WithForceCmkForQuery,
+                DefinitionStages.WithFeatures {
             /**
              * Executes the create request.
              *
@@ -242,9 +273,11 @@ public interface Workspace {
         /** The stage of the Workspace definition allowing to specify retentionInDays. */
         interface WithRetentionInDays {
             /**
-             * Specifies the retentionInDays property: The workspace data retention in days, between 30 and 730..
+             * Specifies the retentionInDays property: The workspace data retention in days. Allowed values are per
+             * pricing plan. See pricing tiers documentation for details..
              *
-             * @param retentionInDays The workspace data retention in days, between 30 and 730.
+             * @param retentionInDays The workspace data retention in days. Allowed values are per pricing plan. See
+             *     pricing tiers documentation for details.
              * @return the next definition stage.
              */
             WithCreate withRetentionInDays(Integer retentionInDays);
@@ -281,6 +314,27 @@ public interface Workspace {
              */
             WithCreate withPublicNetworkAccessForQuery(PublicNetworkAccessType publicNetworkAccessForQuery);
         }
+        /** The stage of the Workspace definition allowing to specify forceCmkForQuery. */
+        interface WithForceCmkForQuery {
+            /**
+             * Specifies the forceCmkForQuery property: Indicates whether customer managed storage is mandatory for
+             * query management..
+             *
+             * @param forceCmkForQuery Indicates whether customer managed storage is mandatory for query management.
+             * @return the next definition stage.
+             */
+            WithCreate withForceCmkForQuery(Boolean forceCmkForQuery);
+        }
+        /** The stage of the Workspace definition allowing to specify features. */
+        interface WithFeatures {
+            /**
+             * Specifies the features property: Workspace features..
+             *
+             * @param features Workspace features.
+             * @return the next definition stage.
+             */
+            WithCreate withFeatures(Map<String, Object> features);
+        }
     }
     /**
      * Begins update for the Workspace resource.
@@ -297,7 +351,9 @@ public interface Workspace {
             UpdateStages.WithRetentionInDays,
             UpdateStages.WithWorkspaceCapping,
             UpdateStages.WithPublicNetworkAccessForIngestion,
-            UpdateStages.WithPublicNetworkAccessForQuery {
+            UpdateStages.WithPublicNetworkAccessForQuery,
+            UpdateStages.WithForceCmkForQuery,
+            UpdateStages.WithFeatures {
         /**
          * Executes the update request.
          *
@@ -348,9 +404,11 @@ public interface Workspace {
         /** The stage of the Workspace update allowing to specify retentionInDays. */
         interface WithRetentionInDays {
             /**
-             * Specifies the retentionInDays property: The workspace data retention in days, between 30 and 730..
+             * Specifies the retentionInDays property: The workspace data retention in days. Allowed values are per
+             * pricing plan. See pricing tiers documentation for details..
              *
-             * @param retentionInDays The workspace data retention in days, between 30 and 730.
+             * @param retentionInDays The workspace data retention in days. Allowed values are per pricing plan. See
+             *     pricing tiers documentation for details.
              * @return the next definition stage.
              */
             Update withRetentionInDays(Integer retentionInDays);
@@ -386,6 +444,27 @@ public interface Workspace {
              * @return the next definition stage.
              */
             Update withPublicNetworkAccessForQuery(PublicNetworkAccessType publicNetworkAccessForQuery);
+        }
+        /** The stage of the Workspace update allowing to specify forceCmkForQuery. */
+        interface WithForceCmkForQuery {
+            /**
+             * Specifies the forceCmkForQuery property: Indicates whether customer managed storage is mandatory for
+             * query management..
+             *
+             * @param forceCmkForQuery Indicates whether customer managed storage is mandatory for query management.
+             * @return the next definition stage.
+             */
+            Update withForceCmkForQuery(Boolean forceCmkForQuery);
+        }
+        /** The stage of the Workspace update allowing to specify features. */
+        interface WithFeatures {
+            /**
+             * Specifies the features property: Workspace features..
+             *
+             * @param features Workspace features.
+             * @return the next definition stage.
+             */
+            Update withFeatures(Map<String, Object> features);
         }
     }
     /**

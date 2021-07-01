@@ -1,14 +1,24 @@
+---
+page_type: sample
+languages:
+- java
+products:
+- azure-key-vault
+description: "Azure Spring Boot Starter Sample project for Key Vault Secrets client library"
+urlFragment: "azure-spring-boot-sample-keyvault-secrets"
+---
+
 # Sample for Azure Key Vault Secrets Spring Boot Starter client library for Java
 
 ## Key concepts
-This sample illustrates how to use [Azure Spring Boot Starter Key Vault Secrets ](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-keyvault-secrets/README.md).
+This sample illustrates how to use [Azure Spring Boot Starter Key Vault Secrets ](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot-starter-keyvault-secrets/README.md).
 
 In this sample, a secret named `spring-data-source-url` is stored into an Azure Key Vault, and a sample Spring application will use its value as a configuration property value.
 
 ## Getting started
 
-### Environment checklist
-We need to ensure that this [environment checklist][ready-to-run-checklist] is completed before the run.
+### Prerequisites
+- [Environment checklist][environment_checklist]
 
 ### Store Secret
 We need to store secret `spring-data-source-url` into Azure Key Vault.
@@ -115,11 +125,13 @@ If you use certificate authentication, you only need to replace the property `az
 azure.keyvault.uri=put-your-azure-keyvault-uri-here
 azure.keyvault.client-id=put-your-azure-client-id-here
 azure.keyvault.certificate-path=put-your-certificate-file-path-here
+azure.keyvault.certificate-password=put-your-certificate-password-here-if-exists
 azure.keyvault.tenant-id=put-your-azure-tenant-id-here
 azure.keyvault.authority-host=put-your-own-authority-host-here(fill with default value if empty)
 azure.keyvault.secret-service-version=specify secretServiceVersion value(fill with default value if empty)
 ```
-
+Note: due to underlying library limitation from msal4j, when using certificates with password for authentication, please make sure the provided certificate file only contains one certificate entry.
+This is because msal4f supports certificate chain by loading it from the end-entity certificate automatically. So you can provide the end-entity certificate only instead of the whole chain. For more details, please refer to the related [PR](https://github.com/AzureAD/microsoft-authentication-library-for-java/pull/276).
 ## Run with Maven
 ```
 cd azure-spring-boot-samples/azure-spring-boot-sample-keyvault-secrets
@@ -132,7 +144,7 @@ mvn spring-boot:run
 
 
 <!-- links -->
-[version_link]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-secrets/src/main/java/com/azure/security/keyvault/secrets/SecretServiceVersion.java#L12
-[ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist
+[version_link]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-secrets/src/main/java/com/azure/security/keyvault/secrets/SecretServiceVersion.java#L12
+[environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
 [certificate-based-authentication]: https://docs.microsoft.com/cli/azure/create-an-azure-service-principal-azure-cli#certificate-based-authentication
 [assign-an-access-policy]: https://docs.microsoft.com/azure/key-vault/general/assign-access-policy-portal#assign-an-access-policy

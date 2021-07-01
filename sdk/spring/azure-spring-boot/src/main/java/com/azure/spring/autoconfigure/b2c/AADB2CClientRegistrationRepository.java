@@ -7,11 +7,9 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
 
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * <p>
@@ -24,13 +22,11 @@ public class AADB2CClientRegistrationRepository implements ClientRegistrationRep
     private final List<ClientRegistration> signUpOrSignInRegistrations;
 
 
-    AADB2CClientRegistrationRepository(List<ClientRegistration> signUpOrSignInRegistrations,
-                                       List<ClientRegistration> otherRegistrations) {
-        this.signUpOrSignInRegistrations = signUpOrSignInRegistrations;
-        List<ClientRegistration> allRegistrations = Stream.of(signUpOrSignInRegistrations, otherRegistrations)
-                                                          .flatMap(Collection::stream)
-                                                          .collect(Collectors.toList());
-        this.clientRegistrations = new InMemoryClientRegistrationRepository(allRegistrations);
+    AADB2CClientRegistrationRepository(String loginFlow, List<ClientRegistration> clientRegistrations) {
+        this.signUpOrSignInRegistrations = clientRegistrations.stream()
+                                                              .filter(client -> loginFlow.equals(client.getClientName()))
+                                                              .collect(Collectors.toList());
+        this.clientRegistrations = new InMemoryClientRegistrationRepository(clientRegistrations);
     }
 
     @Override

@@ -12,26 +12,26 @@ public enum EntityStatus {
     /** Enum value Active. */
     ACTIVE("Active"),
 
-    /** Enum value Creating. */
-    CREATING("Creating"),
-
-    /** Enum value Deleting. */
-    DELETING("Deleting"),
-
     /** Enum value Disabled. */
     DISABLED("Disabled"),
-
-    /** Enum value ReceiveDisabled. */
-    RECEIVE_DISABLED("ReceiveDisabled"),
-
-    /** Enum value Renaming. */
-    RENAMING("Renaming"),
 
     /** Enum value Restoring. */
     RESTORING("Restoring"),
 
     /** Enum value SendDisabled. */
     SEND_DISABLED("SendDisabled"),
+
+    /** Enum value ReceiveDisabled. */
+    RECEIVE_DISABLED("ReceiveDisabled"),
+
+    /** Enum value Creating. */
+    CREATING("Creating"),
+
+    /** Enum value Deleting. */
+    DELETING("Deleting"),
+
+    /** Enum value Renaming. */
+    RENAMING("Renaming"),
 
     /** Enum value Unknown. */
     UNKNOWN("Unknown");

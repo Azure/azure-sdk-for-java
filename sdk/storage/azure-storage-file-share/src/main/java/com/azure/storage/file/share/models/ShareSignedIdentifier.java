@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/**
- * Signed identifier.
- */
+/** Signed identifier. */
 @JacksonXmlRootElement(localName = "SignedIdentifier")
 @Fluent
 public final class ShareSignedIdentifier {

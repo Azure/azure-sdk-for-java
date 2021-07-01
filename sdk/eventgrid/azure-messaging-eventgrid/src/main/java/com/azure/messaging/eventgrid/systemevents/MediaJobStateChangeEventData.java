@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The MediaJobStateChangeEventData model. */
+/** Schema of the Data property of an EventGridEvent for a Microsoft.Media.JobStateChange event. */
 @Fluent
 public class MediaJobStateChangeEventData {
     /*

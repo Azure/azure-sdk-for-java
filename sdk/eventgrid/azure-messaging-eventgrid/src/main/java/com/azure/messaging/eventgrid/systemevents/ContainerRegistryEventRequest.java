@@ -7,7 +7,7 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ContainerRegistryEventRequest model. */
+/** The request that generated the event. */
 @Fluent
 public final class ContainerRegistryEventRequest {
     /*

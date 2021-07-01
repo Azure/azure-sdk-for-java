@@ -16,10 +16,10 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
-import com.azure.storage.blob.implementation.models.ContainerGetAccountInfoHeaders;
-import com.azure.storage.blob.implementation.models.ContainerGetPropertiesHeaders;
+import com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder;
+import com.azure.storage.blob.implementation.models.ContainersGetAccountInfoHeaders;
+import com.azure.storage.blob.implementation.models.ContainersGetPropertiesHeaders;
 import com.azure.storage.blob.implementation.models.ContainersListBlobFlatSegmentResponse;
 import com.azure.storage.blob.implementation.models.ContainersListBlobHierarchySegmentResponse;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
@@ -41,7 +41,6 @@ import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.StorageSharedKeyCredential;
-import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Mono;
@@ -54,7 +53,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -118,18 +117,11 @@ public final class BlobContainerAsyncClient {
     BlobContainerAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion,
         String accountName, String containerName, CpkInfo customerProvidedKey, EncryptionScope encryptionScope,
         BlobContainerEncryptionScope blobContainerEncryptionScope) {
-        /* Check to make sure the uri is valid. We don't want the error to occur later in the generated layer
-           when the sas token has already been applied. */
-        try {
-            URI.create(url);
-        } catch (IllegalArgumentException ex) {
-            throw logger.logExceptionAsError(ex);
-        }
-        this.azureBlobStorage = new AzureBlobStorageBuilder()
+        this.azureBlobStorage = new AzureBlobStorageImplBuilder()
             .pipeline(pipeline)
             .url(url)
             .version(serviceVersion.getVersion())
-            .build();
+            .buildClient();
         this.serviceVersion = serviceVersion;
 
         this.accountName = accountName;
@@ -137,6 +129,13 @@ public final class BlobContainerAsyncClient {
         this.customerProvidedKey = customerProvidedKey;
         this.encryptionScope = encryptionScope;
         this.blobContainerEncryptionScope = blobContainerEncryptionScope;
+        /* Check to make sure the uri is valid. We don't want the error to occur later in the generated layer
+           when the sas token has already been applied. */
+        try {
+            URI.create(getBlobContainerUrl());
+        } catch (IllegalArgumentException ex) {
+            throw logger.logExceptionAsError(ex);
+        }
     }
 
     /**
@@ -169,8 +168,7 @@ public final class BlobContainerAsyncClient {
      * @return A new {@link BlobAsyncClient} object which references the blob with the specified name in this container.
      */
     public BlobAsyncClient getBlobAsyncClient(String blobName, String snapshot) {
-        return new BlobAsyncClient(getHttpPipeline(), StorageImplUtils.appendToUrlPath(getBlobContainerUrl(),
-            Utility.urlEncode(Utility.urlDecode(blobName))).toString(), getServiceVersion(), getAccountName(),
+        return new BlobAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
             getBlobContainerName(), blobName, snapshot, getCustomerProvidedKey(), encryptionScope);
     }
 
@@ -184,9 +182,17 @@ public final class BlobContainerAsyncClient {
      * @return A new {@link BlobAsyncClient} object which references the blob with the specified name in this container.
      */
     public BlobAsyncClient getBlobVersionAsyncClient(String blobName, String versionId) {
-        return new BlobAsyncClient(getHttpPipeline(), StorageImplUtils.appendToUrlPath(getBlobContainerUrl(),
-            Utility.urlEncode(Utility.urlDecode(blobName))).toString(), getServiceVersion(), getAccountName(),
+        return new BlobAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
             getBlobContainerName(), blobName, null, getCustomerProvidedKey(), encryptionScope, versionId);
+    }
+
+    /**
+     * Get the url of the storage account.
+     *
+     * @return the URL of the storage account
+     */
+    public String getAccountUrl() {
+        return azureBlobStorage.getUrl();
     }
 
     /**
@@ -195,7 +201,7 @@ public final class BlobContainerAsyncClient {
      * @return the URL.
      */
     public String getBlobContainerUrl() {
-        return azureBlobStorage.getUrl();
+        return azureBlobStorage.getUrl() + "/" + containerName;
     }
 
     /**
@@ -380,8 +386,8 @@ public final class BlobContainerAsyncClient {
     Mono<Response<Void>> createWithResponse(Map<String, String> metadata, PublicAccessType accessType,
         Context context) {
         context = context == null ? Context.NONE : context;
-        return this.azureBlobStorage.containers().createWithRestResponseAsync(
-            null, null, metadata, accessType, null, blobContainerEncryptionScope,
+        return this.azureBlobStorage.getContainers().createWithResponseAsync(
+            containerName, null, metadata, accessType, null, blobContainerEncryptionScope,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
     }
@@ -440,7 +446,7 @@ public final class BlobContainerAsyncClient {
         }
         context = context == null ? Context.NONE : context;
 
-        return this.azureBlobStorage.containers().deleteWithRestResponseAsync(null, null,
+        return this.azureBlobStorage.getContainers().deleteWithResponseAsync(containerName, null,
             requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), null,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
@@ -490,16 +496,16 @@ public final class BlobContainerAsyncClient {
     Mono<Response<BlobContainerProperties>> getPropertiesWithResponse(String leaseId, Context context) {
         context = context == null ? Context.NONE : context;
 
-        return this.azureBlobStorage.containers()
-            .getPropertiesWithRestResponseAsync(null, null, leaseId, null,
+        return this.azureBlobStorage.getContainers()
+            .getPropertiesWithResponseAsync(containerName, null, leaseId, null,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
-                ContainerGetPropertiesHeaders hd = rb.getDeserializedHeaders();
-                BlobContainerProperties properties = new BlobContainerProperties(hd.getMetadata(), hd.getETag(),
-                    hd.getLastModified(), hd.getLeaseDuration(), hd.getLeaseState(), hd.getLeaseStatus(),
-                    hd.getBlobPublicAccess(), Boolean.TRUE.equals(hd.isHasImmutabilityPolicy()),
-                    Boolean.TRUE.equals(hd.isHasLegalHold()), hd.getDefaultEncryptionScope(),
-                    hd.isDenyEncryptionScopeOverride());
+                ContainersGetPropertiesHeaders hd = rb.getDeserializedHeaders();
+                BlobContainerProperties properties = new BlobContainerProperties(hd.getXMsMeta(), hd.getETag(),
+                    hd.getLastModified(), hd.getXMsLeaseDuration(), hd.getXMsLeaseState(), hd.getXMsLeaseStatus(),
+                    hd.getXMsBlobPublicAccess(), Boolean.TRUE.equals(hd.isXMsHasImmutabilityPolicy()),
+                    Boolean.TRUE.equals(hd.isXMsHasLegalHold()), hd.getXMsDefaultEncryptionScope(),
+                    hd.isXMsDenyEncryptionScopeOverride(), hd.isXMsImmutableStorageWithVersioningEnabled());
                 return new SimpleResponse<>(rb, properties);
             });
     }
@@ -563,7 +569,7 @@ public final class BlobContainerAsyncClient {
                 "If-Modified-Since is the only HTTP access condition supported for this API"));
         }
 
-        return this.azureBlobStorage.containers().setMetadataWithRestResponseAsync(null, null,
+        return this.azureBlobStorage.getContainers().setMetadataWithResponseAsync(containerName, null,
             requestConditions.getLeaseId(), metadata, requestConditions.getIfModifiedSince(), null,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
@@ -612,11 +618,11 @@ public final class BlobContainerAsyncClient {
 
     Mono<Response<BlobContainerAccessPolicies>> getAccessPolicyWithResponse(String leaseId, Context context) {
         context = context == null ? Context.NONE : context;
-        return this.azureBlobStorage.containers().getAccessPolicyWithRestResponseAsync(
-            null, null, leaseId, null,
+        return this.azureBlobStorage.getContainers().getAccessPolicyWithResponseAsync(
+            containerName, null, leaseId, null,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response,
-                new BlobContainerAccessPolicies(response.getDeserializedHeaders().getBlobPublicAccess(),
+                new BlobContainerAccessPolicies(response.getDeserializedHeaders().getXMsBlobPublicAccess(),
                 response.getValue())));
     }
 
@@ -711,9 +717,9 @@ public final class BlobContainerAsyncClient {
         }
         context = context == null ? Context.NONE : context;
 
-        return this.azureBlobStorage.containers().setAccessPolicyWithRestResponseAsync(
-            null, identifiers, null, requestConditions.getLeaseId(), accessType, requestConditions.getIfModifiedSince(),
-            requestConditions.getIfUnmodifiedSince(), null,
+        return this.azureBlobStorage.getContainers().setAccessPolicyWithResponseAsync(
+            containerName, null, requestConditions.getLeaseId(), accessType, requestConditions.getIfModifiedSince(),
+            requestConditions.getIfUnmodifiedSince(), null, identifiers,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
     }
@@ -831,25 +837,40 @@ public final class BlobContainerAsyncClient {
      */
     PagedFlux<BlobItem> listBlobsFlatWithOptionalTimeout(ListBlobsOptions options, String continuationToken,
         Duration timeout) {
-        Function<String, Mono<PagedResponse<BlobItem>>> func =
-            marker -> listBlobsFlatSegment(marker, options, timeout)
-                .map(response -> {
-                    List<BlobItem> value = response.getValue().getSegment() == null
-                        ? Collections.emptyList()
-                        : response.getValue().getSegment().getBlobItems().stream()
-                        .map(ModelHelper::populateBlobItem)
-                        .collect(Collectors.toList());
+        BiFunction<String, Integer, Mono<PagedResponse<BlobItem>>> func =
+            (marker, pageSize) -> {
+                ListBlobsOptions finalOptions;
+                if (pageSize != null) {
+                    if (options == null) {
+                        finalOptions = new ListBlobsOptions().setMaxResultsPerPage(pageSize);
+                    } else {
+                        finalOptions = new ListBlobsOptions()
+                            .setMaxResultsPerPage(pageSize)
+                            .setPrefix(options.getPrefix())
+                            .setDetails(options.getDetails());
+                    }
+                } else {
+                    finalOptions = options;
+                }
 
-                    return new PagedResponseBase<>(
-                        response.getRequest(),
-                        response.getStatusCode(),
-                        response.getHeaders(),
-                        value,
-                        response.getValue().getNextMarker(),
-                        response.getDeserializedHeaders());
-                });
+                return listBlobsFlatSegment(marker, finalOptions, timeout)
+                    .map(response -> {
+                        List<BlobItem> value = response.getValue().getSegment() == null
+                            ? Collections.emptyList()
+                            : response.getValue().getSegment().getBlobItems().stream()
+                            .map(ModelHelper::populateBlobItem)
+                            .collect(Collectors.toList());
 
-        return new PagedFlux<>(() -> func.apply(continuationToken), func);
+                        return new PagedResponseBase<>(
+                            response.getRequest(),
+                            response.getStatusCode(),
+                            response.getHeaders(),
+                            value,
+                            response.getValue().getNextMarker(),
+                            response.getDeserializedHeaders());
+                    });
+            };
+        return new PagedFlux<>(pageSize -> func.apply(continuationToken, pageSize), func);
     }
 
     /*
@@ -876,7 +897,7 @@ public final class BlobContainerAsyncClient {
             options.getDetails().toList().isEmpty() ? null : options.getDetails().toList();
 
         return StorageImplUtils.applyOptionalTimeout(
-            this.azureBlobStorage.containers().listBlobFlatSegmentWithRestResponseAsync(null, options.getPrefix(),
+            this.azureBlobStorage.getContainers().listBlobFlatSegmentWithResponseAsync(containerName, options.getPrefix(),
                 marker, options.getMaxResultsPerPage(), include,
                 null, null, Context.NONE), timeout);
     }
@@ -974,8 +995,27 @@ public final class BlobContainerAsyncClient {
      */
     PagedFlux<BlobItem> listBlobsHierarchyWithOptionalTimeout(String delimiter, ListBlobsOptions options,
         Duration timeout) {
-        Function<String, Mono<PagedResponse<BlobItem>>> func =
-            marker -> listBlobsHierarchySegment(marker, delimiter, options, timeout)
+        BiFunction<String, Integer, Mono<PagedResponse<BlobItem>>> func =
+            (marker, pageSize) -> {
+                ListBlobsOptions finalOptions;
+                /*
+                 If pageSize was not set in a .byPage(int) method, the page size from options will be preserved.
+                 Otherwise, prefer the new value.
+                 */
+                if (pageSize != null) {
+                    if (options == null) {
+                        finalOptions = new ListBlobsOptions().setMaxResultsPerPage(pageSize);
+                    } else {
+                        // Note that this prefers the value passed to .byPage(int) over the value on the options
+                        finalOptions = new ListBlobsOptions()
+                            .setMaxResultsPerPage(pageSize)
+                            .setPrefix(options.getPrefix())
+                            .setDetails(options.getDetails());
+                    }
+                } else {
+                    finalOptions = options;
+                }
+                return listBlobsHierarchySegment(marker, delimiter, finalOptions, timeout)
                 .map(response -> {
                     List<BlobItem> value = response.getValue().getSegment() == null
                         ? Collections.emptyList()
@@ -993,8 +1033,8 @@ public final class BlobContainerAsyncClient {
                         response.getValue().getNextMarker(),
                         response.getDeserializedHeaders());
                 });
-
-        return new PagedFlux<>(() -> func.apply(null), func);
+            };
+        return new PagedFlux<>(pageSize -> func.apply(null, pageSize), func);
     }
 
     private Mono<ContainersListBlobHierarchySegmentResponse> listBlobsHierarchySegment(String marker, String delimiter,
@@ -1009,7 +1049,7 @@ public final class BlobContainerAsyncClient {
             options.getDetails().toList().isEmpty() ? null : options.getDetails().toList();
 
         return StorageImplUtils.applyOptionalTimeout(
-            this.azureBlobStorage.containers().listBlobHierarchySegmentWithRestResponseAsync(null, delimiter,
+            this.azureBlobStorage.getContainers().listBlobHierarchySegmentWithResponseAsync(containerName, delimiter,
                 options.getPrefix(), marker, options.getMaxResultsPerPage(), include, null, null,
                 Context.NONE),
             timeout);
@@ -1055,11 +1095,11 @@ public final class BlobContainerAsyncClient {
 
     Mono<Response<StorageAccountInfo>> getAccountInfoWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
-        return this.azureBlobStorage.containers().getAccountInfoWithRestResponseAsync(null,
+        return this.azureBlobStorage.getContainers().getAccountInfoWithResponseAsync(containerName,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
-                ContainerGetAccountInfoHeaders hd = rb.getDeserializedHeaders();
-                return new SimpleResponse<>(rb, new StorageAccountInfo(hd.getSkuName(), hd.getAccountKind()));
+                ContainersGetAccountInfoHeaders hd = rb.getDeserializedHeaders();
+                return new SimpleResponse<>(rb, new StorageAccountInfo(hd.getXMsSkuName(), hd.getXMsAccountKind()));
             });
     }
 
@@ -1119,7 +1159,7 @@ public final class BlobContainerAsyncClient {
 //                "Lease-Id is the only HTTP access condition supported for this API"));
 //        }
 //
-//        return this.azureBlobStorage.containers().renameWithRestResponseAsync(null,
+//        return this.azureBlobStorage.getContainers().renameWithResponseAsync(containerName,
 //            sourceContainerName, null, null, requestConditions.getLeaseId(),
 //            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
 //            .map(response -> new SimpleResponse<>(response, this));

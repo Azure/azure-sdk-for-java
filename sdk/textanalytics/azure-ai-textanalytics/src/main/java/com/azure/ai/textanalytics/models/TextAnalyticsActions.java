@@ -14,8 +14,10 @@ import java.util.Arrays;
 public final class TextAnalyticsActions {
     private String displayName;
     private Iterable<RecognizeEntitiesOptions> recognizeEntitiesOptions;
+    private Iterable<RecognizeLinkedEntitiesOptions> recognizeLinkedEntitiesOptions;
     private Iterable<RecognizePiiEntitiesOptions> recognizePiiEntitiesOptions;
     private Iterable<ExtractKeyPhrasesOptions> extractKeyPhrasesOptions;
+    private Iterable<AnalyzeSentimentOptions> analyzeSentimentOptions;
 
     /**
      * Get the custom name for the actions.
@@ -52,10 +54,34 @@ public final class TextAnalyticsActions {
      *
      * @param recognizeEntitiesOptions the list of {@link RecognizeEntitiesOptions} to be executed.
      *
-     * @return the AnalyzeTasksOptions object itself.
+     * @return the {@link TextAnalyticsActions} object itself.
      */
     public TextAnalyticsActions setRecognizeEntitiesOptions(RecognizeEntitiesOptions... recognizeEntitiesOptions) {
-        this.recognizeEntitiesOptions = Arrays.asList(recognizeEntitiesOptions);
+        this.recognizeEntitiesOptions = recognizeEntitiesOptions == null ? null
+            : Arrays.asList(recognizeEntitiesOptions);
+        return this;
+    }
+
+    /**
+     * Get the list of {@link RecognizePiiEntitiesOptions} to be executed.
+     *
+     * @return the list of {@link RecognizePiiEntitiesOptions} to be executed.
+     */
+    public Iterable<RecognizeLinkedEntitiesOptions> getRecognizeLinkedEntitiesOptions() {
+        return this.recognizeLinkedEntitiesOptions;
+    }
+
+    /**
+     * Set the list of {@link RecognizeLinkedEntitiesOptions} to be executed.
+     *
+     * @param recognizeLinkedEntitiesOptions the list of {@link RecognizeLinkedEntitiesOptions} to be executed.
+     *
+     * @return the {@link TextAnalyticsActions} object itself.
+     */
+    public TextAnalyticsActions setRecognizeLinkedEntitiesOptions(
+        RecognizeLinkedEntitiesOptions... recognizeLinkedEntitiesOptions) {
+        this.recognizeLinkedEntitiesOptions = recognizeLinkedEntitiesOptions == null ? null
+            : Arrays.asList(recognizeLinkedEntitiesOptions);
         return this;
     }
 
@@ -73,10 +99,12 @@ public final class TextAnalyticsActions {
      *
      * @param recognizePiiEntitiesOptions the list of {@link RecognizePiiEntitiesOptions} to be executed.
      *
-     * @return the AnalyzeTasksOptions object itself.
+     * @return the {@link TextAnalyticsActions} object itself.
      */
-    public TextAnalyticsActions setRecognizePiiEntitiesOptions(RecognizePiiEntitiesOptions... recognizePiiEntitiesOptions) {
-        this.recognizePiiEntitiesOptions = Arrays.asList(recognizePiiEntitiesOptions);
+    public TextAnalyticsActions setRecognizePiiEntitiesOptions(
+        RecognizePiiEntitiesOptions... recognizePiiEntitiesOptions) {
+        this.recognizePiiEntitiesOptions = recognizePiiEntitiesOptions == null ? null
+            : Arrays.asList(recognizePiiEntitiesOptions);
         return this;
     }
 
@@ -94,10 +122,32 @@ public final class TextAnalyticsActions {
      *
      * @param extractKeyPhrasesOptions the list of {@link ExtractKeyPhrasesOptions} to be executed.
      *
-     * @return the AnalyzeTasksOptions object itself.
+     * @return the {@link TextAnalyticsActions} object itself.
      */
     public TextAnalyticsActions setExtractKeyPhrasesOptions(ExtractKeyPhrasesOptions... extractKeyPhrasesOptions) {
-        this.extractKeyPhrasesOptions = Arrays.asList(extractKeyPhrasesOptions);
+        this.extractKeyPhrasesOptions = extractKeyPhrasesOptions == null ? null
+            : Arrays.asList(extractKeyPhrasesOptions);
+        return this;
+    }
+
+    /**
+     * Get the list of {@link AnalyzeSentimentOptions} to be executed.
+     *
+     * @return the list of {@link AnalyzeSentimentOptions} to be executed.
+     */
+    public Iterable<AnalyzeSentimentOptions> getAnalyzeSentimentOptions() {
+        return this.analyzeSentimentOptions;
+    }
+
+    /**
+     * Set the list of {@link AnalyzeSentimentOptions} to be executed.
+     *
+     * @param analyzeSentimentOptions the list of {@link AnalyzeSentimentOptions} to be executed.
+     *
+     * @return the {@link TextAnalyticsActions} object itself.
+     */
+    public TextAnalyticsActions setAnalyzeSentimentOptions(AnalyzeSentimentOptions... analyzeSentimentOptions) {
+        this.analyzeSentimentOptions = analyzeSentimentOptions == null ? null : Arrays.asList(analyzeSentimentOptions);
         return this;
     }
 }

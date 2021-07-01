@@ -6,26 +6,36 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.ConflictException;
+import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.models.ThroughputResponse;
 import com.azure.spring.data.cosmos.CosmosFactory;
+import com.azure.spring.data.cosmos.ReactiveIntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.common.ResponseDiagnosticsTestUtils;
 import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
+import com.azure.spring.data.cosmos.core.generator.FindQuerySpecGenerator;
 import com.azure.spring.data.cosmos.core.mapping.CosmosMappingContext;
 import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import com.azure.spring.data.cosmos.core.query.Criteria;
 import com.azure.spring.data.cosmos.core.query.CriteriaType;
+import com.azure.spring.data.cosmos.domain.AuditableEntity;
+import com.azure.spring.data.cosmos.domain.AutoScaleSample;
 import com.azure.spring.data.cosmos.domain.GenIdEntity;
 import com.azure.spring.data.cosmos.domain.Person;
 import com.azure.spring.data.cosmos.exception.CosmosAccessException;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
+import com.azure.spring.data.cosmos.repository.repository.AuditableRepository;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import org.assertj.core.api.Assertions;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +51,9 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.UUID;
 
 import static com.azure.spring.data.cosmos.common.TestConstants.ADDRESSES;
 import static com.azure.spring.data.cosmos.common.TestConstants.AGE;
@@ -51,6 +63,8 @@ import static com.azure.spring.data.cosmos.common.TestConstants.LAST_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -75,18 +89,20 @@ public class ReactiveCosmosTemplateIT {
     private static final String PRECONDITION_IS_NOT_MET = "is not met";
     private static final String WRONG_ETAG = "WRONG_ETAG";
 
+    @ClassRule
+    public static final ReactiveIntegrationTestCollectionManager collectionManager = new ReactiveIntegrationTestCollectionManager();
+
     @Value("${cosmos.secondaryKey}")
     private String cosmosDbSecondaryKey;
 
     @Value("${cosmos.key}")
     private String cosmosDbKey;
 
+    private static CosmosAsyncClient client;
     private static ReactiveCosmosTemplate cosmosTemplate;
     private static String containerName;
     private static CosmosEntityInformation<Person, String> personInfo;
     private static AzureKeyCredential azureKeyCredential;
-
-    private static boolean initialized;
 
     private Person insertedPerson;
 
@@ -98,13 +114,15 @@ public class ReactiveCosmosTemplateIT {
     private CosmosClientBuilder cosmosClientBuilder;
     @Autowired
     private ResponseDiagnosticsTestUtils responseDiagnosticsTestUtils;
+    @Autowired
+    private AuditableRepository auditableRepository;
 
     @Before
     public void setUp() throws ClassNotFoundException {
-        if (!initialized) {
+        if (cosmosTemplate == null) {
             azureKeyCredential = new AzureKeyCredential(cosmosDbKey);
             cosmosClientBuilder.credential(azureKeyCredential);
-            CosmosAsyncClient client = CosmosFactory.createCosmosAsyncClient(cosmosClientBuilder);
+            client = CosmosFactory.createCosmosAsyncClient(cosmosClientBuilder);
             final CosmosFactory dbFactory = new CosmosFactory(client, TestConstants.DB_NAME);
 
             final CosmosMappingContext mappingContext = new CosmosMappingContext();
@@ -116,10 +134,9 @@ public class ReactiveCosmosTemplateIT {
             final MappingCosmosConverter dbConverter =
                 new MappingCosmosConverter(mappingContext, null);
             cosmosTemplate = new ReactiveCosmosTemplate(dbFactory, cosmosConfig, dbConverter);
-            cosmosTemplate.createContainerIfNotExists(personInfo).block();
-            cosmosTemplate.createContainerIfNotExists(CosmosEntityInformation.getInstance(GenIdEntity.class)).block();
-            initialized = true;
         }
+
+        collectionManager.ensureContainersCreatedAndEmpty(cosmosTemplate, Person.class, GenIdEntity.class, AuditableEntity.class);
 
         insertedPerson = cosmosTemplate.insert(TEST_PERSON,
             new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON))).block();
@@ -129,12 +146,6 @@ public class ReactiveCosmosTemplateIT {
     public void cleanup() {
         //  Reset master key
         azureKeyCredential.update(cosmosDbKey);
-        cosmosTemplate.deleteAll(Person.class.getSimpleName(), Person.class).block();
-    }
-
-    @AfterClass
-    public static void afterClassCleanup() {
-        cosmosTemplate.deleteContainer(personInfo.getContainerName());
     }
 
     @Test
@@ -142,7 +153,7 @@ public class ReactiveCosmosTemplateIT {
         final Mono<Person> insertMono = cosmosTemplate.insert(TEST_PERSON,
             new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON)));
         StepVerifier.create(insertMono)
-                    .expectError(CosmosAccessException.class)
+                    .expectErrorMatches(ex -> ex instanceof CosmosAccessException && ((CosmosAccessException) ex).getCosmosException() instanceof ConflictException)
                     .verify();
     }
 
@@ -473,4 +484,44 @@ public class ReactiveCosmosTemplateIT {
                     .verify();
     }
 
+    @Test
+    public void testRunQueryWithSimpleReturnType() {
+        Criteria ageBetween = Criteria.getInstance(CriteriaType.BETWEEN, "age", Arrays.asList(AGE - 1, AGE + 1),
+                                                   Part.IgnoreCaseType.NEVER);
+        final SqlQuerySpec sqlQuerySpec = new FindQuerySpecGenerator().generateCosmos(new CosmosQuery(ageBetween));
+        final Flux<Person> flux = cosmosTemplate.runQuery(sqlQuerySpec, Person.class, Person.class);
+
+        StepVerifier.create(flux).expectNextCount(1).verifyComplete();
+    }
+
+    @Test
+    public void testRunQueryWithReturnTypeContainingLocalDateTime() {
+        final AuditableEntity entity = new AuditableEntity();
+        entity.setId(UUID.randomUUID().toString());
+
+        auditableRepository.save(entity);
+
+        Criteria equals = Criteria.getInstance(CriteriaType.IS_EQUAL, "id", Collections.singletonList(entity.getId()), Part.IgnoreCaseType.NEVER);
+        final SqlQuerySpec sqlQuerySpec = new FindQuerySpecGenerator().generateCosmos(new CosmosQuery(equals));
+        final Flux<AuditableEntity> flux = cosmosTemplate.runQuery(sqlQuerySpec, AuditableEntity.class, AuditableEntity.class);
+
+        StepVerifier.create(flux).expectNextCount(1).verifyComplete();
+    }
+
+    @Test
+    public void createWithAutoscale() {
+        final CosmosEntityInformation<AutoScaleSample, String> autoScaleSampleInfo =
+            new CosmosEntityInformation<>(AutoScaleSample.class);
+        CosmosContainerResponse containerResponse = cosmosTemplate
+            .createContainerIfNotExists(autoScaleSampleInfo)
+            .block();
+        assertNotNull(containerResponse);
+        ThroughputResponse throughput = client.getDatabase(TestConstants.DB_NAME)
+            .getContainer(autoScaleSampleInfo.getContainerName())
+            .readThroughput()
+            .block();
+        assertNotNull(throughput);
+        assertEquals(Integer.parseInt(TestConstants.AUTOSCALE_MAX_THROUGHPUT),
+            throughput.getProperties().getAutoscaleMaxThroughput());
+    }
 }

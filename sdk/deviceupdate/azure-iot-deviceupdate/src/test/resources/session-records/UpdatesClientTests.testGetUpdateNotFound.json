@@ -1,0 +1,19 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.api.prod.adu.microsoft.com/deviceupdate/blue/v2/updates/providers/foo/names/bar/versions/0.0.0.1",
+    "Headers" : { },
+    "Response" : {
+      "Cache-Control" : "max-age=60, private",
+      "traceparent" : "00-f88c2de47fc9104c8589afb28f80e70e-0009441a36027543-00",
+      "retry-after" : "0",
+      "Content-Length" : "161",
+      "StatusCode" : "404",
+      "Body" : "{\"type\":\"https://tools.ietf.org/html/rfc7231#section-6.5.4\",\"title\":\"Not Found\",\"status\":404,\"traceId\":\"00-f88c2de47fc9104c8589afb28f80e70e-3a66fe55efb5414d-00\"}",
+      "Date" : "Tue, 02 Mar 2021 21:28:55 GMT",
+      "Content-Type" : "application/problem+json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

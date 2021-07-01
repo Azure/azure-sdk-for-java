@@ -15,6 +15,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -93,6 +94,29 @@ public final class PagedFluxJavaDocCodeSnippets {
             nextPageRetriever);
         // END: com.azure.core.http.rest.pagedflux.singlepage.instantiation
         return pagedFlux;
+    }
+
+    public void createASinglePageInstanceWithPageSizeSupport() {
+        // BEGIN: com.azure.core.http.rest.PagedFlux.singlepage.instantiationWithPageSize
+        // A function that fetches the single page of data from a source/service.
+        Function<Integer, Mono<PagedResponse<Integer>>> singlePageRetriever = pageSize ->
+            getFirstPageWithSize(pageSize);
+
+        PagedFlux<Integer> singlePageFluxWithPageSize = new PagedFlux<Integer>(singlePageRetriever);
+        // END: com.azure.core.http.rest.PagedFlux.singlepage.instantiationWithPageSize
+    }
+
+    public void createAnInstanceWithPageSizeSupport() {
+        // BEGIN: com.azure.core.http.rest.PagedFlux.instantiationWithPageSize
+        // A function that fetches the first page of data from a source/service.
+        Function<Integer, Mono<PagedResponse<Integer>>> firstPageRetriever = pageSize -> getFirstPageWithSize(pageSize);
+
+        // A function that fetches subsequent pages of data from a source/service given a continuation token.
+        BiFunction<String, Integer, Mono<PagedResponse<Integer>>> nextPageRetriever = (continuationToken, pageSize) ->
+            getNextPageWithSize(continuationToken, pageSize);
+
+        PagedFlux<Integer> pagedFluxWithPageSize = new PagedFlux<>(firstPageRetriever, nextPageRetriever);
+        // END: com.azure.core.http.rest.PagedFlux.instantiationWithPageSize
     }
 
     /**
@@ -207,31 +231,57 @@ public final class PagedFluxJavaDocCodeSnippets {
     }
 
     /**
-     * Retrieves the next page from a paged API.
+     * Retrieves the initial page from a paged API.
      *
-     * @param continuationToken Token to fetch the next page
-     * @return A {@link Mono} of {@link PagedResponse} containing items of type {@code Integer}
+     * @return A {@link Mono} of {@link PagedResponse} containing items of type {@link Integer}
      */
-    private Mono<PagedResponse<Integer>> getNextPage(String continuationToken) {
-        return getPage(continuationToken);
+    private Mono<PagedResponse<Integer>> getFirstPage() {
+        return getPage(null, null);
     }
 
     /**
-     * Retrieves the initial page from a paged API.
+     * Retrieves the next page from a paged API.
      *
-     * @return A {@link Mono} of {@link PagedResponse} containing items of type {@code Integer}
+     * @param continuationToken Token to fetch the next page
+     * @return A {@link Mono} of {@link PagedResponse} containing items of type {@link Integer}
      */
-    private Mono<PagedResponse<Integer>> getFirstPage() {
-        return getPage(null);
+    private Mono<PagedResponse<Integer>> getNextPage(String continuationToken) {
+        return getPage(continuationToken, null);
+    }
+
+    /**
+     * Retrieves the initial page from a paged API with the given number of elements.
+     * <p>
+     * If {@code pageSize} is null then it will return the default page size used by the paged API.
+     *
+     * @param pageSize Number of elements to be included in the page.
+     * @return A {@link Mono} of {@link PagedResponse} containing items of type {@link Integer}.
+     */
+    private Mono<PagedResponse<Integer>> getFirstPageWithSize(Integer pageSize) {
+        return getPage(null, pageSize);
+    }
+
+    /**
+     * Retrieves the next page from a paged API with the given number of elements.
+     * <p>
+     * If {@code pageSize} is null then it will return the default page size used by the paged API.
+     *
+     * @param continuationToken Token to fetch the next page.
+     * @param pageSize Number of elements to be included in the page.
+     * @return A {@link Mono} of {@link PagedResponse} containing items of type {@link Integer}.
+     */
+    private Mono<PagedResponse<Integer>> getNextPageWithSize(String continuationToken, Integer pageSize) {
+        return getPage(continuationToken, pageSize);
     }
 
     /**
      * Retrieves a page from a paged API.
      *
      * @param continuationToken Token to fetch the next page, if {@code null} the first page is retrieved.
+     * @param pageSize Number of elements to be returned in each page.
      * @return A {@link Mono} of {@link PagedResponse} containing items of type {@code Integer}
      */
-    private Mono<PagedResponse<Integer>> getPage(String continuationToken) {
+    private Mono<PagedResponse<Integer>> getPage(String continuationToken, Integer pageSize) {
         // Given this isn't calling an actual API we will arbitrarily generate a continuation token or end paging.
         boolean lastPage = Math.random() > 0.5;
 
@@ -239,7 +289,7 @@ public final class PagedFluxJavaDocCodeSnippets {
         String nextContinuationToken = lastPage ? null : UUID.randomUUID().toString();
 
         // Arbitrarily begin the next page of integers.
-        int elementCount = (int) Math.ceil(Math.random() * 15);
+        int elementCount = (pageSize == null) ? (int) Math.ceil(Math.random() * 15) : pageSize;
         List<Integer> elements = IntStream.range(elementCount, elementCount + elementCount)
             .map(val -> (int) (Math.random() * val))
             .boxed()

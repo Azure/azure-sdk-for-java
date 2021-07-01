@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -65,7 +66,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     @Host("{$host}")
     @ServiceInterface(name = "StorageManagementCli")
     private interface PrivateEndpointConnectionsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
                 + "/storageAccounts/{accountName}/privateEndpointConnections")
@@ -77,9 +78,10 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
                 + "/storageAccounts/{accountName}/privateEndpointConnections/{privateEndpointConnectionName}")
@@ -92,9 +94,10 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
                 + "/storageAccounts/{accountName}/privateEndpointConnections/{privateEndpointConnectionName}")
@@ -108,9 +111,10 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
             @BodyParam("application/json") PrivateEndpointConnectionInner properties,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
                 + "/storageAccounts/{accountName}/privateEndpointConnections/{privateEndpointConnectionName}")
@@ -123,6 +127,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
+            @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -160,6 +165,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -170,12 +176,13 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                             accountName,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .<PagedResponse<PrivateEndpointConnectionInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -213,6 +220,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(
@@ -221,6 +229,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                 accountName,
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
+                accept,
                 context)
             .map(
                 res ->
@@ -342,6 +351,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                     new IllegalArgumentException(
                         "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -353,8 +363,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             privateEndpointConnectionName,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -400,6 +411,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                     new IllegalArgumentException(
                         "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -409,6 +421,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 privateEndpointConnectionName,
+                accept,
                 context);
     }
 
@@ -490,7 +503,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      *     resource.
-     * @param privateEndpoint The Private Endpoint resource.
+     * @param privateEndpoint The resource of private end point.
      * @param privateLinkServiceConnectionState A collection of information about the state of the connection between
      *     service consumer and provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -536,6 +549,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         if (privateEndpoint != null) {
             privateEndpoint.validate();
         }
+        final String accept = "application/json";
         PrivateEndpointConnectionInner properties = new PrivateEndpointConnectionInner();
         properties.withPrivateEndpoint(privateEndpoint);
         properties.withPrivateLinkServiceConnectionState(privateLinkServiceConnectionState);
@@ -551,8 +565,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                             this.client.getSubscriptionId(),
                             privateEndpointConnectionName,
                             properties,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -564,7 +579,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      *     resource.
-     * @param privateEndpoint The Private Endpoint resource.
+     * @param privateEndpoint The resource of private end point.
      * @param privateLinkServiceConnectionState A collection of information about the state of the connection between
      *     service consumer and provider.
      * @param context The context to associate with this operation.
@@ -612,6 +627,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         if (privateEndpoint != null) {
             privateEndpoint.validate();
         }
+        final String accept = "application/json";
         PrivateEndpointConnectionInner properties = new PrivateEndpointConnectionInner();
         properties.withPrivateEndpoint(privateEndpoint);
         properties.withPrivateLinkServiceConnectionState(privateLinkServiceConnectionState);
@@ -625,6 +641,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                 this.client.getSubscriptionId(),
                 privateEndpointConnectionName,
                 properties,
+                accept,
                 context);
     }
 
@@ -637,7 +654,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      *     resource.
-     * @param privateEndpoint The Private Endpoint resource.
+     * @param privateEndpoint The resource of private end point.
      * @param privateLinkServiceConnectionState A collection of information about the state of the connection between
      *     service consumer and provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -740,7 +757,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      *     resource.
-     * @param privateEndpoint The Private Endpoint resource.
+     * @param privateEndpoint The resource of private end point.
      * @param privateLinkServiceConnectionState A collection of information about the state of the connection between
      *     service consumer and provider.
      * @param context The context to associate with this operation.
@@ -809,6 +826,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                     new IllegalArgumentException(
                         "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -820,8 +838,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             privateEndpointConnectionName,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -867,6 +886,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                     new IllegalArgumentException(
                         "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -876,6 +896,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 privateEndpointConnectionName,
+                accept,
                 context);
     }
 

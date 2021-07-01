@@ -47,6 +47,12 @@ public final class ManagedClusterWindowsProfile {
     @JsonProperty(value = "licenseType")
     private LicenseType licenseType;
 
+    /*
+     * Whether to enable CSI proxy.
+     */
+    @JsonProperty(value = "enableCSIProxy")
+    private Boolean enableCsiProxy;
+
     /**
      * Get the adminUsername property: Specifies the name of the administrator account. &lt;br&gt;&lt;br&gt;
      * **restriction:** Cannot end in "." &lt;br&gt;&lt;br&gt; **Disallowed values:** "administrator", "admin", "user",
@@ -126,6 +132,26 @@ public final class ManagedClusterWindowsProfile {
      */
     public ManagedClusterWindowsProfile withLicenseType(LicenseType licenseType) {
         this.licenseType = licenseType;
+        return this;
+    }
+
+    /**
+     * Get the enableCsiProxy property: Whether to enable CSI proxy.
+     *
+     * @return the enableCsiProxy value.
+     */
+    public Boolean enableCsiProxy() {
+        return this.enableCsiProxy;
+    }
+
+    /**
+     * Set the enableCsiProxy property: Whether to enable CSI proxy.
+     *
+     * @param enableCsiProxy the enableCsiProxy value to set.
+     * @return the ManagedClusterWindowsProfile object itself.
+     */
+    public ManagedClusterWindowsProfile withEnableCsiProxy(Boolean enableCsiProxy) {
+        this.enableCsiProxy = enableCsiProxy;
         return this;
     }
 

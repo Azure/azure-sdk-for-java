@@ -3,14 +3,13 @@
 
 package com.azure.spring.data.cosmos.repository.integration;
 
+import com.azure.spring.data.cosmos.ReactiveIntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.core.ReactiveCosmosTemplate;
 import com.azure.spring.data.cosmos.domain.ReactiveTeacher;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.ReactiveTeacherRepository;
-import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,11 +33,8 @@ public class ReactiveTeacherRepositoryIT {
 
     private static final ReactiveTeacher TEACHER_1 = new ReactiveTeacher(TEACHER_ID_1, TEACHER_FIRST_NAME_1, DEPARTMENT_LAST_NAME_1);
 
-    private static final CosmosEntityInformation<ReactiveTeacher, String> entityInformation =
-        new CosmosEntityInformation<>(ReactiveTeacher.class);
-
-    private static ReactiveCosmosTemplate staticTemplate;
-    private static boolean isSetupDone;
+    @ClassRule
+    public static final ReactiveIntegrationTestCollectionManager collectionManager = new ReactiveIntegrationTestCollectionManager();
 
     @Autowired
     private ReactiveCosmosTemplate template;
@@ -48,24 +44,9 @@ public class ReactiveTeacherRepositoryIT {
 
     @Before
     public void setUp() {
-        if (!isSetupDone) {
-            staticTemplate = template;
-            template.createContainerIfNotExists(entityInformation);
-        }
+        collectionManager.ensureContainersCreatedAndEmpty(template, ReactiveTeacher.class);
         final Flux<ReactiveTeacher> savedFlux = repository.saveAll(Arrays.asList(TEACHER_1));
         StepVerifier.create(savedFlux).thenConsumeWhile(ReactiveTeacher -> true).expectComplete().verify();
-        isSetupDone = true;
-    }
-
-    @After
-    public void cleanup() {
-        final Mono<Void> deletedMono = repository.deleteAll();
-        StepVerifier.create(deletedMono).thenAwait().verifyComplete();
-    }
-
-    @AfterClass
-    public static void afterClassCleanup() {
-        staticTemplate.deleteContainer(entityInformation.getContainerName());
     }
 
     @Test

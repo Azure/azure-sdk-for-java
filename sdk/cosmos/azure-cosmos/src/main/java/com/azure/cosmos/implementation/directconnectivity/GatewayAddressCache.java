@@ -27,6 +27,7 @@ import com.azure.cosmos.implementation.RequestVerb;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
+import com.azure.cosmos.implementation.UnauthorizedException;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -311,13 +312,22 @@ public class GatewayAddressCache implements IAddressCache {
         headers.put(HttpConstants.HttpHeaders.X_DATE, Utils.nowAsRFC1123());
 
         if (tokenProvider.getAuthorizationTokenType() != AuthorizationTokenType.AadToken) {
-            String token = this.tokenProvider.getUserAuthorizationToken(
+            String token = null;
+            try {
+                token = this.tokenProvider.getUserAuthorizationToken(
                     collectionRid,
                     ResourceType.Document,
                     RequestVerb.GET,
                     headers,
                     AuthorizationTokenType.PrimaryMasterKey,
                     request.properties);
+            } catch (UnauthorizedException e) {
+                // User doesn't have rid based resource token. Maybe user has name based.
+
+                if (logger.isDebugEnabled()) {
+                    logger.debug("User doesn't have resource token for collection rid {}", collectionRid);
+                }
+            }
 
             if (token == null && request.getIsNameBased()) {
                 // User doesn't have rid based resource token. Maybe user has name based.

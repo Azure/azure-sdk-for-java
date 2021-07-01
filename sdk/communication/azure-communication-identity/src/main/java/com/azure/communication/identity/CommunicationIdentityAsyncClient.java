@@ -5,12 +5,16 @@ package com.azure.communication.identity;
 
 import com.azure.communication.identity.implementation.CommunicationIdentityClientImpl;
 import com.azure.communication.identity.implementation.CommunicationIdentityImpl;
+import com.azure.communication.identity.implementation.converters.IdentityErrorConverter;
+import com.azure.communication.identity.implementation.models.CommunicationErrorResponseException;
 import com.azure.communication.identity.implementation.models.CommunicationIdentityAccessToken;
 import com.azure.communication.identity.implementation.models.CommunicationIdentityAccessTokenRequest;
 import com.azure.communication.identity.implementation.models.CommunicationIdentityAccessTokenResult;
 import com.azure.communication.identity.implementation.models.CommunicationIdentityCreateRequest;
 import com.azure.communication.identity.models.CommunicationTokenScope;
-import com.azure.communication.identity.models.CommunicationUserIdentifierWithTokenResult;
+import com.azure.communication.identity.models.CommunicationUserIdentifierAndToken;
+import com.azure.communication.identity.models.IdentityError;
+import com.azure.communication.identity.models.IdentityErrorResponseException;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -46,12 +50,13 @@ public final class CommunicationIdentityAsyncClient {
     /**
      * Creates a new CommunicationUserIdentifier.
      *
-     * @return the created communication user.
+     * @return The created communication user.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CommunicationUserIdentifier> createUser() {
         try {
             return client.createAsync(new CommunicationIdentityCreateRequest())
+                .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e))
                 .flatMap(
                     (CommunicationIdentityAccessTokenResult result) -> {
                         return Mono.just(new CommunicationUserIdentifier(result.getIdentity().getId()));
@@ -64,12 +69,13 @@ public final class CommunicationIdentityAsyncClient {
     /**
      * Creates a new CommunicationUserIdentifier with response.
      *
-     * @return the created communication user with response.
+     * @return The created communication user with response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CommunicationUserIdentifier>> createUserWithResponse() {
         try {
             return client.createWithResponseAsync(new CommunicationIdentityCreateRequest())
+                .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e))
                 .flatMap(
                     (Response<CommunicationIdentityAccessTokenResult> response) -> {
                         String id = response.getValue().getIdentity().getId();
@@ -86,16 +92,17 @@ public final class CommunicationIdentityAsyncClient {
     /**
      * Creates a new CommunicationUserIdentifier with token.
      *
-     * @param scopes the list of scopes for the token.
-     * @return the result with created communication user and token.
+     * @param scopes The list of scopes for the token.
+     * @return The created communication user and token.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CommunicationUserIdentifierWithTokenResult> 
-        createUserWithToken(Iterable<CommunicationTokenScope> scopes) {
+    public Mono<CommunicationUserIdentifierAndToken>
+        createUserAndToken(Iterable<CommunicationTokenScope> scopes) {
         try {
             Objects.requireNonNull(scopes);
             final List<CommunicationTokenScope> scopesInput = StreamSupport.stream(scopes.spliterator(), false).collect(Collectors.toList());
             return client.createAsync(new CommunicationIdentityCreateRequest().setCreateTokenWithScopes(scopesInput))
+                .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e))
                 .flatMap(
                     (CommunicationIdentityAccessTokenResult result) -> {
                         return Mono.just(userWithAccessTokenResultConverter(result));
@@ -108,20 +115,21 @@ public final class CommunicationIdentityAsyncClient {
     /**
      * Creates a new CommunicationUserIdentifier with token with response.
      *
-     * @param scopes the list of scopes for the token.
-     * @return the result with created communication user and token with response.
+     * @param scopes The list of scopes for the token.
+     * @return The result with created communication user and token with response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CommunicationUserIdentifierWithTokenResult>> 
-        createUserWithTokenWithResponse(Iterable<CommunicationTokenScope> scopes) {
+    public Mono<Response<CommunicationUserIdentifierAndToken>>
+        createUserAndTokenWithResponse(Iterable<CommunicationTokenScope> scopes) {
         try {
             Objects.requireNonNull(scopes);
             final List<CommunicationTokenScope> scopesInput = StreamSupport.stream(scopes.spliterator(), false).collect(Collectors.toList());
             return client.createWithResponseAsync(
                 new CommunicationIdentityCreateRequest().setCreateTokenWithScopes(scopesInput))
+                .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e))
                 .flatMap(
                     (Response<CommunicationIdentityAccessTokenResult> response) -> {
-                        return Mono.just(new SimpleResponse<CommunicationUserIdentifierWithTokenResult>(response, 
+                        return Mono.just(new SimpleResponse<CommunicationUserIdentifierAndToken>(response,
                             userWithAccessTokenResultConverter(response.getValue())));
                     });
         } catch (RuntimeException ex) {
@@ -133,47 +141,50 @@ public final class CommunicationIdentityAsyncClient {
      * Deletes a CommunicationUserIdentifier, revokes its tokens and deletes its
      * data.
      *
-     * @param communicationUser the user to be deleted.
-     * @return the response.
+     * @param communicationUser The user to be deleted.
+     * @return A reactive response signalling completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteUser(CommunicationUserIdentifier communicationUser) {
         try {
             Objects.requireNonNull(communicationUser);
-            return client.deleteAsync(communicationUser.getId());
+            return client.deleteAsync(communicationUser.getId())
+                .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
-        }    
+        }
     }
 
     /**
      * Deletes a CommunicationUserIdentifier, revokes its tokens and deletes its
      * data with response.
-     * 
-     * @return the response.
+     *
      * @param communicationUser The user to be deleted.
+     * @return The response with void.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteUserWithResponse(CommunicationUserIdentifier communicationUser) {
         try {
             Objects.requireNonNull(communicationUser);
-            return client.deleteWithResponseAsync(communicationUser.getId());
+            return client.deleteWithResponseAsync(communicationUser.getId())
+                .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
-        }   
+        }
     }
 
     /**
      * Revokes all the tokens created for an identifier.
-     * 
+     *
      * @param communicationUser The user to be revoked access tokens.
-     * @return the response.
+     * @return A reactive response signalling completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> revokeTokens(CommunicationUserIdentifier communicationUser) {
         try {
             Objects.requireNonNull(communicationUser);
-            return client.revokeAccessTokensAsync(communicationUser.getId());
+            return client.revokeAccessTokensAsync(communicationUser.getId())
+                .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -183,27 +194,28 @@ public final class CommunicationIdentityAsyncClient {
      * Revokes all the tokens created for an identifier with response.
      *
      * @param communicationUser The user to be revoked tokens.
-     * @return the response.
+     * @return The response with void.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> revokeTokensWithResponse(CommunicationUserIdentifier communicationUser) {
         try {
             Objects.requireNonNull(communicationUser);
-            return client.revokeAccessTokensWithResponseAsync(communicationUser.getId());
+            return client.revokeAccessTokensWithResponseAsync(communicationUser.getId())
+                .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
     /**
-     * Generates a new token for an identity.
+     * Gets a token for an identity.
      *
      * @param communicationUser The user to be issued tokens.
      * @param scopes The scopes that the token should have.
-     * @return the issued token.
+     * @return The access token.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AccessToken> issueToken(CommunicationUserIdentifier communicationUser,
+    public Mono<AccessToken> getToken(CommunicationUserIdentifier communicationUser,
         Iterable<CommunicationTokenScope> scopes) {
         try {
             Objects.requireNonNull(communicationUser);
@@ -211,6 +223,7 @@ public final class CommunicationIdentityAsyncClient {
             final List<CommunicationTokenScope> scopesInput = StreamSupport.stream(scopes.spliterator(), false).collect(Collectors.toList());
             return client.issueAccessTokenAsync(communicationUser.getId(),
                 new CommunicationIdentityAccessTokenRequest().setScopes(scopesInput))
+                .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e))
                 .flatMap((CommunicationIdentityAccessToken rawToken) -> {
                     return Mono.just(new AccessToken(rawToken.getToken(), rawToken.getExpiresOn()));
                 });
@@ -220,14 +233,14 @@ public final class CommunicationIdentityAsyncClient {
     }
 
     /**
-     * Generates a new token for an identity with response.
+     * Gets a token for an identity with response.
      *
      * @param communicationUser The user to be issued tokens.
      * @param scopes The scopes that the token should have.
-     * @return the issued token with response.
+     * @return The access token with response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AccessToken>> issueTokenWithResponse(CommunicationUserIdentifier communicationUser,
+    public Mono<Response<AccessToken>> getTokenWithResponse(CommunicationUserIdentifier communicationUser,
         Iterable<CommunicationTokenScope> scopes) {
         try {
             Objects.requireNonNull(communicationUser);
@@ -235,6 +248,7 @@ public final class CommunicationIdentityAsyncClient {
             final List<CommunicationTokenScope> scopesInput = StreamSupport.stream(scopes.spliterator(), false).collect(Collectors.toList());
             return client.issueAccessTokenWithResponseAsync(communicationUser.getId(),
                 new CommunicationIdentityAccessTokenRequest().setScopes(scopesInput))
+                .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e))
                 .flatMap((Response<CommunicationIdentityAccessToken> response) -> {
                     AccessToken token = new AccessToken(response.getValue().getToken(), response.getValue().getExpiresOn());
                     return Mono.just(new SimpleResponse<AccessToken>(response, token));
@@ -245,18 +259,26 @@ public final class CommunicationIdentityAsyncClient {
     }
 
     /**
-     * Converts CommunicationIdentityAccessTokenResult to CommunicationUserIdentifierWithTokenResult
+     * Converts CommunicationIdentityAccessTokenResult to CommunicationUserIdentifierAndToken
      *
      * @param identityAccessTokenResult The result input.
-     * @return the result converted to CommunicationUserIdentifierWithTokenResult type
+     * @return The result converted to CommunicationUserIdentifierAndToken type
      */
-    private CommunicationUserIdentifierWithTokenResult userWithAccessTokenResultConverter(
+    private CommunicationUserIdentifierAndToken userWithAccessTokenResultConverter(
         CommunicationIdentityAccessTokenResult identityAccessTokenResult) {
-        CommunicationUserIdentifier user = 
+        CommunicationUserIdentifier user =
             new CommunicationUserIdentifier(identityAccessTokenResult.getIdentity().getId());
         AccessToken token = new AccessToken(
             identityAccessTokenResult.getAccessToken().getToken(),
             identityAccessTokenResult.getAccessToken().getExpiresOn());
-        return new CommunicationUserIdentifierWithTokenResult(user, token);
+        return new CommunicationUserIdentifierAndToken(user, token);
+    }
+
+    private IdentityErrorResponseException translateException(CommunicationErrorResponseException exception) {
+        IdentityError error = null;
+        if (exception.getValue() != null) {
+            error = IdentityErrorConverter.convert(exception.getValue().getError());
+        }
+        return new IdentityErrorResponseException(exception.getMessage(), exception.getResponse(), error);
     }
 }

@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.postgresql.implementation;
 
-import com.azure.resourcemanager.postgresql.PostgreSqlManager;
 import com.azure.resourcemanager.postgresql.fluent.models.ServerAdministratorResourceInner;
 import com.azure.resourcemanager.postgresql.models.AdministratorType;
 import com.azure.resourcemanager.postgresql.models.ServerAdministratorResource;
@@ -13,9 +12,11 @@ import java.util.UUID;
 public final class ServerAdministratorResourceImpl implements ServerAdministratorResource {
     private ServerAdministratorResourceInner innerObject;
 
-    private final PostgreSqlManager serviceManager;
+    private final com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager;
 
-    ServerAdministratorResourceImpl(ServerAdministratorResourceInner innerObject, PostgreSqlManager serviceManager) {
+    ServerAdministratorResourceImpl(
+        ServerAdministratorResourceInner innerObject,
+        com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -52,7 +53,7 @@ public final class ServerAdministratorResourceImpl implements ServerAdministrato
         return this.innerObject;
     }
 
-    private PostgreSqlManager manager() {
+    private com.azure.resourcemanager.postgresql.PostgreSqlManager manager() {
         return this.serviceManager;
     }
 }

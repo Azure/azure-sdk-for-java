@@ -11,27 +11,25 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * The list of file ranges.
- */
+/** The list of file ranges. */
 @JacksonXmlRootElement(localName = "ShareFileRangeList")
 @Fluent
 @JsonDeserialize(using = ShareFileRangeListDeserializer.class)
 public final class ShareFileRangeList {
     /*
-     * The ranges property.
+     * The Ranges property.
      */
     @JsonProperty("Range")
     private List<FileRange> ranges = new ArrayList<>();
 
     /*
-     * The clearRanges property.
+     * The ClearRanges property.
      */
     @JsonProperty("ClearRange")
     private List<ClearRange> clearRanges = new ArrayList<>();
 
     /**
-     * Get the ranges property: The ranges property.
+     * Get the ranges property: The Ranges property.
      *
      * @return the ranges value.
      */
@@ -40,7 +38,7 @@ public final class ShareFileRangeList {
     }
 
     /**
-     * Set the ranges property: The ranges property.
+     * Set the ranges property: The Ranges property.
      *
      * @param ranges the ranges value to set.
      * @return the ShareFileRangeList object itself.
@@ -51,7 +49,7 @@ public final class ShareFileRangeList {
     }
 
     /**
-     * Get the clearRanges property: The clearRanges property.
+     * Get the clearRanges property: The ClearRanges property.
      *
      * @return the clearRanges value.
      */
@@ -60,7 +58,7 @@ public final class ShareFileRangeList {
     }
 
     /**
-     * Set the clearRanges property: The clearRanges property.
+     * Set the clearRanges property: The ClearRanges property.
      *
      * @param clearRanges the clearRanges value to set.
      * @return the ShareFileRangeList object itself.

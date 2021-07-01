@@ -593,7 +593,7 @@ public class ManagementTests extends TestBase {
     public void getNamespaceInfoTest() throws ExecutionException, InterruptedException {
         NamespaceInfo nsInfo = this.managementClientAsync.getNamespaceInfoAsync().get();
         Assert.assertNotNull(nsInfo);
-        Assert.assertEquals(NamespaceType.ServiceBus, nsInfo.getNamespaceType());
+        Assert.assertTrue(nsInfo.getNamespaceType() == NamespaceType.ServiceBus || nsInfo.getNamespaceType() == NamespaceType.Mixed);
     }
     
     @Test

@@ -207,7 +207,7 @@ public final class IndexingParameters {
                     break;
 
                 case "pdfTextRotationAlgorithm":
-                    configuration.setPdfTextRotationAlgorithm(BlobIndexerPDFTextRotationAlgorithm.fromString(value));
+                    configuration.setPdfTextRotationAlgorithm(BlobIndexerPdfTextRotationAlgorithm.fromString(value));
                     break;
 
                 case "executionEnvironment":

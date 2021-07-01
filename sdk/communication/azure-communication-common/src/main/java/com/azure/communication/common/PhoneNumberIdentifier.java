@@ -7,7 +7,7 @@ import com.azure.core.util.CoreUtils;
 /**
  * Communication identifier for Communication Services Phone Numbers
  */
-public class PhoneNumberIdentifier extends CommunicationIdentifier {
+public final class PhoneNumberIdentifier extends CommunicationIdentifier {
 
     private final String phoneNumber;
     private String rawId;

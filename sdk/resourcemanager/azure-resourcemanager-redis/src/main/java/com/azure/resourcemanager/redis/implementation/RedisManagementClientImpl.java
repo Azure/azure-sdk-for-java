@@ -13,6 +13,8 @@ import com.azure.resourcemanager.redis.fluent.FirewallRulesClient;
 import com.azure.resourcemanager.redis.fluent.LinkedServersClient;
 import com.azure.resourcemanager.redis.fluent.OperationsClient;
 import com.azure.resourcemanager.redis.fluent.PatchSchedulesClient;
+import com.azure.resourcemanager.redis.fluent.PrivateEndpointConnectionsClient;
+import com.azure.resourcemanager.redis.fluent.PrivateLinkResourcesClient;
 import com.azure.resourcemanager.redis.fluent.RedisClient;
 import com.azure.resourcemanager.redis.fluent.RedisManagementClient;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
@@ -159,6 +161,30 @@ public final class RedisManagementClientImpl extends AzureServiceClient implemen
         return this.linkedServers;
     }
 
+    /** The PrivateEndpointConnectionsClient object to access its operations. */
+    private final PrivateEndpointConnectionsClient privateEndpointConnections;
+
+    /**
+     * Gets the PrivateEndpointConnectionsClient object to access its operations.
+     *
+     * @return the PrivateEndpointConnectionsClient object.
+     */
+    public PrivateEndpointConnectionsClient getPrivateEndpointConnections() {
+        return this.privateEndpointConnections;
+    }
+
+    /** The PrivateLinkResourcesClient object to access its operations. */
+    private final PrivateLinkResourcesClient privateLinkResources;
+
+    /**
+     * Gets the PrivateLinkResourcesClient object to access its operations.
+     *
+     * @return the PrivateLinkResourcesClient object.
+     */
+    public PrivateLinkResourcesClient getPrivateLinkResources() {
+        return this.privateLinkResources;
+    }
+
     /**
      * Initializes an instance of RedisManagementClient client.
      *
@@ -183,11 +209,13 @@ public final class RedisManagementClientImpl extends AzureServiceClient implemen
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2018-03-01";
+        this.apiVersion = "2020-06-01";
         this.operations = new OperationsClientImpl(this);
         this.redis = new RedisClientImpl(this);
         this.firewallRules = new FirewallRulesClientImpl(this);
         this.patchSchedules = new PatchSchedulesClientImpl(this);
         this.linkedServers = new LinkedServersClientImpl(this);
+        this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
+        this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
     }
 }

@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/**
- * Settings for SMB multichannel.
- */
+/** Settings for SMB multichannel. */
 @JacksonXmlRootElement(localName = "Multichannel")
 @Fluent
 public final class SmbMultichannel {

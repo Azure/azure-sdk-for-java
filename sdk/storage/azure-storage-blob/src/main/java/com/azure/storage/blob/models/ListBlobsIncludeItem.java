@@ -7,48 +7,39 @@ package com.azure.storage.blob.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Defines values for ListBlobsIncludeItem.
- */
+/** Defines values for ListBlobsIncludeItem. */
 public enum ListBlobsIncludeItem {
-    /**
-     * Enum value copy.
-     */
+    /** Enum value copy. */
     COPY("copy"),
 
-    /**
-     * Enum value deleted.
-     */
+    /** Enum value deleted. */
     DELETED("deleted"),
 
-    /**
-     * Enum value metadata.
-     */
+    /** Enum value metadata. */
     METADATA("metadata"),
 
-    /**
-     * Enum value snapshots.
-     */
+    /** Enum value snapshots. */
     SNAPSHOTS("snapshots"),
 
-    /**
-     * Enum value uncommittedblobs.
-     */
+    /** Enum value uncommittedblobs. */
     UNCOMMITTEDBLOBS("uncommittedblobs"),
 
-    /**
-     * Enum value versions.
-     */
+    /** Enum value versions. */
     VERSIONS("versions"),
 
-    /**
-     * Enum value tags.
-     */
-    TAGS("tags");
+    /** Enum value tags. */
+    TAGS("tags"),
 
-    /**
-     * The actual serialized value for a ListBlobsIncludeItem instance.
-     */
+    /** Enum value immutabilitypolicy. */
+    IMMUTABILITYPOLICY("immutabilitypolicy"),
+
+    /** Enum value legalhold. */
+    LEGALHOLD("legalhold"),
+
+    /** Enum value deletedwithversions. */
+    DELETEDWITHVERSIONS("deletedwithversions");
+
+    /** The actual serialized value for a ListBlobsIncludeItem instance. */
     private final String value;
 
     ListBlobsIncludeItem(String value) {

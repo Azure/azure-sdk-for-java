@@ -72,6 +72,18 @@ public class ViewInner extends ProxyResource {
     private OffsetDateTime modifiedOn;
 
     /*
+     * Selected date range for viewing cost in.
+     */
+    @JsonProperty(value = "properties.dateRange", access = JsonProperty.Access.WRITE_ONLY)
+    private String dateRange;
+
+    /*
+     * Selected currency.
+     */
+    @JsonProperty(value = "properties.currency", access = JsonProperty.Access.WRITE_ONLY)
+    private String currency;
+
+    /*
      * Chart type of the main view in Cost Analysis. Required.
      */
     @JsonProperty(value = "properties.chart")
@@ -126,8 +138,14 @@ public class ViewInner extends ProxyResource {
     /*
      * Has definition for data in this report config.
      */
-    @JsonProperty(value = "properties.query.dataset")
-    private ReportConfigDataset dataset;
+    @JsonProperty(value = "properties.query.dataSet")
+    private ReportConfigDataset dataSet;
+
+    /*
+     * Include monetary commitment
+     */
+    @JsonProperty(value = "properties.query.includeMonetaryCommitment", access = JsonProperty.Access.WRITE_ONLY)
+    private Boolean includeMonetaryCommitment;
 
     /*
      * eTag of the resource. To handle concurrent update scenario, this field
@@ -219,6 +237,24 @@ public class ViewInner extends ProxyResource {
      */
     public OffsetDateTime modifiedOn() {
         return this.modifiedOn;
+    }
+
+    /**
+     * Get the dateRange property: Selected date range for viewing cost in.
+     *
+     * @return the dateRange value.
+     */
+    public String dateRange() {
+        return this.dateRange;
+    }
+
+    /**
+     * Get the currency property: Selected currency.
+     *
+     * @return the currency value.
+     */
+    public String currency() {
+        return this.currency;
     }
 
     /**
@@ -388,23 +424,32 @@ public class ViewInner extends ProxyResource {
     }
 
     /**
-     * Get the dataset property: Has definition for data in this report config.
+     * Get the dataSet property: Has definition for data in this report config.
      *
-     * @return the dataset value.
+     * @return the dataSet value.
      */
-    public ReportConfigDataset dataset() {
-        return this.dataset;
+    public ReportConfigDataset dataSet() {
+        return this.dataSet;
     }
 
     /**
-     * Set the dataset property: Has definition for data in this report config.
+     * Set the dataSet property: Has definition for data in this report config.
      *
-     * @param dataset the dataset value to set.
+     * @param dataSet the dataSet value to set.
      * @return the ViewInner object itself.
      */
-    public ViewInner withDataset(ReportConfigDataset dataset) {
-        this.dataset = dataset;
+    public ViewInner withDataSet(ReportConfigDataset dataSet) {
+        this.dataSet = dataSet;
         return this;
+    }
+
+    /**
+     * Get the includeMonetaryCommitment property: Include monetary commitment.
+     *
+     * @return the includeMonetaryCommitment value.
+     */
+    public Boolean includeMonetaryCommitment() {
+        return this.includeMonetaryCommitment;
     }
 
     /**
@@ -444,8 +489,8 @@ public class ViewInner extends ProxyResource {
         if (timePeriod() != null) {
             timePeriod().validate();
         }
-        if (dataset() != null) {
-            dataset().validate();
+        if (dataSet() != null) {
+            dataSet().validate();
         }
     }
 }

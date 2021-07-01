@@ -7,6 +7,7 @@ package com.azure.resourcemanager.mediaservices.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mediaservices.models.CommonEncryptionCbcs;
 import com.azure.resourcemanager.mediaservices.models.CommonEncryptionCenc;
@@ -21,6 +22,12 @@ import java.time.OffsetDateTime;
 @Fluent
 public class StreamingPolicyInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(StreamingPolicyInner.class);
+
+    /*
+     * The system metadata relating to this resource.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /*
      * Creation time of Streaming Policy
@@ -57,6 +64,15 @@ public class StreamingPolicyInner extends ProxyResource {
      */
     @JsonProperty(value = "properties.noEncryption")
     private NoEncryption noEncryption;
+
+    /**
+     * Get the systemData property: The system metadata relating to this resource.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
 
     /**
      * Get the created property: Creation time of Streaming Policy.

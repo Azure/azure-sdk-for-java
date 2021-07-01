@@ -3,19 +3,33 @@
 
 package com.azure.resourcemanager.storage.implementation;
 
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpoint;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointConnection;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointConnectionProvisioningState;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.storage.fluent.StorageAccountsClient;
+import com.azure.resourcemanager.storage.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.storage.models.AccessTier;
 import com.azure.resourcemanager.storage.models.AccountStatuses;
 import com.azure.resourcemanager.storage.models.AzureFilesIdentityBasedAuthentication;
 import com.azure.resourcemanager.storage.models.CustomDomain;
 import com.azure.resourcemanager.storage.models.DirectoryServiceOptions;
 import com.azure.resourcemanager.storage.models.Identity;
+import com.azure.resourcemanager.storage.models.IdentityType;
 import com.azure.resourcemanager.storage.models.Kind;
 import com.azure.resourcemanager.storage.models.LargeFileSharesState;
+import com.azure.resourcemanager.storage.models.MinimumTlsVersion;
+import com.azure.resourcemanager.storage.models.PrivateEndpointServiceConnectionStatus;
+import com.azure.resourcemanager.storage.models.PrivateLinkServiceConnectionState;
 import com.azure.resourcemanager.storage.models.ProvisioningState;
 import com.azure.resourcemanager.storage.models.PublicEndpoints;
 import com.azure.resourcemanager.storage.models.Sku;
@@ -30,8 +44,11 @@ import com.azure.resourcemanager.storage.models.StorageService;
 import com.azure.resourcemanager.storage.fluent.models.StorageAccountInner;
 
 import java.time.OffsetDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
 import reactor.core.publisher.Mono;
 
 /** Implementation for {@link StorageAccount}. */
@@ -114,6 +131,11 @@ class StorageAccountImpl
     }
 
     @Override
+    public boolean infrastructureEncryptionEnabled() {
+        return this.encryptionHelper.infrastructureEncryptionEnabled();
+    }
+
+    @Override
     public AccessTier accessTier() {
         return innerModel().accessTier();
     }
@@ -189,6 +211,35 @@ class StorageAccountImpl
     }
 
     @Override
+    public MinimumTlsVersion minimumTlsVersion() {
+        return this.innerModel().minimumTlsVersion();
+    }
+
+    @Override
+    public boolean isHttpsTrafficOnly() {
+        if (this.innerModel().enableHttpsTrafficOnly() == null) {
+            return true;
+        }
+        return this.innerModel().enableHttpsTrafficOnly();
+    }
+
+    @Override
+    public boolean isBlobPublicAccessAllowed() {
+        if (this.innerModel().allowBlobPublicAccess() == null) {
+            return true;
+        }
+        return this.innerModel().allowBlobPublicAccess();
+    }
+
+    @Override
+    public boolean isSharedKeyAccessAllowed() {
+        if (this.innerModel().allowSharedKeyAccess() == null) {
+            return true;
+        }
+        return this.innerModel().allowSharedKeyAccess();
+    }
+
+    @Override
     public List<StorageAccountKey> getKeys() {
         return this.getKeysAsync().block();
     }
@@ -216,6 +267,65 @@ class StorageAccountImpl
             .getStorageAccounts()
             .regenerateKeyAsync(this.resourceGroupName(), this.name(), keyName)
             .map(storageAccountListKeysResultInner -> storageAccountListKeysResultInner.keys());
+    }
+
+    @Override
+    public PagedIterable<PrivateLinkResource> listPrivateLinkResources() {
+        return new PagedIterable<>(listPrivateLinkResourcesAsync());
+    }
+
+    @Override
+    public PagedFlux<PrivateLinkResource> listPrivateLinkResourcesAsync() {
+        Mono<Response<List<PrivateLinkResource>>> retList = this.manager().serviceClient().getPrivateLinkResources()
+            .listByStorageAccountWithResponseAsync(this.resourceGroupName(), this.name())
+            .map(response -> new SimpleResponse<>(response, response.getValue().value().stream()
+                .map(PrivateLinkResourceImpl::new)
+                .collect(Collectors.toList())));
+
+        return PagedConverter.convertListToPagedFlux(retList);
+    }
+
+    @Override
+    public PagedIterable<PrivateEndpointConnection> listPrivateEndpointConnections() {
+        return new PagedIterable<>(listPrivateEndpointConnectionsAsync());
+    }
+
+    @Override
+    public PagedFlux<PrivateEndpointConnection> listPrivateEndpointConnectionsAsync() {
+        return PagedConverter.mapPage(this.manager().serviceClient().getPrivateEndpointConnections()
+            .listAsync(this.resourceGroupName(), this.name()), PrivateEndpointConnectionImpl::new);
+    }
+
+    @Override
+    public void approvePrivateEndpointConnection(String privateEndpointConnectionName) {
+        approvePrivateEndpointConnectionAsync(privateEndpointConnectionName).block();
+    }
+
+    @Override
+    public Mono<Void> approvePrivateEndpointConnectionAsync(String privateEndpointConnectionName) {
+        return this.manager().serviceClient().getPrivateEndpointConnections()
+            .putWithResponseAsync(this.resourceGroupName(), this.name(), privateEndpointConnectionName,
+                null,
+                new com.azure.resourcemanager.storage.models.PrivateLinkServiceConnectionState()
+                    .withStatus(
+                        com.azure.resourcemanager.storage.models.PrivateEndpointServiceConnectionStatus.APPROVED))
+            .then();
+    }
+
+    @Override
+    public void rejectPrivateEndpointConnection(String privateEndpointConnectionName) {
+        rejectPrivateEndpointConnectionAsync(privateEndpointConnectionName).block();
+    }
+
+    @Override
+    public Mono<Void> rejectPrivateEndpointConnectionAsync(String privateEndpointConnectionName) {
+        return this.manager().serviceClient().getPrivateEndpointConnections()
+            .putWithResponseAsync(this.resourceGroupName(), this.name(), privateEndpointConnectionName,
+                null,
+                new PrivateLinkServiceConnectionState()
+                    .withStatus(
+                        PrivateEndpointServiceConnectionStatus.REJECTED))
+            .then();
     }
 
     @Override
@@ -276,6 +386,12 @@ class StorageAccountImpl
     }
 
     @Override
+    public StorageAccountImpl withInfrastructureEncryption() {
+        this.encryptionHelper.withInfrastructureEncryption();
+        return this;
+    }
+
+    @Override
     public StorageAccountImpl withBlobEncryption() {
         this.encryptionHelper.withBlobEncryption();
         return this;
@@ -302,6 +418,18 @@ class StorageAccountImpl
     @Override
     public StorageAccountImpl withoutFileEncryption() {
         this.encryptionHelper.withoutFileEncryption();
+        return this;
+    }
+
+    @Override
+    public StorageAccountImpl withTableAccountScopedEncryptionKey() {
+        this.encryptionHelper.withTableEncryption();
+        return this;
+    }
+
+    @Override
+    public StorageAccountImpl withQueueAccountScopedEncryptionKey() {
+        this.encryptionHelper.withQueueEncryption();
         return this;
     }
 
@@ -357,9 +485,9 @@ class StorageAccountImpl
     public StorageAccountImpl withSystemAssignedManagedServiceIdentity() {
         if (this.innerModel().identity() == null) {
             if (isInCreateMode()) {
-                createParameters.withIdentity(new Identity().withType("SystemAssigned"));
+                createParameters.withIdentity(new Identity().withType(IdentityType.SYSTEM_ASSIGNED));
             } else {
-                updateParameters.withIdentity(new Identity().withType("SystemAssigned"));
+                updateParameters.withIdentity(new Identity().withType(IdentityType.SYSTEM_ASSIGNED));
             }
         }
         return this;
@@ -377,7 +505,61 @@ class StorageAccountImpl
 
     @Override
     public StorageAccountImpl withHttpAndHttpsTraffic() {
-        updateParameters.withEnableHttpsTrafficOnly(false);
+        if (isInCreateMode()) {
+            createParameters.withEnableHttpsTrafficOnly(false);
+        } else {
+            updateParameters.withEnableHttpsTrafficOnly(false);
+        }
+        return this;
+    }
+
+    @Override
+    public StorageAccountImpl withMinimumTlsVersion(MinimumTlsVersion minimumTlsVersion) {
+        if (isInCreateMode()) {
+            createParameters.withMinimumTlsVersion(minimumTlsVersion);
+        } else {
+            updateParameters.withMinimumTlsVersion(minimumTlsVersion);
+        }
+        return this;
+    }
+
+    @Override
+    public StorageAccountImpl enableBlobPublicAccess() {
+        if (isInCreateMode()) {
+            createParameters.withAllowBlobPublicAccess(true);
+        } else {
+            updateParameters.withAllowBlobPublicAccess(true);
+        }
+        return this;
+    }
+
+    @Override
+    public StorageAccountImpl disableBlobPublicAccess() {
+        if (isInCreateMode()) {
+            createParameters.withAllowBlobPublicAccess(false);
+        } else {
+            updateParameters.withAllowBlobPublicAccess(false);
+        }
+        return this;
+    }
+
+    @Override
+    public StorageAccountImpl enableSharedKeyAccess() {
+        if (isInCreateMode()) {
+            createParameters.withAllowSharedKeyAccess(true);
+        } else {
+            updateParameters.withAllowSharedKeyAccess(true);
+        }
+        return this;
+    }
+
+    @Override
+    public StorageAccountImpl disableSharedKeyAccess() {
+        if (isInCreateMode()) {
+            createParameters.withAllowSharedKeyAccess(false);
+        } else {
+            updateParameters.withAllowSharedKeyAccess(false);
+        }
         return this;
     }
 
@@ -551,5 +733,88 @@ class StorageAccountImpl
     public StorageAccountImpl withHnsEnabled(boolean enabled) {
         this.createParameters.withIsHnsEnabled(enabled);
         return this;
+    }
+
+    private static final class PrivateLinkResourceImpl implements PrivateLinkResource {
+        private final com.azure.resourcemanager.storage.models.PrivateLinkResource innerModel;
+
+        private PrivateLinkResourceImpl(com.azure.resourcemanager.storage.models.PrivateLinkResource innerModel) {
+            this.innerModel = innerModel;
+        }
+
+        @Override
+        public String groupId() {
+            return innerModel.groupId();
+        }
+
+        @Override
+        public List<String> requiredMemberNames() {
+            return Collections.unmodifiableList(innerModel.requiredMembers());
+        }
+
+        @Override
+        public List<String> requiredDnsZoneNames() {
+            return Collections.unmodifiableList(innerModel.requiredZoneNames());
+        }
+    }
+
+    private static final class PrivateEndpointConnectionImpl implements PrivateEndpointConnection {
+        private final PrivateEndpointConnectionInner innerModel;
+
+        private final PrivateEndpoint privateEndpoint;
+        private final com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkServiceConnectionState
+            privateLinkServiceConnectionState;
+        private final PrivateEndpointConnectionProvisioningState provisioningState;
+
+        private PrivateEndpointConnectionImpl(PrivateEndpointConnectionInner innerModel) {
+            this.innerModel = innerModel;
+
+            this.privateEndpoint = innerModel.privateEndpoint() == null
+                ? null
+                : new PrivateEndpoint(innerModel.privateEndpoint().id());
+            this.privateLinkServiceConnectionState = innerModel.privateLinkServiceConnectionState() == null
+                ? null
+                : new com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkServiceConnectionState(
+                innerModel.privateLinkServiceConnectionState().status() == null
+                    ? null
+                    : com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointServiceConnectionStatus
+                    .fromString(innerModel.privateLinkServiceConnectionState().status().toString()),
+                innerModel.privateLinkServiceConnectionState().description(),
+                innerModel.privateLinkServiceConnectionState().actionRequired());
+            this.provisioningState = innerModel.provisioningState() == null
+                ? null
+                : PrivateEndpointConnectionProvisioningState.fromString(innerModel.provisioningState().toString());
+        }
+
+        @Override
+        public String id() {
+            return innerModel.id();
+        }
+
+        @Override
+        public String name() {
+            return innerModel.name();
+        }
+
+        @Override
+        public String type() {
+            return innerModel.type();
+        }
+
+        @Override
+        public PrivateEndpoint privateEndpoint() {
+            return privateEndpoint;
+        }
+
+        @Override
+        public com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkServiceConnectionState
+            privateLinkServiceConnectionState() {
+            return privateLinkServiceConnectionState;
+        }
+
+        @Override
+        public PrivateEndpointConnectionProvisioningState provisioningState() {
+            return provisioningState;
+        }
     }
 }

@@ -106,6 +106,13 @@ public class FileShareItemInner extends AzureEntityResource {
     @JsonProperty(value = "properties.shareUsageBytes", access = JsonProperty.Access.WRITE_ONLY)
     private Long shareUsageBytes;
 
+    /*
+     * Creation time of share snapshot returned in the response of list shares
+     * with expand param "snapshots".
+     */
+    @JsonProperty(value = "properties.snapshotTime", access = JsonProperty.Access.WRITE_ONLY)
+    private OffsetDateTime snapshotTime;
+
     /**
      * Get the lastModifiedTime property: Returns the date and time the share was last modified.
      *
@@ -283,6 +290,16 @@ public class FileShareItemInner extends AzureEntityResource {
      */
     public Long shareUsageBytes() {
         return this.shareUsageBytes;
+    }
+
+    /**
+     * Get the snapshotTime property: Creation time of share snapshot returned in the response of list shares with
+     * expand param "snapshots".
+     *
+     * @return the snapshotTime value.
+     */
+    public OffsetDateTime snapshotTime() {
+        return this.snapshotTime;
     }
 
     /**

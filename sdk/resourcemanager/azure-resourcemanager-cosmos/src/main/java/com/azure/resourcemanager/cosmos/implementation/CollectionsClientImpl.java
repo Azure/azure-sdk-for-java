@@ -164,7 +164,6 @@ public final class CollectionsClientImpl implements CollectionsClient {
         if (filter == null) {
             return Mono.error(new IllegalArgumentException("Parameter filter is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -177,7 +176,7 @@ public final class CollectionsClientImpl implements CollectionsClient {
                             accountName,
                             databaseRid,
                             collectionRid,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             filter,
                             accept,
                             context))
@@ -185,7 +184,7 @@ public final class CollectionsClientImpl implements CollectionsClient {
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -240,7 +239,6 @@ public final class CollectionsClientImpl implements CollectionsClient {
         if (filter == null) {
             return Mono.error(new IllegalArgumentException("Parameter filter is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -251,7 +249,7 @@ public final class CollectionsClientImpl implements CollectionsClient {
                 accountName,
                 databaseRid,
                 collectionRid,
-                apiVersion,
+                this.client.getApiVersion(),
                 filter,
                 accept,
                 context)
@@ -405,7 +403,6 @@ public final class CollectionsClientImpl implements CollectionsClient {
         if (collectionRid == null) {
             return Mono.error(new IllegalArgumentException("Parameter collectionRid is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -418,7 +415,7 @@ public final class CollectionsClientImpl implements CollectionsClient {
                             accountName,
                             databaseRid,
                             collectionRid,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             filter,
                             accept,
                             context))
@@ -426,7 +423,7 @@ public final class CollectionsClientImpl implements CollectionsClient {
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -477,7 +474,6 @@ public final class CollectionsClientImpl implements CollectionsClient {
         if (collectionRid == null) {
             return Mono.error(new IllegalArgumentException("Parameter collectionRid is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -488,7 +484,7 @@ public final class CollectionsClientImpl implements CollectionsClient {
                 accountName,
                 databaseRid,
                 collectionRid,
-                apiVersion,
+                this.client.getApiVersion(),
                 filter,
                 accept,
                 context)
@@ -653,7 +649,6 @@ public final class CollectionsClientImpl implements CollectionsClient {
         if (collectionRid == null) {
             return Mono.error(new IllegalArgumentException("Parameter collectionRid is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -666,14 +661,14 @@ public final class CollectionsClientImpl implements CollectionsClient {
                             accountName,
                             databaseRid,
                             collectionRid,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
             .<PagedResponse<MetricDefinitionInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -717,7 +712,6 @@ public final class CollectionsClientImpl implements CollectionsClient {
         if (collectionRid == null) {
             return Mono.error(new IllegalArgumentException("Parameter collectionRid is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -728,7 +722,7 @@ public final class CollectionsClientImpl implements CollectionsClient {
                 accountName,
                 databaseRid,
                 collectionRid,
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context)
             .map(

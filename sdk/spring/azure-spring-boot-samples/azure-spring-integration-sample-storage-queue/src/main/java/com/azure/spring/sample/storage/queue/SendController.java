@@ -5,8 +5,8 @@ package com.azure.spring.sample.storage.queue;
 
 import com.azure.spring.integration.core.api.reactor.DefaultMessageHandler;
 import com.azure.spring.integration.storage.queue.StorageQueueOperation;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.integration.annotation.MessagingGateway;
@@ -23,10 +23,11 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class SendController {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(SendController.class);
     /*Storage queue name can only be made up of lowercase letters, the numbers and the hyphen(-).*/
     private static final String STORAGE_QUEUE_NAME = "example";
     private static final String OUTPUT_CHANNEL = "output";
-    private static final Log LOGGER = LogFactory.getLog(SendController.class);
 
     @Autowired
     StorageQueueOutboundGateway storageQueueOutboundGateway;

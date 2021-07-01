@@ -3,17 +3,7 @@
 
 package com.azure.core.amqp.implementation;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.ArgumentMatchers.isNull;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-
 import com.azure.core.amqp.AmqpTransaction;
-import java.nio.ByteBuffer;
-
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
 import org.apache.qpid.proton.amqp.messaging.Rejected;
@@ -31,6 +21,16 @@ import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.nio.ByteBuffer;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+
 /**
  * Unit tests for {@link TransactionCoordinator}
  */
@@ -40,17 +40,22 @@ public class TransactionCoordinatorTest {
     private MessageSerializer messageSerializer;
     @Mock
     private AmqpSendLink sendLink;
+    private AutoCloseable mocksCloseable;
 
     @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        mocksCloseable = MockitoAnnotations.openMocks(this);
     }
 
     @AfterEach
-    void teardown() {
+    void teardown() throws Exception {
         // Tear down any inline mocks to avoid memory leaks.
         // https://github.com/mockito/mockito/wiki/What's-new-in-Mockito-2#mockito-2250
         Mockito.framework().clearInlineMocks();
+
+        if (mocksCloseable != null) {
+            mocksCloseable.close();
+        }
     }
 
     @ParameterizedTest
@@ -64,7 +69,7 @@ public class TransactionCoordinatorTest {
 
         doReturn(Mono.just(outcome)).when(sendLink).send(any(byte[].class), anyInt(), eq(DeliveryImpl.DEFAULT_MESSAGE_FORMAT), isNull());
 
-        StepVerifier.create(transactionCoordinator.completeTransaction(transaction, isCommit))
+        StepVerifier.create(transactionCoordinator.discharge(transaction, isCommit))
             .verifyError(IllegalArgumentException.class);
 
         verify(sendLink, times(1)).send(any(byte[].class), anyInt(), eq(DeliveryImpl.DEFAULT_MESSAGE_FORMAT), isNull());
@@ -81,7 +86,7 @@ public class TransactionCoordinatorTest {
 
         doReturn(Mono.just(outcome)).when(sendLink).send(any(byte[].class), anyInt(), eq(DeliveryImpl.DEFAULT_MESSAGE_FORMAT), isNull());
 
-        StepVerifier.create(transactionCoordinator.completeTransaction(transaction, isCommit))
+        StepVerifier.create(transactionCoordinator.discharge(transaction, isCommit))
             .verifyComplete();
 
         verify(sendLink, times(1)).send(any(byte[].class), anyInt(), eq(DeliveryImpl.DEFAULT_MESSAGE_FORMAT), isNull());
@@ -95,7 +100,7 @@ public class TransactionCoordinatorTest {
 
         doReturn(Mono.just(outcome)).when(sendLink).send(any(byte[].class), anyInt(), eq(DeliveryImpl.DEFAULT_MESSAGE_FORMAT), isNull());
 
-        StepVerifier.create(transactionCoordinator.createTransaction())
+        StepVerifier.create(transactionCoordinator.declare())
             .verifyError(IllegalArgumentException.class);
 
         verify(sendLink, times(1)).send(any(byte[].class), anyInt(), eq(DeliveryImpl.DEFAULT_MESSAGE_FORMAT), isNull());
@@ -111,7 +116,7 @@ public class TransactionCoordinatorTest {
 
         doReturn(Mono.just(transactionState)).when(sendLink).send(any(byte[].class), anyInt(), eq(DeliveryImpl.DEFAULT_MESSAGE_FORMAT), isNull());
 
-        StepVerifier.create(transactionCoordinator.createTransaction())
+        StepVerifier.create(transactionCoordinator.declare())
             .assertNext(actual -> {
                 Assertions.assertNotNull(actual);
                 Assertions.assertArrayEquals(transactionId, actual.getTransactionId().array());

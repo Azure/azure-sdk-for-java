@@ -8,7 +8,6 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.compute.models.PrivateEndpointConnection;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -26,7 +25,7 @@ public class DiskAccessInner extends Resource {
      * disk. Currently only one endpoint connection is supported.
      */
     @JsonProperty(value = "properties.privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
-    private List<PrivateEndpointConnection> privateEndpointConnections;
+    private List<PrivateEndpointConnectionInner> privateEndpointConnections;
 
     /*
      * The disk access resource provisioning state.
@@ -46,7 +45,7 @@ public class DiskAccessInner extends Resource {
      *
      * @return the privateEndpointConnections value.
      */
-    public List<PrivateEndpointConnection> privateEndpointConnections() {
+    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
         return this.privateEndpointConnections;
     }
 

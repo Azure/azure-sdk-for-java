@@ -3,15 +3,15 @@
 package com.azure.spring.data.cosmos.repository.integration;
 
 import com.azure.cosmos.models.PartitionKey;
-import com.azure.spring.data.cosmos.core.CosmosTemplate;
+import com.azure.spring.data.cosmos.ReactiveIntegrationTestCollectionManager;
+import com.azure.spring.data.cosmos.core.ReactiveCosmosTemplate;
 import com.azure.spring.data.cosmos.domain.LongIdDomainPartition;
 import com.azure.spring.data.cosmos.exception.CosmosAccessException;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.ReactiveLongIdDomainPartitionRepository;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,38 +38,23 @@ public class ReactiveLongIdDomainPartitionPartitionRepositoryIT {
     private static final LongIdDomainPartition DOMAIN_1 = new LongIdDomainPartition(ID_1, NAME_1);
     private static final LongIdDomainPartition DOMAIN_2 = new LongIdDomainPartition(ID_2, NAME_2);
 
-    private static final CosmosEntityInformation<LongIdDomainPartition, Integer> entityInformation =
-            new CosmosEntityInformation<>(LongIdDomainPartition.class);
-
-    private static CosmosTemplate staticTemplate;
-    private static boolean isSetupDone;
+    @ClassRule
+    public static final ReactiveIntegrationTestCollectionManager collectionManager = new ReactiveIntegrationTestCollectionManager();
 
     @Autowired
-    private CosmosTemplate template;
+    private ReactiveCosmosTemplate template;
 
     @Autowired
     private ReactiveLongIdDomainPartitionRepository repository;
 
+    private CosmosEntityInformation<LongIdDomainPartition, ?> entityInformation;
+
     @Before
     public void setUp() {
-        if (!isSetupDone) {
-            staticTemplate = template;
-            template.createContainerIfNotExists(entityInformation);
-        }
+        collectionManager.ensureContainersCreatedAndEmpty(template, LongIdDomainPartition.class);
+        entityInformation = collectionManager.getEntityInformation(LongIdDomainPartition.class);
         Flux<LongIdDomainPartition> savedAllFlux = this.repository.saveAll(Arrays.asList(DOMAIN_1, DOMAIN_2));
         StepVerifier.create(savedAllFlux).thenConsumeWhile(domain -> true).expectComplete().verify();
-        isSetupDone = true;
-    }
-
-    @After
-    public void cleanup() {
-        final Mono<Void> deletedMono = repository.deleteAll();
-        StepVerifier.create(deletedMono).thenAwait().verifyComplete();
-    }
-
-    @AfterClass
-    public static void afterClassCleanup() {
-        staticTemplate.deleteContainer(entityInformation.getContainerName());
     }
 
     @Test

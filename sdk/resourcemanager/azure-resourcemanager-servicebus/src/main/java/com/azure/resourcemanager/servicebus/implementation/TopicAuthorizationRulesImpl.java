@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
 import com.azure.resourcemanager.servicebus.fluent.TopicsClient;
-import com.azure.resourcemanager.servicebus.fluent.models.SharedAccessAuthorizationRuleResourceInner;
+import com.azure.resourcemanager.servicebus.fluent.models.SBAuthorizationRuleInner;
 import com.azure.resourcemanager.servicebus.models.Topic;
 import com.azure.resourcemanager.servicebus.models.TopicAuthorizationRule;
 import com.azure.resourcemanager.servicebus.models.TopicAuthorizationRules;
@@ -22,7 +22,7 @@ class TopicAuthorizationRulesImpl
     extends ServiceBusChildResourcesImpl<
         TopicAuthorizationRule,
         TopicAuthorizationRuleImpl,
-        SharedAccessAuthorizationRuleResourceInner,
+        SBAuthorizationRuleInner,
         TopicsClient,
         ServiceBusManager,
         Topic>
@@ -60,7 +60,7 @@ class TopicAuthorizationRulesImpl
     }
 
     @Override
-    protected Mono<SharedAccessAuthorizationRuleResourceInner> getInnerByNameAsync(String name) {
+    protected Mono<SBAuthorizationRuleInner> getInnerByNameAsync(String name) {
         return this.innerModel().getAuthorizationRuleAsync(this.resourceGroupName,
                 this.namespaceName,
                 this.topicName,
@@ -68,13 +68,13 @@ class TopicAuthorizationRulesImpl
     }
 
     @Override
-    protected PagedFlux<SharedAccessAuthorizationRuleResourceInner> listInnerAsync() {
+    protected PagedFlux<SBAuthorizationRuleInner> listInnerAsync() {
         return this.innerModel().listAuthorizationRulesAsync(
             this.resourceGroupName, this.namespaceName, this.topicName);
     }
 
     @Override
-    protected PagedIterable<SharedAccessAuthorizationRuleResourceInner> listInner() {
+    protected PagedIterable<SBAuthorizationRuleInner> listInner() {
         return this.innerModel().listAuthorizationRules(this.resourceGroupName,
                 this.namespaceName,
                 this.topicName);
@@ -86,13 +86,12 @@ class TopicAuthorizationRulesImpl
                 this.namespaceName,
                 this.topicName,
                 name,
-                this.region,
-                new SharedAccessAuthorizationRuleResourceInner(),
+                new SBAuthorizationRuleInner(),
                 this.manager());
     }
 
     @Override
-    protected TopicAuthorizationRuleImpl wrapModel(SharedAccessAuthorizationRuleResourceInner inner) {
+    protected TopicAuthorizationRuleImpl wrapModel(SBAuthorizationRuleInner inner) {
         if (inner == null) {
             return null;
         }
@@ -100,7 +99,6 @@ class TopicAuthorizationRulesImpl
                 this.namespaceName,
                 this.topicName,
                 inner.name(),
-                this.region,
                 inner,
                 this.manager());
     }

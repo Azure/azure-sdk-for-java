@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The AcsChatMessageDeletedEventData model. */
+/** Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatMessageDeleted event. */
 @Fluent
 public final class AcsChatMessageDeletedEventData extends AcsChatMessageEventBaseProperties {
     /*
@@ -34,6 +34,71 @@ public final class AcsChatMessageDeletedEventData extends AcsChatMessageEventBas
      */
     public AcsChatMessageDeletedEventData setDeleteTime(OffsetDateTime deleteTime) {
         this.deleteTime = deleteTime;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AcsChatMessageDeletedEventData setMessageId(String messageId) {
+        super.setMessageId(messageId);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AcsChatMessageDeletedEventData setSenderCommunicationIdentifier(
+            CommunicationIdentifierModel senderCommunicationIdentifier) {
+        super.setSenderCommunicationIdentifier(senderCommunicationIdentifier);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AcsChatMessageDeletedEventData setSenderDisplayName(String senderDisplayName) {
+        super.setSenderDisplayName(senderDisplayName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AcsChatMessageDeletedEventData setComposeTime(OffsetDateTime composeTime) {
+        super.setComposeTime(composeTime);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AcsChatMessageDeletedEventData setType(String type) {
+        super.setType(type);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AcsChatMessageDeletedEventData setVersion(Long version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AcsChatMessageDeletedEventData setRecipientCommunicationIdentifier(
+            CommunicationIdentifierModel recipientCommunicationIdentifier) {
+        super.setRecipientCommunicationIdentifier(recipientCommunicationIdentifier);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AcsChatMessageDeletedEventData setTransactionId(String transactionId) {
+        super.setTransactionId(transactionId);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AcsChatMessageDeletedEventData setThreadId(String threadId) {
+        super.setThreadId(threadId);
         return this;
     }
 }

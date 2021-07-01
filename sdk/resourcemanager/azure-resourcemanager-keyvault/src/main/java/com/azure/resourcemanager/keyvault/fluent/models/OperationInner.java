@@ -37,6 +37,12 @@ public class OperationInner {
     private String origin;
 
     /*
+     * Property to specify whether the action is a data action.
+     */
+    @JsonProperty(value = "isDataAction")
+    private Boolean isDataAction;
+
+    /*
      * One property of operation, include metric specifications.
      */
     @JsonProperty(value = "properties.serviceSpecification")
@@ -99,6 +105,26 @@ public class OperationInner {
      */
     public OperationInner withOrigin(String origin) {
         this.origin = origin;
+        return this;
+    }
+
+    /**
+     * Get the isDataAction property: Property to specify whether the action is a data action.
+     *
+     * @return the isDataAction value.
+     */
+    public Boolean isDataAction() {
+        return this.isDataAction;
+    }
+
+    /**
+     * Set the isDataAction property: Property to specify whether the action is a data action.
+     *
+     * @param isDataAction the isDataAction value to set.
+     * @return the OperationInner object itself.
+     */
+    public OperationInner withIsDataAction(Boolean isDataAction) {
+        this.isDataAction = isDataAction;
         return this;
     }
 

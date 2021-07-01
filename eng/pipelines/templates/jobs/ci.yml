@@ -1,0 +1,297 @@
+parameters:
+  - name: SDKType
+    type: string
+    default: client
+  - name: ServiceDirectory
+    type: string
+    default: 'not-specified' # Set a default that breaks in obvious ways.
+  - name: TestPipeline
+    type: boolean
+    default: false
+  - name: Artifacts
+    type: object
+    default: []
+  - name: AdditionalModules
+    type: object
+    default: []
+  - name: PreTestSteps
+    type: object
+    default: []
+  - name: MatrixConfigs
+    type: object
+  - name: AdditionalMatrixConfigs
+    type: object
+    default: []
+  - name: MatrixFilters
+    type: object
+    default: []
+  - name: MatrixReplace
+    type: object
+    default: []
+
+jobs:
+  - job: 'Build'
+
+    variables:
+      - template: ../variables/globals.yml
+
+    pool:
+      name: azsdk-pool-mms-ubuntu-1804-general
+
+    strategy:
+      matrix:
+        Client Libraries:
+          ArtifactName: 'packages'
+
+    steps:
+      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+        parameters:
+          Paths:
+            - 'sdk/${{ parameters.ServiceDirectory }}'
+            - '**/*.xml'
+            - '**/*.md'
+            - '!sdk/**/test-recordings'
+            - '!sdk/**/session-records'
+
+      - template: ../steps/generate-project-list.yml
+        parameters:
+          Artifacts: ${{parameters.Artifacts}}
+          AdditionalModules: ${{parameters.AdditionalModules}}
+          JobType: 'Build'
+          SDKType: ${{parameters.SDKType}}
+          ServiceDirectory: ${{parameters.ServiceDirectory}}
+
+      - task: UsePythonVersion@0
+        displayName: 'Use Python 3.6'
+        inputs:
+          versionSpec: '3.6'
+
+      # This step needs to run before we update to using dev versions otherwise dependency
+      # check in the script will not fully work because the versions will mismatch
+      - task: PythonScript@0
+        displayName: 'Generate directories variable for sparse checkout'
+        inputs:
+          scriptPath: 'eng/scripts/generate_from_source_pom.py'
+          arguments: '--set-pipeline-variable CheckoutDirectories --project-list $(ProjectList)'
+          workingDirectory: '$(System.DefaultWorkingDirectory)'
+
+      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+        parameters:
+          Paths: $(CheckoutDirectories)
+          SkipDefaultCheckout: true
+
+      - script: |
+          echo "##vso[build.addbuildtag]Scheduled"
+        displayName: 'Tag scheduled builds'
+        condition: and(succeeded(), eq(variables['Build.SourceBranchName'],'main'),eq(variables['Build.Reason'],'Schedule'))
+
+      - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
+        parameters:
+          PackageName: "azure-sdk-template"
+          ServiceDirectory: "template"
+          TestPipeline: ${{ parameters.TestPipeline }}
+
+      - template: /eng/common/pipelines/templates/steps/daily-dev-build-variable.yml
+        parameters:
+          ServiceDirectory: ${{parameters.ServiceDirectory}}
+
+      - pwsh: |
+          $artifacts = '${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json
+          python3 --version
+
+          # Append dev package version suffix for each artifact
+          foreach ($artifact in $artifacts) {
+            python3 eng/versioning/set_versions.py --build-type ${{parameters.SDKType}} --build-qualifier alpha.$(Build.BuildNumber) --artifact-id $artifact.name --group-id $artifact.groupId
+          }
+
+          # Set zero-dev-version for packages
+          python3 eng/versioning/set_versions.py --set-dev-zero-version --build-type ${{parameters.SDKType}} --build-qualifier alpha.$(Build.BuildNumber)
+
+          # Apply version settings to repository
+          python3 eng/versioning/update_versions.py --update-type library --build-type ${{parameters.SDKType}} --sr
+        condition: and(succeeded(), eq(variables['SetDevVersion'],'true'))
+        displayName: Setup Dev versioning
+
+      - script: |
+          pip install markdown2 BeautifulSoup4
+        displayName: 'pip install markdown2 and BeautifulSoup4'
+
+      - task: Maven@3
+        displayName: 'Build and Package, JDK Version: $(JavaBuildVersion)'
+        inputs:
+          mavenPomFile: pom.xml
+          goals: 'deploy'
+          options: '$(DefaultOptions) -T 1C -DskipTests -Dinject-codesnippets -Dgenerate-overview -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -pl $(ProjectList) -am -DaltDeploymentRepository=id::default::file://$(System.DefaultWorkingDirectory)/build' # We include template-module so we ensure it always builds in CI
+          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: $(JavaBuildVersion)
+          jdkArchitectureOption: 'x64'
+          publishJUnitResults: false
+
+      - task: PowerShell@2
+        displayName: 'Copy artifacts to staging'
+        inputs:
+          pwsh: true
+          workingDirectory: $(Agent.BuildDirectory)
+          filePath: eng/scripts/Stage-MavenPackageArtifacts.ps1
+          arguments: >
+            -SourceDirectory $(System.DefaultWorkingDirectory)/build
+            -TargetDirectory $(Build.ArtifactStagingDirectory)
+            -InformationAction Continue
+
+      - template: /eng/common/pipelines/templates/steps/create-apireview.yml
+        parameters:
+          Artifacts: ${{parameters.Artifacts}}
+
+      - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
+        parameters:
+          ArtifactPath: $(Build.ArtifactStagingDirectory)
+          ArtifactName: '$(ArtifactName)'
+
+      - template: ../steps/upload-repository-on-failure.yml
+
+  - job: 'Analyze'
+    condition: and(succeeded(), ne(variables['Skip.Analyze'], 'true'))
+
+    variables:
+      - template: ../variables/globals.yml
+
+    pool:
+      name: azsdk-pool-mms-ubuntu-2004-general
+      vmImage: MMSUbuntu20.04
+
+    steps:
+      - task: UsePythonVersion@0
+        displayName: 'Use Python 3.6'
+        inputs:
+          versionSpec: '3.6'
+
+      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+        parameters:
+          Paths:
+            - 'sdk/${{ parameters.ServiceDirectory }}'
+            - '**/*.xml'
+            - '**/*.md'
+            - '.vscode/cspell.json'
+            - '!sdk/**/test-recordings'
+            - '!sdk/**/session-records'
+
+      - template: /eng/common/pipelines/templates/steps/check-spelling.yml
+        parameters:
+          CspellConfigPath: .vscode/cspell.json
+
+      - task: PowerShell@2
+        displayName: 'Verify versions in POM files'
+        inputs:
+          pwsh: true
+          workingDirectory: $(Agent.BuildDirectory)
+          filePath: eng/versioning/pom_file_version_scanner.ps1
+          arguments: -Debug:$$(IsDebug)
+
+      - template: ../steps/generate-project-list.yml
+        parameters:
+          Artifacts: ${{ parameters.Artifacts }}
+          AdditionalModules: ${{ parameters.AdditionalModules }}
+          JobType: 'Analyze'
+          SDKType: ${{parameters.SDKType}}
+          ServiceDirectory: ${{parameters.ServiceDirectory}}
+
+      - task: PythonScript@0
+        displayName: 'Generate directories variable for sparse checkout'
+        inputs:
+          scriptPath: 'eng/scripts/generate_from_source_pom.py'
+          arguments: '--set-pipeline-variable CheckoutDirectories --project-list $(ProjectList)'
+          workingDirectory: '$(System.DefaultWorkingDirectory)'
+
+      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+        parameters:
+          Paths: $(CheckoutDirectories)
+          SkipDefaultCheckout: true
+
+      - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
+        parameters:
+          PackageName: "azure-sdk-template"
+          ServiceDirectory: "template"
+          TestPipeline: ${{ parameters.TestPipeline }}
+
+      - script: |
+          pip install setuptools wheel
+          pip install doc-warden==$(DocWardenVersion)
+          ward scan -d $(Build.SourcesDirectory) -c $(Build.SourcesDirectory)/eng/.docsettings.yml
+        displayName: 'Verify Readmes'
+
+      - template: /eng/common/pipelines/templates/steps/verify-links.yml
+        parameters:
+          ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
+            Directory: ''
+            Urls: (eng/common/scripts/get-markdown-files-from-changed-files.ps1)
+          ${{ if ne(variables['Build.Reason'], 'PullRequest') }}:
+            Directory: sdk/${{ parameters.ServiceDirectory }}
+          CheckLinkGuidance: $true
+
+      - template: /eng/common/pipelines/templates/steps/verify-samples.yml
+        parameters:
+          ServiceDirectory: ${{ parameters.ServiceDirectory }}
+
+      # Use BasePathLength of 38 instead of the default 49 as some released files fail when the number is higher.
+      - template: /eng/common/pipelines/templates/steps/verify-path-length.yml
+        parameters:
+          SourceDirectory: $(Build.SourcesDirectory)
+          BasePathLength: 38
+
+      - ${{if ne(parameters.SDKType, 'data')}}:
+        - ${{ each artifact in parameters.Artifacts }}:
+          - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
+            parameters:
+              PackageName: ${{artifact.name}}
+              ServiceName: ${{parameters.ServiceDirectory}}
+              ForRelease: false
+
+      # We `install` the code quality reports tooling into our local m2 cache separately from building the Maven project
+      # reports. This means it is available as part of that, but also so that this is not documented in the project report.
+      - template: ../steps/install-reporting-tools.yml
+
+      # maven dependency:tree needs to be able to resolve dependencies, so these should be installed.
+      - task: Maven@3
+        displayName: 'Build and Install'
+        inputs:
+          mavenPomFile: pom.xml
+          goals: 'install'
+          options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl $(ProjectList) -am'
+          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: $(JavaBuildVersion)
+          jdkArchitectureOption: 'x64'
+          publishJUnitResults: false
+
+      - task: Maven@3
+        displayName: 'Run SpotBugs, Checkstyle, RevApi, and Javadoc'
+        inputs:
+          mavenPomFile: pom.xml
+          options: '$(DefaultOptions) --no-transfer-progress -DskipTests -Dgpg.skip -Dverify-readme -pl $(ProjectList)'
+          mavenOptions: '$(MemoryOptions)'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: $(JavaBuildVersion)
+          jdkArchitectureOption: 'x64'
+          publishJUnitResults: false
+          goals: 'verify'
+
+      - template: ../steps/upload-repository-on-failure.yml
+
+      - template: /eng/common/pipelines/templates/steps/eng-common-workflow-enforcer.yml
+
+  - template: /eng/common/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
+    parameters:
+      JobTemplatePath: /eng/pipelines/templates/jobs/ci.tests.yml
+      MatrixConfigs: ${{ parameters.MatrixConfigs }}
+      MatrixFilters: ${{ parameters.MatrixFilters }}
+      MatrixReplace: ${{ parameters.MatrixReplace }}
+      CloudConfig:
+        Cloud: Public
+      AdditionalParameters:
+        SDKType: ${{ parameters.SDKType }}
+        ServiceDirectory: ${{ parameters.ServiceDirectory }}
+        TestPipeline: ${{ parameters.TestPipeline }}
+        Artifacts: ${{ parameters.Artifacts }}
+        AdditionalModules: ${{ parameters.AdditionalModules }}
+        PreTestSteps: ${{ parameters.PreTestSteps }}

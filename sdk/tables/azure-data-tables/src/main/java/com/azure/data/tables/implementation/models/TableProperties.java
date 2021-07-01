@@ -7,7 +7,7 @@ package com.azure.data.tables.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The TableProperties model. */
+/** The properties for creating a table. */
 @Fluent
 public final class TableProperties {
     /*

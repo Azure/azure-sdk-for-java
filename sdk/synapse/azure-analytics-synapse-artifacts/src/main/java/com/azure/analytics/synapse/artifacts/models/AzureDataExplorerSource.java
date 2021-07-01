@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
 /** A copy activity Azure Data Explorer (Kusto) source. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -34,6 +35,13 @@ public final class AzureDataExplorerSource extends CopySource {
      */
     @JsonProperty(value = "queryTimeout")
     private Object queryTimeout;
+
+    /*
+     * Specifies the additional columns to be added to source data. Type: array
+     * of objects (or Expression with resultType array of objects).
+     */
+    @JsonProperty(value = "additionalColumns")
+    private List<AdditionalColumns> additionalColumns;
 
     /**
      * Get the query property: Database query. Should be a Kusto Query Language (KQL) query. Type: string (or Expression
@@ -98,6 +106,28 @@ public final class AzureDataExplorerSource extends CopySource {
      */
     public AzureDataExplorerSource setQueryTimeout(Object queryTimeout) {
         this.queryTimeout = queryTimeout;
+        return this;
+    }
+
+    /**
+     * Get the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
+     * objects (or Expression with resultType array of objects).
+     *
+     * @return the additionalColumns value.
+     */
+    public List<AdditionalColumns> getAdditionalColumns() {
+        return this.additionalColumns;
+    }
+
+    /**
+     * Set the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
+     * objects (or Expression with resultType array of objects).
+     *
+     * @param additionalColumns the additionalColumns value to set.
+     * @return the AzureDataExplorerSource object itself.
+     */
+    public AzureDataExplorerSource setAdditionalColumns(List<AdditionalColumns> additionalColumns) {
+        this.additionalColumns = additionalColumns;
         return this;
     }
 }
