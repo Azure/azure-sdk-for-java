@@ -136,25 +136,16 @@ public class AADAuthenticationFilterTest {
     }
 
     @Test
-    public void testAutoConfigurationWithNoClientId() {
+    public void testAutoConfiguration() {
 
-        this.contextRunner.run(
+        this.contextRunner.withPropertyValues(
+            "spring.cloud.azure.client-secret=" + TestConstants.CLIENT_SECRET
+        ).run(
             context -> assertThat(context).doesNotHaveBean(AADAuthenticationFilterAutoConfiguration.class)
         );
-
-    }
-
-    @Test
-    public void testAutoConfigurationWithAADProperties() {
-
         this.contextRunner.withPropertyValues(
             "spring.cloud.azure.client-id=" + TestConstants.CLIENT_ID
         ).run(context -> assertThat(context).hasSingleBean(AADAuthenticationFilterAutoConfiguration.class));
-
-    }
-
-    @Test
-    public void testAutoConfigurationWithCommonProperties() {
 
         this.contextRunner.withPropertyValues(
             "spring.cloud.azure.client-id=" + TestConstants.CLIENT_ID
