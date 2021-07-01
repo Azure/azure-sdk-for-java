@@ -1,9 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.implementation.http;
+package com.azure.core.util;
 
-import com.azure.core.util.UrlBuilder;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
@@ -22,6 +21,7 @@ import java.util.stream.IntStream;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
@@ -774,5 +774,19 @@ public class UrlBuilderTests {
         StepVerifier.create(mono)
             .assertNext(count -> assertEquals(100000, count))
             .verifyComplete();
+    }
+
+    @Test
+    public void parseUniqueURLs() {
+        IntStream.range(0, 100000)
+                .parallel()
+                .forEach(i -> {
+                    UrlBuilder urlBuilder = UrlBuilder.parse("www.bing.com:123/index.html?a=" + i);
+                    assertNotNull(urlBuilder);
+                    assertEquals("www.bing.com:123/index.html?a=" + i, urlBuilder.toString());
+                });
+
+        // validate the size of the cache is not greater than 10000
+        assertTrue(UrlBuilder.getParsedUrls().size() <= 10000);
     }
 }
