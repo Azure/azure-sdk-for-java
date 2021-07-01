@@ -6,6 +6,7 @@ package com.azure.messaging.servicebus;
 import com.azure.messaging.servicebus.administration.ServiceBusAdministrationClient;
 import com.azure.messaging.servicebus.administration.ServiceBusAdministrationClientBuilder;
 import com.azure.messaging.servicebus.administration.models.CorrelationRuleFilter;
+    import com.azure.messaging.servicebus.administration.models.FalseRuleFilter;
 import com.azure.messaging.servicebus.administration.models.SqlRuleAction;
 import com.azure.messaging.servicebus.administration.models.SqlRuleFilter;
 import com.azure.messaging.servicebus.administration.models.TrueRuleFilter;
@@ -20,8 +21,28 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * Sample demonstrates how to receive {@link ServiceBusReceivedMessage messages} by topic subscriptions from
- * an Azure Service Bus Topic.
+ * Sample demonstrates how to manage (add/remove/get) rules on Subscription. We will also explore different forms of
+ * subscription filters.
+ *
+ * <p>
+ * Topics are similar to Queues for the send side of the application. However unlike Queues, Topic can have zero or more
+ * subscriptions, from which messages can be retrieved and each of subscription act like independent queues. Whether a
+ * message is selected into the subscription is determined by the Filter condition for the subscription. Filters can be
+ * one of the following:
+ * </p>
+ *
+ * <ul>
+ * <li>{@link TrueRuleFilter TrueFilter} - Selects all messages to subscription.</li>
+ * <li>{@link FalseRuleFilter FalseFilter} - Selects none of the messages to subscription.</li>
+ * <li>{@link SqlRuleFilter SqlFilter} - Holds a SQL-like condition expression that is evaluated in the ServiceBus
+ * service against the arriving messages' user-defined properties and system properties and if matched the message is
+ * selected for subscription.</li>
+ * <li>{@link CorrelationRuleFilter CorrelationFilter} - Holds a set of conditions that is evaluated in the ServiceBus
+ * service against the arriving messages' user-defined properties and system properties. A match exists when an arriving
+ * message's value for a property is equal to the value specified in the correlation filter.</li>
+ * </ul>
+ *
+ * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/topic-filters">Topic Filters</a>
  */
 public class TopicSubscriptionWithRuleOperationsSample {
 
@@ -37,10 +58,11 @@ public class TopicSubscriptionWithRuleOperationsSample {
     static final String CORRELATION_FILTER_SUBSCRIPTION_RULE_NAME = "ImportantCorrelationRule";
 
     /**
-     * Main method to invoke this demo on how to receive {@link ServiceBusReceivedMessage messages}
-     * by topic subscriptions from an Azure Service Bus Topic.
+     * Main method to invoke this demo on how to receive {@link ServiceBusReceivedMessage messages} by topic
+     * subscriptions from an Azure Service Bus Topic.
      *
      * @param args Unused arguments to the program.
+     *
      * @throws InterruptedException If the program is unable to sleep while waiting for the receive to complete.
      */
     public static void main(String[] args) throws InterruptedException {
@@ -49,8 +71,8 @@ public class TopicSubscriptionWithRuleOperationsSample {
     }
 
     /**
-     * This method to invoke this demo on how to receive {@link ServiceBusReceivedMessage messages}
-     * by topic subscriptions from an Azure Service Bus Topic.
+     * This method to invoke this demo on how to receive {@link ServiceBusReceivedMessage messages} by topic
+     * subscriptions from an Azure Service Bus Topic.
      *
      * @throws InterruptedException If the program is unable to sleep while waiting for the receive to complete.
      */
@@ -133,6 +155,7 @@ public class TopicSubscriptionWithRuleOperationsSample {
      * Receive {@link ServiceBusReceivedMessage messages} by topic subscriptions from an Azure Service Bus Topic.
      *
      * @param subscriptionName Subscription Name.
+     *
      * @throws InterruptedException If the program is unable to sleep while waiting for the receive to complete.
      */
     static void receiveMessagesAsync(String subscriptionName) throws InterruptedException {
