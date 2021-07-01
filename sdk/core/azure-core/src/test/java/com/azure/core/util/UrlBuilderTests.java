@@ -3,7 +3,6 @@
 
 package com.azure.core.util;
 
-import com.azure.core.util.UrlBuilder;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
@@ -779,26 +778,36 @@ public class UrlBuilderTests {
 
     @Test
     public void parseUniqueURLs() {
-        IntStream.range(0, 10000)
-                .forEach(i -> assertNotNull(UrlBuilder.parse("www.bing.com:123/index.html?a=" + i)));
+        for (int i = 0; i < 10000; i++) {
+            UrlBuilder urlBuilder = UrlBuilder.parse("www.bing.com:123/index.html?a=" + i);
+            assertNotNull(urlBuilder);
+            assertEquals("www.bing.com:123/index.html?a=" + i, urlBuilder.toString());
+        }
 
         // validate the size of the cache
         assertEquals(10000, UrlBuilder.getParsedUrls().size());
 
         // validate that a new url will clear the cache
-        assertNotNull(UrlBuilder.parse("www.bing.com:123/index.html?a=" + 10001));
+        UrlBuilder urlBuilder = UrlBuilder.parse("www.bing.com:123/index.html?a=10001");
+        assertNotNull(urlBuilder);
+        assertEquals("www.bing.com:123/index.html?a=10001", urlBuilder.toString());
         assertEquals(1, UrlBuilder.getParsedUrls().size());
 
         // validate that the cached entry is used and no new entry is added if the url is the same
-        assertNotNull(UrlBuilder.parse("www.bing.com:123/index.html?a=" + 10001));
+        urlBuilder = UrlBuilder.parse("www.bing.com:123/index.html?a=10001");
+        assertNotNull(urlBuilder);
+        assertEquals("www.bing.com:123/index.html?a=10001", urlBuilder.toString());
         assertEquals(1, UrlBuilder.getParsedUrls().size());
-
     }
 
     @Test
     public void parseUniqueUrlsInParallel() {
         IntStream.range(0, 100000)
                 .parallel()
-                .forEach(i -> assertNotNull(UrlBuilder.parse("www.bing.com:123/index.html?a=" + i)));
+                .forEach(i -> {
+                    UrlBuilder urlBuilder = UrlBuilder.parse("www.bing.com:123/index.html?a=" + i);
+                    assertNotNull(urlBuilder);
+                    assertEquals("www.bing.com:123/index.html?a=" + i, urlBuilder.toString());
+                });
     }
 }
