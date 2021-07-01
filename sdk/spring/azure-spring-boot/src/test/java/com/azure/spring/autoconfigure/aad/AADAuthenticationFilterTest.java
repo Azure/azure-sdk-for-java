@@ -136,11 +136,11 @@ public class AADAuthenticationFilterTest {
     }
 
     @Test
-    @Disabled
-    //TODO (yiliuTo): this UT can pass locally, need to enable it in java - spring - ci pipeline.
     public void testAADAuthenticationFilterAutoConfiguration() {
 
-        this.contextRunner.run(context -> assertThat(context).doesNotHaveBean(AADAuthenticationFilterAutoConfiguration.class));
+        this.contextRunner.withPropertyValues(
+            "azure.activedirectory.client-id=", "spring.cloud.azure.client-id="
+        ).run(context -> assertThat(context).doesNotHaveBean(AADAuthenticationFilterAutoConfiguration.class));
 
         this.contextRunner.withPropertyValues(
             "azure.activedirectory.client-id=" + TestConstants.CLIENT_ID
