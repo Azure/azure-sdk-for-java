@@ -3,16 +3,15 @@
 
 package com.azure.spring.keyvault;
 
-import com.azure.spring.core.AzureSpringProperties;
 import com.azure.spring.utils.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
 
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
 
 /**
  * KeyVaultProperties

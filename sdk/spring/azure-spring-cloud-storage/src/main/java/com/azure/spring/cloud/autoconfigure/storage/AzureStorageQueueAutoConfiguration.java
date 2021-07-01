@@ -11,7 +11,6 @@ import com.azure.spring.cloud.context.core.api.EnvironmentProvider;
 import com.azure.spring.cloud.context.core.impl.DefaultEnvironmentProvider;
 import com.azure.spring.cloud.context.core.impl.StorageAccountManager;
 import com.azure.spring.cloud.context.core.storage.StorageConnectionStringProvider;
-import com.azure.spring.core.AzureSpringProperties;
 import com.azure.spring.integration.storage.queue.StorageQueueOperation;
 import com.azure.spring.integration.storage.queue.StorageQueueTemplate;
 import com.azure.spring.integration.storage.queue.factory.DefaultStorageQueueClientFactory;

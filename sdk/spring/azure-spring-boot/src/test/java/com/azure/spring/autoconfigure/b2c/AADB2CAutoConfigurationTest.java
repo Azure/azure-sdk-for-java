@@ -75,11 +75,11 @@ public class AADB2CAutoConfigurationTest extends AbstractAADB2COAuth2ClientTestC
                 String.format("%s.%s=%s", AADB2CConstants.USER_FLOWS,
                     AADB2CConstants.TEST_KEY_SIGN_UP_OR_IN, AADB2CConstants.TEST_SIGN_UP_OR_IN_NAME),
                 String.format("%s=%s", AADB2CConstants.BASE_URI, AADB2CConstants.TEST_BASE_URI)
-            ).run(c ->{
-            final AADB2CAutoConfiguration autoConfig = c.getBean(AADB2CAutoConfiguration.class);
+            ).run(c -> {
+                final AADB2CAutoConfiguration autoConfig = c.getBean(AADB2CAutoConfiguration.class);
 
-            Assertions.assertNotNull(autoConfig);
-        });
+                Assertions.assertNotNull(autoConfig);
+            });
     }
 
     @Test
@@ -106,7 +106,7 @@ public class AADB2CAutoConfigurationTest extends AbstractAADB2COAuth2ClientTestC
             Assertions.assertEquals(loginHint, AADB2CConstants.TEST_LOGIN_HINT);
         });
     }
-    
+
     @Test
     public void testCredentialPropertiesBean() {
         new WebApplicationContextRunner()
@@ -119,7 +119,7 @@ public class AADB2CAutoConfigurationTest extends AbstractAADB2COAuth2ClientTestC
                 String.format("%s=%s", AADB2CConstants.CLIENT_ID, AADB2CConstants.TEST_CLIENT_ID),
                 String.format("%s=%s", AADB2CConstants.CLIENT_SECRET, AADB2CConstants.TEST_CLIENT_SECRET),
                 String.format("%s=%s", AADB2CConstants.BASE_URI, AADB2CConstants.TEST_BASE_URI)
-            ).run(c ->{
+            ).run(c -> {
                 final AADB2CProperties properties = c.getBean(AADB2CProperties.class);
                 final CredentialProperties credentialProperties = c.getBean(CredentialProperties.class);
 
@@ -128,7 +128,7 @@ public class AADB2CAutoConfigurationTest extends AbstractAADB2COAuth2ClientTestC
                 Assertions.assertEquals(properties.getClientId(), AADB2CConstants.TEST_CLIENT_ID);
                 Assertions.assertEquals(properties.getClientSecret(), AADB2CConstants.TEST_CLIENT_SECRET);
                 Assertions.assertEquals(properties.getTenantId(), "fake-tenant-id");
-        });
+            });
     }
 
     @Test
