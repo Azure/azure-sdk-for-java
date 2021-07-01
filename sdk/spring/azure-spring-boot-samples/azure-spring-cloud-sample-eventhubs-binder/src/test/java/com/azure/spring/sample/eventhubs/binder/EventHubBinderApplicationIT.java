@@ -34,7 +34,7 @@ public class EventHubBinderApplicationIT {
     public void testSendAndReceiveMessage(CapturedOutput capturedOutput) throws Exception {
         Thread.sleep(10000);
         String message = UUID.randomUUID().toString();
-        mvc.perform(post("/messages?message=" + message)).andExpect(status().isOk())
+        mvc.perform(post("/messages/reactive?message=" + message)).andExpect(status().isOk())
             .andExpect(content().string(message));
         String messageReceivedLog = String.format("New message received: '%s'", message);
         String messageCheckpointedLog = String.format("Message '%s' successfully checkpointed", message);
