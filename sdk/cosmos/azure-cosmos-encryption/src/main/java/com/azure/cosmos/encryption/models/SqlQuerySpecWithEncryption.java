@@ -75,9 +75,7 @@ public final class SqlQuerySpecWithEncryption {
                                 System.arraycopy(cipherText, 0, cipherTextWithTypeMarker, 1, cipherText.length);
                                 SqlParameter encryptedParameter = new SqlParameter(sqlParameter.getName(),
                                     cipherTextWithTypeMarker);
-                                if (!parameters.contains(encryptedParameter)) {
-                                    parameters.add(encryptedParameter);
-                                }
+                                parameters.add(encryptedParameter);
                             } catch (MicrosoftDataEncryptionException ex) {
                                 return Mono.error(ex);
                             }

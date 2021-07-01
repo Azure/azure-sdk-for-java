@@ -106,13 +106,12 @@ public class CosmosEncryptionAsyncClient {
         return clientEncryptionKey.read().map(cosmosClientEncryptionKeyResponse ->
             cosmosClientEncryptionKeyResponse.getProperties()
         ).onErrorResume(throwable -> {
-            Throwable unwrappedException = reactor.core.Exceptions.unwrap(throwable);
-            if (!(unwrappedException instanceof Exception)) {
+            if (!(throwable instanceof Exception)) {
                 // fatal error
-                LOGGER.error("Unexpected failure {}", unwrappedException.getMessage(), unwrappedException);
-                return Mono.error(unwrappedException);
+                LOGGER.error("Unexpected failure {}", throwable.getMessage(), throwable);
+                return Mono.error(throwable);
             }
-            Exception exception = (Exception) unwrappedException;
+            Exception exception = (Exception) throwable;
             CosmosException dce = Utils.as(exception, CosmosException.class);
             if (dce != null) {
                 if (dce.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {

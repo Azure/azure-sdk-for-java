@@ -290,7 +290,7 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
     }
 
     @Test(groups = {"encryption"}, timeOut = TIMEOUT)
-    public void crudQueryStaleCacheTest() {
+    public void crudQueryStaleCache() {
         String databaseId = UUID.randomUUID().toString();
         try {
             createNewDatabaseWithClientEncryptionKey(databaseId);

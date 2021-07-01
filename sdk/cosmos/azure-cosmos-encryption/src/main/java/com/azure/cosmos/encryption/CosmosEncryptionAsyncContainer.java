@@ -30,7 +30,6 @@ import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
 import com.fasterxml.jackson.databind.JsonNode;
-import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
@@ -264,7 +263,7 @@ public class CosmosEncryptionAsyncContainer {
             Mono<List<Void>> listMono = Flux.mergeSequential(encryptionSqlParameterMonoList).collectList();
             Mono<SqlQuerySpec> sqlQuerySpecMono =
                 listMono.flatMap(ignoreVoids -> Mono.just(EncryptionModelBridgeInternal.getSqlQuerySpec(sqlQuerySpecWithEncryption)));
-            return queryItemsHelperWithMonoSqlQuerySpec(sqlQuerySpecMono, options, classType, false);
+            return queryItemsHelperWithMonoSqlQuerySpec(sqlQuerySpecMono, sqlQuerySpecWithEncryption, options, classType, false);
         } else {
             return queryItemsHelper(EncryptionModelBridgeInternal.getSqlQuerySpec(sqlQuerySpecWithEncryption),
                 options, classType, false);
@@ -356,16 +355,15 @@ public class CosmosEncryptionAsyncContainer {
             partitionKey,
             requestOptions, byte[].class);
         return responseMessageMono.onErrorResume(exception -> {
-            final Throwable unwrappedException = Exceptions.unwrap(exception);
-            if (!isRetry && unwrappedException instanceof CosmosException) {
-                final CosmosException cosmosException = (CosmosException) unwrappedException;
+            if (!isRetry && exception instanceof CosmosException) {
+                final CosmosException cosmosException = (CosmosException) exception;
                 if (isIncorrectContainerRid(cosmosException)) {
                     this.encryptionProcessor.getIsEncryptionSettingsInitDone().set(false);
                     return this.encryptionProcessor.initializeEncryptionSettingsAsync(true).then(Mono.defer(() -> readItemHelper(id, partitionKey, requestOptions, true)
                     ));
                 }
             }
-            return Mono.error(unwrappedException);
+            return Mono.error(exception);
         });
     }
 
@@ -385,9 +383,8 @@ public class CosmosEncryptionAsyncContainer {
                     this.encryptionProcessor.decrypt(this.cosmosItemResponseBuilderAccessor.getByteArrayContent(cosmosItemResponse)))
                     .map(bytes -> this.responseFactory.createItemResponse(cosmosItemResponse,
                         (Class<T>) itemClass))).onErrorResume(exception -> {
-                    final Throwable unwrappedException = Exceptions.unwrap(exception);
-                    if (!isRetry && unwrappedException instanceof CosmosException) {
-                        final CosmosException cosmosException = (CosmosException) unwrappedException;
+                    if (!isRetry && exception instanceof CosmosException) {
+                        final CosmosException cosmosException = (CosmosException) exception;
                         if (isIncorrectContainerRid(cosmosException)) {
                             this.encryptionProcessor.getIsEncryptionSettingsInitDone().set(false);
                             return this.encryptionProcessor.initializeEncryptionSettingsAsync(true).then
@@ -395,7 +392,7 @@ public class CosmosEncryptionAsyncContainer {
                                     itemClass, true)));
                         }
                     }
-                    return Mono.error(unwrappedException);
+                    return Mono.error(exception);
                 }));
     }
 
@@ -415,9 +412,8 @@ public class CosmosEncryptionAsyncContainer {
                     this.encryptionProcessor.decrypt(this.cosmosItemResponseBuilderAccessor.getByteArrayContent(cosmosItemResponse)))
                     .map(bytes -> this.responseFactory.createItemResponse(cosmosItemResponse, (Class<T>) itemClass)))
                 .onErrorResume(exception -> {
-                    final Throwable unwrappedException = Exceptions.unwrap(exception);
-                    if (!isRetry && unwrappedException instanceof CosmosException) {
-                        final CosmosException cosmosException = (CosmosException) unwrappedException;
+                    if (!isRetry && exception instanceof CosmosException) {
+                        final CosmosException cosmosException = (CosmosException) exception;
                         if (isIncorrectContainerRid(cosmosException)) {
                             this.encryptionProcessor.getIsEncryptionSettingsInitDone().set(false);
                             return this.encryptionProcessor.initializeEncryptionSettingsAsync(true).then
@@ -425,7 +421,7 @@ public class CosmosEncryptionAsyncContainer {
                                     itemClass, true)));
                         }
                     }
-                    return Mono.error(unwrappedException);
+                    return Mono.error(exception);
                 }));
     }
 
@@ -447,9 +443,8 @@ public class CosmosEncryptionAsyncContainer {
                     this.encryptionProcessor.decrypt(this.cosmosItemResponseBuilderAccessor.getByteArrayContent(cosmosItemResponse)))
                     .map(bytes -> this.responseFactory.createItemResponse(cosmosItemResponse, (Class<T>) itemClass)))
                 .onErrorResume(exception -> {
-                    final Throwable unwrappedException = Exceptions.unwrap(exception);
-                    if (!isRetry && unwrappedException instanceof CosmosException) {
-                        final CosmosException cosmosException = (CosmosException) unwrappedException;
+                    if (!isRetry && exception instanceof CosmosException) {
+                        final CosmosException cosmosException = (CosmosException) exception;
                         if (isIncorrectContainerRid(cosmosException)) {
                             this.encryptionProcessor.getIsEncryptionSettingsInitDone().set(false);
                             return this.encryptionProcessor.initializeEncryptionSettingsAsync(true).then
@@ -457,7 +452,7 @@ public class CosmosEncryptionAsyncContainer {
                                     itemClass, true)));
                         }
                     }
-                    return Mono.error(unwrappedException);
+                    return Mono.error(exception);
                 }));
     }
 
@@ -484,16 +479,15 @@ public class CosmosEncryptionAsyncContainer {
                     return queryDecryptionTransformer(classType, func);
                 }
             }).byPage().onErrorResume(exception -> {
-            final Throwable unwrappedException = Exceptions.unwrap(exception);
-            if (unwrappedException instanceof CosmosException) {
-                final CosmosException cosmosException = (CosmosException) unwrappedException;
+            if (exception instanceof CosmosException) {
+                final CosmosException cosmosException = (CosmosException) exception;
                 if (!isRetry && isIncorrectContainerRid(cosmosException)) {
                     this.encryptionProcessor.getIsEncryptionSettingsInitDone().set(false);
                     return this.encryptionProcessor.initializeEncryptionSettingsAsync(true).thenMany(
                         (CosmosPagedFlux.defer(() -> queryItemsHelper(sqlQuerySpec,finalOptions, classType, true).byPage())));
                 }
             }
-            return Mono.error(unwrappedException);
+            return Mono.error(exception);
         });
 
 
@@ -505,9 +499,10 @@ public class CosmosEncryptionAsyncContainer {
 
 
     private <T> CosmosPagedFlux<T> queryItemsHelperWithMonoSqlQuerySpec(Mono<SqlQuerySpec> sqlQuerySpecMono,
-                                                    CosmosQueryRequestOptions options,
-                                                    Class<T> classType,
-                                                    boolean isRetry) {
+                                                                        SqlQuerySpecWithEncryption sqlQuerySpecWithEncryption,
+                                                                        CosmosQueryRequestOptions options,
+                                                                        Class<T> classType,
+                                                                        boolean isRetry) {
 
         setRequestHeaders(options);
         CosmosQueryRequestOptions finalOptions = options;
@@ -520,16 +515,15 @@ public class CosmosEncryptionAsyncContainer {
                     return queryDecryptionTransformer(classType, func);
                 }
             }).byPage().onErrorResume(exception -> {
-            final Throwable unwrappedException = Exceptions.unwrap(exception);
-            if (unwrappedException instanceof CosmosException) {
-                final CosmosException cosmosException = (CosmosException) unwrappedException;
+            if (exception instanceof CosmosException) {
+                final CosmosException cosmosException = (CosmosException) exception;
                 if (!isRetry && isIncorrectContainerRid(cosmosException)) {
                     this.encryptionProcessor.getIsEncryptionSettingsInitDone().set(false);
                     return this.encryptionProcessor.initializeEncryptionSettingsAsync(true).thenMany(
-                        (CosmosPagedFlux.defer(() -> queryItemsHelperWithMonoSqlQuerySpec(sqlQuerySpecMono,finalOptions, classType, true).byPage())));
+                        (CosmosPagedFlux.defer(() -> queryItemsHelper(EncryptionModelBridgeInternal.getSqlQuerySpec(sqlQuerySpecWithEncryption), finalOptions, classType, true).byPage())));
                 }
             }
-            return Mono.error(unwrappedException);
+            return Mono.error(exception);
         });
 
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
