@@ -4,6 +4,7 @@
 package com.azure.ai.textanalytics.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 
 import java.util.Arrays;
 
@@ -12,6 +13,8 @@ import java.util.Arrays;
  */
 @Fluent
 public final class TextAnalyticsActions {
+    private final ClientLogger logger = new ClientLogger(TextAnalyticsActions.class);
+
     private String displayName;
     private Iterable<RecognizeEntitiesAction> recognizeEntitiesActions;
     private Iterable<RecognizeLinkedEntitiesAction> recognizeLinkedEntitiesActions;
@@ -55,8 +58,11 @@ public final class TextAnalyticsActions {
      * @param recognizeEntitiesActions the list of {@link RecognizeEntitiesAction} to be executed.
      *
      * @return the {@link TextAnalyticsActions} object itself.
+     *
+     * @throws IllegalArgumentException if duplicate {@link RecognizeEntitiesAction} actions are passed.
      */
     public TextAnalyticsActions setRecognizeEntitiesActions(RecognizeEntitiesAction... recognizeEntitiesActions) {
+        validateActionsNumber(recognizeEntitiesActions, RecognizeEntitiesAction.class.getName());
         this.recognizeEntitiesActions = recognizeEntitiesActions == null ? null
             : Arrays.asList(recognizeEntitiesActions);
         return this;
@@ -77,9 +83,12 @@ public final class TextAnalyticsActions {
      * @param recognizeLinkedEntitiesActions the list of {@link RecognizeLinkedEntitiesAction} to be executed.
      *
      * @return the {@link TextAnalyticsActions} object itself.
+     *
+     * @throws IllegalArgumentException if duplicate {@link RecognizeLinkedEntitiesAction} actions are passed.
      */
     public TextAnalyticsActions setRecognizeLinkedEntitiesActions(
         RecognizeLinkedEntitiesAction... recognizeLinkedEntitiesActions) {
+        validateActionsNumber(recognizeLinkedEntitiesActions, RecognizeLinkedEntitiesAction.class.getName());
         this.recognizeLinkedEntitiesActions = recognizeLinkedEntitiesActions == null ? null
             : Arrays.asList(recognizeLinkedEntitiesActions);
         return this;
@@ -100,9 +109,12 @@ public final class TextAnalyticsActions {
      * @param recognizePiiEntitiesActions the list of {@link RecognizePiiEntitiesAction} to be executed.
      *
      * @return the {@link TextAnalyticsActions} object itself.
+     *
+     * @throws IllegalArgumentException if duplicate {@link RecognizePiiEntitiesAction} actions are passed.
      */
     public TextAnalyticsActions setRecognizePiiEntitiesActions(
         RecognizePiiEntitiesAction... recognizePiiEntitiesActions) {
+        validateActionsNumber(recognizePiiEntitiesActions, RecognizePiiEntitiesAction.class.getName());
         this.recognizePiiEntitiesActions = recognizePiiEntitiesActions == null ? null
             : Arrays.asList(recognizePiiEntitiesActions);
         return this;
@@ -123,8 +135,11 @@ public final class TextAnalyticsActions {
      * @param extractKeyPhrasesActions the list of {@link ExtractKeyPhrasesAction} to be executed.
      *
      * @return the {@link TextAnalyticsActions} object itself.
+     *
+     * @throws IllegalArgumentException if duplicate {@link ExtractKeyPhrasesAction} actions are passed.
      */
     public TextAnalyticsActions setExtractKeyPhrasesActions(ExtractKeyPhrasesAction... extractKeyPhrasesActions) {
+        validateActionsNumber(extractKeyPhrasesActions, ExtractKeyPhrasesAction.class.getName());
         this.extractKeyPhrasesActions = extractKeyPhrasesActions == null ? null
             : Arrays.asList(extractKeyPhrasesActions);
         return this;
@@ -145,9 +160,19 @@ public final class TextAnalyticsActions {
      * @param analyzeSentimentActions the list of {@link AnalyzeSentimentAction} to be executed.
      *
      * @return the {@link TextAnalyticsActions} object itself.
+     *
+     * @throws IllegalArgumentException if duplicate {@link AnalyzeSentimentAction} actions are passed.
      */
     public TextAnalyticsActions setAnalyzeSentimentActions(AnalyzeSentimentAction... analyzeSentimentActions) {
+        validateActionsNumber(analyzeSentimentActions, AnalyzeSentimentAction.class.getName());
         this.analyzeSentimentActions = analyzeSentimentActions == null ? null : Arrays.asList(analyzeSentimentActions);
         return this;
+    }
+
+    private void validateActionsNumber(Object[] actions, String actionType) {
+        if (actions != null && actions.length > 1) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
+                "Currently, the service can accept up to one %s action per action type only", actionType)));
+        }
     }
 }
