@@ -778,30 +778,6 @@ public class UrlBuilderTests {
 
     @Test
     public void parseUniqueURLs() {
-        for (int i = 0; i < 10000; i++) {
-            UrlBuilder urlBuilder = UrlBuilder.parse("www.bing.com:123/index.html?a=" + i);
-            assertNotNull(urlBuilder);
-            assertEquals("www.bing.com:123/index.html?a=" + i, urlBuilder.toString());
-        }
-
-        // validate the size of the cache
-        assertEquals(10000, UrlBuilder.getParsedUrls().size());
-
-        // validate that a new url will clear the cache
-        UrlBuilder urlBuilder = UrlBuilder.parse("www.bing.com:123/index.html?a=10001");
-        assertNotNull(urlBuilder);
-        assertEquals("www.bing.com:123/index.html?a=10001", urlBuilder.toString());
-        assertEquals(1, UrlBuilder.getParsedUrls().size());
-
-        // validate that the cached entry is used and no new entry is added if the url is the same
-        urlBuilder = UrlBuilder.parse("www.bing.com:123/index.html?a=10001");
-        assertNotNull(urlBuilder);
-        assertEquals("www.bing.com:123/index.html?a=10001", urlBuilder.toString());
-        assertEquals(1, UrlBuilder.getParsedUrls().size());
-    }
-
-    @Test
-    public void parseUniqueUrlsInParallel() {
         IntStream.range(0, 100000)
                 .parallel()
                 .forEach(i -> {
@@ -809,5 +785,8 @@ public class UrlBuilderTests {
                     assertNotNull(urlBuilder);
                     assertEquals("www.bing.com:123/index.html?a=" + i, urlBuilder.toString());
                 });
+
+        // validate the size of the cache is not greater than 10000
+        assertTrue(UrlBuilder.getParsedUrls().size() <= 10000);
     }
 }
