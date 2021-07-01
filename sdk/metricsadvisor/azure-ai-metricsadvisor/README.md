@@ -169,7 +169,7 @@ A notification hook is the entry point that allows the users to subscribe to rea
 * [Check ingestion status](#check-ingestion-status "Check ingestion status")
 * [Configure anomaly detection configuration](#configure-anomaly-detection-configuration "Configure anomaly detection configuration")
 * [Add hooks for receiving anomaly alerts](#add-hooks-for-receiving-anomaly-alerts "Add hooks for receiving anomaly alerts")
-* [Configure an anomaly alert configuration](#configure-an-anomaly-alert-configuration "Configure an anomalyAlert configuration")
+* [Configure an anomaly alert configuration](#configure-an-anomaly-alert-configuration "Configure an anomaly alert configuration")
 * [Query anomaly detection results](#query-anomaly-detection-results "Query anomaly detection results")
 
 #### Add a data feed from a sample or data source
