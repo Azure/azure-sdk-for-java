@@ -19,7 +19,7 @@ import java.util.stream.BaseStream;
  * TODO: Replace placeholder Javadoc
  */
 public class PathScanner {
-    private final ClientLogger logger = new ClientLogger(PathScanner.class);
+    private static final ClientLogger logger = new ClientLogger(PathScanner.class);
     private final String basePath;
 
     /**
@@ -78,7 +78,6 @@ public class PathScanner {
             }
         })
         // Return the paths as strings
-        .map(path -> path.toAbsolutePath().toString())
-        .subscribeOn(Schedulers.boundedElastic());
+        .map(path -> path.toAbsolutePath().toString());
     }
 }
