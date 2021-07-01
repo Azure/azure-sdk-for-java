@@ -29,7 +29,7 @@ public final class CosmosDiagnostics {
 
     private ClientSideRequestStatistics clientSideRequestStatistics;
     private FeedResponseDiagnostics feedResponseDiagnostics;
-    private AtomicBoolean isDiagnosticCapturedInPagedFlux = new AtomicBoolean(false);
+    private AtomicBoolean diagnosticsCapturedInPagedFlux = new AtomicBoolean(false);
 
     static final String USER_AGENT = Utils.getUserAgent();
     static final String USER_AGENT_KEY = "userAgent";
@@ -124,8 +124,8 @@ public final class CosmosDiagnostics {
         this.feedResponseDiagnostics = feedResponseDiagnostics;
     }
 
-    AtomicBoolean IsDiagnosticCapturedInPagedFlux(){
-        return this.isDiagnosticCapturedInPagedFlux;
+    private AtomicBoolean isDiagnosticsCapturedInPagedFlux(){
+        return this.diagnosticsCapturedInPagedFlux;
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -136,8 +136,8 @@ public final class CosmosDiagnostics {
         ImplementationBridgeHelpers.CosmosDiagnosticsHelper.setCosmosDiagnosticsAccessor(
             new ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor() {
                 @Override
-                public AtomicBoolean IsDiagnosticCapturedInPagedFlux(CosmosDiagnostics cosmosDiagnostics) {
-                    return cosmosDiagnostics.isDiagnosticCapturedInPagedFlux;
+                public AtomicBoolean isDiagnosticsCapturedInPagedFlux(CosmosDiagnostics cosmosDiagnostics) {
+                    return cosmosDiagnostics.isDiagnosticsCapturedInPagedFlux();
                 }
             });
     }

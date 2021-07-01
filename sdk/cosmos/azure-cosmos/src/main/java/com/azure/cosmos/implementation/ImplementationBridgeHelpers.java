@@ -410,7 +410,7 @@ public class ImplementationBridgeHelpers {
         }
 
         public interface CosmosDiagnosticsAccessor {
-            AtomicBoolean IsDiagnosticCapturedInPagedFlux(CosmosDiagnostics cosmosDiagnostics);
+            AtomicBoolean isDiagnosticsCapturedInPagedFlux(CosmosDiagnostics cosmosDiagnostics);
         }
     }
 
