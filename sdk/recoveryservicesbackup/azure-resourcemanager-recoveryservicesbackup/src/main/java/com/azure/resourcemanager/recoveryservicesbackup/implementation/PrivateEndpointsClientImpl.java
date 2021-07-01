@@ -116,7 +116,7 @@ public final class PrivateEndpointsClientImpl implements PrivateEndpointsClient 
         if (operationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
         }
-        final String apiVersion = "2021-01-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -183,7 +183,7 @@ public final class PrivateEndpointsClientImpl implements PrivateEndpointsClient 
         if (operationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
         }
-        final String apiVersion = "2021-01-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

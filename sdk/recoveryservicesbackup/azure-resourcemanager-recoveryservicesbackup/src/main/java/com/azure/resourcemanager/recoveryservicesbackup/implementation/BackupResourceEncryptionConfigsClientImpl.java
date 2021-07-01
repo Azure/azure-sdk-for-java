@@ -25,7 +25,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupResourceEncryptionConfigsClient;
-import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.BackupResourceEncryptionConfigResourceInner;
+import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.BackupResourceEncryptionConfigExtendedResourceInner;
+import com.azure.resourcemanager.recoveryservicesbackup.models.BackupResourceEncryptionConfigResource;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in BackupResourceEncryptionConfigsClient. */
@@ -66,7 +67,7 @@ public final class BackupResourceEncryptionConfigsClientImpl implements BackupRe
                 + "/vaults/{vaultName}/backupEncryptionConfigs/backupResourceEncryptionConfig")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<BackupResourceEncryptionConfigResourceInner>> get(
+        Mono<Response<BackupResourceEncryptionConfigExtendedResourceInner>> get(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("vaultName") String vaultName,
@@ -87,7 +88,7 @@ public final class BackupResourceEncryptionConfigsClientImpl implements BackupRe
             @PathParam("vaultName") String vaultName,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") BackupResourceEncryptionConfigResourceInner parameters,
+            @BodyParam("application/json") BackupResourceEncryptionConfigResource parameters,
             @HeaderParam("Accept") String accept,
             Context context);
     }
@@ -103,7 +104,7 @@ public final class BackupResourceEncryptionConfigsClientImpl implements BackupRe
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BackupResourceEncryptionConfigResourceInner>> getWithResponseAsync(
+    private Mono<Response<BackupResourceEncryptionConfigExtendedResourceInner>> getWithResponseAsync(
         String vaultName, String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -124,7 +125,7 @@ public final class BackupResourceEncryptionConfigsClientImpl implements BackupRe
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-01-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -153,7 +154,7 @@ public final class BackupResourceEncryptionConfigsClientImpl implements BackupRe
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BackupResourceEncryptionConfigResourceInner>> getWithResponseAsync(
+    private Mono<Response<BackupResourceEncryptionConfigExtendedResourceInner>> getWithResponseAsync(
         String vaultName, String resourceGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -174,7 +175,7 @@ public final class BackupResourceEncryptionConfigsClientImpl implements BackupRe
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-01-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -199,10 +200,11 @@ public final class BackupResourceEncryptionConfigsClientImpl implements BackupRe
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<BackupResourceEncryptionConfigResourceInner> getAsync(String vaultName, String resourceGroupName) {
+    private Mono<BackupResourceEncryptionConfigExtendedResourceInner> getAsync(
+        String vaultName, String resourceGroupName) {
         return getWithResponseAsync(vaultName, resourceGroupName)
             .flatMap(
-                (Response<BackupResourceEncryptionConfigResourceInner> res) -> {
+                (Response<BackupResourceEncryptionConfigExtendedResourceInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -222,7 +224,7 @@ public final class BackupResourceEncryptionConfigsClientImpl implements BackupRe
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BackupResourceEncryptionConfigResourceInner get(String vaultName, String resourceGroupName) {
+    public BackupResourceEncryptionConfigExtendedResourceInner get(String vaultName, String resourceGroupName) {
         return getAsync(vaultName, resourceGroupName).block();
     }
 
@@ -238,7 +240,7 @@ public final class BackupResourceEncryptionConfigsClientImpl implements BackupRe
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BackupResourceEncryptionConfigResourceInner> getWithResponse(
+    public Response<BackupResourceEncryptionConfigExtendedResourceInner> getWithResponse(
         String vaultName, String resourceGroupName, Context context) {
         return getWithResponseAsync(vaultName, resourceGroupName, context).block();
     }
@@ -256,7 +258,7 @@ public final class BackupResourceEncryptionConfigsClientImpl implements BackupRe
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> updateWithResponseAsync(
-        String vaultName, String resourceGroupName, BackupResourceEncryptionConfigResourceInner parameters) {
+        String vaultName, String resourceGroupName, BackupResourceEncryptionConfigResource parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -281,7 +283,7 @@ public final class BackupResourceEncryptionConfigsClientImpl implements BackupRe
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-01-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -315,7 +317,7 @@ public final class BackupResourceEncryptionConfigsClientImpl implements BackupRe
     private Mono<Response<Void>> updateWithResponseAsync(
         String vaultName,
         String resourceGroupName,
-        BackupResourceEncryptionConfigResourceInner parameters,
+        BackupResourceEncryptionConfigResource parameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -341,7 +343,7 @@ public final class BackupResourceEncryptionConfigsClientImpl implements BackupRe
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-01-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -369,7 +371,7 @@ public final class BackupResourceEncryptionConfigsClientImpl implements BackupRe
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> updateAsync(
-        String vaultName, String resourceGroupName, BackupResourceEncryptionConfigResourceInner parameters) {
+        String vaultName, String resourceGroupName, BackupResourceEncryptionConfigResource parameters) {
         return updateWithResponseAsync(vaultName, resourceGroupName, parameters)
             .flatMap((Response<Void> res) -> Mono.empty());
     }
@@ -385,8 +387,7 @@ public final class BackupResourceEncryptionConfigsClientImpl implements BackupRe
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void update(
-        String vaultName, String resourceGroupName, BackupResourceEncryptionConfigResourceInner parameters) {
+    public void update(String vaultName, String resourceGroupName, BackupResourceEncryptionConfigResource parameters) {
         updateAsync(vaultName, resourceGroupName, parameters).block();
     }
 
@@ -406,7 +407,7 @@ public final class BackupResourceEncryptionConfigsClientImpl implements BackupRe
     public Response<Void> updateWithResponse(
         String vaultName,
         String resourceGroupName,
-        BackupResourceEncryptionConfigResourceInner parameters,
+        BackupResourceEncryptionConfigResource parameters,
         Context context) {
         return updateWithResponseAsync(vaultName, resourceGroupName, parameters, context).block();
     }

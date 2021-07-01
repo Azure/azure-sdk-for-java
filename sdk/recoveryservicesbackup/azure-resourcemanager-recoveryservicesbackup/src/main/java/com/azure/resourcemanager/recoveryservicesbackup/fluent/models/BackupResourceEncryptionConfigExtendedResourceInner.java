@@ -7,21 +7,22 @@ package com.azure.resourcemanager.recoveryservicesbackup.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.recoveryservicesbackup.models.BackupResourceEncryptionConfig;
+import com.azure.resourcemanager.recoveryservicesbackup.models.BackupResourceEncryptionConfigExtended;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The BackupResourceEncryptionConfigResource model. */
+/** The BackupResourceEncryptionConfigExtendedResource model. */
 @Fluent
-public final class BackupResourceEncryptionConfigResourceInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupResourceEncryptionConfigResourceInner.class);
+public final class BackupResourceEncryptionConfigExtendedResourceInner extends Resource {
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(BackupResourceEncryptionConfigExtendedResourceInner.class);
 
     /*
-     * BackupResourceEncryptionConfigResource properties
+     * BackupResourceEncryptionConfigExtendedResource properties
      */
     @JsonProperty(value = "properties")
-    private BackupResourceEncryptionConfig properties;
+    private BackupResourceEncryptionConfigExtended properties;
 
     /*
      * Optional ETag.
@@ -30,21 +31,22 @@ public final class BackupResourceEncryptionConfigResourceInner extends Resource 
     private String etag;
 
     /**
-     * Get the properties property: BackupResourceEncryptionConfigResource properties.
+     * Get the properties property: BackupResourceEncryptionConfigExtendedResource properties.
      *
      * @return the properties value.
      */
-    public BackupResourceEncryptionConfig properties() {
+    public BackupResourceEncryptionConfigExtended properties() {
         return this.properties;
     }
 
     /**
-     * Set the properties property: BackupResourceEncryptionConfigResource properties.
+     * Set the properties property: BackupResourceEncryptionConfigExtendedResource properties.
      *
      * @param properties the properties value to set.
-     * @return the BackupResourceEncryptionConfigResourceInner object itself.
+     * @return the BackupResourceEncryptionConfigExtendedResourceInner object itself.
      */
-    public BackupResourceEncryptionConfigResourceInner withProperties(BackupResourceEncryptionConfig properties) {
+    public BackupResourceEncryptionConfigExtendedResourceInner withProperties(
+        BackupResourceEncryptionConfigExtended properties) {
         this.properties = properties;
         return this;
     }
@@ -62,23 +64,23 @@ public final class BackupResourceEncryptionConfigResourceInner extends Resource 
      * Set the etag property: Optional ETag.
      *
      * @param etag the etag value to set.
-     * @return the BackupResourceEncryptionConfigResourceInner object itself.
+     * @return the BackupResourceEncryptionConfigExtendedResourceInner object itself.
      */
-    public BackupResourceEncryptionConfigResourceInner withEtag(String etag) {
+    public BackupResourceEncryptionConfigExtendedResourceInner withEtag(String etag) {
         this.etag = etag;
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public BackupResourceEncryptionConfigResourceInner withLocation(String location) {
+    public BackupResourceEncryptionConfigExtendedResourceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public BackupResourceEncryptionConfigResourceInner withTags(Map<String, String> tags) {
+    public BackupResourceEncryptionConfigExtendedResourceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
         return this;
     }

@@ -66,6 +66,13 @@ public class AzureWorkloadSapHanaRestoreRequest extends AzureWorkloadRestoreRequ
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public AzureWorkloadSapHanaRestoreRequest withTargetVirtualMachineId(String targetVirtualMachineId) {
+        super.withTargetVirtualMachineId(targetVirtualMachineId);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

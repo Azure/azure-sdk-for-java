@@ -105,6 +105,13 @@ public final class AzureWorkloadSqlRestoreWithRehydrateRequest extends AzureWork
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public AzureWorkloadSqlRestoreWithRehydrateRequest withTargetVirtualMachineId(String targetVirtualMachineId) {
+        super.withTargetVirtualMachineId(targetVirtualMachineId);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

@@ -115,6 +115,14 @@ public final class AzureWorkloadSqlPointInTimeRestoreWithRehydrateRequest
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public AzureWorkloadSqlPointInTimeRestoreWithRehydrateRequest withTargetVirtualMachineId(
+        String targetVirtualMachineId) {
+        super.withTargetVirtualMachineId(targetVirtualMachineId);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

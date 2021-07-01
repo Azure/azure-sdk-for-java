@@ -4,19 +4,20 @@
 
 package com.azure.resourcemanager.recoveryservicesbackup.implementation;
 
-import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.BackupResourceEncryptionConfigResourceInner;
-import com.azure.resourcemanager.recoveryservicesbackup.models.BackupResourceEncryptionConfig;
-import com.azure.resourcemanager.recoveryservicesbackup.models.BackupResourceEncryptionConfigResource;
+import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.BackupResourceEncryptionConfigExtendedResourceInner;
+import com.azure.resourcemanager.recoveryservicesbackup.models.BackupResourceEncryptionConfigExtended;
+import com.azure.resourcemanager.recoveryservicesbackup.models.BackupResourceEncryptionConfigExtendedResource;
 import java.util.Collections;
 import java.util.Map;
 
-public final class BackupResourceEncryptionConfigResourceImpl implements BackupResourceEncryptionConfigResource {
-    private BackupResourceEncryptionConfigResourceInner innerObject;
+public final class BackupResourceEncryptionConfigExtendedResourceImpl
+    implements BackupResourceEncryptionConfigExtendedResource {
+    private BackupResourceEncryptionConfigExtendedResourceInner innerObject;
 
     private final com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager;
 
-    BackupResourceEncryptionConfigResourceImpl(
-        BackupResourceEncryptionConfigResourceInner innerObject,
+    BackupResourceEncryptionConfigExtendedResourceImpl(
+        BackupResourceEncryptionConfigExtendedResourceInner innerObject,
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -47,7 +48,7 @@ public final class BackupResourceEncryptionConfigResourceImpl implements BackupR
         }
     }
 
-    public BackupResourceEncryptionConfig properties() {
+    public BackupResourceEncryptionConfigExtended properties() {
         return this.innerModel().properties();
     }
 
@@ -55,7 +56,7 @@ public final class BackupResourceEncryptionConfigResourceImpl implements BackupR
         return this.innerModel().etag();
     }
 
-    public BackupResourceEncryptionConfigResourceInner innerModel() {
+    public BackupResourceEncryptionConfigExtendedResourceInner innerModel() {
         return this.innerObject;
     }
 

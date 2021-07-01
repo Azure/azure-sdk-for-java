@@ -9,7 +9,6 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -17,6 +16,7 @@ import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
@@ -53,8 +53,8 @@ import com.azure.resourcemanager.recoveryservicesbackup.implementation.JobCancel
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.JobDetailsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.JobOperationResultsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.JobsImpl;
+import com.azure.resourcemanager.recoveryservicesbackup.implementation.OperationOperationsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.OperationsImpl;
-import com.azure.resourcemanager.recoveryservicesbackup.implementation.OperationsOperationsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.PrivateEndpointConnectionsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.PrivateEndpointsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.ProtectableContainersImpl;
@@ -107,8 +107,8 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.JobCancellations;
 import com.azure.resourcemanager.recoveryservicesbackup.models.JobDetails;
 import com.azure.resourcemanager.recoveryservicesbackup.models.JobOperationResults;
 import com.azure.resourcemanager.recoveryservicesbackup.models.Jobs;
+import com.azure.resourcemanager.recoveryservicesbackup.models.OperationOperations;
 import com.azure.resourcemanager.recoveryservicesbackup.models.Operations;
-import com.azure.resourcemanager.recoveryservicesbackup.models.OperationsOperations;
 import com.azure.resourcemanager.recoveryservicesbackup.models.PrivateEndpointConnections;
 import com.azure.resourcemanager.recoveryservicesbackup.models.PrivateEndpoints;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectableContainers;
@@ -136,6 +136,18 @@ import java.util.Objects;
 
 /** Entry point to RecoveryServicesBackupManager. Open API 2.0 Specs for Azure RecoveryServices Backup service. */
 public final class RecoveryServicesBackupManager {
+    private ProtectionIntents protectionIntents;
+
+    private BackupStatus backupStatus;
+
+    private FeatureSupports featureSupports;
+
+    private BackupProtectionIntents backupProtectionIntents;
+
+    private BackupUsageSummaries backupUsageSummaries;
+
+    private Operations operations;
+
     private BackupResourceVaultConfigs backupResourceVaultConfigs;
 
     private BackupResourceEncryptionConfigs backupResourceEncryptionConfigs;
@@ -176,7 +188,7 @@ public final class RecoveryServicesBackupManager {
 
     private BackupProtectedItems backupProtectedItems;
 
-    private Operations operations;
+    private OperationOperations operationOperations;
 
     private BackupEngines backupEngines;
 
@@ -230,18 +242,6 @@ public final class RecoveryServicesBackupManager {
 
     private BackupProtectedItemsCrrs backupProtectedItemsCrrs;
 
-    private ProtectionIntents protectionIntents;
-
-    private BackupStatus backupStatus;
-
-    private FeatureSupports featureSupports;
-
-    private BackupProtectionIntents backupProtectionIntents;
-
-    private BackupUsageSummaries backupUsageSummaries;
-
-    private OperationsOperations operationsOperations;
-
     private final RecoveryServicesBackupClient clientObject;
 
     private RecoveryServicesBackupManager(
@@ -287,6 +287,7 @@ public final class RecoveryServicesBackupManager {
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
         private final List<HttpPipelinePolicy> policies = new ArrayList<>();
+        private final List<String> scopes = new ArrayList<>();
         private RetryPolicy retryPolicy;
         private Duration defaultPollInterval;
 
@@ -323,6 +324,17 @@ public final class RecoveryServicesBackupManager {
          */
         public Configurable withPolicy(HttpPipelinePolicy policy) {
             this.policies.add(Objects.requireNonNull(policy, "'policy' cannot be null."));
+            return this;
+        }
+
+        /**
+         * Adds the scope to permission sets.
+         *
+         * @param scope the scope.
+         * @return the configurable object itself.
+         */
+        public Configurable withScope(String scope) {
+            this.scopes.add(Objects.requireNonNull(scope, "'scope' cannot be null."));
             return this;
         }
 
@@ -382,6 +394,9 @@ public final class RecoveryServicesBackupManager {
                 userAgentBuilder.append(" (auto-generated)");
             }
 
+            if (scopes.isEmpty()) {
+                scopes.add(profile.getEnvironment().getManagementEndpoint() + "/.default");
+            }
             if (retryPolicy == null) {
                 retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
             }
@@ -391,10 +406,7 @@ public final class RecoveryServicesBackupManager {
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
-            policies
-                .add(
-                    new BearerTokenAuthenticationPolicy(
-                        credential, profile.getEnvironment().getManagementEndpoint() + "/.default"));
+            policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
             policies.addAll(this.policies);
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
@@ -405,6 +417,55 @@ public final class RecoveryServicesBackupManager {
                     .build();
             return new RecoveryServicesBackupManager(httpPipeline, profile, defaultPollInterval);
         }
+    }
+
+    /** @return Resource collection API of ProtectionIntents. */
+    public ProtectionIntents protectionIntents() {
+        if (this.protectionIntents == null) {
+            this.protectionIntents = new ProtectionIntentsImpl(clientObject.getProtectionIntents(), this);
+        }
+        return protectionIntents;
+    }
+
+    /** @return Resource collection API of BackupStatus. */
+    public BackupStatus backupStatus() {
+        if (this.backupStatus == null) {
+            this.backupStatus = new BackupStatusImpl(clientObject.getBackupStatus(), this);
+        }
+        return backupStatus;
+    }
+
+    /** @return Resource collection API of FeatureSupports. */
+    public FeatureSupports featureSupports() {
+        if (this.featureSupports == null) {
+            this.featureSupports = new FeatureSupportsImpl(clientObject.getFeatureSupports(), this);
+        }
+        return featureSupports;
+    }
+
+    /** @return Resource collection API of BackupProtectionIntents. */
+    public BackupProtectionIntents backupProtectionIntents() {
+        if (this.backupProtectionIntents == null) {
+            this.backupProtectionIntents =
+                new BackupProtectionIntentsImpl(clientObject.getBackupProtectionIntents(), this);
+        }
+        return backupProtectionIntents;
+    }
+
+    /** @return Resource collection API of BackupUsageSummaries. */
+    public BackupUsageSummaries backupUsageSummaries() {
+        if (this.backupUsageSummaries == null) {
+            this.backupUsageSummaries = new BackupUsageSummariesImpl(clientObject.getBackupUsageSummaries(), this);
+        }
+        return backupUsageSummaries;
+    }
+
+    /** @return Resource collection API of Operations. */
+    public Operations operations() {
+        if (this.operations == null) {
+            this.operations = new OperationsImpl(clientObject.getOperations(), this);
+        }
+        return operations;
     }
 
     /** @return Resource collection API of BackupResourceVaultConfigs. */
@@ -574,12 +635,12 @@ public final class RecoveryServicesBackupManager {
         return backupProtectedItems;
     }
 
-    /** @return Resource collection API of Operations. */
-    public Operations operations() {
-        if (this.operations == null) {
-            this.operations = new OperationsImpl(clientObject.getOperations(), this);
+    /** @return Resource collection API of OperationOperations. */
+    public OperationOperations operationOperations() {
+        if (this.operationOperations == null) {
+            this.operationOperations = new OperationOperationsImpl(clientObject.getOperationOperations(), this);
         }
-        return operations;
+        return operationOperations;
     }
 
     /** @return Resource collection API of BackupEngines. */
@@ -804,55 +865,6 @@ public final class RecoveryServicesBackupManager {
                 new BackupProtectedItemsCrrsImpl(clientObject.getBackupProtectedItemsCrrs(), this);
         }
         return backupProtectedItemsCrrs;
-    }
-
-    /** @return Resource collection API of ProtectionIntents. */
-    public ProtectionIntents protectionIntents() {
-        if (this.protectionIntents == null) {
-            this.protectionIntents = new ProtectionIntentsImpl(clientObject.getProtectionIntents(), this);
-        }
-        return protectionIntents;
-    }
-
-    /** @return Resource collection API of BackupStatus. */
-    public BackupStatus backupStatus() {
-        if (this.backupStatus == null) {
-            this.backupStatus = new BackupStatusImpl(clientObject.getBackupStatus(), this);
-        }
-        return backupStatus;
-    }
-
-    /** @return Resource collection API of FeatureSupports. */
-    public FeatureSupports featureSupports() {
-        if (this.featureSupports == null) {
-            this.featureSupports = new FeatureSupportsImpl(clientObject.getFeatureSupports(), this);
-        }
-        return featureSupports;
-    }
-
-    /** @return Resource collection API of BackupProtectionIntents. */
-    public BackupProtectionIntents backupProtectionIntents() {
-        if (this.backupProtectionIntents == null) {
-            this.backupProtectionIntents =
-                new BackupProtectionIntentsImpl(clientObject.getBackupProtectionIntents(), this);
-        }
-        return backupProtectionIntents;
-    }
-
-    /** @return Resource collection API of BackupUsageSummaries. */
-    public BackupUsageSummaries backupUsageSummaries() {
-        if (this.backupUsageSummaries == null) {
-            this.backupUsageSummaries = new BackupUsageSummariesImpl(clientObject.getBackupUsageSummaries(), this);
-        }
-        return backupUsageSummaries;
-    }
-
-    /** @return Resource collection API of OperationsOperations. */
-    public OperationsOperations operationsOperations() {
-        if (this.operationsOperations == null) {
-            this.operationsOperations = new OperationsOperationsImpl(clientObject.getOperationsOperations(), this);
-        }
-        return operationsOperations;
     }
 
     /**

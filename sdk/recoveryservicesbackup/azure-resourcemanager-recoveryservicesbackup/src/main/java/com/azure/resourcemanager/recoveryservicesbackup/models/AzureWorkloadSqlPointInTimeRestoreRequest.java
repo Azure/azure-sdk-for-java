@@ -115,6 +115,13 @@ public class AzureWorkloadSqlPointInTimeRestoreRequest extends AzureWorkloadSqlR
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public AzureWorkloadSqlPointInTimeRestoreRequest withTargetVirtualMachineId(String targetVirtualMachineId) {
+        super.withTargetVirtualMachineId(targetVirtualMachineId);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

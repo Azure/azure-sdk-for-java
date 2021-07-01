@@ -63,6 +63,14 @@ public class AzureWorkloadRestoreRequest extends RestoreRequest {
     @JsonProperty(value = "recoveryMode")
     private RecoveryMode recoveryMode;
 
+    /*
+     * This is the complete ARM Id of the target VM
+     * For e.g.
+     * /subscriptions/{subId}/resourcegroups/{rg}/provider/Microsoft.Compute/virtualmachines/{vm}
+     */
+    @JsonProperty(value = "targetVirtualMachineId")
+    private String targetVirtualMachineId;
+
     /**
      * Get the recoveryType property: Type of this recovery.
      *
@@ -162,6 +170,28 @@ public class AzureWorkloadRestoreRequest extends RestoreRequest {
      */
     public AzureWorkloadRestoreRequest withRecoveryMode(RecoveryMode recoveryMode) {
         this.recoveryMode = recoveryMode;
+        return this;
+    }
+
+    /**
+     * Get the targetVirtualMachineId property: This is the complete ARM Id of the target VM For e.g.
+     * /subscriptions/{subId}/resourcegroups/{rg}/provider/Microsoft.Compute/virtualmachines/{vm}.
+     *
+     * @return the targetVirtualMachineId value.
+     */
+    public String targetVirtualMachineId() {
+        return this.targetVirtualMachineId;
+    }
+
+    /**
+     * Set the targetVirtualMachineId property: This is the complete ARM Id of the target VM For e.g.
+     * /subscriptions/{subId}/resourcegroups/{rg}/provider/Microsoft.Compute/virtualmachines/{vm}.
+     *
+     * @param targetVirtualMachineId the targetVirtualMachineId value to set.
+     * @return the AzureWorkloadRestoreRequest object itself.
+     */
+    public AzureWorkloadRestoreRequest withTargetVirtualMachineId(String targetVirtualMachineId) {
+        this.targetVirtualMachineId = targetVirtualMachineId;
         return this;
     }
 
