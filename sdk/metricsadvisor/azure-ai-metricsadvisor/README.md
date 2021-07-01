@@ -423,5 +423,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [samples]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/metricsadvisor/azure-ai-metricsadvisor/src/samples
 [samples_readme]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/metricsadvisor/azure-ai-metricsadvisor/src/samples/README.md
 [wiki_identity]: https://github.com/Azure/azure-sdk-for-java/wiki/Identity-and-Authentication
+[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%metricsadvisor%2Fazure-ai-metricsadvisor%2FREADME.png)
