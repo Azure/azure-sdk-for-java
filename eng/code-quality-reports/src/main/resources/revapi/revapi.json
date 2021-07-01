@@ -514,14 +514,38 @@
         "justification": "The field ErrorInfo was added to AmqpErrorContext, but no existing fields were removed or changed."
       },
       {
-          "code": "java.method.added",
-          "new": "method com.azure.core.util.HttpClientOptions com.azure.core.util.HttpClientOptions::setReadTimeout(java.time.Duration)",
-          "justification": "New Setter method."
+        "code": "java.method.added",
+        "new": "method com.azure.core.util.HttpClientOptions com.azure.core.util.HttpClientOptions::setReadTimeout(java.time.Duration)",
+        "justification": "New Setter method."
       },
       {
-          "code": "java.method.added",
-          "new": "method com.azure.core.util.HttpClientOptions com.azure.core.util.HttpClientOptions::setResponseTimeout(java.time.Duration)",
-          "justification": "New Setter method."
+        "code": "java.method.added",
+        "new": "method com.azure.core.util.HttpClientOptions com.azure.core.util.HttpClientOptions::setResponseTimeout(java.time.Duration)",
+        "justification": "New Setter method."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method java.time.Duration com.azure.core.util.HttpClientOptions::getConnectionIdleTimeout()",
+        "package": "com.azure.core.util",
+        "justification": "New getter method"
+      },
+      {
+        "code": "java.method.added",
+        "new": "method java.lang.Integer com.azure.core.util.HttpClientOptions::getMaximumConnectionPoolSize()",
+        "package": "com.azure.core.util",
+        "justification": "New getter method"
+      },
+      {
+        "code": "java.method.added",
+        "new": "method com.azure.core.util.HttpClientOptions com.azure.core.util.HttpClientOptions::setConnectionIdleTimeout(java.time.Duration)",
+        "package": "com.azure.core.util",
+        "justification": "New setter method"
+      },
+      {
+        "code": "java.method.added",
+        "new": "method com.azure.core.util.HttpClientOptions com.azure.core.util.HttpClientOptions::setMaximumConnectionPoolSize(java.lang.Integer)",
+        "package": "com.azure.core.util",
+        "justification": "New setter method"
       }
     ]
   }

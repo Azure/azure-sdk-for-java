@@ -3,8 +3,8 @@
 
 package com.azure.spring.integration.servicebus.factory;
 
-import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
@@ -35,8 +35,13 @@ public class DefaultServiceBusTopicClientFactory extends AbstractServiceBusSende
     private final Map<String, ServiceBusSenderAsyncClient> topicSenderMap = new ConcurrentHashMap<>();
 
     public DefaultServiceBusTopicClientFactory(String connectionString) {
+        this(connectionString, AmqpTransportType.AMQP);
+    }
+
+    public DefaultServiceBusTopicClientFactory(String connectionString, AmqpTransportType amqpTransportType) {
         super(connectionString);
         this.serviceBusClientBuilder = new ServiceBusClientBuilder().connectionString(connectionString);
+        this.serviceBusClientBuilder.transportType(amqpTransportType);
     }
 
     @Override

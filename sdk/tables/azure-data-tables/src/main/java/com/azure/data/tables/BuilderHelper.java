@@ -5,6 +5,7 @@ package com.azure.data.tables;
 
 import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
@@ -13,6 +14,7 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.AzureSasCredentialPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -28,6 +30,7 @@ import com.azure.data.tables.implementation.CosmosPatchTransformPolicy;
 import com.azure.data.tables.implementation.NullHttpClient;
 import com.azure.data.tables.implementation.StorageAuthenticationSettings;
 import com.azure.data.tables.implementation.StorageConnectionString;
+import com.azure.data.tables.implementation.StorageConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,12 +47,13 @@ final class BuilderHelper {
     private static final String CLIENT_VERSION = PROPERTIES.getOrDefault("version", "UnknownVersion");
     private static final String COSMOS_ENDPOINT_SUFFIX = "cosmos.azure.com";
 
-    static HttpPipeline buildPipeline(
-        AzureNamedKeyCredential azureNamedKeyCredential, AzureSasCredential azureSasCredential, String sasToken,
-        String endpoint, RetryPolicy retryPolicy, HttpLogOptions logOptions, ClientOptions clientOptions,
-        HttpClient httpClient, List<HttpPipelinePolicy> perCallAdditionalPolicies,
-        List<HttpPipelinePolicy> perRetryAdditionalPolicies, Configuration configuration, ClientLogger logger) {
-
+    static HttpPipeline buildPipeline(AzureNamedKeyCredential azureNamedKeyCredential,
+                                      AzureSasCredential azureSasCredential, TokenCredential tokenCredential,
+                                      String sasToken, String endpoint, RetryPolicy retryPolicy,
+                                      HttpLogOptions logOptions, ClientOptions clientOptions, HttpClient httpClient,
+                                      List<HttpPipelinePolicy> perCallAdditionalPolicies,
+                                      List<HttpPipelinePolicy> perRetryAdditionalPolicies, Configuration configuration,
+                                      ClientLogger logger) {
         configuration = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
         retryPolicy = (retryPolicy == null) ? new RetryPolicy() : retryPolicy;
         logOptions = (logOptions == null) ? new HttpLogOptions() : logOptions;
@@ -95,6 +99,8 @@ final class BuilderHelper {
             credentialPolicy = new AzureSasCredentialPolicy(azureSasCredential, false);
         } else if (sasToken != null) {
             credentialPolicy = new AzureSasCredentialPolicy(new AzureSasCredential(sasToken), false);
+        } else if (tokenCredential != null) {
+            credentialPolicy =  new BearerTokenAuthenticationPolicy(tokenCredential, StorageConstants.STORAGE_SCOPE);
         } else {
             throw logger.logExceptionAsError(
                 new IllegalStateException("A form of authentication is required to create a client. Use a builder's "
@@ -128,10 +134,10 @@ final class BuilderHelper {
     }
 
     static void validateCredentials(AzureNamedKeyCredential azureNamedKeyCredential,
-                                    AzureSasCredential azureSasCredential, String sasToken, String connectionString,
-                                    ClientLogger logger) {
+                                    AzureSasCredential azureSasCredential, TokenCredential tokenCredential,
+                                    String sasToken, String connectionString, ClientLogger logger) {
         List<Object> usedCredentials =
-            Stream.of(azureNamedKeyCredential, azureSasCredential, sasToken, connectionString)
+            Stream.of(azureNamedKeyCredential, azureSasCredential, tokenCredential, sasToken, connectionString)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
 
@@ -167,6 +173,10 @@ final class BuilderHelper {
 
             if (azureSasCredential != null) {
                 usedCredentialsStringBuilder.add("azureSasCredential");
+            }
+
+            if (tokenCredential != null) {
+                usedCredentialsStringBuilder.add("tokenCredential");
             }
 
             if (sasToken != null) {

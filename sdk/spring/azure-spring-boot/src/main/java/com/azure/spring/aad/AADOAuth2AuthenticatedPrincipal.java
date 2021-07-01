@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.autoconfigure.b2c;
+package com.azure.spring.aad;
 
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.JWTClaimsSet.Builder;
@@ -17,11 +17,13 @@ import java.util.Map.Entry;
 import static org.springframework.security.core.authority.AuthorityUtils.NO_AUTHORITIES;
 
 /**
- * entity class of AADB2COAuth2AuthenticatedPrincipal
+ * Entity class of AADOAuth2AuthenticatedPrincipal
  */
-public class AADB2COAuth2AuthenticatedPrincipal implements OAuth2AuthenticatedPrincipal, Serializable {
+public class AADOAuth2AuthenticatedPrincipal implements OAuth2AuthenticatedPrincipal, Serializable {
 
     private static final long serialVersionUID = -3625690847771476854L;
+
+    private static final String PERSONAL_ACCOUNT_TENANT_ID = "9188040d-6c67-4c5b-b112-36a304b66dad";
 
     private final Collection<GrantedAuthority> authorities;
 
@@ -35,29 +37,23 @@ public class AADB2COAuth2AuthenticatedPrincipal implements OAuth2AuthenticatedPr
 
     private final String name;
 
-    public AADB2COAuth2AuthenticatedPrincipal(Map<String, Object> headers,
-                                              Map<String, Object> attributes,
-                                              Collection<GrantedAuthority> authorities,
-                                              String tokenValue) {
-        this(headers, attributes, authorities, tokenValue, null);
-    }
-
-    public AADB2COAuth2AuthenticatedPrincipal(Map<String, Object> headers,
-                                              Map<String, Object> attributes,
-                                              Collection<GrantedAuthority> authorities,
-                                              String tokenValue, String name) {
+    public AADOAuth2AuthenticatedPrincipal(Map<String, Object> headers,
+                                           Map<String, Object> attributes,
+                                           Collection<GrantedAuthority> authorities,
+                                           String tokenValue,
+                                           String name) {
         Assert.notEmpty(attributes, "attributes cannot be empty");
         Assert.notEmpty(headers, "headers cannot be empty");
         this.headers = headers;
         this.tokenValue = tokenValue;
         this.attributes = Collections.unmodifiableMap(attributes);
         this.authorities = authorities == null ? NO_AUTHORITIES : Collections.unmodifiableCollection(authorities);
-        this.name = (name != null) ? name : (String) this.attributes.get("sub");
+        this.name = name;
         toJwtClaimsSet(attributes);
     }
 
     private void toJwtClaimsSet(Map<String, Object> attributes) {
-        Builder builder = new Builder();
+        JWTClaimsSet.Builder builder = new Builder();
         for (Entry<String, Object> entry : attributes.entrySet()) {
             builder.claim(entry.getKey(), entry.getValue());
         }
@@ -109,6 +105,10 @@ public class AADB2COAuth2AuthenticatedPrincipal implements OAuth2AuthenticatedPr
 
     public String getTenantId() {
         return jwtClaimsSet == null ? null : (String) jwtClaimsSet.getClaim("tid");
+    }
+
+    public boolean isPersonalAccount() {
+        return PERSONAL_ACCOUNT_TENANT_ID.equals(getTenantId());
     }
 
 }

@@ -10,7 +10,7 @@ import com.azure.core.annotation.Fluent;
  * The service principal credential entity for data source..
  */
 @Fluent
-public final class DatasourceServicePrincipal extends DatasourceCredentialEntity {
+public final class DataSourceServicePrincipal extends DataSourceCredentialEntity {
     private String id;
     private String name;
     private String description;
@@ -22,12 +22,12 @@ public final class DatasourceServicePrincipal extends DatasourceCredentialEntity
         DataSourceServicePrincipalAccessor.setAccessor(
             new DataSourceServicePrincipalAccessor.Accessor() {
                 @Override
-                public void setId(DatasourceServicePrincipal entity, String id) {
+                public void setId(DataSourceServicePrincipal entity, String id) {
                     entity.setId(id);
                 }
 
                 @Override
-                public String getClientSecret(DatasourceServicePrincipal entity) {
+                public String getClientSecret(DataSourceServicePrincipal entity) {
                     return entity.getClientSecret();
                 }
             });
@@ -74,7 +74,7 @@ public final class DatasourceServicePrincipal extends DatasourceCredentialEntity
      * @param clientSecret The client secret.
      * @param tenantId The tenant id.
      */
-    public DatasourceServicePrincipal(String name, String clientId, String tenantId, String clientSecret) {
+    public DataSourceServicePrincipal(String name, String clientId, String tenantId, String clientSecret) {
         this.name = name;
         this.clientId = clientId;
         this.tenantId = tenantId;
@@ -87,7 +87,7 @@ public final class DatasourceServicePrincipal extends DatasourceCredentialEntity
      * @param name The name
      * @return an updated object with name set
      */
-    public DatasourceServicePrincipal setName(String name) {
+    public DataSourceServicePrincipal setName(String name) {
         this.name = name;
         return this;
     }
@@ -98,7 +98,7 @@ public final class DatasourceServicePrincipal extends DatasourceCredentialEntity
      * @param clientId The client id
      * @return an updated object with client id set
      */
-    public DatasourceServicePrincipal setClientId(String clientId) {
+    public DataSourceServicePrincipal setClientId(String clientId) {
         this.clientId = clientId;
         return this;
     }
@@ -109,7 +109,7 @@ public final class DatasourceServicePrincipal extends DatasourceCredentialEntity
      * @param clientSecret The client secret
      * @return an updated object with client secret set
      */
-    public DatasourceServicePrincipal setClientSecret(String clientSecret) {
+    public DataSourceServicePrincipal setClientSecret(String clientSecret) {
         this.clientSecret = clientSecret;
         return this;
     }
@@ -120,7 +120,7 @@ public final class DatasourceServicePrincipal extends DatasourceCredentialEntity
      * @param tenantId The tenant id
      * @return an updated object with client teant id set
      */
-    public DatasourceServicePrincipal setTenantId(String tenantId) {
+    public DataSourceServicePrincipal setTenantId(String tenantId) {
         this.tenantId = tenantId;
         return this;
     }
@@ -131,7 +131,7 @@ public final class DatasourceServicePrincipal extends DatasourceCredentialEntity
      * @param description The description
      * @return an updated object with description set
      */
-    public DatasourceServicePrincipal setDescription(String description) {
+    public DataSourceServicePrincipal setDescription(String description) {
         this.description = description;
         return this;
     }

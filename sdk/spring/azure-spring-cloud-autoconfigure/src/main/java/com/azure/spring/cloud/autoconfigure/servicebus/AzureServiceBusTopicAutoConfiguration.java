@@ -82,7 +82,7 @@ public class AzureServiceBusTopicAutoConfiguration {
 
         Assert.notNull(connectionString, "Service Bus connection string must not be null");
 
-        DefaultServiceBusTopicClientFactory clientFactory = new DefaultServiceBusTopicClientFactory(connectionString);
+        DefaultServiceBusTopicClientFactory clientFactory = new DefaultServiceBusTopicClientFactory(connectionString, properties.getTransportType());
         clientFactory.retryOptions(properties.getRetryOptions());
         clientFactory.transportType(properties.getTransportType());
         clientFactory.proxyOptions(proxyOptions);
