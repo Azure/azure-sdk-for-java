@@ -229,7 +229,7 @@ class FileAPITests extends APISpec {
 
         then:
         assertResponseStatusCode(uploadResponse, 201)
-        assertResponseStatusCode(downloadResponse, 200)
+        assertResponseStatusCode(downloadResponse, 200, 206)
         headers.getContentLength() == data.defaultDataSizeLong
         headers.getETag()
         headers.getLastModified()
@@ -274,7 +274,7 @@ class FileAPITests extends APISpec {
 
         then:
         assertResponseStatusCode(uploadResponse, 201)
-        assertResponseStatusCode(downloadResponse, 200)
+        assertResponseStatusCode(downloadResponse, 200, 206)
         headers.getContentLength() == data.defaultDataSizeLong
         headers.getETag()
         headers.getLastModified()
@@ -366,7 +366,7 @@ class FileAPITests extends APISpec {
 
         then:
         assertResponseStatusCode(uploadResponse, 201)
-        assertResponseStatusCode(downloadResponse, 200)
+        assertResponseStatusCode(downloadResponse, 200, 206)
         headers.getContentLength() == data.defaultDataSizeLong
         headers.getETag()
         headers.getLastModified()

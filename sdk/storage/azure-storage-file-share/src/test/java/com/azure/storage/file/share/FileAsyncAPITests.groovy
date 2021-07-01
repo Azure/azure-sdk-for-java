@@ -225,7 +225,7 @@ class FileAsyncAPITests extends APISpec {
         }.verifyComplete()
 
         downloadVerifier.assertNext({ response ->
-            assert assertResponseStatusCode(response, 200)
+            assert assertResponseStatusCode(response, 200, 206)
             def headers = response.getDeserializedHeaders()
             assert headers.getContentLength() == data.defaultDataSizeLong
             assert headers.getETag()
