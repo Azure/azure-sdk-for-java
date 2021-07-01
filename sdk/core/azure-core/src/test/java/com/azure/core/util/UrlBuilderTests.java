@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.implementation.http;
+package com.azure.core.util;
 
 import com.azure.core.util.UrlBuilder;
 import org.hamcrest.CoreMatchers;
@@ -22,6 +22,7 @@ import java.util.stream.IntStream;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
@@ -774,5 +775,30 @@ public class UrlBuilderTests {
         StepVerifier.create(mono)
             .assertNext(count -> assertEquals(100000, count))
             .verifyComplete();
+    }
+
+    @Test
+    public void parseUniqueURLs() {
+        IntStream.range(0, 10000)
+                .forEach(i -> assertNotNull(UrlBuilder.parse("www.bing.com:123/index.html?a=" + i)));
+
+        // validate the size of the cache
+        assertEquals(10000, UrlBuilder.getParsedUrls().size());
+
+        // validate that a new url will clear the cache
+        assertNotNull(UrlBuilder.parse("www.bing.com:123/index.html?a=" + 10001));
+        assertEquals(1, UrlBuilder.getParsedUrls().size());
+
+        // validate that the cached entry is used and no new entry is added if the url is the same
+        assertNotNull(UrlBuilder.parse("www.bing.com:123/index.html?a=" + 10001));
+        assertEquals(1, UrlBuilder.getParsedUrls().size());
+
+    }
+
+    @Test
+    public void parseUniqueUrlsInParallel() {
+        IntStream.range(0, 100000)
+                .parallel()
+                .forEach(i -> assertNotNull(UrlBuilder.parse("www.bing.com:123/index.html?a=" + i)));
     }
 }
