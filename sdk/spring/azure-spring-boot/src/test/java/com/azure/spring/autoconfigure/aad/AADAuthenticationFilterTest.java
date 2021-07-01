@@ -143,69 +143,15 @@ public class AADAuthenticationFilterTest {
     @Test
     public void testAutoConfiguration() {
 
-        this.contextRunner.run(context -> {
-            LOG.info("================1==================");
-            LOG.info("azure.activedirectory.client-id = {}", context.getEnvironment().getProperty("azure.activedirectory.client-id"));
-            LOG.info("spring.cloud.azure.client-id = {}", context.getEnvironment().getProperty("spring.cloud.azure.client-id"));
-            LOG.info("test.prop = {}", context.getEnvironment().getProperty("test.prop"));
-            assertThat(context).doesNotHaveBean(AADAuthenticationFilterAutoConfiguration.class);
-        });
+        this.contextRunner.run(context -> assertThat(context).doesNotHaveBean(AADAuthenticationFilterAutoConfiguration.class));
 
         this.contextRunner.withPropertyValues(
                 "azure.activedirectory.client-id=" + TestConstants.CLIENT_ID
-            ).run(context -> {
-            LOG.info("================2==================");
-            LOG.info("azure.activedirectory.client-id = {}", context.getEnvironment().getProperty("azure.activedirectory.client-id"));
-            LOG.info("spring.cloud.azure.client-id = {}", context.getEnvironment().getProperty("spring.cloud.azure.client-id"));
-            LOG.info("test.prop = {}", context.getEnvironment().getProperty("test.prop"));
-
-            assertThat(context).hasSingleBean(AADAuthenticationFilterAutoConfiguration.class);
-            });
+            ).run(context -> assertThat(context).hasSingleBean(AADAuthenticationFilterAutoConfiguration.class));
 
         this.contextRunner.withPropertyValues(
                 "spring.cloud.azure.client-id=66666", "test.prop=123456"
-            ).run(context -> {
-            LOG.info("================3==================");
-            LOG.info("azure.activedirectory.client-id = {}", context.getEnvironment().getProperty("azure.activedirectory.client-id"));
-            LOG.info("spring.cloud.azure.client-id = {}", context.getEnvironment().getProperty("spring.cloud.azure.client-id"));
-            LOG.info("test.prop = {}", context.getEnvironment().getProperty("test.prop"));
-
-            assertThat(context).hasSingleBean(AADAuthenticationFilterAutoConfiguration.class);
-            });
-
-    }
-
-    @Test
-    public void testAutoConfiguration2() {
-
-        this.contextRunner.run(context -> {
-            LOG.info("================4==================");
-            LOG.info("azure.activedirectory.client-id = {}", context.getEnvironment().getProperty("azure.activedirectory.client-id"));
-            LOG.info("spring.cloud.azure.client-id = {}", context.getEnvironment().getProperty("spring.cloud.azure.client-id"));
-            LOG.info("test.prop = {}", context.getEnvironment().getProperty("test.prop"));
-
-            assertThat(context).doesNotHaveBean(AADAuthenticationFilterAutoConfiguration.class);
-        });
-
-//        this.contextRunner.withPropertyValues(
-//            "azure.activedirectory.client-id=" + TestConstants.CLIENT_ID
-//        ).run(context -> {
-//            LOG.info("================2==================");
-//            LOG.info("azure.activedirectory.client-id = {}", context.getEnvironment().getProperty("azure.activedirectory.client-id"));
-//            LOG.info("spring.cloud.azure.client-id = {}", context.getEnvironment().getProperty("spring.cloud.azure.client-id"));
-//
-//            assertThat(context).hasSingleBean(AADAuthenticationFilterAutoConfiguration.class);
-//        });
-//
-//        this.contextRunner.withPropertyValues(
-//            "spring.cloud.azure.client-id=" + TestConstants.CLIENT_ID
-//        ).run(context -> {
-//            LOG.info("================3==================");
-//            LOG.info("azure.activedirectory.client-id = {}", context.getEnvironment().getProperty("azure.activedirectory.client-id"));
-//            LOG.info("spring.cloud.azure.client-id = {}", context.getEnvironment().getProperty("spring.cloud.azure.client-id"));
-//
-//            assertThat(context).hasSingleBean(AADAuthenticationFilterAutoConfiguration.class);
-//        });
+            ).run(context -> assertThat(context).hasSingleBean(AADAuthenticationFilterAutoConfiguration.class));
 
     }
 }
