@@ -10,7 +10,7 @@
   `AnalyzeActionsResultPagedIterable`, `AnalyzeHealthcareEntitiesPagedFlux`, and `AnalyzeHealthcareEntitiesPagedIterable`.
   
 ### Breaking Changes
-- Changed behavior in `beginAnalyzeActions` API where now accepts a single action per action type. 
+- Changed behavior in `beginAnalyzeActions` API where now accepts up to one action only per action type. 
   An `IllegalArgumentException` is raised if duplicate actions are passed.
 - Replaced
   `AnalyzeActionsResultPagedFlux` to `PagedFlux<AnalyzeActionsResult>`,
