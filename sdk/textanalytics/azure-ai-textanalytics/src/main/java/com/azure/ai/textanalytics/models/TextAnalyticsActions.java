@@ -60,8 +60,7 @@ public final class TextAnalyticsActions {
      * @return the {@link TextAnalyticsActions} object itself.
      *
      * @throws IllegalArgumentException if more than one {@link RecognizeEntitiesAction} action are passed in.
-     * Currently service v3.1 only accepts up to one action per type and this check will be removed once the service
-     * officially removes this restriction.
+     * Currently service v3.1 only accepts up to one action per type.
      */
     public TextAnalyticsActions setRecognizeEntitiesActions(RecognizeEntitiesAction... recognizeEntitiesActions) {
         validateActionsNumber(recognizeEntitiesActions, RecognizeEntitiesAction.class.getName());
@@ -87,8 +86,7 @@ public final class TextAnalyticsActions {
      * @return the {@link TextAnalyticsActions} object itself.
      *
      * @throws IllegalArgumentException if more than one {@link RecognizeLinkedEntitiesAction} action are passed in.
-     * Currently service v3.1 only accepts up to one action per type and this check will be removed once the service
-     * officially removes this restriction.
+     * Currently service v3.1 only accepts up to one action per type.
      */
     public TextAnalyticsActions setRecognizeLinkedEntitiesActions(
         RecognizeLinkedEntitiesAction... recognizeLinkedEntitiesActions) {
@@ -115,8 +113,7 @@ public final class TextAnalyticsActions {
      * @return the {@link TextAnalyticsActions} object itself.
      *
      * @throws IllegalArgumentException if more than one {@link RecognizePiiEntitiesAction} action are passed in.
-     * Currently service v3.1 only accepts up to one action per type and this check will be removed once the service
-     * officially removes this restriction.
+     * Currently service v3.1 only accepts up to one action per type.
      */
     public TextAnalyticsActions setRecognizePiiEntitiesActions(
         RecognizePiiEntitiesAction... recognizePiiEntitiesActions) {
@@ -143,8 +140,7 @@ public final class TextAnalyticsActions {
      * @return the {@link TextAnalyticsActions} object itself.
      *
      * @throws IllegalArgumentException if more than one {@link ExtractKeyPhrasesAction} action are passed in.
-     * Currently service v3.1 only accepts up to one action per type and this check will be removed once the service
-     * officially removes this restriction.
+     * Currently service v3.1 only accepts up to one action per type.
      */
     public TextAnalyticsActions setExtractKeyPhrasesActions(ExtractKeyPhrasesAction... extractKeyPhrasesActions) {
         validateActionsNumber(extractKeyPhrasesActions, ExtractKeyPhrasesAction.class.getName());
@@ -170,8 +166,7 @@ public final class TextAnalyticsActions {
      * @return the {@link TextAnalyticsActions} object itself.
      *
      * @throws IllegalArgumentException if more than one {@link AnalyzeSentimentAction} action are passed in.
-     * Currently service v3.1 only accepts up to one action per type and this check will be removed once the service
-     * officially removes this restriction.
+     * Currently service v3.1 only accepts up to one action per type.
      */
     public TextAnalyticsActions setAnalyzeSentimentActions(AnalyzeSentimentAction... analyzeSentimentActions) {
         validateActionsNumber(analyzeSentimentActions, AnalyzeSentimentAction.class.getName());
