@@ -143,61 +143,24 @@ public class AADAuthenticationFilterTest {
     @Test
     public void testAutoConfiguration() {
 
-        String aadClientIdFromSys = System.getProperty("azure.activedirectory.client-id");
-        String aadClientIdFromEnv = System.getenv("azure.activedirectory.client-id");
-        LOG.info("system property: azure.activedirectory.client-id = {}", aadClientIdFromSys);
-        LOG.info("environment var: azure.activedirectory.client-id = {}", aadClientIdFromEnv);
-        String cloudClientIdFromSys = System.getProperty("spring.cloud.azure.client-id");
-        String cloudClientIdFromEnv = System.getenv("spring.cloud.azure.client-id");
-        LOG.info("system property: spring.cloud.azure.client-id = {}", cloudClientIdFromSys);
-        LOG.info("environment var: spring.cloud.azure.client-id = {}", cloudClientIdFromEnv);
-        LOG.info("=============================");
-        new WebApplicationContextRunner()
-            .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
-            .withConfiguration(AutoConfigurations.of(AADAuthenticationFilterAutoConfiguration.class))
-            .withPropertyValues(
-                "spring.cloud.azure.client-secret=" + TestConstants.CLIENT_SECRET
-            ).run(
-                context -> {
-                    String aClientIdFromSys = context.getEnvironment().getProperty("azure.activedirectory.client-id");
-                    LOG.info("system property: azure.activedirectory.client-id = {}", aClientIdFromSys);
-                    String cClientIdFromSys = context.getEnvironment().getProperty("spring.cloud.azure.client-id");
-                    LOG.info("system property: spring.cloud.azure.client-id = {}", cClientIdFromSys);
-                    LOG.info("=============================");
-
-                    assertThat(context).doesNotHaveBean(AADAuthenticationFilterAutoConfiguration.class);
-                }
-            );
+        this.contextRunner.withPropertyValues(
+                "spring.cloud.azure.client-id=",
+                "azure.activedirectory.client-id="
+            ).run(context -> assertThat(context).doesNotHaveBean(AADAuthenticationFilterAutoConfiguration.class));
 
         new WebApplicationContextRunner()
             .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
             .withConfiguration(AutoConfigurations.of(AADAuthenticationFilterAutoConfiguration.class))
             .withPropertyValues(
                 "azure.activedirectory.client-id=" + TestConstants.CLIENT_ID
-            ).run(context -> {
-                String aClientIdFromSys = context.getEnvironment().getProperty("azure.activedirectory.client-id");
-                LOG.info("system property: azure.activedirectory.client-id = {}", aClientIdFromSys);
-                String cClientIdFromSys = context.getEnvironment().getProperty("spring.cloud.azure.client-id");
-                LOG.info("system property: spring.cloud.azure.client-id = {}", cClientIdFromSys);
-                LOG.info("=============================");
-
-                assertThat(context).hasSingleBean(AADAuthenticationFilterAutoConfiguration.class);
-            });
+            ).run(context -> assertThat(context).hasSingleBean(AADAuthenticationFilterAutoConfiguration.class));
 
         new WebApplicationContextRunner()
             .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
             .withConfiguration(AutoConfigurations.of(AADAuthenticationFilterAutoConfiguration.class))
             .withPropertyValues(
                 "spring.cloud.azure.client-id=" + TestConstants.CLIENT_ID
-            ).run(context -> {
-                String aClientIdFromSys = context.getEnvironment().getProperty("azure.activedirectory.client-id");
-                LOG.info("system property: azure.activedirectory.client-id = {}", aClientIdFromSys);
-                String cClientIdFromSys = context.getEnvironment().getProperty("spring.cloud.azure.client-id");
-                LOG.info("system property: spring.cloud.azure.client-id = {}", cClientIdFromSys);
-                LOG.info("=============================");
-
-                assertThat(context).hasSingleBean(AADAuthenticationFilterAutoConfiguration.class);
-            });
+            ).run(context -> assertThat(context).hasSingleBean(AADAuthenticationFilterAutoConfiguration.class));
 
     }
 }
