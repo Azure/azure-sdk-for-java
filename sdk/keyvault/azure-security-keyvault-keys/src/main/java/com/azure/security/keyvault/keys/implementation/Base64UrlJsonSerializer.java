@@ -1,10 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-
-package com.azure.security.keyvault.keys.models;
+package com.azure.security.keyvault.keys.implementation;
 
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 
@@ -12,13 +10,15 @@ import java.io.IOException;
 import java.util.Base64;
 
 /**
- * The base64 URL JSON serializer.
+ * The Base64 URL JSON serializer.
  */
-class Base64UrlJsonSerializer extends JsonSerializer<byte[]> {
+public class Base64UrlJsonSerializer extends JsonSerializer<byte[]> {
     @Override
-    public void serialize(byte[] value, JsonGenerator jgen, SerializerProvider provider)
-        throws IOException, JsonProcessingException {
+    public void serialize(byte[] value, JsonGenerator jsonGenerator, SerializerProvider provider)
+        throws IOException {
+
         String text;
+
         if (value == null) {
             text = null;
         } else if (value.length == 0) {
@@ -26,6 +26,7 @@ class Base64UrlJsonSerializer extends JsonSerializer<byte[]> {
         } else {
             text = Base64.getUrlEncoder().withoutPadding().encodeToString(value);
         }
-        jgen.writeString(text);
+
+        jsonGenerator.writeString(text);
     }
 }
