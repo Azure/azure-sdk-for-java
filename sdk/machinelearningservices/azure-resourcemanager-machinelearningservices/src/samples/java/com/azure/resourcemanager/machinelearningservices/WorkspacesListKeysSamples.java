@@ -6,7 +6,14 @@ package com.azure.resourcemanager.machinelearningservices;
 
 import com.azure.core.util.Context;
 
+/** Samples for Workspaces ListKeys. */
 public final class WorkspacesListKeysSamples {
+    /**
+     * Sample code: List Workspace Keys.
+     *
+     * @param machineLearningServicesManager Entry point to MachineLearningServicesManager. These APIs allow end users
+     *     to operate on Azure Machine Learning Workspace resources.
+     */
     public static void listWorkspaceKeys(
         com.azure.resourcemanager.machinelearningservices.MachineLearningServicesManager
             machineLearningServicesManager) {

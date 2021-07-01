@@ -9,7 +9,14 @@ import com.azure.resourcemanager.machinelearningservices.models.ComputeResource;
 import com.azure.resourcemanager.machinelearningservices.models.ScaleSettings;
 import java.time.Duration;
 
+/** Samples for MachineLearningCompute Update. */
 public final class MachineLearningComputeUpdateSamples {
+    /**
+     * Sample code: Update a AmlCompute Compute.
+     *
+     * @param machineLearningServicesManager Entry point to MachineLearningServicesManager. These APIs allow end users
+     *     to operate on Azure Machine Learning Workspace resources.
+     */
     public static void updateAAmlComputeCompute(
         com.azure.resourcemanager.machinelearningservices.MachineLearningServicesManager
             machineLearningServicesManager) {

@@ -6,7 +6,14 @@ package com.azure.resourcemanager.machinelearningservices;
 
 import com.azure.core.util.Context;
 
+/** Samples for WorkspaceConnections List. */
 public final class WorkspaceConnectionsListSamples {
+    /**
+     * Sample code: ListWorkspaceConnections.
+     *
+     * @param machineLearningServicesManager Entry point to MachineLearningServicesManager. These APIs allow end users
+     *     to operate on Azure Machine Learning Workspace resources.
+     */
     public static void listWorkspaceConnections(
         com.azure.resourcemanager.machinelearningservices.MachineLearningServicesManager
             machineLearningServicesManager) {

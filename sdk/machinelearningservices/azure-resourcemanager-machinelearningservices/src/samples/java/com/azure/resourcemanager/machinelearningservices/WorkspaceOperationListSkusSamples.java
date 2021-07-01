@@ -6,7 +6,14 @@ package com.azure.resourcemanager.machinelearningservices;
 
 import com.azure.core.util.Context;
 
+/** Samples for WorkspaceOperation ListSkus. */
 public final class WorkspaceOperationListSkusSamples {
+    /**
+     * Sample code: List Skus.
+     *
+     * @param machineLearningServicesManager Entry point to MachineLearningServicesManager. These APIs allow end users
+     *     to operate on Azure Machine Learning Workspace resources.
+     */
     public static void listSkus(
         com.azure.resourcemanager.machinelearningservices.MachineLearningServicesManager
             machineLearningServicesManager) {

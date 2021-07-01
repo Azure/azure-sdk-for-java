@@ -6,7 +6,14 @@ package com.azure.resourcemanager.machinelearningservices;
 
 import com.azure.core.util.Context;
 
+/** Samples for Workspaces GetByResourceGroup. */
 public final class WorkspacesGetByResourceGroupSamples {
+    /**
+     * Sample code: Get Workspace.
+     *
+     * @param machineLearningServicesManager Entry point to MachineLearningServicesManager. These APIs allow end users
+     *     to operate on Azure Machine Learning Workspace resources.
+     */
     public static void getWorkspace(
         com.azure.resourcemanager.machinelearningservices.MachineLearningServicesManager
             machineLearningServicesManager) {

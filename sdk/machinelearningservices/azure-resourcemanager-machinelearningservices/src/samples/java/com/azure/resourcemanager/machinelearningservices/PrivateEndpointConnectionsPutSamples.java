@@ -7,7 +7,14 @@ package com.azure.resourcemanager.machinelearningservices;
 import com.azure.resourcemanager.machinelearningservices.models.PrivateEndpointServiceConnectionStatus;
 import com.azure.resourcemanager.machinelearningservices.models.PrivateLinkServiceConnectionState;
 
+/** Samples for PrivateEndpointConnections Put. */
 public final class PrivateEndpointConnectionsPutSamples {
+    /**
+     * Sample code: WorkspacePutPrivateEndpointConnection.
+     *
+     * @param machineLearningServicesManager Entry point to MachineLearningServicesManager. These APIs allow end users
+     *     to operate on Azure Machine Learning Workspace resources.
+     */
     public static void workspacePutPrivateEndpointConnection(
         com.azure.resourcemanager.machinelearningservices.MachineLearningServicesManager
             machineLearningServicesManager) {

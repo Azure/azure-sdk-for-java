@@ -10,7 +10,14 @@ import com.azure.resourcemanager.machinelearningservices.models.QuotaUnit;
 import com.azure.resourcemanager.machinelearningservices.models.QuotaUpdateParameters;
 import java.util.Arrays;
 
+/** Samples for Quotas Update. */
 public final class QuotasUpdateSamples {
+    /**
+     * Sample code: update quotas.
+     *
+     * @param machineLearningServicesManager Entry point to MachineLearningServicesManager. These APIs allow end users
+     *     to operate on Azure Machine Learning Workspace resources.
+     */
     public static void updateQuotas(
         com.azure.resourcemanager.machinelearningservices.MachineLearningServicesManager
             machineLearningServicesManager) {

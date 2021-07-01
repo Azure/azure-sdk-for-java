@@ -6,7 +6,14 @@ package com.azure.resourcemanager.machinelearningservices;
 
 import com.azure.core.util.Context;
 
+/** Samples for PrivateLinkResources ListByWorkspace. */
 public final class PrivateLinkResourcesListByWorkspaceSamples {
+    /**
+     * Sample code: WorkspaceListPrivateLinkResources.
+     *
+     * @param machineLearningServicesManager Entry point to MachineLearningServicesManager. These APIs allow end users
+     *     to operate on Azure Machine Learning Workspace resources.
+     */
     public static void workspaceListPrivateLinkResources(
         com.azure.resourcemanager.machinelearningservices.MachineLearningServicesManager
             machineLearningServicesManager) {

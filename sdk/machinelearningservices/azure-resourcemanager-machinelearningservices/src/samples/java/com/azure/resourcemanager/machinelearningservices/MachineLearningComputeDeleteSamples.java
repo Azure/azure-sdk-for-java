@@ -7,7 +7,14 @@ package com.azure.resourcemanager.machinelearningservices;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.machinelearningservices.models.UnderlyingResourceAction;
 
+/** Samples for MachineLearningCompute Delete. */
 public final class MachineLearningComputeDeleteSamples {
+    /**
+     * Sample code: Delete Compute.
+     *
+     * @param machineLearningServicesManager Entry point to MachineLearningServicesManager. These APIs allow end users
+     *     to operate on Azure Machine Learning Workspace resources.
+     */
     public static void deleteCompute(
         com.azure.resourcemanager.machinelearningservices.MachineLearningServicesManager
             machineLearningServicesManager) {

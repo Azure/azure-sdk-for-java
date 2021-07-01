@@ -7,7 +7,14 @@ package com.azure.resourcemanager.machinelearningservices;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.machinelearningservices.models.Workspace;
 
+/** Samples for Workspaces Update. */
 public final class WorkspacesUpdateSamples {
+    /**
+     * Sample code: Update Workspace.
+     *
+     * @param machineLearningServicesManager Entry point to MachineLearningServicesManager. These APIs allow end users
+     *     to operate on Azure Machine Learning Workspace resources.
+     */
     public static void updateWorkspace(
         com.azure.resourcemanager.machinelearningservices.MachineLearningServicesManager
             machineLearningServicesManager) {

@@ -6,7 +6,14 @@ package com.azure.resourcemanager.machinelearningservices;
 
 import com.azure.core.util.Context;
 
+/** Samples for MachineLearningCompute Get. */
 public final class MachineLearningComputeGetSamples {
+    /**
+     * Sample code: Get a AKS Compute.
+     *
+     * @param machineLearningServicesManager Entry point to MachineLearningServicesManager. These APIs allow end users
+     *     to operate on Azure Machine Learning Workspace resources.
+     */
     public static void getAAKSCompute(
         com.azure.resourcemanager.machinelearningservices.MachineLearningServicesManager
             machineLearningServicesManager) {
@@ -15,6 +22,12 @@ public final class MachineLearningComputeGetSamples {
             .getWithResponse("testrg123", "workspaces123", "compute123", Context.NONE);
     }
 
+    /**
+     * Sample code: Get an ComputeInstance.
+     *
+     * @param machineLearningServicesManager Entry point to MachineLearningServicesManager. These APIs allow end users
+     *     to operate on Azure Machine Learning Workspace resources.
+     */
     public static void getAnComputeInstance(
         com.azure.resourcemanager.machinelearningservices.MachineLearningServicesManager
             machineLearningServicesManager) {
@@ -23,6 +36,12 @@ public final class MachineLearningComputeGetSamples {
             .getWithResponse("testrg123", "workspaces123", "compute123", Context.NONE);
     }
 
+    /**
+     * Sample code: Get a AML Compute.
+     *
+     * @param machineLearningServicesManager Entry point to MachineLearningServicesManager. These APIs allow end users
+     *     to operate on Azure Machine Learning Workspace resources.
+     */
     public static void getAAMLCompute(
         com.azure.resourcemanager.machinelearningservices.MachineLearningServicesManager
             machineLearningServicesManager) {

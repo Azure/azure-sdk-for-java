@@ -19,7 +19,14 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+/** Samples for MachineLearningService CreateOrUpdate. */
 public final class MachineLearningServiceCreateOrUpdateSamples {
+    /**
+     * Sample code: Create Or Update service.
+     *
+     * @param machineLearningServicesManager Entry point to MachineLearningServicesManager. These APIs allow end users
+     *     to operate on Azure Machine Learning Workspace resources.
+     */
     public static void createOrUpdateService(
         com.azure.resourcemanager.machinelearningservices.MachineLearningServicesManager machineLearningServicesManager)
         throws IOException {

@@ -25,7 +25,14 @@ import com.azure.resourcemanager.machinelearningservices.models.VirtualMachineIm
 import com.azure.resourcemanager.machinelearningservices.models.VmPriority;
 import java.time.Duration;
 
+/** Samples for MachineLearningCompute CreateOrUpdate. */
 public final class MachineLearningComputeCreateOrUpdateSamples {
+    /**
+     * Sample code: Update a AKS Compute.
+     *
+     * @param machineLearningServicesManager Entry point to MachineLearningServicesManager. These APIs allow end users
+     *     to operate on Azure Machine Learning Workspace resources.
+     */
     public static void updateAAKSCompute(
         com.azure.resourcemanager.machinelearningservices.MachineLearningServicesManager
             machineLearningServicesManager) {
@@ -43,6 +50,12 @@ public final class MachineLearningComputeCreateOrUpdateSamples {
             .create();
     }
 
+    /**
+     * Sample code: Create a AML Compute.
+     *
+     * @param machineLearningServicesManager Entry point to MachineLearningServicesManager. These APIs allow end users
+     *     to operate on Azure Machine Learning Workspace resources.
+     */
     public static void createAAMLCompute(
         com.azure.resourcemanager.machinelearningservices.MachineLearningServicesManager
             machineLearningServicesManager) {
@@ -73,6 +86,12 @@ public final class MachineLearningComputeCreateOrUpdateSamples {
             .create();
     }
 
+    /**
+     * Sample code: Create an ComputeInstance Compute.
+     *
+     * @param machineLearningServicesManager Entry point to MachineLearningServicesManager. These APIs allow end users
+     *     to operate on Azure Machine Learning Workspace resources.
+     */
     public static void createAnComputeInstanceCompute(
         com.azure.resourcemanager.machinelearningservices.MachineLearningServicesManager
             machineLearningServicesManager) {
@@ -100,6 +119,12 @@ public final class MachineLearningComputeCreateOrUpdateSamples {
             .create();
     }
 
+    /**
+     * Sample code: Create an ComputeInstance Compute with minimal inputs.
+     *
+     * @param machineLearningServicesManager Entry point to MachineLearningServicesManager. These APIs allow end users
+     *     to operate on Azure Machine Learning Workspace resources.
+     */
     public static void createAnComputeInstanceComputeWithMinimalInputs(
         com.azure.resourcemanager.machinelearningservices.MachineLearningServicesManager
             machineLearningServicesManager) {
@@ -113,6 +138,12 @@ public final class MachineLearningComputeCreateOrUpdateSamples {
             .create();
     }
 
+    /**
+     * Sample code: Update a AML Compute.
+     *
+     * @param machineLearningServicesManager Entry point to MachineLearningServicesManager. These APIs allow end users
+     *     to operate on Azure Machine Learning Workspace resources.
+     */
     public static void updateAAMLCompute(
         com.azure.resourcemanager.machinelearningservices.MachineLearningServicesManager
             machineLearningServicesManager) {
@@ -134,6 +165,12 @@ public final class MachineLearningComputeCreateOrUpdateSamples {
             .create();
     }
 
+    /**
+     * Sample code: Create AKS Compute.
+     *
+     * @param machineLearningServicesManager Entry point to MachineLearningServicesManager. These APIs allow end users
+     *     to operate on Azure Machine Learning Workspace resources.
+     */
     public static void createAKSCompute(
         com.azure.resourcemanager.machinelearningservices.MachineLearningServicesManager
             machineLearningServicesManager) {
@@ -146,6 +183,12 @@ public final class MachineLearningComputeCreateOrUpdateSamples {
             .create();
     }
 
+    /**
+     * Sample code: Create a DataFactory Compute.
+     *
+     * @param machineLearningServicesManager Entry point to MachineLearningServicesManager. These APIs allow end users
+     *     to operate on Azure Machine Learning Workspace resources.
+     */
     public static void createADataFactoryCompute(
         com.azure.resourcemanager.machinelearningservices.MachineLearningServicesManager
             machineLearningServicesManager) {

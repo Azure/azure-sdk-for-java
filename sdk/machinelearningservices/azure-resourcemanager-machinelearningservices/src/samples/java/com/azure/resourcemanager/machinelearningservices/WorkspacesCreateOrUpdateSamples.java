@@ -17,7 +17,14 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+/** Samples for Workspaces CreateOrUpdate. */
 public final class WorkspacesCreateOrUpdateSamples {
+    /**
+     * Sample code: Create Workspace.
+     *
+     * @param machineLearningServicesManager Entry point to MachineLearningServicesManager. These APIs allow end users
+     *     to operate on Azure Machine Learning Workspace resources.
+     */
     public static void createWorkspace(
         com.azure.resourcemanager.machinelearningservices.MachineLearningServicesManager
             machineLearningServicesManager) {
