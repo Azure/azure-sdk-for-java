@@ -177,7 +177,8 @@ public final class TextAnalyticsActions {
     private void validateActionsNumber(Object[] actions, String actionType) {
         if (actions != null && actions.length > 1) {
             throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
-                "Currently, the service can accept up to one %s. Duplicate actions not supported.", actionType)));
+                "Currently, the service can accept up to one %s. Multiple actions of the same type are not supported.",
+                actionType)));
         }
     }
 }

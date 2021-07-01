@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  */
 public class TextAnalyticsActionsUnitTest {
     private static final String DUPLICATE_ACTIONS_ERROR_MESSAGE =
-        "Currently, the service can accept up to one %s. Duplicate actions not supported.";
+        "Currently, the service can accept up to one %s. Multiple actions of the same type are not supported.";
 
     @Test
     public void duplicateRecognizeEntitiesActions() {
