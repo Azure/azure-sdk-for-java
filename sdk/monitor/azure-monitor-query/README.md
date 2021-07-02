@@ -40,7 +40,7 @@ This client library provides access to query metrics and logs collected by Azure
 <!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L41-L43 -->
 ```java
 LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
-    .credential(tokenCredential)
+    .credential(new DefaultAzureCredentialBuilder().build())
     .buildClient();
 ```
 
@@ -50,7 +50,7 @@ LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
 <!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L45-L47 -->
 ```java
 LogsQueryAsyncClient logsQueryAsyncClient = new LogsQueryClientBuilder()
-    .credential(tokenCredential)
+    .credential(new DefaultAzureCredentialBuilder().build())
     .buildAsyncClient();
 ```
 
@@ -268,7 +268,7 @@ for (LogsTable table : logsQueryResult.getLogsTables()) {
 <!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L56-L58 -->
 ```java
 MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder()
-    .credential(tokenCredential)
+    .credential(new DefaultAzureCredentialBuilder().build())
     .buildClient();
 ```
 
@@ -277,7 +277,7 @@ MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder()
 <!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L60-L62 -->
 ```java
 MetricsQueryAsyncClient metricsQueryAsyncClient = new MetricsQueryClientBuilder()
-    .credential(tokenCredential)
+    .credential(new DefaultAzureCredentialBuilder().build())
     .buildAsyncClient();
 ```
 
