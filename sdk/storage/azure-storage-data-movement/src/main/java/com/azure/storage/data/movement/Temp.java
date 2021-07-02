@@ -4,7 +4,6 @@
 package com.azure.storage.data.movement;
 
 /**
- * Temporary Class
+ * Placeholder class
  */
-public class Temp {
-}
+public class Temp { }
