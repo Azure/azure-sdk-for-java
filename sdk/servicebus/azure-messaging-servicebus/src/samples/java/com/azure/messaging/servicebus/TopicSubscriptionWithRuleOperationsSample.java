@@ -6,19 +6,21 @@ package com.azure.messaging.servicebus;
 import com.azure.messaging.servicebus.administration.ServiceBusAdministrationClient;
 import com.azure.messaging.servicebus.administration.ServiceBusAdministrationClientBuilder;
 import com.azure.messaging.servicebus.administration.models.CorrelationRuleFilter;
-    import com.azure.messaging.servicebus.administration.models.FalseRuleFilter;
+import com.azure.messaging.servicebus.administration.models.CreateRuleOptions;
+import com.azure.messaging.servicebus.administration.models.FalseRuleFilter;
 import com.azure.messaging.servicebus.administration.models.SqlRuleAction;
 import com.azure.messaging.servicebus.administration.models.SqlRuleFilter;
 import com.azure.messaging.servicebus.administration.models.TrueRuleFilter;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
+import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Sample demonstrates how to manage (add/remove/get) rules on Subscription. We will also explore different forms of
@@ -45,27 +47,19 @@ import java.util.concurrent.atomic.AtomicReference;
  * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/topic-filters">Topic Filters</a>
  */
 public class TopicSubscriptionWithRuleOperationsSample {
-
-    static final String SERVICE_BUS_CONNECTION_STRING = System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
-    static final String SERVICE_BUS_TOPIC_NAME = System.getenv("AZURE_SERVICEBUS_SAMPLE_TOPIC_NAME");
-    static final String ALL_MESSAGES_SUBSCRIPTION_NAME = "{Subscription 1 Name}";
-    static final String SQL_FILTER_ONLY_SUBSCRIPTION_NAME = "{Subscription 2 Name}";
-    static final String SQL_FILTER_WITH_ACTION_SUBSCRIPTION_NAME = "{Subscription 3 Name}";
-    static final String CORRELATION_FILTER_SUBSCRIPTION_NAME = "{Subscription 4 Name}";
-    static final String DEFAULT_SUBSCRIPTION_RULE_NAME = "$Default";
-    static final String SQL_FILTER_ONLY_SUBSCRIPTION_RULE_NAME = "RedSqlRule";
-    static final String SQL_FILTER_WITH_ACTION_SUBSCRIPTION_RULE_NAME = "BlueSqlRule";
-    static final String CORRELATION_FILTER_SUBSCRIPTION_RULE_NAME = "ImportantCorrelationRule";
+    // Connection String for the namespace can be obtained from the Azure portal under the
+    // `Shared Access policies` section.
+    private static final String SERVICEBUS_NAMESPACE_CONNECTION_STRING =
+        System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
+    private static final String TOPIC_NAME = System.getenv("AZURE_SERVICEBUS_SAMPLE_TOPIC_NAME");
 
     /**
      * Main method to invoke this demo on how to receive {@link ServiceBusReceivedMessage messages} by topic
      * subscriptions from an Azure Service Bus Topic.
      *
      * @param args Unused arguments to the program.
-     *
-     * @throws InterruptedException If the program is unable to sleep while waiting for the receive to complete.
      */
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         TopicSubscriptionWithRuleOperationsSample app = new TopicSubscriptionWithRuleOperationsSample();
         app.run();
     }
@@ -73,23 +67,36 @@ public class TopicSubscriptionWithRuleOperationsSample {
     /**
      * This method to invoke this demo on how to receive {@link ServiceBusReceivedMessage messages} by topic
      * subscriptions from an Azure Service Bus Topic.
-     *
-     * @throws InterruptedException If the program is unable to sleep while waiting for the receive to complete.
      */
-    void run() throws InterruptedException {
+    void run() {
+        // Create 4 default subscriptions (no rules specified explicitly) and provide subscription names.
+        // The Rule addition will be done as part of the sample depending on the subscription behavior expected.
+        final String allMessagesSubscription = "{Subscription 1 Name}";
+        final String sqlFilterOnlySubscription = "{Subscription 2 Name}";
+        final String sqlFilterWithActionSubscription = "{Subscription 3 Name}";
+        final String correlationFilterSubscription = "{Subscription 4 Name}";
 
-        ServiceBusAdministrationClient administrationClient =
-            new ServiceBusAdministrationClientBuilder()
-                .connectionString(SERVICE_BUS_CONNECTION_STRING)
-                .buildClient();
+        // When a subscription is created. A default rule is created for it. This is the name of that default rule.
+        // The rule associated with the default rule is a TrueRuleFilter. It will receive all messages.
+        final String defaultRuleName = "$Default";
 
-        // First Subscription is already created with default rule. Leave as is.
-        System.out.println(String.format("SubscriptionName: %s, Removing and re-adding Default Rule", ALL_MESSAGES_SUBSCRIPTION_NAME));
-        administrationClient.deleteRule(SERVICE_BUS_TOPIC_NAME, ALL_MESSAGES_SUBSCRIPTION_NAME, DEFAULT_SUBSCRIPTION_RULE_NAME);
-        administrationClient.createRule(SERVICE_BUS_TOPIC_NAME, ALL_MESSAGES_SUBSCRIPTION_NAME, DEFAULT_SUBSCRIPTION_RULE_NAME);
-        administrationClient.updateRule(SERVICE_BUS_TOPIC_NAME, ALL_MESSAGES_SUBSCRIPTION_NAME,
-            administrationClient.getRule(SERVICE_BUS_TOPIC_NAME, ALL_MESSAGES_SUBSCRIPTION_NAME, DEFAULT_SUBSCRIPTION_RULE_NAME)
-                .setFilter(new TrueRuleFilter()));
+        // Names of the subscription rules we will create.
+        final String sqlFilterOnlyRuleName = "RedSqlRule";
+        final String sqlFilterWithActionRuleName = "BlueSqlRule";
+        final String correlationFilterSubscriptionRule = "ImportantCorrelationRule";
+
+        final ServiceBusAdministrationClient administrationClient = new ServiceBusAdministrationClientBuilder()
+            .connectionString(SERVICEBUS_NAMESPACE_CONNECTION_STRING)
+            .buildClient();
+
+        // In this scenario, we're deleting the default rule and adding the equivalent rule back.
+        System.out.printf("SubscriptionName: %s, Removing and re-adding Default Rule%n", allMessagesSubscription);
+        administrationClient.deleteRule(TOPIC_NAME, allMessagesSubscription, defaultRuleName);
+
+        // Creating the equivalent of the $Default rule.
+        final CreateRuleOptions defaultRuleOptions = new CreateRuleOptions()
+            .setFilter(new TrueRuleFilter());
+        administrationClient.createRule(TOPIC_NAME, allMessagesSubscription, defaultRuleName, defaultRuleOptions);
 
         // 2nd Subscription: Add SqlFilter on Subscription 2
         // Delete Default Rule.
@@ -100,55 +107,94 @@ public class TopicSubscriptionWithRuleOperationsSample {
         // rule, then only one message will be delivered to the subscription. If more than one rules
         // match and there is a `SqlRuleAction` specified for the rule, then one message per `SqlRuleAction`
         // is delivered to the subscription.
-        System.out.println(String.format("SubscriptionName: %s, Removing Default Rule and Adding SqlFilter", SQL_FILTER_ONLY_SUBSCRIPTION_NAME));
-        administrationClient.deleteRule(SERVICE_BUS_TOPIC_NAME, SQL_FILTER_ONLY_SUBSCRIPTION_NAME, DEFAULT_SUBSCRIPTION_RULE_NAME);
-        administrationClient.createRule(SERVICE_BUS_TOPIC_NAME, SQL_FILTER_ONLY_SUBSCRIPTION_NAME, SQL_FILTER_ONLY_SUBSCRIPTION_RULE_NAME);
-        administrationClient.updateRule(SERVICE_BUS_TOPIC_NAME, SQL_FILTER_ONLY_SUBSCRIPTION_NAME,
-            administrationClient.getRule(SERVICE_BUS_TOPIC_NAME, SQL_FILTER_ONLY_SUBSCRIPTION_NAME, SQL_FILTER_ONLY_SUBSCRIPTION_RULE_NAME)
-                .setFilter(new SqlRuleFilter("Color = 'Red'")));
+        System.out.printf("SubscriptionName: %s, Removing Default Rule and Adding SqlFilter%n",
+            sqlFilterOnlySubscription);
+        administrationClient.deleteRule(TOPIC_NAME, sqlFilterOnlySubscription, defaultRuleName);
+
+        final CreateRuleOptions sqlFilterRuleOptions = new CreateRuleOptions()
+            .setFilter(new SqlRuleFilter("Color = 'Red'"));
+        administrationClient.createRule(TOPIC_NAME, sqlFilterOnlySubscription, sqlFilterOnlyRuleName,
+            sqlFilterRuleOptions);
 
         // 3rd Subscription: Add SqlFilter and SqlRuleAction on Subscription 3
         // Delete Default Rule
         // Add the required SqlFilter Rule and Action
-        System.out.println(String.format("SubscriptionName: %s, Removing Default Rule and Adding CorrelationFilter", SQL_FILTER_WITH_ACTION_SUBSCRIPTION_NAME));
-        administrationClient.deleteRule(SERVICE_BUS_TOPIC_NAME, SQL_FILTER_WITH_ACTION_SUBSCRIPTION_NAME, DEFAULT_SUBSCRIPTION_RULE_NAME);
-        administrationClient.createRule(SERVICE_BUS_TOPIC_NAME, SQL_FILTER_WITH_ACTION_SUBSCRIPTION_NAME, SQL_FILTER_WITH_ACTION_SUBSCRIPTION_RULE_NAME);
-        administrationClient.updateRule(SERVICE_BUS_TOPIC_NAME, SQL_FILTER_WITH_ACTION_SUBSCRIPTION_NAME,
-            administrationClient.getRule(SERVICE_BUS_TOPIC_NAME, SQL_FILTER_WITH_ACTION_SUBSCRIPTION_NAME, SQL_FILTER_WITH_ACTION_SUBSCRIPTION_RULE_NAME)
-                .setFilter(new SqlRuleFilter("Color = 'Blue'"))
-                .setAction(new SqlRuleAction("SET Color = 'BlueProcessed'")));
+        System.out.printf("SubscriptionName: %s, Removing Default Rule and Adding CorrelationFilter%n",
+            sqlFilterWithActionSubscription);
+        administrationClient.deleteRule(TOPIC_NAME, sqlFilterWithActionSubscription, defaultRuleName);
+
+
+        final CreateRuleOptions sqlRuleWithActionOptions = new CreateRuleOptions()
+            .setFilter(new SqlRuleFilter("Color = 'Blue'"))
+            .setAction(new SqlRuleAction("SET Color = 'BlueProcessed'"));
+        administrationClient.createRule(TOPIC_NAME, sqlFilterWithActionSubscription, sqlFilterWithActionRuleName,
+            sqlRuleWithActionOptions);
 
         // 4th Subscription: Add Correlation Filter on Subscription 4
-        System.out.println(String.format("SubscriptionName: %s, Removing Default Rule and Adding CorrelationFilter", CORRELATION_FILTER_SUBSCRIPTION_NAME));
-        administrationClient.deleteRule(SERVICE_BUS_TOPIC_NAME, CORRELATION_FILTER_SUBSCRIPTION_NAME, DEFAULT_SUBSCRIPTION_RULE_NAME);
-        administrationClient.createRule(SERVICE_BUS_TOPIC_NAME, CORRELATION_FILTER_SUBSCRIPTION_NAME, CORRELATION_FILTER_SUBSCRIPTION_RULE_NAME);
-        administrationClient.updateRule(SERVICE_BUS_TOPIC_NAME, CORRELATION_FILTER_SUBSCRIPTION_NAME,
-            administrationClient.getRule(SERVICE_BUS_TOPIC_NAME, CORRELATION_FILTER_SUBSCRIPTION_NAME, CORRELATION_FILTER_SUBSCRIPTION_RULE_NAME)
-                .setFilter(new CorrelationRuleFilter().setCorrelationId("important").setLabel("Red")));
+        System.out.printf("SubscriptionName: %s, Removing Default Rule and Adding CorrelationFilter%n",
+            correlationFilterSubscription);
+        administrationClient.deleteRule(TOPIC_NAME, correlationFilterSubscription, defaultRuleName);
+
+        final CreateRuleOptions correlationFilterRuleOptions = new CreateRuleOptions()
+            .setFilter(new CorrelationRuleFilter().setCorrelationId("important").setLabel("Red"));
+        administrationClient.createRule(TOPIC_NAME, correlationFilterSubscription, correlationFilterSubscriptionRule,
+            correlationFilterRuleOptions);
 
         // Get Rules on Subscription, called here only for one subscription as example
-        administrationClient.listRules(SERVICE_BUS_TOPIC_NAME, CORRELATION_FILTER_SUBSCRIPTION_NAME)
-            .forEach(ruleProperties -> {
-                System.out.println(String.format("GetRules:: SubscriptionName: %s, CorrelationFilter Name: %s, Rule: %s", CORRELATION_FILTER_SUBSCRIPTION_NAME, ruleProperties.getName(), ruleProperties.getFilter()));
-            });
+        administrationClient.listRules(TOPIC_NAME, correlationFilterSubscription)
+            .forEach(ruleProperties ->
+                System.out.printf("GetRules:: SubscriptionName: %s, CorrelationFilter Name: %s, Rule: %s%n",
+                    correlationFilterSubscription, ruleProperties.getName(), ruleProperties.getFilter()));
 
         // Send messages to Topic
-        sendMessagesAsync();
+        sendMessages();
 
         // Receive messages from 'allMessagesSubscriptionName'. Should receive all 9 messages
-        receiveMessagesAsync(ALL_MESSAGES_SUBSCRIPTION_NAME);
+        // The function is asynchronous, but we block here because we want to see the behaviour in sequence.
+        receiveMessages(allMessagesSubscription).block();
 
         // Receive messages from 'sqlFilterOnlySubscriptionName'. Should receive all messages with Color = 'Red' i.e 3 messages
-        receiveMessagesAsync(SQL_FILTER_ONLY_SUBSCRIPTION_NAME);
+        receiveMessages(sqlFilterOnlySubscription).block();
 
         // Receive messages from 'sqlFilterWithActionSubscriptionName'. Should receive all messages with Color = 'Blue'
         // i.e 3 messages AND all messages should have color set to 'BlueProcessed'
-        receiveMessagesAsync(SQL_FILTER_WITH_ACTION_SUBSCRIPTION_NAME);
+        receiveMessages(sqlFilterWithActionSubscription).block();
 
         // Receive messages from 'correlationFilterSubscriptionName'. Should receive all messages  with Color = 'Red' and CorrelationId = "important"
         // i.e 1 message
-        receiveMessagesAsync(CORRELATION_FILTER_SUBSCRIPTION_NAME);
+        receiveMessages(correlationFilterSubscription).block();
+    }
 
+    /**
+     * Send a {@link ServiceBusMessageBatch} to an Azure Service Bus Topic.
+     */
+    private static void sendMessages() {
+        List<ServiceBusMessage> messageList = Arrays.asList(
+            createServiceBusMessage("Red", null),
+            createServiceBusMessage("Blue", null),
+            createServiceBusMessage("Red", "important"),
+            createServiceBusMessage("Blue", "important"),
+            createServiceBusMessage("Red", "not_important"),
+            createServiceBusMessage("Blue", "not_important"),
+            createServiceBusMessage("Green", null),
+            createServiceBusMessage("Green", "important"),
+            createServiceBusMessage("Green", "not_important")
+        );
+
+        ServiceBusSenderClient topicSenderClient = new ServiceBusClientBuilder()
+            .connectionString(SERVICEBUS_NAMESPACE_CONNECTION_STRING)
+            .sender()
+            .topicName(TOPIC_NAME)
+            .buildClient();
+
+        try {
+            System.out.println("==========================================================================");
+            System.out.println("Sending Messages to Topic");
+
+            topicSenderClient.sendMessages(messageList);
+        } finally {
+            topicSenderClient.close();
+        }
     }
 
     /**
@@ -156,78 +202,52 @@ public class TopicSubscriptionWithRuleOperationsSample {
      *
      * @param subscriptionName Subscription Name.
      *
-     * @throws InterruptedException If the program is unable to sleep while waiting for the receive to complete.
+     * @return A Mono that completes when all messages have been received from the subscription. That is, when there is
+     *     a period of 5 seconds where no message has been received.
      */
-    static void receiveMessagesAsync(String subscriptionName) throws InterruptedException {
-        AtomicReference<ServiceBusReceiverAsyncClient> receiverAsyncClient = new AtomicReference<>();
-        AtomicReference<CountDownLatch> countdownLatch = new AtomicReference<>();
-        countdownLatch.set(new CountDownLatch(1));
-        receiverAsyncClient.set(new ServiceBusClientBuilder()
-            .connectionString(SERVICE_BUS_CONNECTION_STRING)
-            .receiver()
-            .topicName(SERVICE_BUS_TOPIC_NAME)
-            .subscriptionName(subscriptionName)
-            .receiveMode(ServiceBusReceiveMode.RECEIVE_AND_DELETE)
-            .buildAsyncClient());
+    private static Mono<Void> receiveMessages(String subscriptionName) {
         System.out.println("==========================================================================");
-        System.out.println(String.format("%s :: Receiving Messages From Subscription: %s", OffsetDateTime.now(), subscriptionName));
-        AtomicLong receiveMessagesCount = new AtomicLong(0L);
-        receiverAsyncClient.get().receiveMessages().parallel().subscribe(receivedMessage -> {
-                receiveMessagesCount.incrementAndGet();
-                System.out.println(String.format("Color Property = %s, CorrelationId = %s",
-                    receivedMessage.getApplicationProperties().get("Color"),
-                    receivedMessage.getCorrelationId() == null ? "" : receivedMessage.getCorrelationId()));
-            }
-        );
-        countdownLatch.get().await(10, TimeUnit.SECONDS);
-        System.out.println(String.format("%s :: Received '%s' Messages From Subscription: %s", OffsetDateTime.now(), receiveMessagesCount.get(), subscriptionName));
-        System.out.println("==========================================================================");
-        receiverAsyncClient.get().close();
-    }
+        System.out.printf("%s: Receiving Messages From Subscription: %s%n", OffsetDateTime.now(), subscriptionName);
 
-    /**
-     * Send a {@link ServiceBusMessageBatch} to an Azure Service Bus Topic.
-     */
-    static void sendMessagesAsync() {
-        ServiceBusSenderClient topicSenderClient = new ServiceBusClientBuilder()
-            .connectionString(SERVICE_BUS_CONNECTION_STRING)
-            .sender()
-            .topicName(SERVICE_BUS_TOPIC_NAME)
-            .buildClient();
-
-        List<ServiceBusMessage> messageList = new ArrayList<ServiceBusMessage>();
-        messageList.add(createServiceBusMessage("Red", null));
-        messageList.add(createServiceBusMessage("Blue", null));
-        messageList.add(createServiceBusMessage("Red", "important"));
-        messageList.add(createServiceBusMessage("Blue", "important"));
-        messageList.add(createServiceBusMessage("Red", "notimportant"));
-        messageList.add(createServiceBusMessage("Blue", "notimportant"));
-        messageList.add(createServiceBusMessage("Green", null));
-        messageList.add(createServiceBusMessage("Green", "important"));
-        messageList.add(createServiceBusMessage("Green", "notimportant"));
-
-        System.out.println("==========================================================================");
-        System.out.println("Sending Messages to Topic");
-        ServiceBusMessageBatch messageBatch = topicSenderClient.createMessageBatch();
-        messageList.forEach(message -> {
-            System.out.println(String.format("Sent Message:: Label: %s, CorrelationId: %s",
-                message.getBody().toString(), message.getCorrelationId() == null ? "" : message.getCorrelationId()));
-            messageBatch.tryAddMessage(message);
+        return Mono.using(() -> {
+            // Creating a receiver in RECEIVE_AND_DELETE mode, which means that the service automatically removes the
+            // message when it is received.
+            return new ServiceBusClientBuilder()
+                .connectionString(SERVICEBUS_NAMESPACE_CONNECTION_STRING)
+                .receiver()
+                .topicName(TOPIC_NAME)
+                .subscriptionName(subscriptionName)
+                .receiveMode(ServiceBusReceiveMode.RECEIVE_AND_DELETE)
+                .buildAsyncClient();
+        }, receiver -> {
+            return receiver.receiveMessages()
+                .timeout(Duration.ofSeconds(5))
+                .map(message -> {
+                    System.out.printf("Color Property = %s, CorrelationId = %s%n",
+                        message.getApplicationProperties().get("Color"),
+                        message.getCorrelationId() == null ? "" : message.getCorrelationId());
+                    return message;
+                })
+                .onErrorResume(TimeoutException.class, error -> {
+                    System.out.println("There were no more messages to receive. Error: " + error);
+                    return Mono.empty();
+                }).then();
+        }, receiver -> {
+            // Disposing of receiver.
+            receiver.close();
         });
-        topicSenderClient.sendMessages(messageBatch);
-        topicSenderClient.close();
     }
 
     /**
      * Create a {@link ServiceBusMessage} for add to a {@link ServiceBusMessageBatch}.
      */
-    static ServiceBusMessage createServiceBusMessage(String label, String correlationId) {
+    private static ServiceBusMessage createServiceBusMessage(String label, String correlationId) {
         ServiceBusMessage message = new ServiceBusMessage(label);
         message.getApplicationProperties().put("Color", label);
         if (correlationId != null) {
             message.setCorrelationId(correlationId);
         }
+
         return message;
     }
-
 }
