@@ -54,7 +54,8 @@ public final class WebNotificationHook extends NotificationHook {
     }
 
     /**
-     * Gets the external link.
+     * Gets the external link url, this will be included in the notification sent to the users,
+     * this is usually a reference to any troubleshooting guide.
      *
      * @return The external link.
      */
@@ -145,7 +146,8 @@ public final class WebNotificationHook extends NotificationHook {
     }
 
     /**
-     * Sets the customized external link.
+     * Sets the customized external link, it will be included in the notification sent to the users,
+     * this is usually a reference to any troubleshooting guide.
      *
      * @param externalLink The customized link.
      * @return The WebNotificationHook object itself.
@@ -193,13 +195,13 @@ public final class WebNotificationHook extends NotificationHook {
     }
 
     /**
-     * Sets the user e-mails with administrative rights to manage the hook.
+     * Sets the user e-mails and clientIds with administrative rights to manage the hook.
      *
-     * @param emails The emails.
+     * @param emails The emails and clientIds
      * @return The WebNotificationHook object itself.
      */
-    public WebNotificationHook setAdminEmails(List<String> emails) {
-        super.setAdministratorEmails(emails);
+    public WebNotificationHook setAdmins(List<String> emails) {
+        super.setAdministrators(emails);
         return this;
     }
 

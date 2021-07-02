@@ -43,7 +43,7 @@ public abstract class NotificationHookTestBase extends MetricsAdvisorAdministrat
         Assertions.assertTrue(notificationHook instanceof EmailNotificationHook);
         EmailNotificationHook emailHook = (EmailNotificationHook) notificationHook;
         Assertions.assertNotNull(emailHook.getId());
-        Assertions.assertNotNull(emailHook.getAdminEmails());
+        Assertions.assertNotNull(emailHook.getAdmins());
         Assertions.assertNotNull(emailHook.getName());
         Assertions.assertEquals(CreateEmailHookInput.INSTANCE.description, emailHook.getDescription());
         Assertions.assertEquals(CreateEmailHookInput.INSTANCE.externalLink, emailHook.getExternalLink());
@@ -82,7 +82,7 @@ public abstract class NotificationHookTestBase extends MetricsAdvisorAdministrat
         Assertions.assertTrue(notificationHook instanceof WebNotificationHook);
         WebNotificationHook webHook = (WebNotificationHook) notificationHook;
         Assertions.assertNotNull(webHook.getId());
-        Assertions.assertNotNull(webHook.getAdminEmails());
+        Assertions.assertNotNull(webHook.getAdmins());
         Assertions.assertNotNull(webHook.getName());
         Assertions.assertEquals(CreateWebHookInput.INSTANCE.description, webHook.getDescription());
         Assertions.assertEquals(CreateWebHookInput.INSTANCE.externalLink, webHook.getExternalLink());

@@ -117,13 +117,13 @@ public final class EmailNotificationHook extends NotificationHook {
     }
 
     /**
-     * Sets the user e-mails with administrative rights to manage the hook.
+     * Sets the user e-mails and clientIds with administrative rights to manage the hook.
      *
-     * @param emails The emails.
+     * @param emails The emails and clientIds
      * @return The EmailNotificationHook object itself.
      */
-    public EmailNotificationHook setAdminEmails(List<String> emails) {
-        super.setAdministratorEmails(emails);
+    public EmailNotificationHook setAdmins(List<String> emails) {
+        super.setAdministrators(emails);
         return this;
     }
 
