@@ -1,5 +1,13 @@
 # Release History
 
+
+## 3.6.1 (2021-07-02)
+### Breaking Changes
+- Fix [cve-2021-22119](https://tanzu.vmware.com/security/cve-2021-22119)
+- Upgrade to [spring-boot-dependencies:2.5.2](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.5.2/spring-boot-dependencies-2.5.2.pom).
+- Upgrade to [spring-cloud-dependencies:2020.0.3](https://repo.maven.apache.org/maven2/org/springframework/cloud/spring-cloud-dependencies/2020.0.3/spring-cloud-dependencies-2020.0.3.pom).
+
+
 ## 3.6.0 (2021-06-23)
 ### Breaking Changes
 - Deprecate aad.group.enable-full-list, use aad.group.allowed-group-ids=all instead.
