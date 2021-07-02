@@ -5,7 +5,6 @@ package com.azure.spring.cloud.autoconfigure.servicebus;
 
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
-import com.azure.core.util.ClientOptions;
 import com.azure.core.util.CoreUtils;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.resourcemanager.AzureResourceManager;
@@ -89,14 +88,8 @@ public class AzureServiceBusAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public com.azure.core.util.Configuration configuration() {
-        return com.azure.core.util.Configuration.getGlobalConfiguration().clone();
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    public ProxyOptions proxyOptions(com.azure.core.util.Configuration configuration) {
-
+    public ProxyOptions proxyOptions() {
+        com.azure.core.util.Configuration configuration = com.azure.core.util.Configuration.getGlobalConfiguration().clone();
         ProxyAuthenticationType authentication = ProxyAuthenticationType.NONE;
 
         String proxyAddress = configuration.get(com.azure.core.util.Configuration.PROPERTY_HTTP_PROXY);
@@ -127,9 +120,4 @@ public class AzureServiceBusAutoConfiguration {
         }
     }
 
-    @Bean
-    @ConditionalOnMissingBean
-    public ClientOptions clientOptions() {
-        return new ClientOptions();
-    }
 }

@@ -43,12 +43,6 @@ public class AzureServiceBusQueueAutoConfiguration {
     @Autowired(required = false)
     private ProxyOptions proxyOptions;
 
-    @Autowired(required = false)
-    private com.azure.core.util.Configuration configuration;
-
-    @Autowired(required = false)
-    private ClientOptions clientOptions;
-
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnBean(ServiceBusNamespaceManager.class)
@@ -73,13 +67,11 @@ public class AzureServiceBusQueueAutoConfiguration {
 
         Assert.notNull(connectionString, "Service Bus connection string must not be null");
 
-        DefaultServiceBusQueueClientFactory clientFactory = new DefaultServiceBusQueueClientFactory(connectionString, properties.getTransportType());
+        DefaultServiceBusQueueClientFactory clientFactory = new DefaultServiceBusQueueClientFactory(connectionString);
 
         clientFactory.proxyOptions(proxyOptions);
         clientFactory.retryOptions(properties.getRetryOptions());
         clientFactory.transportType(properties.getTransportType());
-        clientFactory.configuration(configuration);
-        clientFactory.clientOptions(clientOptions);
 
         clientFactory.setNamespace(properties.getNamespace());
         clientFactory.setServiceBusNamespaceManager(namespaceManager);
