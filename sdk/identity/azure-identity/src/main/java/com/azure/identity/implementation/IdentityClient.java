@@ -777,10 +777,12 @@ public class IdentityClient {
      *
      * @param request the details of the token request
      * @param port the port on which the HTTP server is listening
+     * @param redirectUrl the redirect URL to listen on and receive security code
+     * @param loginHint the username suggestion to pre-fill the login page's username/email address field
      * @return a Publisher that emits an AccessToken
      */
     public Mono<MsalToken> authenticateWithBrowserInteraction(TokenRequestContext request, Integer port,
-                                                              String redirectUrl) {
+                                                              String redirectUrl, String loginHint) {
         URI redirectUri;
         String redirect;
 
@@ -805,6 +807,10 @@ public class IdentityClient {
         if (request.getClaims() != null) {
             ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());
             builder.claims(customClaimRequest);
+        }
+
+        if (loginHint != null) {
+            builder.loginHint(loginHint);
         }
 
         Mono<IAuthenticationResult> acquireToken = publicClientApplicationAccessor.getValue()

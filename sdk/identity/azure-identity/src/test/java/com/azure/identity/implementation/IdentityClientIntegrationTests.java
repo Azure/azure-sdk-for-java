@@ -61,7 +61,7 @@ public class IdentityClientIntegrationTests {
     @Ignore("Integration tests")
     public void browserCanGetToken() {
         IdentityClient client = new IdentityClient("common", System.getenv(AZURE_CLIENT_ID), null, null, null, null, false, new IdentityClientOptions().setProxyOptions(new ProxyOptions(Type.HTTP, new InetSocketAddress("localhost", 8888))));
-        MsalToken token = client.authenticateWithBrowserInteraction(request, 8765, null).block();
+        MsalToken token = client.authenticateWithBrowserInteraction(request, 8765, null, null).block();
         Assert.assertNotNull(token);
         Assert.assertNotNull(token.getToken());
         Assert.assertNotNull(token.getExpiresAt());

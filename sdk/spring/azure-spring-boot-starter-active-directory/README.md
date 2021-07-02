@@ -650,6 +650,36 @@ logging.level.org.hibernate=ERROR
 
 For more information about setting logging in spring, please refer to the [official doc].
 
+### Enable authority logging.
+
+Add the following logging settings:
+
+```properties
+# logging settings for web application scenario.
+logging.level.com.azure.spring.aad.webapp.AADOAuth2UserService=DEBUG
+
+# logging settings for resource server scenario.
+logging.level.com.azure.spring.aad.AADJwtGrantedAuthoritiesConverter=DEBUG
+```
+
+Then you will see log like this in web application:
+
+```text
+...
+DEBUG c.a.s.aad.webapp.AADOAuth2UserService    : User TestUser's authorities extracted by id token and access token: [ROLE_group1, ROLE_group2].
+...
+DEBUG c.a.s.aad.webapp.AADOAuth2UserService    : User TestUser's authorities saved from session: [ROLE_group1, ROLE_group2].
+...
+```
+
+Or log like this in resource server:
+
+```text
+...
+DEBUG .a.s.a.AADJwtGrantedAuthoritiesConverter : User TestUser's authorities created from jwt token: [SCOPE_Test.Read, APPROLE_WebApi.ExampleScope].
+...
+```
+
 ## Next steps
 
 ## Contributing

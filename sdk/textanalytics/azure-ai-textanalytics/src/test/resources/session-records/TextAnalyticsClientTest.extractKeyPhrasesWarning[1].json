@@ -1,23 +1,23 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.1-preview.5//keyPhrases?showStats=false&loggingOptOut=false",
+    "Uri" : "https://REDACTED.azure-api.net/text/analytics/v3.1/keyPhrases?showStats=false&loggingOptOut=false",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.7 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "3879f9d5-8dd2-4d35-b816-98ca8a74767c",
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.8 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "7d17801a-13fe-4d32-9933-44dd83b80e81",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "10",
+      "x-envoy-upstream-service-time" : "37",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
       "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=1,CognitiveServices.TextAnalytics.TextRecords=1",
-      "apim-request-id" : "27a3eac6-4c7f-492d-b81e-6e5d086d6772",
+      "apim-request-id" : "cf1f2b6b-9d0c-4f61-83e6-829dcacd2607",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"documents\":[{\"id\":\"0\",\"keyPhrases\":[\"Thisisaveryveryverylongtextwhichgoesonforalongtimeandwhichalmost\"],\"warnings\":[{\"code\":\"LongWordsInDocument\",\"message\":\"The document contains very long words (longer than 64 characters). These words will be truncated and may result in unreliable model predictions.\"}]}],\"errors\":[],\"modelVersion\":\"2020-07-01\"}",
-      "Date" : "Mon, 10 May 2021 15:43:08 GMT",
+      "Body" : "{\"documents\":[{\"id\":\"0\",\"keyPhrases\":[\"Thisisaveryveryverylongtextwhichgoesonforalongtimeandwhichalmostdoesn\",\"ThereasonforthistestistotryandseewhathappenswhenwesubmitaveryveryverylongtexttoLanguage\",\"Thisshouldworkjustfinebutjustincaseitisalwaysgoodtohaveatestcase\",\"ThisallowsustotestwhathappensifitisnotOK\",\"Ofcourseitisgoingtobeokbutthenagainitisalsobettertobesure\"],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-06-01\"}",
+      "Date" : "Mon, 14 Jun 2021 20:40:44 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

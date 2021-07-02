@@ -29,7 +29,7 @@ public final class AzureDataExplorerDataFeedSource extends DataFeedSource {
     /*
      * The authentication type to access the data source.
      */
-    private final DatasourceAuthenticationType authType;
+    private final DataSourceAuthenticationType authType;
 
     static {
         AzureDataExplorerDataFeedSourceAccessor.setAccessor(
@@ -44,7 +44,7 @@ public final class AzureDataExplorerDataFeedSource extends DataFeedSource {
     private AzureDataExplorerDataFeedSource(final String connectionString,
                                     final String query,
                                     final String credentialId,
-                                    final DatasourceAuthenticationType authType) {
+                                    final DataSourceAuthenticationType authType) {
         this.connectionString = connectionString;
         this.query = query;
         this.credentialId = credentialId;
@@ -61,7 +61,7 @@ public final class AzureDataExplorerDataFeedSource extends DataFeedSource {
      */
     public static AzureDataExplorerDataFeedSource fromBasicCredential(final String connectionString,
                                                                       final String query) {
-        return new AzureDataExplorerDataFeedSource(connectionString, query, null, DatasourceAuthenticationType.BASIC);
+        return new AzureDataExplorerDataFeedSource(connectionString, query, null, DataSourceAuthenticationType.BASIC);
     }
 
     /**
@@ -78,18 +78,18 @@ public final class AzureDataExplorerDataFeedSource extends DataFeedSource {
         return new AzureDataExplorerDataFeedSource(connectionString,
             query,
             null,
-            DatasourceAuthenticationType.MANAGED_IDENTITY);
+            DataSourceAuthenticationType.MANAGED_IDENTITY);
     }
 
     /**
      * Create a AzureDataExplorerDataFeedSource with the {@code credentialId} identifying a credential
-     * entity of type {@link DatasourceServicePrincipal}, the entity contains
+     * entity of type {@link DataSourceServicePrincipal}, the entity contains
      * Service Principal to access the SQL Server.
      *
      * @param connectionString The connection string.
      * @param query The query that retrieves the values to be analyzed for anomalies.
      * @param credentialId The unique id of a credential entity of type
-     * {@link DatasourceServicePrincipal}.
+     * {@link DataSourceServicePrincipal}.
      *
      * @return The SQLServerDataFeedSource.
      */
@@ -99,18 +99,18 @@ public final class AzureDataExplorerDataFeedSource extends DataFeedSource {
         return new AzureDataExplorerDataFeedSource(connectionString,
             query,
             credentialId,
-            DatasourceAuthenticationType.SERVICE_PRINCIPAL);
+            DataSourceAuthenticationType.SERVICE_PRINCIPAL);
     }
 
     /**
      * Create a AzureDataExplorerDataFeedSource with the {@code credentialId} identifying a credential
-     * entity of type {@link DatasourceServicePrincipalInKeyVault}, the entity contains
+     * entity of type {@link DataSourceServicePrincipalInKeyVault}, the entity contains
      * details of the KeyVault holding the Service Principal to access the SQL Server.
      *
      * @param connectionString The connection string.
      * @param query The query that retrieves the values to be analyzed for anomalies.
      * @param credentialId The unique id of a credential entity of type
-     * {@link DatasourceServicePrincipalInKeyVault}.
+     * {@link DataSourceServicePrincipalInKeyVault}.
      *
      * @return The AzureDataExplorerDataFeedSource.
      */
@@ -121,7 +121,7 @@ public final class AzureDataExplorerDataFeedSource extends DataFeedSource {
         return new AzureDataExplorerDataFeedSource(connectionString,
             query,
             credentialId,
-            DatasourceAuthenticationType.SERVICE_PRINCIPAL_IN_KV);
+            DataSourceAuthenticationType.SERVICE_PRINCIPAL_IN_KV);
     }
 
     /**
@@ -134,7 +134,7 @@ public final class AzureDataExplorerDataFeedSource extends DataFeedSource {
     }
 
     /**
-     * Gets the id of the {@link DatasourceCredentialEntity credential resource} to authenticate the data source.
+     * Gets the id of the {@link DataSourceCredentialEntity credential resource} to authenticate the data source.
      *
      * @return The credential resource id.
      */
@@ -147,7 +147,7 @@ public final class AzureDataExplorerDataFeedSource extends DataFeedSource {
      *
      * @return The authentication type.
      */
-    public DatasourceAuthenticationType getAuthenticationType() {
+    public DataSourceAuthenticationType getAuthenticationType() {
         return this.authType;
     }
 

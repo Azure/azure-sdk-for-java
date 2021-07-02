@@ -4,10 +4,12 @@
 package com.azure.ai.textanalytics.models;
 
 import com.azure.ai.textanalytics.implementation.AssessmentSentimentPropertiesHelper;
+import com.azure.core.annotation.Immutable;
 
 /**
  * The {@link AssessmentSentiment} model.
  */
+@Immutable
 public final class AssessmentSentiment {
     private String text;
     private TextSentiment sentiment;
