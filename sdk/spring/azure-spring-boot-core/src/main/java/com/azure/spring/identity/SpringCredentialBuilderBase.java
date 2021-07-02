@@ -7,18 +7,18 @@ import com.azure.identity.ClientCertificateCredentialBuilder;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.identity.ManagedIdentityCredential;
 import com.azure.identity.ManagedIdentityCredentialBuilder;
+import com.azure.spring.core.Constants;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.core.env.Environment;
+
+import java.util.Optional;
+
+import static com.azure.spring.core.Utils.toAuthorityHost;
 
 /**
  *
  */
 public abstract class SpringCredentialBuilderBase<T extends SpringCredentialBuilderBase<T>> {
-
-    /**
-     * Defines the DEFAULT_AUTHORITY_HOST.
-     */
-    public static final String DEFAULT_AUTHORITY_HOST = "https://login.microsoftonline.com/";
 
     protected Environment environment;
 
@@ -44,7 +44,7 @@ public abstract class SpringCredentialBuilderBase<T extends SpringCredentialBuil
         String tenantId = getPropertyValue(prefix + "tenant-id");
         String clientId = getPropertyValue(prefix + "client-id");
         String clientSecret = getPropertyValue(prefix + "client-secret");
-        String authorityHost = getPropertyValue(prefix + "authority-host", DEFAULT_AUTHORITY_HOST);
+        String authorityHost = getAuthorityHost(prefix);
 
         if (tenantId != null && clientId != null && clientSecret != null) {
             return new ClientSecretCredentialBuilder()
@@ -85,6 +85,14 @@ public abstract class SpringCredentialBuilderBase<T extends SpringCredentialBuil
         return Binder.get(this.environment)
                      .bind(propertyName, String.class)
                      .orElse(defaultValue);
+    }
+
+    protected String getAuthorityHost(String prefix) {
+        return Optional.ofNullable(getPropertyValue(prefix + "authority-host"))
+                       .orElse(Optional.ofNullable(getPropertyValue(prefix + "environment"))
+                                       .filter(env -> !env.isEmpty())
+                                       .map(env -> toAuthorityHost(env))
+                                       .orElse(Constants.AZURE_GLOBAL_AUTHORITY_HOST));
     }
 
 }
