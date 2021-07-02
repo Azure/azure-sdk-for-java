@@ -66,10 +66,9 @@ public class DefaultServiceBusQueueClientFactory extends AbstractServiceBusSende
         if (clientConfig.isSessionsEnabled()) {
             return serviceBusClientBuilder.sessionProcessor()
                                           .queueName(name)
-                                          .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
-                                          .maxConcurrentCalls(1)
-                                          // TODO, make it a constant or get it from clientConfig. And it looks like
-                                          //  max auto renew duration is not exposed
+                                          .receiveMode(clientConfig.getServiceBusReceiveMode())
+                                          .maxConcurrentCalls(clientConfig.getMaxConcurrentCalls())
+                                          // TODO, It looks like max auto renew duration is not exposed
                                           .maxConcurrentSessions(clientConfig.getConcurrency())
                                           .prefetchCount(clientConfig.getPrefetchCount())
                                           .disableAutoComplete()
@@ -80,8 +79,8 @@ public class DefaultServiceBusQueueClientFactory extends AbstractServiceBusSende
         } else {
             return serviceBusClientBuilder.processor()
                                           .queueName(name)
-                                          .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
-                                          .maxConcurrentCalls(clientConfig.getConcurrency())
+                                          .receiveMode(clientConfig.getServiceBusReceiveMode())
+                                          .maxConcurrentCalls(clientConfig.getMaxConcurrentCalls())
                                           .prefetchCount(clientConfig.getPrefetchCount())
                                           .disableAutoComplete()
                                           .processMessage(messageProcessor.processMessage())
@@ -105,14 +104,6 @@ public class DefaultServiceBusQueueClientFactory extends AbstractServiceBusSende
 
     public void transportType(AmqpTransportType transportType) {
         serviceBusClientBuilder.transportType(transportType);
-    }
-
-    public void configuration(Configuration configuration) {
-        serviceBusClientBuilder.configuration(configuration);
-    }
-
-    public void clientOptions(ClientOptions clientOptions) {
-        serviceBusClientBuilder.clientOptions(clientOptions);
     }
 
 }

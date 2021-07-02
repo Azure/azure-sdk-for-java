@@ -3,6 +3,7 @@
 
 package com.azure.spring.servicebus.stream.binder.properties;
 
+import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.spring.integration.core.api.CheckpointMode;
 
 /**
@@ -14,6 +15,8 @@ public class ServiceBusConsumerProperties {
     private int concurrency = 1;
     private boolean sessionsEnabled = false;
     private boolean requeueRejected = false;
+    private int maxConcurrentCalls = 1;
+    private ServiceBusReceiveMode serviceBusReceiveMode = ServiceBusReceiveMode.PEEK_LOCK;
 
     private CheckpointMode checkpointMode = CheckpointMode.RECORD;
 
@@ -23,6 +26,14 @@ public class ServiceBusConsumerProperties {
 
     public void setCheckpointMode(CheckpointMode checkpointMode) {
         this.checkpointMode = checkpointMode;
+    }
+
+    public int getMaxConcurrentCalls() {
+        return maxConcurrentCalls;
+    }
+
+    public void setMaxConcurrentCalls(int maxConcurrentCalls) {
+        this.maxConcurrentCalls = maxConcurrentCalls;
     }
 
     /**
@@ -83,4 +94,11 @@ public class ServiceBusConsumerProperties {
         this.requeueRejected = requeueRejected;
     }
 
+    public ServiceBusReceiveMode getServiceBusReceiveMode() {
+        return serviceBusReceiveMode;
+    }
+
+    public void setServiceBusReceiveMode(ServiceBusReceiveMode serviceBusReceiveMode) {
+        this.serviceBusReceiveMode = serviceBusReceiveMode;
+    }
 }

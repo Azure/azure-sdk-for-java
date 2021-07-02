@@ -72,10 +72,9 @@ public class DefaultServiceBusTopicClientFactory extends AbstractServiceBusSende
             return serviceBusClientBuilder.sessionProcessor()
                                           .topicName(topic)
                                           .subscriptionName(subscription)
-                                          .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
-                                          .maxConcurrentCalls(1)
-                                          // TODO, make it a constant or get duration is not exposed it from
-                                          //  clientConfig. And it looks like max auto renew
+                                          .receiveMode(config.getServiceBusReceiveMode())
+                                          .maxConcurrentCalls(config.getMaxConcurrentCalls())
+                                          // TODO, It looks like max auto renew duration is not exposed
                                           .maxConcurrentSessions(config.getConcurrency())
                                           .prefetchCount(config.getPrefetchCount())
                                           .disableAutoComplete()
@@ -86,8 +85,8 @@ public class DefaultServiceBusTopicClientFactory extends AbstractServiceBusSende
             return serviceBusClientBuilder.processor()
                                           .topicName(topic)
                                           .subscriptionName(subscription)
-                                          .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
-                                          .maxConcurrentCalls(config.getConcurrency())
+                                          .receiveMode(config.getServiceBusReceiveMode())
+                                          .maxConcurrentCalls(config.getMaxConcurrentCalls())
                                           .prefetchCount(config.getPrefetchCount())
                                           .disableAutoComplete()
                                           .processMessage(messageProcessor.processMessage())
@@ -112,12 +111,5 @@ public class DefaultServiceBusTopicClientFactory extends AbstractServiceBusSende
         serviceBusClientBuilder.transportType(transportType);
     }
 
-    public void configuration(Configuration configuration) {
-        serviceBusClientBuilder.configuration(configuration);
-    }
-
-    public void clientOptions(ClientOptions clientOptions) {
-        serviceBusClientBuilder.clientOptions(clientOptions);
-    }
-
+    //TODO: Latest serviceBusClientBuilder support crossEntityTransactions
 }

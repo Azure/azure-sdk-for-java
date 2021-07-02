@@ -3,6 +3,8 @@
 
 package com.azure.spring.integration.servicebus;
 
+import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
+
 /**
  * Service bus client related config
  *
@@ -19,13 +21,19 @@ public final class ServiceBusClientConfig {
 
     private final boolean requeueRejected;
 
+    private final int maxConcurrentCalls;
+
+    private ServiceBusReceiveMode serviceBusReceiveMode;
+
     private ServiceBusClientConfig(int prefetchCount, int concurrency, boolean sessionsEnabled,
-                                   boolean requeueRejected) {
+                                   boolean requeueRejected, int maxConcurrentCalls, ServiceBusReceiveMode serviceBusReceiveMode) {
 
         this.prefetchCount = prefetchCount;
         this.concurrency = concurrency;
         this.sessionsEnabled = sessionsEnabled;
         this.requeueRejected = requeueRejected;
+        this.maxConcurrentCalls = maxConcurrentCalls;
+        this.serviceBusReceiveMode = serviceBusReceiveMode;
     }
 
     public int getPrefetchCount() {
@@ -44,6 +52,14 @@ public final class ServiceBusClientConfig {
         return requeueRejected;
     }
 
+    public int getMaxConcurrentCalls() {
+        return maxConcurrentCalls;
+    }
+
+    public ServiceBusReceiveMode getServiceBusReceiveMode() {
+        return serviceBusReceiveMode;
+    }
+
     public static ServiceBusClientConfigBuilder builder() {
         return new ServiceBusClientConfigBuilder();
     }
@@ -56,6 +72,8 @@ public final class ServiceBusClientConfig {
         private int concurrency = 1;
         private boolean sessionsEnabled = false;
         private boolean requeueRejected = false;
+        private int maxConcurrentCalls = 1;
+        private ServiceBusReceiveMode serviceBusReceiveMode = ServiceBusReceiveMode.PEEK_LOCK;
 
         public void setRequeueRejected(boolean requeueRejected) {
             this.requeueRejected = requeueRejected;
@@ -76,8 +94,18 @@ public final class ServiceBusClientConfig {
             return this;
         }
 
+        public ServiceBusClientConfigBuilder setMaxConcurrentCalls(int maxConcurrentCalls) {
+            this.maxConcurrentCalls = maxConcurrentCalls;
+            return this;
+        }
+
+        public ServiceBusClientConfigBuilder setServiceBusReceiveMode(ServiceBusReceiveMode serviceBusReceiveMode) {
+            this.serviceBusReceiveMode = serviceBusReceiveMode;
+            return this;
+        }
+
         public ServiceBusClientConfig build() {
-            return new ServiceBusClientConfig(prefetchCount, concurrency, sessionsEnabled, requeueRejected);
+            return new ServiceBusClientConfig(prefetchCount, concurrency, sessionsEnabled, requeueRejected, maxConcurrentCalls, serviceBusReceiveMode);
         }
     }
 }
