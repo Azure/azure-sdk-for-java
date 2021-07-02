@@ -87,6 +87,10 @@ public final class DataFeedOptions {
 
     /**
      * Get the list of data feed administrator emails and clientIds.
+     * <p>
+     * The administrators have total control over the DataFeed, being allowed to update, delete, or pause the DataFeed.
+     * Each element in this list represents a user with administrator access, but the value of each string element
+     * as either user email address or clientId uniquely identifying the user service principal.
      *
      * @return the admins value.
      */
@@ -97,6 +101,10 @@ public final class DataFeedOptions {
 
     /**
      * Set the list of data feed administrator emails and clientIds.
+     * <p>
+     * The administrators have total control over the DataFeed, being allowed to update, delete, or pause the DataFeed.
+     * Each element in this list represents a user with administrator access, but the value of each string element
+     * as either user email address or clientId uniquely identifying the user service principal.
      *
      * @param admins the admins value to set.
      *
@@ -109,6 +117,10 @@ public final class DataFeedOptions {
 
     /**
      * Get the list of data feed viewer emails and clientIds.
+     * <p>
+     * The Viewers have read-only access to a DataFeed. Each element in this list represents a user with viewer access,
+     * but the value of each string element as either user email address or clientId uniquely identifying
+     * the user service principal.
      *
      * @return the viewers value.
      */
@@ -119,6 +131,10 @@ public final class DataFeedOptions {
 
     /**
      * Set the list of data feed viewer emails and clientIds.
+     * <p>
+     * The Viewers have read-only access to a DataFeed. Each element in this list represents a user with viewer access,
+     * but the value of each string element as either user email address or clientId uniquely identifying
+     * the user service principal.
      *
      * @param viewers the viewers value to set.
      *

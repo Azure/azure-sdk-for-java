@@ -67,6 +67,10 @@ public abstract class NotificationHook {
 
     /**
      * Gets the list of user e-mails and clientIds with administrative rights to manage the hook.
+     * <p>
+     * The administrators have total control over the hook, being allowed to update or delete the hook.
+     * Each element in this list represents a user with administrator access, but the value of each string element
+     * as either user email address or clientId uniquely identifying the user service principal.
      *
      * @return The emails of admins.
      */
@@ -87,8 +91,8 @@ public abstract class NotificationHook {
         return this.admins;
     }
 
-    void setAdministrators(List<String> emails) {
-        this.admins = emails != null ? dedupe(emails) : null;
+    void setAdministrators(List<String> admins) {
+        this.admins = admins != null ? dedupe(admins) : null;
     }
 
     /**
