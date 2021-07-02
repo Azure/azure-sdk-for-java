@@ -90,7 +90,7 @@ public final class DataFeedOptions {
      * <p>
      * The administrators have total control over the DataFeed, being allowed to update, delete, or pause the DataFeed.
      * Each element in this list represents a user with administrator access, but the value of each string element
-     * as either user email address or clientId uniquely identifying the user service principal.
+     * is either user email address or clientId uniquely identifying the user service principal.
      *
      * @return the admins value.
      */
