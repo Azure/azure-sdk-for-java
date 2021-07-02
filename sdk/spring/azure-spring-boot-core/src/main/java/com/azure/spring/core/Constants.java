@@ -28,4 +28,6 @@ public class Constants {
     public static final String AZURE_GERMANY_AUTHORITY_HOST = "https://login.microsoftonline.de/";
     public static final String AZURE_GLOBAL_AUTHORITY_HOST = "https://login.microsoftonline.com/";
     public static final String AZURE_US_GOVERNMENT_AUTHORITY_HOST = "https://login.microsoftonline.us/";
+
+    public static final String PREFIX = "spring.cloud.azure";
 }

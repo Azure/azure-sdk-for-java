@@ -5,18 +5,14 @@ package com.azure.spring.core;
 
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Import;
 import org.springframework.validation.annotation.Validated;
 
 /**
  * Common properties for Azure SDK clients.
  */
 @Validated
-@ConfigurationProperties(AzureSpringProperties.PREFIX)
-@Import(CredentialProperties.class)
-public class AzureSpringProperties {
-
-    public static final String PREFIX = "spring.cloud.azure";
+@ConfigurationProperties(Constants.PREFIX)
+public class MiscProperties {
 
     /**
      * Name of the Azure cloud to connect to.

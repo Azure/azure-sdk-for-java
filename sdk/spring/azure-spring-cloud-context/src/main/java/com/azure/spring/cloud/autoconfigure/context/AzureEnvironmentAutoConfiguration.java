@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.context;
 
 import com.azure.spring.cloud.context.core.api.EnvironmentProvider;
-import com.azure.spring.core.AzureSpringProperties;
+import com.azure.spring.core.MiscProperties;
 import com.azure.spring.cloud.context.core.impl.DefaultEnvironmentProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -21,11 +21,11 @@ public class AzureEnvironmentAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public EnvironmentProvider environmentProvider(@Autowired(required = false) AzureSpringProperties azureSpringProperties) {
+    public EnvironmentProvider environmentProvider(@Autowired(required = false) MiscProperties miscProperties) {
         DefaultEnvironmentProvider defaultEnvironmentProvider = new DefaultEnvironmentProvider();
 
-        if (azureSpringProperties != null) {
-            defaultEnvironmentProvider.setEnvironment(azureSpringProperties.getEnvironment());
+        if (miscProperties != null) {
+            defaultEnvironmentProvider.setEnvironment(miscProperties.getEnvironment());
         }
 
         return defaultEnvironmentProvider;

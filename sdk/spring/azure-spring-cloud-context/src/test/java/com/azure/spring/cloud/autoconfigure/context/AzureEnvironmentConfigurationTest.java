@@ -9,7 +9,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.context.core.api.CredentialsProvider;
 import com.azure.spring.cloud.context.core.api.EnvironmentProvider;
-import com.azure.spring.core.AzureSpringProperties;
+import com.azure.spring.core.MiscProperties;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -46,7 +46,7 @@ public class AzureEnvironmentConfigurationTest {
 
 
     @Configuration
-    @EnableConfigurationProperties(AzureSpringProperties.class)
+    @EnableConfigurationProperties(MiscProperties.class)
     static class TestConfigurationWithProperty {
 
     }

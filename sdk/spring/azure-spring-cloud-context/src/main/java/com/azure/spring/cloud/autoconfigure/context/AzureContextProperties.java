@@ -3,7 +3,8 @@
 
 package com.azure.spring.cloud.autoconfigure.context;
 
-import com.azure.spring.core.AzureSpringProperties;
+import com.azure.spring.core.MiscProperties;
+import com.azure.spring.core.Constants;
 import com.azure.spring.core.CredentialProperties;
 import com.google.common.base.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +19,9 @@ import javax.annotation.PostConstruct;
  * Azure Context related properties for resource management.
  */
 @Validated
-@ConfigurationProperties(AzureContextProperties.PREFIX)
-@Import(AzureSpringProperties.class)
+@ConfigurationProperties(Constants.PREFIX)
+@Import({ MiscProperties.class, CredentialProperties.class})
 public class AzureContextProperties {
-
-    public static final String PREFIX = "spring.cloud.azure";
 
     @Autowired
     private CredentialProperties credentialProperties;

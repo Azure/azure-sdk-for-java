@@ -12,7 +12,7 @@ import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.azure.security.keyvault.secrets.SecretServiceVersion;
-import com.azure.spring.core.AzureSpringProperties;
+import com.azure.spring.core.Constants;
 import com.azure.spring.keyvault.KeyVaultProperties.Property;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -190,7 +190,7 @@ class KeyVaultEnvironmentPostProcessorHelper {
             return keyVaultPropertyValue;
         }
         if (normalizedName.equals("") && AZURE_SPRING_PROPERTIES.contains(property.getName())) {
-            return Optional.of(AzureSpringProperties.PREFIX + property.getName())
+            return Optional.of(Constants.PREFIX + property.getName())
                 .map(environment::getProperty)
                 .orElse(defaultValue);
         }

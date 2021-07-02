@@ -3,7 +3,7 @@
 
 package com.azure.spring.autoconfigure.aad;
 
-import com.azure.spring.core.AzureSpringProperties;
+import com.azure.spring.core.Constants;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -49,8 +49,8 @@ public class AADAuthenticationFilterPropertiesTest {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
         addInlinedPropertiesToEnvironment(
             context,
-            AzureSpringProperties.PREFIX + ".tenant-id=azure-tenant-id",
-            AzureSpringProperties.PREFIX + ".client-id=" + "azure-client-id",
+            Constants.PREFIX + ".tenant-id=azure-tenant-id",
+            Constants.PREFIX + ".client-id=" + "azure-client-id",
             AAD_PROPERTY_PREFIX + "client-id=" + TestConstants.CLIENT_ID,
             AAD_PROPERTY_PREFIX + "client-secret=" + TestConstants.CLIENT_SECRET
         );
