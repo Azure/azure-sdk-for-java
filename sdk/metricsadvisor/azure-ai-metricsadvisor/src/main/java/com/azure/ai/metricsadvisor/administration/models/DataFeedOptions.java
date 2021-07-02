@@ -17,8 +17,8 @@ public final class DataFeedOptions {
     private DataFeedRollupSettings dataFeedRollupSettings;
     private DataFeedMissingDataPointFillSettings dataFeedMissingDataPointFillSettings;
     private DataFeedAccessMode dataFeedAccessMode;
-    private List<String> adminEmails;
-    private List<String> viewerEmails;
+    private List<String> admins;
+    private List<String> viewers;
     private String actionLinkTemplate;
 
     /**
@@ -86,46 +86,46 @@ public final class DataFeedOptions {
     }
 
     /**
-     * Get the list of data feed administrator emails.
+     * Get the list of data feed administrator emails and clientIds.
      *
-     * @return the adminEmails value.
+     * @return the admins value.
      */
-    public List<String> getAdminEmails() {
-        return this.adminEmails == null
-            ? null : Collections.unmodifiableList(this.adminEmails);
+    public List<String> getAdmins() {
+        return this.admins == null
+            ? null : Collections.unmodifiableList(this.admins);
     }
 
     /**
-     * Set the list of data feed administrator emails.
+     * Set the list of data feed administrator emails and clientIds.
      *
-     * @param adminEmails the adminEmails value to set.
+     * @param admins the admins value to set.
      *
      * @return the DataFeedOptions object itself.
      */
-    public DataFeedOptions setAdminEmails(List<String> adminEmails) {
-        this.adminEmails = adminEmails;
+    public DataFeedOptions setAdmins(List<String> admins) {
+        this.admins = admins;
         return this;
     }
 
     /**
-     * Get the list of data feed viewer emails.
+     * Get the list of data feed viewer emails and clientIds.
      *
-     * @return the viewerEmails value.
+     * @return the viewers value.
      */
-    public List<String> getViewerEmails() {
-        return this.viewerEmails == null
-            ? null : Collections.unmodifiableList(this.viewerEmails);
+    public List<String> getViewers() {
+        return this.viewers == null
+            ? null : Collections.unmodifiableList(this.viewers);
     }
 
     /**
-     * Set the list of data feed viewer emails.
+     * Set the list of data feed viewer emails and clientIds.
      *
-     * @param viewerEmails the viewerEmails value to set.
+     * @param viewers the viewers value to set.
      *
      * @return the DataFeedOptions object itself.
      */
-    public DataFeedOptions setViewerEmails(List<String> viewerEmails) {
-        this.viewerEmails = viewerEmails;
+    public DataFeedOptions setViewers(List<String> viewers) {
+        this.viewers = viewers;
         return this;
     }
 
