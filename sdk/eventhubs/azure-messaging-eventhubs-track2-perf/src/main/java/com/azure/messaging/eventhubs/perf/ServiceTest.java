@@ -26,7 +26,6 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Base class that tests Event Hubs.
  */
 abstract class ServiceTest<T extends EventHubsOptions> extends PerfStressTest<T> {
-
     protected final List<EventData> events;
 
     /**
@@ -114,7 +113,11 @@ abstract class ServiceTest<T extends EventHubsOptions> extends PerfStressTest<T>
             .flatMap(batch -> {
                 EventData event = events.get(0);
                 while (batch.tryAdd(event)) {
-                    int index = number.getAndDecrement() % events.size();
+                    final int index = number.getAndDecrement() % events.size();
+                    if (index < 0) {
+                        break;
+                    }
+
                     event = events.get(index);
                 }
 

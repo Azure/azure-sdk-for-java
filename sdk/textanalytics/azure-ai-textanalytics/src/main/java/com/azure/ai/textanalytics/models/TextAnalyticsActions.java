@@ -4,6 +4,7 @@
 package com.azure.ai.textanalytics.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 
 import java.util.Arrays;
 
@@ -12,12 +13,14 @@ import java.util.Arrays;
  */
 @Fluent
 public final class TextAnalyticsActions {
+    private final ClientLogger logger = new ClientLogger(TextAnalyticsActions.class);
+
     private String displayName;
-    private Iterable<RecognizeEntitiesOptions> recognizeEntitiesOptions;
-    private Iterable<RecognizeLinkedEntitiesOptions> recognizeLinkedEntitiesOptions;
-    private Iterable<RecognizePiiEntitiesOptions> recognizePiiEntitiesOptions;
-    private Iterable<ExtractKeyPhrasesOptions> extractKeyPhrasesOptions;
-    private Iterable<AnalyzeSentimentOptions> analyzeSentimentOptions;
+    private Iterable<RecognizeEntitiesAction> recognizeEntitiesActions;
+    private Iterable<RecognizeLinkedEntitiesAction> recognizeLinkedEntitiesActions;
+    private Iterable<RecognizePiiEntitiesAction> recognizePiiEntitiesActions;
+    private Iterable<ExtractKeyPhrasesAction> extractKeyPhrasesActions;
+    private Iterable<AnalyzeSentimentAction> analyzeSentimentActions;
 
     /**
      * Get the custom name for the actions.
@@ -41,113 +44,141 @@ public final class TextAnalyticsActions {
     }
 
     /**
-     * Get the list of {@link RecognizeEntitiesOptions} to be executed.
+     * Get the list of {@link RecognizeEntitiesAction} to be executed.
      *
-     * @return the list of {@link RecognizeEntitiesOptions} to be executed.
+     * @return the list of {@link RecognizeEntitiesAction} to be executed.
      */
-    public Iterable<RecognizeEntitiesOptions> getRecognizeEntitiesOptions() {
-        return this.recognizeEntitiesOptions;
+    public Iterable<RecognizeEntitiesAction> getRecognizeEntitiesActions() {
+        return this.recognizeEntitiesActions;
     }
 
     /**
-     * Set the list of {@link RecognizeEntitiesOptions} to be executed.
+     * Set the list of {@link RecognizeEntitiesAction} to be executed.
      *
-     * @param recognizeEntitiesOptions the list of {@link RecognizeEntitiesOptions} to be executed.
+     * @param recognizeEntitiesActions the list of {@link RecognizeEntitiesAction} to be executed.
      *
      * @return the {@link TextAnalyticsActions} object itself.
+     *
+     * @throws IllegalArgumentException if more than one {@link RecognizeEntitiesAction} action are passed in.
+     * Currently service v3.1 only accepts up to one action per type.
      */
-    public TextAnalyticsActions setRecognizeEntitiesOptions(RecognizeEntitiesOptions... recognizeEntitiesOptions) {
-        this.recognizeEntitiesOptions = recognizeEntitiesOptions == null ? null
-            : Arrays.asList(recognizeEntitiesOptions);
+    public TextAnalyticsActions setRecognizeEntitiesActions(RecognizeEntitiesAction... recognizeEntitiesActions) {
+        validateActionsNumber(recognizeEntitiesActions, RecognizeEntitiesAction.class.getName());
+        this.recognizeEntitiesActions = recognizeEntitiesActions == null ? null
+            : Arrays.asList(recognizeEntitiesActions);
         return this;
     }
 
     /**
-     * Get the list of {@link RecognizePiiEntitiesOptions} to be executed.
+     * Get the list of {@link RecognizeLinkedEntitiesAction} to be executed.
      *
-     * @return the list of {@link RecognizePiiEntitiesOptions} to be executed.
+     * @return the list of {@link RecognizeLinkedEntitiesAction} to be executed.
      */
-    public Iterable<RecognizeLinkedEntitiesOptions> getRecognizeLinkedEntitiesOptions() {
-        return this.recognizeLinkedEntitiesOptions;
+    public Iterable<RecognizeLinkedEntitiesAction> getRecognizeLinkedEntitiesActions() {
+        return this.recognizeLinkedEntitiesActions;
     }
 
     /**
-     * Set the list of {@link RecognizeLinkedEntitiesOptions} to be executed.
+     * Set the list of {@link RecognizeLinkedEntitiesAction} to be executed.
      *
-     * @param recognizeLinkedEntitiesOptions the list of {@link RecognizeLinkedEntitiesOptions} to be executed.
+     * @param recognizeLinkedEntitiesActions the list of {@link RecognizeLinkedEntitiesAction} to be executed.
      *
      * @return the {@link TextAnalyticsActions} object itself.
+     *
+     * @throws IllegalArgumentException if more than one {@link RecognizeLinkedEntitiesAction} action are passed in.
+     * Currently service v3.1 only accepts up to one action per type.
      */
-    public TextAnalyticsActions setRecognizeLinkedEntitiesOptions(
-        RecognizeLinkedEntitiesOptions... recognizeLinkedEntitiesOptions) {
-        this.recognizeLinkedEntitiesOptions = recognizeLinkedEntitiesOptions == null ? null
-            : Arrays.asList(recognizeLinkedEntitiesOptions);
+    public TextAnalyticsActions setRecognizeLinkedEntitiesActions(
+        RecognizeLinkedEntitiesAction... recognizeLinkedEntitiesActions) {
+        validateActionsNumber(recognizeLinkedEntitiesActions, RecognizeLinkedEntitiesAction.class.getName());
+        this.recognizeLinkedEntitiesActions = recognizeLinkedEntitiesActions == null ? null
+            : Arrays.asList(recognizeLinkedEntitiesActions);
         return this;
     }
 
     /**
-     * Get the list of {@link RecognizePiiEntitiesOptions} to be executed.
+     * Get the list of {@link RecognizePiiEntitiesAction} to be executed.
      *
-     * @return the list of {@link RecognizePiiEntitiesOptions} to be executed.
+     * @return the list of {@link RecognizePiiEntitiesAction} to be executed.
      */
-    public Iterable<RecognizePiiEntitiesOptions> getRecognizePiiEntitiesOptions() {
-        return this.recognizePiiEntitiesOptions;
+    public Iterable<RecognizePiiEntitiesAction> getRecognizePiiEntitiesActions() {
+        return this.recognizePiiEntitiesActions;
     }
 
     /**
-     * Set the list of {@link RecognizePiiEntitiesOptions} to be executed.
+     * Set the list of {@link RecognizePiiEntitiesAction} to be executed.
      *
-     * @param recognizePiiEntitiesOptions the list of {@link RecognizePiiEntitiesOptions} to be executed.
+     * @param recognizePiiEntitiesActions the list of {@link RecognizePiiEntitiesAction} to be executed.
      *
      * @return the {@link TextAnalyticsActions} object itself.
+     *
+     * @throws IllegalArgumentException if more than one {@link RecognizePiiEntitiesAction} action are passed in.
+     * Currently service v3.1 only accepts up to one action per type.
      */
-    public TextAnalyticsActions setRecognizePiiEntitiesOptions(
-        RecognizePiiEntitiesOptions... recognizePiiEntitiesOptions) {
-        this.recognizePiiEntitiesOptions = recognizePiiEntitiesOptions == null ? null
-            : Arrays.asList(recognizePiiEntitiesOptions);
+    public TextAnalyticsActions setRecognizePiiEntitiesActions(
+        RecognizePiiEntitiesAction... recognizePiiEntitiesActions) {
+        validateActionsNumber(recognizePiiEntitiesActions, RecognizePiiEntitiesAction.class.getName());
+        this.recognizePiiEntitiesActions = recognizePiiEntitiesActions == null ? null
+            : Arrays.asList(recognizePiiEntitiesActions);
         return this;
     }
 
     /**
-     * Get the list of {@link ExtractKeyPhrasesOptions} to be executed.
+     * Get the list of {@link ExtractKeyPhrasesAction} to be executed.
      *
-     * @return the list of {@link ExtractKeyPhrasesOptions} to be executed.
+     * @return the list of {@link ExtractKeyPhrasesAction} to be executed.
      */
-    public Iterable<ExtractKeyPhrasesOptions> getExtractKeyPhrasesOptions() {
-        return this.extractKeyPhrasesOptions;
+    public Iterable<ExtractKeyPhrasesAction> getExtractKeyPhrasesActions() {
+        return this.extractKeyPhrasesActions;
     }
 
     /**
-     * Set the list of {@link ExtractKeyPhrasesOptions} to be executed.
+     * Set the list of {@link ExtractKeyPhrasesAction} to be executed.
      *
-     * @param extractKeyPhrasesOptions the list of {@link ExtractKeyPhrasesOptions} to be executed.
+     * @param extractKeyPhrasesActions the list of {@link ExtractKeyPhrasesAction} to be executed.
      *
      * @return the {@link TextAnalyticsActions} object itself.
+     *
+     * @throws IllegalArgumentException if more than one {@link ExtractKeyPhrasesAction} action are passed in.
+     * Currently service v3.1 only accepts up to one action per type.
      */
-    public TextAnalyticsActions setExtractKeyPhrasesOptions(ExtractKeyPhrasesOptions... extractKeyPhrasesOptions) {
-        this.extractKeyPhrasesOptions = extractKeyPhrasesOptions == null ? null
-            : Arrays.asList(extractKeyPhrasesOptions);
+    public TextAnalyticsActions setExtractKeyPhrasesActions(ExtractKeyPhrasesAction... extractKeyPhrasesActions) {
+        validateActionsNumber(extractKeyPhrasesActions, ExtractKeyPhrasesAction.class.getName());
+        this.extractKeyPhrasesActions = extractKeyPhrasesActions == null ? null
+            : Arrays.asList(extractKeyPhrasesActions);
         return this;
     }
 
     /**
-     * Get the list of {@link AnalyzeSentimentOptions} to be executed.
+     * Get the list of {@link AnalyzeSentimentAction} to be executed.
      *
-     * @return the list of {@link AnalyzeSentimentOptions} to be executed.
+     * @return the list of {@link AnalyzeSentimentAction} to be executed.
      */
-    public Iterable<AnalyzeSentimentOptions> getAnalyzeSentimentOptions() {
-        return this.analyzeSentimentOptions;
+    public Iterable<AnalyzeSentimentAction> getAnalyzeSentimentActions() {
+        return this.analyzeSentimentActions;
     }
 
     /**
-     * Set the list of {@link AnalyzeSentimentOptions} to be executed.
+     * Set the list of {@link AnalyzeSentimentAction} to be executed.
      *
-     * @param analyzeSentimentOptions the list of {@link AnalyzeSentimentOptions} to be executed.
+     * @param analyzeSentimentActions the list of {@link AnalyzeSentimentAction} to be executed.
      *
      * @return the {@link TextAnalyticsActions} object itself.
+     *
+     * @throws IllegalArgumentException if more than one {@link AnalyzeSentimentAction} action are passed in.
+     * Currently service v3.1 only accepts up to one action per type.
      */
-    public TextAnalyticsActions setAnalyzeSentimentOptions(AnalyzeSentimentOptions... analyzeSentimentOptions) {
-        this.analyzeSentimentOptions = analyzeSentimentOptions == null ? null : Arrays.asList(analyzeSentimentOptions);
+    public TextAnalyticsActions setAnalyzeSentimentActions(AnalyzeSentimentAction... analyzeSentimentActions) {
+        validateActionsNumber(analyzeSentimentActions, AnalyzeSentimentAction.class.getName());
+        this.analyzeSentimentActions = analyzeSentimentActions == null ? null : Arrays.asList(analyzeSentimentActions);
         return this;
+    }
+
+    private void validateActionsNumber(Object[] actions, String actionType) {
+        if (actions != null && actions.length > 1) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
+                "Currently, the service can accept up to one %s. Multiple actions of the same type are not supported.",
+                actionType)));
+        }
     }
 }

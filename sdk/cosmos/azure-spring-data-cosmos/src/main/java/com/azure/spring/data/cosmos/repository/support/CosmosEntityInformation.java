@@ -252,6 +252,10 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
         return partitionKeyField == null ? null : ReflectionUtils.getField(partitionKeyField, entity);
     }
 
+    public String getPartitionKeyFieldName() {
+        return partitionKeyField == null ? null : partitionKeyField.getName();
+    }
+
     /**
      * Check if auto creating container is allowed
      *

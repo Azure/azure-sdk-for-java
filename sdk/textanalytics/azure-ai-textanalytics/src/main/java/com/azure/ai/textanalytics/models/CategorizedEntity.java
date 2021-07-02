@@ -13,7 +13,7 @@ public final class CategorizedEntity {
     private final EntityCategory category;
     private final String subcategory;
     private final double confidenceScore;
-    private final int offset;
+    private int offset;
     private int length;
 
     /**
@@ -30,30 +30,21 @@ public final class CategorizedEntity {
         this.category = category;
         this.subcategory = subcategory;
         this.confidenceScore = confidenceScore;
-        this.offset = 0;
-    }
-
-    /**
-     * Creates a {@link CategorizedEntity} model that describes entity.
-     *
-     * @param text The entity text as appears in the request.
-     * @param category The entity category, such as Person/Location/Org/SSN etc.
-     * @param subcategory The entity subcategory, such as Age/Year/TimeRange etc.
-     * @param confidenceScore If a well-known item is recognized, a decimal number denoting the confidence level
-     * between 0 and 1 will be returned.
-     * @param offset The start position for the entity text.
-     */
-    public CategorizedEntity(String text, EntityCategory category, String subcategory, double confidenceScore,
-        int offset) {
-        this.text = text;
-        this.category = category;
-        this.subcategory = subcategory;
-        this.confidenceScore = confidenceScore;
-        this.offset = offset;
     }
 
     static {
-        CategorizedEntityPropertiesHelper.setAccessor((entity, length) -> entity.setLength(length));
+        CategorizedEntityPropertiesHelper.setAccessor(
+            new CategorizedEntityPropertiesHelper.CategorizedEntityAccessor() {
+                @Override
+                public void setLength(CategorizedEntity entity, int length) {
+                    entity.setLength(length);
+                }
+
+                @Override
+                public void setOffset(CategorizedEntity entity, int offset) {
+                    entity.setOffset(offset);
+                }
+            });
     }
 
     /**
@@ -100,6 +91,10 @@ public final class CategorizedEntity {
      */
     public int getOffset() {
         return offset;
+    }
+
+    private void setOffset(int offset) {
+        this.offset = offset;
     }
 
     /**

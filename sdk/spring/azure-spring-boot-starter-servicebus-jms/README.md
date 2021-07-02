@@ -10,15 +10,14 @@ With this starter you could easily use Spring JMS Queue and Topic with Azure Ser
 - [Environment checklist][environment_checklist]
 
 ### Include the package
-[//]: # ({x-version-update-start;com.azure.spring:azure-spring-boot-starter-servicebus-jms;current})
+1. [Add azure-spring-boot-bom].
+1. Add dependency. `<version>` can be skipped because we already add `azure-spring-boot-bom`.
 ```xml
 <dependency>
-    <groupId>com.azure.spring</groupId>
-    <artifactId>azure-spring-boot-starter-servicebus-jms</artifactId>
-    <version>3.6.0</version>
+  <groupId>com.azure.spring</groupId>
+  <artifactId>azure-spring-boot-starter-servicebus-jms</artifactId>
 </dependency>
 ```
-[//]: # ({x-version-update-end})
 
 ## Key concepts
 This starter uses Azure Service Bus messaging features (queues and publish/subscribe topics) from Java applications using the popular Java Message Service (JMS) API standard with AMQP 1.0.
@@ -264,3 +263,4 @@ Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/bl
 [servicebus-message-payloads]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messages-payloads
 [spring_jms_guide]: https://spring.io/guides/gs/messaging-jms/
 [environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
+[Add azure-spring-boot-bom]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/AZURE_SPRING_BOMS_USAGE.md#add-azure-spring-boot-bom
