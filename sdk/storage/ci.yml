@@ -76,6 +76,9 @@ extends:
       - name: azure-storage-queue
         groupId: com.azure
         safeName: azurestoragequeue
+      - name: azure-resourcemanager-storage-generated
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerstoragegenerated
     AdditionalModules:
       - name: azure-storage-perf
         groupId: com.azure
