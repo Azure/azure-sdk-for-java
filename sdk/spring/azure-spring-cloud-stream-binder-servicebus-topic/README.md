@@ -11,15 +11,14 @@ microservice using **Spring Cloud Stream** based on [Azure Service Bus Topic][az
 - [Environment checklist][environment_checklist]
 
 ### Include the package
-[//]: # ({x-version-update-start;com.azure.spring:azure-spring-cloud-stream-binder-servicebus-topic;current})
+1. [Add azure-spring-cloud-dependencies].
+1. Add dependency. `<version>` can be skipped because we already add `azure-spring-cloud-dependencies`.
 ```xml
 <dependency>
-    <groupId>com.azure.spring</groupId>
-    <artifactId>azure-spring-cloud-stream-binder-servicebus-topic</artifactId>
-    <version>2.6.0</version>
+  <groupId>com.azure.spring</groupId>
+  <artifactId>azure-spring-cloud-stream-binder-servicebus-topic</artifactId>
 </dependency>
 ```
-[//]: # ({x-version-update-end})
 
 ## Key concepts
 
@@ -153,3 +152,4 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [spring_integration]: https://spring.io/projects/spring-integration
 [src_code]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-cloud-stream-binder-servicebus-topic
 [environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
+[Add azure-spring-cloud-dependencies]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/AZURE_SPRING_BOMS_USAGE.md#add-azure-spring-cloud-dependencies

@@ -14,15 +14,14 @@ while protecting the identities of your customers at the same time.
 - [Tutorial create Active Directory B2C tenant][tutorial_create_tenant]
 
 ### Include the package
-[//]: # "{x-version-update-start;com.azure.spring:azure-spring-boot-starter-active-directory-b2c;current}"
+1. [Add azure-spring-boot-bom].
+1. Add dependency. `<version>` can be skipped because we already add `azure-spring-boot-bom`.
 ```xml
 <dependency>
-    <groupId>com.azure.spring</groupId>
-    <artifactId>azure-spring-boot-starter-active-directory-b2c</artifactId>
-    <version>3.6.0</version>
+  <groupId>com.azure.spring</groupId>
+  <artifactId>azure-spring-boot-starter-active-directory-b2c</artifactId>
 </dependency>
 ```
-[//]: # "{x-version-update-end}"
 
 ### Configurable properties
 This starter provides following properties to be customized:
@@ -76,12 +75,10 @@ This scenario uses the [The OAuth 2.0 authorization code grant] flow to login in
    
 1. Add the following dependencies in your *pom.xml*.
 
-   [//]: # "{x-version-update-start;com.azure.spring:azure-spring-boot-starter-active-directory-b2c;current}"
    ```xml
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-boot-starter-active-directory-b2c</artifactId>
-      <version>3.6.0</version>
     </dependency>
 
     <dependency>
@@ -104,7 +101,6 @@ This scenario uses the [The OAuth 2.0 authorization code grant] flow to login in
       <artifactId>thymeleaf-extras-springsecurity5</artifactId>
     </dependency>
    ```
-   [//]: # "{x-version-update-end}"
 
 1. Add properties in *application.yml* using the values you created earlier, for example:
 
@@ -306,12 +302,10 @@ This scenario not support login. Just protect the server by validating the acces
 
 1. Add the following dependencies in your *pom.xml*.
 
-   [//]: # "{x-version-update-start;com.azure.spring:azure-spring-boot-starter-active-directory-b2c;current}"
    ```xml
    <dependency>
      <groupId>com.azure.spring</groupId>
      <artifactId>azure-spring-boot-starter-active-directory-b2c</artifactId>
-     <version>3.6.0</version>
    </dependency>
 
    <dependency>
@@ -319,7 +313,6 @@ This scenario not support login. Just protect the server by validating the acces
      <artifactId>spring-boot-starter-web</artifactId>
    </dependency>
    ```
-   [//]: # "{x-version-update-end}"
 
 1. Add the following configuration.
 
@@ -526,7 +519,7 @@ Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/bl
 [sample]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-boot-samples
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
 [environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
-
+[Add azure-spring-boot-bom]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/AZURE_SPRING_BOMS_USAGE.md#add-azure-spring-boot-bom
 [tutorial_create_tenant]: https://docs.microsoft.com/azure/active-directory-b2c/tutorial-create-tenant
 [The OAuth 2.0 authorization code grant]: https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-auth-code-flow
 [The OAuth 2.0 client credentials grant]: https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-client-creds-grant-flow
