@@ -1,5 +1,8 @@
 # Release History
 
+## 3.7.0-beta.1 (Unreleased)
+
+
 ## 3.6.1 (2021-07-02)
 ### Breaking Changes
 - Fix [cve-2021-22119](https://tanzu.vmware.com/security/cve-2021-22119)
