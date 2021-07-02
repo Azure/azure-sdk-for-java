@@ -121,7 +121,7 @@ public final class EmailNotificationHook extends NotificationHook {
      * <p>
      * The administrators have total control over the hook, being allowed to update or delete the hook.
      * Each element in this list represents a user with administrator access, but the value of each string element
-     * as either user email address or clientId uniquely identifying the user service principal.
+     * is either user email address or clientId uniquely identifying the user service principal.
      *
      * @param admins A list containing email or clientId of admins
      * @return The EmailNotificationHook object itself.
