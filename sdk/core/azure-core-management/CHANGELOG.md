@@ -2,6 +2,8 @@
 
 ## 1.4.0-beta.1 (Unreleased)
 
+### Features Added
+
 - Added new Azure region `Region.US_WEST3`.
 
 ## 1.3.1 (2021-07-01)
