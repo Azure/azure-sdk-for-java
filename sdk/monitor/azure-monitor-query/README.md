@@ -419,11 +419,11 @@ comments.
 
 [samples_readme]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-query/src/samples/java/README.md
 
-[azure_subscription]: https://azure.microsoft.com/free
+[azure_subscription]: http://azure.microsoft.com/free/java
 
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 
-[product_documentation]: https://aka.ms/awps/doc
+[product_documentation]: https://docs.microsoft.com/azure/azure-monitor/overview
 
 [log_levels]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
 
