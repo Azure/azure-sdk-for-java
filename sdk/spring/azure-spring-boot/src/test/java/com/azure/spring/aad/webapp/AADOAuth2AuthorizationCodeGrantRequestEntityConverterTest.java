@@ -6,7 +6,6 @@ package com.azure.spring.aad.webapp;
 import com.azure.spring.aad.AADClientRegistrationRepository;
 import org.hamcrest.Matcher;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -16,7 +15,6 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationExchange;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationResponse;
-import org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken;
 import org.springframework.util.MultiValueMap;
 
 import java.util.Optional;
@@ -30,7 +28,6 @@ public class AADOAuth2AuthorizationCodeGrantRequestEntityConverterTest {
     private WebApplicationContextRunner getContextRunner() {
         return WebApplicationContextRunnerUtils
             .getContextRunnerWithRequiredProperties()
-            .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
             .withPropertyValues(
                 "azure.activedirectory.base-uri = fake-uri",
                 "azure.activedirectory.authorization-clients.arm.scopes = Calendars.Read",

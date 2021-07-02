@@ -3,8 +3,8 @@
 
 package com.azure.spring.aad;
 
+import com.azure.spring.aad.webapp.AADWebAppConfiguration;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.security.oauth2.client.servlet.OAuth2ClientAutoConfiguration;
@@ -14,7 +14,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
-import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken;
 
 import java.util.Set;
@@ -62,12 +61,12 @@ public class AADClientConfigurationTest {
     @Test
     public void testNotExistBearerTokenAuthenticationTokenClass() {
         this.contextRunner
-            .withUserConfiguration(AADClientConfiguration.class)
+            .withConfiguration(AutoConfigurations.of(OAuth2ClientAutoConfiguration.class,
+                AADWebAppConfiguration.class, AADClientConfiguration.class))
             .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
             .run(context -> {
                 assertThat(context).hasSingleBean(AADAuthenticationProperties.class);
                 assertThat(context).hasSingleBean(ClientRegistrationRepository.class);
-                assertThat(context).hasSingleBean(AADOAuth2AuthorizedClientRepository.class);
                 assertThat(context).hasSingleBean(AADOAuth2AuthorizedClientRepository.class);
             });
     }
@@ -75,8 +74,8 @@ public class AADClientConfigurationTest {
     @Test
     public void testNotExistOAuth2LoginAuthenticationFilter() {
         this.contextRunner
-            .withUserConfiguration(AADClientConfiguration.class)
-            .withClassLoader(new FilteredClassLoader(OAuth2LoginAuthenticationFilter.class))
+            .withClassLoader(new FilteredClassLoader(ClientRegistration.class))
+            .withConfiguration(AutoConfigurations.of(AADClientConfiguration.class))
             .run(context -> assertThat(context).doesNotHaveBean(AADOAuth2AuthorizedClientRepository.class));
     }
 

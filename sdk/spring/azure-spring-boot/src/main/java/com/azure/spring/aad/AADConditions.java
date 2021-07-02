@@ -15,7 +15,7 @@ import org.springframework.security.oauth2.server.resource.BearerTokenAuthentica
  */
 public final class AADConditions {
 
-    protected final static String BEARER_TOKEN_AUTHENTICATION_TOKEN_CLASS_NAME =
+    public static final String BEARER_TOKEN_AUTHENTICATION_TOKEN_CLASS_NAME =
         "org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken";
 
 
@@ -32,6 +32,7 @@ public final class AADConditions {
          */
         @ConditionalOnMissingClass(BEARER_TOKEN_AUTHENTICATION_TOKEN_CLASS_NAME)
         @ConditionalOnClass({ EnableWebSecurity.class, ClientRegistration.class })
+        @ConditionalOnExpression("${azure.activedirectory.enable-web-app-resource-server:false} == false")
         static class WebAppClientMode {
 
         }
@@ -44,6 +45,7 @@ public final class AADConditions {
             ClientRegistration.class,
             BearerTokenAuthenticationToken.class
         })
+        @ConditionalOnExpression("${azure.activedirectory.enable-web-app-resource-server:false} == false")
         static class WebApiClientMode {
 
         }
@@ -75,6 +77,7 @@ public final class AADConditions {
          */
         @ConditionalOnMissingClass(BEARER_TOKEN_AUTHENTICATION_TOKEN_CLASS_NAME)
         @ConditionalOnClass({ EnableWebSecurity.class, ClientRegistration.class })
+        @ConditionalOnExpression("${azure.activedirectory.enable-web-app-resource-server:false} == false")
         static class WebAppClientMode {
 
         }
@@ -105,6 +108,7 @@ public final class AADConditions {
          * Web resource server scenario condition.
          */
         @ConditionalOnClass(BearerTokenAuthenticationToken.class)
+        @ConditionalOnExpression("${azure.activedirectory.enable-web-app-resource-server:false} == false")
         static class WebApiClientMode {
 
         }

@@ -7,7 +7,6 @@ import com.azure.spring.aad.AADClientConfiguration;
 import com.azure.spring.aad.AADConditions;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -17,7 +16,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -50,8 +48,7 @@ public class AADWebAppConfiguration {
      */
     @Configuration
     @EnableWebSecurity
-    @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
-    @ConditionalOnBean(ObjectPostProcessor.class)
+    @EnableGlobalMethodSecurity(prePostEnabled = true)
     @ConditionalOnMissingBean(WebSecurityConfigurerAdapter.class)
     @ConditionalOnExpression("${azure.activedirectory.enable-web-app-resource-server:false} == false")
     public static class DefaultAADWebSecurityConfigurerAdapter extends AADWebSecurityConfigurerAdapter {

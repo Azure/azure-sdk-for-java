@@ -159,7 +159,10 @@ public class AuthorizedClientRepoTest {
     }
 
     private Authentication createAuthentication() {
-        return new PreAuthenticatedAuthenticationToken("fake-user", "fake-crednetial");
+        PreAuthenticatedAuthenticationToken authenticationToken =
+            new PreAuthenticatedAuthenticationToken("fake-user", "fake-crednetial");
+        authenticationToken.setAuthenticated(true);
+        return authenticationToken;
     }
 
     private boolean isTokenExpired(OAuth2AccessToken token) {

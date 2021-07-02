@@ -3,6 +3,11 @@
 
 package com.azure.spring.aad.webapp;
 
+import com.azure.spring.aad.AADClientConfiguration;
+import org.springframework.boot.autoconfigure.AutoConfigurations;
+import org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener;
+import org.springframework.boot.autoconfigure.security.oauth2.client.servlet.OAuth2ClientAutoConfiguration;
+import org.springframework.boot.logging.LogLevel;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.http.HttpEntity;
@@ -24,7 +29,9 @@ public class WebApplicationContextRunnerUtils {
     public static WebApplicationContextRunner getContextRunner() {
         return new WebApplicationContextRunner()
             .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
-            .withUserConfiguration(AADWebAppConfiguration.class);
+            .withConfiguration(AutoConfigurations.of(OAuth2ClientAutoConfiguration.class,
+                AADWebAppConfiguration.class, AADClientConfiguration.class))
+            .withInitializer(new ConditionEvaluationReportLoggingListener(LogLevel.INFO));
     }
 
     @SuppressWarnings("unchecked")

@@ -179,4 +179,12 @@ public class AADOAuth2AuthorizedClientRepository implements OAuth2AuthorizedClie
         return authentication != null && !this.authenticationTrustResolver.isAnonymous(authentication)
             && authentication.isAuthenticated();
     }
+
+    public OAuth2AuthorizedClientRepository getAnonymousAuthorizedClientRepository() {
+        return anonymousAuthorizedClientRepository;
+    }
+
+    public void setAnonymousAuthorizedClientRepository(OAuth2AuthorizedClientRepository anonymousAuthorizedClientRepository) {
+        this.anonymousAuthorizedClientRepository = anonymousAuthorizedClientRepository;
+    }
 }

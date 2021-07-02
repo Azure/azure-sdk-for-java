@@ -55,6 +55,7 @@ public class AADClientRegistrationRepository
         this.isWebAppClientMode = isWebAppClientMode();
         this.isWebApiClientMode = isWebApiClientMode();
         this.isAllInClientMode = isAllInClientMode();
+        properties.getAuthorizationClients().forEach(this::handleDefaultAADAuthorizationGrantType);
         this.azureClientRegistration = azureClientRegistration();
         this.delegatedClientRegistrations = delegatedClientRegistrations();
         this.allClientRegistrations = allClientRegistrations();
@@ -97,7 +98,6 @@ public class AADClientRegistrationRepository
     }
 
     private Map<String, ClientRegistration> allClientRegistrations() {
-        properties.getAuthorizationClients().forEach(this::handleDefaultAADAuthorizationGrantType);
         Map<String, ClientRegistration> result =
             properties.getAuthorizationClients()
                       .entrySet()
@@ -142,8 +142,6 @@ public class AADClientRegistrationRepository
         // todo check null
         Assert.notNull(clientProperties.getAuthorizationGrantType(),
             "AuthorizationGrantType can not be empty. " + "registrationId: " + registrationId + ".");
-        // todo 1 where to add this checking "Web Application do not support on-behalf-of grant type."
-        // todo 2 where ro add this checking "Web Api do not support authorization_code grant type."
         LOGGER.debug("Client {} AuthorizationClientProperties: {}.", registrationId, clientProperties);
         AADAuthorizationServerEndpoints endpoints =
             new AADAuthorizationServerEndpoints(properties.getBaseUri(), properties.getTenantId());
@@ -310,8 +308,8 @@ public class AADClientRegistrationRepository
 
     private boolean isAzureDelegatedClientRegistration(String registrationId,
                                                        AuthorizationClientProperties clientProperties) {
-        return !registrationId.equals(AZURE_CLIENT_REGISTRATION_ID)
-            && clientProperties.getAuthorizationGrantType().equals(AUTHORIZATION_CODE)
+        return !AZURE_CLIENT_REGISTRATION_ID.equals(registrationId)
+            && AUTHORIZATION_CODE.equals(clientProperties.getAuthorizationGrantType())
             && !clientProperties.isOnDemand();
     }
 
@@ -401,6 +399,6 @@ public class AADClientRegistrationRepository
     }
 
     private boolean isPresent(String className) {
-        return ClassUtils.isPresent(className, AADClientRegistrationRepository.class.getClassLoader());
+        return ClassUtils.isPresent(className, ClassUtils.getDefaultClassLoader());
     }
 }
