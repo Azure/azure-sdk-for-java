@@ -154,7 +154,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                 throwable instanceof CosmosException) {
                 CosmosException cosmosException = (CosmosException) throwable;
 
-                if(this.cosmosDiagnosticsAccessor.IsDiagnosticCapturedInPagedFlux(cosmosException.getDiagnostics()).compareAndSet(false, true)) {
+                if (this.cosmosDiagnosticsAccessor.isDiagnosticsCapturedInPagedFlux(cosmosException.getDiagnostics()).compareAndSet(false, true)) {
                     fillClientTelemetry(pagedFluxOptions.getCosmosAsyncClient(), 0, pagedFluxOptions.getContainerId(),
                         pagedFluxOptions.getDatabaseId(),
                         pagedFluxOptions.getOperationType(), pagedFluxOptions.getResourceType(),
@@ -171,7 +171,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
 
             if (pagedFluxOptions.getCosmosAsyncClient() != null &&
                 Configs.isClientTelemetryEnabled(BridgeInternal.isClientTelemetryEnabled(pagedFluxOptions.getCosmosAsyncClient()))) {
-                if(this.cosmosDiagnosticsAccessor.IsDiagnosticCapturedInPagedFlux(feedResponse.getCosmosDiagnostics()).compareAndSet(false, true)) {
+                if (this.cosmosDiagnosticsAccessor.isDiagnosticsCapturedInPagedFlux(feedResponse.getCosmosDiagnostics()).compareAndSet(false, true)) {
                     fillClientTelemetry(pagedFluxOptions.getCosmosAsyncClient(), HttpConstants.StatusCodes.OK,
                         pagedFluxOptions.getContainerId(),
                         pagedFluxOptions.getDatabaseId(),
