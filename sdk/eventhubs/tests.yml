@@ -12,7 +12,6 @@ stages:
           groupId: com.azure
           safeName: azuremessagingeventhubscheckpointstoreblob
       TimeoutInMinutes: 120
-      Clouds: 'Public,Canary'
-      SupportedClouds: 'Public,Preview,UsGov,China'
+      Clouds: 'Public,Preview,UsGov,China'
       EnvVars:
         AZURE_LOG_LEVEL: 2
