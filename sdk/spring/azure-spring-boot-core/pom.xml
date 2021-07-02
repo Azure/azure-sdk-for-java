@@ -12,7 +12,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-boot-core</artifactId>
-  <version>1.7.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-core;current} -->
+  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-core;current} -->
   <packaging>jar</packaging>
 
   <name>Azure Spring Boot Core Library</name>
