@@ -23,6 +23,7 @@ import org.springframework.core.env.MutablePropertySources;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
+import javax.swing.text.html.Option;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -140,7 +141,10 @@ class KeyVaultEnvironmentPostProcessorHelper {
         final String tenantId = getPropertyValue(normalizedName, Property.TENANT_ID);
         final String certificatePath = getPropertyValue(normalizedName, Property.CERTIFICATE_PATH);
         final String certificatePassword = getPropertyValue(normalizedName, Property.CERTIFICATE_PASSWORD);
-        final String authorityHost = getPropertyValue(normalizedName, Property.AUTHORITY_HOST, DEFAULT_AUTHORITY_HOST);
+        final String authorityHost = Optional.ofNullable(getPropertyValue(normalizedName, Property.AUTHORITY_HOST))
+                                             .orElse(Optional.of(Constants.PREFIX + "environment")
+                                                             .map(environment::getProperty)
+                                                             .orElse(DEFAULT_AUTHORITY_HOST));
         if (clientId != null && tenantId != null && clientSecret != null) {
             LOGGER.debug("Will use custom credentials");
             return new ClientSecretCredentialBuilder()
@@ -189,7 +193,7 @@ class KeyVaultEnvironmentPostProcessorHelper {
         if (keyVaultPropertyValue != null) {
             return keyVaultPropertyValue;
         }
-        if (normalizedName.equals("") && AZURE_SPRING_PROPERTIES.contains(property.getName())) {
+        if (AZURE_SPRING_PROPERTIES.contains(property.getName())) {
             return Optional.of(Constants.PREFIX + property.getName())
                 .map(environment::getProperty)
                 .orElse(defaultValue);

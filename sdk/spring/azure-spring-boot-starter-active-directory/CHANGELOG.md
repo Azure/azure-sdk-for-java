@@ -10,7 +10,12 @@
           client-id:
           client-secret:
           tenant-id:
+          authority-host:
+          environment:
     ```
+### Breaking Changes
+- Property type of `spring.cloud.azure.environment` are changed from Enum to String. Supported values are "Azure", "AzureChina", "AzureGermany" and "AzureUSGovernment".
+- Support alternative configuration of `azure.activedirectory.base-uri` from `spring.cloud.azure.authority-host` or `spring.cloud.azure.environment`.
 
 ## 3.6.0 (2021-06-23)
 ### Breaking Changes

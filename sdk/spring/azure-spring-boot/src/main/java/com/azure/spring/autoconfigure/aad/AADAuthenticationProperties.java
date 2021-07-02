@@ -5,7 +5,9 @@ package com.azure.spring.autoconfigure.aad;
 
 import com.azure.spring.aad.AADAuthorizationGrantType;
 import com.azure.spring.aad.webapp.AuthorizationClientProperties;
+import com.azure.spring.core.Constants;
 import com.azure.spring.core.CredentialProperties;
+import com.azure.spring.core.MiscProperties;
 import com.nimbusds.jose.jwk.source.RemoteJWKSet;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -28,12 +30,14 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import static com.azure.spring.core.Utils.toAuthorityHost;
+
 /**
  * Configuration properties for Azure Active Directory Authentication.
  */
 @Validated
 @ConfigurationProperties("azure.activedirectory")
-@Import(CredentialProperties.class)
+@Import({CredentialProperties.class, MiscProperties.class })
 public class AADAuthenticationProperties implements InitializingBean {
 
     private static final long DEFAULT_JWK_SET_CACHE_LIFESPAN = TimeUnit.MINUTES.toMillis(5);
@@ -41,6 +45,9 @@ public class AADAuthenticationProperties implements InitializingBean {
 
     @Autowired
     private CredentialProperties credentialProperties;
+
+    @Autowired
+    private MiscProperties miscProperties;
     /**
      * Default UserGroup configuration.
      */
@@ -417,10 +424,13 @@ public class AADAuthenticationProperties implements InitializingBean {
     public void afterPropertiesSet() {
 
         if (!StringUtils.hasText(baseUri)) {
-            baseUri = "https://login.microsoftonline.com/";
-        } else {
-            baseUri = addSlash(baseUri);
+            baseUri = Optional.ofNullable(credentialProperties.getAuthorityHost())
+                              .orElse(Optional.ofNullable(miscProperties.getEnvironment())
+                                              .filter(env -> !env.isEmpty())
+                                              .map(env -> toAuthorityHost(env))
+                                              .orElse(Constants.AZURE_GLOBAL_AUTHORITY_HOST));
         }
+        baseUri = addSlash(baseUri);
 
         if (!StringUtils.hasText(redirectUriTemplate)) {
             redirectUriTemplate = "{baseUrl}/login/oauth2/code/";

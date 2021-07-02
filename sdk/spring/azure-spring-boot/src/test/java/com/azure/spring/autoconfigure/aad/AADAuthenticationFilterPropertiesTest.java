@@ -38,6 +38,7 @@ public class AADAuthenticationFilterPropertiesTest {
 
             assertThat(properties.getClientId()).isEqualTo(TestConstants.CLIENT_ID);
             assertThat(properties.getClientSecret()).isEqualTo(TestConstants.CLIENT_SECRET);
+            assertThat(properties.getBaseUri()).isEqualTo(Constants.AZURE_GLOBAL_AUTHORITY_HOST);
             assertThat(properties.getActiveDirectoryGroups()
                                  .toString()).isEqualTo(TestConstants.TARGETED_GROUPS.toString());
         }
@@ -50,7 +51,9 @@ public class AADAuthenticationFilterPropertiesTest {
         addInlinedPropertiesToEnvironment(
             context,
             Constants.PREFIX + ".tenant-id=azure-tenant-id",
-            Constants.PREFIX + ".client-id=" + "azure-client-id",
+            Constants.PREFIX + ".client-id=azure-client-id",
+            Constants.PREFIX + ".authority-host=azure-authority-host",
+            Constants.PREFIX + ".environment=AzureGermany",
             AAD_PROPERTY_PREFIX + "client-id=" + TestConstants.CLIENT_ID,
             AAD_PROPERTY_PREFIX + "client-secret=" + TestConstants.CLIENT_SECRET
         );
@@ -62,7 +65,26 @@ public class AADAuthenticationFilterPropertiesTest {
         assertThat(properties.getTenantId()).isEqualTo("azure-tenant-id");
         assertThat(properties.getClientId()).isEqualTo(TestConstants.CLIENT_ID);
         assertThat(properties.getClientSecret()).isEqualTo(TestConstants.CLIENT_SECRET);
+        assertThat(properties.getBaseUri()).isEqualTo("azure-authority-host/");
 
+    }
+
+    @Test
+    public void testGetBaseUriFromEnvironment() {
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
+        addInlinedPropertiesToEnvironment(
+            context,
+            Constants.PREFIX + ".environment=AzureGermany",
+            AAD_PROPERTY_PREFIX + "tenant-id=azure-tenant-id",
+            AAD_PROPERTY_PREFIX + "client-id=" + TestConstants.CLIENT_ID,
+            AAD_PROPERTY_PREFIX + "client-secret=" + TestConstants.CLIENT_SECRET
+        );
+        context.register(Config.class);
+        context.refresh();
+
+        final AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
+
+        assertThat(properties.getBaseUri()).isEqualTo(Constants.AZURE_GERMANY_AUTHORITY_HOST);
     }
 
     private void configureAllRequiredProperties(AnnotationConfigApplicationContext context) {

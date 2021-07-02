@@ -149,7 +149,7 @@ public class KeyVaultEnvironmentPostProcessorTest {
     }
 
     @Test
-    public void testGetPropertyFromAzureProperties() {
+    public void testGetPropertyFromCommonProperties() {
         testProperties.put("spring.cloud.azure.client-id", "fake-client-id");
         propertySources.addLast(new MapPropertySource("Test_Properties", testProperties));
 
