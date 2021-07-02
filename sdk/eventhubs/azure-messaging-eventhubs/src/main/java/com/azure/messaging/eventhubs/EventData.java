@@ -3,6 +3,7 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.models.AmqpAnnotatedMessage;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 
@@ -56,6 +57,8 @@ public class EventData {
     private final Map<String, Object> properties;
     private final BinaryData body;
     private final SystemProperties systemProperties;
+    private final AmqpAnnotatedMessage annotatedMessage;
+
     private Context context;
 
     static {
@@ -105,7 +108,11 @@ public class EventData {
      * @param body The {@link BinaryData} payload for this event.
      */
     public EventData(BinaryData body) {
-        this(body, new SystemProperties(), Context.NONE);
+        this.body = Objects.requireNonNull(body, "'body' cannot be null.");
+        this.systemProperties = new SystemProperties();
+        this.context = Context.NONE;
+        this.properties = new HashMap<>();
+        this.annotatedMessage = null;
     }
 
     /**
@@ -114,13 +121,16 @@ public class EventData {
      * @param body The data to set for this event.
      * @param systemProperties System properties set by message broker for this event.
      * @param context A specified key-value pair of type {@link Context}.
+     * @param amqpAnnotatedMessage Backing annotated message.
      * @throws NullPointerException if {@code body}, {@code systemProperties}, or {@code context} is {@code null}.
      */
-    EventData(BinaryData body, SystemProperties systemProperties, Context context) {
+    EventData(BinaryData body, SystemProperties systemProperties, Context context,
+        AmqpAnnotatedMessage amqpAnnotatedMessage) {
         this.body = Objects.requireNonNull(body, "'body' cannot be null.");
         this.context = Objects.requireNonNull(context, "'context' cannot be null.");
         this.systemProperties =  Objects.requireNonNull(systemProperties, "'systemProperties' cannot be null.");
-        this.properties = new HashMap<>();
+        this.properties = Collections.unmodifiableMap(amqpAnnotatedMessage.getApplicationProperties());
+        this.annotatedMessage = Objects.requireNonNull(amqpAnnotatedMessage, "'amqpAnnotatedMessage' cannot be null.");
     }
 
     /**
@@ -133,7 +143,8 @@ public class EventData {
      *
      * {@codesnippet com.azure.messaging.eventhubs.eventdata.getProperties}
      *
-     * @return Application properties associated with this {@link EventData}.
+     * @return Application properties associated with this {@link EventData}. For received {@link EventData}, the map
+     * is a read-only view.
      */
     public Map<String, Object> getProperties() {
         return properties;
