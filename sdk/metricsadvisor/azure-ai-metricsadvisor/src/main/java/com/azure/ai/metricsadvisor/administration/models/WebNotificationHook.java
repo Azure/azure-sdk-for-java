@@ -196,12 +196,16 @@ public final class WebNotificationHook extends NotificationHook {
 
     /**
      * Sets the user e-mails and clientIds with administrative rights to manage the hook.
+     * <p>
+     * The administrators have total control over the hook, being allowed to update or delete the hook.
+     * Each element in this list represents a user with administrator access, but the value of each string element
+     * as either user email address or clientId uniquely identifying the user service principal.
      *
-     * @param emails The emails and clientIds
+     * @param admins A list containing email or clientId of admins
      * @return The WebNotificationHook object itself.
      */
-    public WebNotificationHook setAdmins(List<String> emails) {
-        super.setAdministrators(emails);
+    public WebNotificationHook setAdmins(List<String> admins) {
+        super.setAdministrators(admins);
         return this;
     }
 
