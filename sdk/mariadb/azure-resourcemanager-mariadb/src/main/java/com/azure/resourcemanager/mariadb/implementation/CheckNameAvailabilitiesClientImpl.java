@@ -58,7 +58,7 @@ public final class CheckNameAvailabilitiesClientImpl implements CheckNameAvailab
     @ServiceInterface(name = "MariaDBManagementCli")
     private interface CheckNameAvailabilitiesService {
         @Headers({"Content-Type: application/json"})
-        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.DBForMariaDB/checkNameAvailability")
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.DBforMariaDB/checkNameAvailability")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<NameAvailabilityInner>> execute(

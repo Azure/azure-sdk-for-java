@@ -63,7 +63,7 @@ public final class ServerBasedPerformanceTiersClientImpl implements ServerBasedP
     private interface ServerBasedPerformanceTiersService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBForMariaDB"
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMariaDB"
                 + "/servers/{serverName}/performanceTiers")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)

@@ -56,7 +56,7 @@ public final class RecoverableServersClientImpl implements RecoverableServersCli
     private interface RecoverableServersService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBForMariaDB"
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMariaDB"
                 + "/servers/{serverName}/recoverableServers")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)

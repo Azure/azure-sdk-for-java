@@ -65,7 +65,7 @@ public final class LocationBasedPerformanceTiersClientImpl implements LocationBa
     private interface LocationBasedPerformanceTiersService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.DBForMariaDB/locations/{locationName}"
+            "/subscriptions/{subscriptionId}/providers/Microsoft.DBforMariaDB/locations/{locationName}"
                 + "/performanceTiers")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)

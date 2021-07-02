@@ -60,7 +60,7 @@ public final class ReplicasClientImpl implements ReplicasClient {
     private interface ReplicasService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBForMariaDB"
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMariaDB"
                 + "/servers/{serverName}/replicas")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)

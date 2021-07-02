@@ -60,7 +60,7 @@ public final class LogFilesClientImpl implements LogFilesClient {
     private interface LogFilesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBForMariaDB"
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMariaDB"
                 + "/servers/{serverName}/logFiles")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)

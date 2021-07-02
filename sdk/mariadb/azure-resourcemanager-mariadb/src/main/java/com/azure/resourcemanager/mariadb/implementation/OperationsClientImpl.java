@@ -54,7 +54,7 @@ public final class OperationsClientImpl implements OperationsClient {
     @ServiceInterface(name = "MariaDBManagementCli")
     private interface OperationsService {
         @Headers({"Content-Type: application/json"})
-        @Get("/providers/Microsoft.DBForMariaDB/operations")
+        @Get("/providers/Microsoft.DBforMariaDB/operations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<OperationListResultInner>> list(
