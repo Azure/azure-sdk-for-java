@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.data.movement;
+package com.azure.storage.data.movement.implementation;
 
 /**
  * Factory for constructing {@link PathScanner}. Call {@link #getPathScanner()} to create a path scanner with the

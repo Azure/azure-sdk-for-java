@@ -1,12 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.data.movement;
+package com.azure.storage.data.movement.implementation;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import com.azure.core.util.logging.ClientLogger;
-import reactor.core.scheduler.Schedulers;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -19,7 +18,7 @@ import java.util.stream.BaseStream;
  * TODO: Replace placeholder Javadoc
  */
 public class PathScanner {
-    private static final ClientLogger logger = new ClientLogger(PathScanner.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PathScanner.class);
     private final String basePath;
 
     /**
@@ -37,7 +36,7 @@ public class PathScanner {
         // Check if the path exists; throw an error if there's nothing
         // present at the given path
         if (!(Files.isDirectory(pathObj) || Files.isRegularFile(pathObj))) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException(String.format("No item(s) located at the path '%s'.", basePath)));
+            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException(String.format("No item(s) located at the path '%s'.", basePath)));
         }
     }
 
@@ -69,10 +68,10 @@ public class PathScanner {
                         // If set to skip subdirectories, continue processing; else,
                         // pass an error which will stop the Flux stream
                         if (continueOnError) {
-                            logger.warning(e.getMessage(), e);
+                            LOGGER.warning(e.getMessage(), e);
                             return Mono.empty();
                         } else {
-                            return Mono.error(logger.logThrowableAsError(e));
+                            return Mono.error(LOGGER.logThrowableAsError(e));
                         }
                     });
             }
