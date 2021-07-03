@@ -5,6 +5,7 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.models.AmqpAnnotatedMessage;
 import com.azure.core.amqp.models.AmqpMessageBody;
+import com.azure.core.amqp.models.AmqpMessageId;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
@@ -57,7 +58,6 @@ public class EventData {
     static final Set<String> RESERVED_SYSTEM_PROPERTIES;
 
     private final Map<String, Object> properties;
-    private final AmqpMessageBody body;
     private final SystemProperties systemProperties;
     private final AmqpAnnotatedMessage annotatedMessage;
     private Context context;
@@ -81,7 +81,13 @@ public class EventData {
      * @throws NullPointerException if {@code body} is {@code null}.
      */
     public EventData(byte[] body) {
-        this(BinaryData.fromBytes(Objects.requireNonNull(body, "'body' cannot be null.")));
+        this.systemProperties = new SystemProperties();
+        this.context = Context.NONE;
+
+        final AmqpMessageBody messageBody = AmqpMessageBody.fromData(
+            Objects.requireNonNull(body, "'body' cannot be null."));
+        this.annotatedMessage = new AmqpAnnotatedMessage(messageBody);
+        this.properties = annotatedMessage.getApplicationProperties();
     }
 
     /**
@@ -112,12 +118,7 @@ public class EventData {
      * @param body The {@link BinaryData} payload for this event.
      */
     public EventData(BinaryData body) {
-        this.systemProperties = new SystemProperties();
-        this.context = Context.NONE;
-        this.properties = new HashMap<>();
-
-        this.body = AmqpMessageBody.fromData(Objects.requireNonNull(body, "'body' cannot be null.").toBytes());
-        this.annotatedMessage = new AmqpAnnotatedMessage(AmqpMessageBody.fromData(body.toBytes()));
+        this(Objects.requireNonNull(body, "'body' cannot be null.").toBytes());
     }
 
     /**
@@ -136,19 +137,18 @@ public class EventData {
         this.systemProperties = Objects.requireNonNull(systemProperties, "'systemProperties' cannot be null.");
         this.properties = Collections.unmodifiableMap(amqpAnnotatedMessage.getApplicationProperties());
         this.annotatedMessage = Objects.requireNonNull(amqpAnnotatedMessage, "'amqpAnnotatedMessage' cannot be null.");
-        this.body = amqpAnnotatedMessage.getBody();
 
-        switch (body.getBodyType()) {
+        switch (annotatedMessage.getBody().getBodyType()) {
             case DATA:
                 break;
             case SEQUENCE:
             case VALUE:
                 new ClientLogger(EventData.class).warning("Message body type '{}' is not supported in EH. "
-                    + " Getting contents of body may throw.", body.getBodyType());
+                    + " Getting contents of body may throw.", annotatedMessage.getBody().getBodyType());
                 break;
             default:
                 throw new ClientLogger(EventData.class).logExceptionAsError(new IllegalArgumentException(
-                    "Body type not valid " + body.getBodyType()));
+                    "Body type not valid " + annotatedMessage.getBody().getBodyType()));
         }
     }
 
@@ -192,7 +192,7 @@ public class EventData {
      * @return A byte array representing the data.
      */
     public byte[] getBody() {
-        return body.getFirstData();
+        return annotatedMessage.getBody().getFirstData();
     }
 
     /**
@@ -201,7 +201,7 @@ public class EventData {
      * @return UTF-8 decoded string representation of the event data.
      */
     public String getBodyAsString() {
-        return new String(body.getFirstData(), UTF_8);
+        return new String(annotatedMessage.getBody().getFirstData(), UTF_8);
     }
 
     /**
@@ -210,7 +210,7 @@ public class EventData {
      * @return the {@link BinaryData} payload associated with this event.
      */
     public BinaryData getBodyAsBinaryData() {
-        return BinaryData.fromBytes(body.getFirstData());
+        return BinaryData.fromBytes(annotatedMessage.getBody().getFirstData());
     }
 
     /**
@@ -260,6 +260,15 @@ public class EventData {
     }
 
     /**
+     * Gets the underlying AMQP message.
+     *
+     * @return The underlying AMQP message.
+     */
+    public AmqpAnnotatedMessage getRawAmqpMessage() {
+        return annotatedMessage;
+    }
+
+    /**
      * Gets the content type.
      *
      * @return The content type.
@@ -268,8 +277,63 @@ public class EventData {
         return annotatedMessage.getProperties().getContentType();
     }
 
+    /**
+     * Sets the content type.
+     *
+     * @param contentType The content type.
+     *
+     * @return The updated {@link EventData}.
+     */
     public EventData setContentType(String contentType) {
         annotatedMessage.getProperties().setContentType(contentType);
+        return this;
+    }
+
+    /**
+     * Gets the correlation id.
+     *
+     * @return The correlation id. {@code null} if there is none set.
+     */
+    public String getCorrelationId() {
+        final AmqpMessageId messageId = annotatedMessage.getProperties().getCorrelationId();
+        return messageId != null ? messageId.toString() : null;
+    }
+
+    /**
+     * Sets the correlation id.
+     *
+     * @param correlationId The correlation id.
+     *
+     * @return The updated {@link EventData}.
+     */
+    public EventData setCorrelationId(String correlationId) {
+        final AmqpMessageId id = correlationId != null ? new AmqpMessageId(correlationId) : null;
+
+        annotatedMessage.getProperties().setCorrelationId(id);
+        return this;
+    }
+
+    /**
+     * Gets the message id.
+     *
+     * @return The message id. {@code null} if there is none set.
+     */
+    public String getMessageId() {
+        final AmqpMessageId messageId = annotatedMessage.getProperties().getMessageId();
+        return messageId != null ? messageId.toString() : null;
+    }
+
+    /**
+     * Sets the message id.
+     *
+     * @param messageId The message id.
+     *
+     * @return The updated {@link EventData}.
+     */
+    public EventData setMessageId(String messageId) {
+        final AmqpMessageId id = messageId != null ? new AmqpMessageId(messageId) : null;
+
+        annotatedMessage.getProperties().setMessageId(id);
         return this;
     }
 
@@ -286,7 +350,8 @@ public class EventData {
         }
 
         EventData eventData = (EventData) o;
-        return Arrays.equals(body.getFirstData(), eventData.body.getFirstData());
+        return Arrays.equals(annotatedMessage.getBody().getFirstData(),
+            eventData.annotatedMessage.getBody().getFirstData());
     }
 
     /**
@@ -294,7 +359,7 @@ public class EventData {
      */
     @Override
     public int hashCode() {
-        return Arrays.hashCode(body.getFirstData());
+        return Arrays.hashCode(annotatedMessage.getBody().getFirstData());
     }
 
     /**
