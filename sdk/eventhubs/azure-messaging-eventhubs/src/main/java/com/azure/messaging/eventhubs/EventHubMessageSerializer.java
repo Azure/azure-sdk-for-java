@@ -5,13 +5,12 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.AmqpMessageConstant;
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.amqp.models.AmqpAnnotatedMessage;
 import com.azure.core.exception.AzureException;
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.ManagementChannel;
 import com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties;
-import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
@@ -106,17 +105,9 @@ class EventHubMessageSerializer implements MessageSerializer {
         }
 
         final EventData eventData = (EventData) object;
-        final Message message = Proton.message();
+        final AmqpAnnotatedMessage amqpAnnotatedMessage = eventData.getRawAmqpMessage();
 
-        if (eventData.getProperties() != null && !eventData.getProperties().isEmpty()) {
-            message.setApplicationProperties(new ApplicationProperties(eventData.getProperties()));
-        }
-
-        setSystemProperties(eventData, message);
-
-        message.setBody(new Data(new Binary(eventData.getBody())));
-
-        return message;
+        return MessageUtils.toProtonJMessage(amqpAnnotatedMessage);
     }
 
     @SuppressWarnings("unchecked")
@@ -227,8 +218,9 @@ class EventHubMessageSerializer implements MessageSerializer {
             body = new byte[0];
         }
 
+        final AmqpAnnotatedMessage amqpAnnotatedMessage = MessageUtils.toAmqpAnnotatedMessage(message);
         final EventData.SystemProperties systemProperties = new EventData.SystemProperties(receiveProperties);
-        final EventData eventData = new EventData(BinaryData.fromBytes(body), systemProperties, Context.NONE);
+        final EventData eventData = new EventData(amqpAnnotatedMessage, systemProperties, Context.NONE);
         final Map<String, Object> properties = message.getApplicationProperties() == null
             ? new HashMap<>()
             : message.getApplicationProperties().getValue();
