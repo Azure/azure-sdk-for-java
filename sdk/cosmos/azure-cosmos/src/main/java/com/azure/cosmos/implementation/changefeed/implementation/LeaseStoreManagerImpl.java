@@ -271,13 +271,10 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
                 this.requestOptionsFactory.createItemRequestOptions(lease),
                 serverLease ->
                 {
-                    if (serverLease.getOwner() != null) {
-                        if (serverLease.getOwner() != null && !serverLease.getOwner().equalsIgnoreCase(lease.getOwner())) {
-                            logger.info("Partition {} no need to release lease. The lease was already taken by another host '{}'.", lease.getLeaseToken(), serverLease.getOwner());
-                            throw new LeaseLostException(lease);
-                        }
+                    if (serverLease.getOwner() != null && !serverLease.getOwner().equalsIgnoreCase(lease.getOwner())) {
+                        logger.info("Partition {} no need to release lease. The lease was already taken by another host '{}'.", lease.getLeaseToken(), serverLease.getOwner());
+                        throw new LeaseLostException(lease);
                     }
-
                     serverLease.setOwner(null);
 
                     return serverLease;
