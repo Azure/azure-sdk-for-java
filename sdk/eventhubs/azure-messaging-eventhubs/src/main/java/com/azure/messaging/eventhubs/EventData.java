@@ -4,8 +4,10 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.models.AmqpAnnotatedMessage;
+import com.azure.core.amqp.models.AmqpMessageBody;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 
 import java.nio.ByteBuffer;
 import java.time.Instant;
@@ -55,10 +57,9 @@ public class EventData {
     static final Set<String> RESERVED_SYSTEM_PROPERTIES;
 
     private final Map<String, Object> properties;
-    private final BinaryData body;
+    private final AmqpMessageBody body;
     private final SystemProperties systemProperties;
     private final AmqpAnnotatedMessage annotatedMessage;
-
     private Context context;
 
     static {
@@ -76,6 +77,7 @@ public class EventData {
      * Creates an event containing the {@code body}.
      *
      * @param body The data to set for this event.
+     *
      * @throws NullPointerException if {@code body} is {@code null}.
      */
     public EventData(byte[] body) {
@@ -86,6 +88,7 @@ public class EventData {
      * Creates an event containing the {@code body}.
      *
      * @param body The data to set for this event.
+     *
      * @throws NullPointerException if {@code body} is {@code null}.
      */
     public EventData(ByteBuffer body) {
@@ -96,6 +99,7 @@ public class EventData {
      * Creates an event by encoding the {@code body} using UTF-8 charset.
      *
      * @param body The string that will be UTF-8 encoded to create an event.
+     *
      * @throws NullPointerException if {@code body} is {@code null}.
      */
     public EventData(String body) {
@@ -108,29 +112,44 @@ public class EventData {
      * @param body The {@link BinaryData} payload for this event.
      */
     public EventData(BinaryData body) {
-        this.body = Objects.requireNonNull(body, "'body' cannot be null.");
         this.systemProperties = new SystemProperties();
         this.context = Context.NONE;
         this.properties = new HashMap<>();
-        this.annotatedMessage = null;
+
+        this.body = AmqpMessageBody.fromData(Objects.requireNonNull(body, "'body' cannot be null.").toBytes());
+        this.annotatedMessage = new AmqpAnnotatedMessage(AmqpMessageBody.fromData(body.toBytes()));
     }
 
     /**
      * Creates an event with the given {@code body}, system properties and context.
      *
-     * @param body The data to set for this event.
      * @param systemProperties System properties set by message broker for this event.
      * @param context A specified key-value pair of type {@link Context}.
      * @param amqpAnnotatedMessage Backing annotated message.
-     * @throws NullPointerException if {@code body}, {@code systemProperties}, or {@code context} is {@code null}.
+     *
+     * @throws NullPointerException if {@code amqpAnnotatedMessage}, {@code systemProperties}, or {@code context} is
+     *     {@code null}.
+     * @throws IllegalArgumentException if {@code amqpAnnotatedMessage}'s body type is unknown.
      */
-    EventData(BinaryData body, SystemProperties systemProperties, Context context,
-        AmqpAnnotatedMessage amqpAnnotatedMessage) {
-        this.body = Objects.requireNonNull(body, "'body' cannot be null.");
+    EventData(AmqpAnnotatedMessage amqpAnnotatedMessage, SystemProperties systemProperties, Context context) {
         this.context = Objects.requireNonNull(context, "'context' cannot be null.");
-        this.systemProperties =  Objects.requireNonNull(systemProperties, "'systemProperties' cannot be null.");
+        this.systemProperties = Objects.requireNonNull(systemProperties, "'systemProperties' cannot be null.");
         this.properties = Collections.unmodifiableMap(amqpAnnotatedMessage.getApplicationProperties());
         this.annotatedMessage = Objects.requireNonNull(amqpAnnotatedMessage, "'amqpAnnotatedMessage' cannot be null.");
+        this.body = amqpAnnotatedMessage.getBody();
+
+        switch (body.getBodyType()) {
+            case DATA:
+                break;
+            case SEQUENCE:
+            case VALUE:
+                new ClientLogger(EventData.class).warning("Message body type '{}' is not supported in EH. "
+                    + " Getting contents of body may throw.", body.getBodyType());
+                break;
+            default:
+                throw new ClientLogger(EventData.class).logExceptionAsError(new IllegalArgumentException(
+                    "Body type not valid " + body.getBodyType()));
+        }
     }
 
     /**
@@ -143,8 +162,8 @@ public class EventData {
      *
      * {@codesnippet com.azure.messaging.eventhubs.eventdata.getProperties}
      *
-     * @return Application properties associated with this {@link EventData}. For received {@link EventData}, the map
-     * is a read-only view.
+     * @return Application properties associated with this {@link EventData}. For received {@link EventData}, the map is
+     *     a read-only view.
      */
     public Map<String, Object> getProperties() {
         return properties;
@@ -154,8 +173,8 @@ public class EventData {
      * Properties that are populated by Event Hubs service. As these are populated by the Event Hubs service, they are
      * only present on a <b>received</b> {@link EventData}.
      *
-     * @return An encapsulation of all system properties appended by EventHubs service into {@link EventData}.
-     *     {@code null} if the {@link EventData} is not received from the Event Hubs service.
+     * @return An encapsulation of all system properties appended by EventHubs service into {@link EventData}. {@code
+     *     null} if the {@link EventData} is not received from the Event Hubs service.
      */
     public Map<String, Object> getSystemProperties() {
         return systemProperties;
@@ -173,7 +192,7 @@ public class EventData {
      * @return A byte array representing the data.
      */
     public byte[] getBody() {
-        return body.toBytes();
+        return body.getFirstData();
     }
 
     /**
@@ -182,7 +201,7 @@ public class EventData {
      * @return UTF-8 decoded string representation of the event data.
      */
     public String getBodyAsString() {
-        return new String(body.toBytes(), UTF_8);
+        return new String(body.getFirstData(), UTF_8);
     }
 
     /**
@@ -191,7 +210,7 @@ public class EventData {
      * @return the {@link BinaryData} payload associated with this event.
      */
     public BinaryData getBodyAsBinaryData() {
-        return body;
+        return BinaryData.fromBytes(body.getFirstData());
     }
 
     /**
@@ -230,14 +249,28 @@ public class EventData {
 
     /**
      * Gets the sequence number assigned to the event when it was enqueued in the associated Event Hub partition. This
-     * is unique for every message received in the Event Hub partition. This is only present on a <b>received</b>
-     * {@link EventData}.
+     * is unique for every message received in the Event Hub partition. This is only present on a <b>received</b> {@link
+     * EventData}.
      *
      * @return The sequence number for this event. {@code null} if the {@link EventData} was not received from Event
      *     Hubs service.
      */
     public Long getSequenceNumber() {
         return systemProperties.getSequenceNumber();
+    }
+
+    /**
+     * Gets the content type.
+     *
+     * @return The content type.
+     */
+    public String getContentType() {
+        return annotatedMessage.getProperties().getContentType();
+    }
+
+    public EventData setContentType(String contentType) {
+        annotatedMessage.getProperties().setContentType(contentType);
+        return this;
     }
 
     /**
@@ -253,7 +286,7 @@ public class EventData {
         }
 
         EventData eventData = (EventData) o;
-        return Arrays.equals(body.toBytes(), eventData.body.toBytes());
+        return Arrays.equals(body.getFirstData(), eventData.body.getFirstData());
     }
 
     /**
@@ -261,7 +294,7 @@ public class EventData {
      */
     @Override
     public int hashCode() {
-        return Arrays.hashCode(body.toBytes());
+        return Arrays.hashCode(body.getFirstData());
     }
 
     /**
@@ -278,8 +311,10 @@ public class EventData {
      *
      * @param key The key for this context object
      * @param value The value for this context object.
-     * @throws NullPointerException if {@code key} or {@code value} is null.
+     *
      * @return The updated {@link EventData}.
+     *
+     * @throws NullPointerException if {@code key} or {@code value} is null.
      */
     public EventData addContext(String key, Object value) {
         Objects.requireNonNull(key, "The 'key' parameter cannot be null.");
@@ -369,8 +404,9 @@ public class EventData {
          * Event Hub.
          *
          * @return Sequence number for this event.
-         * @throws IllegalStateException if {@link SystemProperties} does not contain the sequence number in a retrieved
-         * event.
+         *
+         * @throws IllegalStateException if {@link SystemProperties} does not contain the sequence number in a
+         *     retrieved event.
          */
         private Long getSequenceNumber() {
             return sequenceNumber;
