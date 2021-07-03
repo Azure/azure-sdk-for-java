@@ -9,7 +9,8 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.MessageSerializer;
-import com.azure.core.util.BinaryData;
+import com.azure.core.amqp.models.AmqpAnnotatedMessage;
+import com.azure.core.amqp.models.AmqpMessageBody;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.AmqpReceiveLinkProcessor;
@@ -35,6 +36,7 @@ import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;
@@ -184,11 +186,18 @@ class EventHubPartitionAsyncConsumerTest {
         final Message message3 = mock(Message.class);
         final Long secondOffset = 54L;
         final Long lastOffset = 65L;
-        final EventData event1 = new EventData(BinaryData.fromBytes("Foo".getBytes()),
+        final AmqpAnnotatedMessage annotatedMessage1 = new AmqpAnnotatedMessage(
+            AmqpMessageBody.fromData("Foo".getBytes(StandardCharsets.UTF_8)));
+        final AmqpAnnotatedMessage annotatedMessage2 = new AmqpAnnotatedMessage(
+            AmqpMessageBody.fromData("Bar".getBytes(StandardCharsets.UTF_8)));
+        final AmqpAnnotatedMessage annotatedMessage3 = new AmqpAnnotatedMessage(
+            AmqpMessageBody.fromData("Baz".getBytes(StandardCharsets.UTF_8)));
+
+        final EventData event1 = new EventData(annotatedMessage1,
             getSystemProperties(25L, 14L), Context.NONE);
-        final EventData event2 = new EventData(BinaryData.fromBytes("Bar".getBytes()),
+        final EventData event2 = new EventData(annotatedMessage2,
             getSystemProperties(secondOffset, 21L), Context.NONE);
-        final EventData event3 = new EventData(BinaryData.fromBytes("Baz".getBytes()),
+        final EventData event3 = new EventData(annotatedMessage3,
             getSystemProperties(lastOffset, 53L), Context.NONE);
 
         when(messageSerializer.deserialize(same(message1), eq(EventData.class))).thenReturn(event1);
@@ -243,11 +252,18 @@ class EventHubPartitionAsyncConsumerTest {
         final Message message3 = mock(Message.class);
         final Long secondOffset = 54L;
         final Long lastOffset = 65L;
-        final EventData event1 = new EventData(BinaryData.fromBytes("Foo".getBytes()),
+        final AmqpAnnotatedMessage annotatedMessage1 = new AmqpAnnotatedMessage(
+            AmqpMessageBody.fromData("Foo".getBytes(StandardCharsets.UTF_8)));
+        final AmqpAnnotatedMessage annotatedMessage2 = new AmqpAnnotatedMessage(
+            AmqpMessageBody.fromData("Bar".getBytes(StandardCharsets.UTF_8)));
+        final AmqpAnnotatedMessage annotatedMessage3 = new AmqpAnnotatedMessage(
+            AmqpMessageBody.fromData("Baz".getBytes(StandardCharsets.UTF_8)));
+
+        final EventData event1 = new EventData(annotatedMessage1,
             getSystemProperties(25L, 14L), Context.NONE);
-        final EventData event2 = new EventData(BinaryData.fromBytes("Bar".getBytes()),
+        final EventData event2 = new EventData(annotatedMessage2,
             getSystemProperties(secondOffset, 21L), Context.NONE);
-        final EventData event3 = new EventData(BinaryData.fromBytes("Baz".getBytes()),
+        final EventData event3 = new EventData(annotatedMessage3,
             getSystemProperties(lastOffset, 53L), Context.NONE);
 
         when(messageSerializer.deserialize(same(message1), eq(EventData.class))).thenReturn(event1);
