@@ -18,16 +18,17 @@ import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.amqp.messaging.Data;
 import org.apache.qpid.proton.amqp.messaging.DeliveryAnnotations;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
-import org.apache.qpid.proton.amqp.messaging.Section;
 import org.apache.qpid.proton.message.Message;
 
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiFunction;
 
 import static com.azure.messaging.eventhubs.implementation.ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_OFFSET;
 import static com.azure.messaging.eventhubs.implementation.ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER;
@@ -106,8 +107,13 @@ class EventHubMessageSerializer implements MessageSerializer {
 
         final EventData eventData = (EventData) object;
         final AmqpAnnotatedMessage amqpAnnotatedMessage = eventData.getRawAmqpMessage();
+        final Message protonJ = MessageUtils.toProtonJMessage(amqpAnnotatedMessage);
 
-        return MessageUtils.toProtonJMessage(amqpAnnotatedMessage);
+        // This queries the eventData.getSystemProperties() to see if there are properties such as content-type that
+        // be set in the appropriate AMQP message.
+        setSystemProperties(eventData, protonJ);
+
+        return protonJ;
     }
 
     @SuppressWarnings("unchecked")
@@ -206,26 +212,9 @@ class EventHubMessageSerializer implements MessageSerializer {
             addMapEntry(receiveProperties, AmqpMessageConstant.REPLY_TO_GROUP_ID, message.getReplyToGroupId());
         }
 
-        final Section bodySection = message.getBody();
-        byte[] body;
-        if (bodySection instanceof Data) {
-            Data bodyData = (Data) bodySection;
-            body = bodyData.getValue().getArray();
-        } else {
-            logger.warning(String.format(Messages.MESSAGE_NOT_OF_TYPE,
-                bodySection != null ? bodySection.getType() : "null"));
-
-            body = new byte[0];
-        }
-
         final AmqpAnnotatedMessage amqpAnnotatedMessage = MessageUtils.toAmqpAnnotatedMessage(message);
         final EventData.SystemProperties systemProperties = new EventData.SystemProperties(receiveProperties);
         final EventData eventData = new EventData(amqpAnnotatedMessage, systemProperties, Context.NONE);
-        final Map<String, Object> properties = message.getApplicationProperties() == null
-            ? new HashMap<>()
-            : message.getApplicationProperties().getValue();
-
-        properties.forEach((key, value) -> eventData.getProperties().put(key, value));
 
         message.clear();
         return eventData;
@@ -286,10 +275,11 @@ class EventHubMessageSerializer implements MessageSerializer {
         return value.toInstant();
     }
 
-    /*
-     * Sets AMQP protocol header values on the AMQP message.
+    /**
+     * Sets AMQP protocol header values on the AMQP message. This fetches values from {@link
+     * EventData#getSystemProperties()} and places them in the appropriate AMQP message field.
      */
-    private static void setSystemProperties(EventData eventData, Message message) {
+    private void setSystemProperties(EventData eventData, Message message) {
         if (eventData.getSystemProperties() == null || eventData.getSystemProperties().isEmpty()) {
             return;
         }
@@ -304,58 +294,127 @@ class EventHubMessageSerializer implements MessageSerializer {
             if (constant != null) {
                 switch (constant) {
                     case MESSAGE_ID:
+                        checkPropertyEquals(message.getMessageId(), value, "messageId", Object::equals);
+
                         message.setMessageId(value);
                         break;
                     case USER_ID:
-                        message.setUserId((byte[]) value);
+                        final byte[] userIdArray = (byte[]) value;
+                        checkPropertyEquals(message.getUserId(), userIdArray, "userId", Arrays::equals);
+
+                        message.setUserId(userIdArray);
                         break;
                     case TO:
-                        message.setAddress((String) value);
+                        final String address = (String) value;
+                        checkPropertyEquals(message.getAddress(), address, "address", String::equals);
+
+                        message.setAddress(address);
                         break;
                     case SUBJECT:
-                        message.setSubject((String) value);
+                        final String subject = (String) value;
+                        checkPropertyEquals(message.getSubject(), subject, "subject", String::equals);
+
+                        message.setSubject(subject);
                         break;
                     case REPLY_TO:
-                        message.setReplyTo((String) value);
+                        final String replyTo = (String) value;
+                        checkPropertyEquals(message.getReplyTo(), replyTo, "replyTo", String::equals);
+
+                        message.setReplyTo(replyTo);
                         break;
                     case CORRELATION_ID:
+                        checkPropertyEquals(message.getCorrelationId(), value, "correlationId",
+                            Object::equals);
+
                         message.setCorrelationId(value);
                         break;
                     case CONTENT_TYPE:
-                        message.setContentType((String) value);
+                        final String contentType = (String) value;
+                        checkPropertyEquals(message.getContentType(), contentType, "contentType",
+                            String::equals);
+
+                        message.setContentType(contentType);
                         break;
                     case CONTENT_ENCODING:
-                        message.setContentEncoding((String) value);
+                        final String contentEncoding = (String) value;
+                        checkPropertyEquals(message.getContentEncoding(), contentEncoding, "contentEncoding",
+                            String::equals);
+
+                        message.setContentEncoding(contentEncoding);
                         break;
                     case ABSOLUTE_EXPIRY_TIME:
+                        final long expiryTime = (long) value;
+                        checkPropertyEquals(message.getExpiryTime(), expiryTime, "expiryTime",
+                            Long::equals);
+
                         message.setExpiryTime((long) value);
                         break;
                     case CREATION_TIME:
-                        message.setCreationTime((long) value);
+                        final long creationTime = (long) value;
+                        checkPropertyEquals(message.getCreationTime(), creationTime, "creationTime",
+                            Long::equals);
+
+                        message.setCreationTime(creationTime);
                         break;
                     case GROUP_ID:
-                        message.setGroupId((String) value);
+                        final String groupId = (String) value;
+                        checkPropertyEquals(message.getGroupId(), groupId, "groupId", String::equals);
+
+                        message.setGroupId(groupId);
                         break;
                     case GROUP_SEQUENCE:
-                        message.setGroupSequence((long) value);
+                        final long groupSequence = (long) value;
+                        checkPropertyEquals(message.getGroupSequence(), groupSequence, "groupSequence",
+                            Long::equals);
+
+                        message.setGroupSequence(groupSequence);
                         break;
                     case REPLY_TO_GROUP_ID:
-                        message.setReplyToGroupId((String) value);
+                        final String replyToGroupId = (String) value;
+                        checkPropertyEquals(message.getReplyToGroupId(), replyToGroupId, "replyToGroupId",
+                            String::equals);
+
+                        message.setReplyToGroupId(replyToGroupId);
                         break;
                     default:
-                        throw new IllegalArgumentException(
-                            String.format(
-                                "Property is not a recognized reserved property name: %s",
-                                key));
+                        throw new IllegalArgumentException(String.format(
+                            "Property is not a recognized reserved property name: %s. value: %s", key, value));
                 }
             } else {
-                final MessageAnnotations messageAnnotations = (message.getMessageAnnotations() == null)
-                    ? new MessageAnnotations(new HashMap<>())
-                    : message.getMessageAnnotations();
-                messageAnnotations.getValue().put(Symbol.getSymbol(key), value);
-                message.setMessageAnnotations(messageAnnotations);
+                if (message.getMessageAnnotations() == null) {
+                    message.setMessageAnnotations(new MessageAnnotations(new HashMap<>()));
+                }
+
+                final MessageAnnotations messageAnnotations = message.getMessageAnnotations();
+                final Symbol symbolKey = Symbol.getSymbol(key);
+                final Map<Symbol, Object> annotationsValue = messageAnnotations.getValue();
+
+                final Object current = annotationsValue.get(symbolKey);
+                if (current != null && !current.equals(value)) {
+                    logger.warning("MessageAnnotations contains '{}' key with different value. Current: {}. New: {}",
+                        key, current, value);
+                }
+
+                annotationsValue.put(symbolKey, value);
             }
         });
+    }
+
+    private <T> void checkPropertyEquals(T current, T newItem, String propertyName,
+        BiFunction<T, T, Boolean> areEqualsFunction) {
+
+        // The new item will replace a value that was never there. This is OK.
+        if (current == null) {
+            return;
+        }
+
+        // The items are equal. This is fine.
+        if (areEqualsFunction.apply(current, newItem)) {
+            return;
+        }
+
+        logger.warning("Already a value in '{}' and it does not match its replacement. Current: {}. New: {}",
+            propertyName, current, newItem);
     }
 
     private static int getPayloadSize(Message msg) {
