@@ -411,27 +411,29 @@ public class EventData {
             super(map);
             this.partitionKey = removeSystemProperty(PARTITION_KEY_ANNOTATION_NAME.getValue());
 
-            final String offset = removeSystemProperty(OFFSET_ANNOTATION_NAME.getValue());
+            final Long offset = removeSystemPropertyAsLong(OFFSET_ANNOTATION_NAME.getValue());
             if (offset == null) {
                 throw new IllegalStateException(String.format(Locale.US,
                     "offset: %s should always be in map.", OFFSET_ANNOTATION_NAME.getValue()));
             }
-            this.offset = Long.valueOf(offset);
+
+            this.offset = offset;
             put(OFFSET_ANNOTATION_NAME.getValue(), this.offset);
 
-            final Date enqueuedTimeValue = removeSystemProperty(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue());
+            final Instant enqueuedTimeValue = removeSystemPropertyAsInstant(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue());
             if (enqueuedTimeValue == null) {
                 throw new IllegalStateException(String.format(Locale.US,
                     "enqueuedTime: %s should always be in map.", ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue()));
             }
-            this.enqueuedTime = enqueuedTimeValue.toInstant();
+            this.enqueuedTime = enqueuedTimeValue;
             put(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(), this.enqueuedTime);
 
-            final Long sequenceNumber = removeSystemProperty(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue());
+            final Long sequenceNumber = removeSystemPropertyAsLong(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue());
             if (sequenceNumber == null) {
                 throw new IllegalStateException(String.format(Locale.US,
                     "sequenceNumber: %s should always be in map.", SEQUENCE_NUMBER_ANNOTATION_NAME.getValue()));
             }
+
             this.sequenceNumber = sequenceNumber;
             put(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), this.sequenceNumber);
         }
@@ -485,5 +487,37 @@ public class EventData {
 
             return null;
         }
+
+        private Long removeSystemPropertyAsLong(final String key) {
+            if (!this.containsKey(key)) {
+                return null;
+            }
+
+            final Object value = this.remove(key);
+            if (value instanceof String) {
+                return Long.valueOf((String) value);
+            } else if (value instanceof Long) {
+                return (Long) value;
+            } else {
+                throw new ClientLogger(EventData.class).logExceptionAsError(new IllegalStateException(
+                    String.format(Locale.US, "Key: %s Value %s is not of type String or Long.", key, value)));
+            }
+        }
+
+        private Instant removeSystemPropertyAsInstant(final String key) {
+            if (!this.containsKey(key)) {
+                return null;
+            }
+
+            final Object value = this.remove(key);
+            if (value instanceof Date) {
+                return ((Date) value).toInstant();
+            } else if (value instanceof Instant) {
+                return (Instant) value;
+            } else {
+                throw new ClientLogger(EventData.class).logExceptionAsError(new IllegalStateException(
+                    String.format(Locale.US, "Key: %s Value %s is not of type Date or Instant.", key, value)));
+            }
+        }
     }
-}
+    }
