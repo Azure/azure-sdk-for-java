@@ -19,7 +19,7 @@ public class PrivateCloudUpdate {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateCloudUpdate.class);
 
     /*
-     * Resource tags.
+     * Resource tags
      */
     @JsonProperty(value = "tags")
     private Map<String, String> tags;

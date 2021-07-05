@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /** The properties of a cluster. */
 @Immutable
-public final class ClusterProperties extends ManagementCluster {
+public final class ClusterProperties extends CommonClusterProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterProperties.class);
 
     /** {@inheritDoc} */
