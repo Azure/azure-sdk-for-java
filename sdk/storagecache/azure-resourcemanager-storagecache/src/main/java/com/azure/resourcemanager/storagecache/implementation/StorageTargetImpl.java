@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.storagecache.implementation;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.storagecache.fluent.models.StorageTargetInner;
 import com.azure.resourcemanager.storagecache.models.BlobNfsTarget;
@@ -14,7 +15,6 @@ import com.azure.resourcemanager.storagecache.models.Nfs3Target;
 import com.azure.resourcemanager.storagecache.models.ProvisioningStateType;
 import com.azure.resourcemanager.storagecache.models.StorageTarget;
 import com.azure.resourcemanager.storagecache.models.StorageTargetType;
-import com.azure.resourcemanager.storagecache.models.SystemData;
 import com.azure.resourcemanager.storagecache.models.UnknownTarget;
 import java.util.Collections;
 import java.util.List;
