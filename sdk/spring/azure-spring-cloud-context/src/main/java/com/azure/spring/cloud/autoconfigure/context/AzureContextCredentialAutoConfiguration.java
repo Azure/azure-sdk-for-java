@@ -54,14 +54,14 @@ public class AzureContextCredentialAutoConfiguration {
     }
 
     @Bean
-    @Order(SPRING_ENV_CREDENTIAL_ORDER + 1)
+    @Order(SPRING_ENV_CREDENTIAL_ORDER + 100)
     public ManagedIdentityCredentialBuilder managedIdentityCredentialBuilder(AzureProperties azureProperties) {
         return new ManagedIdentityCredentialBuilder().clientId(
             azureProperties.getClientId()); // TODO (xiada) change to use managedIdentityClientId
     }
 
     @Bean
-    @Order(SPRING_ENV_CREDENTIAL_ORDER + 2)
+    @Order(SPRING_ENV_CREDENTIAL_ORDER + 200)
     public IntelliJCredentialBuilder intelliJCredentialBuilder(AzureProperties azureProperties) {
         return new IntelliJCredentialBuilder().tenantId(
             azureProperties.getTenantId()); // TODO (xiada) check whether the property has a default value from Azure
@@ -69,7 +69,7 @@ public class AzureContextCredentialAutoConfiguration {
     }
 
     @Bean
-    @Order(SPRING_ENV_CREDENTIAL_ORDER + 3)
+    @Order(SPRING_ENV_CREDENTIAL_ORDER + 300)
     public VisualStudioCodeCredentialBuilder visualStudioCodeCredentialBuilder(AzureProperties azureProperties) {
         return new VisualStudioCodeCredentialBuilder().tenantId(
             azureProperties.getTenantId());// TODO (xiada) check whether the property has a default value from Azure
@@ -77,13 +77,13 @@ public class AzureContextCredentialAutoConfiguration {
     }
 
     @Bean
-    @Order(SPRING_ENV_CREDENTIAL_ORDER + 4)
+    @Order(SPRING_ENV_CREDENTIAL_ORDER + 400)
     public AzureCliCredentialBuilder azureCliCredentialBuilder() {
         return new AzureCliCredentialBuilder();
     }
 
     @Bean
-    @Order(SPRING_ENV_CREDENTIAL_ORDER + 5)
+    @Order(SPRING_ENV_CREDENTIAL_ORDER + 500)
     public AzurePowerShellCredentialBuilder azurePowerShellCredentialBuilder() {
         return new AzurePowerShellCredentialBuilder();
     }
