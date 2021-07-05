@@ -672,20 +672,6 @@ class APISpec extends StorageSpec {
         }
     }
 
-    class MockRetryRangeResponsePolicy implements HttpPipelinePolicy {
-        @Override
-        Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-            return next.process().flatMap { HttpResponse response ->
-                if (response.getRequest().getHeaders().getValue("x-ms-range") != "bytes=2-6") {
-                    return Mono.<HttpResponse> error(new IllegalArgumentException("The range header was not set correctly on retry."))
-                } else {
-                    // ETag can be a dummy value. It's not validated, but DownloadResponse requires one
-                    return Mono.<HttpResponse> just(new MockDownloadHttpResponse(response, 206, Flux.error(new IOException())))
-                }
-            }
-        }
-    }
-
     /**
      * Injects one retry-able IOException failure per url.
      */

@@ -97,6 +97,27 @@ public class AddressRepositoryIT {
     }
 
     @Test
+    public void testFindByPartitionedCityIn() {
+        final String city = TEST_ADDRESS1_PARTITION1.getCity();
+        final List<Address> result = TestUtils.toList(repository.findByCityIn(Lists.newArrayList(city)));
+
+        assertThat(result.size()).isEqualTo(2);
+        assertThat(result.get(0).getCity()).isEqualTo(city);
+        assertThat(result.get(1).getCity()).isEqualTo(city);
+    }
+
+    @Test
+    public void testFindByPostalCodeAndCityIn() {
+        final String city = TEST_ADDRESS1_PARTITION1.getCity();
+        final List<String> postalCodes = Lists.newArrayList(TEST_ADDRESS1_PARTITION1.getPostalCode(),
+            TEST_ADDRESS2_PARTITION1.getPostalCode());
+        final List<Address> result = TestUtils.toList(repository.findByPostalCodeInAndCity(postalCodes, city));
+
+        assertThat(result.size()).isEqualTo(2);
+        assertThat(result).isEqualTo(Lists.newArrayList(TEST_ADDRESS1_PARTITION1, TEST_ADDRESS2_PARTITION1));
+    }
+
+    @Test
     public void testFindByStreetOrCity() {
         final String city = TEST_ADDRESS1_PARTITION1.getCity();
         final String street = TEST_ADDRESS1_PARTITION2.getStreet();

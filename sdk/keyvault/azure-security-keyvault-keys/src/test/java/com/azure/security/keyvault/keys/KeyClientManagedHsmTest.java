@@ -7,6 +7,7 @@ import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.security.keyvault.keys.models.KeyType;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
+import com.azure.security.keyvault.keys.models.RandomBytes;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -23,7 +24,7 @@ public class KeyClientManagedHsmTest extends KeyClientTest {
 
     @Override
     protected void beforeTest() {
-        Assumptions.assumeTrue(isManagedHsmTest && getTestMode() != TestMode.PLAYBACK);
+        Assumptions.assumeTrue(isManagedHsmTest || getTestMode() == TestMode.PLAYBACK);
 
         super.beforeTest();
     }
@@ -37,6 +38,7 @@ public class KeyClientManagedHsmTest extends KeyClientTest {
         createKeyClient(httpClient, serviceVersion);
         createRsaKeyWithPublicExponentRunner((createRsaKeyOptions) -> {
             KeyVaultKey rsaKey = client.createRsaKey(createRsaKeyOptions);
+
             assertEquals(createRsaKeyOptions.getName(), rsaKey.getName());
             assertEquals(KeyType.RSA_HSM, rsaKey.getKey().getKeyType());
             assertEquals(createRsaKeyOptions.getExpiresOn(), rsaKey.getProperties().getExpiresOn());
@@ -63,6 +65,20 @@ public class KeyClientManagedHsmTest extends KeyClientTest {
             assertEquals(createOctKeyOptions.getExpiresOn(), octKey.getProperties().getExpiresOn());
             assertEquals(createOctKeyOptions.getNotBefore(), octKey.getProperties().getNotBefore());
             assertEquals(createOctKeyOptions.getTags(), octKey.getProperties().getTags());
+        });
+    }
+
+    /**
+     * Tests that random bytes can be retrieved from a Managed HSM.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void getRandomBytes(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        createKeyClient(httpClient, serviceVersion);
+        getRandomBytesRunner((count) -> {
+            RandomBytes randomBytes = client.getRandomBytes(count);
+
+            assertEquals(count, randomBytes.getBytes().length);
         });
     }
 }

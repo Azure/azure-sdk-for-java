@@ -34,6 +34,7 @@ import com.azure.security.keyvault.keys.models.KeyOperation;
 import com.azure.security.keyvault.keys.models.KeyProperties;
 import com.azure.security.keyvault.keys.models.KeyType;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
+import com.azure.security.keyvault.keys.models.RandomBytes;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -1364,6 +1365,64 @@ public final class KeyAsyncClient {
                     error));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Get the requested number of bytes containing random values from a managed HSM.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Gets a number of bytes containing random values from a Managed HSM. Prints out the retrieved bytes in
+     * base64Url format.</p>
+     *
+     * {@codesnippet com.azure.security.keyvault.keys.KeyAsyncClient.getRandomBytes#int}
+     *
+     * @param count The requested number of random bytes.
+     *
+     * @return The requested number of bytes containing random values from a managed HSM.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<RandomBytes> getRandomBytes(int count) {
+        try {
+            return withContext(context -> getRandomBytesWithResponse(count, context)
+                .flatMap(FluxUtil::toMono));
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
+        }
+    }
+
+    /**
+     * Get the requested number of bytes containing random values from a managed HSM.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Gets a number of bytes containing random values from a Managed HSM. Prints out the
+     * {@link Response HTTP Response} details and the retrieved bytes in base64Url format.</p>
+     *
+     * {@codesnippet com.azure.security.keyvault.keys.KeyAsyncClient.getRandomBytesWithResponse#int}
+     *
+     * @param count The requested number of random bytes.
+     *
+     * @return The requested number of bytes containing random values from a managed HSM.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<RandomBytes>> getRandomBytesWithResponse(int count) {
+        try {
+            return withContext(context -> getRandomBytesWithResponse(count, context));
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
+        }
+    }
+
+    Mono<Response<RandomBytes>> getRandomBytesWithResponse(int count, Context context) {
+        try {
+            return service.getRandomBytes(vaultUrl, apiVersion, null, "application/json",
+                context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+                .doOnRequest(ignored -> logger.verbose("Getting {} random bytes.", count))
+                .doOnSuccess(response -> logger.verbose("Got {} random bytes.", count))
+                .doOnError(error -> logger.warning("Failed to get random bytes - {}", error))
+                .map(response -> new SimpleResponse<>(response, new RandomBytes(response.getValue().getBytes())));
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
         }
     }
 }

@@ -32,7 +32,7 @@ public class ImplementationBridgeHelpers {
 
         public static void setCosmosClientBuilderAccessor(final CosmosClientBuilderAccessor newAccessor) {
             if (accessor != null) {
-                throw new IllegalStateException("CosmosClientBuilderHelper accessor already initialized!");
+                throw new IllegalStateException("CosmosClientBuilder accessor already initialized!");
             }
 
             accessor = newAccessor;
@@ -40,7 +40,7 @@ public class ImplementationBridgeHelpers {
 
         static CosmosClientBuilderAccessor getCosmosClientBuilderAccessor() {
             if (accessor == null) {
-                throw new IllegalStateException("CosmosClientBuilderHelper accessor is not initialized yet!");
+                throw new IllegalStateException("CosmosClientBuilder accessor is not initialized yet!");
             }
 
             return accessor;
@@ -64,7 +64,7 @@ public class ImplementationBridgeHelpers {
 
         public static void setPartitionKeyAccessor(final PartitionKeyAccessor newAccessor) {
             if (accessor != null) {
-                throw new IllegalStateException("PartitionKeyHelper accessor already initialized!");
+                throw new IllegalStateException("PartitionKey accessor already initialized!");
             }
 
             accessor = newAccessor;
@@ -72,7 +72,7 @@ public class ImplementationBridgeHelpers {
 
         public static PartitionKeyAccessor getPartitionKeyAccessor() {
             if (accessor == null) {
-                throw new IllegalStateException("PartitionKeyHelper accessor is not initialized!");
+                throw new IllegalStateException("PartitionKey accessor is not initialized!");
             }
 
             return accessor;
@@ -88,12 +88,12 @@ public class ImplementationBridgeHelpers {
 
         private CosmosQueryRequestOptionsHelper() {}
         static {
-            ensureClassLoaded(CosmosQueryRequestOptionsHelper.class);
+            ensureClassLoaded(CosmosQueryRequestOptions.class);
         }
 
         public static void setCosmosQueryRequestOptionsAccessor(final CosmosQueryRequestOptionsAccessor newAccessor) {
             if (accessor != null) {
-                throw new IllegalStateException("CosmosQueryRequestOptionsHelper accessor already initialized!");
+                throw new IllegalStateException("CosmosQueryRequestOptions accessor already initialized!");
             }
 
             accessor = newAccessor;
@@ -101,7 +101,7 @@ public class ImplementationBridgeHelpers {
 
         public static CosmosQueryRequestOptionsAccessor getCosmosQueryRequestOptionsAccessor() {
             if (accessor == null) {
-                throw new IllegalStateException("CosmosQueryRequestOptionsHelper accessor is not initialized yet!");
+                throw new IllegalStateException("CosmosQueryRequestOptions accessor is not initialized yet!");
             }
 
             return accessor;
@@ -118,12 +118,12 @@ public class ImplementationBridgeHelpers {
 
         private CosmosItemRequestOptionsHelper() {}
         static {
-            ensureClassLoaded(CosmosQueryRequestOptionsHelper.class);
+            ensureClassLoaded(CosmosItemRequestOptions.class);
         }
 
         public static void setCosmosItemRequestOptionsAccessor(final CosmosItemRequestOptionsAccessor newAccessor) {
             if (accessor != null) {
-                throw new IllegalStateException("CosmosQueryRequestOptionsHelper accessor already initialized!");
+                throw new IllegalStateException("CosmosItemRequestOptions accessor already initialized!");
             }
 
             accessor = newAccessor;
@@ -131,7 +131,7 @@ public class ImplementationBridgeHelpers {
 
         public static CosmosItemRequestOptionsAccessor getCosmosItemRequestOptionsAccessor() {
             if (accessor == null) {
-                throw new IllegalStateException("CosmosQueryRequestOptionsHelper accessor is not initialized yet!");
+                throw new IllegalStateException("CosmosItemRequestOptions accessor is not initialized yet!");
             }
 
             return accessor;
@@ -149,12 +149,12 @@ public class ImplementationBridgeHelpers {
 
         private CosmosBulkProcessingOptionsHelper() {}
         static {
-            ensureClassLoaded(CosmosQueryRequestOptionsHelper.class);
+            ensureClassLoaded(BulkProcessingOptions.class);
         }
 
         public static void setCosmosBulkProcessingOptionAccessor(final CosmosBulkProcessingOptionAccessor newAccessor) {
             if (accessor != null) {
-                throw new IllegalStateException("CosmosQueryRequestOptionsHelper accessor already initialized!");
+                throw new IllegalStateException("BulkProcessingOptions accessor already initialized!");
             }
 
             accessor = newAccessor;
@@ -162,7 +162,7 @@ public class ImplementationBridgeHelpers {
 
         public static CosmosBulkProcessingOptionAccessor getCosmosBulkProcessingOptionAccessor() {
             if (accessor == null) {
-                throw new IllegalStateException("CosmosQueryRequestOptionsHelper accessor is not initialized yet!");
+                throw new IllegalStateException("BulkProcessingOptions accessor is not initialized yet!");
             }
 
             return accessor;
@@ -186,7 +186,7 @@ public class ImplementationBridgeHelpers {
 
         public static void setCosmosItemResponseBuilderAccessor(final CosmosItemResponseBuilderAccessor newAccessor) {
             if (accessor != null) {
-                throw new IllegalStateException("CosmosItemResponseBuilder accessor already initialized!");
+                throw new IllegalStateException("CosmosItemResponse accessor already initialized!");
             }
 
             accessor = newAccessor;
@@ -194,7 +194,7 @@ public class ImplementationBridgeHelpers {
 
         public static CosmosItemResponseBuilderAccessor getCosmosItemResponseBuilderAccessor() {
             if (accessor == null) {
-                throw new IllegalStateException("CosmosItemResponseBuilder accessor is not initialized yet!");
+                throw new IllegalStateException("CosmosItemResponse accessor is not initialized yet!");
             }
 
             return accessor;
@@ -225,7 +225,7 @@ public class ImplementationBridgeHelpers {
 
         public static void setCosmosClientAccessor(final CosmosClientAccessor newAccessor) {
             if (accessor != null) {
-                throw new IllegalStateException("CosmosClientAccessor accessor already initialized!");
+                throw new IllegalStateException("CosmosClient accessor already initialized!");
             }
 
             accessor = newAccessor;
@@ -233,7 +233,7 @@ public class ImplementationBridgeHelpers {
 
         public static CosmosClientAccessor geCosmosClientAccessor() {
             if (accessor == null) {
-                throw new IllegalStateException("CosmosClientAccessor accessor is not initialized yet!");
+                throw new IllegalStateException("CosmosClient accessor is not initialized yet!");
             }
 
             return accessor;
@@ -249,12 +249,12 @@ public class ImplementationBridgeHelpers {
 
         private BulkProcessingThresholdsHelper() {}
         static {
-            ensureClassLoaded(BulkProcessingThresholdsHelper.class);
+            ensureClassLoaded(BulkProcessingThresholds.class);
         }
 
         public static void setBulkProcessingThresholdsAccessor(final BulkProcessingThresholdsAccessor newAccessor) {
             if (accessor != null) {
-                throw new IllegalStateException("BulkProcessingThresholdsHelper accessor already initialized!");
+                throw new IllegalStateException("BulkProcessingThresholds accessor already initialized!");
             }
 
             accessor = newAccessor;
@@ -262,7 +262,7 @@ public class ImplementationBridgeHelpers {
 
         public static BulkProcessingThresholdsAccessor getBulkProcessingThresholdsAccessor() {
             if (accessor == null) {
-                throw new IllegalStateException("BulkProcessingThresholdsHelper accessor is not initialized yet!");
+                throw new IllegalStateException("BulkProcessingThresholds accessor is not initialized yet!");
             }
 
             return accessor;
