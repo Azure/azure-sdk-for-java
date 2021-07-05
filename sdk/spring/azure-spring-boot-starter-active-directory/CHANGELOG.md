@@ -51,6 +51,11 @@
 - Support creating `GrantedAuthority` by "roles" claim from id-token for web application.
 
 ## 3.2.0 (2021-03-03)
+### Breaking Changes
+- For the required scopes in auth code flow, use `Directory.Read.All` instead of `Directory.AccessAsUser.All`. ([#18901](https://github.com/Azure/azure-sdk-for-java/pull/18901))
+
+    Now The requested scopes are: `openid`, `profile`, `offline_access`, `User.Read`, `Directory.Read.All`. You can Refer to `AADWebAppConfiguration.java` for detailed information.
+
 
 
 ## 3.1.0 (2021-01-20)
@@ -74,6 +79,7 @@
   - Support for `AAD v1`, also named `Azure Active Directory`, endpoints in the form https://login.microsoft.online.com/common/oauth2/authorize has been removed.
   - `AAD v2`, also named `Microsoft Identity Platform`, endpoints in the form https://login.microsoftonline.com/common/oauth2/v2.0/authorize continue to be supported.
   - Please see [this documentation](https://github.com/MicrosoftDocs/azure-docs/blob/master/articles/active-directory/azuread-dev/azure-ad-endpoint-comparison.md) for more information.
+- The required scopes in auth code flow are: `openid`, `profile`, `offline_access`, `User.Read`, `Directory.AccessAsUser.All`. You can Refer to `AADWebAppConfiguration.java` for detailed information.
 
 
 ### New Features
@@ -98,9 +104,12 @@
     # Membership URI of Microsoft Graph API to get users' group information, default value is "https://graph.microsoft.com/v1.0/me/memberOf"
     azure.activedirectory.graph-membership-uri
     ```
+
+
 ## 2.3.5 (2020-09-14)
 ### Key Bug Fixes
 - Get full list of groups the user belongs to from Graph API
+
 
 ## 2.3.3 (2020-08-13)
 ### Key Bug Fixes 
