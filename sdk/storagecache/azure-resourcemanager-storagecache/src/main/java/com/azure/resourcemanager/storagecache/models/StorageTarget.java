@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.storagecache.fluent.models.StorageTargetInner;
 import java.util.List;

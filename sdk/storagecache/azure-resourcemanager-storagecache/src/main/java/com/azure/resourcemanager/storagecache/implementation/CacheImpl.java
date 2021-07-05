@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.storagecache.implementation;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.storagecache.fluent.models.CacheInner;
 import com.azure.resourcemanager.storagecache.models.Cache;
@@ -17,7 +18,6 @@ import com.azure.resourcemanager.storagecache.models.CacheSecuritySettings;
 import com.azure.resourcemanager.storagecache.models.CacheSku;
 import com.azure.resourcemanager.storagecache.models.CacheUpgradeStatus;
 import com.azure.resourcemanager.storagecache.models.ProvisioningStateType;
-import com.azure.resourcemanager.storagecache.models.SystemData;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
