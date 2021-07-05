@@ -18,7 +18,7 @@ public abstract class SpringCredentialBuilderBase<T extends TokenCredential> {
     protected CredentialBuilderBase delegateCredentialBuilder;
     protected IdentityClientOptions identityClientOptions;
 
-    SpringCredentialBuilderBase(Environment environment) {
+    public SpringCredentialBuilderBase(Environment environment) {
         Assert.notNull(environment, "To build a spring credential the environment must be set.");
         this.environment = environment;
         this.identityClientOptions = new IdentityClientOptions();
