@@ -8,3 +8,4 @@ stages:
         - name: azure-identity
           groupId: com.azure
           safeName: azureidentity
+      Clouds: 'Public,UsGov,China,Canary'
