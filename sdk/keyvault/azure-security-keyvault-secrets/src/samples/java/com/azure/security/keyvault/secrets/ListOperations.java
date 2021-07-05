@@ -42,7 +42,7 @@ public class ListOperations {
         // You need to check if any of the secrets are sharing same values. Let's list the secrets and print their values.
         // List operations don't return the secrets with value information. So, for each returned secret we call getSecret to get the secret with its value information.
         for (SecretProperties secret : client.listPropertiesOfSecrets()) {
-            if(!secret.isEnabled()) {
+            if (!secret.isEnabled()) {
                 continue;
             }
             KeyVaultSecret secretWithValue  = client.getSecret(secret.getName(), secret.getVersion());
