@@ -3,7 +3,6 @@
 
 package com.azure.test.aad.webapi.obo;
 
-import com.azure.spring.aad.webapi.AADResourceServerWebSecurityConfigurerAdapter;
 import com.azure.spring.test.aad.AADWebApiITHelper;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -14,9 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
@@ -64,19 +60,12 @@ public class AADWebApiOboIT {
         assertEquals("Graph response success.", aadWebApiITHelper.httpGetStringByAccessToken("call-graph"));
     }
 
-    @EnableWebSecurity
-    @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
     @SpringBootApplication
     @RestController
-    public static class DumbApp extends AADResourceServerWebSecurityConfigurerAdapter {
+    public static class DumbApp {
 
         @Autowired
         private WebClient webClient;
-
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
-            super.configure(http);
-        }
 
         @Bean
         public WebClient webClient(OAuth2AuthorizedClientManager authorizedClientManager) {
