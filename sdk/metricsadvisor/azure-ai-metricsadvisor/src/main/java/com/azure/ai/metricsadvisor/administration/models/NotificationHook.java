@@ -16,7 +16,7 @@ import java.util.TreeSet;
  */
 public abstract class NotificationHook {
     private String id;
-    private List<String> adminEmails;
+    private List<String> admins;
 
     static {
         HookHelper.setAccessor(new HookHelper.HookAccessor() {
@@ -26,8 +26,8 @@ public abstract class NotificationHook {
             }
 
             @Override
-            public List<String> getAdminEmailsRaw(NotificationHook hook) {
-                return hook.getAdminEmailsRaw();
+            public List<String> getAdminsRaw(NotificationHook hook) {
+                return hook.getAdminsRaw();
             }
 
             @Override
@@ -66,13 +66,17 @@ public abstract class NotificationHook {
     public abstract String getDescription();
 
     /**
-     * The list of user e-mails with administrative rights to manage the hook.
+     * Gets the list of user e-mails and clientIds with administrative rights to manage the hook.
+     * <p>
+     * The administrators have total control over the hook, being allowed to update or delete the hook.
+     * Each element in this list represents a user with administrator access, but the value of each string element
+     * is either user email address or clientId uniquely identifying the user service principal.
      *
-     * @return The emails of admins.
+     * @return A list containing email or clientId of admins
      */
-    public List<String> getAdminEmails() {
-        if (this.adminEmails != null) {
-            return Collections.unmodifiableList(this.adminEmails);
+    public List<String> getAdmins() {
+        if (this.admins != null) {
+            return Collections.unmodifiableList(this.admins);
         } else {
             return Collections.emptyList();
         }
@@ -82,13 +86,13 @@ public abstract class NotificationHook {
         this.id = id;
     }
 
-    private List<String> getAdminEmailsRaw() {
+    private List<String> getAdminsRaw() {
         // Getter that won't translate null admin-emails to empty-list.
-        return this.adminEmails;
+        return this.admins;
     }
 
-    void setAdministratorEmails(List<String> emails) {
-        this.adminEmails = emails != null ? dedupe(emails) : null;
+    void setAdministrators(List<String> admins) {
+        this.admins = admins != null ? dedupe(admins) : null;
     }
 
     /**

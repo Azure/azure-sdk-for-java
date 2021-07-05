@@ -25,6 +25,7 @@ import com.azure.security.keyvault.keys.models.KeyType;
 import reactor.util.context.Context;
 
 import java.time.OffsetDateTime;
+import java.util.Arrays;
 
 /**
  * This class contains code samples for generating javadocs through doclets for {@link KeyAsyncClient}
@@ -495,6 +496,28 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
                         keyResponse.getName(),
                         keyResponse.getKeyType(), keyResponse.getProperties().getVersion())));
         // END: com.azure.security.keyvault.keys.async.keyclient.listKeyVersions
+    }
+
+    /**
+     * Generates code samples for using {@link KeyAsyncClient#getRandomBytes(int)} and
+     * {@link KeyAsyncClient#getRandomBytesWithResponse(int)}.
+     */
+    public void getRandomBytes() {
+        KeyAsyncClient keyAsyncClient = createAsyncClient();
+
+        // BEGIN: com.azure.security.keyvault.keys.KeyAsyncClient.getRandomBytes#int
+        int amount = 16;
+        keyAsyncClient.getRandomBytes(amount)
+            .subscribe(randomBytes ->
+                System.out.printf("Retrieved %d random bytes: %s%n", amount, Arrays.toString(randomBytes.getBytes())));
+        // END: com.azure.security.keyvault.keys.KeyAsyncClient.getRandomBytes#int
+
+        // BEGIN: com.azure.security.keyvault.keys.KeyAsyncClient.getRandomBytesWithResponse#int
+        int amountOfBytes = 16;
+        keyAsyncClient.getRandomBytesWithResponse(amountOfBytes).subscribe(response ->
+            System.out.printf("Response received successfully with status code: %d. Retrieved %d random bytes: %s%n",
+                response.getStatusCode(), amountOfBytes, Arrays.toString(response.getValue().getBytes())));
+        // END: com.azure.security.keyvault.keys.KeyAsyncClient.getRandomBytesWithResponse#int
     }
 
     /**

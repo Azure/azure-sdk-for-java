@@ -10,16 +10,14 @@ The Spring Cloud Service Bus starter helps developers to finish the auto-configu
 - [Environment checklist][environment_checklist]
 
 ### Include the package
-[//]: # ({x-version-update-start;com.azure.spring:azure-spring-cloud-starter-servicebus;current})
+1. [Add azure-spring-cloud-dependencies].
+1. Add dependency. `<version>` can be skipped because we already add `azure-spring-cloud-dependencies`.
 ```xml
 <dependency>
-    <groupId>com.azure.spring</groupId>
-    <artifactId>azure-spring-cloud-starter-servicebus</artifactId>
-    <version>2.6.0</version>
+  <groupId>com.azure.spring</groupId>
+  <artifactId>azure-spring-cloud-starter-servicebus</artifactId>
 </dependency>
 ```
-[//]: # ({x-version-update-end})
-
 
 ## Key concepts
 [Spring Integration][spring_integration] enables lightweight messaging within Spring-based applications and supports integration with external systems via declarative adapters.
@@ -68,4 +66,4 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [spring_integration]: https://spring.io/projects/spring-integration
 [spring_cloud_starter_sample_with_service_bus]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-boot-samples/azure-spring-integration-sample-servicebus
 [environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
-
+[Add azure-spring-cloud-dependencies]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/AZURE_SPRING_BOMS_USAGE.md#add-azure-spring-cloud-dependencies

@@ -9,23 +9,14 @@ This package is for Spring Cloud Starters of Azure services. It helps Spring Clo
 - [Environment checklist][environment_checklist]
 
 ### Include the Package
-To start a new project using Azure, go on [start.spring.io][spring_io] and select "Azure
-Support": this will configure the project to make sure you can integrate easily with Azure service.
-
-For instance, let's assume that you want to use Event Hubs starter, you can add the usual `spring-cloud-starter-azure-eventhubs`
-dependency to your project and the Spring Cloud auto-configuration will kick-in: 
-
-[//]: # ({x-version-update-start;com.azure.spring:azure-spring-cloud-starter-eventhubs;current})
+1. [Add azure-spring-cloud-dependencies].
+1. Add dependency. `<version>` can be skipped because we already add `azure-spring-cloud-dependencies`.
 ```xml
 <dependency>
-    <groupId>com.azure.spring</groupId>
-    <artifactId>azure-spring-cloud-starter-eventhubs</artifactId>
-    <version>2.6.0</version>
+  <groupId>com.azure.spring</groupId>
+  <artifactId>azure-spring-cloud-autoconfigure</artifactId>
 </dependency>
 ```
-[//]: # ({x-version-update-end})
-
-Note that there is no need to add a `version` as those are managed already by the project.
 
 ## Key concepts
 This project provides auto-configuration for the following Azure services:
@@ -110,3 +101,4 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [service_bus_sample]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-boot-samples/azure-spring-integration-sample-servicebus
 [storage_queue_sample]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-boot-samples/azure-spring-integration-sample-storage-queue
 [environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
+[Add azure-spring-cloud-dependencies]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/AZURE_SPRING_BOMS_USAGE.md#add-azure-spring-cloud-dependencies
