@@ -4,7 +4,6 @@
 package com.azure.spring.cloud.autoconfigure.servicebus;
 
 import com.azure.core.amqp.ProxyOptions;
-import com.azure.core.util.ClientOptions;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.spring.cloud.context.core.config.AzureProperties;
 import com.azure.spring.cloud.context.core.impl.ServiceBusNamespaceManager;
