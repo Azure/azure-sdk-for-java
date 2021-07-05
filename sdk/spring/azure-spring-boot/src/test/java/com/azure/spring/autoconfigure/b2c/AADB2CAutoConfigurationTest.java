@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.autoconfigure.b2c;
 
+import com.azure.spring.core.CredentialProperties;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -65,6 +66,23 @@ public class AADB2CAutoConfigurationTest extends AbstractAADB2COAuth2ClientTestC
     }
 
     @Test
+    public void testAutoConfigurationBeanWithCredentialProperties() {
+        new WebApplicationContextRunner()
+            .withConfiguration(AutoConfigurations.of(WebOAuth2ClientApp.class, AADB2CAutoConfiguration.class))
+            .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
+            .withPropertyValues("spring.cloud.azure.client-id=fake-client-id",
+                String.format("%s=%s", AADB2CConstants.CLIENT_SECRET, AADB2CConstants.TEST_CLIENT_SECRET),
+                String.format("%s.%s=%s", AADB2CConstants.USER_FLOWS,
+                    AADB2CConstants.TEST_KEY_SIGN_UP_OR_IN, AADB2CConstants.TEST_SIGN_UP_OR_IN_NAME),
+                String.format("%s=%s", AADB2CConstants.BASE_URI, AADB2CConstants.TEST_BASE_URI)
+            ).run(c -> {
+                final AADB2CAutoConfiguration autoConfig = c.getBean(AADB2CAutoConfiguration.class);
+
+                Assertions.assertNotNull(autoConfig);
+            });
+    }
+
+    @Test
     public void testPropertiesBean() {
         getDefaultContextRunner().run(c -> {
             final AADB2CProperties properties = c.getBean(AADB2CProperties.class);
@@ -87,6 +105,30 @@ public class AADB2CAutoConfigurationTest extends AbstractAADB2COAuth2ClientTestC
             Assertions.assertEquals(prompt, AADB2CConstants.TEST_PROMPT);
             Assertions.assertEquals(loginHint, AADB2CConstants.TEST_LOGIN_HINT);
         });
+    }
+
+    @Test
+    public void testCredentialPropertiesBean() {
+        new WebApplicationContextRunner()
+            .withConfiguration(AutoConfigurations.of(WebOAuth2ClientApp.class, AADB2CAutoConfiguration.class))
+            .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
+            .withPropertyValues("spring.cloud.azure.tenant-id=fake-tenant-id",
+                "spring.cloud.azure.client-id=fake-client-id",
+                String.format("%s.%s=%s", AADB2CConstants.USER_FLOWS,
+                    AADB2CConstants.TEST_KEY_SIGN_UP_OR_IN, AADB2CConstants.TEST_SIGN_UP_OR_IN_NAME),
+                String.format("%s=%s", AADB2CConstants.CLIENT_ID, AADB2CConstants.TEST_CLIENT_ID),
+                String.format("%s=%s", AADB2CConstants.CLIENT_SECRET, AADB2CConstants.TEST_CLIENT_SECRET),
+                String.format("%s=%s", AADB2CConstants.BASE_URI, AADB2CConstants.TEST_BASE_URI)
+            ).run(c -> {
+                final AADB2CProperties properties = c.getBean(AADB2CProperties.class);
+                final CredentialProperties credentialProperties = c.getBean(CredentialProperties.class);
+
+                Assertions.assertNotNull(properties);
+                Assertions.assertNotNull(credentialProperties);
+                Assertions.assertEquals(properties.getClientId(), AADB2CConstants.TEST_CLIENT_ID);
+                Assertions.assertEquals(properties.getClientSecret(), AADB2CConstants.TEST_CLIENT_SECRET);
+                Assertions.assertEquals(properties.getTenantId(), "fake-tenant-id");
+            });
     }
 
     @Test

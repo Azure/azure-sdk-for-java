@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Package com.azure.identity.spring;
+ * Package com.azure.spring.identity;
  */
 package com.azure.spring.identity;

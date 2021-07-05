@@ -8,12 +8,15 @@ import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.proc.BadJOSEException;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
-import org.springframework.boot.test.context.runner.ApplicationContextRunner;
+import org.springframework.boot.test.context.FilteredClassLoader;
+import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -31,9 +34,11 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class AADAuthenticationFilterTest {
     private static final String TOKEN = "dummy-token";
-    private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
+    private final WebApplicationContextRunner contextRunner = new WebApplicationContextRunner()
+            .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
             .withConfiguration(AutoConfigurations.of(AADAuthenticationFilterAutoConfiguration.class));
     private final UserPrincipalManager userPrincipalManager;
     private final HttpServletRequest request;
@@ -130,4 +135,20 @@ public class AADAuthenticationFilterTest {
         verify(userPrincipalManager, times(0)).buildUserPrincipal(TOKEN);
     }
 
+    @Test
+    public void testAADAuthenticationFilterAutoConfiguration() {
+
+        this.contextRunner.withPropertyValues(
+            "azure.activedirectory.client-id=", "spring.cloud.azure.client-id="
+        ).run(context -> assertThat(context).doesNotHaveBean(AADAuthenticationFilterAutoConfiguration.class));
+
+        this.contextRunner.withPropertyValues(
+            "azure.activedirectory.client-id=" + TestConstants.CLIENT_ID
+        ).run(context -> assertThat(context).hasSingleBean(AADAuthenticationFilterAutoConfiguration.class));
+
+        this.contextRunner.withPropertyValues(
+            "spring.cloud.azure.client-id=" + TestConstants.CLIENT_ID
+        ).run(context -> assertThat(context).hasSingleBean(AADAuthenticationFilterAutoConfiguration.class));
+
+    }
 }

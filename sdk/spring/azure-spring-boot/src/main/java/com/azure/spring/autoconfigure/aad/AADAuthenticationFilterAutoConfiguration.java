@@ -35,8 +35,8 @@ import java.util.concurrent.TimeUnit;
 @ConditionalOnWebApplication
 @ConditionalOnResource(resources = "classpath:aad.enable.config")
 @ConditionalOnMissingClass({ "org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken" })
-@ConditionalOnProperty(prefix = AADAuthenticationFilterAutoConfiguration.PROPERTY_PREFIX, value = { "client-id" })
-@EnableConfigurationProperties({ AADAuthenticationProperties.class })
+@ConditionalOnExpression(value = "!'${azure.activedirectory.client-id:}'.empty || !'${spring.cloud.azure.client-id:}'.empty")
+@EnableConfigurationProperties(AADAuthenticationProperties.class)
 public class AADAuthenticationFilterAutoConfiguration {
     public static final String PROPERTY_PREFIX = "azure.activedirectory";
     private static final Logger LOG = LoggerFactory.getLogger(AADAuthenticationProperties.class);

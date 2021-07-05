@@ -22,7 +22,7 @@ public class AzureStorageProperties {
     private String account;
 
     private String accessKey;
-    
+
     private String resourceGroup;
 
     public String getAccount() {
@@ -44,7 +44,7 @@ public class AzureStorageProperties {
     public String getResourceGroup() {
         return resourceGroup;
     }
-    
+
     public void setResourceGroup(String resourceGroup) {
         this.resourceGroup = resourceGroup;
     }

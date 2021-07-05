@@ -18,7 +18,8 @@ import org.springframework.jms.config.JmsListenerContainerFactory;
 
 import javax.jms.ConnectionFactory;
 
-import static com.azure.spring.utils.ApplicationId.AZURE_SPRING_SERVICE_BUS;
+import static com.azure.spring.core.ApplicationId.AZURE_SPRING_SERVICE_BUS;
+import static com.azure.spring.utils.Constants.VERSION;
 
 /**
  * Automatic configuration class of ServiceBusJMS for Premium Service Bus
@@ -44,7 +45,7 @@ public class PremiumServiceBusJMSAutoConfiguration {
         final SpringServiceBusJmsConnectionFactory springServiceBusJmsConnectionFactory =
             new SpringServiceBusJmsConnectionFactory(connectionString, settings);
         springServiceBusJmsConnectionFactory.setClientId(clientId);
-        springServiceBusJmsConnectionFactory.setCustomUserAgent(AZURE_SPRING_SERVICE_BUS);
+        springServiceBusJmsConnectionFactory.setCustomUserAgent(AZURE_SPRING_SERVICE_BUS + VERSION);
 
         return springServiceBusJmsConnectionFactory;
     }

@@ -70,7 +70,7 @@ public class SpringEnvironmentCredential implements TokenCredential {
         String tenantId = azureEnvironment.getTenantId();
         String clientId = azureEnvironment.getClientId();
         String clientSecret = azureEnvironment.getClientSecret();
-
+        // TODO (xiada) authority host
 
         if (tenantId != null && clientId != null && clientSecret != null) {
             final ClientSecretCredentialBuilder builder = new ClientSecretCredentialBuilder()

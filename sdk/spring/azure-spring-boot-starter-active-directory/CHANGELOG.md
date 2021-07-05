@@ -1,7 +1,21 @@
 # Release History
 
 ## 3.7.0-beta.1 (Unreleased)
-
+### New Features
+- Support unified properties as below when the associated "azure.activedirectory.*" properties are not configured.([#22396](https://github.com/Azure/azure-sdk-for-java/issues/22396))
+    ```
+    spring:
+      cloud:
+        azure:
+          client-id:
+          client-secret:
+          tenant-id:
+          authority-host:
+          environment:
+    ```
+### Breaking Changes
+- Property type of `spring.cloud.azure.environment` are changed from Enum to String. Supported values are "Azure", "AzureChina", "AzureGermany" and "AzureUSGovernment".
+- Support alternative configuration of `azure.activedirectory.base-uri` from `spring.cloud.azure.authority-host` or `spring.cloud.azure.environment`.
 
 ## 3.6.0 (2021-06-23)
 ### Breaking Changes

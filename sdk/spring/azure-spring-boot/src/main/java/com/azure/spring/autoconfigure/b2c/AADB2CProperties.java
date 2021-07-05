@@ -2,16 +2,18 @@
 // Licensed under the MIT License.
 package com.azure.spring.autoconfigure.b2c;
 
+import com.azure.spring.core.CredentialProperties;
 import com.nimbusds.jose.jwk.source.RemoteJWKSet;
 import org.hibernate.validator.constraints.URL;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
+import org.springframework.context.annotation.Import;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 
-import javax.validation.constraints.NotBlank;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -25,6 +27,7 @@ import static com.azure.spring.aad.AADAuthorizationGrantType.CLIENT_CREDENTIALS;
  */
 @Validated
 @ConfigurationProperties(prefix = AADB2CProperties.PREFIX)
+@Import(CredentialProperties.class)
 public class AADB2CProperties implements InitializingBean {
 
     public static final String DEFAULT_LOGOUT_SUCCESS_URL = "http://localhost:8080/login";
@@ -43,6 +46,9 @@ public class AADB2CProperties implements InitializingBean {
      */
     protected static final String DEFAULT_KEY_PASSWORD_RESET = "password-reset";
 
+    @Autowired
+    private CredentialProperties credentialProperties;
+
     /**
      * The name of the b2c tenant.
      * @deprecated It's recommended to use 'baseUri' instead.
@@ -51,7 +57,7 @@ public class AADB2CProperties implements InitializingBean {
     private String tenant;
 
     /**
-     * The name of the b2c tenant id.
+     * The name of the b2c tenant id. Could be configured by spring.cloud.azure.tenant-id as alternative.
      */
     private String tenantId;
 
@@ -76,13 +82,12 @@ public class AADB2CProperties implements InitializingBean {
     private int jwtSizeLimit = RemoteJWKSet.DEFAULT_HTTP_SIZE_LIMIT; /* bytes */
 
     /**
-     * The application ID that registered under b2c tenant.
+     * The application ID that registered under b2c tenant. Could be configured by spring.cloud.azure.client-id as alternative.
      */
-    @NotBlank(message = "client ID should not be blank")
     private String clientId;
 
     /**
-     * The application secret that registered under b2c tenant.
+     * The application secret that registered under b2c tenant. Could be configured by spring.cloud.azure.client-secret as alternative.
      */
     private String clientSecret;
 
@@ -124,6 +129,7 @@ public class AADB2CProperties implements InitializingBean {
     @Override
     public void afterPropertiesSet() {
         validateWebappProperties();
+        configureCredentialPropertiesIfNeeded();
         validateCommonProperties();
     }
 
@@ -142,6 +148,12 @@ public class AADB2CProperties implements InitializingBean {
         }
     }
 
+    private void configureCredentialPropertiesIfNeeded() {
+        tenantId = Optional.ofNullable(tenantId).orElse(credentialProperties.getTenantId());
+        clientId = Optional.ofNullable(clientId).orElse(credentialProperties.getClientId());
+        clientSecret = Optional.ofNullable(clientSecret).orElse(credentialProperties.getClientSecret());
+    }
+
     /**
      * Validate common scenario properties configuration.
      */
@@ -155,6 +167,14 @@ public class AADB2CProperties implements InitializingBean {
             throw new AADB2CConfigurationException("'tenant-id' must be configured "
                 + "when using client credential flow.");
         }
+    }
+
+    public CredentialProperties getCredentialProperties() {
+        return credentialProperties;
+    }
+
+    public void setCredentialProperties(CredentialProperties credentialProperties) {
+        this.credentialProperties = credentialProperties;
     }
 
     protected String getPasswordReset() {

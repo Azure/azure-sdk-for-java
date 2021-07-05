@@ -11,7 +11,7 @@ import com.azure.identity.IntelliJCredentialBuilder;
 import com.azure.identity.ManagedIdentityCredentialBuilder;
 import com.azure.identity.VisualStudioCodeCredentialBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
-import com.azure.spring.cloud.context.core.config.AzureProperties;
+import com.azure.spring.core.CredentialProperties;
 import com.azure.spring.identity.SpringCredentialBuilderBase;
 import com.azure.spring.identity.SpringEnvironmentCredentialBuilder;
 import org.slf4j.Logger;
@@ -32,8 +32,7 @@ import java.util.Map;
 
 
 @Configuration
-@EnableConfigurationProperties(AzureProperties.class)
-// TODO (xiada) change to use the properties defined in Yi's PR
+@EnableConfigurationProperties(CredentialProperties.class)
 public class AzureContextCredentialAutoConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureContextCredentialAutoConfiguration.class);
@@ -42,7 +41,7 @@ public class AzureContextCredentialAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public IdentityClientOptions identityClientOptions(AzureProperties azureProperties) {
+    public IdentityClientOptions identityClientOptions(CredentialProperties azureProperties) {
         // TODO (xiada) use properties defined in core properties to construct identityClientOptions
         return new IdentityClientOptions();
     }
@@ -55,25 +54,23 @@ public class AzureContextCredentialAutoConfiguration {
 
     @Bean
     @Order(SPRING_ENV_CREDENTIAL_ORDER + 100)
-    public ManagedIdentityCredentialBuilder managedIdentityCredentialBuilder(AzureProperties azureProperties) {
+    public ManagedIdentityCredentialBuilder managedIdentityCredentialBuilder(CredentialProperties azureProperties) {
         return new ManagedIdentityCredentialBuilder().clientId(
             azureProperties.getClientId()); // TODO (xiada) change to use managedIdentityClientId
     }
 
     @Bean
     @Order(SPRING_ENV_CREDENTIAL_ORDER + 200)
-    public IntelliJCredentialBuilder intelliJCredentialBuilder(AzureProperties azureProperties) {
-        return new IntelliJCredentialBuilder().tenantId(
-            azureProperties.getTenantId()); // TODO (xiada) check whether the property has a default value from Azure
-        // SDK env
+    public IntelliJCredentialBuilder intelliJCredentialBuilder(CredentialProperties azureProperties) {
+        return new IntelliJCredentialBuilder().tenantId(azureProperties.getTenantId());
+        // TODO (xiada) check whether the property has a default value from Azure SDK env
     }
 
     @Bean
     @Order(SPRING_ENV_CREDENTIAL_ORDER + 300)
-    public VisualStudioCodeCredentialBuilder visualStudioCodeCredentialBuilder(AzureProperties azureProperties) {
-        return new VisualStudioCodeCredentialBuilder().tenantId(
-            azureProperties.getTenantId());// TODO (xiada) check whether the property has a default value from Azure
-        // SDK env
+    public VisualStudioCodeCredentialBuilder visualStudioCodeCredentialBuilder(CredentialProperties azureProperties) {
+        return new VisualStudioCodeCredentialBuilder().tenantId(azureProperties.getTenantId());
+        // TODO (xiada) check whether the property has a default value from Azure SDK env
     }
 
     @Bean
@@ -100,7 +97,7 @@ public class AzureContextCredentialAutoConfiguration {
 
     static class CredentialBuilderPostProcessor implements BeanFactoryPostProcessor {
 
-        @SuppressWarnings({"rawtypes", "unchecked"})
+        @SuppressWarnings({"rawtypes"})
         @Override
         public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
             final IdentityClientOptions identityClientOptions;

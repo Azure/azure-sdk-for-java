@@ -5,12 +5,17 @@ package com.azure.spring.autoconfigure.aad;
 
 import com.azure.spring.aad.AADAuthorizationGrantType;
 import com.azure.spring.aad.webapp.AuthorizationClientProperties;
+import com.azure.spring.core.Constants;
+import com.azure.spring.core.CredentialProperties;
+import com.azure.spring.core.MiscProperties;
 import com.nimbusds.jose.jwk.source.RemoteJWKSet;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
+import org.springframework.context.annotation.Import;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 
@@ -25,28 +30,38 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import static com.azure.spring.core.Utils.toAuthorityHost;
+
 /**
  * Configuration properties for Azure Active Directory Authentication.
  */
 @Validated
 @ConfigurationProperties("azure.activedirectory")
+@Import({CredentialProperties.class, MiscProperties.class })
 public class AADAuthenticationProperties implements InitializingBean {
 
     private static final long DEFAULT_JWK_SET_CACHE_LIFESPAN = TimeUnit.MINUTES.toMillis(5);
     private static final long DEFAULT_JWK_SET_CACHE_REFRESH_TIME = DEFAULT_JWK_SET_CACHE_LIFESPAN;
 
+    @Autowired
+    private CredentialProperties credentialProperties;
+
+    @Autowired
+    private MiscProperties miscProperties;
     /**
      * Default UserGroup configuration.
      */
     private UserGroupProperties userGroup = new UserGroupProperties();
 
     /**
-     * Registered application ID in Azure AD. Must be configured when OAuth2 authentication is done in front end
+     * Registered application ID in Azure AD. Could be configured by spring.cloud.azure.client-id as alternative.
+     * A property of client-id must be configured when OAuth2 authentication is done in front end.
      */
     private String clientId;
 
     /**
-     * API Access Key of the registered application. Must be configured when OAuth2 authentication is done in front end
+     * API Access Key of the registered application. Could be configured by spring.cloud.azure.client-secret as alternative.
+     * A property of client-secret must be configured when OAuth2 authentication is done in front end.
      */
     private String clientSecret;
 
@@ -97,7 +112,7 @@ public class AADAuthenticationProperties implements InitializingBean {
     private long jwkSetCacheRefreshTime = DEFAULT_JWK_SET_CACHE_REFRESH_TIME;
 
     /**
-     * Azure Tenant ID.
+     * Azure Tenant ID. Could be configured by spring.cloud.azure.tenant-id as alternative.
      */
     private String tenantId;
 
@@ -386,6 +401,14 @@ public class AADAuthenticationProperties implements InitializingBean {
         this.authorizationClients = authorizationClients;
     }
 
+    public CredentialProperties getAzureProperties() {
+        return credentialProperties;
+    }
+
+    public void setAzureProperties(CredentialProperties credentialProperties) {
+        this.credentialProperties = credentialProperties;
+    }
+
     public boolean isAllowedGroup(String group) {
         return Optional.ofNullable(getUserGroup())
                        .map(UserGroupProperties::getAllowedGroupNames)
@@ -401,10 +424,13 @@ public class AADAuthenticationProperties implements InitializingBean {
     public void afterPropertiesSet() {
 
         if (!StringUtils.hasText(baseUri)) {
-            baseUri = "https://login.microsoftonline.com/";
-        } else {
-            baseUri = addSlash(baseUri);
+            baseUri = Optional.ofNullable(credentialProperties.getAuthorityHost())
+                              .orElse(Optional.ofNullable(miscProperties.getEnvironment())
+                                              .filter(env -> !env.isEmpty())
+                                              .map(env -> toAuthorityHost(env))
+                                              .orElse(Constants.AZURE_GLOBAL_AUTHORITY_HOST));
         }
+        baseUri = addSlash(baseUri);
 
         if (!StringUtils.hasText(redirectUriTemplate)) {
             redirectUriTemplate = "{baseUrl}/login/oauth2/code/";
@@ -436,7 +462,15 @@ public class AADAuthenticationProperties implements InitializingBean {
         }
 
         if (!StringUtils.hasText(tenantId)) {
-            tenantId = "common";
+            tenantId = Optional.ofNullable(credentialProperties).map(CredentialProperties::getTenantId).orElse("common");
+        }
+
+        if (!StringUtils.hasText(clientId)) {
+            clientId = Optional.ofNullable(credentialProperties).map(CredentialProperties::getClientId).orElse(null);
+        }
+
+        if (!StringUtils.hasText(clientSecret)) {
+            clientSecret = Optional.ofNullable(credentialProperties).map(CredentialProperties::getClientSecret).orElse(null);
         }
 
         if (isMultiTenantsApplication(tenantId) && !userGroup.getAllowedGroups().isEmpty()) {

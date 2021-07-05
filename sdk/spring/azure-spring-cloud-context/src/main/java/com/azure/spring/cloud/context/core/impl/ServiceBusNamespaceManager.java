@@ -6,7 +6,7 @@ package com.azure.spring.cloud.context.core.impl;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.servicebus.models.ServiceBusNamespace;
-import com.azure.spring.cloud.context.core.config.AzureProperties;
+import com.azure.spring.cloud.autoconfigure.context.AzureContextProperties;
 
 /**
  * Resource manager for Service Bus namespace.
@@ -15,8 +15,8 @@ public class ServiceBusNamespaceManager extends AzureManager<ServiceBusNamespace
 
     private final AzureResourceManager azureResourceManager;
 
-    public ServiceBusNamespaceManager(AzureResourceManager azureResourceManager, AzureProperties azureProperties) {
-        super(azureProperties);
+    public ServiceBusNamespaceManager(AzureResourceManager azureResourceManager, AzureContextProperties azureContextProperties) {
+        super(azureContextProperties);
         this.azureResourceManager = azureResourceManager;
     }
 

@@ -5,7 +5,7 @@ package com.azure.spring.autoconfigure.b2c;
 import org.springframework.boot.autoconfigure.condition.AnyNestedCondition;
 import org.springframework.boot.autoconfigure.condition.ConditionMessage;
 import org.springframework.boot.autoconfigure.condition.ConditionOutcome;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.autoconfigure.condition.SpringBootCondition;
 import org.springframework.boot.context.properties.bind.Binder;
@@ -32,13 +32,9 @@ public final class AADB2CConditions {
          * Web application scenario condition.
          */
         @ConditionalOnWebApplication
-        @ConditionalOnProperty(
-            prefix = AADB2CProperties.PREFIX,
-            value = {
-                "client-id",
-                "client-secret"
-            }
-        )
+        // TODO (yiliu6) Use java instead of SpEL as the condition expression
+        @ConditionalOnExpression("(!'${azure.activedirectory.b2c.client-id:}'.empty || !'${spring.cloud.azure.client-id:}'.empty)"
+            + "&& (!'${azure.activedirectory.b2c.client-secret:}'.empty || !'${spring.cloud.azure.client-secret:}'.empty)")
         static class WebAppMode {
 
         }
@@ -47,7 +43,7 @@ public final class AADB2CConditions {
          * Web resource server scenario condition.
          */
         @ConditionalOnWebApplication
-        @ConditionalOnProperty(prefix = AADB2CProperties.PREFIX, value = { "tenant-id" })
+        @ConditionalOnExpression("!'${azure.activedirectory.b2c.tenant-id:}'.empty || !'${spring.cloud.azure.tenant-id:}'.empty")
         static class WebApiMode {
 
         }
