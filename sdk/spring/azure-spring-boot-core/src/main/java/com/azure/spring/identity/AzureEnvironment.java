@@ -36,7 +36,7 @@ public final class AzureEnvironment {
 
     public String getClientSecret() {
         return getPropertyValue(AZURE_CREDENTIAL_PREFIX + CLIENT_SECRET,
-                                sdkEnvValue(Configuration.PROPERTY_AZURE_CLIENT_ID));
+                                sdkEnvValue(Configuration.PROPERTY_AZURE_CLIENT_SECRET));
     }
 
     public String getClientCertificatePath() {
