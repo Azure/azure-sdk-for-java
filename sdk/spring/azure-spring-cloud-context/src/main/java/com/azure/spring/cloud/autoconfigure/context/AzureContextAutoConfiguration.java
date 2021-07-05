@@ -6,7 +6,6 @@ package com.azure.spring.cloud.autoconfigure.context;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.AzureResourceManager;
-import com.azure.spring.cloud.context.core.api.CredentialsProvider;
 import com.azure.spring.cloud.context.core.api.EnvironmentProvider;
 import com.azure.spring.cloud.context.core.impl.ResourceGroupManager;
 import com.azure.spring.core.Constants;
@@ -23,7 +22,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
 /**
- * Auto-config to provide default {@link CredentialsProvider} for all Azure services
+ * Auto-config to provide default {@link AzureResourceManager} for all Azure services
  *
  * @author Warren Zhu
  */
