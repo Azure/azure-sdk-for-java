@@ -3,7 +3,6 @@
 package com.azure.spring.identity;
 
 import com.azure.core.credential.TokenCredential;
-import com.azure.identity.AadCredentialBuilderBase;
 import com.azure.identity.CredentialBuilderBase;
 import com.azure.identity.implementation.IdentityClientOptions;
 import org.springframework.core.env.Environment;
@@ -15,6 +14,7 @@ import org.springframework.util.Assert;
 public abstract class SpringCredentialBuilderBase<T extends TokenCredential> {
 
     protected Environment environment;
+    @SuppressWarnings("rawtypes")
     protected CredentialBuilderBase delegateCredentialBuilder;
     protected IdentityClientOptions identityClientOptions;
 
@@ -24,24 +24,27 @@ public abstract class SpringCredentialBuilderBase<T extends TokenCredential> {
         this.identityClientOptions = new IdentityClientOptions();
     }
 
+    @SuppressWarnings("rawtypes")
     public SpringCredentialBuilderBase identityClientOptions(IdentityClientOptions identityClientOptions) {
         this.identityClientOptions = identityClientOptions;
         return this;
     }
 
-    @SuppressWarnings("rawtypes")
     public T build() {
         this.configureIdentityOptions();
         return internalBuild();
     }
 
-    @SuppressWarnings("rawtypes")
+    @SuppressWarnings("unchecked")
     protected void configureIdentityOptions() {
         this.delegateCredentialBuilder
-            .httpClient(this.identityClientOptions.getHttpClient())
             .httpPipeline(this.identityClientOptions.getHttpPipeline())
             .maxRetry(this.identityClientOptions.getMaxRetry())
             .retryTimeout(this.identityClientOptions.getRetryTimeout());
+
+        if (this.identityClientOptions.getHttpClient() != null) {
+            this.delegateCredentialBuilder.httpClient(this.identityClientOptions.getHttpClient());
+        }
     }
 
     protected abstract T internalBuild();

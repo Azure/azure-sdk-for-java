@@ -11,7 +11,7 @@ public class SpringManagedIdentityCredentialBuilder extends SpringCredentialBuil
 
     private String clientId;
 
-    SpringManagedIdentityCredentialBuilder(Environment environment) {
+    public SpringManagedIdentityCredentialBuilder(Environment environment) {
         super(environment);
         this.clientId = new AzureEnvironment(environment).getClientId();// TODO (xiada) whether to make the AzureEnvironment first citizen
         this.delegateCredentialBuilder = new ManagedIdentityCredentialBuilder();

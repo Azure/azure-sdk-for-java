@@ -5,15 +5,13 @@ package com.azure.spring.identity;
 
 import com.azure.identity.IntelliJCredential;
 import com.azure.identity.IntelliJCredentialBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
 
-public class SpringIntellijCredentialBuilder extends SpringCredentialBuilderBase<IntelliJCredential> {
+public class SpringIntelliJCredentialBuilder extends SpringCredentialBuilderBase<IntelliJCredential> {
 
     private String tenantId;
 
-    SpringIntellijCredentialBuilder(Environment environment) {
+    public SpringIntelliJCredentialBuilder(Environment environment) {
         super(environment);
         this.tenantId = new AzureEnvironment(environment).getTenantId();
         this.delegateCredentialBuilder = new IntelliJCredentialBuilder();
@@ -27,13 +25,13 @@ public class SpringIntellijCredentialBuilder extends SpringCredentialBuilderBase
      * @param tenantId the tenant ID to set.
      * @return An updated instance of this builder with the tenant id set as specified.
      */
-    public SpringIntellijCredentialBuilder tenantId(String tenantId) {
+    public SpringIntelliJCredentialBuilder tenantId(String tenantId) {
         // TODO (xiada) should we check the tenantId's format here?
         this.tenantId = tenantId;
         return this;
     }
 
-    public SpringIntellijCredentialBuilder keePassDatabasePath(String databasePath) {
+    public SpringIntelliJCredentialBuilder keePassDatabasePath(String databasePath) {
         ((IntelliJCredentialBuilder) this.delegateCredentialBuilder).keePassDatabasePath(databasePath);
         return this;
     }

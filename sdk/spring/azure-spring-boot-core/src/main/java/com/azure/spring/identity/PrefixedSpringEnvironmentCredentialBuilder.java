@@ -34,5 +34,8 @@ public class PrefixedSpringEnvironmentCredentialBuilder
         return new PrefixedSpringEnvironmentCredential(environment, prefix, identityClientOptions);
     }
 
-
+    @Override
+    public PrefixedSpringEnvironmentCredential build() {
+        return internalBuild();
+    }
 }

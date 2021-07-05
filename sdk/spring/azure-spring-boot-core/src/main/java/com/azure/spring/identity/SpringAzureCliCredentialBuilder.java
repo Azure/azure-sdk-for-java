@@ -9,7 +9,7 @@ import org.springframework.core.env.Environment;
 
 public class SpringAzureCliCredentialBuilder extends SpringCredentialBuilderBase<AzureCliCredential> {
 
-    SpringAzureCliCredentialBuilder(Environment environment) {
+    public SpringAzureCliCredentialBuilder(Environment environment) {
         super(environment);
         this.delegateCredentialBuilder = new AzureCliCredentialBuilder();
     }

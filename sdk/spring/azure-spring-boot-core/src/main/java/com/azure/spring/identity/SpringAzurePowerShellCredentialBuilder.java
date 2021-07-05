@@ -9,9 +9,9 @@ import com.azure.identity.AzurePowerShellCredential;
 import com.azure.identity.AzurePowerShellCredentialBuilder;
 import org.springframework.core.env.Environment;
 
-public class SpringAzurePowershellCredentialBuilder extends SpringCredentialBuilderBase<AzurePowerShellCredential> {
+public class SpringAzurePowerShellCredentialBuilder extends SpringCredentialBuilderBase<AzurePowerShellCredential> {
 
-    SpringAzurePowershellCredentialBuilder(Environment environment) {
+    public SpringAzurePowerShellCredentialBuilder(Environment environment) {
         super(environment);
         this.delegateCredentialBuilder = new AzurePowerShellCredentialBuilder();
     }

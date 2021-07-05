@@ -17,4 +17,8 @@ public class SpringEnvironmentCredentialBuilder extends SpringCredentialBuilderB
         return new SpringEnvironmentCredential(this.environment, this.identityClientOptions);
     }
 
+    @Override
+    public SpringEnvironmentCredential build() {
+        return internalBuild();
+    }
 }

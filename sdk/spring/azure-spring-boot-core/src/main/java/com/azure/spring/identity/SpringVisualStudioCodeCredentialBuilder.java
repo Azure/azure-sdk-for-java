@@ -15,10 +15,10 @@ public class SpringVisualStudioCodeCredentialBuilder extends SpringCredentialBui
 
     private String tenantId;
 
-    SpringVisualStudioCodeCredentialBuilder(Environment environment) {
+    public SpringVisualStudioCodeCredentialBuilder(Environment environment) {
         super(environment);
         this.tenantId = new AzureEnvironment(environment).getTenantId();
-        this.delegateCredentialBuilder = new IntelliJCredentialBuilder();
+        this.delegateCredentialBuilder = new VisualStudioCodeCredentialBuilder();
     }
 
 

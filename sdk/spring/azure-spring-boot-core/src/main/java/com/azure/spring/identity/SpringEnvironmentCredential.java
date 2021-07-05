@@ -17,34 +17,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
 import reactor.core.publisher.Mono;
 
-/**
- * A credential provider that provides token credentials based on {@link Environment}. The environment variables
- * expected are:
- * <ul>
- *     <li>azure.credential.tenant-id</li>
- *     <li>azure.credential.client-id</li>
- *     <li>azure.credential.client-secret</li>
- * </ul>
- * or:
- * <ul>
- *     <li>azure.credential.tenant-id</li>
- *     <li>azure.credential.client-id</li>
- *     <li>azure.credential.client-certificate-path</li>
- * </ul>
- * or:
- * <ul>
- *     <li>azure.credential.tenant-id</li>
- *     <li>azure.credential.client-id</li>
- *     <li>azure.credential.username</li>
- *     <li>azure.credential.password</li>
- * </ul>
- */
 public class SpringEnvironmentCredential implements TokenCredential {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SpringEnvironmentCredential.class);
     private final AzureEnvironment azureEnvironment;
     private final TokenCredential tokenCredential;
-
 
     SpringEnvironmentCredential(Environment environment, IdentityClientOptions identityClientOptions) {
         this.azureEnvironment = new AzureEnvironment(environment);
