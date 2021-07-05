@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.condition.AnyNestedCondition;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken;
@@ -58,7 +59,7 @@ public final class AADConditions {
             ClientRegistration.class,
             BearerTokenAuthenticationToken.class
         })
-        @ConditionalOnExpression("${azure.activedirectory.enable-web-app-resource-server:false} == true")
+        @ConditionalOnProperty(value = "azure.activedirectory.enable-web-app-resource-server", havingValue = "true")
         static class AllInClientMode {
 
         }
@@ -90,7 +91,7 @@ public final class AADConditions {
             ClientRegistration.class,
             BearerTokenAuthenticationToken.class
         })
-        @ConditionalOnExpression("${azure.activedirectory.enable-web-app-resource-server:false} == true")
+        @ConditionalOnProperty(value = "azure.activedirectory.enable-web-app-resource-server", havingValue = "true")
         static class AllInClientMode {
 
         }
@@ -121,7 +122,7 @@ public final class AADConditions {
             ClientRegistration.class,
             BearerTokenAuthenticationToken.class
         })
-        @ConditionalOnExpression("${azure.activedirectory.enable-web-app-resource-server:false} == true")
+        @ConditionalOnProperty(value = "azure.activedirectory.enable-web-app-resource-server", havingValue = "true")
         static class AllInClientMode {
 
         }

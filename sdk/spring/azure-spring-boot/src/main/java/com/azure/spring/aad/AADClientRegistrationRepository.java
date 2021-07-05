@@ -145,7 +145,7 @@ public class AADClientRegistrationRepository
         LOGGER.debug("Client {} AuthorizationClientProperties: {}.", registrationId, clientProperties);
         AADAuthorizationServerEndpoints endpoints =
             new AADAuthorizationServerEndpoints(properties.getBaseUri(), properties.getTenantId());
-        ClientRegistration.Builder clientRegistrationBuilder = null;
+        ClientRegistration.Builder clientRegistrationBuilder;
         switch (clientProperties.getAuthorizationGrantType()) {
             case AUTHORIZATION_CODE:
                 clientRegistrationBuilder = toAuthorizationCodeBuilder(registrationId, endpoints, clientProperties);
