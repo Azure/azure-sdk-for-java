@@ -11,15 +11,14 @@ microservice using **Spring Cloud Stream** based on [Azure Event Hub][azure_even
 - [Environment checklist][environment_checklist]
 
 ### Include the package
-[//]: # ({x-version-update-start;com.azure.spring:azure-spring-cloud-stream-binder-eventhubs;current})
+1. [Add azure-spring-cloud-dependencies].
+1. Add dependency. `<version>` can be skipped because we already add `azure-spring-cloud-dependencies`.
 ```xml
 <dependency>
-    <groupId>com.azure.spring</groupId>
-    <artifactId>azure-spring-cloud-stream-binder-eventhubs</artifactId>
-    <version>2.6.0</version>
+  <groupId>com.azure.spring</groupId>
+  <artifactId>azure-spring-cloud-stream-binder-eventhubs</artifactId>
 </dependency>
 ```
-[//]: # ({x-version-update-end})
 
 ## Key concepts
 
@@ -222,3 +221,4 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [azure_event_hub]: https://azure.microsoft.com/services/event-hubs/
 [environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
 [spring_cloud_stream_current_producer_properties]: https://docs.spring.io/spring-cloud-stream/docs/current/reference/html/spring-cloud-stream.html#_producer_properties
+[Add azure-spring-cloud-dependencies]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/AZURE_SPRING_BOMS_USAGE.md#add-azure-spring-cloud-dependencies
