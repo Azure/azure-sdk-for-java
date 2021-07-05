@@ -45,6 +45,7 @@ public class AADGroupsCountIT {
         properties.put("azure.activedirectory.client-id", AAD_MULTI_TENANT_CLIENT_ID);
         properties.put("azure.activedirectory.client-secret", AAD_MULTI_TENANT_CLIENT_SECRET);
         properties.put("azure.activedirectory.user-group.allowed-groups", "group1,group2");
+        properties.put("azure.activedirectory.enable-authentication-filter", "true");
         aadWebApiITHelper = new AADWebApiITHelper(
             DumbApp.class,
             properties,
