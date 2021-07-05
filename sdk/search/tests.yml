@@ -5,6 +5,7 @@ stages:
     parameters:
       ServiceDirectory: search
       TimeoutInMinutes: 60
+      Clouds: 'Public,UsGov,China,Canary'
       MaxParallel: 7
       Artifacts:
         - name: azure-search-documents
