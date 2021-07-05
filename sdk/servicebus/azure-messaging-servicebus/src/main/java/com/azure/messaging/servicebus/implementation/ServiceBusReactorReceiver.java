@@ -239,7 +239,7 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
         }
 
         final UpdateDispositionWorkItem workItem = new UpdateDispositionWorkItem(lockToken, deliveryState, timeout);
-        final Mono<Void> result = Mono.create(sink -> {
+        final Mono<Void> result = Mono.<Void>create(sink -> {
             workItem.start(sink);
             try {
                 provider.getReactorDispatcher().invoke(() -> {
@@ -250,7 +250,7 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
                 sink.error(new AmqpException(false, "updateDisposition failed while dispatching to Reactor.",
                     error, handler.getErrorContext(receiver)));
             }
-        });
+        }).cache();  // cache because closeAsync use `when` to subscribe this Mono again.
 
         workItem.setMono(result);
 

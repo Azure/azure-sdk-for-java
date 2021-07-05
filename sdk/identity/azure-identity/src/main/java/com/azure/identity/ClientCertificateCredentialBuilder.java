@@ -121,6 +121,19 @@ public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase
     }
 
     /**
+     * Specifies either the specific regional authority, or use {@link RegionalAuthority#AUTO_DISCOVER_REGION} to
+     * attempt to auto-detect the region. If unset, a non-regional authority will be used. This argument should be used
+     * only by applications deployed to Azure VMs.
+     *
+     * @param regionalAuthority the regional authority
+     * @return An updated instance of this builder with the regional authority configured.
+     */
+    public ClientCertificateCredentialBuilder regionalAuthority(RegionalAuthority regionalAuthority) {
+        this.identityClientOptions.setRegionalAuthority(regionalAuthority);
+        return this;
+    }
+
+    /**
      * Creates a new {@link ClientCertificateCredential} with the current configurations.
      *
      * @return a {@link ClientCertificateCredential} with the current configurations.

@@ -5,9 +5,9 @@ package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.models.CreateComposedModelOptions;
 import com.azure.ai.formrecognizer.models.FormContentType;
+import com.azure.ai.formrecognizer.models.FormField;
 import com.azure.ai.formrecognizer.models.FormPage;
 import com.azure.ai.formrecognizer.models.FormRecognizerErrorInformation;
-import com.azure.ai.formrecognizer.models.FormRecognizerException;
 import com.azure.ai.formrecognizer.models.FormRecognizerLanguage;
 import com.azure.ai.formrecognizer.models.FormRecognizerLocale;
 import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
@@ -35,6 +35,7 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.PrebuiltType.BUSINESS_CARD;
 import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.PrebuiltType.IDENTITY;
@@ -228,7 +229,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/21331")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/21687")
     public void recognizeReceiptFromUrlWithEncodedBlankSpaceSourceUrl(HttpClient httpClient,
                                                                       FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
@@ -521,7 +522,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/21331")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/21687")
     public void recognizeContentFromUrlWithEncodedBlankSpaceSourceUrl(HttpClient httpClient,
                                                                       FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
@@ -795,13 +796,14 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                         new TrainingOptions().setPollInterval(durationTestMode), Context.NONE);
                 syncPoller.waitForCompletion();
                 CustomFormModel createdModel = syncPoller.getFinalResult();
-                FormRecognizerException formRecognizerException = assertThrows(FormRecognizerException.class,
+                HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
                     () -> client.beginRecognizeCustomFormsFromUrl(
                         createdModel.getModelId(), invalidSourceUrl, new RecognizeCustomFormsOptions()
                             .setPollInterval(durationTestMode), Context.NONE)
                         .getFinalResult());
-                FormRecognizerErrorInformation errorInformation = formRecognizerException.getErrorInformation().get(0);
-                assertEquals(URL_BADLY_FORMATTED_ERROR_CODE, errorInformation.getErrorCode());
+                FormRecognizerErrorInformation errorInformation =
+                    (FormRecognizerErrorInformation) httpResponseException.getValue();
+                assertEquals(INVALID_SOURCE_URL_EXCEPTION_MESSAGE, errorInformation.getMessage());
             }));
     }
 
@@ -1195,6 +1197,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/21687")
     public void recognizeCustomFormFromUrlWithEncodedBlankSpaceSourceUrl(HttpClient httpClient,
                                                                          FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
@@ -1738,7 +1741,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/21331")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/21687")
     public void recognizeBusinessCardFromUrlWithEncodedBlankSpaceSourceUrl(HttpClient httpClient,
                                                                            FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
@@ -1987,7 +1990,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/21331")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/21687")
     public void recognizeInvoiceFromUrlWithEncodedBlankSpaceSourceUrl(HttpClient httpClient,
                                                                       FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
@@ -2048,6 +2051,32 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                 Context.NONE).setPollInterval(durationTestMode);
             validateNetworkCallRecord("locale", "en-US");
         }, INVOICE_PDF);
+    }
+
+    /**
+     * Verify SDK returns empty object and array for null sub line items field.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void invoiceSubLineItemsNull(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        client = getFormRecognizerClient(httpClient, serviceVersion);
+        localFilePathRunner((filePath, dataLength) -> {
+            List<RecognizedForm> recognizedForms = client.beginRecognizeInvoices(
+                getContentDetectionFileData(filePath),
+                dataLength,
+                new RecognizeInvoicesOptions().setLocale(FormRecognizerLocale.EN_US),
+                Context.NONE)
+                .setPollInterval(durationTestMode)
+                .getFinalResult();
+
+            RecognizedForm recognizedForm = recognizedForms.get(0);
+            FormField itemFieldList = recognizedForm.getFields().get("Items").getValue().asList().get(0);
+            Map<String, FormField> formFieldMap = itemFieldList.getValue().asMap();
+
+            assertEquals(null, formFieldMap);
+            assertEquals(String.valueOf(1), itemFieldList.getValueData().getText());
+
+        }, INVOICE_NO_SUB_LINE_PDF);
     }
 
     // Identity Document Recognition

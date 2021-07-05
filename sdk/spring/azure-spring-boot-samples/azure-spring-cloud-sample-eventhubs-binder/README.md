@@ -189,22 +189,47 @@ spring:
       region: [region]
 ```
 
+#### Enable sync message
+To enable message sending in a synchronized way with Spring Cloud Stream 3.x, 
+azure-spring-cloud-stream-binder-eventhubs supports the sync producer mode to get responses for sent messages. 
+By enabling following configuration, you could use [StreamBridge][StreamBridge] for the synchronized message producing.
+
+```yaml
+spring:
+  cloud:
+    stream:
+      eventhub:
+        bindings:
+          supply-out-0:
+            producer:
+              sync: true
+```
 
 ## Examples
 
 1.  Run the `mvn spring-boot:run` in the root of the code sample to get the app running.
 
 1.  Send a POST request
-
-        $ curl -X POST http://localhost:8080/messages?message=hello
-
+    
+        $ ### Send messages through imperative.  
+        $ curl -X POST http://localhost:8080/messages/imperative/staticalDestination?message=hello
+        $ curl -X POST http://localhost:8080/messages/imperative/dynamicDestination?message=hello
+    
+        $ ### Send messages through reactive.
+        $ curl -X POST http://localhost:8080/messages/reactive?message=hello
+    
     or when the app runs on App Service or VM
 
-        $ curl -d -X POST https://[your-app-URL]/messages?message=hello
+        $ ### Send messages through imperative.
+        $ curl -d -X POST https://[your-app-URL]/messages/imperative/staticalDestination?message=hello
+        $ curl -d -X POST https://[your-app-URL]/messages/imperative/dynamicDestination?message=hello
+    
+        $ ### Send messages through reactive.
+        $ curl -d -X POST https://[your-app-URL]/messages/reactive?message=hello
 
 1.  Verify in your app’s logs that a similar message was posted:
 
-        New message received: 'hello'
+        New message received: 'hello', partition key: 2002572479, sequence number: 4, offset: 768, enqueued time: 2021-06-03T01:47:36.859Z
         Message 'hello' successfully checkpointed
 
 1.  Delete the resources on [Azure Portal][azure-portal] to avoid unexpected charges.
@@ -222,11 +247,12 @@ spring:
 [azure-portal]: https://ms.portal.azure.com/
 [create-event-hubs]: https://docs.microsoft.com/azure/event-hubs/ 
 [create-azure-storage]: https://docs.microsoft.com/azure/storage/ 
-[create-sp-using-azure-cli]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/create-sp-using-azure-cli.md
-[create-managed-identity]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/create-managed-identity.md
+[create-sp-using-azure-cli]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot-samples/create-sp-using-azure-cli.md
+[create-managed-identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot-samples/create-managed-identity.md
 [deploy-spring-boot-application-to-app-service]: https://docs.microsoft.com/java/azure/spring-framework/deploy-spring-boot-java-app-with-maven-plugin?toc=%2Fazure%2Fapp-service%2Fcontainers%2Ftoc.json&view=azure-java-stable
-[environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
+[environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
 [role-assignment]: https://docs.microsoft.com/azure/role-based-access-control/role-assignments-portal
-[application-mi.yaml]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-binder/src/main/resources/application-mi.yaml
-[application.yaml]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-binder/src/main/resources/application.yaml
-[application-sp.yaml]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-binder/src/main/resources/application-sp.yaml
+[application-mi.yaml]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-binder/src/main/resources/application-mi.yaml
+[application.yaml]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-binder/src/main/resources/application.yaml
+[application-sp.yaml]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-binder/src/main/resources/application-sp.yaml
+[StreamBridge]: https://docs.spring.io/spring-cloud-stream/docs/3.1.3/reference/html/spring-cloud-stream.html#_sending_arbitrary_data_to_an_output_e_g_foreign_event_driven_sources

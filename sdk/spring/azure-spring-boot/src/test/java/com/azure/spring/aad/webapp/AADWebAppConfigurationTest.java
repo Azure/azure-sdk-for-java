@@ -74,7 +74,7 @@ public class AADWebAppConfigurationTest {
                     azure.getProviderDetails().getAuthorizationUri());
                 assertEquals(endpoints.tokenEndpoint(), azure.getProviderDetails().getTokenUri());
                 assertEquals(endpoints.jwkSetEndpoint(), azure.getProviderDetails().getJwkSetUri());
-                assertEquals("{baseUrl}/login/oauth2/code/", azure.getRedirectUriTemplate());
+                assertEquals("{baseUrl}/login/oauth2/code/", azure.getRedirectUri());
                 assertDefaultScopes(azure, "openid", "profile");
             });
     }
@@ -146,8 +146,6 @@ public class AADWebAppConfigurationTest {
             .run(context -> {
                 AADWebAppClientRegistrationRepository repo =
                     context.getBean(AADWebAppClientRegistrationRepository.class);
-                ClientRegistration azure = repo.findByRegistrationId("azure");
-                ClientRegistration graph = repo.findByRegistrationId("graph");
 
                 assertEquals(repo.findByRegistrationId("azure").getAuthorizationGrantType(),
                     AuthorizationGrantType.AUTHORIZATION_CODE);

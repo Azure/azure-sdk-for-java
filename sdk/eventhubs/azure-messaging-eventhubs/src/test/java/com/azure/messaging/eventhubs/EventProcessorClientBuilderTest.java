@@ -51,7 +51,7 @@ public class EventProcessorClientBuilderTest {
                         + "sequence number of event = " + eventContext.getEventData().getSequenceNumber());
                 })
                 .processError(errorContext -> {
-                    System.out.printf("Error occurred in partition processor for partition {}, {}",
+                    System.out.printf("Error occurred in partition processor for partition %s, %s%n",
                         errorContext.getPartitionContext().getPartitionId(),
                         errorContext.getThrowable());
                 })
@@ -69,7 +69,7 @@ public class EventProcessorClientBuilderTest {
                     + "sequence number of event = " + eventContext.getEventData().getSequenceNumber());
             })
             .processError(errorContext -> {
-                System.out.printf("Error occurred in partition processor for partition %s, %s",
+                System.out.printf("Error occurred in partition processor for partition %s, %s%n",
                     errorContext.getPartitionContext().getPartitionId(),
                     errorContext.getThrowable());
             })
@@ -98,7 +98,7 @@ public class EventProcessorClientBuilderTest {
                     });
                 }, 5, Duration.ofSeconds(1))
                 .processError(errorContext -> {
-                    System.out.printf("Error occurred in partition processor for partition {}, {}",
+                    System.out.printf("Error occurred in partition processor for partition %s, %s%n",
                         errorContext.getPartitionContext().getPartitionId(),
                         errorContext.getThrowable());
                 })
@@ -113,7 +113,7 @@ public class EventProcessorClientBuilderTest {
                 .checkpointStore(new SampleCheckpointStore())
                 .consumerGroup("consumer-group")
                 .processError(errorContext -> {
-                    System.out.printf("Error occurred in partition processor for partition {}, {}",
+                    System.out.printf("Error occurred in partition processor for partition %s, %s%n",
                         errorContext.getPartitionContext().getPartitionId(),
                         errorContext.getThrowable());
                 })
@@ -134,7 +134,7 @@ public class EventProcessorClientBuilderTest {
                 });
             }, 5, Duration.ofSeconds(1))
             .processError(errorContext -> {
-                System.out.printf("Error occurred in partition processor for partition %s, %s",
+                System.out.printf("Error occurred in partition processor for partition %s, %s%n",
                     errorContext.getPartitionContext().getPartitionId(),
                     errorContext.getThrowable());
             })

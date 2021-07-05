@@ -43,7 +43,7 @@ public abstract class NotificationHookTestBase extends MetricsAdvisorAdministrat
         Assertions.assertTrue(notificationHook instanceof EmailNotificationHook);
         EmailNotificationHook emailHook = (EmailNotificationHook) notificationHook;
         Assertions.assertNotNull(emailHook.getId());
-        Assertions.assertNotNull(emailHook.getAdminEmails());
+        Assertions.assertNotNull(emailHook.getAdmins());
         Assertions.assertNotNull(emailHook.getName());
         Assertions.assertEquals(CreateEmailHookInput.INSTANCE.description, emailHook.getDescription());
         Assertions.assertEquals(CreateEmailHookInput.INSTANCE.externalLink, emailHook.getExternalLink());
@@ -82,7 +82,7 @@ public abstract class NotificationHookTestBase extends MetricsAdvisorAdministrat
         Assertions.assertTrue(notificationHook instanceof WebNotificationHook);
         WebNotificationHook webHook = (WebNotificationHook) notificationHook;
         Assertions.assertNotNull(webHook.getId());
-        Assertions.assertNotNull(webHook.getAdminEmails());
+        Assertions.assertNotNull(webHook.getAdmins());
         Assertions.assertNotNull(webHook.getName());
         Assertions.assertEquals(CreateWebHookInput.INSTANCE.description, webHook.getDescription());
         Assertions.assertEquals(CreateWebHookInput.INSTANCE.externalLink, webHook.getExternalLink());
@@ -104,17 +104,16 @@ public abstract class NotificationHookTestBase extends MetricsAdvisorAdministrat
 
     protected static class ListHookInput {
         static final ListHookInput INSTANCE = new ListHookInput();
-        EmailNotificationHook emailHook = new EmailNotificationHook(UUID.randomUUID().toString())
+        EmailNotificationHook emailHook = new EmailNotificationHook("java_test_" + UUID.randomUUID().toString())
             .setEmailsToAlert(new ArrayList<String>() {{
                     add("simpleuser0@hotmail.com");
                 }});
-        WebNotificationHook webHook = new WebNotificationHook(UUID.randomUUID().toString(),
+        WebNotificationHook webHook = new WebNotificationHook("java_test_" + UUID.randomUUID().toString(),
             "https://httpbin.org/post");
         int pageSize = 1;
     }
 
     protected void assertListHookOutput(List<NotificationHook> hooksList) {
-        Assertions.assertTrue(hooksList.size() >= 2);
         if (getTestMode() == TestMode.PLAYBACK) {
             // assert random generated hook names only when hitting real service.
             return;
@@ -139,7 +138,6 @@ public abstract class NotificationHookTestBase extends MetricsAdvisorAdministrat
     }
 
     protected void assertPagedListHookOutput(List<PagedResponse<NotificationHook>> hookPageList) {
-        Assertions.assertTrue(hookPageList.size() >= 2);
         int cnt = 0;
         for (PagedResponse<NotificationHook> hookPage : hookPageList) {
             Assertions.assertNotNull(hookPage.getValue());

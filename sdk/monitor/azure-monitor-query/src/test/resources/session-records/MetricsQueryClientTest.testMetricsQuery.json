@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.azure.com/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/srnagar-azuresdkgroup/providers/Microsoft.CognitiveServices/accounts/srnagara-textanalytics/providers/microsoft.insights/metrics?timespan=PT240H&interval=PT1H&metric=SuccessfulCalls&aggregation=2%2C5%2C4%2C3%2C1&top=100&resultType=Data&api-version=2017-05-01-preview&metricnamespace=Microsoft.CognitiveServices/accounts",
+    "Uri" : "https://REDACTED.azure.com/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/srnagar-azuresdkgroup/providers/Microsoft.CognitiveServices/accounts/srnagara-textanalytics/providers/microsoft.insights/metrics?timespan=PT240H&interval=PT1H&metricnames=SuccessfulCalls&aggregation=2%2C5%2C4%2C3%2C1&top=100&resultType=Data&api-version=2018-01-01&metricnamespace=Microsoft.CognitiveServices/accounts",
     "Headers" : {
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.8; Windows 10; 10.0)"
     },

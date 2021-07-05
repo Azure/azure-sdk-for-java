@@ -1,9 +1,14 @@
 # Release History
 
-## 3.6.0-beta.1 (Unreleased)
+## 3.7.0-beta.1 (Unreleased)
+
+
+## 3.6.0 (2021-06-23)
 ### Breaking Changes
+
+### Deprecations
 - Deprecate aad.group.enable-full-list, use aad.group.allowed-group-ids=all instead.
-- Deprecated `allowTelemetry` configuration item.
+- Deprecate `allowTelemetry` configuration item.
 
 ### New Features
 - Support domain_hint in aad-starter.([#21517](https://github.com/Azure/azure-sdk-for-java/issues/21517))
@@ -65,7 +70,11 @@
     azure.activedirectory.user-group.value
     azure.activedirectory.user-group.object-id-key
     ```
-- Stop support of Azure Active Directory Endpoints.
+- Removed support for older `AAD v1` style endpoints.
+  - Support for `AAD v1`, also named `Azure Active Directory`, endpoints in the form https://login.microsoft.online.com/common/oauth2/authorize has been removed.
+  - `AAD v2`, also named `Microsoft Identity Platform`, endpoints in the form https://login.microsoftonline.com/common/oauth2/v2.0/authorize continue to be supported.
+  - Please see [this documentation](https://github.com/MicrosoftDocs/azure-docs/blob/master/articles/active-directory/azuread-dev/azure-ad-endpoint-comparison.md) for more information.
+
 
 ### New Features
 - Support consent of multiple client registrations during user login.

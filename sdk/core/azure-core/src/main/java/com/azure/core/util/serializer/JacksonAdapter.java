@@ -500,7 +500,7 @@ public class JacksonAdapter implements SerializerAdapter {
                 Method setterMethod = deserializedHeaders.getClass().getDeclaredMethod(potentialSetterName, Map.class);
                 if (Modifier.isPublic(setterMethod.getModifiers())) {
                     setterMethod.invoke(deserializedHeaders, values);
-                    logger.verbose("User setter %s on class %s to set header collection.", potentialSetterName,
+                    logger.verbose("User setter {} on class {} to set header collection.", potentialSetterName,
                         deserializedHeaders.getClass().getSimpleName());
                     return true;
                 }

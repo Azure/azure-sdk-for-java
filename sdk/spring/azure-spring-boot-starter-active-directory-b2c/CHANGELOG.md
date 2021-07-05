@@ -1,8 +1,14 @@
 # Release History
 
-## 3.6.0-beta.1 (Unreleased)
+## 3.7.0-beta.1 (Unreleased)
+
+
+## 3.6.0 (2021-06-23)
 ### Breaking Changes
-- Deprecated `allowTelemetry` configuration item.
+- Remove class `AADB2COAuth2AuthenticatedPrincipal`, use class `AADOAuth2AuthenticatedPrincipal` instead.
+
+### Deprecations
+- Deprecate `allowTelemetry` configuration item.
 
 ## 3.5.0 (2021-05-24)
 ### New Features

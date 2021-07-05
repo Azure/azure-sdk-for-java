@@ -8,7 +8,9 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.context.core.api.CredentialsProvider;
 import com.azure.spring.cloud.context.core.config.AzureProperties;
+import com.azure.spring.cloud.context.core.impl.ResourceGroupManager;
 import com.azure.spring.identity.PrefixedSpringEnvironmentCredentialBuilder;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -56,6 +58,19 @@ public class AzureContextAutoConfiguration {
     @Order(SPRING_ENV_CREDENTIAL_ORDER - 1)
     public PrefixedSpringEnvironmentCredentialBuilder azureSpringCloudCredentialBuilder(Environment environment) {
         return new PrefixedSpringEnvironmentCredentialBuilder(environment).prefix(AzureProperties.PREFIX);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnBean(AzureResourceManager.class)
+    public ResourceGroupManager resourceGroupManager(AzureResourceManager azureResourceManager,
+                                                         AzureProperties azureProperties) {
+        ResourceGroupManager resourceGroupManager = new ResourceGroupManager(azureResourceManager, azureProperties);
+        if (azureProperties.isAutoCreateResources()
+            && !resourceGroupManager.exists(azureProperties.getResourceGroup())) {
+            resourceGroupManager.create(azureProperties.getResourceGroup());
+        }
+        return resourceGroupManager;
     }
 
 }

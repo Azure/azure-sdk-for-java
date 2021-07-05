@@ -175,7 +175,7 @@ public class TablesJacksonSerializer extends JacksonAdapter {
         String typeString = typeNode.asText();
         EntityDataModelType type = EntityDataModelType.fromString(typeString);
         if (type == null) {
-            logger.warning(String.format("'%s' value has unknown OData type %s", fieldName, typeString));
+            logger.warning("'{}' value has unknown OData type {}", fieldName, typeString);
             return serializer().treeToValue(valueNode, Object.class);
         }
 

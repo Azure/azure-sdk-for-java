@@ -10,6 +10,8 @@ import org.slf4j.LoggerFactory;
 import java.util.Locale;
 import java.util.concurrent.ScheduledExecutorService;
 
+import com.microsoft.azure.eventhubs.impl.IOObject.IOObjectState;
+
 public class RequestResponseOpener implements Operation<RequestResponseChannel> {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(RequestResponseOpener.class);
 
@@ -21,7 +23,11 @@ public class RequestResponseOpener implements Operation<RequestResponseChannel> 
     private final AmqpConnection eventDispatcher;
     private final ScheduledExecutorService executor;
 
-    private boolean isOpened;
+    private final String instanceName = StringUtil.getRandomString("RRO");
+
+    private RequestResponseChannel currentChannel = null;
+    private final Object isOpenedSynchronizer = new Object();
+    private volatile boolean isOpening = false;
 
     public RequestResponseOpener(final SessionProvider sessionProvider, final String clientId, final String sessionName, final String linkName,
                                  final String endpointAddress, final AmqpConnection eventDispatcher, final ScheduledExecutorService executor) {
@@ -36,8 +42,33 @@ public class RequestResponseOpener implements Operation<RequestResponseChannel> 
 
     @Override
     public synchronized void run(OperationResult<RequestResponseChannel, Exception> operationCallback) {
-        if (this.isOpened) {
-            return;
+        synchronized (this.isOpenedSynchronizer) {
+            if (this.currentChannel != null) {
+                if ((this.currentChannel.getState() == IOObjectState.OPENED) || (this.currentChannel.getState() == IOObjectState.OPENING)) {
+                    if (TRACE_LOGGER.isInfoEnabled()) {
+                        TRACE_LOGGER.info(String.format(Locale.US, "clientId[%s] rro[%s] inner channel rrc[%s] currently [%s], no need to recreate",
+                            this.clientId, this.instanceName, this.currentChannel.getId(), this.currentChannel.getState().toString()));
+                    }
+                    return;
+                }
+            }
+
+            // Inner channel doesn't exist or it is closing/closed. Do we need to start creation of a new one,
+            // or is that already in progress?
+            if (this.isOpening) {
+                if (TRACE_LOGGER.isInfoEnabled()) {
+                    TRACE_LOGGER.info(String.format(Locale.US, "clientId[%s] rro[%s] inner channel creation already in progress",
+                        this.clientId, this.instanceName));
+                }
+                return;
+            }
+
+            // Need to start creating an inner channel.
+            this.isOpening = true;
+            if (TRACE_LOGGER.isInfoEnabled()) {
+                TRACE_LOGGER.info(String.format(Locale.US, "clientId[%s] rro[%s] opening inner channel",
+                    this.clientId, this.instanceName));
+            }
         }
 
         final Session session = this.sessionProvider.getSession(
@@ -52,6 +83,15 @@ public class RequestResponseOpener implements Operation<RequestResponseChannel> 
             });
 
         if (session == null) {
+            if (TRACE_LOGGER.isErrorEnabled()) {
+                TRACE_LOGGER.error(String.format(Locale.US, "clientId[%s] rro[%s] got a null session, inner channel recreation cannot continue",
+                    this.clientId, this.instanceName));
+            }
+            synchronized (RequestResponseOpener.this.isOpenedSynchronizer) {
+                // Inner channel creation failed.
+                // The next time run() is called should try again.
+                isOpening = false;
+            }
             return;
         }
         final RequestResponseChannel requestResponseChannel = new RequestResponseChannel(
@@ -59,7 +99,7 @@ public class RequestResponseOpener implements Operation<RequestResponseChannel> 
                 this.endpointAddress,
                 session,
                 this.executor);
-
+        this.currentChannel = requestResponseChannel;
         requestResponseChannel.open(
                 new OperationResult<Void, Exception>() {
                     @Override
@@ -69,11 +109,15 @@ public class RequestResponseOpener implements Operation<RequestResponseChannel> 
 
                         operationCallback.onComplete(requestResponseChannel);
 
-                        isOpened = true;
+                        synchronized (RequestResponseOpener.this.isOpenedSynchronizer) {
+                            // Inner channel creation complete.
+                            RequestResponseOpener.this.isOpening = false;
+                        }
 
                         if (TRACE_LOGGER.isInfoEnabled()) {
-                            TRACE_LOGGER.info(String.format(Locale.US, "requestResponseChannel.onOpen complete clientId[%s], session[%s], link[%s], endpoint[%s]",
-                                    clientId, sessionName, linkName, endpointAddress));
+                            TRACE_LOGGER.info(String.format(Locale.US, "requestResponseChannel.onOpen complete clientId[%s], session[%s], link[%s], endpoint[%s], rrc[%s]",
+                                RequestResponseOpener.this.clientId, RequestResponseOpener.this.sessionName, RequestResponseOpener.this.linkName,
+                                RequestResponseOpener.this.endpointAddress, requestResponseChannel.getId()));
                         }
                     }
 
@@ -81,9 +125,19 @@ public class RequestResponseOpener implements Operation<RequestResponseChannel> 
                     public void onError(Exception error) {
                         operationCallback.onError(error);
 
+                        synchronized (RequestResponseOpener.this.isOpenedSynchronizer) {
+                            // Inner channel creation failed. The next time run() is called should try again.
+                            // Sometimes this.currentChannel ends up in a weird state that shows as OPENING (because
+                            // remote states are UNINITIALIZED) instead of CLOSED/CLOSING, which will still cause the
+                            // next attempt to short-circuit, so null out currentChannel to prevent that.
+                            RequestResponseOpener.this.currentChannel = null;
+                            RequestResponseOpener.this.isOpening = false;
+                        }
+
                         if (TRACE_LOGGER.isWarnEnabled()) {
                             TRACE_LOGGER.warn(String.format(Locale.US, "requestResponseChannel.onOpen error clientId[%s], session[%s], link[%s], endpoint[%s], error %s",
-                                    clientId, sessionName, linkName, endpointAddress, error));
+                                RequestResponseOpener.this.clientId, RequestResponseOpener.this.sessionName, RequestResponseOpener.this.linkName,
+                                RequestResponseOpener.this.endpointAddress, error.getMessage()));
                         }
                     }
                 },
@@ -93,11 +147,10 @@ public class RequestResponseOpener implements Operation<RequestResponseChannel> 
                         eventDispatcher.deregisterForConnectionError(requestResponseChannel.getSendLink());
                         eventDispatcher.deregisterForConnectionError(requestResponseChannel.getReceiveLink());
 
-                        isOpened = false;
-
                         if (TRACE_LOGGER.isInfoEnabled()) {
-                            TRACE_LOGGER.info(String.format(Locale.US, "requestResponseChannel.onClose complete clientId[%s], session[%s], link[%s], endpoint[%s]",
-                                    clientId, sessionName, linkName, endpointAddress));
+                            TRACE_LOGGER.info(String.format(Locale.US, "requestResponseChannel.onClose complete clientId[%s], session[%s], link[%s], endpoint[%s], rrc[%s]",
+                                RequestResponseOpener.this.clientId, RequestResponseOpener.this.sessionName, RequestResponseOpener.this.linkName,
+                                RequestResponseOpener.this.endpointAddress, requestResponseChannel.getId()));
                         }
                     }
 
@@ -106,11 +159,10 @@ public class RequestResponseOpener implements Operation<RequestResponseChannel> 
                         eventDispatcher.deregisterForConnectionError(requestResponseChannel.getSendLink());
                         eventDispatcher.deregisterForConnectionError(requestResponseChannel.getReceiveLink());
 
-                        isOpened = false;
-
                         if (TRACE_LOGGER.isWarnEnabled()) {
-                            TRACE_LOGGER.warn(String.format(Locale.US, "requestResponseChannel.onClose error clientId[%s], session[%s], link[%s], endpoint[%s], error %s",
-                                    clientId, sessionName, linkName, endpointAddress, error));
+                            TRACE_LOGGER.warn(String.format(Locale.US, "requestResponseChannel.onClose error clientId[%s], session[%s], link[%s], endpoint[%s], rrc[%s], error %s",
+                                RequestResponseOpener.this.clientId, RequestResponseOpener.this.sessionName, RequestResponseOpener.this.linkName,
+                                RequestResponseOpener.this.endpointAddress, requestResponseChannel.getId(), error.getMessage()));
                         }
                     }
                 });
