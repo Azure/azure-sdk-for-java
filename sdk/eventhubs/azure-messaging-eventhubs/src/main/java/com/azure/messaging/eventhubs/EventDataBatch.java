@@ -216,7 +216,7 @@ public final class EventDataBatch {
         if (event.getRawAmqpMessage().getProperties() != null) {
             AmqpMessageProperties properties = event.getRawAmqpMessage().getProperties();
             if (properties.getMessageId() != null) {
-                message.setMessageId(properties.getMessageId());
+                message.setMessageId(properties.getMessageId().toString());
             }
 
             if (properties.getUserId() != null && properties.getUserId().length > 0) {
@@ -236,7 +236,7 @@ public final class EventDataBatch {
             }
 
             if (properties.getCorrelationId() != null) {
-                message.setCorrelationId(properties.getCorrelationId());
+                message.setCorrelationId(properties.getCorrelationId().toString());
             }
 
             if (properties.getContentType() != null) {
