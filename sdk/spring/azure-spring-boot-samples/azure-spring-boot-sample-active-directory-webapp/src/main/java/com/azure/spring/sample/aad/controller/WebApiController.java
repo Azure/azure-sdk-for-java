@@ -13,48 +13,61 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.reactive.function.client.WebClient;
 
-
 import static org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction.oauth2AuthorizedClient;
 
 @Controller
 public class WebApiController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WebApiController.class);
-
-    private static final String CUSTOM_LOCAL_FILE_ENDPOINT = "http://localhost:8081/webapiA";
+    private static final String WEB_API_A_URI = "http://localhost:8081/webapiA";
+    private static final String WEB_API_B_URI = "http://localhost:8082/webapiB/clientCredential";
 
     @Autowired
     private WebClient webClient;
 
     /**
-     * Call webapiA endpoint, combine all the response and return.
-     * @param webapiAClient authorized client for Custom
+     * Check whether webapiA is accessible.
+     *
+     * @param client authorized client for webapiA
      * @return Response webapiA data.
      */
     @GetMapping("/webapp/webapiA/webapiB")
     @ResponseBody
-    public String callWebApi(@RegisteredOAuth2AuthorizedClient("webapiA") OAuth2AuthorizedClient webapiAClient) {
-        return callWebApiAEndpoint(webapiAClient);
+    public String webapiA(@RegisteredOAuth2AuthorizedClient("webapiA") OAuth2AuthorizedClient client) {
+        return canVisitUri(client, WEB_API_A_URI);
     }
 
     /**
-     * Call webapiA endpoint
-     * @param webapiAClient Authorized Client
-     * @return Response string data.
+     * Check whether webapiB/clientCredential is accessible.
+     *
+     * @param client authorized client for webapiB
+     * @return Response webapiA data.
      */
-    private String callWebApiAEndpoint(OAuth2AuthorizedClient webapiAClient) {
-        if (null != webapiAClient) {
-            String body = webClient
-                .get()
-                .uri(CUSTOM_LOCAL_FILE_ENDPOINT)
-                .attributes(oauth2AuthorizedClient(webapiAClient))
-                .retrieve()
-                .bodyToMono(String.class)
-                .block();
-            LOGGER.info("Response from webapiA : {}", body);
-            return "webapiA response " + (null != body ? "success." : "failed.");
-        } else {
-            return "webapiA response failed.";
+    @GetMapping("/webapp/webapiB/clientCredential")
+    @ResponseBody
+    public String webapiB(@RegisteredOAuth2AuthorizedClient("webapiB") OAuth2AuthorizedClient client) {
+        return canVisitUri(client, WEB_API_B_URI);
+    }
+
+    /**
+     * Check whether uri is accessible by provided client.
+     *
+     * @param client Authorized client.
+     * @param uri The request uri.
+     * @return "Get http response successfully." or "Get http response failed."
+     */
+    private String canVisitUri(OAuth2AuthorizedClient client, String uri) {
+        if (null == client) {
+            return "Get response failed.";
         }
+        String body = webClient
+            .get()
+            .uri(uri)
+            .attributes(oauth2AuthorizedClient(client))
+            .retrieve()
+            .bodyToMono(String.class)
+            .block();
+        LOGGER.info("Response from {} : {}", uri, body);
+        return "Get response " + (null != body ? "successfully" : "failed");
     }
 }
