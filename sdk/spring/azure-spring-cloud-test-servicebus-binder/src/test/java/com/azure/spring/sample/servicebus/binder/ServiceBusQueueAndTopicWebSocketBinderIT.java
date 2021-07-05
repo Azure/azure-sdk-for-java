@@ -109,30 +109,5 @@ public class ServiceBusQueueAndTopicWebSocketBinderIT {
         LOGGER.info("SingleServiceBusQueueAndTopicBinderIT end.");
     }
 
-    @Test
-    public void testServiceBusSendAndReceiveWebSocketMessage() throws InterruptedException {
-        assertThat(isPortAvailable(5671)).isTrue();
-    }
 
-    private static void bindPort(String host, int port) throws Exception {
-        Socket s = new Socket();
-        s.bind(new InetSocketAddress(host, port));
-        s.close();
-    }
-
-    public static boolean isPortAvailable(int port) {
-        Socket s = new Socket();
-        try {
-            bindPort("0.0.0.0", port);
-            bindPort(InetAddress.getLocalHost().getHostAddress(), port);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-
-    public static void main(String[] args) {
-        System.out.println(isPortAvailable(5671));
-    }
 }
