@@ -44,7 +44,6 @@ public class AADAppRoleStatelessAuthenticationFilterIT {
         properties.put("azure.activedirectory.client-id", clientId);
         properties.put("azure.activedirectory.client-secret", clientSecret);
         properties.put("azure.activedirectory.session-stateless", "true");
-        properties.put("azure.activedirectory.enable-authentication-filter", "true");
         aadWebApiITHelper = new AADWebApiITHelper(
             DumbApp.class,
             properties,

@@ -19,7 +19,6 @@ public class ResourceRetrieverTest {
         .withConfiguration(AutoConfigurations.of(AADAuthenticationFilterAutoConfiguration.class))
         .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
         .withPropertyValues(
-            "azure.activedirectory.enable-authentication-filter=true",
             "azure.activedirectory.client-id=fake-client-id",
             "azure.activedirectory.client-secret=fake-client-secret");
 
