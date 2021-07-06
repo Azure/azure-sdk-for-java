@@ -189,8 +189,15 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
                     if (!strategy.canPoll(r)) {
                         return Mono.error(new IllegalStateException("Cannot poll with strategy " + strategy));
                     }
-                    return strategy.onActivationResponse(r, ctx);
-                }).map(status -> new PollResponse<>(status, null)),
+                    return strategy.onActivationResponse(r, ctx)
+                        .map(status -> {
+                            if (r.getValue() instanceof BinaryData) {
+                                return new PollResponse<>(status, (BinaryData) r.getValue());
+                            } else {
+                                return new PollResponse<>(status, BinaryData.fromObject(r.getValue()));
+                            }
+                        });
+                }),
             ctx -> {
                 HttpRequest request = new HttpRequest(HttpMethod.GET, strategy.getPollingUrl(ctx));
                 Mono<HttpResponse> responseMono;
@@ -199,8 +206,9 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
                 } else {
                     responseMono = httpPipeline.send(request, context);
                 }
-                return responseMono.flatMap(r -> strategy.onPollingResponse(r, ctx))
-                    .map(status -> new PollResponse<>(status, null));
+                return responseMono.flatMap(r -> strategy.onPollingResponse(r, ctx)
+                    .flatMap(status -> BinaryData.fromFlux(r.getBody())
+                        .map(body -> new PollResponse<>(status, body))));
             },
             (ctx, pr) -> Mono.error(new IllegalStateException("Cancellation is not supported.")),
             ctx -> {
