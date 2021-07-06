@@ -9,8 +9,8 @@ import com.azure.resourcemanager.monitor.models.LocalizableString;
 import com.azure.resourcemanager.monitor.models.MetricAvailability;
 import com.azure.resourcemanager.monitor.models.MetricCollection;
 import com.azure.resourcemanager.monitor.models.MetricDefinition;
+import com.azure.resourcemanager.monitor.models.MetricUnit;
 import com.azure.resourcemanager.monitor.models.ResultType;
-import com.azure.resourcemanager.monitor.models.Unit;
 import com.azure.resourcemanager.monitor.fluent.models.LocalizableStringInner;
 import com.azure.resourcemanager.monitor.fluent.models.MetricDefinitionInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
@@ -87,7 +87,7 @@ class MetricDefinitionImpl extends WrapperImpl<MetricDefinitionInner>
         return this.inner.supportedAggregationTypes();
     }
 
-    public Unit unit() {
+    public MetricUnit unit() {
         return this.inner.unit();
     }
 

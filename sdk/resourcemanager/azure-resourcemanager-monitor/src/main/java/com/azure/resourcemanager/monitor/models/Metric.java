@@ -36,7 +36,7 @@ public interface Metric extends HasInnerModel<MetricInner> {
      *
      * @return the unit value
      */
-    Unit unit();
+    MetricUnit unit();
 
     /**
      * Get the time series returned when a data query is performed.

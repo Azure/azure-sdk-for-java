@@ -62,7 +62,7 @@ public interface MetricDefinition extends HasManager<MonitorManager>, HasInnerMo
      *
      * @return the unit value
      */
-    Unit unit();
+    MetricUnit unit();
 
     /**
      * Get the primaryAggregationType value.
