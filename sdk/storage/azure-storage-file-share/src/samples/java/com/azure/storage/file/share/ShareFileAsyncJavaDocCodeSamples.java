@@ -5,6 +5,7 @@ package com.azure.storage.file.share;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.file.share.models.DownloadRetryOptions;
 import com.azure.storage.file.share.models.FileRange;
 import com.azure.storage.file.share.models.PermissionCopyModeType;
 import com.azure.storage.file.share.models.ShareFileCopyInfo;
@@ -15,6 +16,7 @@ import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.ShareFileUploadOptions;
 import com.azure.storage.file.share.models.ShareFileUploadRangeOptions;
 import com.azure.storage.file.share.models.ShareRequestConditions;
+import com.azure.storage.file.share.options.ShareFileDownloadOptions;
 import com.azure.storage.file.share.options.ShareFileListRangesDiffOptions;
 import com.azure.storage.file.share.options.ShareFileUploadRangeFromUrlOptions;
 import com.azure.storage.file.share.sas.ShareFileSasPermission;
@@ -551,6 +553,27 @@ public class ShareFileAsyncJavaDocCodeSamples {
                 error -> System.err.println(error.getMessage())
             );
         // END: com.azure.storage.file.share.ShareFileAsyncClient.downloadWithResponse#ShareFileRange-Boolean-ShareRequestConditions
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareFileAsyncClient#downloadWithResponse(ShareFileDownloadOptions)}
+     */
+    public void downloadWithOptions() {
+        ShareFileAsyncClient shareFileAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.downloadWithResponse#ShareFileDownloadOptions
+        ShareRequestConditions requestConditions = new ShareRequestConditions().setLeaseId(leaseId);
+        ShareFileRange range = new ShareFileRange(1024, 2047L);
+        DownloadRetryOptions retryOptions = new DownloadRetryOptions().setMaxRetryRequests(3);
+        ShareFileDownloadOptions options = new ShareFileDownloadOptions().setRange(range)
+            .setRequestConditions(requestConditions)
+            .setRangeContentMd5(false)
+            .setRetryOptions(retryOptions);
+        shareFileAsyncClient.downloadWithResponse(options)
+            .subscribe(response ->
+                    System.out.printf("Complete downloading the data with status code %d%n", response.getStatusCode()),
+                error -> System.err.println(error.getMessage())
+            );
+        // END: com.azure.storage.file.share.ShareFileAsyncClient.downloadWithResponse#ShareFileDownloadOptions
     }
 
 

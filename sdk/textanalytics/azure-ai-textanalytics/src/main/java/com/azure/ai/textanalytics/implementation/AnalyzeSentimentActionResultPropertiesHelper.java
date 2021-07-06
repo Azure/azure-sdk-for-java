@@ -19,7 +19,8 @@ public final class AnalyzeSentimentActionResultPropertiesHelper {
      * instance.
      */
     public interface AnalyzeSentimentActionResultAccessor {
-        void setResult(AnalyzeSentimentActionResult actionsResult, AnalyzeSentimentResultCollection result);
+        void setDocumentsResults(AnalyzeSentimentActionResult actionResult,
+            AnalyzeSentimentResultCollection documentsResults);
     }
 
     /**
@@ -31,8 +32,8 @@ public final class AnalyzeSentimentActionResultPropertiesHelper {
         accessor = analyzeSentimentActionResultAccessor;
     }
 
-    public static void setDocumentResults(AnalyzeSentimentActionResult actionResult,
-        AnalyzeSentimentResultCollection documentResults) {
-        accessor.setResult(actionResult, documentResults);
+    public static void setDocumentsResults(AnalyzeSentimentActionResult actionResult,
+        AnalyzeSentimentResultCollection documentsResults) {
+        accessor.setDocumentsResults(actionResult, documentsResults);
     }
 }

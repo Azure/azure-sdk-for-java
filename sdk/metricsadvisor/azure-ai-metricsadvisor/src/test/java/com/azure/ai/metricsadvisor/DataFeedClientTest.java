@@ -123,7 +123,7 @@ public class DataFeedClientTest extends DataFeedTestBase {
 
     /**
      * Verifies the result of the list data feed method to return only 3 results using
-     * {@link ListDataFeedOptions#setMaxPageSize(int)}.
+     * {@link ListDataFeedOptions#setMaxPageSize(Integer)}}.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
@@ -679,14 +679,14 @@ public class DataFeedClientTest extends DataFeedTestBase {
                 new DataFeed()
                     .setName("name")
                     .setSource(new PostgreSqlDataFeedSource("conn-string", "query"))
-                    .setSchema(new DataFeedSchema(Collections.singletonList(new DataFeedMetric().setName("name"))))));
+                    .setSchema(new DataFeedSchema(Collections.singletonList(new DataFeedMetric("name"))))));
             assertEquals("'dataFeedGranularity.granularityType' is required and cannot be null.", ex.getMessage());
 
             ex = assertThrows(NullPointerException.class, () -> client.createDataFeed(
                 new DataFeed()
                     .setName("name")
                     .setSource(new PostgreSqlDataFeedSource("conn-string", "query"))
-                    .setSchema(new DataFeedSchema(Collections.singletonList(new DataFeedMetric().setName("name"))))
+                    .setSchema(new DataFeedSchema(Collections.singletonList(new DataFeedMetric("name"))))
                     .setGranularity(new DataFeedGranularity().setGranularityType(DAILY))));
             assertEquals("'dataFeedIngestionSettings.ingestionStartTime' is required and cannot be null.",
                 ex.getMessage());
@@ -774,8 +774,8 @@ public class DataFeedClientTest extends DataFeedTestBase {
         try {
             // Arrange
             client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
-            DataFeedMetric dataFeedMetric = new DataFeedMetric().setName("cost");
-            DataFeedMetric dataFeedMetric2 = new DataFeedMetric().setName("cost");
+            DataFeedMetric dataFeedMetric = new DataFeedMetric("cost");
+            DataFeedMetric dataFeedMetric2 = new DataFeedMetric("cost");
 
             creatDataFeedRunner(expectedDataFeed -> {
                 expectedDataFeed.setSchema(new DataFeedSchema(Arrays.asList(dataFeedMetric, dataFeedMetric2)));

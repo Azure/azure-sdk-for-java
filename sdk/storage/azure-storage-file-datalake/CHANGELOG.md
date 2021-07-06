@@ -1,6 +1,7 @@
 # Release History
 
 ## 12.7.0-beta.1 (Unreleased)
+- Added support for openInputStream to sync data lake file clients
 - Added support for the 2020-10-02 service version.
 - Added support to specify Parquet Input Serialization when querying a file.
 - Updated DownloadRetryOptions.maxRetryRequests to default downloads to retry 5 times.

@@ -4,10 +4,12 @@
 package com.azure.ai.textanalytics.models;
 
 import com.azure.ai.textanalytics.implementation.PiiEntityPropertiesHelper;
+import com.azure.core.annotation.Immutable;
 
 /**
  * The {@link PiiEntity} model.
  */
+@Immutable
 public final class PiiEntity {
     /*
      * PiiEntity text as appears in the request.

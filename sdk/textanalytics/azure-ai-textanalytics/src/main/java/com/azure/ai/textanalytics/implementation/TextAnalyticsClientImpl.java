@@ -46,20 +46,21 @@ import com.azure.core.util.Context;
 import com.azure.core.util.serializer.CollectionFormat;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
+import reactor.core.publisher.Mono;
+
 import java.util.List;
 import java.util.UUID;
-import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the TextAnalyticsClient type. */
 public final class TextAnalyticsClientImpl {
     /** The proxy service used to perform REST calls. */
     private final TextAnalyticsClientService service;
 
-    /** Client Api Version. */
+    /** Text Analytics API version (for example, v3.0). */
     private final String apiVersion;
 
     /**
-     * Gets Client Api Version.
+     * Gets Text Analytics API version (for example, v3.0).
      *
      * @return the apiVersion value.
      */
@@ -110,7 +111,7 @@ public final class TextAnalyticsClientImpl {
     /**
      * Initializes an instance of TextAnalyticsClient client.
      *
-     * @param apiVersion Client Api Version.
+     * @param apiVersion Text Analytics API version (for example, v3.0).
      * @param endpoint Supported Cognitive Services endpoints (protocol and hostname, for example:
      *     https://westus.api.cognitive.microsoft.com).
      */
@@ -128,7 +129,7 @@ public final class TextAnalyticsClientImpl {
      * Initializes an instance of TextAnalyticsClient client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
-     * @param apiVersion Client Api Version.
+     * @param apiVersion Text Analytics API version (for example, v3.0).
      * @param endpoint Supported Cognitive Services endpoints (protocol and hostname, for example:
      *     https://westus.api.cognitive.microsoft.com).
      */
@@ -141,7 +142,7 @@ public final class TextAnalyticsClientImpl {
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
-     * @param apiVersion Client Api Version.
+     * @param apiVersion Text Analytics API version (for example, v3.0).
      * @param endpoint Supported Cognitive Services endpoints (protocol and hostname, for example:
      *     https://westus.api.cognitive.microsoft.com).
      */
@@ -164,9 +165,6 @@ public final class TextAnalyticsClientImpl {
     public interface TextAnalyticsClientService {
         @Post("/analyze")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<AnalyzeResponse> analyze(
                 @HostParam("Endpoint") String endpoint,
@@ -177,9 +175,6 @@ public final class TextAnalyticsClientImpl {
 
         @Get("/analyze/jobs/{jobId}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<AnalyzeJobState>> analyzeStatus(
                 @HostParam("Endpoint") String endpoint,
@@ -193,9 +188,6 @@ public final class TextAnalyticsClientImpl {
 
         @Get("/entities/health/jobs/{jobId}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<HealthcareJobState>> healthStatus(
                 @HostParam("Endpoint") String endpoint,
@@ -209,9 +201,6 @@ public final class TextAnalyticsClientImpl {
 
         @Delete("/entities/health/jobs/{jobId}")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<CancelHealthJobResponse> cancelHealthJob(
                 @HostParam("Endpoint") String endpoint,
@@ -222,9 +211,6 @@ public final class TextAnalyticsClientImpl {
 
         @Post("/entities/health/jobs")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<HealthResponse> health(
                 @HostParam("Endpoint") String endpoint,
@@ -238,9 +224,6 @@ public final class TextAnalyticsClientImpl {
 
         @Post("/entities/recognition/general")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<EntitiesResult>> entitiesRecognitionGeneral(
                 @HostParam("Endpoint") String endpoint,
@@ -255,9 +238,6 @@ public final class TextAnalyticsClientImpl {
 
         @Post("/entities/recognition/pii")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<PiiResult>> entitiesRecognitionPii(
                 @HostParam("Endpoint") String endpoint,
@@ -274,9 +254,6 @@ public final class TextAnalyticsClientImpl {
 
         @Post("/entities/linking")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<EntityLinkingResult>> entitiesLinking(
                 @HostParam("Endpoint") String endpoint,
@@ -291,9 +268,6 @@ public final class TextAnalyticsClientImpl {
 
         @Post("/keyPhrases")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<KeyPhraseResult>> keyPhrases(
                 @HostParam("Endpoint") String endpoint,
@@ -307,9 +281,6 @@ public final class TextAnalyticsClientImpl {
 
         @Post("/languages")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<LanguageResult>> languages(
                 @HostParam("Endpoint") String endpoint,
@@ -323,9 +294,6 @@ public final class TextAnalyticsClientImpl {
 
         @Post("/sentiment")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<SentimentResponse>> sentiment(
                 @HostParam("Endpoint") String endpoint,
@@ -347,7 +315,6 @@ public final class TextAnalyticsClientImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -370,7 +337,6 @@ public final class TextAnalyticsClientImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 404, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the status of an analysis job.
      */
@@ -394,7 +360,6 @@ public final class TextAnalyticsClientImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 404, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details of the healthcare prediction job specified by the jobId.
      */
@@ -413,7 +378,6 @@ public final class TextAnalyticsClientImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 404, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -442,7 +406,6 @@ public final class TextAnalyticsClientImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -487,7 +450,6 @@ public final class TextAnalyticsClientImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -537,7 +499,6 @@ public final class TextAnalyticsClientImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -589,7 +550,6 @@ public final class TextAnalyticsClientImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -632,7 +592,6 @@ public final class TextAnalyticsClientImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -673,7 +632,6 @@ public final class TextAnalyticsClientImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -714,7 +672,6 @@ public final class TextAnalyticsClientImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */

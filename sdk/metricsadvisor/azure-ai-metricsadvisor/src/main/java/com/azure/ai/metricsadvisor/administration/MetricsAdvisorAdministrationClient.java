@@ -8,7 +8,7 @@ import com.azure.ai.metricsadvisor.administration.models.AnomalyDetectionConfigu
 import com.azure.ai.metricsadvisor.administration.models.DataFeed;
 import com.azure.ai.metricsadvisor.administration.models.DataFeedIngestionProgress;
 import com.azure.ai.metricsadvisor.administration.models.DataFeedIngestionStatus;
-import com.azure.ai.metricsadvisor.administration.models.DatasourceCredentialEntity;
+import com.azure.ai.metricsadvisor.administration.models.DataSourceCredentialEntity;
 import com.azure.ai.metricsadvisor.administration.models.ListAnomalyAlertConfigsOptions;
 import com.azure.ai.metricsadvisor.administration.models.ListCredentialEntityOptions;
 import com.azure.ai.metricsadvisor.administration.models.ListDataFeedIngestionOptions;
@@ -918,40 +918,40 @@ public final class MetricsAdvisorAdministrationClient {
      * Create a data source credential entity.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createDatasourceCredential#DatasourceCredentialEntity}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createDataSourceCredential#DatasourceCredentialEntity}
      *
-     * @param datasourceCredential The credential entity.
-     * @return The created {@link DatasourceCredentialEntity}.
+     * @param dataSourceCredential The credential entity.
+     * @return The created {@link DataSourceCredentialEntity}.
      * @throws NullPointerException thrown if the {@code credentialEntity} is null
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatasourceCredentialEntity createDatasourceCredential(DatasourceCredentialEntity datasourceCredential) {
-        return createDatasourceCredentialWithResponse(datasourceCredential, Context.NONE).getValue();
+    public DataSourceCredentialEntity createDataSourceCredential(DataSourceCredentialEntity dataSourceCredential) {
+        return createDataSourceCredentialWithResponse(dataSourceCredential, Context.NONE).getValue();
     }
 
     /**
      * Create a data source credential entity with REST response.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createDatasourceCredentialWithResponse#DatasourceCredentialEntity-Context}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createDataSourceCredentialWithResponse#DatasourceCredentialEntity-Context}
      *
-     * @param datasourceCredential The credential entity.
+     * @param dataSourceCredential The credential entity.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
-     * @return A {@link Response} containing the created {@link DatasourceCredentialEntity}.
+     * @return A {@link Response} containing the created {@link DataSourceCredentialEntity}.
      * @throws NullPointerException thrown if the {@code credentialEntity} is null
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DatasourceCredentialEntity> createDatasourceCredentialWithResponse(
-        DatasourceCredentialEntity datasourceCredential, Context context) {
-        return client.createDatasourceCredentialWithResponse(datasourceCredential, context).block();
+    public Response<DataSourceCredentialEntity> createDataSourceCredentialWithResponse(
+            DataSourceCredentialEntity dataSourceCredential, Context context) {
+        return client.createDataSourceCredentialWithResponse(dataSourceCredential, context).block();
     }
 
     /**
      * Get a data source credential entity by its id.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.getDatasourceCredential#String}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.getDataSourceCredential#String}
      *
      * @param credentialId The data source credential entity unique id.
      *
@@ -960,15 +960,15 @@ public final class MetricsAdvisorAdministrationClient {
      * @throws NullPointerException thrown if the {@code credentialId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatasourceCredentialEntity getDatasourceCredential(String credentialId) {
-        return getDatasourceCredentialWithResponse(credentialId, Context.NONE).getValue();
+    public DataSourceCredentialEntity getDataSourceCredential(String credentialId) {
+        return getDataSourceCredentialWithResponse(credentialId, Context.NONE).getValue();
     }
 
     /**
      * Get a data source credential entity by its id with REST response.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.getDatasourceCredentialWithResponse#String-Context}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.getDataSourceCredentialWithResponse#String-Context}
      *
      * @param credentialId The data source credential entity unique id.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
@@ -978,50 +978,50 @@ public final class MetricsAdvisorAdministrationClient {
      * @throws NullPointerException thrown if the {@code dataFeedId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DatasourceCredentialEntity> getDatasourceCredentialWithResponse(String credentialId,
+    public Response<DataSourceCredentialEntity> getDataSourceCredentialWithResponse(String credentialId,
                                                                                     Context context) {
-        return client.getDatasourceCredentialWithResponse(credentialId, context).block();
+        return client.getDataSourceCredentialWithResponse(credentialId, context).block();
     }
 
     /**
      * Update a data source credential entity.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.updateDatasourceCredential#DatasourceCredentialEntity}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.updateDataSourceCredential#DatasourceCredentialEntity}
      *
-     * @param datasourceCredential The credential entity.
+     * @param dataSourceCredential The credential entity.
      *
-     * @return The updated {@link DatasourceCredentialEntity}.
+     * @return The updated {@link DataSourceCredentialEntity}.
      * @throws NullPointerException thrown if the {@code credentialEntity} is null
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatasourceCredentialEntity updateDatasourceCredential(DatasourceCredentialEntity datasourceCredential) {
-        return updateDatasourceCredentialWithResponse(datasourceCredential, Context.NONE).getValue();
+    public DataSourceCredentialEntity updateDataSourceCredential(DataSourceCredentialEntity dataSourceCredential) {
+        return updateDataSourceCredentialWithResponse(dataSourceCredential, Context.NONE).getValue();
     }
 
     /**
      * Update a data source credential entity.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.updateDatasourceCredentialWithResponse#DatasourceCredentialEntity-Context}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.updateDataSourceCredentialWithResponse#DatasourceCredentialEntity-Context}
      *
-     * @param datasourceCredential The credential entity.
+     * @param dataSourceCredential The credential entity.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
-     * @return A {@link Response} containing the updated {@link DatasourceCredentialEntity}.
+     * @return A {@link Response} containing the updated {@link DataSourceCredentialEntity}.
      * @throws NullPointerException thrown if the {@code credentialEntity} is null
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DatasourceCredentialEntity> updateDatasourceCredentialWithResponse(
-        DatasourceCredentialEntity datasourceCredential, Context context) {
-        return client.updateDatasourceCredentialWithResponse(datasourceCredential, context).block();
+    public Response<DataSourceCredentialEntity> updateDataSourceCredentialWithResponse(
+            DataSourceCredentialEntity dataSourceCredential, Context context) {
+        return client.updateDataSourceCredentialWithResponse(dataSourceCredential, context).block();
     }
 
     /**
      * Delete a data source credential entity.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.deleteDatasourceCredential#String}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.deleteDataSourceCredential#String}
      *
      * @param credentialId The data source credential entity unique id.
      *
@@ -1029,15 +1029,15 @@ public final class MetricsAdvisorAdministrationClient {
      * @throws NullPointerException thrown if the {@code credentialId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteDatasourceCredential(String credentialId) {
-        deleteDatasourceCredentialWithResponse(credentialId, Context.NONE);
+    public void deleteDataSourceCredential(String credentialId) {
+        deleteDataSourceCredentialWithResponse(credentialId, Context.NONE);
     }
 
     /**
      * Delete a data source credential entity with REST response.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.deleteDatasourceCredentialWithResponse#String-Context}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.deleteDataSourceCredentialWithResponse#String-Context}
      *
      * @param credentialId The data source credential entity unique id.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
@@ -1047,7 +1047,7 @@ public final class MetricsAdvisorAdministrationClient {
      * @throws NullPointerException thrown if the {@code dataFeedId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteDatasourceCredentialWithResponse(String credentialId, Context context) {
+    public Response<Void> deleteDataSourceCredentialWithResponse(String credentialId, Context context) {
         return client.deleteDataFeedWithResponse(credentialId, context).block();
     }
 
@@ -1055,32 +1055,32 @@ public final class MetricsAdvisorAdministrationClient {
      * List information of all data source credential entities on the metrics advisor account.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listDatasourceCredentials}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listDataSourceCredentials}
      *
-     * @return A {@link PagedIterable} containing information of all the {@link DatasourceCredentialEntity}
+     * @return A {@link PagedIterable} containing information of all the {@link DataSourceCredentialEntity}
      * in the account.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DatasourceCredentialEntity> listDatasourceCredentials() {
-        return listDatasourceCredentials(null, Context.NONE);
+    public PagedIterable<DataSourceCredentialEntity> listDataSourceCredentials() {
+        return listDataSourceCredentials(null, Context.NONE);
     }
 
     /**
      * List information of all data source credential entities on the metrics advisor account.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listDatasourceCredentials#ListCredentialEntityOptions-Context}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listDataSourceCredentials#ListCredentialEntityOptions-Context}
      *
      * @param options The configurable {@link ListCredentialEntityOptions options} to pass for filtering the output
      * result.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return A {@link PagedIterable} containing information of all the {@link DatasourceCredentialEntity}
+     * @return A {@link PagedIterable} containing information of all the {@link DataSourceCredentialEntity}
      * in the account.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DatasourceCredentialEntity> listDatasourceCredentials(
+    public PagedIterable<DataSourceCredentialEntity> listDataSourceCredentials(
         ListCredentialEntityOptions options, Context context) {
-        return new PagedIterable<>(client.listDatasourceCredentials(options, context));
+        return new PagedIterable<>(client.listDataSourceCredentials(options, context));
     }
 }
