@@ -173,7 +173,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                         addDiagnosticsOnTracerEvent(pagedFluxOptions.getTracerProvider(),
                             cosmosException.getDiagnostics(), parentContext.get());
                     } catch (JsonProcessingException ex) {
-                        LOGGER.debug("Error while serializing diagnostics for tracer", ex);
+                        LOGGER.warn("Error while serializing diagnostics for tracer", ex.getMessage());
                     }
                 }
                 fillClientTelemetry(pagedFluxOptions.getCosmosAsyncClient(), 0, pagedFluxOptions.getContainerId(),
@@ -201,7 +201,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                             feedResponse.getCosmosDiagnostics(), parentContext.get());
                     }
                 } catch (JsonProcessingException ex) {
-                    LOGGER.debug("Error while serializing diagnostics for tracer", ex);
+                    LOGGER.warn("Error while serializing diagnostics for tracer", ex.getMessage());
                 }
             }
             //  If the user has passed feedResponseConsumer, then call it with each feedResponse

@@ -474,9 +474,11 @@ public class CosmosQueryRequestOptions {
      * Default is 500 ms
      *
      * @param thresholdForDiagnosticsOnTracer the latency threshold for diagnostics on tracer.
+     * @return the CosmosQueryRequestOptions
      */
-    public void setThresholdForDiagnosticsOnTracer(Duration thresholdForDiagnosticsOnTracer) {
+    public CosmosQueryRequestOptions setThresholdForDiagnosticsOnTracer(Duration thresholdForDiagnosticsOnTracer) {
         this.thresholdForDiagnosticsOnTracer = thresholdForDiagnosticsOnTracer;
+        return this;
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////

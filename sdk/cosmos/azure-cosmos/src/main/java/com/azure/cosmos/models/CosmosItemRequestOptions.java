@@ -348,9 +348,11 @@ public class CosmosItemRequestOptions {
      * Default is 100 ms.
      *
      * @param thresholdForDiagnosticsOnTracer the latency threshold for diagnostics on tracer.
+     * @return the CosmosItemRequestOptions
      */
-    public void setThresholdForDiagnosticsOnTracer(Duration thresholdForDiagnosticsOnTracer) {
+    public CosmosItemRequestOptions setThresholdForDiagnosticsOnTracer(Duration thresholdForDiagnosticsOnTracer) {
         this.thresholdForDiagnosticsOnTracer = thresholdForDiagnosticsOnTracer;
+        return this;
     }
 
     void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {

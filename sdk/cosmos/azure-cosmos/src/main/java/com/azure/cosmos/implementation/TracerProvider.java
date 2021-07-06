@@ -222,7 +222,7 @@ public class TracerProvider {
                             addDiagnosticsOnTracerEvent(cosmosDiagnostics);
                         }
                     } catch (JsonProcessingException ex) {
-                        LOGGER.debug("Error while serializing diagnostics for tracer", ex);
+                        LOGGER.warn("Error while serializing diagnostics for tracer", ex.getMessage());
                     }
                     this.endSpan(parentContext.get(), Signal.complete(), statusCodeFunc.apply(response));
                 }
@@ -234,7 +234,7 @@ public class TracerProvider {
                         try {
                             addDiagnosticsOnTracerEvent(dce.getDiagnostics());
                         } catch (JsonProcessingException ex) {
-                            LOGGER.debug("Error while serializing diagnostics for tracer", ex);
+                            LOGGER.warn("Error while serializing diagnostics for tracer", ex.getMessage());
                         }
                     }
 
