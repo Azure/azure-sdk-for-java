@@ -90,6 +90,7 @@ public class LocationPollingStrategy implements PollingStrategy {
         return Mono.just(status);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <U> Mono<U> getFinalResult(HttpResponse response, PollingContext<BinaryData> context, Type resultType) {
         if (TypeUtil.isTypeOrSubTypeOf(BinaryData.class, resultType)) {
