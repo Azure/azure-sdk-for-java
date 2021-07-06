@@ -179,7 +179,8 @@ public final class PollerJavaDocCodeSnippets {
     }
 
     /**
-     * Instantiating and subscribing to PollerFlux created from a {@link com.azure.core.util.polling.strategy.PollingStrategy}.
+     * Instantiating and subscribing to PollerFlux created from a
+     * {@link com.azure.core.util.polling.strategy.PollingStrategy}.
      */
     public void initializeAndSubscribeWithPollingStrategy() {
         // BEGIN: com.azure.core.util.polling.poller.instantiationAndSubscribeWithPollingStrategy
@@ -205,7 +206,8 @@ public final class PollerJavaDocCodeSnippets {
     }
 
     /**
-     * Instantiating and subscribing to PollerFlux created from a custom modified {@link com.azure.core.util.polling.strategy.PollingStrategy}.
+     * Instantiating and subscribing to PollerFlux created from a custom modified
+     * {@link com.azure.core.util.polling.strategy.PollingStrategy}.
      */
     public void initializeAndSubscribeWithCustomPollingStrategy() {
         // BEGIN: com.azure.core.util.polling.poller.initializeAndSubscribeWithCustomPollingStrategy
@@ -214,7 +216,8 @@ public final class PollerJavaDocCodeSnippets {
         PollingStrategy strategy = new OperationResourcePollingStrategy() {
             // override any interface method to customize the polling behavior
             @Override
-            public Mono<LongRunningOperationStatus> onPollingResponse(HttpResponse response, PollingContext<BinaryData> context) {
+            public Mono<LongRunningOperationStatus> onPollingResponse(HttpResponse response,
+                                                                      PollingContext<BinaryData> context) {
                 return Mono.just(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
             }
         };

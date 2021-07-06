@@ -66,7 +66,7 @@ public interface PollingStrategy {
 
     /**
      * Parses the response from the polling URL into a {@link LongRunningOperationStatus}, and stores information
-     * useful for further polling & final response in the {@link PollingContext}.
+     * useful for further polling and final response in the {@link PollingContext}.
      *
      * @param response the response from the polling URL from the past poll
      * @param context the {@link PollingContext} for the current polling operation
