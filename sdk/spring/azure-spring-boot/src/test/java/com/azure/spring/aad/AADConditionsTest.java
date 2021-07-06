@@ -75,15 +75,15 @@ public class AADConditionsTest {
 
     @Configuration(proxyBeanMethods = false)
     @Conditional(AADConditions.WebAppCondition.class)
-    static class WebAppConditionConfig extends Config {}
+    static class WebAppConditionConfig extends Config { }
 
     @Configuration(proxyBeanMethods = false)
     @Conditional(AADConditions.WebApiCondition.class)
-    static class WebApiConditionConfig extends Config {}
+    static class WebApiConditionConfig extends Config { }
 
     @Configuration(proxyBeanMethods = false)
     @Conditional(AADConditions.ClientRegistrationCondition.class)
-    static class ClientRegistrationConditionConfig extends Config {}
+    static class ClientRegistrationConditionConfig extends Config { }
 
     static class Config {
 
@@ -97,8 +97,7 @@ public class AADConditionsTest {
         return (context) -> {
             if (expected) {
                 assertThat(context).hasBean("myBean");
-            }
-            else {
+            } else {
                 assertThat(context).doesNotHaveBean("myBean");
             }
         };
