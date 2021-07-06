@@ -57,7 +57,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
 
-import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
@@ -97,6 +96,7 @@ public class CosmosTracerTest extends TestSuiteBase {
             ArgumentMatchers.any(), ArgumentMatchers.any());
         Mockito.doAnswer(addEventCapture).when(tracerProvider).addEvent(ArgumentMatchers.any(),
             ArgumentMatchers.any(),
+            ArgumentMatchers.any(),
             ArgumentMatchers.any());
 
         CosmosDatabaseResponse cosmosDatabaseResponse = client.createDatabaseIfNotExists(cosmosAsyncDatabase.getId(), ThroughputProperties.createManualThroughput(5000)).block();
@@ -130,6 +130,7 @@ public class CosmosTracerTest extends TestSuiteBase {
             ArgumentMatchers.any(),
             ArgumentMatchers.any(), ArgumentMatchers.any());
         Mockito.doAnswer(addEventCapture).when(tracerProvider).addEvent(ArgumentMatchers.any(),
+            ArgumentMatchers.any(),
             ArgumentMatchers.any(),
             ArgumentMatchers.any());
 
@@ -179,6 +180,7 @@ public class CosmosTracerTest extends TestSuiteBase {
             ArgumentMatchers.any(),
             ArgumentMatchers.any(), ArgumentMatchers.any());
         Mockito.doAnswer(addEventCapture).when(tracerProvider).addEvent(ArgumentMatchers.any(),
+            ArgumentMatchers.any(),
             ArgumentMatchers.any(),
             ArgumentMatchers.any());
 
@@ -262,6 +264,7 @@ public class CosmosTracerTest extends TestSuiteBase {
             ArgumentMatchers.any(),
             ArgumentMatchers.any(), ArgumentMatchers.any());
         Mockito.doAnswer(addEventCapture).when(tracerProvider).addEvent(ArgumentMatchers.any(),
+            ArgumentMatchers.any(),
             ArgumentMatchers.any(),
             ArgumentMatchers.any());
 
@@ -381,6 +384,7 @@ public class CosmosTracerTest extends TestSuiteBase {
             ArgumentMatchers.any(), ArgumentMatchers.any());
         Mockito.doAnswer(addEventCapture).when(tracerProvider).addEvent(ArgumentMatchers.any(),
             ArgumentMatchers.any(),
+            ArgumentMatchers.any(),
             ArgumentMatchers.any());
 
         InternalObjectNode item = new InternalObjectNode();
@@ -436,6 +440,7 @@ public class CosmosTracerTest extends TestSuiteBase {
 
     private Tracer getMockTracer() {
         Tracer mockTracer = Mockito.mock(Tracer.class);
+        Mockito.when(mockTracer.start(ArgumentMatchers.any(), ArgumentMatchers.any(Context.class))).thenReturn(Context.NONE);
         return mockTracer;
     }
 
@@ -483,20 +488,20 @@ public class CosmosTracerTest extends TestSuiteBase {
             Mockito.verify(tracerProvider, Mockito.times(1)).addEvent(Mockito.eq("SystemInformation")
                 , ArgumentMatchers.any(),
                 Mockito.eq(OffsetDateTime.ofInstant(clientSideRequestStatistics.getRequestStartTimeUTC(),
-                    ZoneOffset.UTC)));
+                    ZoneOffset.UTC)), ArgumentMatchers.any());
 
             //verifying add event call for regionContacted
             Mockito.verify(tracerProvider, Mockito.times(1)).addEvent(Mockito.eq("RegionContacted")
                 , ArgumentMatchers.any(),
                 Mockito.eq(OffsetDateTime.ofInstant(clientSideRequestStatistics.getRequestStartTimeUTC(),
-                    ZoneOffset.UTC)));
+                    ZoneOffset.UTC)), ArgumentMatchers.any());
             assertThat(attributesMap.get("RegionContacted").get("JSON")).isEqualTo(OBJECT_MAPPER.writeValueAsString(clientSideRequestStatistics.getRegionsContacted()));
 
             //verifying add event call for clientCfgs
             Mockito.verify(tracerProvider, Mockito.times(1)).addEvent(Mockito.eq("ClientCfgs")
                 , ArgumentMatchers.any(),
                 Mockito.eq(OffsetDateTime.ofInstant(clientSideRequestStatistics.getRequestStartTimeUTC(),
-                    ZoneOffset.UTC)));
+                    ZoneOffset.UTC)), ArgumentMatchers.any());
             assertThat(attributesMap.get("ClientCfgs").get("JSON")).isEqualTo(OBJECT_MAPPER.writeValueAsString(clientSideRequestStatistics.getDiagnosticsClientContext()));
 
 
@@ -506,7 +511,8 @@ public class CosmosTracerTest extends TestSuiteBase {
                     clientSideRequestStatistics.getSerializationDiagnosticsContext().serializationDiagnosticsList) {
                     Mockito.verify(tracerProvider, Mockito.times(1)).addEvent(Mockito.eq("SerializationDiagnostics " + serializationDiagnostics.serializationType)
                         , ArgumentMatchers.any(),
-                        Mockito.eq(OffsetDateTime.ofInstant(serializationDiagnostics.startTimeUTC, ZoneOffset.UTC)));
+                        Mockito.eq(OffsetDateTime.ofInstant(serializationDiagnostics.startTimeUTC, ZoneOffset.UTC)),
+                        ArgumentMatchers.any());
                     assertThat(attributesMap.get("SerializationDiagnostics " + serializationDiagnostics.serializationType).get("JSON")).isEqualTo(OBJECT_MAPPER.writeValueAsString(serializationDiagnostics));
                 }
             }
@@ -516,7 +522,7 @@ public class CosmosTracerTest extends TestSuiteBase {
                 Mockito.verify(tracerProvider, Mockito.times(1)).addEvent(Mockito.eq("Retry Context")
                     , ArgumentMatchers.any(),
                     Mockito.eq(OffsetDateTime.ofInstant(clientSideRequestStatistics.getRetryContext().getRetryStartTime()
-                        , ZoneOffset.UTC)));
+                        , ZoneOffset.UTC)), ArgumentMatchers.any());
                 assertThat(attributesMap.get("Retry Context").get("JSON")).isEqualTo(OBJECT_MAPPER.writeValueAsString(clientSideRequestStatistics.getRetryContext()));
             }
 
@@ -542,7 +548,8 @@ public class CosmosTracerTest extends TestSuiteBase {
                 }
                 Mockito.verify(tracerProvider, Mockito.times(1)).addEvent(Mockito.eq("StoreResponse" + counter)
                     , ArgumentMatchers.any(),
-                    Mockito.eq(requestStartTime));
+                    Mockito.eq(requestStartTime),
+                    ArgumentMatchers.any());
                 assertThat(attributesMap.get("StoreResponse" + counter).get("JSON")).isEqualTo(OBJECT_MAPPER.writeValueAsString(storeResponseStatistics));
                 counter++;
             }
@@ -570,7 +577,8 @@ public class CosmosTracerTest extends TestSuiteBase {
                 }
                 Mockito.verify(tracerProvider, Mockito.times(1)).addEvent(Mockito.eq("StoreResponse" + counter)
                     , ArgumentMatchers.any(),
-                    Mockito.eq(requestStartTime));
+                    Mockito.eq(requestStartTime),
+                    ArgumentMatchers.any());
                 assertThat(attributesMap.get("Supplemental StoreResponse" + counter).get("JSON")).isEqualTo(OBJECT_MAPPER.writeValueAsString(storeResponseStatistics));
                 counter++;
             }
@@ -581,20 +589,21 @@ public class CosmosTracerTest extends TestSuiteBase {
                 Mockito.verify(tracerProvider, Mockito.times(1)).addEvent(Mockito.eq("AddressResolutionStatistics" + counter)
                     , ArgumentMatchers.any(),
                     Mockito.eq(OffsetDateTime.ofInstant(addressResolutionStatistics.getStartTimeUTC(),
-                        ZoneOffset.UTC)));
+                        ZoneOffset.UTC)), ArgumentMatchers.any());
                 assertThat(attributesMap.get("AddressResolutionStatistics" + counter).get("JSON")).isEqualTo(OBJECT_MAPPER.writeValueAsString(addressResolutionStatistics));
                 counter++;
             }
         }
 
-        FeedResponseDiagnostics feedResponseDiagnostics = cosmosDiagnosticsAccessor.getFeedResponseDiagnostics(cosmosDiagnostics);
+        FeedResponseDiagnostics feedResponseDiagnostics =
+            cosmosDiagnosticsAccessor.getFeedResponseDiagnostics(cosmosDiagnostics);
         if (feedResponseDiagnostics != null && feedResponseDiagnostics.getClientSideRequestStatisticsList().size() > 0) {
             if (feedResponseDiagnostics.getQueryPlanDiagnosticsContext() != null) {
                 //verifying add event call for query plan
                 Mockito.verify(tracerProvider, Mockito.times(1)).addEvent(Mockito.eq("Query Plan Statistics")
                     , ArgumentMatchers.any(),
                     Mockito.eq(OffsetDateTime.ofInstant(feedResponseDiagnostics.getQueryPlanDiagnosticsContext().getStartTimeUTC(),
-                        ZoneOffset.UTC)));
+                        ZoneOffset.UTC)), ArgumentMatchers.any());
                 assertThat(attributesMap.get("Query Plan Statistics").get("JSON")).isEqualTo(OBJECT_MAPPER.writeValueAsString(feedResponseDiagnostics.getQueryPlanDiagnosticsContext()));
             }
 
@@ -606,23 +615,25 @@ public class CosmosTracerTest extends TestSuiteBase {
                     Mockito.verify(tracerProvider, Mockito.atLeast(1)).addEvent(Mockito.eq("Diagnostics for PKRange " + clientSideStatistics.getResponseStatisticsList().get(0).getStoreResult().partitionKeyRangeId)
                         , ArgumentMatchers.any(),
                         Mockito.eq(OffsetDateTime.ofInstant(clientSideStatistics.getRequestStartTimeUTC(),
-                            ZoneOffset.UTC)));
+                            ZoneOffset.UTC)), ArgumentMatchers.any());
                 } else if (clientSideStatistics.getGatewayStatistics() != null) {
                     Mockito.verify(tracerProvider, Mockito.atLeast(1)).addEvent(Mockito.eq("Diagnostics for PKRange " + clientSideStatistics.getGatewayStatistics().getPartitionKeyRangeId())
                         , ArgumentMatchers.any(),
                         Mockito.eq(OffsetDateTime.ofInstant(clientSideStatistics.getRequestStartTimeUTC(),
-                            ZoneOffset.UTC)));
+                            ZoneOffset.UTC)), ArgumentMatchers.any());
                 } else {
                     Mockito.verify(tracerProvider, Mockito.atLeast(1)).addEvent(Mockito.eq("Diagnostics " + counter++)
                         , ArgumentMatchers.any(),
                         Mockito.eq(OffsetDateTime.ofInstant(clientSideStatistics.getRequestStartTimeUTC(),
-                            ZoneOffset.UTC)));
+                            ZoneOffset.UTC)), ArgumentMatchers.any());
                 }
             }
 
-            for (Map.Entry<String, QueryMetrics> queryMetrics : feedResponseDiagnostics.getQueryMetricsMap().entrySet()) {
+            for (Map.Entry<String, QueryMetrics> queryMetrics :
+                feedResponseDiagnostics.getQueryMetricsMap().entrySet()) {
                 Mockito.verify(tracerProvider, Mockito.atLeast(1)).addEvent(Mockito.eq("Query Metrics for PKRange " + queryMetrics.getKey())
                     , ArgumentMatchers.any(),
+                    ArgumentMatchers.any(),
                     ArgumentMatchers.any());
                 assertThat(attributesMap.get("Query Metrics for PKRange " + queryMetrics.getKey()).get("Query " +
                     "Metrics")).isEqualTo(queryMetrics.getValue().toString());
