@@ -9,8 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.LongRunningOperationStatus;
-import com.azure.core.util.polling.PollResponse;
-import com.azure.core.util.polling.PollResult;
 import com.azure.core.util.polling.PollingContext;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
@@ -18,8 +16,10 @@ import reactor.core.publisher.Mono;
 
 import java.lang.reflect.Type;
 
+/**
+ * Implements a Location polling strategy.
+ */
 public class LocationPollingStrategy implements PollingStrategy {
-    private static final String OPERATION_LOCATION = "Operation-Location";
     private static final String LOCATION = "Location";
     private static final String REQUEST_URL = "requestURL";
     private static final String HTTP_METHOD = "httpMethod";
@@ -33,52 +33,49 @@ public class LocationPollingStrategy implements PollingStrategy {
     }
 
     @Override
-    public String getPollingUrl(PollingContext<PollResult> ctx) {
-        return ctx.getData(LOCATION).replace("http://", "https://");
+    public String getPollingUrl(PollingContext<BinaryData> context) {
+        return context.getData(LOCATION).replace("http://", "https://");
     }
 
     @Override
-    public String getFinalGetUrl(PollingContext<PollResult> ctx) {
-        PollResponse<PollResult> lastResponse = ctx.getLatestResponse();
-        String finalGetUrl = lastResponse.getValue().getResourceLocation();
-        if (finalGetUrl == null) {
-            String httpMethod = ctx.getData(HTTP_METHOD);
-            if ("PUT".equalsIgnoreCase(httpMethod) || "PATCH".equalsIgnoreCase(httpMethod)) {
-                finalGetUrl = ctx.getData(REQUEST_URL);
-            } else if ("POST".equalsIgnoreCase(httpMethod) && ctx.getData(LOCATION) != null) {
-                finalGetUrl = ctx.getData(LOCATION);
-            } else {
-                throw new RuntimeException("Cannot get final result");
-            }
+    public String getFinalGetUrl(PollingContext<BinaryData> context) {
+        String finalGetUrl;
+        String httpMethod = context.getData(HTTP_METHOD);
+        if ("PUT".equalsIgnoreCase(httpMethod) || "PATCH".equalsIgnoreCase(httpMethod)) {
+            finalGetUrl = context.getData(REQUEST_URL);
+        } else if ("POST".equalsIgnoreCase(httpMethod) && context.getData(LOCATION) != null) {
+            finalGetUrl = context.getData(LOCATION);
+        } else {
+            throw new RuntimeException("Cannot get final result");
         }
 
         return finalGetUrl;
     }
 
     @Override
-    public Mono<PollResult> onActivationResponse(Response<?> response, PollingContext<PollResult> ctx) {
+    public Mono<LongRunningOperationStatus> onActivationResponse(Response<?> response, PollingContext<BinaryData> context) {
         HttpHeader locationHeader = response.getHeaders().get(LOCATION);
         if (locationHeader != null) {
-            ctx.setData(LOCATION, locationHeader.getValue());
+            context.setData(LOCATION, locationHeader.getValue());
         }
-        ctx.setData(HTTP_METHOD, response.getRequest().getHttpMethod().name());
-        ctx.setData(REQUEST_URL, response.getRequest().getUrl().toString());
+        context.setData(HTTP_METHOD, response.getRequest().getHttpMethod().name());
+        context.setData(REQUEST_URL, response.getRequest().getUrl().toString());
 
         if (response.getStatusCode() == 200
                 || response.getStatusCode() == 201
                 || response.getStatusCode() == 202
                 || response.getStatusCode() == 204) {
-            return Mono.just(new PollResult().setStatus(LongRunningOperationStatus.IN_PROGRESS));
+            return Mono.just(LongRunningOperationStatus.IN_PROGRESS);
         } else {
             throw new RuntimeException("Operation failed or cancelled: " + response.getStatusCode());
         }
     }
 
     @Override
-    public Mono<PollResult> onPollingResponse(HttpResponse response, PollingContext<PollResult> ctx) {
+    public Mono<LongRunningOperationStatus> onPollingResponse(HttpResponse response, PollingContext<BinaryData> context) {
         HttpHeader locationHeader = response.getHeaders().get(LOCATION);
         if (locationHeader != null) {
-            ctx.setData(LOCATION, locationHeader.getValue());
+            context.setData(LOCATION, locationHeader.getValue());
         }
 
         LongRunningOperationStatus status;
@@ -89,29 +86,17 @@ public class LocationPollingStrategy implements PollingStrategy {
         } else {
             status = LongRunningOperationStatus.FAILED;
         }
-        return Mono.just(new PollResult().setStatus(status));
+
+        return Mono.just(status);
     }
 
     @Override
-    public <U> Mono<U> getFinalResult(HttpResponse response, PollingContext<PollResult> ctx, Type resultType) {
+    public <U> Mono<U> getFinalResult(HttpResponse response, PollingContext<BinaryData> context, Type resultType) {
         if (TypeUtil.isTypeOrSubTypeOf(BinaryData.class, resultType)) {
             return (Mono<U>) BinaryData.fromFlux(response.getBody());
         } else {
             return response.getBodyAsString().flatMap(body -> Mono.fromCallable(() ->
                     serializer.deserialize(body, resultType, SerializerEncoding.JSON)));
         }
-    }
-
-    private String normalizeUrl(String url) {
-        url = url.replace("http://", "https://");
-        if (!url.contains("api-version=")) {
-            String apiVersionQuery = "api-version=" + apiVersion;
-            if (!url.contains("?")) {
-                url += "?" + apiVersionQuery;
-            } else {
-                url += "&" + apiVersionQuery;
-            }
-        }
-        return url;
     }
 }

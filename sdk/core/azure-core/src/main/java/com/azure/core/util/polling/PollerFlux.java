@@ -3,17 +3,27 @@
 
 package com.azure.core.util.polling;
 
+import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
+import com.azure.core.http.rest.Response;
+import com.azure.core.util.BinaryData;
+import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.polling.strategy.PollingStrategy;
 import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.lang.reflect.Type;
 import java.time.Duration;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * A Flux that simplifies the task of executing long running operations against an Azure service.
@@ -36,6 +46,12 @@ import java.util.function.Function;
  *
  * <p><strong>Asynchronously cancel the long running operation</strong></p>
  * {@codesnippet com.azure.core.util.polling.poller.cancelOperation}
+ *
+ * <p><strong>Instantiating and subscribing to PollerFlux from a known polling strategy</strong></p>
+ * {@codesnippet com.azure.core.util.polling.poller.instantiationAndSubscribeWithPollingStrategy}
+ *
+ * <p><strong>Instantiating and subscribing to PollerFlux from a custom polling strategy</strong></p>
+ * {@codesnippet com.azure.core.util.polling.poller.initializeAndSubscribeWithCustomPollingStrategy}
  *
  * @param <T> The type of poll response value.
  * @param <U> The type of the final result of long running operation.
@@ -137,6 +153,72 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
             cancelOperation,
             fetchResultOperation,
             true);
+    }
+
+    /**
+     * Creates PollerFlux.
+     *
+     * This create method uses a {@link PollingStrategy} to poll the status of a long running operation after the
+     * activation operation is invoked. See {@link PollingStrategy} for more details of known polling strategies
+     * and how to create a custom strategy.
+     *
+     * @param pollInterval the polling interval
+     * @param activationOperation the activation operation to activate (start) the long running operation.
+     *     This operation will be invoked at most once across all subscriptions. This parameter is required.
+     *     If there is no specific activation work to be done then invocation should return Mono.empty(),
+     *     this operation will be called with a new {@link PollingContext}.
+     * @param strategy a known strategy for polling a long running operation in Azure
+     * @param resultType the {@link Type} of the final result object to deserialize into, or BinaryData if raw response
+     *                   body should be kept. This should match the generic parameter {@link U}.
+     * @param httpPipeline an instance of {@link HttpPipeline} to send requests with
+     * @param context additional metadata to pass along with the request
+     * @param <U> The type of the final result of long running operation
+     * @return PollerFlux
+     */
+    public static <U> PollerFlux<BinaryData, U>
+        create(Duration pollInterval,
+               Supplier<Mono<? extends Response<?>>> activationOperation,
+               PollingStrategy strategy,
+               Type resultType,
+               HttpPipeline httpPipeline,
+               Context context) {
+        return create(
+            pollInterval,
+            ctx -> activationOperation.get()
+                .flatMap(r -> {
+                    if (!strategy.canPoll(r)) {
+                        return Mono.error(new IllegalStateException("Cannot poll with strategy " + strategy));
+                    }
+                    return strategy.onActivationResponse(r, ctx);
+                }).map(status -> new PollResponse<>(status, null)),
+            ctx -> {
+                HttpRequest request = new HttpRequest(HttpMethod.GET, strategy.getPollingUrl(ctx));
+                Mono<HttpResponse> responseMono;
+                if (context == null) {
+                    responseMono = httpPipeline.send(request);
+                } else {
+                    responseMono = httpPipeline.send(request, context);
+                }
+                return responseMono.flatMap(r -> strategy.onPollingResponse(r, ctx))
+                    .map(status -> new PollResponse<>(status, null));
+            },
+            (ctx, pr) -> Mono.error(new IllegalStateException("Cancellation is not supported.")),
+            ctx -> {
+                String finalResultUrl = strategy.getFinalGetUrl(ctx);
+                if (finalResultUrl == null) {
+                    return strategy.getFinalResult(null, ctx, resultType);
+                } else {
+                    HttpRequest request = new HttpRequest(HttpMethod.GET, finalResultUrl);
+                    Mono<HttpResponse> responseMono;
+                    if (context == null) {
+                        responseMono = httpPipeline.send(request);
+                    } else {
+                        responseMono = httpPipeline.send(request, context);
+                    }
+                    return responseMono.flatMap(res ->
+                        strategy.getFinalResult(res, ctx, resultType));
+                }
+            });
     }
 
     private PollerFlux(Duration pollInterval,
