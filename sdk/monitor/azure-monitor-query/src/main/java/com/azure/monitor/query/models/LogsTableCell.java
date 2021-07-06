@@ -14,7 +14,7 @@ import java.time.OffsetDateTime;
 @Immutable
 public final class LogsTableCell {
     private final String columnName;
-    private final ColumnDataType columnType;
+    private final LogsColumnType columnType;
     private final int columnIndex;
     private final int rowIndex;
     private final String rowValue;
@@ -27,19 +27,19 @@ public final class LogsTableCell {
      * @param rowIndex The row index of the row this cell is associated with.
      * @param rowValue The value of the cell.
      */
-    public LogsTableCell(String columnName, ColumnDataType columnType, int columnIndex, int rowIndex, String rowValue) {
+    public LogsTableCell(String columnName, LogsColumnType columnType, int columnIndex, int rowIndex, Object rowValue) {
         this.columnName = columnName;
         this.columnType = columnType;
         this.columnIndex = columnIndex;
         this.rowIndex = rowIndex;
-        this.rowValue = rowValue;
+        this.rowValue = rowValue == null ? null : rowValue.toString();
     }
 
     /**
      * Returns the data type of the value this cell contains.
      * @return the data type of the value this cell contains.
      */
-    public ColumnDataType getColumnType() {
+    public LogsColumnType getColumnType() {
         return columnType;
     }
 

@@ -6,6 +6,8 @@ package com.azure.spring.autoconfigure.aad;
 import com.azure.spring.aad.AADAuthorizationGrantType;
 import com.azure.spring.aad.webapp.AuthorizationClientProperties;
 import com.nimbusds.jose.jwk.source.RemoteJWKSet;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
@@ -18,8 +20,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -63,6 +65,11 @@ public class AADAuthenticationProperties implements InitializingBean {
      * App ID URI which might be used in the <code>"aud"</code> claim of an <code>id_token</code>.
      */
     private String appIdUri;
+
+    /**
+     * Add additional parameters to the Authorization URL.
+     */
+    private Map<String, Object> authenticateAdditionalParameters;
 
     /**
      * Connection Timeout for the JWKSet Remote URL call.
@@ -128,6 +135,8 @@ public class AADAuthenticationProperties implements InitializingBean {
      */
     public static class UserGroupProperties {
 
+        private final Log logger = LogFactory.getLog(UserGroupProperties.class);
+
         /**
          * Expected UserGroups that an authority will be granted to if found in the response from the MemeberOf Graph
          * API Call.
@@ -145,6 +154,11 @@ public class AADAuthenticationProperties implements InitializingBean {
             return allowedGroupIds;
         }
 
+        /**
+         * Set the allowed group ids.
+         *
+         * @param allowedGroupIds Allowed group ids.
+         */
         public void setAllowedGroupIds(Set<String> allowedGroupIds) {
             this.allowedGroupIds = allowedGroupIds;
         }
@@ -157,11 +171,18 @@ public class AADAuthenticationProperties implements InitializingBean {
             this.allowedGroupNames = allowedGroupNames;
         }
 
+        @Deprecated
+        @DeprecatedConfigurationProperty(
+            reason = "enable-full-list is not easy to understand.",
+            replacement = "allowed-group-ids: all")
         public Boolean getEnableFullList() {
             return enableFullList;
         }
 
+        @Deprecated
         public void setEnableFullList(Boolean enableFullList) {
+            logger.warn(" 'azure.activedirectory.user-group.enable-full-list' property detected! "
+                + "Use 'azure.activedirectory.user-group.allowed-group-ids: all' instead!");
             this.enableFullList = enableFullList;
         }
 
@@ -176,6 +197,8 @@ public class AADAuthenticationProperties implements InitializingBean {
 
         @Deprecated
         public void setAllowedGroups(List<String> allowedGroups) {
+            logger.warn(" 'azure.activedirectory.user-group.allowed-groups' property detected! " + " Use 'azure"
+                + ".activedirectory.user-group.allowed-group-names' instead!");
             this.allowedGroupNames = allowedGroups;
         }
 
@@ -248,6 +271,14 @@ public class AADAuthenticationProperties implements InitializingBean {
         this.appIdUri = appIdUri;
     }
 
+    public Map<String, Object> getAuthenticateAdditionalParameters() {
+        return authenticateAdditionalParameters;
+    }
+
+    public void setAuthenticateAdditionalParameters(Map<String, Object> authenticateAdditionalParameters) {
+        this.authenticateAdditionalParameters = authenticateAdditionalParameters;
+    }
+
     public int getJwtConnectTimeout() {
         return jwtConnectTimeout;
     }
@@ -304,6 +335,9 @@ public class AADAuthenticationProperties implements InitializingBean {
         this.postLogoutRedirectUri = postLogoutRedirectUri;
     }
 
+    @Deprecated
+    @DeprecatedConfigurationProperty(
+        reason = "Deprecate the telemetry endpoint and use HTTP header User Agent instead.")
     public boolean isAllowTelemetry() {
         return allowTelemetry;
     }
@@ -364,7 +398,7 @@ public class AADAuthenticationProperties implements InitializingBean {
     }
 
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() {
 
         if (!StringUtils.hasText(baseUri)) {
             baseUri = "https://login.microsoftonline.com/";
@@ -391,6 +425,14 @@ public class AADAuthenticationProperties implements InitializingBean {
                 + "the prefix of azure.activedirectory.graph-membership-uri. "
                 + "azure.activedirectory.graph-base-uri = " + graphBaseUri + ", "
                 + "azure.activedirectory.graph-membership-uri = " + graphMembershipUri + ".");
+        }
+
+        Set<String> allowedGroupIds = userGroup.getAllowedGroupIds();
+        if (allowedGroupIds.size() > 1 && allowedGroupIds.contains("all")) {
+            throw new IllegalStateException("When azure.activedirectory.user-group.allowed-group-ids contains 'all', "
+                + "no other group ids can be configured. "
+                + "But actually azure.activedirectory.user-group.allowed-group-ids="
+                + allowedGroupIds);
         }
 
         if (!StringUtils.hasText(tenantId)) {

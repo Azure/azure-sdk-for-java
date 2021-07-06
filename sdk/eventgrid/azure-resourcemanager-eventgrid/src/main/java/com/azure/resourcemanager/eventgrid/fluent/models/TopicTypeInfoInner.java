@@ -9,6 +9,7 @@ import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventgrid.models.ResourceRegionType;
+import com.azure.resourcemanager.eventgrid.models.TopicTypePropertiesSupportedScopesForSourceItem;
 import com.azure.resourcemanager.eventgrid.models.TopicTypeProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -61,6 +62,12 @@ public class TopicTypeInfoInner extends ProxyResource {
      */
     @JsonProperty(value = "properties.sourceResourceFormat")
     private String sourceResourceFormat;
+
+    /*
+     * Supported source scopes.
+     */
+    @JsonProperty(value = "properties.supportedScopesForSource")
+    private List<TopicTypePropertiesSupportedScopesForSourceItem> supportedScopesForSource;
 
     /**
      * Get the provider property: Namespace of the provider of the topic type.
@@ -199,6 +206,27 @@ public class TopicTypeInfoInner extends ProxyResource {
      */
     public TopicTypeInfoInner withSourceResourceFormat(String sourceResourceFormat) {
         this.sourceResourceFormat = sourceResourceFormat;
+        return this;
+    }
+
+    /**
+     * Get the supportedScopesForSource property: Supported source scopes.
+     *
+     * @return the supportedScopesForSource value.
+     */
+    public List<TopicTypePropertiesSupportedScopesForSourceItem> supportedScopesForSource() {
+        return this.supportedScopesForSource;
+    }
+
+    /**
+     * Set the supportedScopesForSource property: Supported source scopes.
+     *
+     * @param supportedScopesForSource the supportedScopesForSource value to set.
+     * @return the TopicTypeInfoInner object itself.
+     */
+    public TopicTypeInfoInner withSupportedScopesForSource(
+        List<TopicTypePropertiesSupportedScopesForSourceItem> supportedScopesForSource) {
+        this.supportedScopesForSource = supportedScopesForSource;
         return this;
     }
 

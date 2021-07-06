@@ -5,7 +5,7 @@
 package com.azure.monitor.query.metrics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.monitor.query.models.MetricsUnit;
+import com.azure.monitor.query.models.MetricUnit;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -35,7 +35,7 @@ public final class Metric {
     /*
      * Detailed description of this metric.
      */
-    @JsonProperty(value = "displayDescription", required = true)
+    @JsonProperty(value = "displayDescription")
     private String displayDescription;
 
     /*
@@ -45,10 +45,16 @@ public final class Metric {
     private String errorCode;
 
     /*
-     * the unit of the metric.
+     * Error message encountered querying this specific metric.
+     */
+    @JsonProperty(value = "errorMessage")
+    private String errorMessage;
+
+    /*
+     * The unit of the metric.
      */
     @JsonProperty(value = "unit", required = true)
-    private MetricsUnit unit;
+    private MetricUnit unit;
 
     /*
      * the time series returned when a data query is performed.
@@ -62,7 +68,6 @@ public final class Metric {
      * @param id the id value to set.
      * @param type the type value to set.
      * @param name the name value to set.
-     * @param displayDescription the displayDescription value to set.
      * @param unit the unit value to set.
      * @param timeseries the timeseries value to set.
      */
@@ -71,13 +76,11 @@ public final class Metric {
             @JsonProperty(value = "id", required = true) String id,
             @JsonProperty(value = "type", required = true) String type,
             @JsonProperty(value = "name", required = true) LocalizableString name,
-            @JsonProperty(value = "displayDescription", required = true) String displayDescription,
-            @JsonProperty(value = "unit", required = true) MetricsUnit unit,
+            @JsonProperty(value = "unit", required = true) MetricUnit unit,
             @JsonProperty(value = "timeseries", required = true) List<TimeSeriesElement> timeseries) {
         this.id = id;
         this.type = type;
         this.name = name;
-        this.displayDescription = displayDescription;
         this.unit = unit;
         this.timeseries = timeseries;
     }
@@ -119,6 +122,17 @@ public final class Metric {
     }
 
     /**
+     * Set the displayDescription property: Detailed description of this metric.
+     *
+     * @param displayDescription the displayDescription value to set.
+     * @return the Metric object itself.
+     */
+    public Metric setDisplayDescription(String displayDescription) {
+        this.displayDescription = displayDescription;
+        return this;
+    }
+
+    /**
      * Get the errorCode property: 'Success' or the error details on query failures for this metric.
      *
      * @return the errorCode value.
@@ -139,11 +153,31 @@ public final class Metric {
     }
 
     /**
-     * Get the unit property: the unit of the metric.
+     * Get the errorMessage property: Error message encountered querying this specific metric.
+     *
+     * @return the errorMessage value.
+     */
+    public String getErrorMessage() {
+        return this.errorMessage;
+    }
+
+    /**
+     * Set the errorMessage property: Error message encountered querying this specific metric.
+     *
+     * @param errorMessage the errorMessage value to set.
+     * @return the Metric object itself.
+     */
+    public Metric setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+        return this;
+    }
+
+    /**
+     * Get the unit property: The unit of the metric.
      *
      * @return the unit value.
      */
-    public MetricsUnit getUnit() {
+    public MetricUnit getUnit() {
         return this.unit;
     }
 
@@ -172,9 +206,6 @@ public final class Metric {
             throw new IllegalArgumentException("Missing required property name in model Metric");
         } else {
             getName().validate();
-        }
-        if (getDisplayDescription() == null) {
-            throw new IllegalArgumentException("Missing required property displayDescription in model Metric");
         }
         if (getUnit() == null) {
             throw new IllegalArgumentException("Missing required property unit in model Metric");

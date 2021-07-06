@@ -1,10 +1,51 @@
 # Release History
 
-## 12.0.0-beta.8 (Unreleased)
+## 12.1.0-beta.1 (Unreleased)
+
+### New Features
+- Added support for Azure Active Directory (AAD) authorization to `TableServiceClient` and `TableClient`. This enables the use of `TokenCredential` credentials in client builders. Note: Only Azure Storage API endpoints currently support AAD authorization.
+
+### Bug fixes
+- Fixed issue where HTTP headers set in a `ClientOptions` object passed to a client builder would not be set on a client instantiated by said builder.
+- Fixed an issue where a `connectionString` with an account name and key would override a `sasToken`'s authentication settings in client builders.
+- Fixed an issue that made `TableClient.listEntities()` and `TableServiceClient.listTables()` throw a `ClassCastException` when passing a non-null value for `timeout`.
+
+## 12.0.0 (2021-06-11)
+
+### Bug fixes
+- Fixed issue where clients builders would not throw when calling `buildClient()` or `buildAsyncClient()` if no `endpoint` had been set.
+- Fixed issue where `TableClient`'s and `TableClientAsync`'s `submitTransaction()` and `submitTransactionWithResponse()` could not be called from inside a Reactor thread (e.g. calling it inside a chain of reactive operations, such as `myOtherOperation.then(result -> client.submitTransaction(transactionActions)`).
+- Fixed issue that would make an exception be raised when calling `submitTransaction()` if Java's SecurityManager was enabled and no `ReflectPermission` had been granted.
 
 ### New Features
 
-- Introduced the `TableTransactionAction` class and the `TableTransactionActionType` enum.
+- Introduced the following classes:
+    - `TableAccessPolicies`
+    - `TableTransactionAction`
+    - `TableTransactionActionType`
+    - `TableTransactionFailedException`
+    - `TableTransactionResult`
+- Added support for generating SAS tokens at the Account and Table Service level in all clients. Introduced the following related classes:
+    - `TableAccountSasPermission`
+    - `TableAccountSasResourceType`
+    - `TableAccountSasService`
+    - `TableAccountSasSignatureValues`
+    - `TableSasIpRange`
+    - `TableSasPermission`
+    - `TableSasSignatureValues`
+- Added the following methods to `TableClient`, `TableAsyncClient`:
+    - `listAccessPolicies()`
+    - `setAccessPolicies()`
+    - `setAccessPoliciesWithResponse()`
+    - `generateSasToken()`
+- Added the following methods to `TableServiceClient`, `TableServiceAsyncClient`:
+    - `getProperties()`
+    - `getPropertiesWithResponse()`
+    - `setProperties()`
+    - `setPropertiesWithResponse()`
+    - `getStatistics()`
+    - `getStatisticsWithResponse()`
+    - `generateAccountSasToken()`
 
 ### Breaking Changes
 
@@ -13,6 +54,7 @@
     - `TableAsyncClient.submitTransactionWithResponse(List<TableTransactionAction> transactionalBatch)`
     - `TableClient.submitTransaction(List<TableTransactionAction> transactionalBatch)`
     - `TableClient.submitTransactionWithResponse(List<TableTransactionAction> transactionalBatch, Duration timeout, Context context)`
+- Renamed `BatchOperationResponse` to `TableTransactionActionResponse`
 - `deleteEntity()` variants in `TableClient` and `TableAsyncClient` now accept an `ifUnchanged` flag instead of an `eTag` parameter for conditional operations. When said flag is set to `true`, the ETag of a given `TableEntity` will be matched with the ETag of the entity in the Table service.
 - Replaced `deleteEntityWithResponse(String partitionKey, String rowKey, String eTag)` with `deleteEntityWithResponse(TableEntity entity, boolean ifUnchanged)` in `TableAsyncClient`.
 - Replaced `deleteEntityWithResponse(String partitionKey, String rowKey, String eTag, Duration timeout, Context context)` with `deleteEntityWithResponse(TableEntity entity, boolean ifUnchanged, Duration timeout, Context context)` in `TableClient`.
@@ -22,6 +64,12 @@
     - `updateEntity(TableEntity entity, TableEntityUpdateMode updateMode,
       boolean ifUnchanged)`
     - `getEntity(String partitionKey, String rowKey, List<String> select)`
+- Client builders now also throw an `IllegalStateException` when calling `buildClient()` and `buildAsyncClient()` if multiple forms of authentication are provided, with the exception of `sasToken` + `connectionString`; or if `endpoint` and/or `sasToken` are set alongside a `connectionString` and the endpoint and/or SAS token in the latter are different than the former, respectively.
+- The following methods and their `WithResponse` variants in `TableClient` and `TableAsyncClient` now throw an `IllegalArgumentException` instead of an `IllegalStateException` when an empty `TableEntity` is provided:
+    - `createEntity()`
+    - `upsertEntity()`
+    - `updateEntity()`
+    - `deleteEntity()`
 
 ## 12.0.0-beta.7 (2021-05-15)
 

@@ -4,15 +4,14 @@
 package com.azure.ai.metricsadvisor;
 
 import com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient;
-import com.azure.ai.metricsadvisor.models.DataFeed;
-import com.azure.ai.metricsadvisor.models.DataFeedGranularityType;
-import com.azure.ai.metricsadvisor.models.DataFeedSourceType;
-import com.azure.ai.metricsadvisor.models.DataFeedStatus;
-import com.azure.ai.metricsadvisor.models.ErrorCode;
-import com.azure.ai.metricsadvisor.models.ErrorCodeException;
-import com.azure.ai.metricsadvisor.models.ListDataFeedFilter;
-import com.azure.ai.metricsadvisor.models.ListDataFeedOptions;
-import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
+import com.azure.ai.metricsadvisor.administration.models.DataFeed;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedGranularityType;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedSourceType;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedStatus;
+import com.azure.ai.metricsadvisor.administration.models.ListDataFeedFilter;
+import com.azure.ai.metricsadvisor.administration.models.ListDataFeedOptions;
+import com.azure.ai.metricsadvisor.models.MetricsAdvisorError;
+import com.azure.ai.metricsadvisor.models.MetricsAdvisorResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.CoreUtils;
@@ -38,20 +37,20 @@ import static com.azure.ai.metricsadvisor.TestUtils.DEFAULT_SUBSCRIBER_TIMEOUT_S
 import static com.azure.ai.metricsadvisor.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.ai.metricsadvisor.TestUtils.INCORRECT_UUID;
 import static com.azure.ai.metricsadvisor.TestUtils.INCORRECT_UUID_ERROR;
-import static com.azure.ai.metricsadvisor.models.DataFeedGranularityType.DAILY;
-import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.AZURE_APP_INSIGHTS;
-import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.AZURE_BLOB;
-import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.AZURE_COSMOS_DB;
-import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.AZURE_DATA_EXPLORER;
-import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.AZURE_DATA_LAKE_STORAGE_GEN2;
-import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.AZURE_LOG_ANALYTICS;
-import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.AZURE_TABLE;
-import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.INFLUX_DB;
-import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.MONGO_DB;
-import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.MYSQL_DB;
-import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.POSTGRE_SQL_DB;
-import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.SQL_SERVER_DB;
-import static com.azure.ai.metricsadvisor.models.DataFeedStatus.ACTIVE;
+import static com.azure.ai.metricsadvisor.administration.models.DataFeedGranularityType.DAILY;
+import static com.azure.ai.metricsadvisor.administration.models.DataFeedSourceType.AZURE_APP_INSIGHTS;
+import static com.azure.ai.metricsadvisor.administration.models.DataFeedSourceType.AZURE_BLOB;
+import static com.azure.ai.metricsadvisor.administration.models.DataFeedSourceType.AZURE_COSMOS_DB;
+import static com.azure.ai.metricsadvisor.administration.models.DataFeedSourceType.AZURE_DATA_EXPLORER;
+import static com.azure.ai.metricsadvisor.administration.models.DataFeedSourceType.AZURE_DATA_LAKE_STORAGE_GEN2;
+import static com.azure.ai.metricsadvisor.administration.models.DataFeedSourceType.AZURE_LOG_ANALYTICS;
+import static com.azure.ai.metricsadvisor.administration.models.DataFeedSourceType.AZURE_TABLE;
+import static com.azure.ai.metricsadvisor.administration.models.DataFeedSourceType.INFLUX_DB;
+import static com.azure.ai.metricsadvisor.administration.models.DataFeedSourceType.MONGO_DB;
+import static com.azure.ai.metricsadvisor.administration.models.DataFeedSourceType.MYSQL_DB;
+import static com.azure.ai.metricsadvisor.administration.models.DataFeedSourceType.POSTGRE_SQL_DB;
+import static com.azure.ai.metricsadvisor.administration.models.DataFeedSourceType.SQL_SERVER_DB;
+import static com.azure.ai.metricsadvisor.administration.models.DataFeedStatus.ACTIVE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -81,26 +80,30 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
             client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildAsyncClient();
 
             listDataFeedRunner(inputDataFeedList -> {
+                DataFeed[] dataFeedList  = new DataFeed[2];
+                dataFeedList[0] = client.createDataFeed(inputDataFeedList.get(0)).block();
+                dataFeedList[1] = client.createDataFeed(inputDataFeedList.get(1)).block();
                 List<DataFeed> actualDataFeedList = new ArrayList<>();
-                List<DataFeed> expectedDataFeedList =
-                    inputDataFeedList.stream().map(dataFeed -> client.createDataFeed(dataFeed).block())
-                        .collect(Collectors.toList());
+                List<DataFeed> expectedDataFeedList = new ArrayList<>();
+                expectedDataFeedIdList.set(Arrays.asList(dataFeedList[0].getId(), dataFeedList[1].getId()));
 
                 // Act
-                StepVerifier.create(client.listDataFeeds())
+                StepVerifier.create(client.listDataFeeds(new ListDataFeedOptions()
+                    .setListDataFeedFilter(new ListDataFeedFilter().setDataFeedGranularityType(DAILY)
+                        .setName("java_"))))
                     .thenConsumeWhile(actualDataFeedList::add)
                     .verifyComplete();
 
-                expectedDataFeedIdList.set(expectedDataFeedList.stream().map(DataFeed::getId)
-                    .collect(Collectors.toList()));
-                final List<DataFeed> actualList =
-                    actualDataFeedList.stream().filter(dataFeed -> expectedDataFeedIdList.get().contains(dataFeed.getId()))
-                        .collect(Collectors.toList());
+                assertNotNull(actualDataFeedList);
+                final List<DataFeed> actualList = actualDataFeedList.stream()
+                    .filter(dataFeed -> expectedDataFeedIdList.get().contains(dataFeed.getId()))
+                    .collect(Collectors.toList());
 
                 // Assert
+                assertNotNull(actualList);
                 assertEquals(inputDataFeedList.size(), actualList.size());
-                expectedDataFeedList.sort(Comparator.comparing(DataFeed::getSourceType));
-                actualList.sort(Comparator.comparing(DataFeed::getSourceType));
+                expectedDataFeedList.sort(Comparator.comparing(dataFeed -> dataFeed.getSourceType().toString()));
+                actualList.sort(Comparator.comparing(dataFeed -> dataFeed.getSourceType().toString()));
                 final AtomicInteger i = new AtomicInteger(-1);
                 final List<DataFeedSourceType> dataFeedSourceTypes = Arrays.asList(AZURE_BLOB, SQL_SERVER_DB);
                 expectedDataFeedList.forEach(expectedDataFeed -> validateDataFeedResult(expectedDataFeed,
@@ -125,7 +128,7 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
         client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildAsyncClient();
 
         // Act & Assert
-        StepVerifier.create(client.listDataFeeds(new ListDataFeedOptions().setMaxPageSize(3)).byPage())
+        StepVerifier.create(client.listDataFeeds(new ListDataFeedOptions().setMaxPageSize(3)).byPage().take(4))
             .thenConsumeWhile(dataFeedPagedResponse -> 3 >= dataFeedPagedResponse.getValue().size())
             // page size should be less than or equal to 3
             .verifyComplete();
@@ -735,9 +738,8 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
             // Act & Assert
             StepVerifier.create(client.getDataFeedWithResponse(createdDataFeed.getId()))
                 .verifyErrorSatisfies(throwable -> {
-                    assertEquals(ErrorCodeException.class, throwable.getClass());
-                    final ErrorCode errorCode = ((ErrorCodeException) throwable).getValue();
-                    assertEquals(errorCode.getCode(), "ERROR_INVALID_PARAMETER");
+                    assertEquals(MetricsAdvisorResponseException.class, throwable.getClass());
+                    final MetricsAdvisorError errorCode = ((MetricsAdvisorResponseException) throwable).getValue();
                     assertEquals(errorCode.getMessage(), "datafeedId is invalid.");
                 });
         }, SQL_SERVER_DB);

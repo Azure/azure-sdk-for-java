@@ -37,25 +37,49 @@ The [Azure Identity library][identity] provides easy Azure Active Directory supp
 Note all the below samples assume you have an endpoint, which is the URL including the name of the login server and the `https://` prefix.
 More information at [Azure Container Registry portal][container_registry_create_portal]
 
-<!-- embedme ./src/samples/java/com/azure/containers/containerregistry/ReadmeSamples.java#L29-L33 -->
+<!-- embedme ./src/samples/java/com/azure/containers/containerregistry/ReadmeSamples.java#L31-L35 -->
 ```Java
-    ContainerRegistryClient client = new ContainerRegistryClientBuilder()
-        .endpoint(endpoint)
-        .credential(credential)
-        .buildClient();
-}
+DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
+ContainerRegistryClient client = new ContainerRegistryClientBuilder()
+    .endpoint(endpoint)
+    .credential(credential)
+    .buildClient();
 ```
 
-<!-- embedme ./src/samples/java/com/azure/containers/containerregistry/ReadmeSamples.java#L37-L41 -->
+<!-- embedme ./src/samples/java/com/azure/containers/containerregistry/ReadmeSamples.java#L39-L43 -->
 ```Java
-    ContainerRegistryAsyncClient client = new ContainerRegistryClientBuilder()
-        .endpoint(endpoint)
-        .credential(credential)
-        .buildAsyncClient();
-}
+DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
+ContainerRegistryAsyncClient client = new ContainerRegistryClientBuilder()
+    .endpoint(endpoint)
+    .credential(credential)
+    .buildAsyncClient();
 ```
 
 For more information on using AAD with Azure Container Registry, please see the service's [Authentication Overview](https://docs.microsoft.com/azure/container-registry/container-registry-authentication).
+
+#### National Clouds
+To authenticate with a registry in a [National Cloud](https://docs.microsoft.com/azure/active-directory/develop/authentication-national-cloud), you will need to make the following additions to your client configuration:
+- Set the authorityHost in the credential builder.
+- Set the authenticationScope in ContainerRegistryClientBuilder.
+
+<!-- embedme ./src/samples/java/com/azure/containers/containerregistry/ReadmeSamples.java#L183-L197 -->
+```Java
+AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE_US_GOVERNMENT);
+TokenCredential credentials = new DefaultAzureCredentialBuilder()
+    .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
+    .build();
+
+final String authenticationScope = "https://management.usgovcloudapi.net/.default";
+ContainerRegistryClient containerRegistryClient = new ContainerRegistryClientBuilder()
+    .endpoint(getEndpoint())
+    .credential(credentials)
+    .authenticationScope(authenticationScope)
+    .buildClient();
+
+containerRegistryClient
+    .listRepositoryNames()
+    .forEach(name -> System.out.println(name));
+```
 
 ### Anonymous access support
 If the builder is instantiated without any credentials, the SDK creates the service client for the anonymous pull mode.
@@ -63,14 +87,14 @@ The user must use this setting on a registry that has been enabled for anonymous
 In this mode, the user can only call listRepositoryNames method and its overload. All the other calls will fail. 
 For more information please read [Anonymous Pull Access](https://docs.microsoft.com/azure/container-registry/container-registry-faq#how-do-i-enable-anonymous-pull-access)
 
-<!-- embedme ./src/samples/java/com/azure/containers/containerregistry/ReadmeSamples.java#L70-L72 -->
+<!-- embedme ./src/samples/java/com/azure/containers/containerregistry/ReadmeSamples.java#L73-L75 -->
 ```Java
 ContainerRegistryClient client = new ContainerRegistryClientBuilder()
     .endpoint(endpoint)
     .buildClient();
 ```
 
-<!-- embedme ./src/samples/java/com/azure/containers/containerregistry/ReadmeSamples.java#L76-L78 -->
+<!-- embedme ./src/samples/java/com/azure/containers/containerregistry/ReadmeSamples.java#L79-L81 -->
 ```Java
 ContainerRegistryAsyncClient client = new ContainerRegistryClientBuilder()
     .endpoint(endpoint)
@@ -105,7 +129,7 @@ For more information please see [Container Registry Concepts](https://docs.micro
 
 Iterate through the collection of repositories in the registry.
 
-<!-- embedme ./src/samples/java/com/azure/containers/containerregistry/ReadmeSamples.java#L44-L50 -->
+<!-- embedme ./src/samples/java/com/azure/containers/containerregistry/ReadmeSamples.java#L47-L53 -->
 ```Java
 DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
 ContainerRegistryClient client = new ContainerRegistryClientBuilder()
@@ -118,16 +142,16 @@ client.listRepositoryNames().forEach(repository -> System.out.println(repository
 
 ### List tags with anonymous access
 
-<!-- embedme ./src/samples/java/com/azure/containers/containerregistry/ReadmeSamples.java#L137-L148 -->
+<!-- embedme ./src/samples/java/com/azure/containers/containerregistry/ReadmeSamples.java#L140-L151 -->
 ```Java
 ContainerRegistryClient anonymousClient = new ContainerRegistryClientBuilder()
     .endpoint(endpoint)
     .buildClient();
 
 RegistryArtifact image = anonymousClient.getArtifact(repositoryName, digest);
-PagedIterable<ArtifactTagProperties> tags = image.listTags();
+PagedIterable<ArtifactTagProperties> tags = image.listTagProperties();
 
-System.out.printf(String.format("%s has the following aliases:", image.getFullyQualifiedName()));
+System.out.printf(String.format("%s has the following aliases:", image.getFullyQualifiedReference()));
 
 for (ArtifactTagProperties tag : tags) {
     System.out.printf(String.format("%s/%s:%s", anonymousClient.getEndpoint(), repositoryName, tag.getName()));
@@ -136,7 +160,7 @@ for (ArtifactTagProperties tag : tags) {
 
 ### Set artifact properties
 
-<!-- embedme ./src/samples/java/com/azure/containers/containerregistry/ReadmeSamples.java#L116-L129 -->
+<!-- embedme ./src/samples/java/com/azure/containers/containerregistry/ReadmeSamples.java#L119-L132 -->
 ```Java
 TokenCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
 
@@ -156,7 +180,7 @@ image.updateTagProperties(
 
 ### Delete Images
 
-<!-- embedme ./src/samples/java/com/azure/containers/containerregistry/ReadmeSamples.java#L82-L110 -->
+<!-- embedme ./src/samples/java/com/azure/containers/containerregistry/ReadmeSamples.java#L85-L113 -->
 ```Java
 TokenCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
 
@@ -171,8 +195,8 @@ for (String repositoryName : client.listRepositoryNames()) {
 
     // Obtain the images ordered from newest to oldest
     PagedIterable<ArtifactManifestProperties> imageManifests =
-        repository.listManifests(
-            ManifestOrderBy.LAST_UPDATED_ON_DESCENDING,
+        repository.listManifestProperties(
+            ArtifactManifestOrderBy.LAST_UPDATED_ON_DESCENDING,
             Context.NONE);
 
     imageManifests.stream().skip(imagesCountToKeep)
@@ -190,7 +214,7 @@ for (String repositoryName : client.listRepositoryNames()) {
 ```
 
 ### Delete repository with anonymous access throws 
-<!-- embedme ./src/samples/java/com/azure/containers/containerregistry/ReadmeSamples.java#L152-L164 -->
+<!-- embedme ./src/samples/java/com/azure/containers/containerregistry/ReadmeSamples.java#L155-L167 -->
 ```Java
 final String endpoint = getEndpoint();
 final String repositoryName = getRepositoryName();
@@ -202,7 +226,7 @@ ContainerRegistryClient anonymousClient = new ContainerRegistryClientBuilder()
 try {
     anonymousClient.deleteRepository(repositoryName);
     System.out.println("Unexpected Success: Delete is not allowed on anonymous access");
-} catch (Exception ex) {
+} catch (ClientAuthenticationException ex) {
     System.out.println("Expected exception: Delete is not allowed on anonymous access");
 }
 ```
@@ -212,7 +236,7 @@ try {
 All container registry service operations will throw a
 [HttpResponseException][HttpResponseException] on failure.
 
-<!-- embedme ./src/samples/java/com/azure/containers/containerregistry/ReadmeSamples.java#L56-L66 -->
+<!-- embedme ./src/samples/java/com/azure/containers/containerregistry/ReadmeSamples.java#L59-L69 -->
 ```Java
 DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
 ContainerRepository containerRepository = new ContainerRegistryClientBuilder()
@@ -246,7 +270,7 @@ or contact [opencode@microsoft.com][coc_contact] with any
 additional questions or comments.
 
 <!-- LINKS -->
-[source_code]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/containerregistry/azure-containers-containerregistry/src
+[source_code]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/containerregistry/azure-containers-containerregistry/src
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [azure_subscription]: https://azure.microsoft.com/free
 [package]: https://search.maven.org/artifact/com.azure/azure-containers-containerregisty
@@ -260,9 +284,9 @@ additional questions or comments.
 [container_registry_concepts]: https://docs.microsoft.com/azure/container-registry/container-registry-concepts
 [azure_cli]: https://docs.microsoft.com/cli/azure
 [azure_sub]: https://azure.microsoft.com/free/
-[identity]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/identity/azure-identity/README.md
-[HttpResponseException]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/src/main/java/com/azure/core/exception/HttpResponseException.java
-[samples]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/containerregistry/azure-containers-containerregistry/src/samples/
+[identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md
+[HttpResponseException]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/exception/HttpResponseException.java
+[samples]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/containerregistry/azure-containers-containerregistry/src/samples/
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/

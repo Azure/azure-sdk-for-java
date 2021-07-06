@@ -1,3 +1,13 @@
+---
+page_type: sample
+languages:
+- java
+products:
+- azure-active-directory-b2c
+description: "Sample project for Azure AD B2C Spring Boot resource server client library"
+urlFragment: "azure-spring-boot-sample-active-directory-b2c-resource-server"
+---
+
 # Sample for Azure AD B2C Resource server Spring Boot client library for Java
 
 ## Key concepts
@@ -127,4 +137,4 @@ You can set `isEnabled` to `false` in the manifest's JSON configuration.Then del
 ## Next steps
 ## Contributing
 <!-- LINKS -->
-[environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
+[environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist

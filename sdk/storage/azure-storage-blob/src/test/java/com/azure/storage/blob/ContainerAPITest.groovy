@@ -3,15 +3,13 @@
 
 package com.azure.storage.blob
 
-import com.azure.core.http.rest.PagedIterable
-import com.azure.core.http.rest.PagedResponse
+
 import com.azure.core.http.rest.Response
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.AppendBlobItem
 import com.azure.storage.blob.models.BlobAccessPolicy
 import com.azure.storage.blob.models.BlobErrorCode
-import com.azure.storage.blob.models.BlobItem
 import com.azure.storage.blob.models.BlobListDetails
 import com.azure.storage.blob.models.BlobProperties
 import com.azure.storage.blob.models.BlobRequestConditions
@@ -31,14 +29,10 @@ import com.azure.storage.blob.options.BlobSetAccessTierOptions
 import com.azure.storage.blob.options.PageBlobCreateOptions
 import com.azure.storage.blob.specialized.AppendBlobClient
 import com.azure.storage.blob.specialized.BlobClientBase
-import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.Utility
-import com.azure.storage.common.implementation.StorageImplUtils
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import reactor.test.StepVerifier
-import spock.lang.Requires
-import spock.lang.ResourceLock
 import spock.lang.Unroll
 
 import java.time.Duration
@@ -921,6 +915,29 @@ class ContainerAPITest extends APISpec {
             .verifyComplete()
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_10_02")
+    def "list blobs flat options deleted with versions"() {
+        setup:
+        def blobName = generateBlobName()
+        def blob = cc.getBlobClient(blobName).getAppendBlobClient()
+        blob.create()
+        def metadata = new HashMap<String, String>()
+        metadata.put("foo", "bar")
+        blob.setMetadata(metadata)
+        blob.delete()
+        def options = new ListBlobsOptions().setPrefix(blobName)
+            .setDetails(new BlobListDetails().setRetrieveDeletedBlobsWithVersions(true))
+
+        when:
+        def blobs = cc.listBlobs(options, null).iterator()
+
+        then:
+        def b = blobs.next()
+        !blobs.hasNext()
+        b.getName() == blobName
+        b.hasVersionsOnly()
+    }
+
     def "List blobs prefix with comma"() {
         setup:
         def prefix = generateBlobName() + ", " + generateBlobName()
@@ -1301,6 +1318,29 @@ class ContainerAPITest extends APISpec {
         for (def page : iterableByPage) {
             assert page.value.size() == 1
         }
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_10_02")
+    def "list blobs hier options deleted with versions"() {
+        setup:
+        def blobName = generateBlobName()
+        def blob = cc.getBlobClient(blobName).getAppendBlobClient()
+        blob.create()
+        def metadata = new HashMap<String, String>()
+        metadata.put("foo", "bar")
+        blob.setMetadata(metadata)
+        blob.delete()
+        def options = new ListBlobsOptions().setPrefix(blobName)
+            .setDetails(new BlobListDetails().setRetrieveDeletedBlobsWithVersions(true))
+
+        when:
+        def blobs = cc.listBlobsByHierarchy("", options, null).iterator()
+
+        then:
+        def b = blobs.next()
+        !blobs.hasNext()
+        b.getName() == blobName
+        b.hasVersionsOnly()
     }
 
     @Unroll

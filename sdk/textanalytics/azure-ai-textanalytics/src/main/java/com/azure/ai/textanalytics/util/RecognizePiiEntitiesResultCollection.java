@@ -5,13 +5,15 @@ package com.azure.ai.textanalytics.util;
 
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 /**
  * A collection model that contains a list of {@link RecognizePiiEntitiesResult} along with model version and
  * batch's statistics.
  */
-public class RecognizePiiEntitiesResultCollection extends IterableStream<RecognizePiiEntitiesResult> {
+@Immutable
+public final class RecognizePiiEntitiesResultCollection extends IterableStream<RecognizePiiEntitiesResult> {
     private final String modelVersion;
     private final TextDocumentBatchStatistics statistics;
 

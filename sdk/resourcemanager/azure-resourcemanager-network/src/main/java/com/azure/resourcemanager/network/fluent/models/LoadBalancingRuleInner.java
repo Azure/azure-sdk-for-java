@@ -13,6 +13,7 @@ import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.TransportProtocol;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** A load balancing rule for a load balancer. */
 @JsonFlatten
@@ -52,6 +53,12 @@ public class LoadBalancingRuleInner extends SubResource {
      */
     @JsonProperty(value = "properties.backendAddressPool")
     private SubResource backendAddressPool;
+
+    /*
+     * An array of references to pool of DIPs.
+     */
+    @JsonProperty(value = "properties.backendAddressPools")
+    private List<SubResource> backendAddressPools;
 
     /*
      * The reference to the load balancer probe used by the load balancing
@@ -204,6 +211,26 @@ public class LoadBalancingRuleInner extends SubResource {
      */
     public LoadBalancingRuleInner withBackendAddressPool(SubResource backendAddressPool) {
         this.backendAddressPool = backendAddressPool;
+        return this;
+    }
+
+    /**
+     * Get the backendAddressPools property: An array of references to pool of DIPs.
+     *
+     * @return the backendAddressPools value.
+     */
+    public List<SubResource> backendAddressPools() {
+        return this.backendAddressPools;
+    }
+
+    /**
+     * Set the backendAddressPools property: An array of references to pool of DIPs.
+     *
+     * @param backendAddressPools the backendAddressPools value to set.
+     * @return the LoadBalancingRuleInner object itself.
+     */
+    public LoadBalancingRuleInner withBackendAddressPools(List<SubResource> backendAddressPools) {
+        this.backendAddressPools = backendAddressPools;
         return this;
     }
 

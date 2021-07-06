@@ -1,6 +1,20 @@
 # Release History
 
 ## 1.4.0-beta.1 (Unreleased)
+### Features Added
+
+- Added support to `ManagedIdentityCredential` for Bridge to Kubernetes local development authentication.
+- Added regional STS support to client credential types.
+    - Added the `RegionalAuthority` type, that allows specifying Azure regions.
+    - Added `regionalAuthority()` setter to `ClientSecretCredentialBuilder` and `ClientCertificateCredentialBuilder`.
+    - If instead of a region, `RegionalAuthority.AutoDiscoverRegion` is specified as the value for `regionalAuthority`, MSAL will be used to attempt to discover the region.
+    - A region can also be specified through the `AZURE_REGIONAL_AUTHORITY_NAME` environment variable.
+- Added `loginHint()` setter to `InteractiveBrowserCredentialBuilder` which allows a username to be pre-selected for interactive logins.
+
+## 1.3.1 (2021-06-08)
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to 1.17.0
 
 
 ## 1.3.0 (2021-05-11)
@@ -258,7 +272,7 @@ our efforts can be found in the [Azure SDK Design Guidelines for Java](https://a
 For details on the Azure SDK for Java (July 2019 Preview) release, you can refer to the [release announcement](https://aka.ms/azure-sdk-preview1-java).
 
 This release supports service principal and managed identity authentication.
-See the [documentation](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/identity/azure-identity/README.md)
+See the [documentation](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md)
 for more details. User authentication will be added in an upcoming preview
 release.
 

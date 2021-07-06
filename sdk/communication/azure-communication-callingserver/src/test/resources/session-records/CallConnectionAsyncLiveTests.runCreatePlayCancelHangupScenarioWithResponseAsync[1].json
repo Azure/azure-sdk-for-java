@@ -1,0 +1,81 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.communication.azure.com/calling/callConnections?api-version=2021-06-15-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.1 (16.0.1; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "X-Cache" : "CONFIG_NOCACHE",
+      "content-length" : "110",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0T6/BYAAAAADf/TZqAkTRS4u74Irk6dMbQ0hHRURHRTE2MTQAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
+      "StatusCode" : "201",
+      "X-Microsoft-Skype-Chain-ID" : "ac6c39a4-1390-4561-92de-6253164dbab1",
+      "Body" : "{\"callLegId\":\"d21f1300-2cee-4b87-ade5-d381d32041d7\",\"callConnectionId\":\"d21f1300-2cee-4b87-ade5-d381d32041d7\"}",
+      "Date" : "Thu, 10 Jun 2021 06:21:03 GMT",
+      "Content-Type" : "application/json; charset=utf-8",
+      "Client-Request-Id" : "6525df6b-a1a2-48e3-b8af-74bf3b292ece"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.communication.azure.com/calling/callConnections/d21f1300-2cee-4b87-ade5-d381d32041d7/:playAudio?api-version=2021-06-15-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.1 (16.0.1; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "X-Cache" : "CONFIG_NOCACHE",
+      "content-length" : "122",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0YK/BYAAAAABHopBv9/jaT7fmCiBRlCo1Q0hHRURHRTE2MTQAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
+      "StatusCode" : "202",
+      "X-Microsoft-Skype-Chain-ID" : "c43d6028-a146-446d-b158-ef9bbbbf3d3d",
+      "Body" : "{\"operationId\":\"6c40aa2b-7cff-42f7-ae5e-4ff3407a1571\",\"status\":\"running\",\"operationContext\":\"ac794123-3820-4979-8e2d-50c7d3e07b12\"}",
+      "Date" : "Thu, 10 Jun 2021 06:21:20 GMT",
+      "Content-Type" : "application/json; charset=utf-8",
+      "Client-Request-Id" : "d9b75393-4b5e-4566-844a-2d55de9bf669"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.communication.azure.com/calling/callConnections/d21f1300-2cee-4b87-ade5-d381d32041d7/:cancelAllMediaOperations?api-version=2021-06-15-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.1 (16.0.1; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "X-Cache" : "CONFIG_NOCACHE",
+      "content-length" : "124",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0Y6/BYAAAAADMQgdTl7v7Q7gut4WETRXWQ0hHRURHRTE2MTQAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
+      "StatusCode" : "200",
+      "X-Microsoft-Skype-Chain-ID" : "65c91265-3298-4919-a290-2c4d622a6a5a",
+      "Body" : "{\"operationId\":\"35568c58-8600-488c-acf2-ed244d74c5da\",\"status\":\"completed\",\"operationContext\":\"ac794123-3820-4979-8e2d-50c7d3e07b13\"}",
+      "Date" : "Thu, 10 Jun 2021 06:21:23 GMT",
+      "Content-Type" : "application/json; charset=utf-8",
+      "Client-Request-Id" : "cc5f2836-97b1-40d8-a88e-35407f8a6864"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.communication.azure.com/calling/callConnections/d21f1300-2cee-4b87-ade5-d381d32041d7/:hangup?api-version=2021-06-15-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.1 (16.0.1; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "X-Cache" : "CONFIG_NOCACHE",
+      "content-length" : "0",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0Zq/BYAAAAADFDfPxMOAPT4ByUUFLGqrdQ0hHRURHRTE2MTQAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
+      "StatusCode" : "202",
+      "X-Microsoft-Skype-Chain-ID" : "e668c3e5-0a52-4c90-85c1-2a9b3923bfa6",
+      "Date" : "Thu, 10 Jun 2021 06:21:26 GMT",
+      "Client-Request-Id" : "783c506a-0a63-4a72-8777-dfbb147f6af0"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

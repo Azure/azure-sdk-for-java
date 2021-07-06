@@ -38,8 +38,8 @@ stages:
         variables:
           - template: ../variables/globals.yml
         pool:
-          name: azsdk-pool-mms-ubuntu-1804-general
-          vmImage: MMSUbuntu18.04
+          name: azsdk-pool-mms-ubuntu-2004-general
+          vmImage: MMSUbuntu20.04
         strategy:
           runOnce:
             deploy:
@@ -78,8 +78,8 @@ stages:
             variables:
               - template: ../variables/globals.yml
             pool:
-              name: azsdk-pool-mms-ubuntu-1804-general
-              vmImage: MMSUbuntu18.04
+              name: azsdk-pool-mms-ubuntu-2004-general
+              vmImage: MMSUbuntu20.04
 
             steps:
               - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
@@ -274,7 +274,13 @@ stages:
                 runOnce:
                   deploy:
                     steps:
-                      - checkout: self
+                      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+                        parameters:
+                          Paths:
+                            - '${{ parameters.ServiceDirectory }}'
+                            - '**/*.xml'
+                            - '!sdk/**/test-recordings'
+                            - '!sdk/**/session-records'
 
                       - task: UsePythonVersion@0
                         displayName: 'Use Python 3.6'

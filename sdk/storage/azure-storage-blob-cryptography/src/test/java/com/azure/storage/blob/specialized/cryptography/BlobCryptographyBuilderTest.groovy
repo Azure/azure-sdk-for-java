@@ -167,4 +167,39 @@ class BlobCryptographyBuilderTest extends APISpec {
         notThrown(IllegalArgumentException)
 
     }
+
+    def "getCustomerProvidedKeyClient"() {
+        setup:
+        CustomerProvidedKey originalKey = new CustomerProvidedKey(getRandomKey())
+        def client = getEncryptedClientBuilder(fakeKey, null, env.primaryAccount.credential, cc.getBlobContainerUrl())
+            .customerProvidedKey(originalKey)
+            .blobName(generateBlobName())
+            .buildEncryptedBlobClient()
+        def newCpk = new CustomerProvidedKey(getRandomKey())
+
+        when:
+        def newClient = client.getCustomerProvidedKeyClient(newCpk)
+
+        then:
+        newClient instanceof EncryptedBlobClient
+        newClient.getCustomerProvidedKey() != client.getCustomerProvidedKey()
+    }
+
+    def "getEncryptionScopeClient"() {
+        setup:
+        def originalScope = "testscope1"
+        def client = getEncryptedClientBuilder(fakeKey, null, env.primaryAccount.credential, cc.getBlobContainerUrl())
+            .encryptionScope(originalScope)
+            .blobName(generateBlobName())
+            .buildEncryptedBlobClient()
+        def newEncryptionScope = "newtestscope"
+
+        when:
+        def newClient = client.getEncryptionScopeClient(newEncryptionScope)
+
+        then:
+        newClient instanceof EncryptedBlobClient
+        newClient.getEncryptionScope() != client.getEncryptionScope()
+
+    }
 }

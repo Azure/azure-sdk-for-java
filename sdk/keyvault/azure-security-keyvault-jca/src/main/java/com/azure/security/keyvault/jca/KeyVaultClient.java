@@ -41,7 +41,7 @@ import static java.util.logging.Level.WARNING;
 /**
  * The REST client specific to Azure Key Vault.
  */
-class KeyVaultClient extends DelegateRestClient {
+public class KeyVaultClient extends DelegateRestClient {
 
     /**
      * Stores the logger.
@@ -57,7 +57,7 @@ class KeyVaultClient extends DelegateRestClient {
     /**
      * Stores the Key Vault cloud URI.
      */
-    private String keyVaultBaseUri;
+    private final String keyVaultBaseUri;
 
     /**
      * Stores the Azure Key Vault URL.
@@ -65,40 +65,29 @@ class KeyVaultClient extends DelegateRestClient {
     private final String keyVaultUrl;
 
     /**
-     * Stores the AAD authentication URL (or null to default to Azure Public
-     * Cloud).
+     * Stores the AAD authentication URL (or null to default to Azure Public Cloud).
      */
-    private String aadAuthenticationUrl;
+    private final String aadAuthenticationUrl;
 
     /**
      * Stores the tenant ID.
      */
-    private String tenantId;
+    private final String tenantId;
 
     /**
      * Stores the client ID.
      */
-    private String clientId;
+    private final String clientId;
 
     /**
      * Stores the client secret.
      */
-    private String clientSecret;
+    private final String clientSecret;
 
     /**
-     * Stores the managed identity (either the user-assigned managed identity
-     * object ID or null if system-assigned)
+     * Stores the managed identity (either the user-assigned managed identity object ID or null if system-assigned)
      */
     private String managedIdentity;
-
-    /**
-     * Constructor for authentication with system-assigned managed identity.
-     *
-     * @param keyVaultUri the Azure Key Vault URI.
-     */
-    KeyVaultClient(String keyVaultUri) {
-        this(keyVaultUri, null, null, null, null);
-    }
 
     /**
      * Constructor for authentication with user-assigned managed identity.
@@ -118,7 +107,7 @@ class KeyVaultClient extends DelegateRestClient {
      * @param clientId the client ID.
      * @param clientSecret the client secret.
      */
-    KeyVaultClient(final String keyVaultUri, final String tenantId, final String clientId, final String clientSecret) {
+    public KeyVaultClient(String keyVaultUri, String tenantId, String clientId, String clientSecret) {
         this(keyVaultUri, tenantId, clientId, clientSecret, null);
     }
 
@@ -139,11 +128,11 @@ class KeyVaultClient extends DelegateRestClient {
             keyVaultUri = keyVaultUri + "/";
         }
         this.keyVaultUrl = keyVaultUri;
-        //Base Uri shouldn't end with a slash.
+        // Base Uri shouldn't end with a slash.
         String domainNameSuffix = Optional.of(keyVaultUri)
                                           .map(uri -> uri.split("\\.", 2)[1])
                                           .map(suffix -> suffix.substring(0, suffix.length() - 1))
-                                          .get();
+                                          .orElse(null);
         keyVaultBaseUri = HTTPS_PREFIX + domainNameSuffix;
         aadAuthenticationUrl = getAADLoginURIByKeyVaultBaseUri(keyVaultBaseUri);
 
@@ -170,7 +159,8 @@ class KeyVaultClient extends DelegateRestClient {
             }
 
             if (tenantId != null && clientId != null && clientSecret != null) {
-                accessToken = authClient.getAccessToken(resource, aadAuthenticationUrl, tenantId, clientId, clientSecret);
+                accessToken = authClient.getAccessToken(resource, aadAuthenticationUrl, tenantId, clientId,
+                    clientSecret);
             } else {
                 accessToken = authClient.getAccessToken(resource, managedIdentity);
             }
@@ -186,7 +176,7 @@ class KeyVaultClient extends DelegateRestClient {
      *
      * @return the list of aliases.
      */
-    List<String> getAliases() {
+    public List<String> getAliases() {
         ArrayList<String> result = new ArrayList<>();
         HashMap<String, String> headers = new HashMap<>();
         headers.put("Authorization", "Bearer " + getAccessToken());
@@ -197,7 +187,8 @@ class KeyVaultClient extends DelegateRestClient {
             CertificateListResult certificateListResult = null;
             if (response != null) {
                 JsonConverter converter = JsonConverterFactory.createJsonConverter();
-                certificateListResult = (CertificateListResult) converter.fromJson(response, CertificateListResult.class);
+                certificateListResult = (CertificateListResult) converter.fromJson(response,
+                    CertificateListResult.class);
             } else {
                 url = null;
             }
@@ -239,7 +230,7 @@ class KeyVaultClient extends DelegateRestClient {
      * @param alias the alias.
      * @return the certificate, or null if not found.
      */
-    Certificate getCertificate(String alias) {
+    public Certificate getCertificate(String alias) {
         LOGGER.entering("KeyVaultClient", "getCertificate", alias);
         LOGGER.log(INFO, "Getting certificate for alias: {0}", alias);
         X509Certificate certificate = null;
@@ -250,7 +241,7 @@ class KeyVaultClient extends DelegateRestClient {
                 try {
                     CertificateFactory cf = CertificateFactory.getInstance("X.509");
                     certificate = (X509Certificate) cf.generateCertificate(
-                            new ByteArrayInputStream(Base64.getDecoder().decode(certificateString))
+                        new ByteArrayInputStream(Base64.getDecoder().decode(certificateString))
                     );
                 } catch (CertificateException ce) {
                     LOGGER.log(WARNING, "Certificate error", ce);
@@ -268,16 +259,16 @@ class KeyVaultClient extends DelegateRestClient {
      * @param password the password.
      * @return the key.
      */
-    Key getKey(String alias, char[] password) {
-        LOGGER.entering("KeyVaultClient", "getKey", new Object[]{alias, password});
+    public Key getKey(String alias, char[] password) {
+        LOGGER.entering("KeyVaultClient", "getKey", new Object[] { alias, password });
         LOGGER.log(INFO, "Getting key for alias: {0}", alias);
         Key key = null;
         CertificateBundle certificateBundle = getCertificateBundle(alias);
         boolean isExportable = Optional.ofNullable(certificateBundle)
-                .map(CertificateBundle::getPolicy)
-                .map(CertificatePolicy::getKeyProperties)
-                .map(KeyProperties::isExportable)
-                .orElse(false);
+                                       .map(CertificateBundle::getPolicy)
+                                       .map(CertificatePolicy::getKeyProperties)
+                                       .map(KeyProperties::isExportable)
+                                       .orElse(false);
         if (isExportable) {
             //
             // Because the certificate is exportable the private key is
@@ -295,8 +286,8 @@ class KeyVaultClient extends DelegateRestClient {
                     try {
                         KeyStore keyStore = KeyStore.getInstance("PKCS12");
                         keyStore.load(
-                                new ByteArrayInputStream(Base64.getDecoder().decode(secretBundle.getValue())),
-                                "".toCharArray()
+                            new ByteArrayInputStream(Base64.getDecoder().decode(secretBundle.getValue())),
+                            "".toCharArray()
                         );
                         alias = keyStore.aliases().nextElement();
                         key = keyStore.getKey(alias, "".toCharArray());
@@ -331,9 +322,9 @@ class KeyVaultClient extends DelegateRestClient {
      * @throws IOException when an I/O error occurs.
      * @throws NoSuchAlgorithmException when algorithm is unavailable.
      * @throws InvalidKeySpecException when the private key cannot be generated.
-     * */
+     */
     private PrivateKey createPrivateKeyFromPem(String pemString)
-            throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
+        throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
         StringBuilder builder = new StringBuilder();
         try (BufferedReader reader = new BufferedReader(new StringReader(pemString))) {
             String line = reader.readLine();

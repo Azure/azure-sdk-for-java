@@ -1,3 +1,13 @@
+---
+page_type: sample
+languages:
+- java
+products:
+- azure-app-configuration
+description: "Sample project for Azure Spring Cloud Config Conversion client library"
+urlFragment: "azure-appconfiguration-conversion-sample-initial"
+---
+
 # Spring Cloud Azure Config Conversion Sample client library for Java
 
 This sample shows how to convert a Spring Cloud Application with Cosmos DB to be using App Configuration + Key Vault
@@ -289,4 +299,4 @@ In this section, you clone a containerized Spring Boot application and test it l
 ## Contributing
 
 <!-- LINKS -->
-[environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
+[environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist

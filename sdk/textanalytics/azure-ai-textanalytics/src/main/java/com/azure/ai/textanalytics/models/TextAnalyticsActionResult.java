@@ -4,6 +4,7 @@
 package com.azure.ai.textanalytics.models;
 
 import com.azure.ai.textanalytics.implementation.TextAnalyticsActionResultPropertiesHelper;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.time.OffsetDateTime;
@@ -12,6 +13,7 @@ import java.util.Locale;
 /**
  * The {@link TextAnalyticsActionResult} model.
  */
+@Immutable
 public class TextAnalyticsActionResult {
     private final ClientLogger logger = new ClientLogger(TextAnalyticsActionResult.class);
 
@@ -23,8 +25,8 @@ public class TextAnalyticsActionResult {
         TextAnalyticsActionResultPropertiesHelper.setAccessor(
             new TextAnalyticsActionResultPropertiesHelper.TextAnalyticsActionResultAccessor() {
                 @Override
-                public void setCompletedAt(TextAnalyticsActionResult actionsResult, OffsetDateTime completedAt) {
-                    actionsResult.setCompletedAt(completedAt);
+                public void setCompletedAt(TextAnalyticsActionResult actionResult, OffsetDateTime completedAt) {
+                    actionResult.setCompletedAt(completedAt);
                 }
 
                 @Override

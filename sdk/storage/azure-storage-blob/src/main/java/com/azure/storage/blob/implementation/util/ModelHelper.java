@@ -18,10 +18,13 @@ import com.azure.storage.blob.implementation.models.BlobsDownloadHeaders;
 import com.azure.storage.blob.implementation.models.FilterBlobItem;
 import com.azure.storage.blob.models.BlobBeginCopySourceRequestConditions;
 import com.azure.storage.blob.models.BlobDownloadHeaders;
+import com.azure.storage.blob.models.BlobImmutabilityPolicy;
+import com.azure.storage.blob.models.BlobImmutabilityPolicyMode;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobItemProperties;
 import com.azure.storage.blob.models.BlobLeaseRequestConditions;
 import com.azure.storage.blob.models.BlobQueryHeaders;
+import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.ObjectReplicationPolicy;
 import com.azure.storage.blob.models.ObjectReplicationRule;
 import com.azure.storage.blob.models.ObjectReplicationStatus;
@@ -35,6 +38,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -239,6 +243,13 @@ public class ModelHelper {
         headers.setObjectReplicationSourcePolicies(objectReplicationSourcePolicies);
         headers.setSealed(internalHeaders.isXMsBlobSealed());
         headers.setLastAccessedTime(internalHeaders.getXMsLastAccessTime());
+        headers.setCurrentVersion(internalHeaders.isXMsIsCurrentVersion());
+
+        headers.setImmutabilityPolicy(new BlobImmutabilityPolicy()
+            .setPolicyMode(internalHeaders.getXMsImmutabilityPolicyMode() == null ? null
+            : BlobImmutabilityPolicyMode.fromString(internalHeaders.getXMsImmutabilityPolicyMode()))
+            .setExpiryTime(internalHeaders.getXMsImmutabilityPolicyUntilDate()));
+        headers.setHasLegalHold(internalHeaders.isXMsLegalHold());
 
         return headers;
     }
@@ -264,6 +275,8 @@ public class ModelHelper {
 
         blobItem.setObjectReplicationSourcePolicies(
             transformObjectReplicationMetadata(blobItemInternal.getObjectReplicationMetadata()));
+
+        blobItem.setHasVersionsOnly(blobItemInternal.isHasVersionsOnly());
 
         return blobItem;
     }
@@ -329,6 +342,11 @@ public class ModelHelper {
         blobItemProperties.setRehydratePriority(blobItemPropertiesInternal.getRehydratePriority());
         blobItemProperties.setSealed(blobItemPropertiesInternal.isSealed());
         blobItemProperties.setLastAccessedTime(blobItemPropertiesInternal.getLastAccessedOn());
+        blobItemProperties.setExpiryTime(blobItemPropertiesInternal.getExpiresOn());
+        blobItemProperties.setImmutabilityPolicy(new BlobImmutabilityPolicy()
+            .setExpiryTime(blobItemPropertiesInternal.getImmutabilityPolicyExpiresOn())
+            .setPolicyMode(blobItemPropertiesInternal.getImmutabilityPolicyMode()));
+        blobItemProperties.setHasLegalHold(blobItemPropertiesInternal.isLegalHold());
 
         return blobItemProperties;
     }
@@ -482,6 +500,69 @@ public class ModelHelper {
             return SERIALIZER.deserialize(headers, BlobQueryHeaders.class);
         } catch (IOException e) {
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
+    }
+
+    public static void validateConditionsNotPresent(BlobRequestConditions requestConditions,
+        EnumSet<BlobRequestConditionProperty> invalidConditions, String operationName, String parameterName) {
+        if (requestConditions == null) {
+            return;
+        }
+        List<String> invalidConditionsFound = null;
+
+        for (BlobRequestConditionProperty condition : invalidConditions) {
+            switch (condition) {
+                case LEASE_ID:
+                    if (requestConditions.getLeaseId() != null) {
+                        invalidConditionsFound = invalidConditionsFound == null ? new ArrayList<>()
+                            : invalidConditionsFound;
+                        invalidConditionsFound.add(BlobRequestConditionProperty.LEASE_ID.toString());
+                    }
+                    break;
+                case TAGS_CONDITIONS:
+                    if (requestConditions.getTagsConditions() != null) {
+                        invalidConditionsFound = invalidConditionsFound == null ? new ArrayList<>()
+                            : invalidConditionsFound;
+                        invalidConditionsFound.add(BlobRequestConditionProperty.TAGS_CONDITIONS.toString());
+                    }
+                    break;
+                case IF_MODIFIED_SINCE:
+                    if (requestConditions.getIfModifiedSince() != null) {
+                        invalidConditionsFound = invalidConditionsFound == null ? new ArrayList<>()
+                            : invalidConditionsFound;
+                        invalidConditionsFound.add(BlobRequestConditionProperty.IF_MODIFIED_SINCE.toString());
+                    }
+                    break;
+                case IF_UNMODIFIED_SINCE:
+                    if (requestConditions.getIfUnmodifiedSince() != null) {
+                        invalidConditionsFound = invalidConditionsFound == null ? new ArrayList<>()
+                            : invalidConditionsFound;
+                        invalidConditionsFound.add(BlobRequestConditionProperty.IF_UNMODIFIED_SINCE.toString());
+                    }
+                    break;
+                case IF_MATCH:
+                    if (requestConditions.getIfMatch() != null) {
+                        invalidConditionsFound = invalidConditionsFound == null ? new ArrayList<>()
+                            : invalidConditionsFound;
+                        invalidConditionsFound.add(BlobRequestConditionProperty.IF_MATCH.toString());
+                    }
+                    break;
+                case IF_NONE_MATCH:
+                    if (requestConditions.getIfNoneMatch() != null) {
+                        invalidConditionsFound = invalidConditionsFound == null ? new ArrayList<>()
+                            : invalidConditionsFound;
+                        invalidConditionsFound.add(BlobRequestConditionProperty.IF_NONE_MATCH.toString());
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+        if (invalidConditionsFound != null && !invalidConditionsFound.isEmpty()) {
+            String unsupported = String.join(", ", invalidConditionsFound);
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("%s does not support the %s request condition(s) for parameter '%s'.",
+                    operationName, unsupported, parameterName)));
         }
     }
 }

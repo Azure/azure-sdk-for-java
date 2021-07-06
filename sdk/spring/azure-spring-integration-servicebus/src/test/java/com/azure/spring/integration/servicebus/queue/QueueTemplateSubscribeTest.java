@@ -8,12 +8,12 @@ import com.azure.spring.integration.servicebus.converter.ServiceBusMessageConver
 import com.azure.spring.integration.servicebus.factory.ServiceBusQueueClientFactory;
 import com.azure.spring.integration.servicebus.support.ServiceBusProcessorClientWrapper;
 import com.azure.spring.integration.test.support.SubscribeOperationTest;
-import org.junit.Before;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.MockitoAnnotations;
 
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
@@ -22,7 +22,6 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
 public class QueueTemplateSubscribeTest extends SubscribeOperationTest<ServiceBusQueueOperation> {
 
     @Mock
@@ -30,13 +29,20 @@ public class QueueTemplateSubscribeTest extends SubscribeOperationTest<ServiceBu
 
     private ServiceBusProcessorClientWrapper processorClientWrapper;
 
-    @Before
+    private AutoCloseable closeable;
+
+    @BeforeEach
     public void setUp() {
+        this.closeable = MockitoAnnotations.openMocks(this);
         this.processorClientWrapper = new ServiceBusProcessorClientWrapper();
         this.subscribeOperation = new ServiceBusQueueTemplate(mockClientFactory, new ServiceBusMessageConverter());
         when(this.mockClientFactory.getOrCreateProcessor(eq(this.destination), any(), any())).thenReturn(
             processorClientWrapper.getClient());
+    }
 
+    @AfterEach
+    public void close() throws Exception {
+        closeable.close();
     }
 
     @Override

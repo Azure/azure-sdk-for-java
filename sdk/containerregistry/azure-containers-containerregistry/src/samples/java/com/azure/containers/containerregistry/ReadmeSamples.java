@@ -4,10 +4,13 @@ package com.azure.containers.containerregistry;
 
 import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
 import com.azure.containers.containerregistry.models.ArtifactTagProperties;
-import com.azure.containers.containerregistry.models.ManifestOrderBy;
+import com.azure.containers.containerregistry.models.ArtifactManifestOrderBy;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.management.AzureEnvironment;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -92,8 +95,8 @@ public class ReadmeSamples {
 
             // Obtain the images ordered from newest to oldest
             PagedIterable<ArtifactManifestProperties> imageManifests =
-                repository.listManifests(
-                    ManifestOrderBy.LAST_UPDATED_ON_DESCENDING,
+                repository.listManifestProperties(
+                    ArtifactManifestOrderBy.LAST_UPDATED_ON_DESCENDING,
                     Context.NONE);
 
             imageManifests.stream().skip(imagesCountToKeep)
@@ -133,15 +136,15 @@ public class ReadmeSamples {
     private final String os = "os";
     private final String digest = "digest";
 
-    public void listTags() {
+    public void listTagProperties() {
         ContainerRegistryClient anonymousClient = new ContainerRegistryClientBuilder()
             .endpoint(endpoint)
             .buildClient();
 
         RegistryArtifact image = anonymousClient.getArtifact(repositoryName, digest);
-        PagedIterable<ArtifactTagProperties> tags = image.listTags();
+        PagedIterable<ArtifactTagProperties> tags = image.listTagProperties();
 
-        System.out.printf(String.format("%s has the following aliases:", image.getFullyQualifiedName()));
+        System.out.printf(String.format("%s has the following aliases:", image.getFullyQualifiedReference()));
 
         for (ArtifactTagProperties tag : tags) {
             System.out.printf(String.format("%s/%s:%s", anonymousClient.getEndpoint(), repositoryName, tag.getName()));
@@ -159,7 +162,7 @@ public class ReadmeSamples {
         try {
             anonymousClient.deleteRepository(repositoryName);
             System.out.println("Unexpected Success: Delete is not allowed on anonymous access");
-        } catch (Exception ex) {
+        } catch (ClientAuthenticationException ex) {
             System.out.println("Expected exception: Delete is not allowed on anonymous access");
         }
     }
@@ -176,5 +179,22 @@ public class ReadmeSamples {
         return null;
     }
 
+    public void authenticationScopeSample() {
+        AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE_US_GOVERNMENT);
+        TokenCredential credentials = new DefaultAzureCredentialBuilder()
+            .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
+            .build();
+
+        final String authenticationScope = "https://management.usgovcloudapi.net/.default";
+        ContainerRegistryClient containerRegistryClient = new ContainerRegistryClientBuilder()
+            .endpoint(getEndpoint())
+            .credential(credentials)
+            .authenticationScope(authenticationScope)
+            .buildClient();
+
+        containerRegistryClient
+            .listRepositoryNames()
+            .forEach(name -> System.out.println(name));
+    }
 }
 

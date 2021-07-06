@@ -220,7 +220,11 @@ public abstract class IntegrationTestBase extends TestBase {
     }
 
     protected static ConnectionStringProperties getConnectionStringProperties() {
-        return new ConnectionStringProperties(getConnectionString());
+        return new ConnectionStringProperties(getConnectionString(false));
+    }
+
+    protected static ConnectionStringProperties getConnectionStringProperties(boolean withSas) {
+        return new ConnectionStringProperties(getConnectionString(withSas));
     }
 
     /**
@@ -289,8 +293,7 @@ public abstract class IntegrationTestBase extends TestBase {
             try {
                 closeable.close();
             } catch (IOException error) {
-                logger.error(String.format("[%s]: %s didn't close properly.", testName,
-                    closeable.getClass().getSimpleName()), error);
+                logger.error("[{}]: {} didn't close properly.", testName, closeable.getClass().getSimpleName(), error);
             }
         }
     }

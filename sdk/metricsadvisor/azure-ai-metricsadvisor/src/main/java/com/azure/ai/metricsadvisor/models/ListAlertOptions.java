@@ -3,9 +3,12 @@
 
 package com.azure.ai.metricsadvisor.models;
 
+import com.azure.core.annotation.Fluent;
+
 /**
  * Describes the additional parameters for the API to list the alerts triggered.
  */
+@Fluent
 public final class ListAlertOptions {
     private Integer maxPageSize;
     private Integer skip;
@@ -32,9 +35,9 @@ public final class ListAlertOptions {
     }
 
     /**
-     * Gets limit indicating the number of items to be included in a service returned page.
+     * Gets limit indicating the number of items that will be included in a service returned page.
      *
-     * @return The maxPageSize value.
+     * @return The max page size value.
      */
     public Integer getMaxPageSize() {
         return this.maxPageSize;
@@ -53,10 +56,10 @@ public final class ListAlertOptions {
     /**
      * Sets limit indicating the number of items to be included in a service returned page.
      *
-     * @param maxPageSize The skip value.
+     * @param maxPageSize The max page size value.
      * @return ListAlertOptions itself.
      */
-    public ListAlertOptions setMaxPageSize(int maxPageSize) {
+    public ListAlertOptions setMaxPageSize(Integer maxPageSize) {
         this.maxPageSize = maxPageSize;
         return this;
     }
@@ -68,7 +71,7 @@ public final class ListAlertOptions {
      * @param skip The skip value.
      * @return ListAlertOptions itself.
      */
-    public ListAlertOptions setSkip(int skip) {
+    public ListAlertOptions setSkip(Integer skip) {
         this.skip = skip;
         return this;
     }
