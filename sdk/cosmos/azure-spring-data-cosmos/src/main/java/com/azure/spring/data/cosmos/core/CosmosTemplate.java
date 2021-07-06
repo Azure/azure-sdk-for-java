@@ -474,8 +474,9 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                     cosmosContainerResponseMono =
                         cosmosAsyncDatabase.createContainerIfNotExists(cosmosContainerProperties);
                 } else {
-                    ThroughputProperties throughputProperties =
-                        ThroughputProperties.createManualThroughput(information.getRequestUnit());
+                    ThroughputProperties throughputProperties = information.isAutoScale()
+                        ? ThroughputProperties.createAutoscaledThroughput(information.getRequestUnit())
+                        : ThroughputProperties.createManualThroughput(information.getRequestUnit());
                     cosmosContainerResponseMono =
                         cosmosAsyncDatabase.createContainerIfNotExists(cosmosContainerProperties,
                             throughputProperties);

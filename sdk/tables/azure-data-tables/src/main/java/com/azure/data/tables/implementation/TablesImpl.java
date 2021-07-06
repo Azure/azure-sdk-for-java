@@ -39,10 +39,9 @@ import com.azure.data.tables.implementation.models.TablesQueryEntityWithPartitio
 import com.azure.data.tables.implementation.models.TablesQueryResponse;
 import com.azure.data.tables.implementation.models.TablesSetAccessPolicyResponse;
 import com.azure.data.tables.implementation.models.TablesUpdateEntityResponse;
-import reactor.core.publisher.Mono;
-
 import java.util.List;
 import java.util.Map;
+import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Tables. */
 public final class TablesImpl {

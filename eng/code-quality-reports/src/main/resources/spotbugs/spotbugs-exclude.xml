@@ -2486,7 +2486,7 @@
 
   <!-- Two clients in Confidential Ledger share the same builder resulting unused field in each  -->
   <Match>
-    <Class name="~com\.azure\.data\.confidentialledger\.\w+BaseClient"/>
+    <Class name="~com\.azure\.security\.confidentialledger\.\w+BaseClient"/>
     <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
 
