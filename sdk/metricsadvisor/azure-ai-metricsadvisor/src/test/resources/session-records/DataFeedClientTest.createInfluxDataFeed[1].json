@@ -4,60 +4,60 @@
     "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/dataFeeds",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.5 (11.0.11; Mac OS X; 11.4)",
-      "x-ms-client-request-id" : "0f1be6df-7f92-4bbf-b840-54b9eb416f4f",
+      "x-ms-client-request-id" : "e8379223-2e3c-4db7-a07e-55cb98a43527",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "x-request-id" : "aa78b826-9938-4f4d-88ad-c86ab2c469a5",
+      "x-request-id" : "7380b669-55cc-4637-8f4b-ccde0c34b9ab",
       "content-length" : "0",
-      "x-envoy-upstream-service-time" : "616",
+      "x-envoy-upstream-service-time" : "1331",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "aa78b826-9938-4f4d-88ad-c86ab2c469a5",
+      "apim-request-id" : "7380b669-55cc-4637-8f4b-ccde0c34b9ab",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "Date" : "Mon, 21 Jun 2021 23:23:28 GMT",
-      "Location" : "https://js-metrics-advisor.cognitiveservices.azure.com/metricsadvisor/v1.0/dataFeeds/57b61ed1-bc9e-4785-834c-fae40fd8bcd7"
+      "Date" : "Tue, 06 Jul 2021 19:51:33 GMT",
+      "Location" : "https://js-metrics-advisor.cognitiveservices.azure.com/metricsadvisor/v1.0/dataFeeds/f178dcf7-314e-4dc5-82ac-fe301fc31395"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/dataFeeds/57b61ed1-bc9e-4785-834c-fae40fd8bcd7",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/dataFeeds/f178dcf7-314e-4dc5-82ac-fe301fc31395",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.5 (11.0.11; Mac OS X; 11.4)",
-      "x-ms-client-request-id" : "4c9ca0be-7844-4a49-9c73-af06d62f6fae"
+      "x-ms-client-request-id" : "c53a64c7-0c32-4398-8cfe-973c271fe842"
     },
     "Response" : {
-      "x-request-id" : "ad904d4c-bf80-44f5-8ea6-ea9a1ad8ee94",
+      "x-request-id" : "c26d3e3c-b2c2-4e96-9aea-30a05343261c",
       "content-length" : "1380",
-      "x-envoy-upstream-service-time" : "118",
+      "x-envoy-upstream-service-time" : "171",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "ad904d4c-bf80-44f5-8ea6-ea9a1ad8ee94",
+      "apim-request-id" : "c26d3e3c-b2c2-4e96-9aea-30a05343261c",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"dataFeedId\":\"57b61ed1-bc9e-4785-834c-fae40fd8bcd7\",\"dataFeedName\":\"java_create_data_feed_test_sample846e043b-09db-4282-8469-ad0140f5f978\",\"metrics\":[{\"metricId\":\"b1e77869-6e22-4ef9-97b2-cb27fe518bba\",\"metricName\":\"cost\",\"metricDisplayName\":\"cost\",\"metricDescription\":\"\"},{\"metricId\":\"92a09f65-b9d6-438c-b401-a118c3a42b41\",\"metricName\":\"revenue\",\"metricDisplayName\":\"revenue\",\"metricDescription\":\"\"}],\"dimension\":[{\"dimensionName\":\"category\",\"dimensionDisplayName\":\"category\"},{\"dimensionName\":\"city\",\"dimensionDisplayName\":\"city\"}],\"dataStartFrom\":\"2019-10-01T00:00:00Z\",\"dataSourceType\":\"InfluxDB\",\"timestampColumn\":\"\",\"startOffsetInSeconds\":0,\"maxQueryPerMinute\":30.0,\"granularityName\":\"Daily\",\"needRollup\":\"NoRollup\",\"fillMissingPointType\":\"PreviousValue\",\"fillMissingPointValue\":0.0,\"rollUpMethod\":\"None\",\"dataFeedDescription\":\"\",\"stopRetryAfterInSeconds\":-1,\"minRetryIntervalInSeconds\":-1,\"maxConcurrency\":0,\"viewMode\":\"Private\",\"admins\":[\"f850650c-1fcf-4489-b46f-71af2e30d360\"],\"viewers\":[],\"creator\":\"f850650c-1fcf-4489-b46f-71af2e30d360\",\"status\":\"Active\",\"createdTime\":\"2021-06-21T23:23:27Z\",\"isAdmin\":true,\"actionLinkTemplate\":\"\",\"dataSourceParameter\":{\"connectionString\":\"REDACTED\",\"database\":\"adsample\",\"query\":\"select * from adsample2 where Timestamp = @StartTime\",\"userName\":\"REDACTED\"},\"authenticationType\":\"Basic\"}",
-      "Date" : "Mon, 21 Jun 2021 23:23:27 GMT",
+      "Body" : "{\"dataFeedId\":\"f178dcf7-314e-4dc5-82ac-fe301fc31395\",\"dataFeedName\":\"java_create_data_feed_test_sample63bdef85-f097-401d-80e5-286167eecb5d\",\"metrics\":[{\"metricId\":\"ab4b914a-73f5-446e-9431-850e774702d9\",\"metricName\":\"cost\",\"metricDisplayName\":\"cost\",\"metricDescription\":\"\"},{\"metricId\":\"5c9850f2-b926-413b-ab2a-6547cc530d65\",\"metricName\":\"revenue\",\"metricDisplayName\":\"revenue\",\"metricDescription\":\"\"}],\"dimension\":[{\"dimensionName\":\"category\",\"dimensionDisplayName\":\"category\"},{\"dimensionName\":\"city\",\"dimensionDisplayName\":\"city\"}],\"dataStartFrom\":\"2019-10-01T00:00:00Z\",\"dataSourceType\":\"InfluxDB\",\"timestampColumn\":\"\",\"startOffsetInSeconds\":0,\"maxQueryPerMinute\":30.0,\"granularityName\":\"Daily\",\"needRollup\":\"NoRollup\",\"fillMissingPointType\":\"PreviousValue\",\"fillMissingPointValue\":0.0,\"rollUpMethod\":\"None\",\"dataFeedDescription\":\"\",\"stopRetryAfterInSeconds\":-1,\"minRetryIntervalInSeconds\":-1,\"maxConcurrency\":0,\"viewMode\":\"Private\",\"admins\":[\"f850650c-1fcf-4489-b46f-71af2e30d360\"],\"viewers\":[],\"creator\":\"f850650c-1fcf-4489-b46f-71af2e30d360\",\"status\":\"Active\",\"createdTime\":\"2021-07-06T19:51:33Z\",\"isAdmin\":true,\"actionLinkTemplate\":\"\",\"dataSourceParameter\":{\"connectionString\":\"REDACTED\",\"database\":\"adsample\",\"query\":\"select * from adsample2 where Timestamp = @StartTime\",\"userName\":\"REDACTED\"},\"authenticationType\":\"Basic\"}",
+      "Date" : "Tue, 06 Jul 2021 19:51:34 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/dataFeeds/57b61ed1-bc9e-4785-834c-fae40fd8bcd7",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/dataFeeds/f178dcf7-314e-4dc5-82ac-fe301fc31395",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.5 (11.0.11; Mac OS X; 11.4)",
-      "x-ms-client-request-id" : "4fedf39b-b562-47bd-82a1-7d7524bb6849"
+      "x-ms-client-request-id" : "38935211-7489-44c0-bbe1-4493e4bc0ffc"
     },
     "Response" : {
-      "x-request-id" : "c48d77fd-ac0a-487e-832d-1e3d7046597d",
+      "x-request-id" : "c930801a-8e9a-434b-b6f1-ea11a996e03f",
       "content-length" : "0",
-      "x-envoy-upstream-service-time" : "327",
+      "x-envoy-upstream-service-time" : "697",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "c48d77fd-ac0a-487e-832d-1e3d7046597d",
+      "apim-request-id" : "c930801a-8e9a-434b-b6f1-ea11a996e03f",
       "retry-after" : "0",
       "StatusCode" : "204",
-      "Date" : "Mon, 21 Jun 2021 23:23:28 GMT"
+      "Date" : "Tue, 06 Jul 2021 19:51:34 GMT"
     },
     "Exception" : null
   } ],
