@@ -4,7 +4,12 @@
 
 ### Dependency Updates
 
-- Updated `api-version` to `2021-04-01`
+- Updated `api-version` to `2021-04-01`.
+
+### Breaking Changes
+
+- Class `Unit` is renamed to `MetricUnit`.
+- Class `AggregationType` is renamed to `AggregationTypeEnum`.
 
 ## 2.6.0 (2021-06-18)
 
