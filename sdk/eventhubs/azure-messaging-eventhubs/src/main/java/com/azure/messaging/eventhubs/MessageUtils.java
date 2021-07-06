@@ -48,13 +48,13 @@ final class MessageUtils {
     static Message toProtonJMessage(AmqpAnnotatedMessage message) {
         Objects.requireNonNull(message, "'message' to serialize cannot be null.");
 
-        final Message response = Proton.message();
+        final Message protonJMessage = Proton.message();
 
         //TODO (conniey): support AMQP sequence and AMQP value.
         final AmqpMessageBody body = message.getBody();
         switch (body.getBodyType()) {
             case DATA:
-                response.setBody(new Data(new Binary(body.getFirstData())));
+                protonJMessage.setBody(new Data(new Binary(body.getFirstData())));
                 break;
             case VALUE:
             case SEQUENCE:
@@ -66,82 +66,120 @@ final class MessageUtils {
         // Setting message properties.
         final AmqpMessageProperties properties = message.getProperties();
         if (properties.getMessageId() != null) {
-            response.setMessageId(properties.getMessageId().toString());
+            protonJMessage.setMessageId(properties.getMessageId().toString());
         }
 
-        response.setContentType(properties.getContentType());
+        if (properties.getContentType() != null) {
+            protonJMessage.setContentType(properties.getContentType());
+        }
 
         if (properties.getCorrelationId() != null) {
-            response.setCorrelationId(properties.getCorrelationId().toString());
+            protonJMessage.setCorrelationId(properties.getCorrelationId().toString());
         }
 
-        response.setSubject(properties.getSubject());
+        if (properties.getSubject() != null) {
+            protonJMessage.setSubject(properties.getSubject());
+        }
 
         final AmqpAddress replyTo = properties.getReplyTo();
-        response.setReplyTo(replyTo != null ? replyTo.toString() : null);
+        if (replyTo != null) {
+            protonJMessage.setReplyTo(replyTo.toString());
+        }
 
-        response.setReplyToGroupId(properties.getReplyToGroupId());
-        response.setGroupId(properties.getGroupId());
-        response.setContentEncoding(properties.getContentEncoding());
+        if (properties.getReplyToGroupId() != null) {
+            protonJMessage.setReplyToGroupId(properties.getReplyToGroupId());
+        }
+
+        if (properties.getGroupId() != null) {
+            protonJMessage.setGroupId(properties.getGroupId());
+        }
+
+        if (properties.getContentEncoding() != null) {
+            protonJMessage.setContentEncoding(properties.getContentEncoding());
+        }
 
         if (properties.getGroupSequence() != null) {
-            response.setGroupSequence(properties.getGroupSequence());
+            protonJMessage.setGroupSequence(properties.getGroupSequence());
         }
 
-        final AmqpAddress messageTo = properties.getTo();
-        if (response.getProperties() == null) {
-            response.setProperties(new Properties());
+        if (properties.getTo() != null) {
+            if (protonJMessage.getProperties() == null) {
+                protonJMessage.setProperties(new Properties());
+            }
+
+            protonJMessage.getProperties().setTo(properties.getTo().toString());
         }
 
-        response.getProperties().setTo(messageTo != null ? messageTo.toString() : null);
+        // The default is byte[0] when getting a user id that has not been set.
+        if (properties.getUserId() != null && properties.getUserId().length > 0) {
+            if (protonJMessage.getProperties() == null) {
+                protonJMessage.setProperties(new Properties());
+            }
 
-        response.getProperties().setUserId(new Binary(properties.getUserId()));
+            protonJMessage.getProperties().setUserId(new Binary(properties.getUserId()));
+        }
 
         if (properties.getAbsoluteExpiryTime() != null) {
-            response.getProperties().setAbsoluteExpiryTime(
+            if (protonJMessage.getProperties() == null) {
+                protonJMessage.setProperties(new Properties());
+            }
+
+            protonJMessage.getProperties().setAbsoluteExpiryTime(
                 Date.from(properties.getAbsoluteExpiryTime().toInstant()));
         }
 
         if (properties.getCreationTime() != null) {
-            response.getProperties().setCreationTime(Date.from(properties.getCreationTime().toInstant()));
+            if (protonJMessage.getProperties() == null) {
+                protonJMessage.setProperties(new Properties());
+            }
+
+            protonJMessage.getProperties().setCreationTime(Date.from(properties.getCreationTime().toInstant()));
         }
 
         // Set header
         final AmqpMessageHeader header = message.getHeader();
         if (header.getTimeToLive() != null) {
-            response.setTtl(header.getTimeToLive().toMillis());
+            protonJMessage.setTtl(header.getTimeToLive().toMillis());
         }
         if (header.getDeliveryCount() != null) {
-            response.setDeliveryCount(header.getDeliveryCount());
+            protonJMessage.setDeliveryCount(header.getDeliveryCount());
         }
         if (header.getPriority() != null) {
-            response.setPriority(header.getPriority());
+            protonJMessage.setPriority(header.getPriority());
         }
         if (header.isDurable() != null) {
-            response.setDurable(header.isDurable());
+            protonJMessage.setDurable(header.isDurable());
         }
         if (header.isFirstAcquirer() != null) {
-            response.setFirstAcquirer(header.isFirstAcquirer());
+            protonJMessage.setFirstAcquirer(header.isFirstAcquirer());
         }
         if (header.getTimeToLive() != null) {
-            response.setTtl(header.getTimeToLive().toMillis());
+            protonJMessage.setTtl(header.getTimeToLive().toMillis());
         }
 
         // Set footer
-        response.setFooter(new Footer(message.getFooter()));
+        if (!message.getFooter().isEmpty()) {
+            protonJMessage.setFooter(new Footer(message.getFooter()));
+        }
 
         // Set message annotations.
         final Map<Symbol, Object> messageAnnotations = convert(message.getMessageAnnotations());
-        response.setMessageAnnotations(new MessageAnnotations(messageAnnotations));
+        if (!messageAnnotations.isEmpty()) {
+            protonJMessage.setMessageAnnotations(new MessageAnnotations(messageAnnotations));
+        }
 
         // Set Delivery Annotations.
         final Map<Symbol, Object> deliveryAnnotations = convert(message.getDeliveryAnnotations());
-        response.setDeliveryAnnotations(new DeliveryAnnotations(deliveryAnnotations));
+        if (!deliveryAnnotations.isEmpty()) {
+            protonJMessage.setDeliveryAnnotations(new DeliveryAnnotations(deliveryAnnotations));
+        }
 
         // Set application properties
-        response.setApplicationProperties(new ApplicationProperties(message.getApplicationProperties()));
+        if (!message.getApplicationProperties().isEmpty()) {
+            protonJMessage.setApplicationProperties(new ApplicationProperties(message.getApplicationProperties()));
+        }
 
-        return response;
+        return protonJMessage;
     }
 
     /**

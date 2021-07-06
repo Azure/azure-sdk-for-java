@@ -204,14 +204,16 @@ public final class EventDataBatch {
         final AmqpAnnotatedMessage amqpAnnotatedMessage = event.getRawAmqpMessage();
         final Message protonJ = MessageUtils.toProtonJMessage(amqpAnnotatedMessage);
 
-        if (partitionKey != null) {
-            if (protonJ.getMessageAnnotations() == null) {
-                protonJ.setMessageAnnotations(new MessageAnnotations(new HashMap<>()));
-            }
-
-            final MessageAnnotations messageAnnotations = protonJ.getMessageAnnotations();
-            messageAnnotations.getValue().put(AmqpConstants.PARTITION_KEY, partitionKey);
+        if (partitionKey == null) {
+            return protonJ;
         }
+
+        if (protonJ.getMessageAnnotations() == null) {
+            protonJ.setMessageAnnotations(new MessageAnnotations(new HashMap<>()));
+        }
+
+        final MessageAnnotations messageAnnotations = protonJ.getMessageAnnotations();
+        messageAnnotations.getValue().put(AmqpConstants.PARTITION_KEY, partitionKey);
 
         return protonJ;
     }
