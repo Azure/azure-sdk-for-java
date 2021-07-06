@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.nio.ByteBuffer;
+import java.util.Date;
 import java.util.HashMap;
 
 import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
@@ -49,7 +50,7 @@ public class EventDataTest {
         final EventData eventData = new EventData("Test".getBytes());
 
         // Assert
-        Assertions.assertNotNull(eventData.getRawAmqpMessage().getProperties());
+        Assertions.assertNotNull(eventData.getSystemProperties());
         Assertions.assertNotNull(eventData.getBody());
         Assertions.assertNotNull(eventData.getProperties());
     }
@@ -87,10 +88,11 @@ public class EventDataTest {
     @Test
     public void testSystemProperties() {
         EventData eventData = constructMessage(5);
-        Assertions.assertEquals(4, eventData.getRawAmqpMessage().getMessageAnnotations().size());
-        Assertions.assertEquals(OFFSET, (Long) eventData.getRawAmqpMessage().getMessageAnnotations().get(OFFSET_ANNOTATION_NAME.getValue()));
-        Assertions.assertEquals(5L, (Long) eventData.getRawAmqpMessage().getMessageAnnotations().get(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue()));
-        Assertions.assertEquals(ENQUEUED_TIME, eventData.getRawAmqpMessage().getMessageAnnotations().get(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue()));
+        Assertions.assertEquals(3, eventData.getSystemProperties().size());
+        Assertions.assertEquals(OFFSET, eventData.getSystemProperties().get(OFFSET_ANNOTATION_NAME.getValue()));
+        Assertions.assertEquals(5L, eventData.getSystemProperties().get(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue()));
+        Assertions.assertEquals(ENQUEUED_TIME,
+            eventData.getSystemProperties().get(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue()));
     }
 
     /**
@@ -99,9 +101,9 @@ public class EventDataTest {
     private static EventData constructMessage(long sequenceNumber) {
         final HashMap<Symbol, Object> properties = new HashMap<>();
         properties.put(getSymbol(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue()), sequenceNumber);
-        properties.put(getSymbol(OFFSET_ANNOTATION_NAME.getValue()), OFFSET);
+        properties.put(getSymbol(OFFSET_ANNOTATION_NAME.getValue()), String.valueOf(OFFSET));
         properties.put(getSymbol(PARTITION_KEY_ANNOTATION_NAME.getValue()), PARTITION_KEY);
-        properties.put(getSymbol(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue()), ENQUEUED_TIME);
+        properties.put(getSymbol(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue()), Date.from(ENQUEUED_TIME));
 
         final byte[] contents = "boo".getBytes(UTF_8);
         final Message message = Proton.message();
