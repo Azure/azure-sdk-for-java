@@ -1,6 +1,45 @@
 # Release History
 
-## 3.4.0-beta.1 (Unreleased)
+## 3.7.0-beta.1 (Unreleased)
+
+
+## 3.6.0 (2021-06-23)
+### Breaking Changes
+
+### Deprecations
+- Deprecate aad.group.enable-full-list, use aad.group.allowed-group-ids=all instead.
+- Deprecate `allowTelemetry` configuration item.
+
+### New Features
+- Support domain_hint in aad-starter.([#21517](https://github.com/Azure/azure-sdk-for-java/issues/21517))
+- "aad.group.allowed-group-ids=all" can be used to map all group ids to GrantedAuthority (ROLE_group_id). 
+  And it can work together with group names configured by "aad.group.allowed-group-names" (ROLE_group_name).[#21983](https://github.com/Azure/azure-sdk-for-java/issues/21983)
+
+
+## 3.5.0 (2021-05-24)
+### New Features
+- Add `AADB2CTrustedIssuerRepository` to manage the trusted issuer in AAD B2C.
+- Upgrade to [spring-boot-dependencies:2.4.5](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.4.5/spring-boot-dependencies-2.4.5.pom).
+- Upgrade to [spring-cloud-dependencies:2020.0.2](https://repo.maven.apache.org/maven2/org/springframework/cloud/spring-cloud-dependencies/2020.0.2/spring-cloud-dependencies-2020.0.2.pom).
+- Enable property azure.activedirectory.redirect-uri-template.([#21116](https://github.com/Azure/azure-sdk-for-java/issues/21116))
+- Support creating `GrantedAuthority` by groupId and groupName for web application.([#20218](https://github.com/Azure/azure-sdk-for-java/issues/20218))
+  ```yaml
+  user-group:
+      allowed-group-names: group1,group2
+      allowed-group-ids: <group1-id>,<group2-id>
+      enable-full-list: false  
+  ```
+  | Parameter           | Description                                             |
+  | ------------------- | ------------------------------------------------------------ |
+  | allowed-group-names | if `enable-full-list` is `false`, create `GrantedAuthority` with groupNames which belong to user and `allowed-group-names` |
+  | allowed-group-ids   | if `enable-full-list` is `false`, create `GrantedAuthority` with groupIds which belong to user and `allowed-group-ids` |
+  | enable-full-list    | default is `false`.<br> if the value is `true`, create `GrantedAuthority` only with user's  all groupIds, ignore group names|
+
+### Key Bug Fixes
+- Fix issue that where the AAD B2C starter cannot fetch the OpenID Connect metadata document via issuer. [#21036](https://github.com/Azure/azure-sdk-for-java/issues/21036)
+- Deprecate *addB2CIssuer*, *addB2CUserFlowIssuers*, *createB2CUserFlowIssuer* methods in `AADTrustedIssuerRepository`.
+
+## 3.4.0 (2021-04-19)
 ### Key Bug Fixes
 - Fix bug that user-name-attribute cannot be configured. ([#20209](https://github.com/Azure/azure-sdk-for-java/issues/20209))
 
@@ -31,7 +70,11 @@
     azure.activedirectory.user-group.value
     azure.activedirectory.user-group.object-id-key
     ```
-- Stop support of Azure Active Directory Endpoints.
+- Removed support for older `AAD v1` style endpoints.
+  - Support for `AAD v1`, also named `Azure Active Directory`, endpoints in the form https://login.microsoft.online.com/common/oauth2/authorize has been removed.
+  - `AAD v2`, also named `Microsoft Identity Platform`, endpoints in the form https://login.microsoftonline.com/common/oauth2/v2.0/authorize continue to be supported.
+  - Please see [this documentation](https://github.com/MicrosoftDocs/azure-docs/blob/master/articles/active-directory/azuread-dev/azure-ad-endpoint-comparison.md) for more information.
+
 
 ### New Features
 - Support consent of multiple client registrations during user login.

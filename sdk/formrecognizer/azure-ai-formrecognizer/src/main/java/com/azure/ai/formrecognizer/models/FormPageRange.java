@@ -6,7 +6,7 @@ package com.azure.ai.formrecognizer.models;
 import com.azure.core.annotation.Immutable;
 
 /**
- * The FormPageRange model.
+ * Represents a page interval from the input document. Page numbers are 1-based..
  */
 @Immutable
 public final class FormPageRange {

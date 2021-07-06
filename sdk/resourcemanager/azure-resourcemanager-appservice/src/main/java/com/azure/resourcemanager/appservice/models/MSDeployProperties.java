@@ -9,6 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** Core resource properties. */
 @Fluent
@@ -41,6 +42,55 @@ public final class MSDeployProperties extends MSDeployCore {
      */
     public MSDeployProperties withAddOnPackages(List<MSDeployCore> addOnPackages) {
         this.addOnPackages = addOnPackages;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MSDeployProperties withPackageUri(String packageUri) {
+        super.withPackageUri(packageUri);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MSDeployProperties withConnectionString(String connectionString) {
+        super.withConnectionString(connectionString);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MSDeployProperties withDbType(String dbType) {
+        super.withDbType(dbType);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MSDeployProperties withSetParametersXmlFileUri(String setParametersXmlFileUri) {
+        super.withSetParametersXmlFileUri(setParametersXmlFileUri);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MSDeployProperties withSetParameters(Map<String, String> setParameters) {
+        super.withSetParameters(setParameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MSDeployProperties withSkipAppData(Boolean skipAppData) {
+        super.withSkipAppData(skipAppData);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MSDeployProperties withAppOffline(Boolean appOffline) {
+        super.withAppOffline(appOffline);
         return this;
     }
 

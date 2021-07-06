@@ -1,3 +1,13 @@
+---
+page_type: sample
+languages:
+- java
+products:
+- azure-service-bus
+description: "Azure Spring Cloud Sample project for Service Bus Integration client library"
+urlFragment: "azure-spring-integration-sample-servicebus"
+---
+
 # Spring Cloud Azure Service Bus Integration Code Sample shared library for Java
 
 ## Key concepts
@@ -78,14 +88,14 @@ Running this sample will be charged by Azure. You can check the usage and bill a
 [azure-account]: https://azure.microsoft.com/account/
 [azure-portal]: https://ms.portal.azure.com/
 [create-service-bus]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-create-namespace-portal
-[create-managed-identity]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/create-managed-identity.md
-[create-sp-using-azure-cli]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/create-sp-using-azure-cli.md
-[environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
-[queue-receive-controller]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-integration-sample-servicebus/src/main/java/com/azure/spring/sample/servicebus/QueueReceiveController.java
-[queue-send-controller]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-integration-sample-servicebus/src/main/java/com/azure/spring/sample/servicebus/QueueSendController.java
-[topic-receive-controller]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-integration-sample-servicebus/src/main/java/com/azure/spring/sample/servicebus/TopicReceiveController.java
-[topic-send-controller]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-integration-sample-servicebus/src/main/java/com/azure/spring/sample/servicebus/TopicSendController.java
-[application.yaml]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-integration-sample-servicebus/src/main/resources/application.yaml
+[create-managed-identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot-samples/create-managed-identity.md
+[create-sp-using-azure-cli]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot-samples/create-sp-using-azure-cli.md
+[environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
+[queue-receive-controller]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot-samples/azure-spring-integration-sample-servicebus/src/main/java/com/azure/spring/sample/servicebus/QueueReceiveController.java
+[queue-send-controller]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot-samples/azure-spring-integration-sample-servicebus/src/main/java/com/azure/spring/sample/servicebus/QueueSendController.java
+[topic-receive-controller]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot-samples/azure-spring-integration-sample-servicebus/src/main/java/com/azure/spring/sample/servicebus/TopicReceiveController.java
+[topic-send-controller]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot-samples/azure-spring-integration-sample-servicebus/src/main/java/com/azure/spring/sample/servicebus/TopicSendController.java
+[application.yaml]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot-samples/azure-spring-integration-sample-servicebus/src/main/resources/application.yaml
 
 
 

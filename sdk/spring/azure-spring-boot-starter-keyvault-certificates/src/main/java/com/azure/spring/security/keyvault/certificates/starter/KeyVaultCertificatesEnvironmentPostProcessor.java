@@ -27,16 +27,15 @@ public class KeyVaultCertificatesEnvironmentPostProcessor implements Environment
     @Override
     public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
 
-        if (environment.getProperty("azure.keyvault.uri") == null) {
-            return;
-        }
-
-        putEnvironmentPropertyToSystemProperty(environment, "azure.keyvault.aad-authentication-url");
         putEnvironmentPropertyToSystemProperty(environment, "azure.keyvault.uri");
         putEnvironmentPropertyToSystemProperty(environment, "azure.keyvault.tenant-id");
         putEnvironmentPropertyToSystemProperty(environment, "azure.keyvault.client-id");
         putEnvironmentPropertyToSystemProperty(environment, "azure.keyvault.client-secret");
         putEnvironmentPropertyToSystemProperty(environment, "azure.keyvault.managed-identity");
+        putEnvironmentPropertyToSystemProperty(environment, "azure.keyvault.jca.certificates-refresh-interval");
+        putEnvironmentPropertyToSystemProperty(environment, "azure.keyvault.jca.refresh-certificates-when-have-un-trust-certificate");
+        putEnvironmentPropertyToSystemProperty(environment, "azure.cert-path.well-known");
+        putEnvironmentPropertyToSystemProperty(environment, "azure.cert-path.custom");
 
         MutablePropertySources propertySources = environment.getPropertySources();
         if (KeyVaultKeyStore.KEY_STORE_TYPE.equals(environment.getProperty("server.ssl.key-store-type"))) {

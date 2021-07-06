@@ -6,11 +6,13 @@ package com.azure.ai.textanalytics.util;
 import com.azure.ai.textanalytics.implementation.AnalyzeHealthcareEntitiesResultCollectionPropertiesHelper;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesResult;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 /**
  * The {@link AnalyzeHealthcareEntitiesResultCollection} model.
  */
+@Immutable
 public final class AnalyzeHealthcareEntitiesResultCollection extends IterableStream<AnalyzeHealthcareEntitiesResult> {
     private TextDocumentBatchStatistics statistics;
     private String modelVersion;

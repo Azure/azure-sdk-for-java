@@ -44,7 +44,7 @@ public class HelloWorldAsync {
             .setExecutorCores(4)
             .setExecutorCount(2);
 
-        batchClient.createSparkBatchJob(options).subscribe(job -> System.out.printf("Job ID: %f\n", job.getId()));
+        batchClient.createSparkBatchJob(options).subscribe(job -> System.out.printf("Job ID: %d%n", job.getId()));
 
         // Wait for operation completion
         Thread.sleep(30000);

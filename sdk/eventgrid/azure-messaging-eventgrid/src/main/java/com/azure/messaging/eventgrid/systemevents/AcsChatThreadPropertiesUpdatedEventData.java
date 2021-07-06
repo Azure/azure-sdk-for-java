@@ -9,9 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/**
- * Schema of the Data property of an EventGridEvent for an Microsoft.Communication.ChatThreadPropertiesUpdated event.
- */
+/** Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatThreadPropertiesUpdated event. */
 @Fluent
 public final class AcsChatThreadPropertiesUpdatedEventData extends AcsChatThreadEventInThreadBaseProperties {
     /*

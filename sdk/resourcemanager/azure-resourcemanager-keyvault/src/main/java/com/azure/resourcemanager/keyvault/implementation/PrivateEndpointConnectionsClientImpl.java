@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -64,11 +65,11 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     @Host("{$host}")
     @ServiceInterface(name = "KeyVaultManagementCl")
     private interface PrivateEndpointConnectionsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults"
                 + "/{vaultName}/privateEndpointConnections/{privateEndpointConnectionName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PrivateEndpointConnectionInner>> get(
             @HostParam("$host") String endpoint,
@@ -77,9 +78,10 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             @PathParam("vaultName") String vaultName,
             @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults"
                 + "/{vaultName}/privateEndpointConnections/{privateEndpointConnectionName}")
@@ -93,9 +95,10 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") PrivateEndpointConnectionInner properties,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults"
                 + "/{vaultName}/privateEndpointConnections/{privateEndpointConnectionName}")
@@ -108,6 +111,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             @PathParam("vaultName") String vaultName,
             @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -150,6 +154,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                     new IllegalArgumentException(
                         "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -161,8 +166,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                             vaultName,
                             privateEndpointConnectionName,
                             this.client.getApiVersion(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -205,6 +211,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                     new IllegalArgumentException(
                         "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -214,6 +221,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                 vaultName,
                 privateEndpointConnectionName,
                 this.client.getApiVersion(),
+                accept,
                 context);
     }
 
@@ -283,7 +291,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @param resourceGroupName Name of the resource group that contains the key vault.
      * @param vaultName The name of the key vault.
      * @param privateEndpointConnectionName Name of the private endpoint connection associated with the key vault.
-     * @param properties Private endpoint connection resource.
+     * @param properties The intended state of private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -325,6 +333,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         } else {
             properties.validate();
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -337,8 +346,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                             privateEndpointConnectionName,
                             this.client.getApiVersion(),
                             properties,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -347,7 +357,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @param resourceGroupName Name of the resource group that contains the key vault.
      * @param vaultName The name of the key vault.
      * @param privateEndpointConnectionName Name of the private endpoint connection associated with the key vault.
-     * @param properties Private endpoint connection resource.
+     * @param properties The intended state of private endpoint connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -391,6 +401,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         } else {
             properties.validate();
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .put(
@@ -401,6 +412,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                 privateEndpointConnectionName,
                 this.client.getApiVersion(),
                 properties,
+                accept,
                 context);
     }
 
@@ -410,7 +422,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @param resourceGroupName Name of the resource group that contains the key vault.
      * @param vaultName The name of the key vault.
      * @param privateEndpointConnectionName Name of the private endpoint connection associated with the key vault.
-     * @param properties Private endpoint connection resource.
+     * @param properties The intended state of private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -439,7 +451,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @param resourceGroupName Name of the resource group that contains the key vault.
      * @param vaultName The name of the key vault.
      * @param privateEndpointConnectionName Name of the private endpoint connection associated with the key vault.
-     * @param properties Private endpoint connection resource.
+     * @param properties The intended state of private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -460,7 +472,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @param resourceGroupName Name of the resource group that contains the key vault.
      * @param vaultName The name of the key vault.
      * @param privateEndpointConnectionName Name of the private endpoint connection associated with the key vault.
-     * @param properties Private endpoint connection resource.
+     * @param properties The intended state of private endpoint connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -468,7 +480,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @return private endpoint connection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PrivateEndpointConnectionInner> putWithResponse(
+    public PrivateEndpointConnectionsPutResponse putWithResponse(
         String resourceGroupName,
         String vaultName,
         String privateEndpointConnectionName,
@@ -517,6 +529,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                     new IllegalArgumentException(
                         "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -528,8 +541,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                             vaultName,
                             privateEndpointConnectionName,
                             this.client.getApiVersion(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -572,6 +586,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                     new IllegalArgumentException(
                         "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -581,6 +596,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                 vaultName,
                 privateEndpointConnectionName,
                 this.client.getApiVersion(),
+                accept,
                 context);
     }
 

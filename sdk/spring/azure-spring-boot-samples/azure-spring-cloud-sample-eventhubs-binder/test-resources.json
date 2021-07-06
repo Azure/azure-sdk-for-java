@@ -13,9 +13,9 @@
   },
   "functions": [],
   "variables": {
-    "eventHubsNamespaceName": "[concat(parameters('baseName'),'-binder-eventhub')]",
+    "eventHubsNamespaceName": "[concat(parameters('baseName'),'-sample-eventhubs-binder')]",
     "eventHubsNamespaceKeyName": "RootManageSharedAccessKey",
-    "storageAccountName": "[concat(substring(toLower(concat(parameters('storageNamePrefix'), uniqueString(resourceGroup().id), 'binder')), 0, 18), 'binder')]",
+    "storageAccountName": "[substring(toLower(concat(parameters('storageNamePrefix'), uniqueString(resourceGroup().id))), 0, 24)]",
     "location": "[resourceGroup().location]"
   },
   "resources": [
@@ -55,7 +55,7 @@
     {
       "type": "Microsoft.EventHub/namespaces/eventhubs",
       "apiVersion": "2017-04-01",
-      "name": "[concat(variables('eventHubsNamespaceName'), '/binder-test')]",
+      "name": "[concat(variables('eventHubsNamespaceName'), '/sample-eventhubs-binder')]",
       "location": "[variables('location')]",
       "dependsOn": [
         "[resourceId('Microsoft.EventHub/namespaces', variables('eventHubsNamespaceName'))]"
@@ -83,10 +83,10 @@
     {
       "type": "Microsoft.EventHub/namespaces/eventhubs/consumergroups",
       "apiVersion": "2017-04-01",
-      "name": "[concat(variables('eventHubsNamespaceName'), '/binder-test/$Default')]",
+      "name": "[concat(variables('eventHubsNamespaceName'), '/sample-eventhubs-binder/$Default')]",
       "location": "[variables('location')]",
       "dependsOn": [
-        "[resourceId('Microsoft.EventHub/namespaces/eventhubs', variables('eventHubsNamespaceName'), 'binder-test')]",
+        "[resourceId('Microsoft.EventHub/namespaces/eventhubs', variables('eventHubsNamespaceName'), 'sample-eventhubs-binder')]",
         "[resourceId('Microsoft.EventHub/namespaces', variables('eventHubsNamespaceName'))]"
       ],
       "properties": {}
@@ -165,7 +165,7 @@
     {
       "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
       "apiVersion": "2019-06-01",
-      "name": "[concat(variables('storageAccountName'), '/default/binder-test')]",
+      "name": "[concat(variables('storageAccountName'), '/default/sample-eventhubs-binder')]",
       "dependsOn": [
         "[resourceId('Microsoft.Storage/storageAccounts/blobServices', variables('storageAccountName'), 'default')]",
         "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
@@ -176,15 +176,15 @@
     }
   ],
   "outputs": {
-    "STORAGE_ACCOUNT_BINDER": {
+    "STORAGE_ACCOUNT_SAMPLE_EVENTHUBS_BINDER": {
       "type": "string",
       "value": "[variables('storageAccountName')]"
     },
-    "STORAGE_ACCOUNT_KEY_BINDER": {
+    "STORAGE_ACCOUNT_KEY_SAMPLE_EVENTHUBS_BINDER": {
       "type": "string",
       "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), '2019-06-01').keys[0].value]"
     },
-    "EVENTHUB_CONNECTION_STRING_BINDER": {
+    "EVENTHUB_CONNECTION_STRING_SAMPLE_EVENTHUBS_BINDER": {
       "type": "string",
       "value": "[listKeys(resourceId('Microsoft.EventHub/namespaces/authorizationRules', variables('eventHubsNamespaceName'), variables('eventHubsNamespaceKeyName')), '2017-04-01').primaryConnectionString]"
     }

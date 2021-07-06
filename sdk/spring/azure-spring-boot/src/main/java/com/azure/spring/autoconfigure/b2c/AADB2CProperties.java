@@ -7,6 +7,7 @@ import org.hibernate.validator.constraints.URL;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 
@@ -16,6 +17,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static com.azure.spring.aad.AADAuthorizationGrantType.CLIENT_CREDENTIALS;
 
 /**
  * Configuration properties for Azure Active Directory B2C.
@@ -113,18 +116,44 @@ public class AADB2CProperties implements InitializingBean {
 
     private Map<String, String> userFlows = new HashMap<>();
 
+    /**
+     * Specify client configuration
+     */
+    private Map<String, AuthorizationClientProperties> authorizationClients = new HashMap<>();
+
     @Override
     public void afterPropertiesSet() {
-        //When tenantId is not configured, enable AAD B2C user flow related property checking
-        //When the tenantId has been configured, the check is not turned on
-        if (StringUtils.isEmpty(tenantId)) {
-            if (StringUtils.isEmpty(tenant) && StringUtils.isEmpty(baseUri)) {
+        validateWebappProperties();
+        validateCommonProperties();
+    }
+
+    /**
+     * Validate web app scenario properties configuration when using user flows.
+     */
+    private void validateWebappProperties() {
+        if (!CollectionUtils.isEmpty(userFlows)) {
+            if (!StringUtils.hasText(tenant) && !StringUtils.hasText(baseUri)) {
                 throw new AADB2CConfigurationException("'tenant' and 'baseUri' at least configure one item.");
             }
             if (!userFlows.keySet().contains(loginFlow)) {
                 throw new AADB2CConfigurationException("Sign in user flow key '"
                     + loginFlow + "' is not in 'user-flows' map.");
             }
+        }
+    }
+
+    /**
+     * Validate common scenario properties configuration.
+     */
+    private void validateCommonProperties() {
+        long credentialCount = authorizationClients.values()
+                                                   .stream()
+                                                   .map(authClient -> authClient.getAuthorizationGrantType())
+                                                   .filter(client -> CLIENT_CREDENTIALS == client)
+                                                   .count();
+        if (credentialCount > 0 && !StringUtils.hasText(tenantId)) {
+            throw new AADB2CConfigurationException("'tenant-id' must be configured "
+                + "when using client credential flow.");
         }
     }
 
@@ -138,7 +167,7 @@ public class AADB2CProperties implements InitializingBean {
 
     public String getBaseUri() {
         // baseUri is empty and points to Global env by default
-        if (StringUtils.hasText(tenant) && StringUtils.isEmpty(baseUri)) {
+        if (StringUtils.hasText(tenant) && !StringUtils.hasText(baseUri)) {
             return String.format("https://%s.b2clogin.com/%s.onmicrosoft.com/", tenant, tenant);
         }
         return baseUri;
@@ -220,6 +249,9 @@ public class AADB2CProperties implements InitializingBean {
         this.authenticateAdditionalParameters = authenticateAdditionalParameters;
     }
 
+    @Deprecated
+    @DeprecatedConfigurationProperty(
+        reason = "Deprecate the telemetry endpoint and use HTTP header User Agent instead.")
     public boolean isAllowTelemetry() {
         return allowTelemetry;
     }
@@ -282,5 +314,13 @@ public class AADB2CProperties implements InitializingBean {
 
     public void setTenantId(String tenantId) {
         this.tenantId = tenantId;
+    }
+
+    public Map<String, AuthorizationClientProperties> getAuthorizationClients() {
+        return authorizationClients;
+    }
+
+    public void setAuthorizationClients(Map<String, AuthorizationClientProperties> authorizationClients) {
+        this.authorizationClients = authorizationClients;
     }
 }

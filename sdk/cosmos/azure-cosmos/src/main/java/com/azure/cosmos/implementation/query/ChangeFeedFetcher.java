@@ -6,16 +6,14 @@ package com.azure.cosmos.implementation.query;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.GoneException;
-import com.azure.cosmos.implementation.IRetryPolicy;
 import com.azure.cosmos.implementation.InvalidPartitionExceptionRetryPolicy;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.ObservableHelper;
 import com.azure.cosmos.implementation.PartitionKeyRangeGoneRetryPolicy;
 import com.azure.cosmos.implementation.PathsHelper;
-import com.azure.cosmos.implementation.RenameCollectionAwareClientRetryPolicy;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.ResourceType;
-import com.azure.cosmos.implementation.RetryPolicyWithDiagnostics;
+import com.azure.cosmos.implementation.RetryContext;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.ShouldRetryResult;
@@ -82,7 +80,8 @@ class ChangeFeedFetcher<T extends Resource> extends Fetcher<T> {
                 client,
                 this.changeFeedState,
                 retryPolicyInstance,
-                requestOptionProperties);
+                requestOptionProperties,
+                retryPolicyInstance.getRetryContext());
             this.createRequestFunc = () -> {
                 RxDocumentServiceRequest request = createRequestFunc.get();
                 this.feedRangeContinuationSplitRetryPolicy.onBeforeSendRequest(request);
@@ -178,18 +177,21 @@ class ChangeFeedFetcher<T extends Resource> extends Fetcher<T> {
         private final DocumentClientRetryPolicy nextRetryPolicy;
         private final Map<String, Object> requestOptionProperties;
         private MetadataDiagnosticsContext diagnosticsContext;
+        private final RetryContext retryContext;
 
         public FeedRangeContinuationSplitRetryPolicy(
             RxDocumentClientImpl client,
             ChangeFeedState state,
             DocumentClientRetryPolicy nextRetryPolicy,
-            Map<String, Object> requestOptionProperties) {
+            Map<String, Object> requestOptionProperties,
+            RetryContext retryContext) {
 
             this.client = client;
             this.state = state;
             this.nextRetryPolicy = nextRetryPolicy;
             this.requestOptionProperties = requestOptionProperties;
             this.diagnosticsContext = null;
+            this.retryContext = retryContext;
         }
 
         @Override
@@ -248,6 +250,11 @@ class ChangeFeedFetcher<T extends Resource> extends Fetcher<T> {
                 LOGGER.trace("Retrying due to inner retry policy");
                 return Mono.just(shouldRetryResult);
             });
+        }
+
+        @Override
+        public RetryContext getRetryContext() {
+            return this.retryContext;
         }
     }
 }

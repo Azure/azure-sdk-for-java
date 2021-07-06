@@ -223,6 +223,7 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-source-if-none-match-crc64") String sourceIfNoneMatchCrc64,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-lease-id") String leaseId,
+                @HeaderParam("x-ms-copy-source-authorization") String copySourceAuthorization,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -734,7 +735,6 @@ public final class FilesImpl {
      *     up to maximum file size.
      * @param contentLength Specifies the number of bytes being transmitted in the request body. When the x-ms-write
      *     header is set to clear, the value of this header must be set to zero.
-     * @param optionalbody Initial data.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      *     Timeouts for File Service Operations.&lt;/a&gt;.
@@ -743,6 +743,7 @@ public final class FilesImpl {
      *     has arrived with the header value that was sent. If the two hashes do not match, the operation will fail with
      *     error code 400 (Bad Request).
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param optionalbody Initial data.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws StorageErrorException thrown if the request is rejected by server.
@@ -756,10 +757,10 @@ public final class FilesImpl {
             String range,
             ShareFileRangeWriteType fileRangeWrite,
             long contentLength,
-            Flux<ByteBuffer> optionalbody,
             Integer timeout,
             byte[] contentMD5,
             String leaseId,
+            Flux<ByteBuffer> optionalbody,
             Context context) {
         final String comp = "range";
         final String accept = "application/xml";
@@ -802,6 +803,8 @@ public final class FilesImpl {
      * @param sourceContentCrc64 Specify the crc64 calculated for the range of bytes that must be read from the copy
      *     source.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param copySourceAuthorization Only Bearer type is supported. Credentials should be a valid OAuth access token to
+     *     copy source.
      * @param sourceModifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -820,6 +823,7 @@ public final class FilesImpl {
             String sourceRange,
             byte[] sourceContentCrc64,
             String leaseId,
+            String copySourceAuthorization,
             SourceModifiedAccessConditions sourceModifiedAccessConditions,
             Context context) {
         final String comp = "range";
@@ -854,6 +858,7 @@ public final class FilesImpl {
                 sourceIfNoneMatchCrc64Converted,
                 this.client.getVersion(),
                 leaseId,
+                copySourceAuthorization,
                 accept,
                 context);
     }

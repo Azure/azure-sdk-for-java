@@ -41,9 +41,7 @@ It allows code running in this particular web app to access blob data in the tar
 
 ### Key vault
 
-RBAC on key vault is in preview. SDK will support this feature in the future.
-
-For now, SDK supports access policies for key vault.
+SDK supports access policies for key vault.
 
 Sample code to allow access of secret to user-assigned managed identity.
 ```java
@@ -56,6 +54,8 @@ vault.update()
 ```
 
 For system-assigned managed identity, use e.g. `virtualMachine.systemAssignedManagedServiceIdentityPrincipalId()` in place of `identity.principalId()`.
+
+Since 2.5.0, SDK supports role-based access control. Please check `BuiltInRole.KEY_VAULT_CRYPTO_USER`, `BuiltInRole.KEY_VAULT_SECRETS_USER`, etc. for related roles.
 
 ## Accessing Azure Active Directory
 
@@ -119,4 +119,4 @@ For more details on authentication methods, please refer to [Azure Identity][azu
 [microsoft_graph]: https://docs.microsoft.com/graph/overview
 [aad_graph]: https://docs.microsoft.com/azure/active-directory/develop/active-directory-graph-api
 [service_principal]: https://docs.microsoft.com/azure/active-directory/develop/app-objects-and-service-principals
-[azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/identity/azure-identity
+[azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity

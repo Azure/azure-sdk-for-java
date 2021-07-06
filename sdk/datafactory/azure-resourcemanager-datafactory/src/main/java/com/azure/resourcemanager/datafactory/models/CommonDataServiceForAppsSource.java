@@ -99,6 +99,13 @@ public final class CommonDataServiceForAppsSource extends CopySource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public CommonDataServiceForAppsSource withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

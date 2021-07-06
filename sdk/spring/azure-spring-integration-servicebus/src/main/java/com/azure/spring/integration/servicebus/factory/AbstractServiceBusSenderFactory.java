@@ -54,4 +54,8 @@ abstract class AbstractServiceBusSenderFactory implements ServiceBusSenderFactor
     public void setNamespace(String namespace) {
         this.namespace = namespace;
     }
+
+    public String getConnectionString() {
+        return connectionString;
+    }
 }

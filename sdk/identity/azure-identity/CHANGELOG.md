@@ -1,6 +1,31 @@
 # Release History
 
-## 1.3.0-beta.3 (Unreleased)
+## 1.4.0-beta.1 (Unreleased)
+### Features Added
+
+- Added support to `ManagedIdentityCredential` for Bridge to Kubernetes local development authentication.
+- Added regional STS support to client credential types.
+    - Added the `RegionalAuthority` type, that allows specifying Azure regions.
+    - Added `regionalAuthority()` setter to `ClientSecretCredentialBuilder` and `ClientCertificateCredentialBuilder`.
+    - If instead of a region, `RegionalAuthority.AutoDiscoverRegion` is specified as the value for `regionalAuthority`, MSAL will be used to attempt to discover the region.
+    - A region can also be specified through the `AZURE_REGIONAL_AUTHORITY_NAME` environment variable.
+- Added `loginHint()` setter to `InteractiveBrowserCredentialBuilder` which allows a username to be pre-selected for interactive logins.
+
+## 1.3.1 (2021-06-08)
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to 1.17.0
+
+
+## 1.3.0 (2021-05-11)
+
+### Features Added
+- Added `AzurePowerShellCredential` to support authentication using Powershell on development platforms.
+- Added support to disable CP1 capability in `TokenCredentials` via configuration of environment variable `AZURE_IDENTITY_DISABLE_CP1`
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to 1.16.0
+- Upgraded `msal4j` dependency to 1.1.0
 
 
 ## 1.3.0-beta.2 (2021-03-10)
@@ -17,8 +42,7 @@
 - Upgraded `msal4j` dependency to 1.9.1
 - Upgraded `msal4j-persistence-extension` to 1.1.0
 
-
-## 1.3.0-beta.1 (2020-02-10)
+## 1.3.0-beta.1 (2021-02-10)
 
 ### New Features
 - Added the support to consume claims from `TokenRequestContext` send it as part of authentication request.
@@ -183,7 +207,7 @@
 ## 1.0.2 (2020-01-07)
 - Fix MSI_ENDPOINT and MSI_SECRET environment variable lookup issue in `ManagedIdentityCredential` when running on App Service
 
-## 1.0.0 (2019-10-25) - November 2019 SDK Release
+## 1.0.0 (2019-10-25)
 **Breaking changes**
 
 - The `getToken(TokenRequest tokenRequest)` methods on all the credentials are changed to `getToken(TokenRequestContext tokenRequestContext)`. 
@@ -248,7 +272,7 @@ our efforts can be found in the [Azure SDK Design Guidelines for Java](https://a
 For details on the Azure SDK for Java (July 2019 Preview) release, you can refer to the [release announcement](https://aka.ms/azure-sdk-preview1-java).
 
 This release supports service principal and managed identity authentication.
-See the [documentation](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/identity/azure-identity/README.md)
+See the [documentation](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md)
 for more details. User authentication will be added in an upcoming preview
 release.
 

@@ -70,6 +70,13 @@ public class CsmPublishingCredentialsPoliciesCollectionInner extends ProxyOnlyRe
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public CsmPublishingCredentialsPoliciesCollectionInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

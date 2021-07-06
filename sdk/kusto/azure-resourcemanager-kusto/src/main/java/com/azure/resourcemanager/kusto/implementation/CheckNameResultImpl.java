@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.kusto.implementation;
 
-import com.azure.resourcemanager.kusto.KustoManager;
 import com.azure.resourcemanager.kusto.fluent.models.CheckNameResultInner;
 import com.azure.resourcemanager.kusto.models.CheckNameResult;
 import com.azure.resourcemanager.kusto.models.Reason;
@@ -12,9 +11,9 @@ import com.azure.resourcemanager.kusto.models.Reason;
 public final class CheckNameResultImpl implements CheckNameResult {
     private CheckNameResultInner innerObject;
 
-    private final KustoManager serviceManager;
+    private final com.azure.resourcemanager.kusto.KustoManager serviceManager;
 
-    CheckNameResultImpl(CheckNameResultInner innerObject, KustoManager serviceManager) {
+    CheckNameResultImpl(CheckNameResultInner innerObject, com.azure.resourcemanager.kusto.KustoManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -39,7 +38,7 @@ public final class CheckNameResultImpl implements CheckNameResult {
         return this.innerObject;
     }
 
-    private KustoManager manager() {
+    private com.azure.resourcemanager.kusto.KustoManager manager() {
         return this.serviceManager;
     }
 }

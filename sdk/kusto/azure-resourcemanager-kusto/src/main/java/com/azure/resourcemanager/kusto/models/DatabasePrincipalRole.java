@@ -22,8 +22,8 @@ public final class DatabasePrincipalRole extends ExpandableStringEnum<DatabasePr
     /** Static value User for DatabasePrincipalRole. */
     public static final DatabasePrincipalRole USER = fromString("User");
 
-    /** Static value UnrestrictedViewers for DatabasePrincipalRole. */
-    public static final DatabasePrincipalRole UNRESTRICTED_VIEWERS = fromString("UnrestrictedViewers");
+    /** Static value UnrestrictedViewer for DatabasePrincipalRole. */
+    public static final DatabasePrincipalRole UNRESTRICTED_VIEWER = fromString("UnrestrictedViewer");
 
     /** Static value Viewer for DatabasePrincipalRole. */
     public static final DatabasePrincipalRole VIEWER = fromString("Viewer");

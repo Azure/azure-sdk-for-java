@@ -507,7 +507,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "simple" }, timeOut = 50 * CHANGE_FEED_PROCESSOR_TIMEOUT)
+    @Test(groups = { "simple" }, timeOut = 160 * CHANGE_FEED_PROCESSOR_TIMEOUT)
     public void readFeedDocumentsAfterSplit() throws InterruptedException {
         CosmosAsyncContainer createdFeedCollectionForSplit = createFeedCollection(FEED_COLLECTION_THROUGHPUT_FOR_SPLIT);
         CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(LEASE_COLLECTION_THROUGHPUT);
@@ -584,7 +584,8 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                 .retryWhen(Retry.max(40).filter(throwable -> {
                     try {
                         log.warn("Retrying...");
-                        Thread.sleep(CHANGE_FEED_PROCESSOR_TIMEOUT);
+                        // Splits are taking longer, so increasing sleep time between retries
+                        Thread.sleep(60 * CHANGE_FEED_PROCESSOR_TIMEOUT);
                     } catch (InterruptedException e) {
                         throw new RuntimeException("Interrupted exception", e);
                     }

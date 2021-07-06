@@ -14,6 +14,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.netty.implementation.MockProxyServer;
 import com.azure.core.http.netty.implementation.NettyAsyncHttpResponse;
+import com.azure.core.http.policy.FixedDelay;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
@@ -402,23 +403,40 @@ public class NettyAsyncHttpClientTests {
      */
     @Test
     public void proxyAuthenticationErrorEagerlyRetries() {
+        // Create a Netty HttpClient to share backing resources that are warmed up before making a time based call.
+        reactor.netty.http.client.HttpClient warmedUpClient = reactor.netty.http.client.HttpClient.create();
+        StepVerifier.create(new NettyAsyncHttpClientBuilder(warmedUpClient).build()
+            .send(new HttpRequest(HttpMethod.GET, url(server, SHORT_BODY_PATH))))
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
+
         try (MockProxyServer mockProxyServer = new MockProxyServer("1", "1")) {
             AtomicInteger responseHandleCount = new AtomicInteger();
+            RetryPolicy retryPolicy = new RetryPolicy(new FixedDelay(3, Duration.ofSeconds(10)));
+            ProxyOptions proxyOptions = new ProxyOptions(ProxyOptions.Type.HTTP, mockProxyServer.socketAddress())
+                .setCredentials("1", "1");
 
+            // Create an HttpPipeline where any exception has a retry delay of 10 seconds.
             HttpPipeline httpPipeline = new HttpPipelineBuilder()
-                .policies(new RetryPolicy(),
-                    (context, next) -> next.process().doOnNext(ignored -> responseHandleCount.incrementAndGet()))
-                .httpClient(new NettyAsyncHttpClientBuilder()
-                    .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, mockProxyServer.socketAddress())
-                        .setCredentials("1", "1"))
-                    .build())
+                .policies(retryPolicy, (context, next) -> next.process()
+                    .doOnNext(ignored -> responseHandleCount.incrementAndGet()))
+                .httpClient(new NettyAsyncHttpClientBuilder(warmedUpClient).proxy(proxyOptions).build())
                 .build();
 
-            StepVerifier.create(httpPipeline.send(new HttpRequest(HttpMethod.GET, url(server, PROXY_TO_ADDRESS))))
+            // Run a reactive request verifier where it is expected to complete successfully and captures the time
+            // taken. The time taken will then be used to strongly validate that we are not bubbling any ProxyConnect
+            // exceptions to the retry policy as that has a much longer retry delay.
+            Duration timeToHandleProxyConnectException = StepVerifier.create(
+                httpPipeline.send(new HttpRequest(HttpMethod.GET, url(server, PROXY_TO_ADDRESS)),
+                    new Context("azure-eagerly-read-response", true)))
                 .assertNext(response -> assertEquals(418, response.getStatusCode()))
-                .verifyComplete();
+                .expectComplete()
+                .verify();
 
             assertEquals(1, responseHandleCount.get());
+            assertFalse(Duration.ofSeconds(10).minus(timeToHandleProxyConnectException).isNegative(),
+                () -> String.format("Took longer than ten seconds to retry a ProxyConnectException. Took %s.",
+                    timeToHandleProxyConnectException));
         }
     }
 

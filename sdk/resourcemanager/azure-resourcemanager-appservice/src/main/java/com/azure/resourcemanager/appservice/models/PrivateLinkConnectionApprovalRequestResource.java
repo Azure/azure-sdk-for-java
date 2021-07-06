@@ -44,6 +44,13 @@ public class PrivateLinkConnectionApprovalRequestResource extends ProxyOnlyResou
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public PrivateLinkConnectionApprovalRequestResource withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

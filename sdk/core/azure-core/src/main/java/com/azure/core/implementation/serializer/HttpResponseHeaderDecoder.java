@@ -6,7 +6,7 @@ package com.azure.core.implementation.serializer;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.serializer.SerializerAdapter;
-import reactor.core.publisher.Mono;
+import reactor.core.Exceptions;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -29,14 +29,16 @@ final class HttpResponseHeaderDecoder {
      * @return publisher that emits decoded response header upon subscription if header is decodable, no emission if the
      * header is not-decodable
      */
-    static Mono<Object> decode(HttpResponse response, SerializerAdapter serializer,
-        HttpResponseDecodeData decodeData) {
+    static Object decode(HttpResponse response, SerializerAdapter serializer, HttpResponseDecodeData decodeData) {
         Type headerType = decodeData.getHeadersType();
         if (headerType == null) {
-            return Mono.empty();
-        } else {
-            return Mono.fromCallable(() -> serializer.deserialize(response.getHeaders(), headerType))
-                .onErrorMap(IOException.class, e -> new HttpResponseException(MALFORMED_HEADERS_MESSAGE, response, e));
+            return null;
+        }
+
+        try {
+            return serializer.deserialize(response.getHeaders(), headerType);
+        } catch (IOException ex) {
+            throw Exceptions.propagate(new HttpResponseException(MALFORMED_HEADERS_MESSAGE, response, ex));
         }
     }
 }

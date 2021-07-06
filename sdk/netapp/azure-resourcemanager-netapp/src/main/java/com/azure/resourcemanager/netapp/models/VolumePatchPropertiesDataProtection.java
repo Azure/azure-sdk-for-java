@@ -20,6 +20,12 @@ public final class VolumePatchPropertiesDataProtection {
     @JsonProperty(value = "backup")
     private VolumeBackupProperties backup;
 
+    /*
+     * Snapshot properties.
+     */
+    @JsonProperty(value = "snapshot")
+    private VolumeSnapshotProperties snapshot;
+
     /**
      * Get the backup property: Backup Properties.
      *
@@ -41,6 +47,26 @@ public final class VolumePatchPropertiesDataProtection {
     }
 
     /**
+     * Get the snapshot property: Snapshot properties.
+     *
+     * @return the snapshot value.
+     */
+    public VolumeSnapshotProperties snapshot() {
+        return this.snapshot;
+    }
+
+    /**
+     * Set the snapshot property: Snapshot properties.
+     *
+     * @param snapshot the snapshot value to set.
+     * @return the VolumePatchPropertiesDataProtection object itself.
+     */
+    public VolumePatchPropertiesDataProtection withSnapshot(VolumeSnapshotProperties snapshot) {
+        this.snapshot = snapshot;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -48,6 +74,9 @@ public final class VolumePatchPropertiesDataProtection {
     public void validate() {
         if (backup() != null) {
             backup().validate();
+        }
+        if (snapshot() != null) {
+            snapshot().validate();
         }
     }
 }

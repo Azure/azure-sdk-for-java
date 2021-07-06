@@ -47,7 +47,7 @@ object SampleE2EMain {
     ).toDF("number", "word")
     df.printSchema()
 
-    df.write.format("cosmos.items").mode("append").options(cfg).save()
+    df.write.format("cosmos.oltp").mode("append").options(cfg).save()
     df.show()
 
     spark.close()

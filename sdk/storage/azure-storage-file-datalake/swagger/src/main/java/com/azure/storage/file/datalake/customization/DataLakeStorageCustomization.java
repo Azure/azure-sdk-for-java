@@ -23,6 +23,7 @@ public class DataLakeStorageCustomization extends Customization {
         modifyUnexpectedResponseExceptionType(fileSystemsImpl.getMethod("getProperties"));
         modifyUnexpectedResponseExceptionType(fileSystemsImpl.getMethod("delete"));
         modifyUnexpectedResponseExceptionType(fileSystemsImpl.getMethod("listPaths"));
+        modifyUnexpectedResponseExceptionType(fileSystemsImpl.getMethod("listBlobHierarchySegment"));
 
         ClassCustomization pathsImpl = implementation.getClass("PathsImpl");
         modifyUnexpectedResponseExceptionType(pathsImpl.getMethod("create"));
@@ -36,6 +37,7 @@ public class DataLakeStorageCustomization extends Customization {
         modifyUnexpectedResponseExceptionType(pathsImpl.getMethod("flushData"));
         modifyUnexpectedResponseExceptionType(pathsImpl.getMethod("appendData"));
         modifyUnexpectedResponseExceptionType(pathsImpl.getMethod("setExpiry"));
+        modifyUnexpectedResponseExceptionType(pathsImpl.getMethod("undelete"));
 
         ClassCustomization servicesImpl = implementation.getClass("ServicesImpl");
         modifyUnexpectedResponseExceptionType(servicesImpl.getMethod("listFileSystems"));
@@ -60,6 +62,8 @@ public class DataLakeStorageCustomization extends Customization {
         aclFailedEntries.getProperty("failedEntries")
             .removeAnnotation("@JsonProperty(\"AclFailedEntry\")")
             .addAnnotation("@JsonProperty(\"failedEntries\")");
+
+        implementationModels.getClass("BlobHierarchyListSegment").addAnnotation("@JsonDeserialize(using = com.azure.storage.file.datalake.implementation.util.CustomHierarchicalListingDeserializer.class)");
     }
 
     private void modifyUnexpectedResponseExceptionType(MethodCustomization method) {

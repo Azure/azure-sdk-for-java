@@ -4,8 +4,8 @@
     "Uri" : "https://REDACTED.table.core.windows.net/Tables",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-data-tables/12.0.0-beta.4 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "c984a747-e65e-4d83-9bb7-84dec82665b9",
+      "User-Agent" : "azsdk-java-azure-data-tables/12.0.0-beta.7 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "e40ae7b0-9dd2-457e-b90d-ad079e2ae0fc",
       "Content-Type" : "application/json;odata=nometadata"
     },
     "Response" : {
@@ -14,23 +14,23 @@
       "X-Content-Type-Options" : "nosniff",
       "retry-after" : "0",
       "StatusCode" : "204",
-      "Date" : "Tue, 09 Feb 2021 06:52:46 GMT",
+      "Date" : "Wed, 21 Apr 2021 19:12:09 GMT",
       "Cache-Control" : "no-cache",
-      "DataServiceId" : "https://brsiegelsample.table.core.windows.net/Tables('test36696c38a8')",
+      "DataServiceId" : "https://tablesstoragetests.table.core.windows.net/Tables('test189515e94f')",
       "Content-Length" : "0",
-      "x-ms-request-id" : "f8179738-9002-00a9-2fb0-fe0b2e000000",
+      "x-ms-request-id" : "19a73f0e-8002-001e-1ae2-364fe0000000",
       "Preference-Applied" : "return-no-content",
-      "x-ms-client-request-id" : "c984a747-e65e-4d83-9bb7-84dec82665b9",
-      "Location" : "https://brsiegelsample.table.core.windows.net/Tables('test36696c38a8')"
+      "x-ms-client-request-id" : "e40ae7b0-9dd2-457e-b90d-ad079e2ae0fc",
+      "Location" : "https://tablesstoragetests.table.core.windows.net/Tables('test189515e94f')"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.table.core.windows.net/Tables('test36696c38a8')",
+    "Uri" : "https://REDACTED.table.core.windows.net/Tables('test189515e94f')",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-data-tables/12.0.0-beta.4 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "3e80a4ba-2161-4f71-9378-1b456543c823"
+      "User-Agent" : "azsdk-java-azure-data-tables/12.0.0-beta.7 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "f129dcb5-648d-413c-9471-e349899abf48"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -40,11 +40,11 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "204",
-      "x-ms-request-id" : "f8179742-9002-00a9-37b0-fe0b2e000000",
-      "Date" : "Tue, 09 Feb 2021 06:52:46 GMT",
-      "x-ms-client-request-id" : "3e80a4ba-2161-4f71-9378-1b456543c823"
+      "x-ms-request-id" : "19a73f22-8002-001e-28e2-364fe0000000",
+      "Date" : "Wed, 21 Apr 2021 19:12:09 GMT",
+      "x-ms-client-request-id" : "f129dcb5-648d-413c-9471-e349899abf48"
     },
     "Exception" : null
   } ],
-  "variables" : [ "test36696c38a8" ]
+  "variables" : [ "test189515e94f" ]
 }

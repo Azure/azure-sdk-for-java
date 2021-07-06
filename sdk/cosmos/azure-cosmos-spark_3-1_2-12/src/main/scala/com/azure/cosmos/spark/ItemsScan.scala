@@ -3,9 +3,9 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
-import com.azure.cosmos.models.CosmosParameterizedQuery
-import com.azure.cosmos.spark.diagnostics.DiagnosticsContext
+import com.azure.cosmos.models.{CosmosParameterizedQuery, SqlParameter, SqlQuerySpec}
 import com.azure.cosmos.spark.CosmosPredicates.requireNotNull
+import com.azure.cosmos.spark.diagnostics.{DiagnosticsContext, LoggerHelper}
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.connector.read.streaming.ReadLimit
@@ -17,16 +17,18 @@ import java.util.UUID
 private case class ItemsScan(session: SparkSession,
                              schema: StructType,
                              config: Map[String, String],
+                             readConfig: CosmosReadConfig,
                              cosmosQuery: CosmosParameterizedQuery,
-                             cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot])
+                             cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot],
+                             diagnosticsConfig: DiagnosticsConfig)
   extends Scan
-    with Batch
-    with CosmosLoggingTrait {
+    with Batch {
 
   requireNotNull(cosmosQuery, "cosmosQuery")
-  logInfo(s"Instantiated ${this.getClass.getSimpleName}")
 
-  val readConfig = CosmosReadConfig.parseCosmosReadConfig(config)
+  @transient private lazy val log = LoggerHelper.getLogger(diagnosticsConfig, this.getClass)
+  log.logInfo(s"Instantiated ${this.getClass.getSimpleName}")
+
   val clientConfiguration = CosmosClientConfiguration.apply(config, readConfig.forceEventualConsistency)
   val containerConfig = CosmosContainerConfig.parseCosmosContainerConfig(config)
   val partitioningConfig = CosmosPartitioningConfig.parseCosmosPartitioningConfig(config)
@@ -34,7 +36,23 @@ private case class ItemsScan(session: SparkSession,
 
   override def description(): String = {
     s"""Cosmos ItemsScan: ${containerConfig.database}.${containerConfig.container}
-       | - Cosmos Query: ${cosmosQuery.toSqlQuerySpec.toPrettyString}""".stripMargin
+       | - Cosmos Query: ${toPrettyString(cosmosQuery.toSqlQuerySpec)}""".stripMargin
+  }
+
+  private[this] def toPrettyString(query: SqlQuerySpec) = {
+    //scalastyle:off magic.number
+    val sb = new StringBuilder()
+    //scalastyle:on magic.number
+    sb.append(query.getQueryText)
+    query.getParameters.forEach(
+      (p: SqlParameter) => sb
+        .append(CosmosConstants.SystemProperties.LineSeparator)
+        .append(" > param: ")
+        .append(p.getName)
+        .append(" = ")
+        .append(p.getValue(classOf[Any])))
+
+    sb.toString
   }
 
   /**
@@ -71,7 +89,7 @@ private case class ItemsScan(session: SparkSession,
     ItemsScanPartitionReaderFactory(config,
       schema,
       cosmosQuery,
-      DiagnosticsContext(UUID.randomUUID().toString, cosmosQuery.queryTest),
+      DiagnosticsContext(UUID.randomUUID().toString, cosmosQuery.queryText),
       cosmosClientStateHandle,
       DiagnosticsConfig.parseDiagnosticsConfig(config))
   }

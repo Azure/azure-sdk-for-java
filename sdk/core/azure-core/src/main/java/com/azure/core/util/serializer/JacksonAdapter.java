@@ -402,6 +402,8 @@ public class JacksonAdapter implements SerializerAdapter {
             .addModule(HttpHeadersSerializer.getModule())
             .addModule(UnixTimeSerializer.getModule())
             .addModule(UnixTimeDeserializer.getModule())
+            .addModule(GeoJsonSerializer.getModule())
+            .addModule(GeoJsonDeserializer.getModule())
             .visibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY)
             .visibility(PropertyAccessor.SETTER, JsonAutoDetect.Visibility.NONE)
             .visibility(PropertyAccessor.GETTER, JsonAutoDetect.Visibility.NONE)
@@ -498,7 +500,7 @@ public class JacksonAdapter implements SerializerAdapter {
                 Method setterMethod = deserializedHeaders.getClass().getDeclaredMethod(potentialSetterName, Map.class);
                 if (Modifier.isPublic(setterMethod.getModifiers())) {
                     setterMethod.invoke(deserializedHeaders, values);
-                    logger.verbose("User setter %s on class %s to set header collection.", potentialSetterName,
+                    logger.verbose("User setter {} on class {} to set header collection.", potentialSetterName,
                         deserializedHeaders.getClass().getSimpleName());
                     return true;
                 }

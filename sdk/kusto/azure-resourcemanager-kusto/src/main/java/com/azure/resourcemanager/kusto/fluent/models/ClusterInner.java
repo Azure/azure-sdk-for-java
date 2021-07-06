@@ -48,6 +48,12 @@ public class ClusterInner extends Resource {
     private Identity identity;
 
     /*
+     * A unique read-only string that changes whenever the resource is updated.
+     */
+    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
+    private String etag;
+
+    /*
      * The state of the resource.
      */
     @JsonProperty(value = "properties.state", access = JsonProperty.Access.WRITE_ONLY)
@@ -195,6 +201,15 @@ public class ClusterInner extends Resource {
     public ClusterInner withIdentity(Identity identity) {
         this.identity = identity;
         return this;
+    }
+
+    /**
+     * Get the etag property: A unique read-only string that changes whenever the resource is updated.
+     *
+     * @return the etag value.
+     */
+    public String etag() {
+        return this.etag;
     }
 
     /**

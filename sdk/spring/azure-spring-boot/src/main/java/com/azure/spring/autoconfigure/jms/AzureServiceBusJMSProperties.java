@@ -73,7 +73,7 @@ public class AzureServiceBusJMSProperties {
         }
 
         if (!pricingTier.matches("(?i)premium|standard|basic")) {
-            throw new IllegalArgumentException("'spring.jms.servicebus.pricing-tire' is not valid");
+            throw new IllegalArgumentException("'spring.jms.servicebus.pricing-tier' is not valid");
         }
     }
 }

@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -90,7 +91,7 @@ public final class AppServicePlansClientImpl
     @Host("{$host}")
     @ServiceInterface(name = "WebSiteManagementCli")
     private interface AppServicePlansService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Web/serverfarms")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
@@ -99,9 +100,10 @@ public final class AppServicePlansClientImpl
             @QueryParam("detailed") Boolean detailed,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
@@ -110,9 +112,10 @@ public final class AppServicePlansClientImpl
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
                 + "/{name}")
@@ -124,9 +127,10 @@ public final class AppServicePlansClientImpl
             @PathParam("name") String name,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
                 + "/{name}")
@@ -139,9 +143,10 @@ public final class AppServicePlansClientImpl
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") AppServicePlanInner appServicePlan,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
                 + "/{name}")
@@ -153,9 +158,10 @@ public final class AppServicePlansClientImpl
             @PathParam("name") String name,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Patch(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
                 + "/{name}")
@@ -168,9 +174,10 @@ public final class AppServicePlansClientImpl
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") AppServicePlanPatchResource appServicePlan,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
                 + "/{name}/capabilities")
@@ -182,9 +189,10 @@ public final class AppServicePlansClientImpl
             @PathParam("name") String name,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
                 + "/{name}/hybridConnectionNamespaces/{namespaceName}/relays/{relayName}")
@@ -198,9 +206,10 @@ public final class AppServicePlansClientImpl
             @PathParam("relayName") String relayName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
                 + "/{name}/hybridConnectionNamespaces/{namespaceName}/relays/{relayName}")
@@ -214,9 +223,10 @@ public final class AppServicePlansClientImpl
             @PathParam("relayName") String relayName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
                 + "/{name}/hybridConnectionNamespaces/{namespaceName}/relays/{relayName}/listKeys")
@@ -230,9 +240,10 @@ public final class AppServicePlansClientImpl
             @PathParam("relayName") String relayName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
                 + "/{name}/hybridConnectionNamespaces/{namespaceName}/relays/{relayName}/sites")
@@ -246,9 +257,10 @@ public final class AppServicePlansClientImpl
             @PathParam("relayName") String relayName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
                 + "/{name}/hybridConnectionPlanLimits/limit")
@@ -260,9 +272,10 @@ public final class AppServicePlansClientImpl
             @PathParam("name") String name,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
                 + "/{name}/hybridConnectionRelays")
@@ -274,9 +287,10 @@ public final class AppServicePlansClientImpl
             @PathParam("name") String name,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
                 + "/{name}/restartSites")
@@ -289,9 +303,10 @@ public final class AppServicePlansClientImpl
             @QueryParam("softRestart") Boolean softRestart,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
                 + "/{name}/sites")
@@ -306,9 +321,10 @@ public final class AppServicePlansClientImpl
             @QueryParam("$top") String top,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
                 + "/{name}/skus")
@@ -320,9 +336,10 @@ public final class AppServicePlansClientImpl
             @PathParam("name") String name,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
                 + "/{name}/usages")
@@ -335,9 +352,10 @@ public final class AppServicePlansClientImpl
             @QueryParam(value = "$filter", encoded = true) String filter,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
                 + "/{name}/virtualNetworkConnections")
@@ -349,9 +367,10 @@ public final class AppServicePlansClientImpl
             @PathParam("name") String name,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
                 + "/{name}/virtualNetworkConnections/{vnetName}")
@@ -364,9 +383,10 @@ public final class AppServicePlansClientImpl
             @PathParam("vnetName") String vnetName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
                 + "/{name}/virtualNetworkConnections/{vnetName}/gateways/{gatewayName}")
@@ -380,9 +400,10 @@ public final class AppServicePlansClientImpl
             @PathParam("gatewayName") String gatewayName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
                 + "/{name}/virtualNetworkConnections/{vnetName}/gateways/{gatewayName}")
@@ -397,9 +418,10 @@ public final class AppServicePlansClientImpl
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") VnetGatewayInner connectionEnvelope,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
                 + "/{name}/virtualNetworkConnections/{vnetName}/routes")
@@ -412,9 +434,10 @@ public final class AppServicePlansClientImpl
             @PathParam("vnetName") String vnetName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
                 + "/{name}/virtualNetworkConnections/{vnetName}/routes/{routeName}")
@@ -428,9 +451,10 @@ public final class AppServicePlansClientImpl
             @PathParam("routeName") String routeName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
                 + "/{name}/virtualNetworkConnections/{vnetName}/routes/{routeName}")
@@ -445,9 +469,10 @@ public final class AppServicePlansClientImpl
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") VnetRouteInner route,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
                 + "/{name}/virtualNetworkConnections/{vnetName}/routes/{routeName}")
@@ -461,9 +486,10 @@ public final class AppServicePlansClientImpl
             @PathParam("routeName") String routeName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Patch(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
                 + "/{name}/virtualNetworkConnections/{vnetName}/routes/{routeName}")
@@ -478,9 +504,10 @@ public final class AppServicePlansClientImpl
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") VnetRouteInner route,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
                 + "/{name}/workers/{workerName}/reboot")
@@ -493,49 +520,68 @@ public final class AppServicePlansClientImpl
             @PathParam("workerName") String workerName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<AppServicePlanCollection>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<AppServicePlanCollection>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<ResourceCollection>> listWebAppsByHybridConnectionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<HybridConnectionCollection>> listHybridConnectionsNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<WebAppCollection>> listWebAppsNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<CsmUsageQuotaCollection>> listUsagesNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -563,6 +609,7 @@ public final class AppServicePlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -572,6 +619,7 @@ public final class AppServicePlansClientImpl
                             detailed,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            accept,
                             context))
             .<PagedResponse<AppServicePlanInner>>map(
                 res ->
@@ -582,7 +630,7 @@ public final class AppServicePlansClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -611,6 +659,7 @@ public final class AppServicePlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(
@@ -618,6 +667,7 @@ public final class AppServicePlansClientImpl
                 detailed,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
+                accept,
                 context)
             .map(
                 res ->
@@ -680,6 +730,19 @@ public final class AppServicePlansClientImpl
     /**
      * Description for Get all App Service plans for a subscription.
      *
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of App Service plans.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<AppServicePlanInner> list() {
+        final Boolean detailed = null;
+        return new PagedIterable<>(listAsync(detailed));
+    }
+
+    /**
+     * Description for Get all App Service plans for a subscription.
+     *
      * @param detailed Specify &lt;code&gt;true&lt;/code&gt; to return all App Service plan properties. The default is
      *     &lt;code&gt;false&lt;/code&gt;, which returns a subset of the properties. Retrieval of all properties may
      *     increase the API latency.
@@ -692,19 +755,6 @@ public final class AppServicePlansClientImpl
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AppServicePlanInner> list(Boolean detailed, Context context) {
         return new PagedIterable<>(listAsync(detailed, context));
-    }
-
-    /**
-     * Description for Get all App Service plans for a subscription.
-     *
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of App Service plans.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AppServicePlanInner> list() {
-        final Boolean detailed = null;
-        return new PagedIterable<>(listAsync(detailed));
     }
 
     /**
@@ -734,6 +784,7 @@ public final class AppServicePlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -743,6 +794,7 @@ public final class AppServicePlansClientImpl
                             resourceGroupName,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            accept,
                             context))
             .<PagedResponse<AppServicePlanInner>>map(
                 res ->
@@ -753,7 +805,7 @@ public final class AppServicePlansClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -785,6 +837,7 @@ public final class AppServicePlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByResourceGroup(
@@ -792,6 +845,7 @@ public final class AppServicePlansClientImpl
                 resourceGroupName,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
+                accept,
                 context)
             .map(
                 res ->
@@ -898,6 +952,7 @@ public final class AppServicePlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -908,8 +963,9 @@ public final class AppServicePlansClientImpl
                             name,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -945,6 +1001,7 @@ public final class AppServicePlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getByResourceGroup(
@@ -953,6 +1010,7 @@ public final class AppServicePlansClientImpl
                 name,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
+                accept,
                 context);
     }
 
@@ -1016,7 +1074,7 @@ public final class AppServicePlansClientImpl
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
-     * @param appServicePlan App Service plan.
+     * @param appServicePlan Details of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1049,6 +1107,7 @@ public final class AppServicePlansClientImpl
         } else {
             appServicePlan.validate();
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1060,8 +1119,9 @@ public final class AppServicePlansClientImpl
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
                             appServicePlan,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1069,7 +1129,7 @@ public final class AppServicePlansClientImpl
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
-     * @param appServicePlan App Service plan.
+     * @param appServicePlan Details of the App Service plan.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1103,6 +1163,7 @@ public final class AppServicePlansClientImpl
         } else {
             appServicePlan.validate();
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
@@ -1112,6 +1173,7 @@ public final class AppServicePlansClientImpl
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
                 appServicePlan,
+                accept,
                 context);
     }
 
@@ -1120,7 +1182,7 @@ public final class AppServicePlansClientImpl
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
-     * @param appServicePlan App Service plan.
+     * @param appServicePlan Details of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1146,7 +1208,7 @@ public final class AppServicePlansClientImpl
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
-     * @param appServicePlan App Service plan.
+     * @param appServicePlan Details of the App Service plan.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1170,7 +1232,7 @@ public final class AppServicePlansClientImpl
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
-     * @param appServicePlan App Service plan.
+     * @param appServicePlan Details of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1187,7 +1249,7 @@ public final class AppServicePlansClientImpl
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
-     * @param appServicePlan App Service plan.
+     * @param appServicePlan Details of the App Service plan.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1205,7 +1267,7 @@ public final class AppServicePlansClientImpl
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
-     * @param appServicePlan App Service plan.
+     * @param appServicePlan Details of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1224,7 +1286,7 @@ public final class AppServicePlansClientImpl
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
-     * @param appServicePlan App Service plan.
+     * @param appServicePlan Details of the App Service plan.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1244,7 +1306,7 @@ public final class AppServicePlansClientImpl
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
-     * @param appServicePlan App Service plan.
+     * @param appServicePlan Details of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1261,7 +1323,7 @@ public final class AppServicePlansClientImpl
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
-     * @param appServicePlan App Service plan.
+     * @param appServicePlan Details of the App Service plan.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1305,6 +1367,7 @@ public final class AppServicePlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1315,8 +1378,9 @@ public final class AppServicePlansClientImpl
                             name,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1351,6 +1415,7 @@ public final class AppServicePlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -1359,6 +1424,7 @@ public final class AppServicePlansClientImpl
                 name,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
+                accept,
                 context);
     }
 
@@ -1412,7 +1478,7 @@ public final class AppServicePlansClientImpl
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
-     * @param appServicePlan ARM resource for a app service plan.
+     * @param appServicePlan Details of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1445,6 +1511,7 @@ public final class AppServicePlansClientImpl
         } else {
             appServicePlan.validate();
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1456,8 +1523,9 @@ public final class AppServicePlansClientImpl
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
                             appServicePlan,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1465,7 +1533,7 @@ public final class AppServicePlansClientImpl
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
-     * @param appServicePlan ARM resource for a app service plan.
+     * @param appServicePlan Details of the App Service plan.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1499,6 +1567,7 @@ public final class AppServicePlansClientImpl
         } else {
             appServicePlan.validate();
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .update(
@@ -1508,6 +1577,7 @@ public final class AppServicePlansClientImpl
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
                 appServicePlan,
+                accept,
                 context);
     }
 
@@ -1516,7 +1586,7 @@ public final class AppServicePlansClientImpl
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
-     * @param appServicePlan ARM resource for a app service plan.
+     * @param appServicePlan Details of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1541,7 +1611,7 @@ public final class AppServicePlansClientImpl
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
-     * @param appServicePlan ARM resource for a app service plan.
+     * @param appServicePlan Details of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1558,7 +1628,7 @@ public final class AppServicePlansClientImpl
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
-     * @param appServicePlan ARM resource for a app service plan.
+     * @param appServicePlan Details of the App Service plan.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1603,6 +1673,7 @@ public final class AppServicePlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1613,8 +1684,9 @@ public final class AppServicePlansClientImpl
                             name,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1650,6 +1722,7 @@ public final class AppServicePlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listCapabilities(
@@ -1658,6 +1731,7 @@ public final class AppServicePlansClientImpl
                 name,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
+                accept,
                 context);
     }
 
@@ -1756,6 +1830,7 @@ public final class AppServicePlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1768,8 +1843,9 @@ public final class AppServicePlansClientImpl
                             relayName,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1813,6 +1889,7 @@ public final class AppServicePlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getHybridConnection(
@@ -1823,6 +1900,7 @@ public final class AppServicePlansClientImpl
                 relayName,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
+                accept,
                 context);
     }
 
@@ -1929,6 +2007,7 @@ public final class AppServicePlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1941,8 +2020,9 @@ public final class AppServicePlansClientImpl
                             relayName,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1986,6 +2066,7 @@ public final class AppServicePlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .deleteHybridConnection(
@@ -1996,6 +2077,7 @@ public final class AppServicePlansClientImpl
                 relayName,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
+                accept,
                 context);
     }
 
@@ -2094,6 +2176,7 @@ public final class AppServicePlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -2106,8 +2189,9 @@ public final class AppServicePlansClientImpl
                             relayName,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2151,6 +2235,7 @@ public final class AppServicePlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listHybridConnectionKeys(
@@ -2161,6 +2246,7 @@ public final class AppServicePlansClientImpl
                 relayName,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
+                accept,
                 context);
     }
 
@@ -2268,6 +2354,7 @@ public final class AppServicePlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -2280,6 +2367,7 @@ public final class AppServicePlansClientImpl
                             relayName,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            accept,
                             context))
             .<PagedResponse<String>>map(
                 res ->
@@ -2290,7 +2378,7 @@ public final class AppServicePlansClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2334,6 +2422,7 @@ public final class AppServicePlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listWebAppsByHybridConnection(
@@ -2344,6 +2433,7 @@ public final class AppServicePlansClientImpl
                 relayName,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
+                accept,
                 context)
             .map(
                 res ->
@@ -2470,6 +2560,7 @@ public final class AppServicePlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -2480,8 +2571,9 @@ public final class AppServicePlansClientImpl
                             name,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2517,6 +2609,7 @@ public final class AppServicePlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getHybridConnectionPlanLimit(
@@ -2525,6 +2618,7 @@ public final class AppServicePlansClientImpl
                 name,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
+                accept,
                 context);
     }
 
@@ -2615,6 +2709,7 @@ public final class AppServicePlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -2625,6 +2720,7 @@ public final class AppServicePlansClientImpl
                             name,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            accept,
                             context))
             .<PagedResponse<HybridConnectionInner>>map(
                 res ->
@@ -2635,7 +2731,7 @@ public final class AppServicePlansClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2671,6 +2767,7 @@ public final class AppServicePlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listHybridConnections(
@@ -2679,6 +2776,7 @@ public final class AppServicePlansClientImpl
                 name,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
+                accept,
                 context)
             .map(
                 res ->
@@ -2794,6 +2892,7 @@ public final class AppServicePlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -2805,8 +2904,9 @@ public final class AppServicePlansClientImpl
                             softRestart,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2845,6 +2945,7 @@ public final class AppServicePlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .restartWebApps(
@@ -2854,6 +2955,7 @@ public final class AppServicePlansClientImpl
                 softRestart,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
+                accept,
                 context);
     }
 
@@ -2965,6 +3067,7 @@ public final class AppServicePlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -2978,6 +3081,7 @@ public final class AppServicePlansClientImpl
                             top,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            accept,
                             context))
             .<PagedResponse<SiteInner>>map(
                 res ->
@@ -2988,7 +3092,7 @@ public final class AppServicePlansClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3029,6 +3133,7 @@ public final class AppServicePlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listWebApps(
@@ -3040,6 +3145,7 @@ public final class AppServicePlansClientImpl
                 top,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
+                accept,
                 context)
             .map(
                 res ->
@@ -3124,6 +3230,24 @@ public final class AppServicePlansClientImpl
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of App Service apps.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<SiteInner> listWebApps(String resourceGroupName, String name) {
+        final String skipToken = null;
+        final String filter = null;
+        final String top = null;
+        return new PagedIterable<>(listWebAppsAsync(resourceGroupName, name, skipToken, filter, top));
+    }
+
+    /**
+     * Description for Get all apps associated with an App Service plan.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
      * @param skipToken Skip to a web app in the list of webapps associated with app service plan. If specified, the
      *     resulting list will contain web apps starting from (including) the skipToken. Otherwise, the resulting list
      *     contains web apps from the start of the list.
@@ -3139,24 +3263,6 @@ public final class AppServicePlansClientImpl
     public PagedIterable<SiteInner> listWebApps(
         String resourceGroupName, String name, String skipToken, String filter, String top, Context context) {
         return new PagedIterable<>(listWebAppsAsync(resourceGroupName, name, skipToken, filter, top, context));
-    }
-
-    /**
-     * Description for Get all apps associated with an App Service plan.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service plan.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of App Service apps.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SiteInner> listWebApps(String resourceGroupName, String name) {
-        final String skipToken = null;
-        final String filter = null;
-        final String top = null;
-        return new PagedIterable<>(listWebAppsAsync(resourceGroupName, name, skipToken, filter, top));
     }
 
     /**
@@ -3190,6 +3296,7 @@ public final class AppServicePlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -3200,8 +3307,9 @@ public final class AppServicePlansClientImpl
                             name,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3237,6 +3345,7 @@ public final class AppServicePlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getServerFarmSkus(
@@ -3245,6 +3354,7 @@ public final class AppServicePlansClientImpl
                 name,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
+                accept,
                 context);
     }
 
@@ -3336,6 +3446,7 @@ public final class AppServicePlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -3347,6 +3458,7 @@ public final class AppServicePlansClientImpl
                             filter,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            accept,
                             context))
             .<PagedResponse<CsmUsageQuotaInner>>map(
                 res ->
@@ -3357,7 +3469,7 @@ public final class AppServicePlansClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3395,6 +3507,7 @@ public final class AppServicePlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listUsages(
@@ -3404,6 +3517,7 @@ public final class AppServicePlansClientImpl
                 filter,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
+                accept,
                 context)
             .map(
                 res ->
@@ -3479,6 +3593,22 @@ public final class AppServicePlansClientImpl
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of App Service Plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of CSM usage quotas.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<CsmUsageQuotaInner> listUsages(String resourceGroupName, String name) {
+        final String filter = null;
+        return new PagedIterable<>(listUsagesAsync(resourceGroupName, name, filter));
+    }
+
+    /**
+     * Description for Gets server farm usage information.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of App Service Plan.
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example:
      *     $filter=(name.value eq 'Metric1' or name.value eq 'Metric2').
      * @param context The context to associate with this operation.
@@ -3491,22 +3621,6 @@ public final class AppServicePlansClientImpl
     public PagedIterable<CsmUsageQuotaInner> listUsages(
         String resourceGroupName, String name, String filter, Context context) {
         return new PagedIterable<>(listUsagesAsync(resourceGroupName, name, filter, context));
-    }
-
-    /**
-     * Description for Gets server farm usage information.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of App Service Plan.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of CSM usage quotas.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CsmUsageQuotaInner> listUsages(String resourceGroupName, String name) {
-        final String filter = null;
-        return new PagedIterable<>(listUsagesAsync(resourceGroupName, name, filter));
     }
 
     /**
@@ -3540,6 +3654,7 @@ public final class AppServicePlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -3550,8 +3665,9 @@ public final class AppServicePlansClientImpl
                             name,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3587,6 +3703,7 @@ public final class AppServicePlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listVnets(
@@ -3595,6 +3712,7 @@ public final class AppServicePlansClientImpl
                 name,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
+                accept,
                 context);
     }
 
@@ -3688,6 +3806,7 @@ public final class AppServicePlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -3699,8 +3818,9 @@ public final class AppServicePlansClientImpl
                             vnetName,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3740,6 +3860,7 @@ public final class AppServicePlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getVnetFromServerFarm(
@@ -3749,6 +3870,7 @@ public final class AppServicePlansClientImpl
                 vnetName,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
+                accept,
                 context);
     }
 
@@ -3850,6 +3972,7 @@ public final class AppServicePlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -3862,8 +3985,9 @@ public final class AppServicePlansClientImpl
                             gatewayName,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3907,6 +4031,7 @@ public final class AppServicePlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getVnetGateway(
@@ -3917,6 +4042,7 @@ public final class AppServicePlansClientImpl
                 gatewayName,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
+                accept,
                 context);
     }
 
@@ -3989,8 +4115,7 @@ public final class AppServicePlansClientImpl
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param gatewayName Name of the gateway. Only the 'primary' gateway is supported.
-     * @param connectionEnvelope The Virtual Network gateway contract. This is used to give the Virtual Network gateway
-     *     access to the VPN package.
+     * @param connectionEnvelope Definition of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4034,6 +4159,7 @@ public final class AppServicePlansClientImpl
         } else {
             connectionEnvelope.validate();
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -4047,8 +4173,9 @@ public final class AppServicePlansClientImpl
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
                             connectionEnvelope,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -4058,8 +4185,7 @@ public final class AppServicePlansClientImpl
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param gatewayName Name of the gateway. Only the 'primary' gateway is supported.
-     * @param connectionEnvelope The Virtual Network gateway contract. This is used to give the Virtual Network gateway
-     *     access to the VPN package.
+     * @param connectionEnvelope Definition of the gateway.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -4105,6 +4231,7 @@ public final class AppServicePlansClientImpl
         } else {
             connectionEnvelope.validate();
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .updateVnetGateway(
@@ -4116,6 +4243,7 @@ public final class AppServicePlansClientImpl
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
                 connectionEnvelope,
+                accept,
                 context);
     }
 
@@ -4126,8 +4254,7 @@ public final class AppServicePlansClientImpl
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param gatewayName Name of the gateway. Only the 'primary' gateway is supported.
-     * @param connectionEnvelope The Virtual Network gateway contract. This is used to give the Virtual Network gateway
-     *     access to the VPN package.
+     * @param connectionEnvelope Definition of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4158,8 +4285,7 @@ public final class AppServicePlansClientImpl
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param gatewayName Name of the gateway. Only the 'primary' gateway is supported.
-     * @param connectionEnvelope The Virtual Network gateway contract. This is used to give the Virtual Network gateway
-     *     access to the VPN package.
+     * @param connectionEnvelope Definition of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4182,8 +4308,7 @@ public final class AppServicePlansClientImpl
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param gatewayName Name of the gateway. Only the 'primary' gateway is supported.
-     * @param connectionEnvelope The Virtual Network gateway contract. This is used to give the Virtual Network gateway
-     *     access to the VPN package.
+     * @param connectionEnvelope Definition of the gateway.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -4239,6 +4364,7 @@ public final class AppServicePlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -4250,8 +4376,9 @@ public final class AppServicePlansClientImpl
                             vnetName,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -4291,6 +4418,7 @@ public final class AppServicePlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listRoutesForVnet(
@@ -4300,6 +4428,7 @@ public final class AppServicePlansClientImpl
                 vnetName,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
+                accept,
                 context);
     }
 
@@ -4401,6 +4530,7 @@ public final class AppServicePlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -4413,8 +4543,9 @@ public final class AppServicePlansClientImpl
                             routeName,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -4458,6 +4589,7 @@ public final class AppServicePlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getRouteForVnet(
@@ -4468,6 +4600,7 @@ public final class AppServicePlansClientImpl
                 routeName,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
+                accept,
                 context);
     }
 
@@ -4541,7 +4674,7 @@ public final class AppServicePlansClientImpl
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
-     * @param route Virtual Network route contract used to pass routing information for a Virtual Network.
+     * @param route Definition of the Virtual Network route.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4580,6 +4713,7 @@ public final class AppServicePlansClientImpl
         } else {
             route.validate();
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -4593,8 +4727,9 @@ public final class AppServicePlansClientImpl
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
                             route,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -4604,7 +4739,7 @@ public final class AppServicePlansClientImpl
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
-     * @param route Virtual Network route contract used to pass routing information for a Virtual Network.
+     * @param route Definition of the Virtual Network route.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -4649,6 +4784,7 @@ public final class AppServicePlansClientImpl
         } else {
             route.validate();
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdateVnetRoute(
@@ -4660,6 +4796,7 @@ public final class AppServicePlansClientImpl
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
                 route,
+                accept,
                 context);
     }
 
@@ -4670,7 +4807,7 @@ public final class AppServicePlansClientImpl
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
-     * @param route Virtual Network route contract used to pass routing information for a Virtual Network.
+     * @param route Definition of the Virtual Network route.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4697,7 +4834,7 @@ public final class AppServicePlansClientImpl
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
-     * @param route Virtual Network route contract used to pass routing information for a Virtual Network.
+     * @param route Definition of the Virtual Network route.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4716,7 +4853,7 @@ public final class AppServicePlansClientImpl
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
-     * @param route Virtual Network route contract used to pass routing information for a Virtual Network.
+     * @param route Definition of the Virtual Network route.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -4775,6 +4912,7 @@ public final class AppServicePlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -4787,8 +4925,9 @@ public final class AppServicePlansClientImpl
                             routeName,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -4832,6 +4971,7 @@ public final class AppServicePlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .deleteVnetRoute(
@@ -4842,6 +4982,7 @@ public final class AppServicePlansClientImpl
                 routeName,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
+                accept,
                 context);
     }
 
@@ -4905,7 +5046,7 @@ public final class AppServicePlansClientImpl
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
-     * @param route Virtual Network route contract used to pass routing information for a Virtual Network.
+     * @param route Definition of the Virtual Network route.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4944,6 +5085,7 @@ public final class AppServicePlansClientImpl
         } else {
             route.validate();
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -4957,8 +5099,9 @@ public final class AppServicePlansClientImpl
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
                             route,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -4968,7 +5111,7 @@ public final class AppServicePlansClientImpl
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
-     * @param route Virtual Network route contract used to pass routing information for a Virtual Network.
+     * @param route Definition of the Virtual Network route.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -5013,6 +5156,7 @@ public final class AppServicePlansClientImpl
         } else {
             route.validate();
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .updateVnetRoute(
@@ -5024,6 +5168,7 @@ public final class AppServicePlansClientImpl
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
                 route,
+                accept,
                 context);
     }
 
@@ -5034,7 +5179,7 @@ public final class AppServicePlansClientImpl
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
-     * @param route Virtual Network route contract used to pass routing information for a Virtual Network.
+     * @param route Definition of the Virtual Network route.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -5061,7 +5206,7 @@ public final class AppServicePlansClientImpl
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
-     * @param route Virtual Network route contract used to pass routing information for a Virtual Network.
+     * @param route Definition of the Virtual Network route.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -5080,7 +5225,7 @@ public final class AppServicePlansClientImpl
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
-     * @param route Virtual Network route contract used to pass routing information for a Virtual Network.
+     * @param route Definition of the Virtual Network route.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -5134,6 +5279,7 @@ public final class AppServicePlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -5145,8 +5291,9 @@ public final class AppServicePlansClientImpl
                             workerName,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -5186,6 +5333,7 @@ public final class AppServicePlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .rebootWorker(
@@ -5195,6 +5343,7 @@ public final class AppServicePlansClientImpl
                 workerName,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
+                accept,
                 context);
     }
 
@@ -5262,8 +5411,15 @@ public final class AppServicePlansClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listNext(nextLink, context))
+            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<AppServicePlanInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -5273,7 +5429,7 @@ public final class AppServicePlansClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -5291,9 +5447,16 @@ public final class AppServicePlansClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listNext(nextLink, context)
+            .listNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -5319,8 +5482,16 @@ public final class AppServicePlansClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByResourceGroupNext(nextLink, context))
+            .withContext(
+                context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<AppServicePlanInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -5330,7 +5501,7 @@ public final class AppServicePlansClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -5349,9 +5520,16 @@ public final class AppServicePlansClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroupNext(nextLink, context)
+            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -5377,8 +5555,17 @@ public final class AppServicePlansClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listWebAppsByHybridConnectionNext(nextLink, context))
+            .withContext(
+                context ->
+                    service.listWebAppsByHybridConnectionNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<String>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -5388,7 +5575,7 @@ public final class AppServicePlansClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -5407,9 +5594,16 @@ public final class AppServicePlansClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listWebAppsByHybridConnectionNext(nextLink, context)
+            .listWebAppsByHybridConnectionNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -5435,8 +5629,16 @@ public final class AppServicePlansClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listHybridConnectionsNext(nextLink, context))
+            .withContext(
+                context -> service.listHybridConnectionsNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<HybridConnectionInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -5446,7 +5648,7 @@ public final class AppServicePlansClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -5465,9 +5667,16 @@ public final class AppServicePlansClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listHybridConnectionsNext(nextLink, context)
+            .listHybridConnectionsNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -5493,8 +5702,15 @@ public final class AppServicePlansClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listWebAppsNext(nextLink, context))
+            .withContext(context -> service.listWebAppsNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<SiteInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -5504,7 +5720,7 @@ public final class AppServicePlansClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -5522,9 +5738,16 @@ public final class AppServicePlansClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listWebAppsNext(nextLink, context)
+            .listWebAppsNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -5550,8 +5773,15 @@ public final class AppServicePlansClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listUsagesNext(nextLink, context))
+            .withContext(context -> service.listUsagesNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<CsmUsageQuotaInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -5561,7 +5791,7 @@ public final class AppServicePlansClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -5579,9 +5809,16 @@ public final class AppServicePlansClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listUsagesNext(nextLink, context)
+            .listUsagesNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

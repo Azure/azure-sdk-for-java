@@ -252,7 +252,7 @@ public interface Clusters {
     /**
      * Checks that the cluster name is valid and is not already in use.
      *
-     * @param location Azure location.
+     * @param location Azure location (region) name.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -264,7 +264,7 @@ public interface Clusters {
     /**
      * Checks that the cluster name is valid and is not already in use.
      *
-     * @param location Azure location.
+     * @param location Azure location (region) name.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

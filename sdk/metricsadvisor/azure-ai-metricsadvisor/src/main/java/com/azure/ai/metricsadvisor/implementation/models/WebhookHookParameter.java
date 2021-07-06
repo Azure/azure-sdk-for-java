@@ -19,13 +19,13 @@ public final class WebhookHookParameter {
     private String endpoint;
 
     /*
-     * basic authentication
+     * (Deprecated) The username, if using basic authentication
      */
     @JsonProperty(value = "username")
     private String username;
 
     /*
-     * basic authentication
+     * (Deprecated) The password, if using basic authentication
      */
     @JsonProperty(value = "password")
     private String password;
@@ -37,13 +37,15 @@ public final class WebhookHookParameter {
     private Map<String, String> headers;
 
     /*
-     * client certificate
+     * The certificate key/URL, if using client certificate, please read
+     * documents for more informations.
      */
     @JsonProperty(value = "certificateKey")
     private String certificateKey;
 
     /*
-     * client certificate password
+     * The certificate password, if using client certificate, please read
+     * documents for more informations.
      */
     @JsonProperty(value = "certificatePassword")
     private String certificatePassword;
@@ -69,7 +71,7 @@ public final class WebhookHookParameter {
     }
 
     /**
-     * Get the username property: basic authentication.
+     * Get the username property: (Deprecated) The username, if using basic authentication.
      *
      * @return the username value.
      */
@@ -78,7 +80,7 @@ public final class WebhookHookParameter {
     }
 
     /**
-     * Set the username property: basic authentication.
+     * Set the username property: (Deprecated) The username, if using basic authentication.
      *
      * @param username the username value to set.
      * @return the WebhookHookParameter object itself.
@@ -89,7 +91,7 @@ public final class WebhookHookParameter {
     }
 
     /**
-     * Get the password property: basic authentication.
+     * Get the password property: (Deprecated) The password, if using basic authentication.
      *
      * @return the password value.
      */
@@ -98,7 +100,7 @@ public final class WebhookHookParameter {
     }
 
     /**
-     * Set the password property: basic authentication.
+     * Set the password property: (Deprecated) The password, if using basic authentication.
      *
      * @param password the password value to set.
      * @return the WebhookHookParameter object itself.
@@ -129,7 +131,8 @@ public final class WebhookHookParameter {
     }
 
     /**
-     * Get the certificateKey property: client certificate.
+     * Get the certificateKey property: The certificate key/URL, if using client certificate, please read documents for
+     * more informations.
      *
      * @return the certificateKey value.
      */
@@ -138,7 +141,8 @@ public final class WebhookHookParameter {
     }
 
     /**
-     * Set the certificateKey property: client certificate.
+     * Set the certificateKey property: The certificate key/URL, if using client certificate, please read documents for
+     * more informations.
      *
      * @param certificateKey the certificateKey value to set.
      * @return the WebhookHookParameter object itself.
@@ -149,7 +153,8 @@ public final class WebhookHookParameter {
     }
 
     /**
-     * Get the certificatePassword property: client certificate password.
+     * Get the certificatePassword property: The certificate password, if using client certificate, please read
+     * documents for more informations.
      *
      * @return the certificatePassword value.
      */
@@ -158,7 +163,8 @@ public final class WebhookHookParameter {
     }
 
     /**
-     * Set the certificatePassword property: client certificate password.
+     * Set the certificatePassword property: The certificate password, if using client certificate, please read
+     * documents for more informations.
      *
      * @param certificatePassword the certificatePassword value to set.
      * @return the WebhookHookParameter object itself.

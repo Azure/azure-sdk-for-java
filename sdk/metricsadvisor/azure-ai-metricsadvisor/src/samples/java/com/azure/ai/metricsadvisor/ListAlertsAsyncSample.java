@@ -34,7 +34,7 @@ public class ListAlertsAsyncSample {
         //
         final ListAlertOptions options = new ListAlertOptions()
             .setAlertQueryTimeMode(timeMode)
-            .setTop(10);
+            .setMaxPageSize(10);
 
         advisorAsyncClient.listAlerts(alertConfigurationId, startTime, endTime, options)
             .subscribe(alert -> {

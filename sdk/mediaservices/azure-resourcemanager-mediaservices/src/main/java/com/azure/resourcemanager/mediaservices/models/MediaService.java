@@ -93,6 +93,13 @@ public interface MediaService {
     AccountEncryption encryption();
 
     /**
+     * Gets the keyDelivery property: The Key Delivery properties for Media Services account.
+     *
+     * @return the keyDelivery value.
+     */
+    KeyDelivery keyDelivery();
+
+    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -162,7 +169,8 @@ public interface MediaService {
                 DefinitionStages.WithIdentity,
                 DefinitionStages.WithStorageAccounts,
                 DefinitionStages.WithStorageAuthentication,
-                DefinitionStages.WithEncryption {
+                DefinitionStages.WithEncryption,
+                DefinitionStages.WithKeyDelivery {
             /**
              * Executes the create request.
              *
@@ -228,6 +236,16 @@ public interface MediaService {
              */
             WithCreate withEncryption(AccountEncryption encryption);
         }
+        /** The stage of the MediaService definition allowing to specify keyDelivery. */
+        interface WithKeyDelivery {
+            /**
+             * Specifies the keyDelivery property: The Key Delivery properties for Media Services account..
+             *
+             * @param keyDelivery The Key Delivery properties for Media Services account.
+             * @return the next definition stage.
+             */
+            WithCreate withKeyDelivery(KeyDelivery keyDelivery);
+        }
     }
     /**
      * Begins update for the MediaService resource.
@@ -242,7 +260,8 @@ public interface MediaService {
             UpdateStages.WithIdentity,
             UpdateStages.WithStorageAccounts,
             UpdateStages.WithStorageAuthentication,
-            UpdateStages.WithEncryption {
+            UpdateStages.WithEncryption,
+            UpdateStages.WithKeyDelivery {
         /**
          * Executes the update request.
          *
@@ -309,6 +328,16 @@ public interface MediaService {
              * @return the next definition stage.
              */
             Update withEncryption(AccountEncryption encryption);
+        }
+        /** The stage of the MediaService update allowing to specify keyDelivery. */
+        interface WithKeyDelivery {
+            /**
+             * Specifies the keyDelivery property: The Key Delivery properties for Media Services account..
+             *
+             * @param keyDelivery The Key Delivery properties for Media Services account.
+             * @return the next definition stage.
+             */
+            Update withKeyDelivery(KeyDelivery keyDelivery);
         }
     }
     /**

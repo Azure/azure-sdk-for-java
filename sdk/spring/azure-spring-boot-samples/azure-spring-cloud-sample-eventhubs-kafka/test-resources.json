@@ -18,7 +18,7 @@
   },
   "functions": [],
   "variables": {
-    "eventHubsNamespaceName": "[concat(parameters('baseName'),'-kafka-eventhub')]",
+    "eventHubsNamespaceName": "[concat(parameters('baseName'),'-sample-eventhubs-kafka')]",
     "eventHubsNamespaceKeyName": "RootManageSharedAccessKey",
     "location": "[resourceGroup().location]"
   },
@@ -43,7 +43,7 @@
     {
       "type": "Microsoft.EventHub/namespaces/eventhubs",
       "apiVersion": "2017-04-01",
-      "name": "[concat(variables('eventHubsNamespaceName'), '/kafka-test')]",
+      "name": "[concat(variables('eventHubsNamespaceName'), '/sample-eventhubs-kafka')]",
       "location": "[variables('location')]",
       "dependsOn": [
         "[resourceId('Microsoft.EventHub/namespaces', variables('eventHubsNamespaceName'))]"
@@ -71,37 +71,37 @@
     {
       "type": "Microsoft.EventHub/namespaces/eventhubs/consumergroups",
       "apiVersion": "2017-04-01",
-      "name": "[concat(variables('eventHubsNamespaceName'), '/kafka-test/$Default')]",
+      "name": "[concat(variables('eventHubsNamespaceName'), '/sample-eventhubs-kafka/$Default')]",
       "location": "[variables('location')]",
       "dependsOn": [
-        "[resourceId('Microsoft.EventHub/namespaces/eventhubs', variables('eventHubsNamespaceName'), 'kafka-test')]",
+        "[resourceId('Microsoft.EventHub/namespaces/eventhubs', variables('eventHubsNamespaceName'), 'sample-eventhubs-kafka')]",
         "[resourceId('Microsoft.EventHub/namespaces', variables('eventHubsNamespaceName'))]"
       ],
       "properties": {}
     }
   ],
   "outputs": {
-    "EVENTHUB_NAMESPACE_NAME_KAFKA": {
+    "EVENTHUB_NAMESPACE_NAME_SAMPLE_EVENTHUBS_KAFKA": {
       "type": "string",
       "value": "[variables('eventHubsNamespaceName')]"
     },
-    "SPRING_TENANT_ID_KAFKA": {
+    "SPRING_TENANT_ID": {
       "type": "string",
       "value": "[parameters('tenantId')]"
     },
-    "SPRING_CLIENT_ID_KAFKA": {
+    "SPRING_CLIENT_ID": {
       "type": "string",
       "value": "[parameters('testApplicationId')]"
     },
-    "SPRING_CLIENT_SECRET_KAFKA": {
+    "SPRING_CLIENT_SECRET": {
       "type": "string",
       "value": "[parameters('testApplicationSecret')]"
     },
-    "SPRING_RESOURCE_GROUP_KAFKA": {
+    "SPRING_RESOURCE_GROUP": {
       "type": "string",
       "value": "[resourceGroup().name]"
     },
-    "SPRING_SUBSCRIPTION_ID_KAFKA": {
+    "SPRING_SUBSCRIPTION_ID": {
       "type": "string",
       "value": "[subscription().subscriptionId]"
     }

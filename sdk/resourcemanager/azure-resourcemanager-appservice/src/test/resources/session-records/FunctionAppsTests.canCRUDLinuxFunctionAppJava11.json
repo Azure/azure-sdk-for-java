@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javacsmrg1d3019355?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javacsmrg1d3019355?api-version=2021-01-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.0.0 (14.0.1; Windows 10 10.0)",
       "Content-Type" : "application/json"
@@ -51,7 +51,7 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg1d3019355/providers/Microsoft.Web/serverfarms/java-func-58a43893bplan05d23137?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg1d3019355/providers/Microsoft.Web/serverfarms/java-func-58a43893bplan05d23137?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appservice/2.0.0 (14.0.1; Windows 10 10.0)",
       "Content-Type" : "application/json"
@@ -127,7 +127,7 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg1d3019355/providers/Microsoft.Web/sites/java-func-58a43893b?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg1d3019355/providers/Microsoft.Web/sites/java-func-58a43893b?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appservice/2.0.0 (14.0.1; Windows 10 10.0)",
       "Content-Type" : "application/json"
@@ -155,7 +155,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg1d3019355/providers/Microsoft.Web/serverfarms/java-func-58a43893bplan05d23137?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg1d3019355/providers/Microsoft.Web/serverfarms/java-func-58a43893bplan05d23137?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appservice/2.0.0 (14.0.1; Windows 10 10.0)",
       "Content-Type" : "application/json"
@@ -182,7 +182,7 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg1d3019355/providers/Microsoft.Web/sites/java-func-58a43893b/config/web?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg1d3019355/providers/Microsoft.Web/sites/java-func-58a43893b/config/web?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appservice/2.0.0 (14.0.1; Windows 10 10.0)",
       "Content-Type" : "application/json"
@@ -235,7 +235,7 @@
     }
   }, {
     "Method" : "POST",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg1d3019355/providers/Microsoft.Web/sites/java-func-58a43893b/config/appsettings/list?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg1d3019355/providers/Microsoft.Web/sites/java-func-58a43893b/config/appsettings/list?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appservice/2.0.0 (14.0.1; Windows 10 10.0)",
       "Content-Type" : "application/json"
@@ -262,7 +262,7 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg1d3019355/providers/Microsoft.Web/sites/java-func-58a43893b/config/appsettings?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg1d3019355/providers/Microsoft.Web/sites/java-func-58a43893b/config/appsettings?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appservice/2.0.0 (14.0.1; Windows 10 10.0)",
       "Content-Type" : "application/json"
@@ -286,11 +286,11 @@
       "content-type" : "application/json",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "b08bf4b6-bbe7-4347-9d9b-c7f438efc628",
-      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg1d3019355/providers/Microsoft.Web/sites/java-func-58a43893b/config/appsettings\",\"name\":\"appsettings\",\"type\":\"Microsoft.Web/sites/config\",\"location\":\"East US\",\"tags\":{},\"properties\":{\"FUNCTIONS_EXTENSION_VERSION\":\"~3\",\"AzureWebJobsDashboard\":\"DefaultEndpointsProtocol=https;AccountName=a7573fd3dd8647beaaf9;AccountKey=***REMOVED***\",\"WEBSITE_RUN_FROM_PACKAGE\":\"https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/appservice/mgmt/src/test/resources/java-functions.zip\",\"FUNCTIONS_WORKER_RUNTIME\":\"java\",\"AzureWebJobsStorage\":\"DefaultEndpointsProtocol=https;AccountName=a7573fd3dd8647beaaf9;AccountKey=***REMOVED***\"}}"
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg1d3019355/providers/Microsoft.Web/sites/java-func-58a43893b/config/appsettings\",\"name\":\"appsettings\",\"type\":\"Microsoft.Web/sites/config\",\"location\":\"East US\",\"tags\":{},\"properties\":{\"FUNCTIONS_EXTENSION_VERSION\":\"~3\",\"AzureWebJobsDashboard\":\"DefaultEndpointsProtocol=https;AccountName=a7573fd3dd8647beaaf9;AccountKey=***REMOVED***\",\"WEBSITE_RUN_FROM_PACKAGE\":\"https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/appservice/mgmt/src/test/resources/java-functions.zip\",\"FUNCTIONS_WORKER_RUNTIME\":\"java\",\"AzureWebJobsStorage\":\"DefaultEndpointsProtocol=https;AccountName=a7573fd3dd8647beaaf9;AccountKey=***REMOVED***\"}}"
     }
   }, {
     "Method" : "POST",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg1d3019355/providers/Microsoft.Web/sites/java-func-58a43893b/config/appsettings/list?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg1d3019355/providers/Microsoft.Web/sites/java-func-58a43893b/config/appsettings/list?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appservice/2.0.0 (14.0.1; Windows 10 10.0)",
       "Content-Type" : "application/json"
@@ -313,11 +313,11 @@
       "content-type" : "application/json",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "2de4ce33-6c81-4ff2-a34b-158780f4b590",
-      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg1d3019355/providers/Microsoft.Web/sites/java-func-58a43893b/config/appsettings\",\"name\":\"appsettings\",\"type\":\"Microsoft.Web/sites/config\",\"location\":\"East US\",\"tags\":{},\"properties\":{\"FUNCTIONS_EXTENSION_VERSION\":\"~3\",\"AzureWebJobsDashboard\":\"DefaultEndpointsProtocol=https;AccountName=a7573fd3dd8647beaaf9;AccountKey=***REMOVED***\",\"WEBSITE_RUN_FROM_PACKAGE\":\"https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/appservice/mgmt/src/test/resources/java-functions.zip\",\"FUNCTIONS_WORKER_RUNTIME\":\"java\",\"AzureWebJobsStorage\":\"DefaultEndpointsProtocol=https;AccountName=a7573fd3dd8647beaaf9;AccountKey=***REMOVED***\"}}"
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg1d3019355/providers/Microsoft.Web/sites/java-func-58a43893b/config/appsettings\",\"name\":\"appsettings\",\"type\":\"Microsoft.Web/sites/config\",\"location\":\"East US\",\"tags\":{},\"properties\":{\"FUNCTIONS_EXTENSION_VERSION\":\"~3\",\"AzureWebJobsDashboard\":\"DefaultEndpointsProtocol=https;AccountName=a7573fd3dd8647beaaf9;AccountKey=***REMOVED***\",\"WEBSITE_RUN_FROM_PACKAGE\":\"https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/appservice/mgmt/src/test/resources/java-functions.zip\",\"FUNCTIONS_WORKER_RUNTIME\":\"java\",\"AzureWebJobsStorage\":\"DefaultEndpointsProtocol=https;AccountName=a7573fd3dd8647beaaf9;AccountKey=***REMOVED***\"}}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg1d3019355/providers/Microsoft.Web/sites/java-func-58a43893b/config/slotConfigNames?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg1d3019355/providers/Microsoft.Web/sites/java-func-58a43893b/config/slotConfigNames?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appservice/2.0.0 (14.0.1; Windows 10 10.0)",
       "Content-Type" : "application/json"
@@ -344,7 +344,7 @@
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javacsmrg1d3019355?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javacsmrg1d3019355?api-version=2021-01-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.0.0 (14.0.1; Windows 10 10.0)",
       "Content-Type" : "application/json"

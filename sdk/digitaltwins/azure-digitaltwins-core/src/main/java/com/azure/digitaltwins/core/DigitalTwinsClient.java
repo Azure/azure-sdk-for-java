@@ -191,7 +191,8 @@ public final class DigitalTwinsClient {
      *                                    This argument can be created using {@link JsonPatchDocument}.
      * @param options The optional parameters for this request. If null, the default option values will be used.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link DigitalTwinsResponse}
+     * @return A {@link DigitalTwinsResponse}. This response object includes an HTTP header that gives you the updated
+     * ETag for this resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DigitalTwinsResponse<Void> updateDigitalTwinWithResponse(String digitalTwinId, JsonPatchDocument jsonPatch, UpdateDigitalTwinOptions options, Context context)
@@ -369,7 +370,8 @@ public final class DigitalTwinsClient {
      *                                     This argument can be created using {@link JsonPatchDocument}.
      * @param options The optional parameters for this request. If null, the default option values will be used.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link DigitalTwinsResponse} containing no parsed payload object.
+     * @return A {@link DigitalTwinsResponse} containing no parsed payload object. This response object includes an
+     * HTTP header that gives you the updated ETag for this resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DigitalTwinsResponse<Void> updateRelationshipWithResponse(String digitalTwinId, String relationshipId, JsonPatchDocument jsonPatch, UpdateRelationshipOptions options, Context context) {
@@ -722,7 +724,8 @@ public final class DigitalTwinsClient {
      *                                  This argument can be created using {@link JsonPatchDocument}.
      * @param options The optional parameters for this request. If null, the default option values will be used.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link DigitalTwinsResponse} containing no parsed payload object.
+     * @return A {@link DigitalTwinsResponse} containing no parsed payload object. This response object includes an HTTP
+     * header that gives you the updated ETag for this resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DigitalTwinsResponse<Void> updateComponentWithResponse(String digitalTwinId, String componentName, JsonPatchDocument jsonPatch, UpdateComponentOptions options, Context context) {

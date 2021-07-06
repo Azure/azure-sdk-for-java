@@ -1,3 +1,13 @@
+---
+page_type: sample
+languages:
+- java
+products:
+- azure-active-directory-b2c
+description: "Sample project for Azure AD B2C Spring Boot resource server client library"
+urlFragment: "azure-spring-boot-sample-active-directory-b2c-resource-server"
+---
+
 # Sample for Azure AD B2C Resource server Spring Boot client library for Java
 
 ## Key concepts
@@ -13,7 +23,7 @@ This sample illustrates how to use `azure-spring-boot-starter-active-directory-b
 ### Prerequisites
 - [Environment checklist][environment_checklist]
 
-### Create and consent Application permissions 
+### Create and consent Application and Delegated permissions 
 1. On the **Azure AD B2C** Portal, select the application that requires roles to be added, select **Manifest**.
 2. Find the `appRoles` configuration item, and add the following configuration, then click the **Save** button.
 ```json
@@ -46,14 +56,35 @@ This sample illustrates how to use `azure-spring-boot-starter-active-directory-b
 ![Selected Application](docs/image-selected-application.png "Selected Application")
 ![Add Application Roles](docs/image-add-application-roles.png "Add Application Roles")
 
-4. Consent Application permissions.
+4. Expose an api.
 
-![Consent Application permissions](docs/image-consent-application-permissions.png "Consent Application permissions")
+![Expose an api.](docs/image-expose-an-api.png "Expose an api.")
 
-5. In the end, configuration is as follows.
+5. Add the delegated permissions.
+
+![Add Delegated permissions](docs/image-add-delegated-permissions.png "Add Delegated permissions")
+
+6. Consent Application permissions.
+
+![Consent Application permissions](docs/image-consent-application-and-delegated-permissions.png "Consent Application permissions")
+
+7. In the end, configuration is as follows.
    
 ![Final Configuration](docs/image-final-configuration.png "Final Configuration")
 
+### Create User Flow
+1. Add user flow on the portal.
+![Add user flow](docs/image-add-user-flow.png "Add user flow")
+   
+2. Select a user flow type.
+![Select a user flow type](docs/image-select-a-user-flow-type.png "Select a user flow type")
+
+3. Setting Relevant Content.
+![Setting Relevant Content.](docs/image-setting-relevant-content.png "Setting Relevant Content.")
+   
+4. Finally, configuration is as follows.
+![Finally](docs/image-user-flow-finally.png "Finally")
+   
 ## Examples
 ### Configure the sample
 #### application.yml
@@ -66,6 +97,9 @@ azure:
       tenant-id: ${your-tenant-id}
       app-id-uri: ${your-app-id-uri}         # If you are using v1.0 token, please configure app-id-uri for `aud` verification
       client-id: ${your-client-id}           # If you are using v2.0 token, please configure client-id for `aud` verification
+      base-uri: ${your-base-uri}             # Such as: https://xxxxb2c.b2clogin.com
+      user-flows:
+        sign-up-or-sign-in: ${sign-up-or-sign-in-user-flow-name}
 ```
 
 ### Run with Maven
@@ -85,6 +119,10 @@ Authorization: Bearer eyJ0eXAiO ... 0X2tnSQLEANnSPHY0gKcgw
 GET /read HTTP/1.1
 Authorization: Bearer eyJ0eXAiO ... 0X2tnSQLEANnSPHY0gKcgw
 ```
+```http request
+GET /log HTTP/1.1
+Authorization: Bearer eyJ0eXAiO ... 0X2tnSQLEANnSPHY0gKcgw
+```
 
 ## Troubleshooting
 - `WWW-Authenticate: Bearer error="invalid_token", error_description="An error occurred while attempting to decode the Jwt: Couldn't retrieve remote JWK set: Read timed out",`
@@ -99,4 +137,4 @@ You can set `isEnabled` to `false` in the manifest's JSON configuration.Then del
 ## Next steps
 ## Contributing
 <!-- LINKS -->
-[environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
+[environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist

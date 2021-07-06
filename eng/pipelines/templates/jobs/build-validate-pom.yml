@@ -11,8 +11,8 @@ jobs:
       - template: ../variables/globals.yml
 
     pool:
-      name: azsdk-pool-mms-ubuntu-1804-general
-      vmImage: MMSUbuntu18.04
+      name: azsdk-pool-mms-ubuntu-2004-general
+      vmImage: MMSUbuntu20.04
 
     strategy:
       matrix:
@@ -20,10 +20,19 @@ jobs:
           ArtifactName: 'packages'
 
     steps:
+      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+        parameters:
+          Paths:
+            - 'sdk/${{ parameters.ServiceDirectory }}'
+            - '**/*.xml'
+            - '**/*.md'
+            - '!sdk/**/test-recordings'
+            - '!sdk/**/session-records'
+
       - script: |
           echo "##vso[build.addbuildtag]Scheduled"
         displayName: 'Tag scheduled builds'
-        condition: and(succeeded(), eq(variables['Build.SourceBranchName'],'master'),eq(variables['Build.Reason'],'Schedule'))
+        condition: and(succeeded(), eq(variables['Build.SourceBranchName'],'main'),eq(variables['Build.Reason'],'Schedule'))
 
       - task: UsePythonVersion@0
         displayName: 'Use Python 3.6'
@@ -39,29 +48,14 @@ jobs:
         displayName: 'Verify Readmes'
 
       - template: ../steps/cache-maven-repository.yml
+        parameters:
+          JobType: 'Build and Validate'
+          SDKType: ${{ parameters.SDKType }}
+          ServiceDirectory: ${{ parameters.ServiceDirectory }}
 
-      # HACK: Ideally I wouldn't need to do this but I need to figure out the right
-      #       approach here around getting this dependency installed whilst targetting
-      #       the parent POMs via the root aggregeate (given they aren't listed)
-      #       anywhere in the depedency graph.
-      #
-      #       The answer might be to finally strip out the <module /> references from
-      #       the parent POMs (something we want to do anyway) and then add them to
-      #       the graph so that we can build off the root POM targetting the parent
-      #       projects and then it would be able to find sdk-build-tools. But for now
-      #       I am more interested getting the end-to-end scenario working with this
-      #       hack rather than getting bogged down.
-      - task: Maven@3
-        displayName: 'Install build tools'
-        inputs:
-          mavenPomFile: pom.xml
-          goals: 'install'
-          options: '-pl com.azure:sdk-build-tools -am'
-          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: $(JavaBuildVersion)
-          jdkArchitectureOption: 'x64'
-          publishJUnitResults: false
+      # We `install` the code quality reports tooling into our local m2 cache separately from building the Maven project
+      # reports. This means it is available as part of that, but also so that this is not documented in the project report.
+      - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
 
       - ${{ each artifact in parameters.Artifacts }}:
         - task: Maven@3
@@ -69,7 +63,7 @@ jobs:
           inputs:
             mavenPomFile: sdk/${{parameters.ServiceDirectory}}/${{artifact.name}}/pom.xml
             goals: 'deploy'
-            options: '-pl ${{artifact.groupId}}:${{artifact.name}} -DaltDeploymentRepository=id::default::file://$(System.DefaultWorkingDirectory)/build -Ddependency-checker -Dgpg.skip'
+            options: '$(DefaultOptions) -pl ${{artifact.groupId}}:${{artifact.name}} -DaltDeploymentRepository=id::default::file://$(System.DefaultWorkingDirectory)/build -Ddependency-checker -Dgpg.skip'
             mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
             javaHomeOption: 'JDKVersion'
             jdkVersionOption: $(JavaBuildVersion)

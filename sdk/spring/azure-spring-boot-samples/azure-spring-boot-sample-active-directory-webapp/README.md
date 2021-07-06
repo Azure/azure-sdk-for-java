@@ -1,3 +1,13 @@
+---
+page_type: sample
+languages:
+- java
+products:
+- azure-active-directory
+description: "OAuth 2.0 Sample project for Azure AD Spring Boot Starter client library"
+urlFragment: "azure-spring-boot-sample-active-directory-webapp"
+---
+
 # OAuth 2.0 Sample for Azure AD Spring Boot Starter client library for Java
 
 ## Key concepts
@@ -25,8 +35,19 @@ In order to try the authorization action with this sample with minimum effort, [
 ## Advanced features
 
 ### Support access control by id token in web application 
-If you want to use `id_token` for authorization, we can use `appRoles` feature of AAD to generate id_token's `roles` claim and then create `GrantedAuthority` from `roles` to implement access control. 
-Note the `roles` claim generated from `appRoles` is decorated with prefix `APPROLE_`.
+If you want to use `id_token` for authorization, the `appRoles` feature of AAD is supported which is presented in id_token's `roles` claim. By following below configurations, `GrantedAuthority` can be generated from `roles` claim. 
+
+Note:
+ - The `roles` claim generated from `appRoles` is decorated with prefix `APPROLE_`.
+ - When using `appRoles` as `roles` claim, please avoid configuring group attribute as `roles` at the same time. The latter will override the claim to contain group information instead of `appRoles`. Below configuration in manifest should be avoided:
+    ```
+    "optionalClaims": {
+        "idtoken": [{
+            "name": "groups",
+            "additionalProperties": ["emit_as_roles"]
+        }]
+    }
+    ```
 
 Follow the guide to 
 [add app roles in your application](https://docs.microsoft.com/azure/active-directory/develop/howto-add-app-roles-in-azure-ad-apps).
@@ -68,7 +89,8 @@ azure:
     client-secret: <client-secret>
     tenant-id: <tenant-id>
     user-group:
-      allowed-groups: group1, group2
+      allowed-group-names: <group1>,<group2>
+      allowed-group-ids: <group1-id>,<group2-id>   # When 'all' is used, all group id can be obtained.
     post-logout-redirect-uri: http://localhost:8080
     authorization-clients:
       arm:
@@ -82,6 +104,8 @@ azure:
 #        scopes:
 #          - <Web-API-A-app-id-url>/Obo.WebApiA.ExampleScope
       
+# enable-full-list is used to control whether to list all group ids, default is false
+
 # It's suggested the logged in user should at least belong to one of the above groups
 # If not, the logged in user will not be able to access any authorization controller rest APIs
 ```
@@ -118,11 +142,11 @@ In Azure portal, app registration manifest page, configure `oauth2AllowImplicitF
 ## Contributing
 
 <!-- LINKS -->
-[environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
+[environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
 [Register app]: https://docs.microsoft.com/azure/active-directory/develop/quickstart-register-app
 [Grant scoped permission]: https://docs.microsoft.com/azure/active-directory/develop/quickstart-configure-app-access-web-apis
 [configure the user and groups in Azure Active Directory]: https://docs.microsoft.com/azure/active-directory/active-directory-groups-create-azure-portal
 [this issue]: https://github.com/MicrosoftDocs/azure-docs/issues/8121#issuecomment-387090099
-[Resource Server]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server
-[Resource Server Obo]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-obo
-[config for resource server obo]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-obo#configure-your-middle-tier-web-api-a
+[Resource Server]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server
+[Resource Server Obo]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-obo
+[config for resource server obo]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-obo#configure-your-middle-tier-web-api-a

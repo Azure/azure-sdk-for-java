@@ -5,16 +5,17 @@
 package com.azure.resourcemanager.redisenterprise.implementation;
 
 import com.azure.core.management.exception.ManagementError;
-import com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager;
 import com.azure.resourcemanager.redisenterprise.fluent.models.OperationStatusInner;
 import com.azure.resourcemanager.redisenterprise.models.OperationStatus;
 
 public final class OperationStatusImpl implements OperationStatus {
     private OperationStatusInner innerObject;
 
-    private final RedisEnterpriseManager serviceManager;
+    private final com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager serviceManager;
 
-    OperationStatusImpl(OperationStatusInner innerObject, RedisEnterpriseManager serviceManager) {
+    OperationStatusImpl(
+        OperationStatusInner innerObject,
+        com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -47,7 +48,7 @@ public final class OperationStatusImpl implements OperationStatus {
         return this.innerObject;
     }
 
-    private RedisEnterpriseManager manager() {
+    private com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager() {
         return this.serviceManager;
     }
 }

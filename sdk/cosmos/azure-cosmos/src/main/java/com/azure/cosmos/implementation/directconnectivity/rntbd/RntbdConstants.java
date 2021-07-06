@@ -853,7 +853,8 @@ public final class RntbdConstants {
         QuorumAckedLocalLSN((short) 0x003B, RntbdTokenType.LongLong, false),
         ItemLocalLSN((short) 0x003C, RntbdTokenType.LongLong, false),
         HasTentativeWrites((short) 0x003D, RntbdTokenType.Byte, false),
-        SessionToken((short) 0x003E, RntbdTokenType.String, false);
+        SessionToken((short) 0x003E, RntbdTokenType.String, false),
+        BackendRequestDurationMilliseconds((short) 0X0051, RntbdTokenType.Double, false);
 
         public static final ImmutableMap<Short, RntbdResponseHeader> map;
         public static final ImmutableSet<RntbdResponseHeader> set = Sets.immutableEnumSet(EnumSet.allOf(RntbdResponseHeader.class));

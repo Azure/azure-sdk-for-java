@@ -3,7 +3,6 @@
 trigger:
   branches:
     include:
-      - master
       - main
       - hotfix/*
       - release/*
@@ -21,7 +20,6 @@ trigger:
 pr:
   branches:
     include:
-      - master
       - main
       - feature/*
       - hotfix/*
@@ -48,3 +46,8 @@ extends:
       - name: azure-messaging-eventhubs-checkpointstore-blob
         groupId: com.azure
         safeName: azuremessagingeventhubscheckpointstoreblob
+    AdditionalModules:
+      - name: azure-messaging-eventhubs-track1-perf
+        groupId: com.azure
+      - name: azure-messaging-eventhubs-track2-perf
+        groupId: com.azure

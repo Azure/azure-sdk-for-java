@@ -15,11 +15,11 @@ import com.azure.storage.blob.models.PathRenameMode;
 
 /** Initializes a new instance of the AzureBlobStorage type. */
 public final class AzureBlobStorageImpl {
-    /** The URL of the service account, container, or blob that is the targe of the desired operation. */
+    /** The URL of the service account, container, or blob that is the target of the desired operation. */
     private final String url;
 
     /**
-     * Gets The URL of the service account, container, or blob that is the targe of the desired operation.
+     * Gets The URL of the service account, container, or blob that is the target of the desired operation.
      *
      * @return the url value.
      */
@@ -162,7 +162,7 @@ public final class AzureBlobStorageImpl {
     /**
      * Initializes an instance of AzureBlobStorage client.
      *
-     * @param url The URL of the service account, container, or blob that is the targe of the desired operation.
+     * @param url The URL of the service account, container, or blob that is the target of the desired operation.
      * @param version Specifies the version of the operation to use for this request.
      * @param pathRenameMode Determines the behavior of the rename operation.
      */
@@ -181,7 +181,7 @@ public final class AzureBlobStorageImpl {
      * Initializes an instance of AzureBlobStorage client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
-     * @param url The URL of the service account, container, or blob that is the targe of the desired operation.
+     * @param url The URL of the service account, container, or blob that is the target of the desired operation.
      * @param version Specifies the version of the operation to use for this request.
      * @param pathRenameMode Determines the behavior of the rename operation.
      */
@@ -194,7 +194,7 @@ public final class AzureBlobStorageImpl {
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
-     * @param url The URL of the service account, container, or blob that is the targe of the desired operation.
+     * @param url The URL of the service account, container, or blob that is the target of the desired operation.
      * @param version Specifies the version of the operation to use for this request.
      * @param pathRenameMode Determines the behavior of the rename operation.
      */

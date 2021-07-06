@@ -109,7 +109,7 @@ public interface TopLevelDomainsClient {
      * Description for Gets all legal agreements that user needs to accept before purchasing a domain.
      *
      * @param name Name of the top-level domain.
-     * @param agreementOption Options for retrieving the list of top level domain legal agreements.
+     * @param agreementOption Domain agreement options.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -123,7 +123,7 @@ public interface TopLevelDomainsClient {
      * Description for Gets all legal agreements that user needs to accept before purchasing a domain.
      *
      * @param name Name of the top-level domain.
-     * @param agreementOption Options for retrieving the list of top level domain legal agreements.
+     * @param agreementOption Domain agreement options.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -137,7 +137,7 @@ public interface TopLevelDomainsClient {
      * Description for Gets all legal agreements that user needs to accept before purchasing a domain.
      *
      * @param name Name of the top-level domain.
-     * @param agreementOption Options for retrieving the list of top level domain legal agreements.
+     * @param agreementOption Domain agreement options.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is

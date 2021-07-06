@@ -16,7 +16,10 @@ public enum QueryFormatType {
     JSON("json"),
 
     /** Enum value arrow. */
-    ARROW("arrow");
+    ARROW("arrow"),
+
+    /** Enum value parquet. */
+    PARQUET("parquet");
 
     /** The actual serialized value for a QueryFormatType instance. */
     private final String value;

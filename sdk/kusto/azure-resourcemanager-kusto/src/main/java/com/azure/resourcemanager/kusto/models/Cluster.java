@@ -4,9 +4,11 @@
 
 package com.azure.resourcemanager.kusto.models;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.Region;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.kusto.fluent.models.ClusterInner;
+import com.azure.resourcemanager.kusto.fluent.models.FollowerDatabaseDefinitionInner;
 import java.util.List;
 import java.util.Map;
 
@@ -67,6 +69,13 @@ public interface Cluster {
      * @return the identity value.
      */
     Identity identity();
+
+    /**
+     * Gets the etag property: A unique read-only string that changes whenever the resource is updated.
+     *
+     * @return the etag value.
+     */
+    String etag();
 
     /**
      * Gets the state property: The state of the resource.
@@ -261,7 +270,9 @@ public interface Cluster {
                 DefinitionStages.WithKeyVaultProperties,
                 DefinitionStages.WithEnablePurge,
                 DefinitionStages.WithEnableDoubleEncryption,
-                DefinitionStages.WithEngineType {
+                DefinitionStages.WithEngineType,
+                DefinitionStages.WithIfMatch,
+                DefinitionStages.WithIfNoneMatch {
             /**
              * Executes the create request.
              *
@@ -400,6 +411,30 @@ public interface Cluster {
              */
             WithCreate withEngineType(EngineType engineType);
         }
+        /** The stage of the Cluster definition allowing to specify ifMatch. */
+        interface WithIfMatch {
+            /**
+             * Specifies the ifMatch property: The ETag of the cluster. Omit this value to always overwrite the current
+             * cluster. Specify the last-seen ETag value to prevent accidentally overwriting concurrent changes..
+             *
+             * @param ifMatch The ETag of the cluster. Omit this value to always overwrite the current cluster. Specify
+             *     the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+             * @return the next definition stage.
+             */
+            WithCreate withIfMatch(String ifMatch);
+        }
+        /** The stage of the Cluster definition allowing to specify ifNoneMatch. */
+        interface WithIfNoneMatch {
+            /**
+             * Specifies the ifNoneMatch property: Set to '*' to allow a new cluster to be created, but to prevent
+             * updating an existing cluster. Other values will result in a 412 Pre-condition Failed response..
+             *
+             * @param ifNoneMatch Set to '*' to allow a new cluster to be created, but to prevent updating an existing
+             *     cluster. Other values will result in a 412 Pre-condition Failed response.
+             * @return the next definition stage.
+             */
+            WithCreate withIfNoneMatch(String ifNoneMatch);
+        }
     }
     /**
      * Begins update for the Cluster resource.
@@ -421,7 +456,8 @@ public interface Cluster {
             UpdateStages.WithKeyVaultProperties,
             UpdateStages.WithEnablePurge,
             UpdateStages.WithEnableDoubleEncryption,
-            UpdateStages.WithEngineType {
+            UpdateStages.WithEngineType,
+            UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
          *
@@ -562,6 +598,18 @@ public interface Cluster {
              */
             Update withEngineType(EngineType engineType);
         }
+        /** The stage of the Cluster update allowing to specify ifMatch. */
+        interface WithIfMatch {
+            /**
+             * Specifies the ifMatch property: The ETag of the cluster. Omit this value to always overwrite the current
+             * cluster. Specify the last-seen ETag value to prevent accidentally overwriting concurrent changes..
+             *
+             * @param ifMatch The ETag of the cluster. Omit this value to always overwrite the current cluster. Specify
+             *     the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+             * @return the next definition stage.
+             */
+            Update withIfMatch(String ifMatch);
+        }
     }
     /**
      * Refreshes the resource to sync with Azure.
@@ -577,4 +625,163 @@ public interface Cluster {
      * @return the refreshed resource.
      */
     Cluster refresh(Context context);
+
+    /**
+     * Stops a Kusto cluster.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void stop();
+
+    /**
+     * Stops a Kusto cluster.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void stop(Context context);
+
+    /**
+     * Starts a Kusto cluster.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void start();
+
+    /**
+     * Starts a Kusto cluster.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void start(Context context);
+
+    /**
+     * Returns a list of databases that are owned by this cluster and were followed by another cluster.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list Kusto database principals operation response.
+     */
+    PagedIterable<FollowerDatabaseDefinition> listFollowerDatabases();
+
+    /**
+     * Returns a list of databases that are owned by this cluster and were followed by another cluster.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list Kusto database principals operation response.
+     */
+    PagedIterable<FollowerDatabaseDefinition> listFollowerDatabases(Context context);
+
+    /**
+     * Detaches all followers of a database owned by this cluster.
+     *
+     * @param followerDatabaseToRemove The follower databases properties to remove.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void detachFollowerDatabases(FollowerDatabaseDefinitionInner followerDatabaseToRemove);
+
+    /**
+     * Detaches all followers of a database owned by this cluster.
+     *
+     * @param followerDatabaseToRemove The follower databases properties to remove.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void detachFollowerDatabases(FollowerDatabaseDefinitionInner followerDatabaseToRemove, Context context);
+
+    /**
+     * Diagnoses network connectivity status for external resources on which the service is dependent on.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    DiagnoseVirtualNetworkResult diagnoseVirtualNetwork();
+
+    /**
+     * Diagnoses network connectivity status for external resources on which the service is dependent on.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    DiagnoseVirtualNetworkResult diagnoseVirtualNetwork(Context context);
+
+    /**
+     * Returns a list of language extensions that can run within KQL queries.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of language extension objects.
+     */
+    PagedIterable<LanguageExtension> listLanguageExtensions();
+
+    /**
+     * Returns a list of language extensions that can run within KQL queries.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of language extension objects.
+     */
+    PagedIterable<LanguageExtension> listLanguageExtensions(Context context);
+
+    /**
+     * Add a list of language extensions that can run within KQL queries.
+     *
+     * @param languageExtensionsToAdd The language extensions to add.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void addLanguageExtensions(LanguageExtensionsList languageExtensionsToAdd);
+
+    /**
+     * Add a list of language extensions that can run within KQL queries.
+     *
+     * @param languageExtensionsToAdd The language extensions to add.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void addLanguageExtensions(LanguageExtensionsList languageExtensionsToAdd, Context context);
+
+    /**
+     * Remove a list of language extensions that can run within KQL queries.
+     *
+     * @param languageExtensionsToRemove The language extensions to remove.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void removeLanguageExtensions(LanguageExtensionsList languageExtensionsToRemove);
+
+    /**
+     * Remove a list of language extensions that can run within KQL queries.
+     *
+     * @param languageExtensionsToRemove The language extensions to remove.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void removeLanguageExtensions(LanguageExtensionsList languageExtensionsToRemove, Context context);
 }
