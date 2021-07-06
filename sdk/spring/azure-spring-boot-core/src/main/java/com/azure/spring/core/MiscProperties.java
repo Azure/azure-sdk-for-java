@@ -4,14 +4,12 @@
 package com.azure.spring.core;
 
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
 
 /**
  * Common properties for Azure SDK clients.
  */
 @Validated
-@ConfigurationProperties(Constants.PREFIX)
 public class MiscProperties {
 
     /**

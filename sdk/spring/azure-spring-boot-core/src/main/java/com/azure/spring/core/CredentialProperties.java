@@ -3,12 +3,10 @@
 
 package com.azure.spring.core;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * Azure properties used for getting token credential.
  */
-@ConfigurationProperties(Constants.PREFIX)
 public class CredentialProperties {
     /**
      * The Azure Active Directory endpoint to connect to.

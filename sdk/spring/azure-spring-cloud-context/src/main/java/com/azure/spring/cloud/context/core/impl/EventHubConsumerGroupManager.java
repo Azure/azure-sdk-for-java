@@ -7,7 +7,7 @@ import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.eventhubs.models.EventHub;
 import com.azure.resourcemanager.eventhubs.models.EventHubConsumerGroup;
 import com.azure.spring.cloud.autoconfigure.context.AzureContextProperties;
-import com.azure.spring.cloud.context.core.util.Tuple;
+import com.azure.spring.core.util.Tuple;
 
 /**
  * Resource manager for Event Hubs consumer group.
@@ -15,7 +15,7 @@ import com.azure.spring.cloud.context.core.util.Tuple;
 public class EventHubConsumerGroupManager extends AzureManager<EventHubConsumerGroup, Tuple<EventHub, String>> {
 
     private final AzureResourceManager azureResourceManager;
-    
+
     public EventHubConsumerGroupManager(AzureResourceManager azureResourceManager, AzureContextProperties azureContextProperties) {
         super(azureContextProperties);
         this.azureResourceManager = azureResourceManager;

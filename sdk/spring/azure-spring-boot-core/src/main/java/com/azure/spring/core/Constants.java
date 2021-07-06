@@ -13,17 +13,6 @@ import java.util.Set;
  */
 public class Constants {
 
-    public static final Set<String> AZURE_SPRING_PROPERTIES = Collections.unmodifiableSet(
-        new HashSet<>(Arrays.asList(
-            "authority-host",
-            "client-id",
-            "client-secret",
-            "certificate-path",
-            "msi-enabled",
-            "tenant-id",
-            "environment"
-        )));
-
     public static final String AZURE_CHINA_AUTHORITY_HOST = "https://login.chinacloudapi.cn/";
     public static final String AZURE_GERMANY_AUTHORITY_HOST = "https://login.microsoftonline.de/";
     public static final String AZURE_GLOBAL_AUTHORITY_HOST = "https://login.microsoftonline.com/";

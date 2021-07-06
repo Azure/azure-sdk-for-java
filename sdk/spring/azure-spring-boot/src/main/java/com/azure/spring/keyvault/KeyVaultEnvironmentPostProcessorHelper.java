@@ -14,6 +14,8 @@ import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.azure.security.keyvault.secrets.SecretServiceVersion;
 import com.azure.spring.core.Constants;
 import com.azure.spring.keyvault.KeyVaultProperties.Property;
+import java.util.HashSet;
+import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.bind.Bindable;
@@ -29,10 +31,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.azure.spring.core.ApplicationId.AZURE_SPRING_KEY_VAULT;
-import static com.azure.spring.core.Constants.AZURE_SPRING_PROPERTIES;
-import static com.azure.spring.utils.Constants.VERSION;
-import static com.azure.spring.utils.Constants.AZURE_KEYVAULT_PROPERTYSOURCE_NAME;
-import static com.azure.spring.utils.Constants.DEFAULT_REFRESH_INTERVAL_MS;
+import static com.azure.spring.core.ApplicationId.VERSION;
 import static org.springframework.core.env.StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME;
 
 /**
@@ -41,6 +40,18 @@ import static org.springframework.core.env.StandardEnvironment.SYSTEM_ENVIRONMEN
  */
 class KeyVaultEnvironmentPostProcessorHelper {
 
+    public static final String AZURE_KEYVAULT_PROPERTYSOURCE_NAME = "azurekv";
+    public static final long DEFAULT_REFRESH_INTERVAL_MS = 1800000L;
+    public static final Set<String> AZURE_SPRING_PROPERTIES = Collections.unmodifiableSet(
+        new HashSet<>(Arrays.asList(
+            "authority-host",
+            "client-id",
+            "client-secret",
+            "certificate-path",
+            "msi-enabled",
+            "tenant-id",
+            "environment"
+        )));
     private static final Logger LOGGER = LoggerFactory.getLogger(KeyVaultEnvironmentPostProcessorHelper.class);
     private static final String DEFAULT_AUTHORITY_HOST = new IdentityClientOptions().getAuthorityHost();
     private final ConfigurableEnvironment environment;
@@ -186,9 +197,8 @@ class KeyVaultEnvironmentPostProcessorHelper {
     }
 
     private String getPropertyValue(final String normalizedName, final Property property, String defaultValue) {
-        String keyVaultPropertyValue = Optional.of(KeyVaultProperties.getPropertyName(normalizedName, property))
-            .map(environment::getProperty)
-            .orElse(defaultValue);
+        String propertyName = KeyVaultProperties.getPropertyName(normalizedName, property);
+        String keyVaultPropertyValue = environment.getProperty(propertyName, defaultValue);
         if (keyVaultPropertyValue != null) {
             return keyVaultPropertyValue;
         }

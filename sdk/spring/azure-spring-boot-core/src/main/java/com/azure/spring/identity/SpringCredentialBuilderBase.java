@@ -8,7 +8,6 @@ import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.identity.ManagedIdentityCredential;
 import com.azure.identity.ManagedIdentityCredentialBuilder;
 import com.azure.spring.core.Constants;
-import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.core.env.Environment;
 
 import java.util.Optional;
@@ -82,9 +81,7 @@ public abstract class SpringCredentialBuilderBase<T extends SpringCredentialBuil
     }
 
     protected String getPropertyValue(String propertyName, String defaultValue) {
-        return Binder.get(this.environment)
-                     .bind(propertyName, String.class)
-                     .orElse(defaultValue);
+       return environment.getProperty(propertyName, defaultValue);
     }
 
     protected String getAuthorityHost(String prefix) {

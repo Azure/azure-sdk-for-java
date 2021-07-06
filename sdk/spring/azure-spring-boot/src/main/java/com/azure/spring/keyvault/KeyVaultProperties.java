@@ -3,7 +3,6 @@
 
 package com.azure.spring.keyvault;
 
-import com.azure.spring.utils.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -135,7 +134,7 @@ public class KeyVaultProperties {
 
     private Boolean enabled;
     private List<String> secretKeys;
-    private Long refreshInterval = Constants.DEFAULT_REFRESH_INTERVAL_MS;
+    private Long refreshInterval = KeyVaultEnvironmentPostProcessorHelper.DEFAULT_REFRESH_INTERVAL_MS;
     private String allowTelemetry;
     /**
      * Defines the constant for the property that enables/disables case sensitive keys.

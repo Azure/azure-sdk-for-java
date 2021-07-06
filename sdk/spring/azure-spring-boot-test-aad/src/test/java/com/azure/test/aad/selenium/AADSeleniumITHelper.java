@@ -1,6 +1,6 @@
 package com.azure.test.aad.selenium;
 
-import com.azure.spring.utils.AzureCloudUrls;
+import com.azure.spring.core.util.AzureCloudUrls;
 import com.azure.test.aad.common.SeleniumITHelper;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;

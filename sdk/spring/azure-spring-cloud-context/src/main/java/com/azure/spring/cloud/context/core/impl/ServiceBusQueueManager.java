@@ -7,7 +7,7 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.servicebus.models.Queue;
 import com.azure.resourcemanager.servicebus.models.ServiceBusNamespace;
 import com.azure.spring.cloud.autoconfigure.context.AzureContextProperties;
-import com.azure.spring.cloud.context.core.util.Tuple;
+import com.azure.spring.core.util.Tuple;
 
 /**
  * Resource manager for Service Bus queue.

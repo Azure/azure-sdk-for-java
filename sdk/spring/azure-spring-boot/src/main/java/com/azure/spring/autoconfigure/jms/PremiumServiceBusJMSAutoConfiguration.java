@@ -19,7 +19,7 @@ import org.springframework.jms.config.JmsListenerContainerFactory;
 import javax.jms.ConnectionFactory;
 
 import static com.azure.spring.core.ApplicationId.AZURE_SPRING_SERVICE_BUS;
-import static com.azure.spring.utils.Constants.VERSION;
+import static com.azure.spring.core.ApplicationId.VERSION;
 
 /**
  * Automatic configuration class of ServiceBusJMS for Premium Service Bus

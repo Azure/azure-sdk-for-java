@@ -19,7 +19,7 @@ import org.springframework.context.annotation.Import;
 
 import static com.azure.spring.core.ApplicationId.AZURE_SPRING_STORAGE_BLOB;
 import static com.azure.spring.core.ApplicationId.AZURE_SPRING_STORAGE_FILES;
-import static com.azure.spring.utils.Constants.VERSION;
+import static com.azure.spring.core.ApplicationId.VERSION;
 
 /**
  * An auto-configuration for Azure Storage Account

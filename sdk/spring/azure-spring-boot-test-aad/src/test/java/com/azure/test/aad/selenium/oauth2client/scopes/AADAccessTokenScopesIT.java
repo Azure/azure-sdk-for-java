@@ -3,7 +3,7 @@
 
 package com.azure.test.aad.selenium.oauth2client.scopes;
 
-import com.azure.spring.utils.AzureCloudUrls;
+import com.azure.spring.core.util.AzureCloudUrls;
 import com.azure.test.aad.selenium.AADSeleniumITHelper;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;

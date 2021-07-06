@@ -3,6 +3,8 @@
 
 package com.azure.spring.core;
 
+import java.util.Optional;
+
 /**
  * Used internally. Constants in the Azure Spring Boot Core library.
  */
