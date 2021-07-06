@@ -4,20 +4,20 @@
     "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/metrics/27e3015f-04fd-44ba-a20b-bc529a0aebae/dimension/query",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.5 (11.0.11; Mac OS X; 11.4)",
-      "x-ms-client-request-id" : "3a19038c-3e5c-4c94-8dee-b5c192a0136a",
+      "x-ms-client-request-id" : "e2183a1e-d762-44a8-b554-ddd7e7192157",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "x-request-id" : "ae8751cd-be8f-4f05-ac78-3323b27ae4bb",
+      "x-request-id" : "b1061019-9553-467b-8d46-00e05b9fca09",
       "content-length" : "615",
-      "x-envoy-upstream-service-time" : "43",
+      "x-envoy-upstream-service-time" : "119",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "ae8751cd-be8f-4f05-ac78-3323b27ae4bb",
+      "apim-request-id" : "b1061019-9553-467b-8d46-00e05b9fca09",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"value\":[\"Automotive & Powersports\",\"Baby Products (Excluding Apparel)\",\"Beauty\",\"Books\",\"Camera & Photo\",\"Cell Phones\",\"Clothing & Accessories\",\"Collectible Coins\",\"Device Accessories\",\"Electronics (Accessories)\",\"Electronics (Consumer)\",\"Fine Art\",\"Grocery & Gourmet Food\",\"Handmade\",\"Health & Personal Care\",\"Historical & Advertising Collectibles\",\"Home & Garden\",\"Industrial & Scientific\",\"Jewelry\",\"Luggage & Travel Accessories\"],\"@nextLink\":\"https://js-metrics-advisor.cognitiveservices.azure.com:443/metricsadvisor/v1.0/metrics/27e3015f-04fd-44ba-a20b-bc529a0aebae/dimension/query?$maxpagesize=20&$skip=20\"}",
-      "Date" : "Mon, 21 Jun 2021 23:22:53 GMT",
+      "Date" : "Tue, 06 Jul 2021 19:51:08 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
@@ -26,20 +26,20 @@
     "Uri" : "https://REDACTED.cognitiveservices.azure.com:443/metricsadvisor/v1.0/metrics/27e3015f-04fd-44ba-a20b-bc529a0aebae/dimension/query?$maxpagesize=20&$skip=20",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.5 (11.0.11; Mac OS X; 11.4)",
-      "x-ms-client-request-id" : "e1d36cd3-6be2-4dd2-bf04-cc0e6cc5e76f",
+      "x-ms-client-request-id" : "c9d6cdf6-b42b-4703-b159-86900a7af8e4",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "x-request-id" : "dbe3cea8-edb3-4018-bf8a-d577d0252d8a",
+      "x-request-id" : "79e679b7-486e-4287-a222-3837dd516208",
       "content-length" : "217",
-      "x-envoy-upstream-service-time" : "5119",
+      "x-envoy-upstream-service-time" : "103",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "dbe3cea8-edb3-4018-bf8a-d577d0252d8a",
+      "apim-request-id" : "79e679b7-486e-4287-a222-3837dd516208",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"value\":[\"Music\",\"Musical Instruments\",\"Office Products\",\"Outdoors\",\"Personal Computers\",\"Shoes Handbags & Sunglasses\",\"Software & Computer Games\",\"Sports\",\"Sports Collectibles\",\"__SUM__\",\"Tools & Home Improvement\"]}",
-      "Date" : "Mon, 21 Jun 2021 23:22:58 GMT",
+      "Date" : "Tue, 06 Jul 2021 19:51:08 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
