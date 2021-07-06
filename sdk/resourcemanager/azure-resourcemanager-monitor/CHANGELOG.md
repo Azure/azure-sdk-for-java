@@ -8,7 +8,6 @@
 
 ### Breaking Changes
 
-- Class `Unit` is renamed to `MetricUnit`.
 - Class `AggregationType` is renamed to `AggregationTypeEnum`.
 
 ## 2.6.0 (2021-06-18)
