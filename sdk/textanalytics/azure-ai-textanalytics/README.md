@@ -37,8 +37,8 @@ This table shows the relationship between SDK services and supported API version
 
 |SDK version|Supported API version of service
 |-|-
-|5.0.x | 3.0
 |5.1.x | 3.0, 3.1 (default)
+|5.0.x | 3.0
 
 #### Create a Cognitive Services or Text Analytics resource
 Text Analytics supports both [multi-service and single-service access][service_access]. Create a Cognitive Services 
@@ -379,7 +379,7 @@ syncPoller.getFinalResult().forEach(
 ### Analyze multiple actions
 The `Analyze` functionality allows to choose which of the supported Text Analytics features to execute in the same
 set of documents. Currently, the supported features are: `entity recognition`, `linked entity recognition`,
-`Personally Identifiable Information (PII) entity recognition`, `key phrase extraction`, and `Sentiment analysis`. 
+`Personally Identifiable Information (PII) entity recognition`, `key phrase extraction`, and `sentiment analysis`. 
 <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L243-L291 -->
 ```java
 List<TextDocumentInput> documents = Arrays.asList(
