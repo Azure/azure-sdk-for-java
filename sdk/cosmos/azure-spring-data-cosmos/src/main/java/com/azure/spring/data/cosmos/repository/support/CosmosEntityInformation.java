@@ -373,7 +373,7 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
         if (annotation != null
                 && annotation.ru() != null
                 && !annotation.ru().isEmpty()) {
-            ru = Integer.parseInt(annotation.ru());
+            ru = Integer.parseInt(resolveExpression(annotation.ru()));
         }
         return ru;
     }
