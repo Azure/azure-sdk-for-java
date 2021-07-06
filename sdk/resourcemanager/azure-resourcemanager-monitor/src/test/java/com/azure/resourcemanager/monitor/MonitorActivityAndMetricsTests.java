@@ -22,9 +22,13 @@ public class MonitorActivityAndMetricsTests extends MonitorManagementTest {
     public void canListEventsAndMetrics() throws Exception {
         // make sure there exists a VM
 
-        OffsetDateTime recordDateTime = this.isPlaybackMode()
-            ? OffsetDateTime.parse("2020-12-28T21:44:57.424+08:00").minusDays(40)
-            : OffsetDateTime.now().minusDays(40);
+        OffsetDateTime now = OffsetDateTime.parse("2020-12-28T21:44:57.424+08:00");
+        if (!this.isPlaybackMode()) {
+            now = OffsetDateTime.now();
+            System.out.println("record timestamp: " + now);
+        }
+
+        OffsetDateTime recordDateTime = now.minusDays(40);
         VirtualMachine vm = computeManager.virtualMachines().list().iterator().next();
 
         // Metric Definition
