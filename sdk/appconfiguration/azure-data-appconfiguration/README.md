@@ -17,6 +17,37 @@ Use the client library for App Configuration to create and manage application co
 - [App Configuration Store][app_config_store]
 
 ### Include the Package
+#### Include the BOM file
+
+Please include the azure-sdk-bom to your project to take dependency on the latest GA version of the library.
+
+```xml
+<dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-sdk-bom</artifactId>
+            <version>1.0.3</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+    </dependencies>
+</dependencyManagement>
+```
+and then include the direct dependency in the dependencies section without the version tag.
+
+```xml
+<dependencies>
+<dependency>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-data-appconfiguration</artifactId>
+</dependency>
+</dependencies>
+```
+
+#### Include direct dependency
+If you want to take dependency on a particular version of the library that is not present in the BOM,
+add the direct dependency to your project as follows.
 
 [//]: # ({x-version-update-start;com.azure:azure-data-appconfiguration;dependency})
 ```xml
