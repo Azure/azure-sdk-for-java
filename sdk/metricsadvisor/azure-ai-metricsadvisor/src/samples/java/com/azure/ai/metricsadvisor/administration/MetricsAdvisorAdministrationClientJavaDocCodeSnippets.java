@@ -523,7 +523,7 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
                     System.out.printf("Email Hook External Link: %s%n", emailHook.getExternalLink());
                     System.out.printf("Email Hook Emails: %s%n", String.join(",",
                         emailHook.getEmailsToAlert()));
-                    System.out.printf("Email Hook Admins: %s%n", String.join(",", emailHook.getAdminEmails()));
+                    System.out.printf("Email Hook Admins: %s%n", String.join(",", emailHook.getAdmins()));
                 } else if (notificationHook instanceof WebNotificationHook) {
                     WebNotificationHook webHook = (WebNotificationHook) notificationHook;
                     System.out.printf("Web Hook Id: %s%n", webHook.getId());
@@ -532,7 +532,7 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
                     System.out.printf("Web Hook External Link: %s%n", webHook.getExternalLink());
                     System.out.printf("Web Hook Endpoint: %s%n", webHook.getEndpoint());
                     System.out.printf("Web Hook Headers: %s%n", webHook.getHttpHeaders());
-                    System.out.printf("Web Hook Admins: %s%n", String.join(",", webHook.getAdminEmails()));
+                    System.out.printf("Web Hook Admins: %s%n", String.join(",", webHook.getAdmins()));
                 }
             }
         });

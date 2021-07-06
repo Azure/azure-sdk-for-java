@@ -10,15 +10,14 @@
 - [Environment checklist][environment_checklist]
 
 ### Include the package
-[//]: # ({x-version-update-start;com.azure.spring:azure-spring-boot-starter-cosmos;current})
+1. [Add azure-spring-boot-bom].
+1. Add dependency. `<version>` can be skipped because we already add `azure-spring-boot-bom`.
 ```xml
 <dependency>
-    <groupId>com.azure.spring</groupId>
-    <artifactId>azure-spring-boot-starter-cosmos</artifactId>
-    <version>3.6.0</version>
+  <groupId>com.azure.spring</groupId>
+  <artifactId>azure-spring-boot-starter-cosmos</artifactId>
 </dependency>
 ```
-[//]: # ({x-version-update-end})
 
 ## Key concepts
 - Spring Data ReactiveCrudRepository basic CRUD functionality
@@ -297,4 +296,4 @@ Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/bl
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
 [sample_cosmos_switch_key]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-spring-data-cosmos/src/samples/java/com/azure/spring/data/cosmos/SampleApplication.java
 [environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
-
+[Add azure-spring-boot-bom]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/AZURE_SPRING_BOMS_USAGE.md#add-azure-spring-boot-bom
