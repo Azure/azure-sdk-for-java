@@ -8,5 +8,3 @@ stages:
         - name: azure-ai-textanalytics
           groupId: com.azure
           safeName: azureaitextanalytics
-      EnvVars:
-        AZURE_TEST_MODE: RECORD
