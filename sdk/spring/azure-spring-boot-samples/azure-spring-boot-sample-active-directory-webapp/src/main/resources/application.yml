@@ -18,6 +18,10 @@ azure:
         scopes:
           - https://graph.microsoft.com/User.Read
           - https://graph.microsoft.com/Directory.Read.All
-#      webapiA:
+#      webapiA:  # This is used to demonstrate on-behalf-of function. Refs: https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-on-behalf-of-flow
 #        scopes:
 #          - <Web-API-A-app-id-url>/Obo.WebApiA.ExampleScope
+#      webapiB:  # This is used to demonstrate client_credentials type. Refs: https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-client-creds-grant-flow
+#        scopes:
+#          - api://<Web-API-B-app-id-url>/.default
+#        authorization-grant-type: client_credentials

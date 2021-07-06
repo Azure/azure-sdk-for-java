@@ -4,10 +4,12 @@
 package com.azure.ai.textanalytics.models;
 
 import com.azure.ai.textanalytics.implementation.HealthcareEntityAssertionPropertiesHelper;
+import com.azure.core.annotation.Immutable;
 
 /**
  * The {@link HealthcareEntityAssertion} model.
  */
+@Immutable
 public final class HealthcareEntityAssertion {
     /*
      * Describes any conditionality on the entity.

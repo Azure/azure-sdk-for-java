@@ -16,8 +16,8 @@ import com.azure.ai.textanalytics.models.HealthcareEntityRelationRole;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
+import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesPagedIterable;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 
@@ -52,7 +52,7 @@ public class AnalyzeHealthcareEntities {
 
         AnalyzeHealthcareEntitiesOptions options = new AnalyzeHealthcareEntitiesOptions().setIncludeStatistics(true);
 
-        SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, PagedIterable<AnalyzeHealthcareEntitiesResultCollection>>
+        SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedIterable>
             syncPoller = client.beginAnalyzeHealthcareEntities(documents, options, Context.NONE);
 
         System.out.printf("Poller status: %s.%n", syncPoller.poll().getStatus());

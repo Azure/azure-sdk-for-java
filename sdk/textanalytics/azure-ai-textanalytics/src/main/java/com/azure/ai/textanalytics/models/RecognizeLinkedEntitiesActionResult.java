@@ -5,16 +5,18 @@ package com.azure.ai.textanalytics.models;
 
 import com.azure.ai.textanalytics.implementation.RecognizeLinkedEntitiesActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.util.RecognizeLinkedEntitiesResultCollection;
+import com.azure.core.annotation.Immutable;
 
 /**
  * The {@link RecognizeLinkedEntitiesActionResult} model.
  */
+@Immutable
 public final class RecognizeLinkedEntitiesActionResult extends TextAnalyticsActionResult {
-    private RecognizeLinkedEntitiesResultCollection documentResults;
+    private RecognizeLinkedEntitiesResultCollection documentsResults;
 
     static {
         RecognizeLinkedEntitiesActionResultPropertiesHelper.setAccessor(
-            (actionsResult, documentResults) -> actionsResult.setDocumentResults(documentResults));
+            (actionResult, documentsResults) -> actionResult.setDocumentsResults(documentsResults));
     }
 
     /**
@@ -25,12 +27,12 @@ public final class RecognizeLinkedEntitiesActionResult extends TextAnalyticsActi
      * @throws TextAnalyticsException if result has {@code isError} equals to true and when a non-error property
      * was accessed.
      */
-    public RecognizeLinkedEntitiesResultCollection getDocumentResults() {
+    public RecognizeLinkedEntitiesResultCollection getDocumentsResults() {
         throwExceptionIfError();
-        return documentResults;
+        return documentsResults;
     }
 
-    private void setDocumentResults(RecognizeLinkedEntitiesResultCollection documentResults) {
-        this.documentResults = documentResults;
+    private void setDocumentsResults(RecognizeLinkedEntitiesResultCollection documentsResults) {
+        this.documentsResults = documentsResults;
     }
 }
