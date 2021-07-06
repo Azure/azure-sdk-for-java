@@ -145,7 +145,7 @@ public final class SecretReferenceConfigurationSetting extends ConfigurationSett
             super.setValue(writeSecretReferenceConfigurationSetting(this));
         } catch (IOException exception) {
             LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Can't parse Secret Reference configuration setting value. Exception:" + exception));
+                "Can't parse Secret Reference configuration setting value.", exception));
         }
     }
 }

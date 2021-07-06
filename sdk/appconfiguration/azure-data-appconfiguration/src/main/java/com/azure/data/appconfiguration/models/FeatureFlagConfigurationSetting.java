@@ -274,7 +274,7 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
             super.setValue(writeFeatureFlagConfigurationSetting(this));
         } catch (IOException exception) {
             LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Can't parse Feature Flag configuration setting value. Exception:" + exception));
+                "Can't parse Feature Flag configuration setting value.", exception));
         }
     }
 }

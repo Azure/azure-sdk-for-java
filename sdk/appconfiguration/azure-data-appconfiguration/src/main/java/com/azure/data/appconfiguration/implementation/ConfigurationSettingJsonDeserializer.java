@@ -66,6 +66,12 @@ public final class ConfigurationSettingJsonDeserializer extends JsonDeserializer
                          configurationSettingSubclassDeserializer(FeatureFlagConfigurationSetting.class));
     }
 
+    /**
+     * Gets a module wrapping this deserializer as an adapter for the Jackson
+     * ObjectMapper.
+     *
+     * @return a simple module to be plugged onto Jackson ObjectMapper.
+     */
     public static SimpleModule getModule() {
         return MODULE;
     }
@@ -190,6 +196,14 @@ public final class ConfigurationSettingJsonDeserializer extends JsonDeserializer
         return setting;
     }
 
+    /**
+     * Given a JSON format string {@code settingValue}, deserializes it into a {@link JsonNode} and returns a
+     * {@link SecretReferenceConfigurationSetting} object.
+     *
+     * @param key the {@code key} property of setting.
+     * @param settingValue a JSON format string that represents the {@code value} property of setting.
+     * @return A {@link SecretReferenceConfigurationSetting} object.
+     */
     public static SecretReferenceConfigurationSetting readSecretReferenceConfigurationSettingValue(String key,
         String settingValue) {
         final JsonNode settingValueNode = toJsonNode(settingValue);
@@ -202,6 +216,13 @@ public final class ConfigurationSettingJsonDeserializer extends JsonDeserializer
         return new SecretReferenceConfigurationSetting(key, secretID);
     }
 
+    /**
+     * Given a JSON format string {@code settingValue}, deserializes it into a {@link JsonNode} and returns a
+     * {@link FeatureFlagConfigurationSetting} object.
+     *
+     * @param settingValue a JSON format string that represents the {@code value} property of setting.
+     * @return A {@link FeatureFlagConfigurationSetting} object which converted from the {@code settingValue}.
+     */
     public static FeatureFlagConfigurationSetting readFeatureFlagConfigurationSettingValue(String settingValue) {
         JsonNode settingValueNode = toJsonNode(settingValue);
 

@@ -51,6 +51,12 @@ public final class ConfigurationSettingJsonSerializer extends JsonSerializer<Con
         MODULE.addSerializer(ConfigurationSetting.class, new ConfigurationSettingJsonSerializer());
     }
 
+    /**
+     * Gets a module wrapping this serializer as an adapter for the Jackson
+     * ObjectMapper.
+     *
+     * @return a simple module to be plugged onto Jackson ObjectMapper.
+     */
     public static SimpleModule getModule() {
         return MODULE;
     }
@@ -93,6 +99,14 @@ public final class ConfigurationSettingJsonSerializer extends JsonSerializer<Con
         gen.writeEndObject();
     }
 
+    /**
+     * Serialize the strongly-type property, {@code secretId} of {@link SecretReferenceConfigurationSetting} into a
+     * JSON format string, which is the {@code value} of {@link SecretReferenceConfigurationSetting}.
+     *
+     * @param setting the {@link SecretReferenceConfigurationSetting}.
+     * @return a JSON format string that represents the {@code value} of {@link SecretReferenceConfigurationSetting}.
+     * @throws IOException if {@link JsonGenerator} can not be created.
+     */
     public static String writeSecretReferenceConfigurationSetting(SecretReferenceConfigurationSetting setting)
         throws IOException {
         // The setting's value is expected to be a JSON string for the SecretReferenceConfigurationSetting,
@@ -107,6 +121,14 @@ public final class ConfigurationSettingJsonSerializer extends JsonSerializer<Con
         return jsonObjectWriter.toString();
     }
 
+    /**
+     * Serialize the strong-type properties, such as {@code featureId} of {@link FeatureFlagConfigurationSetting}
+     * into a JSON format string, which is the {@code value} of {@link FeatureFlagConfigurationSetting}.
+     *
+     * @param setting the {@link FeatureFlagConfigurationSetting}.
+     * @return a JSON format string that represents the {@code value} of {@link FeatureFlagConfigurationSetting}.
+     * @throws IOException if {@link JsonGenerator} can not be created.
+     */
     public static String writeFeatureFlagConfigurationSetting(FeatureFlagConfigurationSetting setting)
         throws IOException {
         // The setting's value is expected to be a JSON string for the FeatureFlagConfigurationSetting,
