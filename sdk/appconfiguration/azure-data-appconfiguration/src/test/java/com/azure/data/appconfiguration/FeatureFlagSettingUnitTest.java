@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting.KEY_PREFIX;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -81,6 +82,7 @@ public class FeatureFlagSettingUnitTest {
         String expectedUpdatedSettingValue = getFeatureFlagConfigurationSettingValue(UPDATED_KEY,
             UPDATED_DESCRIPTION_VALUE, UPDATED_DISPLAY_NAME_VALUE, UPDATED_IS_ENABLED);
         // make sure the value reflect to the changes
+        assertEquals(KEY_PREFIX + UPDATED_KEY, setting.getKey());
         assertEquals(expectedUpdatedSettingValue, setting.getValue());
     }
 

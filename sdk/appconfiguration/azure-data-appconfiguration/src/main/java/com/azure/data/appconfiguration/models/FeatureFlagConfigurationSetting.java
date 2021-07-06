@@ -157,6 +157,7 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
      */
     public FeatureFlagConfigurationSetting setFeatureId(String featureId) {
         this.featureId = featureId;
+        super.setKey(KEY_PREFIX + featureId);
         updateSettingValue();
         return this;
     }
