@@ -39,6 +39,7 @@
 - Fix issue that where the AAD B2C starter cannot fetch the OpenID Connect metadata document via issuer. [#21036](https://github.com/Azure/azure-sdk-for-java/issues/21036)
 - Deprecate *addB2CIssuer*, *addB2CUserFlowIssuers*, *createB2CUserFlowIssuer* methods in `AADTrustedIssuerRepository`.
 
+
 ## 3.4.0 (2021-04-19)
 ### Key Bug Fixes
 - Fix bug that user-name-attribute cannot be configured. ([#20209](https://github.com/Azure/azure-sdk-for-java/issues/20209))
@@ -50,13 +51,12 @@
 - Upgrade to `Spring Security` [5.4.5](https://github.com/spring-projects/spring-security/releases/tag/5.4.5).
 - Support creating `GrantedAuthority` by "roles" claim from id-token for web application.
 
+
 ## 3.2.0 (2021-03-03)
 ### Breaking Changes
 - For the required scopes in auth code flow, use `Directory.Read.All` instead of `Directory.AccessAsUser.All`. ([#18901](https://github.com/Azure/azure-sdk-for-java/pull/18901))
-
-    Now The requested scopes are: `openid`, `profile`, `offline_access`, `User.Read`, `Directory.Read.All`. You can Refer to `AADWebAppConfiguration.java` for detailed information.
-
-
+  Now The requested scopes are: `openid`, `profile`, `offline_access`, `User.Read`, `Directory.Read.All`. 
+  You can Refer to [AADWebAppConfiguration.java](https://github.com/Azure/azure-sdk-for-java/blob/azure-spring-boot_3.2.0/sdk/spring/azure-spring-boot/src/main/java/com/azure/spring/aad/webapp/AADWebAppConfiguration.java#L119) for detailed information.
 
 ## 3.1.0 (2021-01-20)
 
@@ -79,8 +79,8 @@
   - Support for `AAD v1`, also named `Azure Active Directory`, endpoints in the form https://login.microsoft.online.com/common/oauth2/authorize has been removed.
   - `AAD v2`, also named `Microsoft Identity Platform`, endpoints in the form https://login.microsoftonline.com/common/oauth2/v2.0/authorize continue to be supported.
   - Please see [this documentation](https://github.com/MicrosoftDocs/azure-docs/blob/master/articles/active-directory/azuread-dev/azure-ad-endpoint-comparison.md) for more information.
-- The required scopes in auth code flow are: `openid`, `profile`, `offline_access`, `User.Read`, `Directory.AccessAsUser.All`. You can Refer to `AADWebAppConfiguration.java` for detailed information.
-
+- The required scopes in auth code flow are: `openid`, `profile`, `offline_access`, `User.Read`, `Directory.AccessAsUser.All`.
+  You can Refer to [AADWebAppConfiguration.java](https://github.com/Azure/azure-sdk-for-java/blob/azure-spring-boot_3.0.0/sdk/spring/azure-spring-boot/src/main/java/com/azure/spring/aad/webapp/AADWebAppConfiguration.java#L117) for detailed information.
 
 ### New Features
 - Support consent of multiple client registrations during user login.
