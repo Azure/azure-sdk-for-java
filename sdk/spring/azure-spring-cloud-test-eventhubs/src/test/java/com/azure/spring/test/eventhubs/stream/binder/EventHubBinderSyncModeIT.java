@@ -66,7 +66,7 @@ public class EventHubBinderSyncModeIT {
         public Consumer<Message<String>> consume() {
             return message -> {
                 LOGGER.info("EventHubBinderRecordModeIT: New message received: '{}'", message.getPayload());
-                if (message.getPayload().equals(EventHubBinderSyncModeIT.message)) {
+                if (message.getPayload().equals(EventHubBinderSyncModeIT.message) && message.getHeaders().containsKey("x-opt-enqueued-time")) {
                     latch.countDown();
                 }
             };
