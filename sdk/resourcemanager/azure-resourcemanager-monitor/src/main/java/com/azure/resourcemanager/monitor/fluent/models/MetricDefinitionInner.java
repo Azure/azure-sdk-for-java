@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.monitor.models.AggregationType;
 import com.azure.resourcemanager.monitor.models.MetricAvailability;
 import com.azure.resourcemanager.monitor.models.MetricClass;
-import com.azure.resourcemanager.monitor.models.MetricUnit;
+import com.azure.resourcemanager.monitor.models.Unit;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -66,7 +66,7 @@ public final class MetricDefinitionInner {
      * The unit of the metric.
      */
     @JsonProperty(value = "unit")
-    private MetricUnit unit;
+    private Unit unit;
 
     /*
      * the primary aggregation type value defining how to use the values for
@@ -246,7 +246,7 @@ public final class MetricDefinitionInner {
      *
      * @return the unit value.
      */
-    public MetricUnit unit() {
+    public Unit unit() {
         return this.unit;
     }
 
@@ -256,7 +256,7 @@ public final class MetricDefinitionInner {
      * @param unit the unit value to set.
      * @return the MetricDefinitionInner object itself.
      */
-    public MetricDefinitionInner withUnit(MetricUnit unit) {
+    public MetricDefinitionInner withUnit(Unit unit) {
         this.unit = unit;
         return this;
     }

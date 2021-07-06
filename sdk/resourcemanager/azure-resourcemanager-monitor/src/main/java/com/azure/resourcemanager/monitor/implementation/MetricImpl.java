@@ -5,7 +5,7 @@ package com.azure.resourcemanager.monitor.implementation;
 
 import com.azure.resourcemanager.monitor.models.LocalizableString;
 import com.azure.resourcemanager.monitor.models.Metric;
-import com.azure.resourcemanager.monitor.models.MetricUnit;
+import com.azure.resourcemanager.monitor.models.Unit;
 import com.azure.resourcemanager.monitor.models.TimeSeriesElement;
 import com.azure.resourcemanager.monitor.fluent.models.MetricInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
@@ -36,7 +36,7 @@ class MetricImpl extends WrapperImpl<MetricInner> implements Metric {
     }
 
     @Override
-    public MetricUnit unit() {
+    public Unit unit() {
         return this.innerModel().unit();
     }
 
