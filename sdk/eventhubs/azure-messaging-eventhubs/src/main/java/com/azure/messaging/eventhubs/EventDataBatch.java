@@ -8,21 +8,16 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.AmqpConstants;
 import com.azure.core.amqp.implementation.ErrorContextProvider;
 import com.azure.core.amqp.implementation.TracerProvider;
-import com.azure.core.amqp.models.AmqpMessageProperties;
+import com.azure.core.amqp.models.AmqpAnnotatedMessage;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.ProcessKind;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
-import org.apache.qpid.proton.Proton;
-import org.apache.qpid.proton.amqp.Binary;
-import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
-import org.apache.qpid.proton.amqp.messaging.Data;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.Signal;
 
 import java.nio.BufferOverflowException;
-import java.time.temporal.ChronoField;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -205,80 +200,19 @@ public final class EventDataBatch {
     /*
      * Creates the AMQP message represented by the event data
      */
-    private Message createAmqpMessage(EventData event, String partitionKey) {
-        final Message message = Proton.message();
-
-        if (event.getProperties() != null && !event.getProperties().isEmpty()) {
-            final ApplicationProperties applicationProperties = new ApplicationProperties(event.getProperties());
-            message.setApplicationProperties(applicationProperties);
-        }
-
-        if (event.getRawAmqpMessage().getProperties() != null) {
-            AmqpMessageProperties properties = event.getRawAmqpMessage().getProperties();
-            if (properties.getMessageId() != null) {
-                message.setMessageId(properties.getMessageId().toString());
-            }
-
-            if (properties.getUserId() != null && properties.getUserId().length > 0) {
-                message.setUserId(properties.getUserId());
-            }
-
-            if (properties.getTo() != null) {
-                message.setAddress(properties.getTo().toString());
-            }
-
-            if (properties.getSubject() != null) {
-                message.setSubject(properties.getSubject());
-            }
-
-            if (properties.getReplyTo() != null) {
-                message.setReplyTo(properties.getReplyTo().toString());
-            }
-
-            if (properties.getCorrelationId() != null) {
-                message.setCorrelationId(properties.getCorrelationId().toString());
-            }
-
-            if (properties.getContentType() != null) {
-                message.setContentType(properties.getContentType());
-            }
-
-            if (properties.getContentEncoding() != null) {
-                message.setContentEncoding(properties.getContentEncoding());
-            }
-
-            if (properties.getAbsoluteExpiryTime() != null) {
-                message.setExpiryTime(properties.getAbsoluteExpiryTime().getLong(ChronoField.MILLI_OF_SECOND));
-            }
-
-            if (properties.getCreationTime() != null) {
-                message.setCreationTime(properties.getCreationTime().getLong(ChronoField.MILLI_OF_SECOND));
-            }
-
-            if (properties.getGroupId() != null) {
-                message.setGroupId(properties.getGroupId());
-            }
-
-            if (properties.getGroupSequence() != null) {
-                message.setGroupSequence(properties.getGroupSequence());
-            }
-
-            if (properties.getReplyToGroupId() != null) {
-                message.setReplyToGroupId(properties.getReplyToGroupId());
-            }
-
-        }
+    private static Message createAmqpMessage(EventData event, String partitionKey) {
+        final AmqpAnnotatedMessage amqpAnnotatedMessage = event.getRawAmqpMessage();
+        final Message protonJ = MessageUtils.toProtonJMessage(amqpAnnotatedMessage);
 
         if (partitionKey != null) {
-            final MessageAnnotations messageAnnotations = (message.getMessageAnnotations() == null)
-                ? new MessageAnnotations(new HashMap<>())
-                : message.getMessageAnnotations();
+            if (protonJ.getMessageAnnotations() == null) {
+                protonJ.setMessageAnnotations(new MessageAnnotations(new HashMap<>()));
+            }
+
+            final MessageAnnotations messageAnnotations = protonJ.getMessageAnnotations();
             messageAnnotations.getValue().put(AmqpConstants.PARTITION_KEY, partitionKey);
-            message.setMessageAnnotations(messageAnnotations);
         }
 
-        message.setBody(new Data(new Binary(event.getBody())));
-
-        return message;
+        return protonJ;
     }
 }
