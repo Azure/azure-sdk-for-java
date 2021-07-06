@@ -52,6 +52,7 @@ public final class SecretReferenceConfigurationSetting extends ConfigurationSett
      * @param secretId the secret ID value of this configuration setting.
      *
      * @return The updated {@link SecretReferenceConfigurationSetting} object.
+     * @throws IllegalArgumentException if the setting's {@code value} is an invalid JSON format.
      */
     public SecretReferenceConfigurationSetting setSecretId(String secretId) {
         this.secretId = secretId;
@@ -78,6 +79,7 @@ public final class SecretReferenceConfigurationSetting extends ConfigurationSett
      * @param value The value to associate with this configuration setting.
      *
      * @return The updated {@link SecretReferenceConfigurationSetting} object.
+     * @throws IllegalArgumentException if the setting's {@code value} is an invalid JSON format.
      */
     @Override
     public SecretReferenceConfigurationSetting setValue(String value) {
@@ -142,7 +144,7 @@ public final class SecretReferenceConfigurationSetting extends ConfigurationSett
         try {
             super.setValue(writeSecretReferenceConfigurationSetting(this));
         } catch (IOException exception) {
-            LOGGER.logExceptionAsError(new RuntimeException(
+            LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "Can't parse Secret Reference configuration setting value. Exception:" + exception));
         }
     }

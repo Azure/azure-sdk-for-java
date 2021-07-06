@@ -66,6 +66,7 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
      * @param value The value to associate with this configuration setting.
      *
      * @return The updated {@link FeatureFlagConfigurationSetting} object.
+     * @throws IllegalArgumentException if the setting's {@code value} is an invalid JSON format.
      */
     @Override
     public FeatureFlagConfigurationSetting setValue(String value) {
@@ -154,6 +155,7 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
      * @param featureId the feature ID of this configuration setting.
      *
      * @return The updated {@link FeatureFlagConfigurationSetting} object.
+     * @throws IllegalArgumentException if the setting's {@code value} is an invalid JSON format.
      */
     public FeatureFlagConfigurationSetting setFeatureId(String featureId) {
         this.featureId = featureId;
@@ -177,6 +179,7 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
      * @param isEnabled the boolean indicator to show if the setting is turn on or off.
 
      * @return The updated {@link FeatureFlagConfigurationSetting} object.
+     * @throws IllegalArgumentException if the setting's {@code value} is an invalid JSON format.
      */
     public FeatureFlagConfigurationSetting setEnabled(boolean isEnabled) {
         this.isEnabled = isEnabled;
@@ -199,6 +202,7 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
      * @param description the description of this configuration setting.
      *
      * @return The updated {@link FeatureFlagConfigurationSetting} object.
+     * @throws IllegalArgumentException if the setting's {@code value} is an invalid JSON format.
      */
     public FeatureFlagConfigurationSetting setDescription(String description) {
         this.description = description;
@@ -221,6 +225,7 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
      * @param displayName the display name of this configuration setting.
      *
      * @return The updated {@link FeatureFlagConfigurationSetting} object.
+     * @throws IllegalArgumentException if the setting's {@code value} is an invalid JSON format.
      */
     public FeatureFlagConfigurationSetting setDisplayName(String displayName) {
         this.displayName = displayName;
@@ -243,6 +248,7 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
      * @param clientFilters the feature flag filters of this configuration setting.
      *
      * @return The updated {@link FeatureFlagConfigurationSetting} object.
+     * @throws IllegalArgumentException if the setting's {@code value} is an invalid JSON format.
      */
     public FeatureFlagConfigurationSetting setClientFilters(List<FeatureFlagFilter> clientFilters) {
         this.clientFilters = clientFilters;
@@ -267,7 +273,8 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
         try {
             super.setValue(writeFeatureFlagConfigurationSetting(this));
         } catch (IOException exception) {
-            LOGGER.logExceptionAsError(new RuntimeException("Can't parse Feature Flag configuration setting value."));
+            LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Can't parse Feature Flag configuration setting value. Exception:" + exception));
         }
     }
 }
