@@ -35,7 +35,6 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
-import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
 
 public class TracerProvider {
     private Tracer tracer;
@@ -96,10 +95,11 @@ public class TracerProvider {
      * @param name the name of the event.
      * @param attributes the additional attributes to be set for the event.
      * @param timestamp The instant, in UTC, at which the event will be associated to the span.
+     * @param context the call metadata containing information of the span to which the event should be associated with.
      * @throws NullPointerException if {@code eventName} is {@code null}.
      */
-    public void addEvent(String name, Map<String, Object> attributes, OffsetDateTime timestamp) {
-        tracer.addEvent(name, attributes, timestamp);
+    public void addEvent(String name, Map<String, Object> attributes, OffsetDateTime timestamp, Context context) {
+        tracer.addEvent(name, attributes, timestamp, context);
     }
 
     /**
@@ -219,7 +219,7 @@ public class TracerProvider {
                         if (cosmosDiagnostics != null
                             && cosmosDiagnostics.getDuration() != null
                             && cosmosDiagnostics.getDuration().compareTo(threshold) > 0) {
-                            addDiagnosticsOnTracerEvent(cosmosDiagnostics);
+                            addDiagnosticsOnTracerEvent(cosmosDiagnostics, parentContext.get());
                         }
                     } catch (JsonProcessingException ex) {
                         LOGGER.warn("Error while serializing diagnostics for tracer", ex.getMessage());
@@ -232,7 +232,7 @@ public class TracerProvider {
                     if (unwrappedException instanceof CosmosException) {
                         CosmosException dce = (CosmosException) unwrappedException;
                         try {
-                            addDiagnosticsOnTracerEvent(dce.getDiagnostics());
+                            addDiagnosticsOnTracerEvent(dce.getDiagnostics(), parentContext.get());
                         } catch (JsonProcessingException ex) {
                             LOGGER.warn("Error while serializing diagnostics for tracer", ex.getMessage());
                         }
@@ -366,8 +366,8 @@ public class TracerProvider {
         return reportPayload;
     }
 
-    private void addDiagnosticsOnTracerEvent(CosmosDiagnostics cosmosDiagnostics) throws JsonProcessingException {
-        if(cosmosDiagnostics == null) {
+    private void addDiagnosticsOnTracerEvent(CosmosDiagnostics cosmosDiagnostics, Context context) throws JsonProcessingException {
+        if (cosmosDiagnostics == null) {
             return;
         }
 
@@ -403,7 +403,7 @@ public class TracerProvider {
                 }
             }
 
-            this.addEvent("StoreResponse" + diagnosticsCounter++, attributes, requestStartTime);
+            this.addEvent("StoreResponse" + diagnosticsCounter++, attributes, requestStartTime, context);
         }
 
         //adding supplemental storeResponse
@@ -412,9 +412,11 @@ public class TracerProvider {
             ClientSideRequestStatistics.getCappedSupplementalResponseStatisticsList(clientSideRequestStatistics.getSupplementalResponseStatisticsList())) {
             attributes = new HashMap<>();
             attributes.put(JSON_STRING, Utils.getSimpleObjectMapper().writeValueAsString(statistics));
-            OffsetDateTime requestStartTime = OffsetDateTime.ofInstant(statistics.requestResponseTimeUTC, ZoneOffset.UTC);
-            if(statistics.storeResult != null) {
-                Iterator<RequestTimeline.Event> eventIterator = DirectBridgeInternal.getRequestTimeline(statistics.storeResult.toResponse()).iterator();
+            OffsetDateTime requestStartTime = OffsetDateTime.ofInstant(statistics.requestResponseTimeUTC,
+                ZoneOffset.UTC);
+            if (statistics.storeResult != null) {
+                Iterator<RequestTimeline.Event> eventIterator =
+                    DirectBridgeInternal.getRequestTimeline(statistics.storeResult.toResponse()).iterator();
                 while (eventIterator.hasNext()) {
                     RequestTimeline.Event event = eventIterator.next();
                     if (event.getName().equals("created")) {
@@ -423,7 +425,7 @@ public class TracerProvider {
                     }
                 }
             }
-            this.addEvent("Supplemental StoreResponse" + diagnosticsCounter++, attributes, requestStartTime);
+            this.addEvent("Supplemental StoreResponse" + diagnosticsCounter++, attributes, requestStartTime, context);
         }
 
         //adding gateway statistics
@@ -433,7 +435,7 @@ public class TracerProvider {
                 Utils.getSimpleObjectMapper().writeValueAsString(clientSideRequestStatistics.getGatewayStatistics()));
             OffsetDateTime requestStartTime =
                 OffsetDateTime.ofInstant(clientSideRequestStatistics.getRequestStartTimeUTC(), ZoneOffset.UTC);
-            if(clientSideRequestStatistics.getGatewayStatistics().requestTimeline != null) {
+            if (clientSideRequestStatistics.getGatewayStatistics().requestTimeline != null) {
                 Iterator<RequestTimeline.Event> eventIterator =
                     clientSideRequestStatistics.getGatewayStatistics().requestTimeline.iterator();
                 while (eventIterator.hasNext()) {
@@ -444,47 +446,60 @@ public class TracerProvider {
                     }
                 }
             }
-            this.addEvent("GatewayStatistics", attributes, requestStartTime);
+            this.addEvent("GatewayStatistics", attributes, requestStartTime, context);
         }
 
         //adding retry context
-        if(clientSideRequestStatistics.getRetryContext().getRetryStartTime() != null) {
+        if (clientSideRequestStatistics.getRetryContext().getRetryStartTime() != null) {
             attributes = new HashMap<>();
-            attributes.put(JSON_STRING, Utils.getSimpleObjectMapper().writeValueAsString(clientSideRequestStatistics.getRetryContext()));
-            this.addEvent("Retry Context", attributes, OffsetDateTime.ofInstant(clientSideRequestStatistics.getRetryContext().getRetryStartTime(), ZoneOffset.UTC));
+            attributes.put(JSON_STRING,
+                Utils.getSimpleObjectMapper().writeValueAsString(clientSideRequestStatistics.getRetryContext()));
+            this.addEvent("Retry Context", attributes,
+                OffsetDateTime.ofInstant(clientSideRequestStatistics.getRetryContext().getRetryStartTime(),
+                    ZoneOffset.UTC), context);
         }
 
         //adding addressResolutionStatistics
         diagnosticsCounter = 1;
-        for (ClientSideRequestStatistics.AddressResolutionStatistics addressResolutionStatistics: clientSideRequestStatistics.getAddressResolutionStatistics().values()) {
+        for (ClientSideRequestStatistics.AddressResolutionStatistics addressResolutionStatistics :
+            clientSideRequestStatistics.getAddressResolutionStatistics().values()) {
             attributes = new HashMap<>();
             attributes.put(JSON_STRING, Utils.getSimpleObjectMapper().writeValueAsString(addressResolutionStatistics));
-            this.addEvent("AddressResolutionStatistics" + diagnosticsCounter++, attributes, OffsetDateTime.ofInstant(addressResolutionStatistics.startTimeUTC, ZoneOffset.UTC));
+            this.addEvent("AddressResolutionStatistics" + diagnosticsCounter++, attributes,
+                OffsetDateTime.ofInstant(addressResolutionStatistics.startTimeUTC, ZoneOffset.UTC), context);
         }
 
         //adding serializationDiagnosticsContext
-        if(clientSideRequestStatistics.getSerializationDiagnosticsContext().serializationDiagnosticsList != null) {
-            for (SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics : clientSideRequestStatistics.getSerializationDiagnosticsContext().serializationDiagnosticsList) {
+        if (clientSideRequestStatistics.getSerializationDiagnosticsContext().serializationDiagnosticsList != null) {
+            for (SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics :
+                clientSideRequestStatistics.getSerializationDiagnosticsContext().serializationDiagnosticsList) {
                 attributes = new HashMap<>();
                 attributes.put(JSON_STRING, Utils.getSimpleObjectMapper().writeValueAsString(serializationDiagnostics));
-                this.addEvent("SerializationDiagnostics " + serializationDiagnostics.serializationType, attributes, OffsetDateTime.ofInstant(serializationDiagnostics.startTimeUTC, ZoneOffset.UTC));
+                this.addEvent("SerializationDiagnostics " + serializationDiagnostics.serializationType, attributes,
+                    OffsetDateTime.ofInstant(serializationDiagnostics.startTimeUTC, ZoneOffset.UTC), context);
             }
         }
 
         //adding systemInformation
         attributes = new HashMap<>();
-        attributes.put(JSON_STRING, Utils.getSimpleObjectMapper().writeValueAsString(clientSideRequestStatistics.getRegionsContacted()));
-        this.addEvent("RegionContacted" , attributes, OffsetDateTime.ofInstant(clientSideRequestStatistics.getRequestStartTimeUTC(), ZoneOffset.UTC));
+        attributes.put(JSON_STRING,
+            Utils.getSimpleObjectMapper().writeValueAsString(clientSideRequestStatistics.getRegionsContacted()));
+        this.addEvent("RegionContacted", attributes,
+            OffsetDateTime.ofInstant(clientSideRequestStatistics.getRequestStartTimeUTC(), ZoneOffset.UTC), context);
 
 
         //adding systemInformation
         attributes = new HashMap<>();
-        attributes.put(JSON_STRING, Utils.getSimpleObjectMapper().writeValueAsString(ClientSideRequestStatistics.fetchSystemInformation()));
-        this.addEvent("SystemInformation" , attributes, OffsetDateTime.ofInstant(clientSideRequestStatistics.getRequestStartTimeUTC(), ZoneOffset.UTC));
+        attributes.put(JSON_STRING,
+            Utils.getSimpleObjectMapper().writeValueAsString(ClientSideRequestStatistics.fetchSystemInformation()));
+        this.addEvent("SystemInformation", attributes,
+            OffsetDateTime.ofInstant(clientSideRequestStatistics.getRequestStartTimeUTC(), ZoneOffset.UTC), context);
 
         //adding clientCfgs
         attributes = new HashMap<>();
-        attributes.put(JSON_STRING, Utils.getSimpleObjectMapper().writeValueAsString(clientSideRequestStatistics.getDiagnosticsClientContext()));
-        this.addEvent("ClientCfgs" , attributes, OffsetDateTime.ofInstant(clientSideRequestStatistics.getRequestStartTimeUTC(), ZoneOffset.UTC));
+        attributes.put(JSON_STRING,
+            Utils.getSimpleObjectMapper().writeValueAsString(clientSideRequestStatistics.getDiagnosticsClientContext()));
+        this.addEvent("ClientCfgs", attributes,
+            OffsetDateTime.ofInstant(clientSideRequestStatistics.getRequestStartTimeUTC(), ZoneOffset.UTC), context);
     }
 }

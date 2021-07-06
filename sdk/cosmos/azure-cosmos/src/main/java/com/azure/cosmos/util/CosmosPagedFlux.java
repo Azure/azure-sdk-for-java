@@ -304,7 +304,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
             attributes.put("JSON",
                 Utils.getSimpleObjectMapper().writeValueAsString(queryPlanDiagnosticsContext));
             tracerProvider.addEvent("Query Plan Statistics", attributes,
-                OffsetDateTime.ofInstant(queryPlanDiagnosticsContext.getStartTimeUTC(), ZoneOffset.UTC));
+                OffsetDateTime.ofInstant(queryPlanDiagnosticsContext.getStartTimeUTC(), ZoneOffset.UTC), parentContext);
         }
 
         FeedResponseDiagnostics feedResponseDiagnostics = cosmosDiagnosticsAccessor.getFeedResponseDiagnostics(cosmosDiagnostics);
@@ -313,7 +313,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                 attributes = new HashMap<>();
                 attributes.put("Query Metrics", entry.getValue().toString());
                 tracerProvider.addEvent("Query Metrics for PKRange " + entry.getKey(), attributes,
-                    OffsetDateTime.now());
+                    OffsetDateTime.now(), parentContext);
             }
         }
 
@@ -386,17 +386,17 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                 String eventName =
                     "Diagnostics for PKRange " + clientSideRequestStatistics.getResponseStatisticsList().get(0).getStoreResult().partitionKeyRangeId;
                 tracerProvider.addEvent(eventName, attributes,
-                    OffsetDateTime.ofInstant(clientSideRequestStatistics.getRequestStartTimeUTC(), ZoneOffset.UTC));
+                    OffsetDateTime.ofInstant(clientSideRequestStatistics.getRequestStartTimeUTC(), ZoneOffset.UTC), parentContext);
             } else if (clientSideRequestStatistics.getGatewayStatistics() != null) {
                 String eventName =
                     "Diagnostics for PKRange " + clientSideRequestStatistics.getGatewayStatistics().getPartitionKeyRangeId();
                 tracerProvider.addEvent(eventName, attributes,
-                    OffsetDateTime.ofInstant(clientSideRequestStatistics.getRequestStartTimeUTC(), ZoneOffset.UTC));
+                    OffsetDateTime.ofInstant(clientSideRequestStatistics.getRequestStartTimeUTC(), ZoneOffset.UTC), parentContext);
 
             } else {
                 String eventName = "Diagnostics " + queryDiagnosticsCounter++;
                 tracerProvider.addEvent(eventName, attributes,
-                    OffsetDateTime.ofInstant(clientSideRequestStatistics.getRequestStartTimeUTC(), ZoneOffset.UTC));
+                    OffsetDateTime.ofInstant(clientSideRequestStatistics.getRequestStartTimeUTC(), ZoneOffset.UTC), parentContext);
             }
         }
     }
