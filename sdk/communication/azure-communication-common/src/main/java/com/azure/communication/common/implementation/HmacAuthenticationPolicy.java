@@ -81,8 +81,13 @@ public final class HmacAuthenticationPolicy implements HttpPipelinePolicy {
         }
 
         try {
+            URL hostnameToSignWith = context.getData("hmacSignatureURL")
+                .filter(alternativeUrl -> alternativeUrl instanceof URL)
+                .map(alternativeUrl -> (URL) alternativeUrl)
+                .orElse(context.getHttpRequest().getUrl());
+
             return appendAuthorizationHeaders(
-                    context.getHttpRequest().getUrl(),
+                    hostnameToSignWith,
                     context.getHttpRequest().getHttpMethod().toString(),
                     contents)
                 .flatMap(headers -> {

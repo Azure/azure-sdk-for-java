@@ -3,7 +3,9 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestOptions;
+import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.util.Beta;
 
 import java.time.Duration;
@@ -16,6 +18,7 @@ import java.util.List;
 public class CosmosItemRequestOptions {
     private ConsistencyLevel consistencyLevel;
     private IndexingDirective indexingDirective;
+    private OperationContextAndListenerTuple operationContextAndListenerTuple;
     private List<String> preTriggerInclude;
     private List<String> postTriggerInclude;
     private String sessionToken;
@@ -43,6 +46,7 @@ public class CosmosItemRequestOptions {
         throughputControlGroupName = options.throughputControlGroupName;
         dedicatedGatewayRequestOptions = options.dedicatedGatewayRequestOptions;
         thresholdForDiagnosticsOnTracer = options.thresholdForDiagnosticsOnTracer;
+        operationContextAndListenerTuple = options.operationContextAndListenerTuple;
     }
 
 
@@ -309,6 +313,7 @@ public class CosmosItemRequestOptions {
         requestOptions.setPartitionKey(partitionKey);
         requestOptions.setContentResponseOnWriteEnabled(contentResponseOnWriteEnabled);
         requestOptions.setThroughputControlGroupName(throughputControlGroupName);
+        requestOptions.setOperationContextAndListenerTuple(operationContextAndListenerTuple);
         requestOptions.setDedicatedGatewayRequestOptions(dedicatedGatewayRequestOptions);
         requestOptions.setThresholdForDiagnosticsOnTracer(thresholdForDiagnosticsOnTracer);
         return requestOptions;
@@ -346,5 +351,39 @@ public class CosmosItemRequestOptions {
      */
     public void setThresholdForDiagnosticsOnTracer(Duration thresholdForDiagnosticsOnTracer) {
         this.thresholdForDiagnosticsOnTracer = thresholdForDiagnosticsOnTracer;
+    }
+
+    void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {
+        this.operationContextAndListenerTuple = operationContextAndListenerTuple;
+    }
+
+    OperationContextAndListenerTuple getOperationContextAndListenerTuple() {
+        return this.operationContextAndListenerTuple;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    // the following helper/accessor only helps to access this class outside of this package.//
+    ///////////////////////////////////////////////////////////////////////////////////////////
+
+    static {
+        ImplementationBridgeHelpers.CosmosItemRequestOptionsHelper.setCosmosItemRequestOptionsAccessor(
+            new ImplementationBridgeHelpers.CosmosItemRequestOptionsHelper.CosmosItemRequestOptionsAccessor() {
+
+                @Override
+                public void setOperationContext(CosmosItemRequestOptions itemRequestOptions,
+                                                OperationContextAndListenerTuple operationContextAndListenerTuple) {
+                    itemRequestOptions.setOperationContextAndListenerTuple(operationContextAndListenerTuple);
+                }
+
+                @Override
+                public OperationContextAndListenerTuple getOperationContext(CosmosItemRequestOptions itemRequestOptions) {
+                    return itemRequestOptions.getOperationContextAndListenerTuple();
+                }
+
+                @Override
+                public CosmosItemRequestOptions clone(CosmosItemRequestOptions options) {
+                    return new CosmosItemRequestOptions(options);
+                }
+            });
     }
 }

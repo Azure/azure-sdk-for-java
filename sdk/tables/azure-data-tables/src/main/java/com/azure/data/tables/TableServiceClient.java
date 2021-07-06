@@ -6,6 +6,7 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.credential.AzureNamedKeyCredential;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
@@ -25,18 +26,22 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 
 import static com.azure.core.util.FluxUtil.monoError;
-import static com.azure.data.tables.implementation.TableUtils.applyOptionalTimeout;
 import static com.azure.data.tables.implementation.TableUtils.blockWithOptionalTimeout;
 
 /**
  * Provides a synchronous service client for accessing the Azure Tables service.
  *
- * The client encapsulates the URL for the Tables service endpoint and the credentials for accessing the storage or
+ * <p>The client encapsulates the URL for the Tables service endpoint and the credentials for accessing the storage or
  * CosmosDB table API account. It provides methods to create, delete, and list tables within the account. These methods
- * invoke REST API operations to make the requests and obtain the results that are returned.
+ * invoke REST API operations to make the requests and obtain the results that are returned.</p>
  *
- * Instances of this client are obtained by calling the {@link TableServiceClientBuilder#buildClient()} method on a
- * {@link TableServiceClientBuilder} object.
+ * <p>Instances of this client are obtained by calling the {@link TableServiceClientBuilder#buildClient()} method on a
+ * {@link TableServiceClientBuilder} object.</p>
+ *
+ * <p><strong>Samples to construct a sync client</strong></p>
+ * {@codesnippet com.azure.data.tables.tableServiceClient.instantiation}
+ *
+ * @see TableServiceClientBuilder
  */
 @ServiceClient(builder = TableServiceClientBuilder.class)
 public final class TableServiceClient {
@@ -74,15 +79,24 @@ public final class TableServiceClient {
     }
 
     /**
+     * Gets the {@link HttpPipeline} powering this client.
+     *
+     * @return This client's {@link HttpPipeline}.
+     */
+    HttpPipeline getHttpPipeline() {
+        return client.getHttpPipeline();
+    }
+
+    /**
      * Generates an account SAS for the Azure Storage account using the specified
      * {@link TableAccountSasSignatureValues}.
      *
-     * <p>Note : The client must be authenticated via {@link AzureNamedKeyCredential}.
+     * <p><strong>Note:</strong> The client must be authenticated via {@link AzureNamedKeyCredential}.</p>
      * <p>See {@link TableAccountSasSignatureValues} for more information on how to construct an account SAS.</p>
      *
      * @param tableAccountSasSignatureValues {@link TableAccountSasSignatureValues}.
      *
-     * @return A {@link String} representing the SAS query parameters.
+     * @return A {@code String} representing the SAS query parameters.
      *
      * @throws IllegalStateException If this {@link TableClient} is not authenticated with an
      * {@link AzureNamedKeyCredential}.
@@ -92,11 +106,11 @@ public final class TableServiceClient {
     }
 
     /**
-     * Gets a {@link TableClient} instance for the provided table in the account.
+     * Gets a {@link TableClient} instance for the table in the account with the provided {@code tableName}.
      *
      * @param tableName The name of the table.
      *
-     * @return A {@link TableClient} instance for the provided table in the account.
+     * @return A {@link TableClient} instance for the table in the account with the provided {@code tableName}.
      *
      * @throws IllegalArgumentException If {@code tableName} is {@code null} or empty.
      */
@@ -106,6 +120,10 @@ public final class TableServiceClient {
 
     /**
      * Creates a table within the Tables service.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Creates a table. Prints out the details of the created table.</p>
+     * {@codesnippet com.azure.data.tables.tableServiceClient.createTable#String}
      *
      * @param tableName The name of the table to create.
      *
@@ -122,11 +140,16 @@ public final class TableServiceClient {
     /**
      * Creates a table within the Tables service.
      *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Creates a table. Prints out the details of the {@link Response HTTP response} and the created table.</p>
+     * {@codesnippet com.azure.data.tables.tableServiceClient.createTableWithResponse#String-Duration-Context}
+     *
      * @param tableName The name of the table to create.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     * @param context Additional {@link Context} that is passed through the {@link HttpPipeline HTTP pipeline} during
+     * the service call.
      *
-     * @return The HTTP response containing a {@link TableClient} for the created table.
+     * @return The {@link Response HTTP response} containing a {@link TableClient} for the created table.
      *
      * @throws IllegalArgumentException If {@code tableName} is {@code null} or empty.
      * @throws TableServiceException If a table with the same name already exists within the service.
@@ -153,6 +176,10 @@ public final class TableServiceClient {
     /**
      * Creates a table within the Tables service if the table does not already exist.
      *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Creates a table if it does not already exist. Prints out the details of the created table.</p>
+     * {@codesnippet com.azure.data.tables.tableServiceClient.createTableIfNotExists#String}
+     *
      * @param tableName The name of the table to create.
      *
      * @return A {@link TableClient} for the created table.
@@ -167,11 +194,17 @@ public final class TableServiceClient {
     /**
      * Creates a table within the Tables service if the table does not already exist.
      *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Creates a table if it does not already exist. Prints out the details of the {@link Response HTTP response}
+     * and the created table.</p>
+     * {@codesnippet com.azure.data.tables.tableServiceClient.createTableIfNotExistsWithResponse#String-Duration-Context}
+     *
      * @param tableName The name of the table to create.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     * @param context Additional {@link Context} that is passed through the {@link HttpPipeline HTTP pipeline} during
+     * the service call.
      *
-     * @return The HTTP response containing a {@link TableClient} for the created table.
+     * @return The {@link Response HTTP response} containing a {@link TableClient} for the created table.
      *
      * @throws IllegalArgumentException If {@code tableName} is {@code null} or empty.
      */
@@ -195,6 +228,10 @@ public final class TableServiceClient {
     /**
      * Deletes a table within the Tables service.
      *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Deletes a table.</p>
+     * {@codesnippet com.azure.data.tables.tableServiceClient.deleteTable#String}
+     *
      * @param tableName The name of the table to delete.
      *
      * @throws IllegalArgumentException If {@code tableName} is {@code null} or empty.
@@ -208,11 +245,16 @@ public final class TableServiceClient {
     /**
      * Deletes a table within the Tables service.
      *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Deletes a table. Prints out the details of the {@link Response HTTP response}.</p>
+     * {@codesnippet com.azure.data.tables.tableServiceClient.deleteTableWithResponse#String-Duration-Context}
+     *
      * @param tableName The name of the table to delete.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     * @param context Additional {@link Context} that is passed through the {@link HttpPipeline HTTP pipeline} during
+     * the service call.
      *
-     * @return The HTTP response.
+     * @return The {@link Response HTTP response}.
      *
      * @throws IllegalArgumentException If {@code tableName} is {@code null} or empty.
      * @throws TableServiceException If the request is rejected by the service.
@@ -225,7 +267,11 @@ public final class TableServiceClient {
     /**
      * Lists all tables within the account.
      *
-     * @return A paged iterable containing all tables within the account.
+     * <p><strong>Code Samples</strong></p>
+     * <p>Lists all tables. Prints out the details of the retrieved tables.</p>
+     * {@codesnippet com.azure.data.tables.tableServiceClient.listTables}
+     *
+     * @return A {@link PagedIterable} containing all tables within the account.
      *
      * @throws TableServiceException If the request is rejected by the service.
      */
@@ -235,30 +281,37 @@ public final class TableServiceClient {
     }
 
     /**
-     * Lists tables using the parameters in the provided options.
+     * If the {@code filter} parameter in the options is set, only tables matching the filter will be returned. If the
+     * {@code top} parameter is set, the maximum number of returned tables per page will be limited to that value.
      *
-     * If the `filter` parameter in the options is set, only tables matching the filter will be returned. If the `top`
-     * parameter is set, the number of returned tables will be limited to that value.
+     * <p><strong>Code Samples</strong></p>
+     * <p>Lists all tables that match the filter. Prints out the details of the retrieved tables.</p>
+     * {@codesnippet com.azure.data.tables.tableServiceClient.listTables#ListTablesOptions-Duration-Context}
      *
-     * @param options The `filter` and `top` OData query options to apply to this operation.
+     * @param options The {@code filter} and {@code top} OData query options to apply to this operation.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     * @param context Additional {@link Context} that is passed through the {@link HttpPipeline HTTP pipeline} during
+     * the service call.
      *
-     * @return A paged iterable containing matching tables within the account.
+     * @return A {@link PagedIterable} containing matching tables within the account.
      *
      * @throws IllegalArgumentException If one or more of the OData query options in {@code options} is malformed.
      * @throws TableServiceException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TableItem> listTables(ListTablesOptions options, Duration timeout, Context context) {
-        return new PagedIterable<>(applyOptionalTimeout(client.listTables(options, context), timeout));
+        return new PagedIterable<>(client.listTables(options, context, timeout));
     }
 
     /**
-     * Gets the properties of an account's Table service, including properties for Analytics and CORS (Cross-Origin
+     * Gets the properties of the account's Table service, including properties for Analytics and CORS (Cross-Origin
      * Resource Sharing) rules.
      *
-     * @return The {@link TableServiceProperties properties} of an account's Table service.
+     * <p><strong>Code Samples</strong></p>
+     * <p>Gets the properties of the account's Table service.</p>
+     * {@codesnippet com.azure.data.tables.tableServiceClient.getProperties}
+     *
+     * @return The {@link TableServiceProperties properties} of the account's Table service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TableServiceProperties getProperties() {
@@ -266,13 +319,20 @@ public final class TableServiceClient {
     }
 
     /**
-     * Gets the properties of an account's Table service, including properties for Analytics and CORS (Cross-Origin
+     * Gets the properties of the account's Table service, including properties for Analytics and CORS (Cross-Origin
      * Resource Sharing) rules.
      *
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     * <p><strong>Code Samples</strong></p>
+     * <p>Gets the properties of the account's Table service. Prints out the details of the
+     * {@link Response HTTP response}.</p>
+     * {@codesnippet com.azure.data.tables.tableServiceClient.getPropertiesWithResponse#Duration-Context}
      *
-     * @return The HTTP response and the {@link TableServiceProperties properties} of an account's Table service.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional {@link Context} that is passed through the {@link HttpPipeline HTTP pipeline} during
+     * the service call.
+     *
+     * @return The {@link Response HTTP response} and the {@link TableServiceProperties properties} of the account's
+     * Table service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TableServiceProperties> getPropertiesWithResponse(Duration timeout, Context context) {
@@ -280,8 +340,12 @@ public final class TableServiceClient {
     }
 
     /**
-     * Sets the properties of an account's Table service, including properties for Analytics and CORS (Cross-Origin
+     * Sets the properties of the account's Table service, including properties for Analytics and CORS (Cross-Origin
      * Resource Sharing) rules.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Sets the properties of the account's Table service.</p>
+     * {@codesnippet com.azure.data.tables.tableServiceClient.setProperties#TableServiceProperties}
      *
      * @param tableServiceProperties The {@link TableServiceProperties} to set.
      */
@@ -294,11 +358,17 @@ public final class TableServiceClient {
      * Sets the properties of an account's Table service, including properties for Analytics and CORS (Cross-Origin
      * Resource Sharing) rules.
      *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Sets the properties of the account's Table service. Prints out the details of the
+     * {@link Response HTTP response}.</p></p>
+     * {@codesnippet com.azure.data.tables.tableServiceClient.setPropertiesWithResponse#TableServiceProperties-Duration-Context}
+     *
      * @param tableServiceProperties The {@link TableServiceProperties} to set.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     * @param context Additional {@link Context} that is passed through the {@link HttpPipeline HTTP pipeline} during
+     * the service call.
      *
-     * @return The HTTP response.
+     * @return The {@link Response HTTP response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setPropertiesWithResponse(TableServiceProperties tableServiceProperties, Duration timeout,
@@ -307,10 +377,14 @@ public final class TableServiceClient {
     }
 
     /**
-     * Retrieves statistics related to replication for the Table service. It is only available on the secondary location
-     * endpoint when read-access geo-redundant replication is enabled for the account.
+     * Retrieves statistics related to replication for the account's Table service. It is only available on the
+     * secondary location endpoint when read-access geo-redundant replication is enabled for the account.
      *
-     * @return Statistics for the Table service.
+     * <p><strong>Code Samples</strong></p>
+     * <p>Gets the replication statistics of the account's Table service.</p>
+     * {@codesnippet com.azure.data.tables.tableServiceClient.getStatistics}
+     *
+     * @return {@link TableServiceStatistics Statistics} for the account's Table service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TableServiceStatistics getStatistics() {
@@ -318,13 +392,20 @@ public final class TableServiceClient {
     }
 
     /**
-     * Retrieves statistics related to replication for the Table service. It is only available on the secondary location
-     * endpoint when read-access geo-redundant replication is enabled for the account.
+     * Retrieves statistics related to replication for the account's Table service. It is only available on the
+     * secondary location endpoint when read-access geo-redundant replication is enabled for the account.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Gets the replication statistics of the account's Table service. Prints out the details of the
+     * {@link Response HTTP response}.</p>
+     * {@codesnippet com.azure.data.tables.tableServiceClient.getStatisticsWithResponse#Duration-Context}
      *
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     * @param context Additional {@link Context} that is passed through the {@link HttpPipeline HTTP pipeline} during
+     * the service call.
      *
-     * @return A reactive result containing the HTTP response and statistics for the Table service.
+     * @return An {@link Response HTTP response} containing {@link TableServiceStatistics statistics} for the
+     * account's Table service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TableServiceStatistics> getStatisticsWithResponse(Duration timeout, Context context) {

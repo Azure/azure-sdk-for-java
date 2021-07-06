@@ -3,6 +3,8 @@
 
 package com.azure.core.amqp.models;
 
+import java.util.List;
+import java.util.Locale;
 import org.junit.jupiter.api.Test;
 import java.nio.charset.StandardCharsets;
 
@@ -18,24 +20,25 @@ public class AmqpAnnotatedMessageJavaDocCodeSamples {
         AmqpAnnotatedMessage amqpAnnotatedMessage =
             new AmqpAnnotatedMessage(AmqpMessageBody.fromData("my-amqp-message".getBytes(StandardCharsets.UTF_8)));
         // BEGIN: com.azure.core.amqp.models.AmqpBodyType.checkBodyType
-        // If client do not check `AmqpMessageBody.getBodyType()` and payload is not of type `AmqpMessageBodyType.DATA`,
-        // calling `getFirstData()` or `getData()` on `AmqpMessageBody` will throw Runtime exception.
-        // https://github.com/Azure/azure-sdk-for-java/issues/17614 : This issue tracks additional AMQP body type
-        // support in future.
-
-        byte[] payload = null;
+        Object amqpValue;
         AmqpMessageBodyType bodyType = amqpAnnotatedMessage.getBody().getBodyType();
+
         switch (bodyType) {
             case DATA:
-                payload = amqpAnnotatedMessage.getBody().getFirstData();
+                byte[] payload = amqpAnnotatedMessage.getBody().getFirstData();
+                System.out.println(new String(payload));
                 break;
             case SEQUENCE:
+                List<Object> sequenceData = amqpAnnotatedMessage.getBody().getSequence();
+                sequenceData.forEach(System.out::println);
+                break;
             case VALUE:
-                throw new RuntimeException("Body type not supported yet.");
+                amqpValue = amqpAnnotatedMessage.getBody().getValue();
+                System.out.println(amqpValue);
+                break;
             default:
-                throw new RuntimeException("Body type not valid.");
+                throw new RuntimeException(String.format(Locale.US, "Body type [%s] is not valid.", bodyType));
         }
-        System.out.println(new String(payload));
         // END: com.azure.core.amqp.models.AmqpBodyType.checkBodyType
     }
 

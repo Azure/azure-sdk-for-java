@@ -3,7 +3,6 @@
 trigger:
   branches:
     include:
-      - master
       - main
       - feature/*
       - hotfix/*
@@ -15,7 +14,6 @@ trigger:
 pr:
   branches:
     include:
-      - master
       - main
       - feature/*
       - hotfix/*
@@ -70,9 +68,6 @@ extends:
       - name: azure-spring-cloud-context
         groupId: com.azure.spring
         safeName: azurespringcloudcontext
-      - name: azure-spring-cloud-telemetry
-        groupId: com.azure.spring
-        safeName: azurespringcloudtelemetry
       - name: azure-spring-integration-core
         groupId: com.azure.spring
         safeName: azurespringintegrationcore

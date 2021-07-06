@@ -30,7 +30,6 @@ import com.azure.cosmos.implementation.clientTelemetry.ReportPayload;
 import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.models.FeedResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import io.opentelemetry.api.trace.Span;
 import org.HdrHistogram.ConcurrentDoubleHistogram;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -170,7 +169,6 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                 throwable instanceof CosmosException) {
                 CosmosException cosmosException = (CosmosException) throwable;
                 if (pagedFluxOptions.getTracerProvider().isEnabled()) {
-                   ((Span) parentContext.get().getData(PARENT_SPAN_KEY).get()).makeCurrent();
                     try {
                         addDiagnosticsOnTracerEvent(pagedFluxOptions.getTracerProvider(),
                             cosmosException.getDiagnostics(), parentContext.get());
@@ -192,7 +190,6 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
             startTime.set(Instant.now());
         }).doOnNext(feedResponse -> {
             if (pagedFluxOptions.getTracerProvider().isEnabled()) {
-               ((Span) parentContext.get().getData(PARENT_SPAN_KEY).get()).makeCurrent();
                 try {
                     Duration threshold = pagedFluxOptions.getThresholdForDiagnosticsOnTracer();
                     if (threshold == null) {

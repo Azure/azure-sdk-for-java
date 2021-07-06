@@ -5,16 +5,18 @@ package com.azure.ai.textanalytics.models;
 
 import com.azure.ai.textanalytics.implementation.AnalyzeSentimentActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
+import com.azure.core.annotation.Immutable;
 
 /**
  * The {@link AnalyzeSentimentActionResult} model.
  */
+@Immutable
 public final class AnalyzeSentimentActionResult extends TextAnalyticsActionResult {
-    private AnalyzeSentimentResultCollection result;
+    private AnalyzeSentimentResultCollection documentsResults;
 
     static {
         AnalyzeSentimentActionResultPropertiesHelper.setAccessor(
-            (actionsResult, result) -> actionsResult.setResult(result));
+            (actionResult, documentsResults) -> actionResult.setDocumentsResults(documentsResults));
     }
 
     /**
@@ -25,12 +27,12 @@ public final class AnalyzeSentimentActionResult extends TextAnalyticsActionResul
      * @throws TextAnalyticsException if result has {@code isError} equals to true and when a non-error property
      * was accessed.
      */
-    public AnalyzeSentimentResultCollection getResult() {
+    public AnalyzeSentimentResultCollection getDocumentsResults() {
         throwExceptionIfError();
-        return result;
+        return documentsResults;
     }
 
-    private void setResult(AnalyzeSentimentResultCollection result) {
-        this.result = result;
+    private void setDocumentsResults(AnalyzeSentimentResultCollection documentsResults) {
+        this.documentsResults = documentsResults;
     }
 }

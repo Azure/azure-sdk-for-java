@@ -4,6 +4,7 @@
 package com.azure.ai.textanalytics.models;
 
 import com.azure.ai.textanalytics.implementation.HealthcareEntityRelationPropertiesHelper;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 /**
@@ -11,6 +12,7 @@ import com.azure.core.util.IterableStream;
  * Every relation is an entity graph of a certain relationType, where all entities are connected and have specific roles
  * within the relation context.
  */
+@Immutable
 public final class HealthcareEntityRelation {
     /*
      * Type of relation. Examples include: `DosageOfMedication` or

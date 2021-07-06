@@ -41,12 +41,6 @@ import com.azure.cosmos.models.TriggerType;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.opentelemetry.api.trace.Span;
-import io.opentelemetry.api.trace.SpanBuilder;
-import io.opentelemetry.exporter.logging.LoggingSpanExporter;
-import io.opentelemetry.sdk.OpenTelemetrySdk;
-import io.opentelemetry.sdk.trace.SdkTracerProvider;
-import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
@@ -70,16 +64,10 @@ import static org.assertj.core.api.Assertions.fail;
 public class CosmosTracerTest extends TestSuiteBase {
     private final static ObjectMapper OBJECT_MAPPER = Utils.getSimpleObjectMapper();
     private static final String ITEM_ID = "tracerDoc";
-    private static final io.opentelemetry.api.trace.Tracer TRACER;
     private CosmosDiagnosticsAccessor cosmosDiagnosticsAccessor;
     CosmosAsyncClient client;
     CosmosAsyncDatabase cosmosAsyncDatabase;
     CosmosAsyncContainer cosmosAsyncContainer;
-
-    static {
-        TRACER = configureLoggingExporter();
-    }
-
 
     @BeforeClass(groups = {"emulator"}, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
@@ -448,10 +436,6 @@ public class CosmosTracerTest extends TestSuiteBase {
 
     private Tracer getMockTracer() {
         Tracer mockTracer = Mockito.mock(Tracer.class);
-        SpanBuilder builder = TRACER.spanBuilder("DBActivity");
-        Span span = builder.startSpan();
-        Context context = new Context(PARENT_SPAN_KEY, span);
-        Mockito.when(mockTracer.start(ArgumentMatchers.any(), ArgumentMatchers.any(Context.class))).thenReturn(context);
         return mockTracer;
     }
 
@@ -672,24 +656,4 @@ public class CosmosTracerTest extends TestSuiteBase {
             return attributesMap;
         }
     }
-
-    /**
-     * Configure the OpenTelemetry {@link LoggingSpanExporter} to enable tracing.
-     *
-     * @return The OpenTelemetry {@link io.opentelemetry.api.trace.Tracer} instance.
-     */
-    private static io.opentelemetry.api.trace.Tracer configureLoggingExporter() {
-        // Tracer provider configured to export spans with SimpleSpanProcessor using
-        // the logging exporter.
-        SdkTracerProvider tracerProvider =
-            SdkTracerProvider.builder()
-                .addSpanProcessor(SimpleSpanProcessor.create(new LoggingSpanExporter()))
-                .build();
-
-        return OpenTelemetrySdk.builder()
-            .setTracerProvider(tracerProvider)
-            .buildAndRegisterGlobal()
-            .getTracer("AppConfig-Sample");
-    }
-
 }

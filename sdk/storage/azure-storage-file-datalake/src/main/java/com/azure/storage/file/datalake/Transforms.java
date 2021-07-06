@@ -25,6 +25,7 @@ import com.azure.storage.blob.models.BlobQueryDelimitedSerialization;
 import com.azure.storage.blob.models.BlobQueryError;
 import com.azure.storage.blob.models.BlobQueryHeaders;
 import com.azure.storage.blob.models.BlobQueryJsonSerialization;
+import com.azure.storage.blob.models.BlobQueryParquetSerialization;
 import com.azure.storage.blob.models.BlobQueryProgress;
 import com.azure.storage.blob.models.BlobQueryResponse;
 import com.azure.storage.blob.models.BlobQuerySerialization;
@@ -33,8 +34,10 @@ import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobRetentionPolicy;
 import com.azure.storage.blob.models.BlobServiceProperties;
 import com.azure.storage.blob.models.BlobSignedIdentifier;
+import com.azure.storage.blob.models.ConsistentReadControl;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.StaticWebsite;
+import com.azure.storage.blob.options.BlobInputStreamOptions;
 import com.azure.storage.blob.options.BlobQueryOptions;
 import com.azure.storage.blob.options.UndeleteBlobContainerOptions;
 import com.azure.storage.file.datalake.implementation.models.BlobItemInternal;
@@ -60,6 +63,7 @@ import com.azure.storage.file.datalake.models.FileQueryDelimitedSerialization;
 import com.azure.storage.file.datalake.models.FileQueryError;
 import com.azure.storage.file.datalake.models.FileQueryHeaders;
 import com.azure.storage.file.datalake.models.FileQueryJsonSerialization;
+import com.azure.storage.file.datalake.models.FileQueryParquetSerialization;
 import com.azure.storage.file.datalake.models.FileQueryProgress;
 import com.azure.storage.file.datalake.models.FileQueryResponse;
 import com.azure.storage.file.datalake.models.FileQuerySerialization;
@@ -82,6 +86,7 @@ import com.azure.storage.file.datalake.models.PathItem;
 import com.azure.storage.file.datalake.models.PathProperties;
 import com.azure.storage.file.datalake.models.PublicAccessType;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
+import com.azure.storage.file.datalake.options.DataLakeFileInputStreamOptions;
 import com.azure.storage.file.datalake.options.FileQueryOptions;
 import com.azure.storage.file.datalake.options.FileSystemUndeleteOptions;
 
@@ -93,6 +98,11 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 class Transforms {
+
+    private static final String SERIALIZATION_MESSAGE = String.format("'serialization' must be one of %s, %s, %s or "
+            + "%s.", FileQueryJsonSerialization.class.getSimpleName(),
+        FileQueryDelimitedSerialization.class.getSimpleName(), FileQueryArrowSerialization.class.getSimpleName(),
+        FileQueryParquetSerialization.class.getSimpleName());
 
     static com.azure.storage.blob.models.PublicAccessType toBlobPublicAccessType(PublicAccessType
         fileSystemPublicAccessType) {
@@ -215,6 +225,32 @@ class Transforms {
             .setContentLanguage(pathHTTPHeaders.getContentLanguage())
             .setContentType(pathHTTPHeaders.getContentType())
             .setContentMd5(pathHTTPHeaders.getContentMd5());
+    }
+
+    static BlobInputStreamOptions toBlobInputStreamOptions(DataLakeFileInputStreamOptions options) {
+        if (options == null) {
+            return null;
+        }
+        return new BlobInputStreamOptions()
+            .setBlockSize(options.getBlockSize())
+            .setRange(toBlobRange(options.getRange()))
+            .setRequestConditions(toBlobRequestConditions(options.getRequestConditions()))
+            .setConsistentReadControl(toBlobConsistentReadControl(options.getConsistentReadControl()));
+    }
+
+    static com.azure.storage.blob.models.ConsistentReadControl toBlobConsistentReadControl(
+        com.azure.storage.file.datalake.models.ConsistentReadControl datalakeConsistentReadControl) {
+        if (datalakeConsistentReadControl == null) {
+            return null;
+        }
+        switch (datalakeConsistentReadControl) {
+            case NONE:
+                return ConsistentReadControl.NONE;
+            case ETAG:
+                return ConsistentReadControl.ETAG;
+            default:
+                throw new IllegalArgumentException("Could not convert ConsistentReadControl");
+        }
     }
 
     static BlobRange toBlobRange(FileRange fileRange) {
@@ -444,16 +480,10 @@ class Transforms {
         } else if (ser instanceof FileQueryArrowSerialization) {
             FileQueryArrowSerialization arrSer = (FileQueryArrowSerialization) ser;
             return new BlobQueryArrowSerialization().setSchema(toBlobQueryArrowSchema(arrSer.getSchema()));
-            // TODO (gapra): uncomment when parquet is released
-        /*} else if (ser instanceof FileQueryParquetSerialization) {
-            return new BlobQueryParquetSerialization(); */
+        } else if (ser instanceof FileQueryParquetSerialization) {
+            return new BlobQueryParquetSerialization();
         } else {
-            throw new IllegalArgumentException(
-                String.format("'serialization' must be one of %s, %s, or %s",
-                    FileQueryJsonSerialization.class.getSimpleName(),
-                    FileQueryDelimitedSerialization.class.getSimpleName(),
-                    FileQueryArrowSerialization.class.getSimpleName()
-                    /*FileQueryParquetSerialization.class.getSimpleName()*/));
+            throw new IllegalArgumentException(SERIALIZATION_MESSAGE);
         }
     }
 

@@ -17,7 +17,7 @@ public class HomeController {
     @ResponseBody
     @PreAuthorize("hasAuthority('SCOPE_WebApiB.ExampleScope')")
     public String file() {
-        return "Response from WebApiB.";
+        return "Response from webApiB.";
     }
 
     @GetMapping("/user")
@@ -25,6 +25,12 @@ public class HomeController {
     @PreAuthorize("hasAuthority('SCOPE_User.Read')")
     public String user() {
         return "User read success.";
+    }
+
+    @GetMapping("/webapiB/clientCredential")
+    @ResponseBody
+    public String clientCredential() {
+        return "Response from webApiB: clientCredential";
     }
 
 }

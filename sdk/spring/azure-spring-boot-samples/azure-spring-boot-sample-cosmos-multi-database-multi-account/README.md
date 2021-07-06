@@ -1,3 +1,13 @@
+---
+page_type: sample
+languages:
+- java
+products:
+- azure-cosmos-db
+description: "Azure Spring Boot Sample project for Cosmos Multi Database Multi Account"
+urlFragment: "azure-spring-boot-sample-cosmos-multi-database-multi-account"
+---
+
 # Azure Spring Boot Sample Cosmos Multi Database Multi Account for Java
 
 ## Key concepts
@@ -84,4 +94,4 @@ The corresponding data is added to the mysql database and cosmos database
 ## Contributing
 
 <!-- LINKS -->
-[environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
+[environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist

@@ -4,7 +4,6 @@
 package com.azure.security.keyvault.jca.test;
 
 import com.azure.security.keyvault.jca.JreCertificates;
-import com.azure.security.keyvault.jca.KeyVaultJcaProvider;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
@@ -22,9 +21,7 @@ import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import javax.net.ssl.SSLContext;
 import java.io.IOException;
 import java.security.KeyStore;
-import java.security.Security;
 import java.security.cert.Certificate;
-import java.util.Arrays;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -36,18 +33,11 @@ public class JreKeyStoreTest {
         /*
          * Add JCA provider.
          */
-        KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
-        Security.addProvider(provider);
+        PropertyConvertorUtils.addKeyVaultJcaProvider();
         /*
          * Set system properties.
          */
-
-        PropertyConvertorUtils.putEnvironmentPropertyToSystemProperty(
-            Arrays.asList("AZURE_KEYVAULT_URI",
-                "AZURE_KEYVAULT_TENANT_ID",
-                "AZURE_KEYVAULT_CLIENT_ID",
-                "AZURE_KEYVAULT_CLIENT_SECRET")
-        );
+        PropertyConvertorUtils.putEnvironmentPropertyToSystemPropertyForKeyVaultJca();
     }
 
     @Test

@@ -17,7 +17,6 @@ import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import io.opentelemetry.api.trace.Span;
 import org.HdrHistogram.ConcurrentDoubleHistogram;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -210,7 +209,6 @@ public class TracerProvider {
                 }
             }).doOnSuccess(response -> {
                 if (isEnabled() && !isNestedCall) {
-                    ((Span) parentContext.get().getData(PARENT_SPAN_KEY).get()).makeCurrent();
                     CosmosDiagnostics cosmosDiagnostics = diagnosticFunc.apply(response);
                     try {
                         Duration threshold = thresholdForDiagnosticsOnTracer;
@@ -230,7 +228,6 @@ public class TracerProvider {
                 }
             }).doOnError(throwable -> {
                 if (isEnabled() && !isNestedCall) {
-                    ((Span) parentContext.get().getData(PARENT_SPAN_KEY).get()).makeCurrent();
                     Throwable unwrappedException = reactor.core.Exceptions.unwrap(throwable);
                     if (unwrappedException instanceof CosmosException) {
                         CosmosException dce = (CosmosException) unwrappedException;

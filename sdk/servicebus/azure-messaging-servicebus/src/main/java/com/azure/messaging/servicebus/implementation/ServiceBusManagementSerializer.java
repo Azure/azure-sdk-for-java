@@ -31,6 +31,9 @@ public class ServiceBusManagementSerializer implements SerializerAdapter {
         Pattern.MULTILINE);
     private static final Pattern FILTER_ACTION_PATTERN = Pattern.compile("<(Filter|Action) type=",
         Pattern.MULTILINE);
+    private static final Pattern FILTER_VALUE_PATTERN = Pattern.compile("<(Value)",
+        Pattern.MULTILINE);
+    private static final String RULE_VALUE_ATTRIBUTE_XML = "<$1 xmlns:d6p1=\"http://www.w3.org/2001/XMLSchema\" ns0:type=\"d6p1:string\"";
 
     private final JacksonAdapter jacksonAdapter = new JacksonAdapter();
     private final ClientLogger logger = new ClientLogger(ServiceBusManagementSerializer.class);
@@ -56,12 +59,23 @@ public class ServiceBusManagementSerializer implements SerializerAdapter {
         }
 
         final String namespace = namespaceMatcher.group("namespace");
-        final String replaced = contents
+        String replaced = contents
             .replaceAll(namespace + ":", "")
             .replace("xmlns:" + namespace + "=", "xmlns=");
 
         if (!CreateRuleBody.class.equals(clazz)) {
             return replaced;
+        }
+
+        // This hack is here because value of custom property within RuleFilter should have a namespace like xmlns:d6p1="http://www.w3.org/2001/XMLSchema" ns0:type="d6p1:string".
+        if (CreateRuleBody.class.equals(clazz)) {
+            final Matcher filterValue = FILTER_VALUE_PATTERN.matcher(replaced);
+            if (filterValue.find()) {
+                replaced = filterValue.replaceAll(RULE_VALUE_ATTRIBUTE_XML);
+            } else {
+                logger.warning("Could not find filter name pattern '{}' in {}.", FILTER_VALUE_PATTERN.pattern(),
+                    contents);
+            }
         }
 
         // This hack is here because RuleFilter and RuleAction type="Foo" should have a namespace like n0:type="Foo".
