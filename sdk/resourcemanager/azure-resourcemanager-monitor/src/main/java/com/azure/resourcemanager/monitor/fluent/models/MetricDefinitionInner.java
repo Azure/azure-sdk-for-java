@@ -8,7 +8,8 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.monitor.models.AggregationType;
 import com.azure.resourcemanager.monitor.models.MetricAvailability;
-import com.azure.resourcemanager.monitor.models.Unit;
+import com.azure.resourcemanager.monitor.models.MetricClass;
+import com.azure.resourcemanager.monitor.models.MetricUnit;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -44,10 +45,28 @@ public final class MetricDefinitionInner {
     private LocalizableStringInner name;
 
     /*
-     * the unit of the metric.
+     * Detailed description of this metric.
+     */
+    @JsonProperty(value = "displayDescription")
+    private String displayDescription;
+
+    /*
+     * Custom category name for this metric.
+     */
+    @JsonProperty(value = "category")
+    private String category;
+
+    /*
+     * The class of the metric.
+     */
+    @JsonProperty(value = "metricClass")
+    private MetricClass metricClass;
+
+    /*
+     * The unit of the metric.
      */
     @JsonProperty(value = "unit")
-    private Unit unit;
+    private MetricUnit unit;
 
     /*
      * the primary aggregation type value defining how to use the values for
@@ -163,21 +182,81 @@ public final class MetricDefinitionInner {
     }
 
     /**
-     * Get the unit property: the unit of the metric.
+     * Get the displayDescription property: Detailed description of this metric.
+     *
+     * @return the displayDescription value.
+     */
+    public String displayDescription() {
+        return this.displayDescription;
+    }
+
+    /**
+     * Set the displayDescription property: Detailed description of this metric.
+     *
+     * @param displayDescription the displayDescription value to set.
+     * @return the MetricDefinitionInner object itself.
+     */
+    public MetricDefinitionInner withDisplayDescription(String displayDescription) {
+        this.displayDescription = displayDescription;
+        return this;
+    }
+
+    /**
+     * Get the category property: Custom category name for this metric.
+     *
+     * @return the category value.
+     */
+    public String category() {
+        return this.category;
+    }
+
+    /**
+     * Set the category property: Custom category name for this metric.
+     *
+     * @param category the category value to set.
+     * @return the MetricDefinitionInner object itself.
+     */
+    public MetricDefinitionInner withCategory(String category) {
+        this.category = category;
+        return this;
+    }
+
+    /**
+     * Get the metricClass property: The class of the metric.
+     *
+     * @return the metricClass value.
+     */
+    public MetricClass metricClass() {
+        return this.metricClass;
+    }
+
+    /**
+     * Set the metricClass property: The class of the metric.
+     *
+     * @param metricClass the metricClass value to set.
+     * @return the MetricDefinitionInner object itself.
+     */
+    public MetricDefinitionInner withMetricClass(MetricClass metricClass) {
+        this.metricClass = metricClass;
+        return this;
+    }
+
+    /**
+     * Get the unit property: The unit of the metric.
      *
      * @return the unit value.
      */
-    public Unit unit() {
+    public MetricUnit unit() {
         return this.unit;
     }
 
     /**
-     * Set the unit property: the unit of the metric.
+     * Set the unit property: The unit of the metric.
      *
      * @param unit the unit value to set.
      * @return the MetricDefinitionInner object itself.
      */
-    public MetricDefinitionInner withUnit(Unit unit) {
+    public MetricDefinitionInner withUnit(MetricUnit unit) {
         this.unit = unit;
         return this;
     }
