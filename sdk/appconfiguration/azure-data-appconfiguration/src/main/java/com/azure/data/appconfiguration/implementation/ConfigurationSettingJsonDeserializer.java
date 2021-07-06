@@ -113,17 +113,8 @@ public final class ConfigurationSettingJsonDeserializer extends JsonDeserializer
             settingValue = valueNode.asText();
         }
 
-        final JsonNode settingValueNode = toJsonNode(settingValue);
-
-        final JsonNode uriNode = settingValueNode.get(URI);
-        String secretID = null;
-        if (uriNode != null && !uriNode.isNull()) {
-            secretID = uriNode.asText(); // uri node contains the secret ID value
-        }
-
         SecretReferenceConfigurationSetting secretReferenceConfigurationSetting =
-            new SecretReferenceConfigurationSetting(secretID, secretID)
-                .setKey(baseSetting.getKey())
+            readSecretReferenceConfigurationSettingValue(baseSetting.getKey(), settingValue)
                 .setValue(settingValue)
                 .setLabel(baseSetting.getLabel())
                 .setETag(baseSetting.getETag())
@@ -199,7 +190,19 @@ public final class ConfigurationSettingJsonDeserializer extends JsonDeserializer
         return setting;
     }
 
-    private static FeatureFlagConfigurationSetting readFeatureFlagConfigurationSettingValue(String settingValue) {
+    public static SecretReferenceConfigurationSetting readSecretReferenceConfigurationSettingValue(String key,
+        String settingValue) {
+        final JsonNode settingValueNode = toJsonNode(settingValue);
+
+        final JsonNode uriNode = settingValueNode.get(URI);
+        String secretID = null;
+        if (uriNode != null && !uriNode.isNull()) {
+            secretID = uriNode.asText(); // uri node contains the secret ID value
+        }
+        return new SecretReferenceConfigurationSetting(key, secretID);
+    }
+
+    public static FeatureFlagConfigurationSetting readFeatureFlagConfigurationSettingValue(String settingValue) {
         JsonNode settingValueNode = toJsonNode(settingValue);
 
         final JsonNode featureIdNode = settingValueNode.get(ID);

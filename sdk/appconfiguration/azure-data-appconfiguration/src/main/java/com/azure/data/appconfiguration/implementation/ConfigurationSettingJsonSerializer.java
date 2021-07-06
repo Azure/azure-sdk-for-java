@@ -63,18 +63,11 @@ public final class ConfigurationSettingJsonSerializer extends JsonSerializer<Con
 
     private static void write(ConfigurationSetting value, JsonGenerator gen) throws IOException {
         gen.writeStartObject();
-        // The setting's value is expected to be a JSON string for the FeatureFlagConfigurationSetting and
-        // SecretReferenceConfigurationSetting, so it is better to use another JSON generator
-        // to constructor the value as JSON string, flush into the StringWriter.
-        final StringWriter jsonObjectWriter = new StringWriter();
-        final JsonGenerator generator = new JsonFactory().createGenerator(jsonObjectWriter);
         String settingValue;
         if (value instanceof FeatureFlagConfigurationSetting) {
-            writeFeatureFlagConfigurationSetting((FeatureFlagConfigurationSetting) value, generator);
-            settingValue = jsonObjectWriter.toString();
+            settingValue = writeFeatureFlagConfigurationSetting((FeatureFlagConfigurationSetting) value);
         } else if (value instanceof SecretReferenceConfigurationSetting) {
-            writeSecretReferenceConfigurationSetting((SecretReferenceConfigurationSetting) value, generator);
-            settingValue = jsonObjectWriter.toString();
+            settingValue = writeSecretReferenceConfigurationSetting((SecretReferenceConfigurationSetting) value);
         } else {
             settingValue = value.getValue();
         }
@@ -100,16 +93,27 @@ public final class ConfigurationSettingJsonSerializer extends JsonSerializer<Con
         gen.writeEndObject();
     }
 
-    private static void writeSecretReferenceConfigurationSetting(SecretReferenceConfigurationSetting setting,
-        JsonGenerator gen) throws IOException {
+    public static String writeSecretReferenceConfigurationSetting(SecretReferenceConfigurationSetting setting)
+        throws IOException {
+        // The setting's value is expected to be a JSON string for the SecretReferenceConfigurationSetting,
+        // so it is better to use another JSON generator to constructor the value as JSON string, flush into the
+        // StringWriter.
+        final StringWriter jsonObjectWriter = new StringWriter();
+        final JsonGenerator gen = new JsonFactory().createGenerator(jsonObjectWriter);
         gen.writeStartObject();
         gen.writeStringField(URI, setting.getSecretId());
         gen.writeEndObject();
         gen.close();
+        return jsonObjectWriter.toString();
     }
 
-    private static void writeFeatureFlagConfigurationSetting(FeatureFlagConfigurationSetting setting,
-        JsonGenerator gen) throws IOException {
+    public static String writeFeatureFlagConfigurationSetting(FeatureFlagConfigurationSetting setting)
+        throws IOException {
+        // The setting's value is expected to be a JSON string for the FeatureFlagConfigurationSetting,
+        // so it is better to use another JSON generator to constructor the value as JSON string, flush into the
+        // StringWriter.
+        final StringWriter jsonObjectWriter = new StringWriter();
+        final JsonGenerator gen = new JsonFactory().createGenerator(jsonObjectWriter);
         gen.writeStartObject();
 
         gen.writeStringField(ID, setting.getFeatureId());
@@ -119,19 +123,23 @@ public final class ConfigurationSettingJsonSerializer extends JsonSerializer<Con
 
         gen.writeObjectFieldStart(CONDITIONS);
         gen.writeArrayFieldStart(CLIENT_FILTERS);
-        for (FeatureFlagFilter filter : setting.getClientFilters()) {
-            gen.writeStartObject();
-            gen.writeStringField(NAME, filter.getName());
-            gen.writeObjectFieldStart(PARAMETERS);
-            writeMapProperties(filter.getParameters(), gen);
-            gen.writeEndObject(); // parameters object
-            gen.writeEndObject(); // each filter object
+        if (setting.getClientFilters() != null) {
+            for (FeatureFlagFilter filter : setting.getClientFilters()) {
+                gen.writeStartObject();
+                gen.writeStringField(NAME, filter.getName());
+                gen.writeObjectFieldStart(PARAMETERS);
+                writeMapProperties(filter.getParameters(), gen);
+                gen.writeEndObject(); // parameters object
+                gen.writeEndObject(); // each filter object
+            }
         }
         gen.writeEndArray();
         gen.writeEndObject();
 
         gen.writeEndObject();
         gen.close();
+
+        return jsonObjectWriter.toString();
     }
 
     private static void writeMapProperties(Map<String, ? extends Object> properties, JsonGenerator gen)
