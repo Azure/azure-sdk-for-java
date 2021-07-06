@@ -3,20 +3,13 @@
 
 package com.azure.verticals.agrifood.farming;
 
-import com.azure.core.http.ProxyOptions;
-import com.azure.core.http.llc.RequestOptions;
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
-import com.azure.core.util.BinaryData;
-import com.azure.core.util.polling.PollResult;
-import com.azure.core.util.polling.SyncPoller;
+import com.azure.core.experimental.http.DynamicResponse;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 import java.io.StringReader;
-import java.net.InetSocketAddress;
-import java.util.Random;
 
 /**
  * Sample for creating a farm with FarmsBaseClient.
@@ -28,15 +21,13 @@ public class CreateFarms {
      * @param args Unused arguments to the program.
      */
     public static void main(final String[] args) throws Exception {
-        String farmerId = "iscai-farmer";
-        Random random = new Random();
-        String farmId = "jianghao-farm-" + random.nextInt(999);
+        String farmerId = "<existing-farmer-id>";
+        String farmId = "<new-farm-id>";
 
-        FarmsClient client = new FarmBeatsClientBuilder()
-                .endpoint("https://iscai-sdk.farmbeats-dogfood.azure.net")
-                .credential(new DefaultAzureCredentialBuilder().authorityHost("https://login.windows-ppe.net").build())
-                .httpClient(new NettyAsyncHttpClientBuilder().proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("jianghlu.redmond.corp.microsoft.com", 8888))).build())
-                .buildFarmsClient();
+        FarmsBaseClient client = new FarmBeatsClientBuilder()
+                .endpoint("https://<farmbeats resource name>.farmbeats-dogfood.azure.net")
+                .credential(new DefaultAzureCredentialBuilder().build())
+                .buildFarmsBaseClient();
 
         JsonObject farm = Json.createObjectBuilder()
                 .add("name", farmId)
@@ -44,13 +35,20 @@ public class CreateFarms {
                 .build();
 
         System.out.println("Creating farm " + farmId + "...");
-        SyncPoller<PollResult, BinaryData> res = client.beginCreateOrUpdateWithResponse(farmerId, farmId,
-                new RequestOptions().setBody(BinaryData.fromString(farm.toString())));
+        DynamicResponse res = client.createOrUpdate(farmerId, farmId)
+                .setBody(farm.toString()).send();
+        JsonReader jsonReader = Json.createReader(new StringReader(res.getBody().toString()));
+        JsonObject result = jsonReader.readObject();
+        String status = result.getString("status");
 
-        BinaryData result = res.getFinalResult();
+        while (res.getStatusCode() == 201 || "running".equalsIgnoreCase(status)) {
+            System.out.println("Waiting for resource to be provisioned...");
+            res = client.get(farmerId, farmId).send();
+            Thread.sleep(10000);
+        }
 
-        JsonReader jsonReader = Json.createReader(new StringReader(result.toString()));
-        JsonObject obj = jsonReader.readObject();
-        System.out.println("New farm " + farmId + " successfully created at " + obj.getString("createdDateTime"));
+        jsonReader = Json.createReader(new StringReader(res.getBody().toString()));
+        result = jsonReader.readObject();
+        System.out.println("New farm " + farmId + " successfully created at " + result.getString("createdDateTime"));
     }
 }

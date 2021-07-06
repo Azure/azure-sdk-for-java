@@ -7,30 +7,44 @@ package com.azure.verticals.agrifood.farming;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.experimental.http.DynamicRequest;
 import com.azure.core.http.HttpMethod;
-import com.azure.core.http.llc.RequestOptions;
-import com.azure.core.http.rest.Response;
-import com.azure.core.util.BinaryData;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.util.serializer.ObjectSerializer;
 
-/**
- * Initializes a new instance of the FarmOperationsClient type.
- */
+/** Initializes a new instance of the FarmOperationsBaseClient type. */
 @ServiceClient(builder = FarmBeatsClientBuilder.class)
-public final class FarmOperationsClient {
-    private final FarmOperationsAsyncClient asyncClient;
+public final class FarmOperationsBaseClient {
+    private final String endpoint;
+
+    private final String apiVersion;
+
+    private final HttpPipeline httpPipeline;
+
+    private final ObjectSerializer serializer;
 
     /**
-     * Initializes an instance of FarmOperationsClient client.
-     * 
-     * @param asyncClient The FarmOperationsAsyncClient underneath.
+     * Initializes an instance of FarmOperationsBaseClient client.
+     *
+     * @param endpoint The endpoint of your FarmBeats resource (protocol and hostname, for example:
+     *     https://{resourceName}.farmbeats.azure.net).
+     * @param apiVersion Api Version.
+     * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param serializer The serializer to serialize an object into a string.
      */
-    FarmOperationsClient(FarmOperationsAsyncClient asyncClient) {
-        this.asyncClient = asyncClient;
+    FarmOperationsBaseClient(
+            String endpoint, String apiVersion, HttpPipeline httpPipeline, ObjectSerializer serializer) {
+        this.endpoint = endpoint;
+        this.apiVersion = apiVersion;
+        this.httpPipeline = httpPipeline;
+        this.serializer = serializer;
     }
 
     /**
      * Create a farm operation data ingestion job.
-     * <p><strong>Request Body Schema</strong></p>
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
      * <pre>{@code
      * {
      *     farmerId: String
@@ -54,22 +68,33 @@ public final class FarmOperationsClient {
      *     }
      * }
      * }</pre>
-     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
      * <pre>{@code
      * (recursive schema, see above)
      * }</pre>
-     * 
+     *
      * @param jobId Job ID supplied by user.
      * @return a DynamicRequest where customizations can be made before sent to the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createDataIngestionJobWithResponse(String jobId, RequestOptions options) {
-        return asyncClient.createDataIngestionJobWithResponse(jobId, options).block();
+    public DynamicRequest createDataIngestionJob(String jobId) {
+        return new DynamicRequest(serializer, httpPipeline)
+                .setUrl("{Endpoint}/farm-operations/ingest-data/{jobId}")
+                .setPathParam("Endpoint", endpoint)
+                .setPathParam("jobId", jobId)
+                .addQueryParam("api-version", apiVersion)
+                .addHeader("Accept", "application/json")
+                .addHeader("Content-Type", "application/json")
+                .setHttpMethod(HttpMethod.PUT);
     }
 
     /**
      * Get a farm operation data ingestion job.
-     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
      * <pre>{@code
      * {
      *     farmerId: String
@@ -93,22 +118,29 @@ public final class FarmOperationsClient {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param jobId ID of the job.
      * @return a DynamicRequest where customizations can be made before sent to the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getDataIngestionJobDetailsWithResponse(String jobId, RequestOptions options) {
-        return asyncClient.getDataIngestionJobDetailsWithResponse(jobId, options).block();
+    public DynamicRequest getDataIngestionJobDetails(String jobId) {
+        return new DynamicRequest(serializer, httpPipeline)
+                .setUrl("{Endpoint}/farm-operations/ingest-data/{jobId}")
+                .setPathParam("Endpoint", endpoint)
+                .setPathParam("jobId", jobId)
+                .addQueryParam("api-version", apiVersion)
+                .addHeader("Accept", "application/json")
+                .addHeader("Content-Type", "application/json")
+                .setHttpMethod(HttpMethod.GET);
     }
 
     /**
      * Create an empty DynamicRequest with the serializer and pipeline initialized for this client.
-     * 
+     *
      * @return a DynamicRequest where customizations can be made before sent to the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> invoke(String url, HttpMethod httpMethod, BinaryData body, RequestOptions options) {
-        return asyncClient.invoke(url, httpMethod, body, options).block();
+    public DynamicRequest invoke() {
+        return new DynamicRequest(serializer, httpPipeline);
     }
 }

@@ -18,28 +18,46 @@ import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Configuration;
-
+import com.azure.core.util.serializer.JsonSerializerProviders;
+import com.azure.core.util.serializer.ObjectSerializer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * A builder for creating a new instance of the FarmBeatsClient type.
- */
-@ServiceClientBuilder(serviceClients = {ApplicationDataClient.class, AttachmentsClient.class, BoundariesClient.class, CropsClient.class, CropVarietiesClient.class, FarmersClient.class, FarmOperationsClient.class, FarmsClient.class, FieldsClient.class, HarvestDataClient.class, ImageProcessingClient.class, OAuthProvidersClient.class, OAuthTokensClient.class, PlantingDataClient.class, ScenesClient.class, SeasonalFieldsClient.class, SeasonsClient.class, TillageDataClient.class, WeatherClient.class, ApplicationDataAsyncClient.class, AttachmentsAsyncClient.class, BoundariesAsyncClient.class, CropsAsyncClient.class, CropVarietiesAsyncClient.class, FarmersAsyncClient.class, FarmOperationsAsyncClient.class, FarmsAsyncClient.class, FieldsAsyncClient.class, HarvestDataAsyncClient.class, ImageProcessingAsyncClient.class, OAuthProvidersAsyncClient.class, OAuthTokensAsyncClient.class, PlantingDataAsyncClient.class, ScenesAsyncClient.class, SeasonalFieldsAsyncClient.class, SeasonsAsyncClient.class, TillageDataAsyncClient.class, WeatherAsyncClient.class})
+/** A builder for creating a new instance of the FarmBeatsClient type. */
+@ServiceClientBuilder(
+        serviceClients = {
+            ApplicationDataBaseClient.class,
+            AttachmentsBaseClient.class,
+            BoundariesBaseClient.class,
+            CropsBaseClient.class,
+            CropVarietiesBaseClient.class,
+            FarmersBaseClient.class,
+            FarmOperationsBaseClient.class,
+            FarmsBaseClient.class,
+            FieldsBaseClient.class,
+            HarvestDataBaseClient.class,
+            ImageProcessingBaseClient.class,
+            OAuthProvidersBaseClient.class,
+            OAuthTokensBaseClient.class,
+            PlantingDataBaseClient.class,
+            ScenesBaseClient.class,
+            SeasonalFieldsBaseClient.class,
+            SeasonsBaseClient.class,
+            TillageDataBaseClient.class,
+            WeatherBaseClient.class
+        })
 public final class FarmBeatsClientBuilder {
     private static final String SDK_NAME = "name";
 
     private static final String SDK_VERSION = "version";
 
-    static final String[] DEFAULT_SCOPES = new String[] {"https://farmbeats-dogfood.azure.net/.default"};
+    static final String[] DEFAULT_SCOPES = new String[] {"https://farmbeats.azure.net/.default"};
 
     private final Map<String, String> properties = new HashMap<>();
 
-    /**
-     * Create an instance of the FarmBeatsClientBuilder.
-     */
+    /** Create an instance of the FarmBeatsClientBuilder. */
     public FarmBeatsClientBuilder() {
         this.pipelinePolicies = new ArrayList<>();
     }
@@ -51,8 +69,9 @@ public final class FarmBeatsClientBuilder {
     private String endpoint;
 
     /**
-     * Sets The endpoint of your FarmBeats resource (protocol and hostname, for example: https://{resourceName}.farmbeats.azure.net).
-     * 
+     * Sets The endpoint of your FarmBeats resource (protocol and hostname, for example:
+     * https://{resourceName}.farmbeats.azure.net).
+     *
      * @param endpoint the endpoint value.
      * @return the FarmBeatsClientBuilder.
      */
@@ -68,7 +87,7 @@ public final class FarmBeatsClientBuilder {
 
     /**
      * Sets Api Version.
-     * 
+     *
      * @param apiVersion the apiVersion value.
      * @return the FarmBeatsClientBuilder.
      */
@@ -84,12 +103,28 @@ public final class FarmBeatsClientBuilder {
 
     /**
      * Sets The HTTP pipeline to send requests through.
-     * 
+     *
      * @param pipeline the pipeline value.
      * @return the FarmBeatsClientBuilder.
      */
     public FarmBeatsClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
+        return this;
+    }
+
+    /*
+     * The serializer to serialize an object into a string
+     */
+    private ObjectSerializer serializer;
+
+    /**
+     * Sets The serializer to serialize an object into a string.
+     *
+     * @param serializer the serializer value.
+     * @return the FarmBeatsClientBuilder.
+     */
+    public FarmBeatsClientBuilder serializer(ObjectSerializer serializer) {
+        this.serializer = serializer;
         return this;
     }
 
@@ -100,7 +135,7 @@ public final class FarmBeatsClientBuilder {
 
     /**
      * Sets The HTTP client used to send the request.
-     * 
+     *
      * @param httpClient the httpClient value.
      * @return the FarmBeatsClientBuilder.
      */
@@ -117,7 +152,7 @@ public final class FarmBeatsClientBuilder {
 
     /**
      * Sets The configuration store that is used during construction of the service client.
-     * 
+     *
      * @param configuration the configuration value.
      * @return the FarmBeatsClientBuilder.
      */
@@ -133,7 +168,7 @@ public final class FarmBeatsClientBuilder {
 
     /**
      * Sets The TokenCredential used for authentication.
-     * 
+     *
      * @param tokenCredential the tokenCredential value.
      * @return the FarmBeatsClientBuilder.
      */
@@ -149,7 +184,7 @@ public final class FarmBeatsClientBuilder {
 
     /**
      * Sets The logging configuration for HTTP requests and responses.
-     * 
+     *
      * @param httpLogOptions the httpLogOptions value.
      * @return the FarmBeatsClientBuilder.
      */
@@ -166,7 +201,7 @@ public final class FarmBeatsClientBuilder {
 
     /**
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
-     * 
+     *
      * @param retryPolicy the retryPolicy value.
      * @return the FarmBeatsClientBuilder.
      */
@@ -182,7 +217,7 @@ public final class FarmBeatsClientBuilder {
 
     /**
      * Adds a custom Http pipeline policy.
-     * 
+     *
      * @param customPolicy The custom Http pipeline policy to add.
      * @return the FarmBeatsClientBuilder.
      */
@@ -192,7 +227,8 @@ public final class FarmBeatsClientBuilder {
     }
 
     private HttpPipeline createHttpPipeline() {
-        Configuration buildConfiguration = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
+        Configuration buildConfiguration =
+                (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
         if (httpLogOptions == null) {
             httpLogOptions = new HttpLogOptions();
         }
@@ -202,489 +238,380 @@ public final class FarmBeatsClientBuilder {
         }
         String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
         String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
-        policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion, buildConfiguration));
+        policies.add(
+                new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion, buildConfiguration));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
         policies.add(new CookiePolicy());
         policies.addAll(this.pipelinePolicies);
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
-        HttpPipeline httpPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0])).httpClient(httpClient).build();
+        HttpPipeline httpPipeline =
+                new HttpPipelineBuilder()
+                        .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                        .httpClient(httpClient)
+                        .build();
         return httpPipeline;
     }
 
     /**
-     * Builds an instance of ApplicationDataAsyncClient low level client.
-     * 
-     * @return an instance of ApplicationDataAsyncClient.
+     * Builds an instance of ApplicationDataBaseClient low level client.
+     *
+     * @return an instance of ApplicationDataBaseClient.
      */
-    public ApplicationDataAsyncClient buildApplicationDataAsyncClient() {
+    public ApplicationDataBaseClient buildApplicationDataBaseClient() {
         if (apiVersion == null) {
             this.apiVersion = "2021-03-31-preview";
         }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }
-        ApplicationDataAsyncClient client = new ApplicationDataAsyncClient(endpoint, apiVersion, pipeline);
+        if (serializer == null) {
+            this.serializer = JsonSerializerProviders.createInstance();
+        }
+        ApplicationDataBaseClient client = new ApplicationDataBaseClient(endpoint, apiVersion, pipeline, serializer);
         return client;
     }
 
     /**
-     * Builds an instance of AttachmentsAsyncClient low level client.
-     * 
-     * @return an instance of AttachmentsAsyncClient.
+     * Builds an instance of AttachmentsBaseClient low level client.
+     *
+     * @return an instance of AttachmentsBaseClient.
      */
-    public AttachmentsAsyncClient buildAttachmentsAsyncClient() {
+    public AttachmentsBaseClient buildAttachmentsBaseClient() {
         if (apiVersion == null) {
             this.apiVersion = "2021-03-31-preview";
         }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }
-        AttachmentsAsyncClient client = new AttachmentsAsyncClient(endpoint, apiVersion, pipeline);
+        if (serializer == null) {
+            this.serializer = JsonSerializerProviders.createInstance();
+        }
+        AttachmentsBaseClient client = new AttachmentsBaseClient(endpoint, apiVersion, pipeline, serializer);
         return client;
     }
 
     /**
-     * Builds an instance of BoundariesAsyncClient low level client.
-     * 
-     * @return an instance of BoundariesAsyncClient.
+     * Builds an instance of BoundariesBaseClient low level client.
+     *
+     * @return an instance of BoundariesBaseClient.
      */
-    public BoundariesAsyncClient buildBoundariesAsyncClient() {
+    public BoundariesBaseClient buildBoundariesBaseClient() {
         if (apiVersion == null) {
             this.apiVersion = "2021-03-31-preview";
         }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }
-        BoundariesAsyncClient client = new BoundariesAsyncClient(endpoint, apiVersion, pipeline);
+        if (serializer == null) {
+            this.serializer = JsonSerializerProviders.createInstance();
+        }
+        BoundariesBaseClient client = new BoundariesBaseClient(endpoint, apiVersion, pipeline, serializer);
         return client;
     }
 
     /**
-     * Builds an instance of CropsAsyncClient low level client.
-     * 
-     * @return an instance of CropsAsyncClient.
+     * Builds an instance of CropsBaseClient low level client.
+     *
+     * @return an instance of CropsBaseClient.
      */
-    public CropsAsyncClient buildCropsAsyncClient() {
+    public CropsBaseClient buildCropsBaseClient() {
         if (apiVersion == null) {
             this.apiVersion = "2021-03-31-preview";
         }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }
-        CropsAsyncClient client = new CropsAsyncClient(endpoint, apiVersion, pipeline);
+        if (serializer == null) {
+            this.serializer = JsonSerializerProviders.createInstance();
+        }
+        CropsBaseClient client = new CropsBaseClient(endpoint, apiVersion, pipeline, serializer);
         return client;
     }
 
     /**
-     * Builds an instance of CropVarietiesAsyncClient low level client.
-     * 
-     * @return an instance of CropVarietiesAsyncClient.
+     * Builds an instance of CropVarietiesBaseClient low level client.
+     *
+     * @return an instance of CropVarietiesBaseClient.
      */
-    public CropVarietiesAsyncClient buildCropVarietiesAsyncClient() {
+    public CropVarietiesBaseClient buildCropVarietiesBaseClient() {
         if (apiVersion == null) {
             this.apiVersion = "2021-03-31-preview";
         }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }
-        CropVarietiesAsyncClient client = new CropVarietiesAsyncClient(endpoint, apiVersion, pipeline);
+        if (serializer == null) {
+            this.serializer = JsonSerializerProviders.createInstance();
+        }
+        CropVarietiesBaseClient client = new CropVarietiesBaseClient(endpoint, apiVersion, pipeline, serializer);
         return client;
     }
 
     /**
-     * Builds an instance of FarmersAsyncClient low level client.
-     * 
-     * @return an instance of FarmersAsyncClient.
+     * Builds an instance of FarmersBaseClient low level client.
+     *
+     * @return an instance of FarmersBaseClient.
      */
-    public FarmersAsyncClient buildFarmersAsyncClient() {
+    public FarmersBaseClient buildFarmersBaseClient() {
         if (apiVersion == null) {
             this.apiVersion = "2021-03-31-preview";
         }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }
-        FarmersAsyncClient client = new FarmersAsyncClient(endpoint, apiVersion, pipeline);
+        if (serializer == null) {
+            this.serializer = JsonSerializerProviders.createInstance();
+        }
+        FarmersBaseClient client = new FarmersBaseClient(endpoint, apiVersion, pipeline, serializer);
         return client;
     }
 
     /**
-     * Builds an instance of FarmOperationsAsyncClient low level client.
-     * 
-     * @return an instance of FarmOperationsAsyncClient.
+     * Builds an instance of FarmOperationsBaseClient low level client.
+     *
+     * @return an instance of FarmOperationsBaseClient.
      */
-    public FarmOperationsAsyncClient buildFarmOperationsAsyncClient() {
+    public FarmOperationsBaseClient buildFarmOperationsBaseClient() {
         if (apiVersion == null) {
             this.apiVersion = "2021-03-31-preview";
         }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }
-        FarmOperationsAsyncClient client = new FarmOperationsAsyncClient(endpoint, apiVersion, pipeline);
+        if (serializer == null) {
+            this.serializer = JsonSerializerProviders.createInstance();
+        }
+        FarmOperationsBaseClient client = new FarmOperationsBaseClient(endpoint, apiVersion, pipeline, serializer);
         return client;
     }
 
     /**
-     * Builds an instance of FarmsAsyncClient low level client.
-     * 
-     * @return an instance of FarmsAsyncClient.
+     * Builds an instance of FarmsBaseClient low level client.
+     *
+     * @return an instance of FarmsBaseClient.
      */
-    public FarmsAsyncClient buildFarmsAsyncClient() {
+    public FarmsBaseClient buildFarmsBaseClient() {
         if (apiVersion == null) {
             this.apiVersion = "2021-03-31-preview";
         }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }
-        FarmsAsyncClient client = new FarmsAsyncClient(endpoint, apiVersion, pipeline);
+        if (serializer == null) {
+            this.serializer = JsonSerializerProviders.createInstance();
+        }
+        FarmsBaseClient client = new FarmsBaseClient(endpoint, apiVersion, pipeline, serializer);
         return client;
     }
 
     /**
-     * Builds an instance of FieldsAsyncClient low level client.
-     * 
-     * @return an instance of FieldsAsyncClient.
+     * Builds an instance of FieldsBaseClient low level client.
+     *
+     * @return an instance of FieldsBaseClient.
      */
-    public FieldsAsyncClient buildFieldsAsyncClient() {
+    public FieldsBaseClient buildFieldsBaseClient() {
         if (apiVersion == null) {
             this.apiVersion = "2021-03-31-preview";
         }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }
-        FieldsAsyncClient client = new FieldsAsyncClient(endpoint, apiVersion, pipeline);
+        if (serializer == null) {
+            this.serializer = JsonSerializerProviders.createInstance();
+        }
+        FieldsBaseClient client = new FieldsBaseClient(endpoint, apiVersion, pipeline, serializer);
         return client;
     }
 
     /**
-     * Builds an instance of HarvestDataAsyncClient low level client.
-     * 
-     * @return an instance of HarvestDataAsyncClient.
+     * Builds an instance of HarvestDataBaseClient low level client.
+     *
+     * @return an instance of HarvestDataBaseClient.
      */
-    public HarvestDataAsyncClient buildHarvestDataAsyncClient() {
+    public HarvestDataBaseClient buildHarvestDataBaseClient() {
         if (apiVersion == null) {
             this.apiVersion = "2021-03-31-preview";
         }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }
-        HarvestDataAsyncClient client = new HarvestDataAsyncClient(endpoint, apiVersion, pipeline);
+        if (serializer == null) {
+            this.serializer = JsonSerializerProviders.createInstance();
+        }
+        HarvestDataBaseClient client = new HarvestDataBaseClient(endpoint, apiVersion, pipeline, serializer);
         return client;
     }
 
     /**
-     * Builds an instance of ImageProcessingAsyncClient low level client.
-     * 
-     * @return an instance of ImageProcessingAsyncClient.
+     * Builds an instance of ImageProcessingBaseClient low level client.
+     *
+     * @return an instance of ImageProcessingBaseClient.
      */
-    public ImageProcessingAsyncClient buildImageProcessingAsyncClient() {
+    public ImageProcessingBaseClient buildImageProcessingBaseClient() {
         if (apiVersion == null) {
             this.apiVersion = "2021-03-31-preview";
         }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }
-        ImageProcessingAsyncClient client = new ImageProcessingAsyncClient(endpoint, apiVersion, pipeline);
+        if (serializer == null) {
+            this.serializer = JsonSerializerProviders.createInstance();
+        }
+        ImageProcessingBaseClient client = new ImageProcessingBaseClient(endpoint, apiVersion, pipeline, serializer);
         return client;
     }
 
     /**
-     * Builds an instance of OAuthProvidersAsyncClient low level client.
-     * 
-     * @return an instance of OAuthProvidersAsyncClient.
+     * Builds an instance of OAuthProvidersBaseClient low level client.
+     *
+     * @return an instance of OAuthProvidersBaseClient.
      */
-    public OAuthProvidersAsyncClient buildOAuthProvidersAsyncClient() {
+    public OAuthProvidersBaseClient buildOAuthProvidersBaseClient() {
         if (apiVersion == null) {
             this.apiVersion = "2021-03-31-preview";
         }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }
-        OAuthProvidersAsyncClient client = new OAuthProvidersAsyncClient(endpoint, apiVersion, pipeline);
+        if (serializer == null) {
+            this.serializer = JsonSerializerProviders.createInstance();
+        }
+        OAuthProvidersBaseClient client = new OAuthProvidersBaseClient(endpoint, apiVersion, pipeline, serializer);
         return client;
     }
 
     /**
-     * Builds an instance of OAuthTokensAsyncClient low level client.
-     * 
-     * @return an instance of OAuthTokensAsyncClient.
+     * Builds an instance of OAuthTokensBaseClient low level client.
+     *
+     * @return an instance of OAuthTokensBaseClient.
      */
-    public OAuthTokensAsyncClient buildOAuthTokensAsyncClient() {
+    public OAuthTokensBaseClient buildOAuthTokensBaseClient() {
         if (apiVersion == null) {
             this.apiVersion = "2021-03-31-preview";
         }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }
-        OAuthTokensAsyncClient client = new OAuthTokensAsyncClient(endpoint, apiVersion, pipeline);
+        if (serializer == null) {
+            this.serializer = JsonSerializerProviders.createInstance();
+        }
+        OAuthTokensBaseClient client = new OAuthTokensBaseClient(endpoint, apiVersion, pipeline, serializer);
         return client;
     }
 
     /**
-     * Builds an instance of PlantingDataAsyncClient low level client.
-     * 
-     * @return an instance of PlantingDataAsyncClient.
+     * Builds an instance of PlantingDataBaseClient low level client.
+     *
+     * @return an instance of PlantingDataBaseClient.
      */
-    public PlantingDataAsyncClient buildPlantingDataAsyncClient() {
+    public PlantingDataBaseClient buildPlantingDataBaseClient() {
         if (apiVersion == null) {
             this.apiVersion = "2021-03-31-preview";
         }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }
-        PlantingDataAsyncClient client = new PlantingDataAsyncClient(endpoint, apiVersion, pipeline);
+        if (serializer == null) {
+            this.serializer = JsonSerializerProviders.createInstance();
+        }
+        PlantingDataBaseClient client = new PlantingDataBaseClient(endpoint, apiVersion, pipeline, serializer);
         return client;
     }
 
     /**
-     * Builds an instance of ScenesAsyncClient low level client.
-     * 
-     * @return an instance of ScenesAsyncClient.
+     * Builds an instance of ScenesBaseClient low level client.
+     *
+     * @return an instance of ScenesBaseClient.
      */
-    public ScenesAsyncClient buildScenesAsyncClient() {
+    public ScenesBaseClient buildScenesBaseClient() {
         if (apiVersion == null) {
             this.apiVersion = "2021-03-31-preview";
         }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }
-        ScenesAsyncClient client = new ScenesAsyncClient(endpoint, apiVersion, pipeline);
+        if (serializer == null) {
+            this.serializer = JsonSerializerProviders.createInstance();
+        }
+        ScenesBaseClient client = new ScenesBaseClient(endpoint, apiVersion, pipeline, serializer);
         return client;
     }
 
     /**
-     * Builds an instance of SeasonalFieldsAsyncClient low level client.
-     * 
-     * @return an instance of SeasonalFieldsAsyncClient.
+     * Builds an instance of SeasonalFieldsBaseClient low level client.
+     *
+     * @return an instance of SeasonalFieldsBaseClient.
      */
-    public SeasonalFieldsAsyncClient buildSeasonalFieldsAsyncClient() {
+    public SeasonalFieldsBaseClient buildSeasonalFieldsBaseClient() {
         if (apiVersion == null) {
             this.apiVersion = "2021-03-31-preview";
         }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }
-        SeasonalFieldsAsyncClient client = new SeasonalFieldsAsyncClient(endpoint, apiVersion, pipeline);
+        if (serializer == null) {
+            this.serializer = JsonSerializerProviders.createInstance();
+        }
+        SeasonalFieldsBaseClient client = new SeasonalFieldsBaseClient(endpoint, apiVersion, pipeline, serializer);
         return client;
     }
 
     /**
-     * Builds an instance of SeasonsAsyncClient low level client.
-     * 
-     * @return an instance of SeasonsAsyncClient.
+     * Builds an instance of SeasonsBaseClient low level client.
+     *
+     * @return an instance of SeasonsBaseClient.
      */
-    public SeasonsAsyncClient buildSeasonsAsyncClient() {
+    public SeasonsBaseClient buildSeasonsBaseClient() {
         if (apiVersion == null) {
             this.apiVersion = "2021-03-31-preview";
         }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }
-        SeasonsAsyncClient client = new SeasonsAsyncClient(endpoint, apiVersion, pipeline);
+        if (serializer == null) {
+            this.serializer = JsonSerializerProviders.createInstance();
+        }
+        SeasonsBaseClient client = new SeasonsBaseClient(endpoint, apiVersion, pipeline, serializer);
         return client;
     }
 
     /**
-     * Builds an instance of TillageDataAsyncClient low level client.
-     * 
-     * @return an instance of TillageDataAsyncClient.
+     * Builds an instance of TillageDataBaseClient low level client.
+     *
+     * @return an instance of TillageDataBaseClient.
      */
-    public TillageDataAsyncClient buildTillageDataAsyncClient() {
+    public TillageDataBaseClient buildTillageDataBaseClient() {
         if (apiVersion == null) {
             this.apiVersion = "2021-03-31-preview";
         }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }
-        TillageDataAsyncClient client = new TillageDataAsyncClient(endpoint, apiVersion, pipeline);
+        if (serializer == null) {
+            this.serializer = JsonSerializerProviders.createInstance();
+        }
+        TillageDataBaseClient client = new TillageDataBaseClient(endpoint, apiVersion, pipeline, serializer);
         return client;
     }
 
     /**
-     * Builds an instance of WeatherAsyncClient low level client.
-     * 
-     * @return an instance of WeatherAsyncClient.
+     * Builds an instance of WeatherBaseClient low level client.
+     *
+     * @return an instance of WeatherBaseClient.
      */
-    public WeatherAsyncClient buildWeatherAsyncClient() {
+    public WeatherBaseClient buildWeatherBaseClient() {
         if (apiVersion == null) {
             this.apiVersion = "2021-03-31-preview";
         }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }
-        WeatherAsyncClient client = new WeatherAsyncClient(endpoint, apiVersion, pipeline);
+        if (serializer == null) {
+            this.serializer = JsonSerializerProviders.createInstance();
+        }
+        WeatherBaseClient client = new WeatherBaseClient(endpoint, apiVersion, pipeline, serializer);
         return client;
-    }
-
-    /**
-     * Builds an instance of ApplicationDataClient low level client.
-     * 
-     * @return an instance of ApplicationDataClient.
-     */
-    public ApplicationDataClient buildApplicationDataClient() {
-        return new ApplicationDataClient(buildApplicationDataAsyncClient());
-    }
-
-    /**
-     * Builds an instance of AttachmentsClient low level client.
-     * 
-     * @return an instance of AttachmentsClient.
-     */
-    public AttachmentsClient buildAttachmentsClient() {
-        return new AttachmentsClient(buildAttachmentsAsyncClient());
-    }
-
-    /**
-     * Builds an instance of BoundariesClient low level client.
-     * 
-     * @return an instance of BoundariesClient.
-     */
-    public BoundariesClient buildBoundariesClient() {
-        return new BoundariesClient(buildBoundariesAsyncClient());
-    }
-
-    /**
-     * Builds an instance of CropsClient low level client.
-     * 
-     * @return an instance of CropsClient.
-     */
-    public CropsClient buildCropsClient() {
-        return new CropsClient(buildCropsAsyncClient());
-    }
-
-    /**
-     * Builds an instance of CropVarietiesClient low level client.
-     * 
-     * @return an instance of CropVarietiesClient.
-     */
-    public CropVarietiesClient buildCropVarietiesClient() {
-        return new CropVarietiesClient(buildCropVarietiesAsyncClient());
-    }
-
-    /**
-     * Builds an instance of FarmersClient low level client.
-     * 
-     * @return an instance of FarmersClient.
-     */
-    public FarmersClient buildFarmersClient() {
-        return new FarmersClient(buildFarmersAsyncClient());
-    }
-
-    /**
-     * Builds an instance of FarmOperationsClient low level client.
-     * 
-     * @return an instance of FarmOperationsClient.
-     */
-    public FarmOperationsClient buildFarmOperationsClient() {
-        return new FarmOperationsClient(buildFarmOperationsAsyncClient());
-    }
-
-    /**
-     * Builds an instance of FarmsClient low level client.
-     * 
-     * @return an instance of FarmsClient.
-     */
-    public FarmsClient buildFarmsClient() {
-        return new FarmsClient(buildFarmsAsyncClient());
-    }
-
-    /**
-     * Builds an instance of FieldsClient low level client.
-     * 
-     * @return an instance of FieldsClient.
-     */
-    public FieldsClient buildFieldsClient() {
-        return new FieldsClient(buildFieldsAsyncClient());
-    }
-
-    /**
-     * Builds an instance of HarvestDataClient low level client.
-     * 
-     * @return an instance of HarvestDataClient.
-     */
-    public HarvestDataClient buildHarvestDataClient() {
-        return new HarvestDataClient(buildHarvestDataAsyncClient());
-    }
-
-    /**
-     * Builds an instance of ImageProcessingClient low level client.
-     * 
-     * @return an instance of ImageProcessingClient.
-     */
-    public ImageProcessingClient buildImageProcessingClient() {
-        return new ImageProcessingClient(buildImageProcessingAsyncClient());
-    }
-
-    /**
-     * Builds an instance of OAuthProvidersClient low level client.
-     * 
-     * @return an instance of OAuthProvidersClient.
-     */
-    public OAuthProvidersClient buildOAuthProvidersClient() {
-        return new OAuthProvidersClient(buildOAuthProvidersAsyncClient());
-    }
-
-    /**
-     * Builds an instance of OAuthTokensClient low level client.
-     * 
-     * @return an instance of OAuthTokensClient.
-     */
-    public OAuthTokensClient buildOAuthTokensClient() {
-        return new OAuthTokensClient(buildOAuthTokensAsyncClient());
-    }
-
-    /**
-     * Builds an instance of PlantingDataClient low level client.
-     * 
-     * @return an instance of PlantingDataClient.
-     */
-    public PlantingDataClient buildPlantingDataClient() {
-        return new PlantingDataClient(buildPlantingDataAsyncClient());
-    }
-
-    /**
-     * Builds an instance of ScenesClient low level client.
-     * 
-     * @return an instance of ScenesClient.
-     */
-    public ScenesClient buildScenesClient() {
-        return new ScenesClient(buildScenesAsyncClient());
-    }
-
-    /**
-     * Builds an instance of SeasonalFieldsClient low level client.
-     * 
-     * @return an instance of SeasonalFieldsClient.
-     */
-    public SeasonalFieldsClient buildSeasonalFieldsClient() {
-        return new SeasonalFieldsClient(buildSeasonalFieldsAsyncClient());
-    }
-
-    /**
-     * Builds an instance of SeasonsClient low level client.
-     * 
-     * @return an instance of SeasonsClient.
-     */
-    public SeasonsClient buildSeasonsClient() {
-        return new SeasonsClient(buildSeasonsAsyncClient());
-    }
-
-    /**
-     * Builds an instance of TillageDataClient low level client.
-     * 
-     * @return an instance of TillageDataClient.
-     */
-    public TillageDataClient buildTillageDataClient() {
-        return new TillageDataClient(buildTillageDataAsyncClient());
-    }
-
-    /**
-     * Builds an instance of WeatherClient low level client.
-     * 
-     * @return an instance of WeatherClient.
-     */
-    public WeatherClient buildWeatherClient() {
-        return new WeatherClient(buildWeatherAsyncClient());
     }
 }
