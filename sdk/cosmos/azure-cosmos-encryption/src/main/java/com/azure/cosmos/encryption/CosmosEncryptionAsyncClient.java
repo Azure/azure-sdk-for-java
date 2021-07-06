@@ -176,21 +176,6 @@ public class CosmosEncryptionAsyncClient {
         cosmosAsyncClient.close();
     }
 
-    private ClientEncryptionPolicy getClientEncryptionPolicyWithVersionValidation(CosmosContainerResponse cosmosContainerResponse) {
-        ClientEncryptionPolicy clientEncryptionPolicy = cosmosContainerResponse.getProperties().getClientEncryptionPolicy();
-        if (clientEncryptionPolicy == null) {
-            throw new IllegalArgumentException("Container without client encryption policy cannot be used");
-        }
-
-
-        if (clientEncryptionPolicy.getPolicyFormatVersion() > 1) {
-            throw new UnsupportedOperationException("This version of the Encryption library cannot be used with this " +
-                "container. Please upgrade to the latest version of the same.");
-        }
-
-        return clientEncryptionPolicy;
-    }
-
     private CosmosContainerProperties getContainerPropertiesWithVersionValidation(CosmosContainerResponse cosmosContainerResponse) {
         if (cosmosContainerResponse.getProperties().getClientEncryptionPolicy() == null) {
             throw new IllegalArgumentException("Container without client encryption policy cannot be used");
