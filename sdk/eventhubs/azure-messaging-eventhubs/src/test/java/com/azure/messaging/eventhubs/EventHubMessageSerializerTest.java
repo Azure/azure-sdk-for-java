@@ -19,7 +19,6 @@ import java.util.Map;
 
 import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.OFFSET_ANNOTATION_NAME;
-import static com.azure.core.amqp.AmqpMessageConstant.PARTITION_KEY_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
 import static com.azure.messaging.eventhubs.TestUtils.APPLICATION_PROPERTIES;
 import static com.azure.messaging.eventhubs.TestUtils.ENQUEUED_TIME;
@@ -74,7 +73,6 @@ public class EventHubMessageSerializerTest {
     public void deserializeEventData() {
         // Arrange
         final Map<String, Object> systemPropertiesMap = new HashMap<>();
-        systemPropertiesMap.put(PARTITION_KEY_ANNOTATION_NAME.getValue(), PARTITION_KEY);
         systemPropertiesMap.put(OFFSET_ANNOTATION_NAME.getValue(), OFFSET);
         systemPropertiesMap.put(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(), ENQUEUED_TIME);
         systemPropertiesMap.put(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), SEQUENCE_NUMBER);
