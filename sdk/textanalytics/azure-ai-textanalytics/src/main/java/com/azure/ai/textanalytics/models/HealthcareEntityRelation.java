@@ -43,19 +43,19 @@ public final class HealthcareEntityRelation {
     }
 
     /**
-     * Get the relationType property: Type of relation. Examples include: `DosageOfMedication` or
+     * Gets the relationType property: Type of relation. Examples include: `DosageOfMedication` or
      * 'FrequencyOfMedication', etc.
      *
-     * @return the relationType value.
+     * @return The relationType value.
      */
     public HealthcareEntityRelationType getRelationType() {
         return this.relationType;
     }
 
     /**
-     * Get the entities property: The entities in the relation.
+     * Gets the entities property: The entities in the relation.
      *
-     * @return the entities value.
+     * @return The entities value.
      */
     public IterableStream<HealthcareEntityRelationRole> getRoles() {
         return this.roles;
