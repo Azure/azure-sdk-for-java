@@ -6,6 +6,8 @@ package com.azure.storage.common.test.shared
 import com.azure.core.credential.TokenRequestContext
 import com.azure.core.http.HttpClient
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
+import com.azure.core.http.policy.HttpLogDetailLevel
+import com.azure.core.http.policy.HttpLogOptions
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
@@ -61,6 +63,10 @@ class StorageSpec extends Specification {
             builder."serviceVersion"(parsedServiceVersion)
             builder."addPolicy"(new ServiceVersionValidationPolicy(parsedServiceVersion.version))
         }
+
+        HttpLogOptions httpLogOptions = builder."getDefaultHttpLogOptions"()
+        httpLogOptions.setLogLevel(HttpLogDetailLevel.HEADERS)
+        builder."httpLogOptions"(httpLogOptions)
 
         return builder
     }
