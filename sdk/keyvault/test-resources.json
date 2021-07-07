@@ -62,9 +62,10 @@
     },
     "keyVaultSku": {
       "type": "string",
-      "defaultValue": "Standard",
+      "defaultValue": "Premium",
       "allowedValues": [
-        "Standard"
+        "Standard",
+        "Premium"
       ],
       "metadata": {
         "description": "Key Vault SKU to deploy. The default is 'Premium'"
@@ -169,7 +170,7 @@
         "principalType": "ServicePrincipal"
       }
     },
-    {
+    /*{
       "type": "Microsoft.KeyVault/vaults",
       "apiVersion": "[variables('kvApiVersion')]",
       "name": "[variables('kvName')]",
@@ -292,7 +293,7 @@
         "enableSoftDelete": true,
         "networkAcls": "[variables('networkAcls')]"
       }
-    },
+    },*/
     {
       "type": "Microsoft.KeyVault/managedHSMs",
       "apiVersion": "[variables('hsmApiVersion')]",
