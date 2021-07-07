@@ -6,7 +6,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.http.HttpClient;
 import com.azure.digitaltwins.core.helpers.UniqueIdHelper;
 import com.azure.digitaltwins.core.implementation.models.ErrorResponseException;
-import com.azure.digitaltwins.core.models.DigitalTwinsModelData;
 import com.azure.digitaltwins.core.models.DigitalTwinsResponse;
 import com.azure.digitaltwins.core.models.UpdateComponentOptions;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -22,7 +21,8 @@ import java.util.List;
 import static com.azure.digitaltwins.core.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.digitaltwins.core.TestHelper.assertRestException;
 import static java.net.HttpURLConnection.HTTP_PRECON_FAILED;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class ComponentsTests extends ComponentsTestBase {
 
@@ -48,7 +48,6 @@ public class ComponentsTests extends ComponentsTestBase {
 
         try {
             // Create models and components to test the lifecycle.
-            Iterable<DigitalTwinsModelData> createdList = client.createModels(modelsList);
             logger.info("Created models successfully");
 
             BasicDigitalTwin createdTwin = client.createOrReplaceDigitalTwin(roomWithWifiTwinId, deserializeJsonString(roomWithWifiTwin, BasicDigitalTwin.class), BasicDigitalTwin.class);

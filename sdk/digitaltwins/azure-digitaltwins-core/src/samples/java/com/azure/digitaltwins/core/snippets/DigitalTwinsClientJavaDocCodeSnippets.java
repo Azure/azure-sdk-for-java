@@ -10,12 +10,29 @@ import com.azure.digitaltwins.core.BasicRelationship;
 import com.azure.digitaltwins.core.DigitalTwinsAsyncClient;
 import com.azure.digitaltwins.core.DigitalTwinsClient;
 import com.azure.digitaltwins.core.DigitalTwinsClientBuilder;
-import com.azure.digitaltwins.core.models.*;
+import com.azure.digitaltwins.core.models.CreateOrReplaceDigitalTwinOptions;
+import com.azure.digitaltwins.core.models.CreateOrReplaceRelationshipOptions;
+import com.azure.digitaltwins.core.models.DeleteDigitalTwinOptions;
+import com.azure.digitaltwins.core.models.DeleteRelationshipOptions;
+import com.azure.digitaltwins.core.models.DigitalTwinsEventRoute;
+import com.azure.digitaltwins.core.models.DigitalTwinsModelData;
+import com.azure.digitaltwins.core.models.IncomingRelationship;
+import com.azure.digitaltwins.core.models.ListDigitalTwinsEventRoutesOptions;
+import com.azure.digitaltwins.core.models.ListModelsOptions;
+import com.azure.digitaltwins.core.models.PublishComponentTelemetryOptions;
+import com.azure.digitaltwins.core.models.PublishTelemetryOptions;
+import com.azure.digitaltwins.core.models.QueryOptions;
+import com.azure.digitaltwins.core.models.UpdateComponentOptions;
+import com.azure.digitaltwins.core.models.UpdateDigitalTwinOptions;
+import com.azure.digitaltwins.core.models.UpdateRelationshipOptions;
 import com.azure.identity.ClientSecretCredentialBuilder;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Dictionary;
+import java.util.Hashtable;
+import java.util.UUID;
 
 /**
  * Code snippets for {@link DigitalTwinsClient}

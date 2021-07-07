@@ -1,13 +1,11 @@
 package com.azure.digitaltwins.core;
 
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.digitaltwins.core.helpers.UniqueIdHelper;
 import com.azure.digitaltwins.core.implementation.models.ErrorResponseException;
 import com.azure.digitaltwins.core.models.CreateOrReplaceDigitalTwinOptions;
-import com.azure.digitaltwins.core.models.CreateOrReplaceRelationshipOptions;
 import com.azure.digitaltwins.core.models.DeleteDigitalTwinOptions;
 import com.azure.digitaltwins.core.models.DigitalTwinsModelData;
 import com.azure.digitaltwins.core.models.DigitalTwinsResponse;
@@ -26,7 +24,9 @@ import static com.azure.digitaltwins.core.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS
 import static com.azure.digitaltwins.core.TestHelper.assertRestException;
 import static java.net.HttpURLConnection.HTTP_PRECON_FAILED;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class TwinTests extends TwinTestBase {
 

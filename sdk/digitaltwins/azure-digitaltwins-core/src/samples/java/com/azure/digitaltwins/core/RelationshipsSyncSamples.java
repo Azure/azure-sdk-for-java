@@ -9,14 +9,18 @@ package com.azure.digitaltwins.core;
     import com.azure.digitaltwins.core.helpers.SamplesConstants;
     import com.azure.digitaltwins.core.helpers.UniqueIdHelper;
     import com.azure.digitaltwins.core.implementation.models.ErrorResponseException;
-    import com.azure.digitaltwins.core.models.*;
+    import com.azure.digitaltwins.core.models.DigitalTwinsModelData;
+    import com.azure.digitaltwins.core.models.IncomingRelationship;
     import com.azure.identity.ClientSecretCredentialBuilder;
     import com.fasterxml.jackson.core.JsonProcessingException;
     import com.fasterxml.jackson.databind.ObjectMapper;
 
     import java.io.IOException;
     import java.net.HttpURLConnection;
-    import java.util.*;
+
+    import java.util.ArrayList;
+    import java.util.Arrays;
+    import java.util.Random;
     import java.util.function.Function;
 
 public class RelationshipsSyncSamples {

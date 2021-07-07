@@ -8,14 +8,19 @@ import com.azure.digitaltwins.core.helpers.SamplesArguments;
 import com.azure.digitaltwins.core.helpers.SamplesConstants;
 import com.azure.digitaltwins.core.helpers.UniqueIdHelper;
 import com.azure.digitaltwins.core.implementation.models.ErrorResponseException;
-import com.azure.digitaltwins.core.models.*;
+import com.azure.digitaltwins.core.models.DigitalTwinsModelData;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Dictionary;
+import java.util.Hashtable;
+import java.util.List;
+import java.util.Random;
 import java.util.function.Function;
 
 public class PublishTelemetrySyncSamples {
