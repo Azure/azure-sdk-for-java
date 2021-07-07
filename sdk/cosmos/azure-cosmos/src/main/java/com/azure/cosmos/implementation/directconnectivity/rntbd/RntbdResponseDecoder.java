@@ -9,11 +9,13 @@ import io.netty.handler.codec.ByteToMessageDecoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.Instant;
 import java.util.List;
 
 public final class RntbdResponseDecoder extends ByteToMessageDecoder {
 
     private static final Logger logger = LoggerFactory.getLogger(RntbdResponseDecoder.class);
+    private static Instant decodeStartTime = null;
 
     /**
      * Deserialize from an input {@link ByteBuf} to an {@link RntbdResponse} instance.
@@ -27,11 +29,19 @@ public final class RntbdResponseDecoder extends ByteToMessageDecoder {
     @Override
     protected void decode(final ChannelHandlerContext context, final ByteBuf in, final List<Object> out) {
 
+        if (decodeStartTime == null) {
+            decodeStartTime = Instant.now();
+        }
+
         if (RntbdFramer.canDecodeHead(in)) {
 
             final RntbdResponse response = RntbdResponse.decode(in);
 
             if (response != null) {
+                response.setDecodeEndTime(Instant.now());
+                response.setDecodeStartTime(decodeStartTime);
+                decodeStartTime = null;
+
                 logger.debug("{} DECODE COMPLETE: {}", context.channel(), response);
                 in.discardReadBytes();
                 out.add(response.retain());
