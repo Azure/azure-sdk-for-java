@@ -192,7 +192,6 @@ public class InteropAmqpPropertiesTest extends IntegrationTestBase {
             assertTrue(actual.getProperties().containsKey(key));
             assertEquals(value, actual.getProperties().get(key));
         });
-
     }
 
     private void validateRawAmqpMessageProperties(Message message, Map<Symbol, Object> messageAnnotations,

@@ -115,7 +115,6 @@ public class EventHubMessageSerializerTest {
             Assertions.assertTrue(eventData.getProperties().containsKey(key));
             Assertions.assertEquals(value, eventData.getProperties().get(key));
         });
-
     }
 
     /**
