@@ -3,7 +3,7 @@
 
 package com.azure.spring.aad.webapi;
 
-import com.azure.spring.aad.AADClientConfiguration;
+import com.azure.spring.aad.AADOAuth2ClientAutoConfiguration;
 import com.azure.spring.aad.AADClientRegistrationRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -61,7 +61,7 @@ public class AADOAuth2AuthorizedOboClientRepositoryTest {
             AAD_PROPERTY_PREFIX + "client-secret = fake-client-secret",
             AAD_PROPERTY_PREFIX + "authorization-clients.fake-graph.scopes = https://graph.microsoft.com/.default"
         );
-        context.register(WebOAuth2ClientConfiguration.class, AADClientConfiguration.class);
+        context.register(WebOAuth2ClientConfiguration.class, AADOAuth2ClientAutoConfiguration.class);
         context.refresh();
 
         clientRegistrationsRepo = context.getBean(AADClientRegistrationRepository.class);

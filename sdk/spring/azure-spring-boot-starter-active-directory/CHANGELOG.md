@@ -1,7 +1,8 @@
 # Release History
 
 ## 3.7.0-beta.1 (Unreleased)
-
+### Breaking Changes
+-- Add property `azure.activedirectory.enable-web-app-and-resource-server` to enable the `Web application` and `Resource server` are in the same application.
 
 ## 3.6.0 (2021-06-23)
 ### Breaking Changes

@@ -3,7 +3,7 @@
 
 package com.azure.spring.aad.webapp;
 
-import com.azure.spring.aad.AADClientConfiguration;
+import com.azure.spring.aad.AADOAuth2ClientAutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener;
 import org.springframework.boot.autoconfigure.security.oauth2.client.servlet.OAuth2ClientAutoConfiguration;
@@ -30,7 +30,7 @@ public class WebApplicationContextRunnerUtils {
         return new WebApplicationContextRunner()
             .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
             .withConfiguration(AutoConfigurations.of(OAuth2ClientAutoConfiguration.class,
-                AADWebAppConfiguration.class, AADClientConfiguration.class))
+                AADWebAppConfiguration.class, AADOAuth2ClientAutoConfiguration.class))
             .withInitializer(new ConditionEvaluationReportLoggingListener(LogLevel.INFO));
     }
 

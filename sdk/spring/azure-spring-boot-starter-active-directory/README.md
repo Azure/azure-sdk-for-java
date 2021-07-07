@@ -29,12 +29,13 @@ The `azure-spring-boot-starter-active-directory` (`aad-starter` for short) provi
 
 ## Key concepts
 
-A `web application` is any web based application that allows user to login, whereas a `resource server` will either accept or deny access after validating access_token. We will cover 4 scenarios in this guide:
+A `web application` is any web based application that allows user to login, whereas a `resource server` will either accept or deny access after validating access_token. We will cover 5 scenarios in this guide:
 
 1. Accessing a web application.
 1. Web application accessing resource servers.
 1. Accessing a resource server.
 1. Resource server accessing other resource servers.
+1. Web application and Resource server are in the same application.
 
 ### Accessing a web application
 
@@ -262,9 +263,112 @@ To use **aad-starter** in this scenario, we need these steps:
     }
     ```
 
+### Web application and Resource server are in the same application
+
+This scenario is a combination of `Accessing a web application` and `Accessing a resource server`.
+
+All the paths that contain the custom */api* path are resources of the `Resource Server`, everything else will be managed by `Web application`.
+High priority matches the resources of all `Resource Server`, if the URI matches, it will continue to process according to the process of `Accessing a resource server`; if it does not match, it will be processed according to the process of `Accessing a web application`.
+
+To use **aad-starter** in this scenario, we need these steps:
+
+* Step 1: Add the following dependencies in you pom.xml.
+
+    ```xml
+    <dependency>
+        <groupId>com.azure.spring</groupId>
+        <artifactId>azure-spring-boot-starter-active-directory</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-oauth2-client</artifactId>
+    </dependency>
+    ```
+
+* Step 2: Add properties in application.yml:
+    
+    Enable `azure.activedirectory.enable-web-app-and-resource-server` property is `true`, and specify the authorization type for each authorization client.
+    
+    ```yaml
+    azure:
+       activedirectory:
+          tenant-id: <Tenant-id-registered-by-application>
+          client-id: <Web-API-C-client-id>
+          client-secret: <Web-API-C-client-secret>
+          app-id-uri: <Web-API-C-app-id-url>
+          enable-web-app-and-resource-server: true
+          authorization-clients:
+             graph:   # The Web Application will use this client to access graph resource.
+                authorizationGrantType: authorization_code
+                scopes:
+                   - https://graph.microsoft.com/User.Read
+             webapiB: # The Resource Server will use this client to access webapiB resource.
+                authorization-grant-type: on-behalf-of
+                scopes:
+                  - <Web-API-B-app-id-url>/WebApiB.ExampleScope
+    ```
+
+* Step 3: Write Java code:
+
+    Configure multiple HttpSecurity instances, `AADOAuth2SecurityConfig` contain two security configurations for resource server and web application.
+    
+        (A). The class `ApiWebSecurityConfigurationAdapter` has a high priority to configure the `Resource Server` security adapter.
+    
+        (B). The class `HtmlWebSecurityConfigurerAdapter` has a low priority to config the `Web Application` security adapter. 
+    
+    Here is an example:
+
+    ```java
+    @EnableWebSecurity
+    @EnableGlobalMethodSecurity(prePostEnabled = true)
+    public class AADOAuth2SecurityConfig {
+    
+        @Order(1)
+        @Configuration
+        public static class ApiWebSecurityConfigurationAdapter extends AADResourceServerWebSecurityConfigurerAdapter {
+            protected void configure(HttpSecurity http) throws Exception {
+                super.configure(http);
+                http.antMatcher("/api/**")
+                    .authorizeRequests().anyRequest().authenticated();
+            }
+        }
+    
+        @Configuration
+        public static class HtmlWebSecurityConfigurerAdapter extends AADWebSecurityConfigurerAdapter {
+    
+            @Override
+            protected void configure(HttpSecurity http) throws Exception {
+                super.configure(http);
+                // @formatter:off
+                http.authorizeRequests()
+                        .antMatchers("/login").permitAll()
+                        .anyRequest().authenticated();
+                // @formatter:on
+            }
+        }
+    }
+    ```
+    
+    Other controller side code refer to `Accessing a web application` and `Accessing a resource server` scenarios respectively. 
+
+### Dependency matrix
+
+This starter provides the following dependency usage:
+ 
+| Mode                                | Has dependency: spring-security-oauth2-client | Has dependency: spring-security-oauth2-resource-server | azure.activedirectory.enable-web-app-and-resource-server=true |
+|-------------------------------------|-----------------------------------------------|--------------------------------------------------------|-----------------------------------------------------------|
+| Web application                     |                      Yes                      |                          No                            |                            No                             |
+| Resource Server                     |                      No                       |                          Yes                           |                            No                             |
+| Resource Server with OBO function   |                      Yes                      |                          Yes                           |                            No                             |
+| Web Application and Resource Server |                      Yes                      |                          Yes                           |                            Yes                            |
+ 
 ### Configurable properties
 
-This starter provides following properties:
+This starter provides the following properties:
 
 | Properties                                                              | Description                                                                                    |
 | ----------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
@@ -282,6 +386,7 @@ This starter provides following properties:
 | **azure.activedirectory**.user-group.allowed-group-names                | Users' group name can be use in `@PreAuthorize("hasRole('ROLE_group_name_1')")`. Not all group name will take effect, only group names configured in this property will take effect. |
 | **azure.activedirectory**.user-group.allowed-group-ids                  | Users' group id can be use in `@PreAuthorize("hasRole('ROLE_group_id_1')")`. Not all group id will take effect, only group id configured in this property will take effect. If this property's value is `all`, then all group id will take effect.|
 | **azure.activedirectory**.user-name-attribute                           | Decide which claim to be principal's name. |
+| **azure.activedirectory**.enable-web-app-and-resource-server                | This is the switch for whether `Web application` and `Resource server` are used at the same time. The default is false.|
 
 Here are some examples about how to use these properties:
 

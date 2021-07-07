@@ -6,7 +6,6 @@ package com.azure.spring.aad;
 import com.azure.spring.aad.webapi.AADOBOOAuth2AuthorizedClientProvider;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -31,22 +30,20 @@ import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepo
 @ConditionalOnProperty("azure.activedirectory.client-id")
 @Conditional(AADConditions.ClientRegistrationCondition.class)
 @EnableConfigurationProperties(AADAuthenticationProperties.class)
-public class AADClientConfiguration {
+public class AADOAuth2ClientAutoConfiguration {
 
     @Autowired
     private AADAuthenticationProperties properties;
 
     @Bean
-    @ConditionalOnMissingBean(ClientRegistrationRepository.class)
     public ClientRegistrationRepository clientRegistrationRepository() {
         return new AADClientRegistrationRepository(properties);
     }
 
     @Bean
-    @ConditionalOnMissingBean(OAuth2AuthorizedClientRepository.class)
     public OAuth2AuthorizedClientRepository authorizedClientRepository(AADClientRegistrationRepository repo,
                                                                        OAuth2AuthorizedClientService service) {
-        return new AADOAuth2AuthorizedClientRepository(repo, service);
+        return new AADOAuth2AuthorizedClientRepository(properties, repo, service);
     }
 
     @Bean

@@ -22,7 +22,7 @@ public class AADConditionsTest {
     @Test
     void testWebAppConditionWhenEnableWebAppClientMode() {
         this.contextRunner
-            .withPropertyValues("azure.activedirectory.enable-web-app-resource-server=false")
+            .withPropertyValues("azure.activedirectory.enable-web-app-and-resource-server=false")
             .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
             .withUserConfiguration(WebAppConditionConfig.class).run(match(true));
     }
@@ -30,7 +30,7 @@ public class AADConditionsTest {
     @Test
     void testWebAppConditionWhenEnableAllInClientMode() {
         this.contextRunner
-            .withPropertyValues("azure.activedirectory.enable-web-app-resource-server=true")
+            .withPropertyValues("azure.activedirectory.enable-web-app-and-resource-server=true")
             .withUserConfiguration(WebAppConditionConfig.class).run(match(true));
     }
 
@@ -38,23 +38,21 @@ public class AADConditionsTest {
     @Test
     void testWebApiConditionWhenEnableWebApiClientMode() {
         this.contextRunner
-            .withPropertyValues("azure.activedirectory.enable-web-app-resource-server=false")
+            .withPropertyValues("azure.activedirectory.enable-web-app-and-resource-server=false")
             .withUserConfiguration(WebApiConditionConfig.class).run(match(true));
     }
 
     @Test
     void testWebApiConditionWhenEnableAllInClientMode() {
         this.contextRunner
-            .withPropertyValues("azure.activedirectory.enable-web-app-resource-server=true")
+            .withPropertyValues("azure.activedirectory.enable-web-app-and-resource-server=true")
             .withUserConfiguration(WebApiConditionConfig.class).run(match(true));
     }
-
-
 
     @Test
     void testClientConditionWhenEnableWebAppClientMode() {
         this.contextRunner
-            .withPropertyValues("azure.activedirectory.enable-web-app-resource-server=false")
+            .withPropertyValues("azure.activedirectory.enable-web-app-and-resource-server=false")
             .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
             .withUserConfiguration(ClientRegistrationConditionConfig.class).run(match(true));
     }
@@ -62,14 +60,14 @@ public class AADConditionsTest {
     @Test
     void testClientConditionWhenEnableWebApiClientMode() {
         this.contextRunner
-            .withPropertyValues("azure.activedirectory.enable-web-app-resource-server=false")
+            .withPropertyValues("azure.activedirectory.enable-web-app-and-resource-server=false")
             .withUserConfiguration(ClientRegistrationConditionConfig.class).run(match(true));
     }
 
     @Test
     void testClientConditionWhenEnableAllInClientMode() {
         this.contextRunner
-            .withPropertyValues("azure.activedirectory.enable-web-app-resource-server=true")
+            .withPropertyValues("azure.activedirectory.enable-web-app-and-resource-server=true")
             .withUserConfiguration(ClientRegistrationConditionConfig.class).run(match(true));
     }
 

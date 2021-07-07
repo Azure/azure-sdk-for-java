@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.aad.webapi;
 
-import com.azure.spring.aad.AADClientConfiguration;
+import com.azure.spring.aad.AADOAuth2ClientAutoConfiguration;
 import com.azure.spring.aad.AADClientRegistrationRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -73,7 +73,7 @@ public class AADOAuth2AuthorizedClientCredentialRepositoryTest {
                 + ".com/xxxx-xxxxx-xxxx/.default",
             AAD_PROPERTY_PREFIX + "authorization-clients.fake.authorization-grant-type = client_credentials"
         );
-        context.register(WebOAuth2ClientConfiguration.class, AADClientConfiguration.class);
+        context.register(WebOAuth2ClientConfiguration.class, AADOAuth2ClientAutoConfiguration.class);
         context.refresh();
         clientRegistrationsRepo = context.getBean(AADClientRegistrationRepository.class);
         fakeClientRegistration = ClientRegistration

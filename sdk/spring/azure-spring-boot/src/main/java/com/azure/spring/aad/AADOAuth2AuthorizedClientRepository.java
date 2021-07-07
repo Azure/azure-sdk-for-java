@@ -3,6 +3,7 @@
 
 package com.azure.spring.aad;
 
+import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationTrustResolver;
@@ -27,6 +28,10 @@ import java.time.temporal.ChronoUnit;
 import java.util.Map;
 import java.util.function.Consumer;
 
+import static com.azure.spring.aad.AADApplicationType.applicationType;
+import static com.azure.spring.aad.AADApplicationType.isWebApplicationAndResourceServer;
+import static com.azure.spring.aad.AADApplicationType.isWebApplicationOnly;
+
 /**
  * OAuth2AuthorizedClientRepository used for AAD oauth2 clients.
  */
@@ -42,27 +47,33 @@ public class AADOAuth2AuthorizedClientRepository implements OAuth2AuthorizedClie
     private final OAuth2AuthorizedClientRepository delegate;
     private final OAuth2AuthorizedClientProvider provider;
     private final OAuth2AuthorizedClientService service;
-    private final Boolean isWebAppClientMode;
-    private final Boolean isAllInClientMode;
+    private final Boolean isWebApplicationOnly;
+    private final Boolean isWebApplicationAndResourceServer;
 
-    public AADOAuth2AuthorizedClientRepository(AADClientRegistrationRepository repo,
+    public AADOAuth2AuthorizedClientRepository(AADAuthenticationProperties properties,
+                                               AADClientRegistrationRepository repo,
                                                OAuth2AuthorizedClientService service) {
-        this(repo,
+        this(properties,
+            repo,
             new JacksonHttpSessionOAuth2AuthorizedClientRepository(),
             new RefreshTokenOAuth2AuthorizedClientProvider(),
             service);
     }
 
-    public AADOAuth2AuthorizedClientRepository(AADClientRegistrationRepository repo,
+    public AADOAuth2AuthorizedClientRepository(AADAuthenticationProperties properties,
+                                               AADClientRegistrationRepository repo,
                                                OAuth2AuthorizedClientRepository delegate,
                                                OAuth2AuthorizedClientProvider provider,
                                                OAuth2AuthorizedClientService service) {
+
+        AADApplicationType applicationType = applicationType(properties);
+        this.isWebApplicationOnly = isWebApplicationOnly(applicationType);
+        this.isWebApplicationAndResourceServer = isWebApplicationAndResourceServer(applicationType);
+
         this.repo = repo;
         this.delegate = delegate;
         this.provider = provider;
         this.service = service;
-        this.isWebAppClientMode = this.repo.isWebAppClientMode();
-        this.isAllInClientMode = this.repo.isAllInClientMode();
     }
 
     @Override
@@ -71,7 +82,7 @@ public class AADOAuth2AuthorizedClientRepository implements OAuth2AuthorizedClie
                                      HttpServletRequest request,
                                      HttpServletResponse response) {
         if (this.isPrincipalAuthenticated(principal)) {
-            if (this.isWebAppClientMode || isAllInClientMode) {
+            if (this.isWebApplicationOnly || isWebApplicationAndResourceServer) {
                 delegate.saveAuthorizedClient(authorizedClient, principal, request, response);
             } else {
                 service.saveAuthorizedClient(authorizedClient, principal);
@@ -88,7 +99,7 @@ public class AADOAuth2AuthorizedClientRepository implements OAuth2AuthorizedClie
                                                                      Authentication principal,
                                                                      HttpServletRequest request) {
         if (this.isPrincipalAuthenticated(principal)) {
-            if (this.isWebAppClientMode || isAllInClientMode) {
+            if (this.isWebApplicationOnly || isWebApplicationAndResourceServer) {
                 OAuth2AuthorizedClient result = delegate.loadAuthorizedClient(clientRegistrationId, principal, request);
                 if (result != null || repo.isClientCredentials(clientRegistrationId)) {
                     return (T) result;
@@ -164,7 +175,7 @@ public class AADOAuth2AuthorizedClientRepository implements OAuth2AuthorizedClie
                                        HttpServletResponse response) {
 
         if (this.isPrincipalAuthenticated(principal)) {
-            if (this.isWebAppClientMode || isAllInClientMode) {
+            if (this.isWebApplicationOnly || isWebApplicationAndResourceServer) {
                 delegate.removeAuthorizedClient(clientRegistrationId, principal, request, response);
             } else {
                 service.removeAuthorizedClient(clientRegistrationId, principal.getName());

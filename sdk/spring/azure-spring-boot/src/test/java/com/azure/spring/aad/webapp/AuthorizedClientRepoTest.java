@@ -6,6 +6,7 @@ package com.azure.spring.aad.webapp;
 import com.azure.spring.aad.AADClientRegistrationRepository;
 import com.azure.spring.aad.AADOAuth2AuthorizedClientRepository;
 import com.azure.spring.aad.JacksonHttpSessionOAuth2AuthorizedClientRepository;
+import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
@@ -54,7 +55,9 @@ public class AuthorizedClientRepoTest {
                     InMemoryOAuth2AuthorizedClientService authorizedClientService =
                         context.getBean(InMemoryOAuth2AuthorizedClientService.class);
                     ClientRegistration azure = clientRepo.findByRegistrationId("azure");
+                    AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
                     OAuth2AuthorizedClientRepository authorizedRepo = new AADOAuth2AuthorizedClientRepository(
+                        properties,
                         clientRepo,
                         new JacksonHttpSessionOAuth2AuthorizedClientRepository(),
                         OAuth2AuthorizationContext::getAuthorizedClient,
@@ -100,8 +103,9 @@ public class AuthorizedClientRepoTest {
                     InMemoryOAuth2AuthorizedClientService authorizedClientService =
                         context.getBean(InMemoryOAuth2AuthorizedClientService.class);
                     ClientRegistration graph = clientRepo.findByRegistrationId("graph");
-
+                    AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
                     OAuth2AuthorizedClientRepository authorizedRepo = new AADOAuth2AuthorizedClientRepository(
+                        properties,
                         clientRepo,
                         new JacksonHttpSessionOAuth2AuthorizedClientRepository(),
                         OAuth2AuthorizationContext::getAuthorizedClient,

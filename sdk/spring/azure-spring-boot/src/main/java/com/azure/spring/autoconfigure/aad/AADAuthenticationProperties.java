@@ -402,12 +402,12 @@ public class AADAuthenticationProperties implements InitializingBean {
                        .contains(group);
     }
 
-    public Boolean getEnableWebAppResourceServer() {
-        return enableWebAppResourceServer;
+    public Boolean getEnableWebAppAndResourceServer() {
+        return enableWebAppAndResourceServer;
     }
 
-    public void setEnableWebAppResourceServer(Boolean enableWebAppResourceServer) {
-        this.enableWebAppResourceServer = enableWebAppResourceServer;
+    public void setEnableWebAppAndResourceServer(Boolean enableWebAppAndResourceServer) {
+        this.enableWebAppAndResourceServer = enableWebAppAndResourceServer;
     }
 
     @Override

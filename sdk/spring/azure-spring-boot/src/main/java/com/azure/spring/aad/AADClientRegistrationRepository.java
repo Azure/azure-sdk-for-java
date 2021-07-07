@@ -13,7 +13,6 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.util.Assert;
-import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.Collection;
@@ -28,8 +27,12 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static com.azure.spring.aad.AADApplicationType.applicationType;
+import static com.azure.spring.aad.AADApplicationType.isResourceServerOnly;
+import static com.azure.spring.aad.AADApplicationType.isResourceServerWithObo;
+import static com.azure.spring.aad.AADApplicationType.isWebApplicationAndResourceServer;
+import static com.azure.spring.aad.AADApplicationType.isWebApplicationOnly;
 import static com.azure.spring.aad.AADAuthorizationGrantType.AUTHORIZATION_CODE;
-import static com.azure.spring.aad.AADConditions.BEARER_TOKEN_AUTHENTICATION_TOKEN_CLASS_NAME;
 
 
 /**
@@ -46,15 +49,17 @@ public class AADClientRegistrationRepository
     protected final Map<String, ClientRegistration> delegatedClientRegistrations;
     protected final Map<String, ClientRegistration> allClientRegistrations;
     protected final AADAuthenticationProperties properties;
-    private final Boolean isWebApiClientMode;
-    private final Boolean isWebAppClientMode;
-    private final Boolean isAllInClientMode;
+    private final Boolean isResourceServer;
+    private final Boolean isWebApplicationOnly;
+    private final Boolean isWebApplicationAndResourceServer;
 
     public AADClientRegistrationRepository(AADAuthenticationProperties properties) {
         this.properties = properties;
-        this.isWebAppClientMode = isWebAppClientMode();
-        this.isWebApiClientMode = isWebApiClientMode();
-        this.isAllInClientMode = isAllInClientMode();
+
+        AADApplicationType applicationType = applicationType(properties);
+        this.isWebApplicationOnly = isWebApplicationOnly(applicationType);
+        this.isResourceServer = isResourceServerOnly(applicationType) || isResourceServerWithObo(applicationType);
+        this.isWebApplicationAndResourceServer = isWebApplicationAndResourceServer(applicationType);
         properties.getAuthorizationClients().forEach(this::handleDefaultAADAuthorizationGrantType);
         this.azureClientRegistration = azureClientRegistration();
         this.delegatedClientRegistrations = delegatedClientRegistrations();
@@ -62,7 +67,7 @@ public class AADClientRegistrationRepository
     }
 
     private AzureClientRegistration azureClientRegistration() {
-        if (!isWebAppClientMode && !isAllInClientMode) {
+        if (!isWebApplicationOnly && !isWebApplicationAndResourceServer) {
             return emptyAzureClientRegistration();
         }
 
@@ -84,7 +89,7 @@ public class AADClientRegistrationRepository
     }
 
     private Map<String, ClientRegistration> delegatedClientRegistrations() {
-        if (!isWebAppClientMode && !isAllInClientMode) {
+        if (!isWebApplicationOnly && !isWebApplicationAndResourceServer) {
             return Collections.emptyMap();
         }
 
@@ -115,15 +120,15 @@ public class AADClientRegistrationRepository
     private void handleDefaultAADAuthorizationGrantType(String registrationId,
                                                         AuthorizationClientProperties properties) {
         if (null == properties.getAuthorizationGrantType()) {
-            if (isWebAppClientMode || AZURE_CLIENT_REGISTRATION_ID.equals(registrationId)) {
+            if (isWebApplicationOnly || AZURE_CLIENT_REGISTRATION_ID.equals(registrationId)) {
                 properties.setAuthorizationGrantType(AUTHORIZATION_CODE);
                 LOGGER.debug("The client '{}' sets the default value of AADAuthorizationGrantType to "
                     + "'authorization_code'.", registrationId);
-            } else if (isWebApiClientMode) {
+            } else if (isResourceServer) {
                 properties.setAuthorizationGrantType(AADAuthorizationGrantType.ON_BEHALF_OF);
                 LOGGER.debug("The client '{}' sets the default value of AADAuthorizationGrantType to "
                     + "'on-behalf-of'.", registrationId);
-            } else if (isAllInClientMode) {
+            } else if (isWebApplicationAndResourceServer) {
                 throw new IllegalStateException("azure.activedirectory.authorization-clients." + registrationId
                     + ".authorization-grant-type must be configured. ");
             }
@@ -139,7 +144,6 @@ public class AADClientRegistrationRepository
 
     private ClientRegistration.Builder toClientRegistrationBuilder(String registrationId,
                                                                    AuthorizationClientProperties clientProperties) {
-        // todo check null
         Assert.notNull(clientProperties.getAuthorizationGrantType(),
             "AuthorizationGrantType can not be empty. " + "registrationId: " + registrationId + ".");
         LOGGER.debug("Client {} AuthorizationClientProperties: {}.", registrationId, clientProperties);
@@ -347,58 +351,5 @@ public class AADClientRegistrationRepository
 
     public static boolean isDefaultClient(String registrationId) {
         return AZURE_CLIENT_REGISTRATION_ID.equals(registrationId);
-    }
-
-
-    public boolean isWebAppClientMode() {
-        boolean isWebAppClient = false;
-        if (isOAuth2ClientAvailable()
-            && !isResourceServerAvailable()
-            && StringUtils.hasText(properties.getClientId())
-            && !properties.getEnableWebAppResourceServer()) {
-            isWebAppClient = true;
-            LOGGER.debug("Apply the Web Application scenario.");
-        }
-        return isWebAppClient;
-    }
-
-
-    private boolean isWebApiClientMode() {
-        boolean isWebApiClient = false;
-        if (isOAuth2ClientAvailable()
-            && isResourceServerAvailable()
-            && !properties.getEnableWebAppResourceServer()) {
-            LOGGER.debug("Apply the Web Api scenario.");
-            isWebApiClient = true;
-        }
-        return isWebApiClient;
-    }
-
-    public boolean isAllInClientMode() {
-        boolean isAllInClientClient = false;
-        if (isOAuth2ClientAvailable() && isResourceServerAvailable()) {
-            if (properties.getEnableWebAppResourceServer()) {
-                LOGGER.debug("Apply the Web Application and Web Api scenario.");
-                isAllInClientClient = true;
-            } else {
-                LOGGER.warn("You need to explicitly enable the switch "
-                    + "'azure.activedirectory.enable-web-app-resource-server' "
-                    + "to apply Web Application and Web Api scenario.");
-            }
-        }
-        return isAllInClientClient;
-    }
-
-    private boolean isOAuth2ClientAvailable() {
-        return isPresent("org.springframework.security.config.annotation.web.configuration.EnableWebSecurity")
-            && isPresent("org.springframework.security.oauth2.client.registration.ClientRegistration");
-    }
-
-    private boolean isResourceServerAvailable() {
-        return isPresent(BEARER_TOKEN_AUTHENTICATION_TOKEN_CLASS_NAME);
-    }
-
-    private boolean isPresent(String className) {
-        return ClassUtils.isPresent(className, ClassUtils.getDefaultClassLoader());
     }
 }
