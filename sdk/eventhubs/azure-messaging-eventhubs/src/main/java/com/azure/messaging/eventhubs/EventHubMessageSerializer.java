@@ -377,8 +377,8 @@ class EventHubMessageSerializer implements MessageSerializer {
                         message.setReplyToGroupId(replyToGroupId);
                         break;
                     default:
-                        throw new IllegalArgumentException(String.format(
-                            "Property is not a recognized reserved property name: %s. value: %s", key, value));
+                        throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
+                            "Property is not a recognized reserved property name: %s. value: %s", key, value)));
                 }
             } else {
                 if (message.getMessageAnnotations() == null) {

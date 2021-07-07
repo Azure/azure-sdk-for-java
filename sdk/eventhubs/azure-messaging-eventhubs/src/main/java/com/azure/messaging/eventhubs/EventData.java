@@ -500,7 +500,7 @@ public class EventData {
             } else if (value instanceof Long) {
                 return (Long) value;
             } else {
-                throw new ClientLogger(EventData.class).logExceptionAsError(new IllegalStateException(
+                throw new ClientLogger(SystemProperties.class).logExceptionAsError(new IllegalStateException(
                     String.format(Locale.US, "Key: %s Value %s is not of type String or Long.", key, value)));
             }
         }
@@ -516,9 +516,9 @@ public class EventData {
             } else if (value instanceof Instant) {
                 return (Instant) value;
             } else {
-                throw new ClientLogger(EventData.class).logExceptionAsError(new IllegalStateException(
+                throw new ClientLogger(SystemProperties.class).logExceptionAsError(new IllegalStateException(
                     String.format(Locale.US, "Key: %s Value %s is not of type Date or Instant.", key, value)));
             }
         }
     }
-    }
+}
