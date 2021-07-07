@@ -6,7 +6,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-cloud-dependencies</artifactId>
-  <version>2.5.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-dependencies;dependency} -->
+  <version>2.6.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-dependencies;dependency} -->
   <packaging>pom</packaging>
 
   <name>Azure Spring Cloud Dependencies</name>
