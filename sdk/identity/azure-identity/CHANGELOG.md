@@ -3,6 +3,11 @@
 ## 1.3.2 (2021-07-07)
 
 ### Dependency Updates
+- Pinned `json-smart` dependency to 2.4.7
+
+## 1.3.2 (2021-07-07)
+
+### Dependency Updates
 - Upgraded `azure-core` dependency to 1.18.0
 
 ## 1.3.1 (2021-06-08)
