@@ -122,7 +122,8 @@ public class EventData {
     }
 
     /**
-     * Creates an event with the given {@code body}, system properties and context.
+     * Creates an event with the given {@code body}, system properties and context. Used in the case where a message
+     * is received from the service.
      *
      * @param systemProperties System properties set by message broker for this event.
      * @param context A specified key-value pair of type {@link Context}.
