@@ -45,6 +45,7 @@ import com.azure.storage.blob.sas.BlobSasPermission
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
 import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
+import com.azure.storage.common.Utility
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.test.shared.extensions.LiveOnly
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly
@@ -3094,8 +3095,16 @@ class BlobAPITest extends APISpec {
     }
 
     def "Get Blob Name"() {
+        setup:
+        bc = cc.getBlobClient(name)
+
         expect:
-        blobName == bc.getBlobName()
+        resultName == bc.getBlobName()
+
+        where:
+        name                                | resultName
+        "blobName"                          | "blobName" // standard names should be preserved
+        Utility.urlEncode("dir1/a%20b.txt") | "dir1/a%20b.txt" // encoded names should be decoded (not double decoded
     }
 
     def "Get Blob Name and Build Client"() {

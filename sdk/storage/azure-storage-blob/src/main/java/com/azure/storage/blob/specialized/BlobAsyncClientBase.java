@@ -371,7 +371,7 @@ public class BlobAsyncClientBase {
      * @return The decoded name of the blob.
      */
     public final String getBlobName() {
-        return (blobName == null) ? null : Utility.urlDecode(blobName);
+        return blobName; // The blob name is decoded when the client is constructor
     }
 
     /**
