@@ -285,7 +285,7 @@ class RxGatewayStoreModel implements RxStoreModel {
                                ReactorNettyRequestRecord reactorNettyRequestRecord = httpResponse.request().reactorNettyRequestRecord();
                                if (reactorNettyRequestRecord != null) {
                                    reactorNettyRequestRecord.setTimeCompleted(Instant.now());
-                                   BridgeInternal.setTransportClientRequestTimelineOnDiagnostics(request.requestContext.cosmosDiagnostics,
+                                   BridgeInternal.setGatewayRequestTimelineOnDiagnostics(request.requestContext.cosmosDiagnostics,
                                        reactorNettyRequestRecord.takeTimelineSnapshot());
                                }
 
@@ -342,8 +342,8 @@ class RxGatewayStoreModel implements RxStoreModel {
                        }
 
                        if (request.requestContext.cosmosDiagnostics != null) {
-                           if (BridgeInternal.getClientSideRequestStatics(request.requestContext.cosmosDiagnostics).getTransportRequestTimeline() == null && httpRequest.reactorNettyRequestRecord() != null) {
-                               BridgeInternal.setTransportClientRequestTimelineOnDiagnostics(request.requestContext.cosmosDiagnostics,
+                           if (BridgeInternal.getClientSideRequestStatics(request.requestContext.cosmosDiagnostics).getGatewayRequestTimeline() == null && httpRequest.reactorNettyRequestRecord() != null) {
+                               BridgeInternal.setGatewayRequestTimelineOnDiagnostics(request.requestContext.cosmosDiagnostics,
                                    httpRequest.reactorNettyRequestRecord().takeTimelineSnapshot());
                            }
 
