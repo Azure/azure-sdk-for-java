@@ -122,6 +122,9 @@
 /sdk/**/azure-resourcemanager-*                     @ChenTanyi @weidongxu-microsoft @yungezz
 /sdk/**/mgmt*/                                      @ChenTanyi @weidongxu-microsoft @yungezz
 
+# Quantum
+/sdk/quantum/                                       @vxfield @cgranade @ricardo-espinoza @anjbur @msoeken @guenp
+
 ###########
 # Eng Sys
 ###########
