@@ -20,9 +20,9 @@ public final class AnalyzeSentimentActionResult extends TextAnalyticsActionResul
     }
 
     /**
-     * Gets the key phrases extraction action result.
+     * Gets the sentiment analysis action result.
      *
-     * @return the key phrases extraction action result.
+     * @return The sentiment analysis action result.
      *
      * @throws TextAnalyticsException if result has {@code isError} equals to true and when a non-error property
      * was accessed.

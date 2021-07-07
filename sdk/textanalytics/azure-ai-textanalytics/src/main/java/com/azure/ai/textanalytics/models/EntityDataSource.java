@@ -38,7 +38,7 @@ public final class EntityDataSource {
     }
 
     /**
-     * Get the data source name property: Entity Catalog. Examples include: UMLS, CHV, MSH, etc.
+     * Gets the data source name property: Entity Catalog. Examples include: UMLS, CHV, MSH, etc.
      *
      * @return the data source name.
      */
@@ -47,7 +47,7 @@ public final class EntityDataSource {
     }
 
     /**
-     * Get the data source entity ID property: data source entity ID in the given source catalog.
+     * Gets the data source entity ID property: data source entity ID in the given source catalog.
      *
      * @return the data source entity ID.
      */
@@ -59,7 +59,7 @@ public final class EntityDataSource {
      * The private setter to set the data source name property
      * via {@link EntityDataSourcePropertiesHelper.EntityDataSourceAccessor}.
      *
-     * @param name the data source name property: Entity Catalog. Examples include: UMLS, CHV, MSH, etc.
+     * @param name The data source name property: Entity Catalog. Examples include: UMLS, CHV, MSH, etc.
      */
     private void setName(String name) {
         this.name = name;
