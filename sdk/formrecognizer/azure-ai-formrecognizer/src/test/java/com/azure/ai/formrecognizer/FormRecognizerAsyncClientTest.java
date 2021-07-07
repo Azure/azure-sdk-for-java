@@ -24,7 +24,6 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -51,7 +50,6 @@ import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffe
 import static com.azure.ai.formrecognizer.models.FormContentType.APPLICATION_PDF;
 import static com.azure.ai.formrecognizer.models.FormContentType.IMAGE_JPEG;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase {
@@ -1823,18 +1821,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                     .setPollInterval(durationTestMode)
                     .getSyncPoller();
 
-            List<RecognizedForm> actualPrebuiltRecognizedForms = syncPoller.getFinalResult();
-            RecognizedForm actualForm = actualPrebuiltRecognizedForms.get(0);
-            Assertions.assertEquals("prebuilt:businesscard", actualForm.getFormType());
-
-            assertEquals(1, actualPrebuiltRecognizedForms.size());
-            RecognizedForm businessCardPage1 = actualPrebuiltRecognizedForms.get(0);
-
-            assertEquals(1, businessCardPage1.getPageRange().getFirstPageNumber());
-            assertEquals(1, businessCardPage1.getPageRange().getLastPageNumber());
-            assertNotNull(businessCardPage1.getPages());
-
-            assertEquals(3, businessCardPage1.getFields().size());
+            validateBusinessCardData(syncPoller.getFinalResult(), false);
         }, BUSINESS_CARD_JPG);
     }
 
