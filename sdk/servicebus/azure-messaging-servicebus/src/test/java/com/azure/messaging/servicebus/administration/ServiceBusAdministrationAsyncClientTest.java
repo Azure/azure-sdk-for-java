@@ -29,7 +29,6 @@ import com.azure.messaging.servicebus.implementation.models.QueueDescriptionFeed
 import com.azure.messaging.servicebus.implementation.models.ResponseLink;
 import com.azure.messaging.servicebus.implementation.models.ServiceBusManagementError;
 import com.azure.messaging.servicebus.implementation.models.ServiceBusManagementErrorException;
-import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -77,6 +76,8 @@ import static org.mockito.Mockito.when;
  * Unit tests for {@link ServiceBusAdministrationAsyncClient}.
  */
 class ServiceBusAdministrationAsyncClientTest {
+    private static final int HTTP_UNAUTHORIZED = 401;
+
     @Mock
     private ServiceBusManagementClientImpl serviceClient;
     @Mock
@@ -359,7 +360,7 @@ class ServiceBusAdministrationAsyncClientTest {
         final HttpResponse response = mock(HttpResponse.class);
         when(subscriptions.getWithResponseAsync(eq(topicName), eq(subscriptionName), eq(true), any(Context.class)))
             .thenReturn(Mono.error(new ServiceBusManagementErrorException(errorMessage, response, managementError)));
-        when(response.getStatusCode()).thenReturn(HttpStatus.SC_UNAUTHORIZED);
+        when(response.getStatusCode()).thenReturn(HTTP_UNAUTHORIZED);
 
         // Act & Assert
         StepVerifier.create(client.getSubscriptionRuntimeProperties(topicName, subscriptionName))
@@ -523,7 +524,7 @@ class ServiceBusAdministrationAsyncClientTest {
     static Stream<Arguments> getSubscriptionRuntimePropertiesUnauthorised() {
         return Stream.of(
             Arguments.of("Unauthorized access", null),
-            Arguments.of("Unauthorized access", new ServiceBusManagementError().setCode(HttpStatus.SC_UNAUTHORIZED).setDetail("Unauthorized access"))
+            Arguments.of("Unauthorized access", new ServiceBusManagementError().setCode(HTTP_UNAUTHORIZED).setDetail("Unauthorized access"))
         );
     }
 

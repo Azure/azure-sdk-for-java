@@ -35,7 +35,6 @@ import com.azure.cosmos.models.TriggerType;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.reactivex.subscribers.TestSubscriber;
-import org.jetbrains.annotations.NotNull;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
@@ -459,7 +458,6 @@ public class QueryValidationTests extends TestSuiteBase {
         container.delete().block();
     }
 
-    @NotNull
     private List<PartitionKeyRange> getPartitionKeyRanges(
         String containerId, AsyncDocumentClient asyncDocumentClient) {
         List<PartitionKeyRange> partitionKeyRanges = new ArrayList<>();
