@@ -51,8 +51,8 @@ public class TracerProvider {
     public static final String COSMOS_CALL_DEPTH_VAL = "nested";
     public static final int ERROR_CODE = 0;
     public static final String RESOURCE_PROVIDER_NAME = "Microsoft.DocumentDB";
-    public static Duration CRUD_THRESHOLD_FOR_DIAGNOSTICS = Duration.ofMillis(100);
-    public static Duration QUERY_THRESHOLD_FOR_DIAGNOSTICS = Duration.ofMillis(500);
+    public static final Duration CRUD_THRESHOLD_FOR_DIAGNOSTICS = Duration.ofMillis(100);
+    public static final Duration QUERY_THRESHOLD_FOR_DIAGNOSTICS = Duration.ofMillis(500);
     public TracerProvider(Tracer tracer) {
         this.tracer = tracer;
     }
