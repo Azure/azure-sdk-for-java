@@ -58,7 +58,7 @@ Updated to `Spring Boot` [2.4.3](https://github.com/spring-projects/spring-boot/
 
 ## 3.2.0 (2021-03-03)
 ### Breaking Changes
-- For the required scopes in auth code flow, use `Directory.Read.All` instead of `Directory.AccessAsUser.All`. ([#18901](https://github.com/Azure/azure-sdk-for-java/pull/18901))
+- For the required scopes in AAD auth code flow, use `Directory.Read.All` instead of `Directory.AccessAsUser.All`. ([#18901](https://github.com/Azure/azure-sdk-for-java/pull/18901))
   Now The requested scopes are: `openid`, `profile`, `offline_access`, `User.Read`, `Directory.Read.All`.
   You can Refer to [AADWebAppConfiguration.java](https://github.com/Azure/azure-sdk-for-java/blob/azure-spring-boot_3.2.0/sdk/spring/azure-spring-boot/src/main/java/com/azure/spring/aad/webapp/AADWebAppConfiguration.java#L119) for detailed information.
 - Remove `azure.activedirectory.b2c.oidc-enabled` property.
@@ -101,7 +101,7 @@ Updated to `Spring Boot` [2.4.3](https://github.com/spring-projects/spring-boot/
     - Support for `AAD v1`, also named `Azure Active Directory`, endpoints in the form https://login.microsoft.online.com/common/oauth2/authorize has been removed.
     - `AAD v2`, also named `Microsoft Identity Platform`, endpoints in the form https://login.microsoftonline.com/common/oauth2/v2.0/authorize continue to be supported.
     - Please see [this documentation](https://github.com/MicrosoftDocs/azure-docs/blob/master/articles/active-directory/azuread-dev/azure-ad-endpoint-comparison.md) for more information.
-- The required scopes in auth code flow are: `openid`, `profile`, `offline_access`, `User.Read`, `Directory.AccessAsUser.All`.
+- The required scopes in AAD auth code flow are: `openid`, `profile`, `offline_access`, `User.Read`, `Directory.AccessAsUser.All`.
   You can Refer to [AADWebAppConfiguration.java](https://github.com/Azure/azure-sdk-for-java/blob/azure-spring-boot_3.0.0/sdk/spring/azure-spring-boot/src/main/java/com/azure/spring/aad/webapp/AADWebAppConfiguration.java#L117) for detailed information.
 
 ### New Features
