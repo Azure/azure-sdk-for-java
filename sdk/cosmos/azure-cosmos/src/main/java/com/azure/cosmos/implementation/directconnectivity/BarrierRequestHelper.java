@@ -39,6 +39,10 @@ public class BarrierRequestHelper {
 
         AuthorizationTokenType originalRequestTokenType = request.authorizationTokenType;
 
+        if (authorizationTokenProvider != null && authorizationTokenProvider.getAuthorizationTokenType() != null) {
+            originalRequestTokenType = authorizationTokenProvider.getAuthorizationTokenType();
+        }
+
         if (originalRequestTokenType == AuthorizationTokenType.Invalid) {
             String message = "AuthorizationTokenType not set for the read request";
             assert false : message;
@@ -53,7 +57,8 @@ public class BarrierRequestHelper {
                 OperationType.HeadFeed,
                 null,
                 ResourceType.Database,
-                null);
+                null,
+                originalRequestTokenType);
         } else if (request.getIsNameBased()) {
             // Name based server request
 
@@ -63,13 +68,16 @@ public class BarrierRequestHelper {
             barrierLsnRequest = RxDocumentServiceRequest.createFromName(clientContext,
                     OperationType.Head,
                     collectionLink,
-                    ResourceType.DocumentCollection);
+                    ResourceType.DocumentCollection,
+                    originalRequestTokenType);
         } else {
             // RID based Server request
             barrierLsnRequest = RxDocumentServiceRequest.create(clientContext,
                     OperationType.Head,
                     ResourceId.parse(request.getResourceId()).getDocumentCollectionId().toString(),
-                    ResourceType.DocumentCollection, null);
+                    ResourceType.DocumentCollection,
+                    null,
+                    originalRequestTokenType);
         }
 
         barrierLsnRequest.getHeaders().put(HttpConstants.HttpHeaders.X_DATE, Utils.nowAsRFC1123());

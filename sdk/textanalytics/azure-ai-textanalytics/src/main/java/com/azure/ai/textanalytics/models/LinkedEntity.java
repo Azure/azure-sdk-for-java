@@ -3,6 +3,7 @@
 
 package com.azure.ai.textanalytics.models;
 
+import com.azure.ai.textanalytics.implementation.LinkedEntityPropertiesHelper;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
@@ -44,9 +45,9 @@ public final class LinkedEntity {
     /*
      * Bing Entity Search unique identifier of the recognized entity. Use in conjunction with
      * the Bing Entity Search API to fetch additional relevant information. Only available for API version
-     * v3.1-preview.2 and up.
+     * v3.1 and up.
      */
-    private final String bingEntitySearchApiId;
+    private String bingEntitySearchApiId;
 
     /**
      * Creates a {@link LinkedEntity} model that describes linked entity.
@@ -66,31 +67,11 @@ public final class LinkedEntity {
         this.dataSourceEntityId = dataSourceEntityId;
         this.url = url;
         this.dataSource = dataSource;
-        this.bingEntitySearchApiId = null;
     }
 
-    /**
-     * Creates a {@link LinkedEntity} model that describes linked entity.
-     *
-     * @param name The entity Linking formal name.
-     * @param matches A list of instances this entity appears in the text.
-     * @param language The language used in the data source.
-     * @param dataSourceEntityId Unique identifier of the recognized entity from the data source.
-     * @param url URL for the entity's page from the data source.
-     * @param dataSource The data source used to extract entity linking, such as Wiki/Bing etc.
-     * @param bingEntitySearchApiId Bing Entity Search unique identifier of the recognized entity. Use in conjunction
-     * with the Bing Entity Search SDK to fetch additional relevant information. Only available for API version
-     * v3.1-preview.2 and up.
-     */
-    public LinkedEntity(String name, IterableStream<LinkedEntityMatch> matches, String language,
-        String dataSourceEntityId, String url, String dataSource, String bingEntitySearchApiId) {
-        this.name = name;
-        this.matches = matches;
-        this.language = language;
-        this.dataSourceEntityId = dataSourceEntityId;
-        this.url = url;
-        this.dataSource = dataSource;
-        this.bingEntitySearchApiId = bingEntitySearchApiId;
+    static {
+        LinkedEntityPropertiesHelper.setAccessor(
+            (entity, bingEntitySearchApiId) -> entity.setBingEntitySearchApiId(bingEntitySearchApiId));
     }
 
     /**
@@ -150,11 +131,15 @@ public final class LinkedEntity {
     /**
      * Get the bingEntitySearchApiId property: Bing Entity Search unique identifier of the recognized entity.
      * Use in conjunction with the Bing Entity Search SDK to fetch additional relevant information. Only available
-     * for API version v3.1-preview.2 and up.
+     * for API version v3.1 and up.
      *
      * @return The bingEntitySearchApiId value.
      */
     public String getBingEntitySearchApiId() {
         return this.bingEntitySearchApiId;
+    }
+
+    private void setBingEntitySearchApiId(String bingEntitySearchApiId) {
+        this.bingEntitySearchApiId = bingEntitySearchApiId;
     }
 }

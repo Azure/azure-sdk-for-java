@@ -15,7 +15,8 @@ public enum DataLakeServiceVersion implements ServiceVersion {
     V2020_02_10("2020-02-10"),
     V2020_04_08("2020-04-08"),
     V2020_06_12("2020-06-12"),
-    V2020_08_04("2020-08-04");
+    V2020_08_04("2020-08-04"),
+    V2020_10_02("2020-10-02");
 
     private final String version;
 

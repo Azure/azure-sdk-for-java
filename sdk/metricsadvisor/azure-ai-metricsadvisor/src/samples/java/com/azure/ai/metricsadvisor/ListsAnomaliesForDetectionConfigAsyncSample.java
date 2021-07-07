@@ -29,7 +29,7 @@ public class ListsAnomaliesForDetectionConfigAsyncSample {
         final ListAnomaliesDetectedOptions options = new ListAnomaliesDetectedOptions()
             .setMaxPageSize(10)
             .setFilter(filter);
-        advisorAsyncClient.listAnomalies(detectionConfigurationId,
+        advisorAsyncClient.listAnomaliesForDetectionConfig(detectionConfigurationId,
                 startTime, endTime, options)
             .doOnNext(anomaly -> {
                 System.out.printf("DataPoint Anomaly Severity: %s%n", anomaly.getSeverity());

@@ -1,6 +1,6 @@
 # Single-Service Packages Latest Releases
 
-The single-service packages provide easy-to-use APIs for each Azure service following the design principals of [Azure Management Libraries for Java](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/resourcemanager). If you have specific requirement on certain service API version, you may find appropriate package below. If not, you could always choose the latest release.
+The single-service packages provide easy-to-use APIs for each Azure service following the design principals of [Azure Management Libraries for Java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/resourcemanager). If you have specific requirement on certain service API version, you may find appropriate package below. If not, you could always choose the latest release.
 
 According to [Azure REST API reference](https://docs.microsoft.com/rest/api/azure/), most request URIs of Azure services require `api-version` as the query-string parameter. All supported API versions for each Azure service can be found via [Azure REST API Specifications](https://github.com/Azure/azure-rest-api-specs/tree/master/specification). For your convenience, we provide more details of the published packages by format below.
 
@@ -101,7 +101,7 @@ service
 <details>
 <summary> batchai </summary>
 
-* [package-2018-05](https://github.com/Azure/azure-rest-api-specs/tree/master/specification/batchai/resource-manager#tag-package-2018-05)
+* package-2018-05
     * [1.0.0-beta.1](https://search.maven.org/artifact/com.azure.resourcemanager/azure-resourcemanager-batchai/1.0.0-beta.1/jar)
 </details>
 
@@ -222,6 +222,7 @@ service
 <summary> datadog </summary>
 
 * [package-2021-03](https://github.com/Azure/azure-rest-api-specs/tree/master/specification/datadog/resource-manager#tag-package-2021-03)
+    * [1.0.0-beta.3](https://search.maven.org/artifact/com.azure.resourcemanager/azure-resourcemanager-datadog/1.0.0-beta.3/jar)
     * [1.0.0-beta.2](https://search.maven.org/artifact/com.azure.resourcemanager/azure-resourcemanager-datadog/1.0.0-beta.2/jar)
 * [package-2020-02-preview](https://github.com/Azure/azure-rest-api-specs/tree/master/specification/datadog/resource-manager#tag-package-2020-02-preview)
     * [1.0.0-beta.1](https://search.maven.org/artifact/com.azure.resourcemanager/azure-resourcemanager-datadog/1.0.0-beta.1/jar)
@@ -273,6 +274,14 @@ service
 
 * [package-2019-11-01-preview](https://github.com/Azure/azure-rest-api-specs/tree/master/specification/deploymentmanager/resource-manager#tag-package-2019-11-01-preview)
     * [1.0.0-beta.1](https://search.maven.org/artifact/com.azure.resourcemanager/azure-resourcemanager-deploymentmanager/1.0.0-beta.1/jar)
+</details>
+
+<br/>
+<details>
+<summary> deviceprovisioningservices </summary>
+
+* [package-2020-03](https://github.com/Azure/azure-rest-api-specs/tree/master/specification/deviceprovisioningservices/resource-manager#tag-package-2020-03)
+    * [1.0.0](https://search.maven.org/artifact/com.azure.resourcemanager/azure-resourcemanager-deviceprovisioningservices/1.0.0/jar)
 </details>
 
 <br/>
@@ -331,6 +340,7 @@ service
 <summary> hdinsight </summary>
 
 * [package-2018-06-preview](https://github.com/Azure/azure-rest-api-specs/tree/master/specification/hdinsight/resource-manager#tag-package-2018-06-preview)
+    * [1.0.0-beta.3](https://search.maven.org/artifact/com.azure.resourcemanager/azure-resourcemanager-hdinsight/1.0.0-beta.3/jar)
     * [1.0.0-beta.2](https://search.maven.org/artifact/com.azure.resourcemanager/azure-resourcemanager-hdinsight/1.0.0-beta.2/jar)
     * [1.0.0-beta.1](https://search.maven.org/artifact/com.azure.resourcemanager/azure-resourcemanager-hdinsight/1.0.0-beta.1/jar)
 </details>

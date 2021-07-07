@@ -8,6 +8,8 @@ public interface IOObject {
     // should be run on reactor thread
     IOObjectState getState();
 
+    String getId();
+
     enum IOObjectState {
         OPENING,
         OPENED,

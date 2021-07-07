@@ -62,6 +62,9 @@ final class Transforms {
     private static final Pattern NON_DIGIT_PATTERN = Pattern.compile("[^0-9]+");
     private static final float DEFAULT_CONFIDENCE_VALUE = 1.0f;
     private static final int DEFAULT_TABLE_SPAN = 1;
+    public static final String NORMALIZATION_ERROR_MESSAGE = "Value was extracted from the form, but cannot "
+        + "be normalized to %s type. Consider accessing the `valueData.text` property for a textual representation "
+        + "of the value.";
 
     private Transforms() {
     }
@@ -305,13 +308,12 @@ final class Transforms {
                 if (fieldValue != null) {
                     List<FormElement> formElementList = setReferenceElements(fieldValue.getElements(), readResults);
                     FieldData valueData;
-                    // Bounding box, page and text are not returned by the service in two scenarios:
+                    // Bounding box and page are not returned by the service in two scenarios:
                     //   - When this field is global and not associated with a specific page (e.g. ReceiptType).
                     //   - When this field is a collection, such as a list or dictionary.
                     //
                     // In these scenarios we do not set a ValueData.
-                    if (fieldValue.getText() == null && fieldValue.getPage() == null
-                        && CoreUtils.isNullOrEmpty(fieldValue.getBoundingBox())) {
+                    if (fieldValue.getPage() == null && CoreUtils.isNullOrEmpty(fieldValue.getBoundingBox())) {
                         valueData = null;
                     } else {
                         valueData = new FieldData(fieldValue.getText(), toBoundingBox(fieldValue.getBoundingBox()),
@@ -351,25 +353,31 @@ final class Transforms {
                     FieldValueType.STRING);
                 break;
             case TIME:
-                LocalTime fieldTime = fieldValue.getValueTime() == null ? null : LocalTime
-                    .parse(fieldValue.getValueTime(), DateTimeFormatter.ofPattern("HH:mm:ss"));
-                value = new com.azure.ai.formrecognizer.models.FieldValue(fieldTime, FieldValueType.TIME);
+                if (fieldValue.getValueTime() != null) {
+                    LocalTime fieldTime = LocalTime.parse(fieldValue.getValueTime(),
+                        DateTimeFormatter.ofPattern("HH:mm:ss"));
+                    value = new com.azure.ai.formrecognizer.models.FieldValue(fieldTime, FieldValueType.TIME);
+                } else {
+                    throw LOGGER.logExceptionAsError(new RuntimeException(String.format(NORMALIZATION_ERROR_MESSAGE,
+                        fieldValue.getType())));
+                }
                 break;
             case DATE:
-                value = new com.azure.ai.formrecognizer.models.FieldValue(fieldValue.getValueDate(),
-                    FieldValueType.DATE);
+                if (fieldValue.getValueDate() != null) {
+                    value = new com.azure.ai.formrecognizer.models.FieldValue(fieldValue.getValueDate(),
+                        FieldValueType.DATE);
+                } else {
+                    throw LOGGER.logExceptionAsError(new RuntimeException(String.format(NORMALIZATION_ERROR_MESSAGE,
+                        fieldValue.getType())));
+                }
                 break;
             case INTEGER:
-                com.azure.ai.formrecognizer.models.FieldValue longFieldValue;
-                if (fieldValue.getValueInteger() == null) {
-                    longFieldValue =
-                        new com.azure.ai.formrecognizer.models.FieldValue(null, FieldValueType.LONG);
+                if (fieldValue.getValueInteger() != null) {
+                    value = new com.azure.ai.formrecognizer.models.FieldValue(fieldValue.getValueInteger().longValue(),
+                        FieldValueType.LONG);
                 } else {
-                    longFieldValue =
-                        new com.azure.ai.formrecognizer.models.FieldValue(fieldValue.getValueInteger().longValue(),
-                            FieldValueType.LONG);
+                    value = new com.azure.ai.formrecognizer.models.FieldValue(null, FieldValueType.LONG);
                 }
-                value = longFieldValue;
                 break;
             case NUMBER:
                 value = new com.azure.ai.formrecognizer.models.FieldValue(fieldValue.getValueNumber(),
@@ -381,21 +389,26 @@ final class Transforms {
                 break;
             case OBJECT:
                 value = new com.azure.ai.formrecognizer.models.FieldValue(
-                    toFieldValueObject(fieldValue.getValueObject(), readResults), FieldValueType.MAP);
+                        toFieldValueObject(fieldValue.getValueObject(), readResults), FieldValueType.MAP);
                 break;
             case SELECTION_MARK:
-                com.azure.ai.formrecognizer.models.SelectionMarkState selectionMarkState;
-                final FieldValueSelectionMark fieldValueSelectionMarkState = fieldValue.getValueSelectionMark();
-                if (FieldValueSelectionMark.SELECTED.equals(fieldValueSelectionMarkState)) {
-                    selectionMarkState = com.azure.ai.formrecognizer.models.SelectionMarkState.SELECTED;
-                } else if (FieldValueSelectionMark.UNSELECTED.equals(fieldValueSelectionMarkState)) {
-                    selectionMarkState = com.azure.ai.formrecognizer.models.SelectionMarkState.UNSELECTED;
+                if (fieldValue.getValueSelectionMark() != null) {
+                    com.azure.ai.formrecognizer.models.SelectionMarkState selectionMarkState;
+                    final FieldValueSelectionMark fieldValueSelectionMarkState = fieldValue.getValueSelectionMark();
+                    if (FieldValueSelectionMark.SELECTED.equals(fieldValueSelectionMarkState)) {
+                        selectionMarkState = com.azure.ai.formrecognizer.models.SelectionMarkState.SELECTED;
+                    } else if (FieldValueSelectionMark.UNSELECTED.equals(fieldValueSelectionMarkState)) {
+                        selectionMarkState = com.azure.ai.formrecognizer.models.SelectionMarkState.UNSELECTED;
+                    } else {
+                        selectionMarkState = com.azure.ai.formrecognizer.models.SelectionMarkState.fromString(
+                            fieldValue.getValueSelectionMark().toString());
+                    }
+                    value = new com.azure.ai.formrecognizer.models.FieldValue(selectionMarkState,
+                        FieldValueType.SELECTION_MARK_STATE);
                 } else {
-                    selectionMarkState = com.azure.ai.formrecognizer.models.SelectionMarkState.fromString(
-                        fieldValue.getValueSelectionMark().toString());
+                    throw LOGGER.logExceptionAsError(new RuntimeException(String.format(NORMALIZATION_ERROR_MESSAGE,
+                        fieldValue.getType())));
                 }
-                value = new com.azure.ai.formrecognizer.models.FieldValue(selectionMarkState,
-                    FieldValueType.SELECTION_MARK_STATE);
                 break;
             case COUNTRY_REGION:
                 value = new com.azure.ai.formrecognizer.models.FieldValue(fieldValue.getValueCountryRegion(),
@@ -431,17 +444,22 @@ final class Transforms {
      */
     private static Map<String, FormField> toFieldValueObject(Map<String, FieldValue> valueObject,
                                                              List<ReadResult> readResults) {
+        if (valueObject == null) {
+            return null;
+        }
         Map<String, FormField> fieldValueObjectMap = new TreeMap<>();
-        valueObject.forEach((key, fieldValue) ->
-            fieldValueObjectMap.put(key,
-                setFormField(key,
-                    new FieldData(fieldValue.getText(),
-                        toBoundingBox(fieldValue.getBoundingBox()),
-                        fieldValue.getPage(),
-                        setReferenceElements(fieldValue.getElements(), readResults)),
-                    fieldValue,
-                    readResults)
-            ));
+        valueObject.forEach((key, fieldValue) -> {
+
+            FieldData valueData = null;
+            // has ho value data when bounding box and page info is null.
+            if (fieldValue.getPage() != null && fieldValue.getBoundingBox() != null) {
+                valueData = new FieldData(fieldValue.getText(), toBoundingBox(fieldValue.getBoundingBox()),
+                    fieldValue.getPage(),
+                    setReferenceElements(fieldValue.getElements(), readResults));
+            }
+            fieldValueObjectMap.put(key, setFormField(key, valueData, fieldValue, readResults));
+        });
+
         return fieldValueObjectMap;
     }
 
@@ -455,13 +473,15 @@ final class Transforms {
      * @return The List of {@link FormField}.
      */
     private static List<FormField> toFieldValueArray(List<FieldValue> valueArray, List<ReadResult> readResults) {
+        if (valueArray == null) {
+            return null;
+        }
         return valueArray.stream()
             .map(fieldValue -> {
                 FieldData valueData = null;
                 // ARRAY has ho value data, such as bounding box.
                 if (ARRAY != fieldValue.getType()
-                    && (fieldValue.getPage() != null && fieldValue.getBoundingBox() != null
-                    && fieldValue.getText() != null)) {
+                    && (fieldValue.getPage() != null && fieldValue.getBoundingBox() != null)) {
                     valueData = new FieldData(fieldValue.getText(), toBoundingBox(fieldValue.getBoundingBox()),
                         fieldValue.getPage(),
                         setReferenceElements(fieldValue.getElements(), readResults));

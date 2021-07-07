@@ -3,6 +3,7 @@
 
 package com.azure.ai.metricsadvisor.implementation.util;
 
+import com.azure.ai.metricsadvisor.administration.models.DataFeedDimension;
 import com.azure.ai.metricsadvisor.implementation.models.AuthenticationTypeEnum;
 import com.azure.ai.metricsadvisor.implementation.models.AzureApplicationInsightsDataFeed;
 import com.azure.ai.metricsadvisor.implementation.models.AzureApplicationInsightsDataFeedPatch;
@@ -84,6 +85,8 @@ import com.azure.ai.metricsadvisor.administration.models.SqlServerDataFeedSource
 import com.azure.core.util.logging.ClientLogger;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -108,8 +111,8 @@ public final class DataFeedTransforms {
         final DataFeed dataFeed = setDataFeedSourceType(dataFeedDetail);
         dataFeed
             .setName(dataFeedDetail.getDataFeedName())
-            .setSchema(new DataFeedSchema(dataFeedDetail.getMetrics())
-                .setDimensions(dataFeedDetail.getDimension())
+            .setSchema(new DataFeedSchema(fromInnerMetricList(dataFeedDetail.getMetrics()))
+                .setDimensions(fromInnerDimensionList(dataFeedDetail.getDimension()))
                 .setTimestampColumn(dataFeedDetail.getTimestampColumn()))
             .setGranularity(dataFeedGranularity)
             .setIngestionSettings(new DataFeedIngestionSettings(dataFeedDetail.getDataStartFrom())
@@ -124,14 +127,14 @@ public final class DataFeedTransforms {
                     .setFillType(DataFeedMissingDataPointFillType.fromString(
                         dataFeedDetail.getFillMissingPointType().toString())))
                 .setAccessMode(DataFeedAccessMode.fromString(dataFeedDetail.getViewMode().toString()))
-                .setAdminEmails(dataFeedDetail.getAdmins())
+                .setAdmins(dataFeedDetail.getAdmins())
                 .setRollupSettings(new DataFeedRollupSettings()
                     .setAlreadyRollup(dataFeedDetail.getAllUpIdentification())
                     .setAutoRollup(DataFeedAutoRollUpMethod.fromString(dataFeedDetail.getRollUpMethod().toString()),
                         dataFeedDetail.getRollUpColumns())
                     .setRollupType(DataFeedRollupType.fromString(dataFeedDetail.getNeedRollup().toString())))
                 .setActionLinkTemplate(dataFeedDetail.getActionLinkTemplate())
-                .setViewerEmails(dataFeedDetail.getViewers()));
+                .setViewers(dataFeedDetail.getViewers()));
 
         DataFeedHelper.setId(dataFeed, dataFeedDetail.getDataFeedId().toString());
         DataFeedHelper.setCreatedTime(dataFeed, dataFeedDetail.getCreatedTime());
@@ -140,7 +143,8 @@ public final class DataFeedTransforms {
         DataFeedHelper.setStatus(dataFeed, DataFeedStatus.fromString(dataFeedDetail.getStatus().toString()));
         DataFeedHelper.setMetricIds(dataFeed,
             dataFeedDetail.getMetrics().stream()
-                .collect(Collectors.toMap(DataFeedMetric::getId, DataFeedMetric::getName)));
+                .collect(Collectors.toMap(com.azure.ai.metricsadvisor.implementation.models.DataFeedMetric::getId,
+                    com.azure.ai.metricsadvisor.implementation.models.DataFeedMetric::getName)));
         return dataFeed;
     }
 
@@ -643,5 +647,63 @@ public final class DataFeedTransforms {
         }
 
         return dataFeedDetailPatch;
+    }
+
+    public static List<com.azure.ai.metricsadvisor.implementation.models.DataFeedDimension>
+        toInnerDimensionsListForCreate(List<DataFeedDimension> dimensions) {
+        List<com.azure.ai.metricsadvisor.implementation.models.DataFeedDimension> innerDimensions = null;
+        if (dimensions != null) {
+            innerDimensions = new ArrayList<>();
+            for (DataFeedDimension dimension : dimensions) {
+                innerDimensions.add(new com.azure.ai.metricsadvisor.implementation.models.DataFeedDimension()
+                    .setName(dimension.getName()).setDisplayName(dimension.getDisplayName()));
+            }
+        }
+        return innerDimensions;
+    }
+
+    public static List<com.azure.ai.metricsadvisor.implementation.models.DataFeedMetric>
+        toInnerMetricsListForCreate(List<DataFeedMetric> metrics) {
+        List<com.azure.ai.metricsadvisor.implementation.models.DataFeedMetric> innerMetrics = null;
+        if (metrics != null) {
+            innerMetrics = new ArrayList<>();
+            for (DataFeedMetric metric : metrics) {
+                innerMetrics.add(new com.azure.ai.metricsadvisor.implementation.models.DataFeedMetric()
+                    .setName(metric.getName())
+                    .setDisplayName(metric.getDisplayName())
+                    .setDescription(metric.getDescription()));
+            }
+        }
+        return innerMetrics;
+    }
+
+    private static List<DataFeedDimension>
+        fromInnerDimensionList(List<com.azure.ai.metricsadvisor.implementation.models.DataFeedDimension> innerList) {
+        if (innerList == null) {
+            return null;
+        } else {
+            List<DataFeedDimension> dimensions = new ArrayList<>();
+            for (com.azure.ai.metricsadvisor.implementation.models.DataFeedDimension inner : innerList) {
+                dimensions.add(new DataFeedDimension(inner.getName()).setDisplayName(inner.getDisplayName()));
+            }
+            return dimensions;
+        }
+    }
+
+    private static List<DataFeedMetric> fromInnerMetricList(
+        List<com.azure.ai.metricsadvisor.implementation.models.DataFeedMetric> innerList) {
+        if (innerList == null) {
+            return null;
+        } else {
+            List<DataFeedMetric> metrics = new ArrayList<>();
+            for (com.azure.ai.metricsadvisor.implementation.models.DataFeedMetric inner : innerList) {
+                DataFeedMetric metric = new DataFeedMetric(inner.getName())
+                    .setDisplayName(inner.getDisplayName())
+                    .setDescription(inner.getDescription());
+                DataFeedMetricAccessor.setId(metric, inner.getId());
+                metrics.add(metric);
+            }
+            return metrics;
+        }
     }
 }

@@ -26,7 +26,6 @@ import com.azure.core.util.logging.ClientLogger;
 import reactor.core.Exceptions;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,8 +51,12 @@ public final class HookTransforms {
             innerEmailHook.setHookName(emailHook.getName());
             innerEmailHook.setDescription(emailHook.getDescription());
             innerEmailHook.setExternalLink(emailHook.getExternalLink());
-            innerEmailHook.setHookParameter(new EmailHookParameter()
-                .setToList(emailHook.getEmailsToAlert()));
+            List<String> emailsToAlert = HookHelper.getEmailsToAlertRaw(emailHook);
+            if (emailsToAlert != null) {
+                innerEmailHook.setHookParameter(new EmailHookParameter()
+                    .setToList(emailsToAlert));
+            }
+            innerEmailHook.setAdmins(HookHelper.getAdminsRaw(emailHook));
             return innerEmailHook;
         } else if (notificationHook instanceof WebNotificationHook) {
             WebNotificationHook webHook = (WebNotificationHook) notificationHook;
@@ -69,13 +72,18 @@ public final class HookTransforms {
             innerWebHook.setHookName(webHook.getName());
             innerWebHook.setDescription(webHook.getDescription());
             innerWebHook.setExternalLink(webHook.getExternalLink());
-            innerWebHook.setHookParameter(new WebhookHookParameter()
+            WebhookHookParameter hookParameter = new WebhookHookParameter()
                 .setEndpoint(webHook.getEndpoint())
                 .setUsername(webHook.getUsername())
                 .setPassword(webHook.getPassword())
                 .setCertificateKey(webHook.getClientCertificate())
-                .setCertificatePassword(webHook.getClientCertificatePassword())
-                .setHeaders(webHook.getHttpHeaders().toMap()));
+                .setCertificatePassword(webHook.getClientCertificatePassword());
+            HttpHeaders headers = HookHelper.getHttpHeadersRaw(webHook);
+            if (headers != null) {
+                hookParameter.setHeaders(headers.toMap());
+            }
+            innerWebHook.setAdmins(HookHelper.getAdminsRaw(webHook));
+            innerWebHook.setHookParameter(hookParameter);
             return innerWebHook;
         } else {
             throw logger
@@ -91,8 +99,12 @@ public final class HookTransforms {
             innerEmailHook.setHookName(emailHook.getName());
             innerEmailHook.setDescription(emailHook.getDescription());
             innerEmailHook.setExternalLink(emailHook.getExternalLink());
-            innerEmailHook.setHookParameter(new EmailHookParameterPatch()
-                .setToList(emailHook.getEmailsToAlert()));
+            List<String> emailsToAlert = HookHelper.getEmailsToAlertRaw(emailHook);
+            if (emailsToAlert != null) {
+                innerEmailHook.setHookParameter(new EmailHookParameterPatch()
+                    .setToList(emailsToAlert));
+            }
+            innerEmailHook.setAdmins(HookHelper.getAdminsRaw(emailHook));
             return innerEmailHook;
         } else if (notificationHook instanceof WebNotificationHook) {
             WebNotificationHook webHook = (WebNotificationHook) notificationHook;
@@ -100,15 +112,18 @@ public final class HookTransforms {
             innerWebHook.setHookName(webHook.getName());
             innerWebHook.setDescription(webHook.getDescription());
             innerWebHook.setExternalLink(webHook.getExternalLink());
-
-            innerWebHook.setHookParameter(new WebhookHookParameterPatch()
+            WebhookHookParameterPatch hookParameter = new WebhookHookParameterPatch()
                 .setEndpoint(webHook.getEndpoint())
                 .setUsername(webHook.getUsername())
                 .setPassword(webHook.getPassword())
                 .setCertificateKey(webHook.getClientCertificate())
-                .setCertificatePassword(webHook.getClientCertificatePassword())
-                .setHeaders(webHook.getHttpHeaders().toMap()));
-
+                .setCertificatePassword(webHook.getClientCertificatePassword());
+            HttpHeaders headers = HookHelper.getHttpHeadersRaw(webHook);
+            if (headers != null) {
+                hookParameter.setHeaders(headers.toMap());
+            }
+            innerWebHook.setHookParameter(hookParameter);
+            innerWebHook.setAdmins(HookHelper.getAdminsRaw(webHook));
             return innerWebHook;
         } else {
             throw logger
@@ -128,11 +143,7 @@ public final class HookTransforms {
 
             HookHelper.setId(emailHook, innerEmailHook.getHookId().toString());
 
-            List<String> adminList = innerEmailHook.getAdmins();
-            if (adminList == null) {
-                adminList = new ArrayList<>();
-            }
-            HookHelper.setAdminEmails(emailHook, Collections.unmodifiableList(adminList));
+            emailHook.setAdmins(innerEmailHook.getAdmins());
 
             return emailHook;
         } else if (innerHook instanceof WebhookHookInfo) {
@@ -156,11 +167,7 @@ public final class HookTransforms {
 
             HookHelper.setId(webHook, innerWebHook.getHookId().toString());
 
-            List<String> adminList = innerWebHook.getAdmins();
-            if (adminList == null) {
-                adminList = new ArrayList<>();
-            }
-            HookHelper.setAdminEmails(webHook, Collections.unmodifiableList(adminList));
+            webHook.setAdmins(innerWebHook.getAdmins());
 
             return webHook;
         } else {

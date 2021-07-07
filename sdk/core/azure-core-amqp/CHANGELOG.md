@@ -1,15 +1,38 @@
 # Release History
 
-## 2.1.0-beta.1 (Unreleased)
+## 2.4.0-beta.1 (Unreleased)
+
+
+## 2.3.0 (2021-07-01)
+
+### Features Added
+
+- Added `AmqpTransactionCoordinator` interface for transactions support.
+- Added support for sequence and value AMQP types in `AmqpMessageBody`.
+
+### Dependency Updates
+
+- Upgraded `azure-core` from `1.17.0` to `1.18.0`.
+
+## 2.2.0 (2021-06-11)
 
 ### New Features
+
 - Exposing CbsAuthorizationType.
 - Exposing ManagementNode that can perform management and metadata operations on an AMQP message broker.
 - AmqpConnection, AmqpSession, AmqpSendLink, and AmqpReceiveLink extend from AsyncCloseable.
 - Delivery outcomes and delivery states are added.
 
 ### Bug Fixes
+
 - Fixed a bug where connection and sessions would not be disposed when their endpoint closed.
+- Fixed a bug where ReactorExecutor did not dispose of its scheduler when "IO Sink was interrupted".
+
+### Dependency Updates
+
+- Upgraded `azure-core` from `1.16.0` to `1.17.0`.
+- Upgraded `proton-j` from `0.33.4` to `0.33.8`.
+- Upgraded `qpid-proton-j-extensions` from `1.2.3` to `1.2.4`.
 
 ## 2.0.6 (2021-05-24)
 ### Bug Fixes
@@ -28,6 +51,10 @@
 
 ### Dependency Updates
 - Upgraded `azure-core` dependency to `1.15.0`.
+
+## 2.1.0-beta.1 (2021-03-26)
+### New Features
+- Exposes 'AmqpTransactionCoordinator' via AmqpSession. 
 
 ## 2.0.4 (2021-04-12)
 

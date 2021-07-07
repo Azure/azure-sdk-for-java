@@ -14,6 +14,7 @@ import com.azure.storage.blob.options.BlockBlobListBlocksOptions;
 import com.azure.storage.blob.options.BlockBlobSimpleUploadOptions;
 import com.azure.storage.blob.models.BlockList;
 import com.azure.storage.blob.models.BlockListType;
+import com.azure.storage.blob.options.BlockBlobStageBlockFromUrlOptions;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -234,6 +235,22 @@ public class BlockBlobClientJavaDocCodeSnippets {
             client.stageBlockFromUrlWithResponse(base64BlockId, sourceUrl, new BlobRange(offset, count), null,
                 leaseId, sourceRequestConditions, timeout, context).getStatusCode());
         // END: com.azure.storage.blob.specialized.BlockBlobClient.stageBlockFromUrlWithResponse#String-String-BlobRange-byte-String-BlobRequestConditions-Duration-Context
+    }
+
+    /**
+     * Code snippet for {@link BlockBlobClient#stageBlockFromUrlWithResponse(String, String, BlobRange, byte[], String, BlobRequestConditions, Duration, Context)}
+     */
+    public void stageBlockFromUrlOptionsBag() {
+        // BEGIN: com.azure.storage.blob.specialized.BlockBlobClient.stageBlockFromUrlWithResponse#BlockBlobStageBlockFromUrlOptions-Duration-Context
+        BlobRequestConditions sourceRequestConditions = new BlobRequestConditions()
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
+        Context context = new Context("key", "value");
+
+        System.out.printf("Staging block from URL completed with status %d%n",
+            client.stageBlockFromUrlWithResponse(new BlockBlobStageBlockFromUrlOptions(base64BlockId, sourceUrl)
+                .setSourceRange(new BlobRange(offset, count)).setLeaseId(leaseId)
+                .setSourceRequestConditions(sourceRequestConditions), timeout, context).getStatusCode());
+        // END: com.azure.storage.blob.specialized.BlockBlobClient.stageBlockFromUrlWithResponse#BlockBlobStageBlockFromUrlOptions-Duration-Context
     }
 
     /**

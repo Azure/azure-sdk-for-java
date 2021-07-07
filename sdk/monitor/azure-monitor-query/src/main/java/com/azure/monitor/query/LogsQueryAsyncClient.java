@@ -13,6 +13,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.monitor.query.log.implementation.AzureLogAnalyticsImpl;
 import com.azure.monitor.query.log.implementation.models.BatchQueryRequest;
 import com.azure.monitor.query.log.implementation.models.BatchQueryResponse;
+import com.azure.monitor.query.log.implementation.models.BatchQueryResults;
 import com.azure.monitor.query.log.implementation.models.BatchRequest;
 import com.azure.monitor.query.log.implementation.models.BatchResponse;
 import com.azure.monitor.query.log.implementation.models.ErrorInfo;
@@ -258,10 +259,48 @@ public final class LogsQueryAsyncClient {
                 List<LogsTableColumn> tableColumns = new ArrayList<>();
                 LogsTable logsTable = new LogsTable(tableCells, tableRows, tableColumns);
                 tables.add(logsTable);
-                List<List<String>> rows = table.getRows();
+                List<List<Object>> rows = table.getRows();
 
                 for (int i = 0; i < rows.size(); i++) {
-                    List<String> row = rows.get(i);
+                    List<Object> row = rows.get(i);
+                    LogsTableRow tableRow = new LogsTableRow(i, new ArrayList<>());
+                    tableRows.add(tableRow);
+                    for (int j = 0; j < row.size(); j++) {
+                        LogsTableCell cell = new LogsTableCell(table.getColumns().get(j).getName(),
+                                table.getColumns().get(j).getType(), j, i, row.get(j));
+                        tableCells.add(cell);
+                        tableRow.getTableRow().add(cell);
+                    }
+                }
+            }
+        }
+
+        LogsQueryStatistics statistics = null;
+
+        if (queryResults.getStatistics() != null) {
+            statistics = new LogsQueryStatistics(queryResults.getStatistics());
+        }
+
+        LogsQueryResult logsQueryResult = new LogsQueryResult(tables, statistics,
+                mapLogsQueryError(queryResults.getError()));
+        return logsQueryResult;
+    }
+
+    private LogsQueryResult getLogsQueryResult(BatchQueryResults queryResults) {
+        List<LogsTable> tables = null;
+
+        if (queryResults.getTables() != null) {
+            tables = new ArrayList<>();
+            for (Table table : queryResults.getTables()) {
+                List<LogsTableCell> tableCells = new ArrayList<>();
+                List<LogsTableRow> tableRows = new ArrayList<>();
+                List<LogsTableColumn> tableColumns = new ArrayList<>();
+                LogsTable logsTable = new LogsTable(tableCells, tableRows, tableColumns);
+                tables.add(logsTable);
+                List<List<Object>> rows = table.getRows();
+
+                for (int i = 0; i < rows.size(); i++) {
+                    List<Object> row = rows.get(i);
                     LogsTableRow tableRow = new LogsTableRow(i, new ArrayList<>());
                     tableRows.add(tableRow);
                     for (int j = 0; j < row.size(); j++) {

@@ -16,6 +16,12 @@ public final class EntityLinkingTask {
     @JsonProperty(value = "parameters")
     private EntityLinkingTaskParameters parameters;
 
+    /*
+     * The taskName property.
+     */
+    @JsonProperty(value = "taskName")
+    private String taskName;
+
     /**
      * Get the parameters property: The parameters property.
      *
@@ -33,6 +39,26 @@ public final class EntityLinkingTask {
      */
     public EntityLinkingTask setParameters(EntityLinkingTaskParameters parameters) {
         this.parameters = parameters;
+        return this;
+    }
+
+    /**
+     * Get the taskName property: The taskName property.
+     *
+     * @return the taskName value.
+     */
+    public String getTaskName() {
+        return this.taskName;
+    }
+
+    /**
+     * Set the taskName property: The taskName property.
+     *
+     * @param taskName the taskName value to set.
+     * @return the EntityLinkingTask object itself.
+     */
+    public EntityLinkingTask setTaskName(String taskName) {
+        this.taskName = taskName;
         return this;
     }
 }
