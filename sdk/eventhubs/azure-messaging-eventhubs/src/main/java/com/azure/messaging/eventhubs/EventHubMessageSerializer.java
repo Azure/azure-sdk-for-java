@@ -390,11 +390,8 @@ class EventHubMessageSerializer implements MessageSerializer {
                 final Map<Symbol, Object> annotationsValue = messageAnnotations.getValue();
 
                 final Object current = annotationsValue.get(symbolKey);
-                if (current != null && !current.equals(value)) {
-                    logger.warning("MessageAnnotations contains '{}' key with different value. Current: {}. New: {}",
-                        key, current, value);
-                }
 
+                checkPropertyEquals(current, value, "messageAnnotations[" + key + "]", Object::equals);
                 annotationsValue.put(symbolKey, value);
             }
         });
