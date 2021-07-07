@@ -8,7 +8,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.context.core.api.CredentialsProvider;
 import com.azure.spring.cloud.context.core.api.EnvironmentProvider;
-import com.azure.spring.core.Constants;
+import com.azure.spring.core.SpringPropertyPrefix;
 import com.azure.spring.core.CredentialProperties;
 import com.azure.spring.cloud.context.core.impl.ResourceGroupManager;
 import com.azure.spring.identity.DefaultSpringCredentialBuilder;
@@ -62,7 +62,7 @@ public class AzureContextAutoConfiguration {
     @ConditionalOnMissingBean
     public TokenCredential credential(Environment environment) {
         return new DefaultSpringCredentialBuilder().environment(environment)
-                                                   .alternativePrefix(Constants.PREFIX)
+                                                   .alternativePrefix(SpringPropertyPrefix.PREFIX)
                                                    .build();
     }
 

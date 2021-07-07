@@ -3,11 +3,11 @@
 
 package com.azure.spring.autoconfigure.aad;
 
+import com.azure.identity.AzureAuthorityHosts;
 import com.azure.spring.aad.AADAuthorizationGrantType;
 import com.azure.spring.aad.webapp.AuthorizationClientProperties;
-import com.azure.spring.core.Constants;
 import com.azure.spring.core.CredentialProperties;
-import com.azure.spring.core.MiscProperties;
+import com.azure.spring.core.AzureProperties;
 import com.nimbusds.jose.jwk.source.RemoteJWKSet;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -36,18 +36,18 @@ import static com.azure.spring.core.Utils.toAuthorityHost;
  * Configuration properties for Azure Active Directory Authentication.
  */
 @Validated
-@ConfigurationProperties("azure.activedirectory")
-@Import({CredentialProperties.class, MiscProperties.class })
+@ConfigurationProperties(AADAuthenticationProperties.PREFIX)
+@Import({CredentialProperties.class, AzureProperties.class })
 public class AADAuthenticationProperties implements InitializingBean {
 
     private static final long DEFAULT_JWK_SET_CACHE_LIFESPAN = TimeUnit.MINUTES.toMillis(5);
     private static final long DEFAULT_JWK_SET_CACHE_REFRESH_TIME = DEFAULT_JWK_SET_CACHE_LIFESPAN;
-
+    public static final String PREFIX = "spring.cloud.azure.activedirectory";
     @Autowired
     private CredentialProperties credentialProperties;
 
     @Autowired
-    private MiscProperties miscProperties;
+    private AzureProperties azureProperties;
     /**
      * Default UserGroup configuration.
      */
@@ -425,10 +425,10 @@ public class AADAuthenticationProperties implements InitializingBean {
 
         if (!StringUtils.hasText(baseUri)) {
             baseUri = Optional.ofNullable(credentialProperties.getAuthorityHost())
-                              .orElse(Optional.ofNullable(miscProperties.getEnvironment())
+                              .orElse(Optional.ofNullable(azureProperties.getEnvironment())
                                               .filter(env -> !env.isEmpty())
                                               .map(env -> toAuthorityHost(env))
-                                              .orElse(Constants.AZURE_GLOBAL_AUTHORITY_HOST));
+                                              .orElse(AzureAuthorityHosts.AZURE_PUBLIC_CLOUD));
         }
         baseUri = addSlash(baseUri);
 

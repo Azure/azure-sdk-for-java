@@ -41,7 +41,7 @@ public class ApplicationId {
     public static final String AZURE_SPRING_STORAGE_FILES = "az-sp-sf/";
     public static final String AZURE_SPRING_STORAGE_QUEUE = "az-si-sq/";
 
-    public static final String VERSION = Optional.of(Constants.class)
+    public static final String VERSION = Optional.of(SpringPropertyPrefix.class)
         .map(Class::getPackage)
         .map(Package::getImplementationVersion)
         .orElse("unknown");

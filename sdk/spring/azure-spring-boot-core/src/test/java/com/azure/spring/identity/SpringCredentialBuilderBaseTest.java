@@ -3,10 +3,10 @@
 package com.azure.spring.identity;
 
 import com.azure.core.credential.TokenCredential;
+import com.azure.identity.AzureAuthorityHosts;
 import com.azure.identity.ClientCertificateCredential;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ManagedIdentityCredential;
-import com.azure.spring.core.Constants;
 import org.junit.jupiter.api.Test;
 
 import java.util.Properties;
@@ -37,7 +37,7 @@ public class SpringCredentialBuilderBaseTest extends SpringCredentialTestBase {
         assertEquals("fake-secret", builder.getPropertyValue(prefix + "client-secret"));
         assertEquals("fake-tenant-id", builder.getPropertyValue(prefix + "tenant-id"));
         assertEquals("fake-cert-path", builder.getPropertyValue(prefix + "client-certificate-path"));
-        assertEquals(Constants.AZURE_GLOBAL_AUTHORITY_HOST, builder.getAuthorityHost(prefix));
+        assertEquals(AzureAuthorityHosts.AZURE_PUBLIC_CLOUD, builder.getAuthorityHost(prefix));
     }
 
     @Test
@@ -70,7 +70,7 @@ public class SpringCredentialBuilderBaseTest extends SpringCredentialTestBase {
         final TestSpringCredentialBuilder builder = new TestSpringCredentialBuilder()
             .environment(buildEnvironment(properties));
 
-        assertEquals(Constants.AZURE_CHINA_AUTHORITY_HOST, builder.getAuthorityHost(prefix));
+        assertEquals(AzureAuthorityHosts.AZURE_CHINA, builder.getAuthorityHost(prefix));
     }
 
     @Test

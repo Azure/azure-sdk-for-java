@@ -12,7 +12,7 @@ import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.azure.security.keyvault.secrets.SecretServiceVersion;
-import com.azure.spring.core.Constants;
+import com.azure.spring.core.SpringPropertyPrefix;
 import com.azure.spring.keyvault.KeyVaultProperties.Property;
 import java.util.HashSet;
 import java.util.Set;
@@ -47,6 +47,7 @@ class KeyVaultEnvironmentPostProcessorHelper {
             "authority-host",
             "client-id",
             "client-secret",
+            "certificate-password",
             "certificate-path",
             "msi-enabled",
             "tenant-id",
@@ -152,7 +153,7 @@ class KeyVaultEnvironmentPostProcessorHelper {
         final String certificatePath = getPropertyValue(normalizedName, Property.CERTIFICATE_PATH);
         final String certificatePassword = getPropertyValue(normalizedName, Property.CERTIFICATE_PASSWORD);
         final String authorityHost = Optional.ofNullable(getPropertyValue(normalizedName, Property.AUTHORITY_HOST))
-                                             .orElse(Optional.of(Constants.PREFIX + "environment")
+                                             .orElse(Optional.of(SpringPropertyPrefix.PREFIX + "environment")
                                                              .map(environment::getProperty)
                                                              .orElse(DEFAULT_AUTHORITY_HOST));
         if (clientId != null && tenantId != null && clientSecret != null) {
@@ -193,19 +194,15 @@ class KeyVaultEnvironmentPostProcessorHelper {
     }
 
     private String getPropertyValue(final String normalizedName, final Property property) {
-        return getPropertyValue(normalizedName, property, null);
-    }
-
-    private String getPropertyValue(final String normalizedName, final Property property, String defaultValue) {
         String propertyName = KeyVaultProperties.getPropertyName(normalizedName, property);
-        String keyVaultPropertyValue = environment.getProperty(propertyName, defaultValue);
+        String keyVaultPropertyValue = environment.getProperty(propertyName, (Class<String>) null);
         if (keyVaultPropertyValue != null) {
             return keyVaultPropertyValue;
         }
         if (AZURE_SPRING_PROPERTIES.contains(property.getName())) {
-            return Optional.of(Constants.PREFIX + property.getName())
-                .map(environment::getProperty)
-                .orElse(defaultValue);
+            return Optional.of(SpringPropertyPrefix.PREFIX + property.getName())
+                           .map(environment::getProperty)
+                           .orElse(null);
         }
         return null;
     }

@@ -20,7 +20,7 @@ public class KeyVaultProperties {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(KeyVaultProperties.class);
 
-    public static final String PREFIX = "azure.keyvault";
+    public static final String PREFIX = "spring.cloud.azure.keyvault";
     public static final String DELIMITER = ".";
     public String getClientId() {
         return clientId;

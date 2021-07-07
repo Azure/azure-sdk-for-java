@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.context;
 
-import com.azure.spring.core.Constants;
+import com.azure.spring.core.SpringPropertyPrefix;
 import com.azure.spring.core.CredentialProperties;
 import com.google.common.base.Strings;
 import org.springframework.beans.factory.InitializingBean;
@@ -11,13 +11,11 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.util.Assert;
 import org.springframework.validation.annotation.Validated;
 
-import javax.annotation.PostConstruct;
-
 /**
  * Azure Context related properties for resource management.
  */
 @Validated
-@ConfigurationProperties(Constants.PREFIX)
+@ConfigurationProperties(SpringPropertyPrefix.PREFIX)
 public class AzureContextProperties implements InitializingBean {
 
     private CredentialProperties credential;

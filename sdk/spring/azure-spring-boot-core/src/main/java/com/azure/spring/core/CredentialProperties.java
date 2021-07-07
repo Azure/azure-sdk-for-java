@@ -29,6 +29,11 @@ public class CredentialProperties {
     private String certificatePath;
 
     /**
+     * Password of the certificate file.
+     */
+    private String certificatePassword;
+
+    /**
      * Flag to enable MSI.
      */
     private boolean msiEnabled = false;
@@ -68,6 +73,14 @@ public class CredentialProperties {
 
     public void setCertificatePath(String certificatePath) {
         this.certificatePath = certificatePath;
+    }
+
+    public String getCertificatePassword() {
+        return certificatePassword;
+    }
+
+    public void setCertificatePassword(String certificatePassword) {
+        this.certificatePassword = certificatePassword;
     }
 
     public boolean isMsiEnabled() {

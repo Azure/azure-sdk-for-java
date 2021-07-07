@@ -13,8 +13,10 @@ import javax.validation.constraints.Pattern;
  * Storage properties.
  */
 @Validated
-@ConfigurationProperties("azure.storage")
+@ConfigurationProperties(StorageProperties.PREFIX)
 public class StorageProperties {
+
+    public static final String PREFIX = "spring.cloud.azure.storage";
 
     @NotEmpty
     @Pattern(regexp = "^[a-z0-9]{3,24}$",

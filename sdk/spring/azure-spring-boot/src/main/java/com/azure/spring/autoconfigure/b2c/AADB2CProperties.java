@@ -32,7 +32,7 @@ public class AADB2CProperties implements InitializingBean {
 
     public static final String DEFAULT_LOGOUT_SUCCESS_URL = "http://localhost:8080/login";
 
-    public static final String PREFIX = "azure.activedirectory.b2c";
+    public static final String PREFIX = "spring.cloud.azure.activedirectory.b2c";
 
     private static final String TENANT_NAME_PART_REGEX = "([A-Za-z0-9]+\\.)";
 

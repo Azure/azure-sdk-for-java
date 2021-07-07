@@ -14,8 +14,10 @@ import javax.annotation.PostConstruct;
  * {@link ConfigurationProperties} for configuring Azure Service Bus JMS.
  */
 @Validated
-@ConfigurationProperties("spring.jms.servicebus")
+@ConfigurationProperties(AzureServiceBusJMSProperties.PREFIX)
 public class AzureServiceBusJMSProperties {
+
+    public static final String PREFIX = "spring.cloud.azure.jms";
 
     private String connectionString;
 

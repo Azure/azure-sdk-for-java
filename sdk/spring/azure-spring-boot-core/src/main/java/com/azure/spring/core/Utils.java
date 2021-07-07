@@ -3,7 +3,7 @@
 
 package com.azure.spring.core;
 
-import java.util.Optional;
+import com.azure.identity.AzureAuthorityHosts;
 
 /**
  * Used internally. Constants in the Azure Spring Boot Core library.
@@ -13,13 +13,13 @@ public class Utils {
     public static String toAuthorityHost(String azureEnvironment) {
         switch (azureEnvironment) {
             case "AzureChina":
-                return Constants.AZURE_CHINA_AUTHORITY_HOST;
+                return AzureAuthorityHosts.AZURE_CHINA;
             case "AzureGermany":
-                return Constants.AZURE_GERMANY_AUTHORITY_HOST;
+                return AzureAuthorityHosts.AZURE_GERMANY;
             case "AzureUSGovernment":
-                return Constants.AZURE_US_GOVERNMENT_AUTHORITY_HOST;
+                return AzureAuthorityHosts.AZURE_GOVERNMENT;
             default:
-                return Constants.AZURE_GLOBAL_AUTHORITY_HOST;
+                return AzureAuthorityHosts.AZURE_PUBLIC_CLOUD;
         }
     }
 }

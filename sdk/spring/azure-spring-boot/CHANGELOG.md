@@ -11,6 +11,7 @@
           client-id:
           client-secret:
           certificate-path:
+          certificate-password:
           msi-enabled:
           tenant-id:
           environment: 

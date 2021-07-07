@@ -3,11 +3,11 @@
 package com.azure.spring.identity;
 
 import com.azure.core.credential.TokenCredential;
+import com.azure.identity.AzureAuthorityHosts;
 import com.azure.identity.ClientCertificateCredentialBuilder;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.identity.ManagedIdentityCredential;
 import com.azure.identity.ManagedIdentityCredentialBuilder;
-import com.azure.spring.core.Constants;
 import org.springframework.core.env.Environment;
 
 import java.util.Optional;
@@ -89,7 +89,7 @@ public abstract class SpringCredentialBuilderBase<T extends SpringCredentialBuil
                        .orElse(Optional.ofNullable(getPropertyValue(prefix + "environment"))
                                        .filter(env -> !env.isEmpty())
                                        .map(env -> toAuthorityHost(env))
-                                       .orElse(Constants.AZURE_GLOBAL_AUTHORITY_HOST));
+                                       .orElse(AzureAuthorityHosts.AZURE_PUBLIC_CLOUD));
     }
 
 }

@@ -10,6 +10,7 @@
           client-id:
           client-secret:
           certificate-path:
+          certificate-password:
           tenant-id:
           authority-host:
           environment:

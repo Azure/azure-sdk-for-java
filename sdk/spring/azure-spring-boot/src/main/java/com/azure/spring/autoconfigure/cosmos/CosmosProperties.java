@@ -18,10 +18,12 @@ import javax.validation.constraints.NotEmpty;
  * Configuration properties for Cosmos database, consistency, telemetry, connection, query metrics and diagnostics.
  */
 @Validated
-@ConfigurationProperties("azure.cosmos")
+@ConfigurationProperties(CosmosProperties.PREFIX)
 public class CosmosProperties {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CosmosProperties.class);
+    public static final String PREFIX = "spring.cloud.azure.cosmos";
+
     /**
      * Document DB URI.
      */
