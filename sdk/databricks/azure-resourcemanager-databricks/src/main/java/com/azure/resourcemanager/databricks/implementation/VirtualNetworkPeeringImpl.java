@@ -17,7 +17,7 @@ public final class VirtualNetworkPeeringImpl
     implements VirtualNetworkPeering, VirtualNetworkPeering.Definition, VirtualNetworkPeering.Update {
     private VirtualNetworkPeeringInner innerObject;
 
-    private final com.azure.resourcemanager.databricks.DatabricksManager serviceManager;
+    private final com.azure.resourcemanager.databricks.AzureDatabricksManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -75,7 +75,7 @@ public final class VirtualNetworkPeeringImpl
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.databricks.DatabricksManager manager() {
+    private com.azure.resourcemanager.databricks.AzureDatabricksManager manager() {
         return this.serviceManager;
     }
 
@@ -109,7 +109,7 @@ public final class VirtualNetworkPeeringImpl
         return this;
     }
 
-    VirtualNetworkPeeringImpl(String name, com.azure.resourcemanager.databricks.DatabricksManager serviceManager) {
+    VirtualNetworkPeeringImpl(String name, com.azure.resourcemanager.databricks.AzureDatabricksManager serviceManager) {
         this.innerObject = new VirtualNetworkPeeringInner();
         this.serviceManager = serviceManager;
         this.peeringName = name;
@@ -138,7 +138,8 @@ public final class VirtualNetworkPeeringImpl
     }
 
     VirtualNetworkPeeringImpl(
-        VirtualNetworkPeeringInner innerObject, com.azure.resourcemanager.databricks.DatabricksManager serviceManager) {
+        VirtualNetworkPeeringInner innerObject,
+        com.azure.resourcemanager.databricks.AzureDatabricksManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");

@@ -4,6 +4,7 @@
 package com.azure.storage.blob.options;
 
 import com.azure.core.util.CoreUtils;
+import com.azure.core.experimental.http.HttpAuthorization;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRequestConditions;
@@ -23,6 +24,7 @@ public class BlobUploadFromUrlOptions {
     private BlobRequestConditions destinationRequestConditions;
     private BlobRequestConditions sourceRequestConditions;
     private Boolean copySourceBlobProperties;
+    private HttpAuthorization sourceAuthorization;
 
     /**
      * @param sourceUrl The source URL to upload from.
@@ -157,6 +159,25 @@ public class BlobUploadFromUrlOptions {
      */
     public BlobUploadFromUrlOptions setCopySourceBlobProperties(Boolean copySourceBlobProperties) {
         this.copySourceBlobProperties = copySourceBlobProperties;
+        return this;
+    }
+
+    /**
+     * @return auth header for access to source.
+     */
+    public HttpAuthorization getSourceAuthorization() {
+        return sourceAuthorization;
+    }
+
+    /**
+     * Sets "Authorization" header for accessing source URL. Currently only "Bearer" authentication is accepted by
+     * Storage.
+     *
+     * @param sourceAuthorization auth header for access to source.
+     * @return The updated options.
+     */
+    public BlobUploadFromUrlOptions setSourceAuthorization(HttpAuthorization sourceAuthorization) {
+        this.sourceAuthorization = sourceAuthorization;
         return this;
     }
 }

@@ -5,20 +5,20 @@ package com.azure.ai.textanalytics.lro;
 
 import com.azure.ai.textanalytics.TextAnalyticsClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
-import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
+import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
+import com.azure.ai.textanalytics.models.ExtractKeyPhrasesAction;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesActionResult;
-import com.azure.ai.textanalytics.models.ExtractKeyPhrasesOptions;
+import com.azure.ai.textanalytics.models.RecognizeEntitiesAction;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesActionResult;
-import com.azure.ai.textanalytics.models.RecognizeEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
+import com.azure.ai.textanalytics.util.AnalyzeActionsResultPagedIterable;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -57,13 +57,12 @@ public class AnalyzeActions {
             ));
         }
 
-        SyncPoller<AnalyzeActionsOperationDetail, PagedIterable<AnalyzeActionsResult>> syncPoller =
+        SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedIterable> syncPoller =
             client.beginAnalyzeActions(documents,
                 new TextAnalyticsActions().setDisplayName("{tasks_display_name}")
-                    .setRecognizeEntitiesOptions(new RecognizeEntitiesOptions())
-                    .setExtractKeyPhrasesOptions(
-                        new ExtractKeyPhrasesOptions().setModelVersion("invalidVersion"),
-                        new ExtractKeyPhrasesOptions().setModelVersion("latest")),
+                    .setRecognizeEntitiesActions(new RecognizeEntitiesAction())
+                    .setExtractKeyPhrasesActions(
+                        new ExtractKeyPhrasesAction().setModelVersion("latest")),
                 new AnalyzeActionsOptions().setIncludeStatistics(false),
                 Context.NONE);
 
@@ -72,9 +71,9 @@ public class AnalyzeActions {
             final AnalyzeActionsOperationDetail operationDetail = syncPoller.poll().getValue();
             System.out.printf("Action display name: %s, Successfully completed actions: %d, in-process actions: %d,"
                                   + " failed actions: %d, total actions: %d%n",
-                operationDetail.getDisplayName(), operationDetail.getActionsSucceeded(),
-                operationDetail.getActionsInProgress(), operationDetail.getActionsFailed(),
-                operationDetail.getActionsInTotal());
+                operationDetail.getDisplayName(), operationDetail.getSucceededCount(),
+                operationDetail.getInProgressCount(), operationDetail.getFailedCount(),
+                operationDetail.getTotalCount());
         }
 
         syncPoller.waitForCompletion();
@@ -85,9 +84,9 @@ public class AnalyzeActions {
                 perPage.getContinuationToken());
             for (AnalyzeActionsResult actionsResult : perPage.getElements()) {
                 System.out.println("Entities recognition action results:");
-                for (RecognizeEntitiesActionResult actionResult : actionsResult.getRecognizeEntitiesActionResults()) {
+                for (RecognizeEntitiesActionResult actionResult : actionsResult.getRecognizeEntitiesResults()) {
                     if (!actionResult.isError()) {
-                        for (RecognizeEntitiesResult documentResult : actionResult.getResult()) {
+                        for (RecognizeEntitiesResult documentResult : actionResult.getDocumentsResults()) {
                             if (!documentResult.isError()) {
                                 for (CategorizedEntity entity : documentResult.getEntities()) {
                                     System.out.printf(
@@ -106,9 +105,9 @@ public class AnalyzeActions {
                 }
 
                 System.out.println("Key phrases extraction action results:");
-                for (ExtractKeyPhrasesActionResult actionResult : actionsResult.getExtractKeyPhrasesActionResults()) {
+                for (ExtractKeyPhrasesActionResult actionResult : actionsResult.getExtractKeyPhrasesResults()) {
                     if (!actionResult.isError()) {
-                        for (ExtractKeyPhraseResult documentResult : actionResult.getResult()) {
+                        for (ExtractKeyPhraseResult documentResult : actionResult.getDocumentsResults()) {
                             if (!documentResult.isError()) {
                                 System.out.println("\tExtracted phrases:");
                                 for (String keyPhrases : documentResult.getKeyPhrases()) {

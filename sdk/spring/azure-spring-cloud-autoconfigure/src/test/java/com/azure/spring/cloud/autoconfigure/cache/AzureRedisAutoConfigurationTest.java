@@ -26,32 +26,37 @@ public class AzureRedisAutoConfigurationTest {
     private static final String HOST = "localhost";
     private static final int PORT = 6379;
     private static final boolean IS_SSL = true;
-    private ApplicationContextRunner contextRunner =
-        new ApplicationContextRunner().withConfiguration(AutoConfigurations.of(AzureRedisAutoConfiguration.class));
 
     @Test
     public void testAzureRedisDisabled() {
-        this.contextRunner.withPropertyValues("spring.cloud.azure.redis.enabled=false")
-                          .run(context -> assertThat(context).doesNotHaveBean(AzureRedisProperties.class));
+        new ApplicationContextRunner()
+            .withConfiguration(AutoConfigurations.of(AzureRedisAutoConfiguration.class))
+            .withPropertyValues("spring.cloud.azure.redis.enabled=false")
+            .run(context -> assertThat(context).doesNotHaveBean(AzureRedisProperties.class));
     }
 
     @Test
     public void testWithoutRedisOperationsClass() {
-        this.contextRunner.withClassLoader(new FilteredClassLoader(RedisOperations.class))
-                          .run(context -> assertThat(context).doesNotHaveBean(AzureRedisProperties.class));
+        new ApplicationContextRunner()
+            .withConfiguration(AutoConfigurations.of(AzureRedisAutoConfiguration.class))
+            .withClassLoader(new FilteredClassLoader(RedisOperations.class))
+            .run(context -> assertThat(context).doesNotHaveBean(AzureRedisProperties.class));
     }
 
     @Test
     public void testAzureRedisPropertiesIllegal() {
-        this.contextRunner.withUserConfiguration(TestConfiguration.class)
-                          .withPropertyValues("spring.cloud.azure.redis.name=")
-                          .run(context -> assertThrows(IllegalStateException.class,
-                              () -> context.getBean(AzureRedisProperties.class)));
+        new ApplicationContextRunner()
+            .withConfiguration(AutoConfigurations.of(AzureRedisAutoConfiguration.class))
+            .withUserConfiguration(TestConfiguration.class)
+            .withPropertyValues("spring.cloud.azure.redis.name=")
+            .run(context -> assertThrows(IllegalStateException.class,
+                () -> context.getBean(AzureRedisProperties.class)));
     }
 
     @Test
     public void testAzureRedisPropertiesConfigured() {
-        this.contextRunner
+        new ApplicationContextRunner()
+            .withConfiguration(AutoConfigurations.of(AzureRedisAutoConfiguration.class))
             .withUserConfiguration(TestConfiguration.class)
             .withPropertyValues("spring.cloud.azure.redis.name=redis")
             .run(

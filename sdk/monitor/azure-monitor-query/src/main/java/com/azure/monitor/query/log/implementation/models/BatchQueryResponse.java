@@ -27,7 +27,7 @@ public final class BatchQueryResponse {
      * Contains the tables, columns & rows resulting from a query.
      */
     @JsonProperty(value = "body")
-    private QueryResults body;
+    private BatchQueryResults body;
 
     /*
      * Dictionary of <string>
@@ -80,7 +80,7 @@ public final class BatchQueryResponse {
      *
      * @return the body value.
      */
-    public QueryResults getBody() {
+    public BatchQueryResults getBody() {
         return this.body;
     }
 
@@ -90,7 +90,7 @@ public final class BatchQueryResponse {
      * @param body the body value to set.
      * @return the BatchQueryResponse object itself.
      */
-    public BatchQueryResponse setBody(QueryResults body) {
+    public BatchQueryResponse setBody(BatchQueryResults body) {
         this.body = body;
         return this;
     }

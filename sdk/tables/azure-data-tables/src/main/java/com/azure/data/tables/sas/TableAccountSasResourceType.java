@@ -27,7 +27,7 @@ public final class TableAccountSasResourceType {
      * @param resourceTypesString A {@code String} which represents the
      * {@link TableAccountSasResourceType account resource types}.
      *
-     * @return A {@link TableAccountSasResourceType} generated from the given {@link String}.
+     * @return A {@link TableAccountSasResourceType} generated from the given {@code String}.
      *
      * @throws IllegalArgumentException If {@code resourceTypesString} contains a character other than s, c, or o.
      */
@@ -129,7 +129,7 @@ public final class TableAccountSasResourceType {
     }
 
     /**
-     * Converts the given resource types to a {@link String}. Using this method will guarantee the resource types are in
+     * Converts the given resource types to a {@code String}. Using this method will guarantee the resource types are in
      * an order accepted by the service. If all resource types are set to false, an empty string is returned from this
      * method.
      *

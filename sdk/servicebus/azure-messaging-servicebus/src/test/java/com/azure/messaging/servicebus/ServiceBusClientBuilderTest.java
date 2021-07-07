@@ -6,7 +6,11 @@ package com.azure.messaging.servicebus;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
+import com.azure.core.amqp.implementation.ConnectionStringProperties;
+import com.azure.core.credential.AzureNamedKeyCredential;
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusReceiverClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSenderClientBuilder;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
@@ -16,6 +20,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import reactor.test.StepVerifier;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
@@ -28,7 +33,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class ServiceBusClientBuilderTest {
+import static java.nio.charset.StandardCharsets.UTF_8;
+
+class ServiceBusClientBuilderTest extends IntegrationTestBase {
     private static final String NAMESPACE_NAME = "dummyNamespaceName";
     private static final String DEFAULT_DOMAIN_NAME = "servicebus.windows.net/";
     private static final String ENDPOINT_FORMAT = "sb://%s.%s";
@@ -50,6 +57,12 @@ class ServiceBusClientBuilderTest {
     private static final String ENTITY_PATH_CONNECTION_STRING = String.format("Endpoint=%s;SharedAccessKeyName=%s;SharedAccessKey=%s;EntityPath=%s",
         ENDPOINT, SHARED_ACCESS_KEY_NAME, SHARED_ACCESS_KEY, QUEUE_NAME);
     private static final Proxy PROXY_ADDRESS = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(PROXY_HOST, Integer.parseInt(PROXY_PORT)));
+
+    private static final String TEST_MESSAGE = "SSLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vehicula posuere lobortis. Aliquam finibus volutpat dolor, faucibus pellentesque ipsum bibendum vitae. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Ut sit amet urna hendrerit, dapibus justo a, sodales justo. Mauris finibus augue id pulvinar congue. Nam maximus luctus ipsum, at commodo ligula euismod ac. Phasellus vitae lacus sit amet diam porta placerat. \nUt sodales efficitur sapien ut posuere. Morbi sed tellus est. Proin eu erat purus. Proin massa nunc, condimentum id iaculis dignissim, consectetur et odio. Cras suscipit sem eu libero aliquam tincidunt. Nullam ut arcu suscipit, eleifend velit in, cursus libero. Ut eleifend facilisis odio sit amet feugiat. Phasellus at nunc sit amet elit sagittis commodo ac in nisi. Fusce vitae aliquam quam. Integer vel nibh euismod, tempus elit vitae, pharetra est. Duis vulputate enim a elementum dignissim. Morbi dictum enim id elit scelerisque, in elementum nulla pharetra. \nAenean aliquet aliquet condimentum. Proin dapibus dui id libero tempus feugiat. Sed commodo ligula a lectus mattis, vitae tincidunt velit auctor. Fusce quis semper dui. Phasellus eu efficitur sem. Ut non sem sit amet enim condimentum venenatis id dictum massa. Nullam sagittis lacus a neque sodales, et ultrices arcu mattis. Aliquam erat volutpat. \nAenean fringilla quam elit, id mattis purus vestibulum nec. Praesent porta eros in dapibus molestie. Vestibulum orci libero, tincidunt et turpis eget, condimentum lobortis enim. Fusce suscipit ante et mauris consequat cursus nec laoreet lorem. Maecenas in sollicitudin diam, non tincidunt purus. Nunc mauris purus, laoreet eget interdum vitae, placerat a sapien. In mi risus, blandit eu facilisis nec, molestie suscipit leo. Pellentesque molestie urna vitae dui faucibus bibendum. \nDonec quis ipsum ultricies, imperdiet ex vel, scelerisque eros. Ut at urna arcu. Vestibulum rutrum odio dolor, vitae cursus nunc pulvinar vel. Donec accumsan sapien in malesuada tempor. Maecenas in condimentum eros. Sed vestibulum facilisis massa a iaculis. Etiam et nibh felis. Donec maximus, sem quis vestibulum gravida, turpis risus congue dolor, pharetra tincidunt lectus nisi at velit.";
+
+    ServiceBusClientBuilderTest() {
+        super(new ClientLogger(ServiceBusClientBuilderTest.class));
+    }
 
     @Test
     void deadLetterqueueClient() {
@@ -241,6 +254,103 @@ class ServiceBusClientBuilderTest {
         assertThrows(IllegalArgumentException.class,
             () -> new ServiceBusClientBuilder()
                 .connectionString("Endpoint=sb://sb-name.servicebus.windows.net/;EntityPath=sb-name"));
+    }
+
+    @Test
+    public void testBatchSendEventByAzureNameKeyCredential() {
+        ConnectionStringProperties properties = getConnectionStringProperties();
+        String fullyQualifiedNamespace = getFullyQualifiedDomainName();
+        String sharedAccessKeyName = properties.getSharedAccessKeyName();
+        String sharedAccessKey = properties.getSharedAccessKey();
+        String queueName = getQueueName(0);
+
+        final ServiceBusMessage testData = new ServiceBusMessage(TEST_MESSAGE.getBytes(UTF_8));
+
+        ServiceBusSenderAsyncClient senderAsyncClient = new ServiceBusClientBuilder()
+            .credential(fullyQualifiedNamespace, new AzureNamedKeyCredential(sharedAccessKeyName, sharedAccessKey))
+            .sender()
+            .queueName(queueName)
+            .buildAsyncClient();
+        try {
+            StepVerifier.create(
+                senderAsyncClient.createMessageBatch().flatMap(batch -> {
+                    assertTrue(batch.tryAddMessage(testData));
+                    return senderAsyncClient.sendMessages(batch);
+                })
+            ).verifyComplete();
+        } finally {
+            senderAsyncClient.close();
+        }
+    }
+
+
+    @Test
+    public void testBatchSendEventByAzureSasCredential() {
+        ConnectionStringProperties properties = getConnectionStringProperties(true);
+        String fullyQualifiedNamespace = getFullyQualifiedDomainName();
+        String sharedAccessSignature = properties.getSharedAccessSignature();
+        String queueName = getQueueName(0);
+
+        final ServiceBusMessage testData = new ServiceBusMessage(TEST_MESSAGE.getBytes(UTF_8));
+
+        ServiceBusSenderAsyncClient senderAsyncClient = new ServiceBusClientBuilder()
+            .credential(fullyQualifiedNamespace,
+                new AzureSasCredential(sharedAccessSignature))
+            .sender()
+            .queueName(queueName)
+            .buildAsyncClient();
+        try {
+            StepVerifier.create(
+                senderAsyncClient.createMessageBatch().flatMap(batch -> {
+                    assertTrue(batch.tryAddMessage(testData));
+                    return senderAsyncClient.sendMessages(batch);
+                })
+            ).verifyComplete();
+        } finally {
+            senderAsyncClient.close();
+        }
+    }
+
+    @Test
+    public void testConnectionWithAzureNameKeyCredential() {
+        String fullyQualifiedNamespace = "sb-name.servicebus.windows.net";
+        String sharedAccessKeyName = "SharedAccessKeyName test-value";
+        String sharedAccessKey = "SharedAccessKey test-value";
+
+        assertThrows(NullPointerException.class, () -> new ServiceBusClientBuilder()
+            .credential(null,
+                new AzureNamedKeyCredential(sharedAccessKeyName, sharedAccessKey)));
+
+        assertThrows(IllegalArgumentException.class, () -> new ServiceBusClientBuilder()
+            .credential("",
+                new AzureNamedKeyCredential(sharedAccessKeyName, sharedAccessKey)));
+
+        assertThrows(IllegalArgumentException.class, () -> new ServiceBusClientBuilder()
+            .credential(fullyQualifiedNamespace,
+                new AzureNamedKeyCredential(sharedAccessKeyName, sharedAccessKey)));
+
+        assertThrows(NullPointerException.class, () -> new ServiceBusClientBuilder()
+            .credential(fullyQualifiedNamespace, (AzureNamedKeyCredential) null));
+
+    }
+
+    @Test
+    public void testConnectionWithAzureSasCredential() {
+        String fullyQualifiedNamespace = "sb-name.servicebus.windows.net";
+        String sharedAccessSignature = "SharedAccessSignature test-value";
+
+        assertThrows(NullPointerException.class, () -> new ServiceBusClientBuilder()
+            .credential(null, new AzureSasCredential(sharedAccessSignature)));
+
+        assertThrows(IllegalArgumentException.class, () -> new ServiceBusClientBuilder()
+            .credential("", new AzureSasCredential(sharedAccessSignature)));
+
+        assertThrows(IllegalArgumentException.class, () -> new ServiceBusClientBuilder()
+            .credential(fullyQualifiedNamespace, new AzureSasCredential(sharedAccessSignature)));
+
+        assertThrows(NullPointerException.class, () -> new ServiceBusClientBuilder()
+            .credential(fullyQualifiedNamespace, (AzureSasCredential) null));
+
     }
 
     private static Stream<Arguments> getProxyConfigurations() {

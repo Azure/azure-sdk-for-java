@@ -3,8 +3,8 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.azure.com/metricsadvisor/v1.0/feedback/metric/query",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.4 (1.8.0_221; Mac OS X; 10.16)",
-      "x-ms-client-request-id" : "4fb6ecf0-11a4-4a6c-b544-d3781e14031a",
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.5 (11.0.11; Mac OS X; 11.4)",
+      "x-ms-client-request-id" : "70c6dfae-6c08-4ecb-bbeb-a944a16a066d",
       "Content-Type" : "application/json"
     },
     "Response" : null,
@@ -16,8 +16,8 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.azure.com/metricsadvisor/v1.0/feedback/metric/query",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.4 (1.8.0_221; Mac OS X; 10.16)",
-      "x-ms-client-request-id" : "4fb6ecf0-11a4-4a6c-b544-d3781e14031a",
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.5 (11.0.11; Mac OS X; 11.4)",
+      "x-ms-client-request-id" : "70c6dfae-6c08-4ecb-bbeb-a944a16a066d",
       "Content-Type" : "application/json"
     },
     "Response" : null,
@@ -29,8 +29,8 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.azure.com/metricsadvisor/v1.0/feedback/metric/query",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.4 (1.8.0_221; Mac OS X; 10.16)",
-      "x-ms-client-request-id" : "4fb6ecf0-11a4-4a6c-b544-d3781e14031a",
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.5 (11.0.11; Mac OS X; 11.4)",
+      "x-ms-client-request-id" : "70c6dfae-6c08-4ecb-bbeb-a944a16a066d",
       "Content-Type" : "application/json"
     },
     "Response" : null,
@@ -42,8 +42,8 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.azure.com/metricsadvisor/v1.0/feedback/metric/query",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.4 (1.8.0_221; Mac OS X; 10.16)",
-      "x-ms-client-request-id" : "4fb6ecf0-11a4-4a6c-b544-d3781e14031a",
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.5 (11.0.11; Mac OS X; 11.4)",
+      "x-ms-client-request-id" : "70c6dfae-6c08-4ecb-bbeb-a944a16a066d",
       "Content-Type" : "application/json"
     },
     "Response" : null,

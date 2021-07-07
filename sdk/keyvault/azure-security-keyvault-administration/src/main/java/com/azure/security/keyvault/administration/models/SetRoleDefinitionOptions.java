@@ -12,7 +12,7 @@ import java.util.UUID;
  * Represents the configurable options to create or update a {@link KeyVaultRoleDefinition role definition}.
  */
 @Fluent
-public class SetRoleDefinitionOptions {
+public final class SetRoleDefinitionOptions {
     private final KeyVaultRoleScope roleScope;
     private final String roleDefinitionName;
     private String roleName;

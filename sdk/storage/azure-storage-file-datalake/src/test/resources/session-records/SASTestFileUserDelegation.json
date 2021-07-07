@@ -109,7 +109,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.blob.core.windows.net/b4ca457e0b4ca457e89223457c1e0edab9d60448daea/b4ca457e1b4ca457e89257857f7e4d073ad594047a04?sv=2020-08-04&spr=https%2Chttp&st=2021-05-04T18%3A00%3A54Z&se=2021-05-06T18%3A00%3A54Z&skoid=e339aa3f-fc6a-402b-973a-31cd8d64b280&sktid=72f988bf-86f1-41af-91ab-2d7cd011db47&skt=2021-05-04T18%3A00%3A54Z&ske=2021-05-06T18%3A00%3A54Z&sks=b&skv=2020-08-04&sr=b&sp=racwdlmeop&sig=REDACTED&rscc=cache&rscd=disposition&rsce=encoding&rscl=language&rsct=type",
+    "Uri" : "https://REDACTED.blob.core.windows.net/b4ca457e0b4ca457e89223457c1e0edab9d60448daea/b4ca457e1b4ca457e89257857f7e4d073ad594047a04?sv=2020-10-02&spr=https%2Chttp&st=2021-05-04T18%3A00%3A54Z&se=2021-05-06T18%3A00%3A54Z&skoid=e339aa3f-fc6a-402b-973a-31cd8d64b280&sktid=72f988bf-86f1-41af-91ab-2d7cd011db47&skt=2021-05-04T18%3A00%3A54Z&ske=2021-05-06T18%3A00%3A54Z&sks=b&skv=2020-08-04&sr=b&sp=racwdlmeop&sig=REDACTED&rscc=cache&rscd=disposition&rsce=encoding&rscl=language&rsct=type",
     "Headers" : {
       "x-ms-version" : "2020-08-04",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.12.0-beta.1 azsdk-java-azure-storage-file-datalake/12.6.0-beta.1 (11.0.8; Windows 10; 10.0)",
@@ -145,7 +145,7 @@
     "Exception" : null
   }, {
     "Method" : "HEAD",
-    "Uri" : "https://REDACTED.blob.core.windows.net/b4ca457e0b4ca457e89223457c1e0edab9d60448daea/b4ca457e1b4ca457e89257857f7e4d073ad594047a04?sv=2020-08-04&spr=https%2Chttp&st=2021-05-04T18%3A00%3A54Z&se=2021-05-06T18%3A00%3A54Z&skoid=e339aa3f-fc6a-402b-973a-31cd8d64b280&sktid=72f988bf-86f1-41af-91ab-2d7cd011db47&skt=2021-05-04T18%3A00%3A54Z&ske=2021-05-06T18%3A00%3A54Z&sks=b&skv=2020-08-04&sr=b&sp=racwdlmeop&sig=REDACTED&rscc=cache&rscd=disposition&rsce=encoding&rscl=language&rsct=type",
+    "Uri" : "https://REDACTED.blob.core.windows.net/b4ca457e0b4ca457e89223457c1e0edab9d60448daea/b4ca457e1b4ca457e89257857f7e4d073ad594047a04?sv=2020-10-02&spr=https%2Chttp&st=2021-05-04T18%3A00%3A54Z&se=2021-05-06T18%3A00%3A54Z&skoid=e339aa3f-fc6a-402b-973a-31cd8d64b280&sktid=72f988bf-86f1-41af-91ab-2d7cd011db47&skt=2021-05-04T18%3A00%3A54Z&ske=2021-05-06T18%3A00%3A54Z&sks=b&skv=2020-08-04&sr=b&sp=racwdlmeop&sig=REDACTED&rscc=cache&rscd=disposition&rsce=encoding&rscl=language&rsct=type",
     "Headers" : {
       "x-ms-version" : "2020-08-04",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.12.0-beta.1 azsdk-java-azure-storage-file-datalake/12.6.0-beta.1 (11.0.8; Windows 10; 10.0)",

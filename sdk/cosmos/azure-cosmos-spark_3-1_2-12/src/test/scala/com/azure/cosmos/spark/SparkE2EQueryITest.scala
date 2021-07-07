@@ -9,13 +9,14 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 
 import java.sql.Timestamp
+import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 
 class SparkE2EQueryITest
   extends IntegrationSpec
     with Spark
     with CosmosClient
     with AutoCleanableCosmosContainer
-    with CosmosLoggingTrait {
+    with BasicLoggingTrait {
 
   val objectMapper = new ObjectMapper()
 
@@ -295,6 +296,12 @@ class SparkE2EQueryITest
     fieldNames.contains(CosmosTableSchemaInferrer.ResourceIdAttributeName) shouldBe true
     fieldNames.contains(CosmosTableSchemaInferrer.ETagAttributeName) shouldBe true
     fieldNames.contains(CosmosTableSchemaInferrer.AttachmentsAttributeName) shouldBe true
+
+    rowWithInference.schema(CosmosTableSchemaInferrer.SelfAttributeName).nullable shouldBe false
+    rowWithInference.schema(CosmosTableSchemaInferrer.TimestampAttributeName).nullable shouldBe false
+    rowWithInference.schema(CosmosTableSchemaInferrer.ResourceIdAttributeName).nullable shouldBe false
+    rowWithInference.schema(CosmosTableSchemaInferrer.ETagAttributeName).nullable shouldBe false
+    rowWithInference.schema(CosmosTableSchemaInferrer.AttachmentsAttributeName).nullable shouldBe false
   }
 
   "spark query" can "use schema inference with just timestamp" in {
@@ -438,7 +445,7 @@ class SparkE2EQueryITest
       "spark.cosmos.database" -> cosmosDatabase,
       "spark.cosmos.container" -> cosmosContainer,
       "spark.cosmos.read.inferSchema.enabled" -> "true",
-      "spark.cosmos.read.inferSchema.query" -> "select TOP 1 c.type, c.age, c.isAlive, c._ts from c",
+      "spark.cosmos.read.inferSchema.query" -> "select TOP 1 c.type, c.age, c.isAlive, c._ts, c.id from c",
       "spark.cosmos.read.partitioning.strategy" -> "Restrictive"
     )
 
@@ -455,9 +462,16 @@ class SparkE2EQueryITest
     val fieldNames = rowWithInference.schema.fields.map(field => field.name)
     fieldNames.contains(CosmosTableSchemaInferrer.SelfAttributeName) shouldBe false
     fieldNames.contains(CosmosTableSchemaInferrer.TimestampAttributeName) shouldBe true
+    fieldNames.contains(CosmosTableSchemaInferrer.IdAttributeName) shouldBe true
     fieldNames.contains(CosmosTableSchemaInferrer.ResourceIdAttributeName) shouldBe false
     fieldNames.contains(CosmosTableSchemaInferrer.ETagAttributeName) shouldBe false
     fieldNames.contains(CosmosTableSchemaInferrer.AttachmentsAttributeName) shouldBe false
+
+    rowWithInference.schema(CosmosTableSchemaInferrer.TimestampAttributeName).nullable shouldBe false
+    rowWithInference.schema(CosmosTableSchemaInferrer.IdAttributeName).nullable shouldBe false
+    rowWithInference.schema("type").nullable shouldBe true
+    rowWithInference.schema("age").nullable shouldBe true
+    rowWithInference.schema("isAlive").nullable shouldBe true
   }
 
   "spark query" can "when forceNullableProperties is false and rows have different schema" in {
