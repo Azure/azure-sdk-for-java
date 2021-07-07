@@ -61,7 +61,7 @@
       }
     },
     "keyVaultSku": {
-      "type": "String",
+      "type": "string",
       "defaultValue": "Premium",
       "allowedValues": [
         "Standard",
@@ -72,14 +72,14 @@
       }
     },
     "endpointSuffix": {
-      "type": "String",
+      "type": "string",
       "defaultValue": "vault.azure.net"
     },
     "testApplicationId": {
-      "type": "String"
+      "type": "string"
     },
     "testApplicationSecret": {
-      "type": "String"
+      "type": "string"
     },
     "enabledForDeployment": {
       "type": "bool",
