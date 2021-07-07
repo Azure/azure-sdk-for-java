@@ -23,6 +23,7 @@ import com.azure.core.implementation.http.UnexpectedExceptionInformation;
 import com.azure.core.implementation.serializer.HttpResponseDecoder;
 import com.azure.core.implementation.serializer.HttpResponseDecoder.HttpDecodedResponse;
 import com.azure.core.util.Base64Url;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.UrlBuilder;
@@ -275,6 +276,14 @@ public final class RestProxy implements InvocationHandler {
             }
 
             request.getHeaders().set("Content-Type", contentType);
+            if (bodyContentObject instanceof BinaryData) {
+                BinaryData binaryData = (BinaryData) bodyContentObject;
+                if (binaryData.getLength() != null) {
+                    request.setHeader("Content-Length", binaryData.getLength().toString());
+                }
+                request.setBody(binaryData.toFluxByteBuffer());
+                return request;
+            }
 
             // TODO(jogiles) this feels hacky
             boolean isJson = false;
@@ -471,6 +480,9 @@ public final class RestProxy implements InvocationHandler {
         } else if (FluxUtil.isFluxByteBuffer(entityType)) {
             // Mono<Flux<ByteBuffer>>
             asyncResult = Mono.just(response.getSourceResponse().getBody());
+        } else if (TypeUtil.isTypeOrSubTypeOf(entityType, BinaryData.class)) {
+            // Mono<BinaryData>
+            asyncResult = BinaryData.fromFlux(response.getSourceResponse().getBody());
         } else {
             // Mono<Object> or Mono<Page<T>>
             asyncResult = response.getDecodedBody((byte[]) null);
