@@ -61,7 +61,7 @@
       }
     },
     "keyVaultSku": {
-      "type": "string",
+      "type": "String",
       "defaultValue": "Premium",
       "allowedValues": [
         "Standard",
@@ -170,7 +170,7 @@
         "principalType": "ServicePrincipal"
       }
     },
-    /*{
+    {
       "type": "Microsoft.KeyVault/vaults",
       "apiVersion": "[variables('kvApiVersion')]",
       "name": "[variables('kvName')]",
@@ -293,7 +293,7 @@
         "enableSoftDelete": true,
         "networkAcls": "[variables('networkAcls')]"
       }
-    },*/
+    },
     {
       "type": "Microsoft.KeyVault/managedHSMs",
       "apiVersion": "[variables('hsmApiVersion')]",
