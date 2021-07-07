@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
@@ -145,6 +144,10 @@ public class ClientSideRequestStatistics {
 
     public void setTransportClientRequestTimeline(RequestTimeline transportRequestTimeline) {
         this.transportRequestTimeline = transportRequestTimeline;
+    }
+
+    public RequestTimeline getTransportRequestTimeline() {
+        return this.transportRequestTimeline;
     }
 
     public String recordAddressResolutionStart(URI targetEndpoint) {
