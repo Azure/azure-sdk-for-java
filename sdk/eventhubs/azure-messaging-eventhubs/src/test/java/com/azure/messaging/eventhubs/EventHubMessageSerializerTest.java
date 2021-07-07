@@ -3,6 +3,7 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.models.AmqpAnnotatedMessage;
 import com.azure.core.exception.AzureException;
 import com.azure.messaging.eventhubs.implementation.ManagementChannel;
 import org.apache.qpid.proton.Proton;
@@ -72,12 +73,12 @@ public class EventHubMessageSerializerTest {
     @Test
     public void deserializeEventData() {
         // Arrange
-        final String[] systemPropertyNames = new String[]{
-            PARTITION_KEY_ANNOTATION_NAME.getValue(),
-            OFFSET_ANNOTATION_NAME.getValue(),
-            ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(),
-            SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(),
-        };
+        final Map<String, Object> systemPropertiesMap = new HashMap<>();
+        systemPropertiesMap.put(PARTITION_KEY_ANNOTATION_NAME.getValue(), PARTITION_KEY);
+        systemPropertiesMap.put(OFFSET_ANNOTATION_NAME.getValue(), OFFSET);
+        systemPropertiesMap.put(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(), ENQUEUED_TIME);
+        systemPropertiesMap.put(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), SEQUENCE_NUMBER);
+
         final Message message = getMessage("hello-world".getBytes(UTF_8));
 
         // Act
@@ -90,10 +91,25 @@ public class EventHubMessageSerializerTest {
         Assertions.assertEquals(PARTITION_KEY, eventData.getPartitionKey());
         Assertions.assertEquals(SEQUENCE_NUMBER, eventData.getSequenceNumber());
 
-        Assertions.assertTrue(eventData.getRawAmqpMessage().getMessageAnnotations().containsKey(OTHER_SYSTEM_PROPERTY));
-        final Object otherPropertyValue = eventData.getRawAmqpMessage().getMessageAnnotations().get(OTHER_SYSTEM_PROPERTY);
+        final Map<String, Object> actualSystemProperties = eventData.getSystemProperties();
+        systemPropertiesMap.forEach((key, value) -> {
+            final boolean containsKey = actualSystemProperties.containsKey(key);
+            final Object actualValue = actualSystemProperties.get(key);
+            Assertions.assertTrue(containsKey);
+            Assertions.assertEquals(value, actualValue);
+        });
+
+        // Verify that the message annotations in the raw AMQP message also match the ones in getSystemProperties()
+        Assertions.assertTrue(eventData.getSystemProperties().containsKey(OTHER_SYSTEM_PROPERTY));
+        final Object otherPropertyValue = eventData.getSystemProperties().get(OTHER_SYSTEM_PROPERTY);
         Assertions.assertTrue(otherPropertyValue instanceof Boolean);
         Assertions.assertTrue((Boolean) otherPropertyValue);
+
+        final AmqpAnnotatedMessage amqpMessage = eventData.getRawAmqpMessage();
+        Assertions.assertTrue(amqpMessage.getMessageAnnotations().containsKey(OTHER_SYSTEM_PROPERTY));
+        final Object otherPropertyValue2 = amqpMessage.getMessageAnnotations().get(OTHER_SYSTEM_PROPERTY);
+        Assertions.assertTrue(otherPropertyValue2 instanceof Boolean);
+        Assertions.assertTrue((Boolean) otherPropertyValue2);
 
         // Verifying our application properties are the same.
         Assertions.assertEquals(APPLICATION_PROPERTIES.size(), eventData.getProperties().size());
@@ -115,7 +131,7 @@ public class EventHubMessageSerializerTest {
         final long beginningSequenceNumber = 1343L;
         final long lastEnqueuedSequenceNumber = 1500L;
         final String lastEnqueuedOffset = "102";
-        final Date lastEnqueuedTimeAsDate  = new Date(1569275540L);
+        final Date lastEnqueuedTimeAsDate = new Date(1569275540L);
         final Instant lastEnqueuedTime = lastEnqueuedTimeAsDate.toInstant();
         final boolean isEmpty = true;
 
@@ -154,9 +170,9 @@ public class EventHubMessageSerializerTest {
     public void deserializeEventHubProperties() {
         // Arrange
         final String eventHubName = "my-event-hub";
-        final Date createdAtAsDate  = new Date(1569275540L);
+        final Date createdAtAsDate = new Date(1569275540L);
         final Instant createdAt = createdAtAsDate.toInstant();
-        final String[] partitionIds = new String[]{ "1", "foo", "bar", "baz" };
+        final String[] partitionIds = new String[]{"1", "foo", "bar", "baz"};
 
         final Map<String, Object> values = new HashMap<>();
         values.put(ManagementChannel.MANAGEMENT_ENTITY_NAME_KEY, eventHubName);
