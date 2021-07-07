@@ -1,6 +1,6 @@
 # Release History
 
-## 1.3.2 (2021-07-07)
+## 1.3.3 (2021-07-07)
 
 ### Dependency Updates
 - Pinned `json-smart` dependency to 2.4.7
