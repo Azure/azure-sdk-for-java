@@ -39,6 +39,9 @@ extends:
       - name: azure-messaging-servicebus
         groupId: com.azure
         safeName: azuremessagingservicebus
+      - name: azure-resourcemanager-servicebus-generated
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerservicebusgenerated
     AdditionalModules:
       - name: perf-test-core
         groupId: com.azure
