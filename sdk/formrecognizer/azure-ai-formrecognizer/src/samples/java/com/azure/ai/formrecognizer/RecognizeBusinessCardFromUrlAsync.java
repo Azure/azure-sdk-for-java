@@ -33,7 +33,7 @@ public class RecognizeBusinessCardFromUrlAsync {
             .buildAsyncClient();
 
         String businessCardUrl =
-            "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/formrecognizer"
+            "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/formrecognizer"
                 + "/azure-ai-formrecognizer/src/samples/resources/sample-forms/businessCards/businessCard.jpg";
 
         PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> recognizeBusinessCardPoller

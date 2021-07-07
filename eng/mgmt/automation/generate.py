@@ -37,6 +37,7 @@ def generate(
     use: str,
     tag: str = None,
     version: str = None,
+    autorest_options: str = '',
     **kwargs,
 ):
     module = ARTIFACT_FORMAT.format(service)
@@ -62,7 +63,7 @@ def generate(
         os.path.abspath(sdk_root),
         os.path.abspath(output_dir),
         namespace,
-        ' '.join((tag_option, version_option, FLUENTLITE_ARGUMENTS, readme)),
+        ' '.join((tag_option, version_option, FLUENTLITE_ARGUMENTS, autorest_options, readme)),
     )
     logging.info(command)
     if os.system(command) != 0:
@@ -490,6 +491,11 @@ def parse_args() -> argparse.Namespace:
         '--autorest',
         default = AUTOREST_CORE_VERSION,
         help = 'Autorest version',
+    )
+    parser.add_argument(
+        '--autorest-options',
+        default = '',
+        help = 'Additional autorest options',
     )
     parser.add_argument('--suffix', help = 'Suffix for namespace and artifact')
     parser.add_argument(

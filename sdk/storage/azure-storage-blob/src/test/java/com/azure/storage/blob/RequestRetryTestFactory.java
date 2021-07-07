@@ -49,6 +49,10 @@ class RequestRetryTestFactory {
 
     static final int RETRY_TEST_SCENARIO_NON_REPLAYABLE_FLOWABLE = 9;
 
+    static final int RETRY_TEST_SCENARIO_WRAPPED_NETWORK_ERROR = 10;
+
+    static final int RETRY_TEST_SCENARIO_WRAPPED_TIMEOUT_ERROR = 11;
+
     // Cancelable
 
     static final String RETRY_TEST_PRIMARY_HOST = "PrimaryDC";
@@ -278,6 +282,30 @@ class RequestRetryTestFactory {
                             // fall through
                         case 2:
                             return Mono.error(new IOException());
+                        case 3:
+                            return retryTestOkResponse;
+                        default:
+                            throw new IllegalArgumentException("Continued retrying after success.");
+                    }
+
+                case RETRY_TEST_SCENARIO_WRAPPED_NETWORK_ERROR:
+                    switch (this.factory.tryNumber) {
+                        case 1:
+                            // fall through
+                        case 2:
+                            return Mono.error(Exceptions.propagate(new IOException()));
+                        case 3:
+                            return retryTestOkResponse;
+                        default:
+                            throw new IllegalArgumentException("Continued retrying after success.");
+                    }
+
+                case RETRY_TEST_SCENARIO_WRAPPED_TIMEOUT_ERROR:
+                    switch (this.factory.tryNumber) {
+                        case 1:
+                            // fall through
+                        case 2:
+                            return Mono.error(Exceptions.propagate(new TimeoutException()));
                         case 3:
                             return retryTestOkResponse;
                         default:

@@ -7,9 +7,8 @@ import com.azure.ai.textanalytics.TextAnalyticsAsyncClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetail;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
-import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
+import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesPagedFlux;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.util.polling.PollerFlux;
 
 import java.util.ArrayList;
@@ -52,7 +51,7 @@ public class CancelAnalyzeHealthcareEntitiesAsync {
                     + " for revascularization with open heart surgery."));
         }
 
-        final PollerFlux<AnalyzeHealthcareEntitiesOperationDetail, PagedFlux<AnalyzeHealthcareEntitiesResultCollection>>
+        final PollerFlux<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedFlux>
             poller = client.beginAnalyzeHealthcareEntities(documents, null);
 
         poller

@@ -86,6 +86,7 @@ public class EventHubMessageConverter extends AbstractAzureMessageConverter<Even
 
     private Map<String, Object> getSystemProperties(EventData azureMessage) {
         Map<String, Object> result = new HashMap<>();
+        result.putAll(azureMessage.getSystemProperties());
         result.put(EventHubHeaders.ENQUEUED_TIME, azureMessage.getEnqueuedTime());
         result.put(EventHubHeaders.OFFSET, azureMessage.getOffset());
         result.put(EventHubHeaders.SEQUENCE_NUMBER, azureMessage.getSequenceNumber());

@@ -35,18 +35,19 @@
   <properties>
     <jacoco.min.linecoverage>0.18</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.09</jacoco.min.branchcoverage>
+    <AZURE_TEST_SYSTEM_PLAYBACK_PROPERTIES_FILE>../azure-storage-common/ci.system.properties</AZURE_TEST_SYSTEM_PLAYBACK_PROPERTIES_FILE>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.17.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.18.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.10.0</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.10.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -64,7 +65,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.6.3</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.6.4</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <!-- https://mvnrepository.com/artifact/org.spockframework/spock-core -->
@@ -117,7 +118,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-keys</artifactId>
-      <version>4.3.0-beta.6</version> <!-- {x-version-update;beta_com.azure:azure-security-keyvault-keys;dependency} -->
+      <version>4.3.0</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

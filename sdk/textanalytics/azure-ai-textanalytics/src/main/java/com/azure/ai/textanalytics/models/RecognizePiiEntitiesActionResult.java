@@ -5,16 +5,18 @@ package com.azure.ai.textanalytics.models;
 
 import com.azure.ai.textanalytics.implementation.RecognizePiiEntitiesActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
+import com.azure.core.annotation.Immutable;
 
 /**
  * The {@link RecognizePiiEntitiesActionResult} model.
  */
+@Immutable
 public final class RecognizePiiEntitiesActionResult extends TextAnalyticsActionResult {
-    private RecognizePiiEntitiesResultCollection documentResults;
+    private RecognizePiiEntitiesResultCollection documentsResults;
 
     static {
         RecognizePiiEntitiesActionResultPropertiesHelper.setAccessor(
-            (actionsResult, documentResults) -> actionsResult.setDocumentResults(documentResults));
+            (actionResult, documentsResults) -> actionResult.setDocumentsResults(documentsResults));
     }
 
     /**
@@ -25,12 +27,12 @@ public final class RecognizePiiEntitiesActionResult extends TextAnalyticsActionR
      * @throws TextAnalyticsException if result has {@code isError} equals to true and when a non-error property
      * was accessed.
      */
-    public RecognizePiiEntitiesResultCollection getDocumentResults() {
+    public RecognizePiiEntitiesResultCollection getDocumentsResults() {
         throwExceptionIfError();
-        return documentResults;
+        return documentsResults;
     }
 
-    private void setDocumentResults(RecognizePiiEntitiesResultCollection documentResults) {
-        this.documentResults = documentResults;
+    private void setDocumentsResults(RecognizePiiEntitiesResultCollection documentsResults) {
+        this.documentsResults = documentsResults;
     }
 }

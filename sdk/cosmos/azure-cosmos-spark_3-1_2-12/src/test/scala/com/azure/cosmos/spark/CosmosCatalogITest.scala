@@ -3,6 +3,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.{TestConfigurations, Utils}
+import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import org.apache.commons.lang3.RandomStringUtils
 import org.apache.spark.sql.SparkSession
 
@@ -11,9 +12,10 @@ import java.util.UUID
 import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
 
-class CosmosCatalogITest extends IntegrationSpec with CosmosClient with CosmosLoggingTrait {
+class CosmosCatalogITest extends IntegrationSpec with CosmosClient with BasicLoggingTrait {
   //scalastyle:off multiple.string.literals
   //scalastyle:off magic.number
+
 
   var spark : SparkSession = _
 

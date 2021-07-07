@@ -180,7 +180,7 @@ public final class TopicsClientImpl implements TopicsClient {
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics"
                 + "/{topicName}/regenerateKey")
-        @ExpectedResponses({200})
+        @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> regenerateKey(
             @HostParam("$host") String endpoint,
