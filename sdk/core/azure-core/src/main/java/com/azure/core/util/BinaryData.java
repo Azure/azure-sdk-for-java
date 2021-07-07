@@ -111,9 +111,6 @@ public class BinaryData {
      * Creates an instance of {@link BinaryData} from the given {@link Flux} of {@link ByteBuffer}.
      * <p>
      * If the {@code data} is null an empty {@link BinaryData} will be returned.
-     * <p>
-     * <b>Note:</b> This will collect all bytes from the {@link ByteBuffer ByteBuffers} resulting in {@link
-     * ByteBuffer#hasRemaining() hasRemaining} to return false.
      *
      * <p><strong>Create an instance from a Flux of ByteBuffer</strong></p>
      *
@@ -123,16 +120,13 @@ public class BinaryData {
      * @return A {@link Mono} of {@link BinaryData} representing the {@link Flux} of {@link ByteBuffer}.
      */
     public static Mono<BinaryData> fromFlux(Flux<ByteBuffer> data) {
-        return Mono.just(new BinaryData(new FluxByteBufferContent(data)));
+        return fromFlux(data, null);
     }
 
     /**
      * Creates an instance of {@link BinaryData} from the given {@link Flux} of {@link ByteBuffer}.
      * <p>
      * If the {@code data} is null an empty {@link BinaryData} will be returned.
-     * <p>
-     * <b>Note:</b> This will collect all bytes from the {@link ByteBuffer ByteBuffers} resulting in {@link
-     * ByteBuffer#hasRemaining() hasRemaining} to return false.
      *
      * <p><strong>Create an instance from a Flux of ByteBuffer</strong></p>
      *
@@ -142,9 +136,9 @@ public class BinaryData {
      * @param length The length of {@code data} in bytes.
      * @return A {@link Mono} of {@link BinaryData} representing the {@link Flux} of {@link ByteBuffer}.
      */
-    public static Mono<BinaryData> fromFlux(Flux<ByteBuffer> data, long length) {
+    public static Mono<BinaryData> fromFlux(Flux<ByteBuffer> data, Long length) {
         Objects.requireNonNull(data, "'content' cannot be null.");
-        if (length < 0) {
+        if (length != null && length < 0) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'length' cannot be less than 0."));
         }
         return Mono.just(new BinaryData(new FluxByteBufferContent(data, length)));
