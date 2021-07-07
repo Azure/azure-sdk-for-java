@@ -303,6 +303,7 @@ com.azure.resourcemanager:azure-resourcemanager-botservice;1.0.0-beta.1;1.0.0-be
 com.azure.resourcemanager:azure-resourcemanager-recoveryservicesbackup;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-deviceprovisioningservices;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-postgresqlflexibleserver;1.0.0-beta.1;1.0.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-servicebus-generated;1.0.0-beta.1;1.0.0-beta.1
 
 # Unreleased dependencies: Copy the entry from above, prepend "unreleased_" and remove the current
 # version. Unreleased dependencies are only valid for dependency versions.
