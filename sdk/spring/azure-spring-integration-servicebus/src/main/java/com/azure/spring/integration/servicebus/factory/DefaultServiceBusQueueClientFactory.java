@@ -8,18 +8,18 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.util.ClientOptions;
-import com.azure.core.util.Configuration;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusErrorContext;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
-import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.spring.integration.servicebus.ServiceBusClientConfig;
 import com.azure.spring.integration.servicebus.ServiceBusMessageProcessor;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import static com.azure.spring.cloud.context.core.util.Constants.SPRING_SERVICE_BUS_APPLICATION_ID;
 
 /**
  * Default implementation of {@link ServiceBusQueueClientFactory}. Client will be cached to improve performance
@@ -41,8 +41,10 @@ public class DefaultServiceBusQueueClientFactory extends AbstractServiceBusSende
 
     public DefaultServiceBusQueueClientFactory(String connectionString, AmqpTransportType amqpTransportType) {
         super(connectionString);
-        this.serviceBusClientBuilder = new ServiceBusClientBuilder().connectionString(connectionString);
-        this.serviceBusClientBuilder.transportType(amqpTransportType);
+        this.serviceBusClientBuilder =
+            new ServiceBusClientBuilder().connectionString(connectionString)
+                                         .transportType(amqpTransportType)
+                                         .clientOptions(new ClientOptions().setApplicationId(SPRING_SERVICE_BUS_APPLICATION_ID));
     }
 
     @Override
@@ -68,7 +70,8 @@ public class DefaultServiceBusQueueClientFactory extends AbstractServiceBusSende
                                           .queueName(name)
                                           .receiveMode(clientConfig.getServiceBusReceiveMode())
                                           .maxConcurrentCalls(clientConfig.getMaxConcurrentCalls())
-                                          // TODO, It looks like max auto renew duration is not exposed
+                                          // TODO, which value doesn't used in builder and
+                                          //  It looks like max auto renew duration is not exposed
                                           .maxConcurrentSessions(clientConfig.getConcurrency())
                                           .prefetchCount(clientConfig.getPrefetchCount())
                                           .disableAutoComplete()
