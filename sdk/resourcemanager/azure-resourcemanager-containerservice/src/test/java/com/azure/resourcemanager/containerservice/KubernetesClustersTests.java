@@ -102,6 +102,16 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
 
         Assertions.assertNotNull(kubernetesCluster.tags().get("tag1"));
 
+        // stop
+        kubernetesCluster.stop();
+        kubernetesCluster.refresh();
+        Assertions.assertEquals(Code.STOPPED, kubernetesCluster.powerState().code());
+
+        // start
+        kubernetesCluster.start();
+        kubernetesCluster.refresh();
+        Assertions.assertEquals(Code.RUNNING, kubernetesCluster.powerState().code());
+
         // update
         kubernetesCluster =
             kubernetesCluster
