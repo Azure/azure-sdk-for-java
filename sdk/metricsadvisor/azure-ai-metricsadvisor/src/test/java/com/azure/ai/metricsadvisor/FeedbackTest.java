@@ -115,10 +115,14 @@ public class FeedbackTest extends FeedbackTestBase {
         creatMetricFeedbackRunner(inputMetricFeedback -> {
             MetricFeedback createdFeedback = client.addFeedback(METRIC_ID, inputMetricFeedback
                 .setDimensionFilter(new DimensionKey(DIMENSION_FILTER)));
+            final OffsetDateTime feedbackCreatedTime = createdFeedback.getCreatedTime();
 
             // Act & Assert
             Assertions.assertNotNull(createdFeedback.getId());
             client.listFeedback(METRIC_ID, new ListMetricFeedbackOptions().setFilter(new ListMetricFeedbackFilter()
+                    .setTimeMode(FeedbackQueryTimeMode.FEEDBACK_CREATED_TIME)
+                    .setStartTime(feedbackCreatedTime.minusDays(1))
+                    .setEndTime(feedbackCreatedTime.plusDays(1))
                     .setDimensionFilter(new DimensionKey(DIMENSION_FILTER)))
                     .setMaxPageSize(10),
                 Context.NONE)
