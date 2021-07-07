@@ -2,6 +2,10 @@
 
 ## 5.9.0-beta.1 (Unreleased)
 
+### Features Added
+
+- Add additional fields to `EventData`. `getContentType()`, `getCorrelationId()`, `getMessageId()` and the corresponding setters were added.
+- Add `EventData.getRawAmqpMessage()`.
 
 ## 5.8.0 (2021-06-14)
 
