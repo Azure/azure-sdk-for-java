@@ -7,8 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.ClassUtils;
 
-import static com.azure.spring.aad.AADConditions.BEARER_TOKEN_AUTHENTICATION_TOKEN_CLASS_NAME;
-
 /**
  * AAD application type.
  * Provides some common methods to determine the application type according to the {@link AADAuthenticationProperties} properties.
@@ -21,6 +19,13 @@ public enum AADApplicationType {
     WEB_APPLICATION_AND_RESOURCE_SERVER();
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AADApplicationType.class);
+
+    public static final String BEARER_TOKEN_AUTHENTICATION_TOKEN_CLASS_NAME =
+        "org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken";
+    public static final String ENABLE_WEB_SECURITY_CLASS_NAME =
+        "org.springframework.security.config.annotation.web.configuration.EnableWebSecurity";
+    public static final String CLIENT_REGISTRATION_CLASS_NAME =
+        "org.springframework.security.oauth2.client.registration.ClientRegistration";
 
     public static AADApplicationType applicationType(AADAuthenticationProperties properties) {
         AADApplicationType appType = null;
@@ -37,15 +42,11 @@ public enum AADApplicationType {
             && !properties.getEnableWebAppAndResourceServer()) {
             appType = AADApplicationType.RESOURCE_SERVER_WITH_OBO;
             LOGGER.debug("The Resource Server with Obo scenario detected.");
-        } else if (isOAuth2ClientAvailable() && isResourceServerAvailable()) {
-            if (properties.getEnableWebAppAndResourceServer()) {
-                appType = AADApplicationType.WEB_APPLICATION_AND_RESOURCE_SERVER;
-                LOGGER.debug("The Web Application and Resource Server scenario detected.");
-            } else {
-                LOGGER.warn("You need to explicitly enable the switch "
-                    + "'azure.activedirectory.enable-web-app-and-resource-server' "
-                    + "to apply Web Application and Resource Server scenario.");
-            }
+        } else if (isOAuth2ClientAvailable()
+            && isResourceServerAvailable()
+            && properties.getEnableWebAppAndResourceServer()) {
+            appType = AADApplicationType.WEB_APPLICATION_AND_RESOURCE_SERVER;
+            LOGGER.debug("The Web Application and Resource Server scenario detected.");
         }
         return appType;
     }
@@ -67,8 +68,7 @@ public enum AADApplicationType {
     }
 
     private static boolean isOAuth2ClientAvailable() {
-        return isPresent("org.springframework.security.config.annotation.web.configuration.EnableWebSecurity")
-            && isPresent("org.springframework.security.oauth2.client.registration.ClientRegistration");
+        return isPresent(ENABLE_WEB_SECURITY_CLASS_NAME) && isPresent(CLIENT_REGISTRATION_CLASS_NAME);
     }
 
     private static boolean isResourceServerAvailable() {

@@ -31,6 +31,7 @@ import java.util.function.Consumer;
 import static com.azure.spring.aad.AADApplicationType.applicationType;
 import static com.azure.spring.aad.AADApplicationType.isWebApplicationAndResourceServer;
 import static com.azure.spring.aad.AADApplicationType.isWebApplicationOnly;
+import static com.azure.spring.aad.AADClientRegistrationRepository.AZURE_CLIENT_REGISTRATION_ID;
 
 /**
  * OAuth2AuthorizedClientRepository used for AAD oauth2 clients.
@@ -82,7 +83,7 @@ public class AADOAuth2AuthorizedClientRepository implements OAuth2AuthorizedClie
                                      HttpServletRequest request,
                                      HttpServletResponse response) {
         if (this.isPrincipalAuthenticated(principal)) {
-            if (this.isWebApplicationOnly || isWebApplicationAndResourceServer) {
+            if (isClientOfWebApplication(authorizedClient.getClientRegistration().getRegistrationId())) {
                 delegate.saveAuthorizedClient(authorizedClient, principal, request, response);
             } else {
                 service.saveAuthorizedClient(authorizedClient, principal);
@@ -99,7 +100,7 @@ public class AADOAuth2AuthorizedClientRepository implements OAuth2AuthorizedClie
                                                                      Authentication principal,
                                                                      HttpServletRequest request) {
         if (this.isPrincipalAuthenticated(principal)) {
-            if (this.isWebApplicationOnly || isWebApplicationAndResourceServer) {
+            if (isClientOfWebApplication(clientRegistrationId)) {
                 OAuth2AuthorizedClient result = delegate.loadAuthorizedClient(clientRegistrationId, principal, request);
                 if (result != null || repo.isClientCredentials(clientRegistrationId)) {
                     return (T) result;
@@ -108,7 +109,7 @@ public class AADOAuth2AuthorizedClientRepository implements OAuth2AuthorizedClie
                 if (repo.isAzureDelegatedClientRegistrations(clientRegistrationId)) {
                     OAuth2AuthorizedClient azureClient = loadAuthorizedClient(getAzureClientId(), principal, request);
                     if (azureClient == null) {
-                        throw new ClientAuthorizationRequiredException(AADClientRegistrationRepository.AZURE_CLIENT_REGISTRATION_ID);
+                        throw new ClientAuthorizationRequiredException(AZURE_CLIENT_REGISTRATION_ID);
                     }
                     OAuth2AuthorizedClient fakeAuthzClient = createFakeAuthzClient(azureClient, clientRegistrationId, principal);
                     OAuth2AuthorizationContext.Builder contextBuilder =
@@ -137,6 +138,13 @@ public class AADOAuth2AuthorizedClientRepository implements OAuth2AuthorizedClie
             return null;
         }
         return this.anonymousAuthorizedClientRepository.loadAuthorizedClient(clientRegistrationId, principal, request);
+    }
+
+    private boolean isClientOfWebApplication(String clientRegistrationId) {
+        return this.isWebApplicationOnly
+            || (isWebApplicationAndResourceServer
+                && (AZURE_CLIENT_REGISTRATION_ID.equals(clientRegistrationId)
+                    || repo.isAzureDelegatedClientRegistrations(clientRegistrationId)));
     }
 
     private Consumer<Map<String, Object>> getAttributesConsumer(String[] scopes) {
@@ -175,7 +183,7 @@ public class AADOAuth2AuthorizedClientRepository implements OAuth2AuthorizedClie
                                        HttpServletResponse response) {
 
         if (this.isPrincipalAuthenticated(principal)) {
-            if (this.isWebApplicationOnly || isWebApplicationAndResourceServer) {
+            if (isClientOfWebApplication(clientRegistrationId)) {
                 delegate.removeAuthorizedClient(clientRegistrationId, principal, request, response);
             } else {
                 service.removeAuthorizedClient(clientRegistrationId, principal.getName());

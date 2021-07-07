@@ -25,10 +25,6 @@ import org.springframework.core.type.AnnotatedTypeMetadata;
  */
 public final class AADConditions {
 
-    public static final String BEARER_TOKEN_AUTHENTICATION_TOKEN_CLASS_NAME =
-        "org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken";
-
-
     /**
      * Web application, web resource server or all in scenario condition.
      */

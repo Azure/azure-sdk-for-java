@@ -36,12 +36,12 @@ public class AADOAuth2ClientAutoConfiguration {
     private AADAuthenticationProperties properties;
 
     @Bean
-    public ClientRegistrationRepository clientRegistrationRepository() {
+    public AADClientRegistrationRepository clientRegistrationRepository() {
         return new AADClientRegistrationRepository(properties);
     }
 
     @Bean
-    public OAuth2AuthorizedClientRepository authorizedClientRepository(AADClientRegistrationRepository repo,
+    public AADOAuth2AuthorizedClientRepository authorizedClientRepository(AADClientRegistrationRepository repo,
                                                                        OAuth2AuthorizedClientService service) {
         return new AADOAuth2AuthorizedClientRepository(properties, repo, service);
     }
