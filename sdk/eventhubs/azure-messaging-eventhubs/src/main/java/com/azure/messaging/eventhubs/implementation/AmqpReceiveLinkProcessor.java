@@ -584,7 +584,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
         if (subscriber == null || request == 0) {
             credits = 0;
         } else if (request == Long.MAX_VALUE) {
-            credits = 1;
+            credits = prefetch;
         } else {
             final int remaining = Long.valueOf(request).intValue() - messageQueue.size();
             credits = Math.max(remaining, 0);
