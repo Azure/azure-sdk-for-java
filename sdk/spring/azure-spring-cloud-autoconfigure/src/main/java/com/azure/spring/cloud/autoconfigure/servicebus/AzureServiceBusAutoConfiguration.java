@@ -43,8 +43,6 @@ public class AzureServiceBusAutoConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureServiceBusAutoConfiguration.class);
 
-    private static final Pattern HOST_PORT_PATTERN = Pattern.compile("^[^:]+:\\d+");
-
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnBean({ AzureResourceManager.class, AzureProperties.class })
@@ -84,40 +82,6 @@ public class AzureServiceBusAutoConfiguration {
             namespace, connectionString);
 
         return null;
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    public ProxyOptions proxyOptions() {
-        com.azure.core.util.Configuration configuration = com.azure.core.util.Configuration.getGlobalConfiguration().clone();
-        ProxyAuthenticationType authentication = ProxyAuthenticationType.NONE;
-
-        String proxyAddress = configuration.get(com.azure.core.util.Configuration.PROPERTY_HTTP_PROXY);
-
-        if (CoreUtils.isNullOrEmpty(proxyAddress)) {
-            return ProxyOptions.SYSTEM_DEFAULTS;
-        }
-
-        return getProxyOptions(authentication, proxyAddress, configuration);
-    }
-
-    private ProxyOptions getProxyOptions(ProxyAuthenticationType authentication, String proxyAddress, com.azure.core.util.Configuration configuration) {
-        String host;
-        int port;
-        if (HOST_PORT_PATTERN.matcher(proxyAddress.trim()).find()) {
-            final String[] hostPort = proxyAddress.split(":");
-            host = hostPort[0];
-            port = Integer.parseInt(hostPort[1]);
-            final Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(host, port));
-            final String username = configuration.get(ProxyOptions.PROXY_USERNAME);
-            final String password = configuration.get(ProxyOptions.PROXY_PASSWORD);
-            return new ProxyOptions(authentication, proxy, username, password);
-        } else {
-            com.azure.core.http.ProxyOptions coreProxyOptions = com.azure.core.http.ProxyOptions
-                .fromConfiguration(configuration);
-            return new ProxyOptions(authentication, new Proxy(coreProxyOptions.getType().toProxyType(),
-                coreProxyOptions.getAddress()), coreProxyOptions.getUsername(), coreProxyOptions.getPassword());
-        }
     }
 
 }

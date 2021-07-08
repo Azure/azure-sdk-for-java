@@ -40,9 +40,6 @@ public class AzureServiceBusTopicAutoConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureServiceBusTopicAutoConfiguration.class);
 
-    @Autowired(required = false)
-    private ProxyOptions proxyOptions;
-
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnBean(ServiceBusNamespaceManager.class)
@@ -78,7 +75,7 @@ public class AzureServiceBusTopicAutoConfiguration {
         DefaultServiceBusTopicClientFactory clientFactory = new DefaultServiceBusTopicClientFactory(connectionString);
         clientFactory.retryOptions(properties.getRetryOptions());
         clientFactory.transportType(properties.getTransportType());
-        clientFactory.proxyOptions(proxyOptions);
+
         clientFactory.setNamespace(properties.getNamespace());
         clientFactory.setServiceBusNamespaceManager(namespaceManager);
         clientFactory.setServiceBusTopicManager(topicManager);

@@ -39,9 +39,6 @@ public class AzureServiceBusQueueAutoConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureServiceBusQueueAutoConfiguration.class);
 
-    @Autowired(required = false)
-    private ProxyOptions proxyOptions;
-
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnBean(ServiceBusNamespaceManager.class)
@@ -68,7 +65,6 @@ public class AzureServiceBusQueueAutoConfiguration {
 
         DefaultServiceBusQueueClientFactory clientFactory = new DefaultServiceBusQueueClientFactory(connectionString);
 
-        clientFactory.proxyOptions(proxyOptions);
         clientFactory.retryOptions(properties.getRetryOptions());
         clientFactory.transportType(properties.getTransportType());
 
