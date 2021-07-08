@@ -5,8 +5,8 @@ package com.azure.digitaltwins.core.snippets;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
-import com.azure.core.util.Context;
 import com.azure.core.models.JsonPatchDocument;
+import com.azure.core.util.Context;
 import com.azure.digitaltwins.core.BasicDigitalTwin;
 import com.azure.digitaltwins.core.BasicDigitalTwinMetadata;
 import com.azure.digitaltwins.core.BasicRelationship;

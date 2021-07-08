@@ -5,8 +5,8 @@ package com.azure.digitaltwins.core;
 
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.Response;
-import com.azure.core.util.Context;
 import com.azure.core.models.JsonPatchDocument;
+import com.azure.core.util.Context;
 import com.azure.digitaltwins.core.helpers.ConsoleLogger;
 import com.azure.digitaltwins.core.helpers.SamplesArguments;
 import com.azure.digitaltwins.core.helpers.SamplesConstants;

@@ -9,8 +9,8 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
-import com.azure.core.util.Context;
 import com.azure.core.models.JsonPatchDocument;
+import com.azure.core.util.Context;
 import com.azure.digitaltwins.core.models.CreateOrReplaceDigitalTwinOptions;
 import com.azure.digitaltwins.core.models.CreateOrReplaceRelationshipOptions;
 import com.azure.digitaltwins.core.models.DeleteDigitalTwinOptions;
@@ -27,8 +27,6 @@ import com.azure.digitaltwins.core.models.QueryOptions;
 import com.azure.digitaltwins.core.models.UpdateComponentOptions;
 import com.azure.digitaltwins.core.models.UpdateDigitalTwinOptions;
 import com.azure.digitaltwins.core.models.UpdateRelationshipOptions;
-
-import java.util.List;
 
 /**
  * This class provides a client for interacting synchronously with an Azure Digital Twins instance.
