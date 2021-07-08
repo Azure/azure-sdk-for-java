@@ -49,7 +49,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-ai-metricsadvisor</artifactId>
-      <version>1.0.0-beta.5</version> <!-- {x-version-update;com.azure:azure-ai-metricsadvisor;current} -->
+      <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-ai-metricsadvisor;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -169,7 +169,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.17.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+      <version>4.17.0</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -194,7 +194,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-data-tables</artifactId>
-      <version>12.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-data-tables;current} -->
+      <version>12.1.0</version> <!-- {x-version-update;com.azure:azure-data-tables;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -455,7 +455,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-spring-data-cosmos</artifactId>
-      <version>3.9.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;current} -->
+      <version>3.9.0</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
