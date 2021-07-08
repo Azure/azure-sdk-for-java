@@ -5,7 +5,7 @@
 * Adjust MicroBatchSize dynamically based on throttling rate in BulkExecutor.
 
 #### Key Bug Fixes
-* Fixed an issue where authentication context was missing in Barrier related requests.
+* Fixed an issue with AAD authentication in `Strong` and `BoundedStaleness` in direct mode.
 * Fixed an issue where `ChangeFeedProcessor` was resuming from zero continuation token for new partitions on partition splits.
 
 ### 4.16.0 (2021-06-11)
