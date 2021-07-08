@@ -74,7 +74,7 @@ stages:
                 JAVA_HOME: $(JAVA_HOME_8_X64)
               STORAGE_CONNECTION_STRING: $(PRIMARY_STORAGE_CONNECTION_STRING)
           - pwsh: |
-              New-Item $(Build.ArtifactStagingDirectory)/test-logs
+              New-Item $(Build.ArtifactStagingDirectory)/test-logs -ItemType directory
               Copy-Item sdk/storage/azure-storage-blob/target/test.log $(Build.ArtifactStagingDirectory)/test-logs/azure-storage-blob-test.log
               Copy-Item sdk/storage/azure-storage-blob-batch/target/test.log $(Build.ArtifactStagingDirectory)/test-logs/azure-storage-blob-batch-test.log
               Copy-Item sdk/storage/azure-storage-blob-changefeed/target/test.log $(Build.ArtifactStagingDirectory)/test-logs/azure-storage-blob-changefeed-test.log
