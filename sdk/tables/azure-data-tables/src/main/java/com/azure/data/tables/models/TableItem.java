@@ -2,12 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.data.tables.models;
 
+import com.azure.core.annotation.Immutable;
 import com.azure.data.tables.implementation.ModelHelper;
 import com.azure.data.tables.implementation.models.TableResponseProperties;
 
 /**
  * A table within a storage or CosmosDB table API account.
  */
+@Immutable
 public final class TableItem {
     private final String name;
     private final String odataType;

@@ -22,7 +22,7 @@ public final class FieldData extends FormElement {
     /**
      * Creates raw OCR FieldData item.
      *
-     * @param text The text content of ExtractedField.
+     * @param text The text content of this form element.
      * @param boundingBox The Bounding Box of the recognized field.
      * @param pageNumber the 1 based page number.
      * @param fieldElements The list of element references when includeFieldElements is set to true.

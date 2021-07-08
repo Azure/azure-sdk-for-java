@@ -22,7 +22,7 @@ public class ListIncidentsAlertedAsyncSample {
         final String alertConfigurationId = "ff3014a0-bbbb-41ec-a637-677e77b81299";
         final String alertId = "1746b031c00";
         final ListIncidentsAlertedOptions options = new ListIncidentsAlertedOptions()
-            .setTop(10);
+            .setMaxPageSize(10);
 
         PagedFlux<AnomalyIncident> incidentsPagedFlux = advisorAsyncClient.listIncidentsForAlert(
             alertConfigurationId,

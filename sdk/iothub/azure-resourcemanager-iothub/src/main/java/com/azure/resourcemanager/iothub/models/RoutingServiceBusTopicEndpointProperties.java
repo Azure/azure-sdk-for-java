@@ -46,6 +46,12 @@ public final class RoutingServiceBusTopicEndpointProperties {
     private AuthenticationType authenticationType;
 
     /*
+     * Managed identity properties of routing service bus topic endpoint.
+     */
+    @JsonProperty(value = "identity")
+    private ManagedIdentity identity;
+
+    /*
      * The name that identifies this endpoint. The name can only include
      * alphanumeric characters, periods, underscores, hyphens and has a maximum
      * length of 64 characters. The following names are reserved:  events,
@@ -168,6 +174,26 @@ public final class RoutingServiceBusTopicEndpointProperties {
     }
 
     /**
+     * Get the identity property: Managed identity properties of routing service bus topic endpoint.
+     *
+     * @return the identity value.
+     */
+    public ManagedIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Managed identity properties of routing service bus topic endpoint.
+     *
+     * @param identity the identity value to set.
+     * @return the RoutingServiceBusTopicEndpointProperties object itself.
+     */
+    public RoutingServiceBusTopicEndpointProperties withIdentity(ManagedIdentity identity) {
+        this.identity = identity;
+        return this;
+    }
+
+    /**
      * Get the name property: The name that identifies this endpoint. The name can only include alphanumeric characters,
      * periods, underscores, hyphens and has a maximum length of 64 characters. The following names are reserved:
      * events, fileNotifications, $default. Endpoint names must be unique across endpoint types. The name need not be
@@ -239,6 +265,9 @@ public final class RoutingServiceBusTopicEndpointProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (identity() != null) {
+            identity().validate();
+        }
         if (name() == null) {
             throw logger
                 .logExceptionAsError(

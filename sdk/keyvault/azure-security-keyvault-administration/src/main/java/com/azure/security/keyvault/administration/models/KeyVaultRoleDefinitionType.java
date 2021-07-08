@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 /**
  * Defines values for {@link KeyVaultRoleDefinitionType}.
  */
-public class KeyVaultRoleDefinitionType extends ExpandableStringEnum<KeyVaultRoleDefinitionType> {
+public final class KeyVaultRoleDefinitionType extends ExpandableStringEnum<KeyVaultRoleDefinitionType> {
     /**
      * Static value Microsoft.Authorization/roleDefinitions for {@link KeyVaultRoleDefinitionType}.
      */

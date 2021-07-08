@@ -14,7 +14,7 @@ import java.util.Map;
 @Fluent
 public class CreateRsaKeyOptions extends CreateKeyOptions {
     /**
-     * The AES key size.
+     * The RSA key size.
      */
     private Integer keySize;
 
@@ -23,6 +23,10 @@ public class CreateRsaKeyOptions extends CreateKeyOptions {
      */
     private boolean hardwareProtected;
 
+    /**
+     * The public exponent for the key.
+     */
+    private int publicExponent;
 
     /**
      * Creates a {@link CreateRsaKeyOptions} with {@code name} as name of the RSA key.
@@ -103,15 +107,6 @@ public class CreateRsaKeyOptions extends CreateKeyOptions {
     }
 
     /**
-     * Get the key size in bits.
-     *
-     * @return The key size in bits.
-     */
-    public Integer getKeySize() {
-        return this.keySize;
-    }
-
-    /**
      * Set the key size.
      *
      * @param keySize The key size to set.
@@ -122,6 +117,15 @@ public class CreateRsaKeyOptions extends CreateKeyOptions {
         this.keySize = keySize;
 
         return this;
+    }
+
+    /**
+     * Get the key size in bits.
+     *
+     * @return The key size in bits.
+     */
+    public Integer getKeySize() {
+        return this.keySize;
     }
 
     /**
@@ -147,5 +151,27 @@ public class CreateRsaKeyOptions extends CreateKeyOptions {
      */
     public Boolean isHardwareProtected() {
         return this.hardwareProtected;
+    }
+
+    /**
+     * Get the public exponent for the key.
+     *
+     * @return The public exponent.
+     */
+    public Integer getPublicExponent() {
+        return publicExponent;
+    }
+
+    /**
+     * Set the public exponent for the key.
+     *
+     * @param publicExponent The public exponent to set.
+     *
+     * @return The updated {@link CreateRsaKeyOptions} object.
+     */
+    public CreateRsaKeyOptions setPublicExponent(Integer publicExponent) {
+        this.publicExponent = publicExponent;
+
+        return this;
     }
 }

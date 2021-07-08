@@ -87,6 +87,8 @@ public final class CertificateAsyncClient {
     private final CertificateService service;
     private final ClientLogger logger = new ClientLogger(CertificateAsyncClient.class);
 
+    private final HttpPipeline pipeline;
+
     /**
      * Creates a CertificateAsyncClient that uses {@code pipeline} to service requests
      *
@@ -98,6 +100,7 @@ public final class CertificateAsyncClient {
         Objects.requireNonNull(vaultUrl, KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
         this.vaultUrl = vaultUrl.toString();
         this.service = RestProxy.create(CertificateService.class, pipeline);
+        this.pipeline = pipeline;
         apiVersion = version.getVersion();
     }
 
@@ -107,6 +110,15 @@ public final class CertificateAsyncClient {
      */
     public String getVaultUrl() {
         return vaultUrl;
+    }
+
+    /**
+     * Gets the {@link HttpPipeline} powering this client.
+     *
+     * @return The pipeline.
+     */
+    HttpPipeline getHttpPipeline() {
+        return this.pipeline;
     }
 
     Duration getDefaultPollingInterval() {
@@ -133,10 +145,10 @@ public final class CertificateAsyncClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> beginCreateCertificate(String certificateName, CertificatePolicy policy, Boolean isEnabled, Map<String, String> tags) {
         return new PollerFlux<>(getDefaultPollingInterval(),
-                activationOperation(certificateName, policy, isEnabled, tags),
-                createPollOperation(certificateName),
-                cancelOperation(certificateName),
-                fetchResultOperation(certificateName));
+            activationOperation(certificateName, policy, isEnabled, tags),
+            createPollOperation(certificateName),
+            cancelOperation(certificateName),
+            fetchResultOperation(certificateName));
     }
 
     private BiFunction<PollingContext<CertificateOperation>,
@@ -181,6 +193,7 @@ public final class CertificateAsyncClient {
      * @throws ResourceModifiedException when invalid certificate policy configuration is provided.
      * @return A {@link PollerFlux} polling on the create certificate operation status.
      */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> beginCreateCertificate(String certificateName, CertificatePolicy policy) {
         return beginCreateCertificate(certificateName, policy, true, null);
     }
@@ -1027,7 +1040,7 @@ public final class CertificateAsyncClient {
                 context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
                 .doOnRequest(ignored -> logger.verbose("Listing certificate versions - {}", certificateName))
                 .doOnSuccess(response -> logger.verbose("Listed certificate versions - {}", certificateName))
-                .doOnError(error -> logger.warning(String.format("Failed to list certificate versions - {}", certificateName), error));
+                .doOnError(error -> logger.warning("Failed to list certificate versions - {}", certificateName, error));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -1441,7 +1454,7 @@ public final class CertificateAsyncClient {
                 context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
                 .doOnRequest(ignored -> logger.verbose("Listing certificate issuers - {}"))
                 .doOnSuccess(response -> logger.verbose("Listed certificate issuers - {}"))
-                .doOnError(error -> logger.warning(String.format("Failed to list certificate issuers - {}"), error));
+                .doOnError(error -> logger.warning("Failed to list certificate issuers - {}", error));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -1509,6 +1522,7 @@ public final class CertificateAsyncClient {
      * @throws HttpResponseException if {@link CertificateIssuer#getName() name} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the {@link CertificateIssuer updated issuer}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CertificateIssuer>> updateIssuerWithResponse(CertificateIssuer issuer) {
         try {
             return withContext(context -> updateIssuerWithResponse(issuer, context));
@@ -1566,7 +1580,7 @@ public final class CertificateAsyncClient {
             context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignored -> logger.verbose("Listing certificate contacts - {}"))
             .doOnSuccess(response -> logger.verbose("Listed certificate contacts - {}"))
-            .doOnError(error -> logger.warning(String.format("Failed to list certificate contacts - {}"), error));
+            .doOnError(error -> logger.warning("Failed to list certificate contacts - {}", error));
     }
 
     /**
@@ -1601,7 +1615,7 @@ public final class CertificateAsyncClient {
                 context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
                 .doOnRequest(ignored -> logger.verbose("Listing certificate contacts - {}"))
                 .doOnSuccess(response -> logger.verbose("Listed certificate contacts - {}"))
-                .doOnError(error -> logger.warning(String.format("Failed to list certificate contacts - {}"), error));
+                .doOnError(error -> logger.warning("Failed to list certificate contacts - {}", error));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -1638,7 +1652,7 @@ public final class CertificateAsyncClient {
             context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignored -> logger.verbose("Deleting certificate contacts - {}"))
             .doOnSuccess(response -> logger.verbose("Deleted certificate contacts - {}"))
-            .doOnError(error -> logger.warning(String.format("Failed to delete certificate contacts - {}"), error));
+            .doOnError(error -> logger.warning("Failed to delete certificate contacts - {}", error));
     }
 
     /**
@@ -1700,6 +1714,7 @@ public final class CertificateAsyncClient {
     Mono<Response<CertificateOperation>> cancelCertificateOperationWithResponse(String certificateName, Context context) {
         context = context == null ? Context.NONE : context;
         CertificateOperationUpdateParameter parameter = new CertificateOperationUpdateParameter().cancellationRequested(true);
+
         return service.updateCertificateOperation(vaultUrl, certificateName, apiVersion, ACCEPT_LANGUAGE, parameter, CONTENT_TYPE_HEADER_VALUE,
             context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignored -> logger.verbose("Cancelling certificate operation - {}",  certificateName))

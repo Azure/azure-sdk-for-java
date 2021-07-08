@@ -14,7 +14,9 @@ import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.security.keyvault.keys.cryptography.models.DecryptParameters;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptResult;
+import com.azure.security.keyvault.keys.cryptography.models.EncryptParameters;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptResult;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
@@ -38,6 +40,7 @@ import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.security.keyvault.keys.models.KeyType.EC;
 import static com.azure.security.keyvault.keys.models.KeyType.EC_HSM;
 import static com.azure.security.keyvault.keys.models.KeyType.OCT;
+import static com.azure.security.keyvault.keys.models.KeyType.OCT_HSM;
 import static com.azure.security.keyvault.keys.models.KeyType.RSA;
 import static com.azure.security.keyvault.keys.models.KeyType.RSA_HSM;
 
@@ -49,6 +52,7 @@ import static com.azure.security.keyvault.keys.models.KeyType.RSA_HSM;
  * <p><strong>Samples to construct the sync client</strong></p>
  *
  * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.instantiation}
+ * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.withJsonWebKey.instantiation}
  * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.withHttpClient.instantiation}
  * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.withPipeline.instantiation}
  *
@@ -57,6 +61,7 @@ import static com.azure.security.keyvault.keys.models.KeyType.RSA_HSM;
 @ServiceClient(builder = CryptographyClientBuilder.class, isAsync = true, serviceInterfaces = CryptographyService.class)
 public class CryptographyAsyncClient {
     static final String KEY_VAULT_SCOPE = "https://vault.azure.net/.default";
+    static final String MHSM_SCOPE = "https://managedhsm.azure.net/.default";
     static final String SECRETS_COLLECTION = "secrets";
     // Please see <a href=https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
     // for more information on Azure resource provider namespaces.
@@ -66,6 +71,7 @@ public class CryptographyAsyncClient {
 
     private final ClientLogger logger = new ClientLogger(CryptographyAsyncClient.class);
     private final CryptographyService service;
+    private final HttpPipeline pipeline;
     private final String keyId;
 
     private CryptographyServiceClient cryptographyServiceClient;
@@ -83,6 +89,7 @@ public class CryptographyAsyncClient {
         unpackAndValidateId(keyId);
 
         this.keyId = keyId;
+        this.pipeline = pipeline;
         this.service = RestProxy.create(CryptographyService.class, pipeline);
         this.cryptographyServiceClient = new CryptographyServiceClient(keyId, service, version);
         this.key = null;
@@ -93,10 +100,8 @@ public class CryptographyAsyncClient {
      * operations.
      *
      * @param jsonWebKey The {@link JsonWebKey} to use for local cryptography operations.
-     * @param pipeline {@link HttpPipeline} that the HTTP requests and responses flow through.
-     * @param version {@link CryptographyServiceVersion} of the service to be used when making requests.
      */
-    CryptographyAsyncClient(JsonWebKey jsonWebKey, HttpPipeline pipeline, CryptographyServiceVersion version) {
+    CryptographyAsyncClient(JsonWebKey jsonWebKey) {
         Objects.requireNonNull(jsonWebKey, "The JSON Web Key is required.");
 
         if (!jsonWebKey.isValid()) {
@@ -112,15 +117,10 @@ public class CryptographyAsyncClient {
         }
 
         this.key = jsonWebKey;
-        this.keyId = key.getId();
-        this.service = pipeline != null ? RestProxy.create(CryptographyService.class, pipeline) : null;
-
-        if (!Strings.isNullOrEmpty(key.getId()) && version != null && service != null) {
-            unpackAndValidateId(key.getId());
-            cryptographyServiceClient = new CryptographyServiceClient(key.getId(), service, version);
-        } else {
-            cryptographyServiceClient = null;
-        }
+        this.keyId = jsonWebKey.getId();
+        this.pipeline = null;
+        this.service = null;
+        this.cryptographyServiceClient = null;
 
         initializeCryptoClients();
     }
@@ -134,12 +134,21 @@ public class CryptographyAsyncClient {
             this.localKeyCryptographyClient = new RsaKeyCryptographyClient(this.key, this.cryptographyServiceClient);
         } else if (key.getKeyType().equals(EC) || key.getKeyType().equals(EC_HSM)) {
             this.localKeyCryptographyClient = new EcKeyCryptographyClient(this.key, this.cryptographyServiceClient);
-        } else if (key.getKeyType().equals(OCT)) {
+        } else if (key.getKeyType().equals(OCT) || key.getKeyType().equals(OCT_HSM)) {
             this.localKeyCryptographyClient = new AesKeyCryptographyClient(this.key, this.cryptographyServiceClient);
         } else {
             throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
                 "The JSON Web Key type: %s is not supported.", this.key.getKeyType().toString())));
         }
+    }
+
+    /**
+     * Gets the {@link HttpPipeline} powering this client.
+     *
+     * @return The pipeline.
+     */
+    HttpPipeline getHttpPipeline() {
+        return this.pipeline;
     }
 
     Mono<String> getKeyId() {
@@ -148,7 +157,7 @@ public class CryptographyAsyncClient {
 
     /**
      * Gets the public part of the configured key. The get key operation is applicable to all key types and it requires
-     * the {@code keys/get} permission.
+     * the {@code keys/get} permission for non-local operations.
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Gets the configured key in the client. Subscribes to the call asynchronously and prints out the returned key
@@ -161,7 +170,7 @@ public class CryptographyAsyncClient {
      * @throws ResourceNotFoundException When the configured key doesn't exist in the key vault.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<KeyVaultKey> getKey() {
+    public Mono<KeyVaultKey> getKey() {
         try {
             return getKeyWithResponse().flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
@@ -171,7 +180,7 @@ public class CryptographyAsyncClient {
 
     /**
      * Gets the public part of the configured key. The get key operation is applicable to all key types and it requires
-     * the {@code keys/get} permission.
+     * the {@code keys/get} permission for non-local operations.
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Gets the configured key in the client. Subscribes to the call asynchronously and prints out the returned key
@@ -185,7 +194,7 @@ public class CryptographyAsyncClient {
      * @throws ResourceNotFoundException When the configured key doesn't exist in the key vault.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<KeyVaultKey>> getKeyWithResponse() {
+    public Mono<Response<KeyVaultKey>> getKeyWithResponse() {
         try {
             return withContext(this::getKeyWithResponse);
         } catch (RuntimeException ex) {
@@ -194,7 +203,12 @@ public class CryptographyAsyncClient {
     }
 
     Mono<Response<KeyVaultKey>> getKeyWithResponse(Context context) {
-        return cryptographyServiceClient.getKey(context);
+        if (cryptographyServiceClient != null) {
+            return cryptographyServiceClient.getKey(context);
+        } else {
+            throw logger.logExceptionAsError(new UnsupportedOperationException(
+                "Operation not supported when in operating local-only mode"));
+        }
     }
 
     Mono<JsonWebKey> getSecretKey() {
@@ -210,7 +224,8 @@ public class CryptographyAsyncClient {
      * Encrypts an arbitrary sequence of bytes using the configured key. Note that the encrypt operation only supports
      * a single block of data, the size of which is dependent on the target key and the encryption algorithm to be used.
      * The encrypt operation is supported for both symmetric keys and asymmetric keys. In case of asymmetric keys, the
-     * public portion of the key is used for encryption. This operation requires the {@code keys/encrypt} permission.
+     * public portion of the key is used for encryption. This operation requires the {@code keys/encrypt} permission
+     * for non-local operations.
      *
      * <p>The {@link EncryptionAlgorithm encryption algorithm} indicates the type of algorithm to use for encrypting the
      * specified {@code plaintext}. Possible values for asymmetric keys include:
@@ -218,9 +233,12 @@ public class CryptographyAsyncClient {
      * {@link EncryptionAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
      *
      * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128CBC A128CBC},
-     * {@link EncryptionAlgorithm#A128CBC_HS256 A128CBC-HS256}, {@link EncryptionAlgorithm#A192CBC A192CBC},
-     * {@link EncryptionAlgorithm#A192CBC_HS384 A192CBC-HS384}, {@link EncryptionAlgorithm#A256CBC A256CBC} and
-     * {@link EncryptionAlgorithm#A256CBC_HS512 A256CBC-HS512}</p>
+     * {@link EncryptionAlgorithm#A128CBCPAD A128CBCPAD}, {@link EncryptionAlgorithm#A128CBC_HS256 A128CBC-HS256},
+     * {@link EncryptionAlgorithm#A128GCM A128GCM}, {@link EncryptionAlgorithm#A192CBC A192CBC},
+     * {@link EncryptionAlgorithm#A192CBCPAD A192CBCPAD}, {@link EncryptionAlgorithm#A192CBC_HS384 A192CBC-HS384},
+     * {@link EncryptionAlgorithm#A192GCM A192GCM}, {@link EncryptionAlgorithm#A256CBC A256CBC},
+     * {@link EncryptionAlgorithm#A256CBCPAD A256CBPAD}, {@link EncryptionAlgorithm#A256CBC_HS512 A256CBC-HS512} and
+     * {@link EncryptionAlgorithm#A256GCM A256GCM}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Encrypts the content. Subscribes to the call asynchronously and prints out the encrypted content details when
@@ -240,17 +258,59 @@ public class CryptographyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EncryptResult> encrypt(EncryptionAlgorithm algorithm, byte[] plaintext) {
+        Objects.requireNonNull(algorithm, "'algorithm' cannot be null.");
+        Objects.requireNonNull(plaintext, "'plaintext' cannot be null.");
+
+        return encrypt(algorithm, plaintext, null);
+    }
+
+    /**
+     * Encrypts an arbitrary sequence of bytes using the configured key. Note that the encrypt operation only supports
+     * a single block of data, the size of which is dependent on the target key and the encryption algorithm to be used.
+     * The encrypt operation is supported for both symmetric keys and asymmetric keys. In case of asymmetric keys, the
+     * public portion of the key is used for encryption. This operation requires the {@code keys/encrypt} permission
+     * for non-local operations.
+     *
+     * <p>The {@link EncryptionAlgorithm encryption algorithm} indicates the type of algorithm to use for encrypting the
+     * specified {@code plaintext}. Possible values for asymmetric keys include:
+     * {@link EncryptionAlgorithm#RSA1_5 RSA1_5}, {@link EncryptionAlgorithm#RSA_OAEP RSA_OAEP} and
+     * {@link EncryptionAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
+     *
+     * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128CBC A128CBC},
+     * {@link EncryptionAlgorithm#A128CBCPAD A128CBCPAD}, {@link EncryptionAlgorithm#A128CBC_HS256 A128CBC-HS256},
+     * {@link EncryptionAlgorithm#A128GCM A128GCM}, {@link EncryptionAlgorithm#A192CBC A192CBC},
+     * {@link EncryptionAlgorithm#A192CBCPAD A192CBCPAD}, {@link EncryptionAlgorithm#A192CBC_HS384 A192CBC-HS384},
+     * {@link EncryptionAlgorithm#A192GCM A192GCM}, {@link EncryptionAlgorithm#A256CBC A256CBC},
+     * {@link EncryptionAlgorithm#A256CBCPAD A256CBPAD}, {@link EncryptionAlgorithm#A256CBC_HS512 A256CBC-HS512} and
+     * {@link EncryptionAlgorithm#A256GCM A256GCM}.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Encrypts the content. Subscribes to the call asynchronously and prints out the encrypted content details when
+     * a response has been received.</p>
+     *
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.encrypt#EncryptParameters}
+     *
+     * @param encryptParameters The parameters to use in the encryption operation.
+     *
+     * @return A {@link Mono} containing a {@link EncryptResult} whose {@link EncryptResult#getCipherText() cipher text}
+     * contains the encrypted content.
+     *
+     * @throws NullPointerException If {@code algorithm} or {@code plaintext} are {@code null}.
+     * @throws ResourceNotFoundException If the key cannot be found for encryption.
+     * @throws UnsupportedOperationException If the encrypt operation is not supported or configured on the key.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<EncryptResult> encrypt(EncryptParameters encryptParameters) {
+        Objects.requireNonNull(encryptParameters, "'encryptParameters' cannot be null.");
+
         try {
-            return withContext(context -> encrypt(algorithm, plaintext, context));
+            return withContext(context -> encrypt(encryptParameters, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
     Mono<EncryptResult> encrypt(EncryptionAlgorithm algorithm, byte[] plaintext, Context context) {
-        Objects.requireNonNull(algorithm, "Encryption algorithm cannot be null.");
-        Objects.requireNonNull(plaintext, "Plain text content to be encrypted cannot be null.");
-
         return ensureValidKeyAvailable().flatMap(available -> {
             if (!available) {
                 return cryptographyServiceClient.encrypt(algorithm, plaintext, context);
@@ -265,11 +325,26 @@ public class CryptographyAsyncClient {
         });
     }
 
+    Mono<EncryptResult> encrypt(EncryptParameters encryptParameters, Context context) {
+        return ensureValidKeyAvailable().flatMap(available -> {
+            if (!available) {
+                return cryptographyServiceClient.encrypt(encryptParameters, context);
+            }
+
+            if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.ENCRYPT)) {
+                return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format(
+                    "Encrypt operation is missing permission/not supported for key with id: %s", key.getId()))));
+            }
+
+            return localKeyCryptographyClient.encryptAsync(encryptParameters, context, key);
+        });
+    }
+
     /**
      * Decrypts a single block of encrypted data using the configured key and specified algorithm. Note that only a
      * single block of data may be decrypted, the size of this block is dependent on the target key and the algorithm
      * to be used. The decrypt operation is supported for both asymmetric and symmetric keys. This operation requires
-     * the {@code keys/decrypt} permission.
+     * the {@code keys/decrypt} permission for non-local operations.
      *
      * <p>The {@link EncryptionAlgorithm encryption algorithm} indicates the type of algorithm to use for decrypting
      * the specified encrypted content. Possible values for asymmetric keys include:
@@ -277,9 +352,12 @@ public class CryptographyAsyncClient {
      * {@link EncryptionAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
      *
      * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128CBC A128CBC},
-     * {@link EncryptionAlgorithm#A128CBC_HS256 A128CBC-HS256}, {@link EncryptionAlgorithm#A192CBC A192CBC},
-     * {@link EncryptionAlgorithm#A192CBC_HS384 A192CBC-HS384}, {@link EncryptionAlgorithm#A256CBC A256CBC} and
-     * {@link EncryptionAlgorithm#A256CBC_HS512 A256CBC-HS512} </p>
+     * {@link EncryptionAlgorithm#A128CBCPAD A128CBCPAD}, {@link EncryptionAlgorithm#A128CBC_HS256 A128CBC-HS256},
+     * {@link EncryptionAlgorithm#A128GCM A128GCM}, {@link EncryptionAlgorithm#A192CBC A192CBC},
+     * {@link EncryptionAlgorithm#A192CBCPAD A192CBCPAD}, {@link EncryptionAlgorithm#A192CBC_HS384 A192CBC-HS384},
+     * {@link EncryptionAlgorithm#A192GCM A192GCM}, {@link EncryptionAlgorithm#A256CBC A256CBC},
+     * {@link EncryptionAlgorithm#A256CBCPAD A256CBPAD}, {@link EncryptionAlgorithm#A256CBC_HS512 A256CBC-HS512} and
+     * {@link EncryptionAlgorithm#A256GCM A256GCM}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Decrypts the encrypted content. Subscribes to the call asynchronously and prints out the decrypted content
@@ -298,32 +376,89 @@ public class CryptographyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DecryptResult> decrypt(EncryptionAlgorithm algorithm, byte[] ciphertext) {
+        Objects.requireNonNull(algorithm, "'algorithm' cannot be null.");
+        Objects.requireNonNull(algorithm, "'ciphertext' cannot be null.");
+
+        return decrypt(algorithm, ciphertext, null);
+    }
+
+    /**
+     * Decrypts a single block of encrypted data using the configured key and specified algorithm. Note that only a
+     * single block of data may be decrypted, the size of this block is dependent on the target key and the algorithm
+     * to be used. The decrypt operation is supported for both asymmetric and symmetric keys. This operation requires
+     * the {@code keys/decrypt} permission for non-local operations.
+     *
+     * <p>The {@link EncryptionAlgorithm encryption algorithm} indicates the type of algorithm to use for decrypting
+     * the specified encrypted content. Possible values for asymmetric keys include:
+     * {@link EncryptionAlgorithm#RSA1_5 RSA1_5}, {@link EncryptionAlgorithm#RSA_OAEP RSA_OAEP} and
+     * {@link EncryptionAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
+     *
+     * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128CBC A128CBC},
+     * {@link EncryptionAlgorithm#A128CBCPAD A128CBCPAD}, {@link EncryptionAlgorithm#A128CBC_HS256 A128CBC-HS256},
+     * {@link EncryptionAlgorithm#A128GCM A128GCM}, {@link EncryptionAlgorithm#A192CBC A192CBC},
+     * {@link EncryptionAlgorithm#A192CBCPAD A192CBCPAD}, {@link EncryptionAlgorithm#A192CBC_HS384 A192CBC-HS384},
+     * {@link EncryptionAlgorithm#A192GCM A192GCM}, {@link EncryptionAlgorithm#A256CBC A256CBC},
+     * {@link EncryptionAlgorithm#A256CBCPAD A256CBPAD}, {@link EncryptionAlgorithm#A256CBC_HS512 A256CBC-HS512} and
+     * {@link EncryptionAlgorithm#A256GCM A256GCM}.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Decrypts the encrypted content. Subscribes to the call asynchronously and prints out the decrypted content
+     * details when a response has been received.</p>
+     *
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.decrypt#DecryptParameters}
+     *
+     * @param decryptParameters The parameters to use in the decryption operation.
+     *
+     * @return A {@link Mono} containing the decrypted blob.
+     *
+     * @throws NullPointerException If {@code algorithm} or {@code ciphertext} are {@code null}.
+     * @throws ResourceNotFoundException If the key cannot be found for decryption.
+     * @throws UnsupportedOperationException If the decrypt operation is not supported or configured on the key.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DecryptResult> decrypt(DecryptParameters decryptParameters) {
+        Objects.requireNonNull(decryptParameters, "'decryptParameters' cannot be null.");
+
         try {
-            return withContext(context -> decrypt(algorithm, ciphertext, context));
+            return withContext(context -> decrypt(decryptParameters, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<DecryptResult> decrypt(EncryptionAlgorithm algorithm, byte[] cipherText, Context context) {
-        Objects.requireNonNull(algorithm, "Encryption algorithm cannot be null.");
-        Objects.requireNonNull(cipherText, "Cipher text content to be decrypted cannot be null.");
+    Mono<DecryptResult> decrypt(EncryptionAlgorithm algorithm, byte[] ciphertext, Context context) {
         return ensureValidKeyAvailable().flatMap(available -> {
             if (!available) {
-                return cryptographyServiceClient.decrypt(algorithm, cipherText, context);
+                return cryptographyServiceClient.decrypt(algorithm, ciphertext, context);
             }
 
             if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.DECRYPT)) {
                 return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format(
                     "Decrypt operation is not allowed for key with id: %s", key.getId()))));
             }
-            return localKeyCryptographyClient.decryptAsync(algorithm, cipherText, context, key);
+
+            return localKeyCryptographyClient.decryptAsync(algorithm, ciphertext, context, key);
+        });
+    }
+
+    Mono<DecryptResult> decrypt(DecryptParameters decryptParameters, Context context) {
+        return ensureValidKeyAvailable().flatMap(available -> {
+            if (!available) {
+                return cryptographyServiceClient.decrypt(decryptParameters, context);
+            }
+
+            if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.DECRYPT)) {
+                return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format(
+                    "Decrypt operation is not allowed for key with id: %s", key.getId()))));
+            }
+
+            return localKeyCryptographyClient.decryptAsync(decryptParameters, context, key);
         });
     }
 
     /**
      * Creates a signature from a digest using the configured key. The sign operation supports both asymmetric and
-     * symmetric keys. This operation requires the {@code keys/sign} permission.
+     * symmetric keys. This operation requires the {@code keys/sign} permission for non-local operations.
      *
      * <p>The {@link SignatureAlgorithm signature algorithm} indicates the type of algorithm to use to create the
      * signature from the digest. Possible values include:
@@ -379,7 +514,7 @@ public class CryptographyAsyncClient {
     /**
      * Verifies a signature using the configured key. The verify operation supports both symmetric keys and asymmetric
      * keys. In case of asymmetric keys public portion of the key is used to verify the signature. This operation
-     * requires the {@code keys/verify} permission.
+     * requires the {@code keys/verify} permission for non-local operations.
      *
      * <p>The {@link SignatureAlgorithm signature algorithm} indicates the type of algorithm to use to verify the
      * signature. Possible values include: {@link SignatureAlgorithm#ES256 ES256},
@@ -436,15 +571,16 @@ public class CryptographyAsyncClient {
 
     /**
      * Wraps a symmetric key using the configured key. The wrap operation supports wrapping a symmetric key with both
-     * symmetric and asymmetric keys. This operation requires the {@code keys/wrapKey} permission.
+     * symmetric and asymmetric keys. This operation requires the {@code keys/wrapKey} permission for non-local
+     * operations.
      *
      * <p>The {@link KeyWrapAlgorithm wrap algorithm} indicates the type of algorithm to use for wrapping the specified
      * key content. Possible values include:
      * {@link KeyWrapAlgorithm#RSA1_5 RSA1_5}, {@link KeyWrapAlgorithm#RSA_OAEP RSA_OAEP} and
      * {@link KeyWrapAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
      *
-     * Possible values for symmetric keys include: {@link KeyWrapAlgorithm#A128KW A128KW},
-     * {@link KeyWrapAlgorithm#A192KW A192KW} and {@link KeyWrapAlgorithm#A256KW A256KW}.</p>
+     * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128KW A128KW},
+     * {@link EncryptionAlgorithm#A192KW A192KW} and {@link EncryptionAlgorithm#A256KW A256KW}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Wraps the key content. Subscribes to the call asynchronously and prints out the wrapped key details when a
@@ -474,6 +610,7 @@ public class CryptographyAsyncClient {
     Mono<WrapResult> wrapKey(KeyWrapAlgorithm algorithm, byte[] key, Context context) {
         Objects.requireNonNull(algorithm, "Key wrap algorithm cannot be null.");
         Objects.requireNonNull(key, "Key content to be wrapped cannot be null.");
+
         return ensureValidKeyAvailable().flatMap(available -> {
             if (!available) {
                 return cryptographyServiceClient.wrapKey(algorithm, key, context);
@@ -491,7 +628,7 @@ public class CryptographyAsyncClient {
     /**
      * Unwraps a symmetric key using the configured key that was initially used for wrapping that key. This operation
      * is the reverse of the wrap operation. The unwrap operation supports asymmetric and symmetric keys to unwrap. This
-     * operation requires the {@code keys/unwrapKey} permission.
+     * operation requires the {@code keys/unwrapKey} permission for non-local operations.
      *
      * <p>The {@link KeyWrapAlgorithm wrap algorithm} indicates the type of algorithm to use for unwrapping the
      * specified encrypted key content. Possible values for asymmetric keys include:
@@ -539,13 +676,14 @@ public class CryptographyAsyncClient {
                 return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format(
                     "Unwrap Key operation is not allowed for key with id: %s", this.key.getId()))));
             }
+
             return localKeyCryptographyClient.unwrapKeyAsync(algorithm, encryptedKey, context, key);
         });
     }
 
     /**
      * Creates a signature from the raw data using the configured key. The sign data operation supports both asymmetric
-     * and symmetric keys. This operation requires the {@code keys/sign} permission.
+     * and symmetric keys. This operation requires the {@code keys/sign} permission for non-local operations.
      *
      * <p>The {@link SignatureAlgorithm signature algorithm} indicates the type of algorithm to use to sign the digest.
      * Possible values include:
@@ -601,7 +739,7 @@ public class CryptographyAsyncClient {
     /**
      * Verifies a signature against the raw data using the configured key. The verify operation supports both symmetric
      * keys and asymmetric keys. In case of asymmetric keys public portion of the key is used to verify the signature.
-     * This operation requires the {@code keys/verify} permission.
+     * This operation requires the {@code keys/verify} permission for non-local operations.
      *
      * <p>The {@link SignatureAlgorithm signature algorithm} indicates the type of algorithm to use to verify the
      * signature. Possible values include:
@@ -688,8 +826,9 @@ public class CryptographyAsyncClient {
 
     private Mono<Boolean> ensureValidKeyAvailable() {
         boolean keyNotAvailable = (key == null && keyCollection != null);
+        boolean keyNotValid = (key != null && !key.isValid());
 
-        if (keyNotAvailable) {
+        if (keyNotAvailable || keyNotValid) {
             if (keyCollection.equals(SECRETS_COLLECTION)) {
                 return getSecretKey().map(jsonWebKey -> {
                     key = (jsonWebKey);

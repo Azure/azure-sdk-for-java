@@ -4,10 +4,10 @@
 package com.azure.ai.metricsadvisor;
 
 import com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient;
-import com.azure.ai.metricsadvisor.models.AnomalyDetectionConfiguration;
-import com.azure.ai.metricsadvisor.models.DataFeed;
-import com.azure.ai.metricsadvisor.models.DataFeedMetric;
-import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
+import com.azure.ai.metricsadvisor.administration.models.AnomalyDetectionConfiguration;
+import com.azure.ai.metricsadvisor.administration.models.DataFeed;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedMetric;
+import com.azure.ai.metricsadvisor.administration.models.ListDetectionConfigsOptions;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.CoreUtils;
@@ -57,7 +57,7 @@ public class DetectionConfigurationAsyncTest extends DetectionConfigurationTestB
             final DataFeedMetric costMetric = optMetric.get();
             final String costMetricId = costMetric.getId();
 
-            StepVerifier.create(client.createMetricAnomalyDetectionConfig(costMetricId,
+            StepVerifier.create(client.createDetectionConfig(costMetricId,
                 CreateDetectionConfigurationForWholeSeriesInput.INSTANCE.detectionConfiguration))
                 .assertNext(configuration -> {
                     id.set(configuration.getId());
@@ -67,7 +67,7 @@ public class DetectionConfigurationAsyncTest extends DetectionConfigurationTestB
 
         } finally {
             if (!CoreUtils.isNullOrEmpty(id.get())) {
-                StepVerifier.create(client.deleteMetricAnomalyDetectionConfiguration(id.get()))
+                StepVerifier.create(client.deleteDetectionConfig(id.get()))
                     .verifyComplete();
             }
             if (dataFeed != null) {
@@ -95,7 +95,7 @@ public class DetectionConfigurationAsyncTest extends DetectionConfigurationTestB
             final DataFeedMetric costMetric = optMetric.get();
             final String costMetricId = costMetric.getId();
 
-            StepVerifier.create(client.createMetricAnomalyDetectionConfig(costMetricId,
+            StepVerifier.create(client.createDetectionConfig(costMetricId,
                 CreateDetectionConfigurationForSeriesAndGroupInput.INSTANCE.detectionConfiguration))
                 .assertNext(configuration -> {
                     assertNotNull(configuration);
@@ -105,7 +105,7 @@ public class DetectionConfigurationAsyncTest extends DetectionConfigurationTestB
                 .verifyComplete();
         } finally {
             if (!CoreUtils.isNullOrEmpty(id.get())) {
-                StepVerifier.create(client.deleteMetricAnomalyDetectionConfiguration(id.get()))
+                StepVerifier.create(client.deleteDetectionConfig(id.get()))
                     .verifyComplete();
             }
             if (dataFeed != null) {
@@ -134,7 +134,7 @@ public class DetectionConfigurationAsyncTest extends DetectionConfigurationTestB
             final DataFeedMetric costMetric = optMetric.get();
             final String costMetricId = costMetric.getId();
 
-            StepVerifier.create(client.createMetricAnomalyDetectionConfig(costMetricId,
+            StepVerifier.create(client.createDetectionConfig(costMetricId,
                 CreateDetectionConfigurationForMultipleSeriesAndGroupInput.INSTANCE.detectionConfiguration))
                 .assertNext(configuration -> {
                     assertNotNull(configuration);
@@ -143,14 +143,15 @@ public class DetectionConfigurationAsyncTest extends DetectionConfigurationTestB
                 })
                 .verifyComplete();
 
-            StepVerifier.create(client.listMetricAnomalyDetectionConfigs(costMetricId))
+            StepVerifier.create(client.listDetectionConfigs(costMetricId,
+                new ListDetectionConfigsOptions()))
                 // Expect 2 config: Default + the one just created.
                 .assertNext(configuration -> assertNotNull(configuration))
                 .assertNext(configuration -> assertNotNull(configuration))
                 .verifyComplete();
         } finally {
             if (!CoreUtils.isNullOrEmpty(id.get())) {
-                StepVerifier.create(client.deleteMetricAnomalyDetectionConfiguration(id.get()))
+                StepVerifier.create(client.deleteDetectionConfig(id.get()))
                     .verifyComplete();
             }
             if (dataFeed != null) {
@@ -179,7 +180,7 @@ public class DetectionConfigurationAsyncTest extends DetectionConfigurationTestB
             final String costMetricId = costMetric.getId();
 
             final AnomalyDetectionConfiguration[] configs = new AnomalyDetectionConfiguration[1];
-            StepVerifier.create(client.createMetricAnomalyDetectionConfig(costMetricId,
+            StepVerifier.create(client.createDetectionConfig(costMetricId,
                 UpdateDetectionConfigurationInput.INSTANCE.detectionConfiguration))
                 .assertNext(configuration -> {
                     assertNotNull(configuration);
@@ -197,7 +198,7 @@ public class DetectionConfigurationAsyncTest extends DetectionConfigurationTestB
                 .INSTANCE
                 .seriesGroupConditionToAddOnUpdate);
 
-            StepVerifier.create(client.updateMetricAnomalyDetectionConfig(config))
+            StepVerifier.create(client.updateDetectionConfig(config))
                 .assertNext(configuration -> {
                     id.set(configuration.getId());
                     super.assertUpdateDetectionConfigurationOutput(configuration, costMetricId);
@@ -205,7 +206,7 @@ public class DetectionConfigurationAsyncTest extends DetectionConfigurationTestB
                 .verifyComplete();
         } finally {
             if (!CoreUtils.isNullOrEmpty(id.get())) {
-                StepVerifier.create(client.deleteMetricAnomalyDetectionConfiguration(id.get()))
+                StepVerifier.create(client.deleteDetectionConfig(id.get()))
                     .verifyComplete();
             }
             if (dataFeed != null) {

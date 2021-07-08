@@ -3,7 +3,8 @@
 package com.azure.spring.autoconfigure.cosmos;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.boot.context.properties.ConfigurationPropertiesBindException;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.context.properties.bind.validation.BindValidationException;
@@ -16,14 +17,16 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.azure.spring.autoconfigure.cosmos.PropertySettingUtil.configureCosmosProperties;
 import static org.assertj.core.api.Assertions.assertThat;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class CosmosPropertiesTest {
+
     @Test
     public void canSetAllProperties() {
-        PropertySettingUtil.setProperties();
-
         try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext()) {
+            configureCosmosProperties(context);
             context.register(Config.class);
             context.refresh();
             final CosmosProperties properties = context.getBean(CosmosProperties.class);
@@ -31,27 +34,9 @@ public class CosmosPropertiesTest {
             assertThat(properties.getUri()).isEqualTo(PropertySettingUtil.URI);
             assertThat(properties.getKey()).isEqualTo(PropertySettingUtil.KEY);
             assertThat(properties.getConsistencyLevel()).isEqualTo(PropertySettingUtil.CONSISTENCY_LEVEL);
-            assertThat(properties.isAllowTelemetry()).isEqualTo(PropertySettingUtil.ALLOW_TELEMETRY_TRUE);
             assertThat(properties.isPopulateQueryMetrics()).isEqualTo(PropertySettingUtil.POPULATE_QUERY_METRICS);
             assertThat(properties.getConnectionMode()).isEqualTo(PropertySettingUtil.CONNECTION_MODE);
         }
-
-        PropertySettingUtil.unsetProperties();
-    }
-
-    @Test
-    public void canSetAllowTelemetryFalse() {
-        PropertySettingUtil.setAllowTelemetryFalse();
-
-        try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext()) {
-            context.register(Config.class);
-            context.refresh();
-            final CosmosProperties properties = context.getBean(CosmosProperties.class);
-
-            assertThat(properties.isAllowTelemetry()).isEqualTo(PropertySettingUtil.ALLOW_TELEMETRY_FALSE);
-        }
-
-        PropertySettingUtil.unsetProperties();
     }
 
     @Test
@@ -77,9 +62,9 @@ public class CosmosPropertiesTest {
             Collections.sort(errorStrings);
 
             final List<String> errorStringsExpected = Arrays.asList(
-                    "Field error in object 'azure.cosmos' on field 'database': rejected value [null];",
-                    "Field error in object 'azure.cosmos' on field 'key': rejected value [null];",
-                    "Field error in object 'azure.cosmos' on field 'uri': rejected value [null];"
+                "Field error in object 'azure.cosmos' on field 'database': rejected value [null];",
+                "Field error in object 'azure.cosmos' on field 'key': rejected value [null];",
+                "Field error in object 'azure.cosmos' on field 'uri': rejected value [null];"
             );
 
             assertThat(errorStrings.size()).isEqualTo(errorStringsExpected.size());

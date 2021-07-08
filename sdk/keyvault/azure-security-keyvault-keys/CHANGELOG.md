@@ -1,12 +1,44 @@
 # Release History
 
-## 4.3.0-beta.1 (Unreleased)
+## 4.4.0-beta.1 (Unreleased)
 
 
-## 4.2.8 (2021-05-14)
+## 4.3.0 (2021-06-17)
 
-### Bug Fixes
-- Fixed an issue that prevented setting tags when creating a key using `KeyClient` and `KeyAsyncClient`.
+### Features Added
+- Changed default service version to `7.2`.
+- Added `KeyVaultKeyIdentifier` to parse key URLs.
+- Added local-only support for `CryptographyClient` and `CryptographyAsyncClient` by providing a `JsonWebKey` during client creation.
+- Added `KeyType.OCT-HSM` to support oct-HSM key operations to support Managed HSM.
+- Added the `CreateOctKeyOptions` class and associated `createOctKey()` methods.
+- Added AES-GCM and AES-CBC support for encrypting and decrypting, including new `Encrypt` and `Decrypt` overloads.
+- Added the ability to set a public exponent on RSA keys during creation.
+- Made all getters for properties of a `JsonWebKey` public.
+
+### Changes since 4.3.0-beta.8
+
+#### Bug Fixes
+- Ensured that `RetryPolicy` and `HttpLogOptions` use a default implementation when creating Key Vault clients if not set or set to `null`.
+
+#### New Features
+- Added `createOctKey()` and `createOctKeyWithResponse()` to `KeyClient` and `KeyAsyncClient`.
+- Added factory methods for RSA algorithms in `DecryptParameters` and `EncryptParameters`:
+    - `createRsa15Parameters()`
+    - `createRsaOaepParameters()`
+    - `createRsaOaep256Parameters()`
+
+#### Breaking Changes
+- Removed `EXPORT` from the `KeyOperation` enum.
+- Re-ordered parameters in the `EncryptResult` constructor to show `authenticationTag` before `additionalAuthenticatedData` to align with classes like `DecryptParameters`.
+- Removed service method overloads that take a `pollingInterval`, since `PollerFlux` and `SyncPoller` objects allow for setting this value directly on them.
+- Moved `EncryptParameters` and `DecryptParameters` from the `cryptography` package to the `cryptography.models` package and made them both `final`.
+
+#### Non-Breaking
+- Renamed `keyId` to `sourceId` in `KeyVaultKeyIdentifier`.
+- `KeyVaultKeyIdentifier` can now be used to parse any Key Vault identifier.
+- Added the `@ServiceMethod` annotation to all public methods that call the Key Vault service in `KeyClient`, `KeyAsyncClient`, `CryptographyClient` and `CryptographyAsyncClient`.
+
+## 4.3.0-beta.8 (2021-05-15)
 
 ### Dependency Updates
 - Upgraded `azure-core` dependency to `1.16.0`
@@ -14,11 +46,39 @@
 - Upgraded `azure-core-http-okhttp` dependency to `1.6.2`
 - Upgraded `azure-identity` dependency to `1.3.0`
 
-## 4.2.7 (2021-04-08)
+## 4.3.0-beta.7 (2021-04-29)
+
+### Bug fixes
+- Fixed issue that prevented setting tags on keys when creating or importing them.
 
 ### Breaking Changes
-#### Behavioral Changes
-- `NullPointerException`s thrown by client builders when setting configuration properties are now properly logger at the `ERROR` level.
+- Removed the `exportKey()` operation from `KeyAsyncClient` and `KeyClient`, as it is not yet supported in the current service version.
+
+## 4.3.0-beta.6 (2021-04-09)
+
+### Breaking Changes
+- Renamed `EncryptOptions` to `EncryptParameters`.
+- Renamed `DecryptOptions` to `DecryptParameters`.
+- Changed `KeyVaultKeyIdentifier` so it is instantiated via its constructor as opposed to via a `parse()` factory method.
+- Removed the following classes:
+    - `LocalCryptographyAsyncClient`
+    - `LocalCryptographyClient`
+    - `LocalCryptographyClientBuilder`
+    - `LocalKeyEncryptionKeyClient`
+    - `LocalKeyEncryptionKeyAsyncClient`
+    - `LocalKeyEncryptionKeyClientBuilder`
+
+### New features
+- Added support for service version `7.2`.
+- Made all `JsonWebKey` properties settable.
+- Added support to specify whether or not a pipeline policy should be added per call or per retry.
+- Added convenience class `CreateOctKeyOptions`.
+- Added support for building local-only cryptography clients by providing a `JsonWebKey` for local operations:
+    - `CryptograhpyClientBuilder.jsonWebKey(JsonWebKey)`
+- Added support for building local-only key encryption key clients by providing a `JsonWebKey` for local operations:
+    - `KeyEncryptionKeyClientBuilder.buildKeyEncryptionKey(JsonWebKey)`
+    - `KeyEncryptionKeyClientBuilder.buildAsyncKeyEncryptionKey(JsonWebKey)`
+- `CryptograhpyClientBuilder.keyIdentifier(String)` now throws a `NullPointerException` if a `null` value is provided as an argument.
 
 ### Dependency Updates
 - Upgraded `azure-core` dependency to `1.15.0`
@@ -26,19 +86,35 @@
 - Upgraded `azure-core-http-okhttp` dependency to `1.6.1`
 - Upgraded `azure-identity` dependency to `1.2.5`
 
-## 4.2.6 (2021-03-11)
+## 4.3.0-beta.5 (2021-03-12)
+
+### Breaking Changes
+- Removed local support for encryption and decryption using AESGCM, as per guidance of Microsoft's cryptography board. Remote encryption and decryption using said algorithm is still supported.
 
 ### Changed
 - Changed logging level in `onRequest` and `onSuccess` calls for service operations from `INFO` to `VERBOSE`.
 
-### Bug Fixes
+### Bug fixes
+- Fixed issue that caused a `NullPointerException` when attempting to use a `CryptographyClient` for symmetric key encryption operations after the first one.
 - Fixed issue where `JsonWebKey` byte array contents would get serialized/deserialized using Base64 instead of URL-safe Base64.
+- Fixed issue where properties of responses received when using a `CryptographyClient` for encryption/decryption were not populated on the `EncryptResult` and `DecryptResult` classes.
 
 ### Dependency Updates
 - Upgraded `azure-core` dependency to `1.14.0`
 - Upgraded `azure-core-http-netty` dependency to `1.9.0`
 - Upgraded `azure-core-http-okhttp` dependency to `1.6.0`
 - Upgraded `azure-identity` dependency to `1.2.4`
+
+## 4.3.0-beta.4 (2021-02-11)
+
+### Bug Fixes
+- Fixed issue where cryptographic operations would be attempted locally for symmetric keys that were missing their key material ('k' component).
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.13.0`
+- Upgraded `azure-core-http-netty` dependency to `1.8.0`
+- Upgraded `azure-core-http-okhttp` dependency to `1.5.0`
+- Upgraded `azure-identity` dependency to `1.2.3`
 
 ## 4.2.5 (2021-02-11)
 
@@ -59,6 +135,19 @@
 - Upgraded `azure-core-http-okhttp` dependency to `1.4.1`
 - Upgraded `azure-identity` dependency to `1.2.2`
 
+## 4.3.0-beta.3 (2020-11-19)
+
+### New Features
+- Added support for encrypting and decrypting AES-GCM and AES-CBC keys.
+- Added `KeyType.OCT_HSM` to support "oct-HSM" key operations.
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.10.0`
+- Upgraded `azure-core-http-netty` dependency to `1.6.3`
+- Upgraded `azure-core-http-okhttp` dependency to `1.3.3`
+- Upgraded `azure-core-test` dependency to `1.5.1`
+- Upgraded `azure-identity` dependency to `1.2.0`
+
 ## 4.2.3 (2020-11-12)
 
 ### Dependency Updates
@@ -67,6 +156,29 @@
 - Upgraded `azure-core-http-okhttp` dependency to `1.3.3`
 - Upgraded `azure-core-test` dependency to `1.5.1`
 - Upgraded `azure-identity` dependency to `1.2.0`
+
+## 4.3.0-beta.2 (2020-10-09)
+
+### New Features
+- Added `KeyVaultKeyIdentifier`. Use its [`parse`](https://github.com/Azure/azure-sdk-for-java/blob/ff52067a3772a430e5913b898f2806078aec8ef2/sdk/keyvault/azure-security-keyvault-keys/src/main/java/com/azure/security/keyvault/keys/models/KeyVaultKeyIdentifier.java#L78) method to parse the different elements of a given key identifier.
+- Added API overloads that allow for passing specific polling intervals for long-running operations:
+    - `KeyAsyncClient`
+        - `beginDeleteKey(String, Duration)`
+        - `beginRecoverDeletedKey(String, Duration)`
+    - `KeyClient`
+        - `beginDeleteKey(String, Duration)`
+        - `beginRecoverDeletedKey(String, Duration)`
+- Added support for `com.azure.core.util.ClientOptions` in client builders.
+
+### Bug Fixes
+- Fixed an issue that prevented the `tags` and `managed` members of `KeyProperties` from getting populated when retrieving a single key using `KeyClient`, `KeyAsyncClient`, `CryptographyClient` and `CryptographyAsyncClient`.
+
+### Dependency updates
+- Upgraded `azure-core` dependency to `1.9.0`
+- Upgraded `azure-core-http-netty` dependency to `1.6.2`
+- Upgraded `azure-core-http-okhttp` dependency to `1.3.2`
+- Upgraded `azure-core-test` dependency to `1.5.0`
+- Upgraded `azure-identity` dependency to `1.1.3`
 
 ## 4.2.2 (2020-10-08)
 
@@ -80,6 +192,9 @@
 - Upgraded `azure-core-test` dependency to `1.5.0`
 - Upgraded `azure-identity` dependency to `1.1.3`
 
+## 4.3.0-beta.1 (2020-09-11)
+- Updated versions for azure-core and azure-identity.
+
 ## 4.2.1 (2020-09-10)
 - Updated versions for azure-core and azure-identity.
 
@@ -89,8 +204,16 @@
 - Added `recoverableDays` property to `KeyProperties`.
 - Added `Import` operation to `KeyOperation`.
 
+## 4.2.0-beta.5 (2020-07-08)
+- Updated versions for azure-core, azure-identity.
+
 ## 4.1.5 (2020-07-08)
 - Updated versions for azure-core and azure-identity.
+
+## 4.2.0-beta.4 (2020-06-10)
+- Updated version for azure-core, azure-identity and external dependencies.
+- `404` responses from `listPropertiesOfKeyVersions` in `KeyAsyncClient` and `KeyClient` now throw a `ResourceNotFoundException`.
+- `buildAsyncKeyEncryptionKey` in `LocalKeyEncryptionKeyClientBuilder` now throws an exception when no ID is present in a given `JsonWebKey`.
 
 ## 4.1.4 (2020-06-10)
 - Updated version for azure-core, azure-identity and external dependencies.
@@ -99,11 +222,27 @@
 ## 4.1.3 (2020-05-06)
 - Update azure-core dependency to version 1.5.0.
 
+## 4.2.0-beta.3 (2020-04-09)
+- Added `LocalCryptographyClient`, `LocalCryptographyAsyncClient`, `LocalKeyEncryptionKeyClient` and `LocalKeyEncryptionKeyAsyncClient` to perform cryptography operations locally.
+- Added `retryPolicy` setter in `KeyClientBuilder`, `CryptographyClientBuilder` and `KeyEncryptionKeyClientBuilder`
+- Update azure-core dependency to version 1.4.0.
+
 ## 4.1.2 (2020-04-07)
 - Update azure-core dependency to version 1.4.0.
 
 ## 4.1.1 (2020-03-25)
 - Update azure-core dependency to version 1.3.0.
+
+## 4.2.0-beta.2 (2020-03-10)
+### Added
+- Added `recoverableDays` property to `KeyProperties`.
+- Added `Import` operation to `KeyOperation`.
+- Added support for `7.1-Preview` service version
+
+
+## 4.2.0-beta.1
+- `KeyVaultKey` model can be instantiated using `fromKeyId(String keyId, JsonWebKey jsonWebKey)` and `fromName(String name, JsonWebKey jsonWebKey)` methods on the `KeyVaultKey` model.
+- Allows `KeyEncryptionKeyClientBuilder` to consume `KeyVaultKey` model and build `KeyEncryptionKey` and `AsyncKeyEncryptionKey` via`buildKeyEncryptionKey(KeyVaultKey key) ` and `buildAsyncKeyEncryptionKey(KeyVaultKey key)` methods respectively.
 
 ## 4.1.0 (2020-01-07)
 - Fixes the logic of `getKeyId()` method in `KeyEncryptionKeyClient` and `KeyEncryptionKeyAsyncClient` to ensure key id is available in all scenarios.
@@ -175,7 +314,7 @@ Version 4.0.0-preview.1 is a preview of our efforts in creating a client library
 
 For details on the Azure SDK for Java (July 2019 Preview) release, you can refer to the [release announcement](https://aka.ms/azure-sdk-preview1-java).
 
-This library is not a direct replacement for keys management operations from [microsoft-azure-keyvault](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/keyvault/microsoft-azure-keyvault). Applications using that library would require code changes to use `azure-keyvault-keys`.
+This library is not a direct replacement for keys management operations from [microsoft-azure-keyvault](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault/microsoft-azure-keyvault). Applications using that library would require code changes to use `azure-keyvault-keys`.
 This package's
 [documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-keyvault-keys_4.0.0-preview.1/keyvault/client/keys/README.md)
 and
@@ -192,9 +331,9 @@ only)
 - Reactive streams support using [Project Reactor](https://projectreactor.io/).
 - Authentication using `azure-identity` credentials
   - see this package's
-  [documentation](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/keyvault/azure-security-keyvault-keys/README.md)
+  [documentation](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault/azure-security-keyvault-keys/README.md)
   , and the
-  [Azure Identity documentation](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/identity/azure-identity/README.md)
+  [Azure Identity documentation](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity/README.md)
   for more information
   
 ### `azure-keyvault` features not implemented in this library

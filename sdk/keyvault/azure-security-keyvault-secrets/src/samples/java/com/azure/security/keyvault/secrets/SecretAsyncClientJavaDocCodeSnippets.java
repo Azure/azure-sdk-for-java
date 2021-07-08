@@ -264,7 +264,7 @@ public final class SecretAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Method to insert code snippets for {@link SecretAsyncClient#beginRecoverDeletedSecret(String)}
+     * Method to insert code snippets for {@link SecretAsyncClient#beginRecoverDeletedSecret(String)}.
      */
     public void recoverDeletedSecretCodeSnippets() {
         SecretAsyncClient secretAsyncClient = getAsyncSecretClient();

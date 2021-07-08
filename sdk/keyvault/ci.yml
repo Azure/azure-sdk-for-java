@@ -3,7 +3,6 @@
 trigger:
   branches:
     include:
-      - master
       - main
       - hotfix/*
       - release/*
@@ -18,7 +17,6 @@ trigger:
 pr:
   branches:
     include:
-      - master
       - main
       - feature/*
       - hotfix/*
@@ -28,6 +26,7 @@ pr:
       - sdk/keyvault/ci.yml
       - sdk/keyvault/pom.xml
       - sdk/keyvault/test-resources.json
+      - sdk/keyvault/test-resources-post.ps1
       - sdk/keyvault/tests.yml
       - sdk/keyvault/azure-security-keyvault-certificates
       - sdk/keyvault/azure-security-keyvault-keys

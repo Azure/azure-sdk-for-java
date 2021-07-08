@@ -7,7 +7,9 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.keys.KeyClient;
+import com.azure.security.keyvault.keys.cryptography.models.DecryptParameters;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptResult;
+import com.azure.security.keyvault.keys.cryptography.models.EncryptParameters;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptResult;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
@@ -16,6 +18,7 @@ import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.UnwrapResult;
 import com.azure.security.keyvault.keys.cryptography.models.VerifyResult;
 import com.azure.security.keyvault.keys.cryptography.models.WrapResult;
+import com.azure.security.keyvault.keys.models.JsonWebKey;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
 
 import java.security.MessageDigest;
@@ -48,6 +51,22 @@ public final class CryptographyClientJavaDocCodeSnippets {
     }
 
     /**
+     * Generates code sample for creating a {@link CryptographyClient} with a given {@link JsonWebKey}.
+     *
+     * @return An instance of {@link CryptographyClient}.
+     */
+    public CryptographyClient createClientWithJsonWebKey() {
+        // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyClient.withJsonWebKey.instantiation
+        JsonWebKey jsonWebKey = new JsonWebKey().setId("SampleJsonWebKey");
+        CryptographyClient cryptographyClient = new CryptographyClientBuilder()
+            .jsonWebKey(jsonWebKey)
+            .buildClient();
+        // END: com.azure.security.keyvault.keys.cryptography.CryptographyClient.withJsonWebKey.instantiation
+
+        return cryptographyClient;
+    }
+
+    /**
      * Generates a code sample for using {@link CryptographyClient#getKey()}.
      */
     public void getKeySnippets() {
@@ -75,7 +94,8 @@ public final class CryptographyClientJavaDocCodeSnippets {
 
     /**
      * Generates a code sample for using {@link CryptographyClient#encrypt(EncryptionAlgorithm, byte[])},
-     * {@link CryptographyClient#encrypt(EncryptionAlgorithm, byte[], Context)}.
+     * {@link CryptographyClient#encrypt(EncryptionAlgorithm, byte[], Context)} and
+     * {@link CryptographyClient#encrypt(EncryptParameters, Context)}.
      */
     public void encrypt() {
         CryptographyClient cryptographyClient = createClient();
@@ -100,11 +120,27 @@ public final class CryptographyClientJavaDocCodeSnippets {
         System.out.printf("Received encrypted content of length: %d, with algorithm: %s.\n",
             encryptionResult.getCipherText().length, encryptionResult.getAlgorithm());
         // END: com.azure.security.keyvault.keys.cryptography.CryptographyClient.encrypt#EncryptionAlgorithm-byte-Context
+
+        // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyClient.encrypt#EncryptParameters-Context
+        byte[] myPlaintext = new byte[100];
+        new Random(0x1234567L).nextBytes(myPlaintext);
+        byte[] iv = {
+            (byte) 0x1a, (byte) 0xf3, (byte) 0x8c, (byte) 0x2d, (byte) 0xc2, (byte) 0xb9, (byte) 0x6f, (byte) 0xfd,
+            (byte) 0xd8, (byte) 0x66, (byte) 0x94, (byte) 0x09, (byte) 0x23, (byte) 0x41, (byte) 0xbc, (byte) 0x04
+        };
+
+        EncryptParameters encryptParameters = EncryptParameters.createA128CbcParameters(myPlaintext, iv);
+        EncryptResult encryptedResult = cryptographyClient.encrypt(encryptParameters, new Context(key1, value1));
+
+        System.out.printf("Received encrypted content of length: %d, with algorithm: %s.\n",
+            encryptedResult.getCipherText().length, encryptedResult.getAlgorithm());
+        // END: com.azure.security.keyvault.keys.cryptography.CryptographyClient.encrypt#EncryptParameters-Context
     }
 
     /**
      * Generates a code sample for using {@link CryptographyClient#decrypt(EncryptionAlgorithm, byte[])},
-     * {@link CryptographyClient#decrypt(EncryptionAlgorithm, byte[], Context)}.
+     * {@link CryptographyClient#decrypt(EncryptionAlgorithm, byte[], Context)} and
+     * {@link CryptographyClient#decrypt(DecryptParameters, Context)}.
      */
     public void decrypt() {
         CryptographyClient cryptographyClient = createClient();
@@ -127,6 +163,20 @@ public final class CryptographyClientJavaDocCodeSnippets {
 
         System.out.printf("Received decrypted content of length: %d.\n", decryptionResult.getPlainText().length);
         // END: com.azure.security.keyvault.keys.cryptography.CryptographyClient.decrypt#EncryptionAlgorithm-byte-Context
+
+        // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyClient.decrypt#DecryptParameters-Context
+        byte[] myCiphertext = new byte[100];
+        new Random(0x1234567L).nextBytes(myCiphertext);
+        byte[] iv = {
+            (byte) 0x1a, (byte) 0xf3, (byte) 0x8c, (byte) 0x2d, (byte) 0xc2, (byte) 0xb9, (byte) 0x6f, (byte) 0xfd,
+            (byte) 0xd8, (byte) 0x66, (byte) 0x94, (byte) 0x09, (byte) 0x23, (byte) 0x41, (byte) 0xbc, (byte) 0x04
+        };
+
+        DecryptParameters decryptParameters = DecryptParameters.createA128CbcParameters(myCiphertext, iv);
+        DecryptResult decryptedResult = cryptographyClient.decrypt(decryptParameters, new Context(key1, value1));
+
+        System.out.printf("Received decrypted content of length: %d.\n", decryptedResult.getPlainText().length);
+        // END: com.azure.security.keyvault.keys.cryptography.CryptographyClient.decrypt#DecryptParameters-Context
     }
 
     /**

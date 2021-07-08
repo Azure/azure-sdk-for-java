@@ -152,19 +152,19 @@ public final class SecretClientJavaDocCodeSnippets {
     public void deleteSecretCodeSnippets() {
         SecretClient secretClient = getSecretClient();
         // BEGIN: com.azure.security.keyvault.secretclient.deleteSecret#String
-        SyncPoller<DeletedSecret, Void> deletedSecretPoller = secretClient.beginDeleteSecret("secretName");
+        SyncPoller<DeletedSecret, Void> deleteSecretPoller = secretClient.beginDeleteSecret("secretName");
 
         // Deleted Secret is accessible as soon as polling begins.
-        PollResponse<DeletedSecret> deletedSecretPollResponse = deletedSecretPoller.poll();
+        PollResponse<DeletedSecret> deleteSecretPollResponse = deleteSecretPoller.poll();
 
         // Deletion date only works for a SoftDelete-enabled Key Vault.
-        System.out.println("Deleted Date  %s" + deletedSecretPollResponse.getValue()
+        System.out.println("Deleted Date  %s" + deleteSecretPollResponse.getValue()
             .getDeletedOn().toString());
-        System.out.printf("Deleted Secret's Recovery Id %s", deletedSecretPollResponse.getValue()
+        System.out.printf("Deleted Secret's Recovery Id %s", deleteSecretPollResponse.getValue()
             .getRecoveryId());
 
         // Secret is being deleted on server.
-        deletedSecretPoller.waitForCompletion();
+        deleteSecretPoller.waitForCompletion();
         // END: com.azure.security.keyvault.secretclient.deleteSecret#String
     }
 

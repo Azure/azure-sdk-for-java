@@ -35,12 +35,18 @@ stages:
         - name: azure-storage-queue
           groupId: com.azure
           safeName: azurestoragequeue
+      AdditionalModules:
+        - name: perf-test-core
+          groupId: com.azure
+        - name: azure-storage-perf
+          groupId: com.azure
       TestMode: 'LIVE'
-      TimeoutInMinutes: 240
+      TimeoutInMinutes: 60
       Location: canadacentral
       Clouds: 'Preview'
       TestStepMavenInputs:
-        options: '$(DefaultOptions) -T 1C -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -DtrimStackTrace=false -pl $(ProjectList)'
+        options: '$(DefaultTestOptions) -T 1C'
+        mavenOptions: '$(DefaultTestMavenOptions)'
       MatrixReplace:
         # Use dedicated storage pool in canadacentral with higher memory capacity
         - Pool=(.*)-general/$1-storage
@@ -55,6 +61,18 @@ stages:
             Path: sdk/storage/platform-matrix.json
             Selection: sparse
             GenerateVMJobs: true
+      PostSteps:
+          - task: PowerShell@2
+            displayName: 'Run Stress Scenarios'
+            inputs:
+              targetType: 'filePath'
+              filePath: sdk/storage/azure-storage-perf/memory-stress-scenarios.ps1
+            env:
+              ${{ if eq(variables['JavaTestVersion'], '1.11') }}:
+                JAVA_HOME: $(JAVA_HOME_11_X64)
+              ${{ if eq(variables['JavaTestVersion'], '1.8') }}:
+                JAVA_HOME: $(JAVA_HOME_8_X64)
+              STORAGE_CONNECTION_STRING: $(PRIMARY_STORAGE_CONNECTION_STRING)
       EnvVars:
         AZURE_TENANT_ID: $(aad-azure-sdk-test-tenant-id)
         AZURE_CLIENT_ID: $(aad-azure-sdk-test-client-id)

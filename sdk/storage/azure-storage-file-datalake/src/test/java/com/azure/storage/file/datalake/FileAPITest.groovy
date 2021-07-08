@@ -1,6 +1,7 @@
 package com.azure.storage.file.datalake
 
 import com.azure.core.exception.UnexpectedLengthException
+import com.azure.core.test.TestMode
 import com.azure.core.util.Context
 import com.azure.core.util.FluxUtil
 import com.azure.identity.DefaultAzureCredentialBuilder
@@ -10,9 +11,10 @@ import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.common.ParallelTransferOptions
 import com.azure.storage.common.ProgressReceiver
 import com.azure.storage.common.implementation.Constants
-import com.azure.storage.blob.models.BlockListType
 import com.azure.storage.common.test.shared.extensions.LiveOnly
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
+import com.azure.storage.common.test.shared.policy.MockFailureResponsePolicy
+import com.azure.storage.common.test.shared.policy.MockRetryRangeResponsePolicy
 import com.azure.storage.file.datalake.models.DownloadRetryOptions
 import com.azure.storage.file.datalake.models.AccessTier
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions
@@ -977,7 +979,7 @@ class FileAPITest extends APISpec {
         constructed in BlobClient.download().
          */
         setup:
-        def fileClient = getFileClient(env.dataLakeAccount.credential, fc.getPathUrl(), new MockRetryRangeResponsePolicy())
+        def fileClient = getFileClient(env.dataLakeAccount.credential, fc.getPathUrl(), new MockRetryRangeResponsePolicy("bytes=2-6"))
 
         fc.append(new ByteArrayInputStream(data.defaultBytes), 0, data.defaultDataSize)
         fc.flush(data.defaultDataSize)
@@ -1098,6 +1100,21 @@ class FileAPITest extends APISpec {
 
         then:
         contentMD5 == Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(data.defaultText.substring(0, 3).getBytes()))
+    }
+
+    def "Read retry default"() {
+        setup:
+        fc.append(new ByteArrayInputStream(data.defaultBytes), 0, data.defaultDataSize)
+        fc.flush(data.defaultDataSize)
+        def failureFileClient = getFileClient(env.dataLakeAccount.credential, fc.getFileUrl(), new MockFailureResponsePolicy(5))
+
+        when:
+        def outStream = new ByteArrayOutputStream()
+        failureFileClient.read(outStream)
+        String bodyStr = outStream.toString()
+
+        then:
+        bodyStr == data.defaultText
     }
 
     def "Read error"() {
@@ -2208,7 +2225,7 @@ class FileAPITest extends APISpec {
 
         @Override
         void reportProgress(long bytesTransferred) {
-            this.reportedByteCount += bytesTransferred
+            this.reportedByteCount = bytesTransferred
         }
 
         long getReportedByteCount() {
@@ -2234,8 +2251,7 @@ class FileAPITest extends APISpec {
             null, null, null))
             .verifyComplete()
 
-        // Check if the reported size is equal to or greater than the file size in case there are retries.
-        uploadReporter.getReportedByteCount() >= size
+        uploadReporter.getReportedByteCount() == size
 
         cleanup:
         file.delete()
@@ -2890,6 +2906,49 @@ class FileAPITest extends APISpec {
         compareFiles(file, outFile, 0, file.size())
     }
 
+    def "Upload InputStream no length"() {
+        when:
+        fc.uploadWithResponse(new FileParallelUploadOptions(data.defaultInputStream), null, null)
+
+        then:
+        notThrown(Exception)
+        ByteArrayOutputStream os = new ByteArrayOutputStream()
+        fc.read(os)
+        os.toByteArray() == data.defaultBytes
+    }
+
+    def "Upload InputStream bad length"() {
+        when:
+        fc.uploadWithResponse(new FileParallelUploadOptions(data.defaultInputStream, length), null, null)
+
+        then:
+        thrown(Exception)
+
+        where:
+        _ | length
+        _ | 0
+        _ | -100
+        _ | data.defaultDataSize - 1
+        _ | data.defaultDataSize + 1
+    }
+
+    def "Upload successful retry"() {
+        given:
+        def clientWithFailure = getFileClient(
+            env.dataLakeAccount.credential,
+            fc.getFileUrl(),
+            new TransientFailureInjectingHttpPipelinePolicy())
+
+        when:
+        clientWithFailure.uploadWithResponse(new FileParallelUploadOptions(data.defaultInputStream), null, null)
+
+        then:
+        notThrown(Exception)
+        ByteArrayOutputStream os = new ByteArrayOutputStream()
+        fc.read(os)
+        os.toByteArray() == data.defaultBytes
+    }
+
     /* Quick Query Tests. */
 
     // Generates and uploads a CSV file
@@ -2959,7 +3018,7 @@ class FileAPITest extends APISpec {
 
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     @Unroll
-    @Retry(count = 5)
+    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
     def "Query min"() {
         setup:
         FileQueryDelimitedSerialization ser = new FileQueryDelimitedSerialization()
@@ -3006,7 +3065,7 @@ class FileAPITest extends APISpec {
 
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     @Unroll
-    @Retry(count = 5)
+    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
     def "Query csv serialization separator"() {
         setup:
         FileQueryDelimitedSerialization ser = new FileQueryDelimitedSerialization()
@@ -3083,6 +3142,7 @@ class FileAPITest extends APISpec {
 
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     @Unroll
+    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
     def "Query csv serialization escape and field quote"() {
         setup:
         FileQueryDelimitedSerialization ser = new FileQueryDelimitedSerialization()
@@ -3124,7 +3184,7 @@ class FileAPITest extends APISpec {
     /* Note: Input delimited tested everywhere else. */
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     @Unroll
-    @Retry(count = 5)
+    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
     def "Query Input json"() {
         setup:
         FileQueryJsonSerialization ser = new FileQueryJsonSerialization()
@@ -3166,8 +3226,8 @@ class FileAPITest extends APISpec {
         1000      | '\n'            || _
     }
 
-    @Unroll
-    @Ignore /* TODO: Unignore when parquet is officially supported. */
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_10_02")
+    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
     def "Query Input parquet"() {
         setup:
         String fileName = "parquet.parquet"
@@ -3203,6 +3263,7 @@ class FileAPITest extends APISpec {
     }
 
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
+    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
     def "Query Input csv Output json"() {
         setup:
         FileQueryDelimitedSerialization inSer = new FileQueryDelimitedSerialization()
@@ -3244,7 +3305,7 @@ class FileAPITest extends APISpec {
     }
 
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
-    @Retry(count = 5)
+    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
     def "Query Input json Output csv"() {
         setup:
         FileQueryJsonSerialization inSer = new FileQueryJsonSerialization()
@@ -3286,7 +3347,7 @@ class FileAPITest extends APISpec {
     }
 
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
-    @Retry(count = 5)
+    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
     def "Query Input csv Output arrow"() {
         setup:
         FileQueryDelimitedSerialization inSer = new FileQueryDelimitedSerialization()
@@ -3324,7 +3385,7 @@ class FileAPITest extends APISpec {
     }
 
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
-    @Retry(count = 5)
+    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
     def "Query non fatal error"() {
         setup:
         FileQueryDelimitedSerialization base = new FileQueryDelimitedSerialization()
@@ -3364,6 +3425,7 @@ class FileAPITest extends APISpec {
     }
 
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
+    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
     def "Query fatal error"() {
         setup:
         FileQueryDelimitedSerialization base = new FileQueryDelimitedSerialization()
@@ -3395,6 +3457,7 @@ class FileAPITest extends APISpec {
     }
 
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
+    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
     def "Query progress receiver"() {
         setup:
         FileQueryDelimitedSerialization base = new FileQueryDelimitedSerialization()
@@ -3439,6 +3502,7 @@ class FileAPITest extends APISpec {
 
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     @LiveOnly // Large amount of data.
+    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
     def "Query multiple records with progress receiver"() {
         setup:
         FileQueryDelimitedSerialization ser = new FileQueryDelimitedSerialization()
@@ -3491,6 +3555,7 @@ class FileAPITest extends APISpec {
 
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     @Unroll
+    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
     def "Query input output IA"() {
         setup:
         /* Mock random impl of QQ Serialization*/
@@ -3525,6 +3590,7 @@ class FileAPITest extends APISpec {
     }
 
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
+    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
     def "Query arrow input IA"() {
         setup:
         def inSer = new FileQueryArrowSerialization()
@@ -3547,7 +3613,8 @@ class FileAPITest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
-    @Ignore /* TODO: Unignore when parquet is officially supported. */
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_10_02")
+    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
     def "Query parquet output IA"() {
         setup:
         def outSer = new FileQueryParquetSerialization()
@@ -3571,6 +3638,7 @@ class FileAPITest extends APISpec {
     }
 
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
+    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
     def "Query error"() {
         setup:
         fc = fsc.getFileClient(generatePathName())
@@ -3590,6 +3658,7 @@ class FileAPITest extends APISpec {
 
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     @Unroll
+    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
     def "Query AC"() {
         setup:
         match = setupPathMatchCondition(fc, match)

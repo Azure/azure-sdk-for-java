@@ -37,7 +37,7 @@ public class ListAlertsSample {
         //
         final ListAlertOptions options = new ListAlertOptions()
             .setAlertQueryTimeMode(timeMode)
-            .setTop(10);
+            .setMaxPageSize(10);
 
         PagedIterable<AnomalyAlert> alertsIterable = advisorClient.listAlerts(alertConfigurationId, startTime, endTime,
             options, Context.NONE);

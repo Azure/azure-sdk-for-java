@@ -9,6 +9,7 @@ import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.Disallowed;
+import com.azure.resourcemanager.compute.models.GalleryImageFeature;
 import com.azure.resourcemanager.compute.models.GalleryImageIdentifier;
 import com.azure.resourcemanager.compute.models.GalleryImagePropertiesProvisioningState;
 import com.azure.resourcemanager.compute.models.HyperVGeneration;
@@ -19,23 +20,24 @@ import com.azure.resourcemanager.compute.models.RecommendedMachineConfiguration;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.Map;
 
-/** Specifies information about the gallery Image Definition that you want to create or update. */
+/** Specifies information about the gallery image definition that you want to create or update. */
 @JsonFlatten
 @Fluent
 public class GalleryImageInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryImageInner.class);
 
     /*
-     * The description of this gallery Image Definition resource. This property
+     * The description of this gallery image definition resource. This property
      * is updatable.
      */
     @JsonProperty(value = "properties.description")
     private String description;
 
     /*
-     * The Eula agreement for the gallery Image Definition.
+     * The Eula agreement for the gallery image definition.
      */
     @JsonProperty(value = "properties.eula")
     private String eula;
@@ -75,14 +77,14 @@ public class GalleryImageInner extends Resource {
     private HyperVGeneration hyperVGeneration;
 
     /*
-     * The end of life date of the gallery Image Definition. This property can
+     * The end of life date of the gallery image definition. This property can
      * be used for decommissioning purposes. This property is updatable.
      */
     @JsonProperty(value = "properties.endOfLifeDate")
     private OffsetDateTime endOfLifeDate;
 
     /*
-     * This is the gallery Image Definition identifier.
+     * This is the gallery image definition identifier.
      */
     @JsonProperty(value = "properties.identifier")
     private GalleryImageIdentifier identifier;
@@ -101,7 +103,7 @@ public class GalleryImageInner extends Resource {
     private Disallowed disallowed;
 
     /*
-     * Describes the gallery Image Definition purchase plan. This is used by
+     * Describes the gallery image definition purchase plan. This is used by
      * marketplace images.
      */
     @JsonProperty(value = "properties.purchasePlan")
@@ -113,8 +115,14 @@ public class GalleryImageInner extends Resource {
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private GalleryImagePropertiesProvisioningState provisioningState;
 
+    /*
+     * A list of gallery image features.
+     */
+    @JsonProperty(value = "properties.features")
+    private List<GalleryImageFeature> features;
+
     /**
-     * Get the description property: The description of this gallery Image Definition resource. This property is
+     * Get the description property: The description of this gallery image definition resource. This property is
      * updatable.
      *
      * @return the description value.
@@ -124,7 +132,7 @@ public class GalleryImageInner extends Resource {
     }
 
     /**
-     * Set the description property: The description of this gallery Image Definition resource. This property is
+     * Set the description property: The description of this gallery image definition resource. This property is
      * updatable.
      *
      * @param description the description value to set.
@@ -136,7 +144,7 @@ public class GalleryImageInner extends Resource {
     }
 
     /**
-     * Get the eula property: The Eula agreement for the gallery Image Definition.
+     * Get the eula property: The Eula agreement for the gallery image definition.
      *
      * @return the eula value.
      */
@@ -145,7 +153,7 @@ public class GalleryImageInner extends Resource {
     }
 
     /**
-     * Set the eula property: The Eula agreement for the gallery Image Definition.
+     * Set the eula property: The Eula agreement for the gallery image definition.
      *
      * @param eula the eula value to set.
      * @return the GalleryImageInner object itself.
@@ -262,7 +270,7 @@ public class GalleryImageInner extends Resource {
     }
 
     /**
-     * Get the endOfLifeDate property: The end of life date of the gallery Image Definition. This property can be used
+     * Get the endOfLifeDate property: The end of life date of the gallery image definition. This property can be used
      * for decommissioning purposes. This property is updatable.
      *
      * @return the endOfLifeDate value.
@@ -272,7 +280,7 @@ public class GalleryImageInner extends Resource {
     }
 
     /**
-     * Set the endOfLifeDate property: The end of life date of the gallery Image Definition. This property can be used
+     * Set the endOfLifeDate property: The end of life date of the gallery image definition. This property can be used
      * for decommissioning purposes. This property is updatable.
      *
      * @param endOfLifeDate the endOfLifeDate value to set.
@@ -284,7 +292,7 @@ public class GalleryImageInner extends Resource {
     }
 
     /**
-     * Get the identifier property: This is the gallery Image Definition identifier.
+     * Get the identifier property: This is the gallery image definition identifier.
      *
      * @return the identifier value.
      */
@@ -293,7 +301,7 @@ public class GalleryImageInner extends Resource {
     }
 
     /**
-     * Set the identifier property: This is the gallery Image Definition identifier.
+     * Set the identifier property: This is the gallery image definition identifier.
      *
      * @param identifier the identifier value to set.
      * @return the GalleryImageInner object itself.
@@ -346,7 +354,7 @@ public class GalleryImageInner extends Resource {
     }
 
     /**
-     * Get the purchasePlan property: Describes the gallery Image Definition purchase plan. This is used by marketplace
+     * Get the purchasePlan property: Describes the gallery image definition purchase plan. This is used by marketplace
      * images.
      *
      * @return the purchasePlan value.
@@ -356,7 +364,7 @@ public class GalleryImageInner extends Resource {
     }
 
     /**
-     * Set the purchasePlan property: Describes the gallery Image Definition purchase plan. This is used by marketplace
+     * Set the purchasePlan property: Describes the gallery image definition purchase plan. This is used by marketplace
      * images.
      *
      * @param purchasePlan the purchasePlan value to set.
@@ -374,6 +382,26 @@ public class GalleryImageInner extends Resource {
      */
     public GalleryImagePropertiesProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the features property: A list of gallery image features.
+     *
+     * @return the features value.
+     */
+    public List<GalleryImageFeature> features() {
+        return this.features;
+    }
+
+    /**
+     * Set the features property: A list of gallery image features.
+     *
+     * @param features the features value to set.
+     * @return the GalleryImageInner object itself.
+     */
+    public GalleryImageInner withFeatures(List<GalleryImageFeature> features) {
+        this.features = features;
+        return this;
     }
 
     /** {@inheritDoc} */
@@ -407,6 +435,9 @@ public class GalleryImageInner extends Resource {
         }
         if (purchasePlan() != null) {
             purchasePlan().validate();
+        }
+        if (features() != null) {
+            features().forEach(e -> e.validate());
         }
     }
 }

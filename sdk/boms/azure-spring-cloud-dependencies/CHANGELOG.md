@@ -1,5 +1,11 @@
 # Release History
 
+## 2.6.0 (2021-06-23)
+### Breaking Changes
+- Remove `azure-spring-cloud-telemetry` module dependency.
+
+## 2.5.0 (2021-05-24)
+
 ## 2.4.0 (2021-04-23)
 ### Breaking Changes
 - Update `com.azure` group id to `com.azure.spring`.

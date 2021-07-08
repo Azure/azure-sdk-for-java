@@ -175,18 +175,18 @@ def update_versions_file_for_nightly_devops(build_type, build_qualifier, artifac
                 # been modified.
                 elif (module.name.startswith('unreleased_') or module.name.startswith('beta_'))  and not module.dependency.startswith('['):
                     # Assuming a build qualifier of the form: "alpha.20200204.1"
-                    # Converts "alpha.20200204.1" -> "alpha.20200204."
-                    unreleased_build_qualifier = build_qualifier[:build_qualifier.rfind('.') + 1]
+                    # Converts "alpha.20200204.1" -> "alpha"
+                    unreleased_build_identifier = build_qualifier[:build_qualifier.find('.')]
+                    # Converts "alpha.20200204.1" -> "20200204.1"
+                    unreleased_build_date = build_qualifier[build_qualifier.find('.')+1:][:8]
 
                     if '-' in module.dependency:
-                        # if the module is 1.2.3-beta.x, strip off everything after the '-' and add the qualifier
-                        module.dependency = module.dependency[:module.dependency.rfind('-') + 1] + unreleased_build_qualifier
-                    else:
-                        module.dependency += '-' + unreleased_build_qualifier
+                        # if the module is 1.2.3-beta.x, strip off everything after the '-'
+                        module.dependency = module.dependency[:module.dependency.rfind('-')]
 
                     # The final unreleased dependency version needs to be of the form
-                    # [1.0.0-alpha.YYYYMMDD.,] <-- note the ., this is the version range for Maven
-                    module.dependency = '[{},]'.format(module.dependency)
+                    # [1.0.0-alpha.YYYYMMDD,1.0.0-alpha.99999999] this will keep it in alpha version of the same major/minor/patch range to avoid potential future breaks
+                    module.dependency = '[{0}-{1}.{2},{0}-{1}.{3}]'.format(module.dependency, unreleased_build_identifier, unreleased_build_date, "99999999")
 
                     print(f'updating unreleased/beta dependency {module.name} to use dependency version range: "{module.dependency}"')
 
@@ -267,7 +267,7 @@ def increment_or_set_library_version(build_type, artifact_id, group_id, new_vers
                 # Tick up the version here. If the version is already a pre-release
                 # version then just increment the revision. Otherwise increment the
                 # minor version, zero the patch and add "-beta.1" to the end
-                # https://github.com/Azure/azure-sdk/blob/master/docs/policies/releases.md#java
+                # https://github.com/Azure/azure-sdk/blob/main/docs/policies/releases.md#java
                 if module.name == library_to_update and hasattr(module, 'current'):
                     artifact_found = True
                     if new_version is None:

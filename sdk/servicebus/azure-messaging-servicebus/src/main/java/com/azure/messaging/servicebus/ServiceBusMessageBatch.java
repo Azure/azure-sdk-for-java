@@ -11,10 +11,12 @@ import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.nio.BufferOverflowException;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.azure.messaging.servicebus.implementation.MessageUtils.traceMessageSpan;
 
@@ -30,7 +32,7 @@ public final class ServiceBusMessageBatch {
     private final MessageSerializer serializer;
     private final List<ServiceBusMessage> serviceBusMessageList;
     private final byte[] eventBytes;
-    private int sizeInBytes;
+    private final AtomicInteger sizeInBytes;
     private final TracerProvider tracerProvider;
     private final String entityPath;
     private final String hostname;
@@ -40,8 +42,8 @@ public final class ServiceBusMessageBatch {
         this.maxMessageSize = maxMessageSize;
         this.contextProvider = contextProvider;
         this.serializer = serializer;
-        this.serviceBusMessageList = new LinkedList<>();
-        this.sizeInBytes = (maxMessageSize / 65536) * 1024; // reserve 1KB for every 64KB
+        this.serviceBusMessageList = Collections.synchronizedList(new LinkedList<>());
+        this.sizeInBytes = new AtomicInteger((maxMessageSize / 65536) * 1024); // reserve 1KB for every 64KB
         this.eventBytes = new byte[maxMessageSize];
         this.tracerProvider = tracerProvider;
         this.entityPath = entityPath;
@@ -72,7 +74,7 @@ public final class ServiceBusMessageBatch {
      * @return The size of the {@link ServiceBusMessageBatch batch} in bytes.
      */
     public int getSizeInBytes() {
-        return this.sizeInBytes;
+        return this.sizeInBytes.get();
     }
 
     /**
@@ -97,9 +99,9 @@ public final class ServiceBusMessageBatch {
                 tracerProvider)
                 : serviceBusMessage;
 
-        final int size;
+        final AtomicInteger size = new AtomicInteger();
         try {
-            size = getSize(serviceBusMessageUpdated, serviceBusMessageList.isEmpty());
+            size.set(getSize(serviceBusMessageUpdated, serviceBusMessageList.isEmpty()));
         } catch (BufferOverflowException exception) {
             final RuntimeException ex = new ServiceBusException(
                     new AmqpException(false, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED,
@@ -109,12 +111,9 @@ public final class ServiceBusMessageBatch {
             throw logger.logExceptionAsWarning(ex);
         }
 
-        synchronized (lock) {
-            if (this.sizeInBytes + size > this.maxMessageSize) {
-                return false;
-            }
-
-            this.sizeInBytes += size;
+        if (this.sizeInBytes.addAndGet(size.get()) > this.maxMessageSize) {
+            this.sizeInBytes.addAndGet(-1 * size.get());
+            return false;
         }
 
         this.serviceBusMessageList.add(serviceBusMessageUpdated);

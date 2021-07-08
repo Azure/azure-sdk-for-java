@@ -6,8 +6,12 @@ package com.azure.security.keyvault.keys;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpPipelinePosition;
+import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
@@ -15,10 +19,12 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.keys.implementation.KeyVaultCredentialPolicy;
+import com.azure.security.keyvault.keys.models.KeyVaultKeyIdentifier;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -64,7 +70,8 @@ public final class KeyClientBuilder {
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
 
-    private final List<HttpPipelinePolicy> policies;
+    private final List<HttpPipelinePolicy> perCallPolicies;
+    private final List<HttpPipelinePolicy> perRetryPolicies;
     private final Map<String, String> properties;
 
     private TokenCredential credential;
@@ -75,6 +82,7 @@ public final class KeyClientBuilder {
     private RetryPolicy retryPolicy;
     private Configuration configuration;
     private KeyServiceVersion version;
+    private ClientOptions clientOptions;
 
     /**
      * The constructor with defaults.
@@ -82,7 +90,8 @@ public final class KeyClientBuilder {
     public KeyClientBuilder() {
         retryPolicy = new RetryPolicy();
         httpLogOptions = new HttpLogOptions();
-        policies = new ArrayList<>();
+        perCallPolicies = new ArrayList<>();
+        perRetryPolicies = new ArrayList<>();
         properties = CoreUtils.getProperties(AZURE_KEY_VAULT_KEYS);
     }
 
@@ -148,12 +157,31 @@ public final class KeyClientBuilder {
 
         String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
         String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
-        policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion,
-            buildConfiguration));
+
+        httpLogOptions = (httpLogOptions == null) ? new HttpLogOptions() : httpLogOptions;
+
+        policies.add(new UserAgentPolicy(CoreUtils.getApplicationId(clientOptions, httpLogOptions), clientName,
+            clientVersion, buildConfiguration));
+
+        if (clientOptions != null) {
+            List<HttpHeader> httpHeaderList = new ArrayList<>();
+            clientOptions.getHeaders().forEach(header ->
+                httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
+            policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
+        }
+
+        // Add per call additional policies.
+        policies.addAll(perCallPolicies);
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
-        policies.add(retryPolicy);
+
+        // Add retry policy.
+        policies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
+
         policies.add(new KeyVaultCredentialPolicy(credential));
-        policies.addAll(this.policies);
+
+        // Add per retry additional policies.
+        policies.addAll(perRetryPolicies);
+
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
 
@@ -168,13 +196,20 @@ public final class KeyClientBuilder {
     /**
      * Sets the vault endpoint URL to send HTTP requests to.
      *
-     * @param vaultUrl The vault url is used as destination on Azure to send requests to.
+     * @param vaultUrl The vault url is used as destination on Azure to send requests to. If you have a key identifier,
+     * create a new {@link KeyVaultKeyIdentifier} to parse it and obtain the {@code vaultUrl} and other
+     * information.
      *
      * @return The updated {@link KeyClientBuilder} object.
      *
      * @throws IllegalArgumentException If {@code vaultUrl} cannot be parsed into a valid URL.
+     * @throws NullPointerException If {@code vaultUrl} is {@code null}.
      */
     public KeyClientBuilder vaultUrl(String vaultUrl) {
+        if (vaultUrl == null) {
+            throw logger.logExceptionAsError(new NullPointerException("'vaultUrl' cannot be null."));
+        }
+
         try {
             this.vaultUrl = new URL(vaultUrl);
         } catch (MalformedURLException ex) {
@@ -233,7 +268,11 @@ public final class KeyClientBuilder {
             throw logger.logExceptionAsError(new NullPointerException("'policy' cannot be null."));
         }
 
-        policies.add(policy);
+        if (policy.getPipelinePosition() == HttpPipelinePosition.PER_CALL) {
+            perCallPolicies.add(policy);
+        } else {
+            perRetryPolicies.add(policy);
+        }
 
         return this;
     }
@@ -246,10 +285,6 @@ public final class KeyClientBuilder {
      * @return The updated {@link KeyClientBuilder} object.
      */
     public KeyClientBuilder httpClient(HttpClient client) {
-        if (client == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'client' cannot be null."));
-        }
-
         this.httpClient = client;
 
         return this;
@@ -266,10 +301,6 @@ public final class KeyClientBuilder {
      * @return The updated {@link KeyClientBuilder} object.
      */
     public KeyClientBuilder pipeline(HttpPipeline pipeline) {
-        if (pipeline == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'pipeline' cannot be null."));
-        }
-
         this.pipeline = pipeline;
 
         return this;
@@ -318,11 +349,25 @@ public final class KeyClientBuilder {
      * @return The updated {@link KeyClientBuilder} object.
      */
     public KeyClientBuilder retryPolicy(RetryPolicy retryPolicy) {
-        if (retryPolicy == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'retryPolicy' cannot be null."));
-        }
-
         this.retryPolicy = retryPolicy;
+
+        return this;
+    }
+
+    /**
+     * Sets the {@link ClientOptions} which enables various options to be set on the client. For example setting an
+     * {@code applicationId} using {@link ClientOptions#setApplicationId(String)} to configure
+     * the {@link UserAgentPolicy} for telemetry/monitoring purposes.
+     *
+     * <p>More About <a href="https://azure.github.io/azure-sdk/general_azurecore.html#telemetry-policy">Azure Core:
+     * Telemetry policy</a>
+     *
+     * @param clientOptions the {@link ClientOptions} to be set on the client.
+     *
+     * @return The updated {@link KeyClientBuilder} object.
+     */
+    public KeyClientBuilder clientOptions(ClientOptions clientOptions) {
+        this.clientOptions = clientOptions;
 
         return this;
     }

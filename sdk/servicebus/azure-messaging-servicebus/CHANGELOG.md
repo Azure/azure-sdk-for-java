@@ -1,4 +1,24 @@
 # Release History
+## 7.3.0-beta.3 (Unreleased)
+### New Features
+- Added support receiving dead-letter queue (DLQ) for 'ServiceBusProcessorClient' and session receiver using 'subQueue'
+
+## 7.2.3 (2021-06-14)
+### Fixed
+Fixed the issue that the second call of `ServiceBusReceiverClient.complete` is stuck when connection is broken.
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.17.0`.
+- Upgraded `azure-core-amqp` dependency to `2.2.0`.
+- Upgraded `azure-core-http-netty` to `1.10.0`.
+
+## 7.2.2 (2021-05-26)
+### Fixed
+- Fixed some connection retry issues when network errors happen.
+- Fixed an issue that caused `ServiceBusSenderClient` to keep running after it's already closed.
+
+### Dependency Updates
+- Upgraded `azure-core-amqp` dependency to `2.0.6`.
 
 ## 7.2.1 (2021-05-12)
 ### Fixed
@@ -199,6 +219,6 @@ our efforts can be found in the [Azure SDK Design Guidelines for
 
 ### Known issues
 
-[known-issue-binarydata-notfound]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/azure-messaging-servicebus/known-issues.md#can-not-resolve-binarydata-or-noclassdeffounderror-version-700
+[known-issue-binarydata-notfound]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/known-issues.md#can-not-resolve-binarydata-or-noclassdeffounderror-version-700
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fservicebus%2Fazure-messaging-servicebus%2FCHANGELOG.png)

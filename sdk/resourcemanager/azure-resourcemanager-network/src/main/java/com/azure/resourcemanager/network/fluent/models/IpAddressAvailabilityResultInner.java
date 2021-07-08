@@ -28,6 +28,12 @@ public final class IpAddressAvailabilityResultInner {
     @JsonProperty(value = "availableIPAddresses")
     private List<String> availableIpAddresses;
 
+    /*
+     * Private IP address platform reserved.
+     */
+    @JsonProperty(value = "isPlatformReserved")
+    private Boolean isPlatformReserved;
+
     /**
      * Get the available property: Private IP address availability.
      *
@@ -67,6 +73,26 @@ public final class IpAddressAvailabilityResultInner {
      */
     public IpAddressAvailabilityResultInner withAvailableIpAddresses(List<String> availableIpAddresses) {
         this.availableIpAddresses = availableIpAddresses;
+        return this;
+    }
+
+    /**
+     * Get the isPlatformReserved property: Private IP address platform reserved.
+     *
+     * @return the isPlatformReserved value.
+     */
+    public Boolean isPlatformReserved() {
+        return this.isPlatformReserved;
+    }
+
+    /**
+     * Set the isPlatformReserved property: Private IP address platform reserved.
+     *
+     * @param isPlatformReserved the isPlatformReserved value to set.
+     * @return the IpAddressAvailabilityResultInner object itself.
+     */
+    public IpAddressAvailabilityResultInner withIsPlatformReserved(Boolean isPlatformReserved) {
+        this.isPlatformReserved = isPlatformReserved;
         return this;
     }
 

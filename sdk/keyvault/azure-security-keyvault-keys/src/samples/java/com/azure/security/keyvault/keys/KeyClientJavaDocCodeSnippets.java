@@ -8,6 +8,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.security.keyvault.keys.models.CreateOctKeyOptions;
 import com.azure.security.keyvault.keys.models.DeletedKey;
 import com.azure.security.keyvault.keys.models.CreateEcKeyOptions;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
@@ -82,6 +83,15 @@ public final class KeyClientJavaDocCodeSnippets {
         KeyVaultKey ecKey = keyClient.createEcKey(createEcKeyOptions);
         System.out.printf("Key is created with name %s and id %s %n", ecKey.getName(), ecKey.getId());
         // END: com.azure.keyvault.keys.keyclient.createEcKey#keyOptions
+
+        // BEGIN: com.azure.security.keyvault.keys.async.keyClient.createOctKey#CreateOctKeyOptions
+        CreateOctKeyOptions createOctKeyOptions = new CreateOctKeyOptions("keyName")
+            .setNotBefore(OffsetDateTime.now().plusDays(1))
+            .setExpiresOn(OffsetDateTime.now().plusYears(1));
+        KeyVaultKey octKey = keyClient.createOctKey(createOctKeyOptions);
+
+        System.out.printf("Key is created with name %s and id %s %n", octKey.getName(), octKey.getId());
+        // END: com.azure.security.keyvault.keys.async.keyClient.createOctKey#CreateOctKeyOptions
     }
 
     /**
@@ -121,17 +131,17 @@ public final class KeyClientJavaDocCodeSnippets {
     public void deleteKeySnippets() {
         KeyClient keyClient = createClient();
         // BEGIN: com.azure.keyvault.keys.keyclient.deleteKey#String
-        SyncPoller<DeletedKey, Void> deletedKeyPoller = keyClient.beginDeleteKey("keyName");
+        SyncPoller<DeletedKey, Void> deleteKeyPoller = keyClient.beginDeleteKey("keyName");
 
-        PollResponse<DeletedKey> deletedKeyPollResponse = deletedKeyPoller.poll();
+        PollResponse<DeletedKey> deleteKeyPollResponse = deleteKeyPoller.poll();
 
         // Deleted date only works for SoftDelete Enabled Key Vault.
-        DeletedKey deletedKey = deletedKeyPollResponse.getValue();
-        System.out.println("Deleted Date  %s" + deletedKey.getDeletedOn().toString());
-        System.out.printf("Deleted Key's Recovery Id %s", deletedKey.getRecoveryId());
+        DeletedKey key = deleteKeyPollResponse.getValue();
+        System.out.println("Deleted Date  %s" + key.getDeletedOn().toString());
+        System.out.printf("Deleted Key's Recovery Id %s", key.getRecoveryId());
 
         // Key is being deleted on server.
-        deletedKeyPoller.waitForCompletion();
+        deleteKeyPoller.waitForCompletion();
         // Key is deleted
         // END: com.azure.keyvault.keys.keyclient.deleteKey#String
     }
@@ -177,6 +187,16 @@ public final class KeyClientJavaDocCodeSnippets {
         KeyVaultKey ecKey = keyClient.createEcKeyWithResponse(createEcKeyOptions, new Context(key1, value1)).getValue();
         System.out.printf("Key is created with name %s and id %s %n", ecKey.getName(), ecKey.getId());
         // END: com.azure.keyvault.keys.keyclient.createEcKeyWithResponse#keyOptions-Context
+
+        // BEGIN: com.azure.security.keyvault.keys.async.keyClient.createOctKey#CreateOctKeyOptions-Context
+        CreateOctKeyOptions createOctKeyOptions = new CreateOctKeyOptions("keyName")
+            .setNotBefore(OffsetDateTime.now().plusDays(1))
+            .setExpiresOn(OffsetDateTime.now().plusYears(1));
+        KeyVaultKey octKey =
+            keyClient.createOctKeyWithResponse(createOctKeyOptions, new Context(key1, value1)).getValue();
+
+        System.out.printf("Key is created with name %s and id %s %n", octKey.getName(), octKey.getId());
+        // END: com.azure.security.keyvault.keys.async.keyClient.createOctKey#CreateOctKeyOptions-Context
     }
 
     /**

@@ -16,6 +16,7 @@ import com.azure.storage.blob.models.BlobQueryArrowSerialization;
 import com.azure.storage.blob.models.BlobQueryDelimitedSerialization;
 import com.azure.storage.blob.models.BlobQueryError;
 import com.azure.storage.blob.models.BlobQueryJsonSerialization;
+import com.azure.storage.blob.models.BlobQueryParquetSerialization;
 import com.azure.storage.blob.models.BlobQueryProgress;
 import com.azure.storage.blob.models.BlobQuerySerialization;
 import com.azure.storage.internal.avro.implementation.AvroConstants;
@@ -230,13 +231,12 @@ public class BlobQueryReader {
             generatedFormat.setJsonTextConfiguration(transformJson(
                 (BlobQueryJsonSerialization) userSerialization));
 
-            // TODO (gapra): uncomment when parquet is released
-        /*} else if (userSerialization instanceof BlobQueryParquetSerialization) {
+        } else if (userSerialization instanceof BlobQueryParquetSerialization) {
 
             generatedFormat.setType(QueryFormatType.PARQUET);
             generatedFormat.setParquetTextConfiguration(transformParquet(
                 (BlobQueryParquetSerialization) userSerialization));
-        */
+
         } else {
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 "Please see values of valid input serialization in the documentation "
@@ -323,13 +323,14 @@ public class BlobQueryReader {
      * @param parquetSerialization {@link BlobQueryParquetSerialization}
      * @return {@link JsonTextConfiguration}
      */
-    // TODO (gapra): uncomment when parquet is released
-    /*private static Object transformParquet(BlobQueryParquetSerialization parquetSerialization) {
+    private static Object transformParquet(BlobQueryParquetSerialization parquetSerialization) {
+        /* This method returns an Object since the ParquetConfiguration currently accepts no options. This results in
+        the generator generating ParquetConfiguration as an Object. */
         if (parquetSerialization == null) {
             return null;
         }
         return new Object();
-    }*/
+    }
 
     /**
      * Transforms a BlobQueryArrowSerialization into a ArrowConfiguration.

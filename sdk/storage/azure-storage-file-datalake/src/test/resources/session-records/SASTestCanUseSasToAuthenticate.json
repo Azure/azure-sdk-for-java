@@ -109,7 +109,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.blob.core.windows.net/ad761e9d0ad761e9d8557718465bee3f0f79a467fae5?restype=container&sv=2020-08-04&ss=b&srt=sco&se=2021-05-06T17%3A53%3A43Z&sp=r&sig=REDACTED",
+    "Uri" : "https://REDACTED.blob.core.windows.net/ad761e9d0ad761e9d8557718465bee3f0f79a467fae5?restype=container&sv=2020-10-02&ss=b&srt=sco&se=2021-05-06T17%3A53%3A43Z&sp=r&sig=REDACTED",
     "Headers" : {
       "x-ms-version" : "2020-08-04",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.12.0-beta.1 azsdk-java-azure-storage-file-datalake/12.6.0-beta.1 (11.0.8; Windows 10; 10.0)",
@@ -136,7 +136,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.blob.core.windows.net/ad761e9d0ad761e9d8557718465bee3f0f79a467fae5?restype=container&sv=2020-08-04&ss=b&srt=sco&se=2021-05-06T17%3A53%3A43Z&sp=r&sig=REDACTED",
+    "Uri" : "https://REDACTED.blob.core.windows.net/ad761e9d0ad761e9d8557718465bee3f0f79a467fae5?restype=container&sv=2020-10-02&ss=b&srt=sco&se=2021-05-06T17%3A53%3A43Z&sp=r&sig=REDACTED",
     "Headers" : {
       "x-ms-version" : "2020-08-04",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.12.0-beta.1 azsdk-java-azure-storage-file-datalake/12.6.0-beta.1 (11.0.8; Windows 10; 10.0)",
@@ -163,7 +163,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.blob.core.windows.net/ad761e9d0ad761e9d8557718465bee3f0f79a467fae5?restype=container&sv=2020-08-04&se=2021-05-06T17%3A53%3A43Z&sp=r&sig=REDACTED&ss=b&srt=sco",
+    "Uri" : "https://REDACTED.blob.core.windows.net/ad761e9d0ad761e9d8557718465bee3f0f79a467fae5?restype=container&sv=2020-10-02&se=2021-05-06T17%3A53%3A43Z&sp=r&sig=REDACTED&ss=b&srt=sco",
     "Headers" : {
       "x-ms-version" : "2020-08-04",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.12.0-beta.1 azsdk-java-azure-storage-file-datalake/12.6.0-beta.1 (11.0.8; Windows 10; 10.0)",
@@ -190,7 +190,7 @@
     "Exception" : null
   }, {
     "Method" : "HEAD",
-    "Uri" : "https://REDACTED.blob.core.windows.net/ad761e9d0ad761e9d8557718465bee3f0f79a467fae5/ad761e9d2ad761e9d85554263a316e34d0d364444a91?sv=2020-08-04&ss=b&srt=sco&se=2021-05-06T17%3A53%3A43Z&sp=r&sig=REDACTED",
+    "Uri" : "https://REDACTED.blob.core.windows.net/ad761e9d0ad761e9d8557718465bee3f0f79a467fae5/ad761e9d2ad761e9d85554263a316e34d0d364444a91?sv=2020-10-02&ss=b&srt=sco&se=2021-05-06T17%3A53%3A43Z&sp=r&sig=REDACTED",
     "Headers" : {
       "x-ms-version" : "2020-08-04",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.12.0-beta.1 azsdk-java-azure-storage-file-datalake/12.6.0-beta.1 (11.0.8; Windows 10; 10.0)",
@@ -224,7 +224,7 @@
     "Exception" : null
   }, {
     "Method" : "HEAD",
-    "Uri" : "https://REDACTED.blob.core.windows.net/ad761e9d0ad761e9d8557718465bee3f0f79a467fae5/ad761e9d2ad761e9d85554263a316e34d0d364444a91?sv=2020-08-04&ss=b&srt=sco&se=2021-05-06T17%3A53%3A43Z&sp=r&sig=REDACTED",
+    "Uri" : "https://REDACTED.blob.core.windows.net/ad761e9d0ad761e9d8557718465bee3f0f79a467fae5/ad761e9d2ad761e9d85554263a316e34d0d364444a91?sv=2020-10-02&ss=b&srt=sco&se=2021-05-06T17%3A53%3A43Z&sp=r&sig=REDACTED",
     "Headers" : {
       "x-ms-version" : "2020-08-04",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.12.0-beta.1 azsdk-java-azure-storage-file-datalake/12.6.0-beta.1 (11.0.8; Windows 10; 10.0)",
@@ -258,7 +258,7 @@
     "Exception" : null
   }, {
     "Method" : "HEAD",
-    "Uri" : "https://REDACTED.blob.core.windows.net/ad761e9d0ad761e9d8557718465bee3f0f79a467fae5/ad761e9d2ad761e9d85554263a316e34d0d364444a91?sv=2020-08-04&se=2021-05-06T17%3A53%3A43Z&sp=r&sig=REDACTED&ss=b&srt=sco",
+    "Uri" : "https://REDACTED.blob.core.windows.net/ad761e9d0ad761e9d8557718465bee3f0f79a467fae5/ad761e9d2ad761e9d85554263a316e34d0d364444a91?sv=2020-10-02&se=2021-05-06T17%3A53%3A43Z&sp=r&sig=REDACTED&ss=b&srt=sco",
     "Headers" : {
       "x-ms-version" : "2020-08-04",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.12.0-beta.1 azsdk-java-azure-storage-file-datalake/12.6.0-beta.1 (11.0.8; Windows 10; 10.0)",
@@ -292,7 +292,7 @@
     "Exception" : null
   }, {
     "Method" : "HEAD",
-    "Uri" : "https://REDACTED.blob.core.windows.net/ad761e9d0ad761e9d8557718465bee3f0f79a467fae5/ad761e9d2ad761e9d85554263a316e34d0d364444a91?sv=2020-08-04&ss=b&srt=sco&se=2021-05-06T17%3A53%3A43Z&sp=r&sig=REDACTED",
+    "Uri" : "https://REDACTED.blob.core.windows.net/ad761e9d0ad761e9d8557718465bee3f0f79a467fae5/ad761e9d2ad761e9d85554263a316e34d0d364444a91?sv=2020-10-02&ss=b&srt=sco&se=2021-05-06T17%3A53%3A43Z&sp=r&sig=REDACTED",
     "Headers" : {
       "x-ms-version" : "2020-08-04",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.12.0-beta.1 azsdk-java-azure-storage-file-datalake/12.6.0-beta.1 (11.0.8; Windows 10; 10.0)",
@@ -328,7 +328,7 @@
     "Exception" : null
   }, {
     "Method" : "HEAD",
-    "Uri" : "https://REDACTED.blob.core.windows.net/ad761e9d0ad761e9d8557718465bee3f0f79a467fae5/ad761e9d2ad761e9d85554263a316e34d0d364444a91?sv=2020-08-04&ss=b&srt=sco&se=2021-05-06T17%3A53%3A43Z&sp=r&sig=REDACTED",
+    "Uri" : "https://REDACTED.blob.core.windows.net/ad761e9d0ad761e9d8557718465bee3f0f79a467fae5/ad761e9d2ad761e9d85554263a316e34d0d364444a91?sv=2020-10-02&ss=b&srt=sco&se=2021-05-06T17%3A53%3A43Z&sp=r&sig=REDACTED",
     "Headers" : {
       "x-ms-version" : "2020-08-04",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.12.0-beta.1 azsdk-java-azure-storage-file-datalake/12.6.0-beta.1 (11.0.8; Windows 10; 10.0)",
@@ -362,7 +362,7 @@
     "Exception" : null
   }, {
     "Method" : "HEAD",
-    "Uri" : "https://REDACTED.blob.core.windows.net/ad761e9d0ad761e9d8557718465bee3f0f79a467fae5/ad761e9d2ad761e9d85554263a316e34d0d364444a91?sv=2020-08-04&se=2021-05-06T17%3A53%3A43Z&sp=r&sig=REDACTED&ss=b&srt=sco",
+    "Uri" : "https://REDACTED.blob.core.windows.net/ad761e9d0ad761e9d8557718465bee3f0f79a467fae5/ad761e9d2ad761e9d85554263a316e34d0d364444a91?sv=2020-10-02&se=2021-05-06T17%3A53%3A43Z&sp=r&sig=REDACTED&ss=b&srt=sco",
     "Headers" : {
       "x-ms-version" : "2020-08-04",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.12.0-beta.1 azsdk-java-azure-storage-file-datalake/12.6.0-beta.1 (11.0.8; Windows 10; 10.0)",
@@ -396,7 +396,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.blob.core.windows.net?restype=service&comp=properties&sv=2020-08-04&ss=b&srt=sco&se=2021-05-06T17%3A53%3A43Z&sp=r&sig=REDACTED",
+    "Uri" : "https://REDACTED.blob.core.windows.net?restype=service&comp=properties&sv=2020-10-02&ss=b&srt=sco&se=2021-05-06T17%3A53%3A43Z&sp=r&sig=REDACTED",
     "Headers" : {
       "x-ms-version" : "2020-08-04",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.12.0-beta.1 azsdk-java-azure-storage-file-datalake/12.6.0-beta.1 (11.0.8; Windows 10; 10.0)",
@@ -417,7 +417,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.blob.core.windows.net?restype=service&comp=properties&sv=2020-08-04&ss=b&srt=sco&se=2021-05-06T17%3A53%3A43Z&sp=r&sig=REDACTED",
+    "Uri" : "https://REDACTED.blob.core.windows.net?restype=service&comp=properties&sv=2020-10-02&ss=b&srt=sco&se=2021-05-06T17%3A53%3A43Z&sp=r&sig=REDACTED",
     "Headers" : {
       "x-ms-version" : "2020-08-04",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.12.0-beta.1 azsdk-java-azure-storage-file-datalake/12.6.0-beta.1 (11.0.8; Windows 10; 10.0)",
@@ -438,7 +438,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.blob.core.windows.net?restype=service&comp=properties&sv=2020-08-04&se=2021-05-06T17%3A53%3A43Z&sp=r&sig=REDACTED&ss=b&srt=sco",
+    "Uri" : "https://REDACTED.blob.core.windows.net?restype=service&comp=properties&sv=2020-10-02&se=2021-05-06T17%3A53%3A43Z&sp=r&sig=REDACTED&ss=b&srt=sco",
     "Headers" : {
       "x-ms-version" : "2020-08-04",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.12.0-beta.1 azsdk-java-azure-storage-file-datalake/12.6.0-beta.1 (11.0.8; Windows 10; 10.0)",

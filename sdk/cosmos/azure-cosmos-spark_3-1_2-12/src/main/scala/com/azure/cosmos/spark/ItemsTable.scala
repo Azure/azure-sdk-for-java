@@ -39,8 +39,6 @@ private class ItemsTable(override val sparkSession: SparkSession,
   extends ItemsReadOnlyTable(sparkSession, transforms, databaseName, containerName, userConfig, userProvidedSchema)
   with SupportsWrite {
 
-  logInfo(s"Instantiated ${this.getClass.getSimpleName} for $tableName")
-
   override def capabilities(): util.Set[TableCapability] = Set(
     TableCapability.ACCEPT_ANY_SCHEMA,
     TableCapability.BATCH_WRITE,
@@ -52,8 +50,9 @@ private class ItemsTable(override val sparkSession: SparkSession,
     new ItemsWriterBuilder(
       new CaseInsensitiveStringMap(
         CosmosConfig.getEffectiveConfig(databaseName, containerName, this.effectiveUserConfig).asJava),
-        logicalWriteInfo.schema(),
-        containerStateHandle
+      logicalWriteInfo.schema(),
+      containerStateHandle,
+      diagnosticsConfig
     )
   }
 }

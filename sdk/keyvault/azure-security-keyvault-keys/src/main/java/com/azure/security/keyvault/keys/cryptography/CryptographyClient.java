@@ -3,14 +3,16 @@
 
 package com.azure.security.keyvault.keys.cryptography;
 
-import com.azure.core.annotation.ReturnType;
-import com.azure.core.annotation.ServiceClient;
-import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.Context;
+import com.azure.security.keyvault.keys.cryptography.models.DecryptParameters;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptResult;
+import com.azure.security.keyvault.keys.cryptography.models.EncryptParameters;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptResult;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
@@ -31,6 +33,7 @@ import reactor.core.publisher.Mono;
  * <p><strong>Samples to construct the sync client</strong></p>
  *
  * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyClient.instantiation}
+ * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyClient.withJsonWebKey.instantiation}
  *
  * @see CryptographyClientBuilder
  */
@@ -49,11 +52,11 @@ public class CryptographyClient {
 
     /**
      * Gets the public part of the configured key. The get key operation is applicable to all key types and it requires
-     * the {@code keys/get} permission.
+     * the {@code keys/get} permission for non-local operations.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Gets the configured key in the client. Prints out the returned key details when a response has been
-     * received.</p>
+     * <p>Gets the configured key in the client. Subscribes to the call asynchronously and prints out the returned key
+     * details when a response has been received.</p>
      *
      * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyClient.getKey}
      *
@@ -68,7 +71,7 @@ public class CryptographyClient {
 
     /**
      * Gets the public part of the configured key. The get key operation is applicable to all key types and it requires
-     * the {@code keys/get} permission.
+     * the {@code keys/get} permission for non-local operations.
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Gets the configured key in the client. Subscribes to the call asynchronously and prints out the returned key
@@ -89,11 +92,11 @@ public class CryptographyClient {
     }
 
     /**
-     * Encrypts an arbitrary sequence of bytes using the configured key. Note that the encrypt operation only supports
-     * a single block of data, the size of which is dependent on the target key and the encryption algorithm to be used.
+     * Encrypts an arbitrary sequence of bytes using the configured key. Note that the encrypt operation only supports a
+     * single block of data, the size of which is dependent on the target key and the encryption algorithm to be used.
      * The encrypt operation is supported for both symmetric keys and asymmetric keys. In case of asymmetric keys, the
      * public portion of the key is used for encryption. This operation requires the {@code keys/encrypt} permission
-     *.
+     * for non-local operations.
      *
      * <p>The {@link EncryptionAlgorithm encryption algorithm} indicates the type of algorithm to use for encrypting
      * the specified {@code plaintext}. Possible values for asymmetric keys include:
@@ -101,9 +104,12 @@ public class CryptographyClient {
      * {@link EncryptionAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
      *
      * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128CBC A128CBC},
-     * {@link EncryptionAlgorithm#A128CBC_HS256 A128CBC-HS256}, {@link EncryptionAlgorithm#A192CBC A192CBC},
-     * {@link EncryptionAlgorithm#A192CBC_HS384 A192CBC-HS384}, {@link EncryptionAlgorithm#A256CBC A256CBC} and
-     * {@link EncryptionAlgorithm#A256CBC_HS512 A256CBC-HS512} </p>
+     * {@link EncryptionAlgorithm#A128CBCPAD A128CBCPAD}, {@link EncryptionAlgorithm#A128CBC_HS256 A128CBC-HS256},
+     * {@link EncryptionAlgorithm#A128GCM A128GCM}, {@link EncryptionAlgorithm#A192CBC A192CBC},
+     * {@link EncryptionAlgorithm#A192CBCPAD A192CBCPAD}, {@link EncryptionAlgorithm#A192CBC_HS384 A192CBC-HS384},
+     * {@link EncryptionAlgorithm#A192GCM A192GCM}, {@link EncryptionAlgorithm#A256CBC A256CBC},
+     * {@link EncryptionAlgorithm#A256CBCPAD A256CBPAD}, {@link EncryptionAlgorithm#A256CBC_HS512 A256CBC-HS512} and
+     * {@link EncryptionAlgorithm#A256GCM A256GCM}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Encrypts the content. Subscribes to the call asynchronously and prints out the encrypted content details when
@@ -121,25 +127,30 @@ public class CryptographyClient {
      * @throws ResourceNotFoundException If the key cannot be found for encryption.
      * @throws UnsupportedOperationException If the encrypt operation is not supported or configured on the key.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public EncryptResult encrypt(EncryptionAlgorithm algorithm, byte[] plaintext) {
         return encrypt(algorithm, plaintext, Context.NONE);
     }
 
     /**
-     * Encrypts an arbitrary sequence of bytes using the configured key. Note that the encrypt operation only supports a
-     * single block of data, the size of which is dependent on the target key and the encryption algorithm to be used.
+     * Encrypts an arbitrary sequence of bytes using the configured key. Note that the encrypt operation only supports
+     * a single block of data, the size of which is dependent on the target key and the encryption algorithm to be used.
      * The encrypt operation is supported for both symmetric keys and asymmetric keys. In case of asymmetric keys, the
-     * public portion of the key is used for encryption. This operation requires the {@code keys/encrypt} permission.
+     * public portion of the key is used for encryption. This operation requires the {@code keys/encrypt} permission
+     * for non-local operations.
      *
      * <p>The {@link EncryptionAlgorithm encryption algorithm} indicates the type of algorithm to use for encrypting
      * the specified {@code plaintext}. Possible values for asymmetric keys include:
      * {@link EncryptionAlgorithm#RSA1_5 RSA1_5}, {@link EncryptionAlgorithm#RSA_OAEP RSA_OAEP} and
      * {@link EncryptionAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
      *
-     * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128CBC A128CBC}, {@link
-     * EncryptionAlgorithm#A128CBC_HS256 A128CBC-HS256}, {@link EncryptionAlgorithm#A192CBC A192CBC},
-     * {@link EncryptionAlgorithm#A192CBC_HS384 A192CBC-HS384}, {@link EncryptionAlgorithm#A256CBC A256CBC} and
-     * {@link EncryptionAlgorithm#A256CBC_HS512 A256CBC-HS512} </p>
+     * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128CBC A128CBC},
+     * {@link EncryptionAlgorithm#A128CBCPAD A128CBCPAD}, {@link EncryptionAlgorithm#A128CBC_HS256 A128CBC-HS256},
+     * {@link EncryptionAlgorithm#A128GCM A128GCM}, {@link EncryptionAlgorithm#A192CBC A192CBC},
+     * {@link EncryptionAlgorithm#A192CBCPAD A192CBCPAD}, {@link EncryptionAlgorithm#A192CBC_HS384 A192CBC-HS384},
+     * {@link EncryptionAlgorithm#A192GCM A192GCM}, {@link EncryptionAlgorithm#A256CBC A256CBC},
+     * {@link EncryptionAlgorithm#A256CBCPAD A256CBPAD}, {@link EncryptionAlgorithm#A256CBC_HS512 A256CBC-HS512} and
+     * {@link EncryptionAlgorithm#A256GCM A256GCM}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Encrypts the content. Subscribes to the call asynchronously and prints out the encrypted content details when
@@ -158,15 +169,57 @@ public class CryptographyClient {
      * @throws ResourceNotFoundException If the key cannot be found for encryption.
      * @throws UnsupportedOperationException If the encrypt operation is not supported or configured on the key.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public EncryptResult encrypt(EncryptionAlgorithm algorithm, byte[] plaintext, Context context) {
         return client.encrypt(algorithm, plaintext, context).block();
+    }
+
+    /**
+     * Encrypts an arbitrary sequence of bytes using the configured key. Note that the encrypt operation only supports
+     * a single block of data, the size of which is dependent on the target key and the encryption algorithm to be used.
+     * The encrypt operation is supported for both symmetric keys and asymmetric keys. In case of asymmetric keys, the
+     * public portion of the key is used for encryption. This operation requires the {@code keys/encrypt} permission
+     * for non-local operations.
+     *
+     * <p>The {@link EncryptionAlgorithm encryption algorithm} indicates the type of algorithm to use for encrypting
+     * the specified {@code plaintext}. Possible values for asymmetric keys include:
+     * {@link EncryptionAlgorithm#RSA1_5 RSA1_5}, {@link EncryptionAlgorithm#RSA_OAEP RSA_OAEP} and
+     * {@link EncryptionAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
+     *
+     * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128CBC A128CBC},
+     * {@link EncryptionAlgorithm#A128CBCPAD A128CBCPAD}, {@link EncryptionAlgorithm#A128CBC_HS256 A128CBC-HS256},
+     * {@link EncryptionAlgorithm#A128GCM A128GCM}, {@link EncryptionAlgorithm#A192CBC A192CBC},
+     * {@link EncryptionAlgorithm#A192CBCPAD A192CBCPAD}, {@link EncryptionAlgorithm#A192CBC_HS384 A192CBC-HS384},
+     * {@link EncryptionAlgorithm#A192GCM A192GCM}, {@link EncryptionAlgorithm#A256CBC A256CBC},
+     * {@link EncryptionAlgorithm#A256CBCPAD A256CBPAD}, {@link EncryptionAlgorithm#A256CBC_HS512 A256CBC-HS512} and
+     * {@link EncryptionAlgorithm#A256GCM A256GCM}.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Encrypts the content. Subscribes to the call asynchronously and prints out the encrypted content details when
+     * a response has been received.</p>
+     *
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyClient.encrypt#EncryptParameters-Context}
+     *
+     * @param encryptParameters The parameters to use in the encryption operation.
+     * @param context Additional context that is passed through the {@link HttpPipeline} during the service call.
+     *
+     * @return The {@link EncryptResult} whose {@link EncryptResult#getCipherText() cipher text} contains the encrypted
+     * content.
+     *
+     * @throws NullPointerException If {@code algorithm} or {@code plaintext} are {@code null}.
+     * @throws ResourceNotFoundException If the key cannot be found for encryption.
+     * @throws UnsupportedOperationException If the encrypt operation is not supported or configured on the key.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public EncryptResult encrypt(EncryptParameters encryptParameters, Context context) {
+        return client.encrypt(encryptParameters, context).block();
     }
 
     /**
      * Decrypts a single block of encrypted data using the configured key and specified algorithm. Note that only a
      * single block of data may be decrypted, the size of this block is dependent on the target key and the algorithm to
      * be used. The decrypt operation is supported for both asymmetric and symmetric keys. This operation requires
-     * the {@code keys/decrypt} permission.
+     * the {@code keys/decrypt} permission for non-local operations.
      *
      * <p>The {@link EncryptionAlgorithm encryption algorithm} indicates the type of algorithm to use for decrypting
      * the specified encrypted content. Possible values for asymmetric keys include:
@@ -174,9 +227,12 @@ public class CryptographyClient {
      * {@link EncryptionAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
      *
      * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128CBC A128CBC},
-     * {@link EncryptionAlgorithm#A128CBC_HS256 A128CBC-HS256}, {@link EncryptionAlgorithm#A192CBC A192CBC},
-     * {@link EncryptionAlgorithm#A192CBC_HS384 A192CBC-HS384}, {@link EncryptionAlgorithm#A256CBC A256CBC} and
-     * {@link EncryptionAlgorithm#A256CBC_HS512 A256CBC-HS512} </p>
+     * {@link EncryptionAlgorithm#A128CBCPAD A128CBCPAD}, {@link EncryptionAlgorithm#A128CBC_HS256 A128CBC-HS256},
+     * {@link EncryptionAlgorithm#A128GCM A128GCM}, {@link EncryptionAlgorithm#A192CBC A192CBC},
+     * {@link EncryptionAlgorithm#A192CBCPAD A192CBCPAD}, {@link EncryptionAlgorithm#A192CBC_HS384 A192CBC-HS384},
+     * {@link EncryptionAlgorithm#A192GCM A192GCM}, {@link EncryptionAlgorithm#A256CBC A256CBC},
+     * {@link EncryptionAlgorithm#A256CBCPAD A256CBPAD}, {@link EncryptionAlgorithm#A256CBC_HS512 A256CBC-HS512} and
+     * {@link EncryptionAlgorithm#A256GCM A256GCM}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Decrypts the encrypted content. Subscribes to the call asynchronously and prints out the decrypted content
@@ -194,6 +250,7 @@ public class CryptographyClient {
      * @throws ResourceNotFoundException If the key cannot be found for decryption.
      * @throws UnsupportedOperationException If the decrypt operation is not supported or configured on the key.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public DecryptResult decrypt(EncryptionAlgorithm algorithm, byte[] ciphertext) {
         return decrypt(algorithm, ciphertext, Context.NONE);
     }
@@ -202,7 +259,7 @@ public class CryptographyClient {
      * Decrypts a single block of encrypted data using the configured key and specified algorithm. Note that only a
      * single block of data may be decrypted, the size of this block is dependent on the target key and the algorithm to
      * be used. The decrypt operation is supported for both asymmetric and symmetric keys. This operation requires
-     * the {@code keys/decrypt} permission.
+     * the {@code keys/decrypt} permission for non-local operations.
      *
      * <p>The {@link EncryptionAlgorithm encryption algorithm} indicates the type of algorithm to use for decrypting
      * the specified encrypted content. Possible values for asymmetric keys include:
@@ -210,9 +267,12 @@ public class CryptographyClient {
      * {@link EncryptionAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
      *
      * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128CBC A128CBC},
-     * {@link EncryptionAlgorithm#A128CBC_HS256 A128CBC-HS256}, {@link EncryptionAlgorithm#A192CBC A192CBC},
-     * {@link EncryptionAlgorithm#A192CBC_HS384 A192CBC-HS384}, {@link EncryptionAlgorithm#A256CBC A256CBC} and
-     * {@link EncryptionAlgorithm#A256CBC_HS512 A256CBC-HS512} </p>
+     * {@link EncryptionAlgorithm#A128CBCPAD A128CBCPAD}, {@link EncryptionAlgorithm#A128CBC_HS256 A128CBC-HS256},
+     * {@link EncryptionAlgorithm#A128GCM A128GCM}, {@link EncryptionAlgorithm#A192CBC A192CBC},
+     * {@link EncryptionAlgorithm#A192CBCPAD A192CBCPAD}, {@link EncryptionAlgorithm#A192CBC_HS384 A192CBC-HS384},
+     * {@link EncryptionAlgorithm#A192GCM A192GCM}, {@link EncryptionAlgorithm#A256CBC A256CBC},
+     * {@link EncryptionAlgorithm#A256CBCPAD A256CBPAD}, {@link EncryptionAlgorithm#A256CBC_HS512 A256CBC-HS512} and
+     * {@link EncryptionAlgorithm#A256GCM A256GCM}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Decrypts the encrypted content. Subscribes to the call asynchronously and prints out the decrypted content
@@ -222,7 +282,7 @@ public class CryptographyClient {
      *
      * @param algorithm The algorithm to be used for decryption.
      * @param ciphertext The content to be decrypted.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @param context Additional context that is passed through the {@link HttpPipeline} during the service call.
      *
      * @return The {@link DecryptResult} whose {@link DecryptResult#getPlainText() plain text} contains the decrypted
      * content.
@@ -231,13 +291,54 @@ public class CryptographyClient {
      * @throws ResourceNotFoundException If the key cannot be found for decryption.
      * @throws UnsupportedOperationException If the decrypt operation is not supported or configured on the key.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public DecryptResult decrypt(EncryptionAlgorithm algorithm, byte[] ciphertext, Context context) {
         return client.decrypt(algorithm, ciphertext, context).block();
     }
 
     /**
+     * Decrypts a single block of encrypted data using the configured key and specified algorithm. Note that only a
+     * single block of data may be decrypted, the size of this block is dependent on the target key and the algorithm to
+     * be used. The decrypt operation is supported for both asymmetric and symmetric keys. This operation requires
+     * the {@code keys/decrypt} permission for non-local operations.
+     *
+     * <p>The {@link EncryptionAlgorithm encryption algorithm} indicates the type of algorithm to use for decrypting
+     * the specified encrypted content. Possible values for asymmetric keys include:
+     * {@link EncryptionAlgorithm#RSA1_5 RSA1_5}, {@link EncryptionAlgorithm#RSA_OAEP RSA_OAEP} and
+     * {@link EncryptionAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
+     *
+     * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128CBC A128CBC},
+     * {@link EncryptionAlgorithm#A128CBCPAD A128CBCPAD}, {@link EncryptionAlgorithm#A128CBC_HS256 A128CBC-HS256},
+     * {@link EncryptionAlgorithm#A128GCM A128GCM}, {@link EncryptionAlgorithm#A192CBC A192CBC},
+     * {@link EncryptionAlgorithm#A192CBCPAD A192CBCPAD}, {@link EncryptionAlgorithm#A192CBC_HS384 A192CBC-HS384},
+     * {@link EncryptionAlgorithm#A192GCM A192GCM}, {@link EncryptionAlgorithm#A256CBC A256CBC},
+     * {@link EncryptionAlgorithm#A256CBCPAD A256CBPAD}, {@link EncryptionAlgorithm#A256CBC_HS512 A256CBC-HS512} and
+     * {@link EncryptionAlgorithm#A256GCM A256GCM}.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Decrypts the encrypted content. Subscribes to the call asynchronously and prints out the decrypted content
+     * details when a response has been received.</p>
+     *
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyClient.decrypt#DecryptParameters-Context}
+     *
+     * @param decryptParameters The parameters to use in the decryption operation.
+     * @param context Additional context that is passed through the {@link HttpPipeline} during the service call.
+     *
+     * @return The {@link DecryptResult} whose {@link DecryptResult#getPlainText() plain text} contains the decrypted
+     * content.
+     *
+     * @throws NullPointerException If {@code algorithm} or {@code ciphertext} are {@code null}.
+     * @throws ResourceNotFoundException If the key cannot be found for decryption.
+     * @throws UnsupportedOperationException If the decrypt operation is not supported or configured on the key.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DecryptResult decrypt(DecryptParameters decryptParameters, Context context) {
+        return client.decrypt(decryptParameters, context).block();
+    }
+
+    /**
      * Creates a signature from a digest using the configured key. The sign operation supports both asymmetric and
-     * symmetric keys. This operation requires the {@code keys/sign} permission.
+     * symmetric keys. This operation requires the {@code keys/sign} permission for non-local operations.
      *
      * <p>The {@link SignatureAlgorithm signature algorithm} indicates the type of algorithm to use to create the
      * signature from the digest. Possible values include:
@@ -262,13 +363,14 @@ public class CryptographyClient {
      * @throws ResourceNotFoundException If the key cannot be found for signing.
      * @throws UnsupportedOperationException If the sign operation is not supported or configured on the key.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public SignResult sign(SignatureAlgorithm algorithm, byte[] digest) {
         return client.sign(algorithm, digest, Context.NONE).block();
     }
 
     /**
      * Creates a signature from a digest using the configured key. The sign operation supports both asymmetric and
-     * symmetric keys. This operation requires the {@code keys/sign} permission.
+     * symmetric keys. This operation requires the {@code keys/sign} permission for non-local operations.
      *
      * <p>The {@link SignatureAlgorithm signature algorithm} indicates the type of algorithm to use to create the
      * signature from the digest. Possible values include:
@@ -294,6 +396,7 @@ public class CryptographyClient {
      * @throws ResourceNotFoundException If the key cannot be found for signing.
      * @throws UnsupportedOperationException If the sign operation is not supported or configured on the key.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public SignResult sign(SignatureAlgorithm algorithm, byte[] digest, Context context) {
         return client.sign(algorithm, digest, context).block();
     }
@@ -301,7 +404,7 @@ public class CryptographyClient {
     /**
      * Verifies a signature using the configured key. The verify operation supports both symmetric keys and asymmetric
      * keys. In case of asymmetric keys public portion of the key is used to verify the signature. This operation
-     * requires the {@code keys/verify} permission.
+     * requires the {@code keys/verify} permission for non-local operations.
      *
      * <p>The {@link SignatureAlgorithm signature algorithm} indicates the type of algorithm to use to verify the
      * signature. Possible values include: {@link SignatureAlgorithm#ES256 ES256},
@@ -327,6 +430,7 @@ public class CryptographyClient {
      * @throws UnsupportedOperationException if the verify operation is not supported or configured on the key.
      * @throws NullPointerException if {@code algorithm}, {@code digest} or {@code signature} is null.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public VerifyResult verify(SignatureAlgorithm algorithm, byte[] digest, byte[] signature) {
         return verify(algorithm, digest, signature, Context.NONE);
     }
@@ -334,7 +438,7 @@ public class CryptographyClient {
     /**
      * Verifies a signature using the configured key. The verify operation supports both symmetric keys and asymmetric
      * keys. In case of asymmetric keys public portion of the key is used to verify the signature. This operation
-     * requires the {@code keys/verify} permission.
+     * requires the {@code keys/verify} permission for non-local operations.
      *
      * <p>The {@link SignatureAlgorithm signature algorithm} indicates the type of algorithm to use to verify the
      * signature. Possible values include: {@link SignatureAlgorithm#ES256 ES256},
@@ -361,6 +465,7 @@ public class CryptographyClient {
      * @throws ResourceNotFoundException If the key cannot be found for verifying.
      * @throws UnsupportedOperationException If the verify operation is not supported or configured on the key.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public VerifyResult verify(SignatureAlgorithm algorithm, byte[] digest, byte[] signature, Context context) {
         return client.verify(algorithm, digest, signature, context).block();
     }
@@ -375,8 +480,8 @@ public class CryptographyClient {
      * {@link KeyWrapAlgorithm#RSA1_5 RSA1_5}, {@link KeyWrapAlgorithm#RSA_OAEP RSA_OAEP} and
      * {@link KeyWrapAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
      *
-     * Possible values for symmetric keys include: {@link KeyWrapAlgorithm#A128KW A128KW},
-     * {@link KeyWrapAlgorithm#A192KW A192KW} and {@link KeyWrapAlgorithm#A256KW A256KW}.</p>
+     * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128KW A128KW},
+     * {@link EncryptionAlgorithm#A192KW A192KW} and {@link EncryptionAlgorithm#A256KW A256KW}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Wraps the key content. Subscribes to the call asynchronously and prints out the wrapped key details when a
@@ -394,6 +499,7 @@ public class CryptographyClient {
      * @throws ResourceNotFoundException If the key cannot be found for encryption.
      * @throws UnsupportedOperationException If the wrap operation is not supported or configured on the key.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public WrapResult wrapKey(KeyWrapAlgorithm algorithm, byte[] key) {
         return wrapKey(algorithm, key, Context.NONE);
     }
@@ -408,8 +514,8 @@ public class CryptographyClient {
      * {@link KeyWrapAlgorithm#RSA1_5 RSA1_5}, {@link KeyWrapAlgorithm#RSA_OAEP RSA_OAEP} and
      * {@link KeyWrapAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
      *
-     * Possible values for symmetric keys include: {@link KeyWrapAlgorithm#A128KW A128KW},
-     * {@link KeyWrapAlgorithm#A192KW A192KW} and {@link KeyWrapAlgorithm#A256KW A256KW}.</p>
+     * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128KW A128KW},
+     * {@link EncryptionAlgorithm#A192KW A192KW} and {@link EncryptionAlgorithm#A256KW A256KW}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Wraps the key content. Subscribes to the call asynchronously and prints out the wrapped key details when a
@@ -418,7 +524,6 @@ public class CryptographyClient {
      * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyClient.wrapKey#KeyWrapAlgorithm-byte-Context}
      *
      * @param algorithm The encryption algorithm to use for wrapping the key.
-
      * @param key The key content to be wrapped.
      * @param context Additional context that is passed through the {@link HttpPipeline} during the service call.
      *
@@ -429,6 +534,7 @@ public class CryptographyClient {
      * @throws ResourceNotFoundException If the key cannot be found for encryption.
      * @throws UnsupportedOperationException If the wrap operation is not supported or configured on the key.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public WrapResult wrapKey(KeyWrapAlgorithm algorithm, byte[] key, Context context) {
         return client.wrapKey(algorithm, key, context).block();
     }
@@ -436,7 +542,7 @@ public class CryptographyClient {
     /**
      * Unwraps a symmetric key using the configured key that was initially used for wrapping that key. This operation
      * is the reverse of the wrap operation. The unwrap operation supports asymmetric and symmetric keys to unwrap. This
-     * operation requires the {@code keys/unwrapKey} permission.
+     * operation requires the {@code keys/unwrapKey} permission for non-local operations.
      *
      * <p>The {@link KeyWrapAlgorithm wrap algorithm} indicates the type of algorithm to use for unwrapping the
      * specified encrypted key content. Possible values for asymmetric keys include:
@@ -462,6 +568,7 @@ public class CryptographyClient {
      * @throws ResourceNotFoundException If the key cannot be found for wrap operation.
      * @throws UnsupportedOperationException If the unwrap operation is not supported or configured on the key.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public UnwrapResult unwrapKey(KeyWrapAlgorithm algorithm, byte[] encryptedKey) {
         return unwrapKey(algorithm, encryptedKey, Context.NONE);
     }
@@ -469,7 +576,7 @@ public class CryptographyClient {
     /**
      * Unwraps a symmetric key using the configured key that was initially used for wrapping that key. This operation
      * is the reverse of the wrap operation. The unwrap operation supports asymmetric and symmetric keys to unwrap. This
-     * operation requires the {@code keys/unwrapKey} permission.
+     * operation requires the {@code keys/unwrapKey} permission for non-local operations.
      *
      * <p>The {@link KeyWrapAlgorithm wrap algorithm} indicates the type of algorithm to use for unwrapping the
      * specified encrypted key content. Possible values for asymmetric keys include:
@@ -496,13 +603,14 @@ public class CryptographyClient {
      * @throws ResourceNotFoundException If the key cannot be found for wrap operation.
      * @throws UnsupportedOperationException If the unwrap operation is not supported or configured on the key.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public UnwrapResult unwrapKey(KeyWrapAlgorithm algorithm, byte[] encryptedKey, Context context) {
         return client.unwrapKey(algorithm, encryptedKey, context).block();
     }
 
     /**
      * Creates a signature from the raw data using the configured key. The sign data operation supports both asymmetric
-     * and symmetric keys. This operation requires the {@code keys/sign} permission.
+     * and symmetric keys. This operation requires the {@code keys/sign} permission for non-local operations.
      *
      * <p>The {@link SignatureAlgorithm signature algorithm} indicates the type of algorithm to use to sign the digest.
      * Possible values include:
@@ -527,13 +635,14 @@ public class CryptographyClient {
      * @throws ResourceNotFoundException if the key cannot be found for signing.
      * @throws UnsupportedOperationException if the sign operation is not supported or configured on the key.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public SignResult signData(SignatureAlgorithm algorithm, byte[] data) {
         return signData(algorithm, data, Context.NONE);
     }
 
     /**
      * Creates a signature from the raw data using the configured key. The sign data operation supports both asymmetric
-     * and symmetric keys. This operation requires the {@code keys/sign} permission.
+     * and symmetric keys. This operation requires the {@code keys/sign} permission for non-local operations.
      *
      * <p>The {@link SignatureAlgorithm signature algorithm} indicates the type of algorithm to use to sign the digest.
      * Possible values include:
@@ -559,6 +668,7 @@ public class CryptographyClient {
      * @throws ResourceNotFoundException if the key cannot be found for signing.
      * @throws UnsupportedOperationException if the sign operation is not supported or configured on the key.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public SignResult signData(SignatureAlgorithm algorithm, byte[] data, Context context) {
         return client.signData(algorithm, data, context).block();
     }
@@ -566,7 +676,7 @@ public class CryptographyClient {
     /**
      * Verifies a signature against the raw data using the configured key. The verify operation supports both symmetric
      * keys and asymmetric keys. In case of asymmetric keys public portion of the key is used to verify the signature.
-     * This operation requires the {@code keys/verify} permission.
+     * This operation requires the {@code keys/verify} permission for non-local operations.
      *
      * <p>The {@link SignatureAlgorithm signature algorithm} indicates the type of algorithm to use to verify the
      * signature. Possible values include:
@@ -592,6 +702,7 @@ public class CryptographyClient {
      * @throws UnsupportedOperationException if the verify operation is not supported or configured on the key.
      * @throws NullPointerException if {@code algorithm}, {@code data} or {@code signature} is null.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public VerifyResult verifyData(SignatureAlgorithm algorithm, byte[] data, byte[] signature) {
         return verifyData(algorithm, data, signature, Context.NONE);
     }
@@ -599,7 +710,7 @@ public class CryptographyClient {
     /**
      * Verifies a signature against the raw data using the configured key. The verify operation supports both symmetric
      * keys and asymmetric keys. In case of asymmetric keys public portion of the key is used to verify the signature.
-     * This operation requires the {@code keys/verify} permission.
+     * This operation requires the {@code keys/verify} permission for non-local operations.
      *
      * <p>The {@link SignatureAlgorithm signature algorithm} indicates the type of algorithm to use to verify the
      * signature. Possible values include:
@@ -626,6 +737,7 @@ public class CryptographyClient {
      * @throws ResourceNotFoundException if the key cannot be found for verifying.
      * @throws UnsupportedOperationException if the verify operation is not supported or configured on the key.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public VerifyResult verifyData(SignatureAlgorithm algorithm, byte[] data, byte[] signature, Context context) {
         return client.verifyData(algorithm, data, signature, context).block();
     }

@@ -97,6 +97,8 @@ public final class CertificateClient {
      * Creates a new certificate. If this is the first version, the certificate resource is created. This operation requires
      * the certificates/create permission.
      *
+     * <p>Create certificate is a long running operation. It indefinitely waits for the create certificate operation to complete on service side.</p>
+     *
      * <p><strong>Code Samples</strong></p>
      * <p>Create certificate is a long running operation. The createCertificate indefinitely waits for the operation to complete and
      * returns its last status. The details of the last certificate operation status are printed when a response is received</p>
@@ -130,7 +132,6 @@ public final class CertificateClient {
     public SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> getCertificateOperation(String certificateName) {
         return client.getCertificateOperation(certificateName).getSyncPoller();
     }
-
     /**
      * Gets information about the latest version of the specified certificate. This operation requires the certificates/get permission.
      *
@@ -249,7 +250,6 @@ public final class CertificateClient {
     public Response<KeyVaultCertificate> updateCertificatePropertiesWithResponse(CertificateProperties properties, Context context) {
         return client.updateCertificatePropertiesWithResponse(properties, context).block();
     }
-
 
     /**
      * Deletes a certificate from a specified key vault. All the versions of the certificate along with its associated policy
@@ -515,7 +515,6 @@ public final class CertificateClient {
         return listDeletedCertificates(false, Context.NONE);
     }
 
-
     /**
      * Lists the {@link DeletedCertificate deleted certificates} in the key vault currently available for recovery. This operation includes
      * deletion-specific information and is applicable for vaults enabled for soft-delete. This operation requires the
@@ -613,6 +612,7 @@ public final class CertificateClient {
      * @throws HttpRequestException if {@code certificateName} is empty string.
      * @return A {@link Response} whose {@link Response#getValue() value} contains the requested {@link CertificatePolicy certificate policy}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificatePolicy> getCertificatePolicyWithResponse(String certificateName, Context context) {
         return client.getCertificatePolicyWithResponse(certificateName, context).block();
     }
@@ -863,7 +863,6 @@ public final class CertificateClient {
         return client.updateIssuerWithResponse(issuer, context).block();
     }
 
-
     /**
      * Sets the certificate contacts on the key vault. This operation requires the {@code certificates/managecontacts} permission.
      *
@@ -917,7 +916,6 @@ public final class CertificateClient {
     public PagedIterable<CertificateContact> listContacts() {
         return listContacts(Context.NONE);
     }
-
 
     /**
      * Lists the certificate contacts in the key vault. This operation requires the certificates/managecontacts permission.
@@ -1007,6 +1005,7 @@ public final class CertificateClient {
     public Response<CertificateOperation> deleteCertificateOperationWithResponse(String certificateName, Context context) {
         return client.deleteCertificateOperationWithResponse(certificateName, context).block();
     }
+
     /**
      * Cancels a certificate creation operation that is already in progress. This operation requires the {@code certificates/update} permission.
      *
@@ -1099,6 +1098,7 @@ public final class CertificateClient {
      * @throws HttpRequestException when the {@code importCertificateOptions} are invalid.
      * @return the {@link KeyVaultCertificateWithPolicy imported certificate}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultCertificateWithPolicy importCertificate(ImportCertificateOptions importCertificateOptions) {
         return importCertificateWithResponse(importCertificateOptions, Context.NONE).getValue();
     }
@@ -1117,6 +1117,7 @@ public final class CertificateClient {
      * @throws HttpRequestException when the {@code importCertificateOptions} are invalid.
      * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link KeyVaultCertificateWithPolicy imported certificate}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultCertificateWithPolicy> importCertificateWithResponse(ImportCertificateOptions importCertificateOptions, Context context) {
         return client.importCertificateWithResponse(importCertificateOptions, context).block();
     }

@@ -103,11 +103,11 @@
         <Method name="getDataFromMessageBody"/>
       </And>
       <And>
-        <Class name="com.azure.security.keyvault.keys.models.Base64UrlJsonDeserializer"/>
+        <Class name="com.azure.security.keyvault.keys.implementation.Base64UrlJsonDeserializer"/>
         <Method name="deserialize"/>
       </And>
       <And>
-        <Class name="com.azure.security.keyvault.keys.models.ByteExtensions"/>
+        <Class name="com.azure.security.keyvault.keys.implementation.ByteExtensions"/>
         <Method name="clone"/>
       </And>
       <And>
@@ -140,6 +140,15 @@
     </Or>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
   </Match>
+
+  <!-- Suppress Redundant nullcheck error for JreCertificates$JREKeyStore.loadKeyStore(KeyStore). -->
+  <Match>
+    <Or>
+      <Class name="com.azure.security.keyvault.jca.JreCertificates$JREKeyStore"/> <!-- false positive -->
+    </Or>
+    <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
+  </Match>
+
 
   <Match>
     <Or>
@@ -2269,9 +2278,7 @@
   <!-- Exclude from spring related classes -->
   <Match>
     <Or>
-      <Class name="com.azure.spring.utils.GetHashMac"/> <!-- false positive -->
       <Class name="com.azure.spring.utils.PropertyLoader"/> <!-- false positive -->
-      <Class name="com.azure.spring.cloud.telemetry.GetHashMac"/> <!-- false positive -->
     </Or>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE,
                   NP_LOAD_OF_KNOWN_NULL_VALUE,
@@ -2281,18 +2288,20 @@
 
   <Match>
     <Or>
-      <Class name="com.azure.spring.telemetry.TelemetryEventData$EventData$CustomData"/> <!-- false positive -->
-    </Or>
-    <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
-  </Match>
-
-  <Match>
-    <Or>
       <Class name="com.azure.spring.integration.servicebus.queue.ServiceBusQueueTemplate$QueueMessageHandler"/> <!-- false positive -->
       <Class name="com.azure.spring.integration.servicebus.topic.ServiceBusTopicTemplate$TopicMessageHandler"/> <!-- false positive -->
     </Or>
     <Method name="OnCloseSessionAsync"/>
     <Bug pattern="NM_METHOD_NAMING_CONVENTION"/>
+  </Match>
+
+  <Match>
+    <Bug pattern="UWF_NULL_FIELD"/>
+    <Class name="com.azure.spring.integration.core.AbstractInboundChannelAdapter"/>
+    <Or>
+      <Field name="subscribeByGroupOperation"/>
+      <Field name="subscribeOperation"/>
+    </Or>
   </Match>
 
   <Match>
@@ -2453,10 +2462,17 @@
     <Class name="~com\.azure\.analytics\.purview\.catalog\.\w+BaseClient"/>
     <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
-  
+
   <!-- Two clients in Confidential Ledger share the same builder resulting unused field in each  -->
   <Match>
-    <Class name="~com\.azure\.data\.confidentialledger\.\w+BaseClient"/>
+    <Class name="~com\.azure\.security\.confidentialledger\.\w+BaseClient"/>
     <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+  <!-- This is a false positive. The type of TOptions is known because it is set
+       in the constructor of the concrete class. -->
+  <Match>
+    <Class name="~com\.azure\.messaging\.eventhubs\.perf\.[\w]+Test"/>
+    <Bug pattern="BC_UNCONFIRMED_CAST"/>
   </Match>
 </FindBugsFilter>

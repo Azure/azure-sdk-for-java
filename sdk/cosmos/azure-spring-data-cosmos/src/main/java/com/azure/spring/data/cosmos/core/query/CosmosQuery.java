@@ -2,11 +2,15 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.core.query;
 
+import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.query.parser.Part;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -111,12 +115,35 @@ public class CosmosQuery {
 
         final Optional<Criteria> criteria = this.getSubjectCriteria(this.criteria, keyName);
 
-        return criteria.map(criteria1 -> criteria1.getType() != CriteriaType.IS_EQUAL).orElse(true);
+        return criteria.map(criteria1 -> {
+            //  If there is equal criteria, then it is a single partition query
+            if (isEqualCriteria(criteria1)) {
+                return false;
+            }
+            //  IN is a special case, where we want to first check if the partition key is used with IN clause
+            if (criteria1.getType() == CriteriaType.IN && criteria1.getSubjectValues().size() == 1) {
+                @SuppressWarnings("unchecked")
+                Collection<Object> collection = (Collection<Object>) criteria1.getSubjectValues().get(0);
+                //  IN query types can have multiple values,
+                //  so we are checking the internal collection of the criteria
+                return collection.size() != 1;
+            }
+            return !hasKeywordAnd();
+        }).orElse(true);
     }
 
     private boolean hasKeywordOr() {
         // If there is OR keyword in DocumentQuery, the top node of Criteria must be OR type.
         return this.criteria.getType() == CriteriaType.OR;
+    }
+
+    private boolean hasKeywordAnd() {
+        // If there is AND keyword in DocumentQuery, the top node of Criteria must be AND type.
+        return this.criteria.getType() == CriteriaType.AND;
+    }
+
+    private boolean isEqualCriteria(Criteria criteria) {
+        return criteria.getType() == CriteriaType.IS_EQUAL;
     }
 
     /**
@@ -134,6 +161,57 @@ public class CosmosQuery {
                             .findFirst()
                             .map(p -> true)
                             .orElse(hasKeywordOr());
+    }
+
+    /**
+     * Returns true if this criteria or sub-criteria has partition key field present as one of the subjects.
+     * @param partitionKeyFieldName partition key field name
+     * @return returns true if this criteria or sub criteria has partition key field present as one of the subjects.
+     */
+    public boolean hasPartitionKeyCriteria(@NonNull String partitionKeyFieldName) {
+        if (partitionKeyFieldName.isEmpty()) {
+            return false;
+        }
+
+        final Optional<Criteria> criteria = this.getSubjectCriteria(this.criteria, partitionKeyFieldName);
+        return criteria.isPresent();
+    }
+
+    /**
+     * Returns partition key value based on the criteria.
+     * @param domainType domain type
+     * @param <T> entity class type
+     * @return Optional of partition key value
+     */
+    public <T> Optional<Object> getPartitionKeyValue(@NonNull Class<T> domainType) {
+        CosmosEntityInformation<?, ?> instance = CosmosEntityInformation.getInstance(domainType);
+        String partitionKeyFieldName = instance.getPartitionKeyFieldName();
+        if (partitionKeyFieldName == null
+            || partitionKeyFieldName.isEmpty()
+            || isCrossPartitionQuery(Collections.singletonList(partitionKeyFieldName))) {
+            return Optional.empty();
+        }
+
+        final Optional<Criteria> criteria = this.getSubjectCriteria(this.criteria, partitionKeyFieldName);
+        return criteria.map(criteria1 -> {
+            //  If the criteria has ignoreCase, then we cannot set the partition key
+            //  because of case sensitivity of partition key
+            if (!criteria1.getIgnoreCase().equals(Part.IgnoreCaseType.NEVER)) {
+                return null;
+            }
+            if (criteria1.getType() == CriteriaType.IN && criteria1.getSubjectValues().size() == 1) {
+                @SuppressWarnings("unchecked")
+                Collection<Object> collection = (Collection<Object>) criteria1.getSubjectValues().get(0);
+                //  IN query types can have multiple values,
+                //  so we are checking the internal collection of the criteria
+                if (collection.size() == 1) {
+                    return collection.iterator().next();
+                } else {
+                    return null;
+                }
+            }
+            return criteria1.getSubjectValues().get(0);
+        });
     }
 
     /**
