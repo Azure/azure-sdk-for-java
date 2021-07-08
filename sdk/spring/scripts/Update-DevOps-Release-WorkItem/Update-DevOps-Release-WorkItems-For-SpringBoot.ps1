@@ -1,12 +1,10 @@
 #Requires -Version 6.0
 
-$releaseDate = "05/20/2021"
+$releaseDate = "06/23/2021"
 $serviceDirectory = "spring"
-$certificatesReleaseVersion = "3.0.0-beta.7"
-$identityReleaseVersion = "1.5.0"
-$springtBootReleaseVersion = "3.5.0"
+$identityReleaseVersion = "1.6.0"
+$springtBootReleaseVersion = "3.6.0"
 
-. ${PSScriptRoot}\Update-DevOps-Release-WorkItem-Util.ps1 $releaseDate $serviceDirectory $certificatesReleaseVersion azure-spring-boot-starter-keyvault-certificates
 . ${PSScriptRoot}\Update-DevOps-Release-WorkItem-Util.ps1 $releaseDate $serviceDirectory $identityReleaseVersion azure-identity-spring
 . ${PSScriptRoot}\Update-DevOps-Release-WorkItem-Util.ps1 $releaseDate $serviceDirectory $springtBootReleaseVersion azure-spring-boot
 . ${PSScriptRoot}\Update-DevOps-Release-WorkItem-Util.ps1 $releaseDate $serviceDirectory $springtBootReleaseVersion azure-spring-boot-starter

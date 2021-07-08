@@ -3,7 +3,11 @@
 
 package com.azure.storage.blob
 
+import com.azure.core.http.HttpPipelineCallContext
+import com.azure.core.http.HttpPipelineNextPolicy
+import com.azure.core.http.HttpResponse
 import com.azure.core.http.RequestConditions
+import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.util.BinaryData
 import com.azure.core.util.CoreUtils
 import com.azure.core.util.polling.LongRunningOperationStatus
@@ -45,8 +49,12 @@ import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.test.shared.extensions.LiveOnly
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
+import com.azure.storage.common.test.shared.policy.MockFailureResponsePolicy
+import com.azure.storage.common.test.shared.policy.MockRetryRangeResponsePolicy
 import reactor.core.Exceptions
+import reactor.core.publisher.Flux
 import reactor.core.publisher.Hooks
+import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
 import spock.lang.IgnoreIf
 import spock.lang.Requires
@@ -207,6 +215,45 @@ class BlobAPITest extends APISpec {
         expect:
         bc.uploadWithResponse(new BlobParallelUploadOptions(data.defaultBinaryData), null, null)
             .getValue().getETag() != null
+    }
+
+    def "Upload InputStream no length"() {
+        when:
+        bc.uploadWithResponse(new BlobParallelUploadOptions(data.defaultInputStream), null, null)
+
+        then:
+        notThrown(Exception)
+        bc.downloadContent().toBytes() == data.defaultBytes
+    }
+
+    def "Upload InputStream bad length"() {
+        when:
+        bc.uploadWithResponse(new BlobParallelUploadOptions(data.defaultInputStream, length), null, null)
+
+        then:
+        thrown(Exception)
+
+        where:
+        _ | length
+        _ | 0
+        _ | -100
+        _ | data.defaultDataSize - 1
+        _ | data.defaultDataSize + 1
+    }
+
+    def "Upload successful retry"() {
+        given:
+        def clientWithFailure = getBlobClient(
+            env.primaryAccount.credential,
+            bc.getBlobUrl(),
+            new TransientFailureInjectingHttpPipelinePolicy())
+
+        when:
+        clientWithFailure.uploadWithResponse(new BlobParallelUploadOptions(data.defaultInputStream), null, null)
+
+        then:
+        notThrown(Exception)
+        bc.downloadContent().toBytes() == data.defaultBytes
     }
 
     @LiveOnly
@@ -370,7 +417,7 @@ class BlobAPITest extends APISpec {
         constructed in BlobClient.download().
          */
         setup:
-        def bu2 = getBlobClient(env.primaryAccount.credential, bc.getBlobUrl(), new MockRetryRangeResponsePolicy())
+        def bu2 = getBlobClient(env.primaryAccount.credential, bc.getBlobUrl(), new MockRetryRangeResponsePolicy("bytes=2-6"))
 
         when:
         def range = new BlobRange(2, 5L)
@@ -636,6 +683,19 @@ class BlobAPITest extends APISpec {
 
         then:
         contentMD5 == MessageDigest.getInstance("MD5").digest(data.defaultText.substring(0, 3).getBytes())
+    }
+
+    def "Download retry default"() {
+        setup:
+        def failureBlobClient = getBlobClient(env.primaryAccount.credential, bc.getBlobUrl(), new MockFailureResponsePolicy(5))
+
+        when:
+        def outStream = new ByteArrayOutputStream()
+        failureBlobClient.download(outStream)
+        String bodyStr = outStream.toString()
+
+        then:
+        bodyStr == data.defaultText
     }
 
     def "Download error"() {

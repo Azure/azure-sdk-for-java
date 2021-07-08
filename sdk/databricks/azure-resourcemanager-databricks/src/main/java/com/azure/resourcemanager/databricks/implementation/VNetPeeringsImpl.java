@@ -20,10 +20,10 @@ public final class VNetPeeringsImpl implements VNetPeerings {
 
     private final VNetPeeringsClient innerClient;
 
-    private final com.azure.resourcemanager.databricks.DatabricksManager serviceManager;
+    private final com.azure.resourcemanager.databricks.AzureDatabricksManager serviceManager;
 
     public VNetPeeringsImpl(
-        VNetPeeringsClient innerClient, com.azure.resourcemanager.databricks.DatabricksManager serviceManager) {
+        VNetPeeringsClient innerClient, com.azure.resourcemanager.databricks.AzureDatabricksManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -193,7 +193,7 @@ public final class VNetPeeringsImpl implements VNetPeerings {
         return this.innerClient;
     }
 
-    private com.azure.resourcemanager.databricks.DatabricksManager manager() {
+    private com.azure.resourcemanager.databricks.AzureDatabricksManager manager() {
         return this.serviceManager;
     }
 

@@ -86,7 +86,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     @MethodSource("getTestParameters")
     public void setKeyEmptyName(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         if (isManagedHsmTest && interceptorManager.isPlaybackMode()) {
-            // Setting a key with an empty name returns 500 in MHSM, we don't currently produce recording for that the
+            // Setting a key with an empty name returns 500 in MHSM, we don't currently produce a recording for that the
             // way things are set.
             return;
         }

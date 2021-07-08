@@ -232,6 +232,11 @@ public final class Utility {
      * A utility method for converting the input stream to Flux of ByteBuffer. Will check the equality of entity length
      * and the input length.
      *
+     * Using markAndReset=true to force a seekable stream implies a buffering strategy is not being used, in which case
+     * length is still needed for whatever underlying REST call is being streamed to. If markAndReset=false and data is
+     * being buffered, consider using {@link com.azure.core.util.FluxUtil#toFluxByteBuffer(InputStream, int)} which
+     * does not require a data length.
+     *
      * @param data The input data which needs to convert to ByteBuffer.
      * @param length The expected input data length.
      * @param blockSize The size of each ByteBuffer.

@@ -857,7 +857,7 @@ public final class DigitalTwinsAsyncClient {
                 modelsPayload.add(mapper.readValue(model, Object.class));
             }
             catch (JsonProcessingException e) {
-                logger.error("Could not parse the model payload [%s]: %s", model, e);
+                logger.error("Could not parse the model payload [{}]: {}", model, e);
                 return Mono.error(e);
             }
         }

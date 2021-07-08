@@ -24,8 +24,8 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.monitor.query.metricsdefinitions.implementation.models.ErrorResponseException;
-import com.azure.monitor.query.metricsdefinitions.implementation.models.MetricDefinitionCollection;
 import com.azure.monitor.query.models.MetricDefinition;
+import com.azure.monitor.query.metricsdefinitions.implementation.models.MetricDefinitionCollection;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in MetricDefinitions. */
@@ -55,7 +55,7 @@ public final class MetricDefinitionsImpl {
     @Host("{$host}")
     @ServiceInterface(name = "MetricsDefinitionsCl")
     private interface MetricDefinitionsService {
-        @Get("/{resourceUri}/providers/microsoft.insights/metricDefinitions")
+        @Get("/{resourceUri}/providers/Microsoft.Insights/metricDefinitions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<MetricDefinitionCollection>> list(
