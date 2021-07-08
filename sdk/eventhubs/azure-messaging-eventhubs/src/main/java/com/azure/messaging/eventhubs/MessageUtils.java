@@ -239,47 +239,6 @@ final class MessageUtils {
             setValues(footerValue, response.getFooter());
         }
 
-        // Properties
-        final AmqpMessageProperties responseProperties = response.getProperties();
-        responseProperties.setReplyToGroupId(message.getReplyToGroupId());
-        final String replyTo = message.getReplyTo();
-        if (replyTo != null) {
-            responseProperties.setReplyTo(new AmqpAddress(message.getReplyTo()));
-        }
-        final Object messageId = message.getMessageId();
-        if (messageId != null) {
-            responseProperties.setMessageId(new AmqpMessageId(messageId.toString()));
-        }
-
-        responseProperties.setContentType(message.getContentType());
-        final Object correlationId = message.getCorrelationId();
-        if (correlationId != null) {
-            responseProperties.setCorrelationId(new AmqpMessageId(correlationId.toString()));
-        }
-
-        final Properties amqpProperties = message.getProperties();
-        if (amqpProperties != null) {
-            final String to = amqpProperties.getTo();
-            if (to != null) {
-                responseProperties.setTo(new AmqpAddress(amqpProperties.getTo()));
-            }
-
-            if (amqpProperties.getAbsoluteExpiryTime() != null) {
-                responseProperties.setAbsoluteExpiryTime(amqpProperties.getAbsoluteExpiryTime().toInstant()
-                    .atOffset(ZoneOffset.UTC));
-            }
-            if (amqpProperties.getCreationTime() != null) {
-                responseProperties.setCreationTime(amqpProperties.getCreationTime().toInstant()
-                    .atOffset(ZoneOffset.UTC));
-            }
-        }
-
-        responseProperties.setSubject(message.getSubject());
-        responseProperties.setGroupId(message.getGroupId());
-        responseProperties.setContentEncoding(message.getContentEncoding());
-        responseProperties.setGroupSequence(message.getGroupSequence());
-        responseProperties.setUserId(message.getUserId());
-
         // DeliveryAnnotations
         final DeliveryAnnotations deliveryAnnotations = message.getDeliveryAnnotations();
         if (deliveryAnnotations != null) {
@@ -292,11 +251,76 @@ final class MessageUtils {
             setValues(messageAnnotations.getValue(), response.getMessageAnnotations());
         }
 
+        // AMQP Properties
+        final AmqpMessageProperties responseProperties = response.getProperties();
+        final Properties protonJProperties = message.getProperties();
+
+        if (protonJProperties != null) {
+            if (protonJProperties.getAbsoluteExpiryTime() != null) {
+                responseProperties.setAbsoluteExpiryTime(protonJProperties.getAbsoluteExpiryTime().toInstant()
+                    .atOffset(ZoneOffset.UTC));
+            }
+
+            if (protonJProperties.getContentType() != null) {
+                responseProperties.setContentType(protonJProperties.getContentType().toString());
+            }
+
+            if (protonJProperties.getContentEncoding() != null) {
+                responseProperties.setContentEncoding(protonJProperties.getContentEncoding().toString());
+            }
+
+            final Object correlationId = message.getCorrelationId();
+            if (correlationId != null) {
+                responseProperties.setCorrelationId(new AmqpMessageId(correlationId.toString()));
+            }
+
+            if (protonJProperties.getCreationTime() != null) {
+                responseProperties.setCreationTime(protonJProperties.getCreationTime().toInstant()
+                    .atOffset(ZoneOffset.UTC));
+            }
+
+            if (protonJProperties.getGroupId() != null) {
+                responseProperties.setGroupId(protonJProperties.getGroupId());
+            }
+
+            if (protonJProperties.getGroupSequence() != null) {
+                responseProperties.setGroupSequence(protonJProperties.getGroupSequence().longValue());
+            }
+
+            final Object messageId = message.getMessageId();
+            if (messageId != null) {
+                responseProperties.setMessageId(new AmqpMessageId(messageId.toString()));
+            }
+
+            final String replyTo = protonJProperties.getReplyTo();
+            if (replyTo != null) {
+                responseProperties.setReplyTo(new AmqpAddress(replyTo));
+            }
+
+            if (protonJProperties.getReplyToGroupId() != null) {
+                responseProperties.setReplyToGroupId(protonJProperties.getReplyToGroupId());
+            }
+
+            if (protonJProperties.getSubject() != null) {
+                responseProperties.setSubject(protonJProperties.getSubject());
+            }
+
+            final String to = protonJProperties.getTo();
+            if (to != null) {
+                responseProperties.setTo(new AmqpAddress(to));
+            }
+
+            if (protonJProperties.getUserId() != null) {
+                responseProperties.setUserId(protonJProperties.getUserId().getArray());
+            }
+        }
+
         return response;
     }
 
     /**
-     * Converts a map from it's string keys to use {@link Symbol}.
+     * Converts a map from its string keys to use {@link Symbol}. In addition, if a type is of instant.
+     * Also converts the Date.
      *
      * @param sourceMap Source map.
      *
