@@ -710,7 +710,7 @@ public final class DigitalTwinsAsyncClient {
                                 return DeserializationHelpers.deserializeObject(mapper, object, clazz, this.serializer);
                             } catch (JsonProcessingException e) {
                                 LOGGER.error("JsonProcessingException occurred while deserializing the list relationship response: ", e);
-                                throw new RuntimeException("JsonProcessingException occurred while deserializing the list relationship response", e);
+                                throw LOGGER.logExceptionAsError(new RuntimeException("JsonProcessingException occurred while deserializing the list relationship response", e));
                             }
                         })
                         .filter(Objects::nonNull)
@@ -744,7 +744,7 @@ public final class DigitalTwinsAsyncClient {
                             return DeserializationHelpers.deserializeObject(mapper, object, clazz, this.serializer);
                         } catch (JsonProcessingException e) {
                             LOGGER.error("JsonProcessingException occurred while deserializing the list relationship response: ", e);
-                            throw new RuntimeException("JsonProcessingException occurred while deserializing the list relationship response", e);
+                            throw LOGGER.logExceptionAsError(new RuntimeException("JsonProcessingException occurred while deserializing the list relationship response", e));
                         }
                     })
                     .filter(Objects::nonNull)
@@ -1347,7 +1347,7 @@ public final class DigitalTwinsAsyncClient {
                             return DeserializationHelpers.deserializeObject(mapper, object, clazz, this.serializer);
                         } catch (JsonProcessingException e) {
                             LOGGER.error("JsonProcessingException occurred while deserializing the query response: ", e);
-                            throw new RuntimeException("JsonProcessingException occurred while deserializing the query response: ", e);
+                            throw LOGGER.logExceptionAsError(new RuntimeException("JsonProcessingException occurred while deserializing the query response: ", e));
                         }
                     })
                     .filter(Objects::nonNull)
@@ -1379,7 +1379,7 @@ public final class DigitalTwinsAsyncClient {
                             return DeserializationHelpers.deserializeObject(mapper, object, clazz, this.serializer);
                         } catch (JsonProcessingException e) {
                             LOGGER.error("JsonProcessingException occurred while deserializing the query response: ", e);
-                            throw new RuntimeException("JsonProcessingException occurred while deserializing the query response: ", e);
+                            throw LOGGER.logExceptionAsError(new RuntimeException("JsonProcessingException occurred while deserializing the query response: ", e));
                         }
                     })
                     .filter(Objects::nonNull)

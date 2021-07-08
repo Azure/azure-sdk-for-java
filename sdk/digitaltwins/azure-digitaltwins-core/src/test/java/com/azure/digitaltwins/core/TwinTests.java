@@ -41,10 +41,10 @@ public class TwinTests extends TwinTestBase {
     public void digitalTwinLifecycle(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException {
         DigitalTwinsClient client = getClient(httpClient, serviceVersion);
 
-        String roomTwinId = UniqueIdHelper.getUniqueDigitalTwinId(TestAssetDefaults.ROOM_TWIN_ID_PREFIX, client, randomIntegerStringGenerator);
+        String roomTwinId = UniqueIdHelper.getUniqueDigitalTwinId(TestAssetDefaults.ROOM_TWIN_ID_PREFIX, client, getRandomIntegerStringGenerator());
 
-        String floorModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.FLOOR_MODEL_ID, client, randomIntegerStringGenerator);
-        String roomModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.ROOM_MODEL_ID, client, randomIntegerStringGenerator);
+        String floorModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.FLOOR_MODEL_ID, client, getRandomIntegerStringGenerator());
+        String roomModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.ROOM_MODEL_ID, client, getRandomIntegerStringGenerator());
 
         String roomTwin = TestAssetsHelper.getRoomTwinPayload(roomModelId);
         String roomModel = TestAssetsHelper.getRoomModelPayload(roomModelId, floorModelId);
@@ -114,9 +114,9 @@ public class TwinTests extends TwinTestBase {
     public void createOrReplaceTwinFailsWhenIfNoneMatchStar(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException {
         DigitalTwinsClient client = getClient(httpClient, serviceVersion);
 
-        String roomTwinId = UniqueIdHelper.getUniqueDigitalTwinId(TestAssetDefaults.ROOM_TWIN_ID_PREFIX, client, randomIntegerStringGenerator);
-        String floorModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.FLOOR_MODEL_ID, client, randomIntegerStringGenerator);
-        String roomModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.ROOM_MODEL_ID, client, randomIntegerStringGenerator);
+        String roomTwinId = UniqueIdHelper.getUniqueDigitalTwinId(TestAssetDefaults.ROOM_TWIN_ID_PREFIX, client, getRandomIntegerStringGenerator());
+        String floorModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.FLOOR_MODEL_ID, client, getRandomIntegerStringGenerator());
+        String roomModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.ROOM_MODEL_ID, client, getRandomIntegerStringGenerator());
 
         String roomTwin = TestAssetsHelper.getRoomTwinPayload(roomModelId);
         String roomModel = TestAssetsHelper.getRoomModelPayload(roomModelId, floorModelId);
@@ -164,9 +164,9 @@ public class TwinTests extends TwinTestBase {
     public void createOrReplaceTwinSucceedsWhenNoIfNoneHeader(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException {
         DigitalTwinsClient client = getClient(httpClient, serviceVersion);
 
-        String roomTwinId = UniqueIdHelper.getUniqueDigitalTwinId(TestAssetDefaults.ROOM_TWIN_ID_PREFIX, client, randomIntegerStringGenerator);
-        String floorModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.FLOOR_MODEL_ID, client, randomIntegerStringGenerator);
-        String roomModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.ROOM_MODEL_ID, client, randomIntegerStringGenerator);
+        String roomTwinId = UniqueIdHelper.getUniqueDigitalTwinId(TestAssetDefaults.ROOM_TWIN_ID_PREFIX, client, getRandomIntegerStringGenerator());
+        String floorModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.FLOOR_MODEL_ID, client, getRandomIntegerStringGenerator());
+        String roomModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.ROOM_MODEL_ID, client, getRandomIntegerStringGenerator());
 
         String roomTwin = TestAssetsHelper.getRoomTwinPayload(roomModelId);
         String roomModel = TestAssetsHelper.getRoomModelPayload(roomModelId, floorModelId);
@@ -219,9 +219,9 @@ public class TwinTests extends TwinTestBase {
     public void patchTwinFailsWhenETagDoesNotMatch(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException {
         DigitalTwinsClient client = getClient(httpClient, serviceVersion);
 
-        String roomTwinId = UniqueIdHelper.getUniqueDigitalTwinId(TestAssetDefaults.ROOM_TWIN_ID_PREFIX, client, randomIntegerStringGenerator);
-        String floorModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.FLOOR_MODEL_ID, client, randomIntegerStringGenerator);
-        String roomModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.ROOM_MODEL_ID, client, randomIntegerStringGenerator);
+        String roomTwinId = UniqueIdHelper.getUniqueDigitalTwinId(TestAssetDefaults.ROOM_TWIN_ID_PREFIX, client, getRandomIntegerStringGenerator());
+        String floorModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.FLOOR_MODEL_ID, client, getRandomIntegerStringGenerator());
+        String roomModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.ROOM_MODEL_ID, client, getRandomIntegerStringGenerator());
 
         String roomTwin = TestAssetsHelper.getRoomTwinPayload(roomModelId);
         String roomModel = TestAssetsHelper.getRoomModelPayload(roomModelId, floorModelId);
@@ -274,9 +274,9 @@ public class TwinTests extends TwinTestBase {
     public void patchTwinSucceedsWhenETagMatches(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException {
         DigitalTwinsClient client = getClient(httpClient, serviceVersion);
 
-        String roomTwinId = UniqueIdHelper.getUniqueDigitalTwinId(TestAssetDefaults.ROOM_TWIN_ID_PREFIX, client, randomIntegerStringGenerator);
-        String floorModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.FLOOR_MODEL_ID, client, randomIntegerStringGenerator);
-        String roomModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.ROOM_MODEL_ID, client, randomIntegerStringGenerator);
+        String roomTwinId = UniqueIdHelper.getUniqueDigitalTwinId(TestAssetDefaults.ROOM_TWIN_ID_PREFIX, client, getRandomIntegerStringGenerator());
+        String floorModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.FLOOR_MODEL_ID, client, getRandomIntegerStringGenerator());
+        String roomModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.ROOM_MODEL_ID, client, getRandomIntegerStringGenerator());
 
         String roomTwin = TestAssetsHelper.getRoomTwinPayload(roomModelId);
         String roomModel = TestAssetsHelper.getRoomModelPayload(roomModelId, floorModelId);
@@ -335,9 +335,9 @@ public class TwinTests extends TwinTestBase {
     public void deleteTwinFailsWhenETagDoesNotMatch(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException {
         DigitalTwinsClient client = getClient(httpClient, serviceVersion);
 
-        String roomTwinId = UniqueIdHelper.getUniqueDigitalTwinId(TestAssetDefaults.ROOM_TWIN_ID_PREFIX, client, randomIntegerStringGenerator);
-        String floorModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.FLOOR_MODEL_ID, client, randomIntegerStringGenerator);
-        String roomModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.ROOM_MODEL_ID, client, randomIntegerStringGenerator);
+        String roomTwinId = UniqueIdHelper.getUniqueDigitalTwinId(TestAssetDefaults.ROOM_TWIN_ID_PREFIX, client, getRandomIntegerStringGenerator());
+        String floorModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.FLOOR_MODEL_ID, client, getRandomIntegerStringGenerator());
+        String roomModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.ROOM_MODEL_ID, client, getRandomIntegerStringGenerator());
 
         String roomTwin = TestAssetsHelper.getRoomTwinPayload(roomModelId);
         String roomModel = TestAssetsHelper.getRoomModelPayload(roomModelId, floorModelId);
@@ -390,9 +390,9 @@ public class TwinTests extends TwinTestBase {
     public void deleteTwinSucceedsWhenETagMatches(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException {
         DigitalTwinsClient client = getClient(httpClient, serviceVersion);
 
-        String roomTwinId = UniqueIdHelper.getUniqueDigitalTwinId(TestAssetDefaults.ROOM_TWIN_ID_PREFIX, client, randomIntegerStringGenerator);
-        String floorModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.FLOOR_MODEL_ID, client, randomIntegerStringGenerator);
-        String roomModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.ROOM_MODEL_ID, client, randomIntegerStringGenerator);
+        String roomTwinId = UniqueIdHelper.getUniqueDigitalTwinId(TestAssetDefaults.ROOM_TWIN_ID_PREFIX, client, getRandomIntegerStringGenerator());
+        String floorModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.FLOOR_MODEL_ID, client, getRandomIntegerStringGenerator());
+        String roomModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.ROOM_MODEL_ID, client, getRandomIntegerStringGenerator());
 
         String roomTwin = TestAssetsHelper.getRoomTwinPayload(roomModelId);
         String roomModel = TestAssetsHelper.getRoomModelPayload(roomModelId, floorModelId);
@@ -450,11 +450,11 @@ public class TwinTests extends TwinTestBase {
     public void digitalTwinWithNumericStringProperty(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException {
         DigitalTwinsClient client = getClient(httpClient, serviceVersion);
 
-        String floorTwinId = UniqueIdHelper.getUniqueDigitalTwinId(TestAssetDefaults.FLOOR_TWIN_ID_PREFIX, client, randomIntegerStringGenerator);
+        String floorTwinId = UniqueIdHelper.getUniqueDigitalTwinId(TestAssetDefaults.FLOOR_TWIN_ID_PREFIX, client, getRandomIntegerStringGenerator());
 
-        String floorModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.FLOOR_MODEL_ID, client, randomIntegerStringGenerator);
-        String hvacModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.HVAC_MODEL_ID, client, randomIntegerStringGenerator);
-        String roomModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.ROOM_MODEL_ID, client, randomIntegerStringGenerator);
+        String floorModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.FLOOR_MODEL_ID, client, getRandomIntegerStringGenerator());
+        String hvacModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.HVAC_MODEL_ID, client, getRandomIntegerStringGenerator());
+        String roomModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.ROOM_MODEL_ID, client, getRandomIntegerStringGenerator());
 
         String roomModel = TestAssetsHelper.getRoomModelPayload(roomModelId, floorModelId);
         String floorModel = TestAssetsHelper.getFloorModelPayload(floorModelId, roomModelId, hvacModelId);

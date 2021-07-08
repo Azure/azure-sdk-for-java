@@ -83,8 +83,7 @@ public final class DigitalTwinsClient {
      * @return The deserialized application/json object representing the digital twin created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> T createOrReplaceDigitalTwin(String digitalTwinId, T digitalTwin, Class<T> clazz)
-    {
+    public <T> T createOrReplaceDigitalTwin(String digitalTwinId, T digitalTwin, Class<T> clazz) {
         return createOrReplaceDigitalTwinWithResponse(digitalTwinId, digitalTwin, clazz, null, Context.NONE).getValue();
     }
 
@@ -111,8 +110,7 @@ public final class DigitalTwinsClient {
      * @return A {@link DigitalTwinsResponse} containing the deserialized application/json object representing the digital twin created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> Response<T> createOrReplaceDigitalTwinWithResponse(String digitalTwinId, T digitalTwin, Class<T> clazz, CreateOrReplaceDigitalTwinOptions options, Context context)
-    {
+    public <T> Response<T> createOrReplaceDigitalTwinWithResponse(String digitalTwinId, T digitalTwin, Class<T> clazz, CreateOrReplaceDigitalTwinOptions options, Context context) {
         return digitalTwinsAsyncClient.createOrReplaceDigitalTwinWithResponse(digitalTwinId, digitalTwin, clazz, options, context).block();
     }
 
@@ -138,8 +136,7 @@ public final class DigitalTwinsClient {
      * @return The deserialized application/json object representing the digital twin.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> T getDigitalTwin(String digitalTwinId, Class<T> clazz)
-    {
+    public <T> T getDigitalTwin(String digitalTwinId, Class<T> clazz) {
         return getDigitalTwinWithResponse(digitalTwinId, clazz, Context.NONE).getValue();
     }
 
@@ -166,8 +163,7 @@ public final class DigitalTwinsClient {
      * @return A {@link DigitalTwinsResponse} containing the deserialized application/json object representing the digital twin.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> DigitalTwinsResponse<T> getDigitalTwinWithResponse(String digitalTwinId, Class<T> clazz, Context context)
-    {
+    public <T> DigitalTwinsResponse<T> getDigitalTwinWithResponse(String digitalTwinId, Class<T> clazz, Context context) {
         return digitalTwinsAsyncClient.getDigitalTwinWithResponse(digitalTwinId, clazz, context).block();
     }
 
@@ -185,8 +181,7 @@ public final class DigitalTwinsClient {
      *                                    This argument can be created using {@link JsonPatchDocument}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateDigitalTwin(String digitalTwinId, JsonPatchDocument jsonPatch)
-    {
+    public void updateDigitalTwin(String digitalTwinId, JsonPatchDocument jsonPatch) {
         updateDigitalTwinWithResponse(digitalTwinId, jsonPatch, null, Context.NONE);
     }
 
@@ -208,8 +203,7 @@ public final class DigitalTwinsClient {
      * ETag for this resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DigitalTwinsResponse<Void> updateDigitalTwinWithResponse(String digitalTwinId, JsonPatchDocument jsonPatch, UpdateDigitalTwinOptions options, Context context)
-    {
+    public DigitalTwinsResponse<Void> updateDigitalTwinWithResponse(String digitalTwinId, JsonPatchDocument jsonPatch, UpdateDigitalTwinOptions options, Context context) {
         return digitalTwinsAsyncClient.updateDigitalTwinWithResponse(digitalTwinId, jsonPatch, options, context).block();
     }
 
@@ -223,8 +217,7 @@ public final class DigitalTwinsClient {
      * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteDigitalTwin(String digitalTwinId)
-    {
+    public void deleteDigitalTwin(String digitalTwinId) {
         deleteDigitalTwinWithResponse(digitalTwinId, null, Context.NONE);
     }
 
@@ -241,8 +234,7 @@ public final class DigitalTwinsClient {
      * @return The Http response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteDigitalTwinWithResponse(String digitalTwinId, DeleteDigitalTwinOptions options, Context context)
-    {
+    public Response<Void> deleteDigitalTwinWithResponse(String digitalTwinId, DeleteDigitalTwinOptions options, Context context) {
         return digitalTwinsAsyncClient.deleteDigitalTwinWithResponse(digitalTwinId, options, context).block();
     }
 
@@ -885,8 +877,7 @@ public final class DigitalTwinsClient {
      * @param eventRouteId The Id of the event route to delete.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteEventRoute(String eventRouteId)
-    {
+    public void deleteEventRoute(String eventRouteId) {
         deleteEventRouteWithResponse(eventRouteId, Context.NONE);
     }
 

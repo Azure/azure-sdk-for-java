@@ -33,8 +33,8 @@ public class QueryTests extends QueryTestBase {
     public void validQuerySucceeds(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws InterruptedException {
         DigitalTwinsClient client = getClient(httpClient, serviceVersion);
         int pageSize = 3;
-        String floorModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.FLOOR_MODEL_ID_PREFIX, client, randomIntegerStringGenerator);
-        String roomModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.ROOM_MODEL_ID_PREFIX, client, randomIntegerStringGenerator);
+        String floorModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.FLOOR_MODEL_ID_PREFIX, client, getRandomIntegerStringGenerator());
+        String roomModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.ROOM_MODEL_ID_PREFIX, client, getRandomIntegerStringGenerator());
         List<String> roomTwinIds = new ArrayList<>();
 
         try {
@@ -44,7 +44,7 @@ public class QueryTests extends QueryTestBase {
             // Create a room twin with property "IsOccupied" : true
             String roomTwin = TestAssetsHelper.getRoomTwinPayload(roomModelId);
             for (int i = 0; i < pageSize + 1; i++) {
-                String roomTwinId = UniqueIdHelper.getUniqueDigitalTwinId(TestAssetDefaults.ROOM_TWIN_ID_PREFIX, client, randomIntegerStringGenerator);
+                String roomTwinId = UniqueIdHelper.getUniqueDigitalTwinId(TestAssetDefaults.ROOM_TWIN_ID_PREFIX, client, getRandomIntegerStringGenerator());
                 roomTwinIds.add(roomTwinId);
                 client.createOrReplaceDigitalTwinWithResponse(roomTwinId, roomTwin, String.class, null, Context.NONE);
             }

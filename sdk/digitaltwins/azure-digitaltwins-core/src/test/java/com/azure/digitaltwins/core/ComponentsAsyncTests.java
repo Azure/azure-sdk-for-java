@@ -35,9 +35,9 @@ public class ComponentsAsyncTests extends ComponentsTestBase {
 
         String wifiComponentName = "wifiAccessPoint";
 
-        String roomWithWifiTwinId = UniqueIdHelper.getUniqueDigitalTwinId(TestAssetDefaults.ROOM_WITH_WIFI_TWIN_ID_PREFIX, asyncClient, randomIntegerStringGenerator);
-        String roomWithWifiModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.ROOM_WITH_WIFI_MODEL_ID_PREFIX, asyncClient, randomIntegerStringGenerator);
-        String wifiModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.WIFI_MODEL_ID_PREFIX, asyncClient, randomIntegerStringGenerator);
+        String roomWithWifiTwinId = UniqueIdHelper.getUniqueDigitalTwinId(TestAssetDefaults.ROOM_WITH_WIFI_TWIN_ID_PREFIX, asyncClient, getRandomIntegerStringGenerator());
+        String roomWithWifiModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.ROOM_WITH_WIFI_MODEL_ID_PREFIX, asyncClient, getRandomIntegerStringGenerator());
+        String wifiModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.WIFI_MODEL_ID_PREFIX, asyncClient, getRandomIntegerStringGenerator());
 
         String modelWifi = TestAssetsHelper.getWifiModelPayload(wifiModelId);
         String modelRoomWithWifi = TestAssetsHelper.getRoomWithWifiModelPayload(roomWithWifiModelId, wifiModelId, wifiComponentName);
@@ -98,9 +98,9 @@ public class ComponentsAsyncTests extends ComponentsTestBase {
 
         String wifiComponentName = "wifiAccessPoint";
 
-        String roomWithWifiTwinId = UniqueIdHelper.getUniqueDigitalTwinId(TestAssetDefaults.ROOM_WITH_WIFI_TWIN_ID_PREFIX, asyncClient, randomIntegerStringGenerator);
-        String roomWithWifiModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.ROOM_WITH_WIFI_MODEL_ID_PREFIX, asyncClient, randomIntegerStringGenerator);
-        String wifiModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.WIFI_MODEL_ID_PREFIX, asyncClient, randomIntegerStringGenerator);
+        String roomWithWifiTwinId = UniqueIdHelper.getUniqueDigitalTwinId(TestAssetDefaults.ROOM_WITH_WIFI_TWIN_ID_PREFIX, asyncClient, getRandomIntegerStringGenerator());
+        String roomWithWifiModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.ROOM_WITH_WIFI_MODEL_ID_PREFIX, asyncClient, getRandomIntegerStringGenerator());
+        String wifiModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.WIFI_MODEL_ID_PREFIX, asyncClient, getRandomIntegerStringGenerator());
 
         String modelWifi = TestAssetsHelper.getWifiModelPayload(wifiModelId);
         String modelRoomWithWifi = TestAssetsHelper.getRoomWithWifiModelPayload(roomWithWifiModelId, wifiModelId, wifiComponentName);
@@ -164,9 +164,9 @@ public class ComponentsAsyncTests extends ComponentsTestBase {
 
         String wifiComponentName = "wifiAccessPoint";
 
-        String roomWithWifiTwinId = UniqueIdHelper.getUniqueDigitalTwinId(TestAssetDefaults.ROOM_WITH_WIFI_TWIN_ID_PREFIX, asyncClient, randomIntegerStringGenerator);
-        String roomWithWifiModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.ROOM_WITH_WIFI_MODEL_ID_PREFIX, asyncClient, randomIntegerStringGenerator);
-        String wifiModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.WIFI_MODEL_ID_PREFIX, asyncClient, randomIntegerStringGenerator);
+        String roomWithWifiTwinId = UniqueIdHelper.getUniqueDigitalTwinId(TestAssetDefaults.ROOM_WITH_WIFI_TWIN_ID_PREFIX, asyncClient, getRandomIntegerStringGenerator());
+        String roomWithWifiModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.ROOM_WITH_WIFI_MODEL_ID_PREFIX, asyncClient, getRandomIntegerStringGenerator());
+        String wifiModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.WIFI_MODEL_ID_PREFIX, asyncClient, getRandomIntegerStringGenerator());
 
         String modelWifi = TestAssetsHelper.getWifiModelPayload(wifiModelId);
         String modelRoomWithWifi = TestAssetsHelper.getRoomWithWifiModelPayload(roomWithWifiModelId, wifiModelId, wifiComponentName);
