@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.digitaltwins.core;
 
 import com.azure.core.http.HttpClient;
@@ -58,7 +61,7 @@ public class QueryTests extends QueryTestBase {
                     .isEqualTo(true);
             }
 
-            pagedQueryResponse = client.query(queryString, BasicDigitalTwin.class,new QueryOptions().setMaxItemsPerPage(pageSize), Context.NONE);
+            pagedQueryResponse = client.query(queryString, BasicDigitalTwin.class, new QueryOptions().setMaxItemsPerPage(pageSize), Context.NONE);
 
             // Test that page size hint works, and that all returned pages either have the page size hint amount of
             // elements, or have no continuation token (signaling that it is the last page)

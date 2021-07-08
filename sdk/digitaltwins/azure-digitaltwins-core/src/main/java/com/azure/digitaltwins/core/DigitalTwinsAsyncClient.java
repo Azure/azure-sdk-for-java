@@ -74,11 +74,11 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
  */
 @ServiceClient(builder = DigitalTwinsClientBuilder.class, isAsync = true)
 public final class DigitalTwinsAsyncClient {
-    private static final ClientLogger logger = new ClientLogger(DigitalTwinsAsyncClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DigitalTwinsAsyncClient.class);
     private final ObjectMapper mapper;
     private final DigitalTwinsServiceVersion serviceVersion;
     private final AzureDigitalTwinsAPIImpl protocolLayer;
-    private static final Boolean includeModelDefinitionOnGet = true;
+    private static final Boolean INCLUDE_MODEL_DEFINITION_ON_GET = true;
     private final JsonSerializer serializer;
     private static final String DIGITAL_TWINS_TRACING_NAMESPACE_VALUE = "Microsoft.DigitalTwins";
 
@@ -137,8 +137,7 @@ public final class DigitalTwinsAsyncClient {
      * @return The deserialized application/json object representing the digital twin created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> Mono<T> createOrReplaceDigitalTwin(String digitalTwinId, T digitalTwin, Class<T> clazz)
-    {
+    public <T> Mono<T> createOrReplaceDigitalTwin(String digitalTwinId, T digitalTwin, Class<T> clazz) {
         return createOrReplaceDigitalTwinWithResponse(digitalTwinId, digitalTwin, clazz, null)
             .map(DigitalTwinsResponse::getValue);
     }
@@ -186,7 +185,7 @@ public final class DigitalTwinsAsyncClient {
                 try {
                     genericResponse = DeserializationHelpers.deserializeObject(mapper, response.getValue(), clazz, this.serializer);
                 } catch (JsonProcessingException e) {
-                    logger.error("JsonProcessingException occurred while deserializing the response: ", e);
+                    LOGGER.error("JsonProcessingException occurred while deserializing the response: ", e);
                     return Mono.error(e);
                 }
 
@@ -218,8 +217,7 @@ public final class DigitalTwinsAsyncClient {
      * @return The deserialized application/json object representing the digital twin
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> Mono<T> getDigitalTwin(String digitalTwinId, Class<T> clazz)
-    {
+    public <T> Mono<T> getDigitalTwin(String digitalTwinId, Class<T> clazz) {
         return getDigitalTwinWithResponse(digitalTwinId, clazz)
             .map(DigitalTwinsResponse::getValue);
     }
@@ -246,8 +244,7 @@ public final class DigitalTwinsAsyncClient {
      * @return A {@link DigitalTwinsResponse} containing the deserialized application/json object representing the digital twin.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> Mono<DigitalTwinsResponse<T>> getDigitalTwinWithResponse(String digitalTwinId, Class<T> clazz)
-    {
+    public <T> Mono<DigitalTwinsResponse<T>> getDigitalTwinWithResponse(String digitalTwinId, Class<T> clazz) {
         return withContext(context -> getDigitalTwinWithResponse(digitalTwinId, clazz, context));
     }
 
@@ -267,7 +264,7 @@ public final class DigitalTwinsAsyncClient {
                 try {
                     genericResponse = DeserializationHelpers.deserializeObject(mapper, response.getValue(), clazz, this.serializer);
                 } catch (JsonProcessingException e) {
-                    logger.error("JsonProcessingException occurred while deserializing the digital twin get response: ", e);
+                    LOGGER.error("JsonProcessingException occurred while deserializing the digital twin get response: ", e);
                     return Mono.error(e);
                 }
                 DigitalTwinsResponseHeaders twinHeaders = mapper.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);
@@ -290,8 +287,7 @@ public final class DigitalTwinsAsyncClient {
      * @return An empty Mono
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateDigitalTwin(String digitalTwinId, JsonPatchDocument jsonPatch)
-    {
+    public Mono<Void> updateDigitalTwin(String digitalTwinId, JsonPatchDocument jsonPatch) {
         return updateDigitalTwinWithResponse(digitalTwinId, jsonPatch, null)
             .flatMap(voidResponse -> Mono.empty());
     }
@@ -313,8 +309,7 @@ public final class DigitalTwinsAsyncClient {
      * ETag for this resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DigitalTwinsResponse<Void>> updateDigitalTwinWithResponse(String digitalTwinId, JsonPatchDocument jsonPatch, UpdateDigitalTwinOptions options)
-    {
+    public Mono<DigitalTwinsResponse<Void>> updateDigitalTwinWithResponse(String digitalTwinId, JsonPatchDocument jsonPatch, UpdateDigitalTwinOptions options) {
         return withContext(context -> updateDigitalTwinWithResponse(digitalTwinId, jsonPatch, options, context));
     }
 
@@ -347,8 +342,7 @@ public final class DigitalTwinsAsyncClient {
      * @return An empty Mono
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteDigitalTwin(String digitalTwinId)
-    {
+    public Mono<Void> deleteDigitalTwin(String digitalTwinId) {
         return deleteDigitalTwinWithResponse(digitalTwinId, null)
             .flatMap(voidResponse -> Mono.empty());
     }
@@ -365,8 +359,7 @@ public final class DigitalTwinsAsyncClient {
      * @return The Http response
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteDigitalTwinWithResponse(String digitalTwinId, DeleteDigitalTwinOptions options)
-    {
+    public Mono<Response<Void>> deleteDigitalTwinWithResponse(String digitalTwinId, DeleteDigitalTwinOptions options) {
         return withContext(context -> deleteDigitalTwinWithResponse(digitalTwinId, options, context));
     }
 
@@ -459,7 +452,7 @@ public final class DigitalTwinsAsyncClient {
                 try {
                     genericResponse = DeserializationHelpers.deserializeObject(mapper, response.getValue(), clazz, this.serializer);
                 } catch (JsonProcessingException e) {
-                    logger.error("JsonProcessingException occurred while deserializing the create relationship response: ", e);
+                    LOGGER.error("JsonProcessingException occurred while deserializing the create relationship response: ", e);
                     return Mono.error(e);
                 }
                 DigitalTwinsResponseHeaders twinHeaders = mapper.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);
@@ -533,7 +526,7 @@ public final class DigitalTwinsAsyncClient {
                 try {
                     genericResponse = DeserializationHelpers.deserializeObject(mapper, response.getValue(), clazz, this.serializer);
                 } catch (JsonProcessingException e) {
-                    logger.error("JsonProcessingException occurred while deserializing the get relationship response: ", e);
+                    LOGGER.error("JsonProcessingException occurred while deserializing the get relationship response: ", e);
                     return Mono.error(e);
                 }
                 DigitalTwinsResponseHeaders twinHeaders = mapper.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);
@@ -716,7 +709,7 @@ public final class DigitalTwinsAsyncClient {
                             try {
                                 return DeserializationHelpers.deserializeObject(mapper, object, clazz, this.serializer);
                             } catch (JsonProcessingException e) {
-                                logger.error("JsonProcessingException occurred while deserializing the list relationship response: ", e);
+                                LOGGER.error("JsonProcessingException occurred while deserializing the list relationship response: ", e);
                                 throw new RuntimeException("JsonProcessingException occurred while deserializing the list relationship response", e);
                             }
                         })
@@ -750,7 +743,7 @@ public final class DigitalTwinsAsyncClient {
                         try {
                             return DeserializationHelpers.deserializeObject(mapper, object, clazz, this.serializer);
                         } catch (JsonProcessingException e) {
-                            logger.error("JsonProcessingException occurred while deserializing the list relationship response: ", e);
+                            LOGGER.error("JsonProcessingException occurred while deserializing the list relationship response: ", e);
                             throw new RuntimeException("JsonProcessingException occurred while deserializing the list relationship response", e);
                         }
                     })
@@ -877,7 +870,7 @@ public final class DigitalTwinsAsyncClient {
                 modelsPayload.add(mapper.readValue(model, Object.class));
             }
             catch (JsonProcessingException e) {
-                logger.error("Could not parse the model payload [{}]: {}", model, e);
+                LOGGER.error("Could not parse the model payload [{}]: {}", model, e);
                 return Mono.error(e);
             }
         }
@@ -935,7 +928,7 @@ public final class DigitalTwinsAsyncClient {
             .getDigitalTwinModels()
             .getByIdWithResponseAsync(
                 modelId,
-                includeModelDefinitionOnGet,
+                INCLUDE_MODEL_DEFINITION_ON_GET,
                 null,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE))
             .map(response -> {
@@ -1198,7 +1191,7 @@ public final class DigitalTwinsAsyncClient {
                 try {
                     genericResponse = DeserializationHelpers.deserializeObject(mapper, response.getValue(), clazz, this.serializer);
                 } catch (JsonProcessingException e) {
-                    logger.error("JsonProcessingException occurred while deserializing the get component response: ", e);
+                    LOGGER.error("JsonProcessingException occurred while deserializing the get component response: ", e);
                     return Mono.error(e);
                 }
                 DigitalTwinsResponseHeaders twinHeaders = mapper.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);
@@ -1354,7 +1347,7 @@ public final class DigitalTwinsAsyncClient {
                         try {
                             return DeserializationHelpers.deserializeObject(mapper, object, clazz, this.serializer);
                         } catch (JsonProcessingException e) {
-                            logger.error("JsonProcessingException occurred while deserializing the query response: ", e);
+                            LOGGER.error("JsonProcessingException occurred while deserializing the query response: ", e);
                             throw new RuntimeException("JsonProcessingException occurred while deserializing the query response: ", e);
                         }
                     })
@@ -1386,7 +1379,7 @@ public final class DigitalTwinsAsyncClient {
                         try {
                             return DeserializationHelpers.deserializeObject(mapper, object, clazz, this.serializer);
                         } catch (JsonProcessingException e) {
-                            logger.error("JsonProcessingException occurred while deserializing the query response: ", e);
+                            LOGGER.error("JsonProcessingException occurred while deserializing the query response: ", e);
                             throw new RuntimeException("JsonProcessingException occurred while deserializing the query response: ", e);
                         }
                     })
@@ -1413,8 +1406,7 @@ public final class DigitalTwinsAsyncClient {
      * @return An empty mono.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> createOrReplaceEventRoute(String eventRouteId, DigitalTwinsEventRoute eventRoute)
-    {
+    public Mono<Void> createOrReplaceEventRoute(String eventRouteId, DigitalTwinsEventRoute eventRoute) {
         return createOrReplaceEventRouteWithResponse(eventRouteId, eventRoute)
             .flatMap(voidResponse -> Mono.empty());
     }
@@ -1432,13 +1424,11 @@ public final class DigitalTwinsAsyncClient {
      * @return A {@link Response} containing an empty mono.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> createOrReplaceEventRouteWithResponse(String eventRouteId, DigitalTwinsEventRoute eventRoute)
-    {
+    public Mono<Response<Void>> createOrReplaceEventRouteWithResponse(String eventRouteId, DigitalTwinsEventRoute eventRoute) {
         return withContext(context -> createOrReplaceEventRouteWithResponse(eventRouteId, eventRoute, context));
     }
 
-    Mono<Response<Void>> createOrReplaceEventRouteWithResponse(String eventRouteId, DigitalTwinsEventRoute eventRoute, Context context)
-    {
+    Mono<Response<Void>> createOrReplaceEventRouteWithResponse(String eventRouteId, DigitalTwinsEventRoute eventRoute, Context context) {
          return this.protocolLayer.getEventRoutes().addWithResponseAsync(
             eventRouteId,
             EventRouteConverter.map(eventRoute),
@@ -1457,8 +1447,7 @@ public final class DigitalTwinsAsyncClient {
      * @return The retrieved event route.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DigitalTwinsEventRoute> getEventRoute(String eventRouteId)
-    {
+    public Mono<DigitalTwinsEventRoute> getEventRoute(String eventRouteId) {
         return getEventRouteWithResponse(eventRouteId)
             .map(Response::getValue);
     }
@@ -1474,13 +1463,11 @@ public final class DigitalTwinsAsyncClient {
      * @return A {@link Response} containing the retrieved event route.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DigitalTwinsEventRoute>> getEventRouteWithResponse(String eventRouteId)
-    {
+    public Mono<Response<DigitalTwinsEventRoute>> getEventRouteWithResponse(String eventRouteId) {
         return withContext(context -> getEventRouteWithResponse(eventRouteId, context));
     }
 
-    Mono<Response<DigitalTwinsEventRoute>> getEventRouteWithResponse(String eventRouteId, Context context)
-    {
+    Mono<Response<DigitalTwinsEventRoute>> getEventRouteWithResponse(String eventRouteId, Context context) {
         if (context == null) {
             context = Context.NONE;
         }
@@ -1507,8 +1494,7 @@ public final class DigitalTwinsAsyncClient {
      * @return An empty mono.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteEventRoute(String eventRouteId)
-    {
+    public Mono<Void> deleteEventRoute(String eventRouteId) {
         return deleteEventRouteWithResponse(eventRouteId)
             .flatMap(voidResponse -> Mono.empty());
     }
@@ -1524,13 +1510,11 @@ public final class DigitalTwinsAsyncClient {
      * @return A {@link Response} containing an empty mono.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteEventRouteWithResponse(String eventRouteId)
-    {
+    public Mono<Response<Void>> deleteEventRouteWithResponse(String eventRouteId) {
         return withContext(context -> deleteEventRouteWithResponse(eventRouteId, context));
     }
 
-    Mono<Response<Void>> deleteEventRouteWithResponse(String eventRouteId, Context context)
-    {
+    Mono<Response<Void>> deleteEventRouteWithResponse(String eventRouteId, Context context) {
         return this.protocolLayer.getEventRoutes().deleteWithResponseAsync(
             eventRouteId,
             null,
@@ -1548,8 +1532,7 @@ public final class DigitalTwinsAsyncClient {
      * This PagedFlux may take multiple service requests to iterate over all event routes.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DigitalTwinsEventRoute> listEventRoutes()
-    {
+    public PagedFlux<DigitalTwinsEventRoute> listEventRoutes() {
         return listEventRoutes(null);
     }
 
@@ -1566,15 +1549,13 @@ public final class DigitalTwinsAsyncClient {
      * This PagedFlux may take multiple service requests to iterate over all event routes.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DigitalTwinsEventRoute> listEventRoutes(ListDigitalTwinsEventRoutesOptions options)
-    {
+    public PagedFlux<DigitalTwinsEventRoute> listEventRoutes(ListDigitalTwinsEventRoutesOptions options) {
         return new PagedFlux<>(
             () -> withContext(context -> listEventRoutesFirstPage(options, context)),
             nextLink -> withContext(context -> listEventRoutesNextPage(nextLink, options, context)));
     }
 
-    PagedFlux<DigitalTwinsEventRoute> listEventRoutes(ListDigitalTwinsEventRoutesOptions options, Context context)
-    {
+    PagedFlux<DigitalTwinsEventRoute> listEventRoutes(ListDigitalTwinsEventRoutesOptions options, Context context) {
         return new PagedFlux<>(
             () -> listEventRoutesFirstPage(options, context != null ? context : Context.NONE),
             nextLink -> listEventRoutesNextPage(nextLink, options, context != null ? context : Context.NONE));

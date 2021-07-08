@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.digitaltwins.core;
 
 import com.azure.core.http.policy.HttpLogOptions;
@@ -25,12 +28,16 @@ import java.util.function.Function;
 
 public class PublishTelemetrySyncSamples {
     private static DigitalTwinsClient client;
-    private static final ObjectMapper mapper = new ObjectMapper();
+    private static final ObjectMapper MAPPER = new ObjectMapper();
 
-    public static Function<Integer, String> randomIntegerStringGenerator = (maxLength) -> {
-        int randInt = new Random().nextInt((int)Math.pow(10, 8) - 1) + 1;
-        return String.valueOf(randInt);
-    };
+    private static Function<Integer, String> randomIntegerStringGenerator;
+
+    static {
+        randomIntegerStringGenerator = (maxLength) -> {
+            int randInt = new Random().nextInt((int) Math.pow(10, 8) - 1) + 1;
+            return String.valueOf(randInt);
+        };
+    }
 
     public static void main(String[] args) throws IOException {
 
@@ -90,11 +97,10 @@ public class PublishTelemetrySyncSamples {
 
         ConsoleLogger.printSuccess("Created digital twin with Id: " + digitalTwinId + "\n" + digitalTwinResponse);
 
-        try
-        {
+        try {
             ConsoleLogger.printHeader("Publish Telemetry");
             // construct your json telemetry payload by hand.
-            client.publishTelemetry(digitalTwinId, null,"{\"Telemetry1\": 5}");
+            client.publishTelemetry(digitalTwinId, null, "{\"Telemetry1\": 5}");
             ConsoleLogger.print("Published telemetry message to twin " + digitalTwinId);
 
             ConsoleLogger.printHeader("Publish Component Telemetry");
@@ -112,23 +118,18 @@ public class PublishTelemetrySyncSamples {
                 Context.NONE);
 
             ConsoleLogger.printSuccess("Published component telemetry message to twin " + digitalTwinId);
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             ConsoleLogger.printFatal("Failed to publish a telemetry message due to:\n" + ex.getMessage());
         }
 
-        try
-        {
+        try {
             // Delete the twin.
             client.deleteDigitalTwin(digitalTwinId);
 
             // Delete the models.
             client.deleteModel(modelId);
             client.deleteModel(componentModelId);
-        }
-        catch (ErrorResponseException ex)
-        {
+        } catch (ErrorResponseException ex) {
             if (ex.getResponse().getStatusCode() == HttpsURLConnection.HTTP_NOT_FOUND) {
                 ConsoleLogger.printWarning("Digital twin or models do not exist.");
                 System.exit(1);

@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.digitaltwins.core.snippets;
 
 import com.azure.core.http.rest.PagedIterable;
@@ -41,7 +44,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
 
     private final DigitalTwinsClient digitalTwinsSyncClient;
 
-    DigitalTwinsClientJavaDocCodeSnippets(){
+    DigitalTwinsClientJavaDocCodeSnippets() {
         digitalTwinsSyncClient = createDigitalTwinsClient();
     }
 
@@ -129,9 +132,9 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
             new Context("Key", "Value"));
 
         System.out.println("Response http status: "
-            + resultWithResponse.getStatusCode() +
-            " created digital twin Id: " +
-            resultWithResponse.getValue().getId());
+            + resultWithResponse.getStatusCode()
+            + " created digital twin Id: "
+            + resultWithResponse.getValue().getId());
         // END: com.azure.digitaltwins.core.syncClient.createDigitalTwinsWithResponse#String-Object-Class-Options-Context#BasicDigitalTwin
 
         // BEGIN: com.azure.digitaltwins.core.syncClient.createDigitalTwinsWithResponse#String-Object-Class-Options-Context#String
@@ -145,10 +148,10 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
             new Context("Key", "Value"));
 
         System.out.println(
-            "Response http status: " +
-            stringResultWithResponse.getStatusCode() +
-            " created digital twin: " +
-            stringResultWithResponse.getValue());
+            "Response http status: "
+            + stringResultWithResponse.getStatusCode()
+            + " created digital twin: "
+            + stringResultWithResponse.getValue());
         // END: com.azure.digitaltwins.core.syncClient.createDigitalTwinsWithResponse#String-Object-Class-Options-Context#String
     }
 
@@ -297,10 +300,10 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
             BasicRelationship.class);
 
         System.out.println(
-            "Created relationship with Id: " +
-            createdRelationship.getId() +
-            " from: " + createdRelationship.getSourceId() +
-            " to: " + createdRelationship.getTargetId());
+            "Created relationship with Id: "
+            + createdRelationship.getId()
+            + " from: " + createdRelationship.getSourceId()
+            + " to: " + createdRelationship.getTargetId());
         // END: com.azure.digitaltwins.core.syncClient.createOrReplaceRelationship#String-String-Object-Class#BasicRelationship
 
         // BEGIN: com.azure.digitaltwins.core.syncClient.createOrReplaceRelationship#String-String-Object-Class#String
@@ -341,12 +344,12 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
                 new Context("key", "value"));
 
         System.out.println(
-            "Created relationship with Id: " +
-                createdRelationshipWithResponse.getValue().getId() +
-                " from: " + createdRelationshipWithResponse.getValue().getSourceId() +
-                " to: " + createdRelationshipWithResponse.getValue().getTargetId() +
-                " Http status code: " +
-                createdRelationshipWithResponse.getStatusCode());
+            "Created relationship with Id: "
+            + createdRelationshipWithResponse.getValue().getId()
+            + " from: " + createdRelationshipWithResponse.getValue().getSourceId()
+            + " to: " + createdRelationshipWithResponse.getValue().getTargetId()
+            + " Http status code: "
+            + createdRelationshipWithResponse.getStatusCode());
         // END: com.azure.digitaltwins.core.syncClient.createOrReplaceRelationshipWithResponse#String-String-Object-Class-Options-Context#BasicRelationship
 
         // BEGIN: com.azure.digitaltwins.core.syncClient.createOrReplaceRelationshipWithResponse#String-String-Object-Class-Options-Context#String
@@ -361,10 +364,10 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
             new Context("key", "value"));
 
         System.out.println(
-            "Created relationship: " +
-            createdRelationshipStringWithResponse +
-            " With HTTP status code: " +
-            createdRelationshipStringWithResponse.getStatusCode());
+            "Created relationship: "
+            + createdRelationshipStringWithResponse
+            + " With HTTP status code: "
+            + createdRelationshipStringWithResponse.getStatusCode());
         // END: com.azure.digitaltwins.core.syncClient.createOrReplaceRelationshipWithResponse#String-String-Object-Class-Options-Context#String
     }
 
@@ -381,10 +384,10 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
 
         System.out.println(
             "Retrieved relationship with Id: "
-            + retrievedRelationship.getId() +
-            " from: " +
-            retrievedRelationship.getSourceId() +
-            " to: " + retrievedRelationship.getTargetId());
+            + retrievedRelationship.getId()
+            + " from: "
+            + retrievedRelationship.getSourceId()
+            + " to: " + retrievedRelationship.getTargetId());
         // END: com.azure.digitaltwins.core.syncClient.getRelationship#String#BasicRelationship
 
         // BEGIN: com.azure.digitaltwins.core.syncClient.getRelationship#String#String
@@ -413,11 +416,11 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
 
         System.out.println(
             "Retrieved relationship with Id: "
-                + retrievedRelationshipWithResponse.getValue().getId() +
-                " from: " +
-                retrievedRelationshipWithResponse.getValue().getSourceId() +
-                " to: " + retrievedRelationshipWithResponse.getValue().getTargetId() +
-                "HTTP status code: " + retrievedRelationshipWithResponse.getStatusCode());
+                + retrievedRelationshipWithResponse.getValue().getId()
+                + " from: "
+                + retrievedRelationshipWithResponse.getValue().getSourceId()
+                + " to: " + retrievedRelationshipWithResponse.getValue().getTargetId()
+                + "HTTP status code: " + retrievedRelationshipWithResponse.getStatusCode());
         // END: com.azure.digitaltwins.core.syncClient.getRelationshipWithResponse#String-String-Class-Options-Context#BasicRelationship
 
         // BEGIN: com.azure.digitaltwins.core.syncClient.getRelationshipWithResponse#String-String-Class-Options-Context#String
@@ -428,10 +431,10 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
             new Context("key", "value"));
 
         System.out.println(
-            "Retrieved relationship: " +
-            retrievedRelationshipString +
-            " HTTP status code: " +
-            retrievedRelationshipString.getStatusCode());
+            "Retrieved relationship: "
+            + retrievedRelationshipString
+            + " HTTP status code: "
+            + retrievedRelationshipString.getStatusCode());
         // END: com.azure.digitaltwins.core.syncClient.getRelationshipWithResponse#String-String-Class-Options-Context#String
     }
 
@@ -565,11 +568,11 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
 
         for (IncomingRelationship rel : pagedIncomingRelationships) {
             System.out.println(
-                "Retrieved relationship with Id: " +
-                    rel.getRelationshipId() +
-                    " from: " +
-                    rel.getSourceId() +
-                    " to: myDigitalTwinId");
+                "Retrieved relationship with Id: "
+                + rel.getRelationshipId()
+                + " from: "
+                + rel.getSourceId()
+                + " to: myDigitalTwinId");
         }
         // END: com.azure.digitaltwins.core.syncClient.listIncomingRelationships#String
 
@@ -581,11 +584,11 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
 
         for (IncomingRelationship rel : pagedIncomingRelationshipsWithContext) {
             System.out.println(
-                "Retrieved relationship with Id: " +
-                rel.getRelationshipId() +
-                " from: " +
-                rel.getSourceId() +
-                " to: myDigitalTwinId");
+                "Retrieved relationship with Id: "
+                + rel.getRelationshipId()
+                + " from: "
+                + rel.getSourceId()
+                + " to: myDigitalTwinId");
         }
         // END: com.azure.digitaltwins.core.syncClient.listIncomingRelationships#String-Options-Context
     }
@@ -769,8 +772,8 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
             new Context("key", "value"));
 
         System.out.println(
-            "Received component get operation response with HTTP status code: " +
-            componentStringWithResponse.getStatusCode());
+            "Received component get operation response with HTTP status code: "
+            + componentStringWithResponse.getStatusCode());
         // END: com.azure.digitaltwins.core.syncClient.getComponentWithResponse#String-String-Class-Options-Context
     }
 
@@ -808,8 +811,8 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
             new Context("key", "value"));
 
         System.out.println(
-            "Received update operation HTTP response with status: " +
-            updateResponse.getStatusCode());
+            "Received update operation HTTP response with status: "
+            + updateResponse.getStatusCode());
         // END: com.azure.digitaltwins.core.syncClient.updateComponentWithResponse#String-String-List-Options-Context
     }
 
@@ -828,8 +831,8 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
             BasicDigitalTwin.class);
 
         queryResultBasicDigitalTwin.forEach(basicTwin -> System.out.println(
-            "Retrieved digitalTwin query result with Id: " +
-            basicTwin.getId()));
+            "Retrieved digitalTwin query result with Id: "
+            + basicTwin.getId()));
         // END: com.azure.digitaltwins.core.syncClient.query#String#BasicDigitalTwin
 
         // BEGIN: com.azure.digitaltwins.core.syncClient.query#String#String
@@ -927,8 +930,8 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
             new Context("key", "value"));
 
         System.out.println(
-            "Received get event route operation response with HTTP status code: " +
-            eventRouteWithResponse.getStatusCode());
+            "Received get event route operation response with HTTP status code: "
+            + eventRouteWithResponse.getStatusCode());
         System.out.println("Retrieved event route with Id: " + eventRouteWithResponse.getValue().getEventRouteId());
         // END: com.azure.digitaltwins.core.syncClient.getEventRouteWithResponse#String-Options-Context
     }
@@ -955,8 +958,8 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
             new Context("key", "value"));
 
         System.out.println(
-            "Received delete event route operation response with HTTP status code: " +
-            deleteResponse.getStatusCode());
+            "Received delete event route operation response with HTTP status code: "
+            + deleteResponse.getStatusCode());
         // END: com.azure.digitaltwins.core.syncClient.deleteEventRouteWithResponse#String-Options-Context
     }
 
@@ -1026,8 +1029,8 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
             new Context("key", "value"));
 
         System.out.println(
-            "Received publish telemetry operation response with HTTP status code: " +
-            responseString.getStatusCode());
+            "Received publish telemetry operation response with HTTP status code: "
+            + responseString.getStatusCode());
         // END: com.azure.digitaltwins.core.syncClient.publishTelemetryWithResponse#String-String-Object-Options-Context#String
 
         // BEGIN: com.azure.digitaltwins.core.syncClient.publishTelemetryWithResponse#String-String-Object-Options-Context#Object
@@ -1042,8 +1045,8 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
             new Context("key", "value"));
 
         System.out.println(
-            "Received publish telemetry operation response with HTTP status code: " +
-            responseObject.getStatusCode());
+            "Received publish telemetry operation response with HTTP status code: "
+            + responseObject.getStatusCode());
         // END: com.azure.digitaltwins.core.syncClient.publishTelemetryWithResponse#String-String-Object-Options-Context#Object
     }
 
@@ -1089,8 +1092,8 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
             new Context("key", "value"));
 
         System.out.println(
-            "Received publish component telemetry operation response with HTTP status code: " +
-            responseString.getStatusCode());
+            "Received publish component telemetry operation response with HTTP status code: "
+            + responseString.getStatusCode());
         // END: com.azure.digitaltwins.core.syncClient.publishComponentTelemetryWithResponse#String-String-String-Object-Options-Context#String
 
         // BEGIN: com.azure.digitaltwins.core.syncClient.publishComponentTelemetryWithResponse#String-String-String-Object-Options-Context#Object
@@ -1106,8 +1109,8 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
             new Context("key", "value"));
 
         System.out.println(
-            "Received publish component telemetry operation response with HTTP status code: " +
-            responseObject.getStatusCode());
+            "Received publish component telemetry operation response with HTTP status code: "
+            + responseObject.getStatusCode());
         // END: com.azure.digitaltwins.core.syncClient.publishComponentTelemetryWithResponse#String-String-String-Object-Options-Context#Object
     }
 

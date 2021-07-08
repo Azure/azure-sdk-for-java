@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.digitaltwins.core;
 
 import com.azure.core.http.HttpClient;
@@ -81,9 +84,7 @@ public class TwinTests extends TwinTestBase {
                 .as("Temperature is updated")
                 .isEqualTo(70);
 
-        }
-        // clean up
-        finally {
+        } finally {
             try {
                 if (roomTwinId != null) {
                     client.deleteDigitalTwin(roomTwinId);
@@ -143,9 +144,7 @@ public class TwinTests extends TwinTestBase {
                     Context.NONE),
                 HTTP_PRECON_FAILED
             );
-        }
-        // clean up
-        finally {
+        } finally {
             try {
                 if (roomTwinId != null) {
                     client.deleteDigitalTwin(roomTwinId);
@@ -200,9 +199,7 @@ public class TwinTests extends TwinTestBase {
                     throw ex;
                 }
             }
-        }
-        // clean up
-        finally {
+        } finally {
             try {
                 if (roomTwinId != null) {
                     client.deleteDigitalTwin(roomTwinId);
@@ -257,9 +254,7 @@ public class TwinTests extends TwinTestBase {
                     new UpdateDigitalTwinOptions().setIfMatch(etagBeforeUpdate),
                     Context.NONE),
                 HTTP_PRECON_FAILED);
-        }
-        // clean up
-        finally {
+        } finally {
             try {
                 if (roomTwinId != null) {
                     client.deleteDigitalTwin(roomTwinId);
@@ -320,9 +315,7 @@ public class TwinTests extends TwinTestBase {
                     throw ex;
                 }
             }
-        }
-        // clean up
-        finally {
+        } finally {
             try {
                 if (roomTwinId != null) {
                     client.deleteDigitalTwin(roomTwinId);
@@ -376,13 +369,12 @@ public class TwinTests extends TwinTestBase {
                     new DeleteDigitalTwinOptions().setIfMatch(etagBeforeUpdate),
                     Context.NONE),
                 HTTP_PRECON_FAILED);
-        }
-        // clean up
-        finally {
+        } finally {
             try {
                 if (roomTwinId != null) {
                     client.deleteDigitalTwin(roomTwinId);
                 }
+
                 if (roomModelId != null) {
                     client.deleteModel(roomModelId);
                 }
@@ -441,9 +433,7 @@ public class TwinTests extends TwinTestBase {
                     throw ex;
                 }
             }
-        }
-        // clean up
-        finally {
+        } finally {
             try {
                 if (roomModelId != null) {
                     client.deleteModel(roomModelId);
@@ -481,13 +471,11 @@ public class TwinTests extends TwinTestBase {
             floorTwinToCreate.addToContents("name", "1234");
             floorTwinToCreate.addToContents("roomType", "1234 spacious");
 
-            BasicDigitalTwin createdFloorTwin = client.createOrReplaceDigitalTwin(floorTwinId, floorTwinToCreate , BasicDigitalTwin.class);
+            BasicDigitalTwin createdFloorTwin = client.createOrReplaceDigitalTwin(floorTwinId, floorTwinToCreate, BasicDigitalTwin.class);
 
             logger.info("Created {} twin successfully", createdFloorTwin.getId());
             assertEquals(createdFloorTwin.getId(), floorTwinId);
-        }
-        // clean up
-        finally {
+        } finally {
             try {
                 if (roomModelId != null) {
                     client.deleteModel(roomModelId);

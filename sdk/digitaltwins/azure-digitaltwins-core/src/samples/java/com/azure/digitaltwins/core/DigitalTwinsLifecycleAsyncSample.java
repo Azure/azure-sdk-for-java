@@ -28,9 +28,8 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
-import static com.azure.digitaltwins.core.helpers.SamplesConstants.WIFI_MODEL_ID;
-import static com.azure.digitaltwins.core.helpers.SamplesUtil.IgnoreConflictError;
-import static com.azure.digitaltwins.core.helpers.SamplesUtil.IgnoreNotFoundError;
+import static com.azure.digitaltwins.core.helpers.SamplesUtil.IGNORE_CONFLICT_ERROR;
+import static com.azure.digitaltwins.core.helpers.SamplesUtil.IGNORE_NOT_FOUND_ERROR;
 import static java.net.HttpURLConnection.HTTP_NOT_FOUND;
 import static java.util.Arrays.asList;
 
@@ -152,14 +151,14 @@ public class DigitalTwinsLifecycleAsyncSample {
             // Call APIs to retrieve all relationships.
             client.listRelationships(twinId, BasicRelationship.class)
                 .doOnNext(relationshipList::add)
-                .doOnError(IgnoreNotFoundError)
+                .doOnError(IGNORE_NOT_FOUND_ERROR)
                 .doOnTerminate(listRelationshipSemaphore::countDown)
                 .subscribe();
 
             // Call APIs to retrieve all incoming relationships.
             client.listIncomingRelationships(twinId, null)
                 .doOnNext(e -> relationshipList.add(MAPPER.convertValue(e, BasicRelationship.class)))
-                .doOnError(IgnoreNotFoundError)
+                .doOnError(IGNORE_NOT_FOUND_ERROR)
                 .doOnTerminate(listRelationshipSemaphore::countDown)
                 .subscribe();
 
@@ -174,7 +173,7 @@ public class DigitalTwinsLifecycleAsyncSample {
                                 ConsoleLogger.printSuccess("Found and deleted incoming relationship: " + relationship.getId());
                             }
                         })
-                        .doOnError(IgnoreNotFoundError)
+                        .doOnError(IGNORE_NOT_FOUND_ERROR)
                         .doOnTerminate(deleteRelationshipsSemaphore::release)
                         .subscribe());
             }
@@ -186,7 +185,7 @@ public class DigitalTwinsLifecycleAsyncSample {
                 // Call APIs to delete the twins.
                 client.deleteDigitalTwin(twinId)
                     .doOnSuccess(aVoid -> ConsoleLogger.printSuccess("Deleted digital twin: " + twinId))
-                    .doOnError(IgnoreNotFoundError)
+                    .doOnError(IGNORE_NOT_FOUND_ERROR)
                     .doOnTerminate(deleteTwinsLatch::countDown)
                     .subscribe();
 
@@ -236,7 +235,7 @@ public class DigitalTwinsLifecycleAsyncSample {
             .doOnNext(listOfModelData -> listOfModelData.forEach(
                 modelData -> ConsoleLogger.printSuccess("Created model: " + modelData.getModelId())
             ))
-            .doOnError(IgnoreConflictError)
+            .doOnError(IGNORE_CONFLICT_ERROR)
             .doOnTerminate(createModelsLatch::countDown)
             .subscribe();
 
@@ -254,8 +253,8 @@ public class DigitalTwinsLifecycleAsyncSample {
 
         // Call API to list the models. For each async operation, once the operation is completed successfully, a latch is counted down.
         client.listModels()
-            .doOnNext(modelData -> ConsoleLogger.printSuccess("Retrieved model: " + modelData.getModelId() + ", display name '" + modelData.getDisplayNameLanguageMap().get("en") + "'," +
-                    " upload time '" + modelData.getUploadedOn() + "' and decommissioned '" + modelData.isDecommissioned() + "'"))
+            .doOnNext(modelData -> ConsoleLogger.printSuccess("Retrieved model: " + modelData.getModelId() + ", display name '" + modelData.getDisplayNameLanguageMap().get("en") + "',"
+                + " upload time '" + modelData.getUploadedOn() + "' and decommissioned '" + modelData.isDecommissioned() + "'"))
             .doOnError(throwable -> ConsoleLogger.printFatal("List models error: " + throwable))
             .doOnTerminate(listModelsLatch::countDown)
             .subscribe();
@@ -309,7 +308,7 @@ public class DigitalTwinsLifecycleAsyncSample {
                             try {
                                 client.createOrReplaceRelationship(relationship.getSourceId(), relationship.getId(), MAPPER.writeValueAsString(relationship), String.class)
                                     .doOnSuccess(s -> ConsoleLogger.printSuccess("Linked twin " + relationship.getSourceId() + " to twin " + relationship.getTargetId() + " as " + relationship.getName()))
-                                    .doOnError(IgnoreConflictError)
+                                    .doOnError(IGNORE_CONFLICT_ERROR)
                                     .doOnTerminate(connectTwinsLatch::countDown)
                                     .subscribe();
                             } catch (JsonProcessingException e) {
@@ -355,8 +354,7 @@ public class DigitalTwinsLifecycleAsyncSample {
         // Call API to query digital twins. For each async operation, once the operation is completed successfully, a latch is counted down.
         client.query("SELECT * FROM digitaltwins", BasicDigitalTwin.class, null)
             .byPage()
-            .doOnNext(page ->
-            {
+            .doOnNext(page -> {
                 ConsoleLogger.printHeader("Query charge: " + QueryChargeHelper.getQueryCharge(page));
                 page.getValue()
                     .forEach(item -> ConsoleLogger.printHeader("Found digital twin: " + item.getId()));
