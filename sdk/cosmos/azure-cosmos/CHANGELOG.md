@@ -1,7 +1,12 @@
 ## Release History
 
-## 4.17.0-beta.1 (Unreleased)
+### 4.17.0 (2021-07-08)
+#### New Features
+* Adjust MicroBatchSize dynamically based on throttling rate in BulkExecutor.
 
+#### Key Bug Fixes
+* Fixed an issue where authentication context was missing in Barrier related requests.
+* Fixed an issue where `ChangeFeedProcessor` was resuming from zero continuation token for new partitions on partition splits.
 
 ### 4.16.0 (2021-06-11)
 #### Key Bug Fixes
