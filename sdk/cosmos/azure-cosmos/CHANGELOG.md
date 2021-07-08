@@ -2,7 +2,7 @@
 
 ### 4.17.0 (2021-07-08)
 #### New Features
-* Adjust MicroBatchSize dynamically based on throttling rate in BulkExecutor.
+* Adjust `MicroBatchSize` dynamically based on throttling rate in `BulkExecutor`.
 
 #### Key Bug Fixes
 * Fixed an issue with AAD authentication in `Strong` and `BoundedStaleness` in direct mode.
