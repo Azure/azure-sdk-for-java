@@ -42,8 +42,12 @@ stages:
           groupId: com.azure
       TestMode: 'LIVE'
       TimeoutInMinutes: 60
-      Location: canadacentral
       Clouds: 'UsGov,China,Preview'
+      CloudConfig:
+        UsGov:
+          Location: usdodeast
+        China:
+          Location: chinanorth
       TestStepMavenInputs:
         options: '$(DefaultTestOptions) -T 1C'
         mavenOptions: '$(DefaultTestMavenOptions)'
