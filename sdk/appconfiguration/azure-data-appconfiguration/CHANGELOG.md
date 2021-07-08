@@ -1,7 +1,7 @@
 # Release History
 
 ## 1.2.0 (2021-07-08)
-### Bug Fixes
+### Bugs Fixed
 - `SecretReferenceConfigurationSetting` and `FeatureFlagConfigurationSetting` are able to update the strongly-type
   properties of setting when changing the setting's `value`, vice versa.
 
