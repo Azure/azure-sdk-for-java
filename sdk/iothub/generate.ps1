@@ -23,4 +23,5 @@ autorest https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/spe
 	--sdk-integration `
 	--fluent=lite `
 	--java.fluent=lite `
-	--java.license-header=MICROSOFT_MIT_SMALL
+	--java.license-header=MICROSOFT_MIT_SMALL `
+	--generate-samples
