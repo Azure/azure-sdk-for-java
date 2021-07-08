@@ -272,6 +272,7 @@ This starter provides following properties:
 | **azure.activedirectory**.authorization-clients                         | A map configure the resource APIs the application is going to visit. Each item corresponding to one resource API the application is going to visit. In Spring code, each item corresponding to one OAuth2AuthorizedClient object|
 | **azure.activedirectory**.authorization-clients.{client-name}.scopes    | API permissions of a resource server that the application is going to acquire.                 |
 | **azure.activedirectory**.authorization-clients.{client-name}.on-demand | This is used for incremental consent. The default value is false. If it's true, it's not consent when user login, when application needs the additional permission, incremental consent is performed with one OAuth2 authorization code flow.|
+| **azure.activedirectory**.authorization-clients.{client-name}.authorization-grant-type | Type of authorization client. Supported types are [authorization_code] (default type for webapp), [on-behalf-of] (default type for resource-server), [client_credentials]. |
 | **azure.activedirectory**.base-uri                                      | Base uri for authorization server, the default value is `https://login.microsoftonline.com/`.  |
 | **azure.activedirectory**.client-id                                     | Registered application ID in Azure AD.                                                         |
 | **azure.activedirectory**.client-secret                                 | client secret of the registered application.                                                   |
@@ -551,7 +552,7 @@ In [Resource server visiting other resource server] scenario(For better descript
     @GetMapping("/webapp/webapiA/webapiB")
     @ResponseBody
     public String callWebApi(@RegisteredOAuth2AuthorizedClient("webapiA") OAuth2AuthorizedClient webapiAClient) {
-        return callWebApiAEndpoint(webapiAClient);
+        return canVisitUri(client, WEB_API_A_URI);
     }
     ```
     - webapiA:
@@ -688,10 +689,10 @@ Please follow [instructions here] to build from source or contribute.
 <!-- LINKS -->
 [Azure Portal]: https://ms.portal.azure.com/#home
 [The OAuth 2.0 authorization code grant]: https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-auth-code-flow
-[azure-spring-boot-sample-active-directory-webapp]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp
-[azure-spring-boot-sample-active-directory-resource-server]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server/README.md
-[azure-spring-boot-sample-active-directory-resource-server-obo]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-obo
-[azure-spring-boot-sample-active-directory-resource-server-by-filter]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-by-filter
+[azure-spring-boot-sample-active-directory-webapp]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/aad/azure-spring-boot-sample-active-directory-webapp
+[azure-spring-boot-sample-active-directory-resource-server]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/aad/azure-spring-boot-sample-active-directory-resource-server/README.md
+[azure-spring-boot-sample-active-directory-resource-server-obo]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/aad/azure-spring-boot-sample-active-directory-resource-server-obo
+[azure-spring-boot-sample-active-directory-resource-server-by-filter]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/aad/azure-spring-boot-sample-active-directory-resource-server-by-filter
 [AAD App Roles feature]: https://docs.microsoft.com/azure/architecture/multitenant-identity/app-roles#roles-using-azure-ad-app-roles
 [client credentials grant flow]: https://docs.microsoft.com/azure/active-directory/develop/v1-oauth2-client-creds-grant-flow
 [configured in your manifest]: https://docs.microsoft.com/azure/active-directory/develop/howto-add-app-roles-in-azure-ad-apps#examples
@@ -704,7 +705,7 @@ Please follow [instructions here] to build from source or contribute.
 [OAuth 2.0 implicit grant flow]: https://docs.microsoft.com/azure/active-directory/develop/v1-oauth2-implicit-grant-flow
 [package]: https://mvnrepository.com/artifact/com.azure.spring/azure-spring-boot-starter-active-directory
 [refdocs]: https://azure.github.io/azure-sdk-for-java/springboot.html#azure-spring-boot
-[sample]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-boot-samples
+[sample]: https://github.com/Azure-Samples/azure-spring-boot-samples
 [set up in the manifest of your application registration]: https://docs.microsoft.com/azure/active-directory/develop/howto-add-app-roles-in-azure-ad-apps
 [Azure China]: https://docs.microsoft.com/azure/china/resources-developer-guide#check-endpoints-in-azure
 [Incremental consent]: https://docs.microsoft.com/azure/active-directory/azuread-dev/azure-ad-endpoint-comparison#incremental-and-dynamic-consent
@@ -719,7 +720,10 @@ Please follow [instructions here] to build from source or contribute.
 [Resource server visiting other resource server]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-boot-starter-active-directory#resource-server-visiting-other-resource-servers
 [multi-factor authentication]: https://docs.microsoft.com/azure/active-directory/authentication/concept-mfa-howitworks
 [Require MFA for all users]: https://docs.microsoft.com/azure/active-directory/conditional-access/howto-conditional-access-policy-all-users-mfa
-[configure webapiA]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-obo#configure-your-middle-tier-web-api-a
-[configure webapiB]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server/README.md#configure-web-api
-[configure webapp]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp/README.md#configure-access-other-resources-server
+[configure webapiA]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/aad/azure-spring-boot-sample-active-directory-resource-server-obo#configure-your-middle-tier-web-api-a
+[configure webapiB]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/aad/azure-spring-boot-sample-active-directory-resource-server/README.md#configure-web-api
+[configure webapp]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/aad/azure-spring-boot-sample-active-directory-webapp/README.md#configure-access-other-resources-server
 [ms-identity-java-spring-tutorial]:https://github.com/Azure-Samples/ms-identity-java-spring-tutorial
+[authorization_code]: https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-auth-code-flow
+[on-behalf-of]: https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-on-behalf-of-flow
+[client_credentials]: https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-client-creds-grant-flow

@@ -1,6 +1,6 @@
 # Release History
 
-## 5.1.0 (Unreleased)
+## 5.1.0 (2021-07-07)
 #### Feature Added
 - We are now targeting the service's v3.1 API as the default instead of v3.1-preview.4.
 - Added a new class, `HealthcareEntityCategory` to replace the `String` type of property `category` in the `HealthcareEntity`.
@@ -8,7 +8,8 @@
   `RecognizeLinkedEntitiesAction`, and `AnalyzeSentimentAction`.
 - Added new customized `***PagedFlux`, `***PagedIterable` types, `AnalyzeActionsResultPagedFlux`,
   `AnalyzeActionsResultPagedIterable`, `AnalyzeHealthcareEntitiesPagedFlux`, and `AnalyzeHealthcareEntitiesPagedIterable`.
-  
+- `beginAnalyzeHealthcareEntities` now works with Azure Active Directory credentials.
+
 ### Breaking Changes
 - Changed behavior in `beginAnalyzeActions` API where now accepts up to one action only per action type. 
   An `IllegalArgumentException` is raised if multiple actions of the same type are passed.

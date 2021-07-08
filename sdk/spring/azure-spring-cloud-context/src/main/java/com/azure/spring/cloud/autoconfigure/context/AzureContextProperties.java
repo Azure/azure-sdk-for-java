@@ -3,46 +3,91 @@
 
 package com.azure.spring.cloud.autoconfigure.context;
 
+import com.azure.spring.cloud.context.core.enums.AzureEnvironments;
 import com.azure.spring.core.SpringPropertyPrefix;
-import com.azure.spring.core.CredentialProperties;
 import com.google.common.base.Strings;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.util.Assert;
 import org.springframework.validation.annotation.Validated;
+
+import javax.annotation.PostConstruct;
 
 /**
  * Azure Context related properties for resource management.
  */
 @Validated
 @ConfigurationProperties(SpringPropertyPrefix.PREFIX)
-public class AzureContextProperties implements InitializingBean {
+public class AzureContextProperties {
 
-    private CredentialProperties credential;
+    private String clientId;
 
-    /**
-     * Flag to automatically create resources.
-     */
-    private boolean autoCreateResources = false;
+    private String clientSecret;
 
-    /**
-     * Name of the region where resources would be automatically created.
-     */
+    private String tenantId;
+
+    private String resourceGroup;
+
+    private AzureEnvironments environment = AzureEnvironments.Azure;
+
     private String region;
 
-    /**
-     * Name of the Azure resource group.
-     */
-    private String resourceGroup;
+    private boolean autoCreateResources = false;
+
+    private boolean msiEnabled = false;
 
     private String subscriptionId;
 
-    public CredentialProperties getCredential() {
-        return credential;
+    @PostConstruct
+    private void validate() {
+        if (autoCreateResources) {
+            Assert.hasText(this.region,
+                "When auto create resources is enabled, spring.cloud.azure.region must be provided");
+        }
+
+        if (msiEnabled && Strings.isNullOrEmpty(subscriptionId)) {
+            Assert.hasText(this.subscriptionId, "When msi is enabled, "
+                + "spring.cloud.azure.subscription-id must be provided");
+        }
     }
 
-    public void setCredential(CredentialProperties credential) {
-        this.credential = credential;
+    public String getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
+    }
+
+    public String getClientSecret() {
+        return clientSecret;
+    }
+
+    public void setClientSecret(String clientSecret) {
+        this.clientSecret = clientSecret;
+    }
+
+    public String getTenantId() {
+        return tenantId;
+    }
+
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;
+    }
+
+    public String getResourceGroup() {
+        return resourceGroup;
+    }
+
+    public void setResourceGroup(String resourceGroup) {
+        this.resourceGroup = resourceGroup;
+    }
+
+    public AzureEnvironments getEnvironment() {
+        return environment;
+    }
+
+    public void setEnvironment(AzureEnvironments environment) {
+        this.environment = environment;
     }
 
     public String getRegion() {
@@ -61,12 +106,12 @@ public class AzureContextProperties implements InitializingBean {
         this.autoCreateResources = autoCreateResources;
     }
 
-    public String getResourceGroup() {
-        return resourceGroup;
+    public boolean isMsiEnabled() {
+        return msiEnabled;
     }
 
-    public void setResourceGroup(String resourceGroup) {
-        this.resourceGroup = resourceGroup;
+    public void setMsiEnabled(boolean msiEnabled) {
+        this.msiEnabled = msiEnabled;
     }
 
     public String getSubscriptionId() {
@@ -77,16 +122,4 @@ public class AzureContextProperties implements InitializingBean {
         this.subscriptionId = subscriptionId;
     }
 
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        if (autoCreateResources) {
-            Assert.hasText(this.region,
-                "When auto create resources is enabled, spring.cloud.azure.region must be provided");
-        }
-
-        if (credential.isMsiEnabled() && Strings.isNullOrEmpty(getSubscriptionId())) {
-            Assert.hasText(getSubscriptionId(), "When msi is enabled, "
-                + "spring.cloud.azure.subscription-id must be provided");
-        }
-    }
 }
