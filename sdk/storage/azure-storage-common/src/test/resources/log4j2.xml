@@ -8,10 +8,10 @@
     </File>
   </Appenders>
   <Loggers>
-    <Logger name="com.azure" level="debug" additivity="true">
+    <Logger name="com.azure" level="debug" additivity="false">
       <appender-ref ref="file" />
     </Logger>
-    <Root level="info" additivity="false">
+    <Root level="info">
       <appender-ref ref="file" />
     </Root>
   </Loggers>
