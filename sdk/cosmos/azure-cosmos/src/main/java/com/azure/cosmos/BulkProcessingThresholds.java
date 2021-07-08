@@ -19,6 +19,9 @@ import java.util.concurrent.ConcurrentMap;
 public final class BulkProcessingThresholds<TContext> {
     private final ConcurrentMap<String, PartitionScopeThresholds<TContext>> partitionScopeThresholds;
 
+    /**
+     * Constructor
+     */
     @Beta(value = Beta.SinceVersion.V4_17_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public BulkProcessingThresholds() {
         this.partitionScopeThresholds = new ConcurrentHashMap<>();
