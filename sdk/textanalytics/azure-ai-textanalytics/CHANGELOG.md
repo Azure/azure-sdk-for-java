@@ -1,6 +1,6 @@
 # Release History
 
-## 5.1.0 (2021-07-07)
+## 5.1.0 (2021-07-08)
 #### Feature Added
 - We are now targeting the service's v3.1 API as the default instead of v3.1-preview.4.
 - Added a new class, `HealthcareEntityCategory` to replace the `String` type of property `category` in the `HealthcareEntity`.
