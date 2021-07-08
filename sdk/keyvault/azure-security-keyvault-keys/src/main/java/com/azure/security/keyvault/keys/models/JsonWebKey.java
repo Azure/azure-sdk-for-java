@@ -64,7 +64,7 @@ public class JsonWebKey {
 
     /**
      * JsonWebKey key type (kty). Possible values include: 'EC', 'EC-HSM', 'RSA',
-     * 'RSA-HSM', 'oct'.
+     * 'RSA-HSM', 'oct', 'oct-HSM'.
      */
     @JsonProperty(value = "kty")
     private KeyType keyType;
@@ -171,7 +171,7 @@ public class JsonWebKey {
      *
      * @return the JsonWebKey object itself.
      */
-    JsonWebKey setId(String keyId) {
+    public JsonWebKey setId(String keyId) {
         this.keyId = keyId;
         return this;
     }
@@ -193,7 +193,7 @@ public class JsonWebKey {
      *
      * @return the JsonWebKey object itself.
      */
-    JsonWebKey setKeyType(KeyType keyType) {
+    public JsonWebKey setKeyType(KeyType keyType) {
         this.keyType = keyType;
         return this;
     }
@@ -216,7 +216,7 @@ public class JsonWebKey {
      *
      * @return the JsonWebKey object itself.
      */
-    JsonWebKey setKeyOps(List<KeyOperation> keyOps) {
+    public JsonWebKey setKeyOps(List<KeyOperation> keyOps) {
         this.keyOps = keyOps;
         return this;
     }
@@ -240,7 +240,7 @@ public class JsonWebKey {
      *
      * @return the JsonWebKey object itself.
      */
-    JsonWebKey setN(byte[] n) {
+    public JsonWebKey setN(byte[] n) {
         this.n = ByteExtensions.clone(n);
         return this;
     }
@@ -264,7 +264,7 @@ public class JsonWebKey {
      *
      * @return the JsonWebKey object itself.
      */
-    JsonWebKey setE(byte[] e) {
+    public JsonWebKey setE(byte[] e) {
         this.e = ByteExtensions.clone(e);
         return this;
     }
@@ -288,7 +288,7 @@ public class JsonWebKey {
      *
      * @return the JsonWebKey object itself.
      */
-    JsonWebKey setD(byte[] d) {
+    public JsonWebKey setD(byte[] d) {
         this.d = ByteExtensions.clone(d);
         return this;
     }
@@ -312,7 +312,7 @@ public class JsonWebKey {
      *
      * @return the JsonWebKey object itself.
      */
-    JsonWebKey setDp(byte[] dp) {
+    public JsonWebKey setDp(byte[] dp) {
         this.dp = ByteExtensions.clone(dp);
         return this;
     }
@@ -336,7 +336,7 @@ public class JsonWebKey {
      *
      * @return the JsonWebKey object itself.
      */
-    JsonWebKey setDq(byte[] dq) {
+    public JsonWebKey setDq(byte[] dq) {
         this.dq = ByteExtensions.clone(dq);
         return this;
     }
@@ -360,7 +360,7 @@ public class JsonWebKey {
      *
      * @return the JsonWebKey object itself.
      */
-    JsonWebKey setQi(byte[] qi) {
+    public JsonWebKey setQi(byte[] qi) {
         this.qi = ByteExtensions.clone(qi);
         return this;
     }
@@ -384,7 +384,7 @@ public class JsonWebKey {
      *
      * @return the JsonWebKey object itself.
      */
-    JsonWebKey setP(byte[] p) {
+    public JsonWebKey setP(byte[] p) {
         this.p = ByteExtensions.clone(p);
         return this;
     }
@@ -408,7 +408,7 @@ public class JsonWebKey {
      *
      * @return the JsonWebKey object itself.
      */
-    JsonWebKey setQ(byte[] q) {
+    public JsonWebKey setQ(byte[] q) {
         this.q = ByteExtensions.clone(q);
         return this;
     }
@@ -432,7 +432,7 @@ public class JsonWebKey {
      *
      * @return the JsonWebKey object itself.
      */
-    JsonWebKey setK(byte[] k) {
+    public JsonWebKey setK(byte[] k) {
         this.k = ByteExtensions.clone(k);
         return this;
     }
@@ -456,7 +456,7 @@ public class JsonWebKey {
      *
      * @return the JsonWebKey object itself.
      */
-    JsonWebKey setT(byte[] t) {
+    public JsonWebKey setT(byte[] t) {
         this.t = ByteExtensions.clone(t);
         return this;
     }
@@ -492,7 +492,7 @@ public class JsonWebKey {
      *
      * @return the JsonWebKey object itself.
      */
-    JsonWebKey setCurveName(KeyCurveName crv) {
+    public JsonWebKey setCurveName(KeyCurveName crv) {
         this.crv = crv;
         return this;
     }
@@ -516,7 +516,7 @@ public class JsonWebKey {
      *
      * @return the JsonWebKey object itself.
      */
-    JsonWebKey setX(byte[] x) {
+    public JsonWebKey setX(byte[] x) {
         this.x = ByteExtensions.clone(x);
         return this;
     }
@@ -540,7 +540,7 @@ public class JsonWebKey {
      *
      * @return the JsonWebKey object itself.
      */
-    JsonWebKey setY(byte[] y) {
+    public JsonWebKey setY(byte[] y) {
         this.y = ByteExtensions.clone(y);
         return this;
     }
@@ -1058,7 +1058,7 @@ public class JsonWebKey {
             }
         }
 
-        if (KeyType.OCT.equals(keyType)) {
+        if (KeyType.OCT.equals(keyType) || KeyType.OCT_HSM.equals(keyType)) {
             return isValidOctet();
         } else if (KeyType.RSA.equals(keyType)) {
             return isValidRsa();

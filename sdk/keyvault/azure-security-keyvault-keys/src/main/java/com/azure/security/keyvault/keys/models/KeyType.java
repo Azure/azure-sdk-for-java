@@ -40,6 +40,11 @@ public final class KeyType extends ExpandableStringEnum<KeyType> {
     public static final KeyType OCT = fromString("oct");
 
     /**
+     * Static value oct-HSM for KeyType.
+     */
+    public static final KeyType OCT_HSM = fromString("oct-HSM");
+
+    /**
      * Creates or finds a KeyType from its string representation.
      *
      * @param name a name to look for.

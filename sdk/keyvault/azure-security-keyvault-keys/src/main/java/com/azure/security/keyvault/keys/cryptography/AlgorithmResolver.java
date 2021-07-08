@@ -11,17 +11,21 @@ class AlgorithmResolver {
     static final AlgorithmResolver DEFAULT = new AlgorithmResolver();
 
     static {
-        DEFAULT.put(Aes128CbcHmacSha256.ALGORITHM_NAME, new Aes128CbcHmacSha256());
-        DEFAULT.put(Aes192CbcHmacSha384.ALGORITHM_NAME, new Aes192CbcHmacSha384());
-        DEFAULT.put(Aes256CbcHmacSha512.ALGORITHM_NAME, new Aes256CbcHmacSha512());
-
         DEFAULT.put(Aes128Cbc.ALGORITHM_NAME, new Aes128Cbc());
         DEFAULT.put(Aes192Cbc.ALGORITHM_NAME, new Aes192Cbc());
         DEFAULT.put(Aes256Cbc.ALGORITHM_NAME, new Aes256Cbc());
 
-        DEFAULT.put(AesKw128.ALGORITHM_NAME, new AesKw128());
-        DEFAULT.put(AesKw192.ALGORITHM_NAME, new AesKw192());
-        DEFAULT.put(AesKw256.ALGORITHM_NAME, new AesKw256());
+        DEFAULT.put(Aes128CbcPad.ALGORITHM_NAME, new Aes128CbcPad());
+        DEFAULT.put(Aes192CbcPad.ALGORITHM_NAME, new Aes192CbcPad());
+        DEFAULT.put(Aes256CbcPad.ALGORITHM_NAME, new Aes256CbcPad());
+
+        DEFAULT.put(Aes128CbcHmacSha256.ALGORITHM_NAME, new Aes128CbcHmacSha256());
+        DEFAULT.put(Aes192CbcHmacSha384.ALGORITHM_NAME, new Aes192CbcHmacSha384());
+        DEFAULT.put(Aes256CbcHmacSha512.ALGORITHM_NAME, new Aes256CbcHmacSha512());
+
+        DEFAULT.put(Aes128Kw.ALGORITHM_NAME, new Aes128Kw());
+        DEFAULT.put(Aes192Kw.ALGORITHM_NAME, new Aes192Kw());
+        DEFAULT.put(Aes256Kw.ALGORITHM_NAME, new Aes256Kw());
 
         DEFAULT.put(Rsa15.ALGORITHM_NAME, new Rsa15());
         DEFAULT.put(RsaOaep.ALGORITHM_NAME, new RsaOaep());

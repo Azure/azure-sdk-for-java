@@ -4,12 +4,9 @@
 package com.azure.security.keyvault.keys.cryptography;
 
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.security.keyvault.keys.cryptography.models.DecryptResult;
-import com.azure.security.keyvault.keys.cryptography.models.EncryptResult;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 
 import java.util.Random;
-import java.util.function.Consumer;
 
 /**
  * Sample demonstrates how to set, get, update and delete a key.
@@ -38,14 +35,12 @@ public class EncryptDecryptOperationsAsync {
 
         // Let's encrypt a simple plain text of size 100 bytes.
         cryptoAsyncClient.encrypt(EncryptionAlgorithm.RSA_OAEP, plaintext)
-            .subscribe((Consumer<? super EncryptResult>) encryptResult -> {
+            .subscribe(encryptResult -> {
                 System.out.printf("Returned ciphertext size is %d bytes with algorithm %s\n",
-                    encryptResult.getCipherText().length, encryptResult.getAlgorithm());
+                    encryptResult.getCipherText().length, encryptResult.getAlgorithm().toString());
                 //Let's decrypt the encrypted response.
                 cryptoAsyncClient.decrypt(EncryptionAlgorithm.RSA_OAEP, encryptResult.getCipherText())
-                    .subscribe((Consumer<? super DecryptResult>) decryptResult ->
-                        System.out.printf("Returned plaintext size is %d bytes\n",
-                            decryptResult.getPlainText().length));
+                    .subscribe(decryptResult -> System.out.printf("Returned plaintext size is %d bytes\n", decryptResult.getPlainText().length));
             });
 
         Thread.sleep(5000);

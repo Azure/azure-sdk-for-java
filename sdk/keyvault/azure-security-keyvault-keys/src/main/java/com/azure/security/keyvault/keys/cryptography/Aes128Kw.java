@@ -10,13 +10,13 @@ import java.security.NoSuchAlgorithmException;
 import java.security.Provider;
 import java.util.Arrays;
 
-class AesKw192 extends AesKw {
+class Aes128Kw extends AesKw {
 
-    public static final String ALGORITHM_NAME = "A192KW";
+    public static final String ALGORITHM_NAME = "A128KW";
 
-    static final int KEY_SIZE_IN_BYTES = 192 >> 3;
+    static final int KEY_SIZE_IN_BYTES = 128 >> 3;
 
-    AesKw192() {
+    Aes128Kw() {
         super(ALGORITHM_NAME);
     }
 

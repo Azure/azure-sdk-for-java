@@ -16,7 +16,7 @@ import java.util.Map;
 class KeyRequestParameters {
     /**
      * The type of key to create. For valid values, see KeyType. Possible values include: 'EC', 'EC-HSM', 'RSA',
-     * 'RSA-HSM', 'oct'.
+     * 'RSA-HSM', 'oct', 'oct-HSM'.
      */
     @JsonProperty(value = "kty", required = true)
     private KeyType kty;
@@ -51,6 +51,12 @@ class KeyRequestParameters {
      */
     @JsonProperty(value = "crv")
     private KeyCurveName curve;
+
+    /**
+     * The public exponent for an RSA key.
+     */
+    @JsonProperty(value = "public_exponent")
+    private int publicExponent;
 
     /**
      * Get the key type.
@@ -181,6 +187,27 @@ class KeyRequestParameters {
     public KeyRequestParameters setCurve(KeyCurveName curve) {
         this.curve = curve;
 
+        return this;
+    }
+
+    /**
+     * Get the public exponent for the key.
+     *
+     * @return The public exponent.
+     */
+    public int getPublicExponent() {
+        return publicExponent;
+    }
+
+    /**
+     * Set the public exponent for the key.
+     *
+     * @param publicExponent The public exponent to set.
+     *
+     * @return The updated {@link KeyRequestParameters} object.
+     */
+    public KeyRequestParameters setPublicExponent(int publicExponent) {
+        this.publicExponent = publicExponent;
         return this;
     }
 }

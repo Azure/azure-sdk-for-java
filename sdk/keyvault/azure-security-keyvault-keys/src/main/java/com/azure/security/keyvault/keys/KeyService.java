@@ -89,7 +89,6 @@ interface KeyService {
                                           @HeaderParam("Content-Type") String type,
                                           Context context);
 
-
     @Delete("keys/{key-name}")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)

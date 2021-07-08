@@ -36,6 +36,17 @@ public class KeyVaultKey {
     }
 
     /**
+     * Creates an instance of {@link KeyVaultKey}.
+     *
+     * @param keyProperties The {@link KeyProperties}.
+     * @param jsonWebKey The {@link JsonWebKey} to be used for crypto operations.
+     */
+    KeyVaultKey(KeyProperties keyProperties, JsonWebKey jsonWebKey) {
+        this.properties = keyProperties;
+        this.key = jsonWebKey;
+    }
+
+    /**
      * Get the JSON Web Key.
      *
      * @return The JSON Web Key.

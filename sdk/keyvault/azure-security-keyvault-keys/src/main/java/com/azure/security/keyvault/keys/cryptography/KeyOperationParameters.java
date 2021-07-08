@@ -27,6 +27,24 @@ class KeyOperationParameters {
     private Base64Url value;
 
     /**
+     * Initialization vector for symmetric algorithms.
+     */
+    @JsonProperty(value = "iv")
+    private Base64Url iv;
+
+    /**
+     * Additional data to authenticate but not encrypt/decrypt when using authenticated crypto algorithms.
+     */
+    @JsonProperty(value = "aad")
+    private Base64Url additionalAuthenticatedData;
+
+    /**
+     * The tag to authenticate when performing decryption with an authenticated algorithm.
+     */
+    @JsonProperty(value = "tag")
+    private Base64Url authenticationTag;
+
+    /**
      * Get the algorithm value.
      *
      * @return the algorithm value
@@ -72,4 +90,79 @@ class KeyOperationParameters {
         return this;
     }
 
+    /**
+     * Get the initialization vector to be used in the cryptographic operation using a symmetric algorithm.
+     *
+     * @return The initialization vector.
+     */
+    public byte[] getIv() {
+        if (this.iv == null) {
+            return EMPTY_ARRAY;
+        }
+
+        return this.iv.decodedBytes();
+    }
+
+    /**
+     * Set the initialization vector to be used in the cryptographic operation using a symmetric algorithm.
+     *
+     * @param iv The initialization vector to set.
+     * @return The updated {@link KeyOperationParameters} object.
+     */
+    public KeyOperationParameters setIv(byte[] iv) {
+        this.iv = iv != null ? Base64Url.encode(iv) : null;
+
+        return this;
+    }
+
+    /**
+     * Get additional data to authenticate but not encrypt/decrypt when using authenticated crypto algorithms.
+     *
+     * @return The additional authenticated data.
+     */
+    public byte[] getAdditionalAuthenticatedData() {
+        if (this.additionalAuthenticatedData == null) {
+            return EMPTY_ARRAY;
+        }
+
+        return this.additionalAuthenticatedData.decodedBytes();
+    }
+
+    /**
+     * Set additional data to authenticate but not encrypt/decrypt when using authenticated crypto algorithms.
+     *
+     * @param additionalAuthenticatedData The additional authenticated data.
+     * @return The updated {@link KeyOperationParameters} object.
+     */
+    public KeyOperationParameters setAdditionalAuthenticatedData(byte[] additionalAuthenticatedData) {
+        this.additionalAuthenticatedData =
+            additionalAuthenticatedData != null ? Base64Url.encode(additionalAuthenticatedData) : null;
+
+        return this;
+    }
+
+    /**
+     * Get the tag to authenticate when performing decryption with an authenticated algorithm.
+     *
+     * @return The authentication tag.
+     */
+    public byte[] getAuthenticationTag() {
+        if (this.authenticationTag == null) {
+            return EMPTY_ARRAY;
+        }
+
+        return this.authenticationTag.decodedBytes();
+    }
+
+    /**
+     * Set the tag to authenticate when performing decryption with an authenticated algorithm.
+     *
+     * @param authenticationTag The tag to set.
+     * @return The updated {@link KeyOperationParameters} object.
+     */
+    public KeyOperationParameters setAuthenticationTag(byte[] authenticationTag) {
+        this.authenticationTag = authenticationTag != null ? Base64Url.encode(authenticationTag) : null;
+
+        return this;
+    }
 }

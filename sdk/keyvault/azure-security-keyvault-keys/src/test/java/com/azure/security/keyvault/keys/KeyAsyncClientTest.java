@@ -16,11 +16,13 @@ import com.azure.security.keyvault.keys.models.DeletedKey;
 import com.azure.security.keyvault.keys.models.KeyProperties;
 import com.azure.security.keyvault.keys.models.KeyType;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
 import java.net.HttpURLConnection;
+import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -505,6 +507,24 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
             }).blockLast();
             assertEquals(0, keys.size());
         });
+    }
+
+    /**
+     * Tests that an RSA key with a public exponent can be created in the key vault.
+     */
+    @Disabled // Service issue: https://github.com/Azure/azure-sdk-for-java/issues/17382
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void createRsaKeyWithPublicExponent(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        createKeyAsyncClient(httpClient, serviceVersion);
+        createRsaKeyWithPublicExponentRunner((createRsaKeyOptions) ->
+            StepVerifier.create(client.createRsaKey(createRsaKeyOptions))
+                .assertNext(rsaKey -> assertKeyEquals(createRsaKeyOptions, rsaKey))
+                .assertNext(rsaKey -> {
+                    ByteBuffer wrappedArray = ByteBuffer.wrap(rsaKey.getKey().getE()); // Big-endian by default
+                    assertEquals(createRsaKeyOptions.getPublicExponent(), wrappedArray.getInt());
+                })
+                .verifyComplete());
     }
 
     private void pollOnKeyDeletion(String keyName) {

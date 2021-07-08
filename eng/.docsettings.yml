@@ -153,6 +153,7 @@ known_content_issues:
   - ['sdk/formrecognizer/azure-ai-formrecognizer/swagger/README.md', '#3113']
   - ['sdk/metricsadvisor/azure-ai-metricsadvisor/swagger/README.md', '#3113']
   - ['sdk/keyvault/README.md', '#3113']
+  - ['sdk/keyvault/azure-security-keyvault-administration/README.md', '#3113']
   - ['sdk/loganalytics/microsoft-azure-loganalytics/README.md', '#3113']
   - ['sdk/monitor/azure-monitor-opentelemetry-exporter/swagger/README.md', '#3113' ]
   - ['sdk/monitor/azure-monitor-query/swagger/README.md', '#3113' ]

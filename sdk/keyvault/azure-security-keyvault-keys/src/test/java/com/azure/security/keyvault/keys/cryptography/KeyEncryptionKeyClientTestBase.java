@@ -88,7 +88,13 @@ public abstract class KeyEncryptionKeyClientTestBase extends TestBase {
     public abstract void wrapUnwrapSymmetricAK128(HttpClient httpClient, CryptographyServiceVersion serviceVersion);
 
     @Test
+    public abstract void wrapUnwrapSymmetricAK128Local();
+
+    @Test
     public abstract void wrapUnwrapSymmetricAK192(HttpClient httpClient, CryptographyServiceVersion serviceVersion);
+
+    @Test
+    public abstract void wrapUnwrapSymmetricAK192Local();
 
 
     public String getEndpoint() {

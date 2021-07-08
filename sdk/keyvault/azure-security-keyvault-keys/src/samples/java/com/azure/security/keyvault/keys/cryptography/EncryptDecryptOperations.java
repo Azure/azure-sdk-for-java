@@ -4,9 +4,9 @@
 package com.azure.security.keyvault.keys.cryptography;
 
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.security.keyvault.keys.cryptography.models.DecryptResult;
-import com.azure.security.keyvault.keys.cryptography.models.EncryptResult;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
+import com.azure.security.keyvault.keys.cryptography.models.EncryptResult;
+import com.azure.security.keyvault.keys.cryptography.models.DecryptResult;
 
 import java.util.Random;
 
@@ -38,7 +38,7 @@ public class EncryptDecryptOperations {
         // Let's encrypt a simple plain text of size 100 bytes.
         EncryptResult encryptResult = cryptoClient.encrypt(EncryptionAlgorithm.RSA_OAEP, plaintext);
         System.out.printf("Returned ciphertext size is %d bytes with algorithm %s\n",
-            encryptResult.getCipherText().length, encryptResult.getAlgorithm());
+            encryptResult.getCipherText().length, encryptResult.getAlgorithm().toString());
 
         //Let's decrypt the encrypted response.
         DecryptResult decryptResult = cryptoClient.decrypt(EncryptionAlgorithm.RSA_OAEP, encryptResult.getCipherText());

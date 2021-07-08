@@ -17,6 +17,7 @@ import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
 import com.azure.security.keyvault.keys.implementation.KeyVaultCredentialPolicy;
+import com.azure.security.keyvault.keys.models.JsonWebKey;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -43,6 +44,22 @@ public final class CryptographyAsyncClientJavaDocCodeSnippets {
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
         // END: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.instantiation
+
+        return cryptographyAsyncClient;
+    }
+
+    /**
+     * Generates code sample for creating a {@link KeyAsyncClient} with a given {@link JsonWebKey}.
+     *
+     * @return An instance of {@link KeyAsyncClient}.
+     */
+    public CryptographyAsyncClient createAsyncClientWithJsonWebKey() {
+        // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.withJsonWebKey.instantiation
+        JsonWebKey jsonWebKey = new JsonWebKey().setId("SampleJsonWebKey");
+        CryptographyAsyncClient cryptographyAsyncClient = new CryptographyClientBuilder()
+            .jsonWebKey(jsonWebKey)
+            .buildAsyncClient();
+        // END: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.withJsonWebKey.instantiation
 
         return cryptographyAsyncClient;
     }
@@ -113,16 +130,12 @@ public final class CryptographyAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Generates a code sample for using {@link CryptographyAsyncClient#encrypt(EncryptionAlgorithm, byte[])}.
+     * Generates code samples for using {@link CryptographyAsyncClient#encrypt(EncryptionAlgorithm, byte[])} and
+     * {@link CryptographyAsyncClient#encrypt(EncryptParameters)}.
      */
     public void encrypt() {
         CryptographyAsyncClient cryptographyAsyncClient = createAsyncClient();
-        byte[] iv = {(byte) 0x1a, (byte) 0xf3, (byte) 0x8c, (byte) 0x2d, (byte) 0xc2, (byte) 0xb9, (byte) 0x6f, (byte) 0xfd, (byte) 0xd8, (byte) 0x66, (byte) 0x94, (byte) 0x09, (byte) 0x23, (byte) 0x41, (byte) 0xbc, (byte) 0x04};
-        byte[] authData = {
-            (byte) 0x54, (byte) 0x68, (byte) 0x65, (byte) 0x20, (byte) 0x73, (byte) 0x65, (byte) 0x63, (byte) 0x6f, (byte) 0x6e, (byte) 0x64, (byte) 0x20, (byte) 0x70, (byte) 0x72, (byte) 0x69, (byte) 0x6e, (byte) 0x63,
-            (byte) 0x69, (byte) 0x70, (byte) 0x6c, (byte) 0x65, (byte) 0x20, (byte) 0x6f, (byte) 0x66, (byte) 0x20, (byte) 0x41, (byte) 0x75, (byte) 0x67, (byte) 0x75, (byte) 0x73, (byte) 0x74, (byte) 0x65, (byte) 0x20,
-            (byte) 0x4b, (byte) 0x65, (byte) 0x72, (byte) 0x63, (byte) 0x6b, (byte) 0x68, (byte) 0x6f, (byte) 0x66, (byte) 0x66, (byte) 0x73
-        };
+
         // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.encrypt#EncryptionAlgorithm-byte
         byte[] plaintext = new byte[100];
         new Random(0x1234567L).nextBytes(plaintext);
@@ -133,13 +146,32 @@ public final class CryptographyAsyncClientJavaDocCodeSnippets {
                 System.out.printf("Received encrypted content of length: %d, with algorithm: %s.\n",
                     encryptResult.getCipherText().length, encryptResult.getAlgorithm().toString()));
         // END: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.encrypt#EncryptionAlgorithm-byte
+
+        // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.encrypt#EncryptParameters
+        byte[] plaintextBytes = new byte[100];
+        new Random(0x1234567L).nextBytes(plaintextBytes);
+        byte[] iv = {
+            (byte) 0x1a, (byte) 0xf3, (byte) 0x8c, (byte) 0x2d, (byte) 0xc2, (byte) 0xb9, (byte) 0x6f, (byte) 0xfd,
+            (byte) 0xd8, (byte) 0x66, (byte) 0x94, (byte) 0x09, (byte) 0x23, (byte) 0x41, (byte) 0xbc, (byte) 0x04
+        };
+
+        EncryptParameters encryptParameters = EncryptParameters.createA128CbcParameters(plaintextBytes, iv);
+
+        cryptographyAsyncClient.encrypt(encryptParameters)
+            .contextWrite(context -> context.put(key1, value1).put(key2, value2))
+            .subscribe(encryptResult ->
+                System.out.printf("Received encrypted content of length: %d, with algorithm: %s.\n",
+                    encryptResult.getCipherText().length, encryptResult.getAlgorithm().toString()));
+        // END: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.encrypt#EncryptParameters
     }
 
     /**
-     * Generates a code sample for using {@link CryptographyAsyncClient#decrypt(EncryptionAlgorithm, byte[])}.
+     * Generates code samples for using {@link CryptographyAsyncClient#decrypt(EncryptionAlgorithm, byte[])} and
+     * {@link CryptographyAsyncClient#decrypt(DecryptParameters)}.
      */
     public void decrypt() {
         CryptographyAsyncClient cryptographyAsyncClient = createAsyncClient();
+
         // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.decrypt#EncryptionAlgorithm-byte
         byte[] ciphertext = new byte[100];
         new Random(0x1234567L).nextBytes(ciphertext);
@@ -149,6 +181,22 @@ public final class CryptographyAsyncClientJavaDocCodeSnippets {
             .subscribe(decryptResult ->
                 System.out.printf("Received decrypted content of length: %d\n", decryptResult.getPlainText().length));
         // END: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.decrypt#EncryptionAlgorithm-byte
+
+        // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.decrypt#DecryptParameters
+        byte[] ciphertextBytes = new byte[100];
+        new Random(0x1234567L).nextBytes(ciphertextBytes);
+        byte[] iv = {
+            (byte) 0x1a, (byte) 0xf3, (byte) 0x8c, (byte) 0x2d, (byte) 0xc2, (byte) 0xb9, (byte) 0x6f, (byte) 0xfd,
+            (byte) 0xd8, (byte) 0x66, (byte) 0x94, (byte) 0x09, (byte) 0x23, (byte) 0x41, (byte) 0xbc, (byte) 0x04
+        };
+
+        DecryptParameters decryptParameters = DecryptParameters.createA128CbcParameters(ciphertextBytes, iv);
+
+        cryptographyAsyncClient.decrypt(decryptParameters)
+            .contextWrite(context -> context.put(key1, value1).put(key2, value2))
+            .subscribe(decryptResult ->
+                System.out.printf("Received decrypted content of length: %d.\n", decryptResult.getPlainText().length));
+        // END: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.decrypt#DecryptParameters
     }
 
     /**
@@ -191,9 +239,10 @@ public final class CryptographyAsyncClientJavaDocCodeSnippets {
         // END: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.verify#SignatureAlgorithm-byte-byte
     }
 
+
     /**
      * Generates a code sample for using {@link CryptographyAsyncClient#wrapKey(KeyWrapAlgorithm, byte[])} and
-     * {@link CryptographyAsyncClient#unwrapKey(KeyWrapAlgorithm, byte[])}
+     * {@link CryptographyAsyncClient#unwrapKey(KeyWrapAlgorithm, byte[])}.
      */
     public void wrapKeyUnwrapKey() {
         CryptographyAsyncClient cryptographyAsyncClient = createAsyncClient();
@@ -201,6 +250,7 @@ public final class CryptographyAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.wrapKey#KeyWrapAlgorithm-byte
         byte[] key = new byte[100];
         new Random(0x1234567L).nextBytes(key);
+
         cryptographyAsyncClient.wrapKey(KeyWrapAlgorithm.RSA_OAEP, key)
             .contextWrite(context -> context.put(key1, value1).put(key2, value2))
             .subscribe(wrapResult ->

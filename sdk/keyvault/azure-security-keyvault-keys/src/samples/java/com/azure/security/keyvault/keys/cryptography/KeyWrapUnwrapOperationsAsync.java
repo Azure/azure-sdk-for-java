@@ -5,16 +5,13 @@ package com.azure.security.keyvault.keys.cryptography;
 
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
-import com.azure.security.keyvault.keys.cryptography.models.UnwrapResult;
-import com.azure.security.keyvault.keys.cryptography.models.WrapResult;
-
 import java.util.Random;
-import java.util.function.Consumer;
 
 /**
  * Sample demonstrates how to set, get, update and delete a key.
  */
 public class KeyWrapUnwrapOperationsAsync {
+
     /**
      * Authenticates with the key vault and shows how to set, get, update and delete a key in the key vault.
      *
@@ -23,6 +20,7 @@ public class KeyWrapUnwrapOperationsAsync {
      * @throws InterruptedException when the thread is interrupted in sleep mode.
      */
     public static void main(String[] args) throws InterruptedException, IllegalArgumentException {
+
         // Instantiate a cryptography async client that will be used to perform crypto operations. Notice that the client is using default Azure
         // credentials. To make default credentials work, ensure that environment variables 'AZURE_CLIENT_ID',
         // 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
@@ -36,14 +34,11 @@ public class KeyWrapUnwrapOperationsAsync {
 
         // Let's wrap a simple dummy key content.
         cryptoAsyncClient.wrapKey(KeyWrapAlgorithm.RSA_OAEP, plaintext)
-            .subscribe((Consumer<? super WrapResult>) keyWrapResult -> {
-                System.out.printf("Returned encrypted key size is %d bytes with algorithm %s\n",
-                    keyWrapResult.getEncryptedKey().length, keyWrapResult.getAlgorithm());
+            .subscribe(keyWrapResult -> {
+                System.out.printf("Returned encrypted key size is %d bytes with algorithm %s\n", keyWrapResult.getEncryptedKey().length, keyWrapResult.getAlgorithm().toString());
                 //Let's decrypt the encrypted response.
                 cryptoAsyncClient.unwrapKey(KeyWrapAlgorithm.RSA_OAEP, keyWrapResult.getEncryptedKey())
-                    .subscribe((Consumer<? super UnwrapResult>) keyUnwrapResult ->
-                        System.out.printf("Returned unwrapped key size is %d bytes\n",
-                            keyUnwrapResult.getKey().length));
+                    .subscribe(keyUnwrapResult -> System.out.printf("Returned unwrapped key size is %d bytes\n", keyUnwrapResult.getKey().length));
             });
 
         Thread.sleep(5000);

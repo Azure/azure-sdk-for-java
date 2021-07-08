@@ -16,6 +16,8 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
@@ -80,6 +82,23 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
     }
 
     /**
+     * Creates a local {@link KeyEncryptionKeyClient} for a given JSON Web Key. Every time
+     * {@code buildKeyEncryptionKey(JsonWebKey)} is called, a new instance of {@link KeyEncryptionKey} is created.
+     * For local clients, all other builder settings are ignored.
+     *
+     * <p>The {@code key} is required to build the {@link KeyEncryptionKeyClient client}.</p>
+     *
+     * @param key The {@link JsonWebKey} to be used for cryptography operations.
+     *
+     * @return A {@link KeyEncryptionKeyClient} with the options set from the builder.
+     *
+     * @throws IllegalStateException If {{@code key} is not set.
+     */
+    public KeyEncryptionKey buildKeyEncryptionKey(JsonWebKey key) {
+        return new KeyEncryptionKeyClient((KeyEncryptionKeyAsyncClient) buildAsyncKeyEncryptionKey(key).block());
+    }
+
+    /**
      * Creates a {@link KeyEncryptionKeyAsyncClient} based on options set in the builder. Every time
      * {@code buildAsyncKeyEncryptionKey(String)} is called, a new instance of {@link KeyEncryptionKeyAsyncClient} is
      * created.
@@ -101,7 +120,8 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
 
         if (Strings.isNullOrEmpty(keyId)) {
             throw logger.logExceptionAsError(new IllegalStateException(
-                "Json Web Key or jsonWebKey identifier are required to create key encryption key async client"));
+                "An Azure Key Vault key identifier cannot be null and is required to build the key encryption key "
+                    + "client."));
         }
 
         CryptographyServiceVersion serviceVersion = builder.getServiceVersion() != null ? builder.getServiceVersion() : CryptographyServiceVersion.getLatest();
@@ -121,6 +141,32 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
     }
 
     /**
+     * Creates a local {@link KeyEncryptionKeyAsyncClient} based on options set in the builder. Every time
+     * {@code buildAsyncKeyEncryptionKey(String)} is called, a new instance of
+     * {@link KeyEncryptionKeyAsyncClient} is created. For local clients, all other builder settings are ignored.
+     *
+     * <p>The {@code key} is required to build the {@link KeyEncryptionKeyAsyncClient client}.</p>
+     *
+     * @param key The key to be used for cryptography operations.
+     *
+     * @return A {@link KeyEncryptionKeyAsyncClient} with the options set from the builder.
+     *
+     * @throws IllegalArgumentException If {@code key} has no id.
+     * @throws IllegalStateException If {@code key} is {@code null}.
+     */
+    public Mono<? extends AsyncKeyEncryptionKey> buildAsyncKeyEncryptionKey(JsonWebKey key) {
+        if (key == null) {
+            throw logger.logExceptionAsError(new IllegalStateException(
+                "JSON Web Key cannot be null and is required to build a local key encryption key async client."));
+        } else if (key.getId() == null) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "JSON Web Key's id property is not configured."));
+        }
+
+        return Mono.defer(() -> Mono.just(new KeyEncryptionKeyAsyncClient(key)));
+    }
+
+    /**
      * Sets the credential to use when authenticating HTTP requests.
      *
      * @param credential The credential to use for authenticating HTTP requests.
@@ -130,6 +176,10 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
     public KeyEncryptionKeyClientBuilder credential(TokenCredential credential) {
+        if (credential == null) {
+            throw logger.logExceptionAsError(new NullPointerException("'credential' cannot be null."));
+        }
+
         builder.credential(credential);
 
         return this;
@@ -160,6 +210,10 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
      * @throws NullPointerException If {@code policy} is {@code null}.
      */
     public KeyEncryptionKeyClientBuilder addPolicy(HttpPipelinePolicy policy) {
+        if (policy == null) {
+            throw logger.logExceptionAsError(new NullPointerException("'policy' cannot be null."));
+        }
+
         builder.addPolicy(policy);
 
         return this;
@@ -171,8 +225,6 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
      * @param client The HTTP client to use for requests.
      *
      * @return The updated {@link KeyEncryptionKeyClientBuilder} object.
-     *
-     * @throws NullPointerException If {@code client} is {@code null}.
      */
     public KeyEncryptionKeyClientBuilder httpClient(HttpClient client) {
         builder.httpClient(client);
@@ -238,11 +290,27 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
      * @param retryPolicy User's retry policy applied to each request.
      *
      * @return The updated {@link KeyEncryptionKeyClientBuilder} object.
-     *
-     * @throws NullPointerException If the specified {@code retryPolicy} is null.
      */
     public KeyEncryptionKeyClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         builder.retryPolicy(retryPolicy);
+
+        return this;
+    }
+
+    /**
+     * Sets the {@link ClientOptions} which enables various options to be set on the client. For example setting an
+     * {@code applicationId} using {@link ClientOptions#setApplicationId(String)} to configure the
+     * {@link UserAgentPolicy} for telemetry/monitoring purposes.
+     *
+     * <p>More About <a href="https://azure.github.io/azure-sdk/general_azurecore.html#telemetry-policy">Azure Core:
+     * Telemetry policy</a>
+     *
+     * @param clientOptions The {@link ClientOptions} to be set on the client.
+     *
+     * @return The updated {@link KeyEncryptionKeyClientBuilder} object.
+     */
+    public KeyEncryptionKeyClientBuilder clientOptions(ClientOptions clientOptions) {
+        builder.clientOptions(clientOptions);
 
         return this;
     }
