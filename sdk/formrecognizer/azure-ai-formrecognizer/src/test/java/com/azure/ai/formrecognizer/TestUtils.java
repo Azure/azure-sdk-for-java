@@ -38,7 +38,7 @@ final class TestUtils {
     static final Duration ONE_NANO_DURATION = Duration.ofMillis(1);
     // Local test files
     static final String BLANK_PDF = "blank.pdf";
-    static final String FORM_JPG = "Form_1.jpg";
+    static final String CONTENT_FORM_JPG = "Form_1.jpg";
     static final String TEST_DATA_PNG = "testData.png";
     static final String SELECTION_MARK_PDF = "selectionMarkForm.pdf";
     static final String CONTENT_GERMAN_PDF = "content_german.pdf";
