@@ -12,6 +12,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
 import com.azure.core.util.ServiceVersion
+import com.azure.core.util.logging.ClientLogger
 import com.azure.identity.EnvironmentCredentialBuilder
 import spock.lang.Specification
 
@@ -22,6 +23,7 @@ import java.util.function.Supplier
 class StorageSpec extends Specification {
     private static final TestEnvironment ENVIRONMENT = TestEnvironment.getInstance()
     private static final HttpClient HTTP_CLIENT = new NettyAsyncHttpClientBuilder().build()
+    private static final ClientLogger LOGGER = new ClientLogger(StorageSpec.class)
 
     private InterceptorManager interceptorManager
     private StorageResourceNamer namer
@@ -30,6 +32,7 @@ class StorageSpec extends Specification {
         def testName = TestNameProvider.getTestName(specificationContext.getCurrentIteration());
         interceptorManager = new InterceptorManager(testName, ENVIRONMENT.testMode)
         namer = new StorageResourceNamer(testName, ENVIRONMENT.testMode, interceptorManager.getRecordedData())
+        LOGGER.info("Test {} will use {} resource prefix.", testName, namer.resourcePrefix)
     }
 
     def cleanup() {
