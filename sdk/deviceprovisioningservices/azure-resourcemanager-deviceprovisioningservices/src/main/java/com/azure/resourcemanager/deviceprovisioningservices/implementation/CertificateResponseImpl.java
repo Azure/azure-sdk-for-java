@@ -187,6 +187,16 @@ public final class CertificateResponseImpl
         }
     }
 
+    public CertificateResponseImpl withIsVerified(Boolean isVerified) {
+        if (isInCreateMode()) {
+            this.createCertificateDescription.withIsVerified(isVerified);
+            return this;
+        } else {
+            this.updateCertificateDescription.withIsVerified(isVerified);
+            return this;
+        }
+    }
+
     public CertificateResponseImpl withIfMatch(String ifMatch) {
         if (isInCreateMode()) {
             this.createIfMatch = ifMatch;

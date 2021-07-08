@@ -17,7 +17,6 @@ Thank you in advance for your collaboration. We really appreciate your time!
 Various documentation is available to help you get started
 
 - [API reference documentation][docs]
-- [Service documentation][service_docs]
 
 ## Getting started
 
@@ -33,7 +32,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-deviceprovisioningservices</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -100,4 +99,3 @@ For details on contributing to this repository, see the [contributing guide](htt
 [azure_core_http_netty]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-http-netty
 [authenticate]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/AUTH.md
 [design]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/DESIGN.md
-[service_docs]: https://docs.microsoft.com/azure/iot-dps
