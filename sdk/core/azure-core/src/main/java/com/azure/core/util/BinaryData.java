@@ -59,7 +59,7 @@ import java.util.Objects;
  * @see JsonSerializer
  * @see <a href="https://aka.ms/azsdk/java/docs/serialization" target="_blank">More about serialization</a>
  */
-public class BinaryData {
+public final class BinaryData {
     private static final ClientLogger LOGGER = new ClientLogger(BinaryData.class);
     private static final int CHUNK_SIZE = 8092;
     static final JsonSerializer SERIALIZER = JsonSerializerProviders.createInstance(true);
