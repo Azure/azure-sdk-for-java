@@ -9,8 +9,8 @@
 - Exposing `AmqpMessageBody#value` and `AmqpMessageBody#sequence` to support value and sequence amqp types.
 
 ### Bugs Fixed
-- Fixed a bug that does not create respect properties when creating Subscription Rule with CorrelationFilter. #21299
-- Fixed a but that causes the settlement API not to return or throw error if retry timeout is long enough. #22299
+- Fixed a bug that does not create respect properties when creating Subscription Rule with CorrelationFilter. Issue [21299](https://github.com/Azure/azure-sdk-for-java/issues/21299).
+- Fixed a but that causes the settlement API not to return or throw error if retry timeout is long enough. Issue [22299](https://github.com/Azure/azure-sdk-for-java/issues/22299).
 
 ### Dependency Updates
 - Upgraded `azure-core` dependency to `1.18.0`.
