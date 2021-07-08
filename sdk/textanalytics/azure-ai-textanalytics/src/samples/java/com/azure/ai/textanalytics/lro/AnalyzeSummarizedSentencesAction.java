@@ -3,7 +3,7 @@
 
 package com.azure.ai.textanalytics.lro;
 
-import com.azure.ai.textanalytics.TextAnalyticsAsyncClient;
+import com.azure.ai.textanalytics.TextAnalyticsClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
@@ -15,17 +15,16 @@ import com.azure.ai.textanalytics.models.SummarizedSentence;
 import com.azure.ai.textanalytics.models.SummarizedSentencesOrder;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
+import com.azure.ai.textanalytics.util.AnalyzeActionsResultPagedIterable;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.util.Context;
+import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.core.util.polling.SyncPoller;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
-/**
- * Sample demonstrates how to asynchronously execute actions in a batch of documents, such as key phrases extraction,
- * PII entities recognition actions.
- */
 public class AnalyzeSummarizedSentencesAction {
     /**
      * Main method to invoke this demo about how to analyze a batch of tasks.
@@ -33,10 +32,10 @@ public class AnalyzeSummarizedSentencesAction {
      * @param args Unused arguments to the program.
      */
     public static void main(String[] args) {
-        TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
-                                              .credential(new AzureKeyCredential("{key}"))
-                                              .endpoint("{endpoint}")
-                                              .buildAsyncClient();
+        TextAnalyticsClient client = new TextAnalyticsClientBuilder()
+                                         .credential(new AzureKeyCredential("{key}"))
+                                         .endpoint("{endpoint}")
+                                         .buildClient();
 
         List<TextDocumentInput> documents = new ArrayList<>();
         for (int i = 0; i < 21; i++) {
@@ -56,7 +55,7 @@ public class AnalyzeSummarizedSentencesAction {
                     + "declaring he could not support May's Brexit plan.  He said it involved too close a "
                     + "relationship with the EU and gave only an illusion of control being returned to the UK"
                     + "after it left the EU. \"It seems to me we're giving too much away, too easily, and"
-                    + "that's a dangerous strategy at this time,\\\" Davis said in a BBC radio interview Monday"
+                    + "that's a dangerous strategy at this time,\" Davis said in a BBC radio interview Monday"
                     + "morning. Johnson's resignation came Monday afternoon local time, just before the Prime"
                     + " Minister was due to make a scheduled statement in Parliament. \"This afternoon, the Prime"
                     + "Minister accepted the resignation of Boris Johnson as Foreign Secretary,\" a"
@@ -64,63 +63,53 @@ public class AnalyzeSummarizedSentencesAction {
             ));
         }
 
-        client.beginAnalyzeActions(documents,
-            new TextAnalyticsActions()
-                .setDisplayName("{tasks_display_name}")
-                .setExtractSummarizedSentencesActions(
-                    new ExtractSummarizedSentencesAction()
-                        .setSummarizedSentenceCount(2)
-                        .setSummarizedSentenceOrder(SummarizedSentencesOrder.RANK_SCORE)),
-            new AnalyzeActionsOptions().setIncludeStatistics(false))
-            .flatMap(result -> {
-                AnalyzeActionsOperationDetail operationDetail = result.getValue();
-                System.out.printf("Action display name: %s, Successfully completed actions: %d, in-process actions: %d,"
-                                      + " failed actions: %d, total actions: %d%n",
-                    operationDetail.getDisplayName(), operationDetail.getSucceededCount(),
-                    operationDetail.getInProgressCount(), operationDetail.getFailedCount(),
-                    operationDetail.getTotalCount());
-                return result.getFinalResult();
-            })
-            .flatMap(analyzeActionsResultPagedFlux -> analyzeActionsResultPagedFlux.byPage())
-            .subscribe(
-                perPage -> processAnalyzeActionsResult(perPage),
-                ex -> System.out.println("Error listing pages: " + ex.getMessage()),
-                () -> System.out.println("Successfully listed all pages"));
+        SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedIterable> syncPoller =
+            client.beginAnalyzeActions(documents,
+                new TextAnalyticsActions().setDisplayName("{tasks_display_name}")
+                    .setExtractSummarizedSentencesActions(
+                        new ExtractSummarizedSentencesAction()
+                            .setSummarizedSentenceCount(2)
+                            .setSummarizedSentenceOrder(SummarizedSentencesOrder.RANK_SCORE)),
+                new AnalyzeActionsOptions().setIncludeStatistics(false),
+                Context.NONE);
 
-        // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep
-        // the thread so the program does not end before the send operation is complete. Using .block() instead of
-        // .subscribe() will turn this into a synchronous call.
-        try {
-            TimeUnit.MINUTES.sleep(5);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        // Task operation statistics details
+        while (syncPoller.poll().getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
+            final AnalyzeActionsOperationDetail operationDetail = syncPoller.poll().getValue();
+            System.out.printf("Action display name: %s, Successfully completed actions: %d, in-process actions: %d,"
+                                  + " failed actions: %d, total actions: %d%n",
+                operationDetail.getDisplayName(), operationDetail.getSucceededCount(),
+                operationDetail.getInProgressCount(), operationDetail.getFailedCount(),
+                operationDetail.getTotalCount());
         }
-    }
 
-    private static void processAnalyzeActionsResult(PagedResponse<AnalyzeActionsResult> perPage) {
-        System.out.printf("Response code: %d, Continuation Token: %s.%n",
-            perPage.getStatusCode(), perPage.getContinuationToken());
+        syncPoller.waitForCompletion();
 
-        for (AnalyzeActionsResult actionsResult : perPage.getElements()) {
-            System.out.println("Key phrases extraction action results:");
-            for (ExtractSummarizedSentencesActionResult actionResult : actionsResult.getExtractSummarizedSentencesResults()) {
-                if (!actionResult.isError()) {
-                    for (ExtractSummarizedSentencesResult documentResult : actionResult.getDocumentsResults()) {
-                        if (!documentResult.isError()) {
-                            System.out.println("\tExtracted summarized sentences:");
-                            for (SummarizedSentence summarizedSentence : documentResult.getSentences()) {
-                                System.out.printf("\t\t Summarized sentence text: %s, length: %d, offset: %d, rank score: %d.%n",
-                                    summarizedSentence.getText(), summarizedSentence.getLength(),
-                                    summarizedSentence.getOffset(), summarizedSentence.getRankScore());
+        Iterable<PagedResponse<AnalyzeActionsResult>> pagedResults = syncPoller.getFinalResult().iterableByPage();
+        for (PagedResponse<AnalyzeActionsResult> perPage : pagedResults) {
+            System.out.printf("Response code: %d, Continuation Token: %s.%n", perPage.getStatusCode(),
+                perPage.getContinuationToken());
+            for (AnalyzeActionsResult actionsResult : perPage.getElements()) {
+                System.out.println("Summarized sentences extraction action results:");
+                for (ExtractSummarizedSentencesActionResult actionResult : actionsResult.getExtractSummarizedSentencesResults()) {
+                    if (!actionResult.isError()) {
+                        for (ExtractSummarizedSentencesResult documentResult : actionResult.getDocumentsResults()) {
+                            if (!documentResult.isError()) {
+                                System.out.println("\tExtracted summarized sentences:");
+                                for (SummarizedSentence summarizedSentence : documentResult.getSentences()) {
+                                    System.out.printf("\t\t Summarized sentence text: %s, length: %d, offset: %d, rank score: %d.%n",
+                                        summarizedSentence.getText(), summarizedSentence.getLength(),
+                                        summarizedSentence.getOffset(), summarizedSentence.getRankScore());
+                                }
+                            } else {
+                                System.out.printf("\tCannot extract summarized sentences. Error: %s%n",
+                                    documentResult.getError().getMessage());
                             }
-                        } else {
-                            System.out.printf("\tCannot extract summarized sentences. Error: %s%n",
-                                documentResult.getError().getMessage());
                         }
+                    } else {
+                        System.out.printf("\tCannot execute Summarized Sentences Extraction action. Error: %s%n",
+                            actionResult.getError().getMessage());
                     }
-                } else {
-                    System.out.printf("\tCannot execute Summarized Sentences Extraction action. Error: %s%n",
-                        actionResult.getError().getMessage());
                 }
             }
         }
