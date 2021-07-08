@@ -572,7 +572,8 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
 
     /**
      * Gets the number of credits to add based on {@link #requested} and how many messages are still in queue.
-     * If {@link #requested} is {@link Long#MAX_VALUE}, then we add credits 1 by 1. Similar to Track 1's behaviour.
+     * If {@link #requested} is {@link Long#MAX_VALUE}, which indicates no-backpressure,
+     * then we use the {@link #prefetch} value as credit.
      *
      * @return The number of credits to add.
      */
