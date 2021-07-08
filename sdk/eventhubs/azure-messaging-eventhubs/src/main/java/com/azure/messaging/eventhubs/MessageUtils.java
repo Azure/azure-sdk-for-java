@@ -23,6 +23,7 @@ import org.apache.qpid.proton.amqp.messaging.Section;
 import org.apache.qpid.proton.message.Message;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.time.ZoneOffset;
 import java.util.Date;
 import java.util.HashMap;
@@ -333,7 +334,14 @@ final class MessageUtils {
 
         return sourceMap.entrySet().stream()
             .collect(HashMap::new,
-                (existing, entry) -> existing.put(Symbol.valueOf(entry.getKey()), entry.getValue()),
+                (existing, entry) -> {
+                    if (entry.getValue() instanceof Instant) {
+                        final long epochMilli = ((Instant) entry.getValue()).toEpochMilli();
+                        existing.put(Symbol.valueOf(entry.getKey()), new Date(epochMilli));
+                    } else {
+                        existing.put(Symbol.valueOf(entry.getKey()), entry.getValue());
+                    }
+                },
                 (HashMap::putAll));
     }
 

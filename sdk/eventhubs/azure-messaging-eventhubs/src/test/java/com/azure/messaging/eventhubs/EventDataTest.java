@@ -117,11 +117,12 @@ public class EventDataTest {
         // Assert
         final Map<String, Object> systemProperties = eventData.getSystemProperties();
 
-        Assertions.assertEquals(3, systemProperties.size());
+        Assertions.assertEquals(properties.size(), systemProperties.size());
         Assertions.assertEquals(OFFSET, systemProperties.get(OFFSET_ANNOTATION_NAME.getValue()));
         Assertions.assertEquals(sequenceNumber, systemProperties.get(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue()));
         Assertions.assertEquals(ENQUEUED_TIME, systemProperties.get(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue()));
 
+        Assertions.assertEquals(PARTITION_KEY, eventData.getPartitionKey());
         Assertions.assertEquals(OFFSET, eventData.getOffset());
         Assertions.assertEquals(sequenceNumber, eventData.getSequenceNumber());
         Assertions.assertEquals(ENQUEUED_TIME, eventData.getEnqueuedTime());

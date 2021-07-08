@@ -14,10 +14,7 @@ import java.nio.ByteBuffer;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -81,13 +78,13 @@ public class EventData {
      * @throws NullPointerException if {@code body} is {@code null}.
      */
     public EventData(byte[] body) {
-        this.systemProperties = new SystemProperties();
         this.context = Context.NONE;
-
         final AmqpMessageBody messageBody = AmqpMessageBody.fromData(
             Objects.requireNonNull(body, "'body' cannot be null."));
+
         this.annotatedMessage = new AmqpAnnotatedMessage(messageBody);
         this.properties = annotatedMessage.getApplicationProperties();
+        this.systemProperties = new SystemProperties();
     }
 
     /**
@@ -125,19 +122,18 @@ public class EventData {
      * Creates an event with the given {@code body}, system properties and context. Used in the case where a message
      * is received from the service.
      *
-     * @param systemProperties System properties set by message broker for this event.
      * @param context A specified key-value pair of type {@link Context}.
      * @param amqpAnnotatedMessage Backing annotated message.
      *
-     * @throws NullPointerException if {@code amqpAnnotatedMessage}, {@code systemProperties}, or {@code context} is
-     *     {@code null}.
+     * @throws NullPointerException if {@code amqpAnnotatedMessage} or {@code context} is {@code null}.
      * @throws IllegalArgumentException if {@code amqpAnnotatedMessage}'s body type is unknown.
      */
     EventData(AmqpAnnotatedMessage amqpAnnotatedMessage, SystemProperties systemProperties, Context context) {
         this.context = Objects.requireNonNull(context, "'context' cannot be null.");
-        this.systemProperties = Objects.requireNonNull(systemProperties, "'systemProperties' cannot be null.");
         this.properties = Collections.unmodifiableMap(amqpAnnotatedMessage.getApplicationProperties());
-        this.annotatedMessage = Objects.requireNonNull(amqpAnnotatedMessage, "'amqpAnnotatedMessage' cannot be null.");
+        this.annotatedMessage = Objects.requireNonNull(amqpAnnotatedMessage,
+            "'amqpAnnotatedMessage' cannot be null.");
+        this.systemProperties = systemProperties;
 
         switch (annotatedMessage.getBody().getBodyType()) {
             case DATA:
@@ -388,137 +384,5 @@ public class EventData {
         this.context = context.addData(key, value);
 
         return this;
-    }
-
-    /**
-     * A collection of properties populated by Azure Event Hubs service.
-     */
-    static class SystemProperties extends HashMap<String, Object> {
-        private static final long serialVersionUID = -2827050124966993723L;
-        private final Long offset;
-        private final String partitionKey;
-        private final Instant enqueuedTime;
-        private final Long sequenceNumber;
-
-        SystemProperties() {
-            super();
-            offset = null;
-            partitionKey = null;
-            enqueuedTime = null;
-            sequenceNumber = null;
-        }
-
-        SystemProperties(final Map<String, Object> map) {
-            super(map);
-            this.partitionKey = removeSystemProperty(PARTITION_KEY_ANNOTATION_NAME.getValue());
-
-            final Long offset = removeSystemPropertyAsLong(OFFSET_ANNOTATION_NAME.getValue());
-            if (offset == null) {
-                throw new IllegalStateException(String.format(Locale.US,
-                    "offset: %s should always be in map.", OFFSET_ANNOTATION_NAME.getValue()));
-            }
-
-            this.offset = offset;
-            put(OFFSET_ANNOTATION_NAME.getValue(), this.offset);
-
-            final Instant enqueuedTimeValue = removeSystemPropertyAsInstant(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue());
-            if (enqueuedTimeValue == null) {
-                throw new IllegalStateException(String.format(Locale.US,
-                    "enqueuedTime: %s should always be in map.", ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue()));
-            }
-            this.enqueuedTime = enqueuedTimeValue;
-            put(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(), this.enqueuedTime);
-
-            final Long sequenceNumber = removeSystemPropertyAsLong(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue());
-            if (sequenceNumber == null) {
-                throw new IllegalStateException(String.format(Locale.US,
-                    "sequenceNumber: %s should always be in map.", SEQUENCE_NUMBER_ANNOTATION_NAME.getValue()));
-            }
-
-            this.sequenceNumber = sequenceNumber;
-            put(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), this.sequenceNumber);
-        }
-
-        /**
-         * Gets the offset within the Event Hubs stream.
-         *
-         * @return The offset within the Event Hubs stream.
-         */
-        private Long getOffset() {
-            return offset;
-        }
-
-        /**
-         * Gets a partition key used for message partitioning. If it exists, this value was used to compute a hash to
-         * select a partition to send the message to.
-         *
-         * @return A partition key for this Event Data.
-         */
-        private String getPartitionKey() {
-            return partitionKey;
-        }
-
-        /**
-         * Gets the time this event was enqueued in the Event Hub.
-         *
-         * @return The time this was enqueued in the service.
-         */
-        private Instant getEnqueuedTime() {
-            return enqueuedTime;
-        }
-
-        /**
-         * Gets the sequence number in the event stream for this event. This is unique for every message received in the
-         * Event Hub.
-         *
-         * @return Sequence number for this event.
-         *
-         * @throws IllegalStateException if {@link SystemProperties} does not contain the sequence number in a
-         *     retrieved event.
-         */
-        private Long getSequenceNumber() {
-            return sequenceNumber;
-        }
-
-        @SuppressWarnings("unchecked")
-        private <T> T removeSystemProperty(final String key) {
-            if (this.containsKey(key)) {
-                return (T) (this.remove(key));
-            }
-
-            return null;
-        }
-
-        private Long removeSystemPropertyAsLong(final String key) {
-            if (!this.containsKey(key)) {
-                return null;
-            }
-
-            final Object value = this.remove(key);
-            if (value instanceof String) {
-                return Long.valueOf((String) value);
-            } else if (value instanceof Long) {
-                return (Long) value;
-            } else {
-                throw new ClientLogger(SystemProperties.class).logExceptionAsError(new IllegalStateException(
-                    String.format(Locale.US, "Key: %s Value %s is not of type String or Long.", key, value)));
-            }
-        }
-
-        private Instant removeSystemPropertyAsInstant(final String key) {
-            if (!this.containsKey(key)) {
-                return null;
-            }
-
-            final Object value = this.remove(key);
-            if (value instanceof Date) {
-                return ((Date) value).toInstant();
-            } else if (value instanceof Instant) {
-                return (Instant) value;
-            } else {
-                throw new ClientLogger(SystemProperties.class).logExceptionAsError(new IllegalStateException(
-                    String.format(Locale.US, "Key: %s Value %s is not of type Date or Instant.", key, value)));
-            }
-        }
     }
 }

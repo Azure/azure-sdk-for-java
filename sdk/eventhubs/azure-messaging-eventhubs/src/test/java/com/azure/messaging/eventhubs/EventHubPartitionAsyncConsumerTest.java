@@ -39,9 +39,6 @@ import reactor.test.StepVerifier;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -62,7 +59,7 @@ class EventHubPartitionAsyncConsumerTest {
     private static final String EVENT_HUB_NAME = "event-hub-name";
     private static final String CONSUMER_GROUP = "consumer-group-test";
     private static final String PARTITION_ID = "a-partition-id";
-    private static final Date TEST_DATE = Date.from(Instant.ofEpochSecond(1578643343));
+    private static final Instant TEST_DATE = Instant.ofEpochSecond(1578643343);
 
     @Mock
     private AmqpReceiveLink link1;
@@ -194,11 +191,11 @@ class EventHubPartitionAsyncConsumerTest {
             AmqpMessageBody.fromData("Baz".getBytes(StandardCharsets.UTF_8)));
 
         final EventData event1 = new EventData(annotatedMessage1,
-            getSystemProperties(25L, 14L), Context.NONE);
+            getSystemProperties(annotatedMessage1, 25L, 14L), Context.NONE);
         final EventData event2 = new EventData(annotatedMessage2,
-            getSystemProperties(secondOffset, 21L), Context.NONE);
+            getSystemProperties(annotatedMessage1, secondOffset, 21L), Context.NONE);
         final EventData event3 = new EventData(annotatedMessage3,
-            getSystemProperties(lastOffset, 53L), Context.NONE);
+            getSystemProperties(annotatedMessage1, lastOffset, 53L), Context.NONE);
 
         when(messageSerializer.deserialize(same(message1), eq(EventData.class))).thenReturn(event1);
         when(messageSerializer.deserialize(same(message2), eq(EventData.class))).thenReturn(event2);
@@ -250,8 +247,8 @@ class EventHubPartitionAsyncConsumerTest {
             CONSUMER_GROUP, PARTITION_ID, currentPosition, false);
 
         final Message message3 = mock(Message.class);
-        final Long secondOffset = 54L;
-        final Long lastOffset = 65L;
+        final long secondOffset = 54L;
+        final long lastOffset = 65L;
         final AmqpAnnotatedMessage annotatedMessage1 = new AmqpAnnotatedMessage(
             AmqpMessageBody.fromData("Foo".getBytes(StandardCharsets.UTF_8)));
         final AmqpAnnotatedMessage annotatedMessage2 = new AmqpAnnotatedMessage(
@@ -260,11 +257,11 @@ class EventHubPartitionAsyncConsumerTest {
             AmqpMessageBody.fromData("Baz".getBytes(StandardCharsets.UTF_8)));
 
         final EventData event1 = new EventData(annotatedMessage1,
-            getSystemProperties(25L, 14L), Context.NONE);
+            getSystemProperties(annotatedMessage1, 25L, 14L), Context.NONE);
         final EventData event2 = new EventData(annotatedMessage2,
-            getSystemProperties(secondOffset, 21L), Context.NONE);
+            getSystemProperties(annotatedMessage2, secondOffset, 21L), Context.NONE);
         final EventData event3 = new EventData(annotatedMessage3,
-            getSystemProperties(lastOffset, 53L), Context.NONE);
+            getSystemProperties(annotatedMessage3, lastOffset, 53L), Context.NONE);
 
         when(messageSerializer.deserialize(same(message1), eq(EventData.class))).thenReturn(event1);
         when(messageSerializer.deserialize(same(message2), eq(EventData.class))).thenReturn(event2);
@@ -342,12 +339,16 @@ class EventHubPartitionAsyncConsumerTest {
         }, FluxSink.OverflowStrategy.BUFFER);
     }
 
-    private static EventData.SystemProperties getSystemProperties(long offset, long sequenceNumber) {
-        Map<String, Object> properties = new HashMap<>();
-        properties.put(AmqpMessageConstant.OFFSET_ANNOTATION_NAME.getValue(), offset);
-        properties.put(AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), sequenceNumber);
-        properties.put(AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(), TEST_DATE);
+    private static SystemProperties getSystemProperties(AmqpAnnotatedMessage amqpAnnotatedMessage, long offset,
+        long sequenceNumber) {
 
-        return new EventData.SystemProperties(properties);
+        amqpAnnotatedMessage.getMessageAnnotations()
+            .put(AmqpMessageConstant.OFFSET_ANNOTATION_NAME.getValue(), offset);
+        amqpAnnotatedMessage.getMessageAnnotations()
+            .put(AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), sequenceNumber);
+        amqpAnnotatedMessage.getMessageAnnotations()
+            .put(AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(), TEST_DATE);
+
+        return new SystemProperties(amqpAnnotatedMessage, offset, TEST_DATE, sequenceNumber, null);
     }
 }
