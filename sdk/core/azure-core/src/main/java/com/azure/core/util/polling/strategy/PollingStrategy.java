@@ -94,18 +94,4 @@ public interface PollingStrategy {
      * @return a publisher emitting the final result
      */
     <U> Mono<U> getFinalResult(HttpResponse response, PollingContext<BinaryData> context, Type resultType);
-
-    /**
-     * Creates a default polling strategy based on the {@link ChainedPollingStrategy} implementation, trying in the
-     * order of {@link OperationResourcePollingStrategy}, {@link LocationPollingStrategy}, and {@link StatusCheckPollingStrategy},
-     * and polls with the first strategy that can poll the current long running operation.
-     *
-     * @return an instance of the default polling strategy
-     */
-    static PollingStrategy createDefault() {
-        return new ChainedPollingStrategy()
-            .addPollingStrategy(new OperationResourcePollingStrategy())
-            .addPollingStrategy(new LocationPollingStrategy())
-            .addPollingStrategy(new StatusCheckPollingStrategy());
-    }
 }
