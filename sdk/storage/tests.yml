@@ -43,7 +43,7 @@ stages:
       TestMode: 'LIVE'
       TimeoutInMinutes: 60
       Location: canadacentral
-      Clouds: 'Public,UsGov,China,Canary,Preview'
+      Clouds: 'UsGov,China,Preview'
       TestStepMavenInputs:
         options: '$(DefaultTestOptions) -T 1C'
         mavenOptions: '$(DefaultTestMavenOptions)'
