@@ -71,9 +71,7 @@ public class ComponentsTests extends ComponentsTestBase {
                 Context.NONE);
 
             assertEquals(updateComponentResponse.getStatusCode(), HttpURLConnection.HTTP_NO_CONTENT);
-        }
-        // clean up
-        finally {
+        } finally {
             try {
                 if (roomWithWifiTwinId != null) {
                     client.deleteDigitalTwin(roomWithWifiTwinId);
