@@ -47,7 +47,7 @@ public final class AzureEnvironment {
     /**
      * Provides the settings for authentication with Azure.
      */
-    public static final AzureEnvironment AZURE = new AzureEnvironment(new HashMap<>() {
+    public static final AzureEnvironment AZURE = new AzureEnvironment(new HashMap<String, String>() {
         {
             put(PORTAL_URL, "http://go.microsoft.com/fwlink/?LinkId=254433");
             put(PUBLISHING_PROFILE_URL, "http://go.microsoft.com/fwlink/?LinkId=254432");
@@ -74,7 +74,7 @@ public final class AzureEnvironment {
     /**
      * Provides the settings for authentication with Azure China.
      */
-    public static final AzureEnvironment AZURE_CHINA = new AzureEnvironment(new HashMap<>() {
+    public static final AzureEnvironment AZURE_CHINA = new AzureEnvironment(new HashMap<String, String>() {
         {
             put(PORTAL_URL, "http://go.microsoft.com/fwlink/?LinkId=301902");
             put(PUBLISHING_PROFILE_URL, "http://go.microsoft.com/fwlink/?LinkID=301774");
@@ -105,7 +105,7 @@ public final class AzureEnvironment {
     /**
      * Provides the settings for authentication with Azure US Government.
      */
-    public static final AzureEnvironment AZURE_US_GOVERNMENT = new AzureEnvironment(new HashMap<>() {
+    public static final AzureEnvironment AZURE_US_GOVERNMENT = new AzureEnvironment(new HashMap<String, String>() {
         {
             put(PORTAL_URL, "https://manage.windowsazure.us");
             put(PUBLISHING_PROFILE_URL, "https://manage.windowsazure.us/publishsettings/index");
@@ -136,7 +136,7 @@ public final class AzureEnvironment {
     /**
      * Provides the settings for authentication with Azure Germany.
      */
-    public static final AzureEnvironment AZURE_GERMANY = new AzureEnvironment(new HashMap<>() {
+    public static final AzureEnvironment AZURE_GERMANY = new AzureEnvironment(new HashMap<String, String>() {
         {
             put(PORTAL_URL, "http://portal.microsoftazure.de/");
             put(PUBLISHING_PROFILE_URL, "https://manage.microsoftazure.de/publishsettings/index");

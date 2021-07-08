@@ -27,8 +27,8 @@ import static com.azure.spring.autoconfigure.unity.AzurePropertyAutoConfiguratio
 @Configuration
 @ConditionalOnClass(JmsConnectionFactory.class)
 @ConditionalOnResource(resources = "classpath:servicebusjms.enable.config")
-@ConditionalOnProperty(value = "spring.jms.servicebus.enabled", matchIfMissing = true)
-@ConditionalOnExpression(value = "not '${spring.jms.servicebus.pricing-tier}'.equalsIgnoreCase('premium')")
+@ConditionalOnProperty(value = "spring.cloud.azure.jms.servicebus.enabled", matchIfMissing = true)
+@ConditionalOnExpression(value = "not '${spring.cloud.azure.jms.servicebus.pricing-tier}'.equalsIgnoreCase('premium')")
 @EnableConfigurationProperties(AzureServiceBusJMSProperties.class)
 public class NonPremiumServiceBusJMSAutoConfiguration {
 

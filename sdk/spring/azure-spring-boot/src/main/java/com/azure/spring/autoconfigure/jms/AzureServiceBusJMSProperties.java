@@ -18,7 +18,7 @@ import javax.annotation.PostConstruct;
 @ConfigurationProperties(AzureServiceBusJMSProperties.PREFIX)
 public class AzureServiceBusJMSProperties extends AzureProperties {
 
-    public static final String PREFIX = "spring.cloud.azure.jms";
+    public static final String PREFIX = "spring.cloud.azure.jms.servicebus";
 
     private String connectionString;
 

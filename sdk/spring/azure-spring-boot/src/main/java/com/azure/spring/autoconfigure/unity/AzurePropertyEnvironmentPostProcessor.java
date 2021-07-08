@@ -15,8 +15,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.context.config.ConfigFileApplicationListener;
 import org.springframework.boot.context.properties.bind.Bindable;
 import org.springframework.boot.context.properties.bind.Binder;
-import org.springframework.boot.env.EnvironmentPostProcessor;
-import org.springframework.core.Ordered;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.PropertiesPropertySource;
 import org.springframework.util.CollectionUtils;
@@ -28,7 +26,7 @@ import java.util.Properties;
 /**
  * TODO: Map legacy property to current spring properties.
  */
-public class AzurePropertyEnvironmentPostProcessor implements EnvironmentPostProcessor, Ordered {
+public class AzurePropertyEnvironmentPostProcessor {
 
     public static final int DEFAULT_ORDER = ConfigFileApplicationListener.DEFAULT_ORDER + 1;
 
@@ -135,7 +133,6 @@ public class AzurePropertyEnvironmentPostProcessor implements EnvironmentPostPro
 
     private int order = DEFAULT_ORDER;
 
-    @Override
     public int getOrder() {
         return order;
     }
@@ -145,7 +142,6 @@ public class AzurePropertyEnvironmentPostProcessor implements EnvironmentPostPro
     }
 
 
-    @Override
     public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
 
         Properties properties = new Properties();

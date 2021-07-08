@@ -3,6 +3,7 @@
 
 package com.azure.spring.autoconfigure.storage;
 
+import com.azure.spring.autoconfigure.unity.AzurePropertyAutoConfiguration;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.file.share.ShareServiceClientBuilder;
 import org.junit.jupiter.api.Test;
@@ -21,7 +22,7 @@ import static org.mockito.Mockito.mock;
 public class StorageAutoConfigurationTest {
 
     private ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-        .withConfiguration(AutoConfigurations.of(StorageAutoConfiguration.class))
+        .withConfiguration(AutoConfigurations.of(StorageAutoConfiguration.class, AzurePropertyAutoConfiguration.class))
         .withUserConfiguration(TestConfiguration.class);
 
     @Test
@@ -38,16 +39,16 @@ public class StorageAutoConfigurationTest {
 
     @Test
     public void testAzureStoragePropertiesIllegal() {
-        this.contextRunner.withPropertyValues("azure.storage.accountName=a")
+        this.contextRunner.withPropertyValues("spring.cloud.azure.storage.accountName=a")
                           .run(context -> assertThrows(IllegalStateException.class,
                               () -> context.getBean(StorageProperties.class)));
     }
 
     @Test
     public void testAzureStoragePropertiesConfigured() {
-        this.contextRunner.withPropertyValues("azure.storage.account-name=acc1")
-                          .withPropertyValues("azure.storage.account-key=key1")
-                          .withPropertyValues("azure.storage.blob-endpoint=endpoint1")
+        this.contextRunner.withPropertyValues("spring.cloud.azure.storage.account-name=acc1")
+                          .withPropertyValues("spring.cloud.azure.storage.account-key=key1")
+                          .withPropertyValues("spring.cloud.azure.storage.blob-endpoint=endpoint1")
                           .run(context -> {
                               assertThat(context).hasSingleBean(StorageProperties.class);
                               final StorageProperties storageProperties = context.getBean(StorageProperties.class);

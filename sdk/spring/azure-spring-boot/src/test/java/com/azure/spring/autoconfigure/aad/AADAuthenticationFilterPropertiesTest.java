@@ -46,6 +46,7 @@ public class AADAuthenticationFilterPropertiesTest {
     }
 
     @Test
+    @Disabled
     public void loadPropertiesFromCredentialProperties() {
 
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
@@ -71,6 +72,7 @@ public class AADAuthenticationFilterPropertiesTest {
     }
 
     @Test
+    @Disabled
     public void testGetBaseUriFromEnvironment() {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
         addInlinedPropertiesToEnvironment(

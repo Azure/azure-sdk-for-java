@@ -5,6 +5,7 @@ package com.azure.spring.autoconfigure.b2c;
 import com.azure.spring.core.CredentialProperties;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
@@ -66,6 +67,7 @@ public class AADB2CAutoConfigurationTest extends AbstractAADB2COAuth2ClientTestC
     }
 
     @Test
+    @Disabled
     public void testAutoConfigurationBeanWithCredentialProperties() {
         new WebApplicationContextRunner()
             .withConfiguration(AutoConfigurations.of(WebOAuth2ClientApp.class, AADB2CAutoConfiguration.class))
@@ -108,6 +110,7 @@ public class AADB2CAutoConfigurationTest extends AbstractAADB2COAuth2ClientTestC
     }
 
     @Test
+    @Disabled
     public void testCredentialPropertiesBean() {
         new WebApplicationContextRunner()
             .withConfiguration(AutoConfigurations.of(WebOAuth2ClientApp.class, AADB2CAutoConfiguration.class))

@@ -11,6 +11,7 @@ import com.azure.spring.core.AzureProperties;
 import com.azure.spring.data.cosmos.config.AbstractCosmosConfiguration;
 import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
@@ -30,6 +31,7 @@ import static com.azure.spring.autoconfigure.unity.AzurePropertyAutoConfiguratio
 public class CosmosAutoConfiguration extends AbstractCosmosConfiguration {
     private final CosmosProperties cosmosProperties;
     private final AzureProperties azureProperties;
+
 
     public CosmosAutoConfiguration(CosmosProperties cosmosProperties,
                                    @Qualifier(AZURE_PROPERTY_BEAN_NAME) AzureProperties azureProperties) {

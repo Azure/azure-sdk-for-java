@@ -42,17 +42,6 @@ class KeyVaultEnvironmentPostProcessorHelper {
 
     public static final String AZURE_KEYVAULT_PROPERTYSOURCE_NAME = "azurekv";
     public static final long DEFAULT_REFRESH_INTERVAL_MS = 1800000L;
-    public static final Set<String> AZURE_SPRING_PROPERTIES = Collections.unmodifiableSet(
-        new HashSet<>(Arrays.asList(
-            "authority-host",
-            "client-id",
-            "client-secret",
-            "certificate-password",
-            "certificate-path",
-            "msi-enabled",
-            "tenant-id",
-            "environment"
-        )));
     private static final Logger LOGGER = LoggerFactory.getLogger(KeyVaultEnvironmentPostProcessorHelper.class);
     private static final String DEFAULT_AUTHORITY_HOST = new IdentityClientOptions().getAuthorityHost();
     private final ConfigurableEnvironment environment;
