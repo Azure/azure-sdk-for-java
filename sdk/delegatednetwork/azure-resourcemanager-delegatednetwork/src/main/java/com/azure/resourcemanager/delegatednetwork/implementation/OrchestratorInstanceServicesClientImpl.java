@@ -114,6 +114,7 @@ public final class OrchestratorInstanceServicesClientImpl implements Orchestrato
             @PathParam("resourceName") String resourceName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("forceDelete") Boolean forceDelete,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -594,13 +595,15 @@ public final class OrchestratorInstanceServicesClientImpl implements Orchestrato
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
+     * @param forceDelete Force delete resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String resourceName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String resourceName, Boolean forceDelete) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -631,6 +634,7 @@ public final class OrchestratorInstanceServicesClientImpl implements Orchestrato
                             resourceName,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            forceDelete,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -641,6 +645,7 @@ public final class OrchestratorInstanceServicesClientImpl implements Orchestrato
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
+     * @param forceDelete Force delete resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -649,7 +654,7 @@ public final class OrchestratorInstanceServicesClientImpl implements Orchestrato
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String resourceName, Context context) {
+        String resourceGroupName, String resourceName, Boolean forceDelete, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -678,6 +683,7 @@ public final class OrchestratorInstanceServicesClientImpl implements Orchestrato
                 resourceName,
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
+                forceDelete,
                 accept,
                 context);
     }
@@ -687,14 +693,16 @@ public final class OrchestratorInstanceServicesClientImpl implements Orchestrato
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
+     * @param forceDelete Force delete resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String resourceName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, resourceName);
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String resourceName, Boolean forceDelete) {
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, resourceName, forceDelete);
         return this
             .client
             .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
@@ -705,6 +713,7 @@ public final class OrchestratorInstanceServicesClientImpl implements Orchestrato
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
+     * @param forceDelete Force delete resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -713,9 +722,10 @@ public final class OrchestratorInstanceServicesClientImpl implements Orchestrato
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String resourceName, Context context) {
+        String resourceGroupName, String resourceName, Boolean forceDelete, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, resourceName, context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteWithResponseAsync(resourceGroupName, resourceName, forceDelete, context);
         return this
             .client
             .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
@@ -726,14 +736,16 @@ public final class OrchestratorInstanceServicesClientImpl implements Orchestrato
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
+     * @param forceDelete Force delete resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName) {
-        return beginDeleteAsync(resourceGroupName, resourceName).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String resourceName, Boolean forceDelete) {
+        return beginDeleteAsync(resourceGroupName, resourceName, forceDelete).getSyncPoller();
     }
 
     /**
@@ -741,6 +753,7 @@ public final class OrchestratorInstanceServicesClientImpl implements Orchestrato
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
+     * @param forceDelete Force delete resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -749,8 +762,26 @@ public final class OrchestratorInstanceServicesClientImpl implements Orchestrato
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String resourceName, Context context) {
-        return beginDeleteAsync(resourceGroupName, resourceName, context).getSyncPoller();
+        String resourceGroupName, String resourceName, Boolean forceDelete, Context context) {
+        return beginDeleteAsync(resourceGroupName, resourceName, forceDelete, context).getSyncPoller();
+    }
+
+    /**
+     * Deletes the Orchestrator Instance.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
+     * @param forceDelete Force delete resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> deleteAsync(String resourceGroupName, String resourceName, Boolean forceDelete) {
+        return beginDeleteAsync(resourceGroupName, resourceName, forceDelete)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -765,7 +796,10 @@ public final class OrchestratorInstanceServicesClientImpl implements Orchestrato
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String resourceName) {
-        return beginDeleteAsync(resourceGroupName, resourceName).last().flatMap(this.client::getLroFinalResultOrError);
+        final Boolean forceDelete = null;
+        return beginDeleteAsync(resourceGroupName, resourceName, forceDelete)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -773,6 +807,7 @@ public final class OrchestratorInstanceServicesClientImpl implements Orchestrato
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
+     * @param forceDelete Force delete resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -780,10 +815,26 @@ public final class OrchestratorInstanceServicesClientImpl implements Orchestrato
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String resourceName, Context context) {
-        return beginDeleteAsync(resourceGroupName, resourceName, context)
+    private Mono<Void> deleteAsync(
+        String resourceGroupName, String resourceName, Boolean forceDelete, Context context) {
+        return beginDeleteAsync(resourceGroupName, resourceName, forceDelete, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Deletes the Orchestrator Instance.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
+     * @param forceDelete Force delete resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String resourceName, Boolean forceDelete) {
+        deleteAsync(resourceGroupName, resourceName, forceDelete).block();
     }
 
     /**
@@ -797,7 +848,8 @@ public final class OrchestratorInstanceServicesClientImpl implements Orchestrato
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String resourceName) {
-        deleteAsync(resourceGroupName, resourceName).block();
+        final Boolean forceDelete = null;
+        deleteAsync(resourceGroupName, resourceName, forceDelete).block();
     }
 
     /**
@@ -805,14 +857,15 @@ public final class OrchestratorInstanceServicesClientImpl implements Orchestrato
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
+     * @param forceDelete Force delete resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String resourceName, Context context) {
-        deleteAsync(resourceGroupName, resourceName, context).block();
+    public void delete(String resourceGroupName, String resourceName, Boolean forceDelete, Context context) {
+        deleteAsync(resourceGroupName, resourceName, forceDelete, context).block();
     }
 
     /**

@@ -53,12 +53,16 @@ public final class OrchestratorInstanceServicesImpl implements OrchestratorInsta
         }
     }
 
-    public void deleteByResourceGroup(String resourceGroupName, String resourceName) {
+    public void delete(String resourceGroupName, String resourceName, Boolean forceDelete) {
+        this.serviceClient().delete(resourceGroupName, resourceName, forceDelete);
+    }
+
+    public void delete(String resourceGroupName, String resourceName) {
         this.serviceClient().delete(resourceGroupName, resourceName);
     }
 
-    public void delete(String resourceGroupName, String resourceName, Context context) {
-        this.serviceClient().delete(resourceGroupName, resourceName, context);
+    public void delete(String resourceGroupName, String resourceName, Boolean forceDelete, Context context) {
+        this.serviceClient().delete(resourceGroupName, resourceName, forceDelete, context);
     }
 
     public PagedIterable<Orchestrator> list() {
@@ -135,10 +139,11 @@ public final class OrchestratorInstanceServicesImpl implements OrchestratorInsta
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'orchestrators'.", id)));
         }
-        this.delete(resourceGroupName, resourceName, Context.NONE);
+        Boolean localForceDelete = null;
+        this.delete(resourceGroupName, resourceName, localForceDelete, Context.NONE);
     }
 
-    public void deleteByIdWithResponse(String id, Context context) {
+    public void deleteByIdWithResponse(String id, Boolean forceDelete, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw logger
@@ -154,7 +159,7 @@ public final class OrchestratorInstanceServicesImpl implements OrchestratorInsta
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'orchestrators'.", id)));
         }
-        this.delete(resourceGroupName, resourceName, context);
+        this.delete(resourceGroupName, resourceName, forceDelete, context);
     }
 
     private OrchestratorInstanceServicesClient serviceClient() {

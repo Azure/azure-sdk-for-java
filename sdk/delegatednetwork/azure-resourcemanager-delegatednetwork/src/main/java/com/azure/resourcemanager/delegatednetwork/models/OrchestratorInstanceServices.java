@@ -41,23 +41,36 @@ public interface OrchestratorInstanceServices {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
+     * @param forceDelete Force delete resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void deleteByResourceGroup(String resourceGroupName, String resourceName);
+    void delete(String resourceGroupName, String resourceName, Boolean forceDelete);
 
     /**
      * Deletes the Orchestrator Instance.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(String resourceGroupName, String resourceName);
+
+    /**
+     * Deletes the Orchestrator Instance.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
+     * @param forceDelete Force delete resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(String resourceGroupName, String resourceName, Context context);
+    void delete(String resourceGroupName, String resourceName, Boolean forceDelete, Context context);
 
     /**
      * Get all the orchestratorInstance resources in a subscription.
@@ -139,12 +152,13 @@ public interface OrchestratorInstanceServices {
      * Deletes the Orchestrator Instance.
      *
      * @param id the resource ID.
+     * @param forceDelete Force delete resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void deleteByIdWithResponse(String id, Context context);
+    void deleteByIdWithResponse(String id, Boolean forceDelete, Context context);
 
     /**
      * Begins definition for a new Orchestrator resource.
