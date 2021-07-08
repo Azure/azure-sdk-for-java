@@ -30,6 +30,7 @@ import com.azure.monitor.query.models.LogsQueryException;
 import com.azure.monitor.query.models.LogsQueryOptions;
 import com.azure.monitor.query.models.LogsQueryResult;
 import com.azure.monitor.query.models.LogsQueryStatistics;
+import com.azure.monitor.query.models.LogsQueryVisualization;
 import com.azure.monitor.query.models.LogsTable;
 import com.azure.monitor.query.models.LogsTableCell;
 import com.azure.monitor.query.models.LogsTableColumn;
@@ -179,8 +180,11 @@ public final class LogsQueryAsyncClient {
 
         for (BatchQueryResponse singleQueryResponse : batchResponse.getResponses()) {
 
+            BatchQueryResults queryResults = singleQueryResponse.getBody();
+            LogsQueryResult logsQueryResult = getLogsQueryResult(queryResults.getTables(),
+                    queryResults.getStatistics(), queryResults.getRender(), queryResults.getError());
             LogsBatchQueryResult logsBatchQueryResult = new LogsBatchQueryResult(singleQueryResponse.getId(),
-                    singleQueryResponse.getStatus(), getLogsQueryResult(singleQueryResponse.getBody()));
+                    singleQueryResponse.getStatus(), logsQueryResult);
             batchResults.add(logsBatchQueryResult);
         }
         batchResults.sort(Comparator.comparingInt(o -> Integer.parseInt(o.getId())));
@@ -243,17 +247,19 @@ public final class LogsQueryAsyncClient {
 
     private Response<LogsQueryResult> convertToLogQueryResult(Response<QueryResults> response) {
         QueryResults queryResults = response.getValue();
-        LogsQueryResult logsQueryResult = getLogsQueryResult(queryResults);
+        LogsQueryResult logsQueryResult = getLogsQueryResult(queryResults.getTables(), queryResults.getStatistics(),
+                queryResults.getRender(), queryResults.getError());
         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                 response.getHeaders(), logsQueryResult);
     }
 
-    private LogsQueryResult getLogsQueryResult(QueryResults queryResults) {
+    private LogsQueryResult getLogsQueryResult(List<Table> innerTables, Object innerStats,
+                                               Object innerVisualization, ErrorInfo innerError) {
         List<LogsTable> tables = null;
 
-        if (queryResults.getTables() != null) {
+        if (innerTables != null) {
             tables = new ArrayList<>();
-            for (Table table : queryResults.getTables()) {
+            for (Table table : innerTables) {
                 List<LogsTableCell> tableCells = new ArrayList<>();
                 List<LogsTableRow> tableRows = new ArrayList<>();
                 List<LogsTableColumn> tableColumns = new ArrayList<>();
@@ -275,52 +281,19 @@ public final class LogsQueryAsyncClient {
             }
         }
 
-        LogsQueryStatistics statistics = null;
+        LogsQueryStatistics queryStatistics = null;
 
-        if (queryResults.getStatistics() != null) {
-            statistics = new LogsQueryStatistics(queryResults.getStatistics());
+        if (innerStats != null) {
+            queryStatistics = new LogsQueryStatistics(innerStats);
         }
 
-        LogsQueryResult logsQueryResult = new LogsQueryResult(tables, statistics,
-                mapLogsQueryError(queryResults.getError()));
-        return logsQueryResult;
-    }
-
-    private LogsQueryResult getLogsQueryResult(BatchQueryResults queryResults) {
-        List<LogsTable> tables = null;
-
-        if (queryResults.getTables() != null) {
-            tables = new ArrayList<>();
-            for (Table table : queryResults.getTables()) {
-                List<LogsTableCell> tableCells = new ArrayList<>();
-                List<LogsTableRow> tableRows = new ArrayList<>();
-                List<LogsTableColumn> tableColumns = new ArrayList<>();
-                LogsTable logsTable = new LogsTable(tableCells, tableRows, tableColumns);
-                tables.add(logsTable);
-                List<List<Object>> rows = table.getRows();
-
-                for (int i = 0; i < rows.size(); i++) {
-                    List<Object> row = rows.get(i);
-                    LogsTableRow tableRow = new LogsTableRow(i, new ArrayList<>());
-                    tableRows.add(tableRow);
-                    for (int j = 0; j < row.size(); j++) {
-                        LogsTableCell cell = new LogsTableCell(table.getColumns().get(j).getName(),
-                                table.getColumns().get(j).getType(), j, i, row.get(j));
-                        tableCells.add(cell);
-                        tableRow.getTableRow().add(cell);
-                    }
-                }
-            }
+        LogsQueryVisualization queryVisualization = null;
+        if (innerVisualization != null) {
+            queryVisualization = new LogsQueryVisualization(innerVisualization);
         }
 
-        LogsQueryStatistics statistics = null;
-
-        if (queryResults.getStatistics() != null) {
-            statistics = new LogsQueryStatistics(queryResults.getStatistics());
-        }
-
-        LogsQueryResult logsQueryResult = new LogsQueryResult(tables, statistics,
-                mapLogsQueryError(queryResults.getError()));
+        LogsQueryResult logsQueryResult = new LogsQueryResult(tables, queryStatistics, queryVisualization,
+                mapLogsQueryError(innerError));
         return logsQueryResult;
     }
 
