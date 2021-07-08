@@ -6,6 +6,9 @@ package com.azure.ai.textanalytics.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
+/**
+ *
+ */
 @Immutable
 public final class RecognizeCustomEntitiesResultCollection extends IterableStream<RecognizeCustomEntitiesResult> {
     private final String modelVersion;

@@ -130,6 +130,10 @@ public final class AnalyzeActionsResult {
         return recognizeClassificationResults;
     }
 
+    /**
+     *
+     * @return
+     */
     public IterableStream<RecognizeClassificationCollectionActionResult> getRecognizeClassificationCollectionResults() {
         return recognizeClassificationCollectionResults;
     }

@@ -7,10 +7,13 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
+/**
+ *
+ */
 @Immutable
 public final class ClassificationCategory extends ExpandableStringEnum<ClassificationCategory> {
     /**
-     *
+     * Enum value for politics.
      */
     public static final ClassificationCategory POLITICS = fromString("Politics");
 

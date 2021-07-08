@@ -5,11 +5,18 @@ package com.azure.ai.textanalytics.models;
 
 import com.azure.core.annotation.Immutable;
 
+/**
+ *
+ */
 @Immutable
 public final class DocumentClassification {
     private ClassificationCategory category;
     private double confidenceScore;
 
+    /**
+     *
+     * @return
+     */
     public ClassificationCategory getCategory() {
         return category;
     }

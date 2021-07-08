@@ -7,6 +7,9 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
+/**
+ *
+ */
 @Immutable
 public final class CustomEntityCategory extends ExpandableStringEnum<CustomEntityCategory> {
     /**

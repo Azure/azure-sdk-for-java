@@ -5,6 +5,9 @@ package com.azure.ai.textanalytics.models;
 
 import com.azure.core.annotation.Immutable;
 
+/**
+ *
+ */
 @Immutable
 public final class RecognizeClassificationCollectionActionResult extends TextAnalyticsActionResult {
     private String projectName;

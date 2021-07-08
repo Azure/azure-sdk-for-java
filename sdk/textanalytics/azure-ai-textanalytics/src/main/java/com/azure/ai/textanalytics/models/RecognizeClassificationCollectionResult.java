@@ -6,6 +6,9 @@ package com.azure.ai.textanalytics.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
+/**
+ *
+ */
 @Immutable
 public final class RecognizeClassificationCollectionResult extends TextAnalyticsResult {
     private IterableStream<DocumentClassification> documentClassifications;
