@@ -194,16 +194,16 @@ class KeyVaultEnvironmentPostProcessorHelper {
     }
 
     private String getPropertyValue(final String normalizedName, final Property property) {
-        String propertyName = KeyVaultProperties.getPropertyName(normalizedName, property);
-        String keyVaultPropertyValue = environment.getProperty(propertyName, (Class<String>) null);
-        if (keyVaultPropertyValue != null) {
-            return keyVaultPropertyValue;
+        List<String> propertyNames = Arrays.asList(KeyVaultProperties.getPropertyName(normalizedName, property),
+            SpringPropertyPrefix.PREFIX + property.getName());
+
+        String propertyValue = null;
+        for(String key : propertyNames) {
+            propertyValue = environment.getProperty(key);
+            if (null != propertyValue) {
+                break;
+            }
         }
-        if (AZURE_SPRING_PROPERTIES.contains(property.getName())) {
-            return Optional.of(SpringPropertyPrefix.PREFIX + property.getName())
-                           .map(environment::getProperty)
-                           .orElse(null);
-        }
-        return null;
+        return propertyValue;
     }
 }

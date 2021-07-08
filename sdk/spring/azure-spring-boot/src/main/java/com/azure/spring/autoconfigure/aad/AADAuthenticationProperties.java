@@ -424,13 +424,10 @@ public class AADAuthenticationProperties implements InitializingBean {
     public void afterPropertiesSet() {
 
         if (!StringUtils.hasText(baseUri)) {
-            baseUri = Optional.ofNullable(credentialProperties.getAuthorityHost())
-                              .orElse(Optional.ofNullable(azureProperties.getEnvironment())
-                                              .filter(env -> !env.isEmpty())
-                                              .map(env -> toAuthorityHost(env))
-                                              .orElse(AzureAuthorityHosts.AZURE_PUBLIC_CLOUD));
+            baseUri = "https://login.microsoftonline.com/";
+        } else {
+            baseUri = addSlash(baseUri);
         }
-        baseUri = addSlash(baseUri);
 
         if (!StringUtils.hasText(redirectUriTemplate)) {
             redirectUriTemplate = "{baseUrl}/login/oauth2/code/";

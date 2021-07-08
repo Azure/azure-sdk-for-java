@@ -1,6 +1,5 @@
 package com.azure.spring.core.env;
 
-import com.azure.identity.AzureAuthorityHosts;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -30,7 +29,6 @@ public final class AzureEnvironment {
     public static final String AZURE_LOG_ANALYTICS_RESOURCE_ID = "azureLogAnalyticsResourceId";
     public static final String AZURE_APPLICATION_INSIGHTS_RESOURCE_ID = "azureApplicationInsightsResourceId";
     public static final String PORTAL_URL = "portalUrl";
-    public static final String AUTHORITY_HOST_URL ="authorityHost";
 
     /**
      * the map of all endpoints.
@@ -70,7 +68,6 @@ public final class AzureEnvironment {
             put(AZURE_DATA_LAKE_ANALYTICS_CATALOG_AND_JOB_ENDPOINT_SUFFIX, "azuredatalakeanalytics.net");
             put(AZURE_LOG_ANALYTICS_RESOURCE_ID, "https://api.loganalytics.io/");
             put(AZURE_APPLICATION_INSIGHTS_RESOURCE_ID, "https://api.applicationinsights.io/");
-            put(AUTHORITY_HOST_URL, AzureAuthorityHosts.AZURE_PUBLIC_CLOUD);
         }
     });
 
@@ -101,7 +98,6 @@ public final class AzureEnvironment {
             put(AZURE_DATA_LAKE_ANALYTICS_CATALOG_AND_JOB_ENDPOINT_SUFFIX, "N/A");
             put(AZURE_LOG_ANALYTICS_RESOURCE_ID, "N/A");
             put(AZURE_APPLICATION_INSIGHTS_RESOURCE_ID, "N/A");
-            put(AUTHORITY_HOST_URL, AzureAuthorityHosts.AZURE_CHINA);
 
         }
     });
@@ -133,7 +129,6 @@ public final class AzureEnvironment {
             put(AZURE_DATA_LAKE_ANALYTICS_CATALOG_AND_JOB_ENDPOINT_SUFFIX, "N/A");
             put(AZURE_LOG_ANALYTICS_RESOURCE_ID, "https://api.loganalytics.us/");
             put(AZURE_APPLICATION_INSIGHTS_RESOURCE_ID, "N/A");
-            put(AUTHORITY_HOST_URL, AzureAuthorityHosts.AZURE_GOVERNMENT);
 
         }
     });
@@ -165,7 +160,6 @@ public final class AzureEnvironment {
             put(AZURE_DATA_LAKE_ANALYTICS_CATALOG_AND_JOB_ENDPOINT_SUFFIX, "N/A");
             put(AZURE_LOG_ANALYTICS_RESOURCE_ID, "N/A");
             put(AZURE_APPLICATION_INSIGHTS_RESOURCE_ID, "N/A");
-            put(AUTHORITY_HOST_URL, AzureAuthorityHosts.AZURE_GERMANY);
 
         }
     });
@@ -303,9 +297,6 @@ public final class AzureEnvironment {
         return endpoints.get(AZURE_APPLICATION_INSIGHTS_RESOURCE_ID);
     }
 
-    public String getAuthorityHost(){
-        return endpoints.get(AUTHORITY_HOST_URL);
-    }
     /**
      * The enum representing available endpoints in an environment.
      */
@@ -357,11 +348,7 @@ public final class AzureEnvironment {
         /**
          * Microsoft Graph APIs endpoint.
          */
-        MICROSOFT_GRAPH(MICROSOFT_GRAPH_RESOURCE_ID),
-        /**
-         * Azure Authority Host endpoint.
-         */
-        AUTHORITY_HOST(AUTHORITY_HOST_URL);
+        MICROSOFT_GRAPH(MICROSOFT_GRAPH_RESOURCE_ID);
 
         private final String field;
 

@@ -36,4 +36,6 @@ public class EnvironmentProperties {
     public void setGraphBaseUri(String graphBaseUri) {
         this.graphBaseUri = graphBaseUri;
     }
+
+    //TODO: transfer cloud to AzureEnvironment
 }
