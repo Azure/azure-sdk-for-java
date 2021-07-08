@@ -1,8 +1,8 @@
-# Azure Resource Manager PostgreSql client library for Java
+# Azure Resource Manager elastic client library for Java
 
-Azure Resource Manager PostgreSql client library for Java.
+Azure Resource Manager elastic client library for Java.
 
-This package contains Microsoft Azure SDK for PostgreSql Management SDK. The Microsoft Azure management API provides create, read, update, and delete functionality for Azure PostgreSQL resources including servers, databases, firewall rules, VNET rules, security alert policies, log files and configurations with new business model. Package tag package-flexibleserver-2021-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+This package contains Microsoft Azure SDK for elastic Management SDK.  Package tag package-2020-07-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ## We'd love to hear your feedback
 
@@ -27,11 +27,11 @@ Various documentation is available to help you get started
 
 ### Adding the package to your product
 
-[//]: # ({x-version-update-start;com.azure.resourcemanager:azure-resourcemanager-postgresqlflexibleserver;current})
+[//]: # ({x-version-update-start;com.azure.resourcemanager:azure-resourcemanager-elastic;current})
 ```xml
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
-    <artifactId>azure-resourcemanager-postgresqlflexibleserver</artifactId>
+    <artifactId>azure-resourcemanager-elastic</artifactId>
     <version>1.0.0-beta.1</version>
 </dependency>
 ```
@@ -60,7 +60,7 @@ AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 TokenCredential credential = new DefaultAzureCredentialBuilder()
     .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
     .build();
-PostgreSqlManager manager = PostgreSqlManager
+ElasticManager manager = ElasticManager
     .authenticate(credential, profile);
 ```
 
@@ -74,7 +74,7 @@ See [API design][design] for general introduction on design and key concepts on 
 
 ## Examples
 
-[Code snippets and samples](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/postgresqlflexibleserver/azure-resourcemanager-postgresqlflexibleserver/SAMPLE.md)
+[Code snippets and samples](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/elastic/azure-resourcemanager-elastic/SAMPLE.md)
 
 
 ## Troubleshooting
