@@ -17,6 +17,7 @@ public final class AnalyzeActionsResult {
     private IterableStream<RecognizePiiEntitiesActionResult> recognizePiiEntitiesResults;
     private IterableStream<ExtractKeyPhrasesActionResult> extractKeyPhrasesResults;
     private IterableStream<AnalyzeSentimentActionResult> analyzeSentimentResults;
+    private IterableStream<ExtractSummarizedSentencesActionResult> extractSummarizedSentencesResults;
 
     static {
         AnalyzeActionsResultPropertiesHelper.setAccessor(
@@ -100,6 +101,14 @@ public final class AnalyzeActionsResult {
      */
     public IterableStream<AnalyzeSentimentActionResult> getAnalyzeSentimentResults() {
         return this.analyzeSentimentResults;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public IterableStream<ExtractSummarizedSentencesActionResult> getExtractSummarizedSentencesResults() {
+        return extractSummarizedSentencesResults;
     }
 
     private void setRecognizeEntitiesResults(
