@@ -7,11 +7,9 @@ package com.azure.resourcemanager.delegatednetwork.implementation;
 import com.azure.core.management.Region;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.delegatednetwork.fluent.models.DelegatedSubnetInner;
-import com.azure.resourcemanager.delegatednetwork.models.ControllerDetails;
 import com.azure.resourcemanager.delegatednetwork.models.DelegatedSubnet;
-import com.azure.resourcemanager.delegatednetwork.models.DelegatedSubnetState;
+import com.azure.resourcemanager.delegatednetwork.models.DelegatedSubnetProperties;
 import com.azure.resourcemanager.delegatednetwork.models.ResourceUpdateParameters;
-import com.azure.resourcemanager.delegatednetwork.models.SubnetDetails;
 import java.util.Collections;
 import java.util.Map;
 
@@ -45,20 +43,8 @@ public final class DelegatedSubnetImpl implements DelegatedSubnet, DelegatedSubn
         }
     }
 
-    public String resourceGuid() {
-        return this.innerModel().resourceGuid();
-    }
-
-    public DelegatedSubnetState provisioningState() {
-        return this.innerModel().provisioningState();
-    }
-
-    public SubnetDetails subnetDetails() {
-        return this.innerModel().subnetDetails();
-    }
-
-    public ControllerDetails controllerDetails() {
-        return this.innerModel().controllerDetails();
+    public DelegatedSubnetProperties properties() {
+        return this.innerModel().properties();
     }
 
     public Region region() {
@@ -185,13 +171,8 @@ public final class DelegatedSubnetImpl implements DelegatedSubnet, DelegatedSubn
         }
     }
 
-    public DelegatedSubnetImpl withSubnetDetails(SubnetDetails subnetDetails) {
-        this.innerModel().withSubnetDetails(subnetDetails);
-        return this;
-    }
-
-    public DelegatedSubnetImpl withControllerDetails(ControllerDetails controllerDetails) {
-        this.innerModel().withControllerDetails(controllerDetails);
+    public DelegatedSubnetImpl withProperties(DelegatedSubnetProperties properties) {
+        this.innerModel().withProperties(properties);
         return this;
     }
 

@@ -110,19 +110,21 @@ public interface OrchestratorInstanceServicesClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
+     * @param forceDelete Force delete resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName, Boolean forceDelete);
 
     /**
      * Deletes the Orchestrator Instance.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
+     * @param forceDelete Force delete resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -130,7 +132,21 @@ public interface OrchestratorInstanceServicesClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String resourceName, Boolean forceDelete, Context context);
+
+    /**
+     * Deletes the Orchestrator Instance.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
+     * @param forceDelete Force delete resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String resourceName, Boolean forceDelete);
 
     /**
      * Deletes the Orchestrator Instance.
@@ -149,13 +165,14 @@ public interface OrchestratorInstanceServicesClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
+     * @param forceDelete Force delete resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String resourceName, Context context);
+    void delete(String resourceGroupName, String resourceName, Boolean forceDelete, Context context);
 
     /**
      * Update Orchestrator Instance.

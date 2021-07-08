@@ -47,32 +47,11 @@ public interface DelegatedSubnet {
     Map<String, String> tags();
 
     /**
-     * Gets the resourceGuid property: Resource guid.
+     * Gets the properties property: Properties of the provision operation request.
      *
-     * @return the resourceGuid value.
+     * @return the properties value.
      */
-    String resourceGuid();
-
-    /**
-     * Gets the provisioningState property: The current state of dnc delegated subnet resource.
-     *
-     * @return the provisioningState value.
-     */
-    DelegatedSubnetState provisioningState();
-
-    /**
-     * Gets the subnetDetails property: subnet details.
-     *
-     * @return the subnetDetails value.
-     */
-    SubnetDetails subnetDetails();
-
-    /**
-     * Gets the controllerDetails property: Properties of the controller.
-     *
-     * @return the controllerDetails value.
-     */
-    ControllerDetails controllerDetails();
+    DelegatedSubnetProperties properties();
 
     /**
      * Gets the region of the resource.
@@ -139,10 +118,7 @@ public interface DelegatedSubnet {
          * The stage of the DelegatedSubnet definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithSubnetDetails,
-                DefinitionStages.WithControllerDetails {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithProperties {
             /**
              * Executes the create request.
              *
@@ -168,25 +144,15 @@ public interface DelegatedSubnet {
              */
             WithCreate withTags(Map<String, String> tags);
         }
-        /** The stage of the DelegatedSubnet definition allowing to specify subnetDetails. */
-        interface WithSubnetDetails {
+        /** The stage of the DelegatedSubnet definition allowing to specify properties. */
+        interface WithProperties {
             /**
-             * Specifies the subnetDetails property: subnet details.
+             * Specifies the properties property: Properties of the provision operation request..
              *
-             * @param subnetDetails subnet details.
+             * @param properties Properties of the provision operation request.
              * @return the next definition stage.
              */
-            WithCreate withSubnetDetails(SubnetDetails subnetDetails);
-        }
-        /** The stage of the DelegatedSubnet definition allowing to specify controllerDetails. */
-        interface WithControllerDetails {
-            /**
-             * Specifies the controllerDetails property: Properties of the controller..
-             *
-             * @param controllerDetails Properties of the controller.
-             * @return the next definition stage.
-             */
-            WithCreate withControllerDetails(ControllerDetails controllerDetails);
+            WithCreate withProperties(DelegatedSubnetProperties properties);
         }
     }
     /**
