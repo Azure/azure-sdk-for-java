@@ -11,7 +11,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-monitor-query</artifactId>
-  <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-monitor-query;current} -->
+  <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-monitor-query;current} -->
 
   <name>Microsoft Azure SDK for Azure Monitor Log and Metrics Query</name>
   <description>This package contains Microsoft Azure SDK for Azure Monitor Log and Metrics Query.</description>
