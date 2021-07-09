@@ -117,7 +117,7 @@ public interface LogProfilesClient {
      * Create or update a log profile in Azure Monitoring REST API.
      *
      * @param logProfileName The name of the log profile.
-     * @param parameters The log profile resource.
+     * @param parameters Parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -131,7 +131,7 @@ public interface LogProfilesClient {
      * Create or update a log profile in Azure Monitoring REST API.
      *
      * @param logProfileName The name of the log profile.
-     * @param parameters The log profile resource.
+     * @param parameters Parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -144,7 +144,7 @@ public interface LogProfilesClient {
      * Create or update a log profile in Azure Monitoring REST API.
      *
      * @param logProfileName The name of the log profile.
-     * @param parameters The log profile resource.
+     * @param parameters Parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -157,7 +157,7 @@ public interface LogProfilesClient {
      * Create or update a log profile in Azure Monitoring REST API.
      *
      * @param logProfileName The name of the log profile.
-     * @param parameters The log profile resource.
+     * @param parameters Parameters supplied to the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -172,7 +172,7 @@ public interface LogProfilesClient {
      * Updates an existing LogProfilesResource. To update other fields use the CreateOrUpdate method.
      *
      * @param logProfileName The name of the log profile.
-     * @param logProfilesResource The log profile resource for patch operations.
+     * @param logProfilesResource Parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -186,7 +186,7 @@ public interface LogProfilesClient {
      * Updates an existing LogProfilesResource. To update other fields use the CreateOrUpdate method.
      *
      * @param logProfileName The name of the log profile.
-     * @param logProfilesResource The log profile resource for patch operations.
+     * @param logProfilesResource Parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -199,7 +199,7 @@ public interface LogProfilesClient {
      * Updates an existing LogProfilesResource. To update other fields use the CreateOrUpdate method.
      *
      * @param logProfileName The name of the log profile.
-     * @param logProfilesResource The log profile resource for patch operations.
+     * @param logProfilesResource Parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -212,7 +212,7 @@ public interface LogProfilesClient {
      * Updates an existing LogProfilesResource. To update other fields use the CreateOrUpdate method.
      *
      * @param logProfileName The name of the log profile.
-     * @param logProfilesResource The log profile resource for patch operations.
+     * @param logProfilesResource Parameters supplied to the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
