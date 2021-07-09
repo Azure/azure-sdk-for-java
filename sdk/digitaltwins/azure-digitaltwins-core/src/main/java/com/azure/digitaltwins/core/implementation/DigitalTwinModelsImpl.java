@@ -64,7 +64,7 @@ public final class DigitalTwinModelsImpl {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureDigitalTwinsAPI")
-    private interface DigitalTwinModelsService {
+    public interface DigitalTwinModelsService {
         @Post("/models")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)

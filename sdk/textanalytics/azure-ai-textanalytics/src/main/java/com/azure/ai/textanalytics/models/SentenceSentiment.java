@@ -53,7 +53,7 @@ public final class SentenceSentiment {
     }
 
     /**
-     * Get the sentence text property.
+     * Gets the sentence text property.
      *
      * @return The text property value.
      */
@@ -62,7 +62,7 @@ public final class SentenceSentiment {
     }
 
     /**
-     * Get the text sentiment label: POSITIVE, NEGATIVE, or NEUTRAL.
+     * Gets the text sentiment label: POSITIVE, NEGATIVE, or NEUTRAL.
      *
      * @return The {@link TextSentiment}.
      */
@@ -71,7 +71,7 @@ public final class SentenceSentiment {
     }
 
     /**
-     * Get the confidence score of the sentiment label. All score values sum up to 1, the higher the score, the
+     * Gets the confidence score of the sentiment label. All score values sum up to 1, the higher the score, the
      * higher the confidence in the sentiment.
      *
      * @return The {@link SentimentConfidenceScores}.
@@ -81,7 +81,7 @@ public final class SentenceSentiment {
     }
 
     /**
-     * Get the sentence opinions of sentence sentiment.
+     * Gets the sentence opinions of sentence sentiment.
      * This is only returned if you pass the opinion mining parameter to the analyze sentiment APIs.
      *
      * @return The sentence opinions of sentence sentiment.
@@ -91,7 +91,7 @@ public final class SentenceSentiment {
     }
 
     /**
-     * Get the offset of sentence. The start position for the sentence in a document.
+     * Gets the offset of sentence. The start position for the sentence in a document.
      *
      * @return The offset of sentence.
      */
@@ -100,7 +100,7 @@ public final class SentenceSentiment {
     }
 
     /**
-     * Get the length of sentence.
+     * Gets the length of sentence.
      *
      * @return The length of sentence.
      */
