@@ -67,17 +67,4 @@ public class KeyAsyncClientManagedHsmTest extends KeyAsyncClientTest {
             })
             .verifyComplete());
     }
-
-    /**
-     * Tests that random bytes can be retrieved from a Managed HSM.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getTestParameters")
-    public void getRandomBytes(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        createKeyAsyncClient(httpClient, serviceVersion);
-        getRandomBytesRunner((count) ->
-            StepVerifier.create(client.getRandomBytes(count))
-                .assertNext(randomBytes -> assertEquals(count, randomBytes.getBytes().length))
-                .verifyComplete());
-    }
 }
