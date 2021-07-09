@@ -9,6 +9,25 @@ import org.springframework.util.StringUtils;
 /**
  * AAD application type.
  * <p>Provides some common methods to determine the application type according to the {@link AADAuthenticationProperties} properties.</p>
+ *
+ * <table border="1">
+ *   <caption>AAD application type usage</caption>
+ *   <tr>
+ *     <th> Application type </th> <th> Has dependency: spring-security-oauth2-client</th> <th> Has dependency: spring-security-oauth2-resource-server </th> <th> Set azure.activedirectory.application-type </th>
+ *   </tr>
+ *   <tr>
+ *     <td> Web application </td> <td> Yes </td> <td> No </td> <td> Not required, it can be set to 'web_application' </td>
+ *   </tr>
+ *   <tr>
+ *     <td> Resource Server </td> <td> No </td> <td> Yes </td> <td> Not required, it can be set to 'resource_server' </td>
+ *   </tr>
+ *   <tr>
+ *     <td> Resource Server with OBO function </td> <td> Yes </td> <td> Yes </td> <td> Not required, it can be set to 'resource_server_with_obo' </td>
+ *   </tr>
+ *   <tr>
+ *     <td> Web Application and Resource Server </td> <td> Yes </td> <td> Yes </td> <td> Required, set to 'web_application_and_resource_server' </td>
+ *   </tr>
+ * </table>
  */
 public enum AADApplicationType {
 
@@ -19,28 +38,6 @@ public enum AADApplicationType {
 
     private String applicationType;
 
-    /**
-     * AADApplicationType constructor.
-     *
-     * <table border="1">
-     *   <tr>
-     *     <th> Application type </th> <th> Has dependency: spring-security-oauth2-client</th> <th> Has dependency: spring-security-oauth2-resource-server </th> <th> Set azure.activedirectory.application-type </th>
-     *   </tr>
-     *   <tr>
-     *     <td> Web application </td> <td> Yes </td> <td> No </td> <td> Not required, it can be set to 'web_application' </td>
-     *   </tr>
-     *   <tr>
-     *     <td> Resource Server </td> <td> No </td> <td> Yes </td> <td> Not required, it can be set to 'resource_server' </td>
-     *   </tr>
-     *   <tr>
-     *     <td> Resource Server with OBO function </td> <td> Yes </td> <td> Yes </td> <td> Not required, it can be set to 'resource_server_with_obo' </td>
-     *   </tr>
-     *   <tr>
-     *     <td> Web Application and Resource Server </td> <td> Yes </td> <td> Yes </td> <td> Required, set to 'web_application_and_resource_server' </td>
-     *   </tr>
-     * </table>
-     * @param applicationType application type
-     */
     AADApplicationType(String applicationType) {
         this.applicationType = applicationType;
     }
