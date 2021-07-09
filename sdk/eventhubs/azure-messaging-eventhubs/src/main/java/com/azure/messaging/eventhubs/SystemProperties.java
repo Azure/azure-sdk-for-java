@@ -3,7 +3,6 @@
 
 package com.azure.messaging.eventhubs;
 
-
 import com.azure.core.amqp.AmqpMessageConstant;
 import com.azure.core.amqp.models.AmqpAnnotatedMessage;
 import com.azure.core.amqp.models.AmqpMessageProperties;
@@ -25,31 +24,12 @@ import java.util.stream.Collectors;
  * @see <a href="https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/eventhub/Azure.Messaging.EventHubs/src/Amqp/AmqpSystemProperties.cs">AmqpSystemProperties</a>
  */
 final class SystemProperties implements Map<String, Object> {
-    private static final Set<String> AMQP_PROPERTY_NAMES;
-
     private final ClientLogger logger = new ClientLogger(SystemProperties.class);
     private final Long offset;
     private final String partitionKey;
     private final Instant enqueuedTime;
     private final Long sequenceNumber;
     private final AmqpAnnotatedMessage message;
-
-    static {
-        AMQP_PROPERTY_NAMES = new HashSet<>();
-        AMQP_PROPERTY_NAMES.add(AmqpMessageConstant.MESSAGE_ID.getValue());
-        AMQP_PROPERTY_NAMES.add(AmqpMessageConstant.USER_ID.getValue());
-        AMQP_PROPERTY_NAMES.add(AmqpMessageConstant.TO.getValue());
-        AMQP_PROPERTY_NAMES.add(AmqpMessageConstant.SUBJECT.getValue());
-        AMQP_PROPERTY_NAMES.add(AmqpMessageConstant.REPLY_TO.getValue());
-        AMQP_PROPERTY_NAMES.add(AmqpMessageConstant.CORRELATION_ID.getValue());
-        AMQP_PROPERTY_NAMES.add(AmqpMessageConstant.CONTENT_TYPE.getValue());
-        AMQP_PROPERTY_NAMES.add(AmqpMessageConstant.CONTENT_ENCODING.getValue());
-        AMQP_PROPERTY_NAMES.add(AmqpMessageConstant.ABSOLUTE_EXPIRY_TIME.getValue());
-        AMQP_PROPERTY_NAMES.add(AmqpMessageConstant.CREATION_TIME.getValue());
-        AMQP_PROPERTY_NAMES.add(AmqpMessageConstant.GROUP_ID.getValue());
-        AMQP_PROPERTY_NAMES.add(AmqpMessageConstant.GROUP_SEQUENCE.getValue());
-        AMQP_PROPERTY_NAMES.add(AmqpMessageConstant.REPLY_TO_GROUP_ID.getValue());
-    }
 
     /**
      * Creates an empty set of system properties. This is the case where a message was not received.
@@ -247,7 +227,7 @@ final class SystemProperties implements Map<String, Object> {
 
     @Override
     public boolean isEmpty() {
-        return size() > 0;
+        return size() == 0;
     }
 
     @Override

@@ -29,6 +29,7 @@ import reactor.test.StepVerifier;
 import java.nio.ByteBuffer;
 import java.time.Instant;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -163,7 +164,8 @@ public class InteropAmqpPropertiesTest extends IntegrationTestBase {
         assertEquals(message.getCorrelationId(), actual.getCorrelationId());
 
         assertTrue(actual.getSystemProperties().containsKey(AmqpMessageConstant.CREATION_TIME.getValue()));
-        assertEquals(message.getCreationTime(), actual.getSystemProperties().get(AmqpMessageConstant.CREATION_TIME.getValue()));
+        assertEquals(message.getProperties().getCreationTime().toInstant().atOffset(ZoneOffset.UTC),
+            actual.getSystemProperties().get(AmqpMessageConstant.CREATION_TIME.getValue()));
 
         assertTrue(actual.getSystemProperties().containsKey(AmqpMessageConstant.SUBJECT.getValue()));
         assertEquals(message.getSubject(), actual.getSystemProperties().get(AmqpMessageConstant.SUBJECT.getValue()));
@@ -178,7 +180,8 @@ public class InteropAmqpPropertiesTest extends IntegrationTestBase {
         assertEquals(message.getReplyTo(), actual.getSystemProperties().get(AmqpMessageConstant.REPLY_TO.getValue()));
 
         assertTrue(actual.getSystemProperties().containsKey(AmqpMessageConstant.ABSOLUTE_EXPIRY_TIME.getValue()));
-        assertEquals(message.getExpiryTime(), actual.getSystemProperties().get(AmqpMessageConstant.ABSOLUTE_EXPIRY_TIME.getValue()));
+        assertEquals(message.getProperties().getAbsoluteExpiryTime().toInstant().atOffset(ZoneOffset.UTC),
+            actual.getSystemProperties().get(AmqpMessageConstant.ABSOLUTE_EXPIRY_TIME.getValue()));
 
         assertEquals(PAYLOAD, new String(actual.getBody(), UTF_8));
 
