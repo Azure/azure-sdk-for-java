@@ -1,5 +1,8 @@
 ## Release History
 
+## 3.10.0-beta.1 (Unreleased)
+
+
 ### 3.9.0 (2021-07-08)
 #### New Features
 * Added `PartitionKey` support to spring data single partition queries.
