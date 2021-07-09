@@ -143,6 +143,31 @@ public class SignalRResourceInner extends Resource {
     @JsonProperty(value = "properties.networkACLs")
     private SignalRNetworkACLs networkACLs;
 
+    /*
+     * Enable or disable public network access. Default to "Enabled".
+     * When it's Enabled, network ACLs still apply.
+     * When it's Disabled, public network access is always disabled no matter
+     * what you set in network ACLs.
+     */
+    @JsonProperty(value = "properties.publicNetworkAccess")
+    private String publicNetworkAccess;
+
+    /*
+     * DisableLocalAuth
+     * Enable or disable local auth with AccessKey
+     * When set as true, connection with AccessKey=xxx won't work.
+     */
+    @JsonProperty(value = "properties.disableLocalAuth")
+    private Boolean disableLocalAuth;
+
+    /*
+     * disableAadAuth
+     * Enable or disable aad auth
+     * When set as true, connection with AuthType=aad won't work.
+     */
+    @JsonProperty(value = "properties.disableAadAuth")
+    private Boolean disableAadAuth;
+
     /**
      * Get the sku property: The billing information of the resource.(e.g. Free, Standard).
      *
@@ -393,6 +418,74 @@ public class SignalRResourceInner extends Resource {
      */
     public SignalRResourceInner withNetworkACLs(SignalRNetworkACLs networkACLs) {
         this.networkACLs = networkACLs;
+        return this;
+    }
+
+    /**
+     * Get the publicNetworkAccess property: Enable or disable public network access. Default to "Enabled". When it's
+     * Enabled, network ACLs still apply. When it's Disabled, public network access is always disabled no matter what
+     * you set in network ACLs.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public String publicNetworkAccess() {
+        return this.publicNetworkAccess;
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Enable or disable public network access. Default to "Enabled". When it's
+     * Enabled, network ACLs still apply. When it's Disabled, public network access is always disabled no matter what
+     * you set in network ACLs.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the SignalRResourceInner object itself.
+     */
+    public SignalRResourceInner withPublicNetworkAccess(String publicNetworkAccess) {
+        this.publicNetworkAccess = publicNetworkAccess;
+        return this;
+    }
+
+    /**
+     * Get the disableLocalAuth property: DisableLocalAuth Enable or disable local auth with AccessKey When set as true,
+     * connection with AccessKey=xxx won't work.
+     *
+     * @return the disableLocalAuth value.
+     */
+    public Boolean disableLocalAuth() {
+        return this.disableLocalAuth;
+    }
+
+    /**
+     * Set the disableLocalAuth property: DisableLocalAuth Enable or disable local auth with AccessKey When set as true,
+     * connection with AccessKey=xxx won't work.
+     *
+     * @param disableLocalAuth the disableLocalAuth value to set.
+     * @return the SignalRResourceInner object itself.
+     */
+    public SignalRResourceInner withDisableLocalAuth(Boolean disableLocalAuth) {
+        this.disableLocalAuth = disableLocalAuth;
+        return this;
+    }
+
+    /**
+     * Get the disableAadAuth property: disableAadAuth Enable or disable aad auth When set as true, connection with
+     * AuthType=aad won't work.
+     *
+     * @return the disableAadAuth value.
+     */
+    public Boolean disableAadAuth() {
+        return this.disableAadAuth;
+    }
+
+    /**
+     * Set the disableAadAuth property: disableAadAuth Enable or disable aad auth When set as true, connection with
+     * AuthType=aad won't work.
+     *
+     * @param disableAadAuth the disableAadAuth value to set.
+     * @return the SignalRResourceInner object itself.
+     */
+    public SignalRResourceInner withDisableAadAuth(Boolean disableAadAuth) {
+        this.disableAadAuth = disableAadAuth;
         return this;
     }
 
