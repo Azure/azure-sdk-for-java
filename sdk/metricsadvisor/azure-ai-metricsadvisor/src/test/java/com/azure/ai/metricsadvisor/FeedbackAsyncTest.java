@@ -117,16 +117,19 @@ public class FeedbackAsyncTest extends FeedbackTestBase {
         // Arrange
         client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildAsyncClient();
         creatMetricFeedbackRunner(inputMetricFeedback -> {
-            final MetricFeedback feedbackAdded = client.addFeedback(METRIC_ID, inputMetricFeedback).block();
-            final OffsetDateTime firstFeedbackCreatedTime = feedbackAdded.getCreatedTime();
+            final MetricFeedback feedbackAdded = client.addFeedback(METRIC_ID, inputMetricFeedback
+                .setDimensionFilter(new DimensionKey(DIMENSION_FILTER)))
+                .block();
+            final OffsetDateTime feedbackCreatedTime = feedbackAdded.getCreatedTime();
 
             // Act & Assert
             StepVerifier.create(client.listFeedback(METRIC_ID,
                 new ListMetricFeedbackOptions().setFilter(new ListMetricFeedbackFilter()
                     .setTimeMode(FeedbackQueryTimeMode.FEEDBACK_CREATED_TIME)
-                    .setStartTime(firstFeedbackCreatedTime.minusDays(1))
-                    .setEndTime(firstFeedbackCreatedTime.plusDays(1))
-                    .setDimensionFilter(new DimensionKey(DIMENSION_FILTER))).setMaxPageSize(10)))
+                    .setStartTime(feedbackCreatedTime.minusDays(1))
+                    .setEndTime(feedbackCreatedTime.plusDays(1))
+                    .setDimensionFilter(new DimensionKey(DIMENSION_FILTER)))
+                    .setMaxPageSize(10)))
                 .thenConsumeWhile(metricFeedback ->
                     metricFeedback.getDimensionFilter().asMap().keySet().stream().anyMatch(DIMENSION_FILTER::containsKey))
                 .verifyComplete();

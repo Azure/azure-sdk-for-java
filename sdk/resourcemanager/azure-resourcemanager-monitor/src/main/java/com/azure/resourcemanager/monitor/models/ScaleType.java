@@ -16,7 +16,10 @@ public enum ScaleType {
     PERCENT_CHANGE_COUNT("PercentChangeCount"),
 
     /** Enum value ExactCount. */
-    EXACT_COUNT("ExactCount");
+    EXACT_COUNT("ExactCount"),
+
+    /** Enum value ServiceAllowedNextValue. */
+    SERVICE_ALLOWED_NEXT_VALUE("ServiceAllowedNextValue");
 
     /** The actual serialized value for a ScaleType instance. */
     private final String value;

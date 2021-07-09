@@ -172,9 +172,8 @@ public class CosmosEncryptionContainer {
         try {
             return itemMono.block();
         } catch (Exception ex) {
-            final Throwable throwable = Exceptions.unwrap(ex);
-            if (throwable instanceof CosmosException) {
-                throw (CosmosException) throwable;
+            if (ex instanceof CosmosException) {
+                throw (CosmosException) ex;
             } else {
                 throw ex;
             }
@@ -189,9 +188,8 @@ public class CosmosEncryptionContainer {
         try {
             return deleteItemMono.block();
         } catch (Exception ex) {
-            final Throwable throwable = Exceptions.unwrap(ex);
-            if (throwable instanceof CosmosException) {
-                throw (CosmosException) throwable;
+            if (ex instanceof CosmosException) {
+                throw (CosmosException) ex;
             } else {
                 throw ex;
             }

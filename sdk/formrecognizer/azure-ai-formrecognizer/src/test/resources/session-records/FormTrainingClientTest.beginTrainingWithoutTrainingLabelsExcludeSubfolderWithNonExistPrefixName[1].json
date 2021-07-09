@@ -1,41 +1,41 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1//custom/models",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1/custom/models",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "3cbe800c-f90e-4857-b3a1-f67e16fd521e",
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "abe84a8d-9601-4983-84f4-299ef887f8eb",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "content-length" : "0",
-      "x-envoy-upstream-service-time" : "112",
+      "x-envoy-upstream-service-time" : "638",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "2afc48a2-eb20-482f-a69d-3fc6183dea4d",
+      "apim-request-id" : "a576ac90-959f-4843-b7ef-876755383534",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "Date" : "Tue, 11 May 2021 21:39:55 GMT",
-      "Location" : "https://mariari-canada-central.cognitiveservices.azure.com/formrecognizer/v2.1/custom/models/f377823d-515a-4bb1-9948-d36abcddbd61"
+      "Date" : "Wed, 07 Jul 2021 06:28:32 GMT",
+      "Location" : "https://shafangfr.cognitiveservices.azure.com/formrecognizer/v2.1/custom/models/f8d82050-be7d-495f-867a-be1e3b5cdc21"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1//custom/models/f377823d-515a-4bb1-9948-d36abcddbd61?includeKeys=true",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1/custom/models/f8d82050-be7d-495f-867a-be1e3b5cdc21?includeKeys=true",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "28a6344d-7676-410d-86c8-be17e8edca05"
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "b09f17f7-d905-4dd9-a88b-cc339f85469c"
     },
     "Response" : {
       "content-length" : "403",
-      "x-envoy-upstream-service-time" : "23",
+      "x-envoy-upstream-service-time" : "27",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "1249dc0f-71aa-4d09-a68e-1c61b246ad3c",
+      "apim-request-id" : "5dce5be8-73cc-4dda-b044-aeac7334ea7f",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"modelInfo\":{\"modelId\":\"f377823d-515a-4bb1-9948-d36abcddbd61\",\"status\":\"invalid\",\"createdDateTime\":\"2021-05-11T21:39:55Z\",\"lastUpdatedDateTime\":\"2021-05-11T21:39:56Z\"},\"keys\":{\"clusters\":{}},\"trainResult\":{\"trainingDocuments\":[],\"errors\":[{\"code\":\"2014\",\"message\":\"No valid blobs found in the specified Azure blob container. Please conform to the document format/size/page/dimensions requirements.\"}]}}",
-      "Date" : "Tue, 11 May 2021 21:40:00 GMT",
+      "Body" : "{\"modelInfo\":{\"modelId\":\"f8d82050-be7d-495f-867a-be1e3b5cdc21\",\"status\":\"invalid\",\"createdDateTime\":\"2021-07-07T06:28:33Z\",\"lastUpdatedDateTime\":\"2021-07-07T06:28:34Z\"},\"keys\":{\"clusters\":{}},\"trainResult\":{\"trainingDocuments\":[],\"errors\":[{\"code\":\"2014\",\"message\":\"No valid blobs found in the specified Azure blob container. Please conform to the document format/size/page/dimensions requirements.\"}]}}",
+      "Date" : "Wed, 07 Jul 2021 06:28:37 GMT",
       "Content-Type" : "application/json; charset=utf-8",
       "ms-azure-ai-errorcode" : "2014"
     },
