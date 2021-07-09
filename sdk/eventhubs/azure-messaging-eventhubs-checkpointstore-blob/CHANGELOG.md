@@ -1,7 +1,9 @@
 # Release History
 
 ## 1.8.1 (2021-07-09)
+### Dependency Updates
 
+- Update `azure-messaging-eventhubs` dependency to `5.9.0`.
 
 ## 1.8.0 (2021-06-14)
 
