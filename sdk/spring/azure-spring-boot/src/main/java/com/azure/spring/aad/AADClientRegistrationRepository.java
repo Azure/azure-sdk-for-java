@@ -13,7 +13,6 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -27,11 +26,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.azure.spring.aad.AADApplicationType.applicationType;
-import static com.azure.spring.aad.AADApplicationType.isResourceServerOnly;
-import static com.azure.spring.aad.AADApplicationType.isResourceServerWithObo;
-import static com.azure.spring.aad.AADApplicationType.isWebApplicationAndResourceServer;
-import static com.azure.spring.aad.AADApplicationType.isWebApplicationOnly;
 import static com.azure.spring.aad.AADAuthorizationGrantType.AUTHORIZATION_CODE;
 
 
@@ -49,25 +43,16 @@ public class AADClientRegistrationRepository
     protected final Map<String, ClientRegistration> delegatedClientRegistrations;
     protected final Map<String, ClientRegistration> allClientRegistrations;
     protected final AADAuthenticationProperties properties;
-    private final Boolean isResourceServer;
-    private final Boolean isWebApplicationOnly;
-    private final Boolean isWebApplicationAndResourceServer;
 
     public AADClientRegistrationRepository(AADAuthenticationProperties properties) {
         this.properties = properties;
-
-        AADApplicationType applicationType = applicationType(properties);
-        this.isWebApplicationOnly = isWebApplicationOnly(applicationType);
-        this.isResourceServer = isResourceServerOnly(applicationType) || isResourceServerWithObo(applicationType);
-        this.isWebApplicationAndResourceServer = isWebApplicationAndResourceServer(applicationType);
-        properties.getAuthorizationClients().forEach(this::handleDefaultAADAuthorizationGrantType);
         this.azureClientRegistration = azureClientRegistration();
         this.delegatedClientRegistrations = delegatedClientRegistrations();
         this.allClientRegistrations = allClientRegistrations();
     }
 
     private AzureClientRegistration azureClientRegistration() {
-        if (!isWebApplicationOnly && !isWebApplicationAndResourceServer) {
+        if (!needAzureClientRegistration()) {
             return emptyAzureClientRegistration();
         }
 
@@ -88,8 +73,12 @@ public class AADClientRegistrationRepository
         return new AzureClientRegistration(client, accessTokenScopes);
     }
 
+    private boolean needAzureClientRegistration() {
+        return properties.isWebApplicationOnly() || properties.isWebApplicationAndResourceServer();
+    }
+
     private Map<String, ClientRegistration> delegatedClientRegistrations() {
-        if (!isWebApplicationOnly && !isWebApplicationAndResourceServer) {
+        if (!needAzureClientRegistration()) {
             return Collections.emptyMap();
         }
 
@@ -117,31 +106,6 @@ public class AADClientRegistrationRepository
         return Collections.unmodifiableMap(result);
     }
 
-    private void handleDefaultAADAuthorizationGrantType(String registrationId,
-                                                        AuthorizationClientProperties properties) {
-        if (null == properties.getAuthorizationGrantType()) {
-            if (isWebApplicationOnly || AZURE_CLIENT_REGISTRATION_ID.equals(registrationId)) {
-                properties.setAuthorizationGrantType(AUTHORIZATION_CODE);
-                LOGGER.debug("The client '{}' sets the default value of AADAuthorizationGrantType to "
-                    + "'authorization_code'.", registrationId);
-            } else if (isResourceServer) {
-                properties.setAuthorizationGrantType(AADAuthorizationGrantType.ON_BEHALF_OF);
-                LOGGER.debug("The client '{}' sets the default value of AADAuthorizationGrantType to "
-                    + "'on-behalf-of'.", registrationId);
-            } else if (isWebApplicationAndResourceServer) {
-                throw new IllegalStateException("azure.activedirectory.authorization-clients." + registrationId
-                    + ".authorization-grant-type must be configured. ");
-            }
-        }
-
-        if (AZURE_CLIENT_REGISTRATION_ID.equals(registrationId)
-            && !AUTHORIZATION_CODE.equals(properties.getAuthorizationGrantType())) {
-            throw new IllegalStateException("azure.activedirectory.authorization-clients."
-                + AZURE_CLIENT_REGISTRATION_ID
-                + ".authorization-grant-type must be configured to 'authorization_code'.");
-        }
-    }
-
     private ClientRegistration.Builder toClientRegistrationBuilder(String registrationId,
                                                                    AuthorizationClientProperties clientProperties) {
         Assert.notNull(clientProperties.getAuthorizationGrantType(),
@@ -149,34 +113,35 @@ public class AADClientRegistrationRepository
         LOGGER.debug("Client {} AuthorizationClientProperties: {}.", registrationId, clientProperties);
         AADAuthorizationServerEndpoints endpoints =
             new AADAuthorizationServerEndpoints(properties.getBaseUri(), properties.getTenantId());
-        ClientRegistration.Builder clientRegistrationBuilder;
+        AuthorizationGrantType authorizationGrantType;
         switch (clientProperties.getAuthorizationGrantType()) {
             case AUTHORIZATION_CODE:
-                clientRegistrationBuilder = toAuthorizationCodeBuilder(registrationId, endpoints, clientProperties);
+                authorizationGrantType = AuthorizationGrantType.AUTHORIZATION_CODE;
                 break;
             case ON_BEHALF_OF:
-                clientRegistrationBuilder = toOnBehalfOfBuilder(registrationId, endpoints, clientProperties);
+                authorizationGrantType = new AuthorizationGrantType(AADAuthorizationGrantType.ON_BEHALF_OF.getValue());
                 break;
             case CLIENT_CREDENTIALS:
-                clientRegistrationBuilder = toClientCredentialsBuilder(registrationId, endpoints, clientProperties);
+                authorizationGrantType = AuthorizationGrantType.CLIENT_CREDENTIALS;
                 break;
             default:
                 throw new IllegalArgumentException("Unsupported authorization type "
                     + clientProperties.getAuthorizationGrantType().getValue());
         }
-        return clientRegistrationBuilder;
+        return toClientRegistrationBuilder(registrationId, authorizationGrantType, endpoints, clientProperties);
     }
 
-    private ClientRegistration.Builder toAuthorizationCodeBuilder(String registrationId,
-                                                              AADAuthorizationServerEndpoints endpoints,
-                                                              AuthorizationClientProperties clientProperties) {
+    private ClientRegistration.Builder toClientRegistrationBuilder(String registrationId,
+                                                                   AuthorizationGrantType authorizationGrantType,
+                                                                   AADAuthorizationServerEndpoints endpoints,
+                                                                   AuthorizationClientProperties clientProperties) {
         return ClientRegistration.withRegistrationId(registrationId)
                                  .clientName(registrationId)
-                                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+                                 .authorizationGrantType(authorizationGrantType)
                                  .scope(toScopes(clientProperties))
                                  .redirectUri(properties.getRedirectUriTemplate())
                                  .userNameAttributeName(properties.getUserNameAttribute())
-                                 .clientId(toClientId(properties))
+                                 .clientId(properties.getClientId())
                                  .clientSecret(properties.getClientSecret())
                                  .authorizationUri(endpoints.authorizationEndpoint())
                                  .tokenUri(endpoints.tokenEndpoint())
@@ -184,52 +149,16 @@ public class AADClientRegistrationRepository
                                  .providerConfigurationMetadata(providerConfigurationMetadata(endpoints));
     }
 
-    private ClientRegistration.Builder toOnBehalfOfBuilder(String registrationId,
-                                                           AADAuthorizationServerEndpoints endpoints,
-                                                           AuthorizationClientProperties clientProperties) {
-        return ClientRegistration.withRegistrationId(registrationId)
-                                 .clientName(registrationId)
-                                 .authorizationGrantType(new AuthorizationGrantType(
-                                     AADAuthorizationGrantType.ON_BEHALF_OF.getValue()))
-                                 .scope(clientProperties.getScopes())
-                                 .redirectUri("{baseUrl}/login/oauth2/code/")
-                                 .userNameAttributeName(properties.getUserNameAttribute())
-                                 .clientId(toClientId(properties))
-                                 .clientSecret(properties.getClientSecret())
-                                 .authorizationUri(endpoints.authorizationEndpoint());
-    }
-
-    private ClientRegistration.Builder toClientCredentialsBuilder(String registrationId,
-                                                                  AADAuthorizationServerEndpoints endpoints,
-                                                                  AuthorizationClientProperties clientProperties) {
-        return ClientRegistration.withRegistrationId(registrationId)
-                                 .clientName(registrationId)
-                                 .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
-                                 .scope(toScopes(clientProperties))
-                                 .redirectUri(properties.getRedirectUriTemplate())
-                                 .userNameAttributeName(properties.getUserNameAttribute())
-                                 .clientId(toClientId(properties))
-                                 .clientSecret(properties.getClientSecret())
-                                 .tokenUri(endpoints.tokenEndpoint());
-    }
-
     private AzureClientRegistration emptyAzureClientRegistration() {
         ClientRegistration.Builder clientRegistrationBuilder = toClientRegistrationBuilder(
             AZURE_CLIENT_REGISTRATION_ID, defaultAzureAuthorizationClientProperties());
-        return new AzureClientRegistration(clientRegistrationBuilder.build(), new HashSet<>());
+        return new AzureClientRegistration(clientRegistrationBuilder.build(), Collections.emptySet());
     }
 
     private AuthorizationClientProperties defaultAzureAuthorizationClientProperties() {
         AuthorizationClientProperties result = new AuthorizationClientProperties();
         result.setAuthorizationGrantType(AUTHORIZATION_CODE);
         return result;
-    }
-
-    private String toClientId(AADAuthenticationProperties properties) {
-        return Optional.of(properties)
-                       .map(AADAuthenticationProperties::getClientId)
-                       .filter(StringUtils::hasText)
-                       .orElse("client-id-not-configured");
     }
 
     private List<String> toScopes(AuthorizationClientProperties clientProperties) {
@@ -339,14 +268,6 @@ public class AADClientRegistrationRepository
 
     public boolean isAzureDelegatedClientRegistrations(String registrationId) {
         return delegatedClientRegistrations.containsKey(registrationId);
-    }
-
-    public boolean isClientCredentials(String registrationId) {
-        return Optional.ofNullable(allClientRegistrations.get(registrationId))
-             .map(ClientRegistration::getAuthorizationGrantType)
-             .map(AuthorizationGrantType::getValue)
-             .map(v -> v.equals(AADAuthorizationGrantType.CLIENT_CREDENTIALS.getValue()))
-             .orElse(false);
     }
 
     public static boolean isDefaultClient(String registrationId) {

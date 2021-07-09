@@ -3,6 +3,8 @@
 
 package com.azure.spring.autoconfigure.aad;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.azure.spring.aad.AADAuthorizationGrantType;
 import com.azure.spring.aad.webapp.AuthorizationClientProperties;
 import com.nimbusds.jose.jwk.source.RemoteJWKSet;
@@ -11,6 +13,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 
@@ -24,9 +27,13 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import com.azure.spring.aad.AADApplicationType;
+import static com.azure.spring.aad.AADApplicationType.defaultApplicationType;
+import static com.azure.spring.aad.AADApplicationType.validateApplicationType;
 import static com.azure.spring.aad.AADAuthorizationGrantType.AUTHORIZATION_CODE;
 import static com.azure.spring.aad.AADAuthorizationGrantType.CLIENT_CREDENTIALS;
 import static com.azure.spring.aad.AADAuthorizationGrantType.ON_BEHALF_OF;
+import static com.azure.spring.aad.AADClientRegistrationRepository.AZURE_CLIENT_REGISTRATION_ID;
 
 /**
  * Configuration properties for Azure Active Directory Authentication.
@@ -34,6 +41,8 @@ import static com.azure.spring.aad.AADAuthorizationGrantType.ON_BEHALF_OF;
 @Validated
 @ConfigurationProperties("azure.activedirectory")
 public class AADAuthenticationProperties implements InitializingBean {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(AADAuthenticationProperties.class);
 
     private static final long DEFAULT_JWK_SET_CACHE_LIFESPAN = TimeUnit.MINUTES.toMillis(5);
     private static final long DEFAULT_JWK_SET_CACHE_REFRESH_TIME = DEFAULT_JWK_SET_CACHE_LIFESPAN;
@@ -125,7 +134,18 @@ public class AADAuthenticationProperties implements InitializingBean {
 
     private Map<String, AuthorizationClientProperties> authorizationClients = new HashMap<>();
 
-    private Boolean enableWebAppResourceServer = false;
+    private AADApplicationType applicationType;
+
+    public AADApplicationType getApplicationType() {
+        if (applicationType == null) {
+            applicationType = defaultApplicationType(this);
+        }
+        return applicationType;
+    }
+
+    public void setApplicationType(AADApplicationType applicationType) {
+        this.applicationType = applicationType;
+    }
 
     @DeprecatedConfigurationProperty(
         reason = "Configuration moved to UserGroup class to keep UserGroup properties together",
@@ -402,14 +422,6 @@ public class AADAuthenticationProperties implements InitializingBean {
                        .contains(group);
     }
 
-    public Boolean getEnableWebAppAndResourceServer() {
-        return enableWebAppAndResourceServer;
-    }
-
-    public void setEnableWebAppAndResourceServer(Boolean enableWebAppAndResourceServer) {
-        this.enableWebAppAndResourceServer = enableWebAppAndResourceServer;
-    }
-
     @Override
     public void afterPropertiesSet() {
 
@@ -467,7 +479,22 @@ public class AADAuthenticationProperties implements InitializingBean {
                 + ", and azure.activedirectory.user-group.allowed-group-ids=" + userGroup.getAllowedGroupIds());
         }
 
-        authorizationClients.forEach(this::validateAuthorizationClientProperties);
+        if (applicationType == null) {
+            applicationType = defaultApplicationType(this);
+            LOGGER.debug("The application type '{}' was detected.", applicationType.getValue());
+        } else {
+            LOGGER.debug("The application type '{}' was configured.", applicationType.getValue());
+            if (!validateApplicationType(this)) {
+                throw new IllegalStateException("The application type '"
+                    + applicationType.getValue() + "' and the dependency do not match.");
+            }
+        }
+        if (!CollectionUtils.isEmpty(authorizationClients)) {
+            if (!StringUtils.hasText(clientId)) {
+                throw new IllegalStateException("'client-id' must be configured when using client registration.");
+            }
+            authorizationClients.forEach(this::validateAuthorizationClientProperties);
+        }
     }
 
     private void validateAuthorizationClientProperties(String registrationId,
@@ -476,23 +503,62 @@ public class AADAuthenticationProperties implements InitializingBean {
                               .map(AuthorizationClientProperties::getAuthorizationGrantType)
                               .map(AADAuthorizationGrantType::getValue)
                               .orElse(null);
-        if (type != null && !AUTHORIZATION_CODE.getValue().equals(type)
-            && !CLIENT_CREDENTIALS.getValue().equals(type)
-            && !ON_BEHALF_OF.getValue().equals(type)) {
-            throw new IllegalStateException("Valid values are: authorization_code, client_credentials, on-behalf-of");
+        if (null == type) {
+            if (isWebApplicationOnly() || AZURE_CLIENT_REGISTRATION_ID.equals(registrationId)) {
+                properties.setAuthorizationGrantType(AUTHORIZATION_CODE);
+                LOGGER.debug("The client '{}' sets the default value of AADAuthorizationGrantType to "
+                    + "'authorization_code'.", registrationId);
+            } else if (isResourceServerOnly() || isResourceServerWithObo()) {
+                properties.setAuthorizationGrantType(AADAuthorizationGrantType.ON_BEHALF_OF);
+                LOGGER.debug("The client '{}' sets the default value of AADAuthorizationGrantType to "
+                    + "'on-behalf-of'.", registrationId);
+            } else if (isWebApplicationAndResourceServer()) {
+                throw new IllegalStateException("azure.activedirectory.authorization-clients." + registrationId
+                    + ".authorization-grant-type must be configured. ");
+            }
+        } else {
+            if (!AUTHORIZATION_CODE.getValue().equals(type)
+                && !CLIENT_CREDENTIALS.getValue().equals(type)
+                && !ON_BEHALF_OF.getValue().equals(type)) {
+                throw new IllegalStateException("Valid values are: authorization_code, client_credentials, on-behalf-of");
+            }
+
+            if (properties.isOnDemand()
+                && !AUTHORIZATION_CODE.getValue().equals(type)) {
+                throw new IllegalStateException("onDemand only support authorization_code grant type. Please set "
+                    + "'azure.activedirectory.authorization-clients." + registrationId
+                    + ".authorization-grant-type=authorization_code'"
+                    + " or 'azure.activedirectory.authorization-clients." + registrationId + ".on-demand=false'.");
+            }
+
+            if (AZURE_CLIENT_REGISTRATION_ID.equals(registrationId)
+                && !AUTHORIZATION_CODE.equals(properties.getAuthorizationGrantType())) {
+                throw new IllegalStateException("azure.activedirectory.authorization-clients."
+                    + AZURE_CLIENT_REGISTRATION_ID
+                    + ".authorization-grant-type must be configured to 'authorization_code'.");
+            }
         }
 
-        if (type != null && properties.isOnDemand()
-            && !AUTHORIZATION_CODE.getValue().equals(type)) {
-            throw new IllegalStateException("onDemand only support authorization_code grant type. Please set "
-                + "'azure.activedirectory.authorization-clients." + registrationId
-                + ".authorization-grant-type=authorization_code'"
-                + " or 'azure.activedirectory.authorization-clients." + registrationId + ".on-demand=false'.");
-        }
         if (properties.getScopes() == null || properties.getScopes().isEmpty()) {
             throw new IllegalStateException(
                 "'azure.activedirectory.authorization-clients." + registrationId + ".scopes' must be configured");
         }
+    }
+
+    public boolean isWebApplicationOnly() {
+        return AADApplicationType.WEB_APPLICATION == applicationType;
+    }
+
+    public boolean isResourceServerOnly() {
+        return AADApplicationType.RESOURCE_SERVER == applicationType;
+    }
+
+    public boolean isResourceServerWithObo() {
+        return AADApplicationType.RESOURCE_SERVER_WITH_OBO == applicationType;
+    }
+
+    public boolean isWebApplicationAndResourceServer() {
+        return AADApplicationType.WEB_APPLICATION_AND_RESOURCE_SERVER == applicationType;
     }
 
     private boolean isMultiTenantsApplication(String tenantId) {

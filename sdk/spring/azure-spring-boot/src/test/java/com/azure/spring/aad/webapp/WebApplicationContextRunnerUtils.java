@@ -30,7 +30,7 @@ public class WebApplicationContextRunnerUtils {
         return new WebApplicationContextRunner()
             .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
             .withConfiguration(AutoConfigurations.of(OAuth2ClientAutoConfiguration.class,
-                AADWebAppConfiguration.class, AADOAuth2ClientAutoConfiguration.class))
+                AADWebApplicationConfiguration.class, AADOAuth2ClientAutoConfiguration.class))
             .withInitializer(new ConditionEvaluationReportLoggingListener(LogLevel.INFO));
     }
 

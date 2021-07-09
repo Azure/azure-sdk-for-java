@@ -3,9 +3,8 @@
 package com.azure.spring.aad;
 
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.util.ClassUtils;
+import org.springframework.util.StringUtils;
 
 /**
  * AAD application type.
@@ -13,12 +12,20 @@ import org.springframework.util.ClassUtils;
  */
 public enum AADApplicationType {
 
-    WEB_APPLICATION(),
-    RESOURCE_SERVER(),
-    RESOURCE_SERVER_WITH_OBO(),
-    WEB_APPLICATION_AND_RESOURCE_SERVER();
+    WEB_APPLICATION("web_application"),
+    RESOURCE_SERVER("resource_server"),
+    RESOURCE_SERVER_WITH_OBO("resource_server_with_obo"),
+    WEB_APPLICATION_AND_RESOURCE_SERVER("web_application_and_resource_server");
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AADApplicationType.class);
+    private String applicationType;
+
+    AADApplicationType(String applicationType) {
+        this.applicationType = applicationType;
+    }
+
+    public String getValue() {
+        return applicationType;
+    }
 
     public static final String BEARER_TOKEN_AUTHENTICATION_TOKEN_CLASS_NAME =
         "org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken";
@@ -27,28 +34,45 @@ public enum AADApplicationType {
     public static final String CLIENT_REGISTRATION_CLASS_NAME =
         "org.springframework.security.oauth2.client.registration.ClientRegistration";
 
-    public static AADApplicationType applicationType(AADAuthenticationProperties properties) {
-        AADApplicationType appType = null;
+    /**
+     * Detect the application type when the application-type is messing.
+     * @param properties AADAuthenticationProperties
+     * @return AADApplicationType
+     * @throws IllegalStateException Unrecognized application type
+     */
+    public static AADApplicationType defaultApplicationType(final AADAuthenticationProperties properties) {
+        AADApplicationType appType;
         if (isOAuth2ClientAvailable()
-            && !isResourceServerAvailable()) {
+            && !isResourceServerAvailable()
+            && StringUtils.hasText(properties.getClientId())) {
             appType = AADApplicationType.WEB_APPLICATION;
-            LOGGER.debug("The Web Application scenario detected.");
         } else if (!isOAuth2ClientAvailable()
             && isResourceServerAvailable()) {
             appType = AADApplicationType.RESOURCE_SERVER;
-            LOGGER.debug("The Resource Server scenario detected.");
         } else if (isOAuth2ClientAvailable()
-            && isResourceServerAvailable()
-            && !properties.getEnableWebAppAndResourceServer()) {
+            && isResourceServerAvailable()) {
             appType = AADApplicationType.RESOURCE_SERVER_WITH_OBO;
-            LOGGER.debug("The Resource Server with Obo scenario detected.");
-        } else if (isOAuth2ClientAvailable()
-            && isResourceServerAvailable()
-            && properties.getEnableWebAppAndResourceServer()) {
-            appType = AADApplicationType.WEB_APPLICATION_AND_RESOURCE_SERVER;
-            LOGGER.debug("The Web Application and Resource Server scenario detected.");
+        } else {
+            throw new IllegalStateException("Unrecognized application type. "
+                + "Please confirm dependencies or explicitly configure 'azure.activedirectory.application-type'.");
         }
         return appType;
+    }
+
+    public static boolean validateApplicationType(final AADAuthenticationProperties properties) {
+        AADApplicationType configured = properties.getApplicationType();
+        if (isOAuth2ClientAvailable()
+            && !isResourceServerAvailable()) {
+            return AADApplicationType.WEB_APPLICATION == configured;
+        } else if (!isOAuth2ClientAvailable()
+            && isResourceServerAvailable()) {
+            return AADApplicationType.RESOURCE_SERVER == configured;
+        } else if (isOAuth2ClientAvailable()
+            && isResourceServerAvailable()) {
+            return AADApplicationType.RESOURCE_SERVER_WITH_OBO == configured
+                || AADApplicationType.WEB_APPLICATION_AND_RESOURCE_SERVER == configured;
+        }
+        return false;
     }
 
     public static boolean isWebApplicationOnly(AADApplicationType applicationType) {

@@ -92,7 +92,7 @@ public class AADOBOOAuth2AuthorizedClientProvider implements OAuth2AuthorizedCli
     private <T extends OAuth2AuthorizedClient> T getOboAuthorizedClient(ClientRegistration clientRegistration,
                                                                         Authentication principal) {
         if (principal instanceof AnonymousAuthenticationToken) {
-            LOGGER.warn("Found anonymous authentication.");
+            LOGGER.debug("Found anonymous authentication.");
             return null;
         }
 

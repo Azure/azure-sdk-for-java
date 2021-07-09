@@ -5,8 +5,8 @@ package com.azure.spring.aad;
 
 import com.azure.spring.aad.webapi.AADOBOOAuth2AuthorizedClientProvider;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
+import com.azure.spring.autoconfigure.condition.aad.ClientRegistrationCondition;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
@@ -15,7 +15,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientProvider;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientProviderBuilder;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizedClientManager;
@@ -27,8 +26,7 @@ import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepo
  * </p>
  */
 @Configuration(proxyBeanMethods = false)
-@ConditionalOnProperty("azure.activedirectory.client-id")
-@Conditional(AADConditions.ClientRegistrationCondition.class)
+@Conditional(ClientRegistrationCondition.class)
 @EnableConfigurationProperties(AADAuthenticationProperties.class)
 public class AADOAuth2ClientAutoConfiguration {
 
@@ -41,9 +39,8 @@ public class AADOAuth2ClientAutoConfiguration {
     }
 
     @Bean
-    public AADOAuth2AuthorizedClientRepository authorizedClientRepository(AADClientRegistrationRepository repo,
-                                                                       OAuth2AuthorizedClientService service) {
-        return new AADOAuth2AuthorizedClientRepository(properties, repo, service);
+    public AADOAuth2AuthorizedClientRepository authorizedClientRepository(AADClientRegistrationRepository repo) {
+        return new AADOAuth2AuthorizedClientRepository(repo);
     }
 
     @Bean

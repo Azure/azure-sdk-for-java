@@ -4,12 +4,11 @@
 package com.azure.spring.aad.webapp;
 
 import com.azure.spring.aad.AADOAuth2ClientAutoConfiguration;
-import com.azure.spring.aad.AADConditions;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
+import com.azure.spring.autoconfigure.condition.aad.WebApplicationCondition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -29,11 +28,10 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;
  */
 @Configuration
 @ConditionalOnResource(resources = "classpath:aad.enable.config")
-@ConditionalOnProperty("azure.activedirectory.client-id")
 @EnableConfigurationProperties(AADAuthenticationProperties.class)
-@Conditional(AADConditions.WebAppCondition.class)
+@Conditional(WebApplicationCondition.class)
 @Import(AADOAuth2ClientAutoConfiguration.class)
-public class AADWebAppConfiguration {
+public class AADWebApplicationConfiguration {
 
     @Autowired
     private AADAuthenticationProperties properties;
@@ -50,7 +48,7 @@ public class AADWebAppConfiguration {
     @EnableWebSecurity
     @EnableGlobalMethodSecurity(prePostEnabled = true)
     @ConditionalOnMissingBean(WebSecurityConfigurerAdapter.class)
-    @ConditionalOnExpression("${azure.activedirectory.enable-web-app-and-resource-server:false} == false")
+    @ConditionalOnExpression("!'${azure.activedirectory.application-type}'.equalsIgnoreCase('web_application_and_resource_server')")
     public static class DefaultAADWebSecurityConfigurerAdapter extends AADWebSecurityConfigurerAdapter {
 
         @Override

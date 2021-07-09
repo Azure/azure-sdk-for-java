@@ -3,7 +3,7 @@
 
 package com.azure.spring.aad;
 
-import com.azure.spring.aad.webapp.AADWebAppConfiguration;
+import com.azure.spring.aad.webapp.AADWebApplicationConfiguration;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -62,7 +62,7 @@ public class AADOAuth2ClientAutoConfigurationTest {
     public void testNotExistBearerTokenAuthenticationTokenClass() {
         this.contextRunner
             .withConfiguration(AutoConfigurations.of(OAuth2ClientAutoConfiguration.class,
-                AADWebAppConfiguration.class, AADOAuth2ClientAutoConfiguration.class))
+                AADWebApplicationConfiguration.class, AADOAuth2ClientAutoConfiguration.class))
             .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
             .run(context -> {
                 assertThat(context).hasSingleBean(AADAuthenticationProperties.class);

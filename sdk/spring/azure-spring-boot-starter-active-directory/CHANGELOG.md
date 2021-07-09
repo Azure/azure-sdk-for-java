@@ -1,8 +1,13 @@
 # Release History
 
 ## 3.7.0-beta.1 (Unreleased)
-### Breaking Changes
--- Add property `azure.activedirectory.enable-web-app-and-resource-server` to enable the `Web application` and `Resource server` are in the same application.
+### New Features
+- Add property `azure.activedirectory.application-type` to explicitly configure the application scenario.
+  The following 4 values can be configured:
+  - *web_application*: Not required, only Web Application scenario.
+  - *resource_server*: Not required, only Resource Server scenario.
+  - *resource_server_with_obo*: Not required, Resource Server with authorization grant type 'on-behalf-of' scenario.
+  - *web_application_and_resource_server*: Required, Web Application and Resource Server are in the same application.
 
 ## 3.6.0 (2021-06-23)
 ### Breaking Changes
