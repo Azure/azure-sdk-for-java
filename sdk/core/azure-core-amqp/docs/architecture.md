@@ -10,7 +10,7 @@ all `Extendable`.
 
 The UML diagram below shows this relationship; the interfaces shown in green are Proton-J classes. Each Proton-J
 instance (e.g., `Connection`, `Session`, `Sender`, `Receiver`) is associated with one corresponding `*Handler`.  Each
-azure-core-amqp `AmqpConnection` is associated with one [`Reactor`][Reactor].  When that instance closes, the AMQP
+`azure-core-amqp` `AmqpConnection` is associated with one [`Reactor`][Reactor]. When that instance closes, the AMQP
 connection is also closed.
 
 Each [ReactorConnection][ReactorConnection] has one Proton-J [`Reactor`][Reactor] instance.  Each [`Reactor`][Reactor]
