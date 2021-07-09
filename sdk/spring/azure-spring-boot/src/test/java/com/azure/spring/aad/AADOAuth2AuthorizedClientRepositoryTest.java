@@ -196,7 +196,7 @@ public class AADOAuth2AuthorizedClientRepositoryTest {
                     authentication,
                     request,
                     response);
-                // Todo (v-moaryc) Add the deserializer of grant type 'on-behalf-of' when loading OAuth2AuthorizedClient for OBO client.
+                // Todo (v-moaryc) Add the deserializer of grant type 'on_behalf_of' when loading OAuth2AuthorizedClient for OBO client.
                 OAuth2AuthorizedClient client = authorizedRepo.loadAuthorizedClient(
                     "graph",
                     authentication,

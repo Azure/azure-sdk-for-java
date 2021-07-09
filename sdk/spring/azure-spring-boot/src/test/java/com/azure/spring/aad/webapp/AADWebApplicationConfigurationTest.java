@@ -160,7 +160,7 @@ public class AADWebApplicationConfigurationTest {
         WebApplicationContextRunnerUtils
             .getContextRunnerWithRequiredProperties()
             .withPropertyValues(
-                "azure.activedirectory.authorization-clients.graph.authorizationGrantType = on-behalf-of"
+                "azure.activedirectory.authorization-clients.graph.authorizationGrantType = on_behalf_of"
             )
             .run(context -> {
                 assertThrows(IllegalStateException.class, () -> context.getBean(AADAuthenticationProperties.class));

@@ -307,7 +307,7 @@ To use **aad-starter** in this scenario, we need these steps:
                 scopes:
                    - https://graph.microsoft.com/User.Read
              webapiB: # The Resource Server will use this client to access webapiB resource.
-                authorization-grant-type: on-behalf-of
+                authorization-grant-type: on_behalf_of
                 scopes:
                   - <Web-API-B-app-id-url>/WebApiB.ExampleScope
     ```
@@ -830,5 +830,5 @@ Please follow [instructions here] to build from source or contribute.
 [configure webapp]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp/README.md#configure-access-other-resources-server
 [ms-identity-java-spring-tutorial]:https://github.com/Azure-Samples/ms-identity-java-spring-tutorial
 [authorization_code]: https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-auth-code-flow
-[on-behalf-of]: https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-on-behalf-of-flow
+[on_behalf_of]: https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-on-behalf-of-flow
 [client_credentials]: https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-client-creds-grant-flow

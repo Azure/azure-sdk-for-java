@@ -56,7 +56,7 @@ public class AADOAuth2AuthorizedClientRepository implements OAuth2AuthorizedClie
                                      HttpServletRequest request,
                                      HttpServletResponse response) {
         // Todo (rujche) Fix OAuth2AuthorizedClient deserializer and memory leakage problem
-        //  1. Fix the deserializer of grant type 'on-behalf-of' when loading OAuth2AuthorizedClient for OBO client.
+        //  1. Fix the deserializer of grant type 'on_behalf_of' when loading OAuth2AuthorizedClient for OBO client.
         //  2. Fix the memory leakage problem when saving the resource server's OAuth2AuthorizedClient into InMemoryOAuth2AuthorizedClientService.
         delegate.saveAuthorizedClient(authorizedClient, principal, request, response);
     }

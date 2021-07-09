@@ -117,7 +117,7 @@ public class AADOAuth2ClientAutoConfigurationTest {
         this.contextRunner
             .withUserConfiguration(AADOAuth2ClientAutoConfiguration.class)
             .withPropertyValues("azure.activedirectory.authorization-clients.graph.authorization-grant-type="
-                + "on-behalf-of")
+                + "on_behalf_of")
             .withPropertyValues("azure.activedirectory.authorization-clients.graph.on-demand = true")
             .run(context -> {
                 assertThrows(IllegalStateException.class, () -> context.getBean(AADAuthenticationProperties.class));

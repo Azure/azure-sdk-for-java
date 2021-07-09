@@ -78,7 +78,7 @@ public class AADOAuth2AuthorizedOboClientRepositoryTest {
 
         when(mockClientRegistrationsRepo.findByRegistrationId(any())).thenReturn(ClientRegistration
             .withRegistrationId(FAKE_GRAPH)
-            .authorizationGrantType(new AuthorizationGrantType("on-behalf-of"))
+            .authorizationGrantType(new AuthorizationGrantType("on_behalf_of"))
             .redirectUri("{baseUrl}/login/oauth2/code/")
             .tokenUri("https://login.microsoftonline.com/308df08a-1332-4a15-bb06-2ad7e8b71bcf/oauth2/v2.0/token")
             .jwkSetUri("https://login.microsoftonline.com/308df08a-1332-4a15-bb06-2ad7e8b71bcf/discovery/v2.0/keys")

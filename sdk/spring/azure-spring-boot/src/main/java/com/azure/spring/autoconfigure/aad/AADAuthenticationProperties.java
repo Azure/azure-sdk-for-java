@@ -511,7 +511,7 @@ public class AADAuthenticationProperties implements InitializingBean {
             } else if (isResourceServerOnly() || isResourceServerWithObo()) {
                 properties.setAuthorizationGrantType(AADAuthorizationGrantType.ON_BEHALF_OF);
                 LOGGER.debug("The client '{}' sets the default value of AADAuthorizationGrantType to "
-                    + "'on-behalf-of'.", registrationId);
+                    + "'on_behalf_of'.", registrationId);
             } else if (isWebApplicationAndResourceServer()) {
                 throw new IllegalStateException("azure.activedirectory.authorization-clients." + registrationId
                     + ".authorization-grant-type must be configured. ");
@@ -520,7 +520,7 @@ public class AADAuthenticationProperties implements InitializingBean {
             if (!AUTHORIZATION_CODE.getValue().equals(type)
                 && !CLIENT_CREDENTIALS.getValue().equals(type)
                 && !ON_BEHALF_OF.getValue().equals(type)) {
-                throw new IllegalStateException("Valid values are: authorization_code, client_credentials, on-behalf-of");
+                throw new IllegalStateException("Valid values are: authorization_code, client_credentials, on_behalf_of");
             }
 
             if (properties.isOnDemand()
