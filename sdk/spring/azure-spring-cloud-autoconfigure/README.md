@@ -29,6 +29,8 @@ This project provides auto-configuration for the following Azure services:
 - [Storage][storage]
 - [Storage Queue][storage_queue]
 
+`AmqpTransportType` can be specified by configuring `spring.cloud.azure.servicebus.transportType`, the default value is `AMQP`.
+
 ## Examples
 
 The following section provides sample projects illustrating how to use the Azure Spring Cloud starters.
