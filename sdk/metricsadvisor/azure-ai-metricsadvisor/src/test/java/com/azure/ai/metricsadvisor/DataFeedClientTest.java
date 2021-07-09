@@ -132,10 +132,16 @@ public class DataFeedClientTest extends DataFeedTestBase {
         client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
 
         // Act & Assert
+        int pageCount = 0;
         for (PagedResponse<DataFeed> dataFeedPagedResponse : client.listDataFeeds(new ListDataFeedOptions().setMaxPageSize(3),
             Context.NONE)
             .iterableByPage()) {
             assertTrue(3 >= dataFeedPagedResponse.getValue().size());
+            pageCount++;
+            if (pageCount > 4) {
+                // Stop after 4 pages since there can be large number of feeds.
+                break;
+            }
         }
     }
 

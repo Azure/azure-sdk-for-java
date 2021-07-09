@@ -6,6 +6,7 @@ package com.azure.resourcemanager.monitor.implementation;
 
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -53,7 +54,7 @@ public final class MetricAlertsStatusClientImpl implements MetricAlertsStatusCli
     @Host("{$host}")
     @ServiceInterface(name = "MonitorClientMetricA")
     private interface MetricAlertsStatusService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights"
                 + "/metricAlerts/{ruleName}/status")
@@ -65,9 +66,10 @@ public final class MetricAlertsStatusClientImpl implements MetricAlertsStatusCli
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("ruleName") String ruleName,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights"
                 + "/metricAlerts/{ruleName}/status/{statusName}")
@@ -80,6 +82,7 @@ public final class MetricAlertsStatusClientImpl implements MetricAlertsStatusCli
             @PathParam("ruleName") String ruleName,
             @PathParam("statusName") String statusName,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -116,6 +119,7 @@ public final class MetricAlertsStatusClientImpl implements MetricAlertsStatusCli
             return Mono.error(new IllegalArgumentException("Parameter ruleName is required and cannot be null."));
         }
         final String apiVersion = "2018-03-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -126,8 +130,9 @@ public final class MetricAlertsStatusClientImpl implements MetricAlertsStatusCli
                             resourceGroupName,
                             ruleName,
                             apiVersion,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -164,6 +169,7 @@ public final class MetricAlertsStatusClientImpl implements MetricAlertsStatusCli
             return Mono.error(new IllegalArgumentException("Parameter ruleName is required and cannot be null."));
         }
         final String apiVersion = "2018-03-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(
@@ -172,6 +178,7 @@ public final class MetricAlertsStatusClientImpl implements MetricAlertsStatusCli
                 resourceGroupName,
                 ruleName,
                 apiVersion,
+                accept,
                 context);
     }
 
@@ -267,6 +274,7 @@ public final class MetricAlertsStatusClientImpl implements MetricAlertsStatusCli
             return Mono.error(new IllegalArgumentException("Parameter statusName is required and cannot be null."));
         }
         final String apiVersion = "2018-03-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -278,8 +286,9 @@ public final class MetricAlertsStatusClientImpl implements MetricAlertsStatusCli
                             ruleName,
                             statusName,
                             apiVersion,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -320,6 +329,7 @@ public final class MetricAlertsStatusClientImpl implements MetricAlertsStatusCli
             return Mono.error(new IllegalArgumentException("Parameter statusName is required and cannot be null."));
         }
         final String apiVersion = "2018-03-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByName(
@@ -329,6 +339,7 @@ public final class MetricAlertsStatusClientImpl implements MetricAlertsStatusCli
                 ruleName,
                 statusName,
                 apiVersion,
+                accept,
                 context);
     }
 

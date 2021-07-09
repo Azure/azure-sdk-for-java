@@ -4,40 +4,40 @@
     "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/dataFeeds",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.5 (11.0.11; Mac OS X; 11.4)",
-      "x-ms-client-request-id" : "2b1643a6-1977-4124-81c3-b9aa403df163",
+      "x-ms-client-request-id" : "9fe0b98b-1640-4a81-bf71-5e4698f9dc1f",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "x-request-id" : "eb6a6b67-d1a3-4863-875f-27b1a56f8cea",
+      "x-request-id" : "4df9e62d-ad07-409b-b9b9-11942b86069d",
       "content-length" : "0",
-      "x-envoy-upstream-service-time" : "597",
+      "x-envoy-upstream-service-time" : "1356",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "eb6a6b67-d1a3-4863-875f-27b1a56f8cea",
+      "apim-request-id" : "4df9e62d-ad07-409b-b9b9-11942b86069d",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "Date" : "Mon, 21 Jun 2021 23:23:20 GMT",
-      "Location" : "https://js-metrics-advisor.cognitiveservices.azure.com/metricsadvisor/v1.0/dataFeeds/5e8b0576-ee92-4b81-a980-fc05d5d64def"
+      "Date" : "Tue, 06 Jul 2021 19:51:22 GMT",
+      "Location" : "https://js-metrics-advisor.cognitiveservices.azure.com/metricsadvisor/v1.0/dataFeeds/5873f213-4ea1-4753-81f3-21edeb65f099"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/dataFeeds/5e8b0576-ee92-4b81-a980-fc05d5d64def",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/dataFeeds/5873f213-4ea1-4753-81f3-21edeb65f099",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.5 (11.0.11; Mac OS X; 11.4)",
-      "x-ms-client-request-id" : "d4a76138-17f4-4785-8141-1b706a5a5409"
+      "x-ms-client-request-id" : "fe1ff19f-ab74-4144-b63d-75e393b2d7e5"
     },
     "Response" : {
-      "x-request-id" : "fb13ec67-41ed-4269-8554-ebd7e45d6d13",
+      "x-request-id" : "c06f617a-80df-4aed-8d16-abe0d412a06b",
       "content-length" : "1254",
-      "x-envoy-upstream-service-time" : "80",
+      "x-envoy-upstream-service-time" : "178",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "fb13ec67-41ed-4269-8554-ebd7e45d6d13",
+      "apim-request-id" : "c06f617a-80df-4aed-8d16-abe0d412a06b",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"dataFeedId\":\"5e8b0576-ee92-4b81-a980-fc05d5d64def\",\"dataFeedName\":\"java_data_feed_for_detection20f09845-c995-46a3-9f01-7cd050315b08\",\"metrics\":[{\"metricId\":\"10c19c55-fe5a-4f01-839f-4a0df3e2c966\",\"metricName\":\"cost\",\"metricDisplayName\":\"cost\",\"metricDescription\":\"\"},{\"metricId\":\"c2374710-8230-468a-93cf-0f967467874e\",\"metricName\":\"revenue\",\"metricDisplayName\":\"revenue\",\"metricDescription\":\"\"}],\"dimension\":[{\"dimensionName\":\"category\",\"dimensionDisplayName\":\"category\"},{\"dimensionName\":\"city\",\"dimensionDisplayName\":\"city\"}],\"dataStartFrom\":\"2019-10-01T00:00:00Z\",\"dataSourceType\":\"SqlServer\",\"timestampColumn\":\"\",\"startOffsetInSeconds\":0,\"maxQueryPerMinute\":30.0,\"granularityName\":\"Daily\",\"needRollup\":\"NoRollup\",\"fillMissingPointType\":\"PreviousValue\",\"fillMissingPointValue\":0.0,\"rollUpMethod\":\"None\",\"dataFeedDescription\":\"\",\"stopRetryAfterInSeconds\":-1,\"minRetryIntervalInSeconds\":-1,\"maxConcurrency\":0,\"viewMode\":\"Private\",\"admins\":[\"f850650c-1fcf-4489-b46f-71af2e30d360\"],\"viewers\":[],\"creator\":\"f850650c-1fcf-4489-b46f-71af2e30d360\",\"status\":\"Active\",\"createdTime\":\"2021-06-21T23:23:21Z\",\"isAdmin\":true,\"actionLinkTemplate\":\"\",\"dataSourceParameter\":{\"query\":\"select * from adsample2 where Timestamp = @StartTime\"},\"authenticationType\":\"Basic\"}",
-      "Date" : "Mon, 21 Jun 2021 23:23:21 GMT",
+      "Body" : "{\"dataFeedId\":\"5873f213-4ea1-4753-81f3-21edeb65f099\",\"dataFeedName\":\"java_data_feed_for_detection11ab5523-0d12-4eaf-a09d-faeb2055bb8b\",\"metrics\":[{\"metricId\":\"3e4c2c26-fad4-4b2c-bb80-95996ac449c2\",\"metricName\":\"cost\",\"metricDisplayName\":\"cost\",\"metricDescription\":\"\"},{\"metricId\":\"7768786f-37cf-4549-bc35-378c97754516\",\"metricName\":\"revenue\",\"metricDisplayName\":\"revenue\",\"metricDescription\":\"\"}],\"dimension\":[{\"dimensionName\":\"category\",\"dimensionDisplayName\":\"category\"},{\"dimensionName\":\"city\",\"dimensionDisplayName\":\"city\"}],\"dataStartFrom\":\"2019-10-01T00:00:00Z\",\"dataSourceType\":\"SqlServer\",\"timestampColumn\":\"\",\"startOffsetInSeconds\":0,\"maxQueryPerMinute\":30.0,\"granularityName\":\"Daily\",\"needRollup\":\"NoRollup\",\"fillMissingPointType\":\"PreviousValue\",\"fillMissingPointValue\":0.0,\"rollUpMethod\":\"None\",\"dataFeedDescription\":\"\",\"stopRetryAfterInSeconds\":-1,\"minRetryIntervalInSeconds\":-1,\"maxConcurrency\":0,\"viewMode\":\"Private\",\"admins\":[\"f850650c-1fcf-4489-b46f-71af2e30d360\"],\"viewers\":[],\"creator\":\"f850650c-1fcf-4489-b46f-71af2e30d360\",\"status\":\"Active\",\"createdTime\":\"2021-07-06T19:51:22Z\",\"isAdmin\":true,\"actionLinkTemplate\":\"\",\"dataSourceParameter\":{\"query\":\"select * from adsample2 where Timestamp = @StartTime\"},\"authenticationType\":\"Basic\"}",
+      "Date" : "Tue, 06 Jul 2021 19:51:23 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
@@ -46,122 +46,122 @@
     "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/enrichment/anomalyDetection/configurations",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.5 (11.0.11; Mac OS X; 11.4)",
-      "x-ms-client-request-id" : "491a6848-ef2d-4ebe-85b3-6d6363a07d45",
+      "x-ms-client-request-id" : "63b5baf1-fd6e-45a5-9819-4962003139de",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "x-request-id" : "8431da01-8f88-4ed0-b792-d89a7c1acf0b",
+      "x-request-id" : "ab69b8ea-9869-41d7-be9b-7649b4da4b80",
       "content-length" : "0",
-      "x-envoy-upstream-service-time" : "215",
+      "x-envoy-upstream-service-time" : "542",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "8431da01-8f88-4ed0-b792-d89a7c1acf0b",
+      "apim-request-id" : "ab69b8ea-9869-41d7-be9b-7649b4da4b80",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "Date" : "Mon, 21 Jun 2021 23:23:21 GMT",
-      "Location" : "https://js-metrics-advisor.cognitiveservices.azure.com/metricsadvisor/v1.0/enrichment/anomalyDetection/configurations/2fdc5a78-65cc-405a-a6ce-c565adc00476"
+      "Date" : "Tue, 06 Jul 2021 19:51:23 GMT",
+      "Location" : "https://js-metrics-advisor.cognitiveservices.azure.com/metricsadvisor/v1.0/enrichment/anomalyDetection/configurations/ae9abe6e-b26c-44be-b271-d57371ea26e2"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/enrichment/anomalyDetection/configurations/2fdc5a78-65cc-405a-a6ce-c565adc00476",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/enrichment/anomalyDetection/configurations/ae9abe6e-b26c-44be-b271-d57371ea26e2",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.5 (11.0.11; Mac OS X; 11.4)",
-      "x-ms-client-request-id" : "0336c473-c5c5-44e5-ba56-9fa419f0e6c6"
+      "x-ms-client-request-id" : "19166b54-1217-4fae-8557-616d7e82c0ea"
     },
     "Response" : {
-      "x-request-id" : "bfe0c7dd-6dd2-4efa-901a-69197e69f5fb",
+      "x-request-id" : "25412108-03f2-4c5b-b803-712356dc1697",
       "content-length" : "2105",
-      "x-envoy-upstream-service-time" : "36",
+      "x-envoy-upstream-service-time" : "75",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "bfe0c7dd-6dd2-4efa-901a-69197e69f5fb",
+      "apim-request-id" : "25412108-03f2-4c5b-b803-712356dc1697",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"anomalyDetectionConfigurationId\":\"2fdc5a78-65cc-405a-a6ce-c565adc00476\",\"name\":\"testdetectionconfig41cfb767-f9ec-4cf3-919f-4bddf08221ef\",\"description\":\"test metric anomaly detection configuration\",\"metricId\":\"10c19c55-fe5a-4f01-839f-4a0df3e2c966\",\"wholeMetricConfiguration\":{\"conditionOperator\":\"AND\",\"smartDetectionCondition\":{\"sensitivity\":50.0,\"anomalyDetectorDirection\":\"Both\",\"suppressCondition\":{\"minNumber\":13,\"minRatio\":50.0}},\"hardThresholdCondition\":{\"lowerBound\":0.0,\"upperBound\":100.0,\"anomalyDetectorDirection\":\"Both\",\"suppressCondition\":{\"minNumber\":5,\"minRatio\":5.0}},\"changeThresholdCondition\":{\"changePercentage\":50.0,\"shiftPoint\":30,\"anomalyDetectorDirection\":\"Both\",\"withinRange\":true,\"suppressCondition\":{\"minNumber\":2,\"minRatio\":2.0}}},\"dimensionGroupOverrideConfigurations\":[{\"group\":{\"dimension\":{\"city\":\"Sao Paulo\"}},\"conditionOperator\":\"OR\",\"smartDetectionCondition\":{\"sensitivity\":63.0,\"anomalyDetectorDirection\":\"Both\",\"suppressCondition\":{\"minNumber\":1,\"minRatio\":100.0}},\"hardThresholdCondition\":{\"lowerBound\":0.0,\"upperBound\":100.0,\"anomalyDetectorDirection\":\"Both\",\"suppressCondition\":{\"minNumber\":5,\"minRatio\":5.0}},\"changeThresholdCondition\":{\"changePercentage\":50.0,\"shiftPoint\":30,\"anomalyDetectorDirection\":\"Both\",\"withinRange\":true,\"suppressCondition\":{\"minNumber\":2,\"minRatio\":2.0}}}],\"seriesOverrideConfigurations\":[{\"series\":{\"dimension\":{\"city\":\"Shenzhen\",\"category\":\"Jewelry\"}},\"conditionOperator\":\"OR\",\"smartDetectionCondition\":{\"sensitivity\":63.0,\"anomalyDetectorDirection\":\"Both\",\"suppressCondition\":{\"minNumber\":1,\"minRatio\":100.0}},\"hardThresholdCondition\":{\"lowerBound\":0.0,\"upperBound\":100.0,\"anomalyDetectorDirection\":\"Both\",\"suppressCondition\":{\"minNumber\":5,\"minRatio\":5.0}},\"changeThresholdCondition\":{\"changePercentage\":50.0,\"shiftPoint\":30,\"anomalyDetectorDirection\":\"Both\",\"withinRange\":true,\"suppressCondition\":{\"minNumber\":2,\"minRatio\":2.0}}},{\"series\":{\"dimension\":{\"city\":\"Osaka\",\"category\":\"Cell Phones\"}},\"smartDetectionCondition\":{\"sensitivity\":63.0,\"anomalyDetectorDirection\":\"Both\",\"suppressCondition\":{\"minNumber\":1,\"minRatio\":100.0}}}]}",
-      "Date" : "Mon, 21 Jun 2021 23:23:21 GMT",
+      "Body" : "{\"anomalyDetectionConfigurationId\":\"ae9abe6e-b26c-44be-b271-d57371ea26e2\",\"name\":\"testdetectionconfig2a1e3645-c58e-41ac-805a-6f8a5f3d54f0\",\"description\":\"test metric anomaly detection configuration\",\"metricId\":\"3e4c2c26-fad4-4b2c-bb80-95996ac449c2\",\"wholeMetricConfiguration\":{\"conditionOperator\":\"AND\",\"smartDetectionCondition\":{\"sensitivity\":50.0,\"anomalyDetectorDirection\":\"Both\",\"suppressCondition\":{\"minNumber\":13,\"minRatio\":50.0}},\"hardThresholdCondition\":{\"lowerBound\":0.0,\"upperBound\":100.0,\"anomalyDetectorDirection\":\"Both\",\"suppressCondition\":{\"minNumber\":5,\"minRatio\":5.0}},\"changeThresholdCondition\":{\"changePercentage\":50.0,\"shiftPoint\":30,\"anomalyDetectorDirection\":\"Both\",\"withinRange\":true,\"suppressCondition\":{\"minNumber\":2,\"minRatio\":2.0}}},\"dimensionGroupOverrideConfigurations\":[{\"group\":{\"dimension\":{\"city\":\"Sao Paulo\"}},\"conditionOperator\":\"OR\",\"smartDetectionCondition\":{\"sensitivity\":63.0,\"anomalyDetectorDirection\":\"Both\",\"suppressCondition\":{\"minNumber\":1,\"minRatio\":100.0}},\"hardThresholdCondition\":{\"lowerBound\":0.0,\"upperBound\":100.0,\"anomalyDetectorDirection\":\"Both\",\"suppressCondition\":{\"minNumber\":5,\"minRatio\":5.0}},\"changeThresholdCondition\":{\"changePercentage\":50.0,\"shiftPoint\":30,\"anomalyDetectorDirection\":\"Both\",\"withinRange\":true,\"suppressCondition\":{\"minNumber\":2,\"minRatio\":2.0}}}],\"seriesOverrideConfigurations\":[{\"series\":{\"dimension\":{\"city\":\"Shenzhen\",\"category\":\"Jewelry\"}},\"conditionOperator\":\"OR\",\"smartDetectionCondition\":{\"sensitivity\":63.0,\"anomalyDetectorDirection\":\"Both\",\"suppressCondition\":{\"minNumber\":1,\"minRatio\":100.0}},\"hardThresholdCondition\":{\"lowerBound\":0.0,\"upperBound\":100.0,\"anomalyDetectorDirection\":\"Both\",\"suppressCondition\":{\"minNumber\":5,\"minRatio\":5.0}},\"changeThresholdCondition\":{\"changePercentage\":50.0,\"shiftPoint\":30,\"anomalyDetectorDirection\":\"Both\",\"withinRange\":true,\"suppressCondition\":{\"minNumber\":2,\"minRatio\":2.0}}},{\"series\":{\"dimension\":{\"city\":\"Osaka\",\"category\":\"Cell Phones\"}},\"smartDetectionCondition\":{\"sensitivity\":63.0,\"anomalyDetectorDirection\":\"Both\",\"suppressCondition\":{\"minNumber\":1,\"minRatio\":100.0}}}]}",
+      "Date" : "Tue, 06 Jul 2021 19:51:23 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "PATCH",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/enrichment/anomalyDetection/configurations/2fdc5a78-65cc-405a-a6ce-c565adc00476",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/enrichment/anomalyDetection/configurations/ae9abe6e-b26c-44be-b271-d57371ea26e2",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.5 (11.0.11; Mac OS X; 11.4)",
-      "x-ms-client-request-id" : "53333f0f-34bb-44cc-8dbf-3c0c168b6538",
+      "x-ms-client-request-id" : "b4e045d8-1666-47a1-abdc-45b3ce9b3634",
       "Content-Type" : "application/merge-patch+json"
     },
     "Response" : {
-      "x-request-id" : "9c30429b-fd3e-4d64-8aea-d8956f64a593",
+      "x-request-id" : "749aabdf-b65d-4a49-8faf-f78cf31662dc",
       "content-length" : "2079",
-      "x-envoy-upstream-service-time" : "280",
+      "x-envoy-upstream-service-time" : "750",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "9c30429b-fd3e-4d64-8aea-d8956f64a593",
+      "apim-request-id" : "749aabdf-b65d-4a49-8faf-f78cf31662dc",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"anomalyDetectionConfigurationId\":\"2fdc5a78-65cc-405a-a6ce-c565adc00476\",\"name\":\"testdetectionconfig41cfb767-f9ec-4cf3-919f-4bddf08221ef\",\"description\":\"test metric anomaly detection configuration\",\"metricId\":\"10c19c55-fe5a-4f01-839f-4a0df3e2c966\",\"wholeMetricConfiguration\":{\"conditionOperator\":\"AND\",\"smartDetectionCondition\":{\"sensitivity\":50.0,\"anomalyDetectorDirection\":\"Both\",\"suppressCondition\":{\"minNumber\":13,\"minRatio\":50.0}},\"hardThresholdCondition\":{\"lowerBound\":0.0,\"upperBound\":100.0,\"anomalyDetectorDirection\":\"Both\",\"suppressCondition\":{\"minNumber\":5,\"minRatio\":5.0}},\"changeThresholdCondition\":{\"changePercentage\":50.0,\"shiftPoint\":30,\"anomalyDetectorDirection\":\"Both\",\"withinRange\":true,\"suppressCondition\":{\"minNumber\":2,\"minRatio\":2.0}}},\"dimensionGroupOverrideConfigurations\":[{\"group\":{\"dimension\":{\"city\":\"Sao Paulo\"}},\"conditionOperator\":\"OR\",\"smartDetectionCondition\":{\"sensitivity\":63.0,\"anomalyDetectorDirection\":\"Both\",\"suppressCondition\":{\"minNumber\":1,\"minRatio\":100.0}},\"hardThresholdCondition\":{\"lowerBound\":0.0,\"upperBound\":100.0,\"anomalyDetectorDirection\":\"Both\",\"suppressCondition\":{\"minNumber\":5,\"minRatio\":5.0}},\"changeThresholdCondition\":{\"changePercentage\":50.0,\"shiftPoint\":30,\"anomalyDetectorDirection\":\"Both\",\"withinRange\":true,\"suppressCondition\":{\"minNumber\":2,\"minRatio\":2.0}}},{\"group\":{\"dimension\":{\"city\":\"Seoul\"}},\"smartDetectionCondition\":{\"sensitivity\":63.0,\"anomalyDetectorDirection\":\"Both\",\"suppressCondition\":{\"minNumber\":1,\"minRatio\":100.0}}}],\"seriesOverrideConfigurations\":[{\"series\":{\"dimension\":{\"city\":\"Shenzhen\",\"category\":\"Jewelry\"}},\"conditionOperator\":\"OR\",\"smartDetectionCondition\":{\"sensitivity\":63.0,\"anomalyDetectorDirection\":\"Both\",\"suppressCondition\":{\"minNumber\":1,\"minRatio\":100.0}},\"hardThresholdCondition\":{\"lowerBound\":0.0,\"upperBound\":100.0,\"anomalyDetectorDirection\":\"Both\",\"suppressCondition\":{\"minNumber\":5,\"minRatio\":5.0}},\"changeThresholdCondition\":{\"changePercentage\":50.0,\"shiftPoint\":30,\"anomalyDetectorDirection\":\"Both\",\"withinRange\":true,\"suppressCondition\":{\"minNumber\":2,\"minRatio\":2.0}}}]}",
-      "Date" : "Mon, 21 Jun 2021 23:23:22 GMT",
+      "Body" : "{\"anomalyDetectionConfigurationId\":\"ae9abe6e-b26c-44be-b271-d57371ea26e2\",\"name\":\"testdetectionconfig2a1e3645-c58e-41ac-805a-6f8a5f3d54f0\",\"description\":\"test metric anomaly detection configuration\",\"metricId\":\"3e4c2c26-fad4-4b2c-bb80-95996ac449c2\",\"wholeMetricConfiguration\":{\"conditionOperator\":\"AND\",\"smartDetectionCondition\":{\"sensitivity\":50.0,\"anomalyDetectorDirection\":\"Both\",\"suppressCondition\":{\"minNumber\":13,\"minRatio\":50.0}},\"hardThresholdCondition\":{\"lowerBound\":0.0,\"upperBound\":100.0,\"anomalyDetectorDirection\":\"Both\",\"suppressCondition\":{\"minNumber\":5,\"minRatio\":5.0}},\"changeThresholdCondition\":{\"changePercentage\":50.0,\"shiftPoint\":30,\"anomalyDetectorDirection\":\"Both\",\"withinRange\":true,\"suppressCondition\":{\"minNumber\":2,\"minRatio\":2.0}}},\"dimensionGroupOverrideConfigurations\":[{\"group\":{\"dimension\":{\"city\":\"Sao Paulo\"}},\"conditionOperator\":\"OR\",\"smartDetectionCondition\":{\"sensitivity\":63.0,\"anomalyDetectorDirection\":\"Both\",\"suppressCondition\":{\"minNumber\":1,\"minRatio\":100.0}},\"hardThresholdCondition\":{\"lowerBound\":0.0,\"upperBound\":100.0,\"anomalyDetectorDirection\":\"Both\",\"suppressCondition\":{\"minNumber\":5,\"minRatio\":5.0}},\"changeThresholdCondition\":{\"changePercentage\":50.0,\"shiftPoint\":30,\"anomalyDetectorDirection\":\"Both\",\"withinRange\":true,\"suppressCondition\":{\"minNumber\":2,\"minRatio\":2.0}}},{\"group\":{\"dimension\":{\"city\":\"Seoul\"}},\"smartDetectionCondition\":{\"sensitivity\":63.0,\"anomalyDetectorDirection\":\"Both\",\"suppressCondition\":{\"minNumber\":1,\"minRatio\":100.0}}}],\"seriesOverrideConfigurations\":[{\"series\":{\"dimension\":{\"city\":\"Shenzhen\",\"category\":\"Jewelry\"}},\"conditionOperator\":\"OR\",\"smartDetectionCondition\":{\"sensitivity\":63.0,\"anomalyDetectorDirection\":\"Both\",\"suppressCondition\":{\"minNumber\":1,\"minRatio\":100.0}},\"hardThresholdCondition\":{\"lowerBound\":0.0,\"upperBound\":100.0,\"anomalyDetectorDirection\":\"Both\",\"suppressCondition\":{\"minNumber\":5,\"minRatio\":5.0}},\"changeThresholdCondition\":{\"changePercentage\":50.0,\"shiftPoint\":30,\"anomalyDetectorDirection\":\"Both\",\"withinRange\":true,\"suppressCondition\":{\"minNumber\":2,\"minRatio\":2.0}}}]}",
+      "Date" : "Tue, 06 Jul 2021 19:51:24 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/enrichment/anomalyDetection/configurations/2fdc5a78-65cc-405a-a6ce-c565adc00476",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/enrichment/anomalyDetection/configurations/ae9abe6e-b26c-44be-b271-d57371ea26e2",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.5 (11.0.11; Mac OS X; 11.4)",
-      "x-ms-client-request-id" : "6dda40ea-2b79-473d-8870-d176eb7dbb1c"
+      "x-ms-client-request-id" : "7748371a-f5c1-45fd-8516-0c38851e9b0c"
     },
     "Response" : {
-      "x-request-id" : "07cb5a66-1781-4d6c-bd40-94a7b8d91b8a",
+      "x-request-id" : "2e04fdea-b1e4-4c42-bdfe-4345086e81ff",
       "content-length" : "2079",
-      "x-envoy-upstream-service-time" : "38",
+      "x-envoy-upstream-service-time" : "93",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "07cb5a66-1781-4d6c-bd40-94a7b8d91b8a",
+      "apim-request-id" : "2e04fdea-b1e4-4c42-bdfe-4345086e81ff",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"anomalyDetectionConfigurationId\":\"2fdc5a78-65cc-405a-a6ce-c565adc00476\",\"name\":\"testdetectionconfig41cfb767-f9ec-4cf3-919f-4bddf08221ef\",\"description\":\"test metric anomaly detection configuration\",\"metricId\":\"10c19c55-fe5a-4f01-839f-4a0df3e2c966\",\"wholeMetricConfiguration\":{\"conditionOperator\":\"AND\",\"smartDetectionCondition\":{\"sensitivity\":50.0,\"anomalyDetectorDirection\":\"Both\",\"suppressCondition\":{\"minNumber\":13,\"minRatio\":50.0}},\"hardThresholdCondition\":{\"lowerBound\":0.0,\"upperBound\":100.0,\"anomalyDetectorDirection\":\"Both\",\"suppressCondition\":{\"minNumber\":5,\"minRatio\":5.0}},\"changeThresholdCondition\":{\"changePercentage\":50.0,\"shiftPoint\":30,\"anomalyDetectorDirection\":\"Both\",\"withinRange\":true,\"suppressCondition\":{\"minNumber\":2,\"minRatio\":2.0}}},\"dimensionGroupOverrideConfigurations\":[{\"group\":{\"dimension\":{\"city\":\"Sao Paulo\"}},\"conditionOperator\":\"OR\",\"smartDetectionCondition\":{\"sensitivity\":63.0,\"anomalyDetectorDirection\":\"Both\",\"suppressCondition\":{\"minNumber\":1,\"minRatio\":100.0}},\"hardThresholdCondition\":{\"lowerBound\":0.0,\"upperBound\":100.0,\"anomalyDetectorDirection\":\"Both\",\"suppressCondition\":{\"minNumber\":5,\"minRatio\":5.0}},\"changeThresholdCondition\":{\"changePercentage\":50.0,\"shiftPoint\":30,\"anomalyDetectorDirection\":\"Both\",\"withinRange\":true,\"suppressCondition\":{\"minNumber\":2,\"minRatio\":2.0}}},{\"group\":{\"dimension\":{\"city\":\"Seoul\"}},\"smartDetectionCondition\":{\"sensitivity\":63.0,\"anomalyDetectorDirection\":\"Both\",\"suppressCondition\":{\"minNumber\":1,\"minRatio\":100.0}}}],\"seriesOverrideConfigurations\":[{\"series\":{\"dimension\":{\"city\":\"Shenzhen\",\"category\":\"Jewelry\"}},\"conditionOperator\":\"OR\",\"smartDetectionCondition\":{\"sensitivity\":63.0,\"anomalyDetectorDirection\":\"Both\",\"suppressCondition\":{\"minNumber\":1,\"minRatio\":100.0}},\"hardThresholdCondition\":{\"lowerBound\":0.0,\"upperBound\":100.0,\"anomalyDetectorDirection\":\"Both\",\"suppressCondition\":{\"minNumber\":5,\"minRatio\":5.0}},\"changeThresholdCondition\":{\"changePercentage\":50.0,\"shiftPoint\":30,\"anomalyDetectorDirection\":\"Both\",\"withinRange\":true,\"suppressCondition\":{\"minNumber\":2,\"minRatio\":2.0}}}]}",
-      "Date" : "Mon, 21 Jun 2021 23:23:21 GMT",
+      "Body" : "{\"anomalyDetectionConfigurationId\":\"ae9abe6e-b26c-44be-b271-d57371ea26e2\",\"name\":\"testdetectionconfig2a1e3645-c58e-41ac-805a-6f8a5f3d54f0\",\"description\":\"test metric anomaly detection configuration\",\"metricId\":\"3e4c2c26-fad4-4b2c-bb80-95996ac449c2\",\"wholeMetricConfiguration\":{\"conditionOperator\":\"AND\",\"smartDetectionCondition\":{\"sensitivity\":50.0,\"anomalyDetectorDirection\":\"Both\",\"suppressCondition\":{\"minNumber\":13,\"minRatio\":50.0}},\"hardThresholdCondition\":{\"lowerBound\":0.0,\"upperBound\":100.0,\"anomalyDetectorDirection\":\"Both\",\"suppressCondition\":{\"minNumber\":5,\"minRatio\":5.0}},\"changeThresholdCondition\":{\"changePercentage\":50.0,\"shiftPoint\":30,\"anomalyDetectorDirection\":\"Both\",\"withinRange\":true,\"suppressCondition\":{\"minNumber\":2,\"minRatio\":2.0}}},\"dimensionGroupOverrideConfigurations\":[{\"group\":{\"dimension\":{\"city\":\"Sao Paulo\"}},\"conditionOperator\":\"OR\",\"smartDetectionCondition\":{\"sensitivity\":63.0,\"anomalyDetectorDirection\":\"Both\",\"suppressCondition\":{\"minNumber\":1,\"minRatio\":100.0}},\"hardThresholdCondition\":{\"lowerBound\":0.0,\"upperBound\":100.0,\"anomalyDetectorDirection\":\"Both\",\"suppressCondition\":{\"minNumber\":5,\"minRatio\":5.0}},\"changeThresholdCondition\":{\"changePercentage\":50.0,\"shiftPoint\":30,\"anomalyDetectorDirection\":\"Both\",\"withinRange\":true,\"suppressCondition\":{\"minNumber\":2,\"minRatio\":2.0}}},{\"group\":{\"dimension\":{\"city\":\"Seoul\"}},\"smartDetectionCondition\":{\"sensitivity\":63.0,\"anomalyDetectorDirection\":\"Both\",\"suppressCondition\":{\"minNumber\":1,\"minRatio\":100.0}}}],\"seriesOverrideConfigurations\":[{\"series\":{\"dimension\":{\"city\":\"Shenzhen\",\"category\":\"Jewelry\"}},\"conditionOperator\":\"OR\",\"smartDetectionCondition\":{\"sensitivity\":63.0,\"anomalyDetectorDirection\":\"Both\",\"suppressCondition\":{\"minNumber\":1,\"minRatio\":100.0}},\"hardThresholdCondition\":{\"lowerBound\":0.0,\"upperBound\":100.0,\"anomalyDetectorDirection\":\"Both\",\"suppressCondition\":{\"minNumber\":5,\"minRatio\":5.0}},\"changeThresholdCondition\":{\"changePercentage\":50.0,\"shiftPoint\":30,\"anomalyDetectorDirection\":\"Both\",\"withinRange\":true,\"suppressCondition\":{\"minNumber\":2,\"minRatio\":2.0}}}]}",
+      "Date" : "Tue, 06 Jul 2021 19:51:24 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/hooks/2fdc5a78-65cc-405a-a6ce-c565adc00476",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/hooks/ae9abe6e-b26c-44be-b271-d57371ea26e2",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.5 (11.0.11; Mac OS X; 11.4)",
-      "x-ms-client-request-id" : "f88b5af9-584e-4487-8825-ced6b95a94c5"
+      "x-ms-client-request-id" : "7fcaf94d-9a46-4759-95d5-190c2a38e735"
     },
     "Response" : {
-      "x-request-id" : "cab51616-0fa3-490d-9a53-2a20bcfda35c",
+      "x-request-id" : "9ff0dfef-a6a6-4f9c-b187-baa25a51487e",
       "content-length" : "0",
-      "x-envoy-upstream-service-time" : "16",
+      "x-envoy-upstream-service-time" : "23",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "cab51616-0fa3-490d-9a53-2a20bcfda35c",
+      "apim-request-id" : "9ff0dfef-a6a6-4f9c-b187-baa25a51487e",
       "retry-after" : "0",
       "StatusCode" : "204",
-      "Date" : "Mon, 21 Jun 2021 23:23:22 GMT"
+      "Date" : "Tue, 06 Jul 2021 19:51:24 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/dataFeeds/5e8b0576-ee92-4b81-a980-fc05d5d64def",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/dataFeeds/5873f213-4ea1-4753-81f3-21edeb65f099",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.5 (11.0.11; Mac OS X; 11.4)",
-      "x-ms-client-request-id" : "f134f6fa-377a-45b2-b849-393903803c9b"
+      "x-ms-client-request-id" : "1578d8bf-300f-4794-922a-2fb43e56a402"
     },
     "Response" : {
-      "x-request-id" : "a8386fc4-584e-4bd2-abc3-9fc82dab7938",
+      "x-request-id" : "87d2b819-d302-42fd-ac97-ad877389f977",
       "content-length" : "0",
-      "x-envoy-upstream-service-time" : "311",
+      "x-envoy-upstream-service-time" : "717",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "a8386fc4-584e-4bd2-abc3-9fc82dab7938",
+      "apim-request-id" : "87d2b819-d302-42fd-ac97-ad877389f977",
       "retry-after" : "0",
       "StatusCode" : "204",
-      "Date" : "Mon, 21 Jun 2021 23:23:22 GMT"
+      "Date" : "Tue, 06 Jul 2021 19:51:25 GMT"
     },
     "Exception" : null
   } ],

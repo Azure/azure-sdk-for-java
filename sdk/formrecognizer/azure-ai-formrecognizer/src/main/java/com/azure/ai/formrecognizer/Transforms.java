@@ -288,6 +288,8 @@ final class Transforms {
             }
             TextAppearanceHelper.setStyleConfidence(textAppearance,
                 textLine.getAppearance().getStyle().getConfidence());
+        } else {
+            return null;
         }
         return textAppearance;
     }
@@ -358,18 +360,12 @@ final class Transforms {
                         DateTimeFormatter.ofPattern("HH:mm:ss"));
                     value = new com.azure.ai.formrecognizer.models.FieldValue(fieldTime, FieldValueType.TIME);
                 } else {
-                    throw LOGGER.logExceptionAsError(new RuntimeException(String.format(NORMALIZATION_ERROR_MESSAGE,
-                        fieldValue.getType())));
+                    value = new com.azure.ai.formrecognizer.models.FieldValue(null, FieldValueType.TIME);
                 }
                 break;
             case DATE:
-                if (fieldValue.getValueDate() != null) {
-                    value = new com.azure.ai.formrecognizer.models.FieldValue(fieldValue.getValueDate(),
-                        FieldValueType.DATE);
-                } else {
-                    throw LOGGER.logExceptionAsError(new RuntimeException(String.format(NORMALIZATION_ERROR_MESSAGE,
-                        fieldValue.getType())));
-                }
+                value = new com.azure.ai.formrecognizer.models.FieldValue(fieldValue.getValueDate(),
+                    FieldValueType.DATE);
                 break;
             case INTEGER:
                 if (fieldValue.getValueInteger() != null) {
@@ -384,12 +380,21 @@ final class Transforms {
                     FieldValueType.FLOAT);
                 break;
             case ARRAY:
-                value = new com.azure.ai.formrecognizer.models.FieldValue(
-                    toFieldValueArray(fieldValue.getValueArray(), readResults), FieldValueType.LIST);
+                if (fieldValue.getValueArray() != null) {
+                    value = new com.azure.ai.formrecognizer.models.FieldValue(
+                        toFieldValueArray(fieldValue.getValueArray(), readResults), FieldValueType.LIST);
+                } else {
+                    value = new com.azure.ai.formrecognizer.models.FieldValue(null, FieldValueType.LIST);
+                }
                 break;
             case OBJECT:
-                value = new com.azure.ai.formrecognizer.models.FieldValue(
+                if (fieldValue.getValueObject() != null) {
+                    value = new com.azure.ai.formrecognizer.models.FieldValue(
                         toFieldValueObject(fieldValue.getValueObject(), readResults), FieldValueType.MAP);
+                } else {
+                    value = new com.azure.ai.formrecognizer.models.FieldValue(null, FieldValueType.MAP);
+                }
+
                 break;
             case SELECTION_MARK:
                 if (fieldValue.getValueSelectionMark() != null) {
@@ -444,9 +449,6 @@ final class Transforms {
      */
     private static Map<String, FormField> toFieldValueObject(Map<String, FieldValue> valueObject,
                                                              List<ReadResult> readResults) {
-        if (valueObject == null) {
-            return null;
-        }
         Map<String, FormField> fieldValueObjectMap = new TreeMap<>();
         valueObject.forEach((key, fieldValue) -> {
 
@@ -473,9 +475,6 @@ final class Transforms {
      * @return The List of {@link FormField}.
      */
     private static List<FormField> toFieldValueArray(List<FieldValue> valueArray, List<ReadResult> readResults) {
-        if (valueArray == null) {
-            return null;
-        }
         return valueArray.stream()
             .map(fieldValue -> {
                 FieldData valueData = null;

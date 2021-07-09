@@ -36,7 +36,6 @@ import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.models.BlockLookupList;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.EncryptionAlgorithmType;
-import java.net.URL;
 import java.nio.ByteBuffer;
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -74,9 +73,9 @@ public final class BlockBlobsImpl {
         @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<BlockBlobsUploadResponse> upload(
                 @HostParam("url") String url,
-                @HeaderParam("x-ms-blob-type") String blobType,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
+                @HeaderParam("x-ms-blob-type") String blobType,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("Content-MD5") String transactionalContentMD5,
                 @HeaderParam("Content-Length") long contentLength,
@@ -113,9 +112,9 @@ public final class BlockBlobsImpl {
         @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<BlockBlobsPutBlobFromUrlResponse> putBlobFromUrl(
                 @HostParam("url") String url,
-                @HeaderParam("x-ms-blob-type") String blobType,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
+                @HeaderParam("x-ms-blob-type") String blobType,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("Content-MD5") String transactionalContentMD5,
                 @HeaderParam("Content-Length") long contentLength,
@@ -146,7 +145,7 @@ public final class BlockBlobsImpl {
                 @HeaderParam("x-ms-client-request-id") String requestId,
                 @HeaderParam("x-ms-source-content-md5") String sourceContentMD5,
                 @HeaderParam("x-ms-tags") String blobTagsString,
-                @HeaderParam("x-ms-copy-source") URL copySource,
+                @HeaderParam("x-ms-copy-source") String copySource,
                 @HeaderParam("x-ms-copy-source-blob-properties") Boolean copySourceBlobProperties,
                 @HeaderParam("x-ms-copy-source-authorization") String copySourceAuthorization,
                 @HeaderParam("Accept") String accept,
@@ -157,9 +156,9 @@ public final class BlockBlobsImpl {
         @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<BlockBlobsStageBlockResponse> stageBlock(
                 @HostParam("url") String url,
-                @QueryParam("comp") String comp,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
+                @QueryParam("comp") String comp,
                 @QueryParam("blockid") String blockId,
                 @HeaderParam("Content-Length") long contentLength,
                 @HeaderParam("Content-MD5") String transactionalContentMD5,
@@ -181,12 +180,12 @@ public final class BlockBlobsImpl {
         @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<BlockBlobsStageBlockFromURLResponse> stageBlockFromURL(
                 @HostParam("url") String url,
-                @QueryParam("comp") String comp,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
+                @QueryParam("comp") String comp,
                 @QueryParam("blockid") String blockId,
                 @HeaderParam("Content-Length") long contentLength,
-                @HeaderParam("x-ms-copy-source") URL sourceUrl,
+                @HeaderParam("x-ms-copy-source") String sourceUrl,
                 @HeaderParam("x-ms-source-range") String sourceRange,
                 @HeaderParam("x-ms-source-content-md5") String sourceContentMD5,
                 @HeaderParam("x-ms-source-content-crc64") String sourceContentcrc64,
@@ -211,9 +210,9 @@ public final class BlockBlobsImpl {
         @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<BlockBlobsCommitBlockListResponse> commitBlockList(
                 @HostParam("url") String url,
-                @QueryParam("comp") String comp,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
+                @QueryParam("comp") String comp,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-blob-cache-control") String cacheControl,
                 @HeaderParam("x-ms-blob-content-type") String contentType,
@@ -250,9 +249,9 @@ public final class BlockBlobsImpl {
         @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<BlockBlobsGetBlockListResponse> getBlockList(
                 @HostParam("url") String url,
-                @QueryParam("comp") String comp,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
+                @QueryParam("comp") String comp,
                 @QueryParam("snapshot") String snapshot,
                 @QueryParam("blocklisttype") BlockListType listType,
                 @QueryParam("timeout") Integer timeout,
@@ -395,9 +394,9 @@ public final class BlockBlobsImpl {
                 immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
         return service.upload(
                 this.client.getUrl(),
-                blobType,
                 containerName,
                 blob,
+                blobType,
                 timeout,
                 transactionalContentMD5Converted,
                 contentLength,
@@ -491,7 +490,7 @@ public final class BlockBlobsImpl {
             String containerName,
             String blob,
             long contentLength,
-            URL copySource,
+            String copySource,
             Integer timeout,
             byte[] transactionalContentMD5,
             Map<String, String> metadata,
@@ -581,9 +580,9 @@ public final class BlockBlobsImpl {
         String sourceContentMD5Converted = Base64Util.encodeToString(sourceContentMD5);
         return service.putBlobFromUrl(
                 this.client.getUrl(),
-                blobType,
                 containerName,
                 blob,
+                blobType,
                 timeout,
                 transactionalContentMD5Converted,
                 contentLength,
@@ -688,9 +687,9 @@ public final class BlockBlobsImpl {
         String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
         return service.stageBlock(
                 this.client.getUrl(),
-                comp,
                 containerName,
                 blob,
+                comp,
                 blockId,
                 contentLength,
                 transactionalContentMD5Converted,
@@ -751,7 +750,7 @@ public final class BlockBlobsImpl {
             String blob,
             String blockId,
             long contentLength,
-            URL sourceUrl,
+            String sourceUrl,
             String sourceRange,
             byte[] sourceContentMD5,
             byte[] sourceContentcrc64,
@@ -796,9 +795,9 @@ public final class BlockBlobsImpl {
                 sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
         return service.stageBlockFromURL(
                 this.client.getUrl(),
-                comp,
                 containerName,
                 blob,
+                comp,
                 blockId,
                 contentLength,
                 sourceUrl,
@@ -832,7 +831,7 @@ public final class BlockBlobsImpl {
      *
      * @param containerName The container name.
      * @param blob The blob name.
-     * @param blocks The blocks parameter.
+     * @param blocks Blob Blocks.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      *     Timeouts for Blob Service Operations.&lt;/a&gt;.
@@ -956,9 +955,9 @@ public final class BlockBlobsImpl {
                 immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
         return service.commitBlockList(
                 this.client.getUrl(),
-                comp,
                 containerName,
                 blob,
+                comp,
                 timeout,
                 cacheControl,
                 contentType,
@@ -1030,9 +1029,9 @@ public final class BlockBlobsImpl {
         final String accept = "application/xml";
         return service.getBlockList(
                 this.client.getUrl(),
-                comp,
                 containerName,
                 blob,
+                comp,
                 snapshot,
                 listType,
                 timeout,

@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
 /** Criterion to filter metrics. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "criterionType")
@@ -67,6 +68,48 @@ public final class MetricCriteria extends MultiMetricCriteria {
      */
     public MetricCriteria withThreshold(double threshold) {
         this.threshold = threshold;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MetricCriteria withName(String name) {
+        super.withName(name);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MetricCriteria withMetricName(String metricName) {
+        super.withMetricName(metricName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MetricCriteria withMetricNamespace(String metricNamespace) {
+        super.withMetricNamespace(metricNamespace);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MetricCriteria withTimeAggregation(AggregationTypeEnum timeAggregation) {
+        super.withTimeAggregation(timeAggregation);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MetricCriteria withDimensions(List<MetricDimension> dimensions) {
+        super.withDimensions(dimensions);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MetricCriteria withSkipMetricValidation(Boolean skipMetricValidation) {
+        super.withSkipMetricValidation(skipMetricValidation);
         return this;
     }
 

@@ -16,18 +16,25 @@ import com.azure.resourcemanager.monitor.fluent.AlertRuleIncidentsClient;
 import com.azure.resourcemanager.monitor.fluent.AlertRulesClient;
 import com.azure.resourcemanager.monitor.fluent.AutoscaleSettingsClient;
 import com.azure.resourcemanager.monitor.fluent.BaselinesClient;
+import com.azure.resourcemanager.monitor.fluent.DataCollectionEndpointsClient;
+import com.azure.resourcemanager.monitor.fluent.DataCollectionRuleAssociationsClient;
+import com.azure.resourcemanager.monitor.fluent.DataCollectionRulesClient;
 import com.azure.resourcemanager.monitor.fluent.DiagnosticSettingsCategoriesClient;
 import com.azure.resourcemanager.monitor.fluent.DiagnosticSettingsClient;
 import com.azure.resourcemanager.monitor.fluent.EventCategoriesClient;
 import com.azure.resourcemanager.monitor.fluent.LogProfilesClient;
 import com.azure.resourcemanager.monitor.fluent.MetricAlertsClient;
 import com.azure.resourcemanager.monitor.fluent.MetricAlertsStatusClient;
-import com.azure.resourcemanager.monitor.fluent.MetricBaselinesClient;
 import com.azure.resourcemanager.monitor.fluent.MetricDefinitionsClient;
 import com.azure.resourcemanager.monitor.fluent.MetricNamespacesClient;
 import com.azure.resourcemanager.monitor.fluent.MetricsClient;
 import com.azure.resourcemanager.monitor.fluent.MonitorClient;
 import com.azure.resourcemanager.monitor.fluent.OperationsClient;
+import com.azure.resourcemanager.monitor.fluent.PrivateEndpointConnectionsClient;
+import com.azure.resourcemanager.monitor.fluent.PrivateLinkResourcesClient;
+import com.azure.resourcemanager.monitor.fluent.PrivateLinkScopeOperationStatusClient;
+import com.azure.resourcemanager.monitor.fluent.PrivateLinkScopedResourcesClient;
+import com.azure.resourcemanager.monitor.fluent.PrivateLinkScopesClient;
 import com.azure.resourcemanager.monitor.fluent.ScheduledQueryRulesClient;
 import com.azure.resourcemanager.monitor.fluent.TenantActivityLogsClient;
 import com.azure.resourcemanager.monitor.fluent.VMInsightsClient;
@@ -39,11 +46,11 @@ import java.time.Duration;
 public final class MonitorClientImpl extends AzureServiceClient implements MonitorClient {
     private final ClientLogger logger = new ClientLogger(MonitorClientImpl.class);
 
-    /** The Azure subscription Id. */
+    /** The ID of the target subscription. */
     private final String subscriptionId;
 
     /**
-     * Gets The Azure subscription Id.
+     * Gets The ID of the target subscription.
      *
      * @return the subscriptionId value.
      */
@@ -195,18 +202,6 @@ public final class MonitorClientImpl extends AzureServiceClient implements Monit
         return this.actionGroups;
     }
 
-    /** The ActivityLogAlertsClient object to access its operations. */
-    private final ActivityLogAlertsClient activityLogAlerts;
-
-    /**
-     * Gets the ActivityLogAlertsClient object to access its operations.
-     *
-     * @return the ActivityLogAlertsClient object.
-     */
-    public ActivityLogAlertsClient getActivityLogAlerts() {
-        return this.activityLogAlerts;
-    }
-
     /** The ActivityLogsClient object to access its operations. */
     private final ActivityLogsClient activityLogs;
 
@@ -265,18 +260,6 @@ public final class MonitorClientImpl extends AzureServiceClient implements Monit
      */
     public MetricsClient getMetrics() {
         return this.metrics;
-    }
-
-    /** The MetricBaselinesClient object to access its operations. */
-    private final MetricBaselinesClient metricBaselines;
-
-    /**
-     * Gets the MetricBaselinesClient object to access its operations.
-     *
-     * @return the MetricBaselinesClient object.
-     */
-    public MetricBaselinesClient getMetricBaselines() {
-        return this.metricBaselines;
     }
 
     /** The BaselinesClient object to access its operations. */
@@ -351,6 +334,114 @@ public final class MonitorClientImpl extends AzureServiceClient implements Monit
         return this.vMInsights;
     }
 
+    /** The PrivateLinkScopesClient object to access its operations. */
+    private final PrivateLinkScopesClient privateLinkScopes;
+
+    /**
+     * Gets the PrivateLinkScopesClient object to access its operations.
+     *
+     * @return the PrivateLinkScopesClient object.
+     */
+    public PrivateLinkScopesClient getPrivateLinkScopes() {
+        return this.privateLinkScopes;
+    }
+
+    /** The PrivateLinkScopeOperationStatusClient object to access its operations. */
+    private final PrivateLinkScopeOperationStatusClient privateLinkScopeOperationStatus;
+
+    /**
+     * Gets the PrivateLinkScopeOperationStatusClient object to access its operations.
+     *
+     * @return the PrivateLinkScopeOperationStatusClient object.
+     */
+    public PrivateLinkScopeOperationStatusClient getPrivateLinkScopeOperationStatus() {
+        return this.privateLinkScopeOperationStatus;
+    }
+
+    /** The PrivateLinkResourcesClient object to access its operations. */
+    private final PrivateLinkResourcesClient privateLinkResources;
+
+    /**
+     * Gets the PrivateLinkResourcesClient object to access its operations.
+     *
+     * @return the PrivateLinkResourcesClient object.
+     */
+    public PrivateLinkResourcesClient getPrivateLinkResources() {
+        return this.privateLinkResources;
+    }
+
+    /** The PrivateEndpointConnectionsClient object to access its operations. */
+    private final PrivateEndpointConnectionsClient privateEndpointConnections;
+
+    /**
+     * Gets the PrivateEndpointConnectionsClient object to access its operations.
+     *
+     * @return the PrivateEndpointConnectionsClient object.
+     */
+    public PrivateEndpointConnectionsClient getPrivateEndpointConnections() {
+        return this.privateEndpointConnections;
+    }
+
+    /** The PrivateLinkScopedResourcesClient object to access its operations. */
+    private final PrivateLinkScopedResourcesClient privateLinkScopedResources;
+
+    /**
+     * Gets the PrivateLinkScopedResourcesClient object to access its operations.
+     *
+     * @return the PrivateLinkScopedResourcesClient object.
+     */
+    public PrivateLinkScopedResourcesClient getPrivateLinkScopedResources() {
+        return this.privateLinkScopedResources;
+    }
+
+    /** The ActivityLogAlertsClient object to access its operations. */
+    private final ActivityLogAlertsClient activityLogAlerts;
+
+    /**
+     * Gets the ActivityLogAlertsClient object to access its operations.
+     *
+     * @return the ActivityLogAlertsClient object.
+     */
+    public ActivityLogAlertsClient getActivityLogAlerts() {
+        return this.activityLogAlerts;
+    }
+
+    /** The DataCollectionEndpointsClient object to access its operations. */
+    private final DataCollectionEndpointsClient dataCollectionEndpoints;
+
+    /**
+     * Gets the DataCollectionEndpointsClient object to access its operations.
+     *
+     * @return the DataCollectionEndpointsClient object.
+     */
+    public DataCollectionEndpointsClient getDataCollectionEndpoints() {
+        return this.dataCollectionEndpoints;
+    }
+
+    /** The DataCollectionRuleAssociationsClient object to access its operations. */
+    private final DataCollectionRuleAssociationsClient dataCollectionRuleAssociations;
+
+    /**
+     * Gets the DataCollectionRuleAssociationsClient object to access its operations.
+     *
+     * @return the DataCollectionRuleAssociationsClient object.
+     */
+    public DataCollectionRuleAssociationsClient getDataCollectionRuleAssociations() {
+        return this.dataCollectionRuleAssociations;
+    }
+
+    /** The DataCollectionRulesClient object to access its operations. */
+    private final DataCollectionRulesClient dataCollectionRules;
+
+    /**
+     * Gets the DataCollectionRulesClient object to access its operations.
+     *
+     * @return the DataCollectionRulesClient object.
+     */
+    public DataCollectionRulesClient getDataCollectionRules() {
+        return this.dataCollectionRules;
+    }
+
     /**
      * Initializes an instance of MonitorClient client.
      *
@@ -358,7 +449,7 @@ public final class MonitorClientImpl extends AzureServiceClient implements Monit
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
-     * @param subscriptionId The Azure subscription Id.
+     * @param subscriptionId The ID of the target subscription.
      * @param endpoint server parameter.
      */
     MonitorClientImpl(
@@ -382,18 +473,25 @@ public final class MonitorClientImpl extends AzureServiceClient implements Monit
         this.diagnosticSettings = new DiagnosticSettingsClientImpl(this);
         this.diagnosticSettingsCategories = new DiagnosticSettingsCategoriesClientImpl(this);
         this.actionGroups = new ActionGroupsClientImpl(this);
-        this.activityLogAlerts = new ActivityLogAlertsClientImpl(this);
         this.activityLogs = new ActivityLogsClientImpl(this);
         this.eventCategories = new EventCategoriesClientImpl(this);
         this.tenantActivityLogs = new TenantActivityLogsClientImpl(this);
         this.metricDefinitions = new MetricDefinitionsClientImpl(this);
         this.metrics = new MetricsClientImpl(this);
-        this.metricBaselines = new MetricBaselinesClientImpl(this);
         this.baselines = new BaselinesClientImpl(this);
         this.metricAlerts = new MetricAlertsClientImpl(this);
         this.metricAlertsStatus = new MetricAlertsStatusClientImpl(this);
         this.scheduledQueryRules = new ScheduledQueryRulesClientImpl(this);
         this.metricNamespaces = new MetricNamespacesClientImpl(this);
         this.vMInsights = new VMInsightsClientImpl(this);
+        this.privateLinkScopes = new PrivateLinkScopesClientImpl(this);
+        this.privateLinkScopeOperationStatus = new PrivateLinkScopeOperationStatusClientImpl(this);
+        this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
+        this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
+        this.privateLinkScopedResources = new PrivateLinkScopedResourcesClientImpl(this);
+        this.activityLogAlerts = new ActivityLogAlertsClientImpl(this);
+        this.dataCollectionEndpoints = new DataCollectionEndpointsClientImpl(this);
+        this.dataCollectionRuleAssociations = new DataCollectionRuleAssociationsClientImpl(this);
+        this.dataCollectionRules = new DataCollectionRulesClientImpl(this);
     }
 }

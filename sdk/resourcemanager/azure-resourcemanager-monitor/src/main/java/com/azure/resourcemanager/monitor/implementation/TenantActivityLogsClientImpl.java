@@ -6,6 +6,7 @@ package com.azure.resourcemanager.monitor.implementation;
 
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -58,8 +59,8 @@ public final class TenantActivityLogsClientImpl implements TenantActivityLogsCli
     @Host("{$host}")
     @ServiceInterface(name = "MonitorClientTenantA")
     private interface TenantActivityLogsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("/providers/microsoft.insights/eventtypes/management/values")
+        @Headers({"Content-Type: application/json"})
+        @Get("/providers/Microsoft.Insights/eventtypes/management/values")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EventDataCollection>> list(
@@ -67,14 +68,18 @@ public final class TenantActivityLogsClientImpl implements TenantActivityLogsCli
             @QueryParam("api-version") String apiVersion,
             @QueryParam("$filter") String filter,
             @QueryParam("$select") String select,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EventDataCollection>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -115,8 +120,10 @@ public final class TenantActivityLogsClientImpl implements TenantActivityLogsCli
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String apiVersion = "2015-04-01";
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, filter, select, context))
+            .withContext(
+                context -> service.list(this.client.getEndpoint(), apiVersion, filter, select, accept, context))
             .<PagedResponse<EventDataInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -126,7 +133,7 @@ public final class TenantActivityLogsClientImpl implements TenantActivityLogsCli
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -168,9 +175,10 @@ public final class TenantActivityLogsClientImpl implements TenantActivityLogsCli
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String apiVersion = "2015-04-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), apiVersion, filter, select, context)
+            .list(this.client.getEndpoint(), apiVersion, filter, select, accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -277,6 +285,23 @@ public final class TenantActivityLogsClientImpl implements TenantActivityLogsCli
      * here is that this API does *not* retrieve the logs at the individual subscription of the tenant but only surfaces
      * the logs that were generated at the tenant level.
      *
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Activity Logs for the Tenant.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<EventDataInner> list() {
+        final String filter = null;
+        final String select = null;
+        return new PagedIterable<>(listAsync(filter, select));
+    }
+
+    /**
+     * Gets the Activity Logs for the Tenant.&lt;br&gt;Everything that is applicable to the API to get the Activity Logs
+     * for the subscription is applicable to this API (the parameters, $filter, etc.).&lt;br&gt;One thing to point out
+     * here is that this API does *not* retrieve the logs at the individual subscription of the tenant but only surfaces
+     * the logs that were generated at the tenant level.
+     *
      * @param filter Reduces the set of data collected. &lt;br&gt;The **$filter** is very restricted and allows only the
      *     following patterns.&lt;br&gt;- List events for a resource group: $filter=eventTimestamp ge '&lt;Start
      *     Time&gt;' and eventTimestamp le '&lt;End Time&gt;' and eventChannels eq 'Admin, Operation' and
@@ -307,23 +332,6 @@ public final class TenantActivityLogsClientImpl implements TenantActivityLogsCli
     }
 
     /**
-     * Gets the Activity Logs for the Tenant.&lt;br&gt;Everything that is applicable to the API to get the Activity Logs
-     * for the subscription is applicable to this API (the parameters, $filter, etc.).&lt;br&gt;One thing to point out
-     * here is that this API does *not* retrieve the logs at the individual subscription of the tenant but only surfaces
-     * the logs that were generated at the tenant level.
-     *
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Activity Logs for the Tenant.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<EventDataInner> list() {
-        final String filter = null;
-        final String select = null;
-        return new PagedIterable<>(listAsync(filter, select));
-    }
-
-    /**
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
@@ -337,8 +345,15 @@ public final class TenantActivityLogsClientImpl implements TenantActivityLogsCli
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listNext(nextLink, context))
+            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<EventDataInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -348,7 +363,7 @@ public final class TenantActivityLogsClientImpl implements TenantActivityLogsCli
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -366,9 +381,16 @@ public final class TenantActivityLogsClientImpl implements TenantActivityLogsCli
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listNext(nextLink, context)
+            .listNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
