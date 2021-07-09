@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.core;
+package com.azure.spring.autoconfigure.unity;
 
 /**
  * Environment properties for endpoints in different Azure Clouds.

@@ -24,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class CosmosPropertiesTest {
 
     @Test
-    public void canSetAllProperties() {
+    public void canSetProperties() {
         try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext()) {
             configureCosmosProperties(context);
             context.register(Config.class);
@@ -36,6 +36,8 @@ public class CosmosPropertiesTest {
             assertThat(properties.getConsistencyLevel()).isEqualTo(PropertySettingUtil.CONSISTENCY_LEVEL);
             assertThat(properties.isPopulateQueryMetrics()).isEqualTo(PropertySettingUtil.POPULATE_QUERY_METRICS);
             assertThat(properties.getConnectionMode()).isEqualTo(PropertySettingUtil.CONNECTION_MODE);
+            assertThat(properties.getCredential().isMsiEnabled()).isEqualTo(PropertySettingUtil.MSI_ENABLED);
+            assertThat(properties.getEnvironment().getCloud()).isEqualTo(PropertySettingUtil.CLOUD);
         }
     }
 

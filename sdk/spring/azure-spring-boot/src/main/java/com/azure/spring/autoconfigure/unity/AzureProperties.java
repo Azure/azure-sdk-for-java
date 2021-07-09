@@ -1,24 +1,27 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.core;
+package com.azure.spring.autoconfigure.unity;
 
 /**
  * Unified properties for Azure SDK clients.
  */
 public class AzureProperties {
 
+    public static final String AZURE_PROPERTY_BEAN_NAME = "azureProperties";
 
-    private CredentialProperties credentialProperties;
+    public static final String PREFIX = "spring.cloud.azure";
+
+    private CredentialProperties credential;
 
     private EnvironmentProperties environment;
 
-    public CredentialProperties getCredentialProperties() {
-        return credentialProperties;
+    public CredentialProperties getCredential() {
+        return credential;
     }
 
-    public void setCredentialProperties(CredentialProperties credentialProperties) {
-        this.credentialProperties = credentialProperties;
+    public void setCredential(CredentialProperties credential) {
+        this.credential = credential;
     }
 
     public EnvironmentProperties getEnvironment() {

@@ -22,12 +22,18 @@ import org.springframework.mock.env.MockEnvironment;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.azure.spring.keyvault.KeyVaultProperties.Property.AUTHORITY_HOST;
 import static com.azure.spring.keyvault.KeyVaultProperties.Property.CERTIFICATE_PATH;
 import static com.azure.spring.keyvault.KeyVaultProperties.Property.CLIENT_ID;
 import static com.azure.spring.keyvault.KeyVaultProperties.Property.CLIENT_KEY;
+import static com.azure.spring.keyvault.KeyVaultProperties.Property.CLIENT_SECRET;
+import static com.azure.spring.keyvault.KeyVaultProperties.Property.ORDER;
 import static com.azure.spring.keyvault.KeyVaultProperties.Property.TENANT_ID;
+import static com.azure.spring.keyvault.KeyVaultProperties.Property.URI;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class KeyVaultEnvironmentPostProcessorTest {
     private KeyVaultEnvironmentPostProcessorHelper keyVaultEnvironmentPostProcessorHelper;
@@ -149,16 +155,70 @@ public class KeyVaultEnvironmentPostProcessorTest {
     }
 
     @Test
-    public void testGetPropertyFromCommonProperties() {
-        testProperties.put("spring.cloud.azure.client-id", "fake-client-id");
+    public void testGetCredentialFromKeyVaultProperties() {
+        testProperties.put("spring.cloud.azure.keyvault.credential.client-id", "aaaa-bbbb-cccc-dddd");
+        testProperties.put("spring.cloud.azure.keyvault.credential.client-secret", "mySecret");
+        testProperties.put("spring.cloud.azure.keyvault.credential.tenant-id", "myid");
+        propertySources.addLast(new MapPropertySource("Test_Properties", testProperties));
+        keyVaultEnvironmentPostProcessorHelper = new KeyVaultEnvironmentPostProcessorHelper(environment);
+
+        final TokenCredential credentials = keyVaultEnvironmentPostProcessorHelper.getCredentials();
+
+        assertThat(credentials, IsInstanceOf.instanceOf(ClientSecretCredential.class));
+    }
+
+    @Test
+    public void testGetCredentialFromCommonProperties() {
+        testProperties.put("spring.cloud.azure.credential.client-id", "fake-client-id");
+        testProperties.put("spring.cloud.azure.credential.client-secret", "fake-client-secret");
+        testProperties.put("spring.cloud.azure.credential.tenant-id", "fake-tenant-id");
         propertySources.addLast(new MapPropertySource("Test_Properties", testProperties));
 
         keyVaultEnvironmentPostProcessorHelper = new KeyVaultEnvironmentPostProcessorHelper(environment);
 
         final TokenCredential credentials = keyVaultEnvironmentPostProcessorHelper.getCredentials();
 
-        assertThat(credentials, IsInstanceOf.instanceOf(ManagedIdentityCredential.class));
+        assertThat(credentials, IsInstanceOf.instanceOf(ClientSecretCredential.class));
     }
+
+    @Test
+    public void testGetPropertyValue() {
+        testProperties.put("spring.cloud.azure.credential.client-id", "client1");
+
+        testProperties.put("spring.cloud.azure.keyvault.credential.client-secret", "secret2");
+
+        testProperties.put("spring.cloud.azure.credential.tenant-id", "tenant1");
+        testProperties.put("spring.cloud.azure.keyvault.credential.tenant-id", "tenant2");
+
+        testProperties.put("spring.cloud.azure.environment.authority-host", "host1");
+        testProperties.put("spring.cloud.azure.keyvault.environment.authority-host", "host2");
+
+        testProperties.put("spring.cloud.azure.credential.certificate-path", "cert1");
+        testProperties.put("spring.cloud.azure.keyvault.mykeyvault.credential.certificate-path", "cert2");
+
+        testProperties.put("spring.cloud.azure.keyvault.uri", "uri1");
+
+        propertySources.addLast(new MapPropertySource("Test_Properties", testProperties));
+
+        keyVaultEnvironmentPostProcessorHelper = new KeyVaultEnvironmentPostProcessorHelper(environment);
+
+        String clientId = keyVaultEnvironmentPostProcessorHelper.getPropertyValue("", CLIENT_ID);
+        String clientSecert = keyVaultEnvironmentPostProcessorHelper.getPropertyValue("", CLIENT_SECRET);
+        String tenantId = keyVaultEnvironmentPostProcessorHelper.getPropertyValue("", TENANT_ID);
+        String authorityHost = keyVaultEnvironmentPostProcessorHelper.getPropertyValue("", AUTHORITY_HOST);
+        String certificatePath = keyVaultEnvironmentPostProcessorHelper.getPropertyValue("mykeyvault", CERTIFICATE_PATH);
+        String uri = keyVaultEnvironmentPostProcessorHelper.getPropertyValue("", URI);
+        String order = keyVaultEnvironmentPostProcessorHelper.getPropertyValue("", ORDER);
+
+        assertEquals("client1", clientId);
+        assertEquals("secret2", clientSecert);
+        assertEquals("tenant2", tenantId);
+        assertNotEquals("host1", authorityHost);
+        assertEquals("cert2", certificatePath);
+        assertEquals("uri1", uri);
+        assertNull(order);
+    }
+
 }
 
 @Configuration

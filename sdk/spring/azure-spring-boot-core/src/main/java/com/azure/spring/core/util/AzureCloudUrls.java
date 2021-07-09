@@ -3,6 +3,8 @@
 
 package com.azure.spring.core.util;
 
+import com.azure.identity.AzureAuthorityHosts;
+
 /**
  * Util class for Azure urls
  */
@@ -20,5 +22,18 @@ public class AzureCloudUrls {
     public static String getServiceManagementBaseUrl(String cloudType) {
         return cloudType.equals("Global") ? "https://management.azure.com/"
             : "https://management.chinacloudapi.cn/";
+    }
+
+    public static String toAuthorityHost(String azureEnvironment) {
+        switch (azureEnvironment) {
+            case "AzureChina":
+                return AzureAuthorityHosts.AZURE_CHINA;
+            case "AzureGermany":
+                return AzureAuthorityHosts.AZURE_GERMANY;
+            case "AzureUSGovernment":
+                return AzureAuthorityHosts.AZURE_GOVERNMENT;
+            default:
+                return AzureAuthorityHosts.AZURE_PUBLIC_CLOUD;
+        }
     }
 }

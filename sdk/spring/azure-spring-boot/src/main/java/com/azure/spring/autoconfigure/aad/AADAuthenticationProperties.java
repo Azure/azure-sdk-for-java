@@ -42,14 +42,12 @@ public class AADAuthenticationProperties implements InitializingBean {
     private UserGroupProperties userGroup = new UserGroupProperties();
 
     /**
-     * Registered application ID in Azure AD.
-     * A property of client-id must be configured when OAuth2 authentication is done in front end.
+     * Registered application ID in Azure AD. Must be configured when OAuth2 authentication is done in front end
      */
     private String clientId;
 
     /**
-     * API Access Key of the registered application.
-     * A property of client-secret must be configured when OAuth2 authentication is done in front end.
+     * API Access Key of the registered application. Must be configured when OAuth2 authentication is done in front end
      */
     private String clientSecret;
 

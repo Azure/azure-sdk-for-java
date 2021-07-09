@@ -3,7 +3,7 @@
 
 package com.azure.spring.autoconfigure.storage;
 
-import com.azure.spring.core.AzureProperties;
+import com.azure.spring.autoconfigure.unity.AzureProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
 

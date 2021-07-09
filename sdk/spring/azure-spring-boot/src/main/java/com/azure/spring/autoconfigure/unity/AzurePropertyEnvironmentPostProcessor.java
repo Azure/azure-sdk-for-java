@@ -37,9 +37,9 @@ public class AzurePropertyEnvironmentPostProcessor {
     private static final String LEGACY_STORAGE_PREFIX = "azure.storage";
     private static final String LEGACY_KEYVAULT_PREFIX = "azure.keyvault";
 
-    private final Logger LOGGER = LoggerFactory.getLogger(AzurePropertyEnvironmentPostProcessor.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AzurePropertyEnvironmentPostProcessor.class);
 
-    private static final Map<String, String> LEGACY_TO_CURRENT = new HashMap<>() {
+    private static final Map<String, String> LEGACY_TO_CURRENT = new HashMap<String, String>() {
         {
             put(LEGACY_AAD_PREFIX + ".clientId", AADAuthenticationProperties.PREFIX + ".credential.clientId");
             put(LEGACY_AAD_PREFIX + ".clientSecret", AADAuthenticationProperties.PREFIX + ".credential.clientSecret");
@@ -52,27 +52,27 @@ public class AzurePropertyEnvironmentPostProcessor {
                 + ".allowedGroupIds");
             put(LEGACY_AAD_PREFIX + ".userGroup.enableFullList", AADAuthenticationProperties.PREFIX + ".userGroup"
                 + ".enableFullList");
-            put(LEGACY_AAD_PREFIX + ".userNameAttribute", AADAuthenticationProperties.PREFIX +
-                ".userNameAttribute");
-            put(LEGACY_AAD_PREFIX + ".redirectUriTemplate", AADAuthenticationProperties.PREFIX +
-                ".redirectUriTemplate");
+            put(LEGACY_AAD_PREFIX + ".userNameAttribute", AADAuthenticationProperties.PREFIX
+                + ".userNameAttribute");
+            put(LEGACY_AAD_PREFIX + ".redirectUriTemplate", AADAuthenticationProperties.PREFIX
+                + ".redirectUriTemplate");
             put(LEGACY_AAD_PREFIX + ".appIdUri", AADAuthenticationProperties.PREFIX + ".appIdUri");
             put(LEGACY_AAD_PREFIX + ".authenticateAdditionalParameters",
                 AADAuthenticationProperties.PREFIX + ".authenticateAdditionalParameters");
             put(LEGACY_AAD_PREFIX + ".jwtConnectTimeout", AADAuthenticationProperties.PREFIX + ".jwtConnectTimeout");
             put(LEGACY_AAD_PREFIX + ".jwtReadTimeout", AADAuthenticationProperties.PREFIX + ".jwtReadTimeout");
             put(LEGACY_AAD_PREFIX + ".jwtSizeLimit", AADAuthenticationProperties.PREFIX + ".jwtSizeLimit");
-            put(LEGACY_AAD_PREFIX + ".jwkSetCacheLifespan", AADAuthenticationProperties.PREFIX +
-                ".jwkSetCacheLifespan");
-            put(LEGACY_AAD_PREFIX + ".jwkSetCacheRefreshTime", AADAuthenticationProperties.PREFIX +
-                ".jwkSetCacheRefreshTime");
-            put(LEGACY_AAD_PREFIX + ".postLogoutRedirectUri", AADAuthenticationProperties.PREFIX +
-                ".postLogoutRedirectUri");
+            put(LEGACY_AAD_PREFIX + ".jwkSetCacheLifespan", AADAuthenticationProperties.PREFIX
+                + ".jwkSetCacheLifespan");
+            put(LEGACY_AAD_PREFIX + ".jwkSetCacheRefreshTime", AADAuthenticationProperties.PREFIX
+                + ".jwkSetCacheRefreshTime");
+            put(LEGACY_AAD_PREFIX + ".postLogoutRedirectUri", AADAuthenticationProperties.PREFIX
+                + ".postLogoutRedirectUri");
             put(LEGACY_AAD_PREFIX + ".allowTelemetry", AADAuthenticationProperties.PREFIX + ".allowTelemetry");
             put(LEGACY_AAD_PREFIX + ".sessionStateless", AADAuthenticationProperties.PREFIX + ".sessionStateless");
             put(LEGACY_AAD_PREFIX + ".graphMembershipUri", AADAuthenticationProperties.PREFIX + ".graphMembershipUri");
-            put(LEGACY_AAD_PREFIX + ".authorizationClients", AADAuthenticationProperties.PREFIX +
-                ".authorizationClients");
+            put(LEGACY_AAD_PREFIX + ".authorizationClients", AADAuthenticationProperties.PREFIX
+                + ".authorizationClients");
 
             put(LEGACY_AAD_B2C_PREFIX + ".clientId", AADB2CProperties.PREFIX + ".credential.clientId");
             put(LEGACY_AAD_B2C_PREFIX + ".clientSecret", AADB2CProperties.PREFIX + ".credential.clientSecret");
@@ -84,8 +84,8 @@ public class AzurePropertyEnvironmentPostProcessor {
             put(LEGACY_AAD_B2C_PREFIX + ".jwtReadTimeout", AADB2CProperties.PREFIX + ".jwtReadTimeout");
             put(LEGACY_AAD_B2C_PREFIX + ".jwtSizeLimit", AADB2CProperties.PREFIX + ".jwtSizeLimit");
             put(LEGACY_AAD_B2C_PREFIX + ".logoutSuccessUrl", AADB2CProperties.PREFIX + ".logoutSuccessUrl");
-            put(LEGACY_AAD_B2C_PREFIX + ".authenticateAdditionalParameters", AADB2CProperties.PREFIX +
-                ".authenticateAdditionalParameters");
+            put(LEGACY_AAD_B2C_PREFIX + ".authenticateAdditionalParameters", AADB2CProperties.PREFIX
+                + ".authenticateAdditionalParameters");
             put(LEGACY_AAD_B2C_PREFIX + ".userNameAttributeName", AADB2CProperties.PREFIX + ".userNameAttributeName");
             put(LEGACY_AAD_B2C_PREFIX + ".allowTelemetry", AADB2CProperties.PREFIX + ".allowTelemetry");
             put(LEGACY_AAD_B2C_PREFIX + ".replyUrl", AADB2CProperties.PREFIX + ".replyUrl");
@@ -101,8 +101,8 @@ public class AzurePropertyEnvironmentPostProcessor {
             put(LEGACY_COSMOS_PREFIX + ".populateQueryMetrics", CosmosProperties.PREFIX + ".populateQueryMetrics");
             put(LEGACY_COSMOS_PREFIX + ".allowTelemetry", CosmosProperties.PREFIX + ".allowTelemetry");
             put(LEGACY_COSMOS_PREFIX + ".connectionMode", CosmosProperties.PREFIX + ".connectionMode");
-            put(LEGACY_COSMOS_PREFIX + ".responseDiagnosticsProcessor", CosmosProperties.PREFIX +
-                ".responseDiagnosticsProcessor");
+            put(LEGACY_COSMOS_PREFIX + ".responseDiagnosticsProcessor", CosmosProperties.PREFIX
+                + ".responseDiagnosticsProcessor");
 
             put(LEGACY_JMS_PREFIX + ".connectionString", AzureServiceBusJMSProperties.PREFIX + ".connectionString");
             put(LEGACY_JMS_PREFIX + ".topicClientId", AzureServiceBusJMSProperties.PREFIX + ".topicClientId");
@@ -152,7 +152,7 @@ public class AzurePropertyEnvironmentPostProcessor {
                                  .orElse(null);
             if (null != value) {
                 properties.put(e.getValue(), value);
-                LOGGER.info( e.getKey() + " property detected! Use the {} instead!", e.getValue());
+                LOGGER.info(e.getKey() + " property detected! Use the {} instead!", e.getValue());
             }
         }
 

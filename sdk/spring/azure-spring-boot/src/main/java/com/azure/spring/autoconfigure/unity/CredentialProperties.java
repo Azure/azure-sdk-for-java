@@ -1,17 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.core;
+package com.azure.spring.autoconfigure.unity;
 
 
 /**
  * Azure properties used for getting token credential.
  */
 public class CredentialProperties {
-    /**
-     * The Azure Active Directory endpoint to connect to.
-     */
-    private String authorityHost;
 
     /**
      * Client id to use when performing service principal authentication with Azure.
@@ -42,14 +38,6 @@ public class CredentialProperties {
      * Tenant id for the Azure resources.
      */
     private String tenantId;
-
-    public String getAuthorityHost() {
-        return authorityHost;
-    }
-
-    public void setAuthorityHost(String authorityHost) {
-        this.authorityHost = authorityHost;
-    }
 
     public String getClientId() {
         return clientId;

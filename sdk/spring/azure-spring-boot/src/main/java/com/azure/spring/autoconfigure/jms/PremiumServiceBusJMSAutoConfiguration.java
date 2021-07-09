@@ -3,7 +3,7 @@
 
 package com.azure.spring.autoconfigure.jms;
 
-import com.azure.spring.core.AzureProperties;
+import com.azure.spring.autoconfigure.unity.AzureProperties;
 import com.microsoft.azure.servicebus.jms.ServiceBusJmsConnectionFactory;
 import com.microsoft.azure.servicebus.jms.ServiceBusJmsConnectionFactorySettings;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -20,7 +20,7 @@ import org.springframework.jms.config.JmsListenerContainerFactory;
 
 import javax.jms.ConnectionFactory;
 
-import static com.azure.spring.autoconfigure.unity.AzurePropertyAutoConfiguration.AZURE_PROPERTY_BEAN_NAME;
+import static com.azure.spring.autoconfigure.unity.AzureProperties.AZURE_PROPERTY_BEAN_NAME;
 import static com.azure.spring.core.ApplicationId.AZURE_SPRING_SERVICE_BUS;
 import static com.azure.spring.core.ApplicationId.VERSION;
 
@@ -30,8 +30,8 @@ import static com.azure.spring.core.ApplicationId.VERSION;
 @Configuration
 @ConditionalOnClass(ServiceBusJmsConnectionFactory.class)
 @ConditionalOnResource(resources = "classpath:servicebusjms.enable.config")
-@ConditionalOnProperty(value = "spring.cloud.azure.jms.servicebus.enabled", matchIfMissing = true)
-@ConditionalOnExpression(value = "'${spring.cloud.azure.jms.servicebus.pricing-tier}'.equalsIgnoreCase('premium')")
+@ConditionalOnProperty(value = "spring.jms.servicebus.enabled", matchIfMissing = true)
+@ConditionalOnExpression(value = "'${spring.jms.servicebus.pricing-tier}'.equalsIgnoreCase('premium')")
 @EnableConfigurationProperties(AzureServiceBusJMSProperties.class)
 public class PremiumServiceBusJMSAutoConfiguration {
 

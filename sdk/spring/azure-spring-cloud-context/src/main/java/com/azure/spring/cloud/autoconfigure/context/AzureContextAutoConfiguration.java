@@ -8,8 +8,6 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.context.core.api.CredentialsProvider;
 import com.azure.spring.cloud.context.core.api.EnvironmentProvider;
-import com.azure.spring.core.SpringPropertyPrefix;
-import com.azure.spring.core.CredentialProperties;
 import com.azure.spring.cloud.context.core.impl.ResourceGroupManager;
 import com.azure.spring.identity.DefaultSpringCredentialBuilder;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -19,8 +17,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
 import org.springframework.context.annotation.Import;
+import org.springframework.core.env.Environment;
 /**
  * Auto-config to provide default {@link CredentialsProvider} for all Azure services
  *
@@ -61,7 +59,7 @@ public class AzureContextAutoConfiguration {
     @ConditionalOnMissingBean
     public TokenCredential credential(Environment environment) {
         return new DefaultSpringCredentialBuilder().environment(environment)
-                                                   .alternativePrefix(SpringPropertyPrefix.PREFIX)
+                                                   .alternativePrefix(AzureContextProperties.PREFIX)
                                                    .build();
     }
 

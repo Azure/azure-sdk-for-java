@@ -5,7 +5,7 @@ package com.azure.spring.autoconfigure.cosmos;
 
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.spring.core.AzureProperties;
+import com.azure.spring.autoconfigure.unity.AzureProperties;
 import com.azure.spring.data.cosmos.core.ResponseDiagnosticsProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

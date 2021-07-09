@@ -48,7 +48,7 @@ public class BlobStorageHealthIndicatorTest {
             .withAllowBeanDefinitionOverriding(true)
             .withConfiguration(AutoConfigurations.of(StorageAutoConfiguration.class, StorageHealthConfiguration.class))
             .withUserConfiguration(TestConfigurationConnectionUp.class)
-            .withPropertyValues("azure.storage.account-name=acc1");
+            .withPropertyValues("spring.cloud.azure.storage.account-name=acc1");
 
         contextRunner.run(context -> {
             Health health = context.getBean("blobStorageHealthIndicator", BlobStorageHealthIndicator.class)
@@ -64,7 +64,7 @@ public class BlobStorageHealthIndicatorTest {
             .withAllowBeanDefinitionOverriding(true)
             .withConfiguration(AutoConfigurations.of(StorageAutoConfiguration.class, StorageHealthConfiguration.class))
             .withUserConfiguration(TestConfigurationConnectionDown.class)
-            .withPropertyValues("azure.storage.account-name=acc1");
+            .withPropertyValues("spring.cloud.azure.storage.account-name=acc1");
 
         contextRunner.run(context -> {
             Health health = context.getBean("blobStorageHealthIndicator", BlobStorageHealthIndicator.class)

@@ -19,6 +19,11 @@
   <description>Azure Spring Boot Core Library</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
+  <properties>
+    <jacoco.min.linecoverage>0.10</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.10</jacoco.min.branchcoverage>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>org.springframework</groupId>

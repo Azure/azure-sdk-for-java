@@ -12,7 +12,7 @@ import org.springframework.core.env.Environment;
 
 import java.util.Optional;
 
-import static com.azure.spring.core.Utils.toAuthorityHost;
+import static com.azure.spring.core.util.AzureCloudUrls.toAuthorityHost;
 
 /**
  *
@@ -54,7 +54,7 @@ public abstract class SpringCredentialBuilderBase<T extends SpringCredentialBuil
                 .build();
         }
 
-        String certPath = getPropertyValue(prefix + "client-certificate-path", null);
+        String certPath = getPropertyValue(prefix + "client-certificate-path");
 
         if (tenantId != null && clientId != null && certPath != null) {
             return new ClientCertificateCredentialBuilder()
@@ -77,11 +77,11 @@ public abstract class SpringCredentialBuilderBase<T extends SpringCredentialBuil
     }
 
     protected String getPropertyValue(String propertyName) {
-        return getPropertyValue(propertyName, null);
+        return environment.getProperty(propertyName);
     }
 
     protected String getPropertyValue(String propertyName, String defaultValue) {
-       return environment.getProperty(propertyName, defaultValue);
+        return environment.getProperty(propertyName, defaultValue);
     }
 
     protected String getAuthorityHost(String prefix) {

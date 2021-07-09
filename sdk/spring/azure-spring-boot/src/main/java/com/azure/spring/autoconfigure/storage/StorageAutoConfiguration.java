@@ -5,7 +5,7 @@ package com.azure.spring.autoconfigure.storage;
 
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.spring.autoconfigure.storage.resource.AzureStorageProtocolResolver;
-import com.azure.spring.core.AzureProperties;
+import com.azure.spring.autoconfigure.unity.AzureProperties;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.file.share.ShareServiceClientBuilder;
@@ -19,7 +19,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-import static com.azure.spring.autoconfigure.unity.AzurePropertyAutoConfiguration.AZURE_PROPERTY_BEAN_NAME;
+import static com.azure.spring.autoconfigure.unity.AzureProperties.AZURE_PROPERTY_BEAN_NAME;
 import static com.azure.spring.core.ApplicationId.AZURE_SPRING_STORAGE_BLOB;
 import static com.azure.spring.core.ApplicationId.AZURE_SPRING_STORAGE_FILES;
 import static com.azure.spring.core.ApplicationId.VERSION;

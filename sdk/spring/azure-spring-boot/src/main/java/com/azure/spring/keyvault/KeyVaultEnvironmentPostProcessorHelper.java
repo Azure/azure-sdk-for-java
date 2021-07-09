@@ -5,17 +5,16 @@ package com.azure.spring.keyvault;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.identity.AzureAuthorityHosts;
 import com.azure.identity.ClientCertificateCredentialBuilder;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.identity.ManagedIdentityCredentialBuilder;
-import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.azure.security.keyvault.secrets.SecretServiceVersion;
-import com.azure.spring.core.SpringPropertyPrefix;
+import com.azure.spring.autoconfigure.unity.AzureProperties;
 import com.azure.spring.keyvault.KeyVaultProperties.Property;
-import java.util.HashSet;
-import java.util.Set;
+import com.google.common.annotations.VisibleForTesting;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.bind.Bindable;
@@ -32,6 +31,7 @@ import java.util.Optional;
 
 import static com.azure.spring.core.ApplicationId.AZURE_SPRING_KEY_VAULT;
 import static com.azure.spring.core.ApplicationId.VERSION;
+import static com.azure.spring.keyvault.KeyVaultProperties.DELIMITER;
 import static org.springframework.core.env.StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME;
 
 /**
@@ -43,7 +43,6 @@ class KeyVaultEnvironmentPostProcessorHelper {
     public static final String AZURE_KEYVAULT_PROPERTYSOURCE_NAME = "azurekv";
     public static final long DEFAULT_REFRESH_INTERVAL_MS = 1800000L;
     private static final Logger LOGGER = LoggerFactory.getLogger(KeyVaultEnvironmentPostProcessorHelper.class);
-    private static final String DEFAULT_AUTHORITY_HOST = new IdentityClientOptions().getAuthorityHost();
     private final ConfigurableEnvironment environment;
 
     KeyVaultEnvironmentPostProcessorHelper(final ConfigurableEnvironment environment) {
@@ -142,9 +141,7 @@ class KeyVaultEnvironmentPostProcessorHelper {
         final String certificatePath = getPropertyValue(normalizedName, Property.CERTIFICATE_PATH);
         final String certificatePassword = getPropertyValue(normalizedName, Property.CERTIFICATE_PASSWORD);
         final String authorityHost = Optional.ofNullable(getPropertyValue(normalizedName, Property.AUTHORITY_HOST))
-                                             .orElse(Optional.of(SpringPropertyPrefix.PREFIX + "environment")
-                                                             .map(environment::getProperty)
-                                                             .orElse(DEFAULT_AUTHORITY_HOST));
+                                             .orElse(AzureAuthorityHosts.AZURE_PUBLIC_CLOUD);
         if (clientId != null && tenantId != null && clientSecret != null) {
             LOGGER.debug("Will use custom credentials");
             return new ClientSecretCredentialBuilder()
@@ -182,12 +179,13 @@ class KeyVaultEnvironmentPostProcessorHelper {
         return new ManagedIdentityCredentialBuilder().build();
     }
 
-    private String getPropertyValue(final String normalizedName, final Property property) {
+    @VisibleForTesting
+    String getPropertyValue(final String normalizedName, final Property property) {
         List<String> propertyNames = Arrays.asList(KeyVaultProperties.getPropertyName(normalizedName, property),
-            SpringPropertyPrefix.PREFIX + property.getName());
+            AzureProperties.PREFIX + DELIMITER + property.getName());
 
         String propertyValue = null;
-        for(String key : propertyNames) {
+        for (String key : propertyNames) {
             propertyValue = environment.getProperty(key);
             if (null != propertyValue) {
                 break;
