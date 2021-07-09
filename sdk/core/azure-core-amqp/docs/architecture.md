@@ -9,7 +9,7 @@ listened to.  `Handlers` can be associated with classes implementing the `Extend
 all `Extendable`.
 
 The UML diagram below shows this relationship; the interfaces shown in green are Proton-J classes. Each Proton-J
-instance (ie. `Connection`, `Session`, `Sender`, `Receiver`) is associated with one corresponding `*Handler`.  Each
+instance (e.g., `Connection`, `Session`, `Sender`, `Receiver`) is associated with one corresponding `*Handler`.  Each
 azure-core-amqp `AmqpConnection` is associated with one [`Reactor`][Reactor].  When that instance closes, the AMQP
 connection is also closed.
 
