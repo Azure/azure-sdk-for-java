@@ -291,7 +291,7 @@ To use **aad-starter** in this scenario, we need these steps:
 
 * Step 2: Add properties in application.yml:
     
-    Enable `azure.activedirectory.enable-web-app-and-resource-server` property is `true`, and specify the authorization type for each authorization client.
+    Set property `azure.activedirectory.application-type` is `web_application_and_resource_server`, and specify the authorization type for each authorization client.
     
     ```yaml
     azure:
@@ -300,7 +300,7 @@ To use **aad-starter** in this scenario, we need these steps:
           client-id: <Web-API-C-client-id>
           client-secret: <Web-API-C-client-secret>
           app-id-uri: <Web-API-C-app-id-url>
-          enable-web-app-and-resource-server: true
+          application-type: web_application_and_resource_server
           authorization-clients:
              graph:   # The Web Application will use this client to access graph resource.
                 authorizationGrantType: authorization_code
@@ -353,19 +353,19 @@ To use **aad-starter** in this scenario, we need these steps:
     }
     ```
     
-    Other controller side code refer to `Accessing a web application` and `Accessing a resource server` scenarios respectively. 
+    Other controller side codes refer to `Accessing a web application` and `Accessing a resource server` scenarios respectively. 
 
-### Dependency matrix
+### Application type usage
 
-This starter provides the following dependency usage:
+This starter provides application type recognition based on dependencies and `azure.activedirectory.application-type` configureation, the details are as follows:
  
-| Mode                                | Has dependency: spring-security-oauth2-client | Has dependency: spring-security-oauth2-resource-server | azure.activedirectory.enable-web-app-and-resource-server=true |
-|-------------------------------------|-----------------------------------------------|--------------------------------------------------------|-----------------------------------------------------------|
-| Web application                     |                      Yes                      |                          No                            |                            No                             |
-| Resource Server                     |                      No                       |                          Yes                           |                            No                             |
-| Resource Server with OBO function   |                      Yes                      |                          Yes                           |                            No                             |
-| Web Application and Resource Server |                      Yes                      |                          Yes                           |                            Yes                            |
- 
+|          Application type           | Has dependency: spring-security-oauth2-client | Has dependency: spring-security-oauth2-resource-server |         Set azure.activedirectory.application-type          |
+|-------------------------------------|-----------------------------------------------|--------------------------------------------------------|-------------------------------------------------------------|
+| Web application                     |                      Yes                      |                          No                            |      Not required, it can be set to `web_application`       |
+| Resource Server                     |                      No                       |                          Yes                           |      Not required, it can be set to `resource_server`       |
+| Resource Server with OBO function   |                      Yes                      |                          Yes                           |  Not required, it can be set to `resource_server_with_obo`  |
+| Web Application and Resource Server |                      Yes                      |                          Yes                           |   Required, set to `web_application_and_resource_server`    |
+
 ### Configurable properties
 
 This starter provides the following properties:

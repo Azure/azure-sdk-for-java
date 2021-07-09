@@ -42,7 +42,8 @@ public final class WebApplicationCondition extends SpringBootCondition {
         StringBuilder details = new StringBuilder();
         switch (applicationType) {
             case WEB_APPLICATION:
-                details.append("classes EnableWebSecurity and ClientRegistration");
+                details.append("classes EnableWebSecurity and ClientRegistration, "
+                    + "or property 'azure.activedirectory.application-type=web_application'");
                 break;
             case WEB_APPLICATION_AND_RESOURCE_SERVER:
                 details.append("classes EnableWebSecurity, ClientRegistration and BearerTokenAuthenticationToken "
@@ -52,7 +53,7 @@ public final class WebApplicationCondition extends SpringBootCondition {
                 return ConditionOutcome.noMatch(
                     message.didNotFind("necessary dependencies")
                            .items("classes EnableWebSecurity, ClientRegistration and BearerTokenAuthenticationToken",
-                               "'azure.activedirectory.application-type=web_application_and_resource_server'"));
+                               "property 'azure.activedirectory.application-type'"));
         }
         return ConditionOutcome.match(message.foundExactly(details.toString()));
     }

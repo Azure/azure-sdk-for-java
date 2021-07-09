@@ -14,9 +14,7 @@ public class ClientRegistrationConditionTest extends AbstractCondition {
     @Test
     void testClientConditionWhenEnableWebAppClientMode() {
         this.contextRunner
-            .withPropertyValues(
-                "azure.activedirectory.client-id = fake-client-id",
-                "azure.activedirectory.enable-web-app-and-resource-server=false")
+            .withPropertyValues("azure.activedirectory.client-id = fake-client-id")
             .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
             .withUserConfiguration(ClientRegistrationConditionConfig.class).run(match(true));
     }
@@ -24,9 +22,7 @@ public class ClientRegistrationConditionTest extends AbstractCondition {
     @Test
     void testClientConditionWhenEnableWebApiClientMode() {
         this.contextRunner
-            .withPropertyValues(
-                "azure.activedirectory.client-id = fake-client-id",
-                "azure.activedirectory.enable-web-app-and-resource-server=false")
+            .withPropertyValues("azure.activedirectory.client-id = fake-client-id")
             .withUserConfiguration(ClientRegistrationConditionConfig.class).run(match(true));
     }
 

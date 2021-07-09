@@ -17,9 +17,7 @@ public class WebApplicationConditionTest extends AbstractCondition {
     @Test
     void testWebAppConditionWhenEnableWebAppClientMode() {
         this.contextRunner
-            .withPropertyValues(
-                "azure.activedirectory.client-id = fake-client-id",
-                "azure.activedirectory.enable-web-app-and-resource-server=false")
+            .withPropertyValues("azure.activedirectory.client-id = fake-client-id")
             .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
             .withUserConfiguration(WebAppConditionConfig.class).run(match(true));
     }
