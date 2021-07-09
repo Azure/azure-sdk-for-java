@@ -70,8 +70,7 @@ public class DefaultServiceBusQueueClientFactory extends AbstractServiceBusSende
                                           .queueName(name)
                                           .receiveMode(clientConfig.getServiceBusReceiveMode())
                                           .maxConcurrentCalls(clientConfig.getMaxConcurrentCalls())
-                                          // TODO, which value doesn't used in builder and
-                                          //  It looks like max auto renew duration is not exposed
+                                          // TODO, It looks like max auto renew duration is not exposed
                                           .maxConcurrentSessions(clientConfig.getConcurrency())
                                           .prefetchCount(clientConfig.getPrefetchCount())
                                           .disableAutoComplete()
