@@ -4,8 +4,8 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.JsonSerializable;
-import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import java.time.Duration;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -13,7 +13,6 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 /**
  * Represents a result for a specific operation that was part of a {@link TransactionalBatch} request.
  */
-@Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class TransactionalBatchOperationResult {
 
     private final String eTag;
@@ -53,7 +52,6 @@ public final class TransactionalBatchOperationResult {
      *
      * @return Entity tag associated with the current item.
      */
-    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getETag() {
         return this.eTag;
     }
@@ -66,7 +64,6 @@ public final class TransactionalBatchOperationResult {
      *
      * @return the request charge.
      */
-    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public double getRequestCharge() {
         return this.requestCharge;
     }
@@ -80,7 +77,6 @@ public final class TransactionalBatchOperationResult {
      *
      * @return item associated with the current result.
      */
-    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public <T> T getItem(final Class<T> type) {
         T item = null;
 
@@ -96,7 +92,6 @@ public final class TransactionalBatchOperationResult {
      *
      * @return the retry after
      */
-    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Duration getRetryAfterDuration() {
         return this.retryAfter;
     }
@@ -106,7 +101,6 @@ public final class TransactionalBatchOperationResult {
      *
      * @return the sub status code
      */
-    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public int getSubStatusCode() {
         return this.subStatusCode;
     }
@@ -116,7 +110,6 @@ public final class TransactionalBatchOperationResult {
      *
      * @return {@code true} if the current operation completed successfully; {@code false} otherwise.
      */
-    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public boolean isSuccessStatusCode() {
         return 200 <= this.statusCode && this.statusCode <= 299;
     }
@@ -126,7 +119,6 @@ public final class TransactionalBatchOperationResult {
      *
      * @return the status code.
      */
-    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public int getStatusCode() {
         return this.statusCode;
     }
@@ -140,7 +132,6 @@ public final class TransactionalBatchOperationResult {
      *
      * @return the CosmosItemOperation.
      */
-    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosItemOperation getOperation() {
         return cosmosItemOperation;
     }

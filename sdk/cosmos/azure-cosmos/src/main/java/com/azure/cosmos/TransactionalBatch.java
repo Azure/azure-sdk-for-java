@@ -6,7 +6,6 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.batch.ItemBatchOperation;
 import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.util.Beta;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,7 +81,6 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * <b>See:</b>
  * <a href="https://docs.microsoft.com/azure/cosmos-db/concepts-limits">Limits on TransactionalBatch requests</a>.
  */
-@Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class TransactionalBatch {
 
     private final List<ItemBatchOperation<?>> operations;
@@ -104,7 +102,6 @@ public final class TransactionalBatch {
      *
      * @return A new instance of {@link TransactionalBatch}.
      */
-    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public static TransactionalBatch createTransactionalBatch(PartitionKey partitionKey) {
         return new TransactionalBatch(partitionKey);
     }
@@ -117,7 +114,6 @@ public final class TransactionalBatch {
      *
      * @return The transactional batch instance with the operation added.
      */
-    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public <T> CosmosItemOperation createItemOperation(T item) {
         checkNotNull(item, "expected non-null item");
         return this.createItemOperation(item, new TransactionalBatchItemRequestOptions());
@@ -133,7 +129,6 @@ public final class TransactionalBatch {
      *
      * @return The transactional batch instance with the operation added.
      */
-    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public <T> CosmosItemOperation createItemOperation(T item, TransactionalBatchItemRequestOptions requestOptions) {
 
         checkNotNull(item, "expected non-null item");
@@ -161,7 +156,6 @@ public final class TransactionalBatch {
      *
      * @return The transactional batch instance with the operation added.
      */
-    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosItemOperation deleteItemOperation(String id) {
         checkNotNull(id, "expected non-null id");
         return this.deleteItemOperation(id, new TransactionalBatchItemRequestOptions());
@@ -175,7 +169,6 @@ public final class TransactionalBatch {
      *
      * @return The transactional batch instance with the operation added.
      */
-    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosItemOperation deleteItemOperation(String id, TransactionalBatchItemRequestOptions requestOptions) {
 
         checkNotNull(id, "expected non-null id");
@@ -203,7 +196,6 @@ public final class TransactionalBatch {
      *
      * @return The transactional batch instance with the operation added.
      */
-    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosItemOperation readItemOperation(String id) {
         checkNotNull(id, "expected non-null id");
         return this.readItemOperation(id, new TransactionalBatchItemRequestOptions());
@@ -217,7 +209,6 @@ public final class TransactionalBatch {
      *
      * @return The transactional batch instance with the operation added.
      */
-    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosItemOperation readItemOperation(String id, TransactionalBatchItemRequestOptions requestOptions) {
 
         checkNotNull(id, "expected non-null id");
@@ -247,7 +238,6 @@ public final class TransactionalBatch {
      *
      * @return The transactional batch instance with the operation added.
      */
-    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public <T> CosmosItemOperation replaceItemOperation(String id, T item) {
         checkNotNull(id, "expected non-null id");
         checkNotNull(item, "expected non-null item");
@@ -265,7 +255,6 @@ public final class TransactionalBatch {
      *
      * @return The transactional batch instance with the operation added.
      */
-    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public <T> CosmosItemOperation replaceItemOperation(
         String id, T item, TransactionalBatchItemRequestOptions requestOptions) {
 
@@ -296,7 +285,6 @@ public final class TransactionalBatch {
      *
      * @return The transactional batch instance with the operation added.
      */
-    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public <T> CosmosItemOperation upsertItemOperation(T item) {
         checkNotNull(item, "expected non-null item");
         return this.upsertItemOperation(item, new TransactionalBatchItemRequestOptions());
@@ -312,7 +300,6 @@ public final class TransactionalBatch {
      *
      * @return The transactional batch instance with the operation added.
      */
-    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public <T> CosmosItemOperation upsertItemOperation(T item, TransactionalBatchItemRequestOptions requestOptions) {
 
         checkNotNull(item, "expected non-null item");
@@ -341,7 +328,6 @@ public final class TransactionalBatch {
      *
      * @return The added operation.
      */
-    @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosItemOperation patchItemOperation(String id, CosmosPatchOperations cosmosPatchOperations) {
         checkNotNull(id, "expected non-null id");
         checkNotNull(cosmosPatchOperations, "expected non-null cosmosPatchOperations");
@@ -358,7 +344,6 @@ public final class TransactionalBatch {
      *
      * @return The added operation.
      */
-    @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosItemOperation patchItemOperation(
         String id,
         CosmosPatchOperations cosmosPatchOperations,
@@ -389,7 +374,6 @@ public final class TransactionalBatch {
      *
      * @return The list of operations which are to be executed.
      */
-    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public List<CosmosItemOperation> getOperations() {
         return UnmodifiableList.unmodifiableList(operations);
     }
@@ -399,7 +383,6 @@ public final class TransactionalBatch {
      *
      * @return The partition key for this batch.
      */
-    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public PartitionKey getPartitionKeyValue() {
         return partitionKey;
     }

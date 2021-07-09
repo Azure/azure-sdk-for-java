@@ -3,12 +3,9 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.util.Beta;
-
 /**
  * Encapsulates options that can be specified for an operation within a {@link TransactionalBatch}.
  */
-@Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class TransactionalBatchItemRequestOptions
         extends TransactionalBatchItemRequestOptionsBase {
 
@@ -21,7 +18,6 @@ public final class TransactionalBatchItemRequestOptions
      * @param ifMatchETag the ifMatchETag associated with the request.
      * @return the current request options
      */
-    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public TransactionalBatchItemRequestOptions setIfMatchETag(final String ifMatchETag) {
         super.setIfMatchETagCore(ifMatchETag);
         return this;
@@ -33,7 +29,6 @@ public final class TransactionalBatchItemRequestOptions
      * @param ifNoneMatchEtag the ifNoneMatchETag associated with the request.
      * @return the current request options
      */
-    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public TransactionalBatchItemRequestOptions setIfNoneMatchETag(final String ifNoneMatchEtag) {
         super.setIfNoneMatchETagCore(ifNoneMatchEtag);
         return this;

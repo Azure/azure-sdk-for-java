@@ -4,12 +4,10 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.RequestOptions;
-import com.azure.cosmos.util.Beta;
 
 /**
  * Encapsulates options that can be specified for a {@link TransactionalBatch}.
  */
-@Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class TransactionalBatchRequestOptions {
     private ConsistencyLevel consistencyLevel;
     private String sessionToken;
@@ -39,7 +37,6 @@ public final class TransactionalBatchRequestOptions {
      *
      * @return the session token.
      */
-    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getSessionToken() {
         return sessionToken;
     }
@@ -50,7 +47,6 @@ public final class TransactionalBatchRequestOptions {
      * @param sessionToken the session token.
      * @return the TransactionalBatchRequestOptions.
      */
-    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public TransactionalBatchRequestOptions setSessionToken(String sessionToken) {
         this.sessionToken = sessionToken;
         return this;

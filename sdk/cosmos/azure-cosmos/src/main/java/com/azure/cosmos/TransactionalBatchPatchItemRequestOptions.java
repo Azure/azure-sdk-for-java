@@ -4,9 +4,7 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.RequestOptions;
-import com.azure.cosmos.util.Beta;
 
-@Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class TransactionalBatchPatchItemRequestOptions
         extends TransactionalBatchItemRequestOptionsBase {
     private String filterPredicate;
@@ -16,7 +14,6 @@ public final class TransactionalBatchPatchItemRequestOptions
      *
      * @return the FilterPredicate associated with the request.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getFilterPredicate() {
         return this.filterPredicate;
     }
@@ -27,7 +24,6 @@ public final class TransactionalBatchPatchItemRequestOptions
      * @param filterPredicate the filterPredicate associated with the request.
      * @return the current request options
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public TransactionalBatchPatchItemRequestOptions setFilterPredicate(String filterPredicate) {
         this.filterPredicate = filterPredicate;
         return this;
@@ -39,7 +35,6 @@ public final class TransactionalBatchPatchItemRequestOptions
      * @param ifMatchETag the ifMatchETag associated with the request.
      * @return the current request options
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public TransactionalBatchPatchItemRequestOptions setIfMatchETag(final String ifMatchETag) {
         super.setIfMatchETagCore(ifMatchETag);
         return this;
@@ -51,7 +46,6 @@ public final class TransactionalBatchPatchItemRequestOptions
      * @param ifNoneMatchEtag the ifNoneMatchETag associated with the request.
      * @return the current request options
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public TransactionalBatchPatchItemRequestOptions setIfNoneMatchETag(final String ifNoneMatchEtag) {
         super.setIfNoneMatchETagCore(ifNoneMatchEtag);
         return this;
