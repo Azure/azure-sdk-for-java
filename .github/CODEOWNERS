@@ -136,3 +136,6 @@
 
 /**/tests.yml                                       @benbp
 /**/ci.yml                                          @benbp
+
+# Add owners for notifications for specific pipelines
+/eng/pipelines/aggregate-reports.yml                @joshfree
