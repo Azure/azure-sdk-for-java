@@ -20,7 +20,7 @@ has one [`ReactorDispatcher`][ReactorDispatcher] and one [`ReactorExecutor`][Rea
 
 ## Prefetch and AMQP Link Credits
 
-In Project Reactor, prefetch is the initial number of items to request upstream, afterwards, 75% of the initial prefetch
+In Project Reactor, prefetch is the initial number of items to request upstream. Afterwards, 75% of the initial prefetch
 is used for subsequent `request(long)`.
 
 In Event Hubs, prefetch is the number of AMQP link credits to put on the link when it is first created.  After those
