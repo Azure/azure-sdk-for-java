@@ -137,6 +137,12 @@ public class PerfStressProgram {
                 Flux.just(tests).flatMap(PerfStressTest::setupAsync).blockLast();
                 setupStatus.dispose();
 
+                if (options.getTestProxy() != null) {
+                    Disposable recordStatus = printStatus("=== Record and Start Playback ===", () -> ".", false, false);
+                    Flux.just(tests).flatMap(PerfStressTest::recordAndStartPlaybackAsync).blockLast();
+                    recordStatus.dispose();
+                }
+
                 if (options.getWarmup() > 0) {
                     runTests(tests, options.isSync(), options.getParallel(), options.getWarmup(), "Warmup");
                 }
@@ -149,6 +155,12 @@ public class PerfStressProgram {
                     runTests(tests, options.isSync(), options.getParallel(), options.getDuration(), title);
                 }
             } finally {
+                if (options.getTestProxy() != null) {
+                    Disposable playbackStatus = printStatus("=== Stop Playback ===", () -> ".", false, false);
+                    Flux.just(tests).flatMap(PerfStressTest::stopPlayback).blockLast();
+                    playbackStatus.dispose();
+                }
+
                 if (!options.isNoCleanup()) {
                     cleanupStatus = printStatus("=== Cleanup ===", () -> ".", false, false);
 
