@@ -31,8 +31,6 @@ public abstract class PerfStressTest<TOptions extends PerfStressOptions> {
     private final reactor.netty.http.client.HttpClient recordPlaybackHttpClient;
 
     protected final TOptions options;
-
-    // TODO: Fields vs "get" methods?
     protected final HttpClient httpClient;
     protected final Iterable<HttpPipelinePolicy> policies;
 
