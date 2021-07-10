@@ -87,6 +87,10 @@ public abstract class PerfStressTest<TOptions extends PerfStressOptions> {
         return Mono.empty();
     }
 
+    public Mono<Void> recordAndStartPlayback() {
+
+    }
+
     /**
      * Runs the performance test.
      */
@@ -97,6 +101,9 @@ public abstract class PerfStressTest<TOptions extends PerfStressOptions> {
      * @return An empty {@link Mono}
      */
     public abstract Mono<Void> runAsync();
+
+    public Mono<Void> stopPlayback() {
+    }
 
     /**
      * Runs the cleanup logic after an individual thread finishes in the performance test.
@@ -112,5 +119,14 @@ public abstract class PerfStressTest<TOptions extends PerfStressOptions> {
      */
     public Mono<Void> globalCleanupAsync() {
         return Mono.empty();
+    }
+
+    private Mono<Void> startRecording() {
+    }
+
+    private Mono<Void> stopRecording() {
+    }
+
+    private Mono<Void> startPlayback() {
     }
 }
