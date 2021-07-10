@@ -93,8 +93,8 @@ public abstract class PerfStressTest<TOptions extends PerfStressOptions> {
         return Mono.empty();
     }
 
-    public Mono<Void> recordAndStartPlayback() {
-        return startRecording()
+    public Mono<Void> recordAndStartPlaybackAsync() {
+        return startRecordingAsync()
             .doOnSuccess(x -> {
                 testProxyPolicy.setRecordingId(recordingId);
                 testProxyPolicy.setMode("record");
@@ -107,8 +107,8 @@ public abstract class PerfStressTest<TOptions extends PerfStressOptions> {
                     return runAsync();
                 }
             })())
-            .then(stopRecording())
-            .then(startPlayback())
+            .then(stopRecordingAsync())
+            .then(startPlaybackAsync())
             .doOnSuccess(x -> {
                 testProxyPolicy.setRecordingId(recordingId);
                 testProxyPolicy.setMode("playback");
@@ -126,7 +126,7 @@ public abstract class PerfStressTest<TOptions extends PerfStressOptions> {
      */
     public abstract Mono<Void> runAsync();
 
-    public Mono<Void> stopPlayback() {
+    public Mono<Void> stopPlaybackAsync() {
         return httpClient
             .headers(h -> {
                 h.set("x-recording-id", recordingId);
@@ -158,7 +158,7 @@ public abstract class PerfStressTest<TOptions extends PerfStressOptions> {
         return Mono.empty();
     }
 
-    private Mono<Void> startRecording() {
+    private Mono<Void> startRecordingAsync() {
         return httpClient
             .post()
             .uri(options.getTestProxy().resolve("/record/start"))
@@ -169,7 +169,7 @@ public abstract class PerfStressTest<TOptions extends PerfStressOptions> {
             .then();
     }
 
-    private Mono<Void> stopRecording() {
+    private Mono<Void> stopRecordingAsync() {
         return httpClient
             .headers(h -> h.set("x-recording-id", recordingId))
             .post()
@@ -178,7 +178,7 @@ public abstract class PerfStressTest<TOptions extends PerfStressOptions> {
             .then();
     }
 
-    private Mono<Void> startPlayback() {
+    private Mono<Void> startPlaybackAsync() {
         return httpClient
             .headers(h -> h.set("x-recording-id", recordingId))
             .post()
