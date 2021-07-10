@@ -12,7 +12,6 @@ import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import java.util.ArrayList;
 import javax.net.ssl.SSLException;
 import reactor.core.publisher.Mono;
-import reactor.netty.http.client.HttpClient;
 import reactor.netty.http.client.HttpClientResponse;
 
 /**
@@ -29,7 +28,7 @@ import reactor.netty.http.client.HttpClientResponse;
  * @param <TOptions> the options configured for the test.
  */
 public abstract class PerfStressTest<TOptions extends PerfStressOptions> {
-    private static final HttpClient httpClient = HttpClient.create();
+    private final reactor.netty.http.client.HttpClient recordPlaybackHttpClient;
 
     protected final TOptions options;
 
@@ -59,12 +58,16 @@ public abstract class PerfStressTest<TOptions extends PerfStressOptions> {
                 throw new IllegalStateException(e);
             }
 
+            recordPlaybackHttpClient = reactor.netty.http.client.HttpClient.create()
+                .secure(sslContextSpec -> sslContextSpec.sslContext(sslContext));
+
             reactor.netty.http.client.HttpClient nettyHttpClient = reactor.netty.http.client.HttpClient.create()
                 .secure(sslContextSpec -> sslContextSpec.sslContext(sslContext));
             
             httpClient = new NettyAsyncHttpClientBuilder(nettyHttpClient).build();
         }
         else {
+            recordPlaybackHttpClient = reactor.netty.http.client.HttpClient.create();
             httpClient = null;
         }
 
@@ -127,7 +130,7 @@ public abstract class PerfStressTest<TOptions extends PerfStressOptions> {
     public abstract Mono<Void> runAsync();
 
     public Mono<Void> stopPlaybackAsync() {
-        return httpClient
+        return recordPlaybackHttpClient
             .headers(h -> {
                 h.set("x-recording-id", recordingId);
                 h.set("x-purge-inmemory-recording", Boolean.toString(true));
@@ -159,7 +162,7 @@ public abstract class PerfStressTest<TOptions extends PerfStressOptions> {
     }
 
     private Mono<Void> startRecordingAsync() {
-        return httpClient
+        return recordPlaybackHttpClient
             .post()
             .uri(options.getTestProxy().resolve("/record/start"))
             .response()
@@ -170,7 +173,7 @@ public abstract class PerfStressTest<TOptions extends PerfStressOptions> {
     }
 
     private Mono<Void> stopRecordingAsync() {
-        return httpClient
+        return recordPlaybackHttpClient
             .headers(h -> h.set("x-recording-id", recordingId))
             .post()
             .uri(options.getTestProxy().resolve("/record/stop"))
@@ -179,7 +182,7 @@ public abstract class PerfStressTest<TOptions extends PerfStressOptions> {
     }
 
     private Mono<Void> startPlaybackAsync() {
-        return httpClient
+        return recordPlaybackHttpClient
             .headers(h -> h.set("x-recording-id", recordingId))
             .post()
             .uri(options.getTestProxy().resolve("/playback/start"))
