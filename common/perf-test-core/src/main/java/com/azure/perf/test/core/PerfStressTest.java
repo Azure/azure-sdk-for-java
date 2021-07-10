@@ -12,6 +12,8 @@ import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import java.util.ArrayList;
 import javax.net.ssl.SSLException;
 import reactor.core.publisher.Mono;
+import reactor.netty.http.client.HttpClient;
+import reactor.netty.http.client.HttpClientResponse;
 
 /**
  * Represents the abstraction of a Performance test class.
@@ -27,6 +29,8 @@ import reactor.core.publisher.Mono;
  * @param <TOptions> the options configured for the test.
  */
 public abstract class PerfStressTest<TOptions extends PerfStressOptions> {
+    private static final HttpClient httpClient = HttpClient.create();
+
     protected final TOptions options;
 
     // TODO: Fields vs "get" methods?
@@ -34,6 +38,8 @@ public abstract class PerfStressTest<TOptions extends PerfStressOptions> {
     protected final Iterable<HttpPipelinePolicy> policies;
 
     private final TestProxyPolicy testProxyPolicy;
+
+    private String recordingId;
 
     /**
      * Creates an instance of performance test.
@@ -88,7 +94,25 @@ public abstract class PerfStressTest<TOptions extends PerfStressOptions> {
     }
 
     public Mono<Void> recordAndStartPlayback() {
-
+        return startRecording()
+            .doOnSuccess(x -> {
+                testProxyPolicy.setRecordingId(recordingId);
+                testProxyPolicy.setMode("record");
+            })
+            .then((() -> {
+                if (options.isSync()) {
+                    return Mono.empty().doOnSuccess(x -> run());
+                }
+                else {
+                    return runAsync();
+                }
+            })())
+            .then(stopRecording())
+            .then(startPlayback())
+            .doOnSuccess(x -> {
+                testProxyPolicy.setRecordingId(recordingId);
+                testProxyPolicy.setMode("playback");
+            });
     }
 
     /**
@@ -103,6 +127,19 @@ public abstract class PerfStressTest<TOptions extends PerfStressOptions> {
     public abstract Mono<Void> runAsync();
 
     public Mono<Void> stopPlayback() {
+        return httpClient
+            .headers(h -> {
+                h.set("x-recording-id", recordingId);
+                h.set("x-purge-inmemory-recording", Boolean.toString(true));
+            })
+            .post()
+            .uri(options.getTestProxy().resolve("/playback/stop"))
+            .response()
+            .doOnSuccess(response -> {
+                testProxyPolicy.setMode(null);
+                testProxyPolicy.setRecordingId(null);
+            })
+            .then();
     }
 
     /**
@@ -122,11 +159,34 @@ public abstract class PerfStressTest<TOptions extends PerfStressOptions> {
     }
 
     private Mono<Void> startRecording() {
+        return httpClient
+            .post()
+            .uri(options.getTestProxy().resolve("/record/start"))
+            .response()
+            .doOnNext(response -> {
+                recordingId = response.responseHeaders().get("x-recording-id");
+            })
+            .then();
     }
 
     private Mono<Void> stopRecording() {
+        return httpClient
+            .headers(h -> h.set("x-recording-id", recordingId))
+            .post()
+            .uri(options.getTestProxy().resolve("/record/stop"))
+            .response()
+            .then();
     }
 
     private Mono<Void> startPlayback() {
+        return httpClient
+            .headers(h -> h.set("x-recording-id", recordingId))
+            .post()
+            .uri(options.getTestProxy().resolve("/playback/start"))
+            .response()
+            .doOnNext(response -> {
+                recordingId = response.responseHeaders().get("x-recording-id");
+            })
+            .then();
     }
 }
