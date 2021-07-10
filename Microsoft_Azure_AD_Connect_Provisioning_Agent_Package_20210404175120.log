@@ -1,0 +1,55 @@
+5:57 PM 4/4/2021
+[3A58:1BD8][2021-04-04T17:51:19]i001: Burn v3.14.0.1316, Windows v10.0 (Build 18363: Service Pack 0), path: C:\Users\mbg19\AppData\Local\Temp\{46C3396D-EC0E-4E1B-8689-DD4562F34179}\.cr\AADConnectProvisioningAgentSetup.exe
+[3A58:1BD8][2021-04-04T17:51:19]i000: Initializing string variable 'ENVIRONMENTNAME' to value 'Default'
+[3A58:1BD8][2021-04-04T17:51:20]i009: Command Line: '-burn.clean.room=C:\Users\mbg19\AppData\Local\Temp\MicrosoftEdgeDownloads\cb3c998a-af6b-4f9a-b9f8-b80053d66413\AADConnectProvisioningAgentSetup.exe -burn.filehandle.attached=716 -burn.filehandle.self=652'
+[3A58:1BD8][2021-04-04T17:51:20]i000: Setting string variable 'WixBundleOriginalSource' to value 'C:\Users\mbg19\AppData\Local\Temp\MicrosoftEdgeDownloads\cb3c998a-af6b-4f9a-b9f8-b80053d66413\AADConnectProvisioningAgentSetup.exe'
+[3A58:1BD8][2021-04-04T17:51:20]i000: Setting string variable 'WixBundleOriginalSourceFolder' to value 'C:\Users\mbg19\AppData\Local\Temp\MicrosoftEdgeDownloads\cb3c998a-af6b-4f9a-b9f8-b80053d66413\'
+[3A58:1BD8][2021-04-04T17:51:20]i000: Setting string variable 'WixBundleLog' to value 'C:\Users\mbg19\AppData\Local\Temp\Microsoft_Azure_AD_Connect_Provisioning_Agent_Package_20210404175120.log'
+[3A58:1BD8][2021-04-04T17:51:20]i000: Setting string variable 'WixBundleName' to value 'Microsoft Azure AD Connect Provisioning Agent Package'
+[3A58:1BD8][2021-04-04T17:51:20]i000: Setting string variable 'WixBundleManufacturer' to value 'Microsoft Corporation'
+[3A58:54C0][2021-04-04T17:51:20]i000: Setting numeric variable 'WixStdBALanguageId' to value 1033
+[3A58:54C0][2021-04-04T17:51:20]i000: Setting version variable 'WixBundleFileVersion' to value '1.1.354.0'
+[3A58:1BD8][2021-04-04T17:51:21]i100: Detect begin, 2 packages
+[3A58:1BD8][2021-04-04T17:51:21]i000: Setting string variable 'NETFRAMEWORK45' to value '528040'
+[3A58:1BD8][2021-04-04T17:51:21]i101: Detected package: AADConnectProvisioningAgent.Setup.msi, state: Absent, cached: None
+[3A58:1BD8][2021-04-04T17:51:21]i101: Detected package: AzureADConnectAgentUpdaterInstaller.msi, state: Absent, cached: None
+[3A58:1BD8][2021-04-04T17:51:21]i052: Condition 'NETFRAMEWORK45 >= 461308' evaluates to true.
+[3A58:1BD8][2021-04-04T17:51:21]i199: Detect complete, result: 0x0
+[3A58:54C0][2021-04-04T17:51:26]i000: Setting numeric variable 'EulaAcceptCheckbox' to value 1
+[3A58:1BD8][2021-04-04T17:51:26]i200: Plan begin, 2 packages, action: Install
+[3A58:1BD8][2021-04-04T17:51:26]i000: Setting string variable 'WixBundleLog_AADConnectProvisioningAgent.Setup.msi' to value 'C:\Users\mbg19\AppData\Local\Temp\Microsoft_Azure_AD_Connect_Provisioning_Agent_Package_20210404175120_000_AADConnectProvisioningAgent.Setup.msi.log'
+[3A58:1BD8][2021-04-04T17:51:26]i000: Setting string variable 'WixBundleLog_AzureADConnectAgentUpdaterInstaller.msi' to value 'C:\Users\mbg19\AppData\Local\Temp\Microsoft_Azure_AD_Connect_Provisioning_Agent_Package_20210404175120_001_AzureADConnectAgentUpdaterInstaller.msi.log'
+[3A58:1BD8][2021-04-04T17:51:26]i201: Planned package: AADConnectProvisioningAgent.Setup.msi, state: Absent, default requested: Present, ba requested: Present, execute: Install, rollback: None, cache: Yes, uncache: No, dependency: Register
+[3A58:1BD8][2021-04-04T17:51:26]i201: Planned package: AzureADConnectAgentUpdaterInstaller.msi, state: Absent, default requested: Present, ba requested: Present, execute: Install, rollback: None, cache: Yes, uncache: No, dependency: Register
+[3A58:1BD8][2021-04-04T17:51:26]i299: Plan complete, result: 0x0
+[3A58:1BD8][2021-04-04T17:51:26]i300: Apply begin
+[3A58:1BD8][2021-04-04T17:51:26]i010: Launching elevated engine process.
+[3A58:1BD8][2021-04-04T17:51:41]i011: Launched elevated engine process.
+[3A58:1BD8][2021-04-04T17:51:42]i012: Connected to elevated engine.
+[59EC:485C][2021-04-04T17:51:42]i358: Pausing automatic updates.
+[59EC:485C][2021-04-04T17:51:42]i359: Paused automatic updates.
+[59EC:485C][2021-04-04T17:51:42]i360: Creating a system restore point.
+[59EC:485C][2021-04-04T17:51:42]w363: Could not create system restore point, error: 0x80070422. Continuing...
+[59EC:485C][2021-04-04T17:51:42]i370: Session begin, registration key: SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{bf3ba212-8736-400e-aa05-9da803140a4f}, options: 0x7, disable resume: No
+[59EC:485C][2021-04-04T17:51:42]i000: Caching bundle from: 'C:\Users\mbg19\AppData\Local\Temp\{C3D22820-41E5-4739-BEAF-F3BD595E046B}\.be\AADConnectProvisioningAgent.Installer.exe' to: 'C:\ProgramData\Package Cache\{bf3ba212-8736-400e-aa05-9da803140a4f}\AADConnectProvisioningAgent.Installer.exe'
+[59EC:485C][2021-04-04T17:51:42]i320: Registering bundle dependency provider: {bf3ba212-8736-400e-aa05-9da803140a4f}, version: 1.1.354.0
+[59EC:485C][2021-04-04T17:51:42]i371: Updating session, registration key: SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{bf3ba212-8736-400e-aa05-9da803140a4f}, resume: Active, restart initiated: No, disable resume: No
+[59EC:25C8][2021-04-04T17:51:44]i305: Verified acquired payload: AADConnectProvisioningAgent.Setup.msi at path: C:\ProgramData\Package Cache\.unverified\AADConnectProvisioningAgent.Setup.msi, moving to: C:\ProgramData\Package Cache\{A2F5D049-C43B-4202-B30C-09F46F7492F2}v1.1.354.0\AADConnectProvisioningAgent.Setup.msi.
+[59EC:25C8][2021-04-04T17:51:44]i305: Verified acquired payload: AzureADConnectAgentUpdaterInstaller.msi at path: C:\ProgramData\Package Cache\.unverified\AzureADConnectAgentUpdaterInstaller.msi, moving to: C:\ProgramData\Package Cache\{956AF4E3-97E8-4D02-8E76-8490E76063CE}v1.5.388.0\AzureADConnectAgentUpdaterInstaller.msi.
+[59EC:485C][2021-04-04T17:51:44]i323: Registering package dependency provider: {A2F5D049-C43B-4202-B30C-09F46F7492F2}, version: 1.1.354.0, package: AADConnectProvisioningAgent.Setup.msi
+[59EC:485C][2021-04-04T17:51:44]i301: Applying execute package: AADConnectProvisioningAgent.Setup.msi, action: Install, path: C:\ProgramData\Package Cache\{A2F5D049-C43B-4202-B30C-09F46F7492F2}v1.1.354.0\AADConnectProvisioningAgent.Setup.msi, arguments: ' MSIFASTINSTALL="7" INSTALLDIR="" ENVIRONMENTNAME="Default" WIZARDMODE="4"'
+[59EC:485C][2021-04-04T17:51:52]e000: Error 0x80070643: Failed to install MSI package.
+[59EC:485C][2021-04-04T17:51:52]e000: Error 0x80070643: Failed to execute MSI package.
+[3A58:1BD8][2021-04-04T17:51:52]e000: Error 0x80070643: Failed to configure per-machine MSI package.
+[3A58:1BD8][2021-04-04T17:51:52]i319: Applied execute package: AADConnectProvisioningAgent.Setup.msi, result: 0x80070643, restart: None
+[3A58:1BD8][2021-04-04T17:51:52]e000: Error 0x80070643: Failed to execute MSI package.
+[59EC:485C][2021-04-04T17:51:52]i329: Removed package dependency provider: {A2F5D049-C43B-4202-B30C-09F46F7492F2}, package: AADConnectProvisioningAgent.Setup.msi
+[59EC:485C][2021-04-04T17:51:52]i351: Removing cached package: AADConnectProvisioningAgent.Setup.msi, from path: C:\ProgramData\Package Cache\{A2F5D049-C43B-4202-B30C-09F46F7492F2}v1.1.354.0\
+[59EC:485C][2021-04-04T17:51:52]i372: Session end, registration key: SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{bf3ba212-8736-400e-aa05-9da803140a4f}, resume: All, restart: None, disable resume: No
+[59EC:485C][2021-04-04T17:51:52]i330: Removed bundle dependency provider: {bf3ba212-8736-400e-aa05-9da803140a4f}
+[59EC:485C][2021-04-04T17:51:52]i352: Removing cached bundle: {bf3ba212-8736-400e-aa05-9da803140a4f}, from path: C:\ProgramData\Package Cache\{bf3ba212-8736-400e-aa05-9da803140a4f}\
+[59EC:485C][2021-04-04T17:51:52]i371: Updating session, registration key: SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{bf3ba212-8736-400e-aa05-9da803140a4f}, resume: All, restart initiated: Yes, disable resume: Yes
+[3A58:1BD8][2021-04-04T17:51:52]i399: Apply complete, result: 0x80070643, restart: None, ba requested restart:  Yes
+
+
+
