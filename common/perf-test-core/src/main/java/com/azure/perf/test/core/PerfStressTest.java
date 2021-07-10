@@ -29,8 +29,11 @@ import reactor.core.publisher.Mono;
 public abstract class PerfStressTest<TOptions extends PerfStressOptions> {
     protected final TOptions options;
 
+    // TODO: Fields vs "get" methods?
     protected final HttpClient httpClient;
     protected final Iterable<HttpPipelinePolicy> policies;
+
+    private final TestProxyPolicy testProxyPolicy;
 
     /**
      * Creates an instance of performance test.
@@ -47,7 +50,7 @@ public abstract class PerfStressTest<TOptions extends PerfStressOptions> {
                     .build();
             }
             catch (SSLException e) {
-                throw new RuntimeException(e);
+                throw new IllegalStateException(e);
             }
 
             reactor.netty.http.client.HttpClient nettyHttpClient = reactor.netty.http.client.HttpClient.create()
@@ -60,7 +63,8 @@ public abstract class PerfStressTest<TOptions extends PerfStressOptions> {
         }
 
         if (options.getTestProxy() != null) {
-            policies = new ArrayList<HttpPipelinePolicy>();
+            testProxyPolicy = new TestProxyPolicy(options.getTestProxy());
+            policies = Arrays.asList(testProxyPolicy);
         }
         else {
             policies = null;
