@@ -11,10 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.openjdk.jmh.Main;
 import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.infra.Blackhole;
-import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.RunnerException;
-import org.openjdk.jmh.runner.options.Options;
-import org.openjdk.jmh.runner.options.OptionsBuilder;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -30,11 +27,19 @@ import java.util.concurrent.TimeUnit;
 public class SerializationBenchmark {
     private JacksonAdapter serializer;
     private ObjectMapper mapper;
+    private OuterModel simpleModel;
+    private OuterModel additionalPropertiesModel;
+    private OuterModel jsonAnyModel;
+    private OuterModelFlatten flattenModel;
 
     @Setup
     public void setup() {
         this.serializer = new JacksonAdapter();
         this.mapper = new ObjectMapper();
+        this.simpleModel = new OuterModel("foo", "bar", "baz", Test.PLAIN);
+        this.additionalPropertiesModel = new OuterModel("foo", "bar", "baz", Test.ADDITIONAL_PROPERTIES);
+        this.jsonAnyModel = new OuterModel("foo", "bar", "baz", Test.JSON_ANY);
+        this.flattenModel = new OuterModelFlatten("foo", "bar", "baz");
     }
 
     enum Test {
@@ -50,13 +55,13 @@ public class SerializationBenchmark {
             this.baz = baz;
         }
 
-        @JsonProperty()
+        @JsonProperty
         private String foo;
 
-        @JsonProperty()
+        @JsonProperty
         private String bar;
 
-        @JsonProperty()
+        @JsonProperty
         private String baz;
     }
 
@@ -68,7 +73,7 @@ public class SerializationBenchmark {
             additionalProperties.put("baz", baz);
         }
 
-        @JsonProperty()
+        @JsonProperty
         private Map<String, String> additionalProperties;
     }
 
@@ -80,7 +85,7 @@ public class SerializationBenchmark {
             any.put("baz", baz);
         }
 
-        @JsonAnyGetter()
+        @JsonAnyGetter
         @JsonAnySetter
         private Map<String, String> any;
     }
@@ -129,40 +134,33 @@ public class SerializationBenchmark {
     }
 
     @Benchmark
-    @SuppressWarnings("unchecked")
     public void simpleModelObjectMapperSerializeJson(Blackhole blackhole) throws IOException {
-        blackhole.consume(mapper.writeValueAsString(new OuterModel("foo", "bar", "baz", Test.PLAIN)));
+        blackhole.consume(this.mapper.writeValueAsString(this.simpleModel));
     }
 
-
     @Benchmark
-    @SuppressWarnings("unchecked")
     public void simpleModelJacksonAdapterSerializeJson(Blackhole blackhole) throws IOException {
-        blackhole.consume(serializer.serialize(new OuterModel("foo", "bar", "baz", Test.PLAIN), SerializerEncoding.JSON));
+        blackhole.consume(this.serializer.serialize(this.simpleModel, SerializerEncoding.JSON));
     }
 
     @Benchmark
-    @SuppressWarnings("unchecked")
     public void additionalPropertiesJacksonAdapterSerializeJson(Blackhole blackhole) throws IOException {
-        blackhole.consume(serializer.serialize(new OuterModel("foo", "bar", "baz", Test.ADDITIONAL_PROPERTIES), SerializerEncoding.JSON));
+        blackhole.consume(this.serializer.serialize(this.additionalPropertiesModel, SerializerEncoding.JSON));
     }
 
     @Benchmark
-    @SuppressWarnings("unchecked")
     public void flattenJacksonAdapterSerializeJson(Blackhole blackhole) throws IOException {
-        blackhole.consume(serializer.serialize(new OuterModelFlatten("foo", "bar", "baz"), SerializerEncoding.JSON));
+        blackhole.consume(this.serializer.serialize(this.flattenModel, SerializerEncoding.JSON));
     }
 
     @Benchmark
-    @SuppressWarnings("unchecked")
     public void jsonAnyJacksonAdapterSerializeJson(Blackhole blackhole) throws IOException {
-        blackhole.consume(serializer.serialize(new OuterModel("foo", "bar", "baz", Test.JSON_ANY), SerializerEncoding.JSON));
+        blackhole.consume(this.serializer.serialize(this.jsonAnyModel, SerializerEncoding.JSON));
     }
 
     @Benchmark
-    @SuppressWarnings("unchecked")
     public void simpleModelJacksonAdapterSerializeXml(Blackhole blackhole) throws IOException {
-        blackhole.consume(serializer.serialize(new OuterModel("foo", "bar", "baz", Test.PLAIN), SerializerEncoding.XML));
+        blackhole.consume(this.serializer.serialize(this.simpleModel, SerializerEncoding.XML));
     }
 
     public static void main(String... args) throws IOException, RunnerException {
