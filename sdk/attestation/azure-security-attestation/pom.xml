@@ -55,7 +55,7 @@
     <dependency>
       <groupId>io.github.cdimascio</groupId>
       <artifactId>java-dotenv</artifactId>
-      <version>5.2.2</version><!-- {x-version-update;io.github.cdimascio:java-dotenv;external_dependency} -->
+      <version>5.2.2</version> <!-- {x-version-update;io.github.cdimascio:java-dotenv;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>

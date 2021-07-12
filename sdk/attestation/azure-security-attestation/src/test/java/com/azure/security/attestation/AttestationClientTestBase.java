@@ -70,7 +70,7 @@ public class AttestationClientTestBase extends TestBase {
     @BeforeAll
     public static void beforeAll() {
         TestBase.setupClass();
-        Dotenv.configure().systemProperties().load();
+        Dotenv.configure().ignoreIfMissing().systemProperties().load();
     }
 
     /**
