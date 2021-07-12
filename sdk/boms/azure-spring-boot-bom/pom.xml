@@ -89,6 +89,11 @@
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
+        <artifactId>azure-spring-boot-starter-keyvault-certificates</artifactId>
+        <version>${azure.spring.boot.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.azure.spring</groupId>
         <artifactId>azure-spring-boot-starter-keyvault-secrets</artifactId>
         <version>${azure.spring.boot.keyvault.secrets.version}</version>
       </dependency>
