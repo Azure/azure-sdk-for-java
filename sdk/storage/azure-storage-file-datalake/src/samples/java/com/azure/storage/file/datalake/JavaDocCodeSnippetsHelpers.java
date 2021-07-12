@@ -7,6 +7,7 @@ import com.azure.storage.file.datalake.models.UserDelegationKey;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.OffsetDateTime;
 
 final class JavaDocCodeSnippetsHelpers {
     static DataLakeFileSystemAsyncClient getFileSystemAsyncClient() {
@@ -51,6 +52,6 @@ final class JavaDocCodeSnippetsHelpers {
     }
 
     static UserDelegationKey getUserDelegationKey() {
-        return getDataLakeServiceClient().getUserDelegationKey(null, null);
+        return getDataLakeServiceClient().getUserDelegationKey(null, OffsetDateTime.now().plusDays(30));
     }
 }
