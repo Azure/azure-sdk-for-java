@@ -90,7 +90,7 @@ public class KeyVaultEnvironmentPostProcessorTest {
 
     @Test
     public void testGetCredentialsWhenMSIEnabledInVMWithClientId() {
-        testProperties.put("azure.keyvault.client-id", "aaaa-bbbb-cccc-dddd");
+        testProperties.put("spring.cloud.azure.keyvault.credential.client-id", "aaaa-bbbb-cccc-dddd");
         propertySources.addLast(new MapPropertySource("Test_Properties", testProperties));
 
         keyVaultEnvironmentPostProcessorHelper = new KeyVaultEnvironmentPostProcessorHelper(environment);
@@ -119,7 +119,7 @@ public class KeyVaultEnvironmentPostProcessorTest {
     public void postProcessorOrderConfigurable() {
         final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
             .withConfiguration(AutoConfigurations.of(OrderedProcessConfig.class))
-            .withPropertyValues("azure.keyvault.uri=fakeuri", "azure.keyvault.enabled=true");
+            .withPropertyValues("spring.cloud.azure.keyvault.uri=fakeuri", "spring.cloud.azure.keyvault.enabled=true");
 
         contextRunner.run(context -> {
             assertThat("Configured order for KeyVaultEnvironmentPostProcessor is different with default order "

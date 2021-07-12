@@ -86,7 +86,7 @@
         "siteConfig": {
           "appSettings": [
             {
-              "name": "AZURE_KEYVAULT_URI",
+              "name": "SPRING_CLOUD_AZURE_KEYVAULT_URI",
               "value": "[variables('azureKeyVaultUri')]"
             }
           ],
