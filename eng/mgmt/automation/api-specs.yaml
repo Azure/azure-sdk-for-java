@@ -47,8 +47,6 @@ network:
   suffix: generated
 operationalinsights:
   service: loganalytics
-postgresql:
-  service: postgresqlflexibleserver
 privatedns:
   suffix: generated
 redis:
