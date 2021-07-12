@@ -7,13 +7,13 @@ package com.azure.resourcemanager.eventgrid.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventgrid.models.EventChannelDestination;
 import com.azure.resourcemanager.eventgrid.models.EventChannelFilter;
 import com.azure.resourcemanager.eventgrid.models.EventChannelProvisioningState;
 import com.azure.resourcemanager.eventgrid.models.EventChannelSource;
 import com.azure.resourcemanager.eventgrid.models.PartnerTopicReadinessState;
-import com.azure.resourcemanager.eventgrid.models.SystemData;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -222,9 +222,6 @@ public class EventChannelInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (systemData() != null) {
-            systemData().validate();
-        }
         if (source() != null) {
             source().validate();
         }

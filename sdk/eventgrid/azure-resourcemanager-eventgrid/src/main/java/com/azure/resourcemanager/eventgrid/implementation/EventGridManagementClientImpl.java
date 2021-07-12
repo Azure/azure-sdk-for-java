@@ -344,7 +344,7 @@ public final class EventGridManagementClientImpl implements EventGridManagementC
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2020-10-15-preview";
+        this.apiVersion = "2021-06-01-preview";
         this.domains = new DomainsClientImpl(this);
         this.domainTopics = new DomainTopicsClientImpl(this);
         this.eventChannels = new EventChannelsClientImpl(this);

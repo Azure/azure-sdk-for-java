@@ -34,6 +34,12 @@ public final class ValueCondition {
     private Direction direction;
 
     /*
+     * data used to implement value filter
+     */
+    @JsonProperty(value = "type")
+    private ValueType type;
+
+    /*
      * the other metric unique id used for value filter
      */
     @JsonProperty(value = "metricId")
@@ -113,6 +119,26 @@ public final class ValueCondition {
      */
     public ValueCondition setDirection(Direction direction) {
         this.direction = direction;
+        return this;
+    }
+
+    /**
+     * Get the type property: data used to implement value filter.
+     *
+     * @return the type value.
+     */
+    public ValueType getType() {
+        return this.type;
+    }
+
+    /**
+     * Set the type property: data used to implement value filter.
+     *
+     * @param type the type value to set.
+     * @return the ValueCondition object itself.
+     */
+    public ValueCondition setType(ValueType type) {
+        this.type = type;
         return this;
     }
 

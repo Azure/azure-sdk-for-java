@@ -7,7 +7,7 @@ package com.azure.containers.containerregistry.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The AccessToken model. */
+/** The AcrAccessToken model. */
 @Fluent
 public final class AcrAccessToken {
     /*
@@ -29,7 +29,7 @@ public final class AcrAccessToken {
      * Set the accessToken property: The access token for performing authenticated requests.
      *
      * @param accessToken the accessToken value to set.
-     * @return the AccessToken object itself.
+     * @return the AcrAccessToken object itself.
      */
     public AcrAccessToken setAccessToken(String accessToken) {
         this.accessToken = accessToken;

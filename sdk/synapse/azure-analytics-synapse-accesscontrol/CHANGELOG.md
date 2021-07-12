@@ -1,5 +1,15 @@
-## 1.0.0-beta.3 (Unreleased)
+# Release History
 
+## 1.0.0-beta.4 (Unreleased)
+
+
+## 1.0.0-beta.3 (2021-04-06)
+
+### Breaking Changes
+- `listRoleAssignmentsWithResponse()` now returns `RoleAssignmentsListRoleAssignmentsResponse`
+
+### Dependency Updates
+- Update azure-core to 1.15.0
 
 ## 1.0.0-beta.2 (2021-02-09)
 

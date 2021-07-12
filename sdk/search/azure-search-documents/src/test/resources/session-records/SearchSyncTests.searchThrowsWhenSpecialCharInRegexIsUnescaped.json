@@ -1,28 +1,28 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-search-shared-instance')//docs/search.post.search?api-version=2020-06-30",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-search-shared-instance')//docs/search.post.search?api-version=2020-06-30-Preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "29fc726f-b0bf-46df-b901-5abb0ea9c791",
+      "x-ms-client-request-id" : "f3ca2357-3ad9-448d-ab27-c06066ad7dde",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "29fc726f-b0bf-46df-b901-5abb0ea9c791",
+      "request-id" : "f3ca2357-3ad9-448d-ab27-c06066ad7dde",
       "StatusCode" : "400",
-      "Date" : "Wed, 31 Mar 2021 21:16:59 GMT",
+      "Date" : "Fri, 02 Apr 2021 22:34:38 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "29fc726f-b0bf-46df-b901-5abb0ea9c791",
+      "client-request-id" : "f3ca2357-3ad9-448d-ab27-c06066ad7dde",
       "elapsed-time" : "47",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "341",
       "Body" : "{\"error\":{\"code\":\"InvalidRequestParameter\",\"message\":\"Failed to parse query string at line 1, column 8. See https://aka.ms/azure-search-full-query for supported syntax.\",\"details\":[{\"code\":\"InvalidSearchSyntax\",\"message\":\"Failed to parse query string at line 1, column 8. See https://aka.ms/azure-search-full-query for supported syntax.\"}]}}",
       "Content-Language" : "en",
-      "x-ms-client-request-id" : "29fc726f-b0bf-46df-b901-5abb0ea9c791",
+      "x-ms-client-request-id" : "f3ca2357-3ad9-448d-ab27-c06066ad7dde",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=none"
     },

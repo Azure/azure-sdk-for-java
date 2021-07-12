@@ -7,8 +7,6 @@ import com.azure.core.credential.TokenRequestContext;
 import com.azure.identity.implementation.util.IdentityConstants;
 import com.azure.identity.implementation.util.ValidationUtil;
 
-import java.util.HashMap;
-
 /**
  * Fluent credential builder for instantiating a {@link InteractiveBrowserCredential}.
  *
@@ -18,7 +16,7 @@ public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBas
     private Integer port;
     private boolean automaticAuthentication = true;
     private String redirectUrl;
-    String clientId = IdentityConstants.DEVELOPER_SINGLE_SIGN_ON_ID;
+    private String loginHint;
 
     /**
      * Sets the port for the local HTTP server, for which {@code http://localhost:{port}} must be
@@ -117,16 +115,28 @@ public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBas
     }
 
     /**
+     * Sets the username suggestion to pre-fill the login page's username/email address field. A user may still log in
+     * with a different username.
+     *
+     * @param loginHint the username suggestion to pre-fill the login page's username/email address field.
+     *
+     * @return An updated instance of this builder with login hint configured.
+     */
+    public InteractiveBrowserCredentialBuilder loginHint(String loginHint) {
+        this.loginHint = loginHint;
+        return this;
+    }
+
+    /**
      * Creates a new {@link InteractiveBrowserCredential} with the current configurations.
      *
      * @return a {@link InteractiveBrowserCredential} with the current configurations.
      */
     public InteractiveBrowserCredential build() {
         ValidationUtil.validateInteractiveBrowserRedirectUrlSetup(getClass().getSimpleName(), port, redirectUrl);
-        ValidationUtil.validate(getClass().getSimpleName(), new HashMap<String, Object>() {{
-                put("clientId", clientId);
-            }});
+
+        String clientId = this.clientId != null ? this.clientId : IdentityConstants.DEVELOPER_SINGLE_SIGN_ON_ID;
         return new InteractiveBrowserCredential(clientId, tenantId, port, redirectUrl, automaticAuthentication,
-            identityClientOptions);
+            loginHint, identityClientOptions);
     }
 }

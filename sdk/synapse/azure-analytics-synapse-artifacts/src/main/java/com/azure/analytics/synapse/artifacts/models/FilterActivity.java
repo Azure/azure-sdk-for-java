@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("Filter")
 @JsonFlatten
 @Fluent
-public class FilterActivity extends Activity {
+public class FilterActivity extends ControlActivity {
     /*
      * Input array on which filter should be applied.
      */

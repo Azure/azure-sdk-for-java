@@ -1,61 +1,61 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//prebuilt/idDocument/analyze?includeTextDetails=false",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1/prebuilt/idDocument/analyze?includeTextDetails=false",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.3 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "02b7e637-0e1f-4a2f-81d2-e056d02be5bb",
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "699fefa8-063b-40bc-9e5b-0bbf0ee8f3d9",
       "Content-Type" : "image/jpeg"
     },
     "Response" : {
-      "x-envoy-upstream-service-time" : "64",
+      "content-length" : "0",
+      "x-envoy-upstream-service-time" : "92",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "923611a4-2071-4bc0-bfd5-fa9f7e112be6",
+      "apim-request-id" : "58a427a7-4ece-46d7-a2b1-f9a44f92c150",
       "retry-after" : "0",
-      "Content-Length" : "0",
       "StatusCode" : "202",
-      "Operation-Location" : "https://shafangfr.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3/prebuilt/idDocument/analyzeResults/923611a4-2071-4bc0-bfd5-fa9f7e112be6",
-      "Date" : "Mon, 29 Mar 2021 20:41:29 GMT"
+      "Operation-Location" : "https://shafangfr.cognitiveservices.azure.com/formrecognizer/v2.1/prebuilt/idDocument/analyzeResults/58a427a7-4ece-46d7-a2b1-f9a44f92c150",
+      "Date" : "Wed, 07 Jul 2021 06:31:05 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//prebuilt/idDocument/analyzeResults/923611a4-2071-4bc0-bfd5-fa9f7e112be6",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1/prebuilt/idDocument/analyzeResults/58a427a7-4ece-46d7-a2b1-f9a44f92c150",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.3 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "e60601b2-b86f-42e6-954b-73c7ca3be04e"
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "f09adfb3-c443-4af6-a9ac-62c842cccbe2"
     },
     "Response" : {
-      "x-envoy-upstream-service-time" : "15",
+      "content-length" : "1606",
+      "x-envoy-upstream-service-time" : "14",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "c0977b37-824b-49a8-b302-ca13d92230d3",
+      "apim-request-id" : "6200bf92-db43-436b-bed0-65fa344b5285",
       "retry-after" : "0",
-      "Content-Length" : "1602",
       "StatusCode" : "200",
-      "Body" : "{\"status\":\"succeeded\",\"createdDateTime\":\"2021-03-29T20:41:30Z\",\"lastUpdatedDateTime\":\"2021-03-29T20:41:33Z\",\"analyzeResult\":{\"version\":\"2.1.0\",\"readResults\":[{\"page\":1,\"angle\":-0.4021,\"width\":506,\"height\":319,\"unit\":\"pixel\"}],\"documentResults\":[{\"docType\":\"prebuilt:idDocument:driverLicense\",\"docTypeConfidence\":0.995,\"pageRange\":[1,1],\"fields\":{\"Address\":{\"type\":\"string\",\"valueString\":\"123 MAIN STREET APT. 1 HARRISBURG, PA 17101-0000\",\"text\":\"123 MAIN STREET APT. 1 HARRISBURG, PA 17101-0000\",\"boundingBox\":[178,161,357,161,357,195,178,195],\"page\":1,\"confidence\":0.906},\"Country\":{\"type\":\"country\",\"valueCountry\":\"USA\",\"confidence\":0.99},\"DateOfBirth\":{\"type\":\"date\",\"valueDate\":\"1975-08-04\",\"text\":\"08/04/1975\",\"boundingBox\":[215,93,309,92,309,109,215,108],\"page\":1,\"confidence\":0.995},\"DateOfExpiration\":{\"type\":\"date\",\"valueDate\":\"2023-08-05\",\"text\":\"08/05/2023\",\"boundingBox\":[215,113,307,112,307,129,215,129],\"page\":1,\"confidence\":0.99},\"DocumentNumber\":{\"type\":\"string\",\"valueString\":\"99 999 999\",\"text\":\"99 999 999\",\"boundingBox\":[216,74,307,74,307,91,216,91],\"page\":1,\"confidence\":0.991},\"FirstName\":{\"type\":\"string\",\"valueString\":\"JANICE ANN\",\"text\":\"JANICE ANN\",\"boundingBox\":[177,147,264,147,264,161,177,161],\"page\":1,\"confidence\":0.987},\"LastName\":{\"type\":\"string\",\"valueString\":\"SAMPLE\",\"text\":\"SAMPLE\",\"boundingBox\":[178,135,237,134,236,147,179,147],\"page\":1,\"confidence\":0.986},\"Region\":{\"type\":\"string\",\"valueString\":\"Pennsylvania\",\"confidence\":0.99},\"Sex\":{\"type\":\"gender\",\"valueGender\":\"F\",\"text\":\"F\",\"boundingBox\":[210,199,216,199,217,211,210,211],\"page\":1,\"confidence\":0.99}}}]}}",
-      "Date" : "Mon, 29 Mar 2021 20:41:35 GMT",
+      "Body" : "{\"status\":\"succeeded\",\"createdDateTime\":\"2021-07-07T06:31:05Z\",\"lastUpdatedDateTime\":\"2021-07-07T06:31:10Z\",\"analyzeResult\":{\"version\":\"2.1.0\",\"readResults\":[{\"page\":1,\"angle\":-0.2823,\"width\":450,\"height\":294,\"unit\":\"pixel\"}],\"documentResults\":[{\"docType\":\"prebuilt:idDocument:driverLicense\",\"docTypeConfidence\":0.995,\"pageRange\":[1,1],\"fields\":{\"Address\":{\"type\":\"string\",\"valueString\":\"123 STREET ADDRESS YOUR CITY WA 99999-1234\",\"text\":\"123 STREET ADDRESS YOUR CITY WA 99999-1234\",\"boundingBox\":[158,151,326,151,326,177,158,177],\"page\":1,\"confidence\":0.965},\"CountryRegion\":{\"type\":\"countryRegion\",\"confidence\":0.99,\"valueCountryRegion\":\"USA\"},\"DateOfBirth\":{\"type\":\"date\",\"valueDate\":\"1958-01-06\",\"text\":\"01/06/1958\",\"boundingBox\":[187,133,272,132,272,148,187,149],\"page\":1,\"confidence\":0.99},\"DateOfExpiration\":{\"type\":\"date\",\"valueDate\":\"2020-08-12\",\"text\":\"08/12/2020\",\"boundingBox\":[332,230,414,228,414,244,332,245],\"page\":1,\"confidence\":0.99},\"DocumentNumber\":{\"type\":\"string\",\"valueString\":\"WDLABCD456DG\",\"text\":\"LIC#WDLABCD456DG\",\"boundingBox\":[162,70,307,68,307,84,163,85],\"page\":1,\"confidence\":0.987},\"FirstName\":{\"type\":\"string\",\"valueString\":\"LIAM R.\",\"text\":\"LIAM R.\",\"boundingBox\":[158,102,216,102,216,116,158,116],\"page\":1,\"confidence\":0.985},\"LastName\":{\"type\":\"string\",\"valueString\":\"TALBOT\",\"text\":\"TALBOT\",\"boundingBox\":[160,86,213,85,213,99,160,100],\"page\":1,\"confidence\":0.987},\"Region\":{\"type\":\"string\",\"valueString\":\"Washington\",\"confidence\":0.99},\"Sex\":{\"type\":\"string\",\"valueString\":\"M\",\"text\":\"M\",\"boundingBox\":[226,190,232,190,233,201,226,201],\"page\":1,\"confidence\":0.99}}}]}}",
+      "Date" : "Wed, 07 Jul 2021 06:31:09 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//prebuilt/idDocument/analyzeResults/923611a4-2071-4bc0-bfd5-fa9f7e112be6",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1/prebuilt/idDocument/analyzeResults/58a427a7-4ece-46d7-a2b1-f9a44f92c150",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.3 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "204ac964-f819-4e30-83b0-a3c8b5bea993"
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "2a50111c-f6f1-4437-8079-e686af81e250"
     },
     "Response" : {
-      "x-envoy-upstream-service-time" : "22",
+      "content-length" : "1606",
+      "x-envoy-upstream-service-time" : "17",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "532c435c-b050-4025-8b94-e4c449459341",
+      "apim-request-id" : "700b758f-5489-4eda-998c-ba4ca40ff446",
       "retry-after" : "0",
-      "Content-Length" : "1602",
       "StatusCode" : "200",
-      "Body" : "{\"status\":\"succeeded\",\"createdDateTime\":\"2021-03-29T20:41:30Z\",\"lastUpdatedDateTime\":\"2021-03-29T20:41:33Z\",\"analyzeResult\":{\"version\":\"2.1.0\",\"readResults\":[{\"page\":1,\"angle\":-0.4021,\"width\":506,\"height\":319,\"unit\":\"pixel\"}],\"documentResults\":[{\"docType\":\"prebuilt:idDocument:driverLicense\",\"docTypeConfidence\":0.995,\"pageRange\":[1,1],\"fields\":{\"Address\":{\"type\":\"string\",\"valueString\":\"123 MAIN STREET APT. 1 HARRISBURG, PA 17101-0000\",\"text\":\"123 MAIN STREET APT. 1 HARRISBURG, PA 17101-0000\",\"boundingBox\":[178,161,357,161,357,195,178,195],\"page\":1,\"confidence\":0.906},\"Country\":{\"type\":\"country\",\"valueCountry\":\"USA\",\"confidence\":0.99},\"DateOfBirth\":{\"type\":\"date\",\"valueDate\":\"1975-08-04\",\"text\":\"08/04/1975\",\"boundingBox\":[215,93,309,92,309,109,215,108],\"page\":1,\"confidence\":0.995},\"DateOfExpiration\":{\"type\":\"date\",\"valueDate\":\"2023-08-05\",\"text\":\"08/05/2023\",\"boundingBox\":[215,113,307,112,307,129,215,129],\"page\":1,\"confidence\":0.99},\"DocumentNumber\":{\"type\":\"string\",\"valueString\":\"99 999 999\",\"text\":\"99 999 999\",\"boundingBox\":[216,74,307,74,307,91,216,91],\"page\":1,\"confidence\":0.991},\"FirstName\":{\"type\":\"string\",\"valueString\":\"JANICE ANN\",\"text\":\"JANICE ANN\",\"boundingBox\":[177,147,264,147,264,161,177,161],\"page\":1,\"confidence\":0.987},\"LastName\":{\"type\":\"string\",\"valueString\":\"SAMPLE\",\"text\":\"SAMPLE\",\"boundingBox\":[178,135,237,134,236,147,179,147],\"page\":1,\"confidence\":0.986},\"Region\":{\"type\":\"string\",\"valueString\":\"Pennsylvania\",\"confidence\":0.99},\"Sex\":{\"type\":\"gender\",\"valueGender\":\"F\",\"text\":\"F\",\"boundingBox\":[210,199,216,199,217,211,210,211],\"page\":1,\"confidence\":0.99}}}]}}",
-      "Date" : "Mon, 29 Mar 2021 20:41:35 GMT",
+      "Body" : "{\"status\":\"succeeded\",\"createdDateTime\":\"2021-07-07T06:31:05Z\",\"lastUpdatedDateTime\":\"2021-07-07T06:31:10Z\",\"analyzeResult\":{\"version\":\"2.1.0\",\"readResults\":[{\"page\":1,\"angle\":-0.2823,\"width\":450,\"height\":294,\"unit\":\"pixel\"}],\"documentResults\":[{\"docType\":\"prebuilt:idDocument:driverLicense\",\"docTypeConfidence\":0.995,\"pageRange\":[1,1],\"fields\":{\"Address\":{\"type\":\"string\",\"valueString\":\"123 STREET ADDRESS YOUR CITY WA 99999-1234\",\"text\":\"123 STREET ADDRESS YOUR CITY WA 99999-1234\",\"boundingBox\":[158,151,326,151,326,177,158,177],\"page\":1,\"confidence\":0.965},\"CountryRegion\":{\"type\":\"countryRegion\",\"confidence\":0.99,\"valueCountryRegion\":\"USA\"},\"DateOfBirth\":{\"type\":\"date\",\"valueDate\":\"1958-01-06\",\"text\":\"01/06/1958\",\"boundingBox\":[187,133,272,132,272,148,187,149],\"page\":1,\"confidence\":0.99},\"DateOfExpiration\":{\"type\":\"date\",\"valueDate\":\"2020-08-12\",\"text\":\"08/12/2020\",\"boundingBox\":[332,230,414,228,414,244,332,245],\"page\":1,\"confidence\":0.99},\"DocumentNumber\":{\"type\":\"string\",\"valueString\":\"WDLABCD456DG\",\"text\":\"LIC#WDLABCD456DG\",\"boundingBox\":[162,70,307,68,307,84,163,85],\"page\":1,\"confidence\":0.987},\"FirstName\":{\"type\":\"string\",\"valueString\":\"LIAM R.\",\"text\":\"LIAM R.\",\"boundingBox\":[158,102,216,102,216,116,158,116],\"page\":1,\"confidence\":0.985},\"LastName\":{\"type\":\"string\",\"valueString\":\"TALBOT\",\"text\":\"TALBOT\",\"boundingBox\":[160,86,213,85,213,99,160,100],\"page\":1,\"confidence\":0.987},\"Region\":{\"type\":\"string\",\"valueString\":\"Washington\",\"confidence\":0.99},\"Sex\":{\"type\":\"string\",\"valueString\":\"M\",\"text\":\"M\",\"boundingBox\":[226,190,232,190,233,201,226,201],\"page\":1,\"confidence\":0.99}}}]}}",
+      "Date" : "Wed, 07 Jul 2021 06:31:10 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

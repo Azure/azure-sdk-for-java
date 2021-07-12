@@ -17,22 +17,28 @@ public class ShouldRetryResult {
     public final Exception exception;
     public final Quadruple<Boolean, Boolean, Duration, Integer> policyArg;
     public boolean shouldRetry;
+    public boolean nonRelatedException;
 
     private ShouldRetryResult(Duration dur, Exception e, boolean shouldRetry,
-                              Quadruple<Boolean, Boolean, Duration, Integer> policyArg) {
+                              Quadruple<Boolean, Boolean, Duration, Integer> policyArg, boolean nonRelatedException) {
         this.backOffTime = dur;
         this.exception = e;
         this.shouldRetry = shouldRetry;
         this.policyArg = policyArg;
+        this.nonRelatedException = nonRelatedException;
     }
 
     public static ShouldRetryResult error(Exception e) {
         Utils.checkNotNullOrThrow(e, "exception", "cannot be null");
-        return new ShouldRetryResult(null, e, false, null);
+        return new ShouldRetryResult(null, e, false, null, false);
     }
 
     public static ShouldRetryResult noRetry() {
-        return new ShouldRetryResult(null, null, false, null);
+        return new ShouldRetryResult(null, null, false, null, false);
+    }
+
+    public static ShouldRetryResult noRetryOnNonRelatedException() {
+        return new ShouldRetryResult(null, null, false, null, true);
     }
 
     public static ShouldRetryResult noRetry(Quadruple<Boolean, Boolean, Duration, Integer> policyArg) {
@@ -40,18 +46,19 @@ public class ShouldRetryResult {
             null,
             null,
             false,
-            policyArg);
+            policyArg,
+            false);
     }
 
     public static ShouldRetryResult retryAfter(Duration dur,
                                                Quadruple<Boolean, Boolean, Duration, Integer> policyArg) {
         Utils.checkNotNullOrThrow(dur, "duration", "cannot be null");
-        return new ShouldRetryResult(dur, null, true, policyArg);
+        return new ShouldRetryResult(dur, null, true, policyArg, false);
     }
 
     public static ShouldRetryResult retryAfter(Duration dur) {
         Utils.checkNotNullOrThrow(dur, "duration", "cannot be null");
-        return new ShouldRetryResult(dur, null, true, null);
+        return new ShouldRetryResult(dur, null, true, null, false);
     }
 
     public void throwIfDoneTrying(Exception capturedException) throws Exception {

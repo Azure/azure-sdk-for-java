@@ -3,20 +3,19 @@
 
 package com.azure.cosmos.encryption.implementation;
 
-import com.azure.core.credential.TokenCredential;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.encryption.CosmosEncryptionAsyncClient;
+import com.azure.cosmos.encryption.EncryptionAsyncApiCrudTest;
 import com.azure.cosmos.encryption.EncryptionBridgeInternal;
-import com.azure.cosmos.encryption.EncryptionCrudTest;
 import com.azure.cosmos.encryption.models.CosmosEncryptionAlgorithm;
 import com.azure.cosmos.encryption.models.CosmosEncryptionType;
+import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.models.ClientEncryptionIncludedPath;
 import com.azure.cosmos.models.ClientEncryptionPolicy;
 import com.azure.cosmos.models.CosmosClientEncryptionKeyProperties;
+import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.EncryptionKeyWrapMetadata;
-import com.azure.identity.ClientSecretCredential;
-import com.azure.identity.ClientSecretCredentialBuilder;
 import com.microsoft.data.encryption.cryptography.EncryptionKeyStoreProvider;
 import org.assertj.core.api.Assertions;
 import org.bouncycastle.util.encoders.Hex;
@@ -29,24 +28,25 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
 public class EncryptionProcessorAndSettingsTest {
-    private static final int TIMEOUT = 600000_000;
+    private static final int TIMEOUT = 6000_000;
+    private static final EncryptionAsyncApiCrudTest.TestEncryptionKeyStoreProvider keyStoreProvider =
+        new EncryptionAsyncApiCrudTest.TestEncryptionKeyStoreProvider();
 
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void initializeEncryptionSettingsAsync() {
         CosmosAsyncContainer cosmosAsyncContainer = Mockito.mock(CosmosAsyncContainer.class);
         CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient = Mockito.mock(CosmosEncryptionAsyncClient.class);
-        EncryptionCrudTest.TestEncryptionKeyStoreProvider keyStoreProvider =
-            new EncryptionCrudTest.TestEncryptionKeyStoreProvider();
         Mockito.when(cosmosEncryptionAsyncClient.getEncryptionKeyStoreProvider()).thenReturn(keyStoreProvider);
-        Mockito.when(EncryptionBridgeInternal.getClientEncryptionPolicyAsync(cosmosEncryptionAsyncClient,
-            Mockito.any(CosmosAsyncContainer.class), Mockito.anyBoolean())).thenReturn(Mono.just(generateClientEncryptionPolicy()));
+        Mockito.when(EncryptionBridgeInternal.getContainerPropertiesMono(cosmosEncryptionAsyncClient,
+            Mockito.any(CosmosAsyncContainer.class), Mockito.anyBoolean())).thenReturn(Mono.just(generateContainerWithCosmosEncryptionPolicy()));
         Mockito.when(EncryptionBridgeInternal.getClientEncryptionPropertiesAsync(cosmosEncryptionAsyncClient,
+            Mockito.anyString(),
             Mockito.anyString(),
             Mockito.any(CosmosAsyncContainer.class), Mockito.anyBoolean())).thenReturn(Mono.just(generateClientEncryptionKeyProperties()));
         EncryptionProcessor encryptionProcessor = new EncryptionProcessor(cosmosAsyncContainer,
@@ -61,7 +61,8 @@ public class EncryptionProcessorAndSettingsTest {
         }
         Assertions.assertThat(ReflectionUtils.isEncryptionSettingsInitDone(encryptionProcessor).get()).isFalse();
 
-        encryptionProcessor.initializeEncryptionSettingsAsync().block();
+        encryptionProcessor.initializeEncryptionSettingsAsync(false).block();
+        encryptionSettings = encryptionProcessor.getEncryptionSettings();
         //We should have the value now in encryptionSettingCacheByPropertyName
         CachedEncryptionSettings cachedEncryptionSettings =
             encryptionSettings.getEncryptionSettingCacheByPropertyName().getAsync("sensitiveString", null, null).block();
@@ -74,18 +75,18 @@ public class EncryptionProcessorAndSettingsTest {
     public void withoutInitializeEncryptionSettingsAsync() {
         CosmosAsyncContainer cosmosAsyncContainer = Mockito.mock(CosmosAsyncContainer.class);
         CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient = Mockito.mock(CosmosEncryptionAsyncClient.class);
-        EncryptionCrudTest.TestEncryptionKeyStoreProvider keyStoreProvider =
-            new EncryptionCrudTest.TestEncryptionKeyStoreProvider();
         Mockito.when(cosmosEncryptionAsyncClient.getEncryptionKeyStoreProvider()).thenReturn(keyStoreProvider);
-        Mockito.when(EncryptionBridgeInternal.getClientEncryptionPolicyAsync(cosmosEncryptionAsyncClient,
-            Mockito.any(CosmosAsyncContainer.class), Mockito.anyBoolean())).thenReturn(Mono.just(generateClientEncryptionPolicy()));
+        Mockito.when(EncryptionBridgeInternal.getContainerPropertiesMono(cosmosEncryptionAsyncClient,
+            Mockito.any(CosmosAsyncContainer.class), Mockito.anyBoolean())).thenReturn(Mono.just(generateContainerWithCosmosEncryptionPolicy()));
         Mockito.when(EncryptionBridgeInternal.getClientEncryptionPropertiesAsync(cosmosEncryptionAsyncClient,
+            Mockito.anyString(),
             Mockito.anyString(),
             Mockito.any(CosmosAsyncContainer.class), Mockito.anyBoolean())).thenReturn(Mono.just(generateClientEncryptionKeyProperties()));
         EncryptionProcessor encryptionProcessor = new EncryptionProcessor(cosmosAsyncContainer,
             cosmosEncryptionAsyncClient);
 
         EncryptionSettings encryptionSettings = encryptionProcessor.getEncryptionSettings();
+        encryptionSettings.setDatabaseRid("TestDb");
         try {
             encryptionSettings.getEncryptionSettingCacheByPropertyName().getAsync("sensitiveString", null, null).block();
             fail("encryptionSettings should be empty");
@@ -110,18 +111,18 @@ public class EncryptionProcessorAndSettingsTest {
     public void encryptionSettingCachedTimeToLive() {
         CosmosAsyncContainer cosmosAsyncContainer = Mockito.mock(CosmosAsyncContainer.class);
         CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient = Mockito.mock(CosmosEncryptionAsyncClient.class);
-        EncryptionCrudTest.TestEncryptionKeyStoreProvider keyStoreProvider =
-            new EncryptionCrudTest.TestEncryptionKeyStoreProvider();
         Mockito.when(cosmosEncryptionAsyncClient.getEncryptionKeyStoreProvider()).thenReturn(keyStoreProvider);
-        Mockito.when(EncryptionBridgeInternal.getClientEncryptionPolicyAsync(cosmosEncryptionAsyncClient,
-            Mockito.any(CosmosAsyncContainer.class), Mockito.anyBoolean())).thenReturn(Mono.just(generateClientEncryptionPolicy()));
+        Mockito.when(EncryptionBridgeInternal.getContainerPropertiesMono(cosmosEncryptionAsyncClient,
+            Mockito.any(CosmosAsyncContainer.class), Mockito.anyBoolean())).thenReturn(Mono.just(generateContainerWithCosmosEncryptionPolicy()));
         Mockito.when(EncryptionBridgeInternal.getClientEncryptionPropertiesAsync(cosmosEncryptionAsyncClient,
+            Mockito.anyString(),
             Mockito.anyString(),
             Mockito.any(CosmosAsyncContainer.class), Mockito.anyBoolean())).thenReturn(Mono.just(generateClientEncryptionKeyProperties()));
         EncryptionProcessor encryptionProcessor = new EncryptionProcessor(cosmosAsyncContainer,
             cosmosEncryptionAsyncClient);
 
         EncryptionSettings encryptionSettings = encryptionProcessor.getEncryptionSettings();
+        encryptionSettings.setDatabaseRid("TestDb");
         EncryptionSettings spyEncryptionSettings = Mockito.spy(encryptionSettings);
         EncryptionSettings cachedEncryptionSettings =
             spyEncryptionSettings.getEncryptionSettingForPropertyAsync("sensitiveString", encryptionProcessor).block();
@@ -142,13 +143,12 @@ public class EncryptionProcessorAndSettingsTest {
     public void invalidClientEncryptionKeyException() throws Exception {
         CosmosAsyncContainer cosmosAsyncContainer = Mockito.mock(CosmosAsyncContainer.class);
         CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient = Mockito.mock(CosmosEncryptionAsyncClient.class);
-        EncryptionCrudTest.TestEncryptionKeyStoreProvider keyStoreProvider =
-            new EncryptionCrudTest.TestEncryptionKeyStoreProvider();
         Mockito.when(cosmosEncryptionAsyncClient.getEncryptionKeyStoreProvider()).thenReturn(keyStoreProvider);
-        Mockito.when(EncryptionBridgeInternal.getClientEncryptionPolicyAsync(cosmosEncryptionAsyncClient,
-            Mockito.any(CosmosAsyncContainer.class), Mockito.anyBoolean())).thenReturn(Mono.just(generateClientEncryptionPolicy()));
+        Mockito.when(EncryptionBridgeInternal.getContainerPropertiesMono(cosmosEncryptionAsyncClient,
+            Mockito.any(CosmosAsyncContainer.class), Mockito.anyBoolean())).thenReturn(Mono.just(generateContainerWithCosmosEncryptionPolicy()));
         CosmosClientEncryptionKeyProperties keyProperties = generateClientEncryptionKeyProperties();
         Mockito.when(EncryptionBridgeInternal.getClientEncryptionPropertiesAsync(cosmosEncryptionAsyncClient,
+            Mockito.anyString(),
             Mockito.anyString(),
             Mockito.any(CosmosAsyncContainer.class), Mockito.anyBoolean())).thenReturn(Mono.just(keyProperties));
         EncryptionProcessor encryptionProcessor = new EncryptionProcessor(cosmosAsyncContainer,
@@ -162,7 +162,7 @@ public class EncryptionProcessorAndSettingsTest {
         Mockito.doNothing().when(mockEncryptionSettings).setEncryptionSettingForProperty(Mockito.anyString(),
             Mockito.any(EncryptionSettings.class), Mockito.any(Instant.class));
         Assertions.assertThat(ReflectionUtils.isEncryptionSettingsInitDone(encryptionProcessor).get()).isFalse();
-        encryptionProcessor.initializeEncryptionSettingsAsync().block();
+        encryptionProcessor.initializeEncryptionSettingsAsync(false).block();
 
         //Throw InvalidKeyException twice , we will retry refreshing key from database only once
         encryptionProcessor = new EncryptionProcessor(cosmosAsyncContainer,
@@ -173,7 +173,7 @@ public class EncryptionProcessorAndSettingsTest {
         Mockito.when(mockEncryptionSettings.buildProtectedDataEncryptionKey(Mockito.any(CosmosClientEncryptionKeyProperties.class), Mockito.any(EncryptionKeyStoreProvider.class), Mockito.anyString())).
             thenThrow(new InvalidKeyException(), new InvalidKeyException()).thenReturn(encryptionSettings.buildProtectedDataEncryptionKey(keyProperties, keyStoreProvider, keyProperties.getId()));
         try {
-            encryptionProcessor.initializeEncryptionSettingsAsync().block();
+            encryptionProcessor.initializeEncryptionSettingsAsync(false).block();
             fail("Expecting initializeEncryptionSettingsAsync to throw InvalidKeyException");
         } catch (Exception ex) {
             //expecting InvalidKeyException
@@ -193,26 +193,27 @@ public class EncryptionProcessorAndSettingsTest {
         return new ClientEncryptionPolicy(paths);
     }
 
+    private CosmosContainerProperties generateContainerWithCosmosEncryptionPolicy() {
+        CosmosContainerProperties containerProperties = new CosmosContainerProperties(UUID.randomUUID().toString(), "/mypk");
+        Resource resource = ReflectionUtils.geResource(containerProperties);
+        resource.setSelfLink("dbs/testDb/colls/testCol");
+        ClientEncryptionIncludedPath includedPath1 = new ClientEncryptionIncludedPath();
+        includedPath1.setClientEncryptionKeyId("key1");
+        includedPath1.setPath("/sensitiveString");
+        includedPath1.setEncryptionType(CosmosEncryptionType.DETERMINISTIC);
+        includedPath1.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256);
+        List<ClientEncryptionIncludedPath> paths = new ArrayList<>();
+        paths.add(includedPath1);
+        return containerProperties.setClientEncryptionPolicy(new ClientEncryptionPolicy(paths));
+    }
+
     private CosmosClientEncryptionKeyProperties generateClientEncryptionKeyProperties() {
         byte[] key = Hex.decode(("34 62 52 77 f9 ee 11 9f 04 8c 6f 50 9c e4 c2 5b b3 39 f4 d0 4d c1 6a 32 fa 2b 3b aa" +
             " " +
             "ae 1e d9 1c").replace(" ", ""));
-        EncryptionKeyWrapMetadata metadata = new EncryptionKeyWrapMetadata("key1", "tempmetadata1");
+        EncryptionKeyWrapMetadata metadata = new EncryptionKeyWrapMetadata(keyStoreProvider.getProviderName(),
+            "key1", "tempmetadata1");
         return new CosmosClientEncryptionKeyProperties("key1",
             CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256, key, metadata);
-    }
-
-    private static TokenCredential getTokenCredential(Properties properties) {
-        String clientId = "4b890807-1d72-4369-a21c-238ad285e3ed";
-        String tenantId = "72f988bf-86f1-41af-91ab-2d7cd011db47";
-        String clientSecret = "xNto~R28uF_6~F3E8ZW6ftE22p.lCrmf56";
-        ClientSecretCredential credentials = new ClientSecretCredentialBuilder()
-            .tenantId(tenantId)
-            .clientId(clientId)
-            .clientSecret(clientSecret)
-            .build();
-
-        // TODO: implement certificate base sample
-        return credentials;
     }
 }

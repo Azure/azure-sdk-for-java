@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
 /** A copy activity file system source. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -20,6 +21,13 @@ public final class FileSystemSource extends CopySource {
      */
     @JsonProperty(value = "recursive")
     private Object recursive;
+
+    /*
+     * Specifies the additional columns to be added to source data. Type: array
+     * of objects (or Expression with resultType array of objects).
+     */
+    @JsonProperty(value = "additionalColumns")
+    private List<AdditionalColumns> additionalColumns;
 
     /**
      * Get the recursive property: If true, files under the folder path will be read recursively. Default is true. Type:
@@ -40,6 +48,28 @@ public final class FileSystemSource extends CopySource {
      */
     public FileSystemSource setRecursive(Object recursive) {
         this.recursive = recursive;
+        return this;
+    }
+
+    /**
+     * Get the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
+     * objects (or Expression with resultType array of objects).
+     *
+     * @return the additionalColumns value.
+     */
+    public List<AdditionalColumns> getAdditionalColumns() {
+        return this.additionalColumns;
+    }
+
+    /**
+     * Set the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
+     * objects (or Expression with resultType array of objects).
+     *
+     * @param additionalColumns the additionalColumns value to set.
+     * @return the FileSystemSource object itself.
+     */
+    public FileSystemSource setAdditionalColumns(List<AdditionalColumns> additionalColumns) {
+        this.additionalColumns = additionalColumns;
         return this;
     }
 }

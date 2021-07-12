@@ -36,10 +36,33 @@ public final class FileServerReadSettings extends StoreReadSettings {
     private Object wildcardFileName;
 
     /*
+     * Point to a text file that lists each file (relative path to the path
+     * configured in the dataset) that you want to copy. Type: string (or
+     * Expression with resultType string).
+     */
+    @JsonProperty(value = "fileListPath")
+    private Object fileListPath;
+
+    /*
      * Indicates whether to enable partition discovery.
      */
     @JsonProperty(value = "enablePartitionDiscovery")
     private Boolean enablePartitionDiscovery;
+
+    /*
+     * Specify the root path where partition discovery starts from. Type:
+     * string (or Expression with resultType string).
+     */
+    @JsonProperty(value = "partitionRootPath")
+    private Object partitionRootPath;
+
+    /*
+     * Indicates whether the source files need to be deleted after copy
+     * completion. Default is false. Type: boolean (or Expression with
+     * resultType boolean).
+     */
+    @JsonProperty(value = "deleteFilesAfterCompletion")
+    private Object deleteFilesAfterCompletion;
 
     /*
      * The start of file's modified datetime. Type: string (or Expression with
@@ -54,6 +77,14 @@ public final class FileServerReadSettings extends StoreReadSettings {
      */
     @JsonProperty(value = "modifiedDatetimeEnd")
     private Object modifiedDatetimeEnd;
+
+    /*
+     * Specify a filter to be used to select a subset of files in the
+     * folderPath rather than all files. Type: string (or Expression with
+     * resultType string).
+     */
+    @JsonProperty(value = "fileFilter")
+    private Object fileFilter;
 
     /**
      * Get the recursive property: If true, files under the folder path will be read recursively. Default is true. Type:
@@ -122,6 +153,28 @@ public final class FileServerReadSettings extends StoreReadSettings {
     }
 
     /**
+     * Get the fileListPath property: Point to a text file that lists each file (relative path to the path configured in
+     * the dataset) that you want to copy. Type: string (or Expression with resultType string).
+     *
+     * @return the fileListPath value.
+     */
+    public Object getFileListPath() {
+        return this.fileListPath;
+    }
+
+    /**
+     * Set the fileListPath property: Point to a text file that lists each file (relative path to the path configured in
+     * the dataset) that you want to copy. Type: string (or Expression with resultType string).
+     *
+     * @param fileListPath the fileListPath value to set.
+     * @return the FileServerReadSettings object itself.
+     */
+    public FileServerReadSettings setFileListPath(Object fileListPath) {
+        this.fileListPath = fileListPath;
+        return this;
+    }
+
+    /**
      * Get the enablePartitionDiscovery property: Indicates whether to enable partition discovery.
      *
      * @return the enablePartitionDiscovery value.
@@ -138,6 +191,50 @@ public final class FileServerReadSettings extends StoreReadSettings {
      */
     public FileServerReadSettings setEnablePartitionDiscovery(Boolean enablePartitionDiscovery) {
         this.enablePartitionDiscovery = enablePartitionDiscovery;
+        return this;
+    }
+
+    /**
+     * Get the partitionRootPath property: Specify the root path where partition discovery starts from. Type: string (or
+     * Expression with resultType string).
+     *
+     * @return the partitionRootPath value.
+     */
+    public Object getPartitionRootPath() {
+        return this.partitionRootPath;
+    }
+
+    /**
+     * Set the partitionRootPath property: Specify the root path where partition discovery starts from. Type: string (or
+     * Expression with resultType string).
+     *
+     * @param partitionRootPath the partitionRootPath value to set.
+     * @return the FileServerReadSettings object itself.
+     */
+    public FileServerReadSettings setPartitionRootPath(Object partitionRootPath) {
+        this.partitionRootPath = partitionRootPath;
+        return this;
+    }
+
+    /**
+     * Get the deleteFilesAfterCompletion property: Indicates whether the source files need to be deleted after copy
+     * completion. Default is false. Type: boolean (or Expression with resultType boolean).
+     *
+     * @return the deleteFilesAfterCompletion value.
+     */
+    public Object getDeleteFilesAfterCompletion() {
+        return this.deleteFilesAfterCompletion;
+    }
+
+    /**
+     * Set the deleteFilesAfterCompletion property: Indicates whether the source files need to be deleted after copy
+     * completion. Default is false. Type: boolean (or Expression with resultType boolean).
+     *
+     * @param deleteFilesAfterCompletion the deleteFilesAfterCompletion value to set.
+     * @return the FileServerReadSettings object itself.
+     */
+    public FileServerReadSettings setDeleteFilesAfterCompletion(Object deleteFilesAfterCompletion) {
+        this.deleteFilesAfterCompletion = deleteFilesAfterCompletion;
         return this;
     }
 
@@ -182,6 +279,28 @@ public final class FileServerReadSettings extends StoreReadSettings {
      */
     public FileServerReadSettings setModifiedDatetimeEnd(Object modifiedDatetimeEnd) {
         this.modifiedDatetimeEnd = modifiedDatetimeEnd;
+        return this;
+    }
+
+    /**
+     * Get the fileFilter property: Specify a filter to be used to select a subset of files in the folderPath rather
+     * than all files. Type: string (or Expression with resultType string).
+     *
+     * @return the fileFilter value.
+     */
+    public Object getFileFilter() {
+        return this.fileFilter;
+    }
+
+    /**
+     * Set the fileFilter property: Specify a filter to be used to select a subset of files in the folderPath rather
+     * than all files. Type: string (or Expression with resultType string).
+     *
+     * @param fileFilter the fileFilter value to set.
+     * @return the FileServerReadSettings object itself.
+     */
+    public FileServerReadSettings setFileFilter(Object fileFilter) {
+        this.fileFilter = fileFilter;
         return this;
     }
 }

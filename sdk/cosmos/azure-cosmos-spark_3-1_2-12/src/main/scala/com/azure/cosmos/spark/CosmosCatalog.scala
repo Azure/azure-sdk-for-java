@@ -3,25 +3,24 @@
 
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
+
 import java.util
-import com.azure.cosmos.models.{
-  CosmosContainerProperties,
-  ExcludedPath,
-  IncludedPath,
-  IndexingMode,
-  IndexingPolicy,
-  SparkModelBridgeInternal,
-  ThroughputProperties
-}
+import scala.collection.mutable.ArrayBuffer
+// scalastyle:off underscore.import
+import com.azure.cosmos.models._
+// scalastyle:on underscore.import
 import com.azure.cosmos.{CosmosAsyncClient, CosmosException}
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.catalyst.analysis.{NamespaceAlreadyExistsException, NoSuchNamespaceException, NoSuchTableException}
 import org.apache.spark.sql.connector.catalog.{CatalogPlugin, Identifier, NamespaceChange, SupportsNamespaces, Table, TableCatalog, TableChange}
 import org.apache.spark.sql.connector.expressions.Transform
+import org.apache.spark.sql.execution.streaming.HDFSMetadataLog
 import org.apache.spark.sql.types.StructType
 import org.apache.spark.sql.util.CaseInsensitiveStringMap
 
 import java.util.Collections
+import scala.annotation.tailrec
 
 // scalastyle:off underscore.import
 import scala.collection.JavaConverters._
@@ -38,16 +37,21 @@ import scala.collection.JavaConverters._
 //  - TableCatalog Catalog methods for working with Tables.
 
 // All Hive keywords are case-insensitive, including the names of Hive operators and functions.
+// scalastyle:off multiple.string.literals
+// scalastyle:off number.of.methods
 class CosmosCatalog
     extends CatalogPlugin
     with SupportsNamespaces
     with TableCatalog
-    with CosmosLoggingTrait {
+    with BasicLoggingTrait {
 
   private lazy val sparkSession = SparkSession.active
+
+  // mutable but only expected to be changed from within initialize method
   private var catalogName: String = _
   private var client: CosmosAsyncClient = _
   private var tableOptions: Map[String, String] = _
+  private var viewRepository: Option[HDFSMetadataLog[Array[ViewDefinition]]] = None
 
   /**
     * Called to initialize configuration.
@@ -59,13 +63,22 @@ class CosmosCatalog
     */
   override def initialize(name: String,
                           options: CaseInsensitiveStringMap): Unit = {
-    val config = options.asCaseSensitiveMap().asScala.toMap
+    val config = CosmosConfig.getEffectiveConfig(
+        None,
+        None,
+        options.asCaseSensitiveMap().asScala.toMap)
     val readConfig = CosmosReadConfig.parseCosmosReadConfig(config)
     this.client = CosmosClientCache(CosmosClientConfiguration(config, readConfig.forceEventualConsistency), None)
 
-    // TODO: moderakh do we need to do config validation here?
     tableOptions = toTableConfig(options)
     this.catalogName = name
+
+    val viewRepositoryConfig = CosmosViewRepositoryConfig.parseCosmosViewRepositoryConfig(config)
+    if (viewRepositoryConfig.metaDataPath.isDefined) {
+      this.viewRepository = Some(new HDFSMetadataLog[Array[ViewDefinition]](
+        this.sparkSession,
+        viewRepositoryConfig.metaDataPath.get))
+    }
   }
 
   /**
@@ -199,23 +212,25 @@ class CosmosCatalog
     }
   }
 
-  private def getClient: CosmosAsyncClient = {
-    // TODO moderakh client caching
-    this.client
-  }
-
   override def listTables(namespace: Array[String]): Array[Identifier] = {
     checkNamespace(namespace)
     val databaseName = toCosmosDatabaseName(namespace.head)
 
     try {
-      getClient
+      val cosmosTables = getClient
         .getDatabase(databaseName)
         .readAllContainers()
         .toIterable
         .asScala
         .map(prop => getContainerIdentifier(namespace.head, prop))
-        .toArray
+
+      val tableIdentifiers = this.tryGetViewDefinitions(databaseName) match {
+        case Some(viewDefinitions) =>
+          cosmosTables ++ viewDefinitions.map(viewDef => getContainerIdentifier(namespace.head, viewDef)).toIterable
+        case None => cosmosTables
+      }
+
+      tableIdentifiers.toArray
     } catch {
       case e: CosmosException if isNotFound(e) =>
         throw new NoSuchNamespaceException(namespace)
@@ -226,30 +241,31 @@ class CosmosCatalog
     checkNamespace(ident.namespace())
     val databaseName = toCosmosDatabaseName(ident.namespace().head)
     val containerName = toCosmosContainerName(ident.name())
-    getContainerMetadata(ident, databaseName, containerName) // validates that table exists
-    new ItemsTable(
-      sparkSession,
-      Array[Transform](),
-      Some(databaseName),
-      Some(containerName),
-      tableOptions.asJava,
-      Option.empty)
-  }
+    logInfo(s"loadTable DB:$databaseName, Container: $containerName")
 
-  private def getContainerMetadata(ident: Identifier,
-                                   databaseName: String,
-                                   containerName: String): CosmosContainerProperties = {
-
-    try {
-      getClient
-        .getDatabase(databaseName)
-        .getContainer(containerName)
-        .read()
-        .block()
-        .getProperties
-    } catch {
-      case e: CosmosException if isNotFound(e) =>
-        throw new NoSuchTableException(ident)
+    this.tryGetContainerMetadata(databaseName, containerName) match {
+      case Some(_) =>
+        new ItemsTable(
+          sparkSession,
+          Array[Transform](),
+          Some(databaseName),
+          Some(containerName),
+          tableOptions.asJava,
+          None)
+      case None =>
+        this.tryGetViewDefinition(databaseName, containerName) match {
+          case Some(viewDefinition) =>
+            val effectiveOptions = tableOptions ++ viewDefinition.options
+            new ItemsReadOnlyTable(
+              sparkSession,
+              Array[Transform](),
+              None,
+              None,
+              effectiveOptions.asJava,
+              viewDefinition.userProvidedSchema)
+          case None =>
+            throw new NoSuchTableException(ident)
+        }
     }
   }
 
@@ -259,14 +275,52 @@ class CosmosCatalog
                            properties: util.Map[String, String]): Table = {
     checkNamespace(ident.namespace())
 
+    val databaseName = toCosmosDatabaseName(ident.namespace().head)
+    val containerName = toCosmosContainerName(ident.name())
     val containerProperties = properties.asScala.toMap
+
+    if (CosmosViewRepositoryConfig.isCosmosView(containerProperties)) {
+      createViewTable(ident, databaseName, containerName, schema, partitions, containerProperties)
+    } else {
+      createPhysicalTable(databaseName, containerName, schema, partitions, containerProperties)
+    }
+  }
+
+  @throws(classOf[UnsupportedOperationException])
+  override def alterTable(ident: Identifier, changes: TableChange*): Table = {
+    // TODO: moderakh we can support updating indexing policy and throughput
+    throw new UnsupportedOperationException
+  }
+
+  override def dropTable(ident: Identifier): Boolean = {
+    checkNamespace(ident.namespace())
+
+    val databaseName = toCosmosDatabaseName(ident.namespace().head)
+    val containerName = toCosmosContainerName(ident.name())
+
+    if (deleteViewTable(databaseName, containerName)) {
+      true
+    } else {
+      this.deletePhysicalTable(databaseName, containerName)
+    }
+  }
+
+  @throws(classOf[UnsupportedOperationException])
+  override def renameTable(oldIdent: Identifier, newIdent: Identifier): Unit = {
+    throw new UnsupportedOperationException("renaming table not supported")
+  }
+
+  private def createPhysicalTable(databaseName: String,
+                                  containerName: String,
+                                  schema: StructType,
+                                  partitions: Array[Transform],
+                                  containerProperties: Map[String, String]): Table = {
     val throughputPropertiesOpt = CosmosThroughputProperties
       .tryGetThroughputProperties(containerProperties)
 
     val partitionKeyPath =
       CosmosContainerProperties.getPartitionKeyPath(containerProperties)
-    val databaseName = toCosmosDatabaseName(ident.namespace().head)
-    val containerName = toCosmosContainerName(ident.name())
+    logInfo(s"createPhysicalTable DB:$databaseName, Container: $containerName")
 
     val indexingPolicy = CosmosContainerProperties.getIndexingPolicy(containerProperties)
     val cosmosContainerProperties = new CosmosContainerProperties(containerName, partitionKeyPath)
@@ -281,7 +335,7 @@ class CosmosCatalog
       getClient
         .getDatabase(databaseName)
         .createContainer(cosmosContainerProperties,
-                         throughputPropertiesOpt.get)
+          throughputPropertiesOpt.get)
         .block()
     } else {
       getClient
@@ -290,26 +344,77 @@ class CosmosCatalog
         .block()
     }
 
+    val effectiveOptions = tableOptions ++ containerProperties
+
     new ItemsTable(
       sparkSession,
       partitions,
       Some(databaseName),
       Some(containerName),
-      tableOptions.asJava,
+      effectiveOptions.asJava,
       Option.apply(schema))
   }
 
-  @throws(classOf[UnsupportedOperationException])
-  override def alterTable(ident: Identifier, changes: TableChange*): Table = {
-    // TODO: moderakh we can support updating indexing policy and throughput
-    throw new UnsupportedOperationException
+  //scalastyle:off method.length
+  @tailrec
+  private def createViewTable(ident: Identifier,
+                              databaseName: String,
+                              viewName: String,
+                              schema: StructType,
+                              partitions: Array[Transform],
+                              containerProperties: Map[String, String]): Table = {
+
+    logInfo(s"createViewTable DB:$databaseName, View: $viewName")
+
+    this.viewRepository match {
+      case Some(viewRepositorySnapshot) =>
+        val userProvidedSchema = if (schema != null && schema.length > 0) {
+          Some(schema)
+        } else {
+          None
+        }
+        val viewDefinition = ViewDefinition(databaseName, viewName, userProvidedSchema, containerProperties)
+        var lastBatchId = 0L
+        val newViewDefinitionsSnapshot = viewRepositorySnapshot.getLatest() match {
+          case Some(viewDefinitionsSnapshot) =>
+            lastBatchId = viewDefinitionsSnapshot._1
+            val alreadyExistingViews = viewDefinitionsSnapshot._2
+
+            if (alreadyExistingViews.exists(v => v.databaseName.equals(databaseName) &&
+              v.viewName.equals(viewName))) {
+
+              throw new IllegalArgumentException(s"View '$viewName' already exists in database '$databaseName'")
+            }
+
+            alreadyExistingViews ++ Array(viewDefinition)
+          case None => Array(viewDefinition)
+        }
+
+        if (viewRepositorySnapshot.add(lastBatchId + 1, newViewDefinitionsSnapshot)) {
+          logInfo(s"LatestBatchId: ${viewRepositorySnapshot.getLatestBatchId().getOrElse(-1)}")
+          viewRepositorySnapshot.purge(lastBatchId)
+          logInfo(s"LatestBatchId: ${viewRepositorySnapshot.getLatestBatchId().getOrElse(-1)}")
+          val effectiveOptions = tableOptions ++ viewDefinition.options
+
+          new ItemsReadOnlyTable(
+            sparkSession,
+            partitions,
+            None,
+            None,
+            effectiveOptions.asJava,
+            userProvidedSchema)
+        } else {
+          createViewTable(ident, databaseName, viewName, schema, partitions, containerProperties)
+        }
+      case None =>
+        throw new IllegalArgumentException(
+          s"Catalog configuration for '${CosmosViewRepositoryConfig.MetaDataPathKeyName}' must " +
+            "be set when creating views'")
+    }
   }
+  //scalastyle:on method.length
 
-  override def dropTable(ident: Identifier): Boolean = {
-    checkNamespace(ident.namespace())
-
-    val databaseName = toCosmosDatabaseName(ident.namespace().head)
-    val containerName = toCosmosContainerName(ident.name())
+  private def deletePhysicalTable(databaseName: String, containerName: String): Boolean = {
     try {
       getClient
         .getDatabase(databaseName)
@@ -322,9 +427,88 @@ class CosmosCatalog
     }
   }
 
-  @throws(classOf[UnsupportedOperationException])
-  override def renameTable(oldIdent: Identifier, newIdent: Identifier): Unit = {
-    throw new UnsupportedOperationException("renaming table not supported")
+  @tailrec
+  private def deleteViewTable(databaseName: String, viewName: String): Boolean = {
+    logInfo(s"deleteViewTable DB:$databaseName, View: $viewName")
+
+    this.viewRepository match {
+      case Some(viewRepositorySnapshot) =>
+        viewRepositorySnapshot.getLatest() match {
+          case Some(viewDefinitionsSnapshot) =>
+            val lastBatchId = viewDefinitionsSnapshot._1
+            val viewDefinitions = viewDefinitionsSnapshot._2
+
+            viewDefinitions.find(v => v.databaseName.equals(databaseName) &&
+              v.viewName.equals(viewName)) match {
+              case Some(existingView) =>
+                val updatedViewDefinitionsSnapshot: Array[ViewDefinition] =
+                  (ArrayBuffer(viewDefinitions: _*) - existingView).toArray
+
+                if (viewRepositorySnapshot.add(lastBatchId + 1, updatedViewDefinitionsSnapshot)) {
+                  viewRepositorySnapshot.purge(lastBatchId)
+                  true
+                } else {
+                  deleteViewTable(databaseName, viewName)
+                }
+              case None => false
+            }
+          case None => false
+        }
+      case None =>
+        false
+    }
+  }
+
+  private def getClient: CosmosAsyncClient = {
+    this.client
+  }
+
+  private def tryGetContainerMetadata
+  (
+    databaseName: String,
+    containerName: String
+  ): Option[CosmosContainerProperties] = {
+
+    try {
+      Some(getClient
+        .getDatabase(databaseName)
+        .getContainer(containerName)
+        .read()
+        .block()
+        .getProperties)
+    } catch {
+      case e: CosmosException if isNotFound(e) =>
+        None
+    }
+  }
+
+  private def tryGetViewDefinition(databaseName: String,
+                                   containerName: String) : Option[ViewDefinition] = {
+
+    this.tryGetViewDefinitions(databaseName) match {
+      case Some(viewDefinitions) =>
+        viewDefinitions.find(v => databaseName.equals(v.databaseName) &&
+          containerName.equals(v.viewName))
+      case None => None
+    }
+  }
+
+  private def tryGetViewDefinitions(databaseName: String) : Option[Array[ViewDefinition]] = {
+
+    this.viewRepository match {
+      case Some(viewRepositorySnapshot) =>
+        viewRepositorySnapshot.getLatest() match {
+          case Some(latestMetadataSnapshot) =>
+            val viewDefinitions = latestMetadataSnapshot._2.filter(v => databaseName.equals(v.databaseName))
+            if (viewDefinitions.length > 0) {
+              Some(viewDefinitions)
+            } else {
+              None
+            }
+          case None => None
+        }
+      case None => None
+    }
   }
 
   private def isNotFound(exception: CosmosException) =
@@ -337,6 +521,15 @@ class CosmosCatalog
       namespaceName: String,
       cosmosContainerProperties: CosmosContainerProperties): Identifier = {
     Identifier.of(Array(namespaceName), cosmosContainerProperties.getId)
+  }
+
+  private def getContainerIdentifier
+  (
+    namespaceName: String,
+    viewDefinition: ViewDefinition
+  ): Identifier = {
+
+    Identifier.of(Array(namespaceName), viewDefinition.viewName)
   }
 
   private def checkNamespace(namespace: Array[String]): Unit = {
@@ -402,8 +595,6 @@ class CosmosCatalog
         None
       }
     }
-
-    // TODO: add support for other container properties, indexing policy?
   }
 
   private object CosmosThroughputProperties {
@@ -443,4 +634,14 @@ class CosmosCatalog
       props.asScala.toMap
     }
   }
+
+  private case class ViewDefinition
+  (
+    databaseName: String,
+    viewName: String,
+    userProvidedSchema: Option[StructType],
+    options: Map[String, String]
+  )
 }
+// scalastyle:on multiple.string.literals
+// scalastyle:on number.of.methods

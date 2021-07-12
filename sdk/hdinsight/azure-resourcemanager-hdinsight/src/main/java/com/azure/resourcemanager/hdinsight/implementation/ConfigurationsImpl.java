@@ -8,7 +8,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.hdinsight.HDInsightManager;
 import com.azure.resourcemanager.hdinsight.fluent.ConfigurationsClient;
 import com.azure.resourcemanager.hdinsight.fluent.models.ClusterConfigurationsInner;
 import com.azure.resourcemanager.hdinsight.models.ClusterConfigurations;
@@ -22,9 +21,10 @@ public final class ConfigurationsImpl implements Configurations {
 
     private final ConfigurationsClient innerClient;
 
-    private final HDInsightManager serviceManager;
+    private final com.azure.resourcemanager.hdinsight.HDInsightManager serviceManager;
 
-    public ConfigurationsImpl(ConfigurationsClient innerClient, HDInsightManager serviceManager) {
+    public ConfigurationsImpl(
+        ConfigurationsClient innerClient, com.azure.resourcemanager.hdinsight.HDInsightManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -85,7 +85,7 @@ public final class ConfigurationsImpl implements Configurations {
         return this.innerClient;
     }
 
-    private HDInsightManager manager() {
+    private com.azure.resourcemanager.hdinsight.HDInsightManager manager() {
         return this.serviceManager;
     }
 }

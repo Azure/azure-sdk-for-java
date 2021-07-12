@@ -6,8 +6,8 @@ package com.azure.resourcemanager.eventgrid.implementation;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.eventgrid.fluent.models.TopicInner;
 import com.azure.resourcemanager.eventgrid.models.ExtendedLocation;
@@ -19,7 +19,6 @@ import com.azure.resourcemanager.eventgrid.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.eventgrid.models.PublicNetworkAccess;
 import com.azure.resourcemanager.eventgrid.models.ResourceKind;
 import com.azure.resourcemanager.eventgrid.models.ResourceSku;
-import com.azure.resourcemanager.eventgrid.models.SystemData;
 import com.azure.resourcemanager.eventgrid.models.Topic;
 import com.azure.resourcemanager.eventgrid.models.TopicProvisioningState;
 import com.azure.resourcemanager.eventgrid.models.TopicRegenerateKeyRequest;
@@ -33,7 +32,7 @@ import java.util.stream.Collectors;
 public final class TopicImpl implements Topic, Topic.Definition, Topic.Update {
     private TopicInner innerObject;
 
-    private final EventGridManager serviceManager;
+    private final com.azure.resourcemanager.eventgrid.EventGridManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -127,6 +126,10 @@ public final class TopicImpl implements Topic, Topic.Definition, Topic.Update {
         }
     }
 
+    public Boolean disableLocalAuth() {
+        return this.innerModel().disableLocalAuth();
+    }
+
     public Region region() {
         return Region.fromName(this.regionName());
     }
@@ -139,7 +142,7 @@ public final class TopicImpl implements Topic, Topic.Definition, Topic.Update {
         return this.innerObject;
     }
 
-    private EventGridManager manager() {
+    private com.azure.resourcemanager.eventgrid.EventGridManager manager() {
         return this.serviceManager;
     }
 
@@ -172,7 +175,7 @@ public final class TopicImpl implements Topic, Topic.Definition, Topic.Update {
         return this;
     }
 
-    TopicImpl(String name, EventGridManager serviceManager) {
+    TopicImpl(String name, com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
         this.innerObject = new TopicInner();
         this.serviceManager = serviceManager;
         this.topicName = name;
@@ -201,7 +204,7 @@ public final class TopicImpl implements Topic, Topic.Definition, Topic.Update {
         return this;
     }
 
-    TopicImpl(TopicInner innerObject, EventGridManager serviceManager) {
+    TopicImpl(TopicInner innerObject, com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -294,11 +297,6 @@ public final class TopicImpl implements Topic, Topic.Definition, Topic.Update {
         return this;
     }
 
-    public TopicImpl withPrivateEndpointConnections(List<PrivateEndpointConnectionInner> privateEndpointConnections) {
-        this.innerModel().withPrivateEndpointConnections(privateEndpointConnections);
-        return this;
-    }
-
     public TopicImpl withInputSchema(InputSchema inputSchema) {
         this.innerModel().withInputSchema(inputSchema);
         return this;
@@ -325,6 +323,16 @@ public final class TopicImpl implements Topic, Topic.Definition, Topic.Update {
             return this;
         } else {
             this.updateTopicUpdateParameters.withInboundIpRules(inboundIpRules);
+            return this;
+        }
+    }
+
+    public TopicImpl withDisableLocalAuth(Boolean disableLocalAuth) {
+        if (isInCreateMode()) {
+            this.innerModel().withDisableLocalAuth(disableLocalAuth);
+            return this;
+        } else {
+            this.updateTopicUpdateParameters.withDisableLocalAuth(disableLocalAuth);
             return this;
         }
     }

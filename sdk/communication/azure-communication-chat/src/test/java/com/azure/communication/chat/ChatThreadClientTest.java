@@ -4,6 +4,7 @@
 package com.azure.communication.chat;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -52,11 +53,6 @@ public class ChatThreadClientTest extends ChatClientTestBase {
     private CommunicationUserIdentifier secondParticipant;
     private CommunicationUserIdentifier firstAddedParticipant;
     private CommunicationUserIdentifier secondAddedParticipant;
-
-    @Override
-    protected void beforeTest() {
-        super.beforeTest();
-    }
 
     @Override
     protected void afterTest() {
@@ -291,6 +287,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         ChatMessage message = chatThreadClient.getMessage(response.getId());
         assertEquals(message.getContent().getMessage(), messageRequest.getContent());
         assertEquals(message.getSenderDisplayName(), messageRequest.getSenderDisplayName());
+        assertTrue(message.getMetadata().equals(messageRequest.getMetadata()));
     }
 
     @ParameterizedTest
@@ -306,6 +303,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         ChatMessage message = chatThreadClient.getMessageWithResponse(response.getId(), Context.NONE).getValue();
         assertEquals(message.getContent().getMessage(), messageRequest.getContent());
         assertEquals(message.getSenderDisplayName(), messageRequest.getSenderDisplayName());
+        assertTrue(message.getMetadata().equals(messageRequest.getMetadata()));
     }
 
     @ParameterizedTest
@@ -349,6 +347,12 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
         ChatMessage message = chatThreadClient.getMessage(response.getId());
         assertEquals(message.getContent().getMessage(), updateMessageRequest.getContent());
+
+        assertFalse(message.getMetadata().containsKey("tags"));
+        assertEquals(message.getMetadata().get("deliveryMode"), updateMessageRequest.getMetadata().get("deliveryMode"));
+        assertEquals(message.getMetadata().get("onedriveReferences"), updateMessageRequest.getMetadata().get("onedriveReferences"));
+        assertEquals(message.getMetadata().get("amsreferences"), messageRequest.getMetadata().get("amsreferences"));
+        assertEquals(message.getMetadata().get("key"), messageRequest.getMetadata().get("key"));
     }
 
     @ParameterizedTest
@@ -366,6 +370,12 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
         ChatMessage message = chatThreadClient.getMessage(response.getId());
         assertEquals(message.getContent().getMessage(), updateMessageRequest.getContent());
+
+        assertFalse(message.getMetadata().containsKey("tags"));
+        assertEquals(message.getMetadata().get("deliveryMode"), updateMessageRequest.getMetadata().get("deliveryMode"));
+        assertEquals(message.getMetadata().get("onedriveReferences"), updateMessageRequest.getMetadata().get("onedriveReferences"));
+        assertEquals(message.getMetadata().get("amsreferences"), messageRequest.getMetadata().get("amsreferences"));
+        assertEquals(message.getMetadata().get("key"), messageRequest.getMetadata().get("key"));
     }
 
     @ParameterizedTest
@@ -442,6 +452,32 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
         // Action & Assert
         chatThreadClient.sendTypingNotificationWithResponse(Context.NONE);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void canSendTypingNotificationWithOptions(HttpClient httpClient) {
+        // Arrange
+        setupTest(httpClient, "canSendTypingNotificationWithOptions");
+
+        TypingNotificationOptions options = new TypingNotificationOptions();
+        options.setSenderDisplayName("Sender");
+
+        // Action & Assert
+        chatThreadClient.sendTypingNotification(options);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void canSendTypingNotificationWithResponseWithOptions(HttpClient httpClient) {
+        // Arrange
+        setupTest(httpClient, "canSendTypingNotificationWithResponseWithOptions");
+
+        TypingNotificationOptions options = new TypingNotificationOptions();
+        options.setSenderDisplayName("Sender");
+
+        // Action & Assert
+        chatThreadClient.sendTypingNotificationWithResponse(options, Context.NONE);
     }
 
     @ParameterizedTest

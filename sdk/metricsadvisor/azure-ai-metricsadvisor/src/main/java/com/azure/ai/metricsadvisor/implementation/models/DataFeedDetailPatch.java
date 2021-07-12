@@ -25,9 +25,9 @@ import java.util.List;
     @JsonSubTypes.Type(name = "AzureCosmosDB", value = AzureCosmosDBDataFeedPatch.class),
     @JsonSubTypes.Type(name = "AzureDataExplorer", value = AzureDataExplorerDataFeedPatch.class),
     @JsonSubTypes.Type(name = "AzureDataLakeStorageGen2", value = AzureDataLakeStorageGen2DataFeedPatch.class),
+    @JsonSubTypes.Type(name = "AzureEventHubs", value = AzureEventHubsDataFeedPatch.class),
+    @JsonSubTypes.Type(name = "AzureLogAnalytics", value = AzureLogAnalyticsDataFeedPatch.class),
     @JsonSubTypes.Type(name = "AzureTable", value = AzureTableDataFeedPatch.class),
-    @JsonSubTypes.Type(name = "Elasticsearch", value = ElasticsearchDataFeedPatch.class),
-    @JsonSubTypes.Type(name = "HttpRequest", value = HttpRequestDataFeedPatch.class),
     @JsonSubTypes.Type(name = "InfluxDB", value = InfluxDBDataFeedPatch.class),
     @JsonSubTypes.Type(name = "MySql", value = MySqlDataFeedPatch.class),
     @JsonSubTypes.Type(name = "PostgreSql", value = PostgreSqlDataFeedPatch.class),
@@ -92,13 +92,13 @@ public class DataFeedDetailPatch {
      * mark if the data feed need rollup
      */
     @JsonProperty(value = "needRollup")
-    private DataFeedDetailPatchNeedRollup needRollup;
+    private NeedRollupEnum needRollup;
 
     /*
      * roll up method
      */
     @JsonProperty(value = "rollUpMethod")
-    private DataFeedDetailPatchRollUpMethod rollUpMethod;
+    private RollUpMethod rollUpMethod;
 
     /*
      * roll up columns
@@ -115,20 +115,20 @@ public class DataFeedDetailPatch {
     /*
      * the type of fill missing point for anomaly detection
      */
-    @JsonProperty(value = "fillMissingPointForAd")
-    private DataFeedDetailPatchFillMissingPointForAd fillMissingPointForAd;
+    @JsonProperty(value = "fillMissingPointType")
+    private FillMissingPointType fillMissingPointType;
 
     /*
      * the value of fill missing point for anomaly detection
      */
-    @JsonProperty(value = "fillMissingPointForAdValue")
-    private Double fillMissingPointForAdValue;
+    @JsonProperty(value = "fillMissingPointValue")
+    private Double fillMissingPointValue;
 
     /*
      * data feed access mode, default is Private
      */
     @JsonProperty(value = "viewMode")
-    private DataFeedDetailPatchViewMode viewMode;
+    private ViewMode viewMode;
 
     /*
      * data feed administrator
@@ -146,13 +146,25 @@ public class DataFeedDetailPatch {
      * data feed status
      */
     @JsonProperty(value = "status")
-    private DataFeedDetailPatchStatus status;
+    private EntityStatus status;
 
     /*
      * action link for alert
      */
     @JsonProperty(value = "actionLinkTemplate")
     private String actionLinkTemplate;
+
+    /*
+     * authentication type for corresponding data source
+     */
+    @JsonProperty(value = "authenticationType")
+    private AuthenticationTypeEnum authenticationType;
+
+    /*
+     * The credential entity id
+     */
+    @JsonProperty(value = "credentialId")
+    private String credentialId;
 
     /**
      * Get the dataFeedName property: data feed name.
@@ -327,7 +339,7 @@ public class DataFeedDetailPatch {
      *
      * @return the needRollup value.
      */
-    public DataFeedDetailPatchNeedRollup getNeedRollup() {
+    public NeedRollupEnum getNeedRollup() {
         return this.needRollup;
     }
 
@@ -337,7 +349,7 @@ public class DataFeedDetailPatch {
      * @param needRollup the needRollup value to set.
      * @return the DataFeedDetailPatch object itself.
      */
-    public DataFeedDetailPatch setNeedRollup(DataFeedDetailPatchNeedRollup needRollup) {
+    public DataFeedDetailPatch setNeedRollup(NeedRollupEnum needRollup) {
         this.needRollup = needRollup;
         return this;
     }
@@ -347,7 +359,7 @@ public class DataFeedDetailPatch {
      *
      * @return the rollUpMethod value.
      */
-    public DataFeedDetailPatchRollUpMethod getRollUpMethod() {
+    public RollUpMethod getRollUpMethod() {
         return this.rollUpMethod;
     }
 
@@ -357,7 +369,7 @@ public class DataFeedDetailPatch {
      * @param rollUpMethod the rollUpMethod value to set.
      * @return the DataFeedDetailPatch object itself.
      */
-    public DataFeedDetailPatch setRollUpMethod(DataFeedDetailPatchRollUpMethod rollUpMethod) {
+    public DataFeedDetailPatch setRollUpMethod(RollUpMethod rollUpMethod) {
         this.rollUpMethod = rollUpMethod;
         return this;
     }
@@ -403,43 +415,42 @@ public class DataFeedDetailPatch {
     }
 
     /**
-     * Get the fillMissingPointForAd property: the type of fill missing point for anomaly detection.
+     * Get the fillMissingPointType property: the type of fill missing point for anomaly detection.
      *
-     * @return the fillMissingPointForAd value.
+     * @return the fillMissingPointType value.
      */
-    public DataFeedDetailPatchFillMissingPointForAd getFillMissingPointForAd() {
-        return this.fillMissingPointForAd;
+    public FillMissingPointType getFillMissingPointType() {
+        return this.fillMissingPointType;
     }
 
     /**
-     * Set the fillMissingPointForAd property: the type of fill missing point for anomaly detection.
+     * Set the fillMissingPointType property: the type of fill missing point for anomaly detection.
      *
-     * @param fillMissingPointForAd the fillMissingPointForAd value to set.
+     * @param fillMissingPointType the fillMissingPointType value to set.
      * @return the DataFeedDetailPatch object itself.
      */
-    public DataFeedDetailPatch setFillMissingPointForAd(
-            DataFeedDetailPatchFillMissingPointForAd fillMissingPointForAd) {
-        this.fillMissingPointForAd = fillMissingPointForAd;
+    public DataFeedDetailPatch setFillMissingPointType(FillMissingPointType fillMissingPointType) {
+        this.fillMissingPointType = fillMissingPointType;
         return this;
     }
 
     /**
-     * Get the fillMissingPointForAdValue property: the value of fill missing point for anomaly detection.
+     * Get the fillMissingPointValue property: the value of fill missing point for anomaly detection.
      *
-     * @return the fillMissingPointForAdValue value.
+     * @return the fillMissingPointValue value.
      */
-    public Double getFillMissingPointForAdValue() {
-        return this.fillMissingPointForAdValue;
+    public Double getFillMissingPointValue() {
+        return this.fillMissingPointValue;
     }
 
     /**
-     * Set the fillMissingPointForAdValue property: the value of fill missing point for anomaly detection.
+     * Set the fillMissingPointValue property: the value of fill missing point for anomaly detection.
      *
-     * @param fillMissingPointForAdValue the fillMissingPointForAdValue value to set.
+     * @param fillMissingPointValue the fillMissingPointValue value to set.
      * @return the DataFeedDetailPatch object itself.
      */
-    public DataFeedDetailPatch setFillMissingPointForAdValue(Double fillMissingPointForAdValue) {
-        this.fillMissingPointForAdValue = fillMissingPointForAdValue;
+    public DataFeedDetailPatch setFillMissingPointValue(Double fillMissingPointValue) {
+        this.fillMissingPointValue = fillMissingPointValue;
         return this;
     }
 
@@ -448,7 +459,7 @@ public class DataFeedDetailPatch {
      *
      * @return the viewMode value.
      */
-    public DataFeedDetailPatchViewMode getViewMode() {
+    public ViewMode getViewMode() {
         return this.viewMode;
     }
 
@@ -458,7 +469,7 @@ public class DataFeedDetailPatch {
      * @param viewMode the viewMode value to set.
      * @return the DataFeedDetailPatch object itself.
      */
-    public DataFeedDetailPatch setViewMode(DataFeedDetailPatchViewMode viewMode) {
+    public DataFeedDetailPatch setViewMode(ViewMode viewMode) {
         this.viewMode = viewMode;
         return this;
     }
@@ -508,7 +519,7 @@ public class DataFeedDetailPatch {
      *
      * @return the status value.
      */
-    public DataFeedDetailPatchStatus getStatus() {
+    public EntityStatus getStatus() {
         return this.status;
     }
 
@@ -518,7 +529,7 @@ public class DataFeedDetailPatch {
      * @param status the status value to set.
      * @return the DataFeedDetailPatch object itself.
      */
-    public DataFeedDetailPatch setStatus(DataFeedDetailPatchStatus status) {
+    public DataFeedDetailPatch setStatus(EntityStatus status) {
         this.status = status;
         return this;
     }
@@ -540,6 +551,46 @@ public class DataFeedDetailPatch {
      */
     public DataFeedDetailPatch setActionLinkTemplate(String actionLinkTemplate) {
         this.actionLinkTemplate = actionLinkTemplate;
+        return this;
+    }
+
+    /**
+     * Get the authenticationType property: authentication type for corresponding data source.
+     *
+     * @return the authenticationType value.
+     */
+    public AuthenticationTypeEnum getAuthenticationType() {
+        return this.authenticationType;
+    }
+
+    /**
+     * Set the authenticationType property: authentication type for corresponding data source.
+     *
+     * @param authenticationType the authenticationType value to set.
+     * @return the DataFeedDetailPatch object itself.
+     */
+    public DataFeedDetailPatch setAuthenticationType(AuthenticationTypeEnum authenticationType) {
+        this.authenticationType = authenticationType;
+        return this;
+    }
+
+    /**
+     * Get the credentialId property: The credential entity id.
+     *
+     * @return the credentialId value.
+     */
+    public String getCredentialId() {
+        return this.credentialId;
+    }
+
+    /**
+     * Set the credentialId property: The credential entity id.
+     *
+     * @param credentialId the credentialId value to set.
+     * @return the DataFeedDetailPatch object itself.
+     */
+    public DataFeedDetailPatch setCredentialId(String credentialId) {
+        this.credentialId = credentialId;
         return this;
     }
 }

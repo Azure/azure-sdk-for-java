@@ -37,6 +37,15 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
     private String runtimeVersion;
 
     /*
+     * The ConfigVersion of the Authentication / Authorization feature in use
+     * for the current app.
+     * The setting in this value can control the behavior of the control plane
+     * for Authentication / Authorization.
+     */
+    @JsonProperty(value = "properties.configVersion")
+    private String configVersion;
+
+    /*
      * The action to take when an unauthenticated client attempts to access the
      * app.
      */
@@ -104,6 +113,13 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
     private String clientSecret;
 
     /*
+     * The app setting name that contains the client secret of the relying
+     * party application.
+     */
+    @JsonProperty(value = "properties.clientSecretSettingName")
+    private String clientSecretSettingName;
+
+    /*
      * An alternative to the client secret, that is the thumbprint of a
      * certificate used for signing purposes. This property acts as
      * a replacement for the Client Secret. It is also optional.
@@ -148,6 +164,12 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
     private List<String> additionalLoginParams;
 
     /*
+     * Gets a JSON string containing the Azure AD Acl settings.
+     */
+    @JsonProperty(value = "properties.aadClaimsAuthorization")
+    private String aadClaimsAuthorization;
+
+    /*
      * The OpenID Connect Client ID for the Google web application.
      * This setting is required for enabling Google Sign-In.
      * Google Sign-In documentation:
@@ -164,6 +186,13 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      */
     @JsonProperty(value = "properties.googleClientSecret")
     private String googleClientSecret;
+
+    /*
+     * The app setting name that contains the client secret associated with
+     * the Google web application.
+     */
+    @JsonProperty(value = "properties.googleClientSecretSettingName")
+    private String googleClientSecretSettingName;
 
     /*
      * The OAuth 2.0 scopes that will be requested as part of Google Sign-In
@@ -195,6 +224,13 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
     private String facebookAppSecret;
 
     /*
+     * The app setting name that contains the app secret used for Facebook
+     * Login.
+     */
+    @JsonProperty(value = "properties.facebookAppSecretSettingName")
+    private String facebookAppSecretSettingName;
+
+    /*
      * The OAuth 2.0 scopes that will be requested as part of Facebook Login
      * authentication.
      * This setting is optional.
@@ -203,6 +239,35 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      */
     @JsonProperty(value = "properties.facebookOAuthScopes")
     private List<String> facebookOAuthScopes;
+
+    /*
+     * The Client Id of the GitHub app used for login.
+     * This setting is required for enabling Github login
+     */
+    @JsonProperty(value = "properties.gitHubClientId")
+    private String gitHubClientId;
+
+    /*
+     * The Client Secret of the GitHub app used for Github Login.
+     * This setting is required for enabling Github login.
+     */
+    @JsonProperty(value = "properties.gitHubClientSecret")
+    private String gitHubClientSecret;
+
+    /*
+     * The app setting name that contains the client secret of the Github
+     * app used for GitHub Login.
+     */
+    @JsonProperty(value = "properties.gitHubClientSecretSettingName")
+    private String gitHubClientSecretSettingName;
+
+    /*
+     * The OAuth 2.0 scopes that will be requested as part of GitHub Login
+     * authentication.
+     * This setting is optional
+     */
+    @JsonProperty(value = "properties.gitHubOAuthScopes")
+    private List<String> gitHubOAuthScopes;
 
     /*
      * The OAuth 1.0a consumer key of the Twitter application used for sign-in.
@@ -220,6 +285,14 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      */
     @JsonProperty(value = "properties.twitterConsumerSecret")
     private String twitterConsumerSecret;
+
+    /*
+     * The app setting name that contains the OAuth 1.0a consumer secret of the
+     * Twitter
+     * application used for sign-in.
+     */
+    @JsonProperty(value = "properties.twitterConsumerSecretSettingName")
+    private String twitterConsumerSecretSettingName;
 
     /*
      * The OAuth 2.0 client ID that was created for the app used for
@@ -242,6 +315,14 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
     private String microsoftAccountClientSecret;
 
     /*
+     * The app setting name containing the OAuth 2.0 client secret that was
+     * created for the
+     * app used for authentication.
+     */
+    @JsonProperty(value = "properties.microsoftAccountClientSecretSettingName")
+    private String microsoftAccountClientSecretSettingName;
+
+    /*
      * The OAuth 2.0 scopes that will be requested as part of Microsoft Account
      * authentication.
      * This setting is optional. If not specified, "wl.basic" is used as the
@@ -251,6 +332,20 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      */
     @JsonProperty(value = "properties.microsoftAccountOAuthScopes")
     private List<String> microsoftAccountOAuthScopes;
+
+    /*
+     * "true" if the auth config settings should be read from a file,
+     * "false" otherwise
+     */
+    @JsonProperty(value = "properties.isAuthFromFile")
+    private String isAuthFromFile;
+
+    /*
+     * The path of the config file containing auth settings.
+     * If the path is relative, base will the site's root directory.
+     */
+    @JsonProperty(value = "properties.authFilePath")
+    private String authFilePath;
 
     /**
      * Get the enabled property: &lt;code&gt;true&lt;/code&gt; if the Authentication / Authorization feature is enabled
@@ -295,6 +390,30 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      */
     public SiteAuthSettingsInner withRuntimeVersion(String runtimeVersion) {
         this.runtimeVersion = runtimeVersion;
+        return this;
+    }
+
+    /**
+     * Get the configVersion property: The ConfigVersion of the Authentication / Authorization feature in use for the
+     * current app. The setting in this value can control the behavior of the control plane for Authentication /
+     * Authorization.
+     *
+     * @return the configVersion value.
+     */
+    public String configVersion() {
+        return this.configVersion;
+    }
+
+    /**
+     * Set the configVersion property: The ConfigVersion of the Authentication / Authorization feature in use for the
+     * current app. The setting in this value can control the behavior of the control plane for Authentication /
+     * Authorization.
+     *
+     * @param configVersion the configVersion value to set.
+     * @return the SiteAuthSettingsInner object itself.
+     */
+    public SiteAuthSettingsInner withConfigVersion(String configVersion) {
+        this.configVersion = configVersion;
         return this;
     }
 
@@ -470,6 +589,28 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
     }
 
     /**
+     * Get the clientSecretSettingName property: The app setting name that contains the client secret of the relying
+     * party application.
+     *
+     * @return the clientSecretSettingName value.
+     */
+    public String clientSecretSettingName() {
+        return this.clientSecretSettingName;
+    }
+
+    /**
+     * Set the clientSecretSettingName property: The app setting name that contains the client secret of the relying
+     * party application.
+     *
+     * @param clientSecretSettingName the clientSecretSettingName value to set.
+     * @return the SiteAuthSettingsInner object itself.
+     */
+    public SiteAuthSettingsInner withClientSecretSettingName(String clientSecretSettingName) {
+        this.clientSecretSettingName = clientSecretSettingName;
+        return this;
+    }
+
+    /**
      * Get the clientSecretCertificateThumbprint property: An alternative to the client secret, that is the thumbprint
      * of a certificate used for signing purposes. This property acts as a replacement for the Client Secret. It is also
      * optional.
@@ -588,6 +729,26 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
     }
 
     /**
+     * Get the aadClaimsAuthorization property: Gets a JSON string containing the Azure AD Acl settings.
+     *
+     * @return the aadClaimsAuthorization value.
+     */
+    public String aadClaimsAuthorization() {
+        return this.aadClaimsAuthorization;
+    }
+
+    /**
+     * Set the aadClaimsAuthorization property: Gets a JSON string containing the Azure AD Acl settings.
+     *
+     * @param aadClaimsAuthorization the aadClaimsAuthorization value to set.
+     * @return the SiteAuthSettingsInner object itself.
+     */
+    public SiteAuthSettingsInner withAadClaimsAuthorization(String aadClaimsAuthorization) {
+        this.aadClaimsAuthorization = aadClaimsAuthorization;
+        return this;
+    }
+
+    /**
      * Get the googleClientId property: The OpenID Connect Client ID for the Google web application. This setting is
      * required for enabling Google Sign-In. Google Sign-In documentation:
      * https://developers.google.com/identity/sign-in/web/.
@@ -632,6 +793,28 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      */
     public SiteAuthSettingsInner withGoogleClientSecret(String googleClientSecret) {
         this.googleClientSecret = googleClientSecret;
+        return this;
+    }
+
+    /**
+     * Get the googleClientSecretSettingName property: The app setting name that contains the client secret associated
+     * with the Google web application.
+     *
+     * @return the googleClientSecretSettingName value.
+     */
+    public String googleClientSecretSettingName() {
+        return this.googleClientSecretSettingName;
+    }
+
+    /**
+     * Set the googleClientSecretSettingName property: The app setting name that contains the client secret associated
+     * with the Google web application.
+     *
+     * @param googleClientSecretSettingName the googleClientSecretSettingName value to set.
+     * @return the SiteAuthSettingsInner object itself.
+     */
+    public SiteAuthSettingsInner withGoogleClientSecretSettingName(String googleClientSecretSettingName) {
+        this.googleClientSecretSettingName = googleClientSecretSettingName;
         return this;
     }
 
@@ -706,6 +889,28 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
     }
 
     /**
+     * Get the facebookAppSecretSettingName property: The app setting name that contains the app secret used for
+     * Facebook Login.
+     *
+     * @return the facebookAppSecretSettingName value.
+     */
+    public String facebookAppSecretSettingName() {
+        return this.facebookAppSecretSettingName;
+    }
+
+    /**
+     * Set the facebookAppSecretSettingName property: The app setting name that contains the app secret used for
+     * Facebook Login.
+     *
+     * @param facebookAppSecretSettingName the facebookAppSecretSettingName value to set.
+     * @return the SiteAuthSettingsInner object itself.
+     */
+    public SiteAuthSettingsInner withFacebookAppSecretSettingName(String facebookAppSecretSettingName) {
+        this.facebookAppSecretSettingName = facebookAppSecretSettingName;
+        return this;
+    }
+
+    /**
      * Get the facebookOAuthScopes property: The OAuth 2.0 scopes that will be requested as part of Facebook Login
      * authentication. This setting is optional. Facebook Login documentation:
      * https://developers.facebook.com/docs/facebook-login.
@@ -726,6 +931,94 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      */
     public SiteAuthSettingsInner withFacebookOAuthScopes(List<String> facebookOAuthScopes) {
         this.facebookOAuthScopes = facebookOAuthScopes;
+        return this;
+    }
+
+    /**
+     * Get the gitHubClientId property: The Client Id of the GitHub app used for login. This setting is required for
+     * enabling Github login.
+     *
+     * @return the gitHubClientId value.
+     */
+    public String gitHubClientId() {
+        return this.gitHubClientId;
+    }
+
+    /**
+     * Set the gitHubClientId property: The Client Id of the GitHub app used for login. This setting is required for
+     * enabling Github login.
+     *
+     * @param gitHubClientId the gitHubClientId value to set.
+     * @return the SiteAuthSettingsInner object itself.
+     */
+    public SiteAuthSettingsInner withGitHubClientId(String gitHubClientId) {
+        this.gitHubClientId = gitHubClientId;
+        return this;
+    }
+
+    /**
+     * Get the gitHubClientSecret property: The Client Secret of the GitHub app used for Github Login. This setting is
+     * required for enabling Github login.
+     *
+     * @return the gitHubClientSecret value.
+     */
+    public String gitHubClientSecret() {
+        return this.gitHubClientSecret;
+    }
+
+    /**
+     * Set the gitHubClientSecret property: The Client Secret of the GitHub app used for Github Login. This setting is
+     * required for enabling Github login.
+     *
+     * @param gitHubClientSecret the gitHubClientSecret value to set.
+     * @return the SiteAuthSettingsInner object itself.
+     */
+    public SiteAuthSettingsInner withGitHubClientSecret(String gitHubClientSecret) {
+        this.gitHubClientSecret = gitHubClientSecret;
+        return this;
+    }
+
+    /**
+     * Get the gitHubClientSecretSettingName property: The app setting name that contains the client secret of the
+     * Github app used for GitHub Login.
+     *
+     * @return the gitHubClientSecretSettingName value.
+     */
+    public String gitHubClientSecretSettingName() {
+        return this.gitHubClientSecretSettingName;
+    }
+
+    /**
+     * Set the gitHubClientSecretSettingName property: The app setting name that contains the client secret of the
+     * Github app used for GitHub Login.
+     *
+     * @param gitHubClientSecretSettingName the gitHubClientSecretSettingName value to set.
+     * @return the SiteAuthSettingsInner object itself.
+     */
+    public SiteAuthSettingsInner withGitHubClientSecretSettingName(String gitHubClientSecretSettingName) {
+        this.gitHubClientSecretSettingName = gitHubClientSecretSettingName;
+        return this;
+    }
+
+    /**
+     * Get the gitHubOAuthScopes property: The OAuth 2.0 scopes that will be requested as part of GitHub Login
+     * authentication. This setting is optional.
+     *
+     * @return the gitHubOAuthScopes value.
+     */
+    public List<String> gitHubOAuthScopes() {
+        return this.gitHubOAuthScopes;
+    }
+
+    /**
+     * Set the gitHubOAuthScopes property: The OAuth 2.0 scopes that will be requested as part of GitHub Login
+     * authentication. This setting is optional.
+     *
+     * @param gitHubOAuthScopes the gitHubOAuthScopes value to set.
+     * @return the SiteAuthSettingsInner object itself.
+     */
+    public SiteAuthSettingsInner withGitHubOAuthScopes(List<String> gitHubOAuthScopes) {
+        this.gitHubOAuthScopes = gitHubOAuthScopes;
         return this;
     }
 
@@ -778,6 +1071,28 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
     }
 
     /**
+     * Get the twitterConsumerSecretSettingName property: The app setting name that contains the OAuth 1.0a consumer
+     * secret of the Twitter application used for sign-in.
+     *
+     * @return the twitterConsumerSecretSettingName value.
+     */
+    public String twitterConsumerSecretSettingName() {
+        return this.twitterConsumerSecretSettingName;
+    }
+
+    /**
+     * Set the twitterConsumerSecretSettingName property: The app setting name that contains the OAuth 1.0a consumer
+     * secret of the Twitter application used for sign-in.
+     *
+     * @param twitterConsumerSecretSettingName the twitterConsumerSecretSettingName value to set.
+     * @return the SiteAuthSettingsInner object itself.
+     */
+    public SiteAuthSettingsInner withTwitterConsumerSecretSettingName(String twitterConsumerSecretSettingName) {
+        this.twitterConsumerSecretSettingName = twitterConsumerSecretSettingName;
+        return this;
+    }
+
+    /**
      * Get the microsoftAccountClientId property: The OAuth 2.0 client ID that was created for the app used for
      * authentication. This setting is required for enabling Microsoft Account authentication. Microsoft Account OAuth
      * documentation: https://dev.onedrive.com/auth/msa_oauth.htm.
@@ -826,6 +1141,29 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
     }
 
     /**
+     * Get the microsoftAccountClientSecretSettingName property: The app setting name containing the OAuth 2.0 client
+     * secret that was created for the app used for authentication.
+     *
+     * @return the microsoftAccountClientSecretSettingName value.
+     */
+    public String microsoftAccountClientSecretSettingName() {
+        return this.microsoftAccountClientSecretSettingName;
+    }
+
+    /**
+     * Set the microsoftAccountClientSecretSettingName property: The app setting name containing the OAuth 2.0 client
+     * secret that was created for the app used for authentication.
+     *
+     * @param microsoftAccountClientSecretSettingName the microsoftAccountClientSecretSettingName value to set.
+     * @return the SiteAuthSettingsInner object itself.
+     */
+    public SiteAuthSettingsInner withMicrosoftAccountClientSecretSettingName(
+        String microsoftAccountClientSecretSettingName) {
+        this.microsoftAccountClientSecretSettingName = microsoftAccountClientSecretSettingName;
+        return this;
+    }
+
+    /**
      * Get the microsoftAccountOAuthScopes property: The OAuth 2.0 scopes that will be requested as part of Microsoft
      * Account authentication. This setting is optional. If not specified, "wl.basic" is used as the default scope.
      * Microsoft Account Scopes and permissions documentation: https://msdn.microsoft.com/en-us/library/dn631845.aspx.
@@ -846,6 +1184,57 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      */
     public SiteAuthSettingsInner withMicrosoftAccountOAuthScopes(List<String> microsoftAccountOAuthScopes) {
         this.microsoftAccountOAuthScopes = microsoftAccountOAuthScopes;
+        return this;
+    }
+
+    /**
+     * Get the isAuthFromFile property: "true" if the auth config settings should be read from a file, "false"
+     * otherwise.
+     *
+     * @return the isAuthFromFile value.
+     */
+    public String isAuthFromFile() {
+        return this.isAuthFromFile;
+    }
+
+    /**
+     * Set the isAuthFromFile property: "true" if the auth config settings should be read from a file, "false"
+     * otherwise.
+     *
+     * @param isAuthFromFile the isAuthFromFile value to set.
+     * @return the SiteAuthSettingsInner object itself.
+     */
+    public SiteAuthSettingsInner withIsAuthFromFile(String isAuthFromFile) {
+        this.isAuthFromFile = isAuthFromFile;
+        return this;
+    }
+
+    /**
+     * Get the authFilePath property: The path of the config file containing auth settings. If the path is relative,
+     * base will the site's root directory.
+     *
+     * @return the authFilePath value.
+     */
+    public String authFilePath() {
+        return this.authFilePath;
+    }
+
+    /**
+     * Set the authFilePath property: The path of the config file containing auth settings. If the path is relative,
+     * base will the site's root directory.
+     *
+     * @param authFilePath the authFilePath value to set.
+     * @return the SiteAuthSettingsInner object itself.
+     */
+    public SiteAuthSettingsInner withAuthFilePath(String authFilePath) {
+        this.authFilePath = authFilePath;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SiteAuthSettingsInner withKind(String kind) {
+        super.withKind(kind);
         return this;
     }
 

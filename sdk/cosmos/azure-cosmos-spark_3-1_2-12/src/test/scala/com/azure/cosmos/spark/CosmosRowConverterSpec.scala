@@ -2,19 +2,24 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.{ArrayNode, BinaryNode, BooleanNode, ObjectNode}
+import org.apache.spark.sql.Row
 import org.apache.spark.sql.catalyst.InternalRow
+import org.apache.spark.sql.catalyst.util.ArrayData
+import org.apache.spark.sql.catalyst.encoders.ExpressionEncoder
 import org.apache.spark.sql.catalyst.expressions.GenericRowWithSchema
-import org.apache.spark.sql.types.{ArrayType, BinaryType, BooleanType, DateType,
-  Decimal, DecimalType, DoubleType, FloatType, IntegerType, LongType, MapType,
-  NullType, StringType, StructField, StructType, TimestampType}
 
 import java.sql.{Date, Timestamp}
 import java.time.format.DateTimeFormatter
 import java.time.{LocalDateTime, OffsetDateTime, ZoneOffset}
 
-class CosmosRowConverterSpec extends UnitSpec {
+// scalastyle:off underscore.import
+import org.apache.spark.sql.types._
+// scalastyle:on underscore.import
+
+class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
   //scalastyle:off null
   //scalastyle:off multiple.string.literals
 
@@ -55,18 +60,29 @@ class CosmosRowConverterSpec extends UnitSpec {
   "array in spark row" should "translate to ObjectNode" in {
     val colName1 = "testCol1"
     val colName2 = "testCol2"
+    val colName3 = "testCol3"
     val colVal1 = "strVal"
 
     val row = new GenericRowWithSchema(
-      Array(Seq("arrayElement1", "arrayElement2"), colVal1),
-      StructType(Seq(StructField(colName1, ArrayType(StringType, true)), StructField(colName2, StringType))))
+      Array(
+        Seq("arrayElement1", "arrayElement2"),
+        ArrayData.toArrayData(Array(1, 2)),
+        colVal1),
+      StructType(Seq(
+        StructField(colName1, ArrayType(StringType, containsNull = false)),
+        StructField(colName2, ArrayType(IntegerType, containsNull = false)),
+        StructField(colName3, StringType))))
 
     val objectNode = CosmosRowConverter.fromRowToObjectNode(row)
     objectNode.get(colName1).isArray shouldBe true
     objectNode.get(colName1).asInstanceOf[ArrayNode] should have size 2
-    objectNode.get(colName1).asInstanceOf[ArrayNode].get(0).asText() shouldEqual "arrayElement1"
-    objectNode.get(colName1).asInstanceOf[ArrayNode].get(1).asText() shouldEqual "arrayElement2"
-    objectNode.get(colName2).asText() shouldEqual colVal1
+    objectNode.get(colName1).asInstanceOf[ArrayNode].get(0).asText shouldEqual "arrayElement1"
+    objectNode.get(colName1).asInstanceOf[ArrayNode].get(1).asText shouldEqual "arrayElement2"
+    objectNode.get(colName2).isArray shouldBe true
+    objectNode.get(colName2).asInstanceOf[ArrayNode] should have size 2
+    objectNode.get(colName2).asInstanceOf[ArrayNode].get(0).asInt shouldEqual 1
+    objectNode.get(colName2).asInstanceOf[ArrayNode].get(1).asInt shouldEqual 2
+    objectNode.get(colName3).asText shouldEqual colVal1
   }
 
   "binary in spark row" should "translate to ObjectNode" in {
@@ -425,6 +441,47 @@ class CosmosRowConverterSpec extends UnitSpec {
     }
   }
 
+  "null for decimal in ObjectNode" should "should not throw when nullable" in {
+    val colName1 = "testCol1"
+    val colVal1 = ""
+
+    val objectNode: ObjectNode = objectMapper.createObjectNode()
+    objectNode.put(colName1, colVal1)
+    val schema = StructType(Seq(
+      StructField(colName1, DecimalType(precision = 2, scale = 2), nullable = true)))
+    try {
+      val rowSerializer: ExpressionEncoder.Serializer[Row] = RowSerializerPool.getOrCreateSerializer(schema)
+      val row = CosmosRowConverter.fromObjectNodeToInternalRow(
+        schema, rowSerializer, objectNode, SchemaConversionModes.Relaxed)
+      row.isNullAt(0) shouldBe true
+    }
+    catch {
+      case _: Exception =>
+        fail("Should not throw exception when property is nullable")
+    }
+  }
+
+  "null for decimal in ObjectNode" should "should throw when not nullable" in {
+    val colName1 = "testCol1"
+    val colVal1 = ""
+
+    val objectNode: ObjectNode = objectMapper.createObjectNode()
+    objectNode.put(colName1, colVal1)
+    val schema = StructType(Seq(
+      StructField(colName1, DecimalType(precision = 2, scale = 2), nullable = false)))
+    try {
+      val rowSerializer: ExpressionEncoder.Serializer[Row] = RowSerializerPool.getOrCreateSerializer(schema)
+      CosmosRowConverter.fromObjectNodeToInternalRow(
+        schema, rowSerializer, objectNode, SchemaConversionModes.Relaxed)
+      fail("Expected Exception not thrown")
+    }
+    catch {
+      case expectedError: Exception =>
+        logInfo("Expected exception", expectedError)
+        succeed
+    }
+  }
+
   "null type in ObjectNode" should "translate to Row" in {
 
     val colName1 = "testCol1"
@@ -460,7 +517,7 @@ class CosmosRowConverterSpec extends UnitSpec {
     val colName1 = "testCol1"
     val colVal1: Array[String] = Array("element1", "element2")
 
-    val schema = StructType(Seq(StructField(colName1, ArrayType(StringType, false))))
+    val schema = StructType(Seq(StructField(colName1, ArrayType(StringType, containsNull = false))))
     val objectNode: ObjectNode = objectMapper.createObjectNode()
     val arrayObjectNode = objectMapper.createArrayNode()
     colVal1.foreach(elem => arrayObjectNode.add(elem))
@@ -469,7 +526,7 @@ class CosmosRowConverterSpec extends UnitSpec {
     val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode, SchemaConversionModes.Relaxed)
     val arrayNode = row.get(0).asInstanceOf[Array[Any]]
     arrayNode.length shouldEqual colVal1.length
-    for (i <- 0 until colVal1.length)
+    for (i <- colVal1.indices)
       arrayNode(i) shouldEqual colVal1(i)
   }
 
@@ -649,12 +706,25 @@ class CosmosRowConverterSpec extends UnitSpec {
     val nestedObjectNode: ObjectNode = objectNode.putObject(colName1)
     nestedObjectNode.put(colName1, colVal1)
     objectNode.put(colName2, colVal2)
+
+    // with struct
     val schema = StructType(Seq(StructField(colName1, StructType(Seq(StructField(colName1, StringType)))),
       StructField(colName2, StringType)))
     val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode, SchemaConversionModes.Relaxed)
     val asStruct = row.getStruct(0)
     asStruct.getString(0) shouldEqual colVal1
     row.getString(1) shouldEqual colVal2
+
+    // with map
+    val schemaWithMap = StructType(Seq(
+      StructField(colName1, MapType(keyType = StringType, valueType = StringType, valueContainsNull = false)),
+      StructField(colName2, StringType)))
+
+    val rowWithMap = CosmosRowConverter.fromObjectNodeToRow(schemaWithMap, objectNode, SchemaConversionModes.Relaxed)
+
+    val convertedMap = rowWithMap.getMap[String, String](0)
+    convertedMap(colName1) shouldEqual colVal1
+    rowWithMap.getString(1) shouldEqual colVal2
   }
 
   "raw in ObjectNode" should "translate to Row" in {

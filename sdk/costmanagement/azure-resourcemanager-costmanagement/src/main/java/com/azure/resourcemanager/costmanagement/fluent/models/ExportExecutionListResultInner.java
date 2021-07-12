@@ -6,27 +6,28 @@ package com.azure.resourcemanager.costmanagement.fluent.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.costmanagement.models.ExportExecution;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Result of listing the execution history of an export. */
+/** Result of listing exports execution history of a export by name. */
 @Immutable
 public final class ExportExecutionListResultInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ExportExecutionListResultInner.class);
 
     /*
-     * A list of export executions.
+     * The list of export executions.
      */
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
-    private List<ExportExecutionInner> value;
+    private List<ExportExecution> value;
 
     /**
-     * Get the value property: A list of export executions.
+     * Get the value property: The list of export executions.
      *
      * @return the value value.
      */
-    public List<ExportExecutionInner> value() {
+    public List<ExportExecution> value() {
         return this.value;
     }
 

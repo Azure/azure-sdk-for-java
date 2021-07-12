@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.eventgrid.models;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.eventgrid.fluent.models.EventChannelInner;
 import java.time.OffsetDateTime;

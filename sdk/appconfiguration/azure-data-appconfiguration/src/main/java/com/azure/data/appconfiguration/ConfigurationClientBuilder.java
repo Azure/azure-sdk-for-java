@@ -29,6 +29,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.implementation.ConfigurationCredentialsPolicy;
+import com.azure.data.appconfiguration.implementation.SyncTokenPolicy;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -163,9 +164,11 @@ public final class ConfigurationClientBuilder {
         // endpoint cannot be null, which is required in request authentication
         Objects.requireNonNull(buildEndpoint, "'Endpoint' is required and can not be null.");
 
+        SyncTokenPolicy syncTokenPolicy = new SyncTokenPolicy();
+
         // if http pipeline is already defined
         if (pipeline != null) {
-            return new ConfigurationAsyncClient(buildEndpoint, pipeline, serviceVersion);
+            return new ConfigurationAsyncClient(buildEndpoint, pipeline, serviceVersion, syncTokenPolicy);
         }
 
         // Closest to API goes first, closest to wire goes last.
@@ -195,7 +198,7 @@ public final class ConfigurationClientBuilder {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("Missing credential information while building a client."));
         }
-
+        policies.add(syncTokenPolicy);
         policies.addAll(perRetryPolicies);
 
         if (clientOptions != null) {
@@ -214,7 +217,7 @@ public final class ConfigurationClientBuilder {
                                     .httpClient(httpClient)
                                     .build();
 
-        return new ConfigurationAsyncClient(buildEndpoint, pipeline, serviceVersion);
+        return new ConfigurationAsyncClient(buildEndpoint, pipeline, serviceVersion, syncTokenPolicy);
     }
 
     /**
@@ -384,27 +387,12 @@ public final class ConfigurationClientBuilder {
      * The default retry policy will be used if not provided {@link ConfigurationClientBuilder#buildAsyncClient()} to
      * build {@link ConfigurationAsyncClient} or {@link ConfigurationClient}.
      *
-     * @param retryPolicy The {@link HttpPipelinePolicy} that will be used to retry requests.
+     * @param retryPolicy The {@link HttpPipelinePolicy} that will be used to retry requests. For example,
+     * {@link RetryPolicy} can be used to retry requests.
+     *
      * @return The updated ConfigurationClientBuilder object.
-     * @deprecated Use {@link #retryPolicy(RetryPolicy)} instead. This method is deprecated since version 1.2.0-beta.1.
      */
-    @Deprecated
     public ConfigurationClientBuilder retryPolicy(HttpPipelinePolicy retryPolicy) {
-        this.retryPolicy = retryPolicy;
-        return this;
-    }
-
-    /**
-     * Sets the {@link RetryPolicy} that is used when each request is sent.
-     * <p>
-     * A default retry policy will be used to build {@link ConfigurationAsyncClient} or
-     * {@link ConfigurationClient} if this is not set.
-     *
-     * @param retryPolicy user's retry policy applied to each request.
-     *
-     * @return The updated ConfigurationClientBuilder object.
-     */
-    public ConfigurationClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
         return this;
     }

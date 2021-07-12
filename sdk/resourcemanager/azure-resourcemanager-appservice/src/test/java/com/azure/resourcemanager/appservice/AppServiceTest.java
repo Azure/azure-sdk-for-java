@@ -171,6 +171,7 @@ public class AppServiceTest extends ResourceManagerTestBase {
         }
         try {
             ftpClient.connect(server);
+            ftpClient.enterLocalPassiveMode();
             ftpClient.login(profile.ftpUsername(), profile.ftpPassword());
             ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
             for (String segment : path.split("/")) {

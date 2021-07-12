@@ -19,7 +19,7 @@ import java.util.List;
 @JsonTypeName("Until")
 @JsonFlatten
 @Fluent
-public class UntilActivity extends Activity {
+public class UntilActivity extends ControlActivity {
     /*
      * An expression that would evaluate to Boolean. The loop will continue
      * until this expression evaluates to true

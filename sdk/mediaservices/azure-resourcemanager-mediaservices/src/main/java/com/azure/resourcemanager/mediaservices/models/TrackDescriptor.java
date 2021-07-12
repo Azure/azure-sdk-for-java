@@ -24,11 +24,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("TrackDescriptor")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "#Microsoft.Media.AudioTrackDescriptor", value = AudioTrackDescriptor.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Media.VideoTrackDescriptor", value = VideoTrackDescriptor.class),
-    @JsonSubTypes.Type(
-        name = "#Microsoft.Media.SelectVideoTrackByAttribute",
-        value = SelectVideoTrackByAttribute.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Media.SelectVideoTrackById", value = SelectVideoTrackById.class)
+    @JsonSubTypes.Type(name = "#Microsoft.Media.VideoTrackDescriptor", value = VideoTrackDescriptor.class)
 })
 @JsonFlatten
 @Immutable

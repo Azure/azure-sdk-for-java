@@ -4,23 +4,23 @@
 
 package com.azure.resourcemanager.mediaservices.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.mediaservices.MediaservicesManager;
 import com.azure.resourcemanager.mediaservices.fluent.models.StreamingPolicyInner;
 import com.azure.resourcemanager.mediaservices.models.CommonEncryptionCbcs;
 import com.azure.resourcemanager.mediaservices.models.CommonEncryptionCenc;
 import com.azure.resourcemanager.mediaservices.models.EnvelopeEncryption;
 import com.azure.resourcemanager.mediaservices.models.NoEncryption;
 import com.azure.resourcemanager.mediaservices.models.StreamingPolicy;
-import com.azure.resourcemanager.mediaservices.models.SystemData;
 import java.time.OffsetDateTime;
 
 public final class StreamingPolicyImpl implements StreamingPolicy, StreamingPolicy.Definition {
     private StreamingPolicyInner innerObject;
 
-    private final MediaservicesManager serviceManager;
+    private final com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager;
 
-    StreamingPolicyImpl(StreamingPolicyInner innerObject, MediaservicesManager serviceManager) {
+    StreamingPolicyImpl(
+        StreamingPolicyInner innerObject, com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -69,7 +69,7 @@ public final class StreamingPolicyImpl implements StreamingPolicy, StreamingPoli
         return this.innerObject;
     }
 
-    private MediaservicesManager manager() {
+    private com.azure.resourcemanager.mediaservices.MediaServicesManager manager() {
         return this.serviceManager;
     }
 
@@ -106,7 +106,7 @@ public final class StreamingPolicyImpl implements StreamingPolicy, StreamingPoli
         return this;
     }
 
-    StreamingPolicyImpl(String name, MediaservicesManager serviceManager) {
+    StreamingPolicyImpl(String name, com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
         this.innerObject = new StreamingPolicyInner();
         this.serviceManager = serviceManager;
         this.streamingPolicyName = name;

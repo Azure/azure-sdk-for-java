@@ -4,7 +4,7 @@
 package com.azure.ai.formrecognizer.implementation;
 
 import com.azure.ai.formrecognizer.models.TextAppearance;
-import com.azure.ai.formrecognizer.models.TextStyle;
+import com.azure.ai.formrecognizer.models.TextStyleName;
 
 /**
  * The helper class to set the non-public properties of an {@link TextAppearance} instance.
@@ -18,19 +18,24 @@ public final class TextAppearanceHelper {
      * Type defining the methods to set the non-public properties of an {@link TextAppearance} instance.
      */
     public interface TextAppearanceAccessor {
-        void setStyle(TextAppearance textAppearance, TextStyle textStyle);
+        void setStyleName(TextAppearance textAppearance, TextStyleName styleName);
+        void setStyleConfidence(TextAppearance textAppearance, float styleConfidence);
     }
 
     /**
      * The method called from {@link TextAppearance} to set it's accessor.
      *
-     * @param styleAccessor The accessor.
+     * @param textAppearanceAccessor The accessor.
      */
-    public static void setAccessor(final TextAppearanceAccessor styleAccessor) {
-        accessor = styleAccessor;
+    public static void setAccessor(final TextAppearanceAccessor textAppearanceAccessor) {
+        accessor = textAppearanceAccessor;
     }
 
-    public static void setStyle(TextAppearance textAppearance, TextStyle textStyle) {
-        accessor.setStyle(textAppearance, textStyle);
+    public static void setStyleName(TextAppearance textAppearance, TextStyleName styleName) {
+        accessor.setStyleName(textAppearance, styleName);
+    }
+
+    public static void setStyleConfidence(TextAppearance textAppearance, float styleConfidence) {
+        accessor.setStyleConfidence(textAppearance, styleConfidence);
     }
 }

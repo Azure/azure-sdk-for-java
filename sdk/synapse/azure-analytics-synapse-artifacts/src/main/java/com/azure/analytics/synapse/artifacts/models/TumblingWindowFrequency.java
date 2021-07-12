@@ -16,6 +16,9 @@ public final class TumblingWindowFrequency extends ExpandableStringEnum<Tumbling
     /** Static value Hour for TumblingWindowFrequency. */
     public static final TumblingWindowFrequency HOUR = fromString("Hour");
 
+    /** Static value Month for TumblingWindowFrequency. */
+    public static final TumblingWindowFrequency MONTH = fromString("Month");
+
     /**
      * Creates or finds a TumblingWindowFrequency from its string representation.
      *

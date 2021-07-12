@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.kusto.implementation;
 
-import com.azure.resourcemanager.kusto.KustoManager;
 import com.azure.resourcemanager.kusto.fluent.models.AzureResourceSkuInner;
 import com.azure.resourcemanager.kusto.models.AzureCapacity;
 import com.azure.resourcemanager.kusto.models.AzureResourceSku;
@@ -13,9 +12,10 @@ import com.azure.resourcemanager.kusto.models.AzureSku;
 public final class AzureResourceSkuImpl implements AzureResourceSku {
     private AzureResourceSkuInner innerObject;
 
-    private final KustoManager serviceManager;
+    private final com.azure.resourcemanager.kusto.KustoManager serviceManager;
 
-    AzureResourceSkuImpl(AzureResourceSkuInner innerObject, KustoManager serviceManager) {
+    AzureResourceSkuImpl(
+        AzureResourceSkuInner innerObject, com.azure.resourcemanager.kusto.KustoManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -36,7 +36,7 @@ public final class AzureResourceSkuImpl implements AzureResourceSku {
         return this.innerObject;
     }
 
-    private KustoManager manager() {
+    private com.azure.resourcemanager.kusto.KustoManager manager() {
         return this.serviceManager;
     }
 }

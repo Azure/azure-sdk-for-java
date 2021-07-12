@@ -7,7 +7,7 @@ package com.azure.containers.containerregistry.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The RefreshToken model. */
+/** The AcrRefreshToken model. */
 @Fluent
 public final class AcrRefreshToken {
     /*
@@ -29,7 +29,7 @@ public final class AcrRefreshToken {
      * Set the refreshToken property: The refresh token to be used for generating access tokens.
      *
      * @param refreshToken the refreshToken value to set.
-     * @return the RefreshToken object itself.
+     * @return the AcrRefreshToken object itself.
      */
     public AcrRefreshToken setRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;

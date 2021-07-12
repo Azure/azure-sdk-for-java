@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.digitaltwins.core;
 
 import com.azure.core.http.policy.HttpLogOptions;
@@ -52,8 +55,7 @@ public class EventRoutesSyncSamples {
             existingEventRouteId = eventRoute.getEventRouteId();
             ConsoleLogger.print(String.format("\tEventRouteId: %s", eventRoute.getEventRouteId()));
             ConsoleLogger.print(String.format("\tEventRouteEndpointName: %s", eventRoute.getEndpointName()));
-            if (eventRoute.getFilter() != null)
-            {
+            if (eventRoute.getFilter() != null) {
                 ConsoleLogger.print(String.format("\tFilter: %s", eventRoute.getFilter()));
             }
             ConsoleLogger.print("");
@@ -67,8 +69,7 @@ public class EventRoutesSyncSamples {
                 ConsoleLogger.print(String.format("Successfully retrieved event route with Id %s", existingEventRouteId));
                 ConsoleLogger.print(String.format("\tEventRouteId: %s", existingEventRoute.getEventRouteId()));
                 ConsoleLogger.print(String.format("\tEventRouteEndpointName: %s", existingEventRoute.getEndpointName()));
-                if (existingEventRoute.getFilter() != null)
-                {
+                if (existingEventRoute.getFilter() != null) {
                     ConsoleLogger.print(String.format("\tFilter: %s", existingEventRoute.getFilter()));
                 }
             } catch (ErrorResponseException ex) {

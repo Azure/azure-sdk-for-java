@@ -6,6 +6,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.OffsetDateTime;
+import java.util.Collections;
 import java.util.Map;
 
 /**
@@ -178,7 +179,7 @@ public class ConfigurationSetting {
      * @return tags Gets tags for this configuration setting.
      */
     public Map<String, String> getTags() {
-        return tags;
+        return tags == null ? Collections.emptyMap() : tags;
     }
 
     /**

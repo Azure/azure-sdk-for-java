@@ -17,6 +17,13 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public class ConcurLinkedService extends LinkedService {
     /*
+     * Properties used to connect to Concur. It is mutually exclusive with any
+     * other properties in the linked service. Type: object.
+     */
+    @JsonProperty(value = "typeProperties.connectionProperties")
+    private Object connectionProperties;
+
+    /*
      * Application client_id supplied by Concur App Management.
      */
     @JsonProperty(value = "typeProperties.clientId", required = true)
@@ -64,6 +71,28 @@ public class ConcurLinkedService extends LinkedService {
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
+
+    /**
+     * Get the connectionProperties property: Properties used to connect to Concur. It is mutually exclusive with any
+     * other properties in the linked service. Type: object.
+     *
+     * @return the connectionProperties value.
+     */
+    public Object getConnectionProperties() {
+        return this.connectionProperties;
+    }
+
+    /**
+     * Set the connectionProperties property: Properties used to connect to Concur. It is mutually exclusive with any
+     * other properties in the linked service. Type: object.
+     *
+     * @param connectionProperties the connectionProperties value to set.
+     * @return the ConcurLinkedService object itself.
+     */
+    public ConcurLinkedService setConnectionProperties(Object connectionProperties) {
+        this.connectionProperties = connectionProperties;
+        return this;
+    }
 
     /**
      * Get the clientId property: Application client_id supplied by Concur App Management.

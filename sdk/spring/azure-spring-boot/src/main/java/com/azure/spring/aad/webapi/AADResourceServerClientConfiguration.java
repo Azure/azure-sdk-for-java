@@ -17,11 +17,13 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.oauth2.client.InMemoryOAuth2AuthorizedClientService;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientProvider;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientProviderBuilder;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
+import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
@@ -47,6 +49,26 @@ public class AADResourceServerClientConfiguration {
     @Autowired
     private AADAuthenticationProperties properties;
 
+
+    @Bean
+    public OAuth2AuthorizedClientManager authorizeClientManager(ClientRegistrationRepository clients,
+                                                         OAuth2AuthorizedClientRepository authorizedClients) {
+
+        DefaultOAuth2AuthorizedClientManager manager =
+            new DefaultOAuth2AuthorizedClientManager(clients, authorizedClients);
+
+        OAuth2AuthorizedClientProvider authorizedClientProviders = OAuth2AuthorizedClientProviderBuilder.builder()
+            .authorizationCode()
+            .refreshToken()
+            .clientCredentials()
+            .password()
+            .provider(new AADOBOOAuth2AuthorizedClientProvider())
+            .build();
+
+        manager.setAuthorizedClientProvider(authorizedClientProviders);
+        return manager;
+    }
+
     @Bean
     @ConditionalOnMissingBean({ ClientRegistrationRepository.class })
     public ClientRegistrationRepository clientRegistrationRepository() {
@@ -58,31 +80,20 @@ public class AADResourceServerClientConfiguration {
         return new InMemoryClientRegistrationRepository(clients);
     }
 
-    @Bean
-    @ConditionalOnMissingBean
-    OAuth2AuthorizedClientService authorizedClientService(ClientRegistrationRepository clientRegistrationRepository) {
-        return new InMemoryOAuth2AuthorizedClientService(clientRegistrationRepository);
-    }
-
     /**
-     * Use InMemoryClientRegistrationRepository and ClientRegistrationRepository to create
-     * AADResourceServerOAuth2AuthorizedClientRepository
+     * Create clients based on configuration items
      *
-     * @param repo client registration
-     * @param oAuth2AuthorizedClientService authorized client repository
-     * @return AADResourceServerOAuth2AuthorizedClientRepository Bean
+     * @throws IllegalStateException throw if AuthorizationGrantType is authorization_code
+     * @return result of created Clients
      */
-    @Bean
-    @ConditionalOnMissingBean
-    public OAuth2AuthorizedClientRepository oAuth2AuthorizedClientRepository(
-        ClientRegistrationRepository repo, OAuth2AuthorizedClientService oAuth2AuthorizedClientService) {
-        return new AADResourceServerOAuth2AuthorizedClientRepository(oAuth2AuthorizedClientService, repo);
-    }
-
     public List<ClientRegistration> createClients() {
         List<ClientRegistration> result = new ArrayList<>();
         for (String id : properties.getAuthorizationClients().keySet()) {
             AuthorizationClientProperties authorizationProperties = properties.getAuthorizationClients().get(id);
+            if (AADAuthorizationGrantType.AUTHORIZATION_CODE.equals(authorizationProperties.getAuthorizationGrantType())) {
+                throw new IllegalStateException("Web Api do not support authorization_code grant type. id = "
+                    + id + ".");
+            }
             // The default is null in order to be compatible with previous OBO flow.
             if (authorizationProperties.getAuthorizationGrantType() == null || AADAuthorizationGrantType.ON_BEHALF_OF
                 .equals(authorizationProperties.getAuthorizationGrantType())) {
@@ -103,6 +114,7 @@ public class AADResourceServerClientConfiguration {
         result.redirectUri("{baseUrl}/login/oauth2/code/");
         result.clientId(properties.getClientId());
         result.clientSecret(properties.getClientSecret());
+        result.userNameAttributeName(properties.getUserNameAttribute());
 
         AADAuthorizationServerEndpoints endpoints = new AADAuthorizationServerEndpoints(
             properties.getBaseUri(), properties.getTenantId());

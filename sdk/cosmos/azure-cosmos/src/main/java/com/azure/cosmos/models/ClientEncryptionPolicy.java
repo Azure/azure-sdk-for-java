@@ -12,6 +12,9 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
  * Client encryption policy.
@@ -76,12 +79,31 @@ public final class ClientEncryptionPolicy {
         return this.includedPaths;
     }
 
-    int getPolicyFormatVersion() {
+    /**
+     * Version of the client encryption policy definition.
+     * @return policyFormatVersion
+     */
+    @Beta(value = Beta.SinceVersion.V4_16_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public int getPolicyFormatVersion() {
         return policyFormatVersion;
     }
 
-    void setPolicyFormatVersion(int policyFormatVersion) {
-        this.policyFormatVersion = policyFormatVersion;
+    void validatePartitionKeyPathsAreNotEncrypted(List<List<String>> partitionKeyPathTokens) {
+        checkNotNull(partitionKeyPathTokens, "partitionKeyPathTokens cannot be null");
+        List<String> propertiesToEncrypt =
+            this.includedPaths.stream().map(clientEncryptionIncludedPath -> clientEncryptionIncludedPath.getPath().substring(1)).collect(Collectors.toList());
+
+        for (List<String> tokensInPath : partitionKeyPathTokens) {
+            checkNotNull(tokensInPath);
+            if (tokensInPath.size() > 0) {
+                String topLevelToken = tokensInPath.get(0);
+                if (propertiesToEncrypt.contains(topLevelToken)) {
+                    throw new IllegalArgumentException(String.format("Path %s which is part of the partition key " +
+                        "cannot be included" +
+                        " in the ClientEncryptionPolicy.", topLevelToken));
+                }
+            }
+        }
     }
 
     private void validateIncludedPaths(List<ClientEncryptionIncludedPath> clientEncryptionIncludedPath) {

@@ -4,7 +4,6 @@
 
 package com.azure.analytics.synapse.artifacts.implementation;
 
-import com.azure.analytics.synapse.artifacts.models.AzureEntityResource;
 import com.azure.analytics.synapse.artifacts.models.CloudErrorException;
 import com.azure.analytics.synapse.artifacts.models.LibraryListResponse;
 import com.azure.analytics.synapse.artifacts.models.LibraryResource;
@@ -84,7 +83,7 @@ public final class LibrariesImpl {
         @Get("/libraryOperationResults/{operationId}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
-        Mono<Response<AzureEntityResource>> getOperationResult(
+        Mono<Response<LibraryResource>> getOperationResult(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("operationId") String operationId,
@@ -369,7 +368,7 @@ public final class LibrariesImpl {
      * @return operation result for Library.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AzureEntityResource>> getOperationResultWithResponseAsync(String operationId) {
+    public Mono<Response<LibraryResource>> getOperationResultWithResponseAsync(String operationId) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -388,8 +387,7 @@ public final class LibrariesImpl {
      * @return operation result for Library.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AzureEntityResource>> getOperationResultWithResponseAsync(
-            String operationId, Context context) {
+    public Mono<Response<LibraryResource>> getOperationResultWithResponseAsync(String operationId, Context context) {
         final String accept = "application/json";
         return service.getOperationResult(
                 this.client.getEndpoint(), this.client.getApiVersion(), operationId, accept, context);
@@ -405,10 +403,10 @@ public final class LibrariesImpl {
      * @return operation result for Library.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AzureEntityResource> getOperationResultAsync(String operationId) {
+    public Mono<LibraryResource> getOperationResultAsync(String operationId) {
         return getOperationResultWithResponseAsync(operationId)
                 .flatMap(
-                        (Response<AzureEntityResource> res) -> {
+                        (Response<LibraryResource> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -428,10 +426,10 @@ public final class LibrariesImpl {
      * @return operation result for Library.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AzureEntityResource> getOperationResultAsync(String operationId, Context context) {
+    public Mono<LibraryResource> getOperationResultAsync(String operationId, Context context) {
         return getOperationResultWithResponseAsync(operationId, context)
                 .flatMap(
-                        (Response<AzureEntityResource> res) -> {
+                        (Response<LibraryResource> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -450,7 +448,7 @@ public final class LibrariesImpl {
      * @return operation result for Library.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AzureEntityResource getOperationResult(String operationId) {
+    public LibraryResource getOperationResult(String operationId) {
         return getOperationResultAsync(operationId).block();
     }
 
@@ -465,7 +463,7 @@ public final class LibrariesImpl {
      * @return operation result for Library.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AzureEntityResource> getOperationResultWithResponse(String operationId, Context context) {
+    public Response<LibraryResource> getOperationResultWithResponse(String operationId, Context context) {
         return getOperationResultWithResponseAsync(operationId, context).block();
     }
 

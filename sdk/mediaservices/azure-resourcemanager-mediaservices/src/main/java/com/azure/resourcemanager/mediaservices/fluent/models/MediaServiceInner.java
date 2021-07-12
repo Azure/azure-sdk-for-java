@@ -7,12 +7,13 @@ package com.azure.resourcemanager.mediaservices.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mediaservices.models.AccountEncryption;
+import com.azure.resourcemanager.mediaservices.models.KeyDelivery;
 import com.azure.resourcemanager.mediaservices.models.MediaServiceIdentity;
 import com.azure.resourcemanager.mediaservices.models.StorageAccount;
 import com.azure.resourcemanager.mediaservices.models.StorageAuthentication;
-import com.azure.resourcemanager.mediaservices.models.SystemData;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -60,6 +61,12 @@ public class MediaServiceInner extends Resource {
      */
     @JsonProperty(value = "properties.encryption")
     private AccountEncryption encryption;
+
+    /*
+     * The Key Delivery properties for Media Services account.
+     */
+    @JsonProperty(value = "properties.keyDelivery")
+    private KeyDelivery keyDelivery;
 
     /**
      * Get the identity property: The Managed Identity for the Media Services account.
@@ -159,6 +166,26 @@ public class MediaServiceInner extends Resource {
         return this;
     }
 
+    /**
+     * Get the keyDelivery property: The Key Delivery properties for Media Services account.
+     *
+     * @return the keyDelivery value.
+     */
+    public KeyDelivery keyDelivery() {
+        return this.keyDelivery;
+    }
+
+    /**
+     * Set the keyDelivery property: The Key Delivery properties for Media Services account.
+     *
+     * @param keyDelivery the keyDelivery value to set.
+     * @return the MediaServiceInner object itself.
+     */
+    public MediaServiceInner withKeyDelivery(KeyDelivery keyDelivery) {
+        this.keyDelivery = keyDelivery;
+        return this;
+    }
+
     /** {@inheritDoc} */
     @Override
     public MediaServiceInner withLocation(String location) {
@@ -182,14 +209,14 @@ public class MediaServiceInner extends Resource {
         if (identity() != null) {
             identity().validate();
         }
-        if (systemData() != null) {
-            systemData().validate();
-        }
         if (storageAccounts() != null) {
             storageAccounts().forEach(e -> e.validate());
         }
         if (encryption() != null) {
             encryption().validate();
+        }
+        if (keyDelivery() != null) {
+            keyDelivery().validate();
         }
     }
 }

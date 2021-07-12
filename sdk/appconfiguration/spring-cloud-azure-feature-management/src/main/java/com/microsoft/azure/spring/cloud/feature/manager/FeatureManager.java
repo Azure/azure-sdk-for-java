@@ -37,16 +37,16 @@ public class FeatureManager extends HashMap<String, Object> {
 
     private transient FeatureManagementConfigProperties properties;
 
-    private transient HashMap<String, Feature> featureManagement;
+    private transient Map<String, Feature> featureManagement;
 
-    private HashMap<String, Boolean> onOff;
+    private Map<String, Boolean> onOff;
 
     private ObjectMapper mapper = new ObjectMapper();
 
     public FeatureManager(FeatureManagementConfigProperties properties) {
         this.properties = properties;
-        featureManagement = new HashMap<String, Feature>();
-        onOff = new HashMap<String, Boolean>();
+        featureManagement = new HashMap<>();
+        onOff = new HashMap<>();
         mapper.setPropertyNamingStrategy(PropertyNamingStrategy.KEBAB_CASE);
     }
 
@@ -143,8 +143,8 @@ public class FeatureManager extends HashMap<String, Object> {
         }
 
         // Need to reset or switch between on/off to conditional doesn't work
-        featureManagement = new HashMap<String, Feature>();
-        onOff = new HashMap<String, Boolean>();
+        featureManagement = new HashMap<>();
+        onOff = new HashMap<>();
 
         if (m.size() == 1 && m.containsKey("featureManagement")) {
             m = (Map<? extends String, ? extends Object>) m.get("featureManagement");
@@ -160,7 +160,7 @@ public class FeatureManager extends HashMap<String, Object> {
      * @return a set of all feature names
      */
     public Set<String> getAllFeatureNames() {
-        Set<String> allFeatures = new HashSet<String>();
+        Set<String> allFeatures = new HashSet<>();
 
         allFeatures.addAll(onOff.keySet());
         allFeatures.addAll(featureManagement.keySet());
@@ -170,14 +170,14 @@ public class FeatureManager extends HashMap<String, Object> {
     /**
      * @return the featureManagement
      */
-    HashMap<String, Feature> getFeatureManagement() {
+    Map<String, Feature> getFeatureManagement() {
         return featureManagement;
     }
 
     /**
      * @return the onOff
      */
-    HashMap<String, Boolean> getOnOff() {
+    Map<String, Boolean> getOnOff() {
         return onOff;
     }
 

@@ -9,7 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.postgresql.PostgreSqlManager;
 import com.azure.resourcemanager.postgresql.fluent.ServerKeysClient;
 import com.azure.resourcemanager.postgresql.fluent.models.ServerKeyInner;
 import com.azure.resourcemanager.postgresql.models.ServerKey;
@@ -21,21 +20,22 @@ public final class ServerKeysImpl implements ServerKeys {
 
     private final ServerKeysClient innerClient;
 
-    private final PostgreSqlManager serviceManager;
+    private final com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager;
 
-    public ServerKeysImpl(ServerKeysClient innerClient, PostgreSqlManager serviceManager) {
+    public ServerKeysImpl(
+        ServerKeysClient innerClient, com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<ServerKey> list(String resourceGroupName, String serverName) {
         PagedIterable<ServerKeyInner> inner = this.serviceClient().list(resourceGroupName, serverName);
-        return inner.mapPage(inner1 -> new ServerKeyImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new ServerKeyImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ServerKey> list(String resourceGroupName, String serverName, Context context) {
         PagedIterable<ServerKeyInner> inner = this.serviceClient().list(resourceGroupName, serverName, context);
-        return inner.mapPage(inner1 -> new ServerKeyImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new ServerKeyImpl(inner1, this.manager()));
     }
 
     public ServerKey get(String resourceGroupName, String serverName, String keyName) {
@@ -178,7 +178,7 @@ public final class ServerKeysImpl implements ServerKeys {
         return this.innerClient;
     }
 
-    private PostgreSqlManager manager() {
+    private com.azure.resourcemanager.postgresql.PostgreSqlManager manager() {
         return this.serviceManager;
     }
 

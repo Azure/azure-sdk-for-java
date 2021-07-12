@@ -4,10 +4,9 @@
 
 package com.azure.resourcemanager.costmanagement.models;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.costmanagement.fluent.models.ExportExecutionListResultInner;
 import com.azure.resourcemanager.costmanagement.fluent.models.ExportInner;
-import java.time.OffsetDateTime;
 
 /** An immutable client-side representation of Export. */
 public interface Export {
@@ -33,7 +32,7 @@ public interface Export {
     String type();
 
     /**
-     * Gets the format property: The format of the export being delivered. Currently only 'Csv' is supported.
+     * Gets the format property: The format of the export being delivered.
      *
      * @return the format value.
      */
@@ -47,26 +46,11 @@ public interface Export {
     ExportDeliveryInfo deliveryInfo();
 
     /**
-     * Gets the definition property: Has the definition for the export.
+     * Gets the definition property: Has definition for the export.
      *
      * @return the definition value.
      */
     ExportDefinition definition();
-
-    /**
-     * Gets the runHistory property: If requested, has the most recent execution history for the export.
-     *
-     * @return the runHistory value.
-     */
-    ExportExecutionListResult runHistory();
-
-    /**
-     * Gets the nextRunTimeEstimate property: If the export has an active schedule, provides an estimate of the next
-     * execution time.
-     *
-     * @return the nextRunTimeEstimate value.
-     */
-    OffsetDateTime nextRunTimeEstimate();
 
     /**
      * Gets the schedule property: Has schedule information for the export.
@@ -103,7 +87,7 @@ public interface Export {
             /**
              * Specifies scope.
              *
-             * @param scope The scope associated with export operations. This includes
+             * @param scope The scope associated with query and export operations. This includes
              *     '/subscriptions/{subscriptionId}/' for subscription scope,
              *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
              *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
@@ -130,7 +114,6 @@ public interface Export {
             extends DefinitionStages.WithFormat,
                 DefinitionStages.WithDeliveryInfo,
                 DefinitionStages.WithDefinition,
-                DefinitionStages.WithRunHistory,
                 DefinitionStages.WithSchedule,
                 DefinitionStages.WithEtag {
             /**
@@ -151,10 +134,9 @@ public interface Export {
         /** The stage of the Export definition allowing to specify format. */
         interface WithFormat {
             /**
-             * Specifies the format property: The format of the export being delivered. Currently only 'Csv' is
-             * supported..
+             * Specifies the format property: The format of the export being delivered..
              *
-             * @param format The format of the export being delivered. Currently only 'Csv' is supported.
+             * @param format The format of the export being delivered.
              * @return the next definition stage.
              */
             WithCreate withFormat(FormatType format);
@@ -172,22 +154,12 @@ public interface Export {
         /** The stage of the Export definition allowing to specify definition. */
         interface WithDefinition {
             /**
-             * Specifies the definition property: Has the definition for the export..
+             * Specifies the definition property: Has definition for the export..
              *
-             * @param definition Has the definition for the export.
+             * @param definition Has definition for the export.
              * @return the next definition stage.
              */
             WithCreate withDefinition(ExportDefinition definition);
-        }
-        /** The stage of the Export definition allowing to specify runHistory. */
-        interface WithRunHistory {
-            /**
-             * Specifies the runHistory property: If requested, has the most recent execution history for the export..
-             *
-             * @param runHistory If requested, has the most recent execution history for the export.
-             * @return the next definition stage.
-             */
-            WithCreate withRunHistory(ExportExecutionListResultInner runHistory);
         }
         /** The stage of the Export definition allowing to specify schedule. */
         interface WithSchedule {
@@ -224,7 +196,6 @@ public interface Export {
         extends UpdateStages.WithFormat,
             UpdateStages.WithDeliveryInfo,
             UpdateStages.WithDefinition,
-            UpdateStages.WithRunHistory,
             UpdateStages.WithSchedule,
             UpdateStages.WithEtag {
         /**
@@ -247,10 +218,9 @@ public interface Export {
         /** The stage of the Export update allowing to specify format. */
         interface WithFormat {
             /**
-             * Specifies the format property: The format of the export being delivered. Currently only 'Csv' is
-             * supported..
+             * Specifies the format property: The format of the export being delivered..
              *
-             * @param format The format of the export being delivered. Currently only 'Csv' is supported.
+             * @param format The format of the export being delivered.
              * @return the next definition stage.
              */
             Update withFormat(FormatType format);
@@ -268,22 +238,12 @@ public interface Export {
         /** The stage of the Export update allowing to specify definition. */
         interface WithDefinition {
             /**
-             * Specifies the definition property: Has the definition for the export..
+             * Specifies the definition property: Has definition for the export..
              *
-             * @param definition Has the definition for the export.
+             * @param definition Has definition for the export.
              * @return the next definition stage.
              */
             Update withDefinition(ExportDefinition definition);
-        }
-        /** The stage of the Export update allowing to specify runHistory. */
-        interface WithRunHistory {
-            /**
-             * Specifies the runHistory property: If requested, has the most recent execution history for the export..
-             *
-             * @param runHistory If requested, has the most recent execution history for the export.
-             * @return the next definition stage.
-             */
-            Update withRunHistory(ExportExecutionListResultInner runHistory);
         }
         /** The stage of the Export update allowing to specify schedule. */
         interface WithSchedule {
@@ -322,4 +282,23 @@ public interface Export {
      * @return the refreshed resource.
      */
     Export refresh(Context context);
+
+    /**
+     * The operation to execute a export.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void execute();
+
+    /**
+     * The operation to execute a export.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    Response<Void> executeWithResponse(Context context);
 }

@@ -6,8 +6,10 @@ package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.eventgrid.fluent.models.PartnerNamespaceInner;
+import java.util.List;
 import java.util.Map;
 
 /** An immutable client-side representation of PartnerNamespace. */
@@ -55,6 +57,13 @@ public interface PartnerNamespace {
     SystemData systemData();
 
     /**
+     * Gets the privateEndpointConnections property: The privateEndpointConnections property.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    List<PrivateEndpointConnection> privateEndpointConnections();
+
+    /**
      * Gets the provisioningState property: Provisioning state of the partner namespace.
      *
      * @return the provisioningState value.
@@ -76,6 +85,33 @@ public interface PartnerNamespace {
      * @return the endpoint value.
      */
     String endpoint();
+
+    /**
+     * Gets the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it
+     * is enabled. You can further restrict to specific IPs by configuring &lt;seealso
+     * cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.PartnerNamespaceProperties.InboundIpRules"
+     * /&gt;.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    PublicNetworkAccess publicNetworkAccess();
+
+    /**
+     * Gets the inboundIpRules property: This can be used to restrict traffic from specific IPs instead of all IPs.
+     * Note: These are considered only if PublicNetworkAccess is enabled.
+     *
+     * @return the inboundIpRules value.
+     */
+    List<InboundIpRule> inboundIpRules();
+
+    /**
+     * Gets the disableLocalAuth property: This boolean is used to enable or disable local auth. Default value is false.
+     * When the property is set to true, only AAD token will be used to authenticate if user is allowed to publish to
+     * the partner namespace.
+     *
+     * @return the disableLocalAuth value.
+     */
+    Boolean disableLocalAuth();
 
     /**
      * Gets the region of the resource.
@@ -143,7 +179,11 @@ public interface PartnerNamespace {
          * resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithTags, DefinitionStages.WithPartnerRegistrationFullyQualifiedId {
+            extends DefinitionStages.WithTags,
+                DefinitionStages.WithPartnerRegistrationFullyQualifiedId,
+                DefinitionStages.WithPublicNetworkAccess,
+                DefinitionStages.WithInboundIpRules,
+                DefinitionStages.WithDisableLocalAuth {
             /**
              * Executes the create request.
              *
@@ -183,6 +223,50 @@ public interface PartnerNamespace {
              */
             WithCreate withPartnerRegistrationFullyQualifiedId(String partnerRegistrationFullyQualifiedId);
         }
+        /** The stage of the PartnerNamespace definition allowing to specify publicNetworkAccess. */
+        interface WithPublicNetworkAccess {
+            /**
+             * Specifies the publicNetworkAccess property: This determines if traffic is allowed over public network. By
+             * default it is enabled. You can further restrict to specific IPs by configuring &lt;seealso
+             * cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.PartnerNamespaceProperties"
+                 + ".InboundIpRules"
+             * /&gt;.
+             *
+             * @param publicNetworkAccess This determines if traffic is allowed over public network. By default it is
+             *     enabled. You can further restrict to specific IPs by configuring &lt;seealso
+             *     cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.PartnerNamespaceProperties"
+                 + ".InboundIpRules"
+             *     /&gt;.
+             * @return the next definition stage.
+             */
+            WithCreate withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess);
+        }
+        /** The stage of the PartnerNamespace definition allowing to specify inboundIpRules. */
+        interface WithInboundIpRules {
+            /**
+             * Specifies the inboundIpRules property: This can be used to restrict traffic from specific IPs instead of
+             * all IPs. Note: These are considered only if PublicNetworkAccess is enabled..
+             *
+             * @param inboundIpRules This can be used to restrict traffic from specific IPs instead of all IPs. Note:
+             *     These are considered only if PublicNetworkAccess is enabled.
+             * @return the next definition stage.
+             */
+            WithCreate withInboundIpRules(List<InboundIpRule> inboundIpRules);
+        }
+        /** The stage of the PartnerNamespace definition allowing to specify disableLocalAuth. */
+        interface WithDisableLocalAuth {
+            /**
+             * Specifies the disableLocalAuth property: This boolean is used to enable or disable local auth. Default
+             * value is false. When the property is set to true, only AAD token will be used to authenticate if user is
+             * allowed to publish to the partner namespace..
+             *
+             * @param disableLocalAuth This boolean is used to enable or disable local auth. Default value is false.
+             *     When the property is set to true, only AAD token will be used to authenticate if user is allowed to
+             *     publish to the partner namespace.
+             * @return the next definition stage.
+             */
+            WithCreate withDisableLocalAuth(Boolean disableLocalAuth);
+        }
     }
     /**
      * Begins update for the PartnerNamespace resource.
@@ -192,7 +276,11 @@ public interface PartnerNamespace {
     PartnerNamespace.Update update();
 
     /** The template for PartnerNamespace update. */
-    interface Update extends UpdateStages.WithTags {
+    interface Update
+        extends UpdateStages.WithTags,
+            UpdateStages.WithPublicNetworkAccess,
+            UpdateStages.WithInboundIpRules,
+            UpdateStages.WithDisableLocalAuth {
         /**
          * Executes the update request.
          *
@@ -219,6 +307,50 @@ public interface PartnerNamespace {
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
+        }
+        /** The stage of the PartnerNamespace update allowing to specify publicNetworkAccess. */
+        interface WithPublicNetworkAccess {
+            /**
+             * Specifies the publicNetworkAccess property: This determines if traffic is allowed over public network. By
+             * default it is enabled. You can further restrict to specific IPs by configuring &lt;seealso
+             * cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts"
+                 + ".PartnerNamespaceUpdateParameterProperties.InboundIpRules"
+             * /&gt;.
+             *
+             * @param publicNetworkAccess This determines if traffic is allowed over public network. By default it is
+             *     enabled. You can further restrict to specific IPs by configuring &lt;seealso
+             *     cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts"
+                 + ".PartnerNamespaceUpdateParameterProperties.InboundIpRules"
+             *     /&gt;.
+             * @return the next definition stage.
+             */
+            Update withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess);
+        }
+        /** The stage of the PartnerNamespace update allowing to specify inboundIpRules. */
+        interface WithInboundIpRules {
+            /**
+             * Specifies the inboundIpRules property: This can be used to restrict traffic from specific IPs instead of
+             * all IPs. Note: These are considered only if PublicNetworkAccess is enabled..
+             *
+             * @param inboundIpRules This can be used to restrict traffic from specific IPs instead of all IPs. Note:
+             *     These are considered only if PublicNetworkAccess is enabled.
+             * @return the next definition stage.
+             */
+            Update withInboundIpRules(List<InboundIpRule> inboundIpRules);
+        }
+        /** The stage of the PartnerNamespace update allowing to specify disableLocalAuth. */
+        interface WithDisableLocalAuth {
+            /**
+             * Specifies the disableLocalAuth property: This boolean is used to enable or disable local auth. Default
+             * value is false. When the property is set to true, only AAD token will be used to authenticate if user is
+             * allowed to publish to the partner namespace..
+             *
+             * @param disableLocalAuth This boolean is used to enable or disable local auth. Default value is false.
+             *     When the property is set to true, only AAD token will be used to authenticate if user is allowed to
+             *     publish to the partner namespace.
+             * @return the next definition stage.
+             */
+            Update withDisableLocalAuth(Boolean disableLocalAuth);
         }
     }
     /**

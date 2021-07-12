@@ -4,14 +4,16 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.spark.CosmosTableSchemaInferrer.LsnAttributeName
 import com.azure.cosmos.spark.SchemaConversionModes.SchemaConversionMode
+import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 
 import java.sql.{Date, Timestamp}
 import com.fasterxml.jackson.databind.node.{ArrayNode, BinaryNode, NullNode, ObjectNode, TextNode}
 import com.fasterxml.jackson.databind.{JsonNode, ObjectMapper}
 import org.apache.spark.sql.Row
 import org.apache.spark.sql.catalyst.InternalRow
-import org.apache.spark.sql.catalyst.encoders.RowEncoder
+import org.apache.spark.sql.catalyst.encoders.ExpressionEncoder
 import org.apache.spark.sql.catalyst.expressions.{GenericRowWithSchema, UnsafeMapData}
+import org.apache.spark.sql.catalyst.util.ArrayData
 
 import java.time.{OffsetDateTime, ZoneOffset}
 import java.time.format.DateTimeFormatter
@@ -27,7 +29,7 @@ import scala.util.{Try, Success, Failure}
 // scalastyle:off multiple.string.literals
 // scalastyle:off null
 private object CosmosRowConverter
-    extends CosmosLoggingTrait {
+    extends BasicLoggingTrait {
 
     private val FullFidelityChangeFeedMetadataPropertyName = "_metadata"
     private val OperationTypePropertyName = "operationType"
@@ -42,10 +44,19 @@ private object CosmosRowConverter
         .ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'").withZone(ZoneOffset.UTC)
 
     def fromObjectNodeToInternalRow(schema: StructType,
+                                    rowSerializer: ExpressionEncoder.Serializer[Row],
                                     objectNode: ObjectNode,
                                     schemaConversionMode: SchemaConversionMode): InternalRow = {
         val row = fromObjectNodeToRow(schema, objectNode, schemaConversionMode)
-        RowEncoder(schema).createSerializer().apply(row)
+        try {
+          rowSerializer.apply(row)
+        }
+        catch {
+          case inner: RuntimeException =>
+            throw new Exception(
+              s"Cannot convert Json '${objectMapper.writeValueAsString(objectNode)}' into InternalRow",
+              inner)
+        }
     }
 
     def fromObjectNodeToRow(schema: StructType,
@@ -121,6 +132,7 @@ private object CosmosRowConverter
             case DateType => objectMapper.convertValue(rowData.asInstanceOf[Date].getTime, classOf[JsonNode])
             case TimestampType if rowData.isInstanceOf[java.lang.Long] => objectMapper.convertValue(rowData.asInstanceOf[java.lang.Long], classOf[JsonNode])
             case TimestampType => objectMapper.convertValue(rowData.asInstanceOf[Timestamp].getTime, classOf[JsonNode])
+            case arrayType: ArrayType if rowData.isInstanceOf[ArrayData] => convertSparkArrayToArrayNode(arrayType.elementType, arrayType.containsNull, rowData.asInstanceOf[ArrayData])
             case arrayType: ArrayType => convertSparkArrayToArrayNode(arrayType.elementType, arrayType.containsNull, rowData.asInstanceOf[Seq[_]])
             case structType: StructType => rowTypeRouterToJsonArray(rowData, structType)
             case mapType: MapType =>
@@ -178,23 +190,41 @@ private object CosmosRowConverter
     }
 
     private def convertSparkArrayToArrayNode(elementType: DataType, containsNull: Boolean, data: Seq[Any]): ArrayNode = {
-        val arrayNode = objectMapper.createArrayNode()
+      val arrayNode = objectMapper.createArrayNode()
 
-        data.foreach(x =>
-            if (containsNull && x == null) {
-                arrayNode.add(objectMapper.nullNode())
-            }
-            else {
-                arrayNode.add(convertSparkSubItemToJsonNode(elementType, containsNull, x))
-            })
+      data.foreach(value => writeSparkArrayDataToArrayNode(arrayNode, elementType, containsNull, value))
 
-        arrayNode
+      arrayNode
+    }
+
+    private def convertSparkArrayToArrayNode(elementType: DataType, containsNull: Boolean, data: ArrayData): ArrayNode = {
+      val arrayNode = objectMapper.createArrayNode()
+
+      data.foreach(elementType, (_, value)
+        => writeSparkArrayDataToArrayNode(arrayNode, elementType, containsNull, value))
+
+      arrayNode
+    }
+
+    private def writeSparkArrayDataToArrayNode(arrayNode: ArrayNode,
+                                               elementType: DataType,
+                                               containsNull: Boolean,
+                                               value: Any): Unit = {
+      if (containsNull && value == null) {
+        arrayNode.add(objectMapper.nullNode())
+      }
+      else {
+        arrayNode.add(convertSparkSubItemToJsonNode(elementType, containsNull, value))
+      }
     }
 
     private def convertSparkSubItemToJsonNode(elementType: DataType, containsNull: Boolean, data: Any): JsonNode = {
         elementType match {
             case subDocuments: StructType => rowTypeRouterToJsonArray(data, subDocuments)
-            case subArray: ArrayType => convertSparkArrayToArrayNode(subArray.elementType, containsNull, data.asInstanceOf[Seq[_]])
+            case subArray: ArrayType if data.isInstanceOf[ArrayData]
+              => convertSparkArrayToArrayNode(subArray.elementType, containsNull, data.asInstanceOf[ArrayData])
+            case subArray: ArrayType
+              => convertSparkArrayToArrayNode(subArray.elementType, containsNull, data.asInstanceOf[Seq[_]])
             case _ => convertSparkDataTypeToJsonNode(elementType, data)
         }
     }
@@ -295,7 +325,7 @@ private object CosmosRowConverter
             jsonNode.fields().asScala
                 .map(element => (
                     element.getKey,
-                    convertToSparkDataType(map.valueType, element.getValue, schemaConversionMode)))
+                    convertToSparkDataType(map.valueType, element.getValue, schemaConversionMode))).toMap
         case (arrayNode: ArrayNode, array: ArrayType) =>
             arrayNode.elements().asScala
               .map(convertToSparkDataType(array.elementType, _, schemaConversionMode)).toArray
@@ -332,7 +362,6 @@ private object CosmosRowConverter
             throw new IllegalArgumentException(
               s"Unsupported datatype conversion [Value: $value] of ${value.getClass}] to $dataType]")
           }
-
     }
     // scalastyle:on
 

@@ -41,15 +41,15 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
 
     private final Map<String, List<String>> storeContextsMap;
 
-    private Duration delay;
+    private final Duration delay;
 
-    private ClientStore clientStore;
+    private final ClientStore clientStore;
 
     private Date lastCheckedTime;
 
     private String eventDataInfo;
 
-    private List<String> featureWatchKey = new ArrayList<String>();
+    private final List<String> featureWatchKey = new ArrayList<>();
 
     public AppConfigurationRefresh(AppConfigurationProperties properties, Map<String, List<String>> storeContextsMap,
             ClientStore clientStore) {
@@ -77,7 +77,7 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
      */
     @Async
     public Future<Boolean> refreshConfigurations() {
-        return new AsyncResult<Boolean>(refreshStores());
+        return new AsyncResult<>(refreshStores());
     }
 
     /**
@@ -101,11 +101,9 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
                 if (notCachedTime == null || date.after(notCachedTime)) {
                     for (ConfigStore configStore : configStores) {
                         if (StateHolder.getLoadState(configStore.getEndpoint())) {
-                            willRefresh = refresh_configurations(configStore) ? true
-                                    : willRefresh;
+                            willRefresh = refresh_configurations(configStore) || willRefresh;
                             // Refresh Feature Flags
-                            willRefresh = refreshFeatureFlag(configStore) ? true
-                                    : willRefresh;
+                            willRefresh = refreshFeatureFlag(configStore) || willRefresh;
                         } else {
                             LOGGER.debug("Skipping refresh check for " + configStore.getEndpoint()
                                     + ". The store failed to load on startup.");

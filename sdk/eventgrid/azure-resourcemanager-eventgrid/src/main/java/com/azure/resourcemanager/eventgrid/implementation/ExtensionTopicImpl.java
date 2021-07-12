@@ -4,16 +4,16 @@
 
 package com.azure.resourcemanager.eventgrid.implementation;
 
-import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.fluent.models.ExtensionTopicInner;
 import com.azure.resourcemanager.eventgrid.models.ExtensionTopic;
 
 public final class ExtensionTopicImpl implements ExtensionTopic {
     private ExtensionTopicInner innerObject;
 
-    private final EventGridManager serviceManager;
+    private final com.azure.resourcemanager.eventgrid.EventGridManager serviceManager;
 
-    ExtensionTopicImpl(ExtensionTopicInner innerObject, EventGridManager serviceManager) {
+    ExtensionTopicImpl(
+        ExtensionTopicInner innerObject, com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -42,7 +42,7 @@ public final class ExtensionTopicImpl implements ExtensionTopic {
         return this.innerObject;
     }
 
-    private EventGridManager manager() {
+    private com.azure.resourcemanager.eventgrid.EventGridManager manager() {
         return this.serviceManager;
     }
 }

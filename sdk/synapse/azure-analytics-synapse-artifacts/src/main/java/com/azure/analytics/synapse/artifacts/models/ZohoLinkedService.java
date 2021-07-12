@@ -17,6 +17,13 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public class ZohoLinkedService extends LinkedService {
     /*
+     * Properties used to connect to Zoho. It is mutually exclusive with any
+     * other properties in the linked service. Type: object.
+     */
+    @JsonProperty(value = "typeProperties.connectionProperties")
+    private Object connectionProperties;
+
+    /*
      * The endpoint of the Zoho server. (i.e. crm.zoho.com/crm/private)
      */
     @JsonProperty(value = "typeProperties.endpoint", required = true)
@@ -57,6 +64,28 @@ public class ZohoLinkedService extends LinkedService {
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
+
+    /**
+     * Get the connectionProperties property: Properties used to connect to Zoho. It is mutually exclusive with any
+     * other properties in the linked service. Type: object.
+     *
+     * @return the connectionProperties value.
+     */
+    public Object getConnectionProperties() {
+        return this.connectionProperties;
+    }
+
+    /**
+     * Set the connectionProperties property: Properties used to connect to Zoho. It is mutually exclusive with any
+     * other properties in the linked service. Type: object.
+     *
+     * @param connectionProperties the connectionProperties value to set.
+     * @return the ZohoLinkedService object itself.
+     */
+    public ZohoLinkedService setConnectionProperties(Object connectionProperties) {
+        this.connectionProperties = connectionProperties;
+        return this;
+    }
 
     /**
      * Get the endpoint property: The endpoint of the Zoho server. (i.e. crm.zoho.com/crm/private).

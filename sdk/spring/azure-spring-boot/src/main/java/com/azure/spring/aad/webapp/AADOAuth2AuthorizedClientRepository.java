@@ -63,7 +63,7 @@ public class AADOAuth2AuthorizedClientRepository implements OAuth2AuthorizedClie
                                                                      Authentication principal,
                                                                      HttpServletRequest request) {
         OAuth2AuthorizedClient result = delegate.loadAuthorizedClient(id, principal, request);
-        if (result != null) {
+        if (result != null || repo.isClientCredentials(id)) {
             return (T) result;
         }
 

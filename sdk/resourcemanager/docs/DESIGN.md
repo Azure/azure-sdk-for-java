@@ -28,8 +28,6 @@ Artifact ID for Azure services are:
 
 In addition to artifacts for Azure services, an artifact `azure-resourcemanager` is provided for the convenience of including all supported services.
 
-A parent POM `azure-resourcemanager-parent` is provided for common configurations and dependencies.
-
 ## Fluent interface
 
 Azure Management Libraries for Java is object-oriented API for managing Azure resources.
@@ -132,6 +130,6 @@ Exception on management of Azure resource is a `ManagementException` instance. D
 `managementError.getCode()` and `managementError.getMessage()` returns code and message of the error response.
 
 <!-- LINKS -->
-[authenticate]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/AUTH.md
-[sample_creatable_dependency]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/README.md#dependency-across-azure-resources
-[sample_creatable_batch]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/README.md#batch-azure-resource-provisioning
+[authenticate]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/AUTH.md
+[sample_creatable_dependency]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/README.md#dependency-across-azure-resources
+[sample_creatable_batch]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/README.md#batch-azure-resource-provisioning

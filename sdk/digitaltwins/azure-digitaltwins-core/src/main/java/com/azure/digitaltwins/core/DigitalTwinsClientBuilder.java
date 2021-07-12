@@ -30,7 +30,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.regex.Pattern;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of {@link DigitalTwinsClient
@@ -68,9 +67,9 @@ public final class DigitalTwinsClientBuilder {
     // of the header's value. These null values are equivalent to just constructing "new RetryPolicy()". It is safe
     // to use a null retryAfterHeader and a null retryAfterTimeUnit when constructing this retry policy as this
     // constructor interprets that as saying "this service does not support retry after headers"
-    private static final String retryAfterHeader = null;
-    private static final ChronoUnit retryAfterTimeUnit = null;
-    private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy(retryAfterHeader, retryAfterTimeUnit);
+    private static final String RETRY_AFTER_HEADER = null;
+    private static final ChronoUnit RETRY_AFTER_TIME_UNIT = null;
+    private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy(RETRY_AFTER_HEADER, RETRY_AFTER_TIME_UNIT);
 
     private final Map<String, String> properties;
 
@@ -79,22 +78,22 @@ public final class DigitalTwinsClientBuilder {
     /**
      * The public constructor for DigitalTwinsClientBuilder
      */
-    public DigitalTwinsClientBuilder()
-    {
+    public DigitalTwinsClientBuilder() {
         additionalPolicies = new ArrayList<>();
         properties = CoreUtils.getProperties(DIGITAL_TWINS_PROPERTIES);
         httpLogOptions = new HttpLogOptions();
     }
 
-    private static HttpPipeline buildPipeline(TokenCredential tokenCredential,
-                                              String endpoint,
-                                              HttpLogOptions httpLogOptions,
-                                              ClientOptions clientOptions,
-                                              HttpClient httpClient,
-                                              List<HttpPipelinePolicy> additionalPolicies,
-                                              RetryPolicy retryPolicy,
-                                              Configuration configuration,
-                                              Map<String, String> properties) {
+    private static HttpPipeline setupPipeline(
+        TokenCredential tokenCredential,
+        String endpoint,
+        HttpLogOptions httpLogOptions,
+        ClientOptions clientOptions,
+        HttpClient httpClient,
+        List<HttpPipelinePolicy> additionalPolicies,
+        RetryPolicy retryPolicy,
+        Configuration configuration,
+        Map<String, String> properties) {
         // Closest to API goes first, closest to wire goes last.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
 
@@ -170,27 +169,24 @@ public final class DigitalTwinsClientBuilder {
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null");
 
         Configuration buildConfiguration = this.configuration;
-        if (buildConfiguration == null)
-        {
+        if (buildConfiguration == null) {
             buildConfiguration = Configuration.getGlobalConfiguration().clone();
         }
 
         // Set defaults for these fields if they were not set while building the client
         DigitalTwinsServiceVersion serviceVersion = this.serviceVersion;
-        if (serviceVersion == null)
-        {
+        if (serviceVersion == null) {
             serviceVersion = DigitalTwinsServiceVersion.getLatest();
         }
 
         // Default is exponential backoff
         RetryPolicy retryPolicy = this.retryPolicy;
-        if (retryPolicy == null)
-        {
+        if (retryPolicy == null) {
             retryPolicy = DEFAULT_RETRY_POLICY;
         }
 
         if (this.httpPipeline == null) {
-            this.httpPipeline = buildPipeline(
+            this.httpPipeline = setupPipeline(
                 this.tokenCredential,
                 this.endpoint,
                 this.httpLogOptions,

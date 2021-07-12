@@ -32,6 +32,12 @@ public final class ApplicationGetEndpoint {
     @JsonProperty(value = "publicPort")
     private Integer publicPort;
 
+    /*
+     * The private ip address of the endpoint.
+     */
+    @JsonProperty(value = "privateIPAddress")
+    private String privateIpAddress;
+
     /**
      * Get the location property: The location of the endpoint.
      *
@@ -89,6 +95,26 @@ public final class ApplicationGetEndpoint {
      */
     public ApplicationGetEndpoint withPublicPort(Integer publicPort) {
         this.publicPort = publicPort;
+        return this;
+    }
+
+    /**
+     * Get the privateIpAddress property: The private ip address of the endpoint.
+     *
+     * @return the privateIpAddress value.
+     */
+    public String privateIpAddress() {
+        return this.privateIpAddress;
+    }
+
+    /**
+     * Set the privateIpAddress property: The private ip address of the endpoint.
+     *
+     * @param privateIpAddress the privateIpAddress value to set.
+     * @return the ApplicationGetEndpoint object itself.
+     */
+    public ApplicationGetEndpoint withPrivateIpAddress(String privateIpAddress) {
+        this.privateIpAddress = privateIpAddress;
         return this;
     }
 

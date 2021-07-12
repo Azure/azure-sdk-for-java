@@ -14,7 +14,7 @@ import com.microsoft.azure.spring.cloud.config.AppConfigurationRefresh;
 public class ConfigListener implements ApplicationListener<ServletRequestHandledEvent> {
     private static final Logger LOGGER = LoggerFactory.getLogger(ConfigListener.class);
 
-    private AppConfigurationRefresh appConfigurationRefresh;
+    private final AppConfigurationRefresh appConfigurationRefresh;
 
     public ConfigListener(AppConfigurationRefresh appConfigurationRefresh) {
         this.appConfigurationRefresh = appConfigurationRefresh;

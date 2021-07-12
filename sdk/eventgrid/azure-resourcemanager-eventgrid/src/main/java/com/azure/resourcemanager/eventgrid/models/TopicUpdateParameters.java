@@ -19,13 +19,13 @@ public class TopicUpdateParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TopicUpdateParameters.class);
 
     /*
-     * Tags of the resource.
+     * Tags of the Topic resource.
      */
     @JsonProperty(value = "tags")
     private Map<String, String> tags;
 
     /*
-     * Resource identity information.
+     * Topic resource identity information.
      */
     @JsonProperty(value = "identity")
     private IdentityInfo identity;
@@ -53,8 +53,16 @@ public class TopicUpdateParameters {
     @JsonProperty(value = "properties.inboundIpRules")
     private List<InboundIpRule> inboundIpRules;
 
+    /*
+     * This boolean is used to enable or disable local auth. Default value is
+     * false. When the property is set to true, only AAD token will be used to
+     * authenticate if user is allowed to publish to the topic.
+     */
+    @JsonProperty(value = "properties.disableLocalAuth")
+    private Boolean disableLocalAuth;
+
     /**
-     * Get the tags property: Tags of the resource.
+     * Get the tags property: Tags of the Topic resource.
      *
      * @return the tags value.
      */
@@ -63,7 +71,7 @@ public class TopicUpdateParameters {
     }
 
     /**
-     * Set the tags property: Tags of the resource.
+     * Set the tags property: Tags of the Topic resource.
      *
      * @param tags the tags value to set.
      * @return the TopicUpdateParameters object itself.
@@ -74,7 +82,7 @@ public class TopicUpdateParameters {
     }
 
     /**
-     * Get the identity property: Resource identity information.
+     * Get the identity property: Topic resource identity information.
      *
      * @return the identity value.
      */
@@ -83,7 +91,7 @@ public class TopicUpdateParameters {
     }
 
     /**
-     * Set the identity property: Resource identity information.
+     * Set the identity property: Topic resource identity information.
      *
      * @param identity the identity value to set.
      * @return the TopicUpdateParameters object itself.
@@ -158,6 +166,30 @@ public class TopicUpdateParameters {
      */
     public TopicUpdateParameters withInboundIpRules(List<InboundIpRule> inboundIpRules) {
         this.inboundIpRules = inboundIpRules;
+        return this;
+    }
+
+    /**
+     * Get the disableLocalAuth property: This boolean is used to enable or disable local auth. Default value is false.
+     * When the property is set to true, only AAD token will be used to authenticate if user is allowed to publish to
+     * the topic.
+     *
+     * @return the disableLocalAuth value.
+     */
+    public Boolean disableLocalAuth() {
+        return this.disableLocalAuth;
+    }
+
+    /**
+     * Set the disableLocalAuth property: This boolean is used to enable or disable local auth. Default value is false.
+     * When the property is set to true, only AAD token will be used to authenticate if user is allowed to publish to
+     * the topic.
+     *
+     * @param disableLocalAuth the disableLocalAuth value to set.
+     * @return the TopicUpdateParameters object itself.
+     */
+    public TopicUpdateParameters withDisableLocalAuth(Boolean disableLocalAuth) {
+        this.disableLocalAuth = disableLocalAuth;
         return this;
     }
 

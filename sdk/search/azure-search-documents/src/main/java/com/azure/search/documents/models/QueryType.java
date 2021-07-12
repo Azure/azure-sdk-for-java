@@ -15,7 +15,10 @@ public enum QueryType {
     SIMPLE("simple"),
 
     /** Enum value full. */
-    FULL("full");
+    FULL("full"),
+
+    /** Enum value semantic. */
+    SEMANTIC("semantic");
 
     /** The actual serialized value for a QueryType instance. */
     private final String value;

@@ -8,7 +8,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.mysql.MySqlManager;
 import com.azure.resourcemanager.mysql.fluent.LocationBasedRecommendedActionSessionsOperationStatusClient;
 import com.azure.resourcemanager.mysql.fluent.models.RecommendedActionSessionsOperationStatusInner;
 import com.azure.resourcemanager.mysql.models.LocationBasedRecommendedActionSessionsOperationStatus;
@@ -23,10 +22,11 @@ public final class LocationBasedRecommendedActionSessionsOperationStatusImpl
 
     private final LocationBasedRecommendedActionSessionsOperationStatusClient innerClient;
 
-    private final MySqlManager serviceManager;
+    private final com.azure.resourcemanager.mysql.MySqlManager serviceManager;
 
     public LocationBasedRecommendedActionSessionsOperationStatusImpl(
-        LocationBasedRecommendedActionSessionsOperationStatusClient innerClient, MySqlManager serviceManager) {
+        LocationBasedRecommendedActionSessionsOperationStatusClient innerClient,
+        com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -59,7 +59,7 @@ public final class LocationBasedRecommendedActionSessionsOperationStatusImpl
         return this.innerClient;
     }
 
-    private MySqlManager manager() {
+    private com.azure.resourcemanager.mysql.MySqlManager manager() {
         return this.serviceManager;
     }
 }

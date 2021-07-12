@@ -9,7 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.fluent.EventSubscriptionsClient;
 import com.azure.resourcemanager.eventgrid.fluent.models.DeliveryAttributeListResultInner;
 import com.azure.resourcemanager.eventgrid.fluent.models.EventSubscriptionFullUrlInner;
@@ -25,9 +24,10 @@ public final class EventSubscriptionsImpl implements EventSubscriptions {
 
     private final EventSubscriptionsClient innerClient;
 
-    private final EventGridManager serviceManager;
+    private final com.azure.resourcemanager.eventgrid.EventGridManager serviceManager;
 
-    public EventSubscriptionsImpl(EventSubscriptionsClient innerClient, EventGridManager serviceManager) {
+    public EventSubscriptionsImpl(
+        EventSubscriptionsClient innerClient, com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -372,7 +372,7 @@ public final class EventSubscriptionsImpl implements EventSubscriptions {
         return this.innerClient;
     }
 
-    private EventGridManager manager() {
+    private com.azure.resourcemanager.eventgrid.EventGridManager manager() {
         return this.serviceManager;
     }
 

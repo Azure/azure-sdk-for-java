@@ -1,10 +1,10 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('index')//docs/search.index?api-version=2020-06-30",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('index')//docs/search.index?api-version=2020-06-30-Preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "80efb3e5-ba3e-449a-b067-56798867b412",
+      "x-ms-client-request-id" : "e96d1470-ba6b-435b-ba16-e7d950b46fe6",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -14,10 +14,10 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('index')//docs/search.index?api-version=2020-06-30",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('index')//docs/search.index?api-version=2020-06-30-Preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "7e736273-0a11-49a4-a5d6-b6ebdb84da3b",
+      "x-ms-client-request-id" : "f406cd8c-57b6-4675-91b3-72ecb0438dc5",
       "Content-Type" : "application/json"
     },
     "Response" : {

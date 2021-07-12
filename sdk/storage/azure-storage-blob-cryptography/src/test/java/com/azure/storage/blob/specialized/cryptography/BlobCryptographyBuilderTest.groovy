@@ -3,6 +3,7 @@ package com.azure.storage.blob.specialized.cryptography
 import com.azure.storage.blob.implementation.util.BlobUserAgentModificationPolicy
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.CustomerProvidedKey
+import com.azure.storage.common.implementation.Constants
 
 class BlobCryptographyBuilderTest extends APISpec {
 
@@ -19,8 +20,7 @@ class BlobCryptographyBuilderTest extends APISpec {
         fakeKey = new FakeKey(keyId, getRandomByteArray(256))
         fakeKeyResolver = new FakeKeyResolver(fakeKey)
 
-        def sc = getServiceClientBuilder(primaryCredential,
-            String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
+        def sc = getServiceClientBuilder(env.primaryAccount)
             .buildClient()
         def containerName = generateContainerName()
         def blobName = generateBlobName()
@@ -51,7 +51,7 @@ class BlobCryptographyBuilderTest extends APISpec {
     def "Encrypted client integrity"() {
         setup:
         cc.create()
-        def file = getRandomFile(KB)
+        def file = getRandomFile(Constants.KB)
 
         when:
         beac.uploadFromFile(file.toPath().toString()).block()
@@ -63,7 +63,7 @@ class BlobCryptographyBuilderTest extends APISpec {
     def "Http pipeline"() {
         when:
         def regularClient = cc.getBlobClient(generateBlobName())
-        def encryptedClient = getEncryptedClientBuilder(fakeKey, null, primaryCredential, cc.getBlobContainerUrl())
+        def encryptedClient = getEncryptedClientBuilder(fakeKey, null, env.primaryAccount.credential, cc.getBlobContainerUrl())
             .pipeline(regularClient.getHttpPipeline())
             .blobName(regularClient.getBlobName())
             .buildEncryptedBlobClient()
@@ -79,14 +79,14 @@ class BlobCryptographyBuilderTest extends APISpec {
         setup:
         cc.create()
         CustomerProvidedKey key = new CustomerProvidedKey(getRandomKey())
-        def builder = getEncryptedClientBuilder(fakeKey, null, primaryCredential, cc.getBlobContainerUrl())
+        def builder = getEncryptedClientBuilder(fakeKey, null, env.primaryAccount.credential, cc.getBlobContainerUrl())
             .customerProvidedKey(key)
             .blobName(generateBlobName())
         def encryptedAsyncClient = builder.buildEncryptedBlobAsyncClient()
         def encryptedClient = builder.buildEncryptedBlobClient()
 
         when:
-        def uploadResponse = encryptedAsyncClient.uploadWithResponse(defaultFlux, null, null, null, null, null).block()
+        def uploadResponse = encryptedAsyncClient.uploadWithResponse(data.defaultFlux, null, null, null, null, null).block()
 
         def downloadResult = new ByteArrayOutputStream()
 
@@ -96,23 +96,23 @@ class BlobCryptographyBuilderTest extends APISpec {
         uploadResponse.getStatusCode() == 201
         uploadResponse.getValue().isServerEncrypted()
         uploadResponse.getValue().getEncryptionKeySha256() == key.getKeySha256()
-        downloadResult.toByteArray() == defaultData.array()
+        downloadResult.toByteArray() == data.defaultBytes
     }
 
     def "Customer provided key not a noop"() {
         setup:
         cc.create()
         CustomerProvidedKey key = new CustomerProvidedKey(getRandomKey())
-        def encryptedClientWithCpk = getEncryptedClientBuilder(fakeKey, null, primaryCredential, cc.getBlobContainerUrl())
+        def encryptedClientWithCpk = getEncryptedClientBuilder(fakeKey, null, env.primaryAccount.credential, cc.getBlobContainerUrl())
             .customerProvidedKey(key)
             .blobName(generateBlobName())
             .buildEncryptedBlobAsyncClient()
 
-        def encryptedClientNoCpk = getEncryptedClientBuilder(fakeKey, null, primaryCredential, encryptedClientWithCpk.getBlobUrl())
+        def encryptedClientNoCpk = getEncryptedClientBuilder(fakeKey, null, env.primaryAccount.credential, encryptedClientWithCpk.getBlobUrl())
             .buildEncryptedBlobClient()
 
         when:
-        encryptedClientWithCpk.uploadWithResponse(defaultFlux, null, null, null, null, null).block()
+        encryptedClientWithCpk.uploadWithResponse(data.defaultFlux, null, null, null, null, null).block()
 
         def datastream = new ByteArrayOutputStream()
         encryptedClientNoCpk.downloadWithResponse(datastream, null, null, null, false, null, null)
@@ -120,6 +120,29 @@ class BlobCryptographyBuilderTest extends APISpec {
         then:
         def e = thrown(BlobStorageException)
         e.getStatusCode() == 409
+    }
+
+    def "Encryption scope"() {
+        setup:
+        def scope = "testscope1"
+        cc.create()
+        def builder = getEncryptedClientBuilder(fakeKey, null, env.primaryAccount.credential, cc.getBlobContainerUrl())
+            .encryptionScope(scope)
+            .blobName(generateBlobName())
+        def encryptedAsyncClient = builder.buildEncryptedBlobAsyncClient()
+        def encryptedClient = builder.buildEncryptedBlobClient()
+
+        when:
+        def uploadResponse = encryptedAsyncClient.uploadWithResponse(data.defaultFlux, null, null, null, null, null).block()
+
+        def downloadResult = new ByteArrayOutputStream()
+
+        encryptedClient.download(downloadResult)
+
+        then:
+        uploadResponse.getStatusCode() == 201
+        downloadResult.toByteArray() == data.defaultBytes
+        encryptedClient.getProperties().getEncryptionScope() == scope
     }
 
     def "Conflicting encryption info"() {
@@ -142,6 +165,41 @@ class BlobCryptographyBuilderTest extends APISpec {
 
         then:
         notThrown(IllegalArgumentException)
+
+    }
+
+    def "getCustomerProvidedKeyClient"() {
+        setup:
+        CustomerProvidedKey originalKey = new CustomerProvidedKey(getRandomKey())
+        def client = getEncryptedClientBuilder(fakeKey, null, env.primaryAccount.credential, cc.getBlobContainerUrl())
+            .customerProvidedKey(originalKey)
+            .blobName(generateBlobName())
+            .buildEncryptedBlobClient()
+        def newCpk = new CustomerProvidedKey(getRandomKey())
+
+        when:
+        def newClient = client.getCustomerProvidedKeyClient(newCpk)
+
+        then:
+        newClient instanceof EncryptedBlobClient
+        newClient.getCustomerProvidedKey() != client.getCustomerProvidedKey()
+    }
+
+    def "getEncryptionScopeClient"() {
+        setup:
+        def originalScope = "testscope1"
+        def client = getEncryptedClientBuilder(fakeKey, null, env.primaryAccount.credential, cc.getBlobContainerUrl())
+            .encryptionScope(originalScope)
+            .blobName(generateBlobName())
+            .buildEncryptedBlobClient()
+        def newEncryptionScope = "newtestscope"
+
+        when:
+        def newClient = client.getEncryptionScopeClient(newEncryptionScope)
+
+        then:
+        newClient instanceof EncryptedBlobClient
+        newClient.getEncryptionScope() != client.getEncryptionScope()
 
     }
 }

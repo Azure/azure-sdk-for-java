@@ -4,43 +4,32 @@
 
 package com.azure.containers.containerregistry.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Deleted repository. */
-@Fluent
+@Immutable
 public final class DeleteRepositoryResult {
     /*
      * SHA of the deleted image
      */
-    @JsonProperty(value = "manifestsDeleted")
-    private List<String> deletedRegistryArtifactDigests;
+    @JsonProperty(value = "manifestsDeleted", access = JsonProperty.Access.WRITE_ONLY)
+    private List<String> deletedManifests;
 
     /*
      * Tag of the deleted image
      */
-    @JsonProperty(value = "tagsDeleted")
+    @JsonProperty(value = "tagsDeleted", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> deletedTags;
 
     /**
-     * Get the deletedRegistryArtifactDigests property: SHA of the deleted image.
+     * Get the deletedManifests property: SHA of the deleted image.
      *
-     * @return the deletedRegistryArtifactDigests value.
+     * @return the deletedManifests value.
      */
-    public List<String> getDeletedRegistryArtifactDigests() {
-        return this.deletedRegistryArtifactDigests;
-    }
-
-    /**
-     * Set the deletedRegistryArtifactDigests property: SHA of the deleted image.
-     *
-     * @param deletedRegistryArtifactDigests the deletedRegistryArtifactDigests value to set.
-     * @return the DeleteRepositoryResult object itself.
-     */
-    public DeleteRepositoryResult setDeletedRegistryArtifactDigests(List<String> deletedRegistryArtifactDigests) {
-        this.deletedRegistryArtifactDigests = deletedRegistryArtifactDigests;
-        return this;
+    public List<String> getDeletedManifests() {
+        return this.deletedManifests;
     }
 
     /**
@@ -50,16 +39,5 @@ public final class DeleteRepositoryResult {
      */
     public List<String> getDeletedTags() {
         return this.deletedTags;
-    }
-
-    /**
-     * Set the deletedTags property: Tag of the deleted image.
-     *
-     * @param deletedTags the deletedTags value to set.
-     * @return the DeleteRepositoryResult object itself.
-     */
-    public DeleteRepositoryResult setDeletedTags(List<String> deletedTags) {
-        this.deletedTags = deletedTags;
-        return this;
     }
 }

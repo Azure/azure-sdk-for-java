@@ -146,7 +146,7 @@ public interface PartnerRegistrationsClient {
      * @return result of the List Partner Registrations operation.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PartnerRegistrationInner> listBySubscription();
+    PagedIterable<PartnerRegistrationInner> list();
 
     /**
      * List all the partner registrations under an Azure subscription.
@@ -166,7 +166,7 @@ public interface PartnerRegistrationsClient {
      * @return result of the List Partner Registrations operation.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PartnerRegistrationInner> listBySubscription(String filter, Integer top, Context context);
+    PagedIterable<PartnerRegistrationInner> list(String filter, Integer top, Context context);
 
     /**
      * List all the partner registrations under a resource group.
@@ -201,26 +201,4 @@ public interface PartnerRegistrationsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PartnerRegistrationInner> listByResourceGroup(
         String resourceGroupName, String filter, Integer top, Context context);
-
-    /**
-     * List all partners registrations.
-     *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Registrations operation.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PartnerRegistrationInner> list();
-
-    /**
-     * List all partners registrations.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Registrations operation.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PartnerRegistrationInner> list(Context context);
 }

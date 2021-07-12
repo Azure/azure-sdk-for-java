@@ -17,7 +17,7 @@ public final class VirtualNetworkProfile {
     /*
      * Resource id of the Virtual Network.
      */
-    @JsonProperty(value = "id")
+    @JsonProperty(value = "id", required = true)
     private String id;
 
     /*
@@ -102,5 +102,10 @@ public final class VirtualNetworkProfile {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (id() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property id in model VirtualNetworkProfile"));
+        }
     }
 }

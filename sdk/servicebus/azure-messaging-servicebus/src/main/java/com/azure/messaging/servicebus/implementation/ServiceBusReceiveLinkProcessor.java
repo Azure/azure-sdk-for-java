@@ -5,7 +5,10 @@ package com.azure.messaging.servicebus.implementation;
 
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryPolicy;
+import com.azure.core.amqp.exception.AmqpErrorCondition;
+import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
+import com.azure.core.util.AsyncCloseable;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.message.Message;
@@ -114,7 +117,15 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
                 "lockToken[%s]. state[%s]. Cannot update disposition with no link.", lockToken, deliveryState)));
         }
 
-        return link.updateDisposition(lockToken, deliveryState);
+        return link.updateDisposition(lockToken, deliveryState).onErrorResume(error -> {
+            if (error instanceof AmqpException) {
+                AmqpException amqpException = (AmqpException) error;
+                if (AmqpErrorCondition.TIMEOUT_ERROR.equals(amqpException.getErrorCondition())) {
+                    return link.closeAsync().then(Mono.error(error));
+                }
+            }
+            return Mono.error(error);
+        });
     }
 
     /**
@@ -198,7 +209,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
 
                     drain();
                 }),
-                next.getEndpointStates().subscribe(
+                next.getEndpointStates().subscribeOn(Schedulers.boundedElastic()).subscribe(
                     state -> {
                         // Connection was successfully opened, we can reset the retry interval.
                         if (state == AmqpEndpointState.ACTIVE) {
@@ -221,20 +232,15 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
                             final AmqpReceiveLink existing = currentLink;
                             currentLink = null;
 
-                            if (existing != null) {
-                                existing.dispose();
-                            }
 
+                            disposeReceiver(existing);
                             requestUpstream();
                         }
                     }));
         }
 
         checkAndAddCredits(next);
-
-        if (oldChannel != null) {
-            oldChannel.dispose();
-        }
+        disposeReceiver(oldChannel);
 
         if (oldSubscription != null) {
             oldSubscription.dispose();
@@ -412,9 +418,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
             retrySubscription.dispose();
         }
 
-        if (currentLink != null) {
-            currentLink.dispose();
-        }
+        disposeReceiver(currentLink);
 
         currentLink = null;
 
@@ -509,9 +513,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
             subscriber.onComplete();
         }
 
-        if (currentLink != null) {
-            currentLink.dispose();
-        }
+        disposeReceiver(currentLink);
 
         synchronized (queueLock) {
             messageQueue.clear();
@@ -532,7 +534,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
             logger.info("Link credits='{}', Link credits to add: '{}'", linkCredits, credits);
 
             if (credits > 0) {
-                link.addCredits(credits);
+                link.addCredits(credits).subscribe();
             }
         }
     }
@@ -585,5 +587,18 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
         }
 
         return creditsToAdd;
+    }
+
+    private void disposeReceiver(AmqpReceiveLink link) {
+        if (link == null) {
+            return;
+        }
+
+        try {
+            ((AsyncCloseable) link).closeAsync().subscribe();
+        } catch (Exception error) {
+            logger.warning("linkName[{}] entityPath[{}] Unable to dispose of link.", link.getLinkName(),
+                link.getEntityPath(), error);
+        }
     }
 }

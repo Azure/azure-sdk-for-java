@@ -1,0 +1,48 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/metrics/27e3015f-04fd-44ba-a20b-bc529a0aebae/dimension/query",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.5 (11.0.11; Mac OS X; 11.4)",
+      "x-ms-client-request-id" : "98b8ed53-899f-4dc6-9e67-8249c7b3081b",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-request-id" : "7bc94809-315c-4a63-92fb-4f5ac76dfc20",
+      "content-length" : "615",
+      "x-envoy-upstream-service-time" : "94",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "7bc94809-315c-4a63-92fb-4f5ac76dfc20",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[\"Automotive & Powersports\",\"Baby Products (Excluding Apparel)\",\"Beauty\",\"Books\",\"Camera & Photo\",\"Cell Phones\",\"Clothing & Accessories\",\"Collectible Coins\",\"Device Accessories\",\"Electronics (Accessories)\",\"Electronics (Consumer)\",\"Fine Art\",\"Grocery & Gourmet Food\",\"Handmade\",\"Health & Personal Care\",\"Historical & Advertising Collectibles\",\"Home & Garden\",\"Industrial & Scientific\",\"Jewelry\",\"Luggage & Travel Accessories\"],\"@nextLink\":\"https://js-metrics-advisor.cognitiveservices.azure.com:443/metricsadvisor/v1.0/metrics/27e3015f-04fd-44ba-a20b-bc529a0aebae/dimension/query?$maxpagesize=20&$skip=20\"}",
+      "Date" : "Tue, 06 Jul 2021 19:51:17 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com:443/metricsadvisor/v1.0/metrics/27e3015f-04fd-44ba-a20b-bc529a0aebae/dimension/query?$maxpagesize=20&$skip=20",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.5 (11.0.11; Mac OS X; 11.4)",
+      "x-ms-client-request-id" : "cfcb7a0c-a332-4868-9c7c-fb70d99815d2",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-request-id" : "5f2b1994-f599-4392-bcfc-f0cd52bc00a7",
+      "content-length" : "217",
+      "x-envoy-upstream-service-time" : "98",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "5f2b1994-f599-4392-bcfc-f0cd52bc00a7",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[\"Music\",\"Musical Instruments\",\"Office Products\",\"Outdoors\",\"Personal Computers\",\"Shoes Handbags & Sunglasses\",\"Software & Computer Games\",\"Sports\",\"Sports Collectibles\",\"__SUM__\",\"Tools & Home Improvement\"]}",
+      "Date" : "Tue, 06 Jul 2021 19:51:17 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

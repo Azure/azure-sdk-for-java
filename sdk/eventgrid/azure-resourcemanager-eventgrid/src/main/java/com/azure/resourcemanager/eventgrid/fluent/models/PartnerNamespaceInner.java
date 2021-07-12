@@ -7,11 +7,14 @@ package com.azure.resourcemanager.eventgrid.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.eventgrid.models.InboundIpRule;
 import com.azure.resourcemanager.eventgrid.models.PartnerNamespaceProvisioningState;
-import com.azure.resourcemanager.eventgrid.models.SystemData;
+import com.azure.resourcemanager.eventgrid.models.PublicNetworkAccess;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 import java.util.Map;
 
 /** EventGrid Partner Namespace. */
@@ -25,6 +28,12 @@ public class PartnerNamespaceInner extends Resource {
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /*
+     * The privateEndpointConnections property.
+     */
+    @JsonProperty(value = "properties.privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
+    private List<PrivateEndpointConnectionInner> privateEndpointConnections;
 
     /*
      * Provisioning state of the partner namespace.
@@ -46,6 +55,31 @@ public class PartnerNamespaceInner extends Resource {
     @JsonProperty(value = "properties.endpoint", access = JsonProperty.Access.WRITE_ONLY)
     private String endpoint;
 
+    /*
+     * This determines if traffic is allowed over public network. By default it
+     * is enabled.
+     * You can further restrict to specific IPs by configuring <seealso
+     * cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.PartnerNamespaceProperties.InboundIpRules"
+     * />
+     */
+    @JsonProperty(value = "properties.publicNetworkAccess")
+    private PublicNetworkAccess publicNetworkAccess;
+
+    /*
+     * This can be used to restrict traffic from specific IPs instead of all
+     * IPs. Note: These are considered only if PublicNetworkAccess is enabled.
+     */
+    @JsonProperty(value = "properties.inboundIpRules")
+    private List<InboundIpRule> inboundIpRules;
+
+    /*
+     * This boolean is used to enable or disable local auth. Default value is
+     * false. When the property is set to true, only AAD token will be used to
+     * authenticate if user is allowed to publish to the partner namespace.
+     */
+    @JsonProperty(value = "properties.disableLocalAuth")
+    private Boolean disableLocalAuth;
+
     /**
      * Get the systemData property: The system metadata relating to Partner Namespace resource.
      *
@@ -53,6 +87,15 @@ public class PartnerNamespaceInner extends Resource {
      */
     public SystemData systemData() {
         return this.systemData;
+    }
+
+    /**
+     * Get the privateEndpointConnections property: The privateEndpointConnections property.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
+        return this.privateEndpointConnections;
     }
 
     /**
@@ -97,6 +140,78 @@ public class PartnerNamespaceInner extends Resource {
         return this.endpoint;
     }
 
+    /**
+     * Get the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it is
+     * enabled. You can further restrict to specific IPs by configuring &lt;seealso
+     * cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.PartnerNamespaceProperties.InboundIpRules"
+     * /&gt;.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.publicNetworkAccess;
+    }
+
+    /**
+     * Set the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it is
+     * enabled. You can further restrict to specific IPs by configuring &lt;seealso
+     * cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.PartnerNamespaceProperties.InboundIpRules"
+     * /&gt;.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the PartnerNamespaceInner object itself.
+     */
+    public PartnerNamespaceInner withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        this.publicNetworkAccess = publicNetworkAccess;
+        return this;
+    }
+
+    /**
+     * Get the inboundIpRules property: This can be used to restrict traffic from specific IPs instead of all IPs. Note:
+     * These are considered only if PublicNetworkAccess is enabled.
+     *
+     * @return the inboundIpRules value.
+     */
+    public List<InboundIpRule> inboundIpRules() {
+        return this.inboundIpRules;
+    }
+
+    /**
+     * Set the inboundIpRules property: This can be used to restrict traffic from specific IPs instead of all IPs. Note:
+     * These are considered only if PublicNetworkAccess is enabled.
+     *
+     * @param inboundIpRules the inboundIpRules value to set.
+     * @return the PartnerNamespaceInner object itself.
+     */
+    public PartnerNamespaceInner withInboundIpRules(List<InboundIpRule> inboundIpRules) {
+        this.inboundIpRules = inboundIpRules;
+        return this;
+    }
+
+    /**
+     * Get the disableLocalAuth property: This boolean is used to enable or disable local auth. Default value is false.
+     * When the property is set to true, only AAD token will be used to authenticate if user is allowed to publish to
+     * the partner namespace.
+     *
+     * @return the disableLocalAuth value.
+     */
+    public Boolean disableLocalAuth() {
+        return this.disableLocalAuth;
+    }
+
+    /**
+     * Set the disableLocalAuth property: This boolean is used to enable or disable local auth. Default value is false.
+     * When the property is set to true, only AAD token will be used to authenticate if user is allowed to publish to
+     * the partner namespace.
+     *
+     * @param disableLocalAuth the disableLocalAuth value to set.
+     * @return the PartnerNamespaceInner object itself.
+     */
+    public PartnerNamespaceInner withDisableLocalAuth(Boolean disableLocalAuth) {
+        this.disableLocalAuth = disableLocalAuth;
+        return this;
+    }
+
     /** {@inheritDoc} */
     @Override
     public PartnerNamespaceInner withLocation(String location) {
@@ -117,8 +232,11 @@ public class PartnerNamespaceInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (systemData() != null) {
-            systemData().validate();
+        if (privateEndpointConnections() != null) {
+            privateEndpointConnections().forEach(e -> e.validate());
+        }
+        if (inboundIpRules() != null) {
+            inboundIpRules().forEach(e -> e.validate());
         }
     }
 }

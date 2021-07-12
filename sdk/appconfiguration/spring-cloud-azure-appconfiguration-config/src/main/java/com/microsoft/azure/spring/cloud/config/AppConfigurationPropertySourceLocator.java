@@ -138,7 +138,7 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
         // There is only one Feature Set for all AppConfigurationPropertySources
         FeatureSet featureSet = new FeatureSet();
 
-        List<AppConfigurationPropertySource> sourceList = new ArrayList<AppConfigurationPropertySource>();
+        List<AppConfigurationPropertySource> sourceList = new ArrayList<>();
 
         // Reverse in order to add Profile specific properties earlier, and last profile
         // comes first

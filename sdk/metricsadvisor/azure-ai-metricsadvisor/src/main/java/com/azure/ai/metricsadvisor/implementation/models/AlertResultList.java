@@ -7,7 +7,6 @@ package com.azure.ai.metricsadvisor.implementation.models;
 import com.azure.ai.metricsadvisor.models.AnomalyAlert;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 /** The AlertResultList model. */
@@ -16,7 +15,7 @@ public final class AlertResultList {
     /*
      * The @nextLink property.
      */
-    @JsonProperty(value = "@nextLink", required = true)
+    @JsonProperty(value = "@nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /*
@@ -32,17 +31,6 @@ public final class AlertResultList {
      */
     public String getNextLink() {
         return this.nextLink;
-    }
-
-    /**
-     * Set the nextLink property: The @nextLink property.
-     *
-     * @param nextLink the nextLink value to set.
-     * @return the AlertResultList object itself.
-     */
-    public AlertResultList setNextLink(String nextLink) {
-        this.nextLink = nextLink;
-        return this;
     }
 
     /**

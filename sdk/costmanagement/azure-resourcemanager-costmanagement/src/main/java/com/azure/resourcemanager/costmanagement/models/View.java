@@ -75,6 +75,20 @@ public interface View {
     OffsetDateTime modifiedOn();
 
     /**
+     * Gets the dateRange property: Selected date range for viewing cost in.
+     *
+     * @return the dateRange value.
+     */
+    String dateRange();
+
+    /**
+     * Gets the currency property: Selected currency.
+     *
+     * @return the currency value.
+     */
+    String currency();
+
+    /**
      * Gets the chart property: Chart type of the main view in Cost Analysis. Required.
      *
      * @return the chart value.
@@ -134,11 +148,18 @@ public interface View {
     ReportConfigTimePeriod timePeriod();
 
     /**
-     * Gets the dataset property: Has definition for data in this report config.
+     * Gets the dataSet property: Has definition for data in this report config.
      *
-     * @return the dataset value.
+     * @return the dataSet value.
      */
-    ReportConfigDataset dataset();
+    ReportConfigDataset dataSet();
+
+    /**
+     * Gets the includeMonetaryCommitment property: Include monetary commitment.
+     *
+     * @return the includeMonetaryCommitment value.
+     */
+    Boolean includeMonetaryCommitment();
 
     /**
      * Gets the etag property: eTag of the resource. To handle concurrent update scenario, this field will be used to
@@ -204,7 +225,7 @@ public interface View {
                 DefinitionStages.WithTypePropertiesQueryType,
                 DefinitionStages.WithTimeframe,
                 DefinitionStages.WithTimePeriod,
-                DefinitionStages.WithDataset,
+                DefinitionStages.WithDataSet,
                 DefinitionStages.WithEtag {
             /**
              * Executes the create request.
@@ -359,15 +380,15 @@ public interface View {
              */
             WithCreate withTimePeriod(ReportConfigTimePeriod timePeriod);
         }
-        /** The stage of the View definition allowing to specify dataset. */
-        interface WithDataset {
+        /** The stage of the View definition allowing to specify dataSet. */
+        interface WithDataSet {
             /**
-             * Specifies the dataset property: Has definition for data in this report config..
+             * Specifies the dataSet property: Has definition for data in this report config..
              *
-             * @param dataset Has definition for data in this report config.
+             * @param dataSet Has definition for data in this report config.
              * @return the next definition stage.
              */
-            WithCreate withDataset(ReportConfigDataset dataset);
+            WithCreate withDataSet(ReportConfigDataset dataSet);
         }
         /** The stage of the View definition allowing to specify etag. */
         interface WithEtag {
@@ -401,7 +422,7 @@ public interface View {
             UpdateStages.WithTypePropertiesQueryType,
             UpdateStages.WithTimeframe,
             UpdateStages.WithTimePeriod,
-            UpdateStages.WithDataset,
+            UpdateStages.WithDataSet,
             UpdateStages.WithEtag {
         /**
          * Executes the update request.
@@ -558,15 +579,15 @@ public interface View {
              */
             Update withTimePeriod(ReportConfigTimePeriod timePeriod);
         }
-        /** The stage of the View update allowing to specify dataset. */
-        interface WithDataset {
+        /** The stage of the View update allowing to specify dataSet. */
+        interface WithDataSet {
             /**
-             * Specifies the dataset property: Has definition for data in this report config..
+             * Specifies the dataSet property: Has definition for data in this report config..
              *
-             * @param dataset Has definition for data in this report config.
+             * @param dataSet Has definition for data in this report config.
              * @return the next definition stage.
              */
-            Update withDataset(ReportConfigDataset dataset);
+            Update withDataSet(ReportConfigDataset dataSet);
         }
         /** The stage of the View update allowing to specify etag. */
         interface WithEtag {

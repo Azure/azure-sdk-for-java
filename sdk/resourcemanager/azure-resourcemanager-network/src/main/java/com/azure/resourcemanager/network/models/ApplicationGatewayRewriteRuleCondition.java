@@ -28,8 +28,8 @@ public final class ApplicationGatewayRewriteRuleCondition {
     private String pattern;
 
     /*
-     * Setting this paramter to truth value with force the pattern to do a case
-     * in-sensitive comparison.
+     * Setting this parameter to truth value with force the pattern to do a
+     * case in-sensitive comparison.
      */
     @JsonProperty(value = "ignoreCase")
     private Boolean ignoreCase;
@@ -84,7 +84,7 @@ public final class ApplicationGatewayRewriteRuleCondition {
     }
 
     /**
-     * Get the ignoreCase property: Setting this paramter to truth value with force the pattern to do a case
+     * Get the ignoreCase property: Setting this parameter to truth value with force the pattern to do a case
      * in-sensitive comparison.
      *
      * @return the ignoreCase value.
@@ -94,7 +94,7 @@ public final class ApplicationGatewayRewriteRuleCondition {
     }
 
     /**
-     * Set the ignoreCase property: Setting this paramter to truth value with force the pattern to do a case
+     * Set the ignoreCase property: Setting this parameter to truth value with force the pattern to do a case
      * in-sensitive comparison.
      *
      * @param ignoreCase the ignoreCase value to set.

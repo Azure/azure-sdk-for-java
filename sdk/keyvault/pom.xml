@@ -23,22 +23,22 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-security-keyvault-administration</artifactId>
-          <version>4.0.0-beta.6</version> <!-- {x-version-update;com.azure:azure-security-keyvault-administration;current} -->
+          <version>4.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-administration;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-security-keyvault-certificates</artifactId>
-          <version>4.2.0-beta.5</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;current} -->
+          <version>4.3.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-security-keyvault-keys</artifactId>
-          <version>4.3.0-beta.6</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;current} -->
+          <version>4.4.0-beta.2</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-security-keyvault-secrets</artifactId>
-          <version>4.3.0-beta.5</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;current} -->
+          <version>4.4.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;current} -->
         </dependency>
       </dependencies>
 
@@ -77,11 +77,13 @@
         <module>microsoft-azure-keyvault-cryptography</module>
         <module>microsoft-azure-keyvault-extensions</module>
         <module>microsoft-azure-keyvault-test</module>
+        <module>azure-security-test-keyvault-jca</module>
         <module>azure-security-keyvault-administration</module>
         <module>azure-security-keyvault-certificates</module>
         <module>azure-security-keyvault-jca</module>
         <module>azure-security-keyvault-keys</module>
         <module>azure-security-keyvault-secrets</module>
+        <module>azure-security-keyvault-perf</module>
       </modules>
     </profile>
   </profiles>

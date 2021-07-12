@@ -38,8 +38,8 @@ public final class UsageStats {
     /*
      * The count of non deleted data feed
      */
-    @JsonProperty(value = "datafeedCount", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer datafeedCount;
+    @JsonProperty(value = "dataFeedCount", access = JsonProperty.Access.WRITE_ONLY)
+    private Integer dataFeedCount;
 
     /**
      * Get the timestamp property: The timestamp of the stats.
@@ -78,11 +78,11 @@ public final class UsageStats {
     }
 
     /**
-     * Get the datafeedCount property: The count of non deleted data feed.
+     * Get the dataFeedCount property: The count of non deleted data feed.
      *
-     * @return the datafeedCount value.
+     * @return the dataFeedCount value.
      */
-    public Integer getDatafeedCount() {
-        return this.datafeedCount;
+    public Integer getDataFeedCount() {
+        return this.dataFeedCount;
     }
 }

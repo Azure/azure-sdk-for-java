@@ -26,15 +26,19 @@ import com.azure.resourcemanager.costmanagement.implementation.CostManagementCli
 import com.azure.resourcemanager.costmanagement.implementation.DimensionsImpl;
 import com.azure.resourcemanager.costmanagement.implementation.ExportsImpl;
 import com.azure.resourcemanager.costmanagement.implementation.ForecastsImpl;
+import com.azure.resourcemanager.costmanagement.implementation.GenerateReservationDetailsReportsImpl;
 import com.azure.resourcemanager.costmanagement.implementation.OperationsImpl;
 import com.azure.resourcemanager.costmanagement.implementation.QueriesImpl;
+import com.azure.resourcemanager.costmanagement.implementation.SettingsImpl;
 import com.azure.resourcemanager.costmanagement.implementation.ViewsImpl;
 import com.azure.resourcemanager.costmanagement.models.Alerts;
 import com.azure.resourcemanager.costmanagement.models.Dimensions;
 import com.azure.resourcemanager.costmanagement.models.Exports;
 import com.azure.resourcemanager.costmanagement.models.Forecasts;
+import com.azure.resourcemanager.costmanagement.models.GenerateReservationDetailsReports;
 import com.azure.resourcemanager.costmanagement.models.Operations;
 import com.azure.resourcemanager.costmanagement.models.Queries;
+import com.azure.resourcemanager.costmanagement.models.Settings;
 import com.azure.resourcemanager.costmanagement.models.Views;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
@@ -44,6 +48,8 @@ import java.util.Objects;
 
 /** Entry point to CostManagementManager. */
 public final class CostManagementManager {
+    private Settings settings;
+
     private Views views;
 
     private Alerts alerts;
@@ -53,6 +59,8 @@ public final class CostManagementManager {
     private Dimensions dimensions;
 
     private Queries queries;
+
+    private GenerateReservationDetailsReports generateReservationDetailsReports;
 
     private Operations operations;
 
@@ -175,17 +183,31 @@ public final class CostManagementManager {
             Objects.requireNonNull(credential, "'credential' cannot be null.");
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
+            StringBuilder userAgentBuilder = new StringBuilder();
+            userAgentBuilder
+                .append("azsdk-java")
+                .append("-")
+                .append("com.azure.resourcemanager.costmanagement")
+                .append("/")
+                .append("1.0.0-beta.2");
+            if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
+                userAgentBuilder
+                    .append(" (")
+                    .append(Configuration.getGlobalConfiguration().get("java.version"))
+                    .append("; ")
+                    .append(Configuration.getGlobalConfiguration().get("os.name"))
+                    .append("; ")
+                    .append(Configuration.getGlobalConfiguration().get("os.version"))
+                    .append("; auto-generated)");
+            } else {
+                userAgentBuilder.append(" (auto-generated)");
+            }
+
             if (retryPolicy == null) {
                 retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
             }
             List<HttpPipelinePolicy> policies = new ArrayList<>();
-            policies
-                .add(
-                    new UserAgentPolicy(
-                        null,
-                        "com.azure.resourcemanager.costmanagement",
-                        "1.0.0-beta.1",
-                        Configuration.getGlobalConfiguration()));
+            policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
             policies.add(new RequestIdPolicy());
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
@@ -194,6 +216,7 @@ public final class CostManagementManager {
                 .add(
                     new BearerTokenAuthenticationPolicy(
                         credential, profile.getEnvironment().getManagementEndpoint() + "/.default"));
+            policies.addAll(this.policies);
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
             HttpPipeline httpPipeline =
@@ -203,6 +226,14 @@ public final class CostManagementManager {
                     .build();
             return new CostManagementManager(httpPipeline, profile, defaultPollInterval);
         }
+    }
+
+    /** @return Resource collection API of Settings. */
+    public Settings settings() {
+        if (this.settings == null) {
+            this.settings = new SettingsImpl(clientObject.getSettings(), this);
+        }
+        return settings;
     }
 
     /** @return Resource collection API of Views. */
@@ -243,6 +274,15 @@ public final class CostManagementManager {
             this.queries = new QueriesImpl(clientObject.getQueries(), this);
         }
         return queries;
+    }
+
+    /** @return Resource collection API of GenerateReservationDetailsReports. */
+    public GenerateReservationDetailsReports generateReservationDetailsReports() {
+        if (this.generateReservationDetailsReports == null) {
+            this.generateReservationDetailsReports =
+                new GenerateReservationDetailsReportsImpl(clientObject.getGenerateReservationDetailsReports(), this);
+        }
+        return generateReservationDetailsReports;
     }
 
     /** @return Resource collection API of Operations. */

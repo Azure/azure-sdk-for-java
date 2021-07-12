@@ -13,7 +13,7 @@ import java.util.Map;
 
 /** Profile for the container service agent pool. */
 @Fluent
-public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoolProfileProperties {
+public class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoolProfileProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterAgentPoolProfile.class);
 
     /*
@@ -54,7 +54,7 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
 
     /** {@inheritDoc} */
     @Override
-    public ManagedClusterAgentPoolProfile withVmSize(ContainerServiceVMSizeTypes vmSize) {
+    public ManagedClusterAgentPoolProfile withVmSize(String vmSize) {
         super.withVmSize(vmSize);
         return this;
     }
@@ -70,6 +70,13 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
     @Override
     public ManagedClusterAgentPoolProfile withOsDiskType(OSDiskType osDiskType) {
         super.withOsDiskType(osDiskType);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ManagedClusterAgentPoolProfile withKubeletDiskType(KubeletDiskType kubeletDiskType) {
+        super.withKubeletDiskType(kubeletDiskType);
         return this;
     }
 
@@ -98,6 +105,13 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
     @Override
     public ManagedClusterAgentPoolProfile withOsType(OSType osType) {
         super.withOsType(osType);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ManagedClusterAgentPoolProfile withOsSku(Ossku osSku) {
+        super.withOsSku(osSku);
         return this;
     }
 
@@ -166,6 +180,13 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
 
     /** {@inheritDoc} */
     @Override
+    public ManagedClusterAgentPoolProfile withNodePublicIpPrefixId(String nodePublicIpPrefixId) {
+        super.withNodePublicIpPrefixId(nodePublicIpPrefixId);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public ManagedClusterAgentPoolProfile withScaleSetPriority(ScaleSetPriority scaleSetPriority) {
         super.withScaleSetPriority(scaleSetPriority);
         return this;
@@ -224,6 +245,34 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
     @Override
     public ManagedClusterAgentPoolProfile withLinuxOSConfig(LinuxOSConfig linuxOSConfig) {
         super.withLinuxOSConfig(linuxOSConfig);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ManagedClusterAgentPoolProfile withEnableEncryptionAtHost(Boolean enableEncryptionAtHost) {
+        super.withEnableEncryptionAtHost(enableEncryptionAtHost);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ManagedClusterAgentPoolProfile withEnableUltraSsd(Boolean enableUltraSsd) {
+        super.withEnableUltraSsd(enableUltraSsd);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ManagedClusterAgentPoolProfile withEnableFips(Boolean enableFips) {
+        super.withEnableFips(enableFips);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ManagedClusterAgentPoolProfile withGpuInstanceProfile(GpuInstanceProfile gpuInstanceProfile) {
+        super.withGpuInstanceProfile(gpuInstanceProfile);
         return this;
     }
 

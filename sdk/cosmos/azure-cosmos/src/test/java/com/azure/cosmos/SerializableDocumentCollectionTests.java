@@ -17,6 +17,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static com.azure.cosmos.implementation.DocumentCollection.SerializableDocumentCollection;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -36,6 +37,8 @@ public class SerializableDocumentCollectionTests {
         IndexingPolicy indexingPolicy = new IndexingPolicy();
         indexingPolicy.setSpatialIndexes(spatialSpecList);
         collection.setIndexingPolicy(indexingPolicy);
+        String altLink = UUID.randomUUID().toString();
+        collection.setAltLink(altLink);
 
         SerializableDocumentCollection serializableDocumentCollection = SerializableDocumentCollection.from(collection);
 
@@ -53,6 +56,9 @@ public class SerializableDocumentCollectionTests {
         SerializableDocumentCollection deserializedDocumentCollection = (SerializableDocumentCollection) ois.readObject();
 
         // compare
+        assertThat(deserializedDocumentCollection.getWrappedItem().getAltLink())
+            .isEqualTo(collection.getAltLink())
+            .isEqualTo(altLink);
         assertThat(deserializedDocumentCollection.getWrappedItem().toJson()).isEqualTo(collection.toJson());
     }
 }

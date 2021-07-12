@@ -25,18 +25,18 @@ public interface CapabilitiesResult {
     Map<String, RegionsCapability> regions();
 
     /**
-     * Gets the vmSizes property: The virtual machine sizes.
+     * Gets the vmsizes property: The virtual machine sizes.
      *
-     * @return the vmSizes value.
+     * @return the vmsizes value.
      */
-    Map<String, VmSizesCapability> vmSizes();
+    Map<String, VmSizesCapability> vmsizes();
 
     /**
-     * Gets the vmSizeFilters property: The virtual machine size compatibility filters.
+     * Gets the vmsizeFilters property: The virtual machine size compatibility filters.
      *
-     * @return the vmSizeFilters value.
+     * @return the vmsizeFilters value.
      */
-    List<VmSizeCompatibilityFilter> vmSizeFilters();
+    List<VmSizeCompatibilityFilter> vmsizeFilters();
 
     /**
      * Gets the features property: The capability features.

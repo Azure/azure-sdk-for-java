@@ -6,23 +6,28 @@ package com.azure.resourcemanager.eventgrid.implementation;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.fluent.models.PartnerNamespaceInner;
+import com.azure.resourcemanager.eventgrid.fluent.models.PrivateEndpointConnectionInner;
+import com.azure.resourcemanager.eventgrid.models.InboundIpRule;
 import com.azure.resourcemanager.eventgrid.models.PartnerNamespace;
 import com.azure.resourcemanager.eventgrid.models.PartnerNamespaceProvisioningState;
 import com.azure.resourcemanager.eventgrid.models.PartnerNamespaceRegenerateKeyRequest;
 import com.azure.resourcemanager.eventgrid.models.PartnerNamespaceSharedAccessKeys;
 import com.azure.resourcemanager.eventgrid.models.PartnerNamespaceUpdateParameters;
-import com.azure.resourcemanager.eventgrid.models.SystemData;
+import com.azure.resourcemanager.eventgrid.models.PrivateEndpointConnection;
+import com.azure.resourcemanager.eventgrid.models.PublicNetworkAccess;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public final class PartnerNamespaceImpl
     implements PartnerNamespace, PartnerNamespace.Definition, PartnerNamespace.Update {
     private PartnerNamespaceInner innerObject;
 
-    private final EventGridManager serviceManager;
+    private final com.azure.resourcemanager.eventgrid.EventGridManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -53,6 +58,20 @@ public final class PartnerNamespaceImpl
         return this.innerModel().systemData();
     }
 
+    public List<PrivateEndpointConnection> privateEndpointConnections() {
+        List<PrivateEndpointConnectionInner> inner = this.innerModel().privateEndpointConnections();
+        if (inner != null) {
+            return Collections
+                .unmodifiableList(
+                    inner
+                        .stream()
+                        .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()))
+                        .collect(Collectors.toList()));
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
     public PartnerNamespaceProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
     }
@@ -63,6 +82,23 @@ public final class PartnerNamespaceImpl
 
     public String endpoint() {
         return this.innerModel().endpoint();
+    }
+
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.innerModel().publicNetworkAccess();
+    }
+
+    public List<InboundIpRule> inboundIpRules() {
+        List<InboundIpRule> inner = this.innerModel().inboundIpRules();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    public Boolean disableLocalAuth() {
+        return this.innerModel().disableLocalAuth();
     }
 
     public Region region() {
@@ -77,7 +113,7 @@ public final class PartnerNamespaceImpl
         return this.innerObject;
     }
 
-    private EventGridManager manager() {
+    private com.azure.resourcemanager.eventgrid.EventGridManager manager() {
         return this.serviceManager;
     }
 
@@ -110,7 +146,7 @@ public final class PartnerNamespaceImpl
         return this;
     }
 
-    PartnerNamespaceImpl(String name, EventGridManager serviceManager) {
+    PartnerNamespaceImpl(String name, com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
         this.innerObject = new PartnerNamespaceInner();
         this.serviceManager = serviceManager;
         this.partnerNamespaceName = name;
@@ -139,7 +175,8 @@ public final class PartnerNamespaceImpl
         return this;
     }
 
-    PartnerNamespaceImpl(PartnerNamespaceInner innerObject, EventGridManager serviceManager) {
+    PartnerNamespaceImpl(
+        PartnerNamespaceInner innerObject, com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -212,6 +249,36 @@ public final class PartnerNamespaceImpl
     public PartnerNamespaceImpl withPartnerRegistrationFullyQualifiedId(String partnerRegistrationFullyQualifiedId) {
         this.innerModel().withPartnerRegistrationFullyQualifiedId(partnerRegistrationFullyQualifiedId);
         return this;
+    }
+
+    public PartnerNamespaceImpl withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        if (isInCreateMode()) {
+            this.innerModel().withPublicNetworkAccess(publicNetworkAccess);
+            return this;
+        } else {
+            this.updatePartnerNamespaceUpdateParameters.withPublicNetworkAccess(publicNetworkAccess);
+            return this;
+        }
+    }
+
+    public PartnerNamespaceImpl withInboundIpRules(List<InboundIpRule> inboundIpRules) {
+        if (isInCreateMode()) {
+            this.innerModel().withInboundIpRules(inboundIpRules);
+            return this;
+        } else {
+            this.updatePartnerNamespaceUpdateParameters.withInboundIpRules(inboundIpRules);
+            return this;
+        }
+    }
+
+    public PartnerNamespaceImpl withDisableLocalAuth(Boolean disableLocalAuth) {
+        if (isInCreateMode()) {
+            this.innerModel().withDisableLocalAuth(disableLocalAuth);
+            return this;
+        } else {
+            this.updatePartnerNamespaceUpdateParameters.withDisableLocalAuth(disableLocalAuth);
+            return this;
+        }
     }
 
     private boolean isInCreateMode() {

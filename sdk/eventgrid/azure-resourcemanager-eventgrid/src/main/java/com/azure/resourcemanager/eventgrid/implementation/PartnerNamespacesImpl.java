@@ -9,7 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.fluent.PartnerNamespacesClient;
 import com.azure.resourcemanager.eventgrid.fluent.models.PartnerNamespaceInner;
 import com.azure.resourcemanager.eventgrid.fluent.models.PartnerNamespaceSharedAccessKeysInner;
@@ -24,9 +23,10 @@ public final class PartnerNamespacesImpl implements PartnerNamespaces {
 
     private final PartnerNamespacesClient innerClient;
 
-    private final EventGridManager serviceManager;
+    private final com.azure.resourcemanager.eventgrid.EventGridManager serviceManager;
 
-    public PartnerNamespacesImpl(PartnerNamespacesClient innerClient, EventGridManager serviceManager) {
+    public PartnerNamespacesImpl(
+        PartnerNamespacesClient innerClient, com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -232,7 +232,7 @@ public final class PartnerNamespacesImpl implements PartnerNamespaces {
         return this.innerClient;
     }
 
-    private EventGridManager manager() {
+    private com.azure.resourcemanager.eventgrid.EventGridManager manager() {
         return this.serviceManager;
     }
 

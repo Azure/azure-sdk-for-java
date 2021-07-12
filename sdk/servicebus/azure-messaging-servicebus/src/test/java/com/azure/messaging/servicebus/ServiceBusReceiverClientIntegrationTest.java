@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.amqp.models.AmqpMessageBody;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
@@ -17,6 +18,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.nio.charset.Charset;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -24,7 +26,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -434,21 +438,34 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void peekMessages(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
-        setSender(entityType, TestUtils.USE_CASE_DEFAULT, isSessionEnabled);
+        setSender(entityType, TestUtils.USE_CASE_PEEK_BATCH, isSessionEnabled);
+        final byte[] payload = "peek-message".getBytes(Charset.defaultCharset());
+        final AtomicInteger messageId = new AtomicInteger();
+        final AtomicLong actualCount = new AtomicLong();
 
-        final String messageId = UUID.randomUUID().toString();
-        final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
         final int maxMessages = 2;
+        for (int i = 0; i < maxMessages; ++i) {
+            ServiceBusMessage message = getMessage("" + i, isSessionEnabled, AmqpMessageBody.fromData(payload));
+            sendMessage(message);
+        }
+        setReceiver(entityType, TestUtils.USE_CASE_PEEK_BATCH, isSessionEnabled);
 
-        sendMessage(message);
-        sendMessage(message);
-
-        setReceiver(entityType, TestUtils.USE_CASE_DEFAULT, isSessionEnabled);
         // Act
-        final IterableStream<ServiceBusReceivedMessage> messages = receiver.peekMessages(maxMessages);
+
+        // maxMessages are not always guaranteed, sometime, we get less than asked for, so we will try two times.
+        // https://github.com/Azure/azure-sdk-for-java/issues/21168
+        for (int i = 0; i < 2 && actualCount.get() < maxMessages; ++i) {
+            int finalI = i;
+            receiver.peekMessages(maxMessages).stream().forEach(receivedMessage -> {
+                actualCount.addAndGet(1);
+                assertEquals(String.valueOf(messageId.getAndIncrement()), receivedMessage.getMessageId(),
+                    String.format("Message id did not match. Payload: [%s], try [%s].",
+                        receivedMessage.getBody().toString(), finalI));
+            });
+        }
 
         // Assert
-        assertEquals(maxMessages, (int) messages.stream().count());
+        assertEquals(maxMessages, actualCount.get());
     }
 
     /**
@@ -478,7 +495,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void peekMessagesFromSequence(MessagingEntityType entityType) {
         // Arrange
-        setSender(entityType, 0, false);
+        setSender(entityType, TestUtils.USE_CASE_DEFAULT, false);
 
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, false);
@@ -565,9 +582,9 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
     @ParameterizedTest
-    void receiveAndRenewLock(MessagingEntityType entityType) {
+    void receiveAndRenewLock(MessagingEntityType entityType) throws InterruptedException {
         // Arrange
-        setSender(entityType, 0, false);
+        setSender(entityType, TestUtils.USE_CASE_DEFAULT, false);
 
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, false);
@@ -592,6 +609,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
 
         // Assert & Act
         try {
+            TimeUnit.SECONDS.sleep(5); // Let some lock duration expire.
             OffsetDateTime lockedUntil = receiver.renewMessageLock(receivedMessage);
             assertTrue(lockedUntil.isAfter(initialLock),
                 String.format("Updated lock is not after the initial Lock. updated: [%s]. initial:[%s]",
@@ -640,7 +658,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void receiveDeferredMessageBySequenceNumber(MessagingEntityType entityType, DispositionStatus dispositionStatus) {
         // Arrange
-        setSender(entityType, 0, false);
+        setSender(entityType, TestUtils.USE_CASE_DEFAULT, false);
 
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, false);
@@ -648,7 +666,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
 
         sendMessage(message);
 
-        setReceiver(entityType, 0, false);
+        setReceiver(entityType, TestUtils.USE_CASE_DEFAULT, false);
 
         final IterableStream<ServiceBusReceivedMessage> context = receiver.receiveMessages(maxMessages, TIMEOUT);
         assertNotNull(context);

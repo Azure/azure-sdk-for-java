@@ -1,31 +1,31 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('index')/search.stats?api-version=2020-06-30",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('index')/search.stats?api-version=2020-06-30-Preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "5394f794-b406-4fcb-96b6-aa3229461308"
+      "x-ms-client-request-id" : "3bcac766-7c34-490c-9022-c10bf1687006"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "5394f794-b406-4fcb-96b6-aa3229461308",
+      "request-id" : "3bcac766-7c34-490c-9022-c10bf1687006",
       "StatusCode" : "404",
-      "Date" : "Wed, 31 Mar 2021 21:10:57 GMT",
+      "Date" : "Fri, 02 Apr 2021 22:28:33 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "5394f794-b406-4fcb-96b6-aa3229461308",
+      "client-request-id" : "3bcac766-7c34-490c-9022-c10bf1687006",
       "elapsed-time" : "20",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "76",
       "Body" : "{\"error\":{\"code\":\"\",\"message\":\"An index named 'index' could not be found.\"}}",
       "Content-Language" : "en",
-      "x-ms-client-request-id" : "5394f794-b406-4fcb-96b6-aa3229461308",
+      "x-ms-client-request-id" : "3bcac766-7c34-490c-9022-c10bf1687006",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
     "Exception" : null
   } ],
-  "variables" : [ "5394f794-b406-4fcb-96b6-aa3229461308" ]
+  "variables" : [ "3bcac766-7c34-490c-9022-c10bf1687006" ]
 }

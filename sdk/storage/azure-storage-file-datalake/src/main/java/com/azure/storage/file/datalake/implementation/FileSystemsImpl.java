@@ -22,16 +22,21 @@ import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.DateTimeRfc1123;
+import com.azure.core.util.serializer.CollectionFormat;
+import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.storage.file.datalake.implementation.models.FileSystemsCreateResponse;
 import com.azure.storage.file.datalake.implementation.models.FileSystemsDeleteResponse;
 import com.azure.storage.file.datalake.implementation.models.FileSystemsGetPropertiesResponse;
+import com.azure.storage.file.datalake.implementation.models.FileSystemsListBlobHierarchySegmentResponse;
 import com.azure.storage.file.datalake.implementation.models.FileSystemsListPathsResponse;
 import com.azure.storage.file.datalake.implementation.models.FileSystemsSetPropertiesResponse;
+import com.azure.storage.file.datalake.implementation.models.ListBlobsIncludeItem;
+import com.azure.storage.file.datalake.implementation.models.ListBlobsShowOnly;
 import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.StorageErrorException;
-import reactor.core.publisher.Mono;
-
 import java.time.OffsetDateTime;
+import java.util.List;
+import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in FileSystems. */
 public final class FileSystemsImpl {
@@ -64,6 +69,7 @@ public final class FileSystemsImpl {
         @UnexpectedResponseExceptionType(com.azure.storage.file.datalake.models.DataLakeStorageException.class)
         Mono<FileSystemsCreateResponse> create(
                 @HostParam("url") String url,
+                @PathParam("filesystem") String fileSystem,
                 @QueryParam("resource") String resource,
                 @HeaderParam("x-ms-client-request-id") String requestId,
                 @QueryParam("timeout") Integer timeout,
@@ -77,6 +83,7 @@ public final class FileSystemsImpl {
         @UnexpectedResponseExceptionType(com.azure.storage.file.datalake.models.DataLakeStorageException.class)
         Mono<FileSystemsSetPropertiesResponse> setProperties(
                 @HostParam("url") String url,
+                @PathParam("filesystem") String fileSystem,
                 @QueryParam("resource") String resource,
                 @HeaderParam("x-ms-client-request-id") String requestId,
                 @QueryParam("timeout") Integer timeout,
@@ -92,6 +99,7 @@ public final class FileSystemsImpl {
         @UnexpectedResponseExceptionType(com.azure.storage.file.datalake.models.DataLakeStorageException.class)
         Mono<FileSystemsGetPropertiesResponse> getProperties(
                 @HostParam("url") String url,
+                @PathParam("filesystem") String fileSystem,
                 @QueryParam("resource") String resource,
                 @HeaderParam("x-ms-client-request-id") String requestId,
                 @QueryParam("timeout") Integer timeout,
@@ -104,6 +112,7 @@ public final class FileSystemsImpl {
         @UnexpectedResponseExceptionType(com.azure.storage.file.datalake.models.DataLakeStorageException.class)
         Mono<FileSystemsDeleteResponse> delete(
                 @HostParam("url") String url,
+                @PathParam("filesystem") String fileSystem,
                 @QueryParam("resource") String resource,
                 @HeaderParam("x-ms-client-request-id") String requestId,
                 @QueryParam("timeout") Integer timeout,
@@ -128,6 +137,26 @@ public final class FileSystemsImpl {
                 @QueryParam("recursive") boolean recursive,
                 @QueryParam("maxResults") Integer maxResults,
                 @QueryParam("upn") Boolean upn,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("/{filesystem}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(com.azure.storage.file.datalake.models.DataLakeStorageException.class)
+        Mono<FileSystemsListBlobHierarchySegmentResponse> listBlobHierarchySegment(
+                @HostParam("url") String url,
+                @PathParam("filesystem") String fileSystem,
+                @QueryParam("restype") String restype,
+                @QueryParam("comp") String comp,
+                @QueryParam("prefix") String prefix,
+                @QueryParam("delimiter") String delimiter,
+                @QueryParam("marker") String marker,
+                @QueryParam("maxResults") Integer maxResults,
+                @QueryParam("include") String include,
+                @QueryParam("showonly") ListBlobsShowOnly showonly,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-client-request-id") String requestId,
                 @HeaderParam("Accept") String accept,
                 Context context);
     }
@@ -159,6 +188,7 @@ public final class FileSystemsImpl {
         final String accept = "application/json";
         return service.create(
                 this.client.getUrl(),
+                this.client.getFileSystem(),
                 this.client.getResource(),
                 requestId,
                 timeout,
@@ -215,6 +245,7 @@ public final class FileSystemsImpl {
                 ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return service.setProperties(
                 this.client.getUrl(),
+                this.client.getFileSystem(),
                 this.client.getResource(),
                 requestId,
                 timeout,
@@ -246,6 +277,7 @@ public final class FileSystemsImpl {
         final String accept = "application/json";
         return service.getProperties(
                 this.client.getUrl(),
+                this.client.getFileSystem(),
                 this.client.getResource(),
                 requestId,
                 timeout,
@@ -296,6 +328,7 @@ public final class FileSystemsImpl {
                 ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return service.delete(
                 this.client.getUrl(),
+                this.client.getFileSystem(),
                 this.client.getResource(),
                 requestId,
                 timeout,
@@ -357,6 +390,67 @@ public final class FileSystemsImpl {
                 recursive,
                 maxResults,
                 upn,
+                accept,
+                context);
+    }
+
+    /**
+     * The List Blobs operation returns a list of the blobs under the specified container.
+     *
+     * @param prefix Filters results to filesystems within the specified prefix.
+     * @param delimiter When the request includes this parameter, the operation returns a BlobPrefix element in the
+     *     response body that acts as a placeholder for all blobs whose names begin with the same substring up to the
+     *     appearance of the delimiter character. The delimiter may be a single character or a string.
+     * @param marker A string value that identifies the portion of the list of containers to be returned with the next
+     *     listing operation. The operation returns the NextMarker value within the response body if the listing
+     *     operation did not return all containers remaining to be listed with the current page. The NextMarker value
+     *     can be used as the value for the marker parameter in a subsequent call to request the next page of list
+     *     items. The marker value is opaque to the client.
+     * @param maxResults An optional value that specifies the maximum number of items to return. If omitted or greater
+     *     than 5,000, the response will include up to 5,000 items.
+     * @param include Include this parameter to specify one or more datasets to include in the response.
+     * @param showonly Include this parameter to specify one or more datasets to include in the response.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an enumeration of blobs.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<FileSystemsListBlobHierarchySegmentResponse> listBlobHierarchySegmentWithResponseAsync(
+            String prefix,
+            String delimiter,
+            String marker,
+            Integer maxResults,
+            List<ListBlobsIncludeItem> include,
+            ListBlobsShowOnly showonly,
+            Integer timeout,
+            String requestId,
+            Context context) {
+        final String restype = "container";
+        final String comp = "list";
+        final String accept = "application/xml";
+        String includeConverted =
+                JacksonAdapter.createDefaultSerializerAdapter().serializeList(include, CollectionFormat.CSV);
+        return service.listBlobHierarchySegment(
+                this.client.getUrl(),
+                this.client.getFileSystem(),
+                restype,
+                comp,
+                prefix,
+                delimiter,
+                marker,
+                maxResults,
+                includeConverted,
+                showonly,
+                timeout,
+                this.client.getVersion(),
+                requestId,
                 accept,
                 context);
     }

@@ -4,8 +4,8 @@
 
 package com.azure.resourcemanager.mediaservices.implementation;
 
-import com.azure.resourcemanager.mediaservices.MediaservicesManager;
 import com.azure.resourcemanager.mediaservices.fluent.models.OperationInner;
+import com.azure.resourcemanager.mediaservices.models.ActionType;
 import com.azure.resourcemanager.mediaservices.models.Operation;
 import com.azure.resourcemanager.mediaservices.models.OperationDisplay;
 import com.azure.resourcemanager.mediaservices.models.Properties;
@@ -13,9 +13,10 @@ import com.azure.resourcemanager.mediaservices.models.Properties;
 public final class OperationImpl implements Operation {
     private OperationInner innerObject;
 
-    private final MediaservicesManager serviceManager;
+    private final com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager;
 
-    OperationImpl(OperationInner innerObject, MediaservicesManager serviceManager) {
+    OperationImpl(
+        OperationInner innerObject, com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -36,11 +37,19 @@ public final class OperationImpl implements Operation {
         return this.innerModel().properties();
     }
 
+    public Boolean isDataAction() {
+        return this.innerModel().isDataAction();
+    }
+
+    public ActionType actionType() {
+        return this.innerModel().actionType();
+    }
+
     public OperationInner innerModel() {
         return this.innerObject;
     }
 
-    private MediaservicesManager manager() {
+    private com.azure.resourcemanager.mediaservices.MediaServicesManager manager() {
         return this.serviceManager;
     }
 }

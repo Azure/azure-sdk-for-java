@@ -9,13 +9,16 @@ import com.azure.cosmos.models.CosmosChangeFeedRequestOptions
 import com.azure.cosmos.spark.ChangeFeedPartitionReader.LsnPropertyName
 import com.azure.cosmos.spark.CosmosPredicates.requireNotNull
 import com.azure.cosmos.spark.CosmosTableSchemaInferrer.LsnAttributeName
+import com.azure.cosmos.spark.diagnostics.LoggerHelper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.broadcast.Broadcast
+import org.apache.spark.sql.Row
 import org.apache.spark.sql.catalyst.InternalRow
+import org.apache.spark.sql.catalyst.encoders.ExpressionEncoder
 import org.apache.spark.sql.connector.read.PartitionReader
 import org.apache.spark.sql.types.StructType
 
-private object ChangeFeedPartitionReader extends CosmosLoggingTrait {
+private object ChangeFeedPartitionReader {
   val LsnPropertyName: String = LsnAttributeName
 }
 
@@ -27,14 +30,19 @@ private case class ChangeFeedPartitionReader
   partition: CosmosInputPartition,
   config: Map[String, String],
   readSchema: StructType,
-  cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot]
-) extends PartitionReader[InternalRow] with CosmosLoggingTrait {
+  cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot],
+  diagnosticsConfig: DiagnosticsConfig
+) extends PartitionReader[InternalRow] {
+
+  @transient private lazy val log = LoggerHelper.getLogger(diagnosticsConfig, this.getClass)
 
   requireNotNull(partition, "partition")
   assert(partition.continuationState.isDefined, "Argument 'partition.continuationState' must be defined here.")
-  logTrace(s"Instantiated ${this.getClass.getSimpleName}")
+  log.logInfo(s"Instantiated ${this.getClass.getSimpleName}")
 
   private val containerTargetConfig = CosmosContainerConfig.parseCosmosContainerConfig(config)
+  log.logInfo(s"Reading from feed range ${partition.feedRange} of " +
+    s"container ${containerTargetConfig.database}.${containerTargetConfig.container}")
   private val readConfig = CosmosReadConfig.parseCosmosReadConfig(config)
   private val client = CosmosClientCache(
     CosmosClientConfiguration(config, readConfig.forceEventualConsistency), Some(cosmosClientStateHandle))
@@ -43,11 +51,14 @@ private case class ChangeFeedPartitionReader
 
   private val changeFeedRequestOptions = {
 
-    val startLsn = SparkBridgeImplementationInternal.extractLsnFromChangeFeedContinuation(this.partition.continuationState.get)
-    logDebug(s"Request options for Range '${partition.feedRange.min}-${partition.feedRange.max}' LSN '$startLsn'")
+    val startLsn =
+      SparkBridgeImplementationInternal.extractLsnFromChangeFeedContinuation(this.partition.continuationState.get)
+    log.logDebug(s"Request options for Range '${partition.feedRange.min}-${partition.feedRange.max}' LSN '$startLsn'")
 
     CosmosChangeFeedRequestOptions.createForProcessingFromContinuation(this.partition.continuationState.get)
   }
+
+  private val rowSerializer: ExpressionEncoder.Serializer[Row] = RowSerializerPool.getOrCreateSerializer(readSchema)
 
   private lazy val iterator: PeekingIterator[ObjectNode] =  Iterators.peekingIterator(
     cosmosAsyncContainer
@@ -63,8 +74,8 @@ private case class ChangeFeedPartitionReader
   private[this] def validateNextLsn: Boolean = {
     this.partition.endLsn match {
       case None =>
-        // IN batch mode endLsn is cleared - we will always continue reading until the change feed is completely drained
-        // so all partitions return 304
+        // In batch mode endLsn is cleared - we will always continue reading until the change feed is
+        // completely drained so all partitions return 304
         true
       case Some(endLsn) =>
         // In streaming mode we only continue until we hit the endOffset's continuation Lsn
@@ -78,9 +89,14 @@ private case class ChangeFeedPartitionReader
 
   override def get(): InternalRow = {
     val objectNode = this.iterator.next()
-    CosmosRowConverter.fromObjectNodeToInternalRow(readSchema, objectNode, readConfig.schemaConversionMode)
+    CosmosRowConverter.fromObjectNodeToInternalRow(
+      readSchema,
+      rowSerializer,
+      objectNode,
+      readConfig.schemaConversionMode)
   }
 
   override def close(): Unit = {
+    RowSerializerPool.returnSerializerToPool(readSchema, rowSerializer)
   }
 }

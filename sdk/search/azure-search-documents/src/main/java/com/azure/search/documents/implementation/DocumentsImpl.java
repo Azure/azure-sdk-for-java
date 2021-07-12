@@ -24,7 +24,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.serializer.CollectionFormat;
 import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.search.documents.implementation.models.AutocompleteOptions;
 import com.azure.search.documents.implementation.models.AutocompleteRequest;
 import com.azure.search.documents.implementation.models.IndexBatch;
 import com.azure.search.documents.implementation.models.IndexDocumentsResult;
@@ -34,13 +33,16 @@ import com.azure.search.documents.implementation.models.SearchErrorException;
 import com.azure.search.documents.implementation.models.SearchOptions;
 import com.azure.search.documents.implementation.models.SearchRequest;
 import com.azure.search.documents.implementation.models.SuggestDocumentsResult;
-import com.azure.search.documents.implementation.models.SuggestOptions;
 import com.azure.search.documents.implementation.models.SuggestRequest;
 import com.azure.search.documents.models.AutocompleteMode;
+import com.azure.search.documents.models.AutocompleteOptions;
 import com.azure.search.documents.models.AutocompleteResult;
+import com.azure.search.documents.models.QueryLanguage;
+import com.azure.search.documents.models.QuerySpeller;
 import com.azure.search.documents.models.QueryType;
 import com.azure.search.documents.models.ScoringStatistics;
 import com.azure.search.documents.models.SearchMode;
+import com.azure.search.documents.models.SuggestOptions;
 import java.util.List;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
@@ -89,7 +91,7 @@ public final class DocumentsImpl {
                 @HostParam("endpoint") String endpoint,
                 @HostParam("indexName") String indexName,
                 @QueryParam("search") String searchText,
-                @QueryParam("$count") Boolean includeTotalResultCount,
+                @QueryParam("$count") Boolean includeTotalCount,
                 @QueryParam("facet") String facets,
                 @QueryParam("$filter") String filter,
                 @QueryParam("highlight") String highlightFields,
@@ -101,6 +103,9 @@ public final class DocumentsImpl {
                 @QueryParam("scoringParameter") String scoringParameters,
                 @QueryParam("scoringProfile") String scoringProfile,
                 @QueryParam("searchFields") String searchFields,
+                @QueryParam("queryLanguage") QueryLanguage queryLanguage,
+                @QueryParam("speller") QuerySpeller speller,
+                @QueryParam("answers") String answers,
                 @QueryParam("searchMode") SearchMode searchMode,
                 @QueryParam("scoringStatistics") ScoringStatistics scoringStatistics,
                 @QueryParam("sessionId") String sessionId,
@@ -260,11 +265,11 @@ public final class DocumentsImpl {
     public Mono<Response<SearchDocumentsResult>> searchGetWithResponseAsync(
             String searchText, SearchOptions searchOptions, RequestOptions requestOptions, Context context) {
         final String accept = "application/json; odata.metadata=none";
-        Boolean includeTotalResultCountInternal = null;
+        Boolean includeTotalCountInternal = null;
         if (searchOptions != null) {
-            includeTotalResultCountInternal = searchOptions.isIncludeTotalResultCount();
+            includeTotalCountInternal = searchOptions.isTotalCountIncluded();
         }
-        Boolean includeTotalResultCount = includeTotalResultCountInternal;
+        Boolean includeTotalCount = includeTotalCountInternal;
         List<String> facetsInternal = null;
         if (searchOptions != null) {
             facetsInternal = searchOptions.getFacets();
@@ -320,6 +325,21 @@ public final class DocumentsImpl {
             searchFieldsInternal = searchOptions.getSearchFields();
         }
         List<String> searchFields = searchFieldsInternal;
+        QueryLanguage queryLanguageInternal = null;
+        if (searchOptions != null) {
+            queryLanguageInternal = searchOptions.getQueryLanguage();
+        }
+        QueryLanguage queryLanguage = queryLanguageInternal;
+        QuerySpeller spellerInternal = null;
+        if (searchOptions != null) {
+            spellerInternal = searchOptions.getSpeller();
+        }
+        QuerySpeller speller = spellerInternal;
+        String answersInternal = null;
+        if (searchOptions != null) {
+            answersInternal = searchOptions.getAnswers();
+        }
+        String answers = answersInternal;
         SearchMode searchModeInternal = null;
         if (searchOptions != null) {
             searchModeInternal = searchOptions.getSearchMode();
@@ -371,7 +391,7 @@ public final class DocumentsImpl {
                 this.client.getEndpoint(),
                 this.client.getIndexName(),
                 searchText,
-                includeTotalResultCount,
+                includeTotalCount,
                 facetsConverted,
                 filter,
                 highlightFieldsConverted,
@@ -383,6 +403,9 @@ public final class DocumentsImpl {
                 scoringParametersConverted,
                 scoringProfile,
                 searchFieldsConverted,
+                queryLanguage,
+                speller,
+                answers,
                 searchMode,
                 scoringStatistics,
                 sessionId,
@@ -490,7 +513,7 @@ public final class DocumentsImpl {
         String filter = filterInternal;
         Boolean useFuzzyMatchingInternal = null;
         if (suggestOptions != null) {
-            useFuzzyMatchingInternal = suggestOptions.isUseFuzzyMatching();
+            useFuzzyMatchingInternal = suggestOptions.useFuzzyMatching();
         }
         Boolean useFuzzyMatching = useFuzzyMatchingInternal;
         String highlightPostTagInternal = null;
@@ -658,7 +681,7 @@ public final class DocumentsImpl {
         String filter = filterInternal;
         Boolean useFuzzyMatchingInternal = null;
         if (autocompleteOptions != null) {
-            useFuzzyMatchingInternal = autocompleteOptions.isUseFuzzyMatching();
+            useFuzzyMatchingInternal = autocompleteOptions.useFuzzyMatching();
         }
         Boolean useFuzzyMatching = useFuzzyMatchingInternal;
         String highlightPostTagInternal = null;

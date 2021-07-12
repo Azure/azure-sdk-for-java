@@ -11,6 +11,7 @@ import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 
 /**
@@ -270,6 +271,17 @@ public interface CosmosOperations {
     <T> Page<T> paginationQuery(CosmosQuery query, Class<T> domainType, String containerName);
 
     /**
+     * Slice query
+     *
+     * @param query the document query
+     * @param domainType type class
+     * @param containerName the container name
+     * @param <T> type class of domainType
+     * @return results as Slice
+     */
+    <T> Slice<T> sliceQuery(CosmosQuery query, Class<T> domainType, String containerName);
+
+    /**
      * Count
      *
      * @param containerName the container name
@@ -286,6 +298,16 @@ public interface CosmosOperations {
      * @return count result
      */
     <T> long count(CosmosQuery query, String containerName);
+
+    /**
+     * Count
+     *
+     * @param querySpec the document query spec
+     * @param containerName the container name
+     * @param <T> type class of domainType
+     * @return count result
+     */
+    <T> long count(SqlQuerySpec querySpec, String containerName);
 
     /**
      * To get converter

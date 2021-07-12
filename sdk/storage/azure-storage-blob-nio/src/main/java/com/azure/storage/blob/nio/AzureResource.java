@@ -114,9 +114,6 @@ final class AzureResource {
                 return DirectoryStatus.DOES_NOT_EXIST;
             } else {
                 BlobItem item = blobIterator.next();
-                if (blobIterator.hasNext()) { // More than one item with dir path as prefix. Must be a dir.
-                    return DirectoryStatus.NOT_EMPTY;
-                }
                 if (!item.getName().equals(this.blobClient.getBlobName())) {
                     /*
                     Names do not match. Must be a virtual dir with one item. e.g. blob with name "foo/bar" means dir
@@ -124,8 +121,13 @@ final class AzureResource {
                      */
                     return DirectoryStatus.NOT_EMPTY;
                 }
+                // Metadata marker
                 if (item.getMetadata() != null && item.getMetadata().containsKey(DIR_METADATA_MARKER)) {
-                    return DirectoryStatus.EMPTY; // Metadata marker.
+                    if (blobIterator.hasNext()) { // More than one item with dir path as prefix. Must be a dir.
+                        return DirectoryStatus.NOT_EMPTY;
+                    } else {
+                        return DirectoryStatus.EMPTY;
+                    }
                 }
                 return DirectoryStatus.NOT_A_DIRECTORY; // There is a file (not a directory) at this location.
             }

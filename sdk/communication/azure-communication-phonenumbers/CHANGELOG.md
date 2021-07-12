@@ -1,5 +1,21 @@
 # Release History
 
+## 1.1.0-beta.1 (Unreleased)
+
+
+## 1.0.3 (2021-06-09)
+Updated `azure-communication-phonenumbers` version
+
+## 1.0.2 (2021-05-27)
+- Dependency versions updated.
+
+## 1.0.1 (2021-04-30)
+### Bug fixes
+- Remove dependency on unreleased azure-communication-common version
+
+## 1.0.0 (2021-04-26)
+- Update version
+
 ## 1.0.0-beta.7 (2021-03-29)
 ### Added
 - Added `PollerFlux<PhoneNumberOperation, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbers(String countryCode, PhoneNumberType phoneNumberType, PhoneNumberAssignmentType assignmentType, PhoneNumberCapabilities capabilities)` in PhoneNumbersAsyncClient.
@@ -33,7 +49,7 @@ PhoneNumbersAsyncClient.getPurchasedPhoneNumberWithResponse and PhoneNumbersClie
 - Added support for Azure Active Directory Authentication.
 
 ### Breaking Changes
-- PhoneNumberAsyncClient has been replaced with PhoneNumbersAsyncClient, which has the same functionality but different APIs. To learn more about how PhoneNumbersAsyncClient works, refer to the [README.md][https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/communication/azure-communication-phonenumbers/README.md].
-- PhoneNumberClient has been replaced with PhoneNumbersClient, which has the same functionality but different APIs. To learn more about how PhoneNumbersClient works, refer to the [README.md][https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/communication/azure-communication-phonenumbers/README.md].
+- PhoneNumberAsyncClient has been replaced with PhoneNumbersAsyncClient, which has the same functionality but different APIs. To learn more about how PhoneNumbersAsyncClient works, refer to the [README.md][https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/communication/azure-communication-phonenumbers/README.md].
+- PhoneNumberClient has been replaced with PhoneNumbersClient, which has the same functionality but different APIs. To learn more about how PhoneNumbersClient works, refer to the [README.md][https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/communication/azure-communication-phonenumbers/README.md].
 
 

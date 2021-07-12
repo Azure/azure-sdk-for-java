@@ -60,7 +60,10 @@ public enum ResourceType {
     Media("Media", -3),
     ServiceFabricService("ServiceFabricService", -4),
 
-    ClientEncryptionKey("ClientEncryptionKey", 141);
+    ClientEncryptionKey("ClientEncryptionKey", 141),
+
+    //Adding client telemetry resource type, only meant for client side
+    ClientTelemetry("ClientTelemetry", 1001);
 
     private final int value;
     private final String stringValue;

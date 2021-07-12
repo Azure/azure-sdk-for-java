@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Library response details. */
 @Fluent
-public final class LibraryResource extends AzureEntityResource {
+public final class LibraryResource extends SubResource {
     /*
      * Library/package properties.
      */

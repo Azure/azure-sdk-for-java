@@ -84,7 +84,7 @@ public interface Volume {
     VolumePropertiesExportPolicy exportPolicy();
 
     /**
-     * Gets the protocolTypes property: Set of protocol types, default NFSv3, CIFS fro SMB protocol.
+     * Gets the protocolTypes property: Set of protocol types, default NFSv3, CIFS for SMB protocol.
      *
      * @return the protocolTypes value.
      */
@@ -217,6 +217,32 @@ public interface Volume {
     Boolean ldapEnabled();
 
     /**
+     * Gets the coolAccess property: Specifies whether Cool Access(tiering) is enabled for the volume.
+     *
+     * @return the coolAccess value.
+     */
+    Boolean coolAccess();
+
+    /**
+     * Gets the coolnessPeriod property: Specifies the number of days after which data that is not accessed by clients
+     * will be tiered.
+     *
+     * @return the coolnessPeriod value.
+     */
+    Integer coolnessPeriod();
+
+    /**
+     * Gets the unixPermissions property: UNIX permissions for NFS volume accepted in octal 4 digit format. First digit
+     * selects the set user ID(4), set group ID (2) and sticky (1) attributes. Second digit selects permission for the
+     * owner of the file: read (4), write (2) and execute (1). Third selects permissions for other users in the same
+     * group. the fourth for other users not in the group. 0755 - gives read/write/execute permissions to owner and
+     * read/execute to group and other users.
+     *
+     * @return the unixPermissions value.
+     */
+    String unixPermissions();
+
+    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -338,7 +364,10 @@ public interface Volume {
                 DefinitionStages.WithSmbContinuouslyAvailable,
                 DefinitionStages.WithThroughputMibps,
                 DefinitionStages.WithEncryptionKeySource,
-                DefinitionStages.WithLdapEnabled {
+                DefinitionStages.WithLdapEnabled,
+                DefinitionStages.WithCoolAccess,
+                DefinitionStages.WithCoolnessPeriod,
+                DefinitionStages.WithUnixPermissions {
             /**
              * Executes the create request.
              *
@@ -387,9 +416,9 @@ public interface Volume {
         /** The stage of the Volume definition allowing to specify protocolTypes. */
         interface WithProtocolTypes {
             /**
-             * Specifies the protocolTypes property: Set of protocol types, default NFSv3, CIFS fro SMB protocol.
+             * Specifies the protocolTypes property: Set of protocol types, default NFSv3, CIFS for SMB protocol.
              *
-             * @param protocolTypes Set of protocol types, default NFSv3, CIFS fro SMB protocol.
+             * @param protocolTypes Set of protocol types, default NFSv3, CIFS for SMB protocol.
              * @return the next definition stage.
              */
             WithCreate withProtocolTypes(List<String> protocolTypes);
@@ -536,6 +565,46 @@ public interface Volume {
              * @return the next definition stage.
              */
             WithCreate withLdapEnabled(Boolean ldapEnabled);
+        }
+        /** The stage of the Volume definition allowing to specify coolAccess. */
+        interface WithCoolAccess {
+            /**
+             * Specifies the coolAccess property: Specifies whether Cool Access(tiering) is enabled for the volume..
+             *
+             * @param coolAccess Specifies whether Cool Access(tiering) is enabled for the volume.
+             * @return the next definition stage.
+             */
+            WithCreate withCoolAccess(Boolean coolAccess);
+        }
+        /** The stage of the Volume definition allowing to specify coolnessPeriod. */
+        interface WithCoolnessPeriod {
+            /**
+             * Specifies the coolnessPeriod property: Specifies the number of days after which data that is not accessed
+             * by clients will be tiered..
+             *
+             * @param coolnessPeriod Specifies the number of days after which data that is not accessed by clients will
+             *     be tiered.
+             * @return the next definition stage.
+             */
+            WithCreate withCoolnessPeriod(Integer coolnessPeriod);
+        }
+        /** The stage of the Volume definition allowing to specify unixPermissions. */
+        interface WithUnixPermissions {
+            /**
+             * Specifies the unixPermissions property: UNIX permissions for NFS volume accepted in octal 4 digit format.
+             * First digit selects the set user ID(4), set group ID (2) and sticky (1) attributes. Second digit selects
+             * permission for the owner of the file: read (4), write (2) and execute (1). Third selects permissions for
+             * other users in the same group. the fourth for other users not in the group. 0755 - gives
+             * read/write/execute permissions to owner and read/execute to group and other users..
+             *
+             * @param unixPermissions UNIX permissions for NFS volume accepted in octal 4 digit format. First digit
+             *     selects the set user ID(4), set group ID (2) and sticky (1) attributes. Second digit selects
+             *     permission for the owner of the file: read (4), write (2) and execute (1). Third selects permissions
+             *     for other users in the same group. the fourth for other users not in the group. 0755 - gives
+             *     read/write/execute permissions to owner and read/execute to group and other users.
+             * @return the next definition stage.
+             */
+            WithCreate withUnixPermissions(String unixPermissions);
         }
     }
     /**

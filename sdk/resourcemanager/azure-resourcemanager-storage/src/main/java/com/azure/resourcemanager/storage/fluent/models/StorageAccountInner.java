@@ -17,6 +17,7 @@ import com.azure.resourcemanager.storage.models.Endpoints;
 import com.azure.resourcemanager.storage.models.ExtendedLocation;
 import com.azure.resourcemanager.storage.models.GeoReplicationStats;
 import com.azure.resourcemanager.storage.models.Identity;
+import com.azure.resourcemanager.storage.models.KeyCreationTime;
 import com.azure.resourcemanager.storage.models.KeyPolicy;
 import com.azure.resourcemanager.storage.models.Kind;
 import com.azure.resourcemanager.storage.models.LargeFileSharesState;
@@ -140,10 +141,10 @@ public class StorageAccountInner extends Resource {
     private KeyPolicy keyPolicy;
 
     /*
-     * Gets the list of storage account keys creation time.
+     * Storage account keys creation time.
      */
     @JsonProperty(value = "properties.keyCreationTime", access = JsonProperty.Access.WRITE_ONLY)
-    private Map<String, OffsetDateTime> keyCreationTime;
+    private KeyCreationTime keyCreationTime;
 
     /*
      * Gets the URLs that are used to perform a retrieval of a public blob,
@@ -425,11 +426,11 @@ public class StorageAccountInner extends Resource {
     }
 
     /**
-     * Get the keyCreationTime property: Gets the list of storage account keys creation time.
+     * Get the keyCreationTime property: Storage account keys creation time.
      *
      * @return the keyCreationTime value.
      */
-    public Map<String, OffsetDateTime> keyCreationTime() {
+    public KeyCreationTime keyCreationTime() {
         return this.keyCreationTime;
     }
 
@@ -746,6 +747,9 @@ public class StorageAccountInner extends Resource {
         }
         if (keyPolicy() != null) {
             keyPolicy().validate();
+        }
+        if (keyCreationTime() != null) {
+            keyCreationTime().validate();
         }
         if (secondaryEndpoints() != null) {
             secondaryEndpoints().validate();

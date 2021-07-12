@@ -43,6 +43,18 @@ public class ApplicationGatewayTrustedClientCertificate extends SubResource {
     private String data;
 
     /*
+     * Validated certificate data.
+     */
+    @JsonProperty(value = "properties.validatedCertData", access = JsonProperty.Access.WRITE_ONLY)
+    private String validatedCertData;
+
+    /*
+     * Distinguished name of client certificate issuer.
+     */
+    @JsonProperty(value = "properties.clientCertIssuerDN", access = JsonProperty.Access.WRITE_ONLY)
+    private String clientCertIssuerDN;
+
+    /*
      * The provisioning state of the trusted client certificate resource.
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
@@ -104,6 +116,24 @@ public class ApplicationGatewayTrustedClientCertificate extends SubResource {
     public ApplicationGatewayTrustedClientCertificate withData(String data) {
         this.data = data;
         return this;
+    }
+
+    /**
+     * Get the validatedCertData property: Validated certificate data.
+     *
+     * @return the validatedCertData value.
+     */
+    public String validatedCertData() {
+        return this.validatedCertData;
+    }
+
+    /**
+     * Get the clientCertIssuerDN property: Distinguished name of client certificate issuer.
+     *
+     * @return the clientCertIssuerDN value.
+     */
+    public String clientCertIssuerDN() {
+        return this.clientCertIssuerDN;
     }
 
     /**

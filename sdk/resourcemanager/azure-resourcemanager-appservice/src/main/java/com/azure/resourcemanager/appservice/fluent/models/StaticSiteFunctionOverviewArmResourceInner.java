@@ -48,6 +48,13 @@ public class StaticSiteFunctionOverviewArmResourceInner extends ProxyOnlyResourc
         return this.triggerType;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public StaticSiteFunctionOverviewArmResourceInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

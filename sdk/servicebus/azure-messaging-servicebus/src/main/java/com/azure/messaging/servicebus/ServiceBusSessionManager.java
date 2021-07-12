@@ -220,12 +220,16 @@ class ServiceBusSessionManager implements AutoCloseable {
             return;
         }
 
+        final List<Mono<Void>> closeables = sessionReceivers.values().stream()
+            .map(receiver -> receiver.closeAsync())
+            .collect(Collectors.toList());
+
+        Mono.when(closeables).block(operationTimeout);
+        sessionReceiveSink.complete();
+
         for (Scheduler scheduler : schedulers) {
             scheduler.dispose();
         }
-
-        sessionReceivers.values().forEach(receiver -> receiver.close());
-        sessionReceiveSink.complete();
     }
 
     private AmqpErrorContext getErrorContext() {
@@ -307,7 +311,7 @@ class ServiceBusSessionManager implements AutoCloseable {
                 logger.verbose("Closing session receiver for session id [{}].", sessionReceiver.getSessionId());
                 availableSchedulers.push(scheduler);
                 sessionReceivers.remove(sessionReceiver.getSessionId());
-                sessionReceiver.close();
+                sessionReceiver.closeAsync().subscribe();
 
                 if (receiverOptions.isRollingSessionReceiver()) {
                     onSessionRequest(1L);

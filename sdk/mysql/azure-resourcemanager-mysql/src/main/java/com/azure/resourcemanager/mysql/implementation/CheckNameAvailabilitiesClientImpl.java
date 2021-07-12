@@ -58,7 +58,7 @@ public final class CheckNameAvailabilitiesClientImpl implements CheckNameAvailab
     @ServiceInterface(name = "MySqlManagementClien")
     private interface CheckNameAvailabilitiesService {
         @Headers({"Content-Type: application/json"})
-        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.DBForMySQL/checkNameAvailability")
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.DBforMySQL/checkNameAvailability")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<NameAvailabilityInner>> execute(
@@ -114,7 +114,7 @@ public final class CheckNameAvailabilitiesClientImpl implements CheckNameAvailab
                             nameAvailabilityRequest,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

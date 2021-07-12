@@ -67,7 +67,7 @@ public interface PartnerRegistrations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List Partner Registrations operation.
      */
-    PagedIterable<PartnerRegistration> listBySubscription();
+    PagedIterable<PartnerRegistration> list();
 
     /**
      * List all the partner registrations under an Azure subscription.
@@ -86,7 +86,7 @@ public interface PartnerRegistrations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List Partner Registrations operation.
      */
-    PagedIterable<PartnerRegistration> listBySubscription(String filter, Integer top, Context context);
+    PagedIterable<PartnerRegistration> list(String filter, Integer top, Context context);
 
     /**
      * List all the partner registrations under a resource group.
@@ -119,26 +119,6 @@ public interface PartnerRegistrations {
      */
     PagedIterable<PartnerRegistration> listByResourceGroup(
         String resourceGroupName, String filter, Integer top, Context context);
-
-    /**
-     * List all partners registrations.
-     *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Registrations operation.
-     */
-    PagedIterable<PartnerRegistration> list();
-
-    /**
-     * List all partners registrations.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Registrations operation.
-     */
-    PagedIterable<PartnerRegistration> list(Context context);
 
     /**
      * Gets a partner registration with the specified parameters.

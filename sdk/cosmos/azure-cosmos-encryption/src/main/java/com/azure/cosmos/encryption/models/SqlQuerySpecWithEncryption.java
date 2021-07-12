@@ -63,7 +63,7 @@ public final class SqlQuerySpecWithEncryption {
 
                             try {
                                 byte[] valueByte =
-                                    EncryptionUtils.serializeJsonToByteArray(Utils.getSimpleObjectMapper(),
+                                    EncryptionUtils.serializeJsonToByteArray(EncryptionUtils.getSimpleObjectMapper(),
                                     sqlParameter.getValue(Object.class));
                                 JsonNode itemJObj = Utils.parse(valueByte, JsonNode.class);
                                 Pair<EncryptionProcessor.TypeMarker, byte[]> typeMarkerPair =
@@ -75,7 +75,7 @@ public final class SqlQuerySpecWithEncryption {
                                 System.arraycopy(cipherText, 0, cipherTextWithTypeMarker, 1, cipherText.length);
                                 SqlParameter encryptedParameter = new SqlParameter(sqlParameter.getName(),
                                     cipherTextWithTypeMarker);
-                                this.sqlQuerySpec.getParameters().add(encryptedParameter);
+                                parameters.add(encryptedParameter);
                             } catch (MicrosoftDataEncryptionException ex) {
                                 return Mono.error(ex);
                             }

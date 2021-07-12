@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.costmanagement.implementation;
 
-import com.azure.resourcemanager.costmanagement.CostManagementManager;
 import com.azure.resourcemanager.costmanagement.fluent.models.ExportInner;
 import com.azure.resourcemanager.costmanagement.fluent.models.ExportListResultInner;
 import com.azure.resourcemanager.costmanagement.models.Export;
@@ -16,9 +15,11 @@ import java.util.stream.Collectors;
 public final class ExportListResultImpl implements ExportListResult {
     private ExportListResultInner innerObject;
 
-    private final CostManagementManager serviceManager;
+    private final com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager;
 
-    ExportListResultImpl(ExportListResultInner innerObject, CostManagementManager serviceManager) {
+    ExportListResultImpl(
+        ExportListResultInner innerObject,
+        com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -38,7 +39,7 @@ public final class ExportListResultImpl implements ExportListResult {
         return this.innerObject;
     }
 
-    private CostManagementManager manager() {
+    private com.azure.resourcemanager.costmanagement.CostManagementManager manager() {
         return this.serviceManager;
     }
 }

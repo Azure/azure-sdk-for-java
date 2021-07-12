@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.mediaservices.implementation;
 
-import com.azure.resourcemanager.mediaservices.MediaservicesManager;
 import com.azure.resourcemanager.mediaservices.fluent.models.ListContentKeysResponseInner;
 import com.azure.resourcemanager.mediaservices.models.ListContentKeysResponse;
 import com.azure.resourcemanager.mediaservices.models.StreamingLocatorContentKey;
@@ -14,9 +13,11 @@ import java.util.List;
 public final class ListContentKeysResponseImpl implements ListContentKeysResponse {
     private ListContentKeysResponseInner innerObject;
 
-    private final MediaservicesManager serviceManager;
+    private final com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager;
 
-    ListContentKeysResponseImpl(ListContentKeysResponseInner innerObject, MediaservicesManager serviceManager) {
+    ListContentKeysResponseImpl(
+        ListContentKeysResponseInner innerObject,
+        com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -34,7 +35,7 @@ public final class ListContentKeysResponseImpl implements ListContentKeysRespons
         return this.innerObject;
     }
 
-    private MediaservicesManager manager() {
+    private com.azure.resourcemanager.mediaservices.MediaServicesManager manager() {
         return this.serviceManager;
     }
 }

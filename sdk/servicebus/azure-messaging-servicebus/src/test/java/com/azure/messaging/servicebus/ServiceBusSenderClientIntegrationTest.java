@@ -73,7 +73,7 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void nonSessionQueueSendMessage(MessagingEntityType entityType) {
         // Arrange
-        setSenderAndReceiver(entityType, 0);
+        setSenderAndReceiver(entityType, TestUtils.USE_CASE_DEFAULT);
 
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS_BYTES, messageId);
@@ -91,7 +91,7 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void nonSessionMessageBatch(MessagingEntityType entityType) {
         // Arrange
-        setSenderAndReceiver(entityType, 0);
+        setSenderAndReceiver(entityType, TestUtils.USE_CASE_DEFAULT);
 
         final String messageId = UUID.randomUUID().toString();
         final CreateMessageBatchOptions options = new CreateMessageBatchOptions().setMaximumSizeInBytes(1024);
@@ -117,7 +117,7 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void nonSessionEntitySendMessageList(MessagingEntityType entityType) {
         // Arrange
-        setSenderAndReceiver(entityType, 0);
+        setSenderAndReceiver(entityType, TestUtils.USE_CASE_DEFAULT);
         int count = 3;
         final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(count, UUID.randomUUID().toString(), CONTENTS_BYTES);
 
@@ -134,7 +134,7 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void nonSessionScheduleMessage(MessagingEntityType entityType) {
         // Arrange
-        setSenderAndReceiver(entityType, 0);
+        setSenderAndReceiver(entityType, TestUtils.USE_CASE_DEFAULT);
 
         final OffsetDateTime scheduledEnqueueTime = OffsetDateTime.now().plusSeconds(10);
         final String messageId = UUID.randomUUID().toString();
@@ -156,7 +156,7 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void nonSessionCancelScheduleMessage(MessagingEntityType entityType) {
         // Arrange
-        setSenderAndReceiver(entityType, 0);
+        setSenderAndReceiver(entityType, TestUtils.USE_CASE_DEFAULT);
 
         final OffsetDateTime scheduledEnqueueTime = OffsetDateTime.now().plusSeconds(20);
         final String messageId = UUID.randomUUID().toString();

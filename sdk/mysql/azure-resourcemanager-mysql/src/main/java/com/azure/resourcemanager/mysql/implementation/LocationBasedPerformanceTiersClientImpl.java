@@ -64,7 +64,7 @@ public final class LocationBasedPerformanceTiersClientImpl implements LocationBa
     @ServiceInterface(name = "MySqlManagementClien")
     private interface LocationBasedPerformanceTiersService {
         @Headers({"Content-Type: application/json"})
-        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.DBForMySQL/locations/{locationName}/performanceTiers")
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.DBforMySQL/locations/{locationName}/performanceTiers")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PerformanceTierListResult>> list(
@@ -119,7 +119,7 @@ public final class LocationBasedPerformanceTiersClientImpl implements LocationBa
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

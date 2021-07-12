@@ -2,7 +2,7 @@ $Language = "java"
 $LanguageDisplayName = "Java"
 $PackageRepository = "Maven"
 $packagePattern = "*.pom"
-$MetadataUri = "https://raw.githubusercontent.com/Azure/azure-sdk/master/_data/releases/latest/java-packages.csv"
+$MetadataUri = "https://raw.githubusercontent.com/Azure/azure-sdk/main/_data/releases/latest/java-packages.csv"
 $BlobStorageUrl = "https://azuresdkdocs.blob.core.windows.net/%24web?restype=container&comp=list&prefix=java%2F&delimiter=%2F"
 
 function Get-java-PackageInfoFromRepo ($pkgPath, $serviceDirectory)
@@ -12,14 +12,25 @@ function Get-java-PackageInfoFromRepo ($pkgPath, $serviceDirectory)
   {
     $projectData = New-Object -TypeName XML
     $projectData.load($projectPath)
+
+    if ($projectData.project.psobject.properties.name -notcontains "artifactId" -or !$projectData.project.artifactId) {
+      Write-Host "$projectPath doesn't have a defined artifactId so skipping this pom."
+      return $null
+    }
+
+    if ($projectData.project.psobject.properties.name -notcontains "version" -or !$projectData.project.version) {
+      Write-Host "$projectPath doesn't have a defined version so skipping this pom."
+      return $null
+    }
+
+    if ($projectData.project.psobject.properties.name -notcontains "groupid" -or !$projectData.project.groupId) {
+      Write-Host "$projectPath doesn't have a defined groupId so skipping this pom."
+      return $null
+    }
+
     $projectPkgName = $projectData.project.artifactId
     $pkgVersion = $projectData.project.version
-    if ($projectData.project.psobject.properties.name -contains "groupId") {
-      $pkgGroup = $projectData.project.groupId
-    }
-    else {
-      $pkgGroup = "unknown"
-    }
+    $pkgGroup = $projectData.project.groupId
 
     $pkgProp = [PackageProps]::new($projectPkgName, $pkgVersion.ToString(), $pkgPath, $serviceDirectory, $pkgGroup)
     if ($projectPkgName -match "mgmt" -or $projectPkgName -match "resourcemanager")

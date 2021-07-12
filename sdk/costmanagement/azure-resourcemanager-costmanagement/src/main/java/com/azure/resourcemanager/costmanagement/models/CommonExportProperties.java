@@ -4,51 +4,115 @@
 
 package com.azure.resourcemanager.costmanagement.models;
 
-import com.azure.resourcemanager.costmanagement.fluent.models.CommonExportPropertiesInner;
-import java.time.OffsetDateTime;
+import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** An immutable client-side representation of CommonExportProperties. */
-public interface CommonExportProperties {
+/** The common properties of the export. */
+@Fluent
+public class CommonExportProperties {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(CommonExportProperties.class);
+
+    /*
+     * The format of the export being delivered.
+     */
+    @JsonProperty(value = "format")
+    private FormatType format;
+
+    /*
+     * Has delivery information for the export.
+     */
+    @JsonProperty(value = "deliveryInfo", required = true)
+    private ExportDeliveryInfo deliveryInfo;
+
+    /*
+     * Has definition for the export.
+     */
+    @JsonProperty(value = "definition", required = true)
+    private ExportDefinition definition;
+
     /**
-     * Gets the format property: The format of the export being delivered. Currently only 'Csv' is supported.
+     * Get the format property: The format of the export being delivered.
      *
      * @return the format value.
      */
-    FormatType format();
+    public FormatType format() {
+        return this.format;
+    }
 
     /**
-     * Gets the deliveryInfo property: Has delivery information for the export.
+     * Set the format property: The format of the export being delivered.
+     *
+     * @param format the format value to set.
+     * @return the CommonExportProperties object itself.
+     */
+    public CommonExportProperties withFormat(FormatType format) {
+        this.format = format;
+        return this;
+    }
+
+    /**
+     * Get the deliveryInfo property: Has delivery information for the export.
      *
      * @return the deliveryInfo value.
      */
-    ExportDeliveryInfo deliveryInfo();
+    public ExportDeliveryInfo deliveryInfo() {
+        return this.deliveryInfo;
+    }
 
     /**
-     * Gets the definition property: Has the definition for the export.
+     * Set the deliveryInfo property: Has delivery information for the export.
+     *
+     * @param deliveryInfo the deliveryInfo value to set.
+     * @return the CommonExportProperties object itself.
+     */
+    public CommonExportProperties withDeliveryInfo(ExportDeliveryInfo deliveryInfo) {
+        this.deliveryInfo = deliveryInfo;
+        return this;
+    }
+
+    /**
+     * Get the definition property: Has definition for the export.
      *
      * @return the definition value.
      */
-    ExportDefinition definition();
+    public ExportDefinition definition() {
+        return this.definition;
+    }
 
     /**
-     * Gets the runHistory property: If requested, has the most recent execution history for the export.
+     * Set the definition property: Has definition for the export.
      *
-     * @return the runHistory value.
+     * @param definition the definition value to set.
+     * @return the CommonExportProperties object itself.
      */
-    ExportExecutionListResult runHistory();
+    public CommonExportProperties withDefinition(ExportDefinition definition) {
+        this.definition = definition;
+        return this;
+    }
 
     /**
-     * Gets the nextRunTimeEstimate property: If the export has an active schedule, provides an estimate of the next
-     * execution time.
+     * Validates the instance.
      *
-     * @return the nextRunTimeEstimate value.
+     * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    OffsetDateTime nextRunTimeEstimate();
-
-    /**
-     * Gets the inner com.azure.resourcemanager.costmanagement.fluent.models.CommonExportPropertiesInner object.
-     *
-     * @return the inner object.
-     */
-    CommonExportPropertiesInner innerModel();
+    public void validate() {
+        if (deliveryInfo() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property deliveryInfo in model CommonExportProperties"));
+        } else {
+            deliveryInfo().validate();
+        }
+        if (definition() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property definition in model CommonExportProperties"));
+        } else {
+            definition().validate();
+        }
+    }
 }

@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.mysql.implementation;
 
-import com.azure.resourcemanager.mysql.MySqlManager;
 import com.azure.resourcemanager.mysql.fluent.models.QueryPerformanceInsightResetDataResultInner;
 import com.azure.resourcemanager.mysql.models.QueryPerformanceInsightResetDataResult;
 import com.azure.resourcemanager.mysql.models.QueryPerformanceInsightResetDataResultState;
@@ -12,10 +11,11 @@ import com.azure.resourcemanager.mysql.models.QueryPerformanceInsightResetDataRe
 public final class QueryPerformanceInsightResetDataResultImpl implements QueryPerformanceInsightResetDataResult {
     private QueryPerformanceInsightResetDataResultInner innerObject;
 
-    private final MySqlManager serviceManager;
+    private final com.azure.resourcemanager.mysql.MySqlManager serviceManager;
 
     QueryPerformanceInsightResetDataResultImpl(
-        QueryPerformanceInsightResetDataResultInner innerObject, MySqlManager serviceManager) {
+        QueryPerformanceInsightResetDataResultInner innerObject,
+        com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -32,7 +32,7 @@ public final class QueryPerformanceInsightResetDataResultImpl implements QueryPe
         return this.innerObject;
     }
 
-    private MySqlManager manager() {
+    private com.azure.resourcemanager.mysql.MySqlManager manager() {
         return this.serviceManager;
     }
 }

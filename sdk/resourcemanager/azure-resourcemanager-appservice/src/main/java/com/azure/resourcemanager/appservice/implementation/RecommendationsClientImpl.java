@@ -6,6 +6,7 @@ package com.azure.resourcemanager.appservice.implementation;
 
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -60,7 +61,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
     @Host("{$host}")
     @ServiceInterface(name = "WebSiteManagementCli")
     private interface RecommendationsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Web/recommendations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
@@ -70,9 +71,10 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             @QueryParam(value = "$filter", encoded = true) String filter,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Web/recommendations/reset")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
@@ -80,9 +82,10 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Web/recommendations/{name}/disable")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
@@ -91,9 +94,10 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             @PathParam("name") String name,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
                 + "/hostingEnvironments/{hostingEnvironmentName}/recommendationHistory")
@@ -107,9 +111,10 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             @QueryParam(value = "$filter", encoded = true) String filter,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
                 + "/hostingEnvironments/{hostingEnvironmentName}/recommendations")
@@ -123,9 +128,10 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             @QueryParam(value = "$filter", encoded = true) String filter,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
                 + "/hostingEnvironments/{hostingEnvironmentName}/recommendations/disable")
@@ -138,9 +144,10 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             @PathParam("hostingEnvironmentName") String hostingEnvironmentName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
                 + "/hostingEnvironments/{hostingEnvironmentName}/recommendations/reset")
@@ -153,9 +160,10 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             @PathParam("hostingEnvironmentName") String hostingEnvironmentName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
                 + "/hostingEnvironments/{hostingEnvironmentName}/recommendations/{name}")
@@ -170,9 +178,10 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             @QueryParam("recommendationId") String recommendationId,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
                 + "/hostingEnvironments/{hostingEnvironmentName}/recommendations/{name}/disable")
@@ -186,9 +195,10 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             @PathParam("hostingEnvironmentName") String hostingEnvironmentName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites"
                 + "/{siteName}/recommendationHistory")
@@ -202,9 +212,10 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             @QueryParam(value = "$filter", encoded = true) String filter,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites"
                 + "/{siteName}/recommendations")
@@ -218,9 +229,10 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             @QueryParam(value = "$filter", encoded = true) String filter,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites"
                 + "/{siteName}/recommendations/disable")
@@ -232,9 +244,10 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             @PathParam("siteName") String siteName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites"
                 + "/{siteName}/recommendations/reset")
@@ -246,9 +259,10 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             @PathParam("siteName") String siteName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites"
                 + "/{siteName}/recommendations/{name}")
@@ -263,9 +277,10 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             @QueryParam("recommendationId") String recommendationId,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites"
                 + "/{siteName}/recommendations/{name}/disable")
@@ -278,42 +293,58 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             @PathParam("name") String name,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<RecommendationCollection>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<RecommendationCollection>> listHistoryForHostingEnvironmentNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<RecommendationCollection>> listRecommendedRulesForHostingEnvironmentNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<RecommendationCollection>> listHistoryForWebAppNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<RecommendationCollection>> listRecommendedRulesForWebAppNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -343,6 +374,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -353,6 +385,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                             filter,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            accept,
                             context))
             .<PagedResponse<RecommendationInner>>map(
                 res ->
@@ -363,7 +396,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -395,6 +428,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(
@@ -403,6 +437,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                 filter,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
+                accept,
                 context)
             .map(
                 res ->
@@ -473,6 +508,20 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
     /**
      * Description for List all recommendations for a subscription.
      *
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of recommendations.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<RecommendationInner> list() {
+        final Boolean featured = null;
+        final String filter = null;
+        return new PagedIterable<>(listAsync(featured, filter));
+    }
+
+    /**
+     * Description for List all recommendations for a subscription.
+     *
      * @param featured Specify &lt;code&gt;true&lt;/code&gt; to return only the most critical recommendations. The
      *     default is &lt;code&gt;false&lt;/code&gt;, which returns all recommendations.
      * @param filter Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq
@@ -487,20 +536,6 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RecommendationInner> list(Boolean featured, String filter, Context context) {
         return new PagedIterable<>(listAsync(featured, filter, context));
-    }
-
-    /**
-     * Description for List all recommendations for a subscription.
-     *
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RecommendationInner> list() {
-        final Boolean featured = null;
-        final String filter = null;
-        return new PagedIterable<>(listAsync(featured, filter));
     }
 
     /**
@@ -524,6 +559,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -532,8 +568,9 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                             this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -559,10 +596,15 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .resetAllFilters(
-                this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), context);
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                accept,
+                context);
     }
 
     /**
@@ -628,6 +670,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -637,8 +680,9 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                             name,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -668,10 +712,16 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .disableRecommendationForSubscription(
-                this.client.getEndpoint(), name, this.client.getSubscriptionId(), this.client.getApiVersion(), context);
+                this.client.getEndpoint(),
+                name,
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                accept,
+                context);
     }
 
     /**
@@ -756,6 +806,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -768,6 +819,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                             filter,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            accept,
                             context))
             .<PagedResponse<RecommendationInner>>map(
                 res ->
@@ -778,7 +830,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -821,6 +873,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listHistoryForHostingEnvironment(
@@ -831,6 +884,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                 filter,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
+                accept,
                 context)
             .map(
                 res ->
@@ -921,6 +975,25 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param hostingEnvironmentName Name of the hosting environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of recommendations.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<RecommendationInner> listHistoryForHostingEnvironment(
+        String resourceGroupName, String hostingEnvironmentName) {
+        final Boolean expiredOnly = null;
+        final String filter = null;
+        return new PagedIterable<>(
+            listHistoryForHostingEnvironmentAsync(resourceGroupName, hostingEnvironmentName, expiredOnly, filter));
+    }
+
+    /**
+     * Description for Get past recommendations for an app, optionally specified by the time range.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param hostingEnvironmentName Name of the hosting environment.
      * @param expiredOnly Specify &lt;code&gt;false&lt;/code&gt; to return all recommendations. The default is
      *     &lt;code&gt;true&lt;/code&gt;, which returns only expired recommendations.
      * @param filter Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq
@@ -941,26 +1014,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
     }
 
     /**
-     * Description for Get past recommendations for an app, optionally specified by the time range.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param hostingEnvironmentName Name of the hosting environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RecommendationInner> listHistoryForHostingEnvironment(
-        String resourceGroupName, String hostingEnvironmentName) {
-        final Boolean expiredOnly = null;
-        final String filter = null;
-        return new PagedIterable<>(
-            listHistoryForHostingEnvironmentAsync(resourceGroupName, hostingEnvironmentName, expiredOnly, filter));
-    }
-
-    /**
-     * Description for Get all recommendations for an app.
+     * Description for Get all recommendations for a hosting environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param hostingEnvironmentName Name of the app.
@@ -997,6 +1051,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1009,6 +1064,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                             filter,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            accept,
                             context))
             .<PagedResponse<RecommendationInner>>map(
                 res ->
@@ -1019,11 +1075,11 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Description for Get all recommendations for an app.
+     * Description for Get all recommendations for a hosting environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param hostingEnvironmentName Name of the app.
@@ -1061,6 +1117,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listRecommendedRulesForHostingEnvironment(
@@ -1071,6 +1128,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                 filter,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
+                accept,
                 context)
             .map(
                 res ->
@@ -1084,7 +1142,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
     }
 
     /**
-     * Description for Get all recommendations for an app.
+     * Description for Get all recommendations for a hosting environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param hostingEnvironmentName Name of the app.
@@ -1108,7 +1166,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
     }
 
     /**
-     * Description for Get all recommendations for an app.
+     * Description for Get all recommendations for a hosting environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param hostingEnvironmentName Name of the app.
@@ -1130,7 +1188,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
     }
 
     /**
-     * Description for Get all recommendations for an app.
+     * Description for Get all recommendations for a hosting environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param hostingEnvironmentName Name of the app.
@@ -1155,7 +1213,27 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
     }
 
     /**
-     * Description for Get all recommendations for an app.
+     * Description for Get all recommendations for a hosting environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param hostingEnvironmentName Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of recommendations.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<RecommendationInner> listRecommendedRulesForHostingEnvironment(
+        String resourceGroupName, String hostingEnvironmentName) {
+        final Boolean featured = null;
+        final String filter = null;
+        return new PagedIterable<>(
+            listRecommendedRulesForHostingEnvironmentAsync(
+                resourceGroupName, hostingEnvironmentName, featured, filter));
+    }
+
+    /**
+     * Description for Get all recommendations for a hosting environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param hostingEnvironmentName Name of the app.
@@ -1175,26 +1253,6 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
         return new PagedIterable<>(
             listRecommendedRulesForHostingEnvironmentAsync(
                 resourceGroupName, hostingEnvironmentName, featured, filter, context));
-    }
-
-    /**
-     * Description for Get all recommendations for an app.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param hostingEnvironmentName Name of the app.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RecommendationInner> listRecommendedRulesForHostingEnvironment(
-        String resourceGroupName, String hostingEnvironmentName) {
-        final Boolean featured = null;
-        final String filter = null;
-        return new PagedIterable<>(
-            listRecommendedRulesForHostingEnvironmentAsync(
-                resourceGroupName, hostingEnvironmentName, featured, filter));
     }
 
     /**
@@ -1236,6 +1294,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1247,8 +1306,9 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                             hostingEnvironmentName,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1291,6 +1351,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .disableAllForHostingEnvironment(
@@ -1300,6 +1361,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                 hostingEnvironmentName,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
+                accept,
                 context);
     }
 
@@ -1397,6 +1459,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1408,8 +1471,9 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                             hostingEnvironmentName,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1452,6 +1516,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .resetAllFiltersForHostingEnvironment(
@@ -1461,6 +1526,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                 hostingEnvironmentName,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
+                accept,
                 context);
     }
 
@@ -1565,6 +1631,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1578,8 +1645,9 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                             recommendationId,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1630,6 +1698,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getRuleDetailsByHostingEnvironment(
@@ -1641,6 +1710,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                 recommendationId,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
+                accept,
                 context);
     }
 
@@ -1799,6 +1869,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1811,8 +1882,9 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                             hostingEnvironmentName,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1859,6 +1931,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .disableRecommendationForHostingEnvironment(
@@ -1869,6 +1942,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                 hostingEnvironmentName,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
+                accept,
                 context);
     }
 
@@ -1969,6 +2043,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1981,6 +2056,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                             filter,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            accept,
                             context))
             .<PagedResponse<RecommendationInner>>map(
                 res ->
@@ -1991,7 +2067,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2032,6 +2108,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listHistoryForWebApp(
@@ -2042,6 +2119,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                 filter,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
+                accept,
                 context)
             .map(
                 res ->
@@ -2125,6 +2203,23 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of recommendations.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<RecommendationInner> listHistoryForWebApp(String resourceGroupName, String siteName) {
+        final Boolean expiredOnly = null;
+        final String filter = null;
+        return new PagedIterable<>(listHistoryForWebAppAsync(resourceGroupName, siteName, expiredOnly, filter));
+    }
+
+    /**
+     * Description for Get past recommendations for an app, optionally specified by the time range.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param siteName Name of the app.
      * @param expiredOnly Specify &lt;code&gt;false&lt;/code&gt; to return all recommendations. The default is
      *     &lt;code&gt;true&lt;/code&gt;, which returns only expired recommendations.
      * @param filter Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq
@@ -2141,23 +2236,6 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
         String resourceGroupName, String siteName, Boolean expiredOnly, String filter, Context context) {
         return new PagedIterable<>(
             listHistoryForWebAppAsync(resourceGroupName, siteName, expiredOnly, filter, context));
-    }
-
-    /**
-     * Description for Get past recommendations for an app, optionally specified by the time range.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param siteName Name of the app.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RecommendationInner> listHistoryForWebApp(String resourceGroupName, String siteName) {
-        final Boolean expiredOnly = null;
-        final String filter = null;
-        return new PagedIterable<>(listHistoryForWebAppAsync(resourceGroupName, siteName, expiredOnly, filter));
     }
 
     /**
@@ -2196,6 +2274,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -2208,6 +2287,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                             filter,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            accept,
                             context))
             .<PagedResponse<RecommendationInner>>map(
                 res ->
@@ -2218,7 +2298,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2258,6 +2338,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listRecommendedRulesForWebApp(
@@ -2268,6 +2349,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                 filter,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
+                accept,
                 context)
             .map(
                 res ->
@@ -2350,6 +2432,23 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of recommendations.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<RecommendationInner> listRecommendedRulesForWebApp(String resourceGroupName, String siteName) {
+        final Boolean featured = null;
+        final String filter = null;
+        return new PagedIterable<>(listRecommendedRulesForWebAppAsync(resourceGroupName, siteName, featured, filter));
+    }
+
+    /**
+     * Description for Get all recommendations for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param siteName Name of the app.
      * @param featured Specify &lt;code&gt;true&lt;/code&gt; to return only the most critical recommendations. The
      *     default is &lt;code&gt;false&lt;/code&gt;, which returns all recommendations.
      * @param filter Return only channels specified in the filter. Filter is specified by using OData syntax. Example:
@@ -2365,23 +2464,6 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
         String resourceGroupName, String siteName, Boolean featured, String filter, Context context) {
         return new PagedIterable<>(
             listRecommendedRulesForWebAppAsync(resourceGroupName, siteName, featured, filter, context));
-    }
-
-    /**
-     * Description for Get all recommendations for an app.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param siteName Name of the app.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RecommendationInner> listRecommendedRulesForWebApp(String resourceGroupName, String siteName) {
-        final Boolean featured = null;
-        final String filter = null;
-        return new PagedIterable<>(listRecommendedRulesForWebAppAsync(resourceGroupName, siteName, featured, filter));
     }
 
     /**
@@ -2415,6 +2497,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -2425,8 +2508,9 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                             siteName,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2462,6 +2546,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .disableAllForWebApp(
@@ -2470,6 +2555,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                 siteName,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
+                accept,
                 context);
     }
 
@@ -2550,6 +2636,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -2560,8 +2647,9 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                             siteName,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2597,6 +2685,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .resetAllFiltersForWebApp(
@@ -2605,6 +2694,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                 siteName,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
+                accept,
                 context);
     }
 
@@ -2695,6 +2785,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -2708,8 +2799,9 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                             recommendationId,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2758,6 +2850,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getRuleDetailsByWebApp(
@@ -2769,6 +2862,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                 recommendationId,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
+                accept,
                 context);
     }
 
@@ -2911,6 +3005,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -2922,8 +3017,9 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                             name,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2963,6 +3059,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .disableRecommendationForSite(
@@ -2972,6 +3069,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                 name,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
+                accept,
                 context);
     }
 
@@ -3039,8 +3137,15 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listNext(nextLink, context))
+            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<RecommendationInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -3050,7 +3155,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3068,9 +3173,16 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listNext(nextLink, context)
+            .listNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -3097,8 +3209,17 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listHistoryForHostingEnvironmentNext(nextLink, context))
+            .withContext(
+                context ->
+                    service.listHistoryForHostingEnvironmentNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<RecommendationInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -3108,7 +3229,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3127,9 +3248,16 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listHistoryForHostingEnvironmentNext(nextLink, context)
+            .listHistoryForHostingEnvironmentNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -3156,8 +3284,19 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listRecommendedRulesForHostingEnvironmentNext(nextLink, context))
+            .withContext(
+                context ->
+                    service
+                        .listRecommendedRulesForHostingEnvironmentNext(
+                            nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<RecommendationInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -3167,7 +3306,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3186,9 +3325,16 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listRecommendedRulesForHostingEnvironmentNext(nextLink, context)
+            .listRecommendedRulesForHostingEnvironmentNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -3214,8 +3360,16 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listHistoryForWebAppNext(nextLink, context))
+            .withContext(
+                context -> service.listHistoryForWebAppNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<RecommendationInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -3225,7 +3379,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3244,9 +3398,16 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listHistoryForWebAppNext(nextLink, context)
+            .listHistoryForWebAppNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -3272,8 +3433,17 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listRecommendedRulesForWebAppNext(nextLink, context))
+            .withContext(
+                context ->
+                    service.listRecommendedRulesForWebAppNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<RecommendationInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -3283,7 +3453,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3302,9 +3472,16 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listRecommendedRulesForWebAppNext(nextLink, context)
+            .listRecommendedRulesForWebAppNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

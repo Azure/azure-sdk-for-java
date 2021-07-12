@@ -1,26 +1,26 @@
 {
   "networkCallRecords" : [ {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.queue.core.windows.net/queueaysncapitestsdeletequeueerror39002c3c26acf6c",
+    "Uri" : "https://REDACTED.queue.core.windows.net/76348e6a76348e6aba2801586846f52253cd4e3282",
     "Headers" : {
-      "x-ms-version" : "2019-12-12",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.6.0-beta.1 (11.0.6; Windows 10 10.0)",
-      "x-ms-client-request-id" : "2577f0f3-c56a-47e5-8e60-fa36169083c7"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "3255b7a8-7b26-4f6d-b2ff-2f75d42bc4c2"
     },
     "Response" : {
-      "x-ms-version" : "2019-12-12",
+      "content-length" : "217",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "QueueNotFound",
       "retry-after" : "0",
-      "Content-Length" : "217",
       "StatusCode" : "404",
-      "x-ms-request-id" : "37a3a096-3003-009b-7403-3a8ca5000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:37a3a096-3003-009b-7403-3a8ca5000000\nTime:2020-06-04T00:05:14.6816898Z</Message></Error>",
-      "Date" : "Thu, 04 Jun 2020 00:05:14 GMT",
-      "x-ms-client-request-id" : "2577f0f3-c56a-47e5-8e60-fa36169083c7",
+      "x-ms-request-id" : "10a7c4be-c003-0044-6a09-417c1e000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:10a7c4be-c003-0044-6a09-417c1e000000\nTime:2021-05-04T17:18:37.4674159Z</Message></Error>",
+      "x-ms-client-request-id" : "3255b7a8-7b26-4f6d-b2ff-2f75d42bc4c2",
+      "Date" : "Tue, 04 May 2021 17:18:37 GMT",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "queueaysncapitestsdeletequeueerror39002c3c26acf6c" ]
+  "variables" : [ "76348e6a76348e6aba2801586846f52253cd4e3282" ]
 }

@@ -1,9 +1,53 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
+## 1.1.0-beta.1 (Unreleased)
 
 
-## 1.0.0-beta.3 (2020-07-09)
+## 1.0.0 (2021-07-08)
+
+### Features added
+
+- Added `getAdmins` and `setAdmins` methods to `NotificationHook` model
+- Added the `getMeasureType` and `setMeasureType` to `MetricBoundaryCondition` model
+- Added `getViewers` and `setViewers` methods to `DataFeedOptions` model
+
+### Breaking changes
+
+- Removed the prefix `Anomaly` from all Alert Configuration APIs
+- Removed the prefix `MetricAnomaly` from all Detection Configuration APIs
+- Renamed `MetricAnomalyAlertConfiguration` to `MetricAlertConfiguration`
+- Renamed `DetectionConditionsOperator` to `DetectionConditionOperator`
+- Renamed the `getDimensionsToSplitAlert` method in the model `AnomalyAlertConfiguration` to `getDimensionsToSplitAlert`
+- Renamed the `setDimensionsToSplitAlert` method in the model `AnomalyAlertConfiguration` to `setDimensionsToSplitAlert`
+- Updated the model getter and setter methods for primitive types to use corresponding reference types
+- Renamed `setCrossConditionOperator` method in all detection configuration condition models to `setConditionOperator`
+- Renamed `getCrossConditionOperator` method in all detection configuration condition models to `getConditionOperator`
+- Updated the constructors of `DataFeedMetric`, `DataFeedDimension`, `ChangeThresholdCondition`, `HardThresholdCondition`, `SmartDetectionCondition`, `SeverityCondition`, `MetricAnomalyAlertSnoozeCondition` and `TopNGroupScope` to take required parameters.
+- Removed `SingleBoundaryCondition` model
+- Removed `setSingleBoundary` and `setBothBoundary` methods in `MetricBoundaryCondition` model
+- Replaced `listAnomalies` API with `listAnomaliesForAlert` and `listAnomaliesForDetectionConfig`
+- Replaced `listIncidents` API with `listIncidentsForAlert` and `listIncidentsForDetectionConfig`
+
+## 1.0.0-beta.4 (2021-06-09)
+
+### Features added
+- Added support for Azure Log Analytics DataFeed source
+- Added data source credential API support to client
+- Added authentication type support for data feed
+- Added property `splitAlertByDimensions` to AnomalyAlertConfiguration model
+- Added `clientOptions()` methods to the `MetricsAdvisorClientBuilder` and `MetricsAdvisorAdministrationClientBuilder`
+
+### Breaking changes
+- Replaced updateSubscriptionKey and updateApiKey into one method updateKey
+- Deprecated support for HttpRequestDataFeed and ElasticsearchDataFeed source type
+- Removed granularity type DataFeedGranularityType.PerSecond as it's not supported by the service anymore
+- Renamed `value` and `expectedValue` to `valueOfRootNode` and `expectedValueOfRootNode`
+- Renamed `top` parameter to `maxPageSize`
+- Renamed method `listAnomaliesForAlert` and `listAnomaliesForDetectionConfig` to `listAnomalies`
+- Renamed method `listIncidentsForAlert` and `listIncidentsForDetectionConfig` to `listIncidents`
+- Renamed `ErrorCodeException` and `ErrorCode` to `MetricsAdvisorResponseException` and `MetricsAdvisorError`
+
+## 1.0.0-beta.3 (2021-02-09)
 - Support Azure Active Directory (AAD) authentication for Metrics Advisor clients. 
 - Renamed method `listDimensionValuesWithAnomalies` and `ListDimensionValuesWithAnomaliesOptions`.
   to `listAnomalyDimensionValues` and  `ListAnomalyDimensionValuesOptions` respectively.
@@ -27,7 +71,9 @@
 - Renamed Data feed ingestion granularity type to `"PerMinute"` and `"PerSecond"` instead of `"Minutely"` and `"Secondly"`.
 - Renamed Feedback api's from `createMetricFeedback`, `getMetricFeedback` and `listMetricFeedbacks` 
 to `addFeedback`, `getFeedback` and `listFeedback` respectively.
-
+- Removed `getSubscriptionKey` and `getApiKey` from `MetricsAdvisorKeyCredential` and introduced `MetricsAdvisorKeys`.
+- Renamed model `ErrorCode` to `MetricsAdvisorError` and `ErrorCodeException`
+to `MetricsAdvisorResponseException`
 ## 1.0.0-beta.1 (2020-10-07)
 Version 1.0.0-beta.1 is a preview of our efforts in creating a Azure Metrics Advisor client library that is developer-friendly
 and idiomatic to the Java ecosystem. The principles that guide
@@ -44,7 +90,8 @@ https://azure.github.io/azure-sdk/releases/latest/java.html.
 - Reactive streams support using [Project Reactor](https://projectreactor.io/).
 
 This package's
-[documentation](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/metricsadvisor/azure-ai-metricsadvisor/README.md)
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/metricsadvisor/azure-ai-metricsadvisor/README.md)
 and
-[samples](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/metricsadvisor/azure-ai-metricsadvisor/src/samples)
+[samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/metricsadvisor/azure-ai-metricsadvisor/src/samples)
 demonstrate the new API.
+

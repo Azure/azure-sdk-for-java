@@ -104,7 +104,7 @@ public enum AmqpErrorCondition {
      */
     PROTON_IO("proton:io"),
     /**
-     * A connection error occurred.
+     * A connection error occurred. A valid frame header cannot be formed from the incoming byte stream.
      */
     CONNECTION_FRAMING_ERROR("amqp:connection:framing-error"),
     /**
@@ -139,7 +139,50 @@ public enum AmqpErrorCondition {
     /**
      * Error condition when a subscription client tries to create a rule with the name of an already existing rule.
      */
-    ENTITY_ALREADY_EXISTS("com.microsoft:entity-already-exists");
+    ENTITY_ALREADY_EXISTS("com.microsoft:entity-already-exists"),
+
+    /**
+     * The container is no longer available on the current connection. The peer SHOULD attempt reconnection to the
+     * container using the details provided in the info map.
+     *
+     * The address provided cannot be resolved to a terminus at the current container. The info map MAY contain the
+     * following information to allow the client to locate the attach to the terminus.
+     *
+     * hostname:
+     * the hostname of the container. This is the value that SHOULD be supplied in the hostname field of the open frame,
+     * and during the SASL and TLS negotiation (if used).
+     *
+     * network-host:
+     * the DNS hostname or IP address of the machine hosting the container.
+     *
+     * port:
+     * the port number on the machine hosting the container.
+     */
+    CONNECTION_REDIRECT("amqp:connection:redirect"),
+
+    /**
+     * The address provided cannot be resolved to a terminus at the current container. The info map MAY contain the
+     * following information to allow the client to locate the attach to the terminus.
+     *
+     * hostname:
+     * the hostname of the container hosting the terminus. This is the value that SHOULD be supplied in the hostname
+     * field of the open frame, and during SASL and TLS negotiation (if used).
+     *
+     * network-host:
+     * the DNS hostname or IP address of the machine hosting the container.
+     *
+     * port:
+     * the port number on the machine hosting the container.
+     *
+     * address:
+     * the address of the terminus at the container.
+     */
+    LINK_REDIRECT("amqp:link:redirect"),
+
+    /**
+     * The peer sent more message transfers than currently allowed on the link.
+     */
+    TRANSFER_LIMIT_EXCEEDED("amqp:link:transfer-limit-exceeded");
 
     private static final Map<String, AmqpErrorCondition> ERROR_CONSTANT_MAP = new HashMap<>();
     private final String errorCondition;
@@ -150,6 +193,11 @@ public enum AmqpErrorCondition {
         }
     }
 
+    /**
+     * Creates an instance with the error condition header.
+     *
+     * @param errorCondition Error condition header value.
+     */
     AmqpErrorCondition(String errorCondition) {
         this.errorCondition = errorCondition;
     }

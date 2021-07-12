@@ -88,7 +88,7 @@ public final class WebPubSubServiceClient {
      *
      * <p>To send a message to all users within the same hub, do the following:</p>
      *
-     * codesnippet com.azure.messaging.webpubsub.webpubsubserviceclient.sendToAll.String.String}
+     * {@codesnippet com.azure.messaging.webpubsub.webpubsubserviceclient.sendToAll#String}
      *
      * @param message The message to send.
      */
@@ -104,7 +104,7 @@ public final class WebPubSubServiceClient {
      *
      * <p>To send a message to all users within the same hub, do the following:</p>
      *
-     * codesnippet com.azure.messaging.webpubsub.webpubsubserviceclient.sendToAll.String.String}
+     * {@codesnippet com.azure.messaging.webpubsub.webpubsubserviceclient.sendToAll#String-WebPubSubContentType}
      *
      * @param message The message to send.
      * @param contentType The content type of the message.
@@ -114,29 +114,6 @@ public final class WebPubSubServiceClient {
         sendToAllWithResponse(message, contentType, null, Context.NONE);
     }
 
-//    /**
-//     * Broadcast a text message to all connections on this hub, excluding any connection IDs provided in the
-//     * {@code excludedConnectionIds} list.
-//     *
-//     * <p><strong>Code Samples</strong></p>
-//     *
-//     * <p>To send a message to all users within the same hub, with no exclusions, do the following:</p>
-//     *
-//     * {@codesnippet com.azure.messaging.webpubsub.webpubsubclient.sendToAll.String.List}
-//     *
-//     * <p>To send a message to all users within the same hub, with one or more connection IDs excluded, simply add the
-//     * excluded connection IDs to a List and pass that in as the second argument:</p>
-//     *
-//     * {@codesnippet com.azure.messaging.webpubsub.webpubsubclient.sendToAll.String.List.2}
-//     *
-//     * @param message The message to send.
-//     * @param excludedConnectionIds An optional list of connection IDs to not broadcast the message to.
-//     */
-//    @ServiceMethod(returns = ReturnType.SINGLE)
-//    public void sendToAll(final String message, final List<String> excludedConnectionIds) {
-//        sendToAllWithResponse(message, excludedConnectionIds, Context.NONE);
-//    }
-
     /**
      * Broadcast a text message to all connections on this hub, excluding any connection IDs provided in the
      * {@code excludedConnectionIds} list.
@@ -145,12 +122,12 @@ public final class WebPubSubServiceClient {
      *
      * <p>To send a message to all users within the same hub, with no exclusions, do the following:</p>
      *
-     * {@codesnippet com.azure.messaging.webpubsub.webpubsubserviceclient.sendToAll.String.List}
+     * {@codesnippet com.azure.messaging.webpubsub.webpubsubserviceclient.sendToAllWithResponse}
      *
      * <p>To send a message to all users within the same hub, with one or more connection IDs excluded, simply add the
-     * excluded connection IDs to a List and pass that in as the second argument:</p>
+     * excluded connection IDs to a List and pass that in as the third argument:</p>
      *
-     * {@codesnippet com.azure.messaging.webpubsub.webpubsubserviceclient.sendToAll.String.List.2}
+     * {@codesnippet com.azure.messaging.webpubsub.webpubsubserviceclient.sendToAllWithResponse.withexclusions}
      *
      * @param message The message to send.
      * @param contentType The content type of the message.
@@ -175,12 +152,7 @@ public final class WebPubSubServiceClient {
      *
      * <p>To send a binary message to all users within the same hub, with no exclusions, do the following:</p>
      *
-     * {@codesnippet com.azure.messaging.webpubsub.webpubsubserviceclient.sendToAllBytes.byte.String}
-     *
-     * <p>To send a binary message to all users within the same hub, with one or more connection IDs excluded, simply
-     * add the excluded connection IDs to the end of the method call as var-args:</p>
-     *
-     * {@codesnippet com.azure.messaging.webpubsub.webpubsubserviceclient.sendToAllBytes.byte.String.2}
+     * {@codesnippet com.azure.messaging.webpubsub.webpubsubserviceclient.sendToAll#byte}
      *
      * @param message The message to send.
      */
@@ -197,12 +169,7 @@ public final class WebPubSubServiceClient {
      *
      * <p>To send a binary message to all users within the same hub, with no exclusions, do the following:</p>
      *
-     * {@codesnippet com.azure.messaging.webpubsub.webpubsubserviceclient.sendToAllBytes.byte.String}
-     *
-     * <p>To send a binary message to all users within the same hub, with one or more connection IDs excluded, simply
-     * add the excluded connection IDs to the end of the method call as var-args:</p>
-     *
-     * {@codesnippet com.azure.messaging.webpubsub.webpubsubserviceclient.sendToAllBytes.byte.String.2}
+     * {@codesnippet com.azure.messaging.webpubsub.webpubsubserviceclient.sendToAll#byte-WebPubSubContentType}
      *
      * @param message The message to send.
      * @param contentType The content type of the message.
@@ -212,29 +179,6 @@ public final class WebPubSubServiceClient {
         sendToAllWithResponse(message, contentType, null, Context.NONE);
     }
 
-//    /**
-//     * Broadcast a binary message to all connections on this hub, excluding any connection IDs provided in the
-//     * {@code excludedConnectionIds} list.
-//     *
-//     * <p><strong>Code Samples</strong></p>
-//     *
-//     * <p>To send a binary message to all users within the same hub, with no exclusions, do the following:</p>
-//     *
-//     * {@codesnippet com.azure.messaging.webpubsub.webpubsubclient.sendToAllBytes.byte.List}
-//     *
-//     * <p>To send a binary message to all users within the same hub, with one or more connection IDs excluded, simply
-//     * add the excluded connection IDs to the end of the method call as var-args:</p>
-//     *
-//     * {@codesnippet com.azure.messaging.webpubsub.webpubsubclient.sendToAllBytes.byte.List.2}
-//     *
-//     * @param message The message to send.
-//     * @param excludedConnectionIds An optional list of connection IDs to not broadcast the message to.
-//     */
-//    @ServiceMethod(returns = ReturnType.SINGLE)
-//    public void sendToAll(final byte[] message, final List<String> excludedConnectionIds) {
-//        sendToAllWithResponse(message, excludedConnectionIds, Context.NONE);
-//    }
-
     /**
      * Broadcast a binary message to all connections on this hub, excluding any connection IDs provided in the
      * {@code excludedConnectionIds} list.
@@ -243,12 +187,12 @@ public final class WebPubSubServiceClient {
      *
      * <p>To send a binary message to all users within the same hub, with no exclusions, do the following:</p>
      *
-     * {@codesnippet com.azure.messaging.webpubsub.webpubsubserviceclient.sendToAllBytes.byte.List}
+     * {@codesnippet com.azure.messaging.webpubsub.webpubsubserviceclient.sendToAllWithResponse.byte}
      *
      * <p>To send a binary message to all users within the same hub, with one or more connection IDs excluded, simply
      * add the excluded connection IDs to the end of the method call as var-args:</p>
      *
-     * {@codesnippet com.azure.messaging.webpubsub.webpubsubserviceclient.sendToAllBytes.byte.List.2}
+     * {@codesnippet com.azure.messaging.webpubsub.webpubsubserviceclient.sendToAllWithResponse.byte.withexclusion}
      *
      * @param message The message to send.
      * @param contentType The content type of the message.
@@ -559,11 +503,14 @@ public final class WebPubSubServiceClient {
      *
      * @param permission The permission to be checked against the given connection ID.
      * @param connectionId Target connection Id.
+     * @param targetName Get the permission for the specific target. The meaning of the target depends on the specific
+     * permission.
      * @return A Boolean value representing whether the connection has the specified permission.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public boolean checkPermissionExists(final WebPubSubPermission permission, final String connectionId) {
-        return checkPermissionExistsWithResponse(permission, connectionId, null, Context.NONE).getValue();
+    public boolean checkPermissionExists(final WebPubSubPermission permission, final String connectionId,
+                                         final String targetName) {
+        return checkPermissionExistsWithResponse(permission, connectionId, targetName, Context.NONE).getValue();
     }
 
     /**
@@ -571,12 +518,12 @@ public final class WebPubSubServiceClient {
      *
      * @param permission The permission to be checked against the given connection ID.
      * @param connectionId Target connection Id.
-     * @param targetName Optional. If not set, get the permission for all targets. If set, get the permission for the
-     *     specific target. The meaning of the target depends on the specific permission.
+     * @param targetName Get the permission for the specific target. The meaning of the target depends on the specific
+     * permission.
      * @param context The context to associate with this operation.
      * @return A {@link Response} with a Boolean value representing whether the connection
-     *     has the specified permission, as well as status code and response headers representing the response from
-     *      the service.
+     * has the specified permission, as well as status code and response headers representing the response from
+     * the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> checkPermissionExistsWithResponse(final WebPubSubPermission permission,
@@ -584,6 +531,35 @@ public final class WebPubSubServiceClient {
                                                                final String targetName,
                                                                final Context context) {
         return asyncClient.checkPermissionExistsWithResponse(permission, connectionId, targetName, context).block();
+    }
+
+    /**
+     * Grant permission to the specified connection.
+     *
+     * @param permission The permission to be granted to the given connection ID.
+     * @param connectionId Target connection ID.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void grantPermission(final WebPubSubPermission permission, final String connectionId) {
+        this.grantPermissionWithResponse(permission, connectionId, null, Context.NONE).getValue();
+    }
+
+    /**
+     * Grant permission to the specified connection.
+     *
+     * @param permission The permission to be granted to the given connection ID.
+     * @param connectionId Target connection ID.
+     * @param targetName The specific target that will have the permission granted.
+     * @param context The context to associate with the operation.
+     * @return A void {@link Response}, enabling retrieval of the status code and response
+     *      headers from the service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> grantPermissionWithResponse(final WebPubSubPermission permission,
+                                                            final String connectionId,
+                                                            final String targetName,
+                                                            final Context context) {
+        return asyncClient.grantPermissionWithResponse(permission, connectionId, targetName, context).block();
     }
 
     /**

@@ -5,8 +5,10 @@ package com.azure.test.aad.filter.stateful;
 
 import com.azure.spring.autoconfigure.aad.AADAuthenticationFilter;
 import com.azure.spring.test.aad.AADWebApiITHelper;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpStatus;
@@ -32,16 +34,17 @@ import static com.azure.spring.test.EnvironmentVariable.AAD_MULTI_TENANT_CLIENT_
 import static com.azure.spring.test.EnvironmentVariable.AAD_SINGLE_TENANT_CLIENT_ID;
 import static com.azure.spring.test.EnvironmentVariable.AAD_SINGLE_TENANT_CLIENT_SECRET;
 import static com.azure.spring.test.EnvironmentVariable.AAD_TENANT_ID_1;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class AADAuthenticationFilterIT {
     public static final String SCOPE_GRAPH_READ = "ResourceAccessGraph.Read";
 
     private AADWebApiITHelper singleTenantITHelper;
     private AADWebApiITHelper multiTenantITHelper;
 
-    @Before
-    public void init() {
+    @BeforeAll
+    public void beforeAll() {
         singleTenantITHelper = getAADWebApiITHelper(AAD_SINGLE_TENANT_CLIENT_ID, AAD_SINGLE_TENANT_CLIENT_SECRET);
         multiTenantITHelper = getAADWebApiITHelper(AAD_MULTI_TENANT_CLIENT_ID, AAD_MULTI_TENANT_CLIENT_SECRET);
     }
@@ -77,9 +80,10 @@ public class AADAuthenticationFilterIT {
             singleTenantITHelper.httpGetCookieByAccessTokenThenGetStringByCookie("home", "api/group1"));
     }
 
-    @Test(expected = HttpClientErrorException.class)
+    @Test
     public void testNotAllowedEndpointsForSingleTenant() {
-        singleTenantITHelper.httpGetStringByAccessToken("api/group2");
+        Assertions.assertThrows(HttpClientErrorException.class,
+            () -> singleTenantITHelper.httpGetStringByAccessToken("api/group2"));
     }
 
     @Test
@@ -99,9 +103,10 @@ public class AADAuthenticationFilterIT {
             multiTenantITHelper.httpGetCookieByAccessTokenThenGetStringByCookie("home", "api/group1"));
     }
 
-    @Test(expected = HttpClientErrorException.class)
+    @Test
     public void testNotAllowedEndpointsForMultiTenant() {
-        multiTenantITHelper.httpGetStringByAccessToken("api/group2");
+        Assertions.assertThrows(HttpClientErrorException.class,
+            () -> multiTenantITHelper.httpGetStringByAccessToken("api/group2"));
     }
 
     @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)

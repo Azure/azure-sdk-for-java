@@ -11,7 +11,6 @@ import com.azure.resourcemanager.storage.models.Kind;
 import com.azure.resourcemanager.storage.models.MinimumTlsVersion;
 import com.azure.resourcemanager.storage.models.SkuName;
 import com.azure.resourcemanager.storage.models.StorageAccount;
-import com.azure.resourcemanager.storage.models.StorageAccountEncryptionKeySource;
 import com.azure.resourcemanager.storage.models.StorageAccountEncryptionStatus;
 import com.azure.resourcemanager.storage.models.StorageAccountKey;
 import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
@@ -119,42 +118,6 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
     }
 
     @Test
-    public void canEnableDisableEncryptionOnStorageAccount() throws Exception {
-        StorageAccount storageAccount =
-            storageManager
-                .storageAccounts()
-                .define(saName)
-                .withRegion(Region.US_EAST2)
-                .withNewResourceGroup(rgName)
-                .withBlobEncryption()
-                .create();
-
-        Map<StorageService, StorageAccountEncryptionStatus> statuses = storageAccount.encryptionStatuses();
-        Assertions.assertNotNull(statuses);
-        Assertions.assertTrue(statuses.size() > 0);
-        StorageAccountEncryptionStatus blobServiceEncryptionStatus = statuses.get(StorageService.BLOB);
-        Assertions.assertNotNull(blobServiceEncryptionStatus);
-        Assertions.assertTrue(blobServiceEncryptionStatus.isEnabled());
-        Assertions.assertNotNull(blobServiceEncryptionStatus.lastEnabledTime());
-        Assertions.assertNotNull(storageAccount.encryptionKeySource());
-        Assertions
-            .assertTrue(
-                storageAccount.encryptionKeySource().equals(StorageAccountEncryptionKeySource.MICROSOFT_STORAGE));
-
-        //        Storage no-longer support disabling encryption
-        //
-        //        storageAccount = storageAccount.update()
-        //                .withoutBlobEncryption()
-        //                .apply();
-        //        statuses = storageAccount.encryptionStatuses();
-        //        Assertions.assertNotNull(statuses);
-        //        Assertions.assertTrue(statuses.size() > 0);
-        //        blobServiceEncryptionStatus = statuses.get(StorageService.BLOB);
-        //        Assertions.assertNotNull(blobServiceEncryptionStatus);
-        //        Assertions.assertFalse(blobServiceEncryptionStatus.isEnabled());
-    }
-
-    @Test
     public void canEnableLargeFileSharesOnStorageAccount() throws Exception {
         StorageAccount storageAccount =
             storageManager
@@ -167,45 +130,6 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
                 .create();
 
         Assertions.assertTrue(storageAccount.isLargeFileSharesEnabled());
-    }
-
-    @Test
-    public void canEnableDisableFileEncryptionOnStorageAccount() throws Exception {
-        StorageAccount storageAccount =
-            storageManager
-                .storageAccounts()
-                .define(saName)
-                .withRegion(Region.US_EAST2)
-                .withNewResourceGroup(rgName)
-                .withFileEncryption()
-                .create();
-
-        Map<StorageService, StorageAccountEncryptionStatus> statuses = storageAccount.encryptionStatuses();
-        Assertions.assertNotNull(statuses);
-        Assertions.assertTrue(statuses.size() > 0);
-
-        Assertions.assertTrue(statuses.containsKey(StorageService.BLOB));
-        StorageAccountEncryptionStatus blobServiceEncryptionStatus = statuses.get(StorageService.BLOB);
-        Assertions.assertNotNull(blobServiceEncryptionStatus);
-        Assertions.assertTrue(blobServiceEncryptionStatus.isEnabled()); // Enabled by default by default
-
-        Assertions.assertTrue(statuses.containsKey(StorageService.FILE));
-        StorageAccountEncryptionStatus fileServiceEncryptionStatus = statuses.get(StorageService.FILE);
-        Assertions.assertNotNull(fileServiceEncryptionStatus);
-        Assertions.assertTrue(fileServiceEncryptionStatus.isEnabled());
-
-        // Service no longer support disabling file encryption
-        //        storageAccount.update()
-        //                .withoutFileEncryption()
-        //                .apply();
-        //
-        //        statuses = storageAccount.encryptionStatuses();
-        //
-        //        Assertions.assertTrue(statuses.containsKey(StorageService.FILE));
-        //        fileServiceEncryptionStatus = statuses.get(StorageService.FILE);
-        //        Assertions.assertNotNull(fileServiceEncryptionStatus);
-        //        Assertions.assertFalse(fileServiceEncryptionStatus.isEnabled());
-
     }
 
     @Test

@@ -5,12 +5,11 @@
 package com.azure.resourcemanager.eventgrid.implementation;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.fluent.models.SystemTopicInner;
 import com.azure.resourcemanager.eventgrid.models.IdentityInfo;
 import com.azure.resourcemanager.eventgrid.models.ResourceProvisioningState;
-import com.azure.resourcemanager.eventgrid.models.SystemData;
 import com.azure.resourcemanager.eventgrid.models.SystemTopic;
 import com.azure.resourcemanager.eventgrid.models.SystemTopicUpdateParameters;
 import java.util.Collections;
@@ -19,7 +18,7 @@ import java.util.Map;
 public final class SystemTopicImpl implements SystemTopic, SystemTopic.Definition, SystemTopic.Update {
     private SystemTopicInner innerObject;
 
-    private final EventGridManager serviceManager;
+    private final com.azure.resourcemanager.eventgrid.EventGridManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -46,12 +45,12 @@ public final class SystemTopicImpl implements SystemTopic, SystemTopic.Definitio
         }
     }
 
-    public IdentityInfo identity() {
-        return this.innerModel().identity();
-    }
-
     public SystemData systemData() {
         return this.innerModel().systemData();
+    }
+
+    public IdentityInfo identity() {
+        return this.innerModel().identity();
     }
 
     public ResourceProvisioningState provisioningState() {
@@ -82,7 +81,7 @@ public final class SystemTopicImpl implements SystemTopic, SystemTopic.Definitio
         return this.innerObject;
     }
 
-    private EventGridManager manager() {
+    private com.azure.resourcemanager.eventgrid.EventGridManager manager() {
         return this.serviceManager;
     }
 
@@ -115,7 +114,7 @@ public final class SystemTopicImpl implements SystemTopic, SystemTopic.Definitio
         return this;
     }
 
-    SystemTopicImpl(String name, EventGridManager serviceManager) {
+    SystemTopicImpl(String name, com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
         this.innerObject = new SystemTopicInner();
         this.serviceManager = serviceManager;
         this.systemTopicName = name;
@@ -144,7 +143,7 @@ public final class SystemTopicImpl implements SystemTopic, SystemTopic.Definitio
         return this;
     }
 
-    SystemTopicImpl(SystemTopicInner innerObject, EventGridManager serviceManager) {
+    SystemTopicImpl(SystemTopicInner innerObject, com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");

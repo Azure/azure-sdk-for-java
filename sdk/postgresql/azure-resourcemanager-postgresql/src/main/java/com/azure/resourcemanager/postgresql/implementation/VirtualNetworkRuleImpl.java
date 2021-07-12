@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.postgresql.implementation;
 
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.postgresql.PostgreSqlManager;
 import com.azure.resourcemanager.postgresql.fluent.models.VirtualNetworkRuleInner;
 import com.azure.resourcemanager.postgresql.models.VirtualNetworkRule;
 import com.azure.resourcemanager.postgresql.models.VirtualNetworkRuleState;
@@ -14,7 +13,7 @@ public final class VirtualNetworkRuleImpl
     implements VirtualNetworkRule, VirtualNetworkRule.Definition, VirtualNetworkRule.Update {
     private VirtualNetworkRuleInner innerObject;
 
-    private final PostgreSqlManager serviceManager;
+    private final com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -44,7 +43,7 @@ public final class VirtualNetworkRuleImpl
         return this.innerObject;
     }
 
-    private PostgreSqlManager manager() {
+    private com.azure.resourcemanager.postgresql.PostgreSqlManager manager() {
         return this.serviceManager;
     }
 
@@ -78,7 +77,7 @@ public final class VirtualNetworkRuleImpl
         return this;
     }
 
-    VirtualNetworkRuleImpl(String name, PostgreSqlManager serviceManager) {
+    VirtualNetworkRuleImpl(String name, com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager) {
         this.innerObject = new VirtualNetworkRuleInner();
         this.serviceManager = serviceManager;
         this.virtualNetworkRuleName = name;
@@ -106,7 +105,8 @@ public final class VirtualNetworkRuleImpl
         return this;
     }
 
-    VirtualNetworkRuleImpl(VirtualNetworkRuleInner innerObject, PostgreSqlManager serviceManager) {
+    VirtualNetworkRuleImpl(
+        VirtualNetworkRuleInner innerObject, com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");

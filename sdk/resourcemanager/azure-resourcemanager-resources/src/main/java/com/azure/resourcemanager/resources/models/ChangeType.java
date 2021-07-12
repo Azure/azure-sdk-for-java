@@ -25,7 +25,10 @@ public enum ChangeType {
     NO_CHANGE("NoChange"),
 
     /** Enum value Modify. */
-    MODIFY("Modify");
+    MODIFY("Modify"),
+
+    /** Enum value Unsupported. */
+    UNSUPPORTED("Unsupported");
 
     /** The actual serialized value for a ChangeType instance. */
     private final String value;

@@ -40,10 +40,17 @@ public class SalesforceServiceCloudLinkedService extends LinkedService {
     private SecretBase password;
 
     /*
-     * The security token is required to remotely access Salesforce instance.
+     * The security token is optional to remotely access Salesforce instance.
      */
     @JsonProperty(value = "typeProperties.securityToken")
     private SecretBase securityToken;
+
+    /*
+     * The Salesforce API version used in ADF. Type: string (or Expression with
+     * resultType string).
+     */
+    @JsonProperty(value = "typeProperties.apiVersion")
+    private Object apiVersion;
 
     /*
      * Extended properties appended to the connection string. Type: string (or
@@ -129,7 +136,7 @@ public class SalesforceServiceCloudLinkedService extends LinkedService {
     }
 
     /**
-     * Get the securityToken property: The security token is required to remotely access Salesforce instance.
+     * Get the securityToken property: The security token is optional to remotely access Salesforce instance.
      *
      * @return the securityToken value.
      */
@@ -138,13 +145,35 @@ public class SalesforceServiceCloudLinkedService extends LinkedService {
     }
 
     /**
-     * Set the securityToken property: The security token is required to remotely access Salesforce instance.
+     * Set the securityToken property: The security token is optional to remotely access Salesforce instance.
      *
      * @param securityToken the securityToken value to set.
      * @return the SalesforceServiceCloudLinkedService object itself.
      */
     public SalesforceServiceCloudLinkedService setSecurityToken(SecretBase securityToken) {
         this.securityToken = securityToken;
+        return this;
+    }
+
+    /**
+     * Get the apiVersion property: The Salesforce API version used in ADF. Type: string (or Expression with resultType
+     * string).
+     *
+     * @return the apiVersion value.
+     */
+    public Object getApiVersion() {
+        return this.apiVersion;
+    }
+
+    /**
+     * Set the apiVersion property: The Salesforce API version used in ADF. Type: string (or Expression with resultType
+     * string).
+     *
+     * @param apiVersion the apiVersion value to set.
+     * @return the SalesforceServiceCloudLinkedService object itself.
+     */
+    public SalesforceServiceCloudLinkedService setApiVersion(Object apiVersion) {
+        this.apiVersion = apiVersion;
         return this;
     }
 

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.eventgrid.fluent.models.SystemTopicInner;
 import java.util.Map;
@@ -47,18 +48,18 @@ public interface SystemTopic {
     Map<String, String> tags();
 
     /**
+     * Gets the systemData property: The system metadata relating to System Topic resource.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
+
+    /**
      * Gets the identity property: Identity information for the resource.
      *
      * @return the identity value.
      */
     IdentityInfo identity();
-
-    /**
-     * Gets the systemData property: The system metadata relating to this resource.
-     *
-     * @return the systemData value.
-     */
-    SystemData systemData();
 
     /**
      * Gets the provisioningState property: Provisioning state of the system topic.

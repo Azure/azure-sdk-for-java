@@ -5,14 +5,13 @@
 package com.azure.resourcemanager.postgresql.implementation;
 
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.postgresql.PostgreSqlManager;
 import com.azure.resourcemanager.postgresql.fluent.models.FirewallRuleInner;
 import com.azure.resourcemanager.postgresql.models.FirewallRule;
 
 public final class FirewallRuleImpl implements FirewallRule, FirewallRule.Definition, FirewallRule.Update {
     private FirewallRuleInner innerObject;
 
-    private final PostgreSqlManager serviceManager;
+    private final com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -38,7 +37,7 @@ public final class FirewallRuleImpl implements FirewallRule, FirewallRule.Defini
         return this.innerObject;
     }
 
-    private PostgreSqlManager manager() {
+    private com.azure.resourcemanager.postgresql.PostgreSqlManager manager() {
         return this.serviceManager;
     }
 
@@ -72,7 +71,7 @@ public final class FirewallRuleImpl implements FirewallRule, FirewallRule.Defini
         return this;
     }
 
-    FirewallRuleImpl(String name, PostgreSqlManager serviceManager) {
+    FirewallRuleImpl(String name, com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager) {
         this.innerObject = new FirewallRuleInner();
         this.serviceManager = serviceManager;
         this.firewallRuleName = name;
@@ -100,7 +99,8 @@ public final class FirewallRuleImpl implements FirewallRule, FirewallRule.Defini
         return this;
     }
 
-    FirewallRuleImpl(FirewallRuleInner innerObject, PostgreSqlManager serviceManager) {
+    FirewallRuleImpl(
+        FirewallRuleInner innerObject, com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");

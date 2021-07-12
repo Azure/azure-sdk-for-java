@@ -6,6 +6,7 @@ package com.azure.resourcemanager.containerinstance.implementation;
 
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -62,7 +63,7 @@ public final class LocationsClientImpl implements LocationsClient {
     @Host("{$host}")
     @ServiceInterface(name = "ContainerInstanceMan")
     private interface LocationsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ContainerInstance/locations/{location}/usages")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -71,9 +72,10 @@ public final class LocationsClientImpl implements LocationsClient {
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("location") String location,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ContainerInstance/locations/{location}/cachedImages")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -82,9 +84,10 @@ public final class LocationsClientImpl implements LocationsClient {
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("location") String location,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ContainerInstance/locations/{location}/capabilities")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -93,21 +96,28 @@ public final class LocationsClientImpl implements LocationsClient {
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("location") String location,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CachedImagesListResult>> listCachedImagesNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CapabilitiesListResult>> listCapabilitiesNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -136,6 +146,7 @@ public final class LocationsClientImpl implements LocationsClient {
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -145,12 +156,13 @@ public final class LocationsClientImpl implements LocationsClient {
                             this.client.getSubscriptionId(),
                             location,
                             this.client.getApiVersion(),
+                            accept,
                             context))
             .<PagedResponse<UsageInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -180,6 +192,7 @@ public final class LocationsClientImpl implements LocationsClient {
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listUsage(
@@ -187,6 +200,7 @@ public final class LocationsClientImpl implements LocationsClient {
                 this.client.getSubscriptionId(),
                 location,
                 this.client.getApiVersion(),
+                accept,
                 context)
             .map(
                 res ->
@@ -278,6 +292,7 @@ public final class LocationsClientImpl implements LocationsClient {
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -287,6 +302,7 @@ public final class LocationsClientImpl implements LocationsClient {
                             this.client.getSubscriptionId(),
                             location,
                             this.client.getApiVersion(),
+                            accept,
                             context))
             .<PagedResponse<CachedImages>>map(
                 res ->
@@ -297,7 +313,7 @@ public final class LocationsClientImpl implements LocationsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -327,6 +343,7 @@ public final class LocationsClientImpl implements LocationsClient {
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listCachedImages(
@@ -334,6 +351,7 @@ public final class LocationsClientImpl implements LocationsClient {
                 this.client.getSubscriptionId(),
                 location,
                 this.client.getApiVersion(),
+                accept,
                 context)
             .map(
                 res ->
@@ -433,6 +451,7 @@ public final class LocationsClientImpl implements LocationsClient {
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -442,6 +461,7 @@ public final class LocationsClientImpl implements LocationsClient {
                             this.client.getSubscriptionId(),
                             location,
                             this.client.getApiVersion(),
+                            accept,
                             context))
             .<PagedResponse<Capabilities>>map(
                 res ->
@@ -452,7 +472,7 @@ public final class LocationsClientImpl implements LocationsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -482,6 +502,7 @@ public final class LocationsClientImpl implements LocationsClient {
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listCapabilities(
@@ -489,6 +510,7 @@ public final class LocationsClientImpl implements LocationsClient {
                 this.client.getSubscriptionId(),
                 location,
                 this.client.getApiVersion(),
+                accept,
                 context)
             .map(
                 res ->
@@ -576,8 +598,15 @@ public final class LocationsClientImpl implements LocationsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listCachedImagesNext(nextLink, context))
+            .withContext(context -> service.listCachedImagesNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<CachedImages>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -587,7 +616,7 @@ public final class LocationsClientImpl implements LocationsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -605,9 +634,16 @@ public final class LocationsClientImpl implements LocationsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listCachedImagesNext(nextLink, context)
+            .listCachedImagesNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -633,8 +669,15 @@ public final class LocationsClientImpl implements LocationsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listCapabilitiesNext(nextLink, context))
+            .withContext(context -> service.listCapabilitiesNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<Capabilities>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -644,7 +687,7 @@ public final class LocationsClientImpl implements LocationsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -662,9 +705,16 @@ public final class LocationsClientImpl implements LocationsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listCapabilitiesNext(nextLink, context)
+            .listCapabilitiesNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

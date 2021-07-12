@@ -16,13 +16,19 @@ public final class PartnerTopicUpdateParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PartnerTopicUpdateParameters.class);
 
     /*
-     * Tags of the partner topic.
+     * Tags of the Partner Topic resource.
      */
     @JsonProperty(value = "tags")
     private Map<String, String> tags;
 
+    /*
+     * Identity information for the Partner Topic resource.
+     */
+    @JsonProperty(value = "identity")
+    private IdentityInfo identity;
+
     /**
-     * Get the tags property: Tags of the partner topic.
+     * Get the tags property: Tags of the Partner Topic resource.
      *
      * @return the tags value.
      */
@@ -31,7 +37,7 @@ public final class PartnerTopicUpdateParameters {
     }
 
     /**
-     * Set the tags property: Tags of the partner topic.
+     * Set the tags property: Tags of the Partner Topic resource.
      *
      * @param tags the tags value to set.
      * @return the PartnerTopicUpdateParameters object itself.
@@ -42,10 +48,33 @@ public final class PartnerTopicUpdateParameters {
     }
 
     /**
+     * Get the identity property: Identity information for the Partner Topic resource.
+     *
+     * @return the identity value.
+     */
+    public IdentityInfo identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Identity information for the Partner Topic resource.
+     *
+     * @param identity the identity value to set.
+     * @return the PartnerTopicUpdateParameters object itself.
+     */
+    public PartnerTopicUpdateParameters withIdentity(IdentityInfo identity) {
+        this.identity = identity;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (identity() != null) {
+            identity().validate();
+        }
     }
 }

@@ -25,6 +25,9 @@ public final class AADB2CURL {
 
     private static final String END_SESSION_URL_PATTERN = "oauth2/v2.0/logout?post_logout_redirect_uri=%s&p=%s";
 
+    private static final String AAD_TOKEN_URL_PATTERN = "https://login.microsoftonline.com/%s/oauth2/v2.0/token";
+    private static final String AAD_JWKSET_URL_PATTERN = "https://login.microsoftonline.com/%s/discovery/v2.0/keys";
+
     public static String getAuthorizationUrl(String baseUri) {
         return addSlash(baseUri) + AUTHORIZATION_URL_PATTERN;
     }
@@ -33,6 +36,16 @@ public final class AADB2CURL {
         Assert.hasText(userFlow, "user flow should have text.");
 
         return addSlash(baseUri) + TOKEN_URL_PATTERN + userFlow;
+    }
+
+    public static String getAADTokenUrl(String tenantId) {
+        Assert.hasText(tenantId, "tenantId should have text.");
+        return String.format(AAD_TOKEN_URL_PATTERN, tenantId);
+    }
+
+    public static String getAADJwkSetUrl(String tenantId) {
+        Assert.hasText(tenantId, "tenantId should have text.");
+        return String.format(AAD_JWKSET_URL_PATTERN, tenantId);
     }
 
     public static String getJwkSetUrl(String baseUri, String userFlow) {

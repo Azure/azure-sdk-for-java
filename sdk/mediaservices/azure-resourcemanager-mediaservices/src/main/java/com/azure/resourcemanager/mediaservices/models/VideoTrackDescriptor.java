@@ -8,12 +8,23 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** A TrackSelection to select video tracks. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "@odata\\.type",
+    defaultImpl = VideoTrackDescriptor.class)
 @JsonTypeName("#Microsoft.Media.VideoTrackDescriptor")
+@JsonSubTypes({
+    @JsonSubTypes.Type(
+        name = "#Microsoft.Media.SelectVideoTrackByAttribute",
+        value = SelectVideoTrackByAttribute.class),
+    @JsonSubTypes.Type(name = "#Microsoft.Media.SelectVideoTrackById", value = SelectVideoTrackById.class)
+})
 @JsonFlatten
 @Immutable
 public class VideoTrackDescriptor extends TrackDescriptor {

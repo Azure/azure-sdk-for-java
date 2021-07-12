@@ -193,7 +193,7 @@ public final class AzureWebPubSubServiceRestAPIImplBuilder {
             this.host = "";
         }
         if (apiVersion == null) {
-            this.apiVersion = "2020-10-01";
+            this.apiVersion = "2021-05-01-preview";
         }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();

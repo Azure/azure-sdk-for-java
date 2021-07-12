@@ -21,7 +21,7 @@ public final class MetricSeriesQueryOptions {
     private OffsetDateTime activeSince;
 
     /*
-     * filter specfic dimension name and values
+     * filter specific dimension name and values
      */
     @JsonProperty(value = "dimensionFilter")
     private Map<String, List<String>> dimensionFilter;
@@ -47,7 +47,7 @@ public final class MetricSeriesQueryOptions {
     }
 
     /**
-     * Get the dimensionFilter property: filter specfic dimension name and values.
+     * Get the dimensionFilter property: filter specific dimension name and values.
      *
      * @return the dimensionFilter value.
      */
@@ -56,7 +56,7 @@ public final class MetricSeriesQueryOptions {
     }
 
     /**
-     * Set the dimensionFilter property: filter specfic dimension name and values.
+     * Set the dimensionFilter property: filter specific dimension name and values.
      *
      * @param dimensionFilter the dimensionFilter value to set.
      * @return the MetricSeriesQueryOptions object itself.

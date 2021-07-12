@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.mediaservices.implementation;
 
-import com.azure.resourcemanager.mediaservices.MediaservicesManager;
 import com.azure.resourcemanager.mediaservices.fluent.models.ListStreamingLocatorsResponseInner;
 import com.azure.resourcemanager.mediaservices.models.AssetStreamingLocator;
 import com.azure.resourcemanager.mediaservices.models.ListStreamingLocatorsResponse;
@@ -14,10 +13,11 @@ import java.util.List;
 public final class ListStreamingLocatorsResponseImpl implements ListStreamingLocatorsResponse {
     private ListStreamingLocatorsResponseInner innerObject;
 
-    private final MediaservicesManager serviceManager;
+    private final com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager;
 
     ListStreamingLocatorsResponseImpl(
-        ListStreamingLocatorsResponseInner innerObject, MediaservicesManager serviceManager) {
+        ListStreamingLocatorsResponseInner innerObject,
+        com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -35,7 +35,7 @@ public final class ListStreamingLocatorsResponseImpl implements ListStreamingLoc
         return this.innerObject;
     }
 
-    private MediaservicesManager manager() {
+    private com.azure.resourcemanager.mediaservices.MediaServicesManager manager() {
         return this.serviceManager;
     }
 }

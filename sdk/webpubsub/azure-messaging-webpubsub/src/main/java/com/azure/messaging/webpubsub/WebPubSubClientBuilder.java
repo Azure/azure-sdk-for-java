@@ -21,9 +21,12 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.webpubsub.implementation.AzureWebPubSubServiceRestAPIImplBuilder;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -54,6 +57,8 @@ import java.util.Objects;
  *
  * <p>Of course, synchronous clients may also be instantiated, by calling {@link #buildClient() buildClient} rather than
  * {@link #buildAsyncClient() buildAsyncClient}.</p>
+ *
+ * {@codesnippet com.azure.messaging.webpubsub.webpubsubclientbuilder.connectionstring.sync}
  *
  * @see WebPubSubAsyncServiceClient
  * @see WebPubSubServiceClient
@@ -133,6 +138,11 @@ public final class WebPubSubClientBuilder {
      */
     public WebPubSubClientBuilder endpoint(final String endpoint) {
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
+        try {
+            new URL(endpoint);
+        } catch (MalformedURLException e) {
+            throw logger.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be valid URL", e));
+        }
         this.endpoint = endpoint;
         return this;
     }
@@ -280,14 +290,27 @@ public final class WebPubSubClientBuilder {
 
         if (endpoint == null && credential == null) {
             final Map<String, String> csParams = parseConnectionString(connectionString);
-            final String accessKey = csParams.get("accesskey");
-
-            this.credential = new AzureKeyCredential(accessKey);
-            this.endpoint = csParams.get("endpoint");
-
             if (!csParams.containsKey("endpoint") && !csParams.containsKey("accesskey")) {
                 logger.logThrowableAsError(new IllegalArgumentException(
                     "Connection string does not contain required 'endpoint' and 'accesskey' values"));
+            }
+
+            final String accessKey = csParams.get("accesskey");
+
+            this.credential = new AzureKeyCredential(accessKey);
+            String csEndpoint = csParams.get("endpoint");
+            URL url;
+            try {
+                url = new URL(csEndpoint);
+                this.endpoint = csEndpoint;
+            } catch (MalformedURLException e) {
+                throw logger.logExceptionAsWarning(new IllegalArgumentException("Connection string contains invalid "
+                    + "endpoint", e));
+            }
+
+            String port = csParams.get("port");
+            if (!CoreUtils.isNullOrEmpty(port)) {
+                this.endpoint = UrlBuilder.parse(url).setPort(port).toString();
             }
         }
 

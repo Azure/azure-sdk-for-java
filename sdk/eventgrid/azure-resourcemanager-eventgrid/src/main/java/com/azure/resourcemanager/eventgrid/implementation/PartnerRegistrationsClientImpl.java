@@ -130,7 +130,7 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.EventGrid/partnerRegistrations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PartnerRegistrationsListResult>> listBySubscription(
+        Mono<Response<PartnerRegistrationsListResult>> list(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
@@ -152,16 +152,6 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
             @QueryParam("api-version") String apiVersion,
             @QueryParam("$filter") String filter,
             @QueryParam("$top") Integer top,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get("/providers/Microsoft.EventGrid/partnerRegistrations")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PartnerRegistrationsListResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -233,7 +223,7 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
                             this.client.getApiVersion(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -396,7 +386,7 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
                             partnerRegistrationInfo,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -568,7 +558,7 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
                             partnerRegistrationName,
                             this.client.getApiVersion(),
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -723,7 +713,7 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
                             partnerRegistrationUpdateParameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -873,8 +863,7 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      * @return result of the List Partner Registrations operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PartnerRegistrationInner>> listBySubscriptionSinglePageAsync(
-        String filter, Integer top) {
+    private Mono<PagedResponse<PartnerRegistrationInner>> listSinglePageAsync(String filter, Integer top) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -892,7 +881,7 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
             .withContext(
                 context ->
                     service
-                        .listBySubscription(
+                        .list(
                             this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
@@ -909,7 +898,7 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -930,7 +919,7 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      * @return result of the List Partner Registrations operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PartnerRegistrationInner>> listBySubscriptionSinglePageAsync(
+    private Mono<PagedResponse<PartnerRegistrationInner>> listSinglePageAsync(
         String filter, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -947,7 +936,7 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listBySubscription(
+            .list(
                 this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
@@ -983,10 +972,9 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      * @return result of the List Partner Registrations operation.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PartnerRegistrationInner> listBySubscriptionAsync(String filter, Integer top) {
+    private PagedFlux<PartnerRegistrationInner> listAsync(String filter, Integer top) {
         return new PagedFlux<>(
-            () -> listBySubscriptionSinglePageAsync(filter, top),
-            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+            () -> listSinglePageAsync(filter, top), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -997,12 +985,11 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      * @return result of the List Partner Registrations operation.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PartnerRegistrationInner> listBySubscriptionAsync() {
+    private PagedFlux<PartnerRegistrationInner> listAsync() {
         final String filter = null;
         final Integer top = null;
         return new PagedFlux<>(
-            () -> listBySubscriptionSinglePageAsync(filter, top),
-            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+            () -> listSinglePageAsync(filter, top), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -1023,9 +1010,9 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      * @return result of the List Partner Registrations operation.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PartnerRegistrationInner> listBySubscriptionAsync(String filter, Integer top, Context context) {
+    private PagedFlux<PartnerRegistrationInner> listAsync(String filter, Integer top, Context context) {
         return new PagedFlux<>(
-            () -> listBySubscriptionSinglePageAsync(filter, top, context),
+            () -> listSinglePageAsync(filter, top, context),
             nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
@@ -1037,10 +1024,10 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      * @return result of the List Partner Registrations operation.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PartnerRegistrationInner> listBySubscription() {
+    public PagedIterable<PartnerRegistrationInner> list() {
         final String filter = null;
         final Integer top = null;
-        return new PagedIterable<>(listBySubscriptionAsync(filter, top));
+        return new PagedIterable<>(listAsync(filter, top));
     }
 
     /**
@@ -1061,8 +1048,8 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      * @return result of the List Partner Registrations operation.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PartnerRegistrationInner> listBySubscription(String filter, Integer top, Context context) {
-        return new PagedIterable<>(listBySubscriptionAsync(filter, top, context));
+    public PagedIterable<PartnerRegistrationInner> list(String filter, Integer top, Context context) {
+        return new PagedIterable<>(listAsync(filter, top, context));
     }
 
     /**
@@ -1124,7 +1111,7 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1297,111 +1284,6 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
     }
 
     /**
-     * List all partners registrations.
-     *
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Registrations operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PartnerRegistrationInner>> listSinglePageAsync() {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(), accept, context))
-            .<PagedResponse<PartnerRegistrationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * List all partners registrations.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Registrations operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PartnerRegistrationInner>> listSinglePageAsync(Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), this.client.getApiVersion(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
-    }
-
-    /**
-     * List all partners registrations.
-     *
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Registrations operation.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PartnerRegistrationInner> listAsync() {
-        return new PagedFlux<>(() -> listSinglePageAsync());
-    }
-
-    /**
-     * List all partners registrations.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Registrations operation.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PartnerRegistrationInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context));
-    }
-
-    /**
-     * List all partners registrations.
-     *
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Registrations operation.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PartnerRegistrationInner> list() {
-        return new PagedIterable<>(listAsync());
-    }
-
-    /**
-     * List all partners registrations.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Registrations operation.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PartnerRegistrationInner> list(Context context) {
-        return new PagedIterable<>(listAsync(context));
-    }
-
-    /**
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
@@ -1434,7 +1316,7 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1507,7 +1389,7 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

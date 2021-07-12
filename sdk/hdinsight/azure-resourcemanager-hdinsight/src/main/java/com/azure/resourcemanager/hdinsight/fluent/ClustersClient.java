@@ -11,6 +11,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.resourcemanager.hdinsight.fluent.models.AsyncOperationResultInner;
 import com.azure.resourcemanager.hdinsight.fluent.models.ClusterInner;
 import com.azure.resourcemanager.hdinsight.fluent.models.GatewaySettingsInner;
 import com.azure.resourcemanager.hdinsight.models.AutoscaleConfigurationUpdateParameter;
@@ -20,6 +21,7 @@ import com.azure.resourcemanager.hdinsight.models.ClusterPatchParameters;
 import com.azure.resourcemanager.hdinsight.models.ClusterResizeParameters;
 import com.azure.resourcemanager.hdinsight.models.ExecuteScriptActionParameters;
 import com.azure.resourcemanager.hdinsight.models.RoleName;
+import com.azure.resourcemanager.hdinsight.models.UpdateClusterIdentityCertificateParameters;
 import com.azure.resourcemanager.hdinsight.models.UpdateGatewaySettingsParameters;
 
 /** An instance of this class provides access to all the operations defined in ClustersClient. */
@@ -538,6 +540,103 @@ public interface ClustersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     void updateGatewaySettings(
         String resourceGroupName, String clusterName, UpdateGatewaySettingsParameters parameters, Context context);
+
+    /**
+     * The the async operation status.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @param operationId The long running operation id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the azure async operation response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AsyncOperationResultInner getAzureAsyncOperationStatus(
+        String resourceGroupName, String clusterName, String operationId);
+
+    /**
+     * The the async operation status.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @param operationId The long running operation id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the azure async operation response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<AsyncOperationResultInner> getAzureAsyncOperationStatusWithResponse(
+        String resourceGroupName, String clusterName, String operationId, Context context);
+
+    /**
+     * Updates the cluster identity certificate.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @param parameters The cluster configurations.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<Void>, Void> beginUpdateIdentityCertificate(
+        String resourceGroupName, String clusterName, UpdateClusterIdentityCertificateParameters parameters);
+
+    /**
+     * Updates the cluster identity certificate.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @param parameters The cluster configurations.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<Void>, Void> beginUpdateIdentityCertificate(
+        String resourceGroupName,
+        String clusterName,
+        UpdateClusterIdentityCertificateParameters parameters,
+        Context context);
+
+    /**
+     * Updates the cluster identity certificate.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @param parameters The cluster configurations.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void updateIdentityCertificate(
+        String resourceGroupName, String clusterName, UpdateClusterIdentityCertificateParameters parameters);
+
+    /**
+     * Updates the cluster identity certificate.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @param parameters The cluster configurations.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void updateIdentityCertificate(
+        String resourceGroupName,
+        String clusterName,
+        UpdateClusterIdentityCertificateParameters parameters,
+        Context context);
 
     /**
      * Executes script actions on the specified HDInsight cluster.

@@ -1,27 +1,27 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('thisindexdoesnotexist')?api-version=2020-06-30",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('thisindexdoesnotexist')?api-version=2020-06-30-Preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "46118032-e942-4c91-87d4-ea1e6dece99a"
+      "x-ms-client-request-id" : "97580737-81d7-4c89-844a-cb41f01b7d2b"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "46118032-e942-4c91-87d4-ea1e6dece99a",
+      "request-id" : "97580737-81d7-4c89-844a-cb41f01b7d2b",
       "StatusCode" : "404",
-      "Date" : "Wed, 31 Mar 2021 21:21:08 GMT",
+      "Date" : "Fri, 02 Apr 2021 22:37:02 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "46118032-e942-4c91-87d4-ea1e6dece99a",
-      "elapsed-time" : "29",
+      "client-request-id" : "97580737-81d7-4c89-844a-cb41f01b7d2b",
+      "elapsed-time" : "24",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "122",
       "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No index with the name 'thisindexdoesnotexist' was found in the service 'alzimmer-test'.\"}}",
       "Content-Language" : "en",
-      "x-ms-client-request-id" : "46118032-e942-4c91-87d4-ea1e6dece99a",
+      "x-ms-client-request-id" : "97580737-81d7-4c89-844a-cb41f01b7d2b",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },

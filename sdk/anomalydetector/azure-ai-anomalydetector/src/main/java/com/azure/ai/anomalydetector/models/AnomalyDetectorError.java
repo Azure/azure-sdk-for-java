@@ -7,7 +7,7 @@ package com.azure.ai.anomalydetector.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The AnomalyDetectorError model. */
+/** Error information returned by the API. */
 @Fluent
 public final class AnomalyDetectorError {
     /*

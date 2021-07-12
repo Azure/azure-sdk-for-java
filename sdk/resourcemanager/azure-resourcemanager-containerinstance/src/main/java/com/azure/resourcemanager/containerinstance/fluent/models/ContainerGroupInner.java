@@ -25,6 +25,7 @@ import com.azure.resourcemanager.containerinstance.models.Volume;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** A container group. */
 @JsonFlatten
@@ -410,6 +411,20 @@ public class ContainerGroupInner extends Resource {
      */
     public ContainerGroupInner withInitContainers(List<InitContainerDefinition> initContainers) {
         this.initContainers = initContainers;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ContainerGroupInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ContainerGroupInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 

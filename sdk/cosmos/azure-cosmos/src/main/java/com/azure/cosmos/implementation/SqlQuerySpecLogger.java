@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 public class SqlQuerySpecLogger {
 
     static final String LINE_SEPARATOR = System.getProperty("line.separator");
+
     private static final SqlQuerySpecLogger INSTANCE = new SqlQuerySpecLogger(LoggerFactory.getLogger(SqlQuerySpecLogger.class));
 
     public static SqlQuerySpecLogger getInstance() {
@@ -22,20 +23,24 @@ public class SqlQuerySpecLogger {
         this.logger = logger;
     }
 
+    private static String toPrettyString(SqlQuerySpec query) {
+        StringBuilder sb = new StringBuilder(1000);
+        sb.append(query.getQueryText());
+        query.getParameters().forEach(p -> sb.append(LINE_SEPARATOR)
+                                            .append(" > param: ")
+                                            .append(p.getName())
+                                            .append(" = ")
+                                            .append(p.getValue(Object.class))
+        );
+
+        return sb.toString();
+    }
+
     public void logQuery(SqlQuerySpec querySpec) {
         if (logger.isTraceEnabled() && !querySpec.getParameters().isEmpty()) {
-            StringBuilder queryLogBuilder = new StringBuilder(1000);
-            queryLogBuilder.append(querySpec.getQueryText());
-            querySpec.getParameters().forEach(p -> queryLogBuilder.append(LINE_SEPARATOR)
-                .append(" > param: ")
-                .append(p.getName())
-                .append(" = ")
-                .append(p.getValue(Object.class))
-            );
-            logger.debug(queryLogBuilder.toString());
+            logger.debug(toPrettyString(querySpec));
         } else if (logger.isDebugEnabled()) {
             logger.debug(querySpec.getQueryText());
         }
     }
-
 }

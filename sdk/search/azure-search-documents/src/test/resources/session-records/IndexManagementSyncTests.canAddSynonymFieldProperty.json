@@ -1,104 +1,104 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/synonymmaps?api-version=2020-06-30",
+    "Uri" : "https://REDACTED.search.windows.net/synonymmaps?api-version=2020-06-30-Preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "38e80743-402a-4a67-ab5e-7ec7035b1ad2",
+      "x-ms-client-request-id" : "898fd579-ec26-4abe-a10b-013bc689d5d2",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "38e80743-402a-4a67-ab5e-7ec7035b1ad2",
+      "request-id" : "898fd579-ec26-4abe-a10b-013bc689d5d2",
       "StatusCode" : "201",
-      "Date" : "Wed, 31 Mar 2021 21:20:23 GMT",
+      "Date" : "Fri, 02 Apr 2021 22:36:36 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D8F48ACBE625DE\"",
-      "client-request-id" : "38e80743-402a-4a67-ab5e-7ec7035b1ad2",
-      "elapsed-time" : "50",
+      "ETag" : "W/\"0x8D8F627C6821886\"",
+      "client-request-id" : "898fd579-ec26-4abe-a10b-013bc689d5d2",
+      "elapsed-time" : "68",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "222",
-      "Body" : "{\"@odata.context\":\"https://alzimmer-test.search.windows.net/$metadata#synonymmaps/$entity\",\"@odata.etag\":\"\\\"0x8D8F48ACBE625DE\\\"\",\"name\":\"names7641630c60e86255\",\"format\":\"solr\",\"synonyms\":\"hotel,motel\",\"encryptionKey\":null}",
-      "x-ms-client-request-id" : "38e80743-402a-4a67-ab5e-7ec7035b1ad2",
+      "Body" : "{\"@odata.context\":\"https://alzimmer-test.search.windows.net/$metadata#synonymmaps/$entity\",\"@odata.etag\":\"\\\"0x8D8F627C6821886\\\"\",\"name\":\"names70216988a7e83be8\",\"format\":\"solr\",\"synonyms\":\"hotel,motel\",\"encryptionKey\":null}",
+      "x-ms-client-request-id" : "898fd579-ec26-4abe-a10b-013bc689d5d2",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://alzimmer-test.search.windows.net/synonymmaps('names7641630c60e86255')?api-version=2020-06-30"
+      "Location" : "https://alzimmer-test.search.windows.net/synonymmaps('names70216988a7e83be8')?api-version=2020-06-30-Preview"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/indexes?api-version=2020-06-30",
+    "Uri" : "https://REDACTED.search.windows.net/indexes?api-version=2020-06-30-Preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "c61f3de1-05da-4207-8653-37d29cbe0b63",
+      "x-ms-client-request-id" : "f891f327-111d-414e-9471-bd33bd82331b",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "c61f3de1-05da-4207-8653-37d29cbe0b63",
+      "request-id" : "f891f327-111d-414e-9471-bd33bd82331b",
       "StatusCode" : "201",
-      "Date" : "Wed, 31 Mar 2021 21:20:24 GMT",
+      "Date" : "Fri, 02 Apr 2021 22:36:37 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D8F48ACC8B3527\"",
-      "client-request-id" : "c61f3de1-05da-4207-8653-37d29cbe0b63",
-      "elapsed-time" : "1068",
+      "ETag" : "W/\"0x8D8F627C72DDFCA\"",
+      "client-request-id" : "f891f327-111d-414e-9471-bd33bd82331b",
+      "elapsed-time" : "1109",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "867",
-      "Body" : "{\"@odata.context\":\"https://alzimmer-test.search.windows.net/$metadata#indexes/$entity\",\"@odata.etag\":\"\\\"0x8D8F48ACC8B3527\\\"\",\"name\":\"hotels\",\"defaultScoringProfile\":null,\"fields\":[{\"name\":\"HotelId\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":true,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"synonymMaps\":[]},{\"name\":\"HotelName\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"synonymMaps\":[\"names7641630c60e86255\"]}],\"scoringProfiles\":[],\"corsOptions\":null,\"suggesters\":[],\"analyzers\":[],\"tokenizers\":[],\"tokenFilters\":[],\"charFilters\":[],\"encryptionKey\":null,\"similarity\":{\"@odata.type\":\"#Microsoft.Azure.Search.BM25Similarity\",\"k1\":null,\"b\":null}}",
-      "x-ms-client-request-id" : "c61f3de1-05da-4207-8653-37d29cbe0b63",
+      "Content-Length" : "920",
+      "Body" : "{\"@odata.context\":\"https://alzimmer-test.search.windows.net/$metadata#indexes/$entity\",\"@odata.etag\":\"\\\"0x8D8F627C72DDFCA\\\"\",\"name\":\"hotels\",\"defaultScoringProfile\":null,\"fields\":[{\"name\":\"HotelId\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":true,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"HotelName\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[\"names70216988a7e83be8\"]}],\"scoringProfiles\":[],\"corsOptions\":null,\"suggesters\":[],\"analyzers\":[],\"normalizers\":[],\"tokenizers\":[],\"tokenFilters\":[],\"charFilters\":[],\"encryptionKey\":null,\"similarity\":{\"@odata.type\":\"#Microsoft.Azure.Search.BM25Similarity\",\"k1\":null,\"b\":null}}",
+      "x-ms-client-request-id" : "f891f327-111d-414e-9471-bd33bd82331b",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://alzimmer-test.search.windows.net/indexes('hotels')?api-version=2020-06-30"
+      "Location" : "https://alzimmer-test.search.windows.net/indexes('hotels')?api-version=2020-06-30-Preview"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.search.windows.net/synonymmaps('names7641630c60e86255')?api-version=2020-06-30",
+    "Uri" : "https://REDACTED.search.windows.net/synonymmaps('names70216988a7e83be8')?api-version=2020-06-30-Preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "3bf9502a-7df3-4d23-8fdd-28e1445edc39"
+      "x-ms-client-request-id" : "bcf88237-72f9-4510-a510-b68b3f5d3ac3"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "3bf9502a-7df3-4d23-8fdd-28e1445edc39",
-      "elapsed-time" : "51",
+      "client-request-id" : "bcf88237-72f9-4510-a510-b68b3f5d3ac3",
+      "elapsed-time" : "43",
       "Pragma" : "no-cache",
       "Expires" : "-1",
       "retry-after" : "0",
-      "request-id" : "3bf9502a-7df3-4d23-8fdd-28e1445edc39",
+      "request-id" : "bcf88237-72f9-4510-a510-b68b3f5d3ac3",
       "StatusCode" : "204",
-      "x-ms-client-request-id" : "3bf9502a-7df3-4d23-8fdd-28e1445edc39",
-      "Date" : "Wed, 31 Mar 2021 21:20:24 GMT"
+      "x-ms-client-request-id" : "bcf88237-72f9-4510-a510-b68b3f5d3ac3",
+      "Date" : "Fri, 02 Apr 2021 22:36:37 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('hotels')?api-version=2020-06-30",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('hotels')?api-version=2020-06-30-Preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "2cf0d465-4db6-4b68-87d6-7674fdb76f14"
+      "x-ms-client-request-id" : "c45eaa4b-e0e7-45b7-9970-4ec93d49ea07"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "2cf0d465-4db6-4b68-87d6-7674fdb76f14",
-      "elapsed-time" : "1401",
+      "client-request-id" : "c45eaa4b-e0e7-45b7-9970-4ec93d49ea07",
+      "elapsed-time" : "1289",
       "Pragma" : "no-cache",
       "Expires" : "-1",
       "retry-after" : "0",
-      "request-id" : "2cf0d465-4db6-4b68-87d6-7674fdb76f14",
+      "request-id" : "c45eaa4b-e0e7-45b7-9970-4ec93d49ea07",
       "StatusCode" : "204",
-      "x-ms-client-request-id" : "2cf0d465-4db6-4b68-87d6-7674fdb76f14",
-      "Date" : "Wed, 31 Mar 2021 21:20:26 GMT"
+      "x-ms-client-request-id" : "c45eaa4b-e0e7-45b7-9970-4ec93d49ea07",
+      "Date" : "Fri, 02 Apr 2021 22:36:38 GMT"
     },
     "Exception" : null
   } ],
-  "variables" : [ "names7641630c60e86255" ]
+  "variables" : [ "names70216988a7e83be8" ]
 }

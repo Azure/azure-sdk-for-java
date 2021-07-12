@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.eventgrid.implementation;
 
-import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.eventgrid.models.ConnectionState;
 import com.azure.resourcemanager.eventgrid.models.PrivateEndpoint;
@@ -16,9 +15,11 @@ import java.util.List;
 public final class PrivateEndpointConnectionImpl implements PrivateEndpointConnection {
     private PrivateEndpointConnectionInner innerObject;
 
-    private final EventGridManager serviceManager;
+    private final com.azure.resourcemanager.eventgrid.EventGridManager serviceManager;
 
-    PrivateEndpointConnectionImpl(PrivateEndpointConnectionInner innerObject, EventGridManager serviceManager) {
+    PrivateEndpointConnectionImpl(
+        PrivateEndpointConnectionInner innerObject,
+        com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -60,7 +61,7 @@ public final class PrivateEndpointConnectionImpl implements PrivateEndpointConne
         return this.innerObject;
     }
 
-    private EventGridManager manager() {
+    private com.azure.resourcemanager.eventgrid.EventGridManager manager() {
         return this.serviceManager;
     }
 }

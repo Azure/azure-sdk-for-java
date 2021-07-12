@@ -9,7 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.postgresql.PostgreSqlManager;
 import com.azure.resourcemanager.postgresql.fluent.ConfigurationsClient;
 import com.azure.resourcemanager.postgresql.fluent.models.ConfigurationInner;
 import com.azure.resourcemanager.postgresql.models.Configuration;
@@ -21,9 +20,10 @@ public final class ConfigurationsImpl implements Configurations {
 
     private final ConfigurationsClient innerClient;
 
-    private final PostgreSqlManager serviceManager;
+    private final com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager;
 
-    public ConfigurationsImpl(ConfigurationsClient innerClient, PostgreSqlManager serviceManager) {
+    public ConfigurationsImpl(
+        ConfigurationsClient innerClient, com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -54,13 +54,13 @@ public final class ConfigurationsImpl implements Configurations {
 
     public PagedIterable<Configuration> listByServer(String resourceGroupName, String serverName) {
         PagedIterable<ConfigurationInner> inner = this.serviceClient().listByServer(resourceGroupName, serverName);
-        return inner.mapPage(inner1 -> new ConfigurationImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new ConfigurationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Configuration> listByServer(String resourceGroupName, String serverName, Context context) {
         PagedIterable<ConfigurationInner> inner =
             this.serviceClient().listByServer(resourceGroupName, serverName, context);
-        return inner.mapPage(inner1 -> new ConfigurationImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new ConfigurationImpl(inner1, this.manager()));
     }
 
     public Configuration getById(String id) {
@@ -121,7 +121,7 @@ public final class ConfigurationsImpl implements Configurations {
         return this.innerClient;
     }
 
-    private PostgreSqlManager manager() {
+    private com.azure.resourcemanager.postgresql.PostgreSqlManager manager() {
         return this.serviceManager;
     }
 

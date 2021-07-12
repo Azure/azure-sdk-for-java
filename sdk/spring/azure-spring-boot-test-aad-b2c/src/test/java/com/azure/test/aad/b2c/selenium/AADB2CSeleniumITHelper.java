@@ -26,9 +26,9 @@ public class AADB2CSeleniumITHelper extends SeleniumITHelper {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AADB2CSeleniumITHelper.class);
 
-    private String userEmail;
-    private String userPassword;
-    private boolean isAzureCloudGlobal;
+    private final String userEmail;
+    private final String userPassword;
+    private final boolean isAzureCloudGlobal;
 
     public static Map<String, String> createDefaultProperteis() {
         Map<String, String> defaultProperteis = new HashMap<>();
@@ -110,6 +110,10 @@ public class AADB2CSeleniumITHelper extends SeleniumITHelper {
     }
 
     public String getName() {
+        String currentUrl = driver.getCurrentUrl();
+        LOGGER.info("AADB2CSeleniumITHelper, currenturl = {}", currentUrl);
+        String pageSource = driver.getPageSource();
+        LOGGER.info("AADB2CSeleniumITHelper, pageSource = {}", pageSource);
         return driver.findElement(By.cssSelector("tbody"))
             .findElement(By.xpath("tr[2]"))
             .findElement(By.xpath("th[2]"))

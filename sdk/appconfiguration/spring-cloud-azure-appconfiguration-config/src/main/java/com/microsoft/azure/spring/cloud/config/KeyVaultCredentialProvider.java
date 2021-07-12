@@ -6,6 +6,6 @@ import com.azure.core.credential.TokenCredential;
 
 public interface KeyVaultCredentialProvider {
 
-    public TokenCredential getKeyVaultCredential(String uri);
+    TokenCredential getKeyVaultCredential(String uri);
 
 }

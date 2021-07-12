@@ -9,7 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.postgresql.PostgreSqlManager;
 import com.azure.resourcemanager.postgresql.fluent.FirewallRulesClient;
 import com.azure.resourcemanager.postgresql.fluent.models.FirewallRuleInner;
 import com.azure.resourcemanager.postgresql.models.FirewallRule;
@@ -21,9 +20,10 @@ public final class FirewallRulesImpl implements FirewallRules {
 
     private final FirewallRulesClient innerClient;
 
-    private final PostgreSqlManager serviceManager;
+    private final com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager;
 
-    public FirewallRulesImpl(FirewallRulesClient innerClient, PostgreSqlManager serviceManager) {
+    public FirewallRulesImpl(
+        FirewallRulesClient innerClient, com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -62,13 +62,13 @@ public final class FirewallRulesImpl implements FirewallRules {
 
     public PagedIterable<FirewallRule> listByServer(String resourceGroupName, String serverName) {
         PagedIterable<FirewallRuleInner> inner = this.serviceClient().listByServer(resourceGroupName, serverName);
-        return inner.mapPage(inner1 -> new FirewallRuleImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new FirewallRuleImpl(inner1, this.manager()));
     }
 
     public PagedIterable<FirewallRule> listByServer(String resourceGroupName, String serverName, Context context) {
         PagedIterable<FirewallRuleInner> inner =
             this.serviceClient().listByServer(resourceGroupName, serverName, context);
-        return inner.mapPage(inner1 -> new FirewallRuleImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new FirewallRuleImpl(inner1, this.manager()));
     }
 
     public FirewallRule getById(String id) {
@@ -179,7 +179,7 @@ public final class FirewallRulesImpl implements FirewallRules {
         return this.innerClient;
     }
 
-    private PostgreSqlManager manager() {
+    private com.azure.resourcemanager.postgresql.PostgreSqlManager manager() {
         return this.serviceManager;
     }
 

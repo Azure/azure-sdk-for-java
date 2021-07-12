@@ -67,7 +67,6 @@ public final class ExportsClientImpl implements ExportsClient {
             @HostParam("$host") String endpoint,
             @PathParam(value = "scope", encoded = true) String scope,
             @QueryParam("api-version") String apiVersion,
-            @QueryParam("$expand") String expand,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -80,7 +79,6 @@ public final class ExportsClientImpl implements ExportsClient {
             @PathParam(value = "scope", encoded = true) String scope,
             @QueryParam("api-version") String apiVersion,
             @PathParam("exportName") String exportName,
-            @QueryParam("$expand") String expand,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -137,9 +135,10 @@ public final class ExportsClientImpl implements ExportsClient {
     /**
      * The operation to list all exports at the given scope.
      *
-     * @param scope The scope associated with export operations. This includes '/subscriptions/{subscriptionId}/' for
-     *     subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
-     *     scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
+     * @param scope The scope associated with query and export operations. This includes
+     *     '/subscriptions/{subscriptionId}/' for subscription scope,
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
+     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
      *     scope,
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
@@ -151,15 +150,13 @@ public final class ExportsClientImpl implements ExportsClient {
      *     for invoiceSection scope, and
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}' specific for
      *     partners.
-     * @param expand May be used to expand the properties within an export. Currently only 'runHistory' is supported and
-     *     will return information for the last execution of each export.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of listing exports.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ExportListResultInner>> listWithResponseAsync(String scope, String expand) {
+    private Mono<Response<ExportListResultInner>> listWithResponseAsync(String scope) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -172,18 +169,17 @@ public final class ExportsClientImpl implements ExportsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .list(this.client.getEndpoint(), scope, this.client.getApiVersion(), expand, accept, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+                context -> service.list(this.client.getEndpoint(), scope, this.client.getApiVersion(), accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * The operation to list all exports at the given scope.
      *
-     * @param scope The scope associated with export operations. This includes '/subscriptions/{subscriptionId}/' for
-     *     subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
-     *     scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
+     * @param scope The scope associated with query and export operations. This includes
+     *     '/subscriptions/{subscriptionId}/' for subscription scope,
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
+     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
      *     scope,
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
@@ -195,8 +191,6 @@ public final class ExportsClientImpl implements ExportsClient {
      *     for invoiceSection scope, and
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}' specific for
      *     partners.
-     * @param expand May be used to expand the properties within an export. Currently only 'runHistory' is supported and
-     *     will return information for the last execution of each export.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -204,7 +198,7 @@ public final class ExportsClientImpl implements ExportsClient {
      * @return result of listing exports.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ExportListResultInner>> listWithResponseAsync(String scope, String expand, Context context) {
+    private Mono<Response<ExportListResultInner>> listWithResponseAsync(String scope, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -216,52 +210,16 @@ public final class ExportsClientImpl implements ExportsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.list(this.client.getEndpoint(), scope, this.client.getApiVersion(), expand, accept, context);
+        return service.list(this.client.getEndpoint(), scope, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * The operation to list all exports at the given scope.
      *
-     * @param scope The scope associated with export operations. This includes '/subscriptions/{subscriptionId}/' for
-     *     subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
-     *     scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
-     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
-     *     scope,
-     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
-     *     for EnrollmentAccount scope, '/providers/Microsoft.Management/managementGroups/{managementGroupId} for
-     *     Management Group scope,
-     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
-     *     billingProfile scope,
-     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/invoiceSections/{invoiceSectionId}'
-     *     for invoiceSection scope, and
-     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}' specific for
-     *     partners.
-     * @param expand May be used to expand the properties within an export. Currently only 'runHistory' is supported and
-     *     will return information for the last execution of each export.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing exports.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ExportListResultInner> listAsync(String scope, String expand) {
-        return listWithResponseAsync(scope, expand)
-            .flatMap(
-                (Response<ExportListResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * The operation to list all exports at the given scope.
-     *
-     * @param scope The scope associated with export operations. This includes '/subscriptions/{subscriptionId}/' for
-     *     subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
-     *     scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
+     * @param scope The scope associated with query and export operations. This includes
+     *     '/subscriptions/{subscriptionId}/' for subscription scope,
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
+     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
      *     scope,
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
@@ -280,8 +238,7 @@ public final class ExportsClientImpl implements ExportsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ExportListResultInner> listAsync(String scope) {
-        final String expand = null;
-        return listWithResponseAsync(scope, expand)
+        return listWithResponseAsync(scope)
             .flatMap(
                 (Response<ExportListResultInner> res) -> {
                     if (res.getValue() != null) {
@@ -295,9 +252,10 @@ public final class ExportsClientImpl implements ExportsClient {
     /**
      * The operation to list all exports at the given scope.
      *
-     * @param scope The scope associated with export operations. This includes '/subscriptions/{subscriptionId}/' for
-     *     subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
-     *     scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
+     * @param scope The scope associated with query and export operations. This includes
+     *     '/subscriptions/{subscriptionId}/' for subscription scope,
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
+     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
      *     scope,
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
@@ -316,16 +274,16 @@ public final class ExportsClientImpl implements ExportsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExportListResultInner list(String scope) {
-        final String expand = null;
-        return listAsync(scope, expand).block();
+        return listAsync(scope).block();
     }
 
     /**
      * The operation to list all exports at the given scope.
      *
-     * @param scope The scope associated with export operations. This includes '/subscriptions/{subscriptionId}/' for
-     *     subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
-     *     scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
+     * @param scope The scope associated with query and export operations. This includes
+     *     '/subscriptions/{subscriptionId}/' for subscription scope,
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
+     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
      *     scope,
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
@@ -337,8 +295,6 @@ public final class ExportsClientImpl implements ExportsClient {
      *     for invoiceSection scope, and
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}' specific for
      *     partners.
-     * @param expand May be used to expand the properties within an export. Currently only 'runHistory' is supported and
-     *     will return information for the last execution of each export.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -346,16 +302,17 @@ public final class ExportsClientImpl implements ExportsClient {
      * @return result of listing exports.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ExportListResultInner> listWithResponse(String scope, String expand, Context context) {
-        return listWithResponseAsync(scope, expand, context).block();
+    public Response<ExportListResultInner> listWithResponse(String scope, Context context) {
+        return listWithResponseAsync(scope, context).block();
     }
 
     /**
      * The operation to get the export for the defined scope by export name.
      *
-     * @param scope The scope associated with export operations. This includes '/subscriptions/{subscriptionId}/' for
-     *     subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
-     *     scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
+     * @param scope The scope associated with query and export operations. This includes
+     *     '/subscriptions/{subscriptionId}/' for subscription scope,
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
+     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
      *     scope,
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
@@ -368,15 +325,13 @@ public final class ExportsClientImpl implements ExportsClient {
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}' specific for
      *     partners.
      * @param exportName Export Name.
-     * @param expand May be used to expand the properties within an export. Currently only 'runHistory' is supported and
-     *     will return information for the last 10 executions of the export.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an export resource.
+     * @return a export resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ExportInner>> getWithResponseAsync(String scope, String exportName, String expand) {
+    private Mono<Response<ExportInner>> getWithResponseAsync(String scope, String exportName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -395,22 +350,17 @@ public final class ExportsClientImpl implements ExportsClient {
                 context ->
                     service
                         .get(
-                            this.client.getEndpoint(),
-                            scope,
-                            this.client.getApiVersion(),
-                            exportName,
-                            expand,
-                            accept,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+                            this.client.getEndpoint(), scope, this.client.getApiVersion(), exportName, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * The operation to get the export for the defined scope by export name.
      *
-     * @param scope The scope associated with export operations. This includes '/subscriptions/{subscriptionId}/' for
-     *     subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
-     *     scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
+     * @param scope The scope associated with query and export operations. This includes
+     *     '/subscriptions/{subscriptionId}/' for subscription scope,
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
+     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
      *     scope,
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
@@ -423,17 +373,14 @@ public final class ExportsClientImpl implements ExportsClient {
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}' specific for
      *     partners.
      * @param exportName Export Name.
-     * @param expand May be used to expand the properties within an export. Currently only 'runHistory' is supported and
-     *     will return information for the last 10 executions of the export.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an export resource.
+     * @return a export resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ExportInner>> getWithResponseAsync(
-        String scope, String exportName, String expand, Context context) {
+    private Mono<Response<ExportInner>> getWithResponseAsync(String scope, String exportName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -448,54 +395,16 @@ public final class ExportsClientImpl implements ExportsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(this.client.getEndpoint(), scope, this.client.getApiVersion(), exportName, expand, accept, context);
+        return service.get(this.client.getEndpoint(), scope, this.client.getApiVersion(), exportName, accept, context);
     }
 
     /**
      * The operation to get the export for the defined scope by export name.
      *
-     * @param scope The scope associated with export operations. This includes '/subscriptions/{subscriptionId}/' for
-     *     subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
-     *     scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
-     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
-     *     scope,
-     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
-     *     for EnrollmentAccount scope, '/providers/Microsoft.Management/managementGroups/{managementGroupId} for
-     *     Management Group scope,
-     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
-     *     billingProfile scope,
-     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/invoiceSections/{invoiceSectionId}'
-     *     for invoiceSection scope, and
-     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}' specific for
-     *     partners.
-     * @param exportName Export Name.
-     * @param expand May be used to expand the properties within an export. Currently only 'runHistory' is supported and
-     *     will return information for the last 10 executions of the export.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an export resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ExportInner> getAsync(String scope, String exportName, String expand) {
-        return getWithResponseAsync(scope, exportName, expand)
-            .flatMap(
-                (Response<ExportInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * The operation to get the export for the defined scope by export name.
-     *
-     * @param scope The scope associated with export operations. This includes '/subscriptions/{subscriptionId}/' for
-     *     subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
-     *     scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
+     * @param scope The scope associated with query and export operations. This includes
+     *     '/subscriptions/{subscriptionId}/' for subscription scope,
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
+     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
      *     scope,
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
@@ -511,12 +420,11 @@ public final class ExportsClientImpl implements ExportsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an export resource.
+     * @return a export resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ExportInner> getAsync(String scope, String exportName) {
-        final String expand = null;
-        return getWithResponseAsync(scope, exportName, expand)
+        return getWithResponseAsync(scope, exportName)
             .flatMap(
                 (Response<ExportInner> res) -> {
                     if (res.getValue() != null) {
@@ -530,9 +438,10 @@ public final class ExportsClientImpl implements ExportsClient {
     /**
      * The operation to get the export for the defined scope by export name.
      *
-     * @param scope The scope associated with export operations. This includes '/subscriptions/{subscriptionId}/' for
-     *     subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
-     *     scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
+     * @param scope The scope associated with query and export operations. This includes
+     *     '/subscriptions/{subscriptionId}/' for subscription scope,
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
+     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
      *     scope,
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
@@ -548,20 +457,20 @@ public final class ExportsClientImpl implements ExportsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an export resource.
+     * @return a export resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExportInner get(String scope, String exportName) {
-        final String expand = null;
-        return getAsync(scope, exportName, expand).block();
+        return getAsync(scope, exportName).block();
     }
 
     /**
      * The operation to get the export for the defined scope by export name.
      *
-     * @param scope The scope associated with export operations. This includes '/subscriptions/{subscriptionId}/' for
-     *     subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
-     *     scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
+     * @param scope The scope associated with query and export operations. This includes
+     *     '/subscriptions/{subscriptionId}/' for subscription scope,
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
+     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
      *     scope,
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
@@ -574,26 +483,25 @@ public final class ExportsClientImpl implements ExportsClient {
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}' specific for
      *     partners.
      * @param exportName Export Name.
-     * @param expand May be used to expand the properties within an export. Currently only 'runHistory' is supported and
-     *     will return information for the last 10 executions of the export.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an export resource.
+     * @return a export resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ExportInner> getWithResponse(String scope, String exportName, String expand, Context context) {
-        return getWithResponseAsync(scope, exportName, expand, context).block();
+    public Response<ExportInner> getWithResponse(String scope, String exportName, Context context) {
+        return getWithResponseAsync(scope, exportName, context).block();
     }
 
     /**
      * The operation to create or update a export. Update operation requires latest eTag to be set in the request. You
      * may obtain the latest eTag by performing a get operation. Create operation does not require eTag.
      *
-     * @param scope The scope associated with export operations. This includes '/subscriptions/{subscriptionId}/' for
-     *     subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
-     *     scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
+     * @param scope The scope associated with query and export operations. This includes
+     *     '/subscriptions/{subscriptionId}/' for subscription scope,
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
+     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
      *     scope,
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
@@ -610,7 +518,7 @@ public final class ExportsClientImpl implements ExportsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an export resource.
+     * @return a export resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ExportInner>> createOrUpdateWithResponseAsync(
@@ -645,16 +553,17 @@ public final class ExportsClientImpl implements ExportsClient {
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * The operation to create or update a export. Update operation requires latest eTag to be set in the request. You
      * may obtain the latest eTag by performing a get operation. Create operation does not require eTag.
      *
-     * @param scope The scope associated with export operations. This includes '/subscriptions/{subscriptionId}/' for
-     *     subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
-     *     scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
+     * @param scope The scope associated with query and export operations. This includes
+     *     '/subscriptions/{subscriptionId}/' for subscription scope,
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
+     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
      *     scope,
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
@@ -672,7 +581,7 @@ public final class ExportsClientImpl implements ExportsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an export resource.
+     * @return a export resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ExportInner>> createOrUpdateWithResponseAsync(
@@ -705,9 +614,10 @@ public final class ExportsClientImpl implements ExportsClient {
      * The operation to create or update a export. Update operation requires latest eTag to be set in the request. You
      * may obtain the latest eTag by performing a get operation. Create operation does not require eTag.
      *
-     * @param scope The scope associated with export operations. This includes '/subscriptions/{subscriptionId}/' for
-     *     subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
-     *     scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
+     * @param scope The scope associated with query and export operations. This includes
+     *     '/subscriptions/{subscriptionId}/' for subscription scope,
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
+     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
      *     scope,
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
@@ -724,7 +634,7 @@ public final class ExportsClientImpl implements ExportsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an export resource.
+     * @return a export resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ExportInner> createOrUpdateAsync(String scope, String exportName, ExportInner parameters) {
@@ -743,9 +653,10 @@ public final class ExportsClientImpl implements ExportsClient {
      * The operation to create or update a export. Update operation requires latest eTag to be set in the request. You
      * may obtain the latest eTag by performing a get operation. Create operation does not require eTag.
      *
-     * @param scope The scope associated with export operations. This includes '/subscriptions/{subscriptionId}/' for
-     *     subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
-     *     scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
+     * @param scope The scope associated with query and export operations. This includes
+     *     '/subscriptions/{subscriptionId}/' for subscription scope,
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
+     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
      *     scope,
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
@@ -762,7 +673,7 @@ public final class ExportsClientImpl implements ExportsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an export resource.
+     * @return a export resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExportInner createOrUpdate(String scope, String exportName, ExportInner parameters) {
@@ -773,9 +684,10 @@ public final class ExportsClientImpl implements ExportsClient {
      * The operation to create or update a export. Update operation requires latest eTag to be set in the request. You
      * may obtain the latest eTag by performing a get operation. Create operation does not require eTag.
      *
-     * @param scope The scope associated with export operations. This includes '/subscriptions/{subscriptionId}/' for
-     *     subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
-     *     scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
+     * @param scope The scope associated with query and export operations. This includes
+     *     '/subscriptions/{subscriptionId}/' for subscription scope,
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
+     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
      *     scope,
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
@@ -793,7 +705,7 @@ public final class ExportsClientImpl implements ExportsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an export resource.
+     * @return a export resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExportInner> createOrUpdateWithResponse(
@@ -804,9 +716,10 @@ public final class ExportsClientImpl implements ExportsClient {
     /**
      * The operation to delete a export.
      *
-     * @param scope The scope associated with export operations. This includes '/subscriptions/{subscriptionId}/' for
-     *     subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
-     *     scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
+     * @param scope The scope associated with query and export operations. This includes
+     *     '/subscriptions/{subscriptionId}/' for subscription scope,
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
+     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
      *     scope,
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
@@ -845,15 +758,16 @@ public final class ExportsClientImpl implements ExportsClient {
                     service
                         .delete(
                             this.client.getEndpoint(), scope, this.client.getApiVersion(), exportName, accept, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * The operation to delete a export.
      *
-     * @param scope The scope associated with export operations. This includes '/subscriptions/{subscriptionId}/' for
-     *     subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
-     *     scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
+     * @param scope The scope associated with query and export operations. This includes
+     *     '/subscriptions/{subscriptionId}/' for subscription scope,
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
+     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
      *     scope,
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
@@ -895,9 +809,10 @@ public final class ExportsClientImpl implements ExportsClient {
     /**
      * The operation to delete a export.
      *
-     * @param scope The scope associated with export operations. This includes '/subscriptions/{subscriptionId}/' for
-     *     subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
-     *     scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
+     * @param scope The scope associated with query and export operations. This includes
+     *     '/subscriptions/{subscriptionId}/' for subscription scope,
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
+     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
      *     scope,
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
@@ -923,9 +838,10 @@ public final class ExportsClientImpl implements ExportsClient {
     /**
      * The operation to delete a export.
      *
-     * @param scope The scope associated with export operations. This includes '/subscriptions/{subscriptionId}/' for
-     *     subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
-     *     scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
+     * @param scope The scope associated with query and export operations. This includes
+     *     '/subscriptions/{subscriptionId}/' for subscription scope,
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
+     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
      *     scope,
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
@@ -950,9 +866,10 @@ public final class ExportsClientImpl implements ExportsClient {
     /**
      * The operation to delete a export.
      *
-     * @param scope The scope associated with export operations. This includes '/subscriptions/{subscriptionId}/' for
-     *     subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
-     *     scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
+     * @param scope The scope associated with query and export operations. This includes
+     *     '/subscriptions/{subscriptionId}/' for subscription scope,
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
+     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
      *     scope,
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
@@ -977,11 +894,12 @@ public final class ExportsClientImpl implements ExportsClient {
     }
 
     /**
-     * The operation to execute an export.
+     * The operation to execute a export.
      *
-     * @param scope The scope associated with export operations. This includes '/subscriptions/{subscriptionId}/' for
-     *     subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
-     *     scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
+     * @param scope The scope associated with query and export operations. This includes
+     *     '/subscriptions/{subscriptionId}/' for subscription scope,
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
+     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
      *     scope,
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
@@ -1020,15 +938,16 @@ public final class ExportsClientImpl implements ExportsClient {
                     service
                         .execute(
                             this.client.getEndpoint(), scope, this.client.getApiVersion(), exportName, accept, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * The operation to execute an export.
+     * The operation to execute a export.
      *
-     * @param scope The scope associated with export operations. This includes '/subscriptions/{subscriptionId}/' for
-     *     subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
-     *     scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
+     * @param scope The scope associated with query and export operations. This includes
+     *     '/subscriptions/{subscriptionId}/' for subscription scope,
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
+     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
      *     scope,
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
@@ -1068,11 +987,12 @@ public final class ExportsClientImpl implements ExportsClient {
     }
 
     /**
-     * The operation to execute an export.
+     * The operation to execute a export.
      *
-     * @param scope The scope associated with export operations. This includes '/subscriptions/{subscriptionId}/' for
-     *     subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
-     *     scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
+     * @param scope The scope associated with query and export operations. This includes
+     *     '/subscriptions/{subscriptionId}/' for subscription scope,
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
+     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
      *     scope,
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
@@ -1096,11 +1016,12 @@ public final class ExportsClientImpl implements ExportsClient {
     }
 
     /**
-     * The operation to execute an export.
+     * The operation to execute a export.
      *
-     * @param scope The scope associated with export operations. This includes '/subscriptions/{subscriptionId}/' for
-     *     subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
-     *     scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
+     * @param scope The scope associated with query and export operations. This includes
+     *     '/subscriptions/{subscriptionId}/' for subscription scope,
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
+     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
      *     scope,
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
@@ -1123,11 +1044,12 @@ public final class ExportsClientImpl implements ExportsClient {
     }
 
     /**
-     * The operation to execute an export.
+     * The operation to execute a export.
      *
-     * @param scope The scope associated with export operations. This includes '/subscriptions/{subscriptionId}/' for
-     *     subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
-     *     scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
+     * @param scope The scope associated with query and export operations. This includes
+     *     '/subscriptions/{subscriptionId}/' for subscription scope,
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
+     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
      *     scope,
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
@@ -1152,11 +1074,12 @@ public final class ExportsClientImpl implements ExportsClient {
     }
 
     /**
-     * The operation to get the execution history of an export for the defined scope and export name.
+     * The operation to get the execution history of an export for the defined scope by export name.
      *
-     * @param scope The scope associated with export operations. This includes '/subscriptions/{subscriptionId}/' for
-     *     subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
-     *     scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
+     * @param scope The scope associated with query and export operations. This includes
+     *     '/subscriptions/{subscriptionId}/' for subscription scope,
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
+     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
      *     scope,
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
@@ -1172,7 +1095,7 @@ public final class ExportsClientImpl implements ExportsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing the execution history of an export.
+     * @return result of listing exports execution history of a export by name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ExportExecutionListResultInner>> getExecutionHistoryWithResponseAsync(
@@ -1196,15 +1119,16 @@ public final class ExportsClientImpl implements ExportsClient {
                     service
                         .getExecutionHistory(
                             this.client.getEndpoint(), scope, this.client.getApiVersion(), exportName, accept, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * The operation to get the execution history of an export for the defined scope and export name.
+     * The operation to get the execution history of an export for the defined scope by export name.
      *
-     * @param scope The scope associated with export operations. This includes '/subscriptions/{subscriptionId}/' for
-     *     subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
-     *     scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
+     * @param scope The scope associated with query and export operations. This includes
+     *     '/subscriptions/{subscriptionId}/' for subscription scope,
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
+     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
      *     scope,
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
@@ -1221,7 +1145,7 @@ public final class ExportsClientImpl implements ExportsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing the execution history of an export.
+     * @return result of listing exports execution history of a export by name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ExportExecutionListResultInner>> getExecutionHistoryWithResponseAsync(
@@ -1246,11 +1170,12 @@ public final class ExportsClientImpl implements ExportsClient {
     }
 
     /**
-     * The operation to get the execution history of an export for the defined scope and export name.
+     * The operation to get the execution history of an export for the defined scope by export name.
      *
-     * @param scope The scope associated with export operations. This includes '/subscriptions/{subscriptionId}/' for
-     *     subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
-     *     scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
+     * @param scope The scope associated with query and export operations. This includes
+     *     '/subscriptions/{subscriptionId}/' for subscription scope,
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
+     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
      *     scope,
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
@@ -1266,7 +1191,7 @@ public final class ExportsClientImpl implements ExportsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing the execution history of an export.
+     * @return result of listing exports execution history of a export by name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ExportExecutionListResultInner> getExecutionHistoryAsync(String scope, String exportName) {
@@ -1282,11 +1207,12 @@ public final class ExportsClientImpl implements ExportsClient {
     }
 
     /**
-     * The operation to get the execution history of an export for the defined scope and export name.
+     * The operation to get the execution history of an export for the defined scope by export name.
      *
-     * @param scope The scope associated with export operations. This includes '/subscriptions/{subscriptionId}/' for
-     *     subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
-     *     scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
+     * @param scope The scope associated with query and export operations. This includes
+     *     '/subscriptions/{subscriptionId}/' for subscription scope,
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
+     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
      *     scope,
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
@@ -1302,7 +1228,7 @@ public final class ExportsClientImpl implements ExportsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing the execution history of an export.
+     * @return result of listing exports execution history of a export by name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExportExecutionListResultInner getExecutionHistory(String scope, String exportName) {
@@ -1310,11 +1236,12 @@ public final class ExportsClientImpl implements ExportsClient {
     }
 
     /**
-     * The operation to get the execution history of an export for the defined scope and export name.
+     * The operation to get the execution history of an export for the defined scope by export name.
      *
-     * @param scope The scope associated with export operations. This includes '/subscriptions/{subscriptionId}/' for
-     *     subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
-     *     scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
+     * @param scope The scope associated with query and export operations. This includes
+     *     '/subscriptions/{subscriptionId}/' for subscription scope,
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
+     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
      *     scope,
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
@@ -1331,7 +1258,7 @@ public final class ExportsClientImpl implements ExportsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing the execution history of an export.
+     * @return result of listing exports execution history of a export by name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExportExecutionListResultInner> getExecutionHistoryWithResponse(

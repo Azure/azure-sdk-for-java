@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Integration runtime resource type. */
 @Fluent
-public final class IntegrationRuntimeResource extends AzureEntityResource {
+public final class IntegrationRuntimeResource extends SubResource {
     /*
      * Integration runtime properties.
      */

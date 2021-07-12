@@ -8,7 +8,6 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.hdinsight.HDInsightManager;
 import com.azure.resourcemanager.hdinsight.fluent.ScriptExecutionHistoriesClient;
 import com.azure.resourcemanager.hdinsight.fluent.models.RuntimeScriptActionDetailInner;
 import com.azure.resourcemanager.hdinsight.models.RuntimeScriptActionDetail;
@@ -20,9 +19,11 @@ public final class ScriptExecutionHistoriesImpl implements ScriptExecutionHistor
 
     private final ScriptExecutionHistoriesClient innerClient;
 
-    private final HDInsightManager serviceManager;
+    private final com.azure.resourcemanager.hdinsight.HDInsightManager serviceManager;
 
-    public ScriptExecutionHistoriesImpl(ScriptExecutionHistoriesClient innerClient, HDInsightManager serviceManager) {
+    public ScriptExecutionHistoriesImpl(
+        ScriptExecutionHistoriesClient innerClient,
+        com.azure.resourcemanager.hdinsight.HDInsightManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -30,14 +31,14 @@ public final class ScriptExecutionHistoriesImpl implements ScriptExecutionHistor
     public PagedIterable<RuntimeScriptActionDetail> listByCluster(String resourceGroupName, String clusterName) {
         PagedIterable<RuntimeScriptActionDetailInner> inner =
             this.serviceClient().listByCluster(resourceGroupName, clusterName);
-        return inner.mapPage(inner1 -> new RuntimeScriptActionDetailImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new RuntimeScriptActionDetailImpl(inner1, this.manager()));
     }
 
     public PagedIterable<RuntimeScriptActionDetail> listByCluster(
         String resourceGroupName, String clusterName, Context context) {
         PagedIterable<RuntimeScriptActionDetailInner> inner =
             this.serviceClient().listByCluster(resourceGroupName, clusterName, context);
-        return inner.mapPage(inner1 -> new RuntimeScriptActionDetailImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new RuntimeScriptActionDetailImpl(inner1, this.manager()));
     }
 
     public void promote(String resourceGroupName, String clusterName, String scriptExecutionId) {
@@ -53,7 +54,7 @@ public final class ScriptExecutionHistoriesImpl implements ScriptExecutionHistor
         return this.innerClient;
     }
 
-    private HDInsightManager manager() {
+    private com.azure.resourcemanager.hdinsight.HDInsightManager manager() {
         return this.serviceManager;
     }
 }

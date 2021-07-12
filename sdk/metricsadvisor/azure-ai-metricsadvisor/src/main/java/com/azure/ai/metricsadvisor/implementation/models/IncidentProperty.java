@@ -5,7 +5,7 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.ai.metricsadvisor.models.AnomalyIncidentStatus;
-import com.azure.ai.metricsadvisor.models.AnomalySeverity;
+import com.azure.ai.metricsadvisor.administration.models.AnomalySeverity;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -25,6 +25,18 @@ public final class IncidentProperty {
      */
     @JsonProperty(value = "incidentStatus", access = JsonProperty.Access.WRITE_ONLY)
     private AnomalyIncidentStatus incidentStatus;
+
+    /*
+     * value of the root node
+     */
+    @JsonProperty(value = "valueOfRootNode", access = JsonProperty.Access.WRITE_ONLY)
+    private Double valueOfRootNode;
+
+    /*
+     * expected value of the root node given by smart detector
+     */
+    @JsonProperty(value = "expectedValueOfRootNode", access = JsonProperty.Access.WRITE_ONLY)
+    private Double expectedValueOfRootNode;
 
     /**
      * Get the maxSeverity property: max severity of latest anomalies in the incident.
@@ -55,5 +67,23 @@ public final class IncidentProperty {
      */
     public AnomalyIncidentStatus getIncidentStatus() {
         return this.incidentStatus;
+    }
+
+    /**
+     * Get the valueOfRootNode property: value of the root node.
+     *
+     * @return the valueOfRootNode value.
+     */
+    public Double getValueOfRootNode() {
+        return this.valueOfRootNode;
+    }
+
+    /**
+     * Get the expectedValueOfRootNode property: expected value of the root node given by smart detector.
+     *
+     * @return the expectedValueOfRootNode value.
+     */
+    public Double getExpectedValueOfRootNode() {
+        return this.expectedValueOfRootNode;
     }
 }

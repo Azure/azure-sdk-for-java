@@ -87,6 +87,8 @@ class ServiceBusAsyncConsumerTest {
 
         when(link.getEndpointStates()).thenReturn(endpointStateFlux);
         when(link.receive()).thenReturn(messageFlux);
+        when(link.addCredits(anyInt())).thenReturn(Mono.empty());
+
         linkProcessor = linkFlux.subscribeWith(new ServiceBusReceiveLinkProcessor(10, retryPolicy));
 
         when(connection.getEndpointStates()).thenReturn(Flux.create(sink -> sink.next(AmqpEndpointState.ACTIVE)));
