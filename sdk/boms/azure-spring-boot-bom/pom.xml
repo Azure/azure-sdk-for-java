@@ -40,6 +40,7 @@
     <azure.spring.boot.version>${project.version}</azure.spring.boot.version>
     <azure.spring.boot.cosmos.version>3.6.0</azure.spring.boot.cosmos.version>
     <azure.spring.boot.keyvault.secrets.version>3.6.0</azure.spring.boot.keyvault.secrets.version>
+    <azure.spring.boot.keyvault.certificates.version>3.0.1</azure.spring.boot.keyvault.certificates.version>
     <azure.spring.boot.servicebus.jms.version>3.6.0</azure.spring.boot.servicebus.jms.version>
     <azure.spring.boot.storage.version>3.6.0</azure.spring.boot.storage.version>
     <azure.spring.boot.integration.version>${project.version}</azure.spring.boot.integration.version>
@@ -90,7 +91,7 @@
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>azure-spring-boot-starter-keyvault-certificates</artifactId>
-        <version>${azure.spring.boot.version}</version>
+        <version>${azure.spring.boot.keyvault.certificates.version}</version>
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
