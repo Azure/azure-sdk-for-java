@@ -139,7 +139,7 @@ public final class DigitalTwinsClientBuilder {
         }
 
         // Custom policies, authentication policy, and add date policy all take place after the retry policy which means
-        // they will be applied once per http request, and once for every retried http request. For instance, the
+        // they will be applied once per http request, and once for every retried http request. For example, the
         // AddDatePolicy will add a date time header for each request that is sent, and if the http request fails
         // and the retry policy dictates that the request should be retried, then the date time header policy will
         // be applied again and the current date time will be put in the header instead of the date time from
