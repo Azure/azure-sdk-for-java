@@ -81,12 +81,6 @@
       <version>9.10</version>  <!-- {x-version-update;com.nimbusds:nimbus-jose-jwt;external_dependency} -->
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>io.github.cdimascio</groupId>
-      <artifactId>java-dotenv</artifactId>
-      <version>5.2.2</version>
-      <scope>test</scope>
-    </dependency>
   </dependencies>
 
   <properties>
