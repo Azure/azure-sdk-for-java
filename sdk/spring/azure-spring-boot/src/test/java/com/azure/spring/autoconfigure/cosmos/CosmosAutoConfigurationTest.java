@@ -20,7 +20,7 @@ import org.springframework.core.io.ClassPathResource;
 import static com.azure.spring.autoconfigure.cosmos.PropertySettingUtil.CLOUD;
 import static com.azure.spring.autoconfigure.cosmos.PropertySettingUtil.DATABASE_NAME;
 import static com.azure.spring.autoconfigure.cosmos.PropertySettingUtil.KEY;
-import static com.azure.spring.autoconfigure.cosmos.PropertySettingUtil.MSI_ENABLED;
+import static com.azure.spring.autoconfigure.cosmos.PropertySettingUtil.CLIENT_ID;
 import static com.azure.spring.autoconfigure.cosmos.PropertySettingUtil.URI;
 import static com.azure.spring.autoconfigure.cosmos.PropertySettingUtil.getCosmosPropertyValues;
 import static com.azure.spring.autoconfigure.cosmos.PropertySettingUtil.getUnifiedPropertyValues;
@@ -72,7 +72,7 @@ public class CosmosAutoConfigurationTest {
                 assertThat(cosmosProperties.getDatabase()).isEqualTo(DATABASE_NAME);
 
                 AzureProperties azureProperties = (AzureProperties) context.getBean(AZURE_PROPERTY_BEAN_NAME);
-                assertThat(azureProperties.getCredential().isMsiEnabled()).isEqualTo(MSI_ENABLED);
+                assertThat(azureProperties.getCredential().getClientId()).isEqualTo(CLIENT_ID);
                 assertThat(azureProperties.getEnvironment().getCloud()).isEqualTo(CLOUD);
             });
     }

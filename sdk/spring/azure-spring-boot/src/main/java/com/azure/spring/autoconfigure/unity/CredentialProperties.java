@@ -30,11 +30,6 @@ public class CredentialProperties {
     private String certificatePassword;
 
     /**
-     * Flag to enable MSI.
-     */
-    private boolean msiEnabled = false;
-
-    /**
      * Tenant id for the Azure resources.
      */
     private String tenantId;
@@ -69,14 +64,6 @@ public class CredentialProperties {
 
     public void setCertificatePassword(String certificatePassword) {
         this.certificatePassword = certificatePassword;
-    }
-
-    public boolean isMsiEnabled() {
-        return msiEnabled;
-    }
-
-    public void setMsiEnabled(boolean msiEnabled) {
-        this.msiEnabled = msiEnabled;
     }
 
     public String getTenantId() {

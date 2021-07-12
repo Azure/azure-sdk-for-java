@@ -90,7 +90,7 @@ public class NonPremiumServiceBusJMSAutoConfigurationTest {
                     CONNECTION_STRING);
                 assertThat(context.getBean(AzureServiceBusJMSProperties.class).getTopicClientId()).isEqualTo("cid");
                 assertThat(context.getBean(AzureServiceBusJMSProperties.class).getIdleTimeout()).isEqualTo(123);
-                assertThat(context.getBean(AzureServiceBusJMSProperties.class).getCredential().isMsiEnabled()).isEqualTo(true);
+                assertThat(context.getBean(AzureServiceBusJMSProperties.class).getCredential().getClientSecret()).isEqualTo("for-test-purpose");
                 assertThat(context.getBean(AzureServiceBusJMSProperties.class).getEnvironment().getCloud()).isEqualTo("AzureGermany");
             }
         );
@@ -132,7 +132,7 @@ public class NonPremiumServiceBusJMSAutoConfigurationTest {
                 "spring.jms.servicebus.topic-client-id=cid",
                 "spring.jms.servicebus.idle-timeout=123",
                 "spring.jms.servicebus.pricing-tier=basic",
-                "spring.jms.servicebus.credential.msi-enabled=true",
+                "spring.jms.servicebus.credential.client-secret=for-test-purpose",
                 "spring.jms.servicebus.environment.cloud=AzureGermany",
                 "spring.cloud.azure.credential.certificate-password=for-test-purpose",
                 "spring.cloud.azure.environment.authority-host=for-test-purpose"

@@ -36,7 +36,7 @@ public class CosmosPropertiesTest {
             assertThat(properties.getConsistencyLevel()).isEqualTo(PropertySettingUtil.CONSISTENCY_LEVEL);
             assertThat(properties.isPopulateQueryMetrics()).isEqualTo(PropertySettingUtil.POPULATE_QUERY_METRICS);
             assertThat(properties.getConnectionMode()).isEqualTo(PropertySettingUtil.CONNECTION_MODE);
-            assertThat(properties.getCredential().isMsiEnabled()).isEqualTo(PropertySettingUtil.MSI_ENABLED);
+            assertThat(properties.getCredential().getClientId()).isEqualTo(PropertySettingUtil.CLIENT_ID);
             assertThat(properties.getEnvironment().getCloud()).isEqualTo(PropertySettingUtil.CLOUD);
         }
     }
