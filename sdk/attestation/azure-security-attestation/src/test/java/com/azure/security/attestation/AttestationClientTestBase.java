@@ -47,7 +47,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import io.github.cdimascio.dotenv.Dotenv;
+//import io.github.cdimascio.dotenv.Dotenv;
 
 /**
  * Specialization of the TestBase class for the attestation tests.
@@ -70,7 +70,7 @@ public class AttestationClientTestBase extends TestBase {
     @BeforeAll
     public static void beforeAll() {
         TestBase.setupClass();
-        Dotenv.configure().ignoreIfMissing().systemProperties().load();
+//        Dotenv.configure().ignoreIfMissing().systemProperties().load();
     }
 
     /**
