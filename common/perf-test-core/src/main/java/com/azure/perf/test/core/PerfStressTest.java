@@ -9,10 +9,12 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
-import java.util.ArrayList;
-import javax.net.ssl.SSLException;
 import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClientResponse;
+
+import java.util.Arrays;
+import java.util.ArrayList;
+import javax.net.ssl.SSLException;
 
 /**
  * Represents the abstraction of a Performance test class.
@@ -105,20 +107,22 @@ public abstract class PerfStressTest<TOptions extends PerfStressOptions> {
                 testProxyPolicy.setRecordingId(recordingId);
                 testProxyPolicy.setMode("record");
             })
-            .then((() -> {
-                if (options.isSync()) {
-                    return Mono.empty().doOnSuccess(x -> run());
-                }
-                else {
-                    return runAsync();
-                }
-            })())
+            .then(runSyncOrAsync())
             .then(stopRecordingAsync())
             .then(startPlaybackAsync())
             .doOnSuccess(x -> {
                 testProxyPolicy.setRecordingId(recordingId);
                 testProxyPolicy.setMode("playback");
             });
+    }
+
+    private Mono<Void> runSyncOrAsync() {
+        if (options.isSync()) {
+            return Mono.empty().then().doOnSuccess(x -> run());
+        }
+        else {
+            return runAsync();
+        }
     }
 
     /**
