@@ -76,7 +76,7 @@ example `http://localhost:8080/login/oauth2/code/`. Note the tailing `/` cannot 
 
 * Step 4: Write your Java code:
 
-    `AADWebSecurityConfigurerAdapter` contains necessary web security configuration for **aad-starter**.
+    The `AADWebSecurityConfigurerAdapter` contains necessary web security configuration for **aad-starter**.
 
      (A). `DefaultAADWebSecurityConfigurerAdapter` is configured automatically if you not provide one.
 
@@ -152,7 +152,7 @@ example `http://localhost:8080/login/oauth2/code/`. Note the tailing `/` cannot 
 access_token can be used to access resource server.
 
 ### Accessing a resource server
-This scenario not support login. Just protect the server by validating the access_token, and if valid, serves the request.
+This scenario doesn't support login, just protect the server by validating the access_token. If the access token is valid, the server serves the request.
 
 **System diagram**:
 
@@ -187,7 +187,7 @@ To use **aad-starter** in this scenario, we need these steps:
 
 * Step 3: Write Java code:
 
-    `AADResourceServerWebSecurityConfigurerAdapter` contains necessary web security configuration for resource server.
+    The `AADResourceServerWebSecurityConfigurerAdapter` contains necessary web security configuration for resource server.
 
     (A). `DefaultAADResourceServerWebSecurityConfigurerAdapter` is configured automatically if you not provide one.
 
@@ -239,15 +239,15 @@ To use **aad-starter** in this scenario, we need these steps:
 * Step 2: Add properties in application.yml:
     ```yaml
     azure:
-       activedirectory:
-          tenant-id: <Tenant-id-registered-by-application>
-          client-id: <Web-API-A-client-id>
-          client-secret: <Web-API-A-client-secret>
-          app-id-uri: <Web-API-A-app-id-url>
-          authorization-clients:
-             graph:
-                scopes:
-                   - https://graph.microsoft.com/User.Read
+      activedirectory:
+        tenant-id: <Tenant-id-registered-by-application>
+        client-id: <Web-API-A-client-id>
+        client-secret: <Web-API-A-client-secret>
+        app-id-uri: <Web-API-A-app-id-url>
+        authorization-clients:
+          graph:
+            scopes:
+              - https://graph.microsoft.com/User.Read
     ```
 
 * Step 3: Write Java code:
@@ -295,21 +295,30 @@ To use **aad-starter** in this scenario, we need these steps:
     
     ```yaml
     azure:
-       activedirectory:
-          tenant-id: <Tenant-id-registered-by-application>
-          client-id: <Web-API-C-client-id>
-          client-secret: <Web-API-C-client-secret>
-          app-id-uri: <Web-API-C-app-id-url>
-          application-type: web_application_and_resource_server
-          authorization-clients:
-             graph:   # The Web Application will use this client to access graph resource.
-                authorizationGrantType: authorization_code
-                scopes:
-                   - https://graph.microsoft.com/User.Read
-             webapiB: # The Resource Server will use this client to access webapiB resource.
-                authorization-grant-type: on_behalf_of
-                scopes:
-                  - <Web-API-B-app-id-url>/WebApiB.ExampleScope
+      activedirectory:
+        tenant-id: <Tenant-id-registered-by-application>
+        client-id: <Web-API-C-client-id>
+        client-secret: <Web-API-C-client-secret>
+        app-id-uri: <Web-API-C-app-id-url>
+        application-type: web_application_and_resource_server
+        authorization-clients:
+          graph: # Web Application uses graph client to access restricted resources.
+            authorizationGrantType: authorization_code
+            scopes:
+              - https://graph.microsoft.com/User.Read
+              - https://graph.microsoft.com/Directory.Read.All
+          webapiA:  # Web Application uses webapiA client to access restricted resources.
+            authorizationGrantType: authorization_code
+            scopes:
+              - api://<Web-API-A-app-id-url>/Obo.WebApiA.ExampleScope
+          webapiBWithObo: # Resource server uses webapiBObo client to access restricted resources.
+            authorization-grant-type: on_behalf_of
+            scopes:
+              - api:/<Web-API-B-app-id-url>/WebApiB.ExampleScope
+          webapiBWithClientCredentials:  # Both Web Application or Resource Server can use webapiBWithClientCredentials client to access restricted resources.
+            authorization-grant-type: client_credentials
+            scopes:
+              - api://<Web-API-B-app-id-url>/.default
     ```
 
 * Step 3: Write Java code:
@@ -689,9 +698,9 @@ Developers can customize the redirect-uri.
 
 * Step 1: Add `redirect-uri-template` properties in application.yml.
     ```yaml
-        azure:
-          activedirectory:
-            redirect-uri-template: --your-redirect-uri-template--
+    azure:
+      activedirectory:
+        redirect-uri-template: --your-redirect-uri-template--
     ```
 
 * Step 2: Update the configuration of the azure cloud platform in the portal.
