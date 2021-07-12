@@ -26,7 +26,6 @@ This project provides auto-configuration for the following Azure services:
 - [Event Hubs][event_hubs]
 - [Event Hubs Kafka][event_hubs_kafka]
 - [Service Bus][service_bus]
-- [Storage][storage]
 - [Storage Queue][storage_queue]
 
 ## Examples
@@ -91,7 +90,6 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [event_hubs]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-cloud-starter-eventhubs
 [event_hubs_kafka]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-cloud-starter-eventhubs-kafka
 [service_bus]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-cloud-starter-servicebus
-[storage]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-boot-starter-storage
 [storage_queue]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-cloud-starter-storage-queue
 [app_configuration_sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/appconfiguration/azure-appconfiguration-sample
 [app_configuration_conversation_sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/appconfiguration/azure-appconfiguration-conversion-sample-complete
