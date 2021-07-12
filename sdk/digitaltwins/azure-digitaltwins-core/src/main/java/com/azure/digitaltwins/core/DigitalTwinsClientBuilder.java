@@ -10,6 +10,7 @@ import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
@@ -48,6 +49,9 @@ public final class DigitalTwinsClientBuilder {
     private static final String SDK_VERSION = "version";
 
     private final List<HttpPipelinePolicy> additionalPolicies;
+
+    private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
+    private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
 
     // mandatory
     private String endpoint;
@@ -90,7 +94,8 @@ public final class DigitalTwinsClientBuilder {
         HttpLogOptions httpLogOptions,
         ClientOptions clientOptions,
         HttpClient httpClient,
-        List<HttpPipelinePolicy> additionalPolicies,
+        List<HttpPipelinePolicy> perCallPolicies,
+        List<HttpPipelinePolicy> perRetryPolicies,
         RetryPolicy retryPolicy,
         Configuration configuration,
         Map<String, String> properties) {
@@ -111,6 +116,8 @@ public final class DigitalTwinsClientBuilder {
         // Adds a "x-ms-client-request-id" header to each request. This header is useful for tracing requests through Azure ecosystems
         policies.add(new RequestIdPolicy());
 
+        policies.addAll(perCallPolicies);
+
         // Only the RequestIdPolicy  and UserAgentPolicy will take effect prior to the retry policy since neither of those need
         // to change in any way upon retry
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
@@ -124,7 +131,7 @@ public final class DigitalTwinsClientBuilder {
         HttpPipelinePolicy credentialPolicy = new BearerTokenAuthenticationPolicy(tokenCredential, ADT_PUBLIC_SCOPE);
         policies.add(credentialPolicy);
 
-        policies.addAll(additionalPolicies);
+        policies.addAll(perRetryPolicies);
 
         // If client options has headers configured, add a policy for each
         if (clientOptions != null) {
@@ -192,7 +199,8 @@ public final class DigitalTwinsClientBuilder {
                 this.httpLogOptions,
                 this.clientOptions,
                 this.httpClient,
-                this.additionalPolicies,
+                this.perCallPolicies,
+                this.perRetryPolicies,
                 retryPolicy,
                 buildConfiguration,
                 this.properties);
@@ -273,7 +281,14 @@ public final class DigitalTwinsClientBuilder {
      * @throws NullPointerException If {@code pipelinePolicy} is {@code null}.
      */
     public DigitalTwinsClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
-        this.additionalPolicies.add(Objects.requireNonNull(pipelinePolicy, "'pipelinePolicy' cannot be null"));
+        Objects.requireNonNull(pipelinePolicy, "'pipelinePolicy' cannot be null.");
+
+        if (pipelinePolicy.getPipelinePosition() == HttpPipelinePosition.PER_CALL) {
+            perCallPolicies.add(pipelinePolicy);
+        } else {
+            perRetryPolicies.add(pipelinePolicy);
+        }
+
         return this;
     }
 
