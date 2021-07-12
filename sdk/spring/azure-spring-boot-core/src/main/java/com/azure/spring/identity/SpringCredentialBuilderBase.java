@@ -12,7 +12,7 @@ import org.springframework.core.env.Environment;
 
 import java.util.Optional;
 
-import static com.azure.spring.core.util.AzureCloudUrls.toAuthorityHost;
+import static com.azure.spring.core.env.AzureEnvironment.toAuthorityHost;
 
 /**
  *

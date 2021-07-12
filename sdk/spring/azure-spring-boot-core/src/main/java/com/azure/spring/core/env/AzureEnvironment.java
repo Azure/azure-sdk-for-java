@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.spring.core.env;
 
+import com.azure.identity.AzureAuthorityHosts;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -297,6 +299,19 @@ public final class AzureEnvironment {
      */
     public String getApplicationInsightsEndpoint() {
         return endpoints.get(AZURE_APPLICATION_INSIGHTS_RESOURCE_ID);
+    }
+
+    public static String toAuthorityHost(String azureEnvironment) {
+        switch (azureEnvironment) {
+            case "AzureChina":
+                return AzureAuthorityHosts.AZURE_CHINA;
+            case "AzureGermany":
+                return AzureAuthorityHosts.AZURE_GERMANY;
+            case "AzureUSGovernment":
+                return AzureAuthorityHosts.AZURE_GOVERNMENT;
+            default:
+                return AzureAuthorityHosts.AZURE_PUBLIC_CLOUD;
+        }
     }
 
     /**
