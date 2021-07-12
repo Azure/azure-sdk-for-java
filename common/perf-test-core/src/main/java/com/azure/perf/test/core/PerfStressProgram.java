@@ -161,7 +161,7 @@ public class PerfStressProgram {
             } finally {
                 if (startedPlayback) {
                     Disposable playbackStatus = printStatus("=== Stop Playback ===", () -> ".", false, false);
-                    Flux.just(tests).flatMap(PerfStressTest::stopPlayback).blockLast();
+                    Flux.just(tests).flatMap(PerfStressTest::stopPlaybackAsync).blockLast();
                     playbackStatus.dispose();
                 }
 
