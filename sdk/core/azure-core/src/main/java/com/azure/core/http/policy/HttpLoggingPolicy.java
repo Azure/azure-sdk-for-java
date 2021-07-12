@@ -10,6 +10,7 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.implementation.http.HttpPipelineCallContextHelper;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.UrlBuilder;
@@ -108,14 +109,16 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     }
 
     private HttpRequestLoggingOptions getRequestLoggingOptions(HttpPipelineCallContext callContext) {
-        return new HttpRequestLoggingOptions(callContext.getHttpRequest(), callContext.getContext(),
-            getRequestRetryCount(callContext.getContext(), getHttpLoggingPolicyLogger()));
+        return new HttpRequestLoggingOptions(callContext.getHttpRequest(),
+            HttpPipelineCallContextHelper.getContext(callContext),
+            getRequestRetryCount(HttpPipelineCallContextHelper.getContext(callContext), getHttpLoggingPolicyLogger()));
     }
 
     private HttpResponseLoggingOptions getResponseLoggingOptions(HttpResponse httpResponse, long startNs,
         HttpPipelineCallContext callContext) {
         return new HttpResponseLoggingOptions(httpResponse, Duration.ofNanos(System.nanoTime() - startNs),
-            callContext.getContext(), getRequestRetryCount(callContext.getContext(), getHttpLoggingPolicyLogger()));
+            HttpPipelineCallContextHelper.getContext(callContext),
+            getRequestRetryCount(HttpPipelineCallContextHelper.getContext(callContext), getHttpLoggingPolicyLogger()));
     }
 
     private final class DefaultHttpRequestLogger implements HttpRequestLogger {
