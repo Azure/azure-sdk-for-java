@@ -47,7 +47,7 @@ public abstract class PerfStressTest<TOptions extends PerfStressOptions> {
     public PerfStressTest(TOptions options) {
         this.options = options;
 
-        SslContext sslContext = null;
+        final SslContext sslContext;
 
         if (options.isInsecure()) {
             try {
@@ -65,15 +65,17 @@ public abstract class PerfStressTest<TOptions extends PerfStressOptions> {
             httpClient = new NettyAsyncHttpClientBuilder(nettyHttpClient).build();
         }
         else {
+            sslContext = null;
             httpClient = null;
         }
 
         if (options.getTestProxy() != null) {
-            recordPlaybackHttpClient = reactor.netty.http.client.HttpClient.create();
-
             if (options.isInsecure()) {
-                recordPlaybackHttpClient = recordPlaybackHttpClient
+                recordPlaybackHttpClient = reactor.netty.http.client.HttpClient.create()
                     .secure(sslContextSpec -> sslContextSpec.sslContext(sslContext));
+            }
+            else {
+                recordPlaybackHttpClient = reactor.netty.http.client.HttpClient.create();
             }
 
             testProxyPolicy = new TestProxyPolicy(options.getTestProxy());
@@ -81,6 +83,7 @@ public abstract class PerfStressTest<TOptions extends PerfStressOptions> {
         }
         else {
             recordPlaybackHttpClient = null;
+            testProxyPolicy = null;
             policies = null;
         }
     }
