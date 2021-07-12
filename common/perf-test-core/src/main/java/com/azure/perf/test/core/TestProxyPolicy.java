@@ -27,7 +27,7 @@ public class TestProxyPolicy implements HttpPipelinePolicy {
         return mode;
     }
 
-    public String setMode(String mode) {
+    public void setMode(String mode) {
         this.mode = mode;
     }
 
@@ -35,7 +35,7 @@ public class TestProxyPolicy implements HttpPipelinePolicy {
         return recordingId;
     }
 
-    public String setRecordingId(String recordingId) {
+    public void setRecordingId(String recordingId) {
         this.recordingId = recordingId;
     }
 
