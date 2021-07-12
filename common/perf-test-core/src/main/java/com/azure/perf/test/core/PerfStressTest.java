@@ -45,10 +45,9 @@ public abstract class PerfStressTest<TOptions extends PerfStressOptions> {
     public PerfStressTest(TOptions options) {
         this.options = options;
 
-        recordPlaybackHttpClient = reactor.netty.http.client.HttpClient.create();
+        SslContext sslContext = null;
 
         if (options.isInsecure()) {
-            SslContext sslContext;
             try {
                 sslContext = SslContextBuilder.forClient()
                     .trustManager(InsecureTrustManagerFactory.INSTANCE)
@@ -57,9 +56,6 @@ public abstract class PerfStressTest<TOptions extends PerfStressOptions> {
             catch (SSLException e) {
                 throw new IllegalStateException(e);
             }
-
-            recordPlaybackHttpClient = recordPlaybackHttpClient
-                .secure(sslContextSpec -> sslContextSpec.sslContext(sslContext));
 
             reactor.netty.http.client.HttpClient nettyHttpClient = reactor.netty.http.client.HttpClient.create()
                 .secure(sslContextSpec -> sslContextSpec.sslContext(sslContext));
@@ -71,10 +67,18 @@ public abstract class PerfStressTest<TOptions extends PerfStressOptions> {
         }
 
         if (options.getTestProxy() != null) {
+            recordPlaybackHttpClient = reactor.netty.http.client.HttpClient.create();
+
+            if (options.isInsecure()) {
+                recordPlaybackHttpClient = recordPlaybackHttpClient
+                    .secure(sslContextSpec -> sslContextSpec.sslContext(sslContext));
+            }
+
             testProxyPolicy = new TestProxyPolicy(options.getTestProxy());
             policies = Arrays.asList(testProxyPolicy);
         }
         else {
+            recordPlaybackHttpClient = null;
             policies = null;
         }
     }
