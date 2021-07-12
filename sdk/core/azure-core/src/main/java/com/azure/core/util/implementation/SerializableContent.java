@@ -24,6 +24,11 @@ public class SerializableContent extends BinaryDataContent {
 
     private final AtomicReference<byte[]> bytes = new AtomicReference<>();
 
+    /**
+     * Creates a new instance of {@link SerializableContent}.
+     * @param content The serializable object that forms the content of this instance.
+     * @param serializer The serializer that serializes the {@code content}.
+     */
     public SerializableContent(Object content, ObjectSerializer serializer) {
         this.content = content;
         if (content == null) {

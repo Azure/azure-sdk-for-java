@@ -32,7 +32,7 @@ public class FluxByteBufferContent extends BinaryDataContent {
     }
 
     public FluxByteBufferContent(Flux<ByteBuffer> content, Scheduler scheduler) {
-        this(content, null, Schedulers.boundedElastic());
+        this(content, null, scheduler);
     }
 
     public FluxByteBufferContent(Flux<ByteBuffer> content, Long length) {
@@ -87,7 +87,9 @@ public class FluxByteBufferContent extends BinaryDataContent {
 
     private byte[] getBytes() {
         return FluxUtil.collectBytesInByteBufferStream(content)
-                .publishOn(scheduler)
+                // this doesn't seem to be working (newBoundedElastic() didn't work either)
+                // .publishOn(Schedulers.boundedElastic())
+                .share()
                 .block();
     }
 }

@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
 import java.io.ByteArrayInputStream;
@@ -29,6 +30,7 @@ import java.nio.file.FileSystem;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.spi.FileSystemProvider;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -425,6 +427,16 @@ public class BinaryDataTest {
                 .verifyError(IOException.class);
 
         assertFalse(myFileChannel.isOpen());
+    }
+
+    @Test
+    public void fluxContent() {
+        Mono<BinaryData> binaryDataMono = BinaryData.fromFlux(Flux
+                .just(ByteBuffer.wrap("Hello".getBytes(StandardCharsets.UTF_8))).delayElements(Duration.ofMillis(10)));
+
+        StepVerifier.create(binaryDataMono)
+                .assertNext(binaryData -> assertEquals("Hello", new String(binaryData.toBytes())))
+                .verifyComplete();
     }
 
     public static class MyJsonSerializer implements JsonSerializer {

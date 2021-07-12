@@ -23,7 +23,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * A {@link BinaryDataContent} implementation which is backed by an {@link InputStream}.
  */
 public class InputStreamContent extends BinaryDataContent {
-    private final ClientLogger logger = new ClientLogger(InputStreamContent.class);
+    private static final ClientLogger LOGGER = new ClientLogger(InputStreamContent.class);
     private final InputStream content;
     private final AtomicReference<byte[]> bytes = new AtomicReference<>();
 
@@ -85,7 +85,7 @@ public class InputStreamContent extends BinaryDataContent {
             }
             return dataOutputBuffer.toByteArray();
         } catch (IOException ex) {
-            throw logger.logExceptionAsError(new UncheckedIOException(ex));
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
         }
     }
 }

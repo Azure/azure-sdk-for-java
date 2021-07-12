@@ -30,7 +30,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * A {@link BinaryDataContent} backed by a file.
  */
 public class FileContent extends BinaryDataContent {
-    private final ClientLogger logger = new ClientLogger(FileContent.class);
+    private static final ClientLogger LOGGER = new ClientLogger(FileContent.class);
     private final Path file;
     private final int chunkSize;
     private final long length;
@@ -47,13 +47,13 @@ public class FileContent extends BinaryDataContent {
         Objects.requireNonNull(file, "'file' cannot be null.");
 
         if (chunkSize <= 0) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                     "'chunkSize' cannot be less than or equal to 0."));
         }
         this.file = file;
         this.chunkSize = chunkSize;
         if (!file.toFile().exists()) {
-            throw logger.logExceptionAsError(new UncheckedIOException(
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(
                     new FileNotFoundException("File does not exist " + file)));
         }
 
@@ -88,7 +88,7 @@ public class FileContent extends BinaryDataContent {
         try {
             return new BufferedInputStream(new FileInputStream(file.toFile()), chunkSize);
         } catch (FileNotFoundException e) {
-            throw logger.logExceptionAsError(new UncheckedIOException("File not found " + file, e));
+            throw LOGGER.logExceptionAsError(new UncheckedIOException("File not found " + file, e));
         }
     }
 
@@ -117,14 +117,16 @@ public class FileContent extends BinaryDataContent {
             try {
                 channel.close();
             } catch (IOException ex) {
-                throw logger.logExceptionAsError(Exceptions.propagate(ex));
+                throw LOGGER.logExceptionAsError(Exceptions.propagate(ex));
             }
         });
     }
 
     private byte[] getBytes() {
         return FluxUtil.collectBytesInByteBufferStream(toFluxByteBuffer())
-                .publishOn(scheduler)
+                // this doesn't seem to be working (newBoundedElastic() didn't work either)
+                // .publishOn(Schedulers.boundedElastic())
+                .share()
                 .block();
     }
 }

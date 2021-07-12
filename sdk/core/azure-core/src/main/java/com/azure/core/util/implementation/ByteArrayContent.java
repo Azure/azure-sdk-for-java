@@ -11,7 +11,6 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -20,12 +19,17 @@ import java.util.Objects;
 public class ByteArrayContent extends BinaryDataContent {
     private final byte[] content;
 
+    /**
+     * Creates a new instance of {@link ByteArrayContent}.
+     *
+     * @param content The byte array content.
+     */
     public ByteArrayContent(byte[] content) {
         if (content == null || content.length == 0) {
             this.content = ZERO_BYTE_ARRAY;
             return;
         }
-        this.content = Arrays.copyOf(content, content.length);
+        this.content = content;
     }
 
     @Override
@@ -40,7 +44,7 @@ public class ByteArrayContent extends BinaryDataContent {
 
     @Override
     public byte[] toBytes() {
-        return Arrays.copyOf(content, content.length);
+        return content;
     }
 
     @Override

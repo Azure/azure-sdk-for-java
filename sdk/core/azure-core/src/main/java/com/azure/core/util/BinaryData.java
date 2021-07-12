@@ -166,7 +166,10 @@ public final class BinaryData {
     /**
      * Creates an instance of {@link BinaryData} from the given byte array.
      * <p>
-     * If the byte array is null or zero length an empty {@link BinaryData} will be returned.
+     * If the byte array is null or zero length an empty {@link BinaryData} will be returned. Note that the input
+     * byte array is used as a reference by this instance of {@link BinaryData} and any changes to the byte array
+     * outside of this instance will result in the contents of this BinaryData instance to be updated as well. To
+     * safely update the byte array, it is recommended to make a copy of the contents first.
      *
      * <p><strong>Create an instance from a byte array</strong></p>
      *
@@ -314,7 +317,9 @@ public final class BinaryData {
     }
 
     /**
-     * Returns a byte array representation of this {@link BinaryData}.
+     * Returns a byte array representation of this {@link BinaryData}. This method returns a reference to the
+     * underlying byte array. Modifying the contents of the returned byte array will also change the content of this
+     * BinaryData instance. To safely update the byte array, it is recommended to make a copy of the contents first.
      *
      * @return A byte array representing this {@link BinaryData}.
      */

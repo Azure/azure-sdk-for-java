@@ -15,10 +15,17 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
+/**
+ * A {@link BinaryDataContent} implementation which is backed by a {@code String}.
+ */
 public class StringContent extends BinaryDataContent {
     private String content;
     private final AtomicReference<byte[]> bytes = new AtomicReference<>();
 
+    /**
+     * Creates a new instance of {@link StringContent}.
+     * @param content The string content.
+     */
     public StringContent(String content) {
         if (content == null) {
             // this is to maintain backward compatibility with BinaryData
