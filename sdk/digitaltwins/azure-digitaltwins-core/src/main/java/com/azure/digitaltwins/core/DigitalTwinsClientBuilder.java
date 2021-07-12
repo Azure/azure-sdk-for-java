@@ -48,8 +48,6 @@ public final class DigitalTwinsClientBuilder {
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
 
-    private final List<HttpPipelinePolicy> additionalPolicies;
-
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
     private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
 
@@ -83,7 +81,6 @@ public final class DigitalTwinsClientBuilder {
      * The public constructor for DigitalTwinsClientBuilder
      */
     public DigitalTwinsClientBuilder() {
-        additionalPolicies = new ArrayList<>();
         properties = CoreUtils.getProperties(DIGITAL_TWINS_PROPERTIES);
         httpLogOptions = new HttpLogOptions();
     }
