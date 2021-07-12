@@ -133,6 +133,9 @@ public class PerfStressProgram {
 
         try {
             tests[0].globalSetupAsync().block();
+
+            boolean startedPlayback = false;
+
             try {
                 Flux.just(tests).flatMap(PerfStressTest::setupAsync).blockLast();
                 setupStatus.dispose();
@@ -140,6 +143,7 @@ public class PerfStressProgram {
                 if (options.getTestProxy() != null) {
                     Disposable recordStatus = printStatus("=== Record and Start Playback ===", () -> ".", false, false);
                     Flux.just(tests).flatMap(PerfStressTest::recordAndStartPlaybackAsync).blockLast();
+                    startedPlayback = true;
                     recordStatus.dispose();
                 }
 
@@ -155,7 +159,7 @@ public class PerfStressProgram {
                     runTests(tests, options.isSync(), options.getParallel(), options.getDuration(), title);
                 }
             } finally {
-                if (options.getTestProxy() != null) {
+                if (startedPlayback) {
                     Disposable playbackStatus = printStatus("=== Stop Playback ===", () -> ".", false, false);
                     Flux.just(tests).flatMap(PerfStressTest::stopPlayback).blockLast();
                     playbackStatus.dispose();
