@@ -7,6 +7,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.ResourceLock;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -16,13 +17,17 @@ import org.junit.jupiter.params.provider.ValueSource;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_LOG_LEVEL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -90,10 +95,10 @@ public class ClientLoggerTests {
     public void logMaliciousMessage(LogLevel logLevelToConfigure, LogLevel logLevelToUse)
         throws UnsupportedEncodingException {
         String logMessage = "You have successfully authenticated, \r\n[INFO] User dummy was not"
-                                + " successfully authenticated.";
+            + " successfully authenticated.";
 
         String expectedMessage = "You have successfully authenticated, [INFO] User dummy was not"
-                                     + " successfully authenticated.";
+            + " successfully authenticated.";
 
         String originalLogLevel = setupLogLevel(logLevelToConfigure.getLogLevel());
         logMessage(new ClientLogger(ClientLoggerTests.class), logLevelToUse, logMessage);
@@ -130,7 +135,7 @@ public class ClientLoggerTests {
     @MethodSource("multiLevelCheckSupplier")
     @ResourceLock("SYSTEM_OUT")
     public void logException(LogLevel logLevelToConfigure, LogLevel logLevelToUse, boolean logContainsMessage,
-        boolean logContainsStackTrace) throws UnsupportedEncodingException {
+                             boolean logContainsStackTrace) throws UnsupportedEncodingException {
         String logMessage = "This is an exception";
         String exceptionMessage = "An exception message";
         RuntimeException runtimeException = createIllegalStateException(exceptionMessage);
@@ -152,7 +157,7 @@ public class ClientLoggerTests {
     @MethodSource("logExceptionAsWarningSupplier")
     @ResourceLock("SYSTEM_OUT")
     public void logExceptionAsWarning(LogLevel logLevelToConfigure, boolean logContainsMessage,
-        boolean logContainsStackTrace) throws UnsupportedEncodingException {
+                                      boolean logContainsStackTrace) throws UnsupportedEncodingException {
         String exceptionMessage = "An exception message";
         IllegalStateException illegalStateException = createIllegalStateException(exceptionMessage);
 
@@ -177,7 +182,7 @@ public class ClientLoggerTests {
     @MethodSource("logExceptionAsWarningSupplier")
     @ResourceLock("SYSTEM_OUT")
     public void logCheckedExceptionAsWarning(LogLevel logLevelToConfigure, boolean logContainsMessage,
-        boolean logContainsStackTrace) throws UnsupportedEncodingException {
+                                             boolean logContainsStackTrace) throws UnsupportedEncodingException {
         String exceptionMessage = "An exception message";
         IOException ioException = createIOException(exceptionMessage);
 
@@ -202,7 +207,7 @@ public class ClientLoggerTests {
     @MethodSource("logExceptionAsErrorSupplier")
     @ResourceLock("SYSTEM_OUT")
     public void logExceptionAsError(LogLevel logLevelToConfigure, boolean logContainsMessage,
-        boolean logContainsStackTrace) throws UnsupportedEncodingException {
+                                    boolean logContainsStackTrace) throws UnsupportedEncodingException {
         String exceptionMessage = "An exception message";
         IllegalStateException illegalStateException = createIllegalStateException(exceptionMessage);
 
@@ -227,7 +232,7 @@ public class ClientLoggerTests {
     @MethodSource("logExceptionAsErrorSupplier")
     @ResourceLock("SYSTEM_OUT")
     public void logCheckedExceptionAsError(LogLevel logLevelToConfigure, boolean logContainsMessage,
-        boolean logContainsStackTrace) throws UnsupportedEncodingException {
+                                           boolean logContainsStackTrace) throws UnsupportedEncodingException {
         String exceptionMessage = "An exception message";
         IOException ioException = createIOException(exceptionMessage);
 
@@ -263,6 +268,145 @@ public class ClientLoggerTests {
     @ResourceLock("SYSTEM_OUT")
     public void invalidLogLevelFromString(String environmentLogLevel) {
         assertThrows(IllegalArgumentException.class, () -> LogLevel.fromString(environmentLogLevel));
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideLogLevels")
+    @ResourceLock("SYSTEM_OUT")
+    public void logWithSupplier(LogLevel logLevel) throws UnsupportedEncodingException {
+
+        setupLogLevel(logLevel.getLogLevel());
+        setPropertyToOriginalOrClear(Configuration.getGlobalConfiguration().get(PROPERTY_AZURE_LOG_LEVEL));
+        Supplier<String> supplier = () -> String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3");
+        ClientLogger logger = new ClientLogger(ClientLoggerTests.class);
+        logHelper(() -> logger.log(logLevel, supplier), (args) -> logger.log(logLevel, supplier), supplier);
+
+        String logValues = logCaptureStream.toString("UTF-8");
+        assertTrue(logValues.contains(supplier.get() + System.lineSeparator()));
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideLogLevels")
+    @ResourceLock("SYSTEM_OUT")
+    public void logWithNullSupplier(LogLevel logLevel) throws UnsupportedEncodingException {
+
+        setupLogLevel(logLevel.getLogLevel());
+        setPropertyToOriginalOrClear(Configuration.getGlobalConfiguration().get(PROPERTY_AZURE_LOG_LEVEL));
+        Supplier<String> supplier = null;
+        ClientLogger logger = new ClientLogger(ClientLoggerTests.class);
+        logHelper(() -> logger.log(logLevel, supplier), (args) -> logger.log(logLevel, supplier), supplier);
+
+        String logValues = logCaptureStream.toString("UTF-8");
+        assertTrue(logValues.isEmpty());
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideLogLevels")
+    @ResourceLock("SYSTEM_OUT")
+    public void logSupplierWithException(LogLevel logLevel) throws UnsupportedEncodingException {
+
+        NullPointerException exception = new NullPointerException();
+        setupLogLevel(logLevel.getLogLevel());
+        setPropertyToOriginalOrClear(Configuration.getGlobalConfiguration().get(PROPERTY_AZURE_LOG_LEVEL));
+        Supplier<String> supplier = () -> String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3");
+        ClientLogger logger = new ClientLogger(ClientLoggerTests.class);
+        logHelper(() -> logger.log(logLevel, supplier, exception), (args) -> logger.log(logLevel, supplier, exception), supplier);
+        String logValues = logCaptureStream.toString("UTF-8");
+
+        assertTrue(logValues.contains(supplier.get() + System.lineSeparator()));
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideLogLevels")
+    @ResourceLock("SYSTEM_OUT")
+    public void logShouldEvaluateSupplierWithNullException(LogLevel logLevel) throws UnsupportedEncodingException {
+
+        setupLogLevel(logLevel.getLogLevel());
+        setPropertyToOriginalOrClear(Configuration.getGlobalConfiguration().get(PROPERTY_AZURE_LOG_LEVEL));
+        Supplier<String> supplier = () -> String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3");
+        ClientLogger logger = new ClientLogger(ClientLoggerTests.class);
+        logHelper(() -> logger.log(logLevel, supplier, null), (args) -> logger.log(logLevel, supplier, null), supplier);
+        String logValues = logCaptureStream.toString("UTF-8");
+
+        assertTrue(logValues.contains(supplier.get() + System.lineSeparator()));
+    }
+
+
+    @Test
+    public void testIsSupplierLogging() {
+
+        Supplier<String> supplier = () -> String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3");
+        ClientLogger logger = new ClientLogger(ClientLoggerTests.class);
+        NullPointerException exception = new NullPointerException();
+        Object[] args = {supplier, exception};
+
+        assertTrue(logger.isSupplierLogging(args));
+    }
+
+    @Test
+    public void testIsSupplierLoggingWithException() {
+
+        Supplier<String> supplier = () -> String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3");
+        ClientLogger logger = new ClientLogger(ClientLoggerTests.class);
+        Object[] args = {supplier};
+
+        assertTrue(logger.isSupplierLogging(args));
+    }
+
+    @Test
+    public void testIsSupplierLoggingWithNullException() {
+
+        Supplier<String> supplier = () -> String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3");
+        ClientLogger logger = new ClientLogger(ClientLoggerTests.class);
+        Object[] args = {supplier, null};
+
+        assertTrue(logger.isSupplierLogging(args));
+    }
+
+    @Test
+    public void testIsSupplierLoggingWithMoreParameters() {
+
+        Supplier<String> supplier = () -> String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3");
+        ClientLogger logger = new ClientLogger(ClientLoggerTests.class);
+        Object[] args = {supplier, supplier, supplier};
+
+        assertFalse(logger.isSupplierLogging(args));
+    }
+
+    @Test
+    public void testIsSupplierGettingEvaluated() {
+
+        Supplier<String> supplier = () -> String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3");
+        ClientLogger logger = new ClientLogger(ClientLoggerTests.class);
+        Object[] args = {supplier};
+
+        assertEquals(supplier.get(), logger.evaluateSupplierArgument(args)[0]);
+    }
+
+    @Test
+    @ResourceLock("SYSTEM_OUT")
+    public void logSupplierShouldLogExceptionOnVerboseLevel() throws UnsupportedEncodingException {
+
+        LogLevel logLevel = LogLevel.VERBOSE;
+        NullPointerException exception = new NullPointerException();
+        setupLogLevel(logLevel.getLogLevel());
+        setPropertyToOriginalOrClear(Configuration.getGlobalConfiguration().get(PROPERTY_AZURE_LOG_LEVEL));
+        Supplier<String> supplier = () -> String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3");
+        ClientLogger logger = new ClientLogger(ClientLoggerTests.class);
+        String expectedStackTrace = stackTraceToString(exception);
+        logHelper(() -> logger.log(logLevel, supplier, exception), (args) -> logger.log(logLevel, supplier, exception), supplier);
+
+        String logValues = logCaptureStream.toString("UTF-8");
+
+        assertTrue(logValues.contains(supplier.get() + System.lineSeparator()));
+        assertTrue(logValues.contains(expectedStackTrace));
+    }
+
+
+    private String stackTraceToString(Throwable exception) {
+        StringWriter stringWriter = new StringWriter();
+        exception.printStackTrace(new PrintWriter(stringWriter));
+        return stringWriter.toString();
     }
 
     private String setupLogLevel(int logLevelToSet) {
@@ -522,6 +666,23 @@ public class ClientLoggerTests {
 
             // Checking ERROR.
             Arguments.of(LogLevel.ERROR, LogLevel.ERROR, true)
+        );
+    }
+
+    private static Stream<Arguments> provideLogLevels() {
+        return Stream.of(
+
+            // Checking VERBOSE.
+            Arguments.of(LogLevel.VERBOSE),
+
+            // Checking WARNING.
+            Arguments.of(LogLevel.WARNING),
+
+            // Checking INFORMATIONAL.
+            Arguments.of(LogLevel.INFORMATIONAL),
+
+            // Checking ERROR.
+            Arguments.of(LogLevel.ERROR)
         );
     }
 

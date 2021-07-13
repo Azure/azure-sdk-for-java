@@ -35,6 +35,18 @@ public class ClientLoggerJavaDocCodeSnippets {
         logger.info("A formattable message. Hello, {}", name);
         // END: com.azure.core.util.logging.clientlogger.info#string-object
 
+        // BEGIN: com.azure.core.util.logging.clientlogger.log
+        logger.log(LogLevel.VERBOSE,
+            () -> String.format("Param 1: %s, Param 2: %s, Param 3: %s", "param1", "param2", "param3"));
+        // END: com.azure.core.util.logging.clientlogger.log
+
+        // BEGIN: com.azure.core.util.logging.clientlogger.log#throwable
+        Throwable illegalArgumentException = new IllegalArgumentException("An invalid argument was encountered.");
+        logger.log(LogLevel.VERBOSE,
+            () -> String.format("Param 1: %s, Param 2: %s, Param 3: %s", "param1", "param2", "param3"),
+            illegalArgumentException);
+        // END: com.azure.core.util.logging.clientlogger.log#throwable
+
         // BEGIN: com.azure.core.util.logging.clientlogger.warning
         Throwable detailedException = new IllegalArgumentException("A exception with a detailed message");
         logger.warning(detailedException.getMessage());
@@ -65,6 +77,7 @@ public class ClientLoggerJavaDocCodeSnippets {
 
     /**
      * Implementation not provided
+     *
      * @return {@code null}
      */
     private File getFile() {
@@ -73,6 +86,7 @@ public class ClientLoggerJavaDocCodeSnippets {
 
     /**
      * Implementation not provided
+     *
      * @return {@code null}
      */
     private String getName() {
@@ -81,6 +95,7 @@ public class ClientLoggerJavaDocCodeSnippets {
 
     /**
      * Implementation not provided
+     *
      * @param resource A file resource
      * @throws IOException if upload fails
      */
