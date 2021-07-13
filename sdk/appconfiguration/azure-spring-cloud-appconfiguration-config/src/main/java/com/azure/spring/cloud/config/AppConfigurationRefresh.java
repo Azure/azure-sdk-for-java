@@ -4,6 +4,7 @@ package com.azure.spring.cloud.config;
 
 import java.time.Duration;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Component;
 
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
+import com.azure.spring.cloud.config.health.AppConfigurationStoreHealth;
 import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.config.properties.AppConfigurationStoreMonitoring;
 import com.azure.spring.cloud.config.properties.ConfigStore;
@@ -37,8 +39,12 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
     private final AtomicBoolean running = new AtomicBoolean(false);
 
     private final List<ConfigStore> configStores;
+
     private ApplicationEventPublisher publisher;
+
     private final ClientStore clientStore;
+
+    private HashMap<String, AppConfigurationStoreHealth> clientHealth;
 
     private String eventDataInfo;
 
@@ -46,6 +52,14 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
         this.configStores = properties.getStores();
         this.clientStore = clientStore;
         this.eventDataInfo = "";
+        this.clientHealth = new HashMap<String, AppConfigurationStoreHealth>();
+        configStores.stream().forEach(store -> {
+            if (getStoreHealthState(store)) {
+                this.clientHealth.put(store.getEndpoint(), AppConfigurationStoreHealth.UP);
+            } else {
+                this.clientHealth.put(store.getEndpoint(), AppConfigurationStoreHealth.NOT_LOADED);
+            }
+        });
     }
 
     @Override
@@ -54,7 +68,8 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
     }
 
     /**
-     * Checks configurations to see if configurations should be reloaded. If the refresh interval has passed and a trigger has been updated configuration are reloaded.
+     * Checks configurations to see if configurations should be reloaded. If the refresh interval has passed and a
+     * trigger has been updated configuration are reloaded.
      *
      * @return Future with a boolean of if a RefreshEvent was published. If refreshConfigurations is currently being run
      * elsewhere this method will return right away as <b>false</b>.
@@ -83,33 +98,48 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
     private boolean refreshStores() {
         boolean didRefresh = false;
         if (running.compareAndSet(false, true)) {
+            HashMap<String, AppConfigurationStoreHealth> clientHealthUpdate = new HashMap<String, AppConfigurationStoreHealth>();
+            configStores.stream().forEach(store -> {
+                if (getStoreHealthState(store)) {
+                    clientHealthUpdate.put(store.getEndpoint(), AppConfigurationStoreHealth.DOWN);
+                } else {
+                    clientHealthUpdate.put(store.getEndpoint(), AppConfigurationStoreHealth.NOT_LOADED);
+                }
+            });
             try {
                 for (ConfigStore configStore : configStores) {
                     if (configStore.isEnabled()) {
                         String endpoint = configStore.getEndpoint();
                         AppConfigurationStoreMonitoring monitor = configStore.getMonitoring();
 
-                        if (StateHolder.getLoadState(endpoint) && monitor.isEnabled()
-                            && refresh(StateHolder.getState(endpoint), endpoint, monitor.getRefreshInterval())) {
-                            didRefresh = true;
-                            break;
-                        } else {
-                            LOGGER.debug("Skipping configuration refresh check for " + endpoint);
+                        if (StateHolder.getLoadState(endpoint)) {
+                            if (monitor.isEnabled()
+                                && refresh(StateHolder.getState(endpoint), endpoint, monitor.getRefreshInterval())) {
+                                didRefresh = true;
+                                break;
+                            } else {
+                                LOGGER.debug("Skipping configuration refresh check for " + endpoint);
+                            }
+                            clientHealthUpdate.put(configStore.getEndpoint(), AppConfigurationStoreHealth.UP);
                         }
 
                         FeatureFlagStore featureStore = configStore.getFeatureFlags();
 
-                        if (featureStore.getEnabled() && StateHolder.getLoadStateFeatureFlag(endpoint) && refresh(
-                            StateHolder.getStateFeatureFlag(endpoint), endpoint, monitor.getFeatureFlagRefreshInterval())) {
-                            didRefresh = true;
-                            break;
-                        } else {
-                            LOGGER.debug("Skipping feature flag refresh check for " + endpoint);
+                        if (StateHolder.getLoadStateFeatureFlag(endpoint)) {
+                            if (featureStore.getEnabled() && refresh(StateHolder.getStateFeatureFlag(endpoint),
+                                endpoint, monitor.getFeatureFlagRefreshInterval())) {
+                                didRefresh = true;
+                                break;
+                            } else {
+                                LOGGER.debug("Skipping feature flag refresh check for " + endpoint);
+                            }
+                            clientHealthUpdate.put(configStore.getEndpoint(), AppConfigurationStoreHealth.UP);
                         }
                     }
                 }
             } finally {
                 running.set(false);
+                clientHealth = clientHealthUpdate;
             }
         }
         return didRefresh;
@@ -162,6 +192,15 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
         }
 
         return false;
+    }
+
+    public HashMap<String, AppConfigurationStoreHealth> getAppConfigurationStoresHealth() {
+        return this.clientHealth;
+    }
+
+    private Boolean getStoreHealthState(ConfigStore store) {
+        return store.isEnabled() && (StateHolder.getLoadState(store.getEndpoint())
+            || StateHolder.getLoadStateFeatureFlag(store.getEndpoint()));
     }
 
     /**
