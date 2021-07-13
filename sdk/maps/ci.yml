@@ -26,6 +26,11 @@ extends:
   parameters:
     ServiceDirectory: maps
     Artifacts:
+      - name: azure-sdk-maps
+        groupId: com.azure
+        safeName: azuresdkmaps
+    ServiceDirectory: maps
+    Artifacts:
       - name: azure-resourcemanager-maps
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagermaps

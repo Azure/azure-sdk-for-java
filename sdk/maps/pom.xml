@@ -46,6 +46,7 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <modules>
+        <module>azure-maps-service</module>
         <module>azure-resourcemanager-maps</module>
       </modules>
     </profile>
