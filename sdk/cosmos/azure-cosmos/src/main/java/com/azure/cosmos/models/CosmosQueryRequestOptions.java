@@ -5,11 +5,11 @@ package com.azure.cosmos.models;
 
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.util.Beta;
 
 import java.time.Duration;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -36,6 +36,7 @@ public class CosmosQueryRequestOptions {
     private String throughputControlGroupName;
     private DedicatedGatewayRequestOptions dedicatedGatewayRequestOptions;
     private Duration thresholdForDiagnosticsOnTracer;
+    private Map<String, String> customOptions;
 
     /**
      * Instantiates a new query request options.
@@ -66,6 +67,7 @@ public class CosmosQueryRequestOptions {
         this.throughputControlGroupName = options.throughputControlGroupName;
         this.operationContextAndListenerTuple = options.operationContextAndListenerTuple;
         this.dedicatedGatewayRequestOptions = options.dedicatedGatewayRequestOptions;
+        this.customOptions = options.customOptions;
     }
 
     void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {
@@ -481,6 +483,31 @@ public class CosmosQueryRequestOptions {
         return this;
     }
 
+    /**
+     * Sets the custom query request option value by key
+     *
+     * @param name  a string representing the custom option's name
+     * @param value a string representing the custom option's value
+     *
+     * @return the CosmosQueryRequestOptions.
+     */
+    CosmosQueryRequestOptions setHeader(String name, String value) {
+        if (this.customOptions == null) {
+            this.customOptions = new HashMap<>();
+        }
+        this.customOptions.put(name, value);
+        return this;
+    }
+
+    /**
+     * Gets the custom query request options
+     *
+     * @return Map of custom request options
+     */
+    Map<String, String> getHeaders() {
+        return this.customOptions;
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -498,6 +525,17 @@ public class CosmosQueryRequestOptions {
                 @Override
                 public OperationContextAndListenerTuple getOperationContext(CosmosQueryRequestOptions queryRequestOptions) {
                     return queryRequestOptions.getOperationContextAndListenerTuple();
+                }
+
+                @Override
+                public CosmosQueryRequestOptions setHeader(CosmosQueryRequestOptions queryRequestOptions, String name
+                    , String value) {
+                    return queryRequestOptions.setHeader(name, value);
+                }
+
+                @Override
+                public Map<String, String> getHeader(CosmosQueryRequestOptions queryRequestOptions) {
+                    return queryRequestOptions.getHeaders();
                 }
             });
     }

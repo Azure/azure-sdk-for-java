@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import java.net.URI;
 import java.time.Duration;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * This class represents response diagnostic statistics associated with a request to Azure Cosmos DB
@@ -28,6 +29,7 @@ public final class CosmosDiagnostics {
 
     private ClientSideRequestStatistics clientSideRequestStatistics;
     private FeedResponseDiagnostics feedResponseDiagnostics;
+    private AtomicBoolean diagnosticsCapturedInPagedFlux = new AtomicBoolean(false);
 
     static final String USER_AGENT = Utils.getUserAgent();
     static final String USER_AGENT_KEY = "userAgent";
@@ -123,6 +125,10 @@ public final class CosmosDiagnostics {
         this.feedResponseDiagnostics = feedResponseDiagnostics;
     }
 
+    private AtomicBoolean isDiagnosticsCapturedInPagedFlux(){
+        return this.diagnosticsCapturedInPagedFlux;
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -130,14 +136,19 @@ public final class CosmosDiagnostics {
     static {
         ImplementationBridgeHelpers.CosmosDiagnosticsHelper.setCosmosDiagnosticsAccessor(
             new ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor() {
-            @Override
-            public FeedResponseDiagnostics  getFeedResponseDiagnostics(CosmosDiagnostics cosmosDiagnostics) {
-                if (cosmosDiagnostics != null) {
-                    return cosmosDiagnostics.getFeedResponseDiagnostics();
+                @Override
+                public FeedResponseDiagnostics getFeedResponseDiagnostics(CosmosDiagnostics cosmosDiagnostics) {
+                    if (cosmosDiagnostics != null) {
+                        return cosmosDiagnostics.getFeedResponseDiagnostics();
+                    }
+
+                    return null;
                 }
 
-                return null;
-            }
-        });
+                @Override
+                public AtomicBoolean isDiagnosticsCapturedInPagedFlux(CosmosDiagnostics cosmosDiagnostics) {
+                    return cosmosDiagnostics.isDiagnosticsCapturedInPagedFlux();
+                }
+            });
     }
 }

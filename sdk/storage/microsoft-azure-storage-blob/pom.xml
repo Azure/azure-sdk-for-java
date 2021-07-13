@@ -56,7 +56,7 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.7.30</version> <!-- {x-version-update;org.slf4j:slf4j-api;external_dependency} -->
+            <version>1.7.31</version> <!-- {x-version-update;org.slf4j:slf4j-api;external_dependency} -->
         </dependency>
 
         <dependency>

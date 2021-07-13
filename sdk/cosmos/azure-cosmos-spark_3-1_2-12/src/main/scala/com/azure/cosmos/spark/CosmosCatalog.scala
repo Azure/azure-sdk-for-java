@@ -63,7 +63,10 @@ class CosmosCatalog
     */
   override def initialize(name: String,
                           options: CaseInsensitiveStringMap): Unit = {
-    val config = options.asCaseSensitiveMap().asScala.toMap
+    val config = CosmosConfig.getEffectiveConfig(
+        None,
+        None,
+        options.asCaseSensitiveMap().asScala.toMap)
     val readConfig = CosmosReadConfig.parseCosmosReadConfig(config)
     this.client = CosmosClientCache(CosmosClientConfiguration(config, readConfig.forceEventualConsistency), None)
 

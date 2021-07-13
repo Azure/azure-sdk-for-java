@@ -30,7 +30,6 @@ import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobImmutabilityPolicyMode;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.EncryptionAlgorithmType;
-import java.net.URL;
 import java.nio.ByteBuffer;
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -68,9 +67,9 @@ public final class AppendBlobsImpl {
         @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<AppendBlobsCreateResponse> create(
                 @HostParam("url") String url,
-                @HeaderParam("x-ms-blob-type") String blobType,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
+                @HeaderParam("x-ms-blob-type") String blobType,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("Content-Length") long contentLength,
                 @HeaderParam("x-ms-blob-content-type") String contentType,
@@ -104,9 +103,9 @@ public final class AppendBlobsImpl {
         @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<AppendBlobsAppendBlockResponse> appendBlock(
                 @HostParam("url") String url,
-                @QueryParam("comp") String comp,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
+                @QueryParam("comp") String comp,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("Content-Length") long contentLength,
                 @HeaderParam("Content-MD5") String transactionalContentMD5,
@@ -134,10 +133,10 @@ public final class AppendBlobsImpl {
         @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<AppendBlobsAppendBlockFromUrlResponse> appendBlockFromUrl(
                 @HostParam("url") String url,
-                @QueryParam("comp") String comp,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
-                @HeaderParam("x-ms-copy-source") URL sourceUrl,
+                @QueryParam("comp") String comp,
+                @HeaderParam("x-ms-copy-source") String sourceUrl,
                 @HeaderParam("x-ms-source-range") String sourceRange,
                 @HeaderParam("x-ms-source-content-md5") String sourceContentMD5,
                 @HeaderParam("x-ms-source-content-crc64") String sourceContentcrc64,
@@ -171,9 +170,9 @@ public final class AppendBlobsImpl {
         @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<AppendBlobsSealResponse> seal(
                 @HostParam("url") String url,
-                @QueryParam("comp") String comp,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
+                @QueryParam("comp") String comp,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-client-request-id") String requestId,
@@ -308,9 +307,9 @@ public final class AppendBlobsImpl {
                 immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
         return service.create(
                 this.client.getUrl(),
-                blobType,
                 containerName,
                 blob,
+                blobType,
                 timeout,
                 contentLength,
                 contentType,
@@ -431,9 +430,9 @@ public final class AppendBlobsImpl {
                 ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return service.appendBlock(
                 this.client.getUrl(),
-                comp,
                 containerName,
                 blob,
+                comp,
                 timeout,
                 contentLength,
                 transactionalContentMD5Converted,
@@ -512,7 +511,7 @@ public final class AppendBlobsImpl {
     public Mono<AppendBlobsAppendBlockFromUrlResponse> appendBlockFromUrlWithResponseAsync(
             String containerName,
             String blob,
-            URL sourceUrl,
+            String sourceUrl,
             long contentLength,
             String sourceRange,
             byte[] sourceContentMD5,
@@ -571,9 +570,9 @@ public final class AppendBlobsImpl {
                 sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
         return service.appendBlockFromUrl(
                 this.client.getUrl(),
-                comp,
                 containerName,
                 blob,
+                comp,
                 sourceUrl,
                 sourceRange,
                 sourceContentMD5Converted,
@@ -653,9 +652,9 @@ public final class AppendBlobsImpl {
                 ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return service.seal(
                 this.client.getUrl(),
-                comp,
                 containerName,
                 blob,
+                comp,
                 timeout,
                 this.client.getVersion(),
                 requestId,

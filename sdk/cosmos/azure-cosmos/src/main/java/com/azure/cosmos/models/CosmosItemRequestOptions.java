@@ -10,7 +10,9 @@ import com.azure.cosmos.util.Beta;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Encapsulates options that can be specified for a request issued to cosmos Item.
@@ -29,6 +31,7 @@ public class CosmosItemRequestOptions {
     private String throughputControlGroupName;
     private DedicatedGatewayRequestOptions dedicatedGatewayRequestOptions;
     private Duration thresholdForDiagnosticsOnTracer;
+    private Map<String, String> customOptions;
 
     /**
      * copy constructor
@@ -316,6 +319,11 @@ public class CosmosItemRequestOptions {
         requestOptions.setOperationContextAndListenerTuple(operationContextAndListenerTuple);
         requestOptions.setDedicatedGatewayRequestOptions(dedicatedGatewayRequestOptions);
         requestOptions.setThresholdForDiagnosticsOnTracer(thresholdForDiagnosticsOnTracer);
+        if(this.customOptions != null) {
+            for(Map.Entry<String, String> entry : this.customOptions.entrySet()) {
+                requestOptions.setHeader(entry.getKey(), entry.getValue());
+            }
+        }
         return requestOptions;
     }
 
@@ -355,6 +363,31 @@ public class CosmosItemRequestOptions {
         return this;
     }
 
+    /**
+     * Sets the custom item request option value by key
+     *
+     * @param name  a string representing the custom option's name
+     * @param value a string representing the custom option's value
+     *
+     * @return the CosmosItemRequestOptions.
+     */
+    CosmosItemRequestOptions setHeader(String name, String value) {
+        if (this.customOptions == null) {
+            this.customOptions = new HashMap<>();
+        }
+        this.customOptions.put(name, value);
+        return this;
+    }
+
+    /**
+     * Gets the custom item request options
+     *
+     * @return Map of custom request options
+     */
+    Map<String, String> getHeaders() {
+        return this.customOptions;
+    }
+
     void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {
         this.operationContextAndListenerTuple = operationContextAndListenerTuple;
     }
@@ -386,6 +419,18 @@ public class CosmosItemRequestOptions {
                 public CosmosItemRequestOptions clone(CosmosItemRequestOptions options) {
                     return new CosmosItemRequestOptions(options);
                 }
-            });
+
+                @Override
+                public CosmosItemRequestOptions setHeader(CosmosItemRequestOptions cosmosItemRequestOptions,
+                                                          String name, String value) {
+                    return cosmosItemRequestOptions.setHeader(name, value);
+                }
+
+                @Override
+                public Map<String, String> getHeader(CosmosItemRequestOptions cosmosItemRequestOptions) {
+                    return cosmosItemRequestOptions.getHeaders();
+                }
+            }
+        );
     }
 }

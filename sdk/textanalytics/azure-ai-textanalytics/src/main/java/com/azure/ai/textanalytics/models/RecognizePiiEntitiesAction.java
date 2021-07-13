@@ -28,7 +28,7 @@ public final class RecognizePiiEntitiesAction {
     }
 
     /**
-     * Set the model version. This value indicates which model will be used for scoring, e.g. "latest", "2019-10-01".
+     * Sets the model version. This value indicates which model will be used for scoring, e.g. "latest", "2019-10-01".
      * If a model-version is not specified, the API will default to the latest, non-preview version.
      *
      * @param modelVersion The model version.
@@ -41,7 +41,7 @@ public final class RecognizePiiEntitiesAction {
     }
 
     /**
-     * Get the value of {@code disableServiceLogs}.
+     * Gets the value of {@code disableServiceLogs}.
      *
      * @return The value of {@code disableServiceLogs}. The default value of this property is 'false'. This means,
      * Text Analytics service logs your input text for 48 hours, solely to allow for troubleshooting issues. Setting
@@ -52,7 +52,7 @@ public final class RecognizePiiEntitiesAction {
     }
 
     /**
-     * Set the value of {@code disableServiceLogs}.
+     * Sets the value of {@code disableServiceLogs}.
      *
      * @param disableServiceLogs The default value of this property is 'true'. This means, Text Analytics service won't
      * log your input text. Setting this property to 'false', enables logging your input text for 48 hours,
@@ -66,7 +66,7 @@ public final class RecognizePiiEntitiesAction {
     }
 
     /**
-     * Get the value of domainFilter. It filters the response entities to ones only included in the specified domain.
+     * Gets the value of domainFilter. It filters the response entities to ones only included in the specified domain.
      * I.e., if set to 'PHI', will only return entities in the Protected Healthcare Information domain.
      * See https://aka.ms/tanerpii for more information.
      *
@@ -77,7 +77,7 @@ public final class RecognizePiiEntitiesAction {
     }
 
     /**
-     * Set the value of domainFilter. It filters the response entities to ones only included in the specified domain.
+     * Sets the value of domainFilter. It filters the response entities to ones only included in the specified domain.
      * I.e., if set to 'PHI', will only return entities in the Protected Healthcare Information domain.
      * See https://aka.ms/tanerpii for more information.
      *
@@ -91,7 +91,7 @@ public final class RecognizePiiEntitiesAction {
     }
 
     /**
-     * Get the value of categoriesFilter. It filters the response entities to ones only included in the specified
+     * Gets the value of categoriesFilter. It filters the response entities to ones only included in the specified
      * categories.
      *
      * @return The value of categoriesFilter.
@@ -101,7 +101,7 @@ public final class RecognizePiiEntitiesAction {
     }
 
     /**
-     * Set the value of categoriesFilter. It filters the response entities to ones only included in the specified
+     * Sets the value of categoriesFilter. It filters the response entities to ones only included in the specified
      * categories.
      *
      * @param categoriesFilter It filters the response entities to ones only included in the specified categories.

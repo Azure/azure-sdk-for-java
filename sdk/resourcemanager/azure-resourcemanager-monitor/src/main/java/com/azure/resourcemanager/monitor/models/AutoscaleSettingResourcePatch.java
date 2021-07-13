@@ -59,6 +59,13 @@ public class AutoscaleSettingResourcePatch {
     @JsonProperty(value = "properties.targetResourceUri")
     private String targetResourceUri;
 
+    /*
+     * the location of the resource that the autoscale setting should be added
+     * to.
+     */
+    @JsonProperty(value = "properties.targetResourceLocation")
+    private String targetResourceLocation;
+
     /**
      * Get the tags property: Resource tags.
      *
@@ -182,6 +189,28 @@ public class AutoscaleSettingResourcePatch {
      */
     public AutoscaleSettingResourcePatch withTargetResourceUri(String targetResourceUri) {
         this.targetResourceUri = targetResourceUri;
+        return this;
+    }
+
+    /**
+     * Get the targetResourceLocation property: the location of the resource that the autoscale setting should be added
+     * to.
+     *
+     * @return the targetResourceLocation value.
+     */
+    public String targetResourceLocation() {
+        return this.targetResourceLocation;
+    }
+
+    /**
+     * Set the targetResourceLocation property: the location of the resource that the autoscale setting should be added
+     * to.
+     *
+     * @param targetResourceLocation the targetResourceLocation value to set.
+     * @return the AutoscaleSettingResourcePatch object itself.
+     */
+    public AutoscaleSettingResourcePatch withTargetResourceLocation(String targetResourceLocation) {
+        this.targetResourceLocation = targetResourceLocation;
         return this;
     }
 

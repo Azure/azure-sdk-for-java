@@ -48,7 +48,7 @@ public final class CategorizedEntity {
     }
 
     /**
-     * Get the text property: Categorized entity text as appears in the request.
+     * Gets the text property: Categorized entity text as appears in the request.
      *
      * @return The text value.
      */
@@ -57,7 +57,7 @@ public final class CategorizedEntity {
     }
 
     /**
-     * Get the category property: Categorized entity category, such as Person/Location/Org/SSN etc.
+     * Gets the category property: Categorized entity category, such as Person/Location/Org/SSN etc.
      *
      * @return The category value.
      */
@@ -66,7 +66,7 @@ public final class CategorizedEntity {
     }
 
     /**
-     * Get the subcategory property: Categorized entity sub category, such as Age/Year/TimeRange etc.
+     * Gets the subcategory property: Categorized entity sub category, such as Age/Year/TimeRange etc.
      *
      * @return The subcategory value.
      */
@@ -75,7 +75,7 @@ public final class CategorizedEntity {
     }
 
     /**
-     * Get the score property: If a well-known item is recognized, a decimal
+     * Gets the score property: If a well-known item is recognized, a decimal
      * number denoting the confidence level between 0 and 1 will be returned.
      *
      * @return The score value.
@@ -85,7 +85,7 @@ public final class CategorizedEntity {
     }
 
     /**
-     * Get the offset of entity text. The start position for the entity text in a document.
+     * Gets the offset of entity text. The start position for the entity text in a document.
      *
      * @return The offset of entity text.
      */
@@ -98,7 +98,7 @@ public final class CategorizedEntity {
     }
 
     /**
-     * Get the length of entity text.
+     * Gets the length of entity text.
      *
      * @return The length of entity text.
      */
