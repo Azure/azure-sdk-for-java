@@ -17,6 +17,10 @@ public final class AnalyzeActionsResult {
     private IterableStream<RecognizePiiEntitiesActionResult> recognizePiiEntitiesResults;
     private IterableStream<ExtractKeyPhrasesActionResult> extractKeyPhrasesResults;
     private IterableStream<AnalyzeSentimentActionResult> analyzeSentimentResults;
+    private IterableStream<ExtractSummarizedSentencesActionResult> extractSummarizedSentencesResults;
+    private IterableStream<RecognizeCustomEntitiesActionResult> recognizeCustomEntitiesResults;
+    private IterableStream<RecognizeClassificationActionResult> recognizeClassificationResults;
+    private IterableStream<RecognizeClassificationCollectionActionResult> recognizeClassificationCollectionResults;
 
     static {
         AnalyzeActionsResultPropertiesHelper.setAccessor(
@@ -100,6 +104,38 @@ public final class AnalyzeActionsResult {
      */
     public IterableStream<AnalyzeSentimentActionResult> getAnalyzeSentimentResults() {
         return this.analyzeSentimentResults;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public IterableStream<ExtractSummarizedSentencesActionResult> getExtractSummarizedSentencesResults() {
+        return extractSummarizedSentencesResults;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public IterableStream<RecognizeCustomEntitiesActionResult> getRecognizeCustomEntitiesResults() {
+        return recognizeCustomEntitiesResults;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public IterableStream<RecognizeClassificationActionResult> getRecognizeClassificationResults() {
+        return recognizeClassificationResults;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public IterableStream<RecognizeClassificationCollectionActionResult> getRecognizeClassificationCollectionResults() {
+        return recognizeClassificationCollectionResults;
     }
 
     private void setRecognizeEntitiesResults(

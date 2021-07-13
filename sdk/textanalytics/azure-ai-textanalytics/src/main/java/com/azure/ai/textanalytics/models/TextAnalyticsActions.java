@@ -21,6 +21,11 @@ public final class TextAnalyticsActions {
     private Iterable<RecognizePiiEntitiesAction> recognizePiiEntitiesActions;
     private Iterable<ExtractKeyPhrasesAction> extractKeyPhrasesActions;
     private Iterable<AnalyzeSentimentAction> analyzeSentimentActions;
+    private Iterable<ExtractSummarizedSentencesAction> extractSummarizedSentencesActions;
+    private Iterable<RecognizeCustomEntitiesAction> recognizeCustomEntitiesActions;
+    private Iterable<RecognizeClassificationAction> recognizeClassificationActions;
+    private Iterable<RecognizeClassificationCollectionAction> recognizeClassificationCollectionActions;
+
 
     /**
      * Gets the custom name for the actions.
@@ -173,6 +178,95 @@ public final class TextAnalyticsActions {
         this.analyzeSentimentActions = analyzeSentimentActions == null ? null : Arrays.asList(analyzeSentimentActions);
         return this;
     }
+
+    /**
+     *
+     * @return
+     */
+    public Iterable<ExtractSummarizedSentencesAction> getExtractSummarizedSentencesActions() {
+        return extractSummarizedSentencesActions;
+    }
+
+    /**
+     *
+     * @param extractSummarizedSentencesActions
+     * @return
+     */
+    public TextAnalyticsActions setExtractSummarizedSentencesActions(
+        ExtractSummarizedSentencesAction... extractSummarizedSentencesActions) {
+        validateActionsNumber(extractSummarizedSentencesActions, ExtractSummarizedSentencesAction.class.getName());
+        this.extractSummarizedSentencesActions = extractSummarizedSentencesActions == null ? null :
+                                                     Arrays.asList(extractSummarizedSentencesActions);
+        return this;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public Iterable<RecognizeCustomEntitiesAction> getRecognizeCustomEntitiesActions() {
+        return recognizeCustomEntitiesActions;
+    }
+
+    /**
+     *
+     * @param recognizeCustomEntitiesActions
+     * @return
+     */
+    public TextAnalyticsActions setRecognizeCustomEntitiesActions(
+        RecognizeCustomEntitiesAction... recognizeCustomEntitiesActions) {
+        validateActionsNumber(recognizeCustomEntitiesActions, RecognizeCustomEntitiesAction.class.getName());
+        this.recognizeCustomEntitiesActions = recognizeCustomEntitiesActions == null ? null :
+                                                     Arrays.asList(recognizeCustomEntitiesActions);
+        return this;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public Iterable<RecognizeClassificationAction> getRecognizeClassificationActions() {
+        return recognizeClassificationActions;
+    }
+
+
+
+    /**
+     *
+     * @param recognizeClassificationActions
+     * @return
+     */
+    public TextAnalyticsActions setRecognizeClassificationActions(
+        RecognizeClassificationAction... recognizeClassificationActions) {
+        validateActionsNumber(recognizeClassificationActions, RecognizeClassificationAction.class.getName());
+        this.recognizeClassificationActions = recognizeClassificationActions == null ? null :
+                                                  Arrays.asList(recognizeClassificationActions);
+        return this;
+    }
+
+
+    /**
+     *
+     * @return
+     */
+    public Iterable<RecognizeClassificationCollectionAction> getRecognizeClassificationCollectionActions() {
+        return recognizeClassificationCollectionActions;
+    }
+
+
+    /**
+     *
+     * @param recognizeClassificationCollectionActions
+     * @return
+     */
+    public TextAnalyticsActions setRecognizeClassificationCollectionActions(
+        RecognizeClassificationCollectionAction... recognizeClassificationCollectionActions) {
+        validateActionsNumber(recognizeClassificationCollectionActions, RecognizeClassificationCollectionAction.class.getName());
+        this.recognizeClassificationCollectionActions = recognizeClassificationCollectionActions == null ? null :
+                                                            Arrays.asList(recognizeClassificationCollectionActions);
+        return this;
+    }
+
 
     private void validateActionsNumber(Object[] actions, String actionType) {
         if (actions != null && actions.length > 1) {
