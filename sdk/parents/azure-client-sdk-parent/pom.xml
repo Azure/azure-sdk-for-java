@@ -163,6 +163,11 @@
         <version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
         <configuration>
           <outputDirectory>${packageOutputDirectory}</outputDirectory>
+          <archive>
+            <manifestEntries>
+              <Multi-Release>true</Multi-Release>
+            </manifestEntries>
+          </archive>
         </configuration>
       </plugin>
 
@@ -193,6 +198,11 @@
               <goal>jar</goal>
             </goals>
             <configuration>
+              <archive>
+                <manifestEntries>
+                  <Multi-Release>true</Multi-Release>
+                </manifestEntries>
+              </archive>
               <outputDirectory>${packageOutputDirectory}</outputDirectory>
             </configuration>
           </execution>
@@ -254,6 +264,7 @@
                 <exclude>**/com/azure/cosmos/implementation/apachecommons/**/*</exclude>
                 <exclude>**/com/azure/cosmos/implementation/guava25/**/*</exclude>
                 <exclude>**/com/azure/cosmos/implementation/guava27/**/*</exclude>
+                <exclude>**/versions/11/**/*</exclude>
               </excludes>
             </configuration>
           </execution>
@@ -281,6 +292,9 @@
                   </limits>
                 </rule>
               </rules>
+              <excludes>
+                <exclude>**/versions/11/**/*</exclude>
+              </excludes>
             </configuration>
           </execution>
         </executions>
@@ -817,8 +831,27 @@
               <!-- compile first with module-info for Java 9+ -->
               <execution>
                 <id>default-compile</id>
+                <phase>compile</phase>
+                <goals>
+                  <goal>compile</goal>
+                </goals>
                 <configuration>
                   <release>11</release>
+                </configuration>
+              </execution>
+              <!-- compile sources in multirelease directory - src/main/javaXX -->
+              <execution>
+                <id>multirelease-compile</id>
+                <phase>compile</phase>
+                <goals>
+                  <goal>compile</goal>
+                </goals>
+                <configuration>
+                  <release>11</release>
+                  <compileSourceRoots>
+                    <compileSourceRoot>${project.basedir}/src/main/java11</compileSourceRoot>
+                  </compileSourceRoots>
+                  <multiReleaseOutput>true</multiReleaseOutput>
                 </configuration>
               </execution>
               <!-- then compile without module-info for Java 8 -->
@@ -835,6 +868,7 @@
                 </configuration>
               </execution>
             </executions>
+
           </plugin>
           <!-- Surefire plugin is broken, https://issues.apache.org/jira/browse/SUREFIRE-1501 -->
           <plugin>
