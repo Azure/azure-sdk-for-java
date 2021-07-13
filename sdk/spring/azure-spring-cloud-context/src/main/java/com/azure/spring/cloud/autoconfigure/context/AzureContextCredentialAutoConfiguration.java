@@ -20,6 +20,9 @@ import org.springframework.core.annotation.Order;
 import java.util.List;
 
 
+/**
+ * Auto-configuration for Azure Spring default Token Credential.
+ */
 @Configuration
 public class AzureContextCredentialAutoConfiguration {
 

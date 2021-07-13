@@ -1,9 +1,15 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.spring.cloud.autoconfigure.context;
 
 import com.azure.core.util.Configuration;
 import com.azure.spring.identity.CredentialPropertiesProvider;
 import org.springframework.util.StringUtils;
 
+/**
+ * Azure Spring extension of the {@link Configuration}.
+ */
 public class AzureSpringConfiguration extends Configuration implements CredentialPropertiesProvider {
 
     private final Configuration configuration;
