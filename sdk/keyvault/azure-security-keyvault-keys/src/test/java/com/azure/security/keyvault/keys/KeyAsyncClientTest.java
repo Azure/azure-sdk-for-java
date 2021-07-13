@@ -80,6 +80,18 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     }
 
     /**
+     * Tests that a Ec key created.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void createEcKey(HttpClient httpClient, KeyServiceVersion keyServiceVersion) {
+        createKeyAsyncClient(httpClient, keyServiceVersion);
+        createEcKeyRunner((expected) -> StepVerifier.create(client.createEcKey(expected))
+            .assertNext(response -> assertKeyEquals(expected, response))
+            .verifyComplete());
+    }
+
+    /**
      * Tests that we cannot create a key when the key is an empty string.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
