@@ -13,6 +13,7 @@ public final class SchemaRegistryAvroSerializerBuilder {
     private Boolean avroSpecificReader;
     private SchemaRegistryAsyncClient schemaRegistryAsyncClient;
     private String schemaGroup;
+    private AvroSchemaRegistryUtils avroSchemaRegistryUtils;
 
     /**
      * Instantiates instance of Builder class.
@@ -77,15 +78,29 @@ public final class SchemaRegistryAvroSerializerBuilder {
     }
 
     /**
+     * The {@link AvroSchemaRegistryUtils} to use to interact with the Schema Registry service.
+     *
+     * @param avroSchemaRegistryUtils
+     * @return
+     */
+    public SchemaRegistryAvroSerializerBuilder avroSchemaRegistryUtils(AvroSchemaRegistryUtils avroSchemaRegistryUtils) {
+        this.avroSchemaRegistryUtils = avroSchemaRegistryUtils;
+        return this;
+    }
+
+    /**
      * Instantiates SchemaRegistry avro serializer.
+     *
      * @return {@link SchemaRegistryAvroSerializer} instance
      *
      * @throws NullPointerException if parameters are incorrectly set.
      * @throws IllegalArgumentException if credential is not set.
      */
     public SchemaRegistryAvroSerializer buildSerializer() {
-        AvroSchemaRegistryUtils codec = new AvroSchemaRegistryUtils(this.avroSpecificReader);
-        return new SchemaRegistryAvroSerializer(schemaRegistryAsyncClient, codec, this.schemaGroup,
+        if (this.avroSchemaRegistryUtils == null) {
+            avroSchemaRegistryUtils = new AvroSchemaRegistryUtils(this.avroSpecificReader);
+        }
+        return new SchemaRegistryAvroSerializer(schemaRegistryAsyncClient, avroSchemaRegistryUtils, this.schemaGroup,
             this.autoRegisterSchemas);
     }
 }
