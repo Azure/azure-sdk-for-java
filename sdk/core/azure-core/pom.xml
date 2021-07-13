@@ -109,6 +109,12 @@
       <version>3.4.7</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
+        <!-- This maven artifact brings in Google's boring SSL, which is statically linked with the artifact. 
+        This enables pluggable HttpClients to use it without user manually installing boring SSL components.
+        Even though the artifact name has 'netty' prefix, the package has nothing specific for Netty, 
+        it's just that Netty community maintains this artifact.
+        For more info, refer: https://netty.io/wiki/forked-tomcat-native.html
+        -->
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-tcnative-boringssl-static</artifactId>
