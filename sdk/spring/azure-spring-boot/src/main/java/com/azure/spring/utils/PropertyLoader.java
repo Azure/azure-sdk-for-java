@@ -13,8 +13,6 @@ import java.util.Properties;
 public class PropertyLoader {
     private static final String PROJECT_PROPERTY_FILE = "/META-INF/project.properties";
 
-    private static final String TELEMETRY_CONFIG_FILE = "/telemetry.config";
-
     /**
      * To load a property value from the file.
      * @param file The source file to load properties from.

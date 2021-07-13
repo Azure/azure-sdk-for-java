@@ -3,6 +3,8 @@
 
 package com.azure.spring.aad.webapi;
 
+import com.azure.spring.aad.AADOAuth2ClientAutoConfiguration;
+import com.azure.spring.aad.AADClientRegistrationRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,9 +17,6 @@ import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
-import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
-import org.springframework.security.oauth2.client.web.AuthenticatedPrincipalOAuth2AuthorizedClientRepository;
-import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -35,12 +34,6 @@ public class AADOAuth2AuthorizedOboClientRepositoryTest {
         OAuth2AuthorizedClientService authorizedClientService(ClientRegistrationRepository clientRegistrationRepository) {
             return new InMemoryOAuth2AuthorizedClientService(clientRegistrationRepository);
         }
-
-        @Bean
-        public OAuth2AuthorizedClientRepository oAuth2AuthorizedClientRepository(
-            OAuth2AuthorizedClientService oAuth2AuthorizedClientService) {
-            return new AuthenticatedPrincipalOAuth2AuthorizedClientRepository(oAuth2AuthorizedClientService);
-        }
     }
 
     private static final String OBO_ACCESS_TOKEN_1 =
@@ -51,7 +44,7 @@ public class AADOAuth2AuthorizedOboClientRepositoryTest {
     public static final String FAKE_PRINCIPAL_NAME = "fake-principal-name";
     public static final String FAKE_TOKEN_VALUE = "fake-token-value";
 
-    private InMemoryClientRegistrationRepository clientRegistrationsRepo;
+    private AADClientRegistrationRepository clientRegistrationsRepo;
     private OAuth2AuthorizedClient client;
     private InMemoryOAuth2AuthorizedClientService inMemoryOAuth2AuthorizedClientService;
     private JwtAuthenticationToken jwtAuthenticationToken;
@@ -68,10 +61,10 @@ public class AADOAuth2AuthorizedOboClientRepositoryTest {
             AAD_PROPERTY_PREFIX + "client-secret = fake-client-secret",
             AAD_PROPERTY_PREFIX + "authorization-clients.fake-graph.scopes = https://graph.microsoft.com/.default"
         );
-        context.register(WebOAuth2ClientConfiguration.class, AADResourceServerClientConfiguration.class);
+        context.register(WebOAuth2ClientConfiguration.class, AADOAuth2ClientAutoConfiguration.class);
         context.refresh();
 
-        clientRegistrationsRepo = context.getBean(InMemoryClientRegistrationRepository.class);
+        clientRegistrationsRepo = context.getBean(AADClientRegistrationRepository.class);
         setupForAzureAuthorizedClient();
     }
 
@@ -81,11 +74,11 @@ public class AADOAuth2AuthorizedOboClientRepositoryTest {
         OAuth2AccessToken mockAccessToken = mock(OAuth2AccessToken.class);
         when(mockAccessToken.getTokenValue()).thenReturn(OBO_ACCESS_TOKEN_1);
 
-        InMemoryClientRegistrationRepository mockClientRegistrationsRepo = mock(InMemoryClientRegistrationRepository.class);
+        AADClientRegistrationRepository mockClientRegistrationsRepo = mock(AADClientRegistrationRepository.class);
 
         when(mockClientRegistrationsRepo.findByRegistrationId(any())).thenReturn(ClientRegistration
             .withRegistrationId(FAKE_GRAPH)
-            .authorizationGrantType(new AuthorizationGrantType("on-behalf-of"))
+            .authorizationGrantType(new AuthorizationGrantType("on_behalf_of"))
             .redirectUri("{baseUrl}/login/oauth2/code/")
             .tokenUri("https://login.microsoftonline.com/308df08a-1332-4a15-bb06-2ad7e8b71bcf/oauth2/v2.0/token")
             .jwkSetUri("https://login.microsoftonline.com/308df08a-1332-4a15-bb06-2ad7e8b71bcf/discovery/v2.0/keys")
