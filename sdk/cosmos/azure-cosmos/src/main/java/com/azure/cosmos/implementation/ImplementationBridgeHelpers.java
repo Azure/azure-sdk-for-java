@@ -347,7 +347,6 @@ public class ImplementationBridgeHelpers {
 
         public interface CosmosAsyncDatabaseAccessor {
             CosmosAsyncClient getCosmosAsyncClient(CosmosAsyncDatabase cosmosAsyncDatabase);
-
         }
     }
 
@@ -410,6 +409,7 @@ public class ImplementationBridgeHelpers {
         }
 
         public interface CosmosDiagnosticsAccessor {
+            FeedResponseDiagnostics getFeedResponseDiagnostics(CosmosDiagnostics cosmosDiagnostics);
             AtomicBoolean isDiagnosticsCapturedInPagedFlux(CosmosDiagnostics cosmosDiagnostics);
         }
     }

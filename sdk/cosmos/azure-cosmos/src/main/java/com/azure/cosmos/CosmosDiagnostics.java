@@ -80,6 +80,7 @@ public final class CosmosDiagnostics {
 
     /**
      * Regions contacted for this request
+     *
      * @return set of regions contacted for this request
      */
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
@@ -102,7 +103,7 @@ public final class CosmosDiagnostics {
             }
 
             if (stringBuilder != null) {
-                stringBuilder.append(USER_AGENT_KEY +"=").append(USER_AGENT).append(System.lineSeparator());
+                stringBuilder.append(USER_AGENT_KEY + "=").append(USER_AGENT).append(System.lineSeparator());
                 stringBuilder.append(feedResponseDiagnostics);
             }
         } else {
@@ -135,6 +136,15 @@ public final class CosmosDiagnostics {
     static {
         ImplementationBridgeHelpers.CosmosDiagnosticsHelper.setCosmosDiagnosticsAccessor(
             new ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor() {
+                @Override
+                public FeedResponseDiagnostics getFeedResponseDiagnostics(CosmosDiagnostics cosmosDiagnostics) {
+                    if (cosmosDiagnostics != null) {
+                        return cosmosDiagnostics.getFeedResponseDiagnostics();
+                    }
+
+                    return null;
+                }
+
                 @Override
                 public AtomicBoolean isDiagnosticsCapturedInPagedFlux(CosmosDiagnostics cosmosDiagnostics) {
                     return cosmosDiagnostics.isDiagnosticsCapturedInPagedFlux();

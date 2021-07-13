@@ -33,7 +33,7 @@ public class FeedResponseDiagnostics {
         this.clientSideRequestStatisticsList = Collections.synchronizedList(new ArrayList<>());
     }
 
-    Map<String, QueryMetrics> getQueryMetricsMap() {
+    public Map<String, QueryMetrics> getQueryMetricsMap() {
         return queryMetricsMap;
     }
 
@@ -86,6 +86,10 @@ public class FeedResponseDiagnostics {
 
     public void setDiagnosticsContext(QueryInfo.QueryPlanDiagnosticsContext diagnosticsContext) {
         this.diagnosticsContext = diagnosticsContext;
+    }
+
+    public QueryInfo.QueryPlanDiagnosticsContext getQueryPlanDiagnosticsContext() {
+        return diagnosticsContext;
     }
 
     /**
