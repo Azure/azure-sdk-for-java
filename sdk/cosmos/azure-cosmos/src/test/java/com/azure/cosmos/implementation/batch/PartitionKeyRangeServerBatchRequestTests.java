@@ -34,7 +34,7 @@ public class PartitionKeyRangeServerBatchRequestTests {
 
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void fitsAllOperations() {
-        List<CosmosItemOperation> operations = new ArrayList<>() {{
+        List<CosmosItemOperation> operations = new ArrayList<CosmosItemOperation>() {{
             createItemBulkOperation("");
             createItemBulkOperation("");
         }};
@@ -52,7 +52,7 @@ public class PartitionKeyRangeServerBatchRequestTests {
 
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void overflowsBasedOnCount() {
-        List<CosmosItemOperation> operations = new ArrayList<>() {{
+        List<CosmosItemOperation> operations = new ArrayList<CosmosItemOperation>() {{
             add(createItemBulkOperation("1"));
             add(createItemBulkOperation("2"));
             add(createItemBulkOperation("3"));
@@ -75,7 +75,7 @@ public class PartitionKeyRangeServerBatchRequestTests {
 
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void overflowsBasedOnCountWithOffset() {
-        List<CosmosItemOperation> operations = new ArrayList<>() {{
+        List<CosmosItemOperation> operations = new ArrayList<CosmosItemOperation>() {{
             add(createItemBulkOperation("1"));
             add(createItemBulkOperation("2"));
             add(createItemBulkOperation("3"));
