@@ -3,93 +3,63 @@
 package com.azure.spring.identity;
 
 import com.azure.core.credential.TokenCredential;
-import com.azure.identity.AzureAuthorityHosts;
-import com.azure.identity.ClientCertificateCredentialBuilder;
-import com.azure.identity.ClientSecretCredentialBuilder;
-import com.azure.identity.ManagedIdentityCredential;
-import com.azure.identity.ManagedIdentityCredentialBuilder;
-import org.springframework.core.env.Environment;
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.ProxyOptions;
+import com.azure.identity.CredentialBuilderBase;
 
-import java.util.Optional;
-
-import static com.azure.spring.core.env.AzureEnvironment.toAuthorityHost;
+import java.time.Duration;
+import java.util.Objects;
+import java.util.function.Function;
 
 /**
  *
  */
-public abstract class SpringCredentialBuilderBase<T extends SpringCredentialBuilderBase<T>> {
+public abstract class SpringCredentialBuilderBase<B extends SpringCredentialBuilderBase, T extends TokenCredential> {
 
-    protected Environment environment;
+    protected CredentialPropertiesProvider credentialPropertiesProvider;
 
-    public SpringCredentialBuilderBase() {
+    @SuppressWarnings("rawtypes")
+    protected CredentialBuilderBase delegateCredentialBuilder;
 
+    @SuppressWarnings("unchecked")
+    public B credentialPropertiesProvider(CredentialPropertiesProvider provider) {
+        this.credentialPropertiesProvider = provider;
+        return (B) this;
     }
 
     @SuppressWarnings("unchecked")
-    public T environment(Environment environment) {
-        this.environment = environment;
-        return (T) this;
+    public B maxRetry(int maxRetry) {
+        this.delegateCredentialBuilder.maxRetry(maxRetry);
+        return (B) this;
     }
 
-    protected TokenCredential populateTokenCredential(String prefix) {
-        return populateTokenCredential(prefix, true);
+    @SuppressWarnings("unchecked")
+    public B retryTimeout(Function<Duration, Duration> retryTimeout) {
+        this.delegateCredentialBuilder.retryTimeout(retryTimeout);
+        return (B) this;
     }
 
-    protected TokenCredential populateTokenCredentialBasedOnClientId(String prefix) {
-        return populateTokenCredential(prefix, false);
+    @Deprecated
+    @SuppressWarnings("unchecked")
+    public B proxyOptions(ProxyOptions proxyOptions) {
+        this.delegateCredentialBuilder.proxyOptions(proxyOptions);
+        return (B) this;
     }
 
-    private TokenCredential populateTokenCredential(String prefix, boolean createDefault) {
-        String tenantId = getPropertyValue(prefix + "tenant-id");
-        String clientId = getPropertyValue(prefix + "client-id");
-        String clientSecret = getPropertyValue(prefix + "client-secret");
-        String authorityHost = getAuthorityHost(prefix);
-
-        if (tenantId != null && clientId != null && clientSecret != null) {
-            return new ClientSecretCredentialBuilder()
-                .tenantId(tenantId)
-                .clientId(clientId)
-                .clientSecret(clientSecret)
-                .authorityHost(authorityHost)
-                .build();
-        }
-
-        String certPath = getPropertyValue(prefix + "client-certificate-path");
-
-        if (tenantId != null && clientId != null && certPath != null) {
-            return new ClientCertificateCredentialBuilder()
-                .tenantId(tenantId)
-                .clientId(clientId)
-                .pemCertificate(certPath)
-                .authorityHost(authorityHost)
-                .build();
-        }
-
-        if (clientId != null) {
-            return new ManagedIdentityCredentialBuilder().clientId(clientId).build();
-        }
-
-        return createDefault ? defaultManagedIdentityCredential() : null;
+    @SuppressWarnings("unchecked")
+    public B httpPipeline(HttpPipeline httpPipeline) {
+        this.delegateCredentialBuilder.httpPipeline(httpPipeline);
+        return (B) this;
     }
 
-    protected ManagedIdentityCredential defaultManagedIdentityCredential() {
-        return new ManagedIdentityCredentialBuilder().build();
+    @SuppressWarnings("unchecked")
+    public B httpClient(HttpClient client) {
+        Objects.requireNonNull(client);
+        this.delegateCredentialBuilder.httpClient(client);
+        return (B) this;
     }
 
-    protected String getPropertyValue(String propertyName) {
-        return environment.getProperty(propertyName);
-    }
-
-    protected String getPropertyValue(String propertyName, String defaultValue) {
-        return environment.getProperty(propertyName, defaultValue);
-    }
-
-    protected String getAuthorityHost(String prefix) {
-        return Optional.ofNullable(getPropertyValue(prefix + "authority-host"))
-                       .orElse(Optional.ofNullable(getPropertyValue(prefix + "environment"))
-                                       .filter(env -> !env.isEmpty())
-                                       .map(env -> toAuthorityHost(env))
-                                       .orElse(AzureAuthorityHosts.AZURE_PUBLIC_CLOUD));
-    }
+    public abstract T build();
 
 }

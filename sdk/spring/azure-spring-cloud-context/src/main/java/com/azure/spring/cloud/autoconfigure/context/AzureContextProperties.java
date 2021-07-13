@@ -4,9 +4,9 @@
 package com.azure.spring.cloud.autoconfigure.context;
 
 import com.azure.spring.cloud.context.core.enums.AzureEnvironments;
-import com.google.common.base.Strings;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 
 import javax.annotation.PostConstruct;
@@ -45,7 +45,7 @@ public class AzureContextProperties {
                 "When auto create resources is enabled, spring.cloud.azure.region must be provided");
         }
 
-        if (msiEnabled && Strings.isNullOrEmpty(subscriptionId)) {
+        if (msiEnabled && !StringUtils.hasText(subscriptionId)) {
             Assert.hasText(this.subscriptionId, "When msi is enabled, "
                 + "spring.cloud.azure.subscription-id must be provided");
         }
