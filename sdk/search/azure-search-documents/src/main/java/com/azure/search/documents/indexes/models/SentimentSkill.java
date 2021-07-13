@@ -9,13 +9,17 @@ package com.azure.search.documents.indexes.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import java.util.List;
 
-/** Text analytics positive-negative sentiment analysis, scored as a floating point value in a range of zero to 1. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
+/**
+ * Text analytics positive-negative sentiment analysis, scored as a floating point value in a range of zero to 1.
+ */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "@odata.type",
+    visible = true)
 @JsonTypeName("#Microsoft.Skills.Text.SentimentSkill")
 @Fluent
 public final class SentimentSkill extends SearchIndexerSkill {
@@ -41,7 +45,8 @@ public final class SentimentSkill extends SearchIndexerSkill {
     @JsonProperty(value = "modelVersion")
     private String modelVersion;
 
-    @JsonProperty(value = "@odata.type")
+    @JsonTypeId
+    @JsonProperty(value = "@odata.type", access = JsonProperty.Access.WRITE_ONLY)
     private SentimentSkillVersion version;
 
     /**
@@ -52,8 +57,8 @@ public final class SentimentSkill extends SearchIndexerSkill {
      */
     @JsonCreator
     public SentimentSkill(
-            @JsonProperty(value = "inputs", required = true) List<InputFieldMappingEntry> inputs,
-            @JsonProperty(value = "outputs", required = true) List<OutputFieldMappingEntry> outputs) {
+        @JsonProperty(value = "inputs", required = true) List<InputFieldMappingEntry> inputs,
+        @JsonProperty(value = "outputs", required = true) List<OutputFieldMappingEntry> outputs) {
         this(inputs, outputs, SentimentSkillVersion.V1);
     }
 
@@ -64,11 +69,8 @@ public final class SentimentSkill extends SearchIndexerSkill {
      * @param outputs the outputs value to set.
      * @param version the SentimentSkillVersion value to set.
      */
-    @JsonCreator
-    public SentimentSkill(
-        @JsonProperty(value = "inputs", required = true) List<InputFieldMappingEntry> inputs,
-        @JsonProperty(value = "outputs", required = true) List<OutputFieldMappingEntry> outputs,
-        @JsonProperty(value = "@odata.type", required = true) SentimentSkillVersion version) {
+    public SentimentSkill(List<InputFieldMappingEntry> inputs, List<OutputFieldMappingEntry> outputs,
+        SentimentSkillVersion version) {
         super(inputs, outputs);
         this.version = version;
     }

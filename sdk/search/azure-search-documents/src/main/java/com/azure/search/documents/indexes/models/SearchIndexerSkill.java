@@ -20,7 +20,8 @@ import java.util.List;
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
         property = "@odata.type",
-        defaultImpl = SearchIndexerSkill.class)
+        defaultImpl = SearchIndexerSkill.class,
+        visible = true)
 @JsonTypeName("SearchIndexerSkill")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "#Microsoft.Skills.Util.ConditionalSkill", value = ConditionalSkill.class),

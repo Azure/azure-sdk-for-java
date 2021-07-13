@@ -10,13 +10,17 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import java.util.List;
 
-/** Text analytics entity recognition. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
+/**
+ * Text analytics entity recognition.
+ */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "@odata.type",
+    visible = true)
 @JsonTypeName("#Microsoft.Skills.Text.EntityRecognitionSkill")
 @Fluent
 public final class EntityRecognitionSkill extends SearchIndexerSkill {
@@ -57,7 +61,8 @@ public final class EntityRecognitionSkill extends SearchIndexerSkill {
     @JsonProperty(value = "modelVersion")
     private String modelVersion;
 
-    @JsonProperty(value = "@odata.type")
+    @JsonTypeId
+    @JsonProperty(value = "@odata.type", access = JsonProperty.Access.WRITE_ONLY)
     private EntityRecognitionSkillVersion version;
 
     /**
@@ -80,11 +85,8 @@ public final class EntityRecognitionSkill extends SearchIndexerSkill {
      * @param outputs the outputs value to set.
      * @param version the EntityRecognitionSkillVersion value to set.
      */
-    @JsonCreator
-    public EntityRecognitionSkill(
-        @JsonProperty(value = "inputs", required = true) List<InputFieldMappingEntry> inputs,
-        @JsonProperty(value = "outputs", required = true) List<OutputFieldMappingEntry> outputs,
-        @JsonProperty(value = "@odata.type", required = true) EntityRecognitionSkillVersion version) {
+    public EntityRecognitionSkill(List<InputFieldMappingEntry> inputs, List<OutputFieldMappingEntry> outputs,
+        EntityRecognitionSkillVersion version) {
         super(inputs, outputs);
         this.version = version;
     }
