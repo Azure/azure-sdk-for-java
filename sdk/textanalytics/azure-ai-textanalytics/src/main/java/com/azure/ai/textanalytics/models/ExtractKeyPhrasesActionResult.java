@@ -23,7 +23,7 @@ public final class ExtractKeyPhrasesActionResult extends TextAnalyticsActionResu
     /**
      * Gets the key phrases extraction action result.
      *
-     * @return the key phrases extraction action result.
+     * @return The key phrases extraction action result.
      *
      * @throws TextAnalyticsException if result has {@code isError} equals to true and when a non-error property
      * was accessed.
