@@ -1,19 +1,26 @@
 # Release History
 
 ## 3.7.0-beta.1 (Unreleased)
+### New Features
+- Add property `azure.activedirectory.application-type` to configure the application type.
+
+    Here are the 4 valid values:
+    - *web_application*: Web Application.
+    - *resource_server*: Resource Server.
+    - *resource_server_with_obo*: Resource Server with authorization grant type `on_behalf_of`.
+    - *web_application_and_resource_server*: Web Application and Resource Server in the same application, it also supports `on_behalf_of`.
+
+    This property is optional, its value can be inferred by dependencies, only `web_application_and_resource_server` must be configured manually: `azure.activedirectory.application-type=web_application_and_resource_server`.
+    
+    | Has dependency: spring-security-oauth2-client | Has dependency: spring-security-oauth2-resource-server |                  Valid values of application type                 | Default value               |
+    |-----------------------------------------------|--------------------------------------------------------|-------------------------------------------------------------------|-----------------------------|
+    |                      Yes                      |                          No                            |                       `web_application`                           |       `web_application`     |
+    |                      No                       |                          Yes                           |                       `resource_server`                           |       `resource_server`     |
+    |                      Yes                      |                          Yes                           | `resource_server_with_obo`, `web_application_and_resource_server` | `resource_server_with_obo`  |
+
+- Support new value `on_behalf_of` for AAD Obo authorization grant type.
 
 ## 3.6.1 (2021-07-02)
-### New Features
-- Upgrade to [spring-boot-dependencies:2.5.2](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.5.2/spring-boot-dependencies-2.5.2.pom).
-- Upgrade to [spring-cloud-dependencies:2020.0.3](https://repo.maven.apache.org/maven2/org/springframework/cloud/spring-cloud-dependencies/2020.0.3/spring-cloud-dependencies-2020.0.3.pom).
-- Add AAD property `azure.activedirectory.application-type` to explicitly configure the application scenario.
-  The following 4 values can be configured:
-  - *web_application*: Not required, only Web Application scenario.
-  - *resource_server*: Not required, only Resource Server scenario.
-  - *resource_server_with_obo*: Not required, Resource Server with authorization grant type 'on_behalf_of' scenario.
-  - *web_application_and_resource_server*: Required, Web Application and Resource Server are in the same application.
-- Support new value 'on_behalf_of' for AAD Obo authorization grant type.
-
 
 ### Key Bug Fixes
 - Fix [cve-2021-22119](https://tanzu.vmware.com/security/cve-2021-22119).

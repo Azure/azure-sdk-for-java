@@ -10,22 +10,23 @@ import org.springframework.util.StringUtils;
  * AAD application type.
  * <p>Provides some common methods to determine the application type according to the {@link AADAuthenticationProperties} properties.</p>
  *
+ * <p>The value can be inferred by dependencies, only 'web_application_and_resource_server' must be configured manually.</p>
  * <table border="1">
  *   <caption>AAD application type usage</caption>
  *   <tr>
  *     <th> Application type </th> <th> Has dependency: spring-security-oauth2-client</th> <th> Has dependency: spring-security-oauth2-resource-server </th> <th> Set azure.activedirectory.application-type </th>
  *   </tr>
  *   <tr>
- *     <td> Web application </td> <td> Yes </td> <td> No </td> <td> Not required, it can be set to 'web_application' </td>
+ *     <td> Web application </td> <td> Yes </td> <td> No </td> <td> Default value is 'web_application' </td>
  *   </tr>
  *   <tr>
- *     <td> Resource Server </td> <td> No </td> <td> Yes </td> <td> Not required, it can be set to 'resource_server' </td>
+ *     <td> Resource Server </td> <td> No </td> <td> Yes </td> <td> Default value is 'resource_server' </td>
  *   </tr>
  *   <tr>
- *     <td> Resource Server with OBO function </td> <td> Yes </td> <td> Yes </td> <td> Not required, it can be set to 'resource_server_with_obo' </td>
+ *     <td> Resource Server with OBO function </td> <td> Yes </td> <td> Yes </td> <td> Default value is 'resource_server_with_obo' </td>
  *   </tr>
  *   <tr>
- *     <td> Web Application and Resource Server </td> <td> Yes </td> <td> Yes </td> <td> Required, set to 'web_application_and_resource_server' </td>
+ *     <td> Web Application and Resource Server </td> <td> Yes </td> <td> Yes </td> <td> It's required to set 'web_application_and_resource_server'. </td>
  *   </tr>
  * </table>
  */

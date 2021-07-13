@@ -7,6 +7,7 @@ import com.azure.spring.aad.webapi.AADOBOOAuth2AuthorizedClientProvider;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import com.azure.spring.autoconfigure.condition.aad.ClientRegistrationCondition;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
@@ -34,16 +35,19 @@ public class AADOAuth2ClientAutoConfiguration {
     private AADAuthenticationProperties properties;
 
     @Bean
+    @ConditionalOnMissingBean
     public AADClientRegistrationRepository clientRegistrationRepository() {
         return new AADClientRegistrationRepository(properties);
     }
 
     @Bean
+    @ConditionalOnMissingBean
     public AADOAuth2AuthorizedClientRepository authorizedClientRepository(AADClientRegistrationRepository repo) {
         return new AADOAuth2AuthorizedClientRepository(repo);
     }
 
     @Bean
+    @ConditionalOnMissingBean
     public OAuth2AuthorizedClientManager authorizedClientManager(ClientRegistrationRepository clients,
                                                                  OAuth2AuthorizedClientRepository authorizedClients) {
 

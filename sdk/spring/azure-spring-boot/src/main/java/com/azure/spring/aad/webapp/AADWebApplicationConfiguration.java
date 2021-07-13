@@ -37,6 +37,7 @@ public class AADWebApplicationConfiguration {
     private AADAuthenticationProperties properties;
 
     @Bean
+    @ConditionalOnMissingBean
     public OAuth2UserService<OidcUserRequest, OidcUser> oidcUserService(AADAuthenticationProperties properties) {
         return new AADOAuth2UserService(properties);
     }
