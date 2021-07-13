@@ -16,7 +16,7 @@ public class ApplicationIdTest {
     so there are some requirements to run this test:
     1. This test can not put in azure-spring-boot module.
        If put in azure-spring-boot module, azure-spring-boot-xxx.jar/META-INF/MANIFEST.MF can not be used.
-    2. This test can not put in the same package with ApplicationId: "com.azure.spring.utils".
+    2. This test can not put in the same package with ApplicationId: "com.azure.spring.core".
        If put in that package, then ApplicationId.class.getPackage().getImplementationVersion() will return null.
     3. This test can not run in Intellij with default configuration.
        In Intellij, the default dependency type is "module", not "external library".
