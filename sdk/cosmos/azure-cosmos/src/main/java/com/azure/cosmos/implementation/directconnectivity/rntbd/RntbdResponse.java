@@ -21,6 +21,7 @@ import io.netty.util.ResourceLeakDetector;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.time.Instant;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
@@ -54,6 +55,9 @@ public final class RntbdResponse implements ReferenceCounted {
 
     @JsonProperty
     private volatile int referenceCount;
+
+    private Instant decodeStartTime;
+    private Instant decodeEndTime;
 
     // endregion
 
@@ -133,6 +137,24 @@ public final class RntbdResponse implements ReferenceCounted {
     @JsonIgnore
     public Long getTransportRequestId() {
         return this.getHeader(RntbdResponseHeader.TransportRequestID);
+    }
+
+    @JsonIgnore
+    public Instant getDecodeStartTime() {
+        return decodeStartTime;
+    }
+
+    @JsonIgnore
+    public void setDecodeStartTime(Instant decodeStartTime) {
+        this.decodeStartTime = decodeStartTime;
+    }
+
+    public Instant getDecodeEndTime() {
+        return decodeEndTime;
+    }
+
+    public void setDecodeEndTime(Instant decodeEndTime) {
+        this.decodeEndTime = decodeEndTime;
     }
 
     // endregion
