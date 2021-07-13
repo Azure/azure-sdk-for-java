@@ -3,10 +3,11 @@
 
 package com.azure.core.util.serializer;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -15,66 +16,108 @@ import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class JacksonAdapterTests {
-    @Test
-    public void emptyMap() throws IOException {
-        final Map<String, String> map = new HashMap<>();
-        final JacksonAdapter serializer = new JacksonAdapter();
-        assertEquals("{}", serializer.serialize(map, SerializerEncoding.JSON));
+    private static final JacksonAdapter SERIALIZER = new JacksonAdapter();
+
+    @ParameterizedTest
+    @MethodSource("mapJsonSerializationSupplier")
+    public void mapJsonSerialization(Object mapOrMapHolder, String expected) {
+        assertEquals(expected, assertDoesNotThrow(() -> new ObjectMapper().writeValueAsString(mapOrMapHolder)));
+            //JACKSON_ADAPTER.serialize(mapOrMapHolder, SerializerEncoding.JSON)));
     }
 
-    @Test
-    public void mapWithNullKey() throws IOException {
-        final Map<String, String> map = new HashMap<>();
-        map.put(null, null);
-        final JacksonAdapter serializer = new JacksonAdapter();
-        assertEquals("{}", serializer.serialize(map, SerializerEncoding.JSON));
+    private static Stream<Arguments> mapJsonSerializationSupplier() {
+        return Stream.of(
+//            Arguments.of(Collections.emptyMap(), "{}"),
+            Arguments.of(Collections.singletonMap(null, null), "{}")
+//            Arguments.of(Collections.singletonMap("", null), "{\"\":null}"),
+//            Arguments.of(Collections.singletonMap("", ""), "{\"\":\"\"}"),
+//            Arguments.of(Collections.singletonMap("", "test"), "{\"\":\"test\"}"),
+//            Arguments.of(Collections.singletonMap("test", "test"), "{\"test\":\"test\"}"),
+
+//            Arguments.of(new MapHolder(null), "{\"map\":null}"),
+//            Arguments.of(new MapHolder(Collections.emptyMap()), "{\"map\":{}}"),
+//            Arguments.of(new MapHolder(Collections.singletonMap(null, null)), "{\"map\":{}}"),
+//            Arguments.of(new MapHolder(Collections.singletonMap("", null)), "{\"map\":{\"\":null}}"),
+//            Arguments.of(new MapHolder(Collections.singletonMap("", "")), "{\"map\":{\"\":\"\"}}"),
+//            Arguments.of(new MapHolder(Collections.singletonMap("", "test")), "{\"map\":{\"\":\"test\"}}"),
+//            Arguments.of(new MapHolder(Collections.singletonMap("test", "test")), "{\"map\":{\"test\":\"test\"}}")
+        );
     }
 
-    @Test
-    public void mapWithEmptyKeyAndNullValue() throws IOException {
-        final MapHolder mapHolder = new MapHolder();
-        mapHolder.map(new HashMap<>());
-        mapHolder.map().put("", null);
-
-        final JacksonAdapter serializer = new JacksonAdapter();
-        assertEquals("{\"map\":{\"\":null}}", serializer.serialize(mapHolder, SerializerEncoding.JSON));
+    @ParameterizedTest
+    @MethodSource("collectionJsonSerializationSupplier")
+    public void collectionJsonSerialization(Object collectionOrCollectionHolder, String expected) {
+        assertEquals(expected, assertDoesNotThrow(() ->
+            SERIALIZER.serialize(collectionOrCollectionHolder, SerializerEncoding.JSON)));
     }
 
-    @Test
-    public void mapWithEmptyKeyAndEmptyValue() throws IOException {
-        final MapHolder mapHolder = new MapHolder();
-        mapHolder.map = new HashMap<>();
-        mapHolder.map.put("", "");
-        final JacksonAdapter serializer = new JacksonAdapter();
-        assertEquals("{\"map\":{\"\":\"\"}}", serializer.serialize(mapHolder, SerializerEncoding.JSON));
+    private static Stream<Arguments> collectionJsonSerializationSupplier() {
+        return Stream.of(
+            Arguments.of(new String[0], "[]"),
+            Arguments.of(new String[] { null }, "[null]")
+        );
     }
 
-    @Test
-    public void mapWithEmptyKeyAndNonEmptyValue() throws IOException {
-        final Map<String, String> map = new HashMap<>();
-        map.put("", "test");
-        final JacksonAdapter serializer = new JacksonAdapter();
-        assertEquals("{\"\":\"test\"}", serializer.serialize(map, SerializerEncoding.JSON));
+    @ParameterizedTest
+    @MethodSource("mapXmlSerializationSupplier")
+    public void mapXmlSerialization(Object mapOrMapHolder, String expected) {
+        assertEquals(expected, assertDoesNotThrow(() ->
+            SERIALIZER.serialize(mapOrMapHolder, SerializerEncoding.XML)));
     }
 
-    private static class MapHolder {
+    private static Stream<Arguments> mapXmlSerializationSupplier() {
+        return Stream.of(
+            Arguments.of(Collections.emptyMap(), ""),
+            Arguments.of(Collections.singletonMap(null, null), ""),
+            Arguments.of(Collections.singletonMap("", null), "{\"\":null}"),
+            Arguments.of(Collections.singletonMap("", ""), "{\"\":\"\"}"),
+            Arguments.of(Collections.singletonMap("", "test"), "{\"\":\"test\"}"),
+            Arguments.of(Collections.singletonMap("test", "test"), "{\"test\":\"test\"}"),
 
+            Arguments.of(new MapHolder(null), "{\"map\":null}"),
+            Arguments.of(new MapHolder(Collections.emptyMap()), "{\"map\":{}}"),
+            Arguments.of(new MapHolder(Collections.singletonMap(null, null)), "{\"map\":{}}"),
+            Arguments.of(new MapHolder(Collections.singletonMap("", null)), "{\"map\":{\"\":null}}"),
+            Arguments.of(new MapHolder(Collections.singletonMap("", "")), "{\"map\":{\"\":\"\"}}"),
+            Arguments.of(new MapHolder(Collections.singletonMap("", "test")), "{\"map\":{\"\":\"test\"}}"),
+            Arguments.of(new MapHolder(Collections.singletonMap("test", "test")), "{\"map\":{\"test\":\"test\"}}")
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("mapXmlDeserializationSupplier")
+    public void mapXmlDeserialization(String xml, Class<?> mapOrMapHolderClass, Object expected) {
+        assertEquals(expected, assertDoesNotThrow(() ->
+            SERIALIZER.deserialize(xml, mapOrMapHolderClass, SerializerEncoding.XML)));
+    }
+
+    private static Stream<Arguments> mapXmlDeserializationSupplier() {
+        return Stream.of(
+            Arguments.of("<empty />", Map.class, Collections.emptyMap())
+        );
+    }
+
+    static class MapHolder {
         @JsonInclude(content = JsonInclude.Include.ALWAYS)
-        private Map<String, String> map = new HashMap<>();
-        public Map<String, String> map() {
-            return map;
+        @JsonProperty("map")
+        private final Map<String, String> map;
+
+        @JsonCreator
+        MapHolder(Map<String, String> map) {
+            this.map = map;
         }
 
-        public void map(Map<String, String> map) {
-            this.map = map;
+        public Map<String, String> getMap() {
+            return map;
         }
 
     }
