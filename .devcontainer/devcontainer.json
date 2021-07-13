@@ -28,7 +28,8 @@
 		"lldb.executable": "/usr/bin/lldb",
 		"files.watcherExclude": {
 			"**/target/**": true
-		}
+		},
+		"java.jdt.ls.vmargs":"-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx2G -Xms100m"
 	},
 	"remoteUser": "codespace",
 	"overrideCommand": false,
@@ -41,7 +42,8 @@
 	"extensions": [
 		"GitHub.vscode-pull-request-github",
 		"MS-vsliveshare.vsliveshare",
-		"VisualStudioExptTeam.vscodeintellicode"
+		"VisualStudioExptTeam.vscodeintellicode",
+		"vscjava.vscode-java-pack"
 	]
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
