@@ -9,6 +9,7 @@ import com.azure.autorest.customization.PackageCustomization;
 import org.slf4j.Logger;
 
 import java.lang.reflect.Modifier;
+import java.util.Collections;
 import java.util.Locale;
 
 /**
@@ -41,7 +42,7 @@ public class SearchServiceCustomizations extends Customization {
         bulkChangeClassModifiers(publicCustomization, PUBLIC_ABSTRACT, "ScoringFunction", "DataChangeDetectionPolicy",
             "DataDeletionDetectionPolicy", "CharFilter", "CognitiveServicesAccount", "SearchIndexerSkill",
             "LexicalAnalyzer", "SearchIndexerKnowledgeStoreProjectionSelector",
-            "SearchIndexerKnowledgeStoreBlobProjectionSelector");
+            "SearchIndexerKnowledgeStoreBlobProjectionSelector", "SearchIndexerDataIdentity");
 
         // Change class modifiers to 'public final'.
         bulkChangeClassModifiers(publicCustomization, PUBLIC_FINAL, "BM25SimilarityAlgorithm",
@@ -76,13 +77,11 @@ public class SearchServiceCustomizations extends Customization {
         customizeLuceneStandardAnalyzer(publicCustomization.getClass("LuceneStandardAnalyzer"));
         customizeStopAnalyzer(publicCustomization.getClass("StopAnalyzer"));
         customizeSearchIndexerSkillset(publicCustomization.getClass("SearchIndexerSkillset"));
-        customizeSearchIndexerKnowledgeStoreBlobProjectionSelector(
-            publicCustomization.getClass("SearchIndexerKnowledgeStoreBlobProjectionSelector"));
-        customizeSearchIndexerKnowledgeStoreFileProjectionSelector(
-            publicCustomization.getClass("SearchIndexerKnowledgeStoreFileProjectionSelector"));
-        customizeSearchIndexerKnowledgeStoreObjectProjectionSelector(
-            publicCustomization.getClass("SearchIndexerKnowledgeStoreObjectProjectionSelector"));
-        customizeSearchIndexerKnowledgeStoreTableProjectionSelector(
+
+        addKnowledgeStoreProjectionFluentSetterOverrides(
+            publicCustomization.getClass("SearchIndexerKnowledgeStoreBlobProjectionSelector"),
+            publicCustomization.getClass("SearchIndexerKnowledgeStoreFileProjectionSelector"),
+            publicCustomization.getClass("SearchIndexerKnowledgeStoreObjectProjectionSelector"),
             publicCustomization.getClass("SearchIndexerKnowledgeStoreTableProjectionSelector"));
     }
 
@@ -356,58 +355,41 @@ public class SearchServiceCustomizations extends Customization {
         addVarArgsOverload(classCustomization, "skills", "SearchIndexerSkill");
     }
 
-    private void customizeSearchIndexerKnowledgeStoreBlobProjectionSelector(ClassCustomization classCustomization) {
-        addKnowledgeStoreProjectionFluentSetterOverrides(classCustomization);
-    }
+    private void addKnowledgeStoreProjectionFluentSetterOverrides(ClassCustomization... classCustomizations) {
+        for (ClassCustomization classCustomization : classCustomizations) {
+            String className = classCustomization.getClassName();
 
-    private void customizeSearchIndexerKnowledgeStoreFileProjectionSelector(ClassCustomization classCustomization) {
-        classCustomization.removeAnnotation("@Immutable");
-        classCustomization.addAnnotation("@Fluent");
-        addKnowledgeStoreProjectionFluentSetterOverrides(classCustomization);
-    }
+            classCustomization.addMethod(joinWithNewline(
+                String.format("public %s setReferenceKeyName(String referenceKeyName) {", className),
+                "    super.setReferenceKeyName(referenceKeyName);",
+                "    return this;",
+                "}")).addAnnotation("@Override");
 
-    private void customizeSearchIndexerKnowledgeStoreObjectProjectionSelector(ClassCustomization classCustomization) {
-        classCustomization.removeAnnotation("@Immutable");
-        classCustomization.addAnnotation("@Fluent");
-        addKnowledgeStoreProjectionFluentSetterOverrides(classCustomization);
-    }
+            classCustomization.addMethod(joinWithNewline(
+                String.format("public %s setGeneratedKeyName(String generatedKeyName) {", className),
+                "    super.setGeneratedKeyName(generatedKeyName);",
+                "    return this;",
+                "}")).addAnnotation("@Override");
 
-    private void customizeSearchIndexerKnowledgeStoreTableProjectionSelector(ClassCustomization classCustomization) {
-        addKnowledgeStoreProjectionFluentSetterOverrides(classCustomization);
-    }
+            classCustomization.addMethod(joinWithNewline(
+                String.format("public %s setSource(String source) {", className),
+                "    super.setSource(source);\n",
+                "    return this;\n",
+                "}")).addAnnotation("@Override");
 
-    private void addKnowledgeStoreProjectionFluentSetterOverrides(ClassCustomization classCustomization) {
-        String className = classCustomization.getClassName();
+            classCustomization.addMethod(joinWithNewline(
+                String.format("public %s setSourceContext(String sourceContext) {", className),
+                "    super.setSourceContext(sourceContext);",
+                "    return this;",
+                "}")).addAnnotation("@Override");
 
-        classCustomization.addMethod(joinWithNewline(
-            String.format("public %s setReferenceKeyName(String referenceKeyName) {", className),
-            "    super.setReferenceKeyName(referenceKeyName);",
-            "    return this;",
-            "}")).addAnnotation("@Override");
-
-        classCustomization.addMethod(joinWithNewline(
-            String.format("public %s setGeneratedKeyName(String generatedKeyName) {", className),
-            "    super.setGeneratedKeyName(generatedKeyName);",
-            "    return this;",
-            "}")).addAnnotation("@Override");
-
-        classCustomization.addMethod(joinWithNewline(
-            String.format("public %s setSource(String source) {", className),
-            "    super.setSource(source);\n",
-            "    return this;\n",
-            "}")).addAnnotation("@Override");
-
-        classCustomization.addMethod(joinWithNewline(
-            String.format("public %s setSourceContext(String sourceContext) {", className),
-            "    super.setSourceContext(sourceContext);",
-            "    return this;",
-            "}")).addAnnotation("@Override");
-
-        classCustomization.addMethod(joinWithNewline(
-            String.format("public %s setInputs(List<InputFieldMappingEntry> inputs) {", className),
-            "    super.setInputs(inputs);",
-            "    return this;",
-            "}")).addAnnotation("@Override");
+            classCustomization.addMethod(joinWithNewline(
+                String.format("public %s setInputs(List<InputFieldMappingEntry> inputs) {", className),
+                "    super.setInputs(inputs);",
+                "    return this;",
+                "}"), Collections.singletonList("java.util.List"))
+                .addAnnotation("@Override");
+        }
     }
 
     private static void bulkChangeClassModifiers(PackageCustomization packageCustomization, int modifier,

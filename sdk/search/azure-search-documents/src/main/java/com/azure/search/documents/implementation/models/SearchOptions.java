@@ -7,6 +7,7 @@
 package com.azure.search.documents.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.search.documents.models.Captions;
 import com.azure.search.documents.models.QueryLanguage;
 import com.azure.search.documents.models.QuerySpeller;
 import com.azure.search.documents.models.QueryType;
@@ -192,6 +193,23 @@ public final class SearchOptions {
      */
     @JsonProperty(value = "$top")
     private Integer top;
+
+    /*
+     * This parameter is only valid if the query type is 'semantic'. If set,
+     * the query returns captions extracted from key passages in the highest
+     * ranked documents. When Captions is set to 'extractive', highlighting is
+     * enabled by default, and can be configured by appending the pipe
+     * character '|' followed by the 'highlight-<true/false>' option, such as
+     * 'extractive|highlight-true'. Defaults to 'None'.
+     */
+    @JsonProperty(value = "captions")
+    private Captions captions;
+
+    /*
+     * The list of field names used for semantic search.
+     */
+    @JsonProperty(value = "semanticFields")
+    private List<String> semanticFields;
 
     /**
      * Get the includeTotalCount property: A value that specifies whether to fetch the total count of results. Default
@@ -674,6 +692,52 @@ public final class SearchOptions {
      */
     public SearchOptions setTop(Integer top) {
         this.top = top;
+        return this;
+    }
+
+    /**
+     * Get the captions property: This parameter is only valid if the query type is 'semantic'. If set, the query
+     * returns captions extracted from key passages in the highest ranked documents. When Captions is set to
+     * 'extractive', highlighting is enabled by default, and can be configured by appending the pipe character '|'
+     * followed by the 'highlight-&lt;true/false&gt;' option, such as 'extractive|highlight-true'. Defaults to 'None'.
+     *
+     * @return the captions value.
+     */
+    public Captions getCaptions() {
+        return this.captions;
+    }
+
+    /**
+     * Set the captions property: This parameter is only valid if the query type is 'semantic'. If set, the query
+     * returns captions extracted from key passages in the highest ranked documents. When Captions is set to
+     * 'extractive', highlighting is enabled by default, and can be configured by appending the pipe character '|'
+     * followed by the 'highlight-&lt;true/false&gt;' option, such as 'extractive|highlight-true'. Defaults to 'None'.
+     *
+     * @param captions the captions value to set.
+     * @return the SearchOptions object itself.
+     */
+    public SearchOptions setCaptions(Captions captions) {
+        this.captions = captions;
+        return this;
+    }
+
+    /**
+     * Get the semanticFields property: The list of field names used for semantic search.
+     *
+     * @return the semanticFields value.
+     */
+    public List<String> getSemanticFields() {
+        return this.semanticFields;
+    }
+
+    /**
+     * Set the semanticFields property: The list of field names used for semantic search.
+     *
+     * @param semanticFields the semanticFields value to set.
+     * @return the SearchOptions object itself.
+     */
+    public SearchOptions setSemanticFields(List<String> semanticFields) {
+        this.semanticFields = semanticFields;
         return this;
     }
 }

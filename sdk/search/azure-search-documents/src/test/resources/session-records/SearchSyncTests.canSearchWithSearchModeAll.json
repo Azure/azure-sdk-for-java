@@ -1,27 +1,27 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-search-shared-instance')//docs/search.post.search?api-version=2020-06-30-Preview",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-search-shared-instance')/docs/search.post.search?api-version=2021-04-30-Preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "9440abac-5b4d-491a-b248-910a1f4bd872",
+      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "116e4016-8c36-49bc-81b3-c59363e6dd83",
       "Content-Type" : "application/json"
     },
     "Response" : {
+      "content-length" : "502",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "9440abac-5b4d-491a-b248-910a1f4bd872",
+      "request-id" : "116e4016-8c36-49bc-81b3-c59363e6dd83",
       "StatusCode" : "200",
-      "Date" : "Fri, 02 Apr 2021 22:34:21 GMT",
+      "Date" : "Tue, 13 Jul 2021 19:20:57 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "9440abac-5b4d-491a-b248-910a1f4bd872",
-      "elapsed-time" : "25",
+      "client-request-id" : "116e4016-8c36-49bc-81b3-c59363e6dd83",
+      "elapsed-time" : "9",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "502",
       "Body" : "{\"value\":[{\"@search.score\":3.4764762,\"HotelId\":\"2\",\"HotelName\":\"Roach Motel\",\"Description\":\"Cheapest hotel in town. Infact, a motel.\",\"Description_fr\":\"H\\u00f4tel le moins cher en ville. Infact, un motel.\",\"Category\":\"Budget\",\"Tags\":[\"motel\",\"budget\"],\"ParkingIncluded\":true,\"SmokingAllowed\":true,\"LastRenovationDate\":\"1982-04-28T00:00:00Z\",\"Rating\":1,\"Location\":{\"type\":\"Point\",\"coordinates\":[-122.131577,49.678581],\"crs\":{\"type\":\"name\",\"properties\":{\"name\":\"EPSG:4326\"}}},\"Address\":null,\"Rooms\":[]}]}",
-      "x-ms-client-request-id" : "9440abac-5b4d-491a-b248-910a1f4bd872",
+      "x-ms-client-request-id" : "116e4016-8c36-49bc-81b3-c59363e6dd83",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=none"
     },
