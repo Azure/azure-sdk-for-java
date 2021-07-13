@@ -12,7 +12,7 @@ import java.util.Arrays;
 public class HelloWorldAsync {
 
     /**
-     * Authenticates with the Synapse workspace and shows how to set, get, update and delete a role assignment in the workspace.
+     * Authenticates with the Synapse workspace and shows how to set, get, update and delete a spark job in the workspace.
      *
      * @param args Unused. Arguments to the program.
      * @throws IllegalArgumentException when invalid workspace endpoint is passed.

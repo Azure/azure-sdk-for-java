@@ -4,16 +4,19 @@
 package com.azure.analytics.synapse.spark;
 
 import com.azure.analytics.synapse.spark.models.SparkBatchJob;
+import com.azure.analytics.synapse.spark.models.SparkBatchJobCollection;
 import com.azure.analytics.synapse.spark.models.SparkBatchJobOptions;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Flux;
+import reactor.test.StepVerifier;
 
 import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class SparkBatchClientTest extends SparkClientTestBase {
-    private SparkBatchClient client;
+public class SparkBatchAsyncClientTest extends SparkClientTestBase {
+    private SparkBatchAsyncClient client;
 
     @Override
     protected void beforeTest() {
@@ -21,15 +24,17 @@ public class SparkBatchClientTest extends SparkClientTestBase {
             .endpoint(getEndpoint())
             .pipeline(httpPipeline)
             .sparkPoolName(getSparkPoolName())
-            .buildSparkBatchClient());
+            .buildSparkBatchAsyncClient());
     }
 
     @Test
     public void getSparkBatchJob() {
-        for (SparkBatchJob expectedSparkJob : client.getSparkBatchJobs().getSessions()) {
-            SparkBatchJob actualSparkJob = client.getSparkBatchJob(expectedSparkJob.getId());
-            assertSparkJobEquals(expectedSparkJob, actualSparkJob);
-        }
+        client.getSparkBatchJobs()
+            .map(SparkBatchJobCollection::getSessions)
+            .flatMapMany(Flux::fromIterable)
+            .doOnNext(expected -> StepVerifier.create(client.getSparkBatchJob(expected.getId()))
+                .assertNext(actual -> assertSparkJobEquals(expected, actual))
+                .verifyComplete());
     }
 
     @Test
@@ -51,26 +56,28 @@ public class SparkBatchClientTest extends SparkClientTestBase {
             .setExecutorCores(4)
             .setExecutorCount(2);
 
-        // act
-        SparkBatchJob expected = null;
+        AtomicReference<SparkBatchJob> testJob = new AtomicReference<>();
 
         try {
-            expected = client.createSparkBatchJob(options, true);
+            // act
+            StepVerifier.create(client.createSparkBatchJob(options, true))
+                .consumeNextWith(expected -> {
+                    testJob.set(expected);
 
-            // assert
-            assertNotNull(expected);
-            assertEquals(jobName, expected.getName());
-            assertEquals(getSparkPoolName(), expected.getSparkPoolName());
+                    assertEquals(jobName, expected.getName());
+                    assertEquals(getSparkPoolName(), expected.getSparkPoolName());
+                })
+                .verifyComplete();
 
             // act
-            SparkBatchJob actual = client.getSparkBatchJob(expected.getId(), true);
+            StepVerifier.create(client.getSparkBatchJob(testJob.get().getId(), true))
+                .assertNext(actual -> assertSparkJobEquals(testJob.get(), actual))
+                .verifyComplete();
 
-            // assert
-            assertSparkJobEquals(expected, actual);
         } finally {
             // clean up
-            if (expected != null) {
-                client.cancelSparkBatchJob(expected.getId());
+            if (testJob.get() != null) {
+                client.cancelSparkBatchJob(testJob.get().getId()).block();
             }
         }
     }

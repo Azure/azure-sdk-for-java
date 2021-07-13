@@ -5,16 +5,26 @@ package com.azure.analytics.synapse.spark;
 
 import com.azure.analytics.synapse.spark.models.SparkBatchJob;
 import com.azure.analytics.synapse.spark.models.SparkSession;
+import com.azure.analytics.synapse.spark.models.SparkStatement;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
-import com.azure.core.http.policy.*;
+import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.HttpPolicyProviders;
+import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +44,8 @@ public abstract class SparkClientTestBase extends TestBase {
     private final String clientName = properties.getOrDefault(NAME, "UnknownName");
     private final String clientVersion = properties.getOrDefault(VERSION, "UnknownVersion");
     private final String fakeSparkPool = "testsparkpool";
+    private final String fakeStorageAccount = "teststorageaccount";
+    private final String fakeStorageContainerName = "testcontainer";
 
     protected String getEndpoint() {
         String endpoint = interceptorManager.isPlaybackMode()
@@ -51,21 +63,27 @@ public abstract class SparkClientTestBase extends TestBase {
         return sparkPoolName;
     }
 
+    protected String getStorageAccountName() {
+        String storageAccountName = interceptorManager.isPlaybackMode()
+            ? fakeStorageAccount
+            : Configuration.getGlobalConfiguration().get("AZURE_SYNAPSE_STORAGE_ACCOUNT_NAME");
+        Objects.requireNonNull(storageAccountName);
+        return storageAccountName;
+    }
+
+    protected String getStorageContainerName() {
+        String storageContainerName = interceptorManager.isPlaybackMode()
+            ? fakeStorageContainerName
+            : Configuration.getGlobalConfiguration().get("AZURE_SYNAPSE_STORAGE_CONTAINER_NAME");
+        Objects.requireNonNull(storageContainerName);
+        return storageContainerName;
+    }
+
     <T> T clientSetup(Function<HttpPipeline, T> clientBuilder) {
         TokenCredential credential = null;
 
         if (!interceptorManager.isPlaybackMode()) {
-            String clientId = System.getenv("CLIENT_ID");
-            String clientKey = System.getenv("CLIENT_SECRET");
-            String tenantId = System.getenv("TENANT_ID");
-            Objects.requireNonNull(clientId, "The client id cannot be null");
-            Objects.requireNonNull(clientKey, "The client key cannot be null");
-            Objects.requireNonNull(tenantId, "The tenant id cannot be null");
-            credential = new ClientSecretCredentialBuilder()
-                .clientSecret(clientKey)
-                .clientId(clientId)
-                .tenantId(tenantId)
-                .build();
+            credential = new DefaultAzureCredentialBuilder().build();
         }
 
         HttpClient httpClient;
@@ -106,7 +124,7 @@ public abstract class SparkClientTestBase extends TestBase {
         return Objects.requireNonNull(client);
     }
 
-    void validateSparkBatchJob(SparkBatchJob expectedSparkJob, SparkBatchJob actualSparkJob) {
+    void assertSparkJobEquals(SparkBatchJob expectedSparkJob, SparkBatchJob actualSparkJob) {
         assertEquals(expectedSparkJob.getName(), actualSparkJob.getName());
         assertEquals(expectedSparkJob.getId(), actualSparkJob.getId());
         assertEquals(expectedSparkJob.getAppId(), actualSparkJob.getAppId());
@@ -114,11 +132,16 @@ public abstract class SparkClientTestBase extends TestBase {
         assertEquals(expectedSparkJob.getArtifactId(), actualSparkJob.getArtifactId());
     }
 
-    void validateSparkSession(SparkSession expectedSparkSession, SparkSession actualSparkSession) {
+    void assertSparkSessionEquals(SparkSession expectedSparkSession, SparkSession actualSparkSession) {
         assertEquals(expectedSparkSession.getName(), actualSparkSession.getName());
         assertEquals(expectedSparkSession.getId(), actualSparkSession.getId());
         assertEquals(expectedSparkSession.getAppId(), actualSparkSession.getAppId());
         assertEquals(expectedSparkSession.getSubmitterId(), actualSparkSession.getSubmitterId());
         assertEquals(expectedSparkSession.getArtifactId(), actualSparkSession.getArtifactId());
+    }
+
+    void assertSparkStatementEquals(SparkStatement expectedSparkStatement, SparkStatement actualSparkStatement) {
+        assertEquals(expectedSparkStatement.getId(), actualSparkStatement.getId());
+        assertEquals(expectedSparkStatement.getCode(), actualSparkStatement.getCode());
     }
 }
