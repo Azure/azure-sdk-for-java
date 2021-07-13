@@ -21,6 +21,7 @@ public final class TextAnalyticsActions {
     private Iterable<RecognizePiiEntitiesAction> recognizePiiEntitiesActions;
     private Iterable<ExtractKeyPhrasesAction> extractKeyPhrasesActions;
     private Iterable<AnalyzeSentimentAction> analyzeSentimentActions;
+    private Iterable<ExtractKeySentencesAction> extractKeySentencesActions;
 
     /**
      * Gets the custom name for the actions.
@@ -171,6 +172,26 @@ public final class TextAnalyticsActions {
     public TextAnalyticsActions setAnalyzeSentimentActions(AnalyzeSentimentAction... analyzeSentimentActions) {
         validateActionsNumber(analyzeSentimentActions, AnalyzeSentimentAction.class.getName());
         this.analyzeSentimentActions = analyzeSentimentActions == null ? null : Arrays.asList(analyzeSentimentActions);
+        return this;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public Iterable<ExtractKeySentencesAction> getExtractKeySentencesActions() {
+        return extractKeySentencesActions;
+    }
+
+    /**
+     *
+     * @param extractKeySentencesActions
+     * @return
+     */
+    public TextAnalyticsActions setExtractKeySentencesActions(ExtractKeySentencesAction... extractKeySentencesActions) {
+        validateActionsNumber(extractKeySentencesActions, ExtractKeySentencesAction.class.getName());
+        this.extractKeySentencesActions = extractKeySentencesActions == null ? null :
+                                                     Arrays.asList(extractKeySentencesActions);
         return this;
     }
 
