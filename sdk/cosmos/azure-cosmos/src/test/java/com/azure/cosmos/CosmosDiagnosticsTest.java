@@ -298,10 +298,12 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
                     assertThat(queryDiagnostics).contains("QueryPlan Start Time (UTC)=");
                     assertThat(queryDiagnostics).contains("QueryPlan End Time (UTC)=");
                     assertThat(queryDiagnostics).contains("QueryPlan Duration (ms)=");
+                    assertThat(queryDiagnostics).contains("QueryPlan RequestTimeline =");
                 } else {
                     assertThat(queryDiagnostics).doesNotContain("QueryPlan Start Time (UTC)=");
                     assertThat(queryDiagnostics).doesNotContain("QueryPlan End Time (UTC)=");
                     assertThat(queryDiagnostics).doesNotContain("QueryPlan Duration (ms)=");
+                    assertThat(queryDiagnostics).doesNotContain("QueryPlan RequestTimeline =");
                 }
                 feedResponseCounter++;
             }

@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.query;
 
+import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.query.aggregation.AggregateOperator;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -174,9 +175,16 @@ public final class QueryInfo extends JsonSerializable {
     public static final class QueryPlanDiagnosticsContext {
         private volatile Instant startTimeUTC;
         private volatile Instant endTimeUTC;
+        private volatile RequestTimeline requestTimeline;
         public QueryPlanDiagnosticsContext(Instant startTimeUTC, Instant endTimeUTC) {
             this.startTimeUTC = startTimeUTC;
             this.endTimeUTC = endTimeUTC;
+        }
+
+        public QueryPlanDiagnosticsContext(Instant startTimeUTC, Instant endTimeUTC, RequestTimeline requestTimeline) {
+            this.startTimeUTC = startTimeUTC;
+            this.endTimeUTC = endTimeUTC;
+            this.requestTimeline = requestTimeline;
         }
 
         public Instant getStartTimeUTC() {
@@ -185,6 +193,10 @@ public final class QueryInfo extends JsonSerializable {
 
         public Instant getEndTimeUTC() {
             return endTimeUTC;
+        }
+
+        public RequestTimeline getRequestTimeline() {
+            return requestTimeline;
         }
     }
 

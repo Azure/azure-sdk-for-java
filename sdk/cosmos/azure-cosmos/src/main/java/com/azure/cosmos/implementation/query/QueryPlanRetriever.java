@@ -67,7 +67,7 @@ class QueryPlanRetriever {
                 retryPolicyInstance.onBeforeSendRequest(req);
                 return queryClient.executeQueryAsync(request).flatMap(rxDocumentServiceResponse -> {
                     PartitionedQueryExecutionInfo partitionedQueryExecutionInfo =
-                        new PartitionedQueryExecutionInfo(rxDocumentServiceResponse.getResponseBodyAsByteArray());
+                        new PartitionedQueryExecutionInfo(rxDocumentServiceResponse.getResponseBodyAsByteArray(), rxDocumentServiceResponse.getGatewayHttpRequestTimeline());
                     return Mono.just(partitionedQueryExecutionInfo);
 
                 });
