@@ -360,6 +360,15 @@ public class UrlBuilderTests {
     }
 
     @Test
+    public void schemeAndHostAndPathAndOneQueryParameterGetQuery() {
+        final UrlBuilder builder = new UrlBuilder()
+            .setScheme("http")
+            .setHost("www.example.com")
+            .setQueryParameter("A", "B");
+        assertEquals(builder.getQuery().get("A"), "B");
+    }
+
+    @Test
     public void schemeAndHostAndOneQueryParameterWhenQueryParameterNameHasWhitespace() {
         final UrlBuilder builder = new UrlBuilder()
             .setScheme("http")
@@ -425,6 +434,17 @@ public class UrlBuilderTests {
             .appendQueryParameter("A", "D")
             .setPath("index.html");
         assertEquals("http://www.example.com/index.html?A=B&A=D", builder.toString());
+    }
+
+    @Test
+    public void schemeAndHostAndPathAndTwoIdenticalQueryParametersGetQuery() {
+        final UrlBuilder builder = new UrlBuilder()
+            .setScheme("http")
+            .setHost("www.example.com")
+            .appendQueryParameter("A", "B")
+            .appendQueryParameter("A", "D")
+            .setPath("index.html");
+        assertEquals(builder.getQuery().get("A"), "B");
     }
 
     @Test

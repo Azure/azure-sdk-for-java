@@ -197,8 +197,25 @@ public final class UrlBuilder {
      *
      * @return the query that has been assigned to this UrlBuilder.
      */
-    public Map<String, List<String>> getQuery() {
-        return query;
+    public Map<String, String> getQuery() {
+        // This contains a map of key=value query parameters, replacing
+        // multiple values for a single key with the first value in the list
+        // This is done to maintain backward compatibility.
+        final Map<String, String> singleKeyValueQuery = new LinkedHashMap<>();
+
+        if (query != null) {
+            for (Map.Entry<String, List<String>> entry : query.entrySet()) {
+                String value = null;
+                List<String> valueList = entry.getValue();
+
+                if (valueList != null && valueList.size() > 0) {
+                    value = valueList.get(0);
+                }
+
+                singleKeyValueQuery.put(entry.getKey(), value);
+            }
+        }
+        return singleKeyValueQuery;
     }
 
     /**
