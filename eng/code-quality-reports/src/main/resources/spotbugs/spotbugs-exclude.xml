@@ -2487,6 +2487,20 @@
     <Class name="~com\.azure\.messaging\.eventhubs\.perf\.[\w]+Test"/>
     <Bug pattern="BC_UNCONFIRMED_CAST"/>
   </Match>
+  
+  
+  <!-- Disabling false positives in azure-messaging-servicebus -->
+  <!-- The user input does not get passed to String.format calls flagged in these classes, so this issue doesn't expose any risk/threat.-->
+  <Match>
+      <Or>
+          <Class name="com.azure.messaging.servicebus.ServiceBusSessionManager"/>
+          <Class name="com.azure.messaging.servicebus.implementation.MessageUtils"/>
+          <Class name="com.azure.messaging.servicebus.ServiceBusSenderAsyncClient"/>
+          <Class name="com.azure.messaging.servicebus.ServiceBusReceiverAsyncClient"/>
+          <Class name="com.azure.messaging.servicebus.ServiceBusMessageSerializer"/>
+      </Or>
+      <Bug pattern="FORMAT_STRING_MANIPULATION" />
+  </Match>
 
   <!-- We shouldn't return a zero-length array if null is provided to serialization/deserialization and clone methods. -->
   <Match>
