@@ -15,7 +15,7 @@ import java.util.function.Function;
 /**
  *
  */
-public abstract class SpringCredentialBuilderBase<B extends SpringCredentialBuilderBase, T extends TokenCredential> {
+public abstract class SpringCredentialBuilderBase<B extends SpringCredentialBuilderBase<B, ?>, T extends TokenCredential> {
 
     protected CredentialPropertiesProvider credentialPropertiesProvider;
 
