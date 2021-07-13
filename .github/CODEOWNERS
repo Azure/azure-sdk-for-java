@@ -24,7 +24,7 @@
 /sdk/appconfiguration/spring-cloud-azure-*/         @mrm9084 @zhenlan @saragluna @yiliuTo @chenrujun @backwind1233 @stliu
 
 # PRLabel: %Batch
-/sdk/batch/                                         @xingwu1 @bgklein @matthchr
+/sdk/batch/                                         @xingwu1 @bgklein @gingi @paterasMSFT @dpwatrous
 
 # PRLabel: %Communication
 /sdk/communication/                                 @JianpingChen @ankitarorabit @minnieliu @Azure/azure-sdk-communication-code-reviewers
