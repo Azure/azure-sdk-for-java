@@ -358,18 +358,20 @@ public final class BulkExecutor<TContext> {
 
         CosmosBulkItemResponse cosmosBulkItemResponse = BridgeInternal.createCosmosBulkItemResponse(operationResult, response);
         CosmosItemOperation itemOperation = operationResult.getOperation();
+        TContext actualContext = this.getActualContext(itemOperation);
 
         if (!operationResult.isSuccessStatusCode()) {
 
-            if (itemOperation instanceof ItemBulkOperation<?>) {
+            if (itemOperation instanceof ItemBulkOperation<?, ?>) {
 
-                return ((ItemBulkOperation<?>) itemOperation).getRetryPolicy().shouldRetry(operationResult).flatMap(
+                ItemBulkOperation<?, ?> itemBulkOperation = (ItemBulkOperation<?, ?>) itemOperation;
+                return itemBulkOperation.getRetryPolicy().shouldRetry(operationResult).flatMap(
                     result -> {
                         if (result.shouldRetry) {
                             return this.enqueueForRetry(result.backOffTime, groupSink, itemOperation, thresholds);
                         } else {
                             return Mono.just(BridgeInternal.createCosmosBulkOperationResponse(
-                                itemOperation, cosmosBulkItemResponse, this.batchContext));
+                                itemOperation, cosmosBulkItemResponse, actualContext));
                         }
                     });
 
@@ -382,7 +384,26 @@ public final class BulkExecutor<TContext> {
         return Mono.just(BridgeInternal.createCosmosBulkOperationResponse(
             itemOperation,
             cosmosBulkItemResponse,
-            this.batchContext));
+            actualContext));
+    }
+
+    private TContext getActualContext(CosmosItemOperation itemOperation) {
+        ItemBulkOperation<?, ?> itemBulkOperation = null;
+
+        if (itemOperation instanceof ItemBulkOperation<?, ?>) {
+            itemBulkOperation = (ItemBulkOperation<?, ?>) itemOperation;
+        }
+
+        if (itemBulkOperation == null) {
+            return this.batchContext;
+        }
+
+        TContext operationContext = itemBulkOperation.getContext();
+        if (operationContext != null) {
+            return operationContext;
+        }
+
+        return this.batchContext;
     }
 
     private Mono<CosmosBulkOperationResponse<TContext>> handleTransactionalBatchExecutionException(
@@ -391,9 +412,9 @@ public final class BulkExecutor<TContext> {
         FluxSink<CosmosItemOperation> groupSink,
         PartitionScopeThresholds<TContext> thresholds) {
 
-        if (exception instanceof CosmosException && itemOperation instanceof ItemBulkOperation<?>) {
+        if (exception instanceof CosmosException && itemOperation instanceof ItemBulkOperation<?, ?>) {
             CosmosException cosmosException = (CosmosException) exception;
-            ItemBulkOperation<?> itemBulkOperation = (ItemBulkOperation<?>) itemOperation;
+            ItemBulkOperation<?, ?> itemBulkOperation = (ItemBulkOperation<?, ?>) itemOperation;
 
             // First check if it failed due to split, so the operations need to go in a different pk range group. So
             // add it in the mainSink.
@@ -417,7 +438,8 @@ public final class BulkExecutor<TContext> {
                 });
         }
 
-        return Mono.just(BridgeInternal.createCosmosBulkOperationResponse(itemOperation, exception, this.batchContext));
+        TContext actualContext = this.getActualContext(itemOperation);
+        return Mono.just(BridgeInternal.createCosmosBulkOperationResponse(itemOperation, exception, actualContext));
     }
 
     private Mono<CosmosBulkOperationResponse<TContext>> enqueueForRetry(
@@ -445,15 +467,16 @@ public final class BulkExecutor<TContext> {
         Exception exception,
         FluxSink<CosmosItemOperation> groupSink,
         CosmosException cosmosException,
-        ItemBulkOperation<?> itemBulkOperation,
+        ItemBulkOperation<?, ?> itemBulkOperation,
         PartitionScopeThresholds<TContext> thresholds) {
 
+        TContext actualContext = this.getActualContext(itemOperation);
         return itemBulkOperation.getRetryPolicy().shouldRetry(cosmosException).flatMap(result -> {
             if (result.shouldRetry) {
                 return this.enqueueForRetry(result.backOffTime, groupSink, itemBulkOperation, thresholds);
             } else {
                 return Mono.just(BridgeInternal.createCosmosBulkOperationResponse(
-                    itemOperation, exception, this.batchContext));
+                    itemOperation, exception, actualContext));
             }
         });
     }

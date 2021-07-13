@@ -46,8 +46,8 @@ final class BulkExecutorUtil {
         CosmosItemOperation cosmosItemOperation,
         ThrottlingRetryOptions throttlingRetryOptions) {
 
-        if (cosmosItemOperation instanceof ItemBulkOperation<?>) {
-            final ItemBulkOperation<?> itemBulkOperation = (ItemBulkOperation<?>) cosmosItemOperation;
+        if (cosmosItemOperation instanceof ItemBulkOperation<?, ?>) {
+            final ItemBulkOperation<?, ?> itemBulkOperation = (ItemBulkOperation<?, ?>) cosmosItemOperation;
 
             ResourceThrottleRetryPolicy resourceThrottleRetryPolicy = new ResourceThrottleRetryPolicy(
                 throttlingRetryOptions.getMaxRetryAttemptsOnThrottledRequests(),
@@ -94,8 +94,8 @@ final class BulkExecutorUtil {
 
         checkNotNull(operation, "expected non-null operation");
 
-        if (operation instanceof ItemBulkOperation<?>) {
-            final ItemBulkOperation<?> itemBulkOperation = (ItemBulkOperation<?>) operation;
+        if (operation instanceof ItemBulkOperation<?, ?>) {
+            final ItemBulkOperation<?, ?> itemBulkOperation = (ItemBulkOperation<?, ?>) operation;
 
             final Mono<String> pkRangeIdMono = BulkExecutorUtil.getCollectionInfoAsync(docClientWrapper, container)
                 .flatMap(collection -> {

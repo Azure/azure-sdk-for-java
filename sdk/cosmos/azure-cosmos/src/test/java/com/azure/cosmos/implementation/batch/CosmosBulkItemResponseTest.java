@@ -33,12 +33,13 @@ public class CosmosBulkItemResponseTest {
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void validateAllSetValuesInCosmosBulkItemResponse() {
         List<TransactionalBatchOperationResult> results = new ArrayList<>();
-        ItemBulkOperation<?>[] arrayOperations = new ItemBulkOperation<?>[1];
+        ItemBulkOperation<?, ?>[] arrayOperations = new ItemBulkOperation<?, ?>[1];
 
-        ItemBulkOperation<?> operation = new ItemBulkOperation<>(
+        ItemBulkOperation<?, ?> operation = new ItemBulkOperation<>(
             CosmosItemOperationType.READ,
             "0",
             PartitionKey.NONE,
+            null,
             null,
             null
         );
@@ -119,12 +120,13 @@ public class CosmosBulkItemResponseTest {
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void validateEmptyHeaderInCosmosBulkItemResponse() {
         List<TransactionalBatchOperationResult> results = new ArrayList<>();
-        ItemBulkOperation<?>[] arrayOperations = new ItemBulkOperation<?>[1];
+        ItemBulkOperation<?, ?>[] arrayOperations = new ItemBulkOperation<?, ?>[1];
 
-        ItemBulkOperation<?> operation = new ItemBulkOperation<>(
+        ItemBulkOperation<?, ?> operation = new ItemBulkOperation<>(
             CosmosItemOperationType.READ,
             "0",
             PartitionKey.NONE,
+            null,
             null,
             null
         );

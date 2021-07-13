@@ -63,8 +63,8 @@ public abstract class ServerBatchRequest {
 
             if (operation instanceof ItemBatchOperation<?>) {
                 operationJsonSerializable = ((ItemBatchOperation<?>) operation).serializeOperation();
-            } else if (operation instanceof ItemBulkOperation<?>) {
-                operationJsonSerializable = ((ItemBulkOperation<?>) operation).serializeOperation();
+            } else if (operation instanceof ItemBulkOperation<?, ?>) {
+                operationJsonSerializable = ((ItemBulkOperation<?, ?>) operation).serializeOperation();
             } else {
                 throw new UnsupportedOperationException("Unknown CosmosItemOperation.");
             }
