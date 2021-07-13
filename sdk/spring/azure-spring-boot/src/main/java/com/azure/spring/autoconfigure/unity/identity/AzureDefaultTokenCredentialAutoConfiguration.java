@@ -31,36 +31,42 @@ public class AzureDefaultTokenCredentialAutoConfiguration {
         return new AzureSpringConfiguration(azureProperties);
     }
 
+    @ConditionalOnMissingBean
     @Bean
     @Order(SPRING_ENV_CREDENTIAL_ORDER)
     public SpringEnvironmentCredentialBuilder springEnvironmentCredentialBuilder(AzureSpringConfiguration azureSpringConfiguration) {
         return new SpringEnvironmentCredentialBuilder().credentialPropertiesProvider(azureSpringConfiguration);
     }
 
+    @ConditionalOnMissingBean
     @Bean
     @Order(SPRING_ENV_CREDENTIAL_ORDER + 100)
     public SpringManagedIdentityCredentialBuilder managedIdentityCredentialBuilder(AzureSpringConfiguration azureSpringConfiguration) {
         return new SpringManagedIdentityCredentialBuilder().clientId(azureSpringConfiguration.getClientId());
     }
 
+    @ConditionalOnMissingBean
     @Bean
     @Order(SPRING_ENV_CREDENTIAL_ORDER + 200)
     public SpringIntelliJCredentialBuilder intelliJCredentialBuilder(AzureSpringConfiguration azureSpringConfiguration) {
         return new SpringIntelliJCredentialBuilder().tenantId(azureSpringConfiguration.getTenantId());
     }
 
+    @ConditionalOnMissingBean
     @Bean
     @Order(SPRING_ENV_CREDENTIAL_ORDER + 300)
     public SpringVisualStudioCodeCredentialBuilder visualStudioCodeCredentialBuilder(AzureSpringConfiguration azureSpringConfiguration) {
         return new SpringVisualStudioCodeCredentialBuilder().tenantId(azureSpringConfiguration.getTenantId());
     }
 
+    @ConditionalOnMissingBean
     @Bean
     @Order(SPRING_ENV_CREDENTIAL_ORDER + 400)
     public SpringAzureCliCredentialBuilder azureCliCredentialBuilder() {
         return new SpringAzureCliCredentialBuilder();
     }
 
+    @ConditionalOnMissingBean
     @Bean
     @Order(SPRING_ENV_CREDENTIAL_ORDER + 500)
     public SpringAzurePowerShellCredentialBuilder azurePowerShellCredentialBuilder() {
