@@ -111,8 +111,9 @@ public abstract class PerfStressTest<TOptions extends PerfStressOptions> {
                 testProxyPolicy.setMode("record");
             })
             .then(runSyncOrAsync())
-            .then(stopRecordingAsync())
-            .then(startPlaybackAsync())
+            // Must use Mono.defer() to ensure request headers are not set until fields are populated from prior requests
+            .then(Mono.defer(() -> stopRecordingAsync()))
+            .then(Mono.defer(() -> startPlaybackAsync()))
             .doOnSuccess(x -> {
                 testProxyPolicy.setRecordingId(recordingId);
                 testProxyPolicy.setMode("playback");
