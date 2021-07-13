@@ -20,9 +20,9 @@ Maven dependency for the Azure Synapse Spark client library. Add it to your proj
 [//]: # ({x-version-update-end})
 
 ### Prerequisites
-- Java Development Kit (JDK) with version 8 or above
-- An [Azure subscription][azure_sub].
-- An existing Azure Synapse workspace. If you need to create an Azure Synapse workspace, you can use the Azure Portal or [Azure CLI][azure_cli].
+- [Java Development Kit (JDK)][jdk] with version 8 or above
+- [Azure subscription][azure_sub].
+- An existing Azure Synapse workspace. If you need to create an Azure Synapse workspace, you can use the [Azure Portal][azure_portal] or [Azure CLI][azure_cli].
     ```Bash
     az synapse workspace create \
         --name <your-workspace-name> \
@@ -219,12 +219,14 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity
 [maven]: https://maven.apache.org/
 [azure_subscription]: https://azure.microsoft.com/
-[azure_synapse]: https://docs.microsoft.com/en-us/azure/synapse-analytics/quickstart-create-workspace
-[azure_cli]: https://docs.microsoft.com/cli/azure
+[azure_synapse]: https://docs.microsoft.com/azure/synapse-analytics/quickstart-create-workspace
+[azure_cli]: https://docs.microsoft.com/azure/synapse-analytics/quickstart-create-workspace-cli
 [rest_api]: https://docs.microsoft.com/rest/api/synapse/
 [azsynapse_rest]: https://docs.microsoft.com/rest/api/synapse/
 [azure_create_application_in_portal]: https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal
 [azure_synapse_cli_full]: https://docs.microsoft.com/cli/azure/synapse?view=azure-cli-latest
 [spark_samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/synapse/azure-analytics-synapse-spark/src/samples/java/com/azure/analytics/synapse/spark
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
-
+[jdk]: https://docs.microsoft.com/java/azure/jdk/
+[azure_sub]: https://azure.microsoft.com/free/
+[azure_portal]: https://docs.microsoft.com/azure/synapse-analytics/quickstart-create-workspace
