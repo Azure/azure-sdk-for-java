@@ -1,5 +1,5 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.XS
+// Licensed under the MIT License.
 
 package com.azure.storage.blob;
 
@@ -94,7 +94,7 @@ public class StorageEventExample {
         private final BiConsumer<HttpRequest, HttpResponse> responseReceivedEvent;
         private final BiConsumer<HttpRequest, Throwable> errorResponseEvent;
 
-        public EventHandlerPolicy(Consumer<HttpRequest> sendingRequestEvent,
+        EventHandlerPolicy(Consumer<HttpRequest> sendingRequestEvent,
             BiConsumer<HttpRequest, Integer> retryRequestEvent,
             BiConsumer<HttpRequest, HttpResponse> responseReceivedEvent,
             BiConsumer<HttpRequest, Throwable> errorResponseEvent) {
