@@ -45,6 +45,7 @@ public class AzureContextAutoConfigurationTest {
     @Test
     public void testAzurePropertiesConfigured() {
         this.contextRunner
+            .withUserConfiguration(AzureContextCredentialAutoConfiguration.class)
             .withPropertyValues(
                 AZURE_PROPERTY_PREFIX + "client-id=client1",
                 AZURE_PROPERTY_PREFIX + "client-secret=secret1",

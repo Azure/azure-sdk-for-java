@@ -13,6 +13,7 @@ public class AzureSpringConfiguration extends Configuration implements Credentia
         overridePropertyIfApplicable(Configuration.PROPERTY_AZURE_TENANT_ID, azureContextProperties.getTenantId());
         overridePropertyIfApplicable(Configuration.PROPERTY_AZURE_CLIENT_ID, azureContextProperties.getClientId());
         overridePropertyIfApplicable(Configuration.PROPERTY_AZURE_CLIENT_SECRET, azureContextProperties.getClientSecret());
+        overridePropertyIfApplicable(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, azureContextProperties.getEnvironment().getAzureEnvironment().getActiveDirectoryEndpoint());
     }
 
     private void overridePropertyIfApplicable(String key, String value) {
