@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -58,7 +59,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
     @Host("{$host}")
     @ServiceInterface(name = "TrafficManagerManage")
     private interface EndpointsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Patch(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/trafficmanagerprofiles/{profileName}/{endpointType}/{endpointName}")
@@ -73,9 +74,10 @@ public final class EndpointsClientImpl implements EndpointsClient {
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") EndpointInner parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/trafficmanagerprofiles/{profileName}/{endpointType}/{endpointName}")
@@ -89,9 +91,10 @@ public final class EndpointsClientImpl implements EndpointsClient {
             @PathParam("endpointName") String endpointName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/trafficmanagerprofiles/{profileName}/{endpointType}/{endpointName}")
@@ -106,9 +109,10 @@ public final class EndpointsClientImpl implements EndpointsClient {
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") EndpointInner parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/trafficmanagerprofiles/{profileName}/{endpointType}/{endpointName}")
@@ -122,6 +126,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
             @PathParam("endpointName") String endpointName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -132,7 +137,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint to be updated.
      * @param endpointName The name of the Traffic Manager endpoint to be updated.
-     * @param parameters Class representing a Traffic Manager endpoint.
+     * @param parameters The Traffic Manager endpoint parameters supplied to the Update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -175,6 +180,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
         } else {
             parameters.validate();
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -188,8 +194,9 @@ public final class EndpointsClientImpl implements EndpointsClient {
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             parameters,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -199,7 +206,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint to be updated.
      * @param endpointName The name of the Traffic Manager endpoint to be updated.
-     * @param parameters Class representing a Traffic Manager endpoint.
+     * @param parameters The Traffic Manager endpoint parameters supplied to the Update operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -244,6 +251,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
         } else {
             parameters.validate();
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .update(
@@ -255,6 +263,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 parameters,
+                accept,
                 context);
     }
 
@@ -265,7 +274,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint to be updated.
      * @param endpointName The name of the Traffic Manager endpoint to be updated.
-     * @param parameters Class representing a Traffic Manager endpoint.
+     * @param parameters The Traffic Manager endpoint parameters supplied to the Update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -296,7 +305,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint to be updated.
      * @param endpointName The name of the Traffic Manager endpoint to be updated.
-     * @param parameters Class representing a Traffic Manager endpoint.
+     * @param parameters The Traffic Manager endpoint parameters supplied to the Update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -319,7 +328,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint to be updated.
      * @param endpointName The name of the Traffic Manager endpoint to be updated.
-     * @param parameters Class representing a Traffic Manager endpoint.
+     * @param parameters The Traffic Manager endpoint parameters supplied to the Update operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -378,6 +387,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -390,8 +400,9 @@ public final class EndpointsClientImpl implements EndpointsClient {
                             endpointName,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -435,6 +446,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -445,6 +457,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
                 endpointName,
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -518,7 +531,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint to be created or updated.
      * @param endpointName The name of the Traffic Manager endpoint to be created or updated.
-     * @param parameters Class representing a Traffic Manager endpoint.
+     * @param parameters The Traffic Manager endpoint parameters supplied to the CreateOrUpdate operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -561,6 +574,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
         } else {
             parameters.validate();
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -574,8 +588,9 @@ public final class EndpointsClientImpl implements EndpointsClient {
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             parameters,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -586,7 +601,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint to be created or updated.
      * @param endpointName The name of the Traffic Manager endpoint to be created or updated.
-     * @param parameters Class representing a Traffic Manager endpoint.
+     * @param parameters The Traffic Manager endpoint parameters supplied to the CreateOrUpdate operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -631,6 +646,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
         } else {
             parameters.validate();
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
@@ -642,6 +658,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 parameters,
+                accept,
                 context);
     }
 
@@ -653,7 +670,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint to be created or updated.
      * @param endpointName The name of the Traffic Manager endpoint to be created or updated.
-     * @param parameters Class representing a Traffic Manager endpoint.
+     * @param parameters The Traffic Manager endpoint parameters supplied to the CreateOrUpdate operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -685,7 +702,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint to be created or updated.
      * @param endpointName The name of the Traffic Manager endpoint to be created or updated.
-     * @param parameters Class representing a Traffic Manager endpoint.
+     * @param parameters The Traffic Manager endpoint parameters supplied to the CreateOrUpdate operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -709,7 +726,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint to be created or updated.
      * @param endpointName The name of the Traffic Manager endpoint to be created or updated.
-     * @param parameters Class representing a Traffic Manager endpoint.
+     * @param parameters The Traffic Manager endpoint parameters supplied to the CreateOrUpdate operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -769,6 +786,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -781,8 +799,9 @@ public final class EndpointsClientImpl implements EndpointsClient {
                             endpointName,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -826,6 +845,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -836,6 +856,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
                 endpointName,
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 

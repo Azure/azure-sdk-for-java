@@ -27,7 +27,8 @@ public interface ProfilesClient
     /**
      * Checks the availability of a Traffic Manager Relative DNS name.
      *
-     * @param parameters Parameters supplied to check Traffic Manager name operation.
+     * @param parameters The Traffic Manager name parameters supplied to the CheckTrafficManagerNameAvailability
+     *     operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -40,7 +41,8 @@ public interface ProfilesClient
     /**
      * Checks the availability of a Traffic Manager Relative DNS name.
      *
-     * @param parameters Parameters supplied to check Traffic Manager name operation.
+     * @param parameters The Traffic Manager name parameters supplied to the CheckTrafficManagerNameAvailability
+     *     operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -53,7 +55,8 @@ public interface ProfilesClient
     /**
      * Checks the availability of a Traffic Manager Relative DNS name.
      *
-     * @param parameters Parameters supplied to check Traffic Manager name operation.
+     * @param parameters The Traffic Manager name parameters supplied to the CheckTrafficManagerNameAvailability
+     *     operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -66,7 +69,8 @@ public interface ProfilesClient
     /**
      * Checks the availability of a Traffic Manager Relative DNS name.
      *
-     * @param parameters Parameters supplied to check Traffic Manager name operation.
+     * @param parameters The Traffic Manager name parameters supplied to the CheckTrafficManagerNameAvailability
+     *     operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -205,7 +209,7 @@ public interface ProfilesClient
      *
      * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
      * @param profileName The name of the Traffic Manager profile.
-     * @param parameters Class representing a Traffic Manager profile.
+     * @param parameters The Traffic Manager profile parameters supplied to the CreateOrUpdate operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -220,7 +224,7 @@ public interface ProfilesClient
      *
      * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
      * @param profileName The name of the Traffic Manager profile.
-     * @param parameters Class representing a Traffic Manager profile.
+     * @param parameters The Traffic Manager profile parameters supplied to the CreateOrUpdate operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -234,7 +238,7 @@ public interface ProfilesClient
      *
      * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
      * @param profileName The name of the Traffic Manager profile.
-     * @param parameters Class representing a Traffic Manager profile.
+     * @param parameters The Traffic Manager profile parameters supplied to the CreateOrUpdate operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -248,7 +252,7 @@ public interface ProfilesClient
      *
      * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
      * @param profileName The name of the Traffic Manager profile.
-     * @param parameters Class representing a Traffic Manager profile.
+     * @param parameters The Traffic Manager profile parameters supplied to the CreateOrUpdate operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -318,7 +322,7 @@ public interface ProfilesClient
      *
      * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
      * @param profileName The name of the Traffic Manager profile.
-     * @param parameters Class representing a Traffic Manager profile.
+     * @param parameters The Traffic Manager profile parameters supplied to the Update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -333,7 +337,7 @@ public interface ProfilesClient
      *
      * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
      * @param profileName The name of the Traffic Manager profile.
-     * @param parameters Class representing a Traffic Manager profile.
+     * @param parameters The Traffic Manager profile parameters supplied to the Update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -347,7 +351,7 @@ public interface ProfilesClient
      *
      * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
      * @param profileName The name of the Traffic Manager profile.
-     * @param parameters Class representing a Traffic Manager profile.
+     * @param parameters The Traffic Manager profile parameters supplied to the Update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -361,7 +365,7 @@ public interface ProfilesClient
      *
      * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
      * @param profileName The name of the Traffic Manager profile.
-     * @param parameters Class representing a Traffic Manager profile.
+     * @param parameters The Traffic Manager profile parameters supplied to the Update operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

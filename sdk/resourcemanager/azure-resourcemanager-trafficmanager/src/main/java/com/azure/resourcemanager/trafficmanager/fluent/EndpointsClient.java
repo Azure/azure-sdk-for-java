@@ -21,7 +21,7 @@ public interface EndpointsClient {
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint to be updated.
      * @param endpointName The name of the Traffic Manager endpoint to be updated.
-     * @param parameters Class representing a Traffic Manager endpoint.
+     * @param parameters The Traffic Manager endpoint parameters supplied to the Update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -42,7 +42,7 @@ public interface EndpointsClient {
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint to be updated.
      * @param endpointName The name of the Traffic Manager endpoint to be updated.
-     * @param parameters Class representing a Traffic Manager endpoint.
+     * @param parameters The Traffic Manager endpoint parameters supplied to the Update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -63,7 +63,7 @@ public interface EndpointsClient {
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint to be updated.
      * @param endpointName The name of the Traffic Manager endpoint to be updated.
-     * @param parameters Class representing a Traffic Manager endpoint.
+     * @param parameters The Traffic Manager endpoint parameters supplied to the Update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -84,7 +84,7 @@ public interface EndpointsClient {
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint to be updated.
      * @param endpointName The name of the Traffic Manager endpoint to be updated.
-     * @param parameters Class representing a Traffic Manager endpoint.
+     * @param parameters The Traffic Manager endpoint parameters supplied to the Update operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -172,7 +172,7 @@ public interface EndpointsClient {
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint to be created or updated.
      * @param endpointName The name of the Traffic Manager endpoint to be created or updated.
-     * @param parameters Class representing a Traffic Manager endpoint.
+     * @param parameters The Traffic Manager endpoint parameters supplied to the CreateOrUpdate operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -194,7 +194,7 @@ public interface EndpointsClient {
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint to be created or updated.
      * @param endpointName The name of the Traffic Manager endpoint to be created or updated.
-     * @param parameters Class representing a Traffic Manager endpoint.
+     * @param parameters The Traffic Manager endpoint parameters supplied to the CreateOrUpdate operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -216,7 +216,7 @@ public interface EndpointsClient {
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint to be created or updated.
      * @param endpointName The name of the Traffic Manager endpoint to be created or updated.
-     * @param parameters Class representing a Traffic Manager endpoint.
+     * @param parameters The Traffic Manager endpoint parameters supplied to the CreateOrUpdate operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -238,7 +238,7 @@ public interface EndpointsClient {
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint to be created or updated.
      * @param endpointName The name of the Traffic Manager endpoint to be created or updated.
-     * @param parameters Class representing a Traffic Manager endpoint.
+     * @param parameters The Traffic Manager endpoint parameters supplied to the CreateOrUpdate operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

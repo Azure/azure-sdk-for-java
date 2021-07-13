@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -72,7 +73,7 @@ public final class ProfilesClientImpl
     @Host("{$host}")
     @ServiceInterface(name = "TrafficManagerManage")
     private interface ProfilesService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post("/providers/Microsoft.Network/checkTrafficManagerNameAvailability")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -80,9 +81,10 @@ public final class ProfilesClientImpl
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") CheckTrafficManagerRelativeDnsNameAvailabilityParameters parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/trafficmanagerprofiles")
@@ -93,9 +95,10 @@ public final class ProfilesClientImpl
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/trafficmanagerprofiles")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -103,9 +106,10 @@ public final class ProfilesClientImpl
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/trafficmanagerprofiles/{profileName}")
@@ -117,9 +121,10 @@ public final class ProfilesClientImpl
             @PathParam("profileName") String profileName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/trafficmanagerprofiles/{profileName}")
@@ -132,9 +137,10 @@ public final class ProfilesClientImpl
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") ProfileInner parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/trafficmanagerprofiles/{profileName}")
@@ -146,9 +152,10 @@ public final class ProfilesClientImpl
             @PathParam("profileName") String profileName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Patch(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/trafficmanagerprofiles/{profileName}")
@@ -161,13 +168,15 @@ public final class ProfilesClientImpl
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") ProfileInner parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
     }
 
     /**
      * Checks the availability of a Traffic Manager Relative DNS name.
      *
-     * @param parameters Parameters supplied to check Traffic Manager name operation.
+     * @param parameters The Traffic Manager name parameters supplied to the CheckTrafficManagerNameAvailability
+     *     operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -188,19 +197,21 @@ public final class ProfilesClientImpl
         } else {
             parameters.validate();
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
                     service
                         .checkTrafficManagerRelativeDnsNameAvailability(
-                            this.client.getEndpoint(), this.client.getApiVersion(), parameters, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+                            this.client.getEndpoint(), this.client.getApiVersion(), parameters, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Checks the availability of a Traffic Manager Relative DNS name.
      *
-     * @param parameters Parameters supplied to check Traffic Manager name operation.
+     * @param parameters The Traffic Manager name parameters supplied to the CheckTrafficManagerNameAvailability
+     *     operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -222,16 +233,18 @@ public final class ProfilesClientImpl
         } else {
             parameters.validate();
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .checkTrafficManagerRelativeDnsNameAvailability(
-                this.client.getEndpoint(), this.client.getApiVersion(), parameters, context);
+                this.client.getEndpoint(), this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
      * Checks the availability of a Traffic Manager Relative DNS name.
      *
-     * @param parameters Parameters supplied to check Traffic Manager name operation.
+     * @param parameters The Traffic Manager name parameters supplied to the CheckTrafficManagerNameAvailability
+     *     operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -254,7 +267,8 @@ public final class ProfilesClientImpl
     /**
      * Checks the availability of a Traffic Manager Relative DNS name.
      *
-     * @param parameters Parameters supplied to check Traffic Manager name operation.
+     * @param parameters The Traffic Manager name parameters supplied to the CheckTrafficManagerNameAvailability
+     *     operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -269,7 +283,8 @@ public final class ProfilesClientImpl
     /**
      * Checks the availability of a Traffic Manager Relative DNS name.
      *
-     * @param parameters Parameters supplied to check Traffic Manager name operation.
+     * @param parameters The Traffic Manager name parameters supplied to the CheckTrafficManagerNameAvailability
+     *     operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -309,6 +324,7 @@ public final class ProfilesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -318,12 +334,13 @@ public final class ProfilesClientImpl
                             resourceGroupName,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .<PagedResponse<ProfileInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -355,6 +372,7 @@ public final class ProfilesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByResourceGroup(
@@ -362,6 +380,7 @@ public final class ProfilesClientImpl
                 resourceGroupName,
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
+                accept,
                 context)
             .map(
                 res ->
@@ -448,6 +467,7 @@ public final class ProfilesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -456,12 +476,13 @@ public final class ProfilesClientImpl
                             this.client.getEndpoint(),
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .<PagedResponse<ProfileInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -487,9 +508,15 @@ public final class ProfilesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), context)
+            .list(
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                accept,
+                context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -580,6 +607,7 @@ public final class ProfilesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -590,8 +618,9 @@ public final class ProfilesClientImpl
                             profileName,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -627,6 +656,7 @@ public final class ProfilesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getByResourceGroup(
@@ -635,6 +665,7 @@ public final class ProfilesClientImpl
                 profileName,
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -698,7 +729,7 @@ public final class ProfilesClientImpl
      *
      * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
      * @param profileName The name of the Traffic Manager profile.
-     * @param parameters Class representing a Traffic Manager profile.
+     * @param parameters The Traffic Manager profile parameters supplied to the CreateOrUpdate operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -731,6 +762,7 @@ public final class ProfilesClientImpl
         } else {
             parameters.validate();
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -742,8 +774,9 @@ public final class ProfilesClientImpl
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             parameters,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -751,7 +784,7 @@ public final class ProfilesClientImpl
      *
      * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
      * @param profileName The name of the Traffic Manager profile.
-     * @param parameters Class representing a Traffic Manager profile.
+     * @param parameters The Traffic Manager profile parameters supplied to the CreateOrUpdate operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -785,6 +818,7 @@ public final class ProfilesClientImpl
         } else {
             parameters.validate();
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
@@ -794,6 +828,7 @@ public final class ProfilesClientImpl
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 parameters,
+                accept,
                 context);
     }
 
@@ -802,7 +837,7 @@ public final class ProfilesClientImpl
      *
      * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
      * @param profileName The name of the Traffic Manager profile.
-     * @param parameters Class representing a Traffic Manager profile.
+     * @param parameters The Traffic Manager profile parameters supplied to the CreateOrUpdate operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -827,7 +862,7 @@ public final class ProfilesClientImpl
      *
      * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
      * @param profileName The name of the Traffic Manager profile.
-     * @param parameters Class representing a Traffic Manager profile.
+     * @param parameters The Traffic Manager profile parameters supplied to the CreateOrUpdate operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -843,7 +878,7 @@ public final class ProfilesClientImpl
      *
      * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
      * @param profileName The name of the Traffic Manager profile.
-     * @param parameters Class representing a Traffic Manager profile.
+     * @param parameters The Traffic Manager profile parameters supplied to the CreateOrUpdate operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -888,6 +923,7 @@ public final class ProfilesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -898,8 +934,9 @@ public final class ProfilesClientImpl
                             profileName,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -935,6 +972,7 @@ public final class ProfilesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -943,6 +981,7 @@ public final class ProfilesClientImpl
                 profileName,
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -1006,7 +1045,7 @@ public final class ProfilesClientImpl
      *
      * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
      * @param profileName The name of the Traffic Manager profile.
-     * @param parameters Class representing a Traffic Manager profile.
+     * @param parameters The Traffic Manager profile parameters supplied to the Update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1039,6 +1078,7 @@ public final class ProfilesClientImpl
         } else {
             parameters.validate();
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1050,8 +1090,9 @@ public final class ProfilesClientImpl
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             parameters,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1059,7 +1100,7 @@ public final class ProfilesClientImpl
      *
      * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
      * @param profileName The name of the Traffic Manager profile.
-     * @param parameters Class representing a Traffic Manager profile.
+     * @param parameters The Traffic Manager profile parameters supplied to the Update operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1093,6 +1134,7 @@ public final class ProfilesClientImpl
         } else {
             parameters.validate();
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .update(
@@ -1102,6 +1144,7 @@ public final class ProfilesClientImpl
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 parameters,
+                accept,
                 context);
     }
 
@@ -1110,7 +1153,7 @@ public final class ProfilesClientImpl
      *
      * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
      * @param profileName The name of the Traffic Manager profile.
-     * @param parameters Class representing a Traffic Manager profile.
+     * @param parameters The Traffic Manager profile parameters supplied to the Update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1134,7 +1177,7 @@ public final class ProfilesClientImpl
      *
      * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
      * @param profileName The name of the Traffic Manager profile.
-     * @param parameters Class representing a Traffic Manager profile.
+     * @param parameters The Traffic Manager profile parameters supplied to the Update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1150,7 +1193,7 @@ public final class ProfilesClientImpl
      *
      * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
      * @param profileName The name of the Traffic Manager profile.
-     * @param parameters Class representing a Traffic Manager profile.
+     * @param parameters The Traffic Manager profile parameters supplied to the Update operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/trafficmanagerprofiles?api-version=2018-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/trafficmanagerprofiles?api-version=2018-08-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.trafficmanager/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "de5a15b7-30c8-4e28-82cd-d7556fb4b827",
@@ -28,7 +28,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/trafficmanagerprofiles?api-version=2018-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/trafficmanagerprofiles?api-version=2018-08-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.trafficmanager/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "fae1d3ba-f331-4dbf-85cb-4948e9d846f3",
@@ -81,7 +81,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg381920/providers/Microsoft.Network/trafficmanagerprofiles/nestedtm438930?api-version=2018-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg381920/providers/Microsoft.Network/trafficmanagerprofiles/nestedtm438930?api-version=2018-08-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.trafficmanager/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "855b7fc1-fa31-46ff-9c85-14dbb04d0959",
@@ -108,7 +108,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg381920/providers/Microsoft.Network/trafficmanagerprofiles/nestedtm438930/externalEndpoints/external-ep-1?api-version=2018-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg381920/providers/Microsoft.Network/trafficmanagerprofiles/nestedtm438930/externalEndpoints/external-ep-1?api-version=2018-08-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.trafficmanager/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "7b9d7135-254b-4454-9d28-4e2bf03f7b65",
@@ -135,7 +135,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg381920/providers/Microsoft.Network/trafficmanagerprofiles/nestedtm438930?api-version=2018-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg381920/providers/Microsoft.Network/trafficmanagerprofiles/nestedtm438930?api-version=2018-08-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.trafficmanager/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "340dd13e-b911-45c7-8a2f-255fd5c4b95d",
@@ -250,7 +250,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg381920/providers/Microsoft.Network/trafficmanagerprofiles/nestedtm438930/azureEndpoints/azure-ep-1?api-version=2018-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg381920/providers/Microsoft.Network/trafficmanagerprofiles/nestedtm438930/azureEndpoints/azure-ep-1?api-version=2018-08-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.trafficmanager/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "42b962ae-d812-41ae-b6fd-817bf8d760f3",
@@ -277,7 +277,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg381920/providers/Microsoft.Network/trafficmanagerprofiles/nestedtm438930?api-version=2018-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg381920/providers/Microsoft.Network/trafficmanagerprofiles/nestedtm438930?api-version=2018-08-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.trafficmanager/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "15cb8c1f-8826-4276-b3db-cda0a64bf100",
@@ -304,7 +304,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg381920/providers/Microsoft.Network/trafficmanagerprofiles/nestedtm438930?api-version=2018-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg381920/providers/Microsoft.Network/trafficmanagerprofiles/nestedtm438930?api-version=2018-08-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.trafficmanager/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "2bda04fc-2479-4130-9f86-50b9f2ed2aba",
@@ -331,7 +331,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg381920/providers/Microsoft.Network/trafficmanagerprofiles/nestedtm438930?api-version=2018-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg381920/providers/Microsoft.Network/trafficmanagerprofiles/nestedtm438930?api-version=2018-08-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.trafficmanager/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "6b81d340-ac14-4188-b9b9-9b0a91ca3e28",
@@ -358,7 +358,7 @@
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg381920/providers/Microsoft.Network/trafficmanagerprofiles/nestedtm438930/azureEndpoints/azure-ep-1?api-version=2018-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg381920/providers/Microsoft.Network/trafficmanagerprofiles/nestedtm438930/azureEndpoints/azure-ep-1?api-version=2018-08-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.trafficmanager/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "49d8e12b-9f81-4280-95d0-c43274cd91f5",
@@ -383,7 +383,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg381920/providers/Microsoft.Network/trafficmanagerprofiles/nestedtm438930?api-version=2018-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg381920/providers/Microsoft.Network/trafficmanagerprofiles/nestedtm438930?api-version=2018-08-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.trafficmanager/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "710e1441-6803-400e-9873-fb870d0f81ec",
@@ -410,7 +410,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg381920/providers/Microsoft.Network/trafficmanagerprofiles/nestedtm438930?api-version=2018-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg381920/providers/Microsoft.Network/trafficmanagerprofiles/nestedtm438930?api-version=2018-08-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.trafficmanager/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "386efc93-8fa9-4707-824d-43c57329ca38",
@@ -437,7 +437,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg381920/providers/Microsoft.Network/trafficmanagerprofiles/nestedtm438930?api-version=2018-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg381920/providers/Microsoft.Network/trafficmanagerprofiles/nestedtm438930?api-version=2018-08-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.trafficmanager/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "36b6fb4d-f94e-42ed-aefc-2380aad7d0d2",
@@ -464,7 +464,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg381920/providers/Microsoft.Network/trafficmanagerprofiles/tm438930?api-version=2018-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg381920/providers/Microsoft.Network/trafficmanagerprofiles/tm438930?api-version=2018-08-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.trafficmanager/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "9c116a0a-38ea-4d3d-a0a9-7d09aca4e359",
@@ -491,7 +491,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg381920/providers/Microsoft.Network/trafficmanagerprofiles/tm438930/externalEndpoints/external-ep-2?api-version=2018-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg381920/providers/Microsoft.Network/trafficmanagerprofiles/tm438930/externalEndpoints/external-ep-2?api-version=2018-08-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.trafficmanager/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "b7adad20-88a7-43d5-b088-f0d9bc4f699b",
@@ -518,7 +518,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg381920/providers/Microsoft.Network/trafficmanagerprofiles/tm438930/externalEndpoints/external-ep-1?api-version=2018-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg381920/providers/Microsoft.Network/trafficmanagerprofiles/tm438930/externalEndpoints/external-ep-1?api-version=2018-08-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.trafficmanager/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "5a4d82fe-1263-4ce0-a34a-ff74f100f3cc",
@@ -545,7 +545,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg381920/providers/Microsoft.Network/trafficmanagerprofiles/tm438930/azureEndpoints/azure-ep-1?api-version=2018-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg381920/providers/Microsoft.Network/trafficmanagerprofiles/tm438930/azureEndpoints/azure-ep-1?api-version=2018-08-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.trafficmanager/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "f50d9e2d-7cb3-4e0d-b913-30f22296a966",
@@ -572,7 +572,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg381920/providers/Microsoft.Network/trafficmanagerprofiles/tm438930/nestedEndpoints/nested-profile-ep-1?api-version=2018-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg381920/providers/Microsoft.Network/trafficmanagerprofiles/tm438930/nestedEndpoints/nested-profile-ep-1?api-version=2018-08-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.trafficmanager/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "0c9b5016-c813-4961-ac3f-337f70130f8f",
@@ -599,7 +599,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg381920/providers/Microsoft.Network/trafficmanagerprofiles/tm438930?api-version=2018-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg381920/providers/Microsoft.Network/trafficmanagerprofiles/tm438930?api-version=2018-08-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.trafficmanager/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "d732bc39-d2d0-45f8-854e-bd661862873d",
@@ -626,7 +626,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg381920/providers/Microsoft.Network/trafficmanagerprofiles/tm438930?api-version=2018-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg381920/providers/Microsoft.Network/trafficmanagerprofiles/tm438930?api-version=2018-08-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.trafficmanager/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "1c73ebfa-2e0e-41d9-b20d-3d87e4313bb0",
@@ -653,7 +653,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/trafficmanagerprofiles?api-version=2018-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/trafficmanagerprofiles?api-version=2018-08-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.trafficmanager/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "1038200a-50eb-4589-a15f-78b8006ef911",
@@ -680,7 +680,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/trafficmanagerprofiles?api-version=2018-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/trafficmanagerprofiles?api-version=2018-08-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.trafficmanager/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "b0b1c621-44b0-4518-82d7-ef4414e57a52",
@@ -707,7 +707,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg381920/providers/Microsoft.Network/trafficmanagerprofiles/tm438930?api-version=2018-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg381920/providers/Microsoft.Network/trafficmanagerprofiles/tm438930?api-version=2018-08-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.trafficmanager/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "89c96a4e-eaaf-4345-b34d-065b962a35e5",
@@ -734,7 +734,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg381920/providers/Microsoft.Network/trafficmanagerprofiles/tm438930?api-version=2018-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg381920/providers/Microsoft.Network/trafficmanagerprofiles/tm438930?api-version=2018-08-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.trafficmanager/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "53968fdf-eb0c-4c2f-ac2f-01dbacc86c7f",
@@ -761,7 +761,7 @@
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg381920/providers/Microsoft.Network/trafficmanagerprofiles/tm438930/externalEndpoints/external-ep-1?api-version=2018-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg381920/providers/Microsoft.Network/trafficmanagerprofiles/tm438930/externalEndpoints/external-ep-1?api-version=2018-08-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.trafficmanager/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "610a43d1-9cdf-4a72-916f-98e2eafd4b4b",
@@ -786,7 +786,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg381920/providers/Microsoft.Network/trafficmanagerprofiles/tm438930/externalEndpoints/external-ep-3?api-version=2018-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg381920/providers/Microsoft.Network/trafficmanagerprofiles/tm438930/externalEndpoints/external-ep-3?api-version=2018-08-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.trafficmanager/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "880e0b94-86e9-466b-8e79-681730932399",
@@ -813,7 +813,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg381920/providers/Microsoft.Network/trafficmanagerprofiles/tm438930/nestedEndpoints/nested-profile-ep-1?api-version=2018-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg381920/providers/Microsoft.Network/trafficmanagerprofiles/tm438930/nestedEndpoints/nested-profile-ep-1?api-version=2018-08-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.trafficmanager/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "0f367a9e-1e6c-44b6-a623-7a3f750a2ccc",
@@ -840,7 +840,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg381920/providers/Microsoft.Network/trafficmanagerprofiles/tm438930/azureEndpoints/azure-ep-1?api-version=2018-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg381920/providers/Microsoft.Network/trafficmanagerprofiles/tm438930/azureEndpoints/azure-ep-1?api-version=2018-08-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.trafficmanager/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "0d6a3ac2-5755-40f5-b113-15fdb851d794",
@@ -867,7 +867,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg381920/providers/Microsoft.Network/trafficmanagerprofiles/tm438930?api-version=2018-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg381920/providers/Microsoft.Network/trafficmanagerprofiles/tm438930?api-version=2018-08-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.trafficmanager/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "4e3fd369-d64f-494e-8bac-2fff7051fd9a",
@@ -894,7 +894,7 @@
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg381920/providers/Microsoft.Network/trafficmanagerprofiles/tm438930?api-version=2018-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg381920/providers/Microsoft.Network/trafficmanagerprofiles/tm438930?api-version=2018-08-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.trafficmanager/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "7d8710d1-6e6e-45e0-85b8-530b2a95d80c",
