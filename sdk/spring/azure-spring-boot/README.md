@@ -25,8 +25,8 @@ This project provides auto-configuration for the following Azure services:
 - [Azure Active Directory B2C](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot-starter-active-directory-b2c)
 - [Cosmos DB SQL API](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot-starter-cosmos)
 - [Key Vault Secrets](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot-starter-keyvault-secrets)
-- [Metrics Service](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot-starter-metrics)
 - [JMS Service Bus](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot-starter-servicebus-jms)
+- [Storage]
 
 This module also provides the ability to automatically inject credentials from Cloud Foundry into your
 applications consuming Azure services. It does this by reading the `VCAP_SERVICES` environment
@@ -98,3 +98,4 @@ You can participate community driven [![Gitter](https://badges.gitter.im/Microso
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
 [environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
 [Add azure-spring-boot-bom]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/AZURE_SPRING_BOMS_USAGE.md#add-azure-spring-boot-bom
+[Storage]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-boot-starter-storage
