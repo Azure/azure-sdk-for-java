@@ -8,7 +8,7 @@ import com.beust.jcommander.Parameter;
 import java.net.URL;
 
 public class HttpPipelineOptions extends PerfStressOptions {
-    @Parameter(names = { "-u", "--url" }, description = "URL to fetch")
+    @Parameter(names = { "-u", "--url" }, description = "URL to fetch", required = true)
     private URL url;
 
     public URL getUrl() {
