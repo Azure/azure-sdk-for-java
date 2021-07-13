@@ -9,6 +9,7 @@ import com.azure.core.implementation.models.jsonflatten.ClassWithFlattenedProper
 import com.azure.core.implementation.models.jsonflatten.FlattenedProduct;
 import com.azure.core.implementation.models.jsonflatten.FlattenedPropertiesAndJsonAnyGetter;
 import com.azure.core.implementation.models.jsonflatten.JsonFlattenOnArrayType;
+import com.azure.core.implementation.models.jsonflatten.JsonFlattenOnBoxedPrimitiveType;
 import com.azure.core.implementation.models.jsonflatten.JsonFlattenOnCollectionType;
 import com.azure.core.implementation.models.jsonflatten.JsonFlattenOnJsonIgnoredProperty;
 import com.azure.core.implementation.models.jsonflatten.JsonFlattenOnPrimitiveType;
@@ -553,6 +554,33 @@ public class FlatteningSerializerTests {
     }
 
     @Test
+    public void jsonFlattenOnArrayTypeNull() {
+        JsonFlattenOnArrayType expected = new JsonFlattenOnArrayType();
+
+        String expectedSerialization = "{\"jsonflatten\":{}}";
+        String actualSerialization = serialize(expected);
+
+        assertEquals(expectedSerialization, actualSerialization);
+
+        JsonFlattenOnArrayType deserialized = deserialize(actualSerialization, JsonFlattenOnArrayType.class);
+        assertArrayEquals(expected.getJsonFlattenArray(), deserialized.getJsonFlattenArray());
+    }
+
+    @Test
+    public void jsonFlattenOnArrayTypeEmpty() {
+        JsonFlattenOnArrayType expected = new JsonFlattenOnArrayType()
+            .setJsonFlattenArray(new String[0]);
+
+        String expectedSerialization = "{\"jsonflatten\":{\"array\":[]}}";
+        String actualSerialization = serialize(expected);
+
+        assertEquals(expectedSerialization, actualSerialization);
+
+        JsonFlattenOnArrayType deserialized = deserialize(actualSerialization, JsonFlattenOnArrayType.class);
+        assertArrayEquals(expected.getJsonFlattenArray(), deserialized.getJsonFlattenArray());
+    }
+
+    @Test
     public void jsonFlattenOnCollectionType() {
         JsonFlattenOnCollectionType expected = new JsonFlattenOnCollectionType()
             .setJsonFlattenCollection(Arrays.asList("hello", "goodbye", null));
@@ -600,6 +628,44 @@ public class FlatteningSerializerTests {
         assertEquals(expectedSerialization, actualSerialization);
 
         JsonFlattenOnPrimitiveType deserialized = deserialize(actualSerialization, JsonFlattenOnPrimitiveType.class);
+        assertEquals(expected.isJsonFlattenBoolean(), deserialized.isJsonFlattenBoolean());
+        assertEquals(expected.getJsonFlattenDecimal(), deserialized.getJsonFlattenDecimal());
+        assertEquals(expected.getJsonFlattenNumber(), deserialized.getJsonFlattenNumber());
+        assertEquals(expected.getJsonFlattenString(), deserialized.getJsonFlattenString());
+    }
+
+    @Test
+    public void jsonFlattenOnBoxedPrimitiveType() {
+        JsonFlattenOnBoxedPrimitiveType expected = new JsonFlattenOnBoxedPrimitiveType()
+            .setJsonFlattenBoolean(true)
+            .setJsonFlattenDecimal(1.25D)
+            .setJsonFlattenNumber(2)
+            .setJsonFlattenString("string");
+
+        String expectedSerialization = "{\"jsonflatten\":{\"boolean\":true,\"decimal\":1.25,\"number\":2,\"string\":\"string\"}}";
+        String actualSerialization = serialize(expected);
+
+        assertEquals(expectedSerialization, actualSerialization);
+
+        JsonFlattenOnBoxedPrimitiveType deserialized = deserialize(actualSerialization,
+            JsonFlattenOnBoxedPrimitiveType.class);
+        assertEquals(expected.isJsonFlattenBoolean(), deserialized.isJsonFlattenBoolean());
+        assertEquals(expected.getJsonFlattenDecimal(), deserialized.getJsonFlattenDecimal());
+        assertEquals(expected.getJsonFlattenNumber(), deserialized.getJsonFlattenNumber());
+        assertEquals(expected.getJsonFlattenString(), deserialized.getJsonFlattenString());
+    }
+
+    @Test
+    public void jsonFlattenOnBoxedPrimitiveTypeAllNull() {
+        JsonFlattenOnBoxedPrimitiveType expected = new JsonFlattenOnBoxedPrimitiveType();
+
+        String expectedSerialization = "{\"jsonflatten\":{}}";
+        String actualSerialization = serialize(expected);
+
+        assertEquals(expectedSerialization, actualSerialization);
+
+        JsonFlattenOnBoxedPrimitiveType deserialized = deserialize(actualSerialization,
+            JsonFlattenOnBoxedPrimitiveType.class);
         assertEquals(expected.isJsonFlattenBoolean(), deserialized.isJsonFlattenBoolean());
         assertEquals(expected.getJsonFlattenDecimal(), deserialized.getJsonFlattenDecimal());
         assertEquals(expected.getJsonFlattenNumber(), deserialized.getJsonFlattenNumber());
