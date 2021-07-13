@@ -11,6 +11,8 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import reactor.core.publisher.Mono;
 
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URI;
 
 public class TestProxyPolicy implements HttpPipelinePolicy {
@@ -67,7 +69,10 @@ public class TestProxyPolicy implements HttpPipelinePolicy {
                 requestUri.getPath(), requestUri.getQuery(), requestUri.getFragment());
             request.setUrl(testProxyUri.toURL());
         }
-        catch (Exception e) {
+        catch (URISyntaxException e) {
+            throw new IllegalStateException(e);
+        }
+        catch (MalformedURLException e) {
             throw new IllegalStateException(e);
         }
     }
