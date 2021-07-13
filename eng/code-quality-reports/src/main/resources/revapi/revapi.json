@@ -628,16 +628,6 @@
         "code": "java.method.added",
         "new": "method boolean com.google.gson.JsonArray::isEmpty()",
         "justification": "com.google.code.gson:gson:jar:2.8.7 added this new method."
-      },
-      {
-        "code": "java.annotation.removed",
-        "new": "method void com.azure.search.documents.indexes.models.EntityRecognitionSkill::<init>(java.util.List<com.azure.search.documents.indexes.models.InputFieldMappingEntry>, java.util.List<com.azure.search.documents.indexes.models.OutputFieldMappingEntry>)",
-        "justification": "New constructor added that uses @JsonCreator."
-      },
-      {
-        "code": "java.annotation.removed",
-        "new": "method void com.azure.search.documents.indexes.models.SentimentSkill::<init>(java.util.List<com.azure.search.documents.indexes.models.InputFieldMappingEntry>, java.util.List<com.azure.search.documents.indexes.models.OutputFieldMappingEntry>)",
-        "justification": "New constructor added that uses @JsonCreator."
       }
     ]
   }
