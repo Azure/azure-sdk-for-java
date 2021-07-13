@@ -392,6 +392,10 @@ page at http://checkstyle.sourceforge.net/config.html -->
       <property name="blacklistedWords" value="URL, HTTP, XML, JSON, SAS, CPK, API" />
     </module>
 
+    <!--CUSTOM CHECKS-->
+    <!-- Overridden methods should be annotated with @Override annotation -->
+    <module name="com.azure.tools.checkstyle.checks.EnforceOverrideAnnotationCheck"/>
+
     <!-- CUSTOM CHECKS -->
     <!-- Fluent method checks:
     (1) A method returns an instance of the class, and that have one parameter,
