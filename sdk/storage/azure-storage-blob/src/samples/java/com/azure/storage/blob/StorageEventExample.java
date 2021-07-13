@@ -33,7 +33,7 @@ import java.util.function.Consumer;
  *
  * The main areas of divergence from the original feature are:
  * - It is only possible to use the sendingRequestHandler on an async client.
- * - The callbacks do not all accept the same type as they did in the track 1 sdk and there is no StorageEven type.
+ * - The callbacks do not all accept the same type as they did in the track 1 sdk and there is no StorageEvent type.
  * - The SendingRequest events come after the signature here. In track 1, they came before the signature. It would be
  * possible to create a second, near identical policy to put before the signature specifically for the SendingRequest
  * event if that behavior is desirable. The policy shown here should then be modified to not duplicate that event.
