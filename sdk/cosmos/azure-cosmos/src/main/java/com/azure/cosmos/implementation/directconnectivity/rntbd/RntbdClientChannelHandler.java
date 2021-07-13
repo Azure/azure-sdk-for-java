@@ -103,7 +103,7 @@ public class RntbdClientChannelHandler extends ChannelInitializer<Channel> imple
         final ChannelPipeline pipeline = channel.pipeline();
 
         pipeline.addFirst(
-            new RntbdContextNegotiator(requestManager, this.config.userAgent()),
+            new RntbdContextNegotiator(requestManager, this.config.userAgent(), this.config.isChannelMultiplexingEnabled()),
             new RntbdResponseDecoder(),
             new RntbdRequestEncoder(),
             requestManager

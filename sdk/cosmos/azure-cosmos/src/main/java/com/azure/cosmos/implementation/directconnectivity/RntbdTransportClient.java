@@ -367,6 +367,9 @@ public class RntbdTransportClient extends TransportClient {
         private final int bufferPageSize;
 
         @JsonProperty()
+        private final boolean channelMultiplexingEnabled;
+
+        @JsonProperty()
         private final Duration connectionAcquisitionTimeout;
 
         @JsonProperty()
@@ -445,6 +448,7 @@ public class RntbdTransportClient extends TransportClient {
             this.shutdownTimeout = builder.shutdownTimeout;
             this.threadCount = builder.threadCount;
             this.userAgent = builder.userAgent;
+            this.channelMultiplexingEnabled = builder.channelMultiplexingEnabled;
 
             this.connectTimeout = builder.connectTimeout == null
                 ? builder.requestTimeout
@@ -472,6 +476,7 @@ public class RntbdTransportClient extends TransportClient {
             this.shutdownTimeout = Duration.ofSeconds(15L);
             this.threadCount = 2 * Runtime.getRuntime().availableProcessors();
             this.userAgent = new UserAgentContainer();
+            this.channelMultiplexingEnabled = connectionPolicy.isChannelMultiplexingEnabled();
         }
 
         // endregion
@@ -482,6 +487,10 @@ public class RntbdTransportClient extends TransportClient {
             return this.bufferPageSize;
         }
 
+        public boolean isChannelMultiplexingEnabled() {
+            return this.channelMultiplexingEnabled;
+        }
+        
         public Duration connectionAcquisitionTimeout() {
             return this.connectionAcquisitionTimeout;
         }
@@ -677,6 +686,7 @@ public class RntbdTransportClient extends TransportClient {
                 }
             }
 
+            public boolean channelMultiplexingEnabled;
             private int bufferPageSize;
             private Duration connectionAcquisitionTimeout;
             private boolean connectionEndpointRediscoveryEnabled;
@@ -712,6 +722,7 @@ public class RntbdTransportClient extends TransportClient {
                 this.maxBufferCapacity = DEFAULT_OPTIONS.maxBufferCapacity;
                 this.maxChannelsPerEndpoint = connectionPolicy.getMaxConnectionsPerEndpoint();
                 this.maxRequestsPerChannel = connectionPolicy.getMaxRequestsPerConnection();
+                this.channelMultiplexingEnabled = connectionPolicy.isChannelMultiplexingEnabled();
 
                 this.maxConcurrentRequestsPerEndpointOverride =
                     DEFAULT_OPTIONS.maxConcurrentRequestsPerEndpointOverride;

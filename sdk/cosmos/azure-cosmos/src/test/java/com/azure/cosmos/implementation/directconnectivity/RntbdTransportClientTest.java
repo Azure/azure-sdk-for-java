@@ -849,7 +849,7 @@ public final class RntbdTransportClientTest {
             this.requestTimer = timer;
 
             this.fakeChannel = new FakeChannel(responses,
-                new RntbdContextNegotiator(requestManager, config.userAgent()),
+                new RntbdContextNegotiator(requestManager, config.userAgent(), config.isChannelMultiplexingEnabled()),
                 new RntbdRequestEncoder(),
                 new RntbdResponseDecoder(),
                 requestManager
