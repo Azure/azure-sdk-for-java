@@ -13,22 +13,38 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
+import java.nio.MappedByteBuffer;
 import java.nio.ReadOnlyBufferException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.FileSystem;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.spi.FileSystemProvider;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 
 /**
  * Test class for {@link BinaryData}.
@@ -96,7 +112,7 @@ public class BinaryDataTest {
         final byte[] expected = "Doe".getBytes(StandardCharsets.UTF_8);
 
         // Act
-        final BinaryData data = new BinaryData(expected);
+        final BinaryData data = BinaryData.fromBytes(expected);
 
         // Assert
         assertArrayEquals(expected, data.toBytes());
@@ -148,27 +164,21 @@ public class BinaryDataTest {
 
         // Act
         BinaryData data = BinaryData.fromStream(new ByteArrayInputStream(expected));
-        final byte[] actual = new byte[expected.length];
-        (data.toStream()).read(actual, 0, expected.length);
 
         // Assert
         assertArrayEquals(expected, data.toBytes());
-        assertArrayEquals(expected, actual);
     }
 
     @Test
     public void createFromEmptyStream() throws IOException {
         // Arrange
         final byte[] expected = "".getBytes();
-        final byte[] actual = new byte[expected.length];
 
         // Act
         BinaryData data = BinaryData.fromStream(new ByteArrayInputStream(expected));
-        data.toStream().read(actual, 0, expected.length);
 
         // Assert
         assertArrayEquals(expected, data.toBytes());
-        assertArrayEquals(expected, actual);
     }
 
     @Test
@@ -360,6 +370,73 @@ public class BinaryDataTest {
                 assertEquals(25, persons.get(1).getAge());
             })
             .verifyComplete();
+    }
+
+    @Test
+    public void fileChannelOpenErrorReturnsReactively() {
+        Path notARealPath = Paths.get("fake");
+        assertThrows(UncheckedIOException.class, () -> BinaryData.fromFile(notARealPath));
+    }
+
+    @Test
+    public void fileChannelCloseErrorReturnsReactively() throws IOException {
+        MyFileChannel myFileChannel = spy(MyFileChannel.class);
+        when(myFileChannel.map(any(), anyLong(), anyLong())).thenReturn(mock(MappedByteBuffer.class));
+        doThrow(IOException.class).when(myFileChannel).implCloseChannel();
+
+        FileSystemProvider fileSystemProvider = mock(FileSystemProvider.class);
+        when(fileSystemProvider.newFileChannel(any(), any(), any())).thenReturn(myFileChannel);
+
+        FileSystem fileSystem = mock(FileSystem.class);
+        when(fileSystem.provider()).thenReturn(fileSystemProvider);
+
+        Path path = mock(Path.class);
+        when(path.getFileSystem()).thenReturn(fileSystem);
+        File file = mock(File.class);
+        when(file.length()).thenReturn(1024L);
+        when(file.exists()).thenReturn(true);
+        when(path.toFile()).thenReturn(file);
+
+        BinaryData binaryData = BinaryData.fromFile(path);
+        StepVerifier.create(binaryData.toFluxByteBuffer())
+                .thenConsumeWhile(Objects::nonNull)
+                .verifyError(IOException.class);
+    }
+
+    @Test
+    public void fileChannelIsClosedWhenMapErrors() throws IOException {
+        MyFileChannel myFileChannel = spy(MyFileChannel.class);
+        when(myFileChannel.map(any(), anyLong(), anyLong())).thenThrow(IOException.class);
+
+        FileSystemProvider fileSystemProvider = mock(FileSystemProvider.class);
+        when(fileSystemProvider.newFileChannel(any(), any(), any())).thenReturn(myFileChannel);
+
+        FileSystem fileSystem = mock(FileSystem.class);
+        when(fileSystem.provider()).thenReturn(fileSystemProvider);
+
+        Path path = mock(Path.class);
+        when(path.getFileSystem()).thenReturn(fileSystem);
+        File file = mock(File.class);
+        when(file.length()).thenReturn(1024L);
+        when(file.exists()).thenReturn(true);
+        when(path.toFile()).thenReturn(file);
+
+        BinaryData binaryData = BinaryData.fromFile(path);
+        StepVerifier.create(binaryData.toFluxByteBuffer())
+                .thenConsumeWhile(Objects::nonNull)
+                .verifyError(IOException.class);
+
+        assertFalse(myFileChannel.isOpen());
+    }
+
+    @Test
+    public void fluxContent() {
+        Mono<BinaryData> binaryDataMono = BinaryData.fromFlux(Flux
+                .just(ByteBuffer.wrap("Hello".getBytes(StandardCharsets.UTF_8))).delayElements(Duration.ofMillis(10)));
+
+        StepVerifier.create(binaryDataMono)
+                .assertNext(binaryData -> assertEquals("Hello", new String(binaryData.toBytes())))
+                .verifyComplete();
     }
 
     public static class MyJsonSerializer implements JsonSerializer {
