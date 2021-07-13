@@ -49,6 +49,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import java.lang.reflect.Field;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -99,30 +100,36 @@ public class CosmosTracerTest extends TestSuiteBase {
             ArgumentMatchers.any(),
             ArgumentMatchers.any());
 
-        CosmosDatabaseResponse cosmosDatabaseResponse = client.createDatabaseIfNotExists(cosmosAsyncDatabase.getId(), ThroughputProperties.createManualThroughput(5000)).block();
+        CosmosDatabaseResponse cosmosDatabaseResponse = client.createDatabaseIfNotExists(cosmosAsyncDatabase.getId(),
+            ThroughputProperties.createManualThroughput(5000)).block();
         Context context = tracerProviderCapture.getResult();
-        Map<String, Map<String, Object>> attributesMap =  addEventCapture.getAttributesMap();
-        verifyTracerAttributes(tracerProvider, mockTracer, "createDatabaseIfNotExists." + cosmosAsyncDatabase.getId(), context,
+        Map<String, Map<String, Object>> attributesMap = addEventCapture.getAttributesMap();
+        verifyTracerAttributes(tracerProvider, mockTracer, "createDatabaseIfNotExists." + cosmosAsyncDatabase.getId()
+            , context,
             cosmosAsyncDatabase.getId(), traceApiCounter, null, cosmosDatabaseResponse.getDiagnostics(), attributesMap);
         traceApiCounter++;
 
-        FeedResponse<CosmosDatabaseProperties> feedResponseReadAllDatabases = client.readAllDatabases(new CosmosQueryRequestOptions()).byPage().single().block();
-        verifyTracerAttributes(tracerProvider, mockTracer, "readAllDatabases", context, null, traceApiCounter, null, feedResponseReadAllDatabases.getCosmosDiagnostics(), attributesMap);
+        FeedResponse<CosmosDatabaseProperties> feedResponseReadAllDatabases =
+            client.readAllDatabases(new CosmosQueryRequestOptions()).byPage().single().block();
+        verifyTracerAttributes(tracerProvider, mockTracer, "readAllDatabases", context, null, traceApiCounter, null,
+            feedResponseReadAllDatabases.getCosmosDiagnostics(), attributesMap);
         traceApiCounter++;
 
 
         String query = "select * from c where c.id = '" + cosmosAsyncDatabase.getId() + "'";
-        FeedResponse<CosmosDatabaseProperties> feedResponseQueryDatabases = client.queryDatabases(query, new CosmosQueryRequestOptions()).byPage().single().block();
-        verifyTracerAttributes(tracerProvider, mockTracer, "queryDatabases", context, null, traceApiCounter, null, feedResponseQueryDatabases.getCosmosDiagnostics(), attributesMap);
+        FeedResponse<CosmosDatabaseProperties> feedResponseQueryDatabases = client.queryDatabases(query,
+            new CosmosQueryRequestOptions()).byPage().single().block();
+        verifyTracerAttributes(tracerProvider, mockTracer, "queryDatabases", context, null, traceApiCounter, null,
+            feedResponseQueryDatabases.getCosmosDiagnostics(), attributesMap);
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
-    public void cosmosAsyncDatabase() throws JsonProcessingException {
+    public void cosmosAsyncDatabase() throws Exception {
         Tracer mockTracer = getMockTracer();
         TracerProvider tracerProvider = Mockito.spy(new TracerProvider(mockTracer));
         ReflectionUtils.setTracerProvider(client, tracerProvider);
-        ReflectionUtils.setThresholdForCrud(tracerProvider, Duration.ZERO);
-        ReflectionUtils.setThresholdForQuery(tracerProvider, Duration.ZERO);
+        setThreshHoldDurationOnTracer(tracerProvider, Duration.ZERO, "CRUD_THRESHOLD_FOR_DIAGNOSTICS");
+        setThreshHoldDurationOnTracer(tracerProvider, Duration.ZERO, "QUERY_THRESHOLD_FOR_DIAGNOSTICS");
         TracerProviderCapture tracerProviderCapture = new TracerProviderCapture();
         AddEventCapture addEventCapture = new AddEventCapture();
 
@@ -135,22 +142,28 @@ public class CosmosTracerTest extends TestSuiteBase {
             ArgumentMatchers.any());
 
         int traceApiCounter = 1;
-        CosmosContainerResponse containerResponse = cosmosAsyncDatabase.createContainerIfNotExists(cosmosAsyncContainer.getId(),
+        CosmosContainerResponse containerResponse =
+            cosmosAsyncDatabase.createContainerIfNotExists(cosmosAsyncContainer.getId(),
             "/pk", 5000).block();
         Context context = tracerProviderCapture.getResult();
-        Map<String, Map<String, Object>> attributesMap =  addEventCapture.getAttributesMap();
-        verifyTracerAttributes(tracerProvider, mockTracer, "createContainerIfNotExists." + cosmosAsyncContainer.getId(), context,
+        Map<String, Map<String, Object>> attributesMap = addEventCapture.getAttributesMap();
+        verifyTracerAttributes(tracerProvider, mockTracer,
+            "createContainerIfNotExists." + cosmosAsyncContainer.getId(), context,
             cosmosAsyncDatabase.getId(), traceApiCounter, null, containerResponse.getDiagnostics(), attributesMap);
         traceApiCounter++;
 
-        FeedResponse<CosmosUserProperties> userPropertiesFeedResponse = cosmosAsyncDatabase.readAllUsers().byPage().single().block();
+        FeedResponse<CosmosUserProperties> userPropertiesFeedResponse =
+            cosmosAsyncDatabase.readAllUsers().byPage().single().block();
         verifyTracerAttributes(tracerProvider, mockTracer, "readAllUsers." + cosmosAsyncDatabase.getId(), context,
-            cosmosAsyncDatabase.getId(), traceApiCounter, null, userPropertiesFeedResponse.getCosmosDiagnostics(), attributesMap);
+            cosmosAsyncDatabase.getId(), traceApiCounter, null, userPropertiesFeedResponse.getCosmosDiagnostics(),
+            attributesMap);
         traceApiCounter++;
 
-        FeedResponse<CosmosContainerProperties> containerPropertiesFeedResponse = cosmosAsyncDatabase.readAllContainers().byPage().single().block();
+        FeedResponse<CosmosContainerProperties> containerPropertiesFeedResponse =
+            cosmosAsyncDatabase.readAllContainers().byPage().single().block();
         verifyTracerAttributes(tracerProvider, mockTracer, "readAllContainers." + cosmosAsyncDatabase.getId(), context,
-            cosmosAsyncDatabase.getId(), traceApiCounter, null, containerPropertiesFeedResponse.getCosmosDiagnostics(), attributesMap);
+            cosmosAsyncDatabase.getId(), traceApiCounter, null,
+            containerPropertiesFeedResponse.getCosmosDiagnostics(), attributesMap);
         traceApiCounter++;
 
         String errorType = null;
@@ -167,11 +180,11 @@ public class CosmosTracerTest extends TestSuiteBase {
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
-    public void cosmosAsyncContainer() throws JsonProcessingException {
+    public void cosmosAsyncContainer() throws Exception {
         Tracer mockTracer = getMockTracer();
         TracerProvider tracerProvider = Mockito.spy(new TracerProvider(mockTracer));
-        ReflectionUtils.setThresholdForCrud(tracerProvider, Duration.ZERO);
-        ReflectionUtils.setThresholdForQuery(tracerProvider, Duration.ZERO);
+        setThreshHoldDurationOnTracer(tracerProvider, Duration.ZERO, "CRUD_THRESHOLD_FOR_DIAGNOSTICS");
+        setThreshHoldDurationOnTracer(tracerProvider, Duration.ZERO, "QUERY_THRESHOLD_FOR_DIAGNOSTICS");
         ReflectionUtils.setTracerProvider(client, tracerProvider);
         TracerProviderCapture tracerProviderCapture = new TracerProviderCapture();
         AddEventCapture addEventCapture = new AddEventCapture();
@@ -187,7 +200,7 @@ public class CosmosTracerTest extends TestSuiteBase {
         int traceApiCounter = 1;
         CosmosContainerResponse containerResponse = cosmosAsyncContainer.read().block();
         Context context = tracerProviderCapture.getResult();
-        Map<String, Map<String, Object>> attributesMap =  addEventCapture.getAttributesMap();
+        Map<String, Map<String, Object>> attributesMap = addEventCapture.getAttributesMap();
         Mockito.verify(tracerProvider, Mockito.times(traceApiCounter)).startSpan(ArgumentMatchers.any(),
             ArgumentMatchers.any(),
             ArgumentMatchers.any(), ArgumentMatchers.any(Context.class));
@@ -205,14 +218,15 @@ public class CosmosTracerTest extends TestSuiteBase {
             cosmosAsyncDatabase.getId(), traceApiCounter, null, cosmosDiagnostics, attributesMap);
         traceApiCounter++;
 
-        ReflectionUtils.setThresholdForCrud(tracerProvider, Duration.ofMillis(100));
-        ReflectionUtils.setThresholdForQuery(tracerProvider, Duration.ofMillis(500));
+        setThreshHoldDurationOnTracer(tracerProvider, Duration.ZERO, "CRUD_THRESHOLD_FOR_DIAGNOSTICS");
+        setThreshHoldDurationOnTracer(tracerProvider, Duration.ZERO, "QUERY_THRESHOLD_FOR_DIAGNOSTICS");
 
         CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
         requestOptions.setThresholdForDiagnosticsOnTracer(Duration.ZERO);
         InternalObjectNode item = new InternalObjectNode();
         item.setId(ITEM_ID);
-        CosmosItemResponse<InternalObjectNode> cosmosItemResponse = cosmosAsyncContainer.createItem(item, requestOptions).block();
+        CosmosItemResponse<InternalObjectNode> cosmosItemResponse = cosmosAsyncContainer.createItem(item,
+            requestOptions).block();
         verifyTracerAttributes(tracerProvider, mockTracer, "createItem." + cosmosAsyncContainer.getId(), context,
             cosmosAsyncDatabase.getId(), traceApiCounter, null, cosmosItemResponse.getDiagnostics(), attributesMap);
         traceApiCounter++;
@@ -229,14 +243,16 @@ public class CosmosTracerTest extends TestSuiteBase {
             cosmosAsyncDatabase.getId(), traceApiCounter, null, cosmosItemResponse.getDiagnostics(), attributesMap);
         traceApiCounter++;
 
-        CosmosItemResponse<Object> deleteItemResponse = cosmosAsyncContainer.deleteItem(ITEM_ID, PartitionKey.NONE, requestOptions).block();
+        CosmosItemResponse<Object> deleteItemResponse = cosmosAsyncContainer.deleteItem(ITEM_ID, PartitionKey.NONE,
+            requestOptions).block();
         verifyTracerAttributes(tracerProvider, mockTracer, "deleteItem." + cosmosAsyncContainer.getId(), context,
             cosmosAsyncDatabase.getId(), traceApiCounter, null, deleteItemResponse.getDiagnostics(), attributesMap);
         traceApiCounter++;
 
         CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions();
         queryRequestOptions.setThresholdForDiagnosticsOnTracer(Duration.ZERO);
-        FeedResponse<InternalObjectNode> feedItemResponse = cosmosAsyncContainer.readAllItems(queryRequestOptions, InternalObjectNode.class).byPage().single().block();
+        FeedResponse<InternalObjectNode> feedItemResponse = cosmosAsyncContainer.readAllItems(queryRequestOptions,
+            InternalObjectNode.class).byPage().single().block();
         Mockito.verify(tracerProvider, Mockito.times(traceApiCounter)).startSpan(ArgumentMatchers.any(),
             ArgumentMatchers.any(),
             ArgumentMatchers.any(), ArgumentMatchers.any(Context.class));
@@ -245,18 +261,19 @@ public class CosmosTracerTest extends TestSuiteBase {
         traceApiCounter++;
 
         String query = "select * from c where c.id = '" + ITEM_ID + "'";
-        feedItemResponse = cosmosAsyncContainer.queryItems(query, queryRequestOptions, InternalObjectNode.class).byPage().single().block();
+        feedItemResponse =
+            cosmosAsyncContainer.queryItems(query, queryRequestOptions, InternalObjectNode.class).byPage().single().block();
         verifyTracerAttributes(tracerProvider, mockTracer, "queryItems." + cosmosAsyncContainer.getId(), context,
             cosmosAsyncDatabase.getId(), traceApiCounter, null, feedItemResponse.getCosmosDiagnostics(), attributesMap);
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
-    public void cosmosAsyncScripts() throws JsonProcessingException {
+    public void cosmosAsyncScripts() throws Exception {
         Tracer mockTracer = getMockTracer();
         TracerProvider tracerProvider = Mockito.spy(new TracerProvider(mockTracer));
         ReflectionUtils.setTracerProvider(client, tracerProvider);
-        ReflectionUtils.setThresholdForCrud(tracerProvider, Duration.ZERO);
-        ReflectionUtils.setThresholdForQuery(tracerProvider, Duration.ZERO);
+        setThreshHoldDurationOnTracer(tracerProvider, Duration.ZERO, "CRUD_THRESHOLD_FOR_DIAGNOSTICS");
+        setThreshHoldDurationOnTracer(tracerProvider, Duration.ZERO, "QUERY_THRESHOLD_FOR_DIAGNOSTICS");
         TracerProviderCapture tracerProviderCapture = new TracerProviderCapture();
         AddEventCapture addEventCapture = new AddEventCapture();
 
@@ -269,20 +286,27 @@ public class CosmosTracerTest extends TestSuiteBase {
             ArgumentMatchers.any());
 
         int traceApiCounter = 1;
-        FeedResponse<CosmosStoredProcedureProperties> sprocFeedResponse = cosmosAsyncContainer.getScripts().readAllStoredProcedures(new CosmosQueryRequestOptions()).byPage().single().block();
+        FeedResponse<CosmosStoredProcedureProperties> sprocFeedResponse =
+            cosmosAsyncContainer.getScripts().readAllStoredProcedures(new CosmosQueryRequestOptions()).byPage().single().block();
         Context context = tracerProviderCapture.getResult();
-        Map<String, Map<String, Object>> attributesMap =  addEventCapture.getAttributesMap();
-        verifyTracerAttributes(tracerProvider, mockTracer, "readAllStoredProcedures." + cosmosAsyncContainer.getId(), context,
-            cosmosAsyncDatabase.getId(), traceApiCounter, null, sprocFeedResponse.getCosmosDiagnostics(), attributesMap);
+        Map<String, Map<String, Object>> attributesMap = addEventCapture.getAttributesMap();
+        verifyTracerAttributes(tracerProvider, mockTracer, "readAllStoredProcedures." + cosmosAsyncContainer.getId(),
+            context,
+            cosmosAsyncDatabase.getId(), traceApiCounter, null, sprocFeedResponse.getCosmosDiagnostics(),
+            attributesMap);
         traceApiCounter++;
 
-        FeedResponse<CosmosTriggerProperties> triggerFeedResponse = cosmosAsyncContainer.getScripts().readAllTriggers(new CosmosQueryRequestOptions()).byPage().single().block();
+        FeedResponse<CosmosTriggerProperties> triggerFeedResponse =
+            cosmosAsyncContainer.getScripts().readAllTriggers(new CosmosQueryRequestOptions()).byPage().single().block();
         verifyTracerAttributes(tracerProvider, mockTracer, "readAllTriggers." + cosmosAsyncContainer.getId(), context,
-            cosmosAsyncDatabase.getId(), traceApiCounter, null, triggerFeedResponse.getCosmosDiagnostics(), attributesMap);
+            cosmosAsyncDatabase.getId(), traceApiCounter, null, triggerFeedResponse.getCosmosDiagnostics(),
+            attributesMap);
         traceApiCounter++;
 
-        FeedResponse<CosmosUserDefinedFunctionProperties> udfFeedResponse = cosmosAsyncContainer.getScripts().readAllUserDefinedFunctions(new CosmosQueryRequestOptions()).byPage().single().block();
-        verifyTracerAttributes(tracerProvider, mockTracer, "readAllUserDefinedFunctions." + cosmosAsyncContainer.getId(), context,
+        FeedResponse<CosmosUserDefinedFunctionProperties> udfFeedResponse =
+            cosmosAsyncContainer.getScripts().readAllUserDefinedFunctions(new CosmosQueryRequestOptions()).byPage().single().block();
+        verifyTracerAttributes(tracerProvider, mockTracer,
+            "readAllUserDefinedFunctions." + cosmosAsyncContainer.getId(), context,
             cosmosAsyncDatabase.getId(), traceApiCounter, null, udfFeedResponse.getCosmosDiagnostics(), attributesMap);
         traceApiCounter++;
 
@@ -290,18 +314,23 @@ public class CosmosTracerTest extends TestSuiteBase {
             getCosmosUserDefinedFunctionProperties();
         CosmosUserDefinedFunctionResponse resultUdf =
             cosmosAsyncContainer.getScripts().createUserDefinedFunction(cosmosUserDefinedFunctionProperties).block();
-        verifyTracerAttributes(tracerProvider, mockTracer, "createUserDefinedFunction." + cosmosAsyncContainer.getId(), context,
+        verifyTracerAttributes(tracerProvider, mockTracer,
+            "createUserDefinedFunction." + cosmosAsyncContainer.getId(), context,
             cosmosAsyncDatabase.getId(), traceApiCounter, null, resultUdf.getDiagnostics(), attributesMap);
         traceApiCounter++;
 
-        resultUdf = cosmosAsyncContainer.getScripts().getUserDefinedFunction(cosmosUserDefinedFunctionProperties.getId()).read().block();
-        verifyTracerAttributes(tracerProvider, mockTracer, "readUserDefinedFunction." + cosmosAsyncContainer.getId(), context,
+        resultUdf =
+            cosmosAsyncContainer.getScripts().getUserDefinedFunction(cosmosUserDefinedFunctionProperties.getId()).read().block();
+        verifyTracerAttributes(tracerProvider, mockTracer, "readUserDefinedFunction." + cosmosAsyncContainer.getId(),
+            context,
             cosmosAsyncDatabase.getId(), traceApiCounter, null, resultUdf.getDiagnostics(), attributesMap);
         traceApiCounter++;
 
         cosmosUserDefinedFunctionProperties.setBody("function() {var x = 15;}");
-        resultUdf = cosmosAsyncContainer.getScripts().getUserDefinedFunction(resultUdf.getProperties().getId()).replace(resultUdf.getProperties()).block();
-        verifyTracerAttributes(tracerProvider, mockTracer, "replaceUserDefinedFunction." + cosmosAsyncContainer.getId(), context,
+        resultUdf =
+            cosmosAsyncContainer.getScripts().getUserDefinedFunction(resultUdf.getProperties().getId()).replace(resultUdf.getProperties()).block();
+        verifyTracerAttributes(tracerProvider, mockTracer,
+            "replaceUserDefinedFunction." + cosmosAsyncContainer.getId(), context,
             cosmosAsyncDatabase.getId(), traceApiCounter, null, resultUdf.getDiagnostics(), attributesMap);
         traceApiCounter++;
 
@@ -311,8 +340,10 @@ public class CosmosTracerTest extends TestSuiteBase {
             ArgumentMatchers.any(), ArgumentMatchers.any(Context.class));
         traceApiCounter++;
 
-        resultUdf = cosmosAsyncContainer.getScripts().getUserDefinedFunction(cosmosUserDefinedFunctionProperties.getId()).delete().block();
-        verifyTracerAttributes(tracerProvider, mockTracer, "deleteUserDefinedFunction." + cosmosAsyncContainer.getId(), context,
+        resultUdf =
+            cosmosAsyncContainer.getScripts().getUserDefinedFunction(cosmosUserDefinedFunctionProperties.getId()).delete().block();
+        verifyTracerAttributes(tracerProvider, mockTracer,
+            "deleteUserDefinedFunction." + cosmosAsyncContainer.getId(), context,
             cosmosAsyncDatabase.getId(), traceApiCounter, null, resultUdf.getDiagnostics(), attributesMap);
         traceApiCounter++;
 
@@ -328,7 +359,8 @@ public class CosmosTracerTest extends TestSuiteBase {
             cosmosAsyncDatabase.getId(), traceApiCounter, null, resultTrigger.getDiagnostics(), attributesMap);
         traceApiCounter++;
 
-        resultTrigger = cosmosAsyncContainer.getScripts().getTrigger(cosmosTriggerProperties.getId()).replace(resultTrigger.getProperties()).block();
+        resultTrigger =
+            cosmosAsyncContainer.getScripts().getTrigger(cosmosTriggerProperties.getId()).replace(resultTrigger.getProperties()).block();
         verifyTracerAttributes(tracerProvider, mockTracer, "replaceTrigger." + cosmosAsyncContainer.getId(), context,
             cosmosAsyncDatabase.getId(), traceApiCounter, null, resultTrigger.getDiagnostics(), attributesMap);
         traceApiCounter++;
@@ -347,32 +379,39 @@ public class CosmosTracerTest extends TestSuiteBase {
         CosmosStoredProcedureProperties procedureProperties = getCosmosStoredProcedureProperties();
         CosmosStoredProcedureResponse resultSproc =
             cosmosAsyncContainer.getScripts().createStoredProcedure(procedureProperties).block();
-        verifyTracerAttributes(tracerProvider, mockTracer, "createStoredProcedure." + cosmosAsyncContainer.getId(), context,
+        verifyTracerAttributes(tracerProvider, mockTracer, "createStoredProcedure." + cosmosAsyncContainer.getId(),
+            context,
             cosmosAsyncDatabase.getId(), traceApiCounter, null, resultSproc.getDiagnostics(), attributesMap);
         traceApiCounter++;
 
         resultSproc = cosmosAsyncContainer.getScripts().getStoredProcedure(procedureProperties.getId()).read().block();
-        verifyTracerAttributes(tracerProvider, mockTracer, "readStoredProcedure." + cosmosAsyncContainer.getId(), context,
+        verifyTracerAttributes(tracerProvider, mockTracer, "readStoredProcedure." + cosmosAsyncContainer.getId(),
+            context,
             cosmosAsyncDatabase.getId(), traceApiCounter, null, resultSproc.getDiagnostics(), attributesMap);
         traceApiCounter++;
 
-        resultSproc = cosmosAsyncContainer.getScripts().getStoredProcedure(procedureProperties.getId()).replace(resultSproc.getProperties()).block();
-        verifyTracerAttributes(tracerProvider, mockTracer, "replaceStoredProcedure." + cosmosAsyncContainer.getId(), context,
+        resultSproc =
+            cosmosAsyncContainer.getScripts().getStoredProcedure(procedureProperties.getId()).replace(resultSproc.getProperties()).block();
+        verifyTracerAttributes(tracerProvider, mockTracer, "replaceStoredProcedure." + cosmosAsyncContainer.getId(),
+            context,
             cosmosAsyncDatabase.getId(), traceApiCounter, null, resultSproc.getDiagnostics(), attributesMap);
         traceApiCounter++;
 
         cosmosAsyncContainer.getScripts().readAllStoredProcedures(new CosmosQueryRequestOptions()).byPage().single().block();
 
-        resultSproc = cosmosAsyncContainer.getScripts().getStoredProcedure(procedureProperties.getId()).delete().block();
+        resultSproc =
+            cosmosAsyncContainer.getScripts().getStoredProcedure(procedureProperties.getId()).delete().block();
         traceApiCounter++;
-        verifyTracerAttributes(tracerProvider, mockTracer, "deleteStoredProcedure." + cosmosAsyncContainer.getId(), context,
+        verifyTracerAttributes(tracerProvider, mockTracer, "deleteStoredProcedure." + cosmosAsyncContainer.getId(),
+            context,
             cosmosAsyncDatabase.getId(), traceApiCounter, null, resultSproc.getDiagnostics(), attributesMap);
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
-    public void tracerExceptionSpan() throws JsonProcessingException {
+    public void tracerExceptionSpan() throws Exception {
         Tracer mockTracer = getMockTracer();
         TracerProvider tracerProvider = Mockito.spy(new TracerProvider(mockTracer));
+        setThreshHoldDurationOnTracer(tracerProvider, Duration.ZERO, "CRUD_THRESHOLD_FOR_DIAGNOSTICS");
         ReflectionUtils.setTracerProvider(client, tracerProvider);
         int traceApiCounter = 1;
 
@@ -391,7 +430,7 @@ public class CosmosTracerTest extends TestSuiteBase {
         item.setId("testDoc");
         CosmosItemResponse<InternalObjectNode> itemResponse = cosmosAsyncContainer.createItem(item).block();
         Context context = tracerProviderCapture.getResult();
-        Map<String, Map<String, Object>> attributesMap =  addEventCapture.getAttributesMap();
+        Map<String, Map<String, Object>> attributesMap = addEventCapture.getAttributesMap();
         verifyTracerAttributes(tracerProvider, mockTracer, "createItem." + cosmosAsyncContainer.getId(), context,
             cosmosAsyncDatabase.getId(), traceApiCounter, null, itemResponse.getDiagnostics(), attributesMap);
         traceApiCounter++;
@@ -444,9 +483,11 @@ public class CosmosTracerTest extends TestSuiteBase {
         return mockTracer;
     }
 
-    private void verifyTracerAttributes(TracerProvider tracerProvider, Tracer mockTracer, String methodName, Context context, String databaseName,
+    private void verifyTracerAttributes(TracerProvider tracerProvider, Tracer mockTracer, String methodName,
+                                        Context context, String databaseName,
                                         int numberOfTimesCalledWithinTest, String errorType,
-                                        CosmosDiagnostics cosmosDiagnostics, Map<String, Map<String, Object>> attributesMap) throws JsonProcessingException {
+                                        CosmosDiagnostics cosmosDiagnostics,
+                                        Map<String, Map<String, Object>> attributesMap) throws JsonProcessingException {
         Mockito.verify(tracerProvider, Mockito.times(numberOfTimesCalledWithinTest)).startSpan(ArgumentMatchers.any(),
             ArgumentMatchers.any(),
             ArgumentMatchers.any(), ArgumentMatchers.any(Context.class));
@@ -656,15 +697,22 @@ public class CosmosTracerTest extends TestSuiteBase {
     }
 
     private class AddEventCapture implements Answer<Void> {
-        private Map<String , Map<String, Object>> attributesMap = new HashMap<>();
+        private Map<String, Map<String, Object>> attributesMap = new HashMap<>();
+
         @Override
         public Void answer(InvocationOnMock invocationOnMock) throws Throwable {
             attributesMap.put(invocationOnMock.getArgument(0), invocationOnMock.getArgument(1));
             return null;
         }
 
-        public Map<String , Map<String, Object>> getAttributesMap() {
+        public Map<String, Map<String, Object>> getAttributesMap() {
             return attributesMap;
         }
+    }
+
+    private void setThreshHoldDurationOnTracer(TracerProvider tracerProvider, Duration duration, String fieldName) throws Exception {
+        Field field = TracerProvider.class.getDeclaredField(fieldName);
+        field.setAccessible(true);
+        field.set(tracerProvider, duration);
     }
 }

@@ -168,14 +168,6 @@ public class ReflectionUtils {
         set(cosmosAsyncClient, tracerProvider, "tracerProvider");
     }
 
-    public static void setThresholdForCrud(TracerProvider tracerProvider, Duration thresholdForCrud) {
-        set(tracerProvider, thresholdForCrud, "CRUD_THRESHOLD_FOR_DIAGNOSTICS");
-    }
-
-    public static void setThresholdForQuery(TracerProvider tracerProvider, Duration thresholdForQuery) {
-        set(tracerProvider, thresholdForQuery, "QUERY_THRESHOLD_FOR_DIAGNOSTICS");
-    }
-
     public static ConnectionPolicy getConnectionPolicy(CosmosClientBuilder cosmosClientBuilder){
         return get(ConnectionPolicy.class, cosmosClientBuilder, "connectionPolicy");
     }

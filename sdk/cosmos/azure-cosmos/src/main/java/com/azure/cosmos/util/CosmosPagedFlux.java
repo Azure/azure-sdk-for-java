@@ -192,7 +192,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                 try {
                     Duration threshold = pagedFluxOptions.getThresholdForDiagnosticsOnTracer();
                     if (threshold == null) {
-                        threshold = TracerProvider.QUERY_THRESHOLD_FOR_DIAGNOSTICS;
+                        threshold = pagedFluxOptions.getTracerProvider().QUERY_THRESHOLD_FOR_DIAGNOSTICS;
                     }
 
                     if (Duration.between(startTime.get(), Instant.now()).compareTo(threshold) > 0) {
