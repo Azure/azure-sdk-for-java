@@ -3,7 +3,6 @@
 
 package com.azure.test.aad.selenium.oauth2client.issuedat;
 
-import com.azure.spring.utils.AzureCloudUrls;
 import com.azure.test.aad.common.AADSeleniumITHelper;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
@@ -32,11 +31,11 @@ public class AADOauth2AuthorizedClientCachedIT {
     public void testOauth2AuthorizedClientCached() {
         Map<String, String> properties = createDefaultProperties();
 
-        String armClientUrl = AzureCloudUrls.getServiceManagementBaseUrl(AZURE_CLOUD_TYPE);
+        String armClientUrl = AADSeleniumITHelper.getServiceManagementBaseUrl(AZURE_CLOUD_TYPE);
         String armClientScope = armClientUrl + "user_impersonation";
         properties.put("azure.activedirectory.authorization-clients.arm.scopes", armClientScope);
 
-        String graphBaseUrl = AzureCloudUrls.getGraphBaseUrl(AZURE_CLOUD_TYPE);
+        String graphBaseUrl = AADSeleniumITHelper.getGraphBaseUrl(AZURE_CLOUD_TYPE);
         properties.put("azure.activedirectory.authorization-clients.graph.scopes",
             graphBaseUrl + "User.Read, " + graphBaseUrl + "Directory.Read.All");
         aadSeleniumITHelper = new AADSeleniumITHelper(DumbApp.class, properties);

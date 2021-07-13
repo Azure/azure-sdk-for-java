@@ -4,8 +4,8 @@
 package com.azure.spring.cloud.context.core.impl;
 
 import com.azure.core.management.exception.ManagementException;
+import com.azure.spring.cloud.autoconfigure.context.AzureContextProperties;
 import com.azure.spring.cloud.context.core.api.ResourceManager;
-import com.azure.spring.cloud.context.core.config.AzureProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
@@ -21,14 +21,14 @@ public abstract class AzureManager<T, K> implements ResourceManager<T, K> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureManager.class);
 
-    private final AzureProperties azureProperties;
+    private final AzureContextProperties azureContextProperties;
     protected final String resourceGroup;
     protected final String region;
 
-    public AzureManager(@NonNull AzureProperties azureProperties) {
-        this.azureProperties = azureProperties;
-        this.resourceGroup = azureProperties.getResourceGroup();
-        this.region = azureProperties.getRegion();
+    public AzureManager(@NonNull AzureContextProperties azureContextProperties) {
+        this.azureContextProperties = azureContextProperties;
+        this.resourceGroup = azureContextProperties.getResourceGroup();
+        this.region = azureContextProperties.getRegion();
     }
 
     @Override
@@ -90,7 +90,7 @@ public abstract class AzureManager<T, K> implements ResourceManager<T, K> {
             return result;
         }
 
-        if (!azureProperties.isAutoCreateResources()) {
+        if (!azureContextProperties.isAutoCreateResources()) {
             String message = String.format("%s with name '%s' not existed.", getResourceType(), getResourceName(key));
             LOGGER.warn(message);
             String enable = "If you want to enable automatic resource creation. Please set spring.cloud.azure"

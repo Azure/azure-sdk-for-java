@@ -5,11 +5,11 @@ package com.azure.spring.eventhub.stream.binder.config;
 
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.autoconfigure.context.AzureContextAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.context.AzureContextProperties;
 import com.azure.spring.cloud.autoconfigure.context.AzureEnvironmentAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.eventhub.AzureEventHubAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.eventhub.AzureEventHubProperties;
 import com.azure.spring.cloud.autoconfigure.eventhub.EventHubUtils;
-import com.azure.spring.cloud.context.core.config.AzureProperties;
 import com.azure.spring.cloud.context.core.impl.EventHubConsumerGroupManager;
 import com.azure.spring.cloud.context.core.impl.EventHubManager;
 import com.azure.spring.cloud.context.core.impl.EventHubNamespaceManager;
@@ -45,16 +45,16 @@ public class EventHubBinderConfiguration {
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnBean(EventHubNamespaceManager.class)
-    public EventHubManager eventHubManager(AzureResourceManager azureResourceManager, AzureProperties azureProperties) {
-        return new EventHubManager(azureResourceManager, azureProperties);
+    public EventHubManager eventHubManager(AzureResourceManager azureResourceManager, AzureContextProperties azureContextProperties) {
+        return new EventHubManager(azureResourceManager, azureContextProperties);
     }
 
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnBean(EventHubNamespaceManager.class)
     public EventHubConsumerGroupManager eventHubConsumerGroupManager(AzureResourceManager azureResourceManager,
-                                                                     AzureProperties azureProperties) {
-        return new EventHubConsumerGroupManager(azureResourceManager, azureProperties);
+                                                                     AzureContextProperties azureContextProperties) {
+        return new EventHubConsumerGroupManager(azureResourceManager, azureContextProperties);
     }
 
     @Bean

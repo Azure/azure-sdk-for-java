@@ -7,8 +7,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.eventhubs.models.EventHub;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespace;
-import com.azure.spring.cloud.context.core.config.AzureProperties;
-import com.azure.spring.cloud.context.core.util.Tuple;
+import com.azure.spring.cloud.autoconfigure.context.AzureContextProperties;
+import com.azure.spring.core.util.Tuple;
 
 /**
  * Resource manager for Event Hubs.
@@ -17,8 +17,8 @@ public class EventHubManager extends AzureManager<EventHub, Tuple<EventHubNamesp
 
     private final AzureResourceManager azureResourceManager;
 
-    public EventHubManager(AzureResourceManager azureResourceManager, AzureProperties azureProperties) {
-        super(azureProperties);
+    public EventHubManager(AzureResourceManager azureResourceManager, AzureContextProperties azureContextProperties) {
+        super(azureContextProperties);
         this.azureResourceManager = azureResourceManager;
     }
 

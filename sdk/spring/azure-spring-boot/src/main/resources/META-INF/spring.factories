@@ -12,4 +12,5 @@ com.azure.spring.autoconfigure.jms.NonPremiumServiceBusJMSAutoConfiguration,\
 com.azure.spring.autoconfigure.jms.PremiumServiceBusJMSAutoConfiguration,\
 com.azure.spring.autoconfigure.storage.StorageAutoConfiguration,\
 com.azure.spring.autoconfigure.storage.StorageHealthConfiguration,\
-com.azure.spring.keyvault.KeyVaultHealthConfiguration
+com.azure.spring.keyvault.KeyVaultHealthConfiguration,\
+com.azure.spring.autoconfigure.unity.AzurePropertyAutoConfiguration

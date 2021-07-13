@@ -13,7 +13,7 @@
     <profile>
       <id>coverage</id>
       <modules>
-        <module>azure-identity-spring</module>
+        <module>azure-spring-boot-core</module>
         <module>azure-spring-boot</module>
         <module>azure-spring-cloud-autoconfigure</module>
         <module>azure-spring-cloud-context</module>
@@ -31,8 +31,8 @@
       <dependencies>
         <dependency>
           <groupId>com.azure.spring</groupId>
-          <artifactId>azure-identity-spring</artifactId>
-          <version>1.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-identity-spring;current} -->
+          <artifactId>azure-spring-boot-core</artifactId>
+          <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-core;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure.spring</groupId>
@@ -129,7 +129,7 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <modules>
-        <module>azure-identity-spring</module>
+        <module>azure-spring-boot-core</module>
         <module>azure-spring-boot</module>
         <module>azure-spring-boot-starter</module>
         <module>azure-spring-boot-starter-active-directory</module>

@@ -3,8 +3,6 @@
 
 package com.azure.spring.keyvault;
 
-import com.azure.spring.utils.Constants;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +26,7 @@ public class InitializerTest {
         final MutablePropertySources sources =
             ((ConfigurableEnvironment) context.getEnvironment()).getPropertySources();
 
-        assertFalse(sources.contains(Constants.AZURE_KEYVAULT_PROPERTYSOURCE_NAME), "PropertySources should not "
+        assertFalse(sources.contains(KeyVaultEnvironmentPostProcessorHelper.AZURE_KEYVAULT_PROPERTYSOURCE_NAME), "PropertySources should not "
             + "contains azurekv when enabled=false");
     }
 }

@@ -3,15 +3,15 @@
 
 package com.azure.spring.integration.servicebus.factory;
 
-import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.util.ClientOptions;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusErrorContext;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
-import com.azure.spring.cloud.context.core.util.Tuple;
+import com.azure.spring.core.util.Tuple;
 import com.azure.spring.integration.servicebus.ServiceBusClientConfig;
 import com.azure.spring.integration.servicebus.ServiceBusMessageProcessor;
 import org.slf4j.Logger;

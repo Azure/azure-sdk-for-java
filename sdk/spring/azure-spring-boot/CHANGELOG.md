@@ -34,6 +34,7 @@ This release is compatible with Spring Boot 2.5.0 - 2.5.3.
 - Support new value `on_behalf_of` for OBO authorization grant type, originally we only support `on-behalf-of`.
 
 
+
 ## 3.6.1 (2021-07-02)
 ### New Features
 - Upgrade to [spring-boot-dependencies:2.5.2](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.5.2/spring-boot-dependencies-2.5.2.pom).

@@ -121,9 +121,9 @@ extends:
   parameters:
     ServiceDirectory: spring
     Artifacts:
-      - name: azure-identity-spring
+      - name: azure-spring-boot-core
         groupId: com.azure.spring
-        safeName: azureidentityspring
+        safeName: azurespringbootcore
       - name: azure-spring-boot
         groupId: com.azure.spring
         safeName: azurespringboot

@@ -5,7 +5,7 @@ package com.azure.spring.keyvault;
 
 import org.springframework.core.env.EnumerablePropertySource;
 
-import static com.azure.spring.utils.Constants.AZURE_KEYVAULT_PROPERTYSOURCE_NAME;
+import static com.azure.spring.keyvault.KeyVaultEnvironmentPostProcessorHelper.AZURE_KEYVAULT_PROPERTYSOURCE_NAME;
 
 /**
  * A key vault implementation of {@link EnumerablePropertySource} to enumerate all property pairs in Key Vault.

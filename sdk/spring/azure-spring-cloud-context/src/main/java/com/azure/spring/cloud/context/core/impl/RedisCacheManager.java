@@ -6,7 +6,7 @@ package com.azure.spring.cloud.context.core.impl;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.redis.models.RedisCache;
-import com.azure.spring.cloud.context.core.config.AzureProperties;
+import com.azure.spring.cloud.autoconfigure.context.AzureContextProperties;
 
 /**
  * Resource manager for Redis cache.
@@ -15,8 +15,8 @@ public class RedisCacheManager extends AzureManager<RedisCache, String> {
 
     private final AzureResourceManager azureResourceManager;
 
-    public RedisCacheManager(AzureResourceManager azureResourceManager, AzureProperties azureProperties) {
-        super(azureProperties);
+    public RedisCacheManager(AzureResourceManager azureResourceManager, AzureContextProperties azureContextProperties) {
+        super(azureContextProperties);
         this.azureResourceManager = azureResourceManager;
     }
 

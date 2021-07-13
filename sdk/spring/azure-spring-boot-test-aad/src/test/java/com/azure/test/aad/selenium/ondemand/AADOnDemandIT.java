@@ -3,7 +3,6 @@
 
 package com.azure.test.aad.selenium.ondemand;
 
-import com.azure.spring.utils.AzureCloudUrls;
 import com.azure.test.aad.common.AADSeleniumITHelper;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
@@ -32,7 +31,7 @@ public class AADOnDemandIT {
 
     @Test
     public void onDemandTest() {
-        String armClientUrl = AzureCloudUrls.getServiceManagementBaseUrl(AZURE_CLOUD_TYPE);
+        String armClientUrl = AADSeleniumITHelper.getServiceManagementBaseUrl(AZURE_CLOUD_TYPE);
         String armClientScope = armClientUrl + "user_impersonation";
         Map<String, String> properties = createDefaultProperties();
         properties.put("azure.activedirectory.authorization-clients.arm.scopes", armClientScope);

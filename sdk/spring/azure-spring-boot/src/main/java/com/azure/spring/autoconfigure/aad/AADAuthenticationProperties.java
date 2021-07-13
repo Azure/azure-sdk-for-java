@@ -37,13 +37,14 @@ import static com.azure.spring.aad.AADClientRegistrationRepository.AZURE_CLIENT_
  * Configuration properties for Azure Active Directory Authentication.
  */
 @Validated
-@ConfigurationProperties("azure.activedirectory")
+@ConfigurationProperties(AADAuthenticationProperties.PREFIX)
 public class AADAuthenticationProperties implements InitializingBean {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AADAuthenticationProperties.class);
 
     private static final long DEFAULT_JWK_SET_CACHE_LIFESPAN = TimeUnit.MINUTES.toMillis(5);
     private static final long DEFAULT_JWK_SET_CACHE_REFRESH_TIME = DEFAULT_JWK_SET_CACHE_LIFESPAN;
+    public static final String PREFIX = "azure.activedirectory";
 
     /**
      * Default UserGroup configuration.

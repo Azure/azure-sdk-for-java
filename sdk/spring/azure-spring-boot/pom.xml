@@ -168,6 +168,13 @@
       <optional>true</optional>
     </dependency>
 
+    <!-- Azure Spring Commons-->
+    <dependency>
+      <groupId>com.azure.spring</groupId>
+      <artifactId>azure-spring-boot-core</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-core;current} -->
+    </dependency>
+
     <!--  Storage  -->
     <dependency>
       <groupId>com.azure</groupId>
@@ -318,18 +325,6 @@
               </includes>
             </bannedDependencies>
           </rules>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
-        <configuration>
-          <archive>
-            <manifest>
-              <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-            </manifest>
-          </archive>
         </configuration>
       </plugin>
     </plugins>

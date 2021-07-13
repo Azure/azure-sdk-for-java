@@ -6,7 +6,7 @@ package com.azure.spring.cloud.autoconfigure.cache;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.redis.models.RedisCache;
 import com.azure.spring.cloud.autoconfigure.context.AzureContextAutoConfiguration;
-import com.azure.spring.cloud.context.core.config.AzureProperties;
+import com.azure.spring.cloud.autoconfigure.context.AzureContextProperties;
 import com.azure.spring.cloud.context.core.impl.RedisCacheManager;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -36,8 +36,8 @@ public class AzureRedisAutoConfiguration {
     @ConditionalOnMissingBean
     @Bean
     public RedisCacheManager redisCacheManager(AzureResourceManager azureResourceManager,
-                                               AzureProperties azureProperties) {
-        return new RedisCacheManager(azureResourceManager, azureProperties);
+                                               AzureContextProperties azureContextProperties) {
+        return new RedisCacheManager(azureResourceManager, azureContextProperties);
     }
 
     @ConditionalOnMissingBean

@@ -7,8 +7,8 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.messaging.eventhubs.EventHubConsumerAsyncClient;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.autoconfigure.context.AzureContextAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.context.AzureContextProperties;
 import com.azure.spring.cloud.context.core.api.EnvironmentProvider;
-import com.azure.spring.cloud.context.core.config.AzureProperties;
 import com.azure.spring.cloud.context.core.impl.EventHubNamespaceManager;
 import com.azure.spring.cloud.context.core.impl.StorageAccountManager;
 import com.azure.spring.cloud.context.core.storage.StorageConnectionStringProvider;
@@ -48,16 +48,16 @@ public class AzureEventHubAutoConfiguration {
     @ConditionalOnMissingBean
     @ConditionalOnBean(AzureResourceManager.class)
     public EventHubNamespaceManager eventHubNamespaceManager(AzureResourceManager azureResourceManager,
-                                                             AzureProperties azureProperties) {
-        return new EventHubNamespaceManager(azureResourceManager, azureProperties);
+                                                             AzureContextProperties azureContextProperties) {
+        return new EventHubNamespaceManager(azureResourceManager, azureContextProperties);
     }
 
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnBean(AzureResourceManager.class)
     public StorageAccountManager storageAccountManager(AzureResourceManager azureResourceManager,
-                                                       AzureProperties azureProperties) {
-        return new StorageAccountManager(azureResourceManager, azureProperties);
+                                                       AzureContextProperties azureContextProperties) {
+        return new StorageAccountManager(azureResourceManager, azureContextProperties);
     }
 
     /**

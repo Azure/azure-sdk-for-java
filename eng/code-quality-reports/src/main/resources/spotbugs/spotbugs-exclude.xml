@@ -2314,9 +2314,6 @@
 
   <!-- Exclude from spring related classes -->
   <Match>
-    <Or>
-      <Class name="com.azure.spring.utils.PropertyLoader"/> <!-- false positive -->
-    </Or>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE,
                   NP_LOAD_OF_KNOWN_NULL_VALUE,
                   RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE,
@@ -2351,6 +2348,17 @@
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
 
+  <Match>
+    <Class name="com.azure.spring.identity.SpringCredentialBuilderBase"/>
+    <Field name="environment"/>
+    <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
+  </Match>
+
+  <Match>
+    <Class name="com.azure.spring.autoconfigure.cosmos.CosmosAutoConfiguration"/>
+    <Field name="azureProperties"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
   <!-- The transient fields are not used if deserialization happens. -->
   <Match>
     <Class name="com.azure.identity.implementation.MsalAuthenticationAccount"/>

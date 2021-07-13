@@ -22,12 +22,18 @@ import org.springframework.mock.env.MockEnvironment;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.azure.spring.keyvault.KeyVaultProperties.Property.AUTHORITY_HOST;
 import static com.azure.spring.keyvault.KeyVaultProperties.Property.CERTIFICATE_PATH;
 import static com.azure.spring.keyvault.KeyVaultProperties.Property.CLIENT_ID;
 import static com.azure.spring.keyvault.KeyVaultProperties.Property.CLIENT_KEY;
+import static com.azure.spring.keyvault.KeyVaultProperties.Property.CLIENT_SECRET;
+import static com.azure.spring.keyvault.KeyVaultProperties.Property.ORDER;
 import static com.azure.spring.keyvault.KeyVaultProperties.Property.TENANT_ID;
+import static com.azure.spring.keyvault.KeyVaultProperties.Property.URI;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class KeyVaultEnvironmentPostProcessorTest {
     private KeyVaultEnvironmentPostProcessorHelper keyVaultEnvironmentPostProcessorHelper;
@@ -84,7 +90,7 @@ public class KeyVaultEnvironmentPostProcessorTest {
 
     @Test
     public void testGetCredentialsWhenMSIEnabledInVMWithClientId() {
-        testProperties.put("azure.keyvault.client-id", "aaaa-bbbb-cccc-dddd");
+        testProperties.put("spring.cloud.azure.keyvault.credential.client-id", "aaaa-bbbb-cccc-dddd");
         propertySources.addLast(new MapPropertySource("Test_Properties", testProperties));
 
         keyVaultEnvironmentPostProcessorHelper = new KeyVaultEnvironmentPostProcessorHelper(environment);
@@ -113,7 +119,7 @@ public class KeyVaultEnvironmentPostProcessorTest {
     public void postProcessorOrderConfigurable() {
         final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
             .withConfiguration(AutoConfigurations.of(OrderedProcessConfig.class))
-            .withPropertyValues("azure.keyvault.uri=fakeuri", "azure.keyvault.enabled=true");
+            .withPropertyValues("spring.cloud.azure.keyvault.uri=fakeuri", "spring.cloud.azure.keyvault.enabled=true");
 
         contextRunner.run(context -> {
             assertThat("Configured order for KeyVaultEnvironmentPostProcessor is different with default order "
@@ -130,13 +136,13 @@ public class KeyVaultEnvironmentPostProcessorTest {
      */
     @Test
     public void testMultipleKeyVaults() {
-        testProperties.put("azure.keyvault.order", "myvault, myvault2");
-        testProperties.put("azure.keyvault.myvault.client-id", "aaaa-bbbb-cccc-dddd");
-        testProperties.put("azure.keyvault.myvault.client-key", "mySecret");
-        testProperties.put("azure.keyvault.myvault.tenant-id", "myid");
-        testProperties.put("azure.keyvault.myvault2.client-id", "aaaa-bbbb-cccc-dddd");
-        testProperties.put("azure.keyvault.myvault2.client-key", "mySecret");
-        testProperties.put("azure.keyvault.myvault2.tenant-id", "myid");
+        testProperties.put("spring.cloud.azure.keyvault.order", "myvault, myvault2");
+        testProperties.put("spring.cloud.azure.keyvault.myvault.credential.client-id", "aaaa-bbbb-cccc-dddd");
+        testProperties.put("spring.cloud.azure.keyvault.myvault.credential.client-secret", "mySecret");
+        testProperties.put("spring.cloud.azure.keyvault.myvault.credential.tenant-id", "myid");
+        testProperties.put("spring.cloud.azure.keyvault.myvault2.credential.client-id", "aaaa-bbbb-cccc-dddd");
+        testProperties.put("spring.cloud.azure.keyvault.myvault2.credential.client-secret", "mySecret");
+        testProperties.put("spring.cloud.azure.keyvault.myvault2.credential.tenant-id", "myid");
         propertySources.addLast(new MapPropertySource("Test_Properties", testProperties));
 
         keyVaultEnvironmentPostProcessorHelper = new KeyVaultEnvironmentPostProcessorHelper(environment);
@@ -147,6 +153,72 @@ public class KeyVaultEnvironmentPostProcessorTest {
         final TokenCredential credentials2 = keyVaultEnvironmentPostProcessorHelper.getCredentials("myvault2");
         assertThat(credentials2, IsInstanceOf.instanceOf(ClientSecretCredential.class));
     }
+
+    @Test
+    public void testGetCredentialFromKeyVaultProperties() {
+        testProperties.put("spring.cloud.azure.keyvault.credential.client-id", "aaaa-bbbb-cccc-dddd");
+        testProperties.put("spring.cloud.azure.keyvault.credential.client-secret", "mySecret");
+        testProperties.put("spring.cloud.azure.keyvault.credential.tenant-id", "myid");
+        propertySources.addLast(new MapPropertySource("Test_Properties", testProperties));
+        keyVaultEnvironmentPostProcessorHelper = new KeyVaultEnvironmentPostProcessorHelper(environment);
+
+        final TokenCredential credentials = keyVaultEnvironmentPostProcessorHelper.getCredentials();
+
+        assertThat(credentials, IsInstanceOf.instanceOf(ClientSecretCredential.class));
+    }
+
+    @Test
+    public void testGetCredentialFromCommonProperties() {
+        testProperties.put("spring.cloud.azure.credential.client-id", "fake-client-id");
+        testProperties.put("spring.cloud.azure.credential.client-secret", "fake-client-secret");
+        testProperties.put("spring.cloud.azure.credential.tenant-id", "fake-tenant-id");
+        propertySources.addLast(new MapPropertySource("Test_Properties", testProperties));
+
+        keyVaultEnvironmentPostProcessorHelper = new KeyVaultEnvironmentPostProcessorHelper(environment);
+
+        final TokenCredential credentials = keyVaultEnvironmentPostProcessorHelper.getCredentials();
+
+        assertThat(credentials, IsInstanceOf.instanceOf(ClientSecretCredential.class));
+    }
+
+    @Test
+    public void testGetPropertyValue() {
+        testProperties.put("spring.cloud.azure.credential.client-id", "client1");
+
+        testProperties.put("spring.cloud.azure.keyvault.credential.client-secret", "secret2");
+
+        testProperties.put("spring.cloud.azure.credential.tenant-id", "tenant1");
+        testProperties.put("spring.cloud.azure.keyvault.credential.tenant-id", "tenant2");
+
+        testProperties.put("spring.cloud.azure.environment.authority-host", "host1");
+        testProperties.put("spring.cloud.azure.keyvault.environment.authority-host", "host2");
+
+        testProperties.put("spring.cloud.azure.credential.certificate-path", "cert1");
+        testProperties.put("spring.cloud.azure.keyvault.mykeyvault.credential.certificate-path", "cert2");
+
+        testProperties.put("spring.cloud.azure.keyvault.uri", "uri1");
+
+        propertySources.addLast(new MapPropertySource("Test_Properties", testProperties));
+
+        keyVaultEnvironmentPostProcessorHelper = new KeyVaultEnvironmentPostProcessorHelper(environment);
+
+        String clientId = keyVaultEnvironmentPostProcessorHelper.getPropertyValue("", CLIENT_ID);
+        String clientSecert = keyVaultEnvironmentPostProcessorHelper.getPropertyValue("", CLIENT_SECRET);
+        String tenantId = keyVaultEnvironmentPostProcessorHelper.getPropertyValue("", TENANT_ID);
+        String authorityHost = keyVaultEnvironmentPostProcessorHelper.getPropertyValue("", AUTHORITY_HOST);
+        String certificatePath = keyVaultEnvironmentPostProcessorHelper.getPropertyValue("mykeyvault", CERTIFICATE_PATH);
+        String uri = keyVaultEnvironmentPostProcessorHelper.getPropertyValue("", URI);
+        String order = keyVaultEnvironmentPostProcessorHelper.getPropertyValue("", ORDER);
+
+        assertEquals("client1", clientId);
+        assertEquals("secret2", clientSecert);
+        assertEquals("tenant2", tenantId);
+        assertNotEquals("host1", authorityHost);
+        assertEquals("cert2", certificatePath);
+        assertEquals("uri1", uri);
+        assertNull(order);
+    }
+
 }
 
 @Configuration

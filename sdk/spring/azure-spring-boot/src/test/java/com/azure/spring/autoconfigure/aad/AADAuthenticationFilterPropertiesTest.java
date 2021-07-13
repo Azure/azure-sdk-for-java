@@ -3,6 +3,8 @@
 
 package com.azure.spring.autoconfigure.aad;
 
+import com.azure.identity.AzureAuthorityHosts;
+import com.azure.spring.autoconfigure.unity.AzureProperties;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -40,6 +42,51 @@ public class AADAuthenticationFilterPropertiesTest {
             assertThat(properties.getActiveDirectoryGroups()
                                  .toString()).isEqualTo(TestConstants.TARGETED_GROUPS.toString());
         }
+    }
+
+    @Test
+    @Disabled
+    public void loadPropertiesFromCredentialProperties() {
+
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
+        addInlinedPropertiesToEnvironment(
+            context,
+            AzureProperties.PREFIX + ".tenant-id=azure-tenant-id",
+            AzureProperties.PREFIX + ".client-id=azure-client-id",
+            AzureProperties.PREFIX + ".authority-host=azure-authority-host",
+            AzureProperties.PREFIX + ".environment=AzureGermany",
+            AAD_PROPERTY_PREFIX + "client-id=" + TestConstants.CLIENT_ID,
+            AAD_PROPERTY_PREFIX + "client-secret=" + TestConstants.CLIENT_SECRET
+        );
+        context.register(Config.class);
+        context.refresh();
+
+        final AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
+
+        assertThat(properties.getTenantId()).isEqualTo("azure-tenant-id");
+        assertThat(properties.getClientId()).isEqualTo(TestConstants.CLIENT_ID);
+        assertThat(properties.getClientSecret()).isEqualTo(TestConstants.CLIENT_SECRET);
+        assertThat(properties.getBaseUri()).isEqualTo("azure-authority-host/");
+
+    }
+
+    @Test
+    @Disabled
+    public void testGetBaseUriFromEnvironment() {
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
+        addInlinedPropertiesToEnvironment(
+            context,
+            AzureProperties.PREFIX + ".environment=AzureGermany",
+            AAD_PROPERTY_PREFIX + "tenant-id=azure-tenant-id",
+            AAD_PROPERTY_PREFIX + "client-id=" + TestConstants.CLIENT_ID,
+            AAD_PROPERTY_PREFIX + "client-secret=" + TestConstants.CLIENT_SECRET
+        );
+        context.register(Config.class);
+        context.refresh();
+
+        final AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
+
+        assertThat(properties.getBaseUri()).isEqualTo(AzureAuthorityHosts.AZURE_GERMANY);
     }
 
     private void configureAllRequiredProperties(AnnotationConfigApplicationContext context) {

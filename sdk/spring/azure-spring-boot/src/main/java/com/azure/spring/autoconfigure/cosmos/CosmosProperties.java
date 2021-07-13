@@ -5,6 +5,7 @@ package com.azure.spring.autoconfigure.cosmos;
 
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.spring.autoconfigure.unity.AzureProperties;
 import com.azure.spring.data.cosmos.core.ResponseDiagnosticsProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,10 +19,12 @@ import javax.validation.constraints.NotEmpty;
  * Configuration properties for Cosmos database, consistency, telemetry, connection, query metrics and diagnostics.
  */
 @Validated
-@ConfigurationProperties("azure.cosmos")
-public class CosmosProperties {
+@ConfigurationProperties(CosmosProperties.PREFIX)
+public class CosmosProperties extends AzureProperties {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CosmosProperties.class);
+    public static final String PREFIX = "spring.cloud.azure.cosmos";
+
     /**
      * Document DB URI.
      */

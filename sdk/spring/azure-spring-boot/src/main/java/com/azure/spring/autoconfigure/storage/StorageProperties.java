@@ -3,6 +3,7 @@
 
 package com.azure.spring.autoconfigure.storage;
 
+import com.azure.spring.autoconfigure.unity.AzureProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
 
@@ -13,8 +14,10 @@ import javax.validation.constraints.Pattern;
  * Storage properties.
  */
 @Validated
-@ConfigurationProperties("azure.storage")
-public class StorageProperties {
+@ConfigurationProperties(StorageProperties.PREFIX)
+public class StorageProperties extends AzureProperties {
+
+    public static final String PREFIX = "spring.cloud.azure.storage";
 
     @NotEmpty
     @Pattern(regexp = "^[a-z0-9]{3,24}$",

@@ -6,7 +6,7 @@ package com.azure.spring.cloud.context.core.impl;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespace;
-import com.azure.spring.cloud.context.core.config.AzureProperties;
+import com.azure.spring.cloud.autoconfigure.context.AzureContextProperties;
 
 /**
  * Resource manager for Event Hubs namespace.
@@ -15,8 +15,8 @@ public class EventHubNamespaceManager extends AzureManager<EventHubNamespace, St
 
     private final AzureResourceManager azureResourceManager;
 
-    public EventHubNamespaceManager(AzureResourceManager azureResourceManager, AzureProperties azureProperties) {
-        super(azureProperties);
+    public EventHubNamespaceManager(AzureResourceManager azureResourceManager, AzureContextProperties azureContextProperties) {
+        super(azureContextProperties);
         this.azureResourceManager = azureResourceManager;
     }
 
