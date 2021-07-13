@@ -55,8 +55,8 @@ import static com.azure.core.util.FluxUtil.monoError;
 
 /**
  * This class provides an asynchronous client that contains all the operations that apply to Azure Form Recognizer.
- * Operations allowed by the client are recognizing receipt, business card, invoice and ID document data from input
- * documents, extracting layout information, analyzing custom forms for predefined data.
+ * Operations allowed by the client are recognizing receipt, business card, invoice and identity document data from
+ * input documents, extracting layout information, analyzing custom forms for predefined data.
  *
  * <p><strong>Instantiating an asynchronous Form Recognizer Client</strong></p>
  * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.instantiation}
@@ -238,7 +238,7 @@ public final class FormRecognizerAsyncClient {
 
             final RecognizeCustomFormsOptions finalRecognizeCustomFormsOptions
                 = getRecognizeCustomFormOptions(recognizeCustomFormsOptions);
-            final boolean isFieldElementsIncluded = recognizeCustomFormsOptions.isFieldElementsIncluded();
+            final boolean isFieldElementsIncluded = finalRecognizeCustomFormsOptions.isFieldElementsIncluded();
             return new PollerFlux<>(
                 finalRecognizeCustomFormsOptions.getPollInterval(),
                 streamActivationOperation(
@@ -335,7 +335,7 @@ public final class FormRecognizerAsyncClient {
                             ? null : Language.fromString(finalRecognizeContentOptions.getLanguage().toString()),
                         finalRecognizeContentOptions.getReadingOrder() != null
                             ? com.azure.ai.formrecognizer.implementation.models.ReadingOrder.fromString(
-                                recognizeContentOptions.getReadingOrder().toString())
+                            finalRecognizeContentOptions.getReadingOrder().toString())
                             : null,
                         new SourcePath().setSource(formUrl),
                         context)
@@ -426,7 +426,7 @@ public final class FormRecognizerAsyncClient {
                             ? null : Language.fromString(finalRecognizeContentOptions.getLanguage().toString()),
                         finalRecognizeContentOptions.getReadingOrder() != null
                             ? com.azure.ai.formrecognizer.implementation.models.ReadingOrder.fromString(
-                            recognizeContentOptions.getReadingOrder().toString())
+                            finalRecognizeContentOptions.getReadingOrder().toString())
                             : null,
                         form,
                         length,

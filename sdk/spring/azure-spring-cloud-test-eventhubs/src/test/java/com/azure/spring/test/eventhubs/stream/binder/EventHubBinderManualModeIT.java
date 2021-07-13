@@ -20,9 +20,12 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Sinks;
 
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(classes = EventHubBinderManualModeIT.TestConfig.class)
 @TestPropertySource(properties =
@@ -36,7 +39,7 @@ public class EventHubBinderManualModeIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubBinderManualModeIT.class);
     private static String message = UUID.randomUUID().toString();
-    private static final AtomicInteger count = new AtomicInteger(0);
+    private static CountDownLatch latch = new CountDownLatch(1);
 
     @Autowired
     private Sinks.Many<Message<String>> many;
@@ -59,22 +62,25 @@ public class EventHubBinderManualModeIT {
         @Bean
         public Consumer<Message<String>> consume() {
             return message -> {
-                LOGGER.info("New message received: '{}'", message.getPayload());
-                Assertions.assertEquals(message.getPayload(), EventHubBinderManualModeIT.message);
-                Checkpointer checkpointer = (Checkpointer) message.getHeaders().get(AzureHeaders.CHECKPOINTER);
-                checkpointer.success().handle((r, ex) -> {
-                    Assertions.assertNull(ex);
-                });
-                count.addAndGet(1);
+                LOGGER.info("EventHubBinderManualModeIT: New message received: '{}'", message.getPayload());
+                if (message.getPayload().equals(EventHubBinderManualModeIT.message)) {
+                    Checkpointer checkpointer = (Checkpointer) message.getHeaders().get(AzureHeaders.CHECKPOINTER);
+                    checkpointer.success().handle((r, ex) -> {
+                        Assertions.assertNull(ex);
+                    });
+                    latch.countDown();
+                }
             };
         }
     }
 
     @Test
     public void testSendAndReceiveMessage() throws InterruptedException {
-        Thread.sleep(15000);
+        LOGGER.info("EventHubBinderManualModeIT begin.");
+        EventHubBinderManualModeIT.latch.await(15, TimeUnit.SECONDS);
+        LOGGER.info("Send a message:" + message + ".");
         many.emitNext(new GenericMessage<>(message), Sinks.EmitFailureHandler.FAIL_FAST);
-        Thread.sleep(6000);
-        Assertions.assertEquals(1, count.get());
+        assertThat(EventHubBinderManualModeIT.latch.await(15, TimeUnit.SECONDS)).isTrue();
+        LOGGER.info("EventHubBinderManualModeIT end.");
     }
 }

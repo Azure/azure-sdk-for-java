@@ -16,6 +16,12 @@ public final class EffectiveNetworkSecurityGroupAssociation {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(EffectiveNetworkSecurityGroupAssociation.class);
 
     /*
+     * The ID of the Azure network manager if assigned.
+     */
+    @JsonProperty(value = "networkManager")
+    private SubResource networkManager;
+
+    /*
      * The ID of the subnet if assigned.
      */
     @JsonProperty(value = "subnet")
@@ -26,6 +32,26 @@ public final class EffectiveNetworkSecurityGroupAssociation {
      */
     @JsonProperty(value = "networkInterface")
     private SubResource networkInterface;
+
+    /**
+     * Get the networkManager property: The ID of the Azure network manager if assigned.
+     *
+     * @return the networkManager value.
+     */
+    public SubResource networkManager() {
+        return this.networkManager;
+    }
+
+    /**
+     * Set the networkManager property: The ID of the Azure network manager if assigned.
+     *
+     * @param networkManager the networkManager value to set.
+     * @return the EffectiveNetworkSecurityGroupAssociation object itself.
+     */
+    public EffectiveNetworkSecurityGroupAssociation withNetworkManager(SubResource networkManager) {
+        this.networkManager = networkManager;
+        return this;
+    }
 
     /**
      * Get the subnet property: The ID of the subnet if assigned.

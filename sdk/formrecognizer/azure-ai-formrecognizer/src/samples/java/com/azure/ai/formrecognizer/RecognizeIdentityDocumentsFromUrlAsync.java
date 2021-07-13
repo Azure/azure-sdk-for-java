@@ -36,7 +36,7 @@ public class RecognizeIdentityDocumentsFromUrlAsync {
             .buildAsyncClient();
 
         String licenseDocumentUrl =
-            "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/formrecognizer/"
+            "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/formrecognizer/"
                 + "azure-ai-formrecognizer/src/samples/resources/sample-forms/IdentityDocuments/license.jpg";
         PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> recognizeIdentityDocumentPoller =
             client.beginRecognizeIdentityDocumentsFromUrl(licenseDocumentUrl);
@@ -45,7 +45,6 @@ public class RecognizeIdentityDocumentsFromUrlAsync {
             .last()
             .flatMap(pollResponse -> {
                 if (pollResponse.getStatus().isComplete()) {
-                    // training completed successfully, retrieving final result.
                     return pollResponse.getFinalResult();
                 } else {
                     return Mono.error(new RuntimeException("Polling completed unsuccessfully with status:"

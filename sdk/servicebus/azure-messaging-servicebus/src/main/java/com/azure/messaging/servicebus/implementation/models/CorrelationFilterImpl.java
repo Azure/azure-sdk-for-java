@@ -85,11 +85,11 @@ public final class CorrelationFilterImpl extends RuleFilterImpl {
     private String contentType;
 
     private static final class PropertiesWrapper {
-        @JacksonXmlProperty(localName = "KeyValueOfstringanyType")
+        @JacksonXmlProperty(localName = "KeyValueOfstringanyType", namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
         private final List<KeyValueImpl> items;
 
         @JsonCreator
-        private PropertiesWrapper(@JacksonXmlProperty(localName = "KeyValueOfstringanyType") List<KeyValueImpl> items) {
+        private PropertiesWrapper(@JacksonXmlProperty(localName = "KeyValueOfstringanyType", namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect") List<KeyValueImpl> items) {
             this.items = items;
         }
     }

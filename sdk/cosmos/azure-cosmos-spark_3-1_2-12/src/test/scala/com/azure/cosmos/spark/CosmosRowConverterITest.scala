@@ -4,6 +4,7 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.TestConfigurations
 import com.azure.cosmos.models.PartitionKey
+import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.fasterxml.jackson.databind.node.{ArrayNode, ObjectNode}
 import org.apache.spark
 
@@ -12,7 +13,7 @@ class CosmosRowConverterITest
     with Spark
     with CosmosClient
     with AutoCleanableCosmosContainer
-    with CosmosLoggingTrait {
+    with BasicLoggingTrait {
 
   //scalastyle:off multiple.string.literals
   //scalastyle:off magic.number

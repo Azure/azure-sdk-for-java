@@ -3,6 +3,12 @@
 ## 1.1.0-beta.1 (Unreleased)
 
 
+## 1.0.3 (2021-06-09)
+Updated `azure-communication-sms` version
+
+## 1.0.2 (2021-05-27)
+- Dependency versions updated.
+
 ## 1.0.1 (2021-05-11)
 ### Bug Fixes
 - Fixing bugs to support idempotency.
@@ -41,5 +47,5 @@ This is the initial release of Azure Communication Services for Telephony and SM
 This is a Public Preview version, so breaking changes are possible in subsequent releases as we improve the product. To provide feedback, please submit an issue in our [Azure SDK for Java GitHub repo](https://github.com/Azure/azure-sdk-for-java/issues).
 
 <!-- LINKS -->
-[read_me]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/communication/azure-communication-sms/README.md
+[read_me]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/communication/azure-communication-sms/README.md
 [documentation]: https://docs.microsoft.com/azure/communication-services/quickstarts/telephony-sms/send?pivots=programming-language-java

@@ -28,7 +28,7 @@ public final class RecognizeEntitiesResult extends TextAnalyticsResult {
     }
 
     /**
-     * Get an {@link IterableStream} of {@link CategorizedEntity}.
+     * Gets an {@link IterableStream} of {@link CategorizedEntity}.
      *
      * @return An {@link IterableStream} of {@link CategorizedEntity}.
      *

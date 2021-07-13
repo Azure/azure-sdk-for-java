@@ -79,7 +79,7 @@ public final class AcsRecordingFileStatusUpdatedEventData {
     }
 
     /**
-     * Get the {@link Duration} of recordingDuration property: The recording duration.
+     * Get the recordingDuration property: The recording duration.
      *
      * @return the recordingDuration value.
      */

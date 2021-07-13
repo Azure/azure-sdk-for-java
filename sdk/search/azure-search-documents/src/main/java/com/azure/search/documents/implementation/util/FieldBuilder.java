@@ -3,7 +3,7 @@
 
 package com.azure.search.documents.implementation.util;
 
-import com.azure.core.experimental.geojson.GeoPoint;
+import com.azure.core.models.GeoPoint;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.MemberNameConverter;
 import com.azure.core.util.serializer.MemberNameConverterProviders;
@@ -108,7 +108,7 @@ public final class FieldBuilder {
     private static List<SearchField> build(Class<?> currentClass, Stack<Class<?>> classChain,
         MemberNameConverter serializer) {
         if (classChain.contains(currentClass)) {
-            LOGGER.warning(String.format("There is circular dependencies %s, %s", classChain, currentClass));
+            LOGGER.warning("There is circular dependencies {}, {}", classChain, currentClass);
             return null;
         }
         if (classChain.size() > MAX_DEPTH) {

@@ -44,15 +44,46 @@ jobs:
           ArtifactName: 'packages'
 
     steps:
-      - script: |
-          echo "##vso[build.addbuildtag]Scheduled"
-        displayName: 'Tag scheduled builds'
-        condition: and(succeeded(), eq(variables['Build.SourceBranchName'],'master'),eq(variables['Build.Reason'],'Schedule'))
+      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+        parameters:
+          Paths:
+            - 'sdk/${{ parameters.ServiceDirectory }}'
+            - '**/*.xml'
+            - '**/*.md'
+            - '!sdk/**/test-recordings'
+            - '!sdk/**/session-records'
+
+      - template: ../steps/generate-project-list.yml
+        parameters:
+          Artifacts: ${{parameters.Artifacts}}
+          AdditionalModules: ${{parameters.AdditionalModules}}
+          JobType: 'Build'
+          SDKType: ${{parameters.SDKType}}
+          ServiceDirectory: ${{parameters.ServiceDirectory}}
 
       - task: UsePythonVersion@0
         displayName: 'Use Python 3.6'
         inputs:
           versionSpec: '3.6'
+
+      # This step needs to run before we update to using dev versions otherwise dependency
+      # check in the script will not fully work because the versions will mismatch
+      - task: PythonScript@0
+        displayName: 'Generate directories variable for sparse checkout'
+        inputs:
+          scriptPath: 'eng/scripts/generate_from_source_pom.py'
+          arguments: '--set-pipeline-variable CheckoutDirectories --project-list $(ProjectList)'
+          workingDirectory: '$(System.DefaultWorkingDirectory)'
+
+      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+        parameters:
+          Paths: $(CheckoutDirectories)
+          SkipDefaultCheckout: true
+
+      - script: |
+          echo "##vso[build.addbuildtag]Scheduled"
+        displayName: 'Tag scheduled builds'
+        condition: and(succeeded(), eq(variables['Build.SourceBranchName'],'main'),eq(variables['Build.Reason'],'Schedule'))
 
       - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
         parameters:
@@ -64,35 +95,26 @@ jobs:
         parameters:
           ServiceDirectory: ${{parameters.ServiceDirectory}}
 
-      - ${{ each artifact in parameters.Artifacts }}:
-        - script: |
-            python3 --version
-            python3 eng/versioning/set_versions.py --build-type ${{parameters.SDKType}} --build-qualifier alpha.$(Build.BuildNumber) --artifact-id ${{artifact.name}} --group-id ${{artifact.groupId}}
-          condition: and(succeeded(), eq(variables['SetDevVersion'],'true'))
-          displayName: Append dev package version suffix for ${{artifact.name}}
-
-      - script: |
+      - pwsh: |
+          $artifacts = '${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json
           python3 --version
+
+          # Append dev package version suffix for each artifact
+          foreach ($artifact in $artifacts) {
+            python3 eng/versioning/set_versions.py --build-type ${{parameters.SDKType}} --build-qualifier alpha.$(Build.BuildNumber) --artifact-id $artifact.name --group-id $artifact.groupId
+          }
+
+          # Set zero-dev-version for packages
           python3 eng/versioning/set_versions.py --set-dev-zero-version --build-type ${{parameters.SDKType}} --build-qualifier alpha.$(Build.BuildNumber)
-        condition: and(succeeded(), eq(variables['SetDevVersion'],'true'))
-        displayName: Set zero-dev-version for packages
 
-      - script: |
-          python3 --version
+          # Apply version settings to repository
           python3 eng/versioning/update_versions.py --update-type library --build-type ${{parameters.SDKType}} --sr
         condition: and(succeeded(), eq(variables['SetDevVersion'],'true'))
-        displayName: Apply version settings to repository
+        displayName: Setup Dev versioning
 
       - script: |
           pip install markdown2 BeautifulSoup4
         displayName: 'pip install markdown2 and BeautifulSoup4'
-
-      - template: ../steps/cache-maven-repository.yml
-
-      - template: ../steps/generate-project-list.yml
-        parameters:
-          Artifacts: ${{parameters.Artifacts}}
-          AdditionalModules: ${{parameters.AdditionalModules}}
 
       - task: Maven@3
         displayName: 'Build and Package, JDK Version: $(JavaBuildVersion)'
@@ -135,11 +157,28 @@ jobs:
       - template: ../variables/globals.yml
 
     pool:
-      name: azsdk-pool-mms-ubuntu-1804-general
-      vmImage: MMSUbuntu18.04
+      name: azsdk-pool-mms-ubuntu-2004-general
+      vmImage: MMSUbuntu20.04
 
     steps:
+      - task: UsePythonVersion@0
+        displayName: 'Use Python 3.6'
+        inputs:
+          versionSpec: '3.6'
+
+      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+        parameters:
+          Paths:
+            - 'sdk/${{ parameters.ServiceDirectory }}'
+            - '**/*.xml'
+            - '**/*.md'
+            - '.vscode/cspell.json'
+            - '!sdk/**/test-recordings'
+            - '!sdk/**/session-records'
+
       - template: /eng/common/pipelines/templates/steps/check-spelling.yml
+        parameters:
+          CspellConfigPath: .vscode/cspell.json
 
       - task: PowerShell@2
         displayName: 'Verify versions in POM files'
@@ -149,10 +188,25 @@ jobs:
           filePath: eng/versioning/pom_file_version_scanner.ps1
           arguments: -Debug:$$(IsDebug)
 
-      - task: UsePythonVersion@0
-        displayName: 'Use Python 3.6'
+      - template: ../steps/generate-project-list.yml
+        parameters:
+          Artifacts: ${{ parameters.Artifacts }}
+          AdditionalModules: ${{ parameters.AdditionalModules }}
+          JobType: 'Analyze'
+          SDKType: ${{parameters.SDKType}}
+          ServiceDirectory: ${{parameters.ServiceDirectory}}
+
+      - task: PythonScript@0
+        displayName: 'Generate directories variable for sparse checkout'
         inputs:
-          versionSpec: '3.6'
+          scriptPath: 'eng/scripts/generate_from_source_pom.py'
+          arguments: '--set-pipeline-variable CheckoutDirectories --project-list $(ProjectList)'
+          workingDirectory: '$(System.DefaultWorkingDirectory)'
+
+      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+        parameters:
+          Paths: $(CheckoutDirectories)
+          SkipDefaultCheckout: true
 
       - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
         parameters:
@@ -179,7 +233,7 @@ jobs:
         parameters:
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
 
-      # Use BasePathLength of 38 instead of the default 49 as some GA'd files fail when the number is higher.
+      # Use BasePathLength of 38 instead of the default 49 as some released files fail when the number is higher.
       - template: /eng/common/pipelines/templates/steps/verify-path-length.yml
         parameters:
           SourceDirectory: $(Build.SourcesDirectory)
@@ -196,14 +250,6 @@ jobs:
       # We `install` the code quality reports tooling into our local m2 cache separately from building the Maven project
       # reports. This means it is available as part of that, but also so that this is not documented in the project report.
       - template: ../steps/install-reporting-tools.yml
-        parameters:
-          Options: --batch-mode
-          MavenOptions: $(MemoryOptions) $(LoggingOptions)
-
-      - template: ../steps/generate-project-list.yml
-        parameters:
-          Artifacts: ${{parameters.Artifacts}}
-          AdditionalModules: ${{parameters.AdditionalModules}}
 
       # maven dependency:tree needs to be able to resolve dependencies, so these should be installed.
       - task: Maven@3

@@ -5,9 +5,11 @@ package com.azure.cosmos.encryption.implementation;
 
 import com.azure.cosmos.encryption.CosmosEncryptionAsyncClient;
 import com.azure.cosmos.encryption.CosmosEncryptionAsyncContainer;
+import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.caches.AsyncCache;
 import com.azure.cosmos.models.ClientEncryptionPolicy;
 import com.azure.cosmos.models.CosmosClientEncryptionKeyProperties;
+import com.azure.cosmos.models.CosmosContainerProperties;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -36,8 +38,8 @@ public class ReflectionUtils {
         return get(encryptionProcessor, "isEncryptionSettingsInitDone");
     }
 
-    public static AsyncCache<String, ClientEncryptionPolicy> getClientEncryptionPolicyCacheByContainerId(CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient) {
-        return get(cosmosEncryptionAsyncClient, "clientEncryptionPolicyCacheByContainerId");
+    public static AsyncCache<String, CosmosContainerProperties> getContainerPropertiesCacheByContainerId(CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient) {
+        return get(cosmosEncryptionAsyncClient, "containerPropertiesCacheByContainerId");
     }
 
     public static AsyncCache<String, CosmosClientEncryptionKeyProperties> getClientEncryptionKeyPropertiesCacheByKeyId(CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient) {
@@ -58,5 +60,13 @@ public class ReflectionUtils {
 
     public static void setEncryptionSettings(EncryptionProcessor encryptionProcessor, EncryptionSettings encryptionSettings) {
         set(encryptionProcessor, encryptionSettings,"encryptionSettings");
+    }
+
+    public static void setPolicyFormatVersion(ClientEncryptionPolicy clientEncryptionPolicy, int policyFormatVersion) {
+        set(clientEncryptionPolicy, policyFormatVersion,"policyFormatVersion");
+    }
+
+    public static Resource geResource(CosmosContainerProperties cosmosContainerProperties) {
+        return get(cosmosContainerProperties, "documentCollection");
     }
 }

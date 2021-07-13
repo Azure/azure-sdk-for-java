@@ -5,6 +5,7 @@ package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.implementation.AnalyzeActionsOperationDetailPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.AnalyzeActionsResultPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.AnalyzeSentimentActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.ExtractKeyPhrasesActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.RecognizeEntitiesActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.RecognizeLinkedEntitiesActionResultPropertiesHelper;
@@ -29,16 +30,21 @@ import com.azure.ai.textanalytics.implementation.models.PiiResult;
 import com.azure.ai.textanalytics.implementation.models.PiiTask;
 import com.azure.ai.textanalytics.implementation.models.PiiTaskParameters;
 import com.azure.ai.textanalytics.implementation.models.PiiTaskParametersDomain;
-import com.azure.ai.textanalytics.implementation.models.RequestStatistics;
+import com.azure.ai.textanalytics.implementation.models.SentimentAnalysisTask;
+import com.azure.ai.textanalytics.implementation.models.SentimentAnalysisTaskParameters;
+import com.azure.ai.textanalytics.implementation.models.SentimentResponse;
+import com.azure.ai.textanalytics.implementation.models.StringIndexType;
 import com.azure.ai.textanalytics.implementation.models.TasksStateTasks;
 import com.azure.ai.textanalytics.implementation.models.TasksStateTasksEntityLinkingTasksItem;
 import com.azure.ai.textanalytics.implementation.models.TasksStateTasksEntityRecognitionPiiTasksItem;
 import com.azure.ai.textanalytics.implementation.models.TasksStateTasksEntityRecognitionTasksItem;
 import com.azure.ai.textanalytics.implementation.models.TasksStateTasksKeyPhraseExtractionTasksItem;
+import com.azure.ai.textanalytics.implementation.models.TasksStateTasksSentimentAnalysisTasksItem;
 import com.azure.ai.textanalytics.implementation.models.TextAnalyticsError;
-import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
+import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
+import com.azure.ai.textanalytics.models.AnalyzeSentimentActionResult;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesActionResult;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesActionResult;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesActionResult;
@@ -46,10 +52,9 @@ import com.azure.ai.textanalytics.models.RecognizePiiEntitiesActionResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsActionResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextAnalyticsErrorCode;
-import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
-import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedIterable;
+import com.azure.ai.textanalytics.util.AnalyzeActionsResultPagedFlux;
+import com.azure.ai.textanalytics.util.AnalyzeActionsResultPagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
@@ -75,10 +80,10 @@ import java.util.stream.StreamSupport;
 
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.implementation.Utility.DEFAULT_POLL_INTERVAL;
-import static com.azure.ai.textanalytics.implementation.Utility.getNonNullStringIndexType;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.ai.textanalytics.implementation.Utility.parseNextLink;
 import static com.azure.ai.textanalytics.implementation.Utility.parseOperationId;
+import static com.azure.ai.textanalytics.implementation.Utility.toAnalyzeSentimentResultCollection;
 import static com.azure.ai.textanalytics.implementation.Utility.toCategoriesFilter;
 import static com.azure.ai.textanalytics.implementation.Utility.toExtractKeyPhrasesResultCollection;
 import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
@@ -93,18 +98,22 @@ class AnalyzeActionsAsyncClient {
     private static final String ENTITY_RECOGNITION_PII_TASKS = "entityRecognitionPiiTasks";
     private static final String KEY_PHRASE_EXTRACTION_TASKS = "keyPhraseExtractionTasks";
     private static final String ENTITY_LINKING_TASKS = "entityLinkingTasks";
-
-    private static final String REGEX_ACTION_ERROR_TARGET =
-        "#/tasks/(keyPhraseExtractionTasks|entityRecognitionPiiTasks|entityRecognitionTasks)/(\\d+)";
+    private static final String SENTIMENT_ANALYSIS_TASKS = "sentimentAnalysisTasks";
+    private static final String REGEX_ACTION_ERROR_TARGET = "#/tasks/(keyPhraseExtractionTasks|"
+        + "entityRecognitionPiiTasks|entityRecognitionTasks|entityLinkingTasks|sentimentAnalysisTasks)/(\\d+)";
 
     private final ClientLogger logger = new ClientLogger(AnalyzeActionsAsyncClient.class);
     private final TextAnalyticsClientImpl service;
+    private static final Pattern PATTERN;
+    static {
+        PATTERN = Pattern.compile(REGEX_ACTION_ERROR_TARGET, Pattern.MULTILINE);
+    }
 
     AnalyzeActionsAsyncClient(TextAnalyticsClientImpl service) {
         this.service = service;
     }
 
-    PollerFlux<AnalyzeActionsOperationDetail, PagedFlux<AnalyzeActionsResult>> beginAnalyzeActions(
+    PollerFlux<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> beginAnalyzeActions(
         Iterable<TextDocumentInput> documents, TextAnalyticsActions actions, AnalyzeActionsOptions options,
         Context context) {
         try {
@@ -142,7 +151,7 @@ class AnalyzeActionsAsyncClient {
         }
     }
 
-    PollerFlux<AnalyzeActionsOperationDetail, PagedIterable<AnalyzeActionsResult>> beginAnalyzeActionsIterable(
+    PollerFlux<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedIterable> beginAnalyzeActionsIterable(
         Iterable<TextDocumentInput> documents, TextAnalyticsActions actions, AnalyzeActionsOptions options,
         Context context) {
         try {
@@ -171,8 +180,9 @@ class AnalyzeActionsAsyncClient {
                     finalIncludeStatistics, null, null, finalContext)),
                 (activationResponse, pollingContext) ->
                     Mono.error(new RuntimeException("Cancellation is not supported.")),
-                fetchingOperationIterable(operationId -> Mono.just(new PagedIterable<>(getAnalyzeOperationFluxPage(
-                    operationId, null, null, finalIncludeStatistics, finalContext))))
+                fetchingOperationIterable(
+                    operationId -> Mono.just(new AnalyzeActionsResultPagedIterable(getAnalyzeOperationFluxPage(
+                        operationId, null, null, finalIncludeStatistics, finalContext))))
             );
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
@@ -181,24 +191,21 @@ class AnalyzeActionsAsyncClient {
 
     private JobManifestTasks getJobManifestTasks(TextAnalyticsActions actions) {
         return new JobManifestTasks()
-            .setEntityRecognitionTasks(actions.getRecognizeEntitiesOptions() == null ? null
-                : StreamSupport.stream(actions.getRecognizeEntitiesOptions().spliterator(), false).map(
+            .setEntityRecognitionTasks(actions.getRecognizeEntitiesActions() == null ? null
+                : StreamSupport.stream(actions.getRecognizeEntitiesActions().spliterator(), false).map(
                     action -> {
                         if (action == null) {
                             return null;
                         }
                         final EntitiesTask entitiesTask = new EntitiesTask();
                         entitiesTask.setParameters(
-                            // TODO: currently, service does not set their default values for model version, we
-                            // temporally set the default value to 'latest' until service correct it.
-                            // https://github.com/Azure/azure-sdk-for-java/issues/17625
                             new EntitiesTaskParameters()
-                                .setModelVersion(getNotNullModelVersion(action.getModelVersion()))
-                                .setStringIndexType(getNonNullStringIndexType(action.getStringIndexType())));
+                                .setModelVersion(action.getModelVersion())
+                                .setStringIndexType(StringIndexType.UTF16CODE_UNIT));
                         return entitiesTask;
                     }).collect(Collectors.toList()))
-            .setEntityRecognitionPiiTasks(actions.getRecognizePiiEntitiesOptions() == null ? null
-                : StreamSupport.stream(actions.getRecognizePiiEntitiesOptions().spliterator(), false).map(
+            .setEntityRecognitionPiiTasks(actions.getRecognizePiiEntitiesActions() == null ? null
+                : StreamSupport.stream(actions.getRecognizePiiEntitiesActions().spliterator(), false).map(
                     action -> {
                         if (action == null) {
                             return null;
@@ -206,49 +213,53 @@ class AnalyzeActionsAsyncClient {
                         final PiiTask piiTask = new PiiTask();
                         piiTask.setParameters(
                             new PiiTaskParameters()
-                                // TODO: currently, service does not set their default values for model version, we
-                                // temporally set the default value to 'latest' until service correct it.
-                                // https://github.com/Azure/azure-sdk-for-java/issues/17625
-                                .setModelVersion(getNotNullModelVersion(action.getModelVersion()))
+                                .setModelVersion(action.getModelVersion())
                                 .setDomain(PiiTaskParametersDomain.fromString(
                                     action.getDomainFilter() == null ? null
                                         : action.getDomainFilter().toString()))
-                                .setStringIndexType(getNonNullStringIndexType(action.getStringIndexType()))
+                                .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
                                 .setPiiCategories(toCategoriesFilter(action.getCategoriesFilter()))
                         );
                         return piiTask;
                     }).collect(Collectors.toList()))
-            .setKeyPhraseExtractionTasks(actions.getExtractKeyPhrasesOptions() == null ? null
-                : StreamSupport.stream(actions.getExtractKeyPhrasesOptions().spliterator(), false).map(
+            .setKeyPhraseExtractionTasks(actions.getExtractKeyPhrasesActions() == null ? null
+                : StreamSupport.stream(actions.getExtractKeyPhrasesActions().spliterator(), false).map(
                     action -> {
                         if (action == null) {
                             return null;
                         }
                         final KeyPhrasesTask keyPhrasesTask = new KeyPhrasesTask();
                         keyPhrasesTask.setParameters(
-                            // TODO: currently, service does not set their default values for model version, we
-                            // temporally set the default value to 'latest' until service correct it.
-                            // https://github.com/Azure/azure-sdk-for-java/issues/17625
                             new KeyPhrasesTaskParameters()
-                                .setModelVersion(getNotNullModelVersion(action.getModelVersion()))
+                                .setModelVersion(action.getModelVersion())
                         );
                         return keyPhrasesTask;
                     }).collect(Collectors.toList()))
-            .setEntityLinkingTasks(actions.getRecognizeLinkedEntitiesOptions() == null ? null
-                : StreamSupport.stream(actions.getRecognizeLinkedEntitiesOptions().spliterator(), false).map(
+            .setEntityLinkingTasks(actions.getRecognizeLinkedEntitiesActions() == null ? null
+                : StreamSupport.stream(actions.getRecognizeLinkedEntitiesActions().spliterator(), false).map(
                     action -> {
                         if (action == null) {
                             return null;
                         }
                         final EntityLinkingTask entityLinkingTask = new EntityLinkingTask();
                         entityLinkingTask.setParameters(
-                            // TODO: currently, service does not set their default values for model version, we
-                            // temporally set the default value to 'latest' until service correct it.
-                            // https://github.com/Azure/azure-sdk-for-java/issues/17625
                             new EntityLinkingTaskParameters()
-                                .setModelVersion(getNotNullModelVersion(action.getModelVersion()))
+                                .setModelVersion(action.getModelVersion())
                         );
                         return entityLinkingTask;
+                    }).collect(Collectors.toList()))
+            .setSentimentAnalysisTasks(actions.getAnalyzeSentimentActions() == null ? null
+                : StreamSupport.stream(actions.getAnalyzeSentimentActions().spliterator(), false).map(
+                    action -> {
+                        if (action == null) {
+                            return null;
+                        }
+                        final SentimentAnalysisTask sentimentAnalysisTask = new SentimentAnalysisTask();
+                        sentimentAnalysisTask.setParameters(
+                            new SentimentAnalysisTaskParameters()
+                                .setModelVersion(action.getModelVersion())
+                        );
+                        return sentimentAnalysisTask;
                     }).collect(Collectors.toList()));
     }
 
@@ -282,8 +293,8 @@ class AnalyzeActionsAsyncClient {
         };
     }
 
-    private Function<PollingContext<AnalyzeActionsOperationDetail>, Mono<PagedFlux<AnalyzeActionsResult>>>
-        fetchingOperation(Function<String, Mono<PagedFlux<AnalyzeActionsResult>>> fetchingFunction) {
+    private Function<PollingContext<AnalyzeActionsOperationDetail>, Mono<AnalyzeActionsResultPagedFlux>>
+        fetchingOperation(Function<String, Mono<AnalyzeActionsResultPagedFlux>> fetchingFunction) {
         return pollingContext -> {
             try {
                 // TODO: [Service-Bug] change back to UUID after service support it.
@@ -297,8 +308,8 @@ class AnalyzeActionsAsyncClient {
         };
     }
 
-    private Function<PollingContext<AnalyzeActionsOperationDetail>, Mono<PagedIterable<AnalyzeActionsResult>>>
-        fetchingOperationIterable(Function<String, Mono<PagedIterable<AnalyzeActionsResult>>> fetchingFunction) {
+    private Function<PollingContext<AnalyzeActionsOperationDetail>, Mono<AnalyzeActionsResultPagedIterable>>
+        fetchingOperationIterable(Function<String, Mono<AnalyzeActionsResultPagedIterable>> fetchingFunction) {
         return pollingContext -> {
             try {
                 // TODO: [Service-Bug] change back to UUID after service support it.
@@ -312,20 +323,21 @@ class AnalyzeActionsAsyncClient {
         };
     }
 
-    PagedFlux<AnalyzeActionsResult> getAnalyzeOperationFluxPage(String operationId, Integer top, Integer skip,
+    AnalyzeActionsResultPagedFlux getAnalyzeOperationFluxPage(String operationId, Integer top, Integer skip,
         boolean showStats, Context context) {
-        return new PagedFlux<>(
-            () -> getPage(null, operationId, top, skip, showStats, context),
-            continuationToken -> getPage(continuationToken, operationId, top, skip, showStats, context));
+        return new AnalyzeActionsResultPagedFlux(
+            () -> (continuationToken, pageSize) ->
+                      getPage(continuationToken, operationId, top, skip, showStats, context).flux());
     }
 
     Mono<PagedResponse<AnalyzeActionsResult>> getPage(String continuationToken, String operationId, Integer top,
         Integer skip, boolean showStats, Context context) {
         if (continuationToken != null) {
-            final Map<String, Integer> continuationTokenMap = parseNextLink(continuationToken);
-            final Integer topValue = continuationTokenMap.getOrDefault("$top", null);
-            final Integer skipValue = continuationTokenMap.getOrDefault("$skip", null);
-            return service.analyzeStatusWithResponseAsync(operationId, showStats, topValue, skipValue, context)
+            final Map<String, Object> continuationTokenMap = parseNextLink(continuationToken);
+            final Integer topValue = (Integer) continuationTokenMap.getOrDefault("$top", null);
+            final Integer skipValue = (Integer) continuationTokenMap.getOrDefault("$skip", null);
+            final Boolean showStatsValue = (Boolean) continuationTokenMap.getOrDefault(showStats, false);
+            return service.analyzeStatusWithResponseAsync(operationId, showStatsValue, topValue, skipValue, context)
                 .map(this::toAnalyzeActionsResultPagedResponse)
                 .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
         } else {
@@ -356,18 +368,22 @@ class AnalyzeActionsAsyncClient {
             tasksStateTasks.getKeyPhraseExtractionTasks();
         final List<TasksStateTasksEntityLinkingTasksItem> linkedEntityRecognitionTasksItems =
             tasksStateTasks.getEntityLinkingTasks();
+        final List<TasksStateTasksSentimentAnalysisTasksItem> sentimentAnalysisTasksItems =
+            tasksStateTasks.getSentimentAnalysisTasks();
 
         List<RecognizeEntitiesActionResult> recognizeEntitiesActionResults = new ArrayList<>();
         List<RecognizePiiEntitiesActionResult> recognizePiiEntitiesActionResults = new ArrayList<>();
         List<ExtractKeyPhrasesActionResult> extractKeyPhrasesActionResults = new ArrayList<>();
         List<RecognizeLinkedEntitiesActionResult> recognizeLinkedEntitiesActionResults = new ArrayList<>();
+        List<AnalyzeSentimentActionResult> analyzeSentimentActionResults = new ArrayList<>();
+
         if (!CoreUtils.isNullOrEmpty(entityRecognitionTasksItems)) {
             for (int i = 0; i < entityRecognitionTasksItems.size(); i++) {
                 final TasksStateTasksEntityRecognitionTasksItem taskItem = entityRecognitionTasksItems.get(i);
                 final RecognizeEntitiesActionResult actionResult = new RecognizeEntitiesActionResult();
                 final EntitiesResult results = taskItem.getResults();
                 if (results != null) {
-                    RecognizeEntitiesActionResultPropertiesHelper.setResult(actionResult,
+                    RecognizeEntitiesActionResultPropertiesHelper.setDocumentsResults(actionResult,
                         toRecognizeEntitiesResultCollectionResponse(results));
                 }
                 TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult,
@@ -381,7 +397,7 @@ class AnalyzeActionsAsyncClient {
                 final RecognizePiiEntitiesActionResult actionResult = new RecognizePiiEntitiesActionResult();
                 final PiiResult results = taskItem.getResults();
                 if (results != null) {
-                    RecognizePiiEntitiesActionResultPropertiesHelper.setResult(actionResult,
+                    RecognizePiiEntitiesActionResultPropertiesHelper.setDocumentsResults(actionResult,
                         toRecognizePiiEntitiesResultCollection(results));
                 }
                 TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult,
@@ -395,7 +411,7 @@ class AnalyzeActionsAsyncClient {
                 final ExtractKeyPhrasesActionResult actionResult = new ExtractKeyPhrasesActionResult();
                 final KeyPhraseResult results = taskItem.getResults();
                 if (results != null) {
-                    ExtractKeyPhrasesActionResultPropertiesHelper.setResult(actionResult,
+                    ExtractKeyPhrasesActionResultPropertiesHelper.setDocumentsResults(actionResult,
                         toExtractKeyPhrasesResultCollection(results));
                 }
                 TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult,
@@ -410,12 +426,27 @@ class AnalyzeActionsAsyncClient {
                 final RecognizeLinkedEntitiesActionResult actionResult = new RecognizeLinkedEntitiesActionResult();
                 final EntityLinkingResult results = taskItem.getResults();
                 if (results != null) {
-                    RecognizeLinkedEntitiesActionResultPropertiesHelper.setResult(actionResult,
+                    RecognizeLinkedEntitiesActionResultPropertiesHelper.setDocumentsResults(actionResult,
                         toRecognizeLinkedEntitiesResultCollection(results));
                 }
                 TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult,
                     taskItem.getLastUpdateDateTime());
                 recognizeLinkedEntitiesActionResults.add(actionResult);
+            }
+        }
+
+        if (!CoreUtils.isNullOrEmpty(sentimentAnalysisTasksItems)) {
+            for (int i = 0; i < sentimentAnalysisTasksItems.size(); i++) {
+                final TasksStateTasksSentimentAnalysisTasksItem taskItem = sentimentAnalysisTasksItems.get(i);
+                final AnalyzeSentimentActionResult actionResult = new AnalyzeSentimentActionResult();
+                final SentimentResponse results = taskItem.getResults();
+                if (results != null) {
+                    AnalyzeSentimentActionResultPropertiesHelper.setDocumentsResults(actionResult,
+                        toAnalyzeSentimentResultCollection(results));
+                }
+                TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult,
+                    taskItem.getLastUpdateDateTime());
+                analyzeSentimentActionResults.add(actionResult);
             }
         }
 
@@ -434,6 +465,8 @@ class AnalyzeActionsAsyncClient {
                     actionResult = extractKeyPhrasesActionResults.get(taskIndex);
                 } else if (ENTITY_LINKING_TASKS.equals(taskName)) {
                     actionResult = recognizeLinkedEntitiesActionResults.get(taskIndex);
+                } else if (SENTIMENT_ANALYSIS_TASKS.equals(taskName)) {
+                    actionResult = analyzeSentimentActionResults.get(taskIndex);
                 } else {
                     throw logger.logExceptionAsError(new RuntimeException(
                         "Invalid task name in target reference, " + taskName));
@@ -449,24 +482,16 @@ class AnalyzeActionsAsyncClient {
         }
 
         final AnalyzeActionsResult analyzeActionsResult = new AnalyzeActionsResult();
-        final RequestStatistics requestStatistics = analyzeJobState.getStatistics();
-        TextDocumentBatchStatistics batchStatistics = null;
-        if (requestStatistics != null) {
-            batchStatistics = new TextDocumentBatchStatistics(
-                requestStatistics.getDocumentsCount(), requestStatistics.getErroneousDocumentsCount(),
-                requestStatistics.getValidDocumentsCount(), requestStatistics.getTransactionsCount()
-            );
-        }
-
-        AnalyzeActionsResultPropertiesHelper.setStatistics(analyzeActionsResult, batchStatistics);
-        AnalyzeActionsResultPropertiesHelper.setRecognizeEntitiesActionResults(analyzeActionsResult,
+        AnalyzeActionsResultPropertiesHelper.setRecognizeEntitiesResults(analyzeActionsResult,
             IterableStream.of(recognizeEntitiesActionResults));
-        AnalyzeActionsResultPropertiesHelper.setRecognizePiiEntitiesActionResults(analyzeActionsResult,
+        AnalyzeActionsResultPropertiesHelper.setRecognizePiiEntitiesResults(analyzeActionsResult,
             IterableStream.of(recognizePiiEntitiesActionResults));
-        AnalyzeActionsResultPropertiesHelper.setExtractKeyPhrasesActionResults(analyzeActionsResult,
+        AnalyzeActionsResultPropertiesHelper.setExtractKeyPhrasesResults(analyzeActionsResult,
             IterableStream.of(extractKeyPhrasesActionResults));
-        AnalyzeActionsResultPropertiesHelper.setRecognizeLinkedEntitiesActionResults(analyzeActionsResult,
+        AnalyzeActionsResultPropertiesHelper.setRecognizeLinkedEntitiesResults(analyzeActionsResult,
             IterableStream.of(recognizeLinkedEntitiesActionResults));
+        AnalyzeActionsResultPropertiesHelper.setAnalyzeSentimentResults(analyzeActionsResult,
+            IterableStream.of(analyzeSentimentActionResults));
         return analyzeActionsResult;
     }
 
@@ -521,18 +546,13 @@ class AnalyzeActionsAsyncClient {
         return options == null ? new AnalyzeActionsOptions() : options;
     }
 
-    private String getNotNullModelVersion(String modelVersion) {
-        return modelVersion == null ? "latest" : modelVersion;
-    }
-
     private String[] parseActionErrorTarget(String targetReference) {
         if (CoreUtils.isNullOrEmpty(targetReference)) {
             throw logger.logExceptionAsError(new RuntimeException(
                 "Expected an error with a target field referencing an action but did not get one"));
         }
         // action could be failed and the target reference is "#/tasks/keyPhraseExtractionTasks/0";
-        final Pattern pattern = Pattern.compile(REGEX_ACTION_ERROR_TARGET, Pattern.MULTILINE);
-        final Matcher matcher = pattern.matcher(targetReference);
+        final Matcher matcher = PATTERN.matcher(targetReference);
         String[] taskNameIdPair = new String[2];
         while (matcher.find()) {
             taskNameIdPair[0] = matcher.group(1);
