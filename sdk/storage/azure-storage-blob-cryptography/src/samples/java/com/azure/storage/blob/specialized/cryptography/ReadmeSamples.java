@@ -39,6 +39,8 @@ public class ReadmeSamples {
     private TokenCredential tokenCredential;
     private String keyVaultUrl;
     private String keyName;
+    private String containerName;
+    private String blobName;
 
     public void getEncryptedBlobClientBlobClient() {
         EncryptedBlobClient client = new EncryptedBlobClientBuilder()
