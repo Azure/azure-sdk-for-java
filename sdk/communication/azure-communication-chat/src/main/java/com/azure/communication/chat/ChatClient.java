@@ -45,7 +45,7 @@ public final class ChatClient {
      */
     public ChatThreadClient getChatThreadClient(String chatThreadId) {
 
-        ChatThreadAsyncClient chatThreadAsyncClient = this.client.getChatThreadClient(chatThreadId);
+        ChatThreadAsyncClient chatThreadAsyncClient = this.client.getChatThreadAsyncClient(chatThreadId);
         return new ChatThreadClient(chatThreadAsyncClient);
     }
 
