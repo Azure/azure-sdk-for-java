@@ -110,7 +110,7 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
         /*
         Update the RETRY_COUNT_CONTEXT to log retries.
          */
-        context.setData(HttpLoggingPolicy.RETRY_COUNT_CONTEXT, attempt + 1);
+        context.setData(HttpLoggingPolicy.RETRY_COUNT_CONTEXT, attempt);
 
         /*
          We want to send the request with a given timeout, but we don't want to kickoff that timeout-bound operation
