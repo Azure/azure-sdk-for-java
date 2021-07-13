@@ -11,7 +11,6 @@ import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Scope;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -25,7 +24,6 @@ import static com.azure.core.util.tracing.Tracer.DISABLE_TRACING_KEY;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@Tag("integration")
 public class AppConfigurationExporterIntegrationTest extends AzureMonitorTraceExporterTestBase {
 
     @Test
@@ -57,8 +55,8 @@ public class AppConfigurationExporterIntegrationTest extends AzureMonitorTraceEx
             span.end();
             scope.close();
         }
-        assertTrue(appConfigCountDown.await(1, TimeUnit.SECONDS));
-        assertTrue(exporterCountDown.await(1, TimeUnit.SECONDS));
+        assertTrue(appConfigCountDown.await(10, TimeUnit.SECONDS));
+        assertTrue(exporterCountDown.await(10, TimeUnit.SECONDS));
     }
 
     @Test
@@ -95,14 +93,14 @@ public class AppConfigurationExporterIntegrationTest extends AzureMonitorTraceEx
             span.end();
             scope.close();
         }
-        assertTrue(appConfigCountDown.await(1, TimeUnit.SECONDS));
-        assertTrue(exporterCountDown.await(1, TimeUnit.SECONDS));
+        assertTrue(appConfigCountDown.await(10, TimeUnit.SECONDS));
+        assertTrue(exporterCountDown.await(10, TimeUnit.SECONDS));
         assertFalse(configSpanExists.get());
     }
 
     private ConfigurationClient getConfigurationClient(CountDownLatch appConfigCountDown) {
         ConfigurationClient client = new ConfigurationClientBuilder()
-            .connectionString(System.getenv("APP_CONFIG_CONNECTION_STRING"))
+            .connectionString(System.getenv("AZURE_APPCONFIG_CONNECTION_STRING"))
             .addPolicy((context, next) -> {
                 Optional<Object> data = context.getData(com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY);
                 if (data.isPresent() && data.get().equals("Microsoft.AppConfiguration")) {

@@ -6,6 +6,7 @@ package com.azure.monitor.opentelemetry.exporter;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import io.opentelemetry.api.GlobalOpenTelemetry;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.trace.SdkTracerProvider;
@@ -25,11 +26,12 @@ public class AzureMonitorTraceExporterTestBase extends TestBase {
     @Override
     @AfterEach
     public void teardownTest(TestInfo testInfo) {
+        GlobalOpenTelemetry.resetForTest();
     }
 
     Tracer configureAzureMonitorExporter(HttpPipelinePolicy validator) {
         AzureMonitorTraceExporter exporter = new AzureMonitorExporterBuilder()
-            .connectionString(System.getenv("AZURE_MONITOR_CONNECTION_STRING"))
+            .connectionString(System.getenv("APPLICATIONINSIGHTS_CONNECTION_STRING"))
             .addPolicy(validator)
             .buildTraceExporter();
 
