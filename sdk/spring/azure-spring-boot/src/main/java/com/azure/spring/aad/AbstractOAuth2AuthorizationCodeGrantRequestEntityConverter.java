@@ -3,7 +3,7 @@
 
 package com.azure.spring.aad;
 
-import com.azure.spring.utils.ApplicationId;
+import com.azure.spring.core.ApplicationId;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.RequestEntity;

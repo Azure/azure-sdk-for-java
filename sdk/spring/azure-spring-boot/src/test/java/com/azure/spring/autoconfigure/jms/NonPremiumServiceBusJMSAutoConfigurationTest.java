@@ -3,6 +3,8 @@
 
 package com.azure.spring.autoconfigure.jms;
 
+import com.azure.spring.autoconfigure.unity.AzurePropertyAutoConfiguration;
+import com.azure.spring.autoconfigure.unity.AzureProperties;
 import org.apache.qpid.jms.JmsConnectionFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -14,6 +16,7 @@ import org.springframework.jms.core.JmsTemplate;
 
 import javax.jms.ConnectionFactory;
 
+import static com.azure.spring.autoconfigure.unity.AzureProperties.AZURE_PROPERTY_BEAN_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -87,6 +90,24 @@ public class NonPremiumServiceBusJMSAutoConfigurationTest {
                     CONNECTION_STRING);
                 assertThat(context.getBean(AzureServiceBusJMSProperties.class).getTopicClientId()).isEqualTo("cid");
                 assertThat(context.getBean(AzureServiceBusJMSProperties.class).getIdleTimeout()).isEqualTo(123);
+                assertThat(context.getBean(AzureServiceBusJMSProperties.class).getCredential().getClientSecret()).isEqualTo("for-test-purpose");
+                assertThat(context.getBean(AzureServiceBusJMSProperties.class).getEnvironment().getCloud()).isEqualTo("AzureGermany");
+            }
+        );
+    }
+
+    @Test
+    public void testAzurePropertiesConfigured() {
+        ApplicationContextRunner contextRunner = getContextRunnerWithProperties();
+
+        contextRunner.run(
+            context -> {
+                assertThat(context).hasBean(AZURE_PROPERTY_BEAN_NAME);
+
+                assertThat(((AzureProperties) context.getBean(AZURE_PROPERTY_BEAN_NAME)).getCredential().getCertificatePassword())
+                    .isEqualTo("for-test-purpose");
+                assertThat(((AzureProperties) context.getBean(AZURE_PROPERTY_BEAN_NAME)).getEnvironment().getAuthorityHost())
+                    .isEqualTo("for-test-purpose");
             }
         );
     }
@@ -95,7 +116,7 @@ public class NonPremiumServiceBusJMSAutoConfigurationTest {
 
         return new ApplicationContextRunner()
             .withConfiguration(AutoConfigurations.of(NonPremiumServiceBusJMSAutoConfiguration.class,
-                JmsAutoConfiguration.class))
+                JmsAutoConfiguration.class, AzurePropertyAutoConfiguration.class))
             .withPropertyValues(
                 "spring.jms.servicebus.pricing-tier=basic"
             );
@@ -105,12 +126,16 @@ public class NonPremiumServiceBusJMSAutoConfigurationTest {
 
         return new ApplicationContextRunner()
             .withConfiguration(AutoConfigurations.of(NonPremiumServiceBusJMSAutoConfiguration.class,
-                JmsAutoConfiguration.class))
+                JmsAutoConfiguration.class, AzurePropertyAutoConfiguration.class))
             .withPropertyValues(
                 "spring.jms.servicebus.connection-string=" + CONNECTION_STRING,
                 "spring.jms.servicebus.topic-client-id=cid",
                 "spring.jms.servicebus.idle-timeout=123",
-                "spring.jms.servicebus.pricing-tier=basic"
+                "spring.jms.servicebus.pricing-tier=basic",
+                "spring.jms.servicebus.credential.client-secret=for-test-purpose",
+                "spring.jms.servicebus.environment.cloud=AzureGermany",
+                "spring.cloud.azure.credential.certificate-password=for-test-purpose",
+                "spring.cloud.azure.environment.authority-host=for-test-purpose"
             );
     }
 }

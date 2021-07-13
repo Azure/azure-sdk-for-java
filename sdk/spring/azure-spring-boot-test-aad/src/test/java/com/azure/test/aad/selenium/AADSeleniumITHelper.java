@@ -1,6 +1,5 @@
 package com.azure.test.aad.selenium;
 
-import com.azure.spring.utils.AzureCloudUrls;
 import com.azure.test.aad.common.SeleniumITHelper;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -33,8 +32,8 @@ public class AADSeleniumITHelper extends SeleniumITHelper {
         defaultProperties.put("azure.activedirectory.client-secret", AAD_SINGLE_TENANT_CLIENT_SECRET);
         defaultProperties.put("azure.activedirectory.user-group.allowed-groups", "group1");
         defaultProperties.put("azure.activedirectory.post-logout-redirect-uri", "http://localhost:${server.port}");
-        defaultProperties.put("azure.activedirectory.base-uri", AzureCloudUrls.getBaseUrl(AZURE_CLOUD_TYPE));
-        defaultProperties.put("azure.activedirectory.graph-base-uri", AzureCloudUrls.getGraphBaseUrl(AZURE_CLOUD_TYPE));
+        defaultProperties.put("azure.activedirectory.base-uri", getBaseUrl(AZURE_CLOUD_TYPE));
+        defaultProperties.put("azure.activedirectory.graph-base-uri", getGraphBaseUrl(AZURE_CLOUD_TYPE));
         return defaultProperties;
     }
 
@@ -97,7 +96,7 @@ public class AADSeleniumITHelper extends SeleniumITHelper {
     public String httpGetWithIncrementalConsent(String endpoint) {
         driver.get((app.root() + endpoint));
 
-        String oauth2AuthorizationUrlFraction = String.format(AzureCloudUrls.getBaseUrl(AZURE_CLOUD_TYPE)
+        String oauth2AuthorizationUrlFraction = String.format(getBaseUrl(AZURE_CLOUD_TYPE)
             + "%s/oauth2/v2.0/" + "authorize?", AAD_TENANT_ID_1);
         wait.until(ExpectedConditions.urlContains(oauth2AuthorizationUrlFraction));
 
@@ -108,5 +107,20 @@ public class AADSeleniumITHelper extends SeleniumITHelper {
 
     public String getUsername() {
         return username;
+    }
+
+    public static String getBaseUrl(String cloudType) {
+        return cloudType.equals("Global") ? "https://login.microsoftonline.com/"
+            : "https://login.partner.microsoftonline.cn/";
+    }
+
+    public static String getGraphBaseUrl(String cloudType) {
+        return cloudType.equals("Global") ? "https://graph.microsoft.com/"
+            : "https://microsoftgraph.chinacloudapi.cn/";
+    }
+
+    public static String getServiceManagementBaseUrl(String cloudType) {
+        return cloudType.equals("Global") ? "https://management.azure.com/"
+            : "https://management.chinacloudapi.cn/";
     }
 }

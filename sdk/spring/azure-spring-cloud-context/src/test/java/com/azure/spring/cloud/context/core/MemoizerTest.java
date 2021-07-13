@@ -5,8 +5,8 @@ package com.azure.spring.cloud.context.core;
 
 import static org.mockito.Mockito.*;
 
-import com.azure.spring.cloud.context.core.util.Memoizer;
-import com.azure.spring.cloud.context.core.util.Tuple;
+import com.azure.spring.core.util.Memoizer;
+import com.azure.spring.core.util.Tuple;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiFunction;

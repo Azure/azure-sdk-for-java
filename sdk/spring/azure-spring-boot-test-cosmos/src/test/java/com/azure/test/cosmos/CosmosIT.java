@@ -30,10 +30,10 @@ public class CosmosIT {
     public void testCosmosStarterIsolating() {
         try (AppRunner app = new AppRunner(DummyApp.class)) {
             //set properties
-            app.property("azure.cosmos.uri", AZURE_COSMOS_ENDPOINT);
-            app.property("azure.cosmos.key", AZURE_COSMOS_ACCOUNT_KEY);
-            app.property("azure.cosmos.database", AZURE_COSMOS_DATABASE_NAME);
-            app.property("azure.cosmos.populateQueryMetrics", String.valueOf(true));
+            app.property("spring.cloud.azure.cosmos.uri", AZURE_COSMOS_ENDPOINT);
+            app.property("spring.cloud.azure.cosmos.key", AZURE_COSMOS_ACCOUNT_KEY);
+            app.property("spring.cloud.azure.cosmos.database", AZURE_COSMOS_DATABASE_NAME);
+            app.property("spring.cloud.azure.cosmos.populateQueryMetrics", String.valueOf(true));
 
             //start app
             app.start();
@@ -46,10 +46,10 @@ public class CosmosIT {
     public void testCosmosOperation() {
         try (AppRunner app = new AppRunner(DummyApp.class)) {
             //set properties
-            app.property("azure.cosmos.uri", AZURE_COSMOS_ENDPOINT);
-            app.property("azure.cosmos.key", AZURE_COSMOS_ACCOUNT_KEY);
-            app.property("azure.cosmos.database", AZURE_COSMOS_DATABASE_NAME);
-            app.property("azure.cosmos.populateQueryMetrics", String.valueOf(true));
+            app.property("spring.cloud.azure.cosmos.uri", AZURE_COSMOS_ENDPOINT);
+            app.property("spring.cloud.azure.cosmos.key", AZURE_COSMOS_ACCOUNT_KEY);
+            app.property("spring.cloud.azure.cosmos.database", AZURE_COSMOS_DATABASE_NAME);
+            app.property("spring.cloud.azure.cosmos.populateQueryMetrics", String.valueOf(true));
 
             //start app
             app.start();

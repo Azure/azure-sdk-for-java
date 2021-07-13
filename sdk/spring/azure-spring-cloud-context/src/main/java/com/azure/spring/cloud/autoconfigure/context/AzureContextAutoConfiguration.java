@@ -7,7 +7,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.context.core.api.CredentialsProvider;
-import com.azure.spring.cloud.context.core.config.AzureProperties;
+import com.azure.spring.cloud.context.core.api.EnvironmentProvider;
 import com.azure.spring.cloud.context.core.impl.ResourceGroupManager;
 import com.azure.spring.identity.DefaultSpringCredentialBuilder;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -17,17 +17,18 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.core.env.Environment;
-
 /**
  * Auto-config to provide default {@link CredentialsProvider} for all Azure services
  *
  * @author Warren Zhu
  */
 @Configuration
-@EnableConfigurationProperties(AzureProperties.class)
+@EnableConfigurationProperties(AzureContextProperties.class)
 @ConditionalOnClass(AzureResourceManager.class)
 @ConditionalOnProperty(prefix = "spring.cloud.azure", value = { "resource-group" })
+@Import(AzureEnvironmentAutoConfiguration.class)
 public class AzureContextAutoConfiguration {
 
     /**
@@ -48,16 +49,17 @@ public class AzureContextAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public AzureProfile azureProfile(AzureProperties azureProperties) {
-        return new AzureProfile(azureProperties.getTenantId(), azureProperties.getSubscriptionId(),
-            azureProperties.getEnvironment().getAzureEnvironment());
+    public AzureProfile azureProfile(AzureContextProperties azureContextProperties,
+                                     EnvironmentProvider environmentProvider) {
+        return new AzureProfile(azureContextProperties.getTenantId(), azureContextProperties.getSubscriptionId(),
+            environmentProvider.getEnvironment());
     }
 
     @Bean
     @ConditionalOnMissingBean
     public TokenCredential credential(Environment environment) {
         return new DefaultSpringCredentialBuilder().environment(environment)
-                                                   .alternativePrefix(AzureProperties.PREFIX)
+                                                   .alternativePrefix(AzureContextProperties.PREFIX)
                                                    .build();
     }
 
@@ -65,11 +67,11 @@ public class AzureContextAutoConfiguration {
     @ConditionalOnMissingBean
     @ConditionalOnBean(AzureResourceManager.class)
     public ResourceGroupManager resourceGroupManager(AzureResourceManager azureResourceManager,
-                                                         AzureProperties azureProperties) {
-        ResourceGroupManager resourceGroupManager = new ResourceGroupManager(azureResourceManager, azureProperties);
-        if (azureProperties.isAutoCreateResources()
-            && !resourceGroupManager.exists(azureProperties.getResourceGroup())) {
-            resourceGroupManager.create(azureProperties.getResourceGroup());
+                                                         AzureContextProperties azureContextProperties) {
+        ResourceGroupManager resourceGroupManager = new ResourceGroupManager(azureResourceManager, azureContextProperties);
+        if (azureContextProperties.isAutoCreateResources()
+            && !resourceGroupManager.exists(azureContextProperties.getResourceGroup())) {
+            resourceGroupManager.create(azureContextProperties.getResourceGroup());
         }
         return resourceGroupManager;
     }

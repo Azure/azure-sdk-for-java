@@ -29,11 +29,12 @@ import java.util.concurrent.TimeUnit;
  * Configuration properties for Azure Active Directory Authentication.
  */
 @Validated
-@ConfigurationProperties("azure.activedirectory")
+@ConfigurationProperties(AADAuthenticationProperties.PREFIX)
 public class AADAuthenticationProperties implements InitializingBean {
 
     private static final long DEFAULT_JWK_SET_CACHE_LIFESPAN = TimeUnit.MINUTES.toMillis(5);
     private static final long DEFAULT_JWK_SET_CACHE_REFRESH_TIME = DEFAULT_JWK_SET_CACHE_LIFESPAN;
+    public static final String PREFIX = "azure.activedirectory";
 
     /**
      * Default UserGroup configuration.

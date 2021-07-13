@@ -5,14 +5,15 @@ package com.azure.spring.cloud.context.core;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static com.azure.spring.cloud.context.core.util.Constants.SPRING_INTEGRATION_STORAGE_QUEUE_APPLICATION_ID;
+import static com.azure.spring.core.ApplicationId.AZURE_SPRING_STORAGE_QUEUE;
+import static com.azure.spring.core.ApplicationId.VERSION;
 
 
 public class ApplicationIdTest {
 
     @Test
     public void maxLength() {
-        Assertions.assertTrue(SPRING_INTEGRATION_STORAGE_QUEUE_APPLICATION_ID.length() <= 24);
+        Assertions.assertTrue((AZURE_SPRING_STORAGE_QUEUE + VERSION).length() <= 24);
     }
 
 }

@@ -24,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class CosmosPropertiesTest {
 
     @Test
-    public void canSetAllProperties() {
+    public void canSetProperties() {
         try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext()) {
             configureCosmosProperties(context);
             context.register(Config.class);
@@ -36,6 +36,8 @@ public class CosmosPropertiesTest {
             assertThat(properties.getConsistencyLevel()).isEqualTo(PropertySettingUtil.CONSISTENCY_LEVEL);
             assertThat(properties.isPopulateQueryMetrics()).isEqualTo(PropertySettingUtil.POPULATE_QUERY_METRICS);
             assertThat(properties.getConnectionMode()).isEqualTo(PropertySettingUtil.CONNECTION_MODE);
+            assertThat(properties.getCredential().getClientId()).isEqualTo(PropertySettingUtil.CLIENT_ID);
+            assertThat(properties.getEnvironment().getCloud()).isEqualTo(PropertySettingUtil.CLOUD);
         }
     }
 
@@ -62,9 +64,9 @@ public class CosmosPropertiesTest {
             Collections.sort(errorStrings);
 
             final List<String> errorStringsExpected = Arrays.asList(
-                "Field error in object 'azure.cosmos' on field 'database': rejected value [null];",
-                "Field error in object 'azure.cosmos' on field 'key': rejected value [null];",
-                "Field error in object 'azure.cosmos' on field 'uri': rejected value [null];"
+                "Field error in object 'spring.cloud.azure.cosmos' on field 'database': rejected value [null];",
+                "Field error in object 'spring.cloud.azure.cosmos' on field 'key': rejected value [null];",
+                "Field error in object 'spring.cloud.azure.cosmos' on field 'uri': rejected value [null];"
             );
 
             assertThat(errorStrings.size()).isEqualTo(errorStringsExpected.size());

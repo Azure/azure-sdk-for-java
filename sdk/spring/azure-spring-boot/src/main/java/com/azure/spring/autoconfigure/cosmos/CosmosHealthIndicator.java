@@ -21,10 +21,10 @@ public class CosmosHealthIndicator extends AbstractHealthIndicator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CosmosHealthIndicator.class);
 
-    @Value("${azure.cosmos.database}")
+    @Value("${spring.cloud.azure.cosmos.database}")
     private String dbName;
 
-    @Value("${azure.cosmos.uri}")
+    @Value("${spring.cloud.azure.cosmos.uri}")
     private String uri;
 
     private final CosmosAsyncClient cosmosAsyncClient;

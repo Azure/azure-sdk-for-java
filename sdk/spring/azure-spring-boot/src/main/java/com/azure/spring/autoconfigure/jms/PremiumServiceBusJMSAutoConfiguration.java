@@ -3,8 +3,10 @@
 
 package com.azure.spring.autoconfigure.jms;
 
+import com.azure.spring.autoconfigure.unity.AzureProperties;
 import com.microsoft.azure.servicebus.jms.ServiceBusJmsConnectionFactory;
 import com.microsoft.azure.servicebus.jms.ServiceBusJmsConnectionFactorySettings;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -18,7 +20,9 @@ import org.springframework.jms.config.JmsListenerContainerFactory;
 
 import javax.jms.ConnectionFactory;
 
-import static com.azure.spring.utils.ApplicationId.AZURE_SPRING_SERVICE_BUS;
+import static com.azure.spring.autoconfigure.unity.AzureProperties.AZURE_PROPERTY_BEAN_NAME;
+import static com.azure.spring.core.ApplicationId.AZURE_SPRING_SERVICE_BUS;
+import static com.azure.spring.core.ApplicationId.VERSION;
 
 /**
  * Automatic configuration class of ServiceBusJMS for Premium Service Bus
@@ -33,7 +37,8 @@ public class PremiumServiceBusJMSAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public ConnectionFactory jmsConnectionFactory(AzureServiceBusJMSProperties serviceBusJMSProperties) {
+    public ConnectionFactory jmsConnectionFactory(AzureServiceBusJMSProperties serviceBusJMSProperties,
+                                                  @Qualifier(AZURE_PROPERTY_BEAN_NAME) AzureProperties azureProperties) {
         final String connectionString = serviceBusJMSProperties.getConnectionString();
         final String clientId = serviceBusJMSProperties.getTopicClientId();
         final int idleTimeout = serviceBusJMSProperties.getIdleTimeout();
@@ -44,7 +49,7 @@ public class PremiumServiceBusJMSAutoConfiguration {
         final SpringServiceBusJmsConnectionFactory springServiceBusJmsConnectionFactory =
             new SpringServiceBusJmsConnectionFactory(connectionString, settings);
         springServiceBusJmsConnectionFactory.setClientId(clientId);
-        springServiceBusJmsConnectionFactory.setCustomUserAgent(AZURE_SPRING_SERVICE_BUS);
+        springServiceBusJmsConnectionFactory.setCustomUserAgent(AZURE_SPRING_SERVICE_BUS + VERSION);
 
         return springServiceBusJmsConnectionFactory;
     }

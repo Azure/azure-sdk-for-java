@@ -11,8 +11,8 @@ import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.messaging.eventhubs.EventProcessorClient;
 import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
 import com.azure.messaging.eventhubs.checkpointstore.blob.BlobCheckpointStore;
-import com.azure.spring.cloud.context.core.util.Memoizer;
-import com.azure.spring.cloud.context.core.util.Tuple;
+import com.azure.spring.core.util.Memoizer;
+import com.azure.spring.core.util.Tuple;
 import com.azure.spring.integration.eventhub.api.EventHubClientFactory;
 import com.azure.spring.integration.eventhub.impl.EventHubProcessor;
 import com.azure.storage.blob.BlobContainerAsyncClient;
@@ -31,7 +31,8 @@ import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import static com.azure.spring.cloud.context.core.util.Constants.SPRING_EVENT_HUB_APPLICATION_ID;
+import static com.azure.spring.core.ApplicationId.AZURE_SPRING_EVENT_HUB;
+import static com.azure.spring.core.ApplicationId.VERSION;
 
 /**
  * Default implementation of {@link EventHubClientFactory}.
@@ -72,14 +73,14 @@ public class DefaultEventHubClientFactory implements EventHubClientFactory, Disp
         return new EventHubClientBuilder()
             .connectionString(eventHubConnectionString, eventHubName)
             .consumerGroup(consumerGroup)
-            .clientOptions(new ClientOptions().setApplicationId(SPRING_EVENT_HUB_APPLICATION_ID))
+            .clientOptions(new ClientOptions().setApplicationId(AZURE_SPRING_EVENT_HUB + VERSION))
             .buildAsyncConsumerClient();
     }
 
     private EventHubProducerAsyncClient createProducerClient(String eventHubName) {
         return new EventHubClientBuilder()
             .connectionString(eventHubConnectionString, eventHubName)
-            .clientOptions(new ClientOptions().setApplicationId(SPRING_EVENT_HUB_APPLICATION_ID))
+            .clientOptions(new ClientOptions().setApplicationId(AZURE_SPRING_EVENT_HUB + VERSION))
             .buildAsyncProducerClient();
     }
 
@@ -93,7 +94,7 @@ public class DefaultEventHubClientFactory implements EventHubClientFactory, Disp
         BlobContainerAsyncClient blobClient = new BlobContainerClientBuilder()
             .connectionString(checkpointStorageConnectionString)
             .containerName(containerName)
-            .httpLogOptions(new HttpLogOptions().setApplicationId(SPRING_EVENT_HUB_APPLICATION_ID))
+            .httpLogOptions(new HttpLogOptions().setApplicationId(AZURE_SPRING_EVENT_HUB + VERSION))
             .buildAsyncClient();
 
         final Boolean isContainerExist = blobClient.exists().block();
