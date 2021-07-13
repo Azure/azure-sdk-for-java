@@ -5,7 +5,10 @@ package com.azure.core.util;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -24,7 +27,7 @@ public final class UrlBuilder {
     private String path;
 
     // LinkedHashMap preserves insertion order
-    private final Map<String, String> query = new LinkedHashMap<>();
+    private final Map<String, List<String>> query = new LinkedHashMap<>();
 
     /**
      * Set the scheme/protocol that will be used to build the final URL.
@@ -140,7 +143,25 @@ public final class UrlBuilder {
      * @return The provided query parameter name and encoded value to query string for the final URL.
      */
     public UrlBuilder setQueryParameter(String queryParameterName, String queryParameterEncodedValue) {
-        query.put(queryParameterName, queryParameterEncodedValue);
+        query.put(queryParameterName, new ArrayList<String>(Arrays.asList(queryParameterEncodedValue)));
+        return this;
+    }
+
+    /**
+     * Append the provided query parameter name and encoded value to query string for the final URL.
+     *
+     * @param queryParameterName The name of the query parameter.
+     * @param queryParameterEncodedValue The encoded value of the query parameter.
+     * @return The provided query parameter name and encoded value to query string for the final URL.
+     */
+    public UrlBuilder appendQueryParameter(String queryParameterName, String queryParameterEncodedValue) {
+        query.compute(queryParameterName, (key, value) -> {
+            if (value == null) {
+                return new ArrayList<String>(Arrays.asList(queryParameterEncodedValue));
+            }
+            value.add(queryParameterEncodedValue);
+            return value;
+        });
         return this;
     }
 
@@ -160,11 +181,23 @@ public final class UrlBuilder {
     }
 
     /**
+     * Clear the query that will be used to build the final URL.
+     *
+     * @return This UrlBuilder so that multiple setters can be chained together.
+     */
+    public UrlBuilder clearQuery() {
+        if (query != null && !query.isEmpty()) {
+            query.clear();
+        }
+        return this;
+    }
+
+    /**
      * Get the query that has been assigned to this UrlBuilder.
      *
      * @return the query that has been assigned to this UrlBuilder.
      */
-    public Map<String, String> getQuery() {
+    public Map<String, List<String>> getQuery() {
         return query;
     }
 
@@ -178,13 +211,15 @@ public final class UrlBuilder {
         }
 
         StringBuilder queryBuilder = new StringBuilder("?");
-        for (Map.Entry<String, String> entry : query.entrySet()) {
-            if (queryBuilder.length() > 1) {
-                queryBuilder.append("&");
+        for (Map.Entry<String, List<String>> entry : query.entrySet()) {
+            for (String queryValue : entry.getValue()) {
+                if (queryBuilder.length() > 1) {
+                    queryBuilder.append("&");
+                }
+                queryBuilder.append(entry.getKey());
+                queryBuilder.append("=");
+                queryBuilder.append(queryValue);
             }
-            queryBuilder.append(entry.getKey());
-            queryBuilder.append("=");
-            queryBuilder.append(entry.getValue());
         }
 
         return queryBuilder.toString();
@@ -227,9 +262,9 @@ public final class UrlBuilder {
                         for (String entry : queryString.split("&")) {
                             String[] nameValue = entry.split("=");
                             if (nameValue.length == 2) {
-                                setQueryParameter(nameValue[0], nameValue[1]);
+                                appendQueryParameter(nameValue[0], nameValue[1]);
                             } else {
-                                setQueryParameter(nameValue[0], "");
+                                appendQueryParameter(nameValue[0], "");
                             }
                         }
                     }
