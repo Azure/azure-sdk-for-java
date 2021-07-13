@@ -10,18 +10,16 @@ import com.azure.core.util.IterableStream;
  *
  */
 @Immutable
-public final class SummarizedSentencesCollection extends IterableStream<SummarizedSentence> {
+public final class KeySentenceCollection extends IterableStream<KeySentence> {
     private final IterableStream<TextAnalyticsWarning> warnings;
 
     /**
-     * Creates a {@link SummarizedSentencesCollection} model that describes a summarized sentence collection including
-     * warnings.
+     * Creates a {@link KeySentenceCollection} model that describes a key sentence collection including warnings.
      *
-     * @param sentences An {@link IterableStream} of {@link SummarizedSentence}.
+     * @param sentences An {@link IterableStream} of {@link KeySentence}.
      * @param warnings An {@link IterableStream} of {@link TextAnalyticsWarning warnings}.
      */
-    public SummarizedSentencesCollection(IterableStream<SummarizedSentence> sentences,
-        IterableStream<TextAnalyticsWarning> warnings) {
+    public KeySentenceCollection(IterableStream<KeySentence> sentences, IterableStream<TextAnalyticsWarning> warnings) {
         super(sentences);
         this.warnings = warnings;
     }

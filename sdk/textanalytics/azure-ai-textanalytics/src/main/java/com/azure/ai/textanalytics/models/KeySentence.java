@@ -9,7 +9,7 @@ import com.azure.core.annotation.Immutable;
  *
  */
 @Immutable
-public final class SummarizedSentence {
+public final class KeySentence {
     private String text;
     private double rankScore;
     private int length;

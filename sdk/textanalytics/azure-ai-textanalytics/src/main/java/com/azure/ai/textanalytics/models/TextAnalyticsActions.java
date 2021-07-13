@@ -21,7 +21,7 @@ public final class TextAnalyticsActions {
     private Iterable<RecognizePiiEntitiesAction> recognizePiiEntitiesActions;
     private Iterable<ExtractKeyPhrasesAction> extractKeyPhrasesActions;
     private Iterable<AnalyzeSentimentAction> analyzeSentimentActions;
-    private Iterable<ExtractSummarizedSentencesAction> extractSummarizedSentencesActions;
+    private Iterable<ExtractKeySentencesAction> extractKeySentencesActions;
 
     /**
      * Gets the custom name for the actions.
@@ -179,20 +179,19 @@ public final class TextAnalyticsActions {
      *
      * @return
      */
-    public Iterable<ExtractSummarizedSentencesAction> getExtractSummarizedSentencesActions() {
-        return extractSummarizedSentencesActions;
+    public Iterable<ExtractKeySentencesAction> getExtractKeySentencesActions() {
+        return extractKeySentencesActions;
     }
 
     /**
      *
-     * @param extractSummarizedSentencesActions
+     * @param extractKeySentencesActions
      * @return
      */
-    public TextAnalyticsActions setExtractSummarizedSentencesActions(
-        ExtractSummarizedSentencesAction... extractSummarizedSentencesActions) {
-        validateActionsNumber(extractSummarizedSentencesActions, ExtractSummarizedSentencesAction.class.getName());
-        this.extractSummarizedSentencesActions = extractSummarizedSentencesActions == null ? null :
-                                                     Arrays.asList(extractSummarizedSentencesActions);
+    public TextAnalyticsActions setExtractKeySentencesActions(ExtractKeySentencesAction... extractKeySentencesActions) {
+        validateActionsNumber(extractKeySentencesActions, ExtractKeySentencesAction.class.getName());
+        this.extractKeySentencesActions = extractKeySentencesActions == null ? null :
+                                                     Arrays.asList(extractKeySentencesActions);
         return this;
     }
 

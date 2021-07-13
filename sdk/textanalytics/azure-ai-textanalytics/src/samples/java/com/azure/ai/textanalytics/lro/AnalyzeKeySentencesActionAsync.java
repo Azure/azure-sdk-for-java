@@ -8,11 +8,11 @@ import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
 import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
-import com.azure.ai.textanalytics.models.ExtractSummarizedSentencesAction;
-import com.azure.ai.textanalytics.models.ExtractSummarizedSentencesActionResult;
-import com.azure.ai.textanalytics.models.ExtractSummarizedSentencesResult;
-import com.azure.ai.textanalytics.models.SummarizedSentence;
-import com.azure.ai.textanalytics.models.SummarizedSentencesOrder;
+import com.azure.ai.textanalytics.models.ExtractKeySentencesAction;
+import com.azure.ai.textanalytics.models.ExtractKeySentencesActionResult;
+import com.azure.ai.textanalytics.models.ExtractKeySentencesResult;
+import com.azure.ai.textanalytics.models.KeySentence;
+import com.azure.ai.textanalytics.models.KeySentencesOrder;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.core.credential.AzureKeyCredential;
@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit;
  * Sample demonstrates how to asynchronously execute actions in a batch of documents, such as key phrases extraction,
  * PII entities recognition actions.
  */
-public class AnalyzeSummarizedSentencesActionAsync {
+public class AnalyzeKeySentencesActionAsync {
     /**
      * Main method to invoke this demo about how to analyze a batch of tasks.
      *
@@ -67,10 +67,10 @@ public class AnalyzeSummarizedSentencesActionAsync {
         client.beginAnalyzeActions(documents,
             new TextAnalyticsActions()
                 .setDisplayName("{tasks_display_name}")
-                .setExtractSummarizedSentencesActions(
-                    new ExtractSummarizedSentencesAction()
-                        .setSummarizedSentenceCount(2)
-                        .setSummarizedSentenceOrder(SummarizedSentencesOrder.RANK_SCORE)),
+                .setExtractKeySentencesActions(
+                    new ExtractKeySentencesAction()
+                        .setMaxSentenceCount(2)
+                        .setSentencesOrder(KeySentencesOrder.RANK)),
             new AnalyzeActionsOptions().setIncludeStatistics(false))
             .flatMap(result -> {
                 AnalyzeActionsOperationDetail operationDetail = result.getValue();
@@ -102,24 +102,24 @@ public class AnalyzeSummarizedSentencesActionAsync {
             perPage.getStatusCode(), perPage.getContinuationToken());
 
         for (AnalyzeActionsResult actionsResult : perPage.getElements()) {
-            System.out.println("Summarized sentences extraction action results:");
-            for (ExtractSummarizedSentencesActionResult actionResult : actionsResult.getExtractSummarizedSentencesResults()) {
+            System.out.println("Key sentences extraction action results:");
+            for (ExtractKeySentencesActionResult actionResult : actionsResult.getExtractKeySentencesResults()) {
                 if (!actionResult.isError()) {
-                    for (ExtractSummarizedSentencesResult documentResult : actionResult.getDocumentsResults()) {
+                    for (ExtractKeySentencesResult documentResult : actionResult.getDocumentsResults()) {
                         if (!documentResult.isError()) {
-                            System.out.println("\tExtracted summarized sentences:");
-                            for (SummarizedSentence summarizedSentence : documentResult.getSentences()) {
-                                System.out.printf("\t\t Summarized sentence text: %s, length: %d, offset: %d, rank score: %d.%n",
-                                    summarizedSentence.getText(), summarizedSentence.getLength(),
-                                    summarizedSentence.getOffset(), summarizedSentence.getRankScore());
+                            System.out.println("\tExtracted key sentences:");
+                            for (KeySentence keySentence : documentResult.getSentences()) {
+                                System.out.printf("\t\t Key sentence text: %s, length: %d, offset: %d, rank score: %d.%n",
+                                    keySentence.getText(), keySentence.getLength(),
+                                    keySentence.getOffset(), keySentence.getRankScore());
                             }
                         } else {
-                            System.out.printf("\tCannot extract summarized sentences. Error: %s%n",
+                            System.out.printf("\tCannot extract key sentences. Error: %s%n",
                                 documentResult.getError().getMessage());
                         }
                     }
                 } else {
-                    System.out.printf("\tCannot execute Summarized Sentences Extraction action. Error: %s%n",
+                    System.out.printf("\tCannot execute Key Sentences Extraction action. Error: %s%n",
                         actionResult.getError().getMessage());
                 }
             }

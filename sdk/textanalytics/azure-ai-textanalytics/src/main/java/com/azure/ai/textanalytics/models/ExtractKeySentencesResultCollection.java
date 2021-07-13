@@ -10,19 +10,19 @@ import com.azure.core.util.IterableStream;
  *
  */
 @Immutable
-public final class ExtractSummarizedSentencesResultCollection extends IterableStream<ExtractSummarizedSentencesResult> {
+public final class ExtractKeySentencesResultCollection extends IterableStream<ExtractKeySentencesResult> {
 
     private final String modelVersion;
     private final TextDocumentBatchStatistics statistics;
     /**
-     * Create a {@link ExtractSummarizedSentencesResultCollection} model that maintains a list of
-     * {@link ExtractSummarizedSentencesResult} along with model version and batch's statistics.
+     * Create a {@link ExtractKeySentencesResultCollection} model that maintains a list of
+     * {@link ExtractKeySentencesResult} along with model version and batch's statistics.
      *
-     * @param documentResults A list of {@link ExtractSummarizedSentencesResult}.
+     * @param documentResults A list of {@link ExtractKeySentencesResult}.
      * @param modelVersion The model version trained in service for the request.
      * @param statistics The batch statistics of response.
      */
-    public ExtractSummarizedSentencesResultCollection(Iterable<ExtractSummarizedSentencesResult> documentResults,
+    public ExtractKeySentencesResultCollection(Iterable<ExtractKeySentencesResult> documentResults,
         String modelVersion, TextDocumentBatchStatistics statistics) {
         super(documentResults);
         this.modelVersion = modelVersion;

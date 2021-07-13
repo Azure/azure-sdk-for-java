@@ -9,10 +9,10 @@ import com.azure.core.annotation.Fluent;
  *
  */
 @Fluent
-public final class ExtractSummarizedSentencesAction {
+public final class ExtractKeySentencesAction {
     private String modelVersion;
-    private int summarizedSentenceCount;
-    private SummarizedSentencesOrder summarizedSentenceOrder;
+    private int maxSentenceCount;
+    private KeySentencesOrder sentencesOrder;
 
 
     /**
@@ -30,9 +30,9 @@ public final class ExtractSummarizedSentencesAction {
      *
      * @param modelVersion The model version.
      *
-     * @return The {@link ExtractSummarizedSentencesAction} object itself.
+     * @return The {@link ExtractKeySentencesAction} object itself.
      */
-    public ExtractSummarizedSentencesAction setModelVersion(String modelVersion) {
+    public ExtractKeySentencesAction setModelVersion(String modelVersion) {
         this.modelVersion = modelVersion;
         return this;
     }
@@ -41,17 +41,17 @@ public final class ExtractSummarizedSentencesAction {
      *
      * @return
      */
-    public int getSummarizedSentenceCount() {
-        return this.summarizedSentenceCount;
+    public int getMaxSentenceCount() {
+        return this.maxSentenceCount;
     }
 
     /**
      *
-     * @param summarizedSentenceCount
+     * @param maxSentenceCount
      * @return
      */
-    public ExtractSummarizedSentencesAction setSummarizedSentenceCount(int summarizedSentenceCount) {
-        this.summarizedSentenceCount = summarizedSentenceCount;
+    public ExtractKeySentencesAction setMaxSentenceCount(int maxSentenceCount) {
+        this.maxSentenceCount = maxSentenceCount;
         return this;
     }
 
@@ -59,17 +59,17 @@ public final class ExtractSummarizedSentencesAction {
      *
      * @return
      */
-    public SummarizedSentencesOrder getSummarizedSentenceOrder() {
-        return summarizedSentenceOrder;
+    public KeySentencesOrder getSentencesOrder() {
+        return sentencesOrder;
     }
 
     /**
      *
-     * @param summarizedSentenceOrder
+     * @param sentencesOrder
      * @return
      */
-    public ExtractSummarizedSentencesAction setSummarizedSentenceOrder(SummarizedSentencesOrder summarizedSentenceOrder) {
-        this.summarizedSentenceOrder = summarizedSentenceOrder;
+    public ExtractKeySentencesAction setSentencesOrder(KeySentencesOrder sentencesOrder) {
+        this.sentencesOrder = sentencesOrder;
         return this;
     }
 }

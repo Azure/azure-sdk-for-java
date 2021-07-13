@@ -9,18 +9,18 @@ import com.azure.core.annotation.Immutable;
  *
  */
 @Immutable
-public final class ExtractSummarizedSentencesActionResult extends TextAnalyticsActionResult {
-    private ExtractSummarizedSentencesResultCollection documentsResults;
+public final class ExtractKeySentencesActionResult extends TextAnalyticsActionResult {
+    private ExtractKeySentencesResultCollection documentsResults;
 
     /**
-     * Gets the summarized sentences extraction action result.
+     * Gets the key sentences extraction action result.
      *
-     * @return the summarized sentences extraction action result.
+     * @return the key sentences extraction action result.
      *
      * @throws TextAnalyticsException if result has {@code isError} equals to true and when a non-error property
      * was accessed.
      */
-    public ExtractSummarizedSentencesResultCollection getDocumentsResults() {
+    public ExtractKeySentencesResultCollection getDocumentsResults() {
         throwExceptionIfError();
         return documentsResults;
     }

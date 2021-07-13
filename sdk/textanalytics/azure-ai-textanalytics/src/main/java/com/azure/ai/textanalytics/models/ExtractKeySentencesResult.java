@@ -9,8 +9,8 @@ import com.azure.core.annotation.Immutable;
  *
  */
 @Immutable
-public final class ExtractSummarizedSentencesResult extends TextAnalyticsResult {
-    private final SummarizedSentencesCollection sentences;
+public final class ExtractKeySentencesResult extends TextAnalyticsResult {
+    private KeySentenceCollection sentences;
 
     /**
      * Creates a {@link AnalyzeSentimentResult} model that describes analyzed sentiment result.
@@ -18,23 +18,21 @@ public final class ExtractSummarizedSentencesResult extends TextAnalyticsResult 
      * @param id Unique, non-empty document identifier.
      * @param textDocumentStatistics The text document statistics.
      * @param error The document error.
-     * @param sentences The summarized sentences.
      */
-    public ExtractSummarizedSentencesResult(String id, TextDocumentStatistics textDocumentStatistics,
-        TextAnalyticsError error, SummarizedSentencesCollection sentences) {
+    public ExtractKeySentencesResult(String id, TextDocumentStatistics textDocumentStatistics,
+        TextAnalyticsError error) {
         super(id, textDocumentStatistics, error);
-        this.sentences = sentences;
     }
 
     /**
-     * Get the summarized sentences.
+     * Get the key sentences.
      *
-     * @return The summarized sentences.
+     * @return The key sentences.
      *
      * @throws TextAnalyticsException if result has {@code isError} equals to true and when a non-error property
      * was accessed.
      */
-    public SummarizedSentencesCollection getSentences() {
+    public KeySentenceCollection getSentences() {
         throwExceptionIfError();
         return sentences;
     }
