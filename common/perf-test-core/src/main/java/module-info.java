@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 
 module com.azure.core.test.perf {
+    requires com.azure.core;
+    requires com.azure.http.netty;
     requires reactor.core;
     requires org.reactivestreams;
     requires jcommander;

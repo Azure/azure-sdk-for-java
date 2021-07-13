@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.perf.core;
 
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.perf.test.core.PerfStressOptions;
@@ -29,6 +30,16 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
         // Setup the service client
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
             .connectionString(connectionString);
+
+        if (httpClient != null) {
+            builder = builder.httpClient(httpClient);
+        }
+
+        if (policies != null) {
+            for (HttpPipelinePolicy policy : policies) {
+                builder.addPolicy(policy);
+            }
+        }
 
         blobServiceClient = builder.buildClient();
         blobServiceAsyncClient = builder.buildAsyncClient();
