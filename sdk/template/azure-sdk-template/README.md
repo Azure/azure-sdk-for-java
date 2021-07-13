@@ -38,6 +38,8 @@ For example, for Cosmos DB:
 
 **Prerequisites**: You must have an [Azure subscription](https://azure.microsoft.com/free/), [Cosmos DB account](https://docs.microsoft.com/azure/cosmos-db/account-overview) (SQL API), and [Java Development Kit (JDK) with version 8 or above][jdk] to use this package.
 
+> TODO: Once the library has GA'ed include the instructions on how to include the BOM file directly. And the benefit of using the BOM file over adding a direct dependency to the project.
+
 ### Authenticate the client
 
 If your library requires authentication for use, such as for Azure services, include instructions and example code 
