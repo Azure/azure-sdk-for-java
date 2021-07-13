@@ -7,6 +7,10 @@ import com.azure.identity.IntelliJCredential;
 import com.azure.identity.IntelliJCredentialBuilder;
 import org.springframework.util.StringUtils;
 
+/**
+ * A wrapper builder for the SpringIntelliJCredentialBuilder, could be removed when the EnvironmentCredential could
+ * accept a Configuration as a constructor parameter.
+ */
 public class SpringIntelliJCredentialBuilder extends SpringCredentialBuilderBase<SpringIntelliJCredentialBuilder, IntelliJCredential> {
 
     private String tenantId;

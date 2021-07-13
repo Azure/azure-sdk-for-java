@@ -3,6 +3,9 @@
 
 package com.azure.spring.identity;
 
+/**
+ * The builder to build a {@link SpringEnvironmentCredential}.
+ */
 public class SpringEnvironmentCredentialBuilder extends SpringCredentialBuilderBase<SpringEnvironmentCredentialBuilder, SpringEnvironmentCredential> {
 
 

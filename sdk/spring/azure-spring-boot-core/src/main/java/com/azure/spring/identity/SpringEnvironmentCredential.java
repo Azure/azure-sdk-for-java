@@ -16,6 +16,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
+/**
+ * An equivalent of {@link com.azure.identity.EnvironmentCredential} which can accept a
+ * {@link CredentialPropertiesProvider} as a constructor parameter.
+ */
 public class SpringEnvironmentCredential implements TokenCredential {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SpringEnvironmentCredential.class);
@@ -75,7 +79,7 @@ public class SpringEnvironmentCredential implements TokenCredential {
         final String username = credentialPropertiesProvider.getUsername();
         final String password = credentialPropertiesProvider.getPassword();
 
-        if (clientId != null && username != null && password != null) {// tenant-id is not required
+        if (clientId != null && username != null && password != null) {
             final UsernamePasswordCredentialBuilder builder = new UsernamePasswordCredentialBuilder()
                                                                   .tenantId(tenantId)
                                                                   .clientId(clientId)
@@ -93,12 +97,12 @@ public class SpringEnvironmentCredential implements TokenCredential {
     // TODO (xiada) this IdentityClientOptions is not exposed
     private void configureIdentityOptions(AadCredentialBuilderBase<?> aadCredentialBuilderBase,
                                           IdentityClientOptions identityClientOptions) {
-        aadCredentialBuilderBase.authorityHost(identityClientOptions.getAuthorityHost())
+/*        aadCredentialBuilderBase.authorityHost(identityClientOptions.getAuthorityHost())
                                 .executorService(identityClientOptions.getExecutorService())
                                 .httpClient(identityClientOptions.getHttpClient())
                                 .httpPipeline(identityClientOptions.getHttpPipeline())
                                 .maxRetry(identityClientOptions.getMaxRetry())
-                                .retryTimeout(identityClientOptions.getRetryTimeout());
+                                .retryTimeout(identityClientOptions.getRetryTimeout());*/
     }
 
 }

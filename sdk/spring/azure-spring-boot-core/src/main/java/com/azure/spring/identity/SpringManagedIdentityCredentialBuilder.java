@@ -7,6 +7,10 @@ import com.azure.identity.ManagedIdentityCredential;
 import com.azure.identity.ManagedIdentityCredentialBuilder;
 import org.springframework.util.StringUtils;
 
+/**
+ * A wrapper builder for the SpringManagedIdentityCredentialBuilder, could be removed when the EnvironmentCredential
+ * could accept a Configuration as a constructor parameter.
+ */
 public class SpringManagedIdentityCredentialBuilder extends SpringCredentialBuilderBase<SpringManagedIdentityCredentialBuilder, ManagedIdentityCredential> {
 
     private String clientId;

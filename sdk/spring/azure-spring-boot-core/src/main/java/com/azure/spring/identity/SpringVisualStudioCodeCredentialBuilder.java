@@ -7,6 +7,10 @@ import com.azure.identity.VisualStudioCodeCredential;
 import com.azure.identity.VisualStudioCodeCredentialBuilder;
 import org.springframework.util.StringUtils;
 
+/**
+ * A wrapper builder for the SpringVisualStudioCodeCredentialBuilder, could be removed when the EnvironmentCredential
+ * could accept a Configuration as a constructor parameter.
+ */
 public class SpringVisualStudioCodeCredentialBuilder extends SpringCredentialBuilderBase<SpringVisualStudioCodeCredentialBuilder, VisualStudioCodeCredential> {
 
     private String tenantId;
