@@ -7,6 +7,7 @@ import static com.azure.spring.cloud.config.TestConstants.TEST_ETAG;
 import static com.azure.spring.cloud.config.TestConstants.TEST_STORE_NAME;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -31,6 +32,7 @@ import org.springframework.cloud.endpoint.event.RefreshEvent;
 import org.springframework.context.ApplicationEventPublisher;
 
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.spring.cloud.config.health.AppConfigurationStoreHealth;
 import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.config.properties.AppConfigurationStoreMonitoring;
 import com.azure.spring.cloud.config.properties.AppConfigurationStoreTrigger;
@@ -115,6 +117,7 @@ public class AppConfigurationRefreshTest {
 
         configRefresh.refreshConfigurations().get();
         verify(eventPublisher, times(0)).publishEvent(any(RefreshEvent.class));
+        assertEquals(AppConfigurationStoreHealth.UP, configRefresh.getAppConfigurationStoresHealth().get(TEST_STORE_NAME));
     }
 
     @Test
@@ -209,6 +212,29 @@ public class AppConfigurationRefreshTest {
         assertFalse(configRefresh.refreshConfigurations().get());
         verify(eventPublisher, times(0)).publishEvent(any(RefreshEvent.class));
     }
+    
+    @Test
+    public void watchKeyThrowError() throws Exception {
+        List<ConfigurationSetting> watchKeys = new ArrayList<ConfigurationSetting>();
+        watchKeys.add(initialResponse());
+        StateHolder.setState(TEST_STORE_NAME, watchKeys, monitoring.getRefreshInterval());
+
+        when(clientStoreMock.getWatchKey(Mockito.any(), Mockito.anyString()))
+            .thenThrow(new RuntimeException("This would be an IO Exception. An existing connection was forcibly closed by the remote host. Test"));
+        configRefresh.setApplicationEventPublisher(eventPublisher);
+
+        // The first time an action happens it can't update
+        Boolean sawError = false;
+        try {
+            assertFalse(configRefresh.refreshConfigurations().get());
+        } catch (RuntimeException e) {
+            sawError = true;
+            verify(eventPublisher, times(0)).publishEvent(any(RefreshEvent.class));
+            assertEquals(AppConfigurationStoreHealth.DOWN, configRefresh.getAppConfigurationStoresHealth().get(TEST_STORE_NAME));
+        }
+        
+        assertTrue(sawError);
+    }
 
     @Test
     public void nullItemsReturned() throws Exception {
@@ -286,6 +312,41 @@ public class AppConfigurationRefreshTest {
 
         // The first time an action happens it can update
         verify(eventPublisher, times(0)).publishEvent(any(RefreshEvent.class));
+    }
+    
+    @Test
+    public void storeDisabled() throws Exception {
+        List<ConfigurationSetting> watchKeys = new ArrayList<ConfigurationSetting>();
+        watchKeys.add(initialResponse());
+        StateHolder.setState(TEST_STORE_NAME, watchKeys, monitoring.getRefreshInterval());
+
+        ConfigStore store = new ConfigStore();
+        store.setEndpoint(TEST_STORE_NAME);
+        store.setConnectionString(TEST_CONN_STRING);
+        store.setEnabled(false);
+
+        AppConfigurationStoreMonitoring monitoring = new AppConfigurationStoreMonitoring();
+        monitoring.setEnabled(true);
+        trigger = new AppConfigurationStoreTrigger();
+        trigger.setKey(WATCHED_KEYS);
+        trigger.setLabel("\0");
+        List<AppConfigurationStoreTrigger> triggers = new ArrayList<AppConfigurationStoreTrigger>();
+        triggers.add(trigger);
+        monitoring.setTriggers(triggers);
+        monitoring.setRefreshInterval(Duration.ofMinutes(60));
+        store.setMonitoring(monitoring);
+
+        AppConfigurationProperties properties = new AppConfigurationProperties();
+        properties.setStores(Arrays.asList(store));
+
+        AppConfigurationRefresh refresh = new AppConfigurationRefresh(properties, clientStoreMock);
+
+        refresh.setApplicationEventPublisher(eventPublisher);
+        refresh.refreshConfigurations().get();
+
+        // The first time an action happens it can update
+        verify(eventPublisher, times(0)).publishEvent(any(RefreshEvent.class));
+        assertEquals(AppConfigurationStoreHealth.NOT_LOADED, refresh.getAppConfigurationStoresHealth().get(TEST_STORE_NAME));
     }
 
     private ConfigurationSetting initialResponse() {
