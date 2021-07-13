@@ -12,6 +12,7 @@ import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Post;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ServiceInterface;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -258,7 +259,9 @@ class KuduClient {
 
     Mono<Void> warDeployAsync(File warFile, String appName) throws IOException {
         AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(warFile.toPath(), StandardOpenOption.READ);
-        return retryOnError(service.warDeploy(host, FluxUtil.readFile(fileChannel), fileChannel.size(), appName))
+        Flux<ByteBuffer> data = FluxUtil.readFile(fileChannel);
+        long size = fileChannel.size();
+        return retryOnError(service.warDeploy(host, data, size, appName))
                 .doFinally(ignored -> {
                     try {
                         fileChannel.close();
@@ -284,7 +287,9 @@ class KuduClient {
 
     Mono<Void> zipDeployAsync(File zipFile) throws IOException {
         AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(zipFile.toPath(), StandardOpenOption.READ);
-        return retryOnError(service.zipDeploy(host, FluxUtil.readFile(fileChannel), fileChannel.size()))
+        Flux<ByteBuffer> data = FluxUtil.readFile(fileChannel);
+        long size = fileChannel.size();
+        return retryOnError(service.zipDeploy(host, data, size))
             .doFinally(ignored -> {
                 try {
                     fileChannel.close();
@@ -305,8 +310,9 @@ class KuduClient {
                            File file,
                            String path, Boolean restart, Boolean clean) throws IOException {
         AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ);
-        return retryOnError(service.deploy(host, FluxUtil.readFile(fileChannel), fileChannel.size(),
-            type, path, restart, clean))
+        Flux<ByteBuffer> data = FluxUtil.readFile(fileChannel);
+        long size = fileChannel.size();
+        return retryOnError(service.deploy(host, data, size, type, path, restart, clean))
             .doFinally(ignored -> {
                 try {
                     fileChannel.close();
@@ -352,7 +358,7 @@ class KuduClient {
 //    }
 
     private <T> Mono<T> retryOnError(Mono<T> observable) {
-        final int retryCount = 5 + 1;   // retryCount is 5, last 1 is guard
+        final int retryCount = 3 + 1;   // retryCount is 3, last 1 is guard
         return observable
             .retryWhen(Retry.withThrowable(
                 flux ->
@@ -362,7 +368,9 @@ class KuduClient {
                             (Throwable throwable, Integer count) -> {
                                 if (count < retryCount
                                     && (throwable instanceof TimeoutException
-                                    || throwable instanceof SocketTimeoutException)) {
+                                    || throwable instanceof SocketTimeoutException
+                                    || (throwable instanceof HttpResponseException
+                                    && ((HttpResponseException) throwable).getResponse().getStatusCode() == 502))) {
                                     return count;
                                 } else {
                                     throw logger.logExceptionAsError(Exceptions.propagate(throwable));
