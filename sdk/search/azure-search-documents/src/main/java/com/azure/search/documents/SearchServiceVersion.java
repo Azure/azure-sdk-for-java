@@ -10,7 +10,7 @@ import com.azure.core.util.ServiceVersion;
  */
 public enum SearchServiceVersion implements ServiceVersion {
     V2020_06_30("2020-06-30"),
-    V2020_06_30_PREVIEW("2020-06-30-Preview");
+    V2020_06_30_PREVIEW("2021-04-30-Preview");
 
     private final String version;
 
