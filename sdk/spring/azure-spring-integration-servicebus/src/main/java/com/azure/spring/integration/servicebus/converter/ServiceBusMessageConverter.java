@@ -18,8 +18,10 @@ import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import static com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.CORRELATION_ID;
 import static com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.MESSAGE_ID;
@@ -73,32 +75,48 @@ public class ServiceBusMessageConverter
     @Override
     protected void setCustomHeaders(MessageHeaders headers, ServiceBusMessage message) {
 
+        Set<String> copyHeaders = new HashSet<String>();
+        headers.forEach((key, value) -> {
+            copyHeaders.add(key);
+        });
         // Spring MessageHeaders
-        getStringHeader(headers, MessageHeaders.ID).ifPresent(message::setMessageId);
-        getStringHeader(headers, MessageHeaders.CONTENT_TYPE).ifPresent(message::setContentType);
-        getStringHeader(headers, MessageHeaders.REPLY_CHANNEL).ifPresent(message::setReplyTo);
+        getStringHeader(headers, copyHeaders, MessageHeaders.ID).ifPresent(message::setMessageId);
+        getStringHeader(headers, copyHeaders, MessageHeaders.CONTENT_TYPE).ifPresent(message::setContentType);
+        getStringHeader(headers, copyHeaders, MessageHeaders.REPLY_CHANNEL).ifPresent(message::setReplyTo);
 
         // AzureHeaders.
-        getStringHeader(headers, AzureHeaders.RAW_ID).ifPresent(message::setMessageId);
-        Optional.ofNullable(headers.get(AzureHeaders.SCHEDULED_ENQUEUE_MESSAGE, Integer.class))
+        getStringHeader(headers, copyHeaders, AzureHeaders.RAW_ID).ifPresent(message::setMessageId);
+        Optional.of(AzureHeaders.SCHEDULED_ENQUEUE_MESSAGE)
+                .filter(copyHeaders::remove)
+                .map(key -> headers.get(key, Integer.class))
                 .map(Duration::ofMillis)
                 .map(Instant.now()::plus)
                 .map((ins) -> OffsetDateTime.ofInstant(ins, ZoneId.systemDefault()))
                 .ifPresent(message::setScheduledEnqueueTime);
 
         // ServiceBusMessageHeaders, service bus headers have highest priority.
-        getStringHeader(headers, MESSAGE_ID).ifPresent(message::setMessageId);
-        Optional.ofNullable((Duration) headers.get(TIME_TO_LIVE)).ifPresent(message::setTimeToLive);
-        Optional.ofNullable((Instant) headers.get(SCHEDULED_ENQUEUE_TIME))
+        getStringHeader(headers, copyHeaders, MESSAGE_ID).ifPresent(message::setMessageId);
+
+        Optional.of(TIME_TO_LIVE)
+                .filter(copyHeaders::remove)
+                .map(key -> headers.get(key, Duration.class))
+                .ifPresent(message::setTimeToLive);
+
+        Optional.of(SCHEDULED_ENQUEUE_TIME)
+                .filter(copyHeaders::remove)
+                .map(key -> headers.get(key, Instant.class))
                 .map((ins) -> OffsetDateTime.ofInstant(ins, ZoneId.systemDefault()))
                 .ifPresent(message::setScheduledEnqueueTime);
-        getStringHeader(headers, SESSION_ID).ifPresent(message::setSessionId);
-        getStringHeader(headers, CORRELATION_ID).ifPresent(message::setCorrelationId);
-        getStringHeader(headers, TO).ifPresent(message::setTo);
-        getStringHeader(headers, REPLY_TO_SESSION_ID).ifPresent(message::setReplyToSessionId);
-        getStringHeader(headers, PARTITION_KEY).ifPresent(message::setPartitionKey);
 
-        headers.forEach((key, value) -> message.getApplicationProperties().put(key, value.toString()));
+        getStringHeader(headers, copyHeaders, SESSION_ID).ifPresent(message::setSessionId);
+        getStringHeader(headers, copyHeaders, CORRELATION_ID).ifPresent(message::setCorrelationId);
+        getStringHeader(headers, copyHeaders, TO).ifPresent(message::setTo);
+        getStringHeader(headers, copyHeaders, REPLY_TO_SESSION_ID).ifPresent(message::setReplyToSessionId);
+        getStringHeader(headers, copyHeaders, PARTITION_KEY).ifPresent(message::setPartitionKey);
+
+        copyHeaders.forEach(key -> {
+            message.getApplicationProperties().put(key, headers.get(key).toString());
+        });
     }
 
     @Override
@@ -124,13 +142,21 @@ public class ServiceBusMessageConverter
         setValueIfHasText(headers, REPLY_TO_SESSION_ID, message.getReplyToSessionId());
         setValueIfHasText(headers, SESSION_ID, message.getSessionId());
 
-        headers.putAll(message.getApplicationProperties());
+        message.getApplicationProperties().forEach((key, value) -> {
+            if (!headers.containsKey(key)) {
+                headers.put(key, value);
+            }
+        });
 
         return Collections.unmodifiableMap(headers);
     }
 
-    private Optional<String> getStringHeader(MessageHeaders springMessageHeaders, String key) {
-        return Optional.ofNullable(springMessageHeaders.get(key)).map(Object::toString).filter(StringUtils::hasText);
+    private Optional<String> getStringHeader(MessageHeaders springMessageHeaders, Set<String> copyHeaders, String key) {
+        return Optional.of(key)
+                       .filter(copyHeaders::remove)
+                       .map(springMessageHeaders::get)
+                       .map(Object::toString)
+                       .filter(StringUtils::hasText);
     }
 
     private void setValueIfHasText(Map<String, Object> map, String key, String value) {
