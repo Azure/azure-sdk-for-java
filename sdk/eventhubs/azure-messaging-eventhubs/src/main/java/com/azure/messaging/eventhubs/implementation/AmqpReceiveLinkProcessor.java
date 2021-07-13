@@ -572,7 +572,8 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
 
     /**
      * Gets the number of credits to add based on {@link #requested} and how many messages are still in queue.
-     * If {@link #requested} is {@link Long#MAX_VALUE}, then we add credits 1 by 1. Similar to Track 1's behaviour.
+     * If {@link #requested} is {@link Long#MAX_VALUE}, which indicates no-backpressure,
+     * then we use the {@link #prefetch} value as credit.
      *
      * @return The number of credits to add.
      */
@@ -584,7 +585,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
         if (subscriber == null || request == 0) {
             credits = 0;
         } else if (request == Long.MAX_VALUE) {
-            credits = 1;
+            credits = prefetch;
         } else {
             final int remaining = Long.valueOf(request).intValue() - messageQueue.size();
             credits = Math.max(remaining, 0);
