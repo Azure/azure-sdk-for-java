@@ -82,7 +82,7 @@ example `http://localhost:8080/login/oauth2/code/`. Note the tailing `/` cannot 
 
      (B). You can provide one by extending `AADWebSecurityConfigurerAdapter` and call `super.configure(http)` explicitly
     in the `configure(HttpSecurity http)` function. Here is an example:
-    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp/src/main/java/com/azure/spring/sample/aad/security/AADOAuth2LoginSecurityConfig.java#L11-L25 -->
+    <!-- embedme https://github.com/Azure-Samples/azure-spring-boot-samples/blob/main/aad/azure-spring-boot-sample-active-directory-webapp/src/main/java/com/azure/spring/sample/aad/security/AADOAuth2LoginSecurityConfig.java#L11-L25 -->
     ```java
     @EnableWebSecurity
     @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -136,7 +136,7 @@ example `http://localhost:8080/login/oauth2/code/`. Note the tailing `/` cannot 
     Here, `graph` is the name of `OAuth2AuthorizedClient`, `scopes` means the scopes need to consent when login.
 
 * Step 4: Write your Java code:
-    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp/src/main/java/com/azure/spring/sample/aad/controller/ClientController.java#L40-L48 -->
+    <!-- embedme https://github.com/Azure-Samples/azure-spring-boot-samples/blob/main/aad/azure-spring-boot-sample-active-directory-webapp/src/main/java/com/azure/spring/sample/aad/controller/ClientController.java#L40-L48 -->
     ```java
     @GetMapping("/graph")
     @ResponseBody
@@ -193,7 +193,7 @@ To use **aad-starter** in this scenario, we need these steps:
 
     (B). You can provide one by extending `AADResourceServerWebSecurityConfigurerAdapter` and call `super.configure(http)` explicitly
     in the `configure(HttpSecurity http)` function. Here is an example:
-    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server/src/main/java/com/azure/spring/sample/aad/security/AADOAuth2ResourceServerSecurityConfig.java#L12-L23 -->
+    <!-- embedme https://github.com/Azure-Samples/azure-spring-boot-samples/blob/main/aad/azure-spring-boot-sample-active-directory-resource-server/src/main/java/com/azure/spring/sample/aad/security/AADOAuth2ResourceServerSecurityConfig.java#L12-L23 -->
     ```java
     @EnableWebSecurity
     @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -254,7 +254,7 @@ To use **aad-starter** in this scenario, we need these steps:
 
     Using `@RegisteredOAuth2AuthorizedClient` to access related resource server:
 
-    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-obo/src/main/java/com/azure/spring/sample/aad/controller/SampleController.java#L64-L68 -->
+    <!-- embedme https://github.com/Azure-Samples/azure-spring-boot-samples/blob/main/aad/azure-spring-boot-sample-active-directory-resource-server-obo/src/main/java/com/azure/spring/sample/aad/controller/SampleController.java#L64-L68 -->
     ```java
     @PreAuthorize("hasAuthority('SCOPE_Obo.Graph.Read')")
     @GetMapping("call-graph")
@@ -425,7 +425,7 @@ Here are some examples about how to use these properties:
 
 * Step 2: Add `@EnableGlobalMethodSecurity(prePostEnabled = true)` in web application:
 
-    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp/src/main/java/com/azure/spring/sample/aad/security/AADOAuth2LoginSecurityConfig.java#L11-L25 -->
+    <!-- embedme https://github.com/Azure-Samples/azure-spring-boot-samples/blob/main/aad/azure-spring-boot-sample-active-directory-webapp/src/main/java/com/azure/spring/sample/aad/security/AADOAuth2LoginSecurityConfig.java#L11-L25 -->
     ```java
     @EnableWebSecurity
     @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -445,7 +445,7 @@ Here are some examples about how to use these properties:
     ```
 
     Then we can protect the method by `@PreAuthorize` annotation:
-    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp/src/main/java/com/azure/spring/sample/aad/controller/RoleController.java#L11-L40 -->
+    <!-- embedme https://github.com/Azure-Samples/azure-spring-boot-samples/blob/main/aad/azure-spring-boot-sample-active-directory-webapp/src/main/java/com/azure/spring/sample/aad/controller/RoleController.java#L11-L40 -->
     ```java
     @Controller
     public class RoleController {
@@ -494,7 +494,7 @@ Here are some examples about how to use these properties:
     ```
 
 * Step 2: Write Java code:
-    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp/src/main/java/com/azure/spring/sample/aad/controller/OnDemandClientController.java#L17-L25 -->
+    <!-- embedme https://github.com/Azure-Samples/azure-spring-boot-samples/blob/main/aad/azure-spring-boot-sample-active-directory-webapp/src/main/java/com/azure/spring/sample/aad/controller/OnDemandClientController.java#L17-L25 -->
     ```java
     @GetMapping("/arm")
     @ResponseBody
@@ -529,7 +529,7 @@ Here are some examples about how to use these properties:
     ```
 
 * Step 2: Write Java code:
-    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-obo/src/main/java/com/azure/spring/sample/aad/controller/SampleController.java#L134-L146 -->
+    <!-- embedme https://github.com/Azure-Samples/azure-spring-boot-samples/blob/main/aad/azure-spring-boot-sample-active-directory-resource-server-obo/src/main/java/com/azure/spring/sample/aad/controller/SampleController.java#L134-L146 -->
     ```java
     @PreAuthorize("hasAuthority('SCOPE_Obo.WebApiA.ExampleScope')")
     @GetMapping("webapiA/webapiC")
@@ -583,7 +583,7 @@ Follow the guide to [add app roles in your application and assign to users or gr
       ]
     ```
 * Step 2: Write Java code:
-    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp/src/main/java/com/azure/spring/sample/aad/controller/AuthorityController.java#L13-L18 -->
+    <!-- embedme https://github.com/Azure-Samples/azure-spring-boot-samples/blob/main/aad/azure-spring-boot-sample-active-directory-webapp/src/main/java/com/azure/spring/sample/aad/controller/AuthorityController.java#L13-L18 -->
     ```java
     @GetMapping("Admin")
     @ResponseBody
@@ -661,7 +661,7 @@ In [Resource server visiting other resource server] scenario(For better descript
 
 * Step 5: Write your Java code:
     - webapp :
-    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp/src/main/java/com/azure/spring/sample/aad/controller/WebApiController.java#L34-L38 -->
+    <!-- embedme https://github.com/Azure-Samples/azure-spring-boot-samples/blob/main/aad/azure-spring-boot-sample-active-directory-webapp/src/main/java/com/azure/spring/sample/aad/controller/WebApiController.java#L34-L38 -->
     ```java
     @GetMapping("/webapp/webapiA/webapiB")
     @ResponseBody
@@ -670,7 +670,7 @@ In [Resource server visiting other resource server] scenario(For better descript
     }
     ```
     - webapiA:
-    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-obo/src/main/java/com/azure/spring/sample/aad/controller/SampleController.java#L76-L81 -->
+    <!-- embedme https://github.com/Azure-Samples/azure-spring-boot-samples/blob/main/aad/azure-spring-boot-sample-active-directory-resource-server-obo/src/main/java/com/azure/spring/sample/aad/controller/SampleController.java#L76-L81 -->
     ```java
     @PreAuthorize("hasAuthority('SCOPE_Obo.WebApiA.ExampleScope')")
     @GetMapping("webapiA/webapiB")
@@ -680,7 +680,7 @@ In [Resource server visiting other resource server] scenario(For better descript
     }
     ```
     - webapiB:
-    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server/src/main/java/com/azure/spring/sample/aad/controller/HomeController.java#L16-L21 -->
+    <!-- embedme https://github.com/Azure-Samples/azure-spring-boot-samples/blob/main/aad/azure-spring-boot-sample-active-directory-resource-server/src/main/java/com/azure/spring/sample/aad/controller/HomeController.java#L16-L21 -->
     ```java
     @GetMapping("/webapiB")
     @ResponseBody
