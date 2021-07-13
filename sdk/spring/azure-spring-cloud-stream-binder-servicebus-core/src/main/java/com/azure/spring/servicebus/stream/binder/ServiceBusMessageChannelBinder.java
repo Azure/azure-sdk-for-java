@@ -112,6 +112,8 @@ public abstract class ServiceBusMessageChannelBinder<T extends ServiceBusExtende
                                      .setPrefetchCount(consumerProperties.getPrefetchCount())
                                      .setConcurrency(consumerProperties.getConcurrency())
                                      .setSessionsEnabled(consumerProperties.isSessionsEnabled())
+                                     .setMaxConcurrentCalls(consumerProperties.getMaxConcurrentCalls())
+                                     .setServiceBusReceiveMode(consumerProperties.getServiceBusReceiveMode())
                                      .build();
     }
 
