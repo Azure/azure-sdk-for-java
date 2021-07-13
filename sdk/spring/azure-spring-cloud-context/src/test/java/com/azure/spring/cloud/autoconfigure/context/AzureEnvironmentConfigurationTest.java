@@ -5,7 +5,6 @@ package com.azure.spring.cloud.autoconfigure.context;
 
 import com.azure.core.management.AzureEnvironment;
 import com.azure.resourcemanager.AzureResourceManager;
-import com.azure.spring.cloud.context.core.api.CredentialsProvider;
 import com.azure.spring.cloud.context.core.api.EnvironmentProvider;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -57,11 +56,6 @@ public class AzureEnvironmentConfigurationTest {
         @Bean
         AzureResourceManager azureResourceManager() {
             return mock(AzureResourceManager.class);
-        }
-
-        @Bean
-        CredentialsProvider credentialsProvider() {
-            return mock(CredentialsProvider.class);
         }
 
     }

@@ -6,10 +6,8 @@ package com.azure.spring.cloud.autoconfigure.context;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.AzureResourceManager;
-import com.azure.spring.cloud.context.core.api.CredentialsProvider;
 import com.azure.spring.cloud.context.core.api.EnvironmentProvider;
 import com.azure.spring.cloud.context.core.impl.ResourceGroupManager;
-import com.azure.spring.identity.DefaultSpringCredentialBuilder;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -18,9 +16,8 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.core.env.Environment;
 /**
- * Auto-config to provide default {@link CredentialsProvider} for all Azure services
+ * Auto-config to provide default {@link AzureResourceManager} for all Azure services
  *
  * @author Warren Zhu
  */
@@ -57,14 +54,6 @@ public class AzureContextAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public TokenCredential credential(Environment environment) {
-        return new DefaultSpringCredentialBuilder().environment(environment)
-                                                   .alternativePrefix(AzureContextProperties.PREFIX)
-                                                   .build();
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
     @ConditionalOnBean(AzureResourceManager.class)
     public ResourceGroupManager resourceGroupManager(AzureResourceManager azureResourceManager,
                                                          AzureContextProperties azureContextProperties) {
@@ -75,4 +64,5 @@ public class AzureContextAutoConfiguration {
         }
         return resourceGroupManager;
     }
+
 }
