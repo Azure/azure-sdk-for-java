@@ -20,10 +20,11 @@ public class PartitionKeyRangeServerBatchRequestTests {
     private static final int TIMEOUT = 40000;
 
     private CosmosItemOperation createItemBulkOperation(String id) {
-        ItemBulkOperation<?> operation = new ItemBulkOperation<>(
+        ItemBulkOperation<?, ?> operation = new ItemBulkOperation<>(
             CosmosItemOperationType.CREATE,
             id,
             PartitionKey.NONE,
+            null,
             null,
             null
         );
@@ -152,12 +153,13 @@ public class PartitionKeyRangeServerBatchRequestTests {
             JsonSerializable jsonSerializable = new JsonSerializable();
             jsonSerializable.set("abc", StringUtils.repeat("x", docSizeInBytes - 10));// {"abc":" + "} = 10
 
-            ItemBulkOperation<?> operation = new ItemBulkOperation<>(
+            ItemBulkOperation<?, ?> operation = new ItemBulkOperation<>(
                 CosmosItemOperationType.CREATE,
                 "",
                 null,
                 null,
-                jsonSerializable
+                jsonSerializable,
+                null
             );
 
             operations.add(operation);
