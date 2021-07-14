@@ -11,7 +11,7 @@ import com.azure.core.annotation.Immutable;
 @Immutable
 public final class KeySentence {
     private String text;
-    private double rankScore;
+    private double importanceScore;
     private int length;
     private int offset;
 
@@ -27,8 +27,8 @@ public final class KeySentence {
      *
      * @return
      */
-    public double getRankScore() {
-        return rankScore;
+    public double getImportanceScore() {
+        return importanceScore;
     }
 
     /**

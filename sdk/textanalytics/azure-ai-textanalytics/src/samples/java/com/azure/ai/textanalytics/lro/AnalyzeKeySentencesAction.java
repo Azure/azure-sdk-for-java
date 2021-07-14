@@ -19,7 +19,6 @@ import com.azure.ai.textanalytics.util.AnalyzeActionsResultPagedIterable;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.util.Context;
-import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.SyncPoller;
 
 import java.util.ArrayList;
@@ -69,26 +68,14 @@ public class AnalyzeKeySentencesAction {
                     .setExtractKeySentencesActions(
                         new ExtractKeySentencesAction()
                             .setMaxSentenceCount(2)
-                            .setSentencesOrder(KeySentencesOrder.RANK)),
+                            .setSentencesOrder(KeySentencesOrder.IMPORTANCE)),
                 new AnalyzeActionsOptions().setIncludeStatistics(false),
                 Context.NONE);
-
-        // Task operation statistics details
-        while (syncPoller.poll().getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
-            final AnalyzeActionsOperationDetail operationDetail = syncPoller.poll().getValue();
-            System.out.printf("Action display name: %s, Successfully completed actions: %d, in-process actions: %d,"
-                                  + " failed actions: %d, total actions: %d%n",
-                operationDetail.getDisplayName(), operationDetail.getSucceededCount(),
-                operationDetail.getInProgressCount(), operationDetail.getFailedCount(),
-                operationDetail.getTotalCount());
-        }
 
         syncPoller.waitForCompletion();
 
         Iterable<PagedResponse<AnalyzeActionsResult>> pagedResults = syncPoller.getFinalResult().iterableByPage();
         for (PagedResponse<AnalyzeActionsResult> perPage : pagedResults) {
-            System.out.printf("Response code: %d, Continuation Token: %s.%n", perPage.getStatusCode(),
-                perPage.getContinuationToken());
             for (AnalyzeActionsResult actionsResult : perPage.getElements()) {
                 System.out.println("Key sentences extraction action results:");
                 for (ExtractKeySentencesActionResult actionResult : actionsResult.getExtractKeySentencesResults()) {
@@ -97,9 +84,10 @@ public class AnalyzeKeySentencesAction {
                             if (!documentResult.isError()) {
                                 System.out.println("\tExtracted key sentences:");
                                 for (KeySentence keySentence : documentResult.getSentences()) {
-                                    System.out.printf("\t\t Key sentence text: %s, length: %d, offset: %d, rank score: %d.%n",
+                                    System.out.printf(
+                                        "\t\t Key sentence text: %s, length: %d, offset: %d, importance score: %d.%n",
                                         keySentence.getText(), keySentence.getLength(),
-                                        keySentence.getOffset(), keySentence.getRankScore());
+                                        keySentence.getOffset(), keySentence.getImportanceScore());
                                 }
                             } else {
                                 System.out.printf("\tCannot extract key sentences. Error: %s%n",

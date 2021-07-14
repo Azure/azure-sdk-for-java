@@ -70,7 +70,7 @@ public class AnalyzeKeySentencesActionAsync {
                 .setExtractKeySentencesActions(
                     new ExtractKeySentencesAction()
                         .setMaxSentenceCount(2)
-                        .setSentencesOrder(KeySentencesOrder.RANK)),
+                        .setSentencesOrder(KeySentencesOrder.IMPORTANCE)),
             new AnalyzeActionsOptions().setIncludeStatistics(false))
             .flatMap(result -> {
                 AnalyzeActionsOperationDetail operationDetail = result.getValue();
@@ -109,9 +109,9 @@ public class AnalyzeKeySentencesActionAsync {
                         if (!documentResult.isError()) {
                             System.out.println("\tExtracted key sentences:");
                             for (KeySentence keySentence : documentResult.getSentences()) {
-                                System.out.printf("\t\t Key sentence text: %s, length: %d, offset: %d, rank score: %d.%n",
+                                System.out.printf("\t\t Key sentence text: %s, length: %d, offset: %d, importance score: %d.%n",
                                     keySentence.getText(), keySentence.getLength(),
-                                    keySentence.getOffset(), keySentence.getRankScore());
+                                    keySentence.getOffset(), keySentence.getImportanceScore());
                             }
                         } else {
                             System.out.printf("\tCannot extract key sentences. Error: %s%n",

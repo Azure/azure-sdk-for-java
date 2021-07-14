@@ -14,12 +14,12 @@ public final class KeySentencesOrder extends ExpandableStringEnum<KeySentencesOr
     /**
      * offset as the KeySentencesOrder.
      */
-    public static final KeySentencesOrder OFFSET = fromString("offset");
+    public static final KeySentencesOrder OFFSET = fromString("Offset");
 
     /**
-     * rankScore (PHI) as the KeySentencesOrder.
+     * rank (PHI) as the KeySentencesOrder.
      */
-    public static final KeySentencesOrder RANK = fromString("rank");
+    public static final KeySentencesOrder IMPORTANCE = fromString("Importance");
 
     /**
      * Creates or finds a {@link KeySentencesOrder} from its string representation.
