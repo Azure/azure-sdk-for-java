@@ -277,8 +277,13 @@ public final class ConfigurationStoreImpl
     }
 
     public ConfigurationStoreImpl withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
-        this.innerModel().withPublicNetworkAccess(publicNetworkAccess);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withPublicNetworkAccess(publicNetworkAccess);
+            return this;
+        } else {
+            this.updateConfigStoreUpdateParameters.withPublicNetworkAccess(publicNetworkAccess);
+            return this;
+        }
     }
 
     public ConfigurationStoreImpl withDisableLocalAuth(Boolean disableLocalAuth) {

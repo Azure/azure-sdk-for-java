@@ -52,7 +52,7 @@ public final class AnalyzeHealthcareEntitiesResult extends TextAnalyticsResult {
     }
 
     /**
-     * Get an {@link IterableStream} of {@link HealthcareEntity}.
+     * Gets an {@link IterableStream} of {@link HealthcareEntity}.
      *
      * @return An {@link IterableStream} of {@link HealthcareEntity}.
      *
@@ -65,7 +65,7 @@ public final class AnalyzeHealthcareEntitiesResult extends TextAnalyticsResult {
     }
 
     /**
-     * Get the {@link IterableStream} of {@link TextAnalyticsWarning Text Analytics warnings}.
+     * Gets the {@link IterableStream} of {@link TextAnalyticsWarning Text Analytics warnings}.
      *
      * @return {@link IterableStream} of {@link TextAnalyticsWarning}.
      */
@@ -74,9 +74,9 @@ public final class AnalyzeHealthcareEntitiesResult extends TextAnalyticsResult {
     }
 
     /**
-     * Get the {@link IterableStream} of {@link HealthcareEntityRelation}.
+     * Gets the {@link IterableStream} of {@link HealthcareEntityRelation}.
      *
-     * @return the {@link IterableStream} of {@link HealthcareEntityRelation}.
+     * @return The {@link IterableStream} of {@link HealthcareEntityRelation}.
      */
     public IterableStream<HealthcareEntityRelation> getEntityRelations() {
         return this.entityRelations;

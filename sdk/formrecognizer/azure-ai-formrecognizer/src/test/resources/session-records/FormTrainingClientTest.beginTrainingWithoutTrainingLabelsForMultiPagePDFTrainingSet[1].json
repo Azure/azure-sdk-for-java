@@ -1,121 +1,141 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1//custom/models",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1/custom/models",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "55bb1b9e-b3a9-4231-a24d-e5db5499f5d6",
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "0e1a02ed-0892-4d9a-890e-53926dd4ecf7",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "content-length" : "0",
-      "x-envoy-upstream-service-time" : "105",
+      "x-envoy-upstream-service-time" : "436",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "af6504fb-aef1-48fb-969a-17057eb147ba",
+      "apim-request-id" : "b6048e2b-7772-4643-9dbf-1a7bab434d74",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "Date" : "Tue, 11 May 2021 21:39:07 GMT",
-      "Location" : "https://mariari-canada-central.cognitiveservices.azure.com/formrecognizer/v2.1/custom/models/5f7e63ff-fcb5-4f9e-8630-3ccc16bf2fc1"
+      "Date" : "Wed, 07 Jul 2021 06:28:28 GMT",
+      "Location" : "https://shafangfr.cognitiveservices.azure.com/formrecognizer/v2.1/custom/models/ffb4d3dc-9e2d-4136-b763-438a3d937795"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1//custom/models/5f7e63ff-fcb5-4f9e-8630-3ccc16bf2fc1?includeKeys=true",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1/custom/models/ffb4d3dc-9e2d-4136-b763-438a3d937795?includeKeys=true",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "f51b91dc-573e-47db-8780-ebf33da1143a"
-    },
-    "Response" : {
-      "content-length" : "170",
-      "x-envoy-upstream-service-time" : "40",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "98ffbd0f-c2c6-4b4f-8b80-e4600ba70450",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"modelInfo\":{\"modelId\":\"5f7e63ff-fcb5-4f9e-8630-3ccc16bf2fc1\",\"status\":\"creating\",\"createdDateTime\":\"2021-05-11T21:39:07Z\",\"lastUpdatedDateTime\":\"2021-05-11T21:39:07Z\"}}",
-      "Date" : "Tue, 11 May 2021 21:39:11 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1//custom/models/5f7e63ff-fcb5-4f9e-8630-3ccc16bf2fc1?includeKeys=true",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "eec6377e-3922-4a97-8e26-5fbdcc55098e"
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "29db999b-697e-4c08-9cc3-a2f38fd67ff3"
     },
     "Response" : {
       "content-length" : "170",
       "x-envoy-upstream-service-time" : "19",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "1d3d3ecd-cab6-458a-ad53-9103dbd1cbcb",
+      "apim-request-id" : "c86cb77a-3247-4efb-ba9e-7e2e0a59372e",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"modelInfo\":{\"modelId\":\"5f7e63ff-fcb5-4f9e-8630-3ccc16bf2fc1\",\"status\":\"creating\",\"createdDateTime\":\"2021-05-11T21:39:07Z\",\"lastUpdatedDateTime\":\"2021-05-11T21:39:07Z\"}}",
-      "Date" : "Tue, 11 May 2021 21:39:18 GMT",
+      "Body" : "{\"modelInfo\":{\"modelId\":\"ffb4d3dc-9e2d-4136-b763-438a3d937795\",\"status\":\"creating\",\"createdDateTime\":\"2021-07-07T06:28:29Z\",\"lastUpdatedDateTime\":\"2021-07-07T06:28:29Z\"}}",
+      "Date" : "Wed, 07 Jul 2021 06:28:34 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1//custom/models/5f7e63ff-fcb5-4f9e-8630-3ccc16bf2fc1?includeKeys=true",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1/custom/models/ffb4d3dc-9e2d-4136-b763-438a3d937795?includeKeys=true",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "c9384ec6-4e61-4f14-b3b5-d7fe4764cf64"
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "211ad45a-42e4-4ce0-8f9e-4ad1e96fa223"
     },
     "Response" : {
       "content-length" : "170",
-      "x-envoy-upstream-service-time" : "25",
+      "x-envoy-upstream-service-time" : "38",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "820589bc-46b0-484c-83cf-8b410e6b1e98",
+      "apim-request-id" : "c880bd62-e76c-4865-81ea-2acfa9160542",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"modelInfo\":{\"modelId\":\"5f7e63ff-fcb5-4f9e-8630-3ccc16bf2fc1\",\"status\":\"creating\",\"createdDateTime\":\"2021-05-11T21:39:07Z\",\"lastUpdatedDateTime\":\"2021-05-11T21:39:07Z\"}}",
-      "Date" : "Tue, 11 May 2021 21:39:22 GMT",
+      "Body" : "{\"modelInfo\":{\"modelId\":\"ffb4d3dc-9e2d-4136-b763-438a3d937795\",\"status\":\"creating\",\"createdDateTime\":\"2021-07-07T06:28:29Z\",\"lastUpdatedDateTime\":\"2021-07-07T06:28:29Z\"}}",
+      "Date" : "Wed, 07 Jul 2021 06:28:38 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1//custom/models/5f7e63ff-fcb5-4f9e-8630-3ccc16bf2fc1?includeKeys=true",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1/custom/models/ffb4d3dc-9e2d-4136-b763-438a3d937795?includeKeys=true",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "a8496e5e-28d5-4949-a268-2d0b7a0b5dec"
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "757b9b69-23a3-4770-9450-6b9f0d7721fc"
     },
     "Response" : {
-      "content-length" : "1111",
-      "x-envoy-upstream-service-time" : "22",
+      "content-length" : "170",
+      "x-envoy-upstream-service-time" : "30",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "1553a4d0-7bd2-45a7-8fce-4fe3ac734707",
+      "apim-request-id" : "1eec38b2-4216-4a30-bd08-032040ae98fc",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"modelInfo\":{\"modelId\":\"5f7e63ff-fcb5-4f9e-8630-3ccc16bf2fc1\",\"status\":\"ready\",\"createdDateTime\":\"2021-05-11T21:39:07Z\",\"lastUpdatedDateTime\":\"2021-05-11T21:39:27Z\"},\"keys\":{\"clusters\":{\"0\":[\"Contoso Ltd. Conference will be held on May 28-29, 2020 at the Elm Conference Center in\",\"Included\",\"Maple City, Massachusetts. The conference has sold out of its 1,500 tickets, with a 400 person\",\"Package\",\"Price\",\"Rates:\",\"Vendor #:\",\"Vendor Registration\",\"below, and attach a check made out to:\",\"waitlist. Vendor applications are being accepted through Feb 28, 2020. Please fill in the form\"],\"1\":[\"Company Name:\",\"Contact:\",\"Preferred Package:\",\"Special Requests:\",\"Vendor #:\",\"Vendor Details:\"]}},\"trainResult\":{\"trainingDocuments\":[{\"documentName\":\"multi1.pdf\",\"pages\":2,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"multi2.pdf\",\"pages\":2,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"multi3.pdf\",\"pages\":2,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"multi4.pdf\",\"pages\":2,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"multi5.pdf\",\"pages\":2,\"errors\":[],\"status\":\"succeeded\"}],\"errors\":[]}}",
-      "Date" : "Tue, 11 May 2021 21:39:27 GMT",
+      "Body" : "{\"modelInfo\":{\"modelId\":\"ffb4d3dc-9e2d-4136-b763-438a3d937795\",\"status\":\"creating\",\"createdDateTime\":\"2021-07-07T06:28:29Z\",\"lastUpdatedDateTime\":\"2021-07-07T06:28:29Z\"}}",
+      "Date" : "Wed, 07 Jul 2021 06:28:44 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1//custom/models/5f7e63ff-fcb5-4f9e-8630-3ccc16bf2fc1?includeKeys=true",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1/custom/models/ffb4d3dc-9e2d-4136-b763-438a3d937795?includeKeys=true",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "4079f172-f4e4-4c2c-acba-bd992f111ff0"
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "48d4a67e-5f93-4c58-9509-2acec2320bcb"
     },
     "Response" : {
-      "content-length" : "1111",
-      "x-envoy-upstream-service-time" : "25",
+      "content-length" : "170",
+      "x-envoy-upstream-service-time" : "26",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "20e7e211-5e85-4b8b-8eb2-bea66e869818",
+      "apim-request-id" : "f70229cb-c5d6-47b0-b52b-acd13008f4bf",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"modelInfo\":{\"modelId\":\"5f7e63ff-fcb5-4f9e-8630-3ccc16bf2fc1\",\"status\":\"ready\",\"createdDateTime\":\"2021-05-11T21:39:07Z\",\"lastUpdatedDateTime\":\"2021-05-11T21:39:27Z\"},\"keys\":{\"clusters\":{\"0\":[\"Contoso Ltd. Conference will be held on May 28-29, 2020 at the Elm Conference Center in\",\"Included\",\"Maple City, Massachusetts. The conference has sold out of its 1,500 tickets, with a 400 person\",\"Package\",\"Price\",\"Rates:\",\"Vendor #:\",\"Vendor Registration\",\"below, and attach a check made out to:\",\"waitlist. Vendor applications are being accepted through Feb 28, 2020. Please fill in the form\"],\"1\":[\"Company Name:\",\"Contact:\",\"Preferred Package:\",\"Special Requests:\",\"Vendor #:\",\"Vendor Details:\"]}},\"trainResult\":{\"trainingDocuments\":[{\"documentName\":\"multi1.pdf\",\"pages\":2,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"multi2.pdf\",\"pages\":2,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"multi3.pdf\",\"pages\":2,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"multi4.pdf\",\"pages\":2,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"multi5.pdf\",\"pages\":2,\"errors\":[],\"status\":\"succeeded\"}],\"errors\":[]}}",
-      "Date" : "Tue, 11 May 2021 21:39:27 GMT",
+      "Body" : "{\"modelInfo\":{\"modelId\":\"ffb4d3dc-9e2d-4136-b763-438a3d937795\",\"status\":\"creating\",\"createdDateTime\":\"2021-07-07T06:28:29Z\",\"lastUpdatedDateTime\":\"2021-07-07T06:28:29Z\"}}",
+      "Date" : "Wed, 07 Jul 2021 06:28:49 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1/custom/models/ffb4d3dc-9e2d-4136-b763-438a3d937795?includeKeys=true",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "88f7c7d6-3b8f-4ccc-ac84-5c4d7a6d360d"
+    },
+    "Response" : {
+      "content-length" : "784",
+      "x-envoy-upstream-service-time" : "27",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "2b6794fb-3bfa-4bd3-8f23-fcc2775a0109",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"modelInfo\":{\"modelId\":\"ffb4d3dc-9e2d-4136-b763-438a3d937795\",\"status\":\"ready\",\"createdDateTime\":\"2021-07-07T06:28:29Z\",\"lastUpdatedDateTime\":\"2021-07-07T06:28:52Z\"},\"keys\":{\"clusters\":{\"0\":[\"Address:\",\"Invoice For:\",\"Item\",\"Price\",\"Quantity\",\"Redmond, WA\",\"Signature:\",\"Subtotal:\",\"Tax:\",\"Tip:\",\"Total:\"]}},\"trainResult\":{\"trainingDocuments\":[{\"documentName\":\"multipage_invoice1.pdf\",\"pages\":3,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"multipage_invoice2.pdf\",\"pages\":3,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"multipage_invoice3.pdf\",\"pages\":3,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"multipage_invoice4.pdf\",\"pages\":3,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"multipage_invoice5.pdf\",\"pages\":3,\"errors\":[],\"status\":\"succeeded\"}],\"errors\":[]}}",
+      "Date" : "Wed, 07 Jul 2021 06:28:54 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1/custom/models/ffb4d3dc-9e2d-4136-b763-438a3d937795?includeKeys=true",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d468411c-9f42-4cdf-a316-e27b5ed5541c"
+    },
+    "Response" : {
+      "content-length" : "784",
+      "x-envoy-upstream-service-time" : "27",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "14d76fb0-49bc-426a-9f26-d7a26b0039bf",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"modelInfo\":{\"modelId\":\"ffb4d3dc-9e2d-4136-b763-438a3d937795\",\"status\":\"ready\",\"createdDateTime\":\"2021-07-07T06:28:29Z\",\"lastUpdatedDateTime\":\"2021-07-07T06:28:52Z\"},\"keys\":{\"clusters\":{\"0\":[\"Address:\",\"Invoice For:\",\"Item\",\"Price\",\"Quantity\",\"Redmond, WA\",\"Signature:\",\"Subtotal:\",\"Tax:\",\"Tip:\",\"Total:\"]}},\"trainResult\":{\"trainingDocuments\":[{\"documentName\":\"multipage_invoice1.pdf\",\"pages\":3,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"multipage_invoice2.pdf\",\"pages\":3,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"multipage_invoice3.pdf\",\"pages\":3,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"multipage_invoice4.pdf\",\"pages\":3,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"multipage_invoice5.pdf\",\"pages\":3,\"errors\":[],\"status\":\"succeeded\"}],\"errors\":[]}}",
+      "Date" : "Wed, 07 Jul 2021 06:28:55 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

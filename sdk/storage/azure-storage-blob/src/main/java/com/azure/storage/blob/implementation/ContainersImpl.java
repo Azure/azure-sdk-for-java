@@ -84,8 +84,8 @@ public final class ContainersImpl {
         @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<ContainersCreateResponse> create(
                 @HostParam("url") String url,
-                @QueryParam("restype") String restype,
                 @PathParam("containerName") String containerName,
+                @QueryParam("restype") String restype,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-meta-") Map<String, String> metadata,
                 @HeaderParam("x-ms-blob-public-access") PublicAccessType access,
@@ -101,8 +101,8 @@ public final class ContainersImpl {
         @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<ContainersGetPropertiesResponse> getProperties(
                 @HostParam("url") String url,
-                @QueryParam("restype") String restype,
                 @PathParam("containerName") String containerName,
+                @QueryParam("restype") String restype,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-lease-id") String leaseId,
                 @HeaderParam("x-ms-version") String version,
@@ -115,8 +115,8 @@ public final class ContainersImpl {
         @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<ContainersDeleteResponse> delete(
                 @HostParam("url") String url,
-                @QueryParam("restype") String restype,
                 @PathParam("containerName") String containerName,
+                @QueryParam("restype") String restype,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-lease-id") String leaseId,
                 @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
@@ -131,9 +131,9 @@ public final class ContainersImpl {
         @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<ContainersSetMetadataResponse> setMetadata(
                 @HostParam("url") String url,
+                @PathParam("containerName") String containerName,
                 @QueryParam("restype") String restype,
                 @QueryParam("comp") String comp,
-                @PathParam("containerName") String containerName,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-lease-id") String leaseId,
                 @HeaderParam("x-ms-meta-") Map<String, String> metadata,
@@ -148,9 +148,9 @@ public final class ContainersImpl {
         @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<ContainersGetAccessPolicyResponse> getAccessPolicy(
                 @HostParam("url") String url,
+                @PathParam("containerName") String containerName,
                 @QueryParam("restype") String restype,
                 @QueryParam("comp") String comp,
-                @PathParam("containerName") String containerName,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-lease-id") String leaseId,
                 @HeaderParam("x-ms-version") String version,
@@ -163,9 +163,9 @@ public final class ContainersImpl {
         @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<ContainersSetAccessPolicyResponse> setAccessPolicy(
                 @HostParam("url") String url,
+                @PathParam("containerName") String containerName,
                 @QueryParam("restype") String restype,
                 @QueryParam("comp") String comp,
-                @PathParam("containerName") String containerName,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-lease-id") String leaseId,
                 @HeaderParam("x-ms-blob-public-access") PublicAccessType access,
@@ -182,9 +182,9 @@ public final class ContainersImpl {
         @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<ContainersRestoreResponse> restore(
                 @HostParam("url") String url,
+                @PathParam("containerName") String containerName,
                 @QueryParam("restype") String restype,
                 @QueryParam("comp") String comp,
-                @PathParam("containerName") String containerName,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-client-request-id") String requestId,
@@ -198,9 +198,9 @@ public final class ContainersImpl {
         @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<ContainersRenameResponse> rename(
                 @HostParam("url") String url,
+                @PathParam("containerName") String containerName,
                 @QueryParam("restype") String restype,
                 @QueryParam("comp") String comp,
-                @PathParam("containerName") String containerName,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-client-request-id") String requestId,
@@ -214,9 +214,9 @@ public final class ContainersImpl {
         @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<StreamResponse> submitBatch(
                 @HostParam("url") String url,
+                @PathParam("containerName") String containerName,
                 @QueryParam("restype") String restype,
                 @QueryParam("comp") String comp,
-                @PathParam("containerName") String containerName,
                 @HeaderParam("Content-Length") long contentLength,
                 @HeaderParam("Content-Type") String multipartContentType,
                 @QueryParam("timeout") Integer timeout,
@@ -231,10 +231,10 @@ public final class ContainersImpl {
         @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<ContainersAcquireLeaseResponse> acquireLease(
                 @HostParam("url") String url,
+                @PathParam("containerName") String containerName,
                 @QueryParam("comp") String comp,
                 @QueryParam("restype") String restype,
                 @HeaderParam("x-ms-lease-action") String action,
-                @PathParam("containerName") String containerName,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-lease-duration") Integer duration,
                 @HeaderParam("x-ms-proposed-lease-id") String proposedLeaseId,
@@ -250,10 +250,10 @@ public final class ContainersImpl {
         @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<ContainersReleaseLeaseResponse> releaseLease(
                 @HostParam("url") String url,
+                @PathParam("containerName") String containerName,
                 @QueryParam("comp") String comp,
                 @QueryParam("restype") String restype,
                 @HeaderParam("x-ms-lease-action") String action,
-                @PathParam("containerName") String containerName,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-lease-id") String leaseId,
                 @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
@@ -268,10 +268,10 @@ public final class ContainersImpl {
         @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<ContainersRenewLeaseResponse> renewLease(
                 @HostParam("url") String url,
+                @PathParam("containerName") String containerName,
                 @QueryParam("comp") String comp,
                 @QueryParam("restype") String restype,
                 @HeaderParam("x-ms-lease-action") String action,
-                @PathParam("containerName") String containerName,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-lease-id") String leaseId,
                 @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
@@ -286,10 +286,10 @@ public final class ContainersImpl {
         @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<ContainersBreakLeaseResponse> breakLease(
                 @HostParam("url") String url,
+                @PathParam("containerName") String containerName,
                 @QueryParam("comp") String comp,
                 @QueryParam("restype") String restype,
                 @HeaderParam("x-ms-lease-action") String action,
-                @PathParam("containerName") String containerName,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-lease-break-period") Integer breakPeriod,
                 @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
@@ -304,10 +304,10 @@ public final class ContainersImpl {
         @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<ContainersChangeLeaseResponse> changeLease(
                 @HostParam("url") String url,
+                @PathParam("containerName") String containerName,
                 @QueryParam("comp") String comp,
                 @QueryParam("restype") String restype,
                 @HeaderParam("x-ms-lease-action") String action,
-                @PathParam("containerName") String containerName,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-lease-id") String leaseId,
                 @HeaderParam("x-ms-proposed-lease-id") String proposedLeaseId,
@@ -323,9 +323,9 @@ public final class ContainersImpl {
         @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<ContainersListBlobFlatSegmentResponse> listBlobFlatSegment(
                 @HostParam("url") String url,
+                @PathParam("containerName") String containerName,
                 @QueryParam("restype") String restype,
                 @QueryParam("comp") String comp,
-                @PathParam("containerName") String containerName,
                 @QueryParam("prefix") String prefix,
                 @QueryParam("marker") String marker,
                 @QueryParam("maxresults") Integer maxresults,
@@ -341,9 +341,9 @@ public final class ContainersImpl {
         @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<ContainersListBlobHierarchySegmentResponse> listBlobHierarchySegment(
                 @HostParam("url") String url,
+                @PathParam("containerName") String containerName,
                 @QueryParam("restype") String restype,
                 @QueryParam("comp") String comp,
-                @PathParam("containerName") String containerName,
                 @QueryParam("prefix") String prefix,
                 @QueryParam("delimiter") String delimiter,
                 @QueryParam("marker") String marker,
@@ -360,9 +360,9 @@ public final class ContainersImpl {
         @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<ContainersGetAccountInfoResponse> getAccountInfo(
                 @HostParam("url") String url,
+                @PathParam("containerName") String containerName,
                 @QueryParam("restype") String restype,
                 @QueryParam("comp") String comp,
-                @PathParam("containerName") String containerName,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -416,8 +416,8 @@ public final class ContainersImpl {
         Boolean encryptionScopeOverridePrevented = encryptionScopeOverridePreventedInternal;
         return service.create(
                 this.client.getUrl(),
-                restype,
                 containerName,
+                restype,
                 timeout,
                 metadata,
                 access,
@@ -453,8 +453,8 @@ public final class ContainersImpl {
         final String accept = "application/xml";
         return service.getProperties(
                 this.client.getUrl(),
-                restype,
                 containerName,
+                restype,
                 timeout,
                 leaseId,
                 this.client.getVersion(),
@@ -501,8 +501,8 @@ public final class ContainersImpl {
                 ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return service.delete(
                 this.client.getUrl(),
-                restype,
                 containerName,
+                restype,
                 timeout,
                 leaseId,
                 ifModifiedSinceConverted,
@@ -553,9 +553,9 @@ public final class ContainersImpl {
                 ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         return service.setMetadata(
                 this.client.getUrl(),
+                containerName,
                 restype,
                 comp,
-                containerName,
                 timeout,
                 leaseId,
                 metadata,
@@ -591,9 +591,9 @@ public final class ContainersImpl {
         final String accept = "application/xml";
         return service.getAccessPolicy(
                 this.client.getUrl(),
+                containerName,
                 restype,
                 comp,
-                containerName,
                 timeout,
                 leaseId,
                 this.client.getVersion(),
@@ -646,9 +646,9 @@ public final class ContainersImpl {
         SignedIdentifiersWrapper containerAclConverted = new SignedIdentifiersWrapper(containerAcl);
         return service.setAccessPolicy(
                 this.client.getUrl(),
+                containerName,
                 restype,
                 comp,
-                containerName,
                 timeout,
                 leaseId,
                 access,
@@ -693,9 +693,9 @@ public final class ContainersImpl {
         final String accept = "application/xml";
         return service.restore(
                 this.client.getUrl(),
+                containerName,
                 restype,
                 comp,
-                containerName,
                 timeout,
                 this.client.getVersion(),
                 requestId,
@@ -736,9 +736,9 @@ public final class ContainersImpl {
         final String accept = "application/xml";
         return service.rename(
                 this.client.getUrl(),
+                containerName,
                 restype,
                 comp,
-                containerName,
                 timeout,
                 this.client.getVersion(),
                 requestId,
@@ -781,9 +781,9 @@ public final class ContainersImpl {
         final String accept = "application/xml";
         return service.submitBatch(
                 this.client.getUrl(),
+                containerName,
                 restype,
                 comp,
-                containerName,
                 contentLength,
                 multipartContentType,
                 timeout,
@@ -840,10 +840,10 @@ public final class ContainersImpl {
                 ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return service.acquireLease(
                 this.client.getUrl(),
+                containerName,
                 comp,
                 restype,
                 action,
-                containerName,
                 timeout,
                 duration,
                 proposedLeaseId,
@@ -895,10 +895,10 @@ public final class ContainersImpl {
                 ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return service.releaseLease(
                 this.client.getUrl(),
+                containerName,
                 comp,
                 restype,
                 action,
-                containerName,
                 timeout,
                 leaseId,
                 ifModifiedSinceConverted,
@@ -949,10 +949,10 @@ public final class ContainersImpl {
                 ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return service.renewLease(
                 this.client.getUrl(),
+                containerName,
                 comp,
                 restype,
                 action,
-                containerName,
                 timeout,
                 leaseId,
                 ifModifiedSinceConverted,
@@ -1008,10 +1008,10 @@ public final class ContainersImpl {
                 ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return service.breakLease(
                 this.client.getUrl(),
+                containerName,
                 comp,
                 restype,
                 action,
-                containerName,
                 timeout,
                 breakPeriod,
                 ifModifiedSinceConverted,
@@ -1066,10 +1066,10 @@ public final class ContainersImpl {
                 ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return service.changeLease(
                 this.client.getUrl(),
+                containerName,
                 comp,
                 restype,
                 action,
-                containerName,
                 timeout,
                 leaseId,
                 proposedLeaseId,
@@ -1125,9 +1125,9 @@ public final class ContainersImpl {
                 JacksonAdapter.createDefaultSerializerAdapter().serializeList(include, CollectionFormat.CSV);
         return service.listBlobFlatSegment(
                 this.client.getUrl(),
+                containerName,
                 restype,
                 comp,
-                containerName,
                 prefix,
                 marker,
                 maxresults,
@@ -1187,9 +1187,9 @@ public final class ContainersImpl {
                 JacksonAdapter.createDefaultSerializerAdapter().serializeList(include, CollectionFormat.CSV);
         return service.listBlobHierarchySegment(
                 this.client.getUrl(),
+                containerName,
                 restype,
                 comp,
-                containerName,
                 prefix,
                 delimiter,
                 marker,
@@ -1219,6 +1219,6 @@ public final class ContainersImpl {
         final String comp = "properties";
         final String accept = "application/xml";
         return service.getAccountInfo(
-                this.client.getUrl(), restype, comp, containerName, this.client.getVersion(), accept, context);
+                this.client.getUrl(), containerName, restype, comp, this.client.getVersion(), accept, context);
     }
 }
