@@ -7,6 +7,7 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.security.fluent.models.JitNetworkAccessPolicyInner;
 
 /** Resource collection API of JitNetworkAccessPolicies. */
 public interface JitNetworkAccessPolicies {
@@ -143,6 +144,48 @@ public interface JitNetworkAccessPolicies {
         String resourceGroupName, String ascLocation, String jitNetworkAccessPolicyName, Context context);
 
     /**
+     * Create a policy for protecting resources using Just-in-Time access control.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
+     *     locations.
+     * @param jitNetworkAccessPolicyName Name of a Just-in-Time access configuration policy.
+     * @param body The body parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    JitNetworkAccessPolicy createOrUpdate(
+        String resourceGroupName,
+        String ascLocation,
+        String jitNetworkAccessPolicyName,
+        JitNetworkAccessPolicyInner body);
+
+    /**
+     * Create a policy for protecting resources using Just-in-Time access control.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
+     *     locations.
+     * @param jitNetworkAccessPolicyName Name of a Just-in-Time access configuration policy.
+     * @param body The body parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    Response<JitNetworkAccessPolicy> createOrUpdateWithResponse(
+        String resourceGroupName,
+        String ascLocation,
+        String jitNetworkAccessPolicyName,
+        JitNetworkAccessPolicyInner body,
+        Context context);
+
+    /**
      * Delete a Just-in-Time access control policy.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
@@ -214,57 +257,4 @@ public interface JitNetworkAccessPolicies {
         String jitNetworkAccessPolicyName,
         JitNetworkAccessPolicyInitiateRequest body,
         Context context);
-
-    /**
-     * Policies for protecting resources using Just-in-Time access control for the subscription, location.
-     *
-     * @param id the resource ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    JitNetworkAccessPolicy getById(String id);
-
-    /**
-     * Policies for protecting resources using Just-in-Time access control for the subscription, location.
-     *
-     * @param id the resource ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    Response<JitNetworkAccessPolicy> getByIdWithResponse(String id, Context context);
-
-    /**
-     * Delete a Just-in-Time access control policy.
-     *
-     * @param id the resource ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void deleteById(String id);
-
-    /**
-     * Delete a Just-in-Time access control policy.
-     *
-     * @param id the resource ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    Response<Void> deleteByIdWithResponse(String id, Context context);
-
-    /**
-     * Begins definition for a new JitNetworkAccessPolicy resource.
-     *
-     * @param name resource name.
-     * @return the first stage of the new JitNetworkAccessPolicy definition.
-     */
-    JitNetworkAccessPolicy.DefinitionStages.Blank define(String name);
 }

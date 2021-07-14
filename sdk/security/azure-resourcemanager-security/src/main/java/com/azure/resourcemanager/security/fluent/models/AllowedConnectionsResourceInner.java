@@ -6,9 +6,9 @@ package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.models.ConnectableResource;
+import com.azure.resourcemanager.security.models.Location;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -17,7 +17,7 @@ import java.util.List;
 /** The resource whose properties describes the allowed traffic between Azure resources. */
 @JsonFlatten
 @Immutable
-public class AllowedConnectionsResourceInner extends ProxyResource {
+public class AllowedConnectionsResourceInner extends Location {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AllowedConnectionsResourceInner.class);
 
     /*
@@ -31,12 +31,6 @@ public class AllowedConnectionsResourceInner extends ProxyResource {
      */
     @JsonProperty(value = "properties.connectableResources", access = JsonProperty.Access.WRITE_ONLY)
     private List<ConnectableResource> connectableResources;
-
-    /*
-     * Location where the resource is stored
-     */
-    @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
-    private String location;
 
     /**
      * Get the calculatedDateTime property: The UTC time on which the allowed connections resource was calculated.
@@ -57,20 +51,13 @@ public class AllowedConnectionsResourceInner extends ProxyResource {
     }
 
     /**
-     * Get the location property: Location where the resource is stored.
-     *
-     * @return the location value.
-     */
-    public String location() {
-        return this.location;
-    }
-
-    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
+        super.validate();
         if (connectableResources() != null) {
             connectableResources().forEach(e -> e.validate());
         }

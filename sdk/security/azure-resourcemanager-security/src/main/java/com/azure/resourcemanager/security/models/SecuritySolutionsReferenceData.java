@@ -6,7 +6,6 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -14,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** The SecuritySolutionsReferenceData model. */
 @JsonFlatten
 @Fluent
-public class SecuritySolutionsReferenceData extends ProxyResource {
+public class SecuritySolutionsReferenceData extends Location {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SecuritySolutionsReferenceData.class);
 
     /*
@@ -58,12 +57,6 @@ public class SecuritySolutionsReferenceData extends ProxyResource {
      */
     @JsonProperty(value = "properties.template", required = true)
     private String template;
-
-    /*
-     * Location where the resource is stored
-     */
-    @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
-    private String location;
 
     /**
      * Get the securityFamily property: The security family of the security solution.
@@ -206,20 +199,13 @@ public class SecuritySolutionsReferenceData extends ProxyResource {
     }
 
     /**
-     * Get the location property: Location where the resource is stored.
-     *
-     * @return the location value.
-     */
-    public String location() {
-        return this.location;
-    }
-
-    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
+        super.validate();
         if (securityFamily() == null) {
             throw logger
                 .logExceptionAsError(

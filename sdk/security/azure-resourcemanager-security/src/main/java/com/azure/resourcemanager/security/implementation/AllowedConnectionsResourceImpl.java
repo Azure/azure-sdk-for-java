@@ -23,16 +23,8 @@ public final class AllowedConnectionsResourceImpl implements AllowedConnectionsR
         this.serviceManager = serviceManager;
     }
 
-    public String id() {
-        return this.innerModel().id();
-    }
-
-    public String name() {
-        return this.innerModel().name();
-    }
-
-    public String type() {
-        return this.innerModel().type();
+    public String location() {
+        return this.innerModel().location();
     }
 
     public OffsetDateTime calculatedDateTime() {
@@ -46,10 +38,6 @@ public final class AllowedConnectionsResourceImpl implements AllowedConnectionsR
         } else {
             return Collections.emptyList();
         }
-    }
-
-    public String location() {
-        return this.innerModel().location();
     }
 
     public AllowedConnectionsResourceInner innerModel() {

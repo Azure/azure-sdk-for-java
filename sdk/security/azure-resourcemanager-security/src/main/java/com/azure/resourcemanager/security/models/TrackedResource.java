@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -13,14 +12,8 @@ import java.util.Map;
 
 /** Describes an Azure tracked resource. */
 @Fluent
-public final class TrackedResource extends ProxyResource {
+public final class TrackedResource extends AzureTrackedResourceLocation {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TrackedResource.class);
-
-    /*
-     * Location where the resource is stored
-     */
-    @JsonProperty(value = "location")
-    private String location;
 
     /*
      * Kind of the resource
@@ -40,26 +33,6 @@ public final class TrackedResource extends ProxyResource {
      */
     @JsonProperty(value = "tags")
     private Map<String, String> tags;
-
-    /**
-     * Get the location property: Location where the resource is stored.
-     *
-     * @return the location value.
-     */
-    public String location() {
-        return this.location;
-    }
-
-    /**
-     * Set the location property: Location where the resource is stored.
-     *
-     * @param location the location value to set.
-     * @return the TrackedResource object itself.
-     */
-    public TrackedResource withLocation(String location) {
-        this.location = location;
-        return this;
-    }
 
     /**
      * Get the kind property: Kind of the resource.
@@ -121,11 +94,20 @@ public final class TrackedResource extends ProxyResource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public TrackedResource withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
+        super.validate();
     }
 }

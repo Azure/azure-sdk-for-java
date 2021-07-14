@@ -12,25 +12,11 @@ import java.util.Map;
 /** An immutable client-side representation of IoTSecurityAggregatedAlert. */
 public interface IoTSecurityAggregatedAlert {
     /**
-     * Gets the id property: Fully qualified resource Id for the resource.
+     * Gets the tags property: Resource tags.
      *
-     * @return the id value.
+     * @return the tags value.
      */
-    String id();
-
-    /**
-     * Gets the name property: The name of the resource.
-     *
-     * @return the name value.
-     */
-    String name();
-
-    /**
-     * Gets the type property: The type of the resource.
-     *
-     * @return the type value.
-     */
-    String type();
+    Map<String, String> tags();
 
     /**
      * Gets the alertType property: Name of the alert type.
@@ -123,13 +109,6 @@ public interface IoTSecurityAggregatedAlert {
      * @return the topDevicesList value.
      */
     List<IoTSecurityAggregatedAlertPropertiesTopDevicesListItem> topDevicesList();
-
-    /**
-     * Gets the tags property: Resource tags.
-     *
-     * @return the tags value.
-     */
-    Map<String, String> tags();
 
     /**
      * Gets the inner com.azure.resourcemanager.security.fluent.models.IoTSecurityAggregatedAlertInner object.

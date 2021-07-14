@@ -10,25 +10,11 @@ import java.util.Map;
 /** An immutable client-side representation of IoTSecurityAggregatedRecommendation. */
 public interface IoTSecurityAggregatedRecommendation {
     /**
-     * Gets the id property: Fully qualified resource Id for the resource.
+     * Gets the tags property: Resource tags.
      *
-     * @return the id value.
+     * @return the tags value.
      */
-    String id();
-
-    /**
-     * Gets the name property: The name of the resource.
-     *
-     * @return the name value.
-     */
-    String name();
-
-    /**
-     * Gets the type property: The type of the resource.
-     *
-     * @return the type value.
-     */
-    String type();
+    Map<String, String> tags();
 
     /**
      * Gets the recommendationName property: Name of the recommendation.
@@ -99,13 +85,6 @@ public interface IoTSecurityAggregatedRecommendation {
      * @return the logAnalyticsQuery value.
      */
     String logAnalyticsQuery();
-
-    /**
-     * Gets the tags property: Resource tags.
-     *
-     * @return the tags value.
-     */
-    Map<String, String> tags();
 
     /**
      * Gets the inner com.azure.resourcemanager.security.fluent.models.IoTSecurityAggregatedRecommendationInner object.

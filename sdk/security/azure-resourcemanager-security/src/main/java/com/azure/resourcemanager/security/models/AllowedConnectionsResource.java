@@ -11,25 +11,11 @@ import java.util.List;
 /** An immutable client-side representation of AllowedConnectionsResource. */
 public interface AllowedConnectionsResource {
     /**
-     * Gets the id property: Fully qualified resource Id for the resource.
+     * Gets the location property: Location where the resource is stored.
      *
-     * @return the id value.
+     * @return the location value.
      */
-    String id();
-
-    /**
-     * Gets the name property: The name of the resource.
-     *
-     * @return the name value.
-     */
-    String name();
-
-    /**
-     * Gets the type property: The type of the resource.
-     *
-     * @return the type value.
-     */
-    String type();
+    String location();
 
     /**
      * Gets the calculatedDateTime property: The UTC time on which the allowed connections resource was calculated.
@@ -44,13 +30,6 @@ public interface AllowedConnectionsResource {
      * @return the connectableResources value.
      */
     List<ConnectableResource> connectableResources();
-
-    /**
-     * Gets the location property: Location where the resource is stored.
-     *
-     * @return the location value.
-     */
-    String location();
 
     /**
      * Gets the inner com.azure.resourcemanager.security.fluent.models.AllowedConnectionsResourceInner object.

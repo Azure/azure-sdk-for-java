@@ -6,9 +6,9 @@ package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.models.JitNetworkAccessPolicyVirtualMachine;
+import com.azure.resourcemanager.security.models.Kind;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -16,7 +16,7 @@ import java.util.List;
 /** The JitNetworkAccessPolicy model. */
 @JsonFlatten
 @Fluent
-public class JitNetworkAccessPolicyInner extends ProxyResource {
+public class JitNetworkAccessPolicyInner extends Kind {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(JitNetworkAccessPolicyInner.class);
 
     /*
@@ -36,12 +36,6 @@ public class JitNetworkAccessPolicyInner extends ProxyResource {
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
-
-    /*
-     * Kind of the resource
-     */
-    @JsonProperty(value = "kind")
-    private String kind;
 
     /*
      * Location where the resource is stored
@@ -99,26 +93,6 @@ public class JitNetworkAccessPolicyInner extends ProxyResource {
     }
 
     /**
-     * Get the kind property: Kind of the resource.
-     *
-     * @return the kind value.
-     */
-    public String kind() {
-        return this.kind;
-    }
-
-    /**
-     * Set the kind property: Kind of the resource.
-     *
-     * @param kind the kind value to set.
-     * @return the JitNetworkAccessPolicyInner object itself.
-     */
-    public JitNetworkAccessPolicyInner withKind(String kind) {
-        this.kind = kind;
-        return this;
-    }
-
-    /**
      * Get the location property: Location where the resource is stored.
      *
      * @return the location value.
@@ -127,12 +101,21 @@ public class JitNetworkAccessPolicyInner extends ProxyResource {
         return this.location;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public JitNetworkAccessPolicyInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
+        super.validate();
         if (virtualMachines() == null) {
             throw logger
                 .logExceptionAsError(

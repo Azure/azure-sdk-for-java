@@ -13,6 +13,7 @@ import com.azure.resourcemanager.security.fluent.IotSecuritySolutionsClient;
 import com.azure.resourcemanager.security.fluent.models.IoTSecuritySolutionModelInner;
 import com.azure.resourcemanager.security.models.IoTSecuritySolutionModel;
 import com.azure.resourcemanager.security.models.IotSecuritySolutions;
+import com.azure.resourcemanager.security.models.UpdateIotSecuritySolutionData;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class IotSecuritySolutionsImpl implements IotSecuritySolutions {
@@ -75,6 +76,68 @@ public final class IotSecuritySolutionsImpl implements IotSecuritySolutions {
         }
     }
 
+    public IoTSecuritySolutionModel createOrUpdate(
+        String resourceGroupName, String solutionName, IoTSecuritySolutionModelInner iotSecuritySolutionData) {
+        IoTSecuritySolutionModelInner inner =
+            this.serviceClient().createOrUpdate(resourceGroupName, solutionName, iotSecuritySolutionData);
+        if (inner != null) {
+            return new IoTSecuritySolutionModelImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<IoTSecuritySolutionModel> createOrUpdateWithResponse(
+        String resourceGroupName,
+        String solutionName,
+        IoTSecuritySolutionModelInner iotSecuritySolutionData,
+        Context context) {
+        Response<IoTSecuritySolutionModelInner> inner =
+            this
+                .serviceClient()
+                .createOrUpdateWithResponse(resourceGroupName, solutionName, iotSecuritySolutionData, context);
+        if (inner != null) {
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new IoTSecuritySolutionModelImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public IoTSecuritySolutionModel update(
+        String resourceGroupName, String solutionName, UpdateIotSecuritySolutionData updateIotSecuritySolutionData) {
+        IoTSecuritySolutionModelInner inner =
+            this.serviceClient().update(resourceGroupName, solutionName, updateIotSecuritySolutionData);
+        if (inner != null) {
+            return new IoTSecuritySolutionModelImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<IoTSecuritySolutionModel> updateWithResponse(
+        String resourceGroupName,
+        String solutionName,
+        UpdateIotSecuritySolutionData updateIotSecuritySolutionData,
+        Context context) {
+        Response<IoTSecuritySolutionModelInner> inner =
+            this
+                .serviceClient()
+                .updateWithResponse(resourceGroupName, solutionName, updateIotSecuritySolutionData, context);
+        if (inner != null) {
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new IoTSecuritySolutionModelImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
     public void deleteByResourceGroup(String resourceGroupName, String solutionName) {
         this.serviceClient().delete(resourceGroupName, solutionName);
     }
@@ -83,103 +146,11 @@ public final class IotSecuritySolutionsImpl implements IotSecuritySolutions {
         return this.serviceClient().deleteWithResponse(resourceGroupName, solutionName, context);
     }
 
-    public IoTSecuritySolutionModel getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String solutionName = Utils.getValueFromIdByName(id, "iotSecuritySolutions");
-        if (solutionName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'iotSecuritySolutions'.",
-                                id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, solutionName, Context.NONE).getValue();
-    }
-
-    public Response<IoTSecuritySolutionModel> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String solutionName = Utils.getValueFromIdByName(id, "iotSecuritySolutions");
-        if (solutionName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'iotSecuritySolutions'.",
-                                id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, solutionName, context);
-    }
-
-    public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String solutionName = Utils.getValueFromIdByName(id, "iotSecuritySolutions");
-        if (solutionName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'iotSecuritySolutions'.",
-                                id)));
-        }
-        this.deleteWithResponse(resourceGroupName, solutionName, Context.NONE).getValue();
-    }
-
-    public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String solutionName = Utils.getValueFromIdByName(id, "iotSecuritySolutions");
-        if (solutionName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'iotSecuritySolutions'.",
-                                id)));
-        }
-        return this.deleteWithResponse(resourceGroupName, solutionName, context);
-    }
-
     private IotSecuritySolutionsClient serviceClient() {
         return this.innerClient;
     }
 
     private com.azure.resourcemanager.security.SecurityManager manager() {
         return this.serviceManager;
-    }
-
-    public IoTSecuritySolutionModelImpl define(String name) {
-        return new IoTSecuritySolutionModelImpl(name, this.manager());
     }
 }

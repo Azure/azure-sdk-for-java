@@ -5,13 +5,12 @@
 package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.models.AadExternalSecuritySolution;
 import com.azure.resourcemanager.security.models.AtaExternalSecuritySolution;
 import com.azure.resourcemanager.security.models.CefExternalSecuritySolution;
+import com.azure.resourcemanager.security.models.Location;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -32,29 +31,16 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "AAD", value = AadExternalSecuritySolution.class)
 })
 @Immutable
-public class ExternalSecuritySolutionInner extends ProxyResource {
+public class ExternalSecuritySolutionInner extends Location {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ExternalSecuritySolutionInner.class);
-
-    /*
-     * Location where the resource is stored
-     */
-    @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
-    private String location;
-
-    /**
-     * Get the location property: Location where the resource is stored.
-     *
-     * @return the location value.
-     */
-    public String location() {
-        return this.location;
-    }
 
     /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
+        super.validate();
     }
 }

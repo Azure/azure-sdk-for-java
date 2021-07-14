@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.implementation;
 
-import com.azure.core.management.Region;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.security.fluent.models.JitNetworkAccessPolicyInner;
 import com.azure.resourcemanager.security.fluent.models.JitNetworkAccessRequestInner;
 import com.azure.resourcemanager.security.models.JitNetworkAccessPolicy;
@@ -15,22 +13,19 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public final class JitNetworkAccessPolicyImpl
-    implements JitNetworkAccessPolicy, JitNetworkAccessPolicy.Definition, JitNetworkAccessPolicy.Update {
+public final class JitNetworkAccessPolicyImpl implements JitNetworkAccessPolicy {
     private JitNetworkAccessPolicyInner innerObject;
 
     private final com.azure.resourcemanager.security.SecurityManager serviceManager;
 
-    public String id() {
-        return this.innerModel().id();
+    JitNetworkAccessPolicyImpl(
+        JitNetworkAccessPolicyInner innerObject, com.azure.resourcemanager.security.SecurityManager serviceManager) {
+        this.innerObject = innerObject;
+        this.serviceManager = serviceManager;
     }
 
-    public String name() {
-        return this.innerModel().name();
-    }
-
-    public String type() {
-        return this.innerModel().type();
+    public String kind() {
+        return this.innerModel().kind();
     }
 
     public List<JitNetworkAccessPolicyVirtualMachine> virtualMachines() {
@@ -60,20 +55,8 @@ public final class JitNetworkAccessPolicyImpl
         return this.innerModel().provisioningState();
     }
 
-    public String kind() {
-        return this.innerModel().kind();
-    }
-
     public String location() {
         return this.innerModel().location();
-    }
-
-    public Region region() {
-        return Region.fromName(this.regionName());
-    }
-
-    public String regionName() {
-        return this.location();
     }
 
     public JitNetworkAccessPolicyInner innerModel() {
@@ -82,115 +65,5 @@ public final class JitNetworkAccessPolicyImpl
 
     private com.azure.resourcemanager.security.SecurityManager manager() {
         return this.serviceManager;
-    }
-
-    private String resourceGroupName;
-
-    private String ascLocation;
-
-    private String jitNetworkAccessPolicyName;
-
-    public JitNetworkAccessPolicyImpl withExistingLocation(String resourceGroupName, String ascLocation) {
-        this.resourceGroupName = resourceGroupName;
-        this.ascLocation = ascLocation;
-        return this;
-    }
-
-    public JitNetworkAccessPolicy create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getJitNetworkAccessPolicies()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, ascLocation, jitNetworkAccessPolicyName, this.innerModel(), Context.NONE)
-                .getValue();
-        return this;
-    }
-
-    public JitNetworkAccessPolicy create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getJitNetworkAccessPolicies()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, ascLocation, jitNetworkAccessPolicyName, this.innerModel(), context)
-                .getValue();
-        return this;
-    }
-
-    JitNetworkAccessPolicyImpl(String name, com.azure.resourcemanager.security.SecurityManager serviceManager) {
-        this.innerObject = new JitNetworkAccessPolicyInner();
-        this.serviceManager = serviceManager;
-        this.jitNetworkAccessPolicyName = name;
-    }
-
-    public JitNetworkAccessPolicyImpl update() {
-        return this;
-    }
-
-    public JitNetworkAccessPolicy apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getJitNetworkAccessPolicies()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, ascLocation, jitNetworkAccessPolicyName, this.innerModel(), Context.NONE)
-                .getValue();
-        return this;
-    }
-
-    public JitNetworkAccessPolicy apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getJitNetworkAccessPolicies()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, ascLocation, jitNetworkAccessPolicyName, this.innerModel(), context)
-                .getValue();
-        return this;
-    }
-
-    JitNetworkAccessPolicyImpl(
-        JitNetworkAccessPolicyInner innerObject, com.azure.resourcemanager.security.SecurityManager serviceManager) {
-        this.innerObject = innerObject;
-        this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.ascLocation = Utils.getValueFromIdByName(innerObject.id(), "locations");
-        this.jitNetworkAccessPolicyName = Utils.getValueFromIdByName(innerObject.id(), "jitNetworkAccessPolicies");
-    }
-
-    public JitNetworkAccessPolicy refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getJitNetworkAccessPolicies()
-                .getWithResponse(resourceGroupName, ascLocation, jitNetworkAccessPolicyName, Context.NONE)
-                .getValue();
-        return this;
-    }
-
-    public JitNetworkAccessPolicy refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getJitNetworkAccessPolicies()
-                .getWithResponse(resourceGroupName, ascLocation, jitNetworkAccessPolicyName, context)
-                .getValue();
-        return this;
-    }
-
-    public JitNetworkAccessPolicyImpl withVirtualMachines(List<JitNetworkAccessPolicyVirtualMachine> virtualMachines) {
-        this.innerModel().withVirtualMachines(virtualMachines);
-        return this;
-    }
-
-    public JitNetworkAccessPolicyImpl withRequests(List<JitNetworkAccessRequestInner> requests) {
-        this.innerModel().withRequests(requests);
-        return this;
-    }
-
-    public JitNetworkAccessPolicyImpl withKind(String kind) {
-        this.innerModel().withKind(kind);
-        return this;
     }
 }

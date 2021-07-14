@@ -6,8 +6,8 @@ package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.security.models.Location;
 import com.azure.resourcemanager.security.models.SecurityFamily;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** The DiscoveredSecuritySolution model. */
 @JsonFlatten
 @Fluent
-public class DiscoveredSecuritySolutionInner extends ProxyResource {
+public class DiscoveredSecuritySolutionInner extends Location {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DiscoveredSecuritySolutionInner.class);
 
     /*
@@ -41,12 +41,6 @@ public class DiscoveredSecuritySolutionInner extends ProxyResource {
      */
     @JsonProperty(value = "properties.sku", required = true)
     private String sku;
-
-    /*
-     * Location where the resource is stored
-     */
-    @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
-    private String location;
 
     /**
      * Get the securityFamily property: The security family of the discovered solution.
@@ -129,20 +123,13 @@ public class DiscoveredSecuritySolutionInner extends ProxyResource {
     }
 
     /**
-     * Get the location property: Location where the resource is stored.
-     *
-     * @return the location value.
-     */
-    public String location() {
-        return this.location;
-    }
-
-    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
+        super.validate();
         if (securityFamily() == null) {
             throw logger
                 .logExceptionAsError(

@@ -20,16 +20,8 @@ public final class SecuritySolutionImpl implements SecuritySolution {
         this.serviceManager = serviceManager;
     }
 
-    public String id() {
-        return this.innerModel().id();
-    }
-
-    public String name() {
-        return this.innerModel().name();
-    }
-
-    public String type() {
-        return this.innerModel().type();
+    public String location() {
+        return this.innerModel().location();
     }
 
     public SecurityFamily securityFamily() {
@@ -46,10 +38,6 @@ public final class SecuritySolutionImpl implements SecuritySolution {
 
     public String protectionStatus() {
         return this.innerModel().protectionStatus();
-    }
-
-    public String location() {
-        return this.innerModel().location();
     }
 
     public SecuritySolutionInner innerModel() {
