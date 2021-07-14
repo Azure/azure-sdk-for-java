@@ -30,7 +30,7 @@ public class BulkProcessingOptionsTest {
 
     @Test(groups = { "unit" })
     public void minAndMaxTargetRetryRate() {
-        BulkProcessingOptions<Object> options = new BulkProcessingOptions<Object>();
+        BulkExecutionOptions options = new BulkExecutionOptions();
 
         double rnd1 = rnd.nextDouble();
         double rnd2 = rnd.nextDouble();
@@ -45,23 +45,23 @@ public class BulkProcessingOptionsTest {
     }
 
     @Test(groups = { "unit" })
-    public void thresholdsInstanceCanBePassedAcrossBulkProcessingOptionsInstances() {
-        BulkProcessingOptions<Object> initialOptions = new BulkProcessingOptions<Object>();
-        BulkProcessingThresholds<Object> thresholds = initialOptions.getThresholds();
-        ConcurrentMap<String, PartitionScopeThresholds<Object>> partitionScopeThresholdsMap =
+    public void thresholdsInstanceCanBePassedAcrossBulkExecutionOptionsInstances() {
+        BulkExecutionOptions initialOptions = new BulkExecutionOptions();
+        BulkExecutionThresholds thresholds = initialOptions.getThresholds();
+        ConcurrentMap<String, PartitionScopeThresholds> partitionScopeThresholdsMap =
             ImplementationBridgeHelpers
-                .BulkProcessingThresholdsHelper
-                .getBulkProcessingThresholdsAccessor()
+                .BulkExecutionThresholdsHelper
+                .getBulkExecutionThresholdsAccessor()
                 .getPartitionScopeThresholds(thresholds);
-        BulkProcessingOptions<Object> optionsWithThresholds =
-            new BulkProcessingOptions<Object>(null, thresholds);
+        BulkExecutionOptions optionsWithThresholds =
+            new BulkExecutionOptions(null, thresholds);
 
         assertThat(thresholds).isSameAs(optionsWithThresholds.getThresholds());
         assertThat(partitionScopeThresholdsMap)
             .isSameAs(
                 ImplementationBridgeHelpers
-                    .BulkProcessingThresholdsHelper
-                    .getBulkProcessingThresholdsAccessor()
+                    .BulkExecutionThresholdsHelper
+                    .getBulkExecutionThresholdsAccessor()
                     .getPartitionScopeThresholds(optionsWithThresholds.getThresholds()));
     }
 }

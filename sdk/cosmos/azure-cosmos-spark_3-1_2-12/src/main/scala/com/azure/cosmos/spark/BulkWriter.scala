@@ -4,10 +4,10 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.
 {
+  BulkExecutionOptions,
+  BulkExecutionThresholds,
   BulkItemRequestOptions,
   BulkOperations,
-  BulkProcessingOptions,
-  BulkProcessingThresholds,
   CosmosAsyncContainer,
   CosmosBulkOperationResponse,
   CosmosException,
@@ -76,7 +76,7 @@ class BulkWriter(container: CosmosAsyncContainer,
   private val totalScheduledMetrics = new AtomicLong(0)
   private val totalSuccessfulIngestionMetrics = new AtomicLong(0)
 
-  private val bulkOptions = new BulkProcessingOptions[Object](null, BulkWriter.bulkProcessingThresholds)
+  private val bulkOptions = new BulkExecutionOptions(BulkWriter.bulkProcessingThresholds)
   private val operationContext = initializeOperationContext()
 
   private def initializeOperationContext(): SparkTaskContext = {
@@ -95,8 +95,8 @@ class BulkWriter(container: CosmosAsyncContainer,
         DiagnosticsLoader.getDiagnosticsProvider(diagnosticsConfig).getLogger(this.getClass)
 
       val operationContextAndListenerTuple = new OperationContextAndListenerTuple(taskDiagnosticsContext, listener)
-      ImplementationBridgeHelpers.CosmosBulkProcessingOptionsHelper
-        .getCosmosBulkProcessingOptionAccessor
+      ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
+        .getCosmosBulkExecutionOptionsAccessor
         .setOperationContext(bulkOptions, operationContextAndListenerTuple)
 
       taskDiagnosticsContext
@@ -373,7 +373,7 @@ private object BulkWriter {
   val emitFailureHandler: EmitFailureHandler =
         (_, emitResult) => if (emitResult.equals(EmitResult.FAIL_NON_SERIALIZED)) true else false
 
-  val bulkProcessingThresholds = new BulkProcessingThresholds[Object]()
+  val bulkProcessingThresholds = new BulkExecutionThresholds()
 }
 
 //scalastyle:on multiple.string.literals
