@@ -22,6 +22,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.HashMap;
 import java.util.Map;
 
 import static com.azure.spring.integration.core.AzureHeaders.SCHEDULED_ENQUEUE_MESSAGE;
@@ -248,6 +249,11 @@ public class ServiceBusMessageConverterTest {
         when(this.receivedMessage.getTo()).thenReturn(SERVICE_BUS_TO);
         when(this.receivedMessage.getReplyToSessionId()).thenReturn(SERVICE_BUS_REPLY_TO_SESSION_ID);
         when(this.receivedMessage.getPartitionKey()).thenReturn(SERVICE_BUS_PARTITION_KEY);
+        when(this.receivedMessage.getApplicationProperties()).thenReturn(new HashMap<String, Object>() {
+            {
+                put(TIME_TO_LIVE, SERVICE_BUS_TTL.toString());
+            }
+        });
 
         Message<String> springMessage = this.messageConverter.toMessage(this.receivedMessage, String.class);
 
