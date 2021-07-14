@@ -31,14 +31,12 @@ import javax.net.ssl.SSLException;
  */
 public abstract class PerfStressTest<TOptions extends PerfStressOptions> {
     private final reactor.netty.http.client.HttpClient recordPlaybackHttpClient;
+    private final TestProxyPolicy testProxyPolicy;
+    private String recordingId;
 
     protected final TOptions options;
     protected final HttpClient httpClient;
     protected final Iterable<HttpPipelinePolicy> policies;
-
-    private final TestProxyPolicy testProxyPolicy;
-
-    private String recordingId;
 
     /**
      * Creates an instance of performance test.
