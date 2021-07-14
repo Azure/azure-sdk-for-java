@@ -6,8 +6,8 @@ package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.security.models.Location;
 import com.azure.resourcemanager.security.models.TopologySingleResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -17,7 +17,7 @@ import java.util.List;
 /** The TopologyResource model. */
 @JsonFlatten
 @Immutable
-public class TopologyResourceInner extends ProxyResource {
+public class TopologyResourceInner extends Location {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TopologyResourceInner.class);
 
     /*
@@ -31,12 +31,6 @@ public class TopologyResourceInner extends ProxyResource {
      */
     @JsonProperty(value = "properties.topologyResources", access = JsonProperty.Access.WRITE_ONLY)
     private List<TopologySingleResource> topologyResources;
-
-    /*
-     * Location where the resource is stored
-     */
-    @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
-    private String location;
 
     /**
      * Get the calculatedDateTime property: The UTC time on which the topology was calculated.
@@ -57,20 +51,13 @@ public class TopologyResourceInner extends ProxyResource {
     }
 
     /**
-     * Get the location property: Location where the resource is stored.
-     *
-     * @return the location value.
-     */
-    public String location() {
-        return this.location;
-    }
-
-    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
+        super.validate();
         if (topologyResources() != null) {
             topologyResources().forEach(e -> e.validate());
         }

@@ -6,10 +6,10 @@ package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.models.IoTSecurityAggregatedAlertPropertiesTopDevicesListItem;
 import com.azure.resourcemanager.security.models.ReportedSeverity;
+import com.azure.resourcemanager.security.models.TagsResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.LocalDate;
@@ -19,7 +19,7 @@ import java.util.Map;
 /** Security Solution Aggregated Alert information. */
 @JsonFlatten
 @Fluent
-public class IoTSecurityAggregatedAlertInner extends ProxyResource {
+public class IoTSecurityAggregatedAlertInner extends TagsResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(IoTSecurityAggregatedAlertInner.class);
 
     /*
@@ -100,12 +100,6 @@ public class IoTSecurityAggregatedAlertInner extends ProxyResource {
      */
     @JsonProperty(value = "properties.topDevicesList", access = JsonProperty.Access.WRITE_ONLY)
     private List<IoTSecurityAggregatedAlertPropertiesTopDevicesListItem> topDevicesList;
-
-    /*
-     * Resource tags
-     */
-    @JsonProperty(value = "tags")
-    private Map<String, String> tags;
 
     /**
      * Get the alertType property: Name of the alert type.
@@ -225,23 +219,10 @@ public class IoTSecurityAggregatedAlertInner extends ProxyResource {
         return this.topDevicesList;
     }
 
-    /**
-     * Get the tags property: Resource tags.
-     *
-     * @return the tags value.
-     */
-    public Map<String, String> tags() {
-        return this.tags;
-    }
-
-    /**
-     * Set the tags property: Resource tags.
-     *
-     * @param tags the tags value to set.
-     * @return the IoTSecurityAggregatedAlertInner object itself.
-     */
+    /** {@inheritDoc} */
+    @Override
     public IoTSecurityAggregatedAlertInner withTags(Map<String, String> tags) {
-        this.tags = tags;
+        super.withTags(tags);
         return this;
     }
 
@@ -250,7 +231,9 @@ public class IoTSecurityAggregatedAlertInner extends ProxyResource {
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
+        super.validate();
         if (topDevicesList() != null) {
             topDevicesList().forEach(e -> e.validate());
         }

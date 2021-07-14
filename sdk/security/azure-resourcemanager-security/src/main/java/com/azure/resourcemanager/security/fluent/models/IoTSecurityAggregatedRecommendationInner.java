@@ -6,9 +6,9 @@ package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.models.ReportedSeverity;
+import com.azure.resourcemanager.security.models.TagsResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -16,7 +16,7 @@ import java.util.Map;
 /** IoT Security solution recommendation information. */
 @JsonFlatten
 @Fluent
-public class IoTSecurityAggregatedRecommendationInner extends ProxyResource {
+public class IoTSecurityAggregatedRecommendationInner extends TagsResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(IoTSecurityAggregatedRecommendationInner.class);
 
     /*
@@ -78,12 +78,6 @@ public class IoTSecurityAggregatedRecommendationInner extends ProxyResource {
      */
     @JsonProperty(value = "properties.logAnalyticsQuery", access = JsonProperty.Access.WRITE_ONLY)
     private String logAnalyticsQuery;
-
-    /*
-     * Resource tags
-     */
-    @JsonProperty(value = "tags")
-    private Map<String, String> tags;
 
     /**
      * Get the recommendationName property: Name of the recommendation.
@@ -186,23 +180,10 @@ public class IoTSecurityAggregatedRecommendationInner extends ProxyResource {
         return this.logAnalyticsQuery;
     }
 
-    /**
-     * Get the tags property: Resource tags.
-     *
-     * @return the tags value.
-     */
-    public Map<String, String> tags() {
-        return this.tags;
-    }
-
-    /**
-     * Set the tags property: Resource tags.
-     *
-     * @param tags the tags value to set.
-     * @return the IoTSecurityAggregatedRecommendationInner object itself.
-     */
+    /** {@inheritDoc} */
+    @Override
     public IoTSecurityAggregatedRecommendationInner withTags(Map<String, String> tags) {
-        this.tags = tags;
+        super.withTags(tags);
         return this;
     }
 
@@ -211,6 +192,8 @@ public class IoTSecurityAggregatedRecommendationInner extends ProxyResource {
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
+        super.validate();
     }
 }

@@ -25,16 +25,13 @@ public final class IoTSecurityAggregatedAlertImpl implements IoTSecurityAggregat
         this.serviceManager = serviceManager;
     }
 
-    public String id() {
-        return this.innerModel().id();
-    }
-
-    public String name() {
-        return this.innerModel().name();
-    }
-
-    public String type() {
-        return this.innerModel().type();
+    public Map<String, String> tags() {
+        Map<String, String> inner = this.innerModel().tags();
+        if (inner != null) {
+            return Collections.unmodifiableMap(inner);
+        } else {
+            return Collections.emptyMap();
+        }
     }
 
     public String alertType() {
@@ -91,15 +88,6 @@ public final class IoTSecurityAggregatedAlertImpl implements IoTSecurityAggregat
             return Collections.unmodifiableList(inner);
         } else {
             return Collections.emptyList();
-        }
-    }
-
-    public Map<String, String> tags() {
-        Map<String, String> inner = this.innerModel().tags();
-        if (inner != null) {
-            return Collections.unmodifiableMap(inner);
-        } else {
-            return Collections.emptyMap();
         }
     }
 

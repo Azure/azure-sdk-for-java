@@ -101,6 +101,41 @@ public final class JitNetworkAccessPoliciesImpl implements JitNetworkAccessPolic
         }
     }
 
+    public JitNetworkAccessPolicy createOrUpdate(
+        String resourceGroupName,
+        String ascLocation,
+        String jitNetworkAccessPolicyName,
+        JitNetworkAccessPolicyInner body) {
+        JitNetworkAccessPolicyInner inner =
+            this.serviceClient().createOrUpdate(resourceGroupName, ascLocation, jitNetworkAccessPolicyName, body);
+        if (inner != null) {
+            return new JitNetworkAccessPolicyImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<JitNetworkAccessPolicy> createOrUpdateWithResponse(
+        String resourceGroupName,
+        String ascLocation,
+        String jitNetworkAccessPolicyName,
+        JitNetworkAccessPolicyInner body,
+        Context context) {
+        Response<JitNetworkAccessPolicyInner> inner =
+            this
+                .serviceClient()
+                .createOrUpdateWithResponse(resourceGroupName, ascLocation, jitNetworkAccessPolicyName, body, context);
+        if (inner != null) {
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new JitNetworkAccessPolicyImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
     public void delete(String resourceGroupName, String ascLocation, String jitNetworkAccessPolicyName) {
         this.serviceClient().delete(resourceGroupName, ascLocation, jitNetworkAccessPolicyName);
     }
@@ -147,133 +182,11 @@ public final class JitNetworkAccessPoliciesImpl implements JitNetworkAccessPolic
         }
     }
 
-    public JitNetworkAccessPolicy getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String ascLocation = Utils.getValueFromIdByName(id, "locations");
-        if (ascLocation == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'locations'.", id)));
-        }
-        String jitNetworkAccessPolicyName = Utils.getValueFromIdByName(id, "jitNetworkAccessPolicies");
-        if (jitNetworkAccessPolicyName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'jitNetworkAccessPolicies'.",
-                                id)));
-        }
-        return this
-            .getWithResponse(resourceGroupName, ascLocation, jitNetworkAccessPolicyName, Context.NONE)
-            .getValue();
-    }
-
-    public Response<JitNetworkAccessPolicy> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String ascLocation = Utils.getValueFromIdByName(id, "locations");
-        if (ascLocation == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'locations'.", id)));
-        }
-        String jitNetworkAccessPolicyName = Utils.getValueFromIdByName(id, "jitNetworkAccessPolicies");
-        if (jitNetworkAccessPolicyName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'jitNetworkAccessPolicies'.",
-                                id)));
-        }
-        return this.getWithResponse(resourceGroupName, ascLocation, jitNetworkAccessPolicyName, context);
-    }
-
-    public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String ascLocation = Utils.getValueFromIdByName(id, "locations");
-        if (ascLocation == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'locations'.", id)));
-        }
-        String jitNetworkAccessPolicyName = Utils.getValueFromIdByName(id, "jitNetworkAccessPolicies");
-        if (jitNetworkAccessPolicyName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'jitNetworkAccessPolicies'.",
-                                id)));
-        }
-        this.deleteWithResponse(resourceGroupName, ascLocation, jitNetworkAccessPolicyName, Context.NONE).getValue();
-    }
-
-    public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String ascLocation = Utils.getValueFromIdByName(id, "locations");
-        if (ascLocation == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'locations'.", id)));
-        }
-        String jitNetworkAccessPolicyName = Utils.getValueFromIdByName(id, "jitNetworkAccessPolicies");
-        if (jitNetworkAccessPolicyName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'jitNetworkAccessPolicies'.",
-                                id)));
-        }
-        return this.deleteWithResponse(resourceGroupName, ascLocation, jitNetworkAccessPolicyName, context);
-    }
-
     private JitNetworkAccessPoliciesClient serviceClient() {
         return this.innerClient;
     }
 
     private com.azure.resourcemanager.security.SecurityManager manager() {
         return this.serviceManager;
-    }
-
-    public JitNetworkAccessPolicyImpl define(String name) {
-        return new JitNetworkAccessPolicyImpl(name, this.manager());
     }
 }

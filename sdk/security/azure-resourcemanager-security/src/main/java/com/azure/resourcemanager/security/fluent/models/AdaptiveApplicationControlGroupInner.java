@@ -6,11 +6,11 @@ package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.models.AdaptiveApplicationControlIssueSummary;
 import com.azure.resourcemanager.security.models.ConfigurationStatus;
 import com.azure.resourcemanager.security.models.EnforcementMode;
+import com.azure.resourcemanager.security.models.Location;
 import com.azure.resourcemanager.security.models.PathRecommendation;
 import com.azure.resourcemanager.security.models.ProtectionMode;
 import com.azure.resourcemanager.security.models.RecommendationStatus;
@@ -23,7 +23,7 @@ import java.util.List;
 /** The AdaptiveApplicationControlGroup model. */
 @JsonFlatten
 @Fluent
-public class AdaptiveApplicationControlGroupInner extends ProxyResource {
+public class AdaptiveApplicationControlGroupInner extends Location {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AdaptiveApplicationControlGroupInner.class);
 
     /*
@@ -75,12 +75,6 @@ public class AdaptiveApplicationControlGroupInner extends ProxyResource {
      */
     @JsonProperty(value = "properties.pathRecommendations")
     private List<PathRecommendation> pathRecommendations;
-
-    /*
-     * Location where the resource is stored
-     */
-    @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
-    private String location;
 
     /**
      * Get the enforcementMode property: The application control policy enforcement/protection mode of the machine
@@ -203,20 +197,13 @@ public class AdaptiveApplicationControlGroupInner extends ProxyResource {
     }
 
     /**
-     * Get the location property: Location where the resource is stored.
-     *
-     * @return the location value.
-     */
-    public String location() {
-        return this.location;
-    }
-
-    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
+        super.validate();
         if (protectionMode() != null) {
             protectionMode().validate();
         }

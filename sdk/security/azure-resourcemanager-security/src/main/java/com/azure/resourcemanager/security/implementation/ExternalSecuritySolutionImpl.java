@@ -18,18 +18,6 @@ public final class ExternalSecuritySolutionImpl implements ExternalSecuritySolut
         this.serviceManager = serviceManager;
     }
 
-    public String id() {
-        return this.innerModel().id();
-    }
-
-    public String name() {
-        return this.innerModel().name();
-    }
-
-    public String type() {
-        return this.innerModel().type();
-    }
-
     public String location() {
         return this.innerModel().location();
     }

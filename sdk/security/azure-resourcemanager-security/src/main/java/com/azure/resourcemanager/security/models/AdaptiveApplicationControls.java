@@ -6,6 +6,7 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.security.fluent.models.AdaptiveApplicationControlGroupInner;
 
 /** Resource collection API of AdaptiveApplicationControls. */
 public interface AdaptiveApplicationControls {
@@ -60,6 +61,37 @@ public interface AdaptiveApplicationControls {
     Response<AdaptiveApplicationControlGroup> getWithResponse(String ascLocation, String groupName, Context context);
 
     /**
+     * Update an application control machine group.
+     *
+     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
+     *     locations.
+     * @param groupName Name of an application control machine group.
+     * @param body The body parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    AdaptiveApplicationControlGroup put(
+        String ascLocation, String groupName, AdaptiveApplicationControlGroupInner body);
+
+    /**
+     * Update an application control machine group.
+     *
+     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
+     *     locations.
+     * @param groupName Name of an application control machine group.
+     * @param body The body parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    Response<AdaptiveApplicationControlGroup> putWithResponse(
+        String ascLocation, String groupName, AdaptiveApplicationControlGroupInner body, Context context);
+
+    /**
      * Delete an application control machine group.
      *
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
@@ -84,57 +116,4 @@ public interface AdaptiveApplicationControls {
      * @return the response.
      */
     Response<Void> deleteWithResponse(String ascLocation, String groupName, Context context);
-
-    /**
-     * Gets an application control VM/server group.
-     *
-     * @param id the resource ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an application control VM/server group.
-     */
-    AdaptiveApplicationControlGroup getById(String id);
-
-    /**
-     * Gets an application control VM/server group.
-     *
-     * @param id the resource ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an application control VM/server group.
-     */
-    Response<AdaptiveApplicationControlGroup> getByIdWithResponse(String id, Context context);
-
-    /**
-     * Delete an application control machine group.
-     *
-     * @param id the resource ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void deleteById(String id);
-
-    /**
-     * Delete an application control machine group.
-     *
-     * @param id the resource ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    Response<Void> deleteByIdWithResponse(String id, Context context);
-
-    /**
-     * Begins definition for a new AdaptiveApplicationControlGroup resource.
-     *
-     * @param name resource name.
-     * @return the first stage of the new AdaptiveApplicationControlGroup definition.
-     */
-    AdaptiveApplicationControlGroup.DefinitionStages.Blank define(String name);
 }

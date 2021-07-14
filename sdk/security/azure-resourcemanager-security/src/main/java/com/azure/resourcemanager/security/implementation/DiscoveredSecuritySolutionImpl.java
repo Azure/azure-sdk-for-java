@@ -20,16 +20,8 @@ public final class DiscoveredSecuritySolutionImpl implements DiscoveredSecurityS
         this.serviceManager = serviceManager;
     }
 
-    public String id() {
-        return this.innerModel().id();
-    }
-
-    public String name() {
-        return this.innerModel().name();
-    }
-
-    public String type() {
-        return this.innerModel().type();
+    public String location() {
+        return this.innerModel().location();
     }
 
     public SecurityFamily securityFamily() {
@@ -46,10 +38,6 @@ public final class DiscoveredSecuritySolutionImpl implements DiscoveredSecurityS
 
     public String sku() {
         return this.innerModel().sku();
-    }
-
-    public String location() {
-        return this.innerModel().location();
     }
 
     public DiscoveredSecuritySolutionInner innerModel() {

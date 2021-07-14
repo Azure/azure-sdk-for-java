@@ -6,7 +6,6 @@ package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.models.AdditionalWorkspacesProperties;
@@ -14,6 +13,7 @@ import com.azure.resourcemanager.security.models.DataSource;
 import com.azure.resourcemanager.security.models.ExportData;
 import com.azure.resourcemanager.security.models.RecommendationConfigurationProperties;
 import com.azure.resourcemanager.security.models.SecuritySolutionStatus;
+import com.azure.resourcemanager.security.models.TagsResource;
 import com.azure.resourcemanager.security.models.UnmaskedIpLoggingStatus;
 import com.azure.resourcemanager.security.models.UserDefinedResourcesProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -24,7 +24,7 @@ import java.util.Map;
 /** IoT Security solution configuration and resource information. */
 @JsonFlatten
 @Fluent
-public class IoTSecuritySolutionModelInner extends ProxyResource {
+public class IoTSecuritySolutionModelInner extends TagsResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(IoTSecuritySolutionModelInner.class);
 
     /*
@@ -107,12 +107,6 @@ public class IoTSecuritySolutionModelInner extends ProxyResource {
      */
     @JsonProperty(value = "properties.additionalWorkspaces")
     private List<AdditionalWorkspacesProperties> additionalWorkspaces;
-
-    /*
-     * Resource tags
-     */
-    @JsonProperty(value = "tags")
-    private Map<String, String> tags;
 
     /**
      * Get the location property: The resource location.
@@ -355,23 +349,10 @@ public class IoTSecuritySolutionModelInner extends ProxyResource {
         return this;
     }
 
-    /**
-     * Get the tags property: Resource tags.
-     *
-     * @return the tags value.
-     */
-    public Map<String, String> tags() {
-        return this.tags;
-    }
-
-    /**
-     * Set the tags property: Resource tags.
-     *
-     * @param tags the tags value to set.
-     * @return the IoTSecuritySolutionModelInner object itself.
-     */
+    /** {@inheritDoc} */
+    @Override
     public IoTSecuritySolutionModelInner withTags(Map<String, String> tags) {
-        this.tags = tags;
+        super.withTags(tags);
         return this;
     }
 
@@ -380,7 +361,9 @@ public class IoTSecuritySolutionModelInner extends ProxyResource {
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
+        super.validate();
         if (userDefinedResources() != null) {
             userDefinedResources().validate();
         }

@@ -9,25 +9,11 @@ import com.azure.resourcemanager.security.fluent.models.DiscoveredSecuritySoluti
 /** An immutable client-side representation of DiscoveredSecuritySolution. */
 public interface DiscoveredSecuritySolution {
     /**
-     * Gets the id property: Fully qualified resource Id for the resource.
+     * Gets the location property: Location where the resource is stored.
      *
-     * @return the id value.
+     * @return the location value.
      */
-    String id();
-
-    /**
-     * Gets the name property: The name of the resource.
-     *
-     * @return the name value.
-     */
-    String name();
-
-    /**
-     * Gets the type property: The type of the resource.
-     *
-     * @return the type value.
-     */
-    String type();
+    String location();
 
     /**
      * Gets the securityFamily property: The security family of the discovered solution.
@@ -56,13 +42,6 @@ public interface DiscoveredSecuritySolution {
      * @return the sku value.
      */
     String sku();
-
-    /**
-     * Gets the location property: Location where the resource is stored.
-     *
-     * @return the location value.
-     */
-    String location();
 
     /**
      * Gets the inner com.azure.resourcemanager.security.fluent.models.DiscoveredSecuritySolutionInner object.

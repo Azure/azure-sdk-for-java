@@ -22,16 +22,13 @@ public final class IoTSecurityAggregatedRecommendationImpl implements IoTSecurit
         this.serviceManager = serviceManager;
     }
 
-    public String id() {
-        return this.innerModel().id();
-    }
-
-    public String name() {
-        return this.innerModel().name();
-    }
-
-    public String type() {
-        return this.innerModel().type();
+    public Map<String, String> tags() {
+        Map<String, String> inner = this.innerModel().tags();
+        if (inner != null) {
+            return Collections.unmodifiableMap(inner);
+        } else {
+            return Collections.emptyMap();
+        }
     }
 
     public String recommendationName() {
@@ -72,15 +69,6 @@ public final class IoTSecurityAggregatedRecommendationImpl implements IoTSecurit
 
     public String logAnalyticsQuery() {
         return this.innerModel().logAnalyticsQuery();
-    }
-
-    public Map<String, String> tags() {
-        Map<String, String> inner = this.innerModel().tags();
-        if (inner != null) {
-            return Collections.unmodifiableMap(inner);
-        } else {
-            return Collections.emptyMap();
-        }
     }
 
     public IoTSecurityAggregatedRecommendationInner innerModel() {

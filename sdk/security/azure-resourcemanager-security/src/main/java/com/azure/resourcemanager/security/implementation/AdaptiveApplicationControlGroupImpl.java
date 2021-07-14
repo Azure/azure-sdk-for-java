@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.implementation;
 
-import com.azure.core.management.Region;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.security.fluent.models.AdaptiveApplicationControlGroupInner;
 import com.azure.resourcemanager.security.models.AdaptiveApplicationControlGroup;
 import com.azure.resourcemanager.security.models.AdaptiveApplicationControlIssueSummary;
@@ -19,24 +17,20 @@ import com.azure.resourcemanager.security.models.VmRecommendation;
 import java.util.Collections;
 import java.util.List;
 
-public final class AdaptiveApplicationControlGroupImpl
-    implements AdaptiveApplicationControlGroup,
-        AdaptiveApplicationControlGroup.Definition,
-        AdaptiveApplicationControlGroup.Update {
+public final class AdaptiveApplicationControlGroupImpl implements AdaptiveApplicationControlGroup {
     private AdaptiveApplicationControlGroupInner innerObject;
 
     private final com.azure.resourcemanager.security.SecurityManager serviceManager;
 
-    public String id() {
-        return this.innerModel().id();
+    AdaptiveApplicationControlGroupImpl(
+        AdaptiveApplicationControlGroupInner innerObject,
+        com.azure.resourcemanager.security.SecurityManager serviceManager) {
+        this.innerObject = innerObject;
+        this.serviceManager = serviceManager;
     }
 
-    public String name() {
-        return this.innerModel().name();
-    }
-
-    public String type() {
-        return this.innerModel().type();
+    public String location() {
+        return this.innerModel().location();
     }
 
     public EnforcementMode enforcementMode() {
@@ -86,132 +80,11 @@ public final class AdaptiveApplicationControlGroupImpl
         }
     }
 
-    public String location() {
-        return this.innerModel().location();
-    }
-
-    public Region region() {
-        return Region.fromName(this.regionName());
-    }
-
-    public String regionName() {
-        return this.location();
-    }
-
     public AdaptiveApplicationControlGroupInner innerModel() {
         return this.innerObject;
     }
 
     private com.azure.resourcemanager.security.SecurityManager manager() {
         return this.serviceManager;
-    }
-
-    private String ascLocation;
-
-    private String groupName;
-
-    public AdaptiveApplicationControlGroupImpl withExistingLocation(String ascLocation) {
-        this.ascLocation = ascLocation;
-        return this;
-    }
-
-    public AdaptiveApplicationControlGroup create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAdaptiveApplicationControls()
-                .putWithResponse(ascLocation, groupName, this.innerModel(), Context.NONE)
-                .getValue();
-        return this;
-    }
-
-    public AdaptiveApplicationControlGroup create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAdaptiveApplicationControls()
-                .putWithResponse(ascLocation, groupName, this.innerModel(), context)
-                .getValue();
-        return this;
-    }
-
-    AdaptiveApplicationControlGroupImpl(
-        String name, com.azure.resourcemanager.security.SecurityManager serviceManager) {
-        this.innerObject = new AdaptiveApplicationControlGroupInner();
-        this.serviceManager = serviceManager;
-        this.groupName = name;
-    }
-
-    public AdaptiveApplicationControlGroupImpl update() {
-        return this;
-    }
-
-    public AdaptiveApplicationControlGroup apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAdaptiveApplicationControls()
-                .putWithResponse(ascLocation, groupName, this.innerModel(), Context.NONE)
-                .getValue();
-        return this;
-    }
-
-    public AdaptiveApplicationControlGroup apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAdaptiveApplicationControls()
-                .putWithResponse(ascLocation, groupName, this.innerModel(), context)
-                .getValue();
-        return this;
-    }
-
-    AdaptiveApplicationControlGroupImpl(
-        AdaptiveApplicationControlGroupInner innerObject,
-        com.azure.resourcemanager.security.SecurityManager serviceManager) {
-        this.innerObject = innerObject;
-        this.serviceManager = serviceManager;
-        this.ascLocation = Utils.getValueFromIdByName(innerObject.id(), "locations");
-        this.groupName = Utils.getValueFromIdByName(innerObject.id(), "applicationWhitelistings");
-    }
-
-    public AdaptiveApplicationControlGroup refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAdaptiveApplicationControls()
-                .getWithResponse(ascLocation, groupName, Context.NONE)
-                .getValue();
-        return this;
-    }
-
-    public AdaptiveApplicationControlGroup refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAdaptiveApplicationControls()
-                .getWithResponse(ascLocation, groupName, context)
-                .getValue();
-        return this;
-    }
-
-    public AdaptiveApplicationControlGroupImpl withEnforcementMode(EnforcementMode enforcementMode) {
-        this.innerModel().withEnforcementMode(enforcementMode);
-        return this;
-    }
-
-    public AdaptiveApplicationControlGroupImpl withProtectionMode(ProtectionMode protectionMode) {
-        this.innerModel().withProtectionMode(protectionMode);
-        return this;
-    }
-
-    public AdaptiveApplicationControlGroupImpl withVmRecommendations(List<VmRecommendation> vmRecommendations) {
-        this.innerModel().withVmRecommendations(vmRecommendations);
-        return this;
-    }
-
-    public AdaptiveApplicationControlGroupImpl withPathRecommendations(List<PathRecommendation> pathRecommendations) {
-        this.innerModel().withPathRecommendations(pathRecommendations);
-        return this;
     }
 }
