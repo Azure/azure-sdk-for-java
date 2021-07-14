@@ -35,10 +35,10 @@ import com.azure.ai.metricsadvisor.administration.models.DataFeedMissingDataPoin
 import com.azure.ai.metricsadvisor.administration.models.DataFeedOptions;
 import com.azure.ai.metricsadvisor.administration.models.DataFeedRollupSettings;
 import com.azure.ai.metricsadvisor.administration.models.DataFeedSchema;
-import com.azure.ai.metricsadvisor.administration.models.DatasourceCredentialEntity;
+import com.azure.ai.metricsadvisor.administration.models.DataSourceCredentialEntity;
 import com.azure.ai.metricsadvisor.administration.models.ListAnomalyAlertConfigsOptions;
 import com.azure.ai.metricsadvisor.administration.models.ListCredentialEntityOptions;
-import com.azure.ai.metricsadvisor.administration.models.ListMetricAnomalyDetectionConfigsOptions;
+import com.azure.ai.metricsadvisor.administration.models.ListDetectionConfigsOptions;
 import com.azure.ai.metricsadvisor.administration.models.NotificationHook;
 import com.azure.ai.metricsadvisor.administration.models.ListDataFeedFilter;
 import com.azure.ai.metricsadvisor.administration.models.ListDataFeedIngestionOptions;
@@ -189,8 +189,8 @@ public final class MetricsAdvisorAdministrationAsyncClient {
                 .setGranularityName(Granularity.fromString(dataFeedGranularity.getGranularityType() == null
                     ? null : dataFeedGranularity.getGranularityType().toString()))
                 .setGranularityAmount(dataFeedGranularity.getCustomGranularityValue())
-                .setDimension(dataFeedSchema.getDimensions())
-                .setMetrics(dataFeedSchema.getMetrics())
+                .setDimension(DataFeedTransforms.toInnerDimensionsListForCreate(dataFeedSchema.getDimensions()))
+                .setMetrics(DataFeedTransforms.toInnerMetricsListForCreate(dataFeedSchema.getMetrics()))
                 .setTimestampColumn(dataFeedSchema.getTimestampColumn())
                 .setDataStartFrom(dataFeedIngestionSettings.getIngestionStartTime())
                 .setStartOffsetInSeconds(dataFeedIngestionSettings.getIngestionStartOffset() == null
@@ -213,8 +213,8 @@ public final class MetricsAdvisorAdministrationAsyncClient {
                 .setFillMissingPointValue(dataFeedMissingDataPointFillSettings.getCustomFillValue())
                 .setViewMode(ViewMode.fromString(finalDataFeedOptions.getAccessMode() == null
                     ? null : finalDataFeedOptions.getAccessMode().toString()))
-                .setViewers(finalDataFeedOptions.getViewerEmails())
-                .setAdmins(finalDataFeedOptions.getAdminEmails())
+                .setViewers(finalDataFeedOptions.getViewers())
+                .setAdmins(finalDataFeedOptions.getAdmins())
                 .setActionLinkTemplate(finalDataFeedOptions.getActionLinkTemplate()), withTracing)
                 .flatMap(createDataFeedResponse -> {
                     final String dataFeedId =
@@ -353,8 +353,8 @@ public final class MetricsAdvisorAdministrationAsyncClient {
                     dataFeedOptions.getAccessMode() != null
                         ? ViewMode.fromString(dataFeedOptions.getAccessMode().toString())
                         : null)
-                .setViewers(dataFeedOptions.getViewerEmails())
-                .setAdmins(dataFeedOptions.getAdminEmails())
+                .setViewers(dataFeedOptions.getViewers())
+                .setAdmins(dataFeedOptions.getAdmins())
                 .setStatus(
                     dataFeed.getStatus() != null
                         ? EntityStatus.fromString(dataFeed.getStatus().toString())
@@ -715,7 +715,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * Create a configuration to detect anomalies in the time series of a metric.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createMetricAnomalyDetectionConfig#String-AnomalyDetectionConfiguration}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createDetectionConfig#String-AnomalyDetectionConfiguration}
      *
      * @param metricId The metric id to associate the configuration with.
      * @param detectionConfiguration The anomaly detection configuration.
@@ -727,14 +727,14 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      *   or {@code detectionConfiguration.wholeSeriesCondition} is null
      *   or {@code seriesKey} is missing for any {@code MetricSingleSeriesDetectionCondition} in the configuration
      *   or {@code seriesGroupKey} is missing for any {@code MetricSeriesGroupDetectionCondition} in the configuration
-     *   or {@code crossConditionsOperator} is missing when multiple nested conditions are set in a
+     *   or {@code conditionOperator} is missing when multiple nested conditions are set in a
      *      {@code MetricSingleSeriesDetectionCondition} or {@code MetricSeriesGroupDetectionCondition}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnomalyDetectionConfiguration> createMetricAnomalyDetectionConfig(
+    public Mono<AnomalyDetectionConfiguration> createDetectionConfig(
         String metricId,
         AnomalyDetectionConfiguration detectionConfiguration) {
-        return createMetricAnomalyDetectionConfigWithResponse(metricId, detectionConfiguration)
+        return createDetectionConfigWithResponse(metricId, detectionConfiguration)
             .map(Response::getValue);
     }
 
@@ -743,7 +743,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      *
      * <p><strong>Code sample</strong></p>
      *      *
-     *      {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createMetricAnomalyDetectionConfigWithResponse#String-AnomalyDetectionConfiguration}
+     *      {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createDetectionConfigWithResponse#String-AnomalyDetectionConfiguration}
      *
      * @param metricId The metric id to associate the configuration with.
      * @param detectionConfiguration The anomaly detection configuration.
@@ -755,15 +755,15 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      *   or {@code detectionConfiguration.wholeSeriesCondition} is null
      *   or {@code seriesKey} is missing for any {@code MetricSingleSeriesDetectionCondition} in the configuration
      *   or {@code seriesGroupKey} is missing for any {@code MetricSeriesGroupDetectionCondition} in the configuration
-     *   or {@code crossConditionsOperator} is missing when multiple nested conditions are set in a
+     *   or {@code conditionOperator} is missing when multiple nested conditions are set in a
      *      {@code MetricSingleSeriesDetectionCondition} or {@code MetricSeriesGroupDetectionCondition}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AnomalyDetectionConfiguration>> createMetricAnomalyDetectionConfigWithResponse(
+    public Mono<Response<AnomalyDetectionConfiguration>> createDetectionConfigWithResponse(
         String metricId,
         AnomalyDetectionConfiguration detectionConfiguration) {
         try {
-            return withContext(context -> createMetricAnomalyDetectionConfigWithResponse(metricId,
+            return withContext(context -> createDetectionConfigWithResponse(metricId,
                 detectionConfiguration,
                 context));
         } catch (RuntimeException e) {
@@ -771,7 +771,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
         }
     }
 
-    Mono<Response<AnomalyDetectionConfiguration>> createMetricAnomalyDetectionConfigWithResponse(
+    Mono<Response<AnomalyDetectionConfiguration>> createDetectionConfigWithResponse(
         String metricId,
         AnomalyDetectionConfiguration detectionConfiguration,
         Context context) {
@@ -790,7 +790,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
             .flatMap(response -> {
                 final String configurationId
                     = Utility.parseOperationId(response.getDeserializedHeaders().getLocation());
-                return getMetricAnomalyDetectionConfigWithResponse(configurationId, context)
+                return getDetectionConfigWithResponse(configurationId, context)
                     .map(configurationResponse -> new ResponseBase<Void, AnomalyDetectionConfiguration>(
                         response.getRequest(),
                         response.getStatusCode(),
@@ -804,7 +804,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * Get the anomaly detection configuration by its id.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getMetricAnomalyDetectionConfig#String}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getDetectionConfig#String}
      *
      * @param detectionConfigurationId The anomaly detection configuration id.
      * @return A {@link Mono} containing the {@link AnomalyDetectionConfiguration} for the provided id.
@@ -813,9 +813,9 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * @throws NullPointerException thrown if the {@code detectionConfigurationId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnomalyDetectionConfiguration> getMetricAnomalyDetectionConfig(
+    public Mono<AnomalyDetectionConfiguration> getDetectionConfig(
         String detectionConfigurationId) {
-        return getMetricAnomalyDetectionConfigWithResponse(detectionConfigurationId)
+        return getDetectionConfigWithResponse(detectionConfigurationId)
             .map(Response::getValue);
     }
 
@@ -823,7 +823,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * Get the anomaly detection configuration by its id.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getMetricAnomalyDetectionConfigWithResponse#String}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getDetectionConfigWithResponse#String}
      *
      * @param detectionConfigurationId The anomaly detection configuration id.
      * @return A {@link Response} of a {@link Mono} containing the {@link AnomalyDetectionConfiguration}
@@ -833,17 +833,17 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * @throws NullPointerException thrown if the {@code detectionConfigurationId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AnomalyDetectionConfiguration>> getMetricAnomalyDetectionConfigWithResponse(
+    public Mono<Response<AnomalyDetectionConfiguration>> getDetectionConfigWithResponse(
         String detectionConfigurationId) {
         try {
-            return withContext(context -> getMetricAnomalyDetectionConfigWithResponse(detectionConfigurationId,
+            return withContext(context -> getDetectionConfigWithResponse(detectionConfigurationId,
                 context));
         } catch (RuntimeException e) {
             return FluxUtil.monoError(logger, e);
         }
     }
 
-    Mono<Response<AnomalyDetectionConfiguration>> getMetricAnomalyDetectionConfigWithResponse(
+    Mono<Response<AnomalyDetectionConfiguration>> getDetectionConfigWithResponse(
         String detectionConfigurationId, Context context) {
         Objects.requireNonNull(detectionConfigurationId, "detectionConfigurationId is required.");
 
@@ -869,7 +869,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * Update a configuration to detect anomalies in the time series of a metric.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateMetricAnomalyDetectionConfig#AnomalyDetectionConfiguration}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateDetectionConfig#AnomalyDetectionConfiguration}
      *
      * @param detectionConfiguration The anomaly detection configuration.
      * @return A {@link Mono} containing the updated {@link AnomalyDetectionConfiguration}.
@@ -877,9 +877,9 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      *   or {@code detectionConfiguration.id} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnomalyDetectionConfiguration> updateMetricAnomalyDetectionConfig(
+    public Mono<AnomalyDetectionConfiguration> updateDetectionConfig(
         AnomalyDetectionConfiguration detectionConfiguration) {
-        return updateMetricAnomalyDetectionConfigWithResponse(detectionConfiguration)
+        return updateDetectionConfigWithResponse(detectionConfiguration)
             .map(Response::getValue);
     }
 
@@ -887,7 +887,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * Update a configuration to detect anomalies in the time series of a metric.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateMetricAnomalyDetectionConfigWithResponse#AnomalyDetectionConfiguration}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateDetectionConfigWithResponse#AnomalyDetectionConfiguration}
      *
      * @param detectionConfiguration The anomaly detection configuration.
      * @return A {@link Response} of a {@link Mono} containing the updated {@link AnomalyDetectionConfiguration}.
@@ -895,17 +895,17 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      *   or {@code detectionConfiguration.id} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AnomalyDetectionConfiguration>> updateMetricAnomalyDetectionConfigWithResponse(
+    public Mono<Response<AnomalyDetectionConfiguration>> updateDetectionConfigWithResponse(
         AnomalyDetectionConfiguration detectionConfiguration) {
         try {
-            return withContext(context -> updateMetricAnomalyDetectionConfigWithResponse(detectionConfiguration,
+            return withContext(context -> updateDetectionConfigWithResponse(detectionConfiguration,
                 context));
         } catch (RuntimeException e) {
             return FluxUtil.monoError(logger, e);
         }
     }
 
-    Mono<Response<AnomalyDetectionConfiguration>> updateMetricAnomalyDetectionConfigWithResponse(
+    Mono<Response<AnomalyDetectionConfiguration>> updateDetectionConfigWithResponse(
         AnomalyDetectionConfiguration detectionConfiguration,
         Context context) {
         Objects.requireNonNull(detectionConfiguration, "detectionConfiguration is required");
@@ -921,7 +921,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
             .doOnSuccess(response -> logger.info("Updated AnomalyDetectionConfiguration"))
             .doOnError(error -> logger.warning("Failed to update AnomalyDetectionConfiguration", error))
             .flatMap(response -> {
-                return getMetricAnomalyDetectionConfigWithResponse(detectionConfiguration.getId(), context)
+                return getDetectionConfigWithResponse(detectionConfiguration.getId(), context)
                     .map(configurationResponse -> new ResponseBase<Void, AnomalyDetectionConfiguration>(
                         response.getRequest(),
                         response.getStatusCode(),
@@ -937,7 +937,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * @param detectionConfigurationId The metric anomaly detection configuration unique id.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteMetricAnomalyDetectionConfig#String}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteDetectionConfig#String}
      *
      * @return An empty Mono.
      * @throws NullPointerException thrown if the {@code detectionConfigurationId} is null.
@@ -945,15 +945,15 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      *     format specification.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteMetricAnomalyDetectionConfiguration(String detectionConfigurationId) {
-        return deleteMetricAnomalyDetectionConfigWithResponse(detectionConfigurationId).then();
+    public Mono<Void> deleteDetectionConfig(String detectionConfigurationId) {
+        return deleteDetectionConfigWithResponse(detectionConfigurationId).then();
     }
 
     /**
      * Delete a metric anomaly detection configuration.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteMetricAnomalyDetectionConfigWithResponse#String}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteDetectionConfigWithResponse#String}
      *
      * @param detectionConfigurationId The metric anomaly detection configuration unique id.
      *
@@ -963,10 +963,10 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      *     format specification.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteMetricAnomalyDetectionConfigWithResponse(
+    public Mono<Response<Void>> deleteDetectionConfigWithResponse(
         String detectionConfigurationId) {
         try {
-            return withContext(context -> deleteMetricAnomalyDetectionConfigWithResponse(
+            return withContext(context -> deleteDetectionConfigWithResponse(
                 detectionConfigurationId,
                 context));
         } catch (RuntimeException e) {
@@ -974,8 +974,8 @@ public final class MetricsAdvisorAdministrationAsyncClient {
         }
     }
 
-    Mono<Response<Void>> deleteMetricAnomalyDetectionConfigWithResponse(String detectionConfigurationId,
-                                                                        Context context) {
+    Mono<Response<Void>> deleteDetectionConfigWithResponse(String detectionConfigurationId,
+                                                           Context context) {
         Objects.requireNonNull(detectionConfigurationId, "detectionConfigurationId is required.");
         return service.deleteHookWithResponseAsync(UUID.fromString(detectionConfigurationId),
             context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE))
@@ -988,7 +988,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * Given a metric id, retrieve all anomaly detection configurations applied to it.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listMetricAnomalyDetectionConfigs#String}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listDetectionConfigs#String}
      *
      * @param metricId The metric id.
      * @return The anomaly detection configurations.
@@ -996,16 +996,16 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * @throws IllegalArgumentException If {@code metricId} does not conform to the UUID format specification.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<AnomalyDetectionConfiguration> listMetricAnomalyDetectionConfigs(
+    public PagedFlux<AnomalyDetectionConfiguration> listDetectionConfigs(
         String metricId) {
-        return listMetricAnomalyDetectionConfigs(metricId, null);
+        return listDetectionConfigs(metricId, null);
     }
 
     /**
      * Given a metric id, retrieve all anomaly detection configurations applied to it.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listMetricAnomalyDetectionConfigs#String-ListMetricAnomalyDetectionConfigsOptions}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listDetectionConfigs#String-ListDetectionConfigsOptions}
      *
      * @param metricId The metric id.
      * @param options th e additional configurable options to specify when querying the result.
@@ -1014,15 +1014,15 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * @throws IllegalArgumentException If {@code metricId} does not conform to the UUID format specification.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<AnomalyDetectionConfiguration> listMetricAnomalyDetectionConfigs(
+    public PagedFlux<AnomalyDetectionConfiguration> listDetectionConfigs(
         String metricId,
-        ListMetricAnomalyDetectionConfigsOptions options) {
+        ListDetectionConfigsOptions options) {
         try {
             return new PagedFlux<>(() ->
                 withContext(context ->
-                    listMetricAnomalyDetectionConfigsSinglePageAsync(metricId, options, context)),
+                    listAnomalyDetectionConfigsSinglePageAsync(metricId, options, context)),
                 continuationToken ->
-                    withContext(context -> listMetricAnomalyDetectionConfigsNextPageAsync(continuationToken,
+                    withContext(context -> listAnomalyDetectionConfigsNextPageAsync(continuationToken,
                         context)));
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> FluxUtil.monoError(logger, ex));
@@ -1030,22 +1030,22 @@ public final class MetricsAdvisorAdministrationAsyncClient {
 
     }
 
-    PagedFlux<AnomalyDetectionConfiguration> listMetricAnomalyDetectionConfigs(
+    PagedFlux<AnomalyDetectionConfiguration> listDetectionConfigs(
         String metricId,
-        ListMetricAnomalyDetectionConfigsOptions options,
+        ListDetectionConfigsOptions options,
         Context context) {
         return new PagedFlux<>(() ->
-            listMetricAnomalyDetectionConfigsSinglePageAsync(metricId, options, context),
+            listAnomalyDetectionConfigsSinglePageAsync(metricId, options, context),
             continuationToken ->
-                listMetricAnomalyDetectionConfigsNextPageAsync(continuationToken, context));
+                listAnomalyDetectionConfigsNextPageAsync(continuationToken, context));
     }
 
-    private Mono<PagedResponse<AnomalyDetectionConfiguration>> listMetricAnomalyDetectionConfigsSinglePageAsync(
+    private Mono<PagedResponse<AnomalyDetectionConfiguration>> listAnomalyDetectionConfigsSinglePageAsync(
         String metricId,
-        ListMetricAnomalyDetectionConfigsOptions options,
+        ListDetectionConfigsOptions options,
         Context context) {
         if (options == null) {
-            options = new ListMetricAnomalyDetectionConfigsOptions();
+            options = new ListDetectionConfigsOptions();
         }
         return service.getAnomalyDetectionConfigurationsByMetricSinglePageAsync(
             UUID.fromString(metricId), options.getSkip(), options.getMaxPageSize(),
@@ -1056,7 +1056,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
             .map(response -> DetectionConfigurationTransforms.fromInnerPagedResponse(response));
     }
 
-    private Mono<PagedResponse<AnomalyDetectionConfiguration>> listMetricAnomalyDetectionConfigsNextPageAsync(
+    private Mono<PagedResponse<AnomalyDetectionConfiguration>> listAnomalyDetectionConfigsNextPageAsync(
         String nextPageLink, Context context) {
         if (CoreUtils.isNullOrEmpty(nextPageLink)) {
             return Mono.empty();
@@ -1360,7 +1360,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * Create a configuration to trigger alert when anomalies are detected.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createAnomalyAlertConfig#AnomalyAlertConfiguration}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createAlertConfig#AnomalyAlertConfiguration}
      *
      * @param alertConfiguration The anomaly alerting configuration.
      *
@@ -1369,16 +1369,16 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * {@code alertConfiguration.metricAnomalyAlertConfigurations} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnomalyAlertConfiguration> createAnomalyAlertConfig(
+    public Mono<AnomalyAlertConfiguration> createAlertConfig(
         AnomalyAlertConfiguration alertConfiguration) {
-        return createAnomalyAlertConfigWithResponse(alertConfiguration).flatMap(FluxUtil::toMono);
+        return createAlertConfigWithResponse(alertConfiguration).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Create a configuration to trigger alert when anomalies are detected.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createAnomalyAlertConfigWithResponse#AnomalyAlertConfiguration}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createAlertConfigWithResponse#AnomalyAlertConfiguration}
      *
      * @param alertConfiguration The anomaly alerting configuration.
      *
@@ -1387,16 +1387,16 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * {@code alertConfiguration.metricAnomalyAlertConfigurations} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AnomalyAlertConfiguration>> createAnomalyAlertConfigWithResponse(
+    public Mono<Response<AnomalyAlertConfiguration>> createAlertConfigWithResponse(
         AnomalyAlertConfiguration alertConfiguration) {
         try {
-            return withContext(context -> createAnomalyAlertConfigWithResponse(alertConfiguration, context));
+            return withContext(context -> createAlertConfigWithResponse(alertConfiguration, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<AnomalyAlertConfiguration>> createAnomalyAlertConfigWithResponse(
+    Mono<Response<AnomalyAlertConfiguration>> createAlertConfigWithResponse(
         AnomalyAlertConfiguration alertConfiguration, Context context) {
         Objects.requireNonNull(alertConfiguration, "'alertConfiguration' is required.");
         if (CoreUtils.isNullOrEmpty(alertConfiguration.getMetricAlertConfigurations())) {
@@ -1420,7 +1420,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
                 innerAlertConfiguration, error))
             .flatMap(response -> {
                 final String configurationId = parseOperationId(response.getDeserializedHeaders().getLocation());
-                return getAnomalyAlertConfigWithResponse(configurationId, context)
+                return getAlertConfigWithResponse(configurationId, context)
                     .map(getResponse -> new ResponseBase<Void, AnomalyAlertConfiguration>(response.getRequest(),
                         response.getStatusCode(),
                         response.getHeaders(),
@@ -1433,7 +1433,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * Get the anomaly alert configuration identified by {@code alertConfigurationId}.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getAnomalyAlertConfig#String}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getAlertConfig#String}
      *
      * @param alertConfigurationId The anomaly alert configuration id.
      *
@@ -1443,16 +1443,16 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * @throws NullPointerException thrown if the {@code alertConfigurationId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnomalyAlertConfiguration> getAnomalyAlertConfig(
+    public Mono<AnomalyAlertConfiguration> getAlertConfig(
         String alertConfigurationId) {
-        return getAnomalyAlertConfigWithResponse(alertConfigurationId).flatMap(FluxUtil::toMono);
+        return getAlertConfigWithResponse(alertConfigurationId).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Get the anomaly alert configuration identified by {@code alertConfigurationId}.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getAnomalyAlertConfigWithResponse#String}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getAlertConfigWithResponse#String}
      *
      * @param alertConfigurationId The anomaly alert configuration id.
      *
@@ -1463,16 +1463,16 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * @throws NullPointerException thrown if the {@code alertConfigurationId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AnomalyAlertConfiguration>> getAnomalyAlertConfigWithResponse(
+    public Mono<Response<AnomalyAlertConfiguration>> getAlertConfigWithResponse(
         String alertConfigurationId) {
         try {
-            return withContext(context -> getAnomalyAlertConfigWithResponse(alertConfigurationId, context));
+            return withContext(context -> getAlertConfigWithResponse(alertConfigurationId, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<AnomalyAlertConfiguration>> getAnomalyAlertConfigWithResponse(
+    Mono<Response<AnomalyAlertConfiguration>> getAlertConfigWithResponse(
         String alertConfigurationId, Context context) {
         Objects.requireNonNull(alertConfigurationId, "'alertConfigurationId' is required.");
         final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE);
@@ -1493,7 +1493,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * Update anomaly alert configuration.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateAnomalyAlertConfig#AnomalyAlertConfiguration}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateAlertConfig#AnomalyAlertConfiguration}
      *
      * @param alertConfiguration The anomaly alert configuration to update.
      *
@@ -1502,16 +1502,16 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * {@code alertConfiguration.metricAnomalyAlertConfigurations} is null or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnomalyAlertConfiguration> updateAnomalyAlertConfig(
+    public Mono<AnomalyAlertConfiguration> updateAlertConfig(
         AnomalyAlertConfiguration alertConfiguration) {
-        return updateAnomalyAlertConfigWithResponse(alertConfiguration).flatMap(FluxUtil::toMono);
+        return updateAlertConfigWithResponse(alertConfiguration).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Update anomaly alert configuration.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateAnomalyAlertConfigWithResponse#AnomalyAlertConfiguration}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateAlertConfigWithResponse#AnomalyAlertConfiguration}
      *
      * @param alertConfiguration The anomaly alert configuration to update.
      *
@@ -1520,16 +1520,16 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * {@code alertConfiguration.metricAnomalyAlertConfigurations} is null or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AnomalyAlertConfiguration>> updateAnomalyAlertConfigWithResponse(
+    public Mono<Response<AnomalyAlertConfiguration>> updateAlertConfigWithResponse(
         AnomalyAlertConfiguration alertConfiguration) {
         try {
-            return withContext(context -> updateAnomalyAlertConfigWithResponse(alertConfiguration, context));
+            return withContext(context -> updateAlertConfigWithResponse(alertConfiguration, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<AnomalyAlertConfiguration>> updateAnomalyAlertConfigWithResponse(
+    Mono<Response<AnomalyAlertConfiguration>> updateAlertConfigWithResponse(
         AnomalyAlertConfiguration alertConfiguration, Context context) {
         Objects.requireNonNull(alertConfiguration, "'alertConfiguration' is required");
         if (CoreUtils.isNullOrEmpty(alertConfiguration.getMetricAlertConfigurations())) {
@@ -1549,7 +1549,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
             .doOnSuccess(response -> logger.info("Updated AnomalyAlertConfiguration - {}", response))
             .doOnError(error -> logger.warning("Failed to update AnomalyAlertConfiguration - {}",
                 innerAlertConfiguration, error))
-            .flatMap(response -> getAnomalyAlertConfigWithResponse(alertConfiguration.getId(), context)
+            .flatMap(response -> getAlertConfigWithResponse(alertConfiguration.getId(), context)
                 .map(getResponse -> new ResponseBase<Void, AnomalyAlertConfiguration>(response.getRequest(),
                     response.getStatusCode(),
                     response.getHeaders(),
@@ -1561,7 +1561,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * Deletes the anomaly alert configuration identified by {@code alertConfigurationId}.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteAnomalyAlertConfig#String}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteAlertConfig#String}
      *
      * @param alertConfigurationId The anomaly alert configuration id.
      *
@@ -1571,15 +1571,15 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * @throws NullPointerException thrown if the {@code alertConfigurationId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAnomalyAlertConfig(String alertConfigurationId) {
-        return deleteAnomalyAlertConfigWithResponse(alertConfigurationId).flatMap(FluxUtil::toMono);
+    public Mono<Void> deleteAlertConfig(String alertConfigurationId) {
+        return deleteAlertConfigWithResponse(alertConfigurationId).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Deletes the anomaly alert configuration identified by {@code alertConfigurationId}.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteAnomalyAlertConfigWithResponse#String}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteAlertConfigWithResponse#String}
      *
      * @param alertConfigurationId The anomaly alert configuration id.
      *
@@ -1589,15 +1589,15 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * @throws NullPointerException thrown if the {@code alertConfigurationId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteAnomalyAlertConfigWithResponse(String alertConfigurationId) {
+    public Mono<Response<Void>> deleteAlertConfigWithResponse(String alertConfigurationId) {
         try {
-            return withContext(context -> deleteAnomalyAlertConfigWithResponse(alertConfigurationId, context));
+            return withContext(context -> deleteAlertConfigWithResponse(alertConfigurationId, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<Void>> deleteAnomalyAlertConfigWithResponse(String alertConfigurationId, Context context) {
+    Mono<Response<Void>> deleteAlertConfigWithResponse(String alertConfigurationId, Context context) {
         Objects.requireNonNull(alertConfigurationId, "'alertConfigurationId' is required.");
         final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE);
 
@@ -1613,7 +1613,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * Fetch the anomaly alert configurations associated with a detection configuration.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listAnomalyAlertConfigs#String-ListAnomalyAlertConfigsOptions}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listAlertConfigs#String-ListAnomalyAlertConfigsOptions}
      *
      * @param detectionConfigurationId The id of the detection configuration.
      * @param options th e additional configurable options to specify when querying the result.
@@ -1625,7 +1625,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * UUID format specification.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<AnomalyAlertConfiguration> listAnomalyAlertConfigs(
+    public PagedFlux<AnomalyAlertConfiguration> listAlertConfigs(
         String detectionConfigurationId, ListAnomalyAlertConfigsOptions options) {
         try {
             return new PagedFlux<>(() ->
@@ -1641,7 +1641,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
         }
     }
 
-    PagedFlux<AnomalyAlertConfiguration> listAnomalyAlertConfigs(
+    PagedFlux<AnomalyAlertConfiguration> listAlertConfigs(
         String detectionConfigurationId, ListAnomalyAlertConfigsOptions options, Context context) {
         return new PagedFlux<>(() ->
             listAnomalyAlertConfigsSinglePageAsync(detectionConfigurationId,
@@ -1686,16 +1686,16 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * Create a data source credential entity.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createDatasourceCredential#DatasourceCredentialEntity}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createDataSourceCredential#DatasourceCredentialEntity}
      *
-     * @param datasourceCredential The credential entity.
-     * @return A {@link Mono} containing the created {@link DatasourceCredentialEntity}.
+     * @param dataSourceCredential The credential entity.
+     * @return A {@link Mono} containing the created {@link DataSourceCredentialEntity}.
      * @throws NullPointerException thrown if the {@code credentialEntity} is null
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DatasourceCredentialEntity> createDatasourceCredential(
-        DatasourceCredentialEntity datasourceCredential) {
-        return createDatasourceCredentialWithResponse(datasourceCredential)
+    public Mono<DataSourceCredentialEntity> createDataSourceCredential(
+        DataSourceCredentialEntity dataSourceCredential) {
+        return createDataSourceCredentialWithResponse(dataSourceCredential)
             .map(Response::getValue);
     }
 
@@ -1703,30 +1703,30 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * Create a data source credential entity with REST response.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createDatasourceCredentialWithResponse#DatasourceCredentialEntity}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createDataSourceCredentialWithResponse#DatasourceCredentialEntity}
      *
-     * @param datasourceCredential The credential entity.
-     * @return A {@link Mono} containing the created {@link DatasourceCredentialEntity}.
+     * @param dataSourceCredential The credential entity.
+     * @return A {@link Mono} containing the created {@link DataSourceCredentialEntity}.
      * @throws NullPointerException thrown if the {@code credentialEntity} is null
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DatasourceCredentialEntity>> createDatasourceCredentialWithResponse(
-        DatasourceCredentialEntity datasourceCredential) {
+    public Mono<Response<DataSourceCredentialEntity>> createDataSourceCredentialWithResponse(
+        DataSourceCredentialEntity dataSourceCredential) {
         try {
-            return withContext(context -> createDatasourceCredentialWithResponse(datasourceCredential,
+            return withContext(context -> createDataSourceCredentialWithResponse(dataSourceCredential,
                 context));
         } catch (RuntimeException e) {
             return FluxUtil.monoError(logger, e);
         }
     }
 
-    Mono<Response<DatasourceCredentialEntity>> createDatasourceCredentialWithResponse(
-        DatasourceCredentialEntity datasourceCredential,
+    Mono<Response<DataSourceCredentialEntity>> createDataSourceCredentialWithResponse(
+        DataSourceCredentialEntity dataSourceCredential,
         Context context) {
-        Objects.requireNonNull(datasourceCredential, "datasourceCredential is required");
+        Objects.requireNonNull(dataSourceCredential, "dataSourceCredential is required");
 
         final DataSourceCredential
-            innerDataSourceCredential = DataSourceCredentialEntityTransforms.toInnerForCreate(datasourceCredential);
+            innerDataSourceCredential = DataSourceCredentialEntityTransforms.toInnerForCreate(dataSourceCredential);
         return service.createCredentialWithResponseAsync(innerDataSourceCredential,
             context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE))
             .doOnSubscribe(ignoredValue -> logger.info("Creating DataSourceCredentialEntity"))
@@ -1735,8 +1735,8 @@ public final class MetricsAdvisorAdministrationAsyncClient {
             .flatMap(response -> {
                 final String credentialId
                     = Utility.parseOperationId(response.getDeserializedHeaders().getLocation());
-                return this.getDatasourceCredentialWithResponse(credentialId, context)
-                    .map(configurationResponse -> new ResponseBase<Void, DatasourceCredentialEntity>(
+                return this.getDataSourceCredentialWithResponse(credentialId, context)
+                    .map(configurationResponse -> new ResponseBase<Void, DataSourceCredentialEntity>(
                         response.getRequest(),
                         response.getStatusCode(),
                         response.getHeaders(),
@@ -1749,16 +1749,16 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * Update a data source credential entity.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateDatasourceCredential#DatasourceCredentialEntity}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateDataSourceCredential#DatasourceCredentialEntity}
      *
-     * @param datasourceCredential The credential entity.
-     * @return A {@link Mono} containing the updated {@link DatasourceCredentialEntity}.
+     * @param dataSourceCredential The credential entity.
+     * @return A {@link Mono} containing the updated {@link DataSourceCredentialEntity}.
      * @throws NullPointerException thrown if the {@code credentialEntity} is null
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DatasourceCredentialEntity> updateDatasourceCredential(
-        DatasourceCredentialEntity datasourceCredential) {
-        return updateDatasourceCredentialWithResponse(datasourceCredential)
+    public Mono<DataSourceCredentialEntity> updateDataSourceCredential(
+        DataSourceCredentialEntity dataSourceCredential) {
+        return updateDataSourceCredentialWithResponse(dataSourceCredential)
             .map(Response::getValue);
     }
 
@@ -1766,39 +1766,39 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * Update a data source credential entity with REST response.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateDatasourceCredentialWithResponse#DatasourceCredentialEntity}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateDataSourceCredentialWithResponse#DatasourceCredentialEntity}
      *
-     * @param datasourceCredential The credential entity.
-     * @return A {@link Mono} containing the updated {@link DatasourceCredentialEntity}.
+     * @param dataSourceCredential The credential entity.
+     * @return A {@link Mono} containing the updated {@link DataSourceCredentialEntity}.
      * @throws NullPointerException thrown if the {@code credentialEntity} is null
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DatasourceCredentialEntity>> updateDatasourceCredentialWithResponse(
-        DatasourceCredentialEntity datasourceCredential) {
+    public Mono<Response<DataSourceCredentialEntity>> updateDataSourceCredentialWithResponse(
+        DataSourceCredentialEntity dataSourceCredential) {
         try {
-            return withContext(context -> updateDatasourceCredentialWithResponse(datasourceCredential,
+            return withContext(context -> updateDataSourceCredentialWithResponse(dataSourceCredential,
                 context));
         } catch (RuntimeException e) {
             return FluxUtil.monoError(logger, e);
         }
     }
 
-    Mono<Response<DatasourceCredentialEntity>> updateDatasourceCredentialWithResponse(
-        DatasourceCredentialEntity datasourceCredential,
+    Mono<Response<DataSourceCredentialEntity>> updateDataSourceCredentialWithResponse(
+        DataSourceCredentialEntity dataSourceCredential,
         Context context) {
-        Objects.requireNonNull(datasourceCredential, "datasourceCredential is required");
+        Objects.requireNonNull(dataSourceCredential, "dataSourceCredential is required");
 
         final DataSourceCredentialPatch
-            innerDataSourceCredential = DataSourceCredentialEntityTransforms.toInnerForUpdate(datasourceCredential);
-        return service.updateCredentialWithResponseAsync(UUID.fromString(datasourceCredential.getId()),
+            innerDataSourceCredential = DataSourceCredentialEntityTransforms.toInnerForUpdate(dataSourceCredential);
+        return service.updateCredentialWithResponseAsync(UUID.fromString(dataSourceCredential.getId()),
             innerDataSourceCredential,
             context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE))
             .doOnSubscribe(ignoredValue -> logger.info("Updating DataSourceCredentialEntity"))
             .doOnSuccess(response -> logger.info("Updated DataSourceCredentialEntity"))
             .doOnError(error -> logger.warning("Failed to update DataSourceCredentialEntity", error))
             .flatMap(response -> {
-                return this.getDatasourceCredentialWithResponse(datasourceCredential.getId(), context)
-                    .map(configurationResponse -> new ResponseBase<Void, DatasourceCredentialEntity>(
+                return this.getDataSourceCredentialWithResponse(dataSourceCredential.getId(), context)
+                    .map(configurationResponse -> new ResponseBase<Void, DataSourceCredentialEntity>(
                         response.getRequest(),
                         response.getStatusCode(),
                         response.getHeaders(),
@@ -1811,7 +1811,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * Get a data source credential entity by its id.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getDatasourceCredential#String}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getDataSourceCredential#String}
      *
      * @param credentialId The data source credential entity unique id.
      *
@@ -1820,15 +1820,15 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * @throws NullPointerException thrown if the {@code credentialId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DatasourceCredentialEntity> getDatasourceCredential(String credentialId) {
-        return getDatasourceCredentialWithResponse(credentialId).flatMap(FluxUtil::toMono);
+    public Mono<DataSourceCredentialEntity> getDataSourceCredential(String credentialId) {
+        return getDataSourceCredentialWithResponse(credentialId).flatMap(FluxUtil::toMono);
     }
 
     /**
      *  Get a data source credential entity by its id with REST response.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getDatasourceCredentialWithResponse#String}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getDataSourceCredentialWithResponse#String}
      *
      * @param credentialId The data source credential entity unique id.
      *
@@ -1837,16 +1837,16 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * @throws NullPointerException thrown if the {@code credentialId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DatasourceCredentialEntity>> getDatasourceCredentialWithResponse(
+    public Mono<Response<DataSourceCredentialEntity>> getDataSourceCredentialWithResponse(
         String credentialId) {
         try {
-            return withContext(context -> getDatasourceCredentialWithResponse(credentialId, context));
+            return withContext(context -> getDataSourceCredentialWithResponse(credentialId, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<DatasourceCredentialEntity>> getDatasourceCredentialWithResponse(String credentialId,
+    Mono<Response<DataSourceCredentialEntity>> getDataSourceCredentialWithResponse(String credentialId,
                                                                                    Context context) {
         Objects.requireNonNull(credentialId, "'credentialId' cannot be null.");
 
@@ -1859,7 +1859,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * Deletes the data source credential entity identified by {@code credentialId}.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteDatasourceCredential#String}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteDataSourceCredential#String}
      *
      * @param credentialId The data source credential entity id.
      *
@@ -1869,15 +1869,15 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * @throws NullPointerException thrown if the {@code credentialId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteDatasourceCredential(String credentialId) {
-        return deleteDatasourceCredentialWithResponse(credentialId).flatMap(FluxUtil::toMono);
+    public Mono<Void> deleteDataSourceCredential(String credentialId) {
+        return deleteDataSourceCredentialWithResponse(credentialId).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Deletes the data source credential entity identified by {@code credentialId}.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteDatasourceCredentialWithResponse#String}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteDataSourceCredentialWithResponse#String}
      *
      * @param credentialId The data source credential entity id.
      *
@@ -1887,15 +1887,15 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * @throws NullPointerException thrown if the {@code credentialId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteDatasourceCredentialWithResponse(String credentialId) {
+    public Mono<Response<Void>> deleteDataSourceCredentialWithResponse(String credentialId) {
         try {
-            return withContext(context -> deleteDatasourceCredentialWithResponse(credentialId, context));
+            return withContext(context -> deleteDataSourceCredentialWithResponse(credentialId, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<Void>> deleteDatasourceCredentialWithResponse(String credentialId, Context context) {
+    Mono<Response<Void>> deleteDataSourceCredentialWithResponse(String credentialId, Context context) {
         Objects.requireNonNull(credentialId, "'credentialId' is required.");
         final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE);
 
@@ -1912,30 +1912,30 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * List information of all data source credential entities on the metrics advisor account.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listDatasourceCredentials}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listDataSourceCredentials}
      *
-     * @return A {@link PagedFlux} containing information of all the {@link DatasourceCredentialEntity data feeds}
+     * @return A {@link PagedFlux} containing information of all the {@link DataSourceCredentialEntity data feeds}
      * in the account.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DatasourceCredentialEntity> listDatasourceCredentials() {
-        return listDatasourceCredentials(new ListCredentialEntityOptions());
+    public PagedFlux<DataSourceCredentialEntity> listDataSourceCredentials() {
+        return listDataSourceCredentials(new ListCredentialEntityOptions());
     }
 
     /**
      * List information of all data source credential entities on the metrics advisor account.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listDatasourceCredentials#ListCredentialEntityOptions}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listDataSourceCredentials#ListCredentialEntityOptions}
      *
      * @param options The configurable {@link ListCredentialEntityOptions options} to pass for filtering
      * the output result.
      *
-     * @return A {@link PagedFlux} containing information of all the {@link DatasourceCredentialEntity data feeds}
+     * @return A {@link PagedFlux} containing information of all the {@link DataSourceCredentialEntity data feeds}
      * in the account.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DatasourceCredentialEntity> listDatasourceCredentials(ListCredentialEntityOptions options) {
+    public PagedFlux<DataSourceCredentialEntity> listDataSourceCredentials(ListCredentialEntityOptions options) {
         try {
             return new PagedFlux<>(() ->
                 withContext(context ->
@@ -1947,7 +1947,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
         }
     }
 
-    PagedFlux<DatasourceCredentialEntity> listDatasourceCredentials(ListCredentialEntityOptions options,
+    PagedFlux<DataSourceCredentialEntity> listDataSourceCredentials(ListCredentialEntityOptions options,
                                                                     Context context) {
         return new PagedFlux<>(() ->
             listCredentialEntitiesSinglePageAsync(options, context),
@@ -1955,7 +1955,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
                 listCredentialEntitiesSNextPageAsync(continuationToken, context));
     }
 
-    private Mono<PagedResponse<DatasourceCredentialEntity>> listCredentialEntitiesSinglePageAsync(
+    private Mono<PagedResponse<DataSourceCredentialEntity>> listCredentialEntitiesSinglePageAsync(
         ListCredentialEntityOptions options, Context context) {
         options = options != null ? options : new ListCredentialEntityOptions();
         final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE);
@@ -1973,7 +1973,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
                 null));
     }
 
-    private Mono<PagedResponse<DatasourceCredentialEntity>> listCredentialEntitiesSNextPageAsync(
+    private Mono<PagedResponse<DataSourceCredentialEntity>> listCredentialEntitiesSNextPageAsync(
         String nextPageLink, Context context) {
         if (CoreUtils.isNullOrEmpty(nextPageLink)) {
             return Mono.empty();

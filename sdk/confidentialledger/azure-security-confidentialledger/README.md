@@ -141,15 +141,15 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [azure_confidential_computing]: https://azure.microsoft.com/solutions/confidential-compute
 [confidential_ledger_docs]: https://aka.ms/confidentialledger-servicedocs
 [samples]: src/samples/java/com/azure/security/confidentialledger
-[source_code]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/confidentialledger/azure-security-confidentialledger/src
-[samples_code]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/confidentialledger/azure-security-confidentialledger/src/samples/
+[source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/confidentialledger/azure-security-confidentialledger/src
+[samples_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/confidentialledger/azure-security-confidentialledger/src/samples/
 [azure_subscription]: https://azure.microsoft.com/free/
 [product_documentation]: https://aka.ms/confidentialledger-servicedocs
-[ledger_base_client_class]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/confidentialledger/azure-security-confidentialledger/src/main/java/com/azure/security/confidentialledger/LedgerBaseClient.java
+[ledger_base_client_class]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/confidentialledger/azure-security-confidentialledger/src/main/java/com/azure/security/confidentialledger/LedgerBaseClient.java
 [azure_portal]: https://portal.azure.com
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [package]: https://mvnrepository.com/artifact/com.azure/azure-security-confidentialledger
-[samples_readme]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/confidentialledger/azure-security-confidentialledger/src/samples/README.md
+[samples_readme]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/confidentialledger/azure-security-confidentialledger/src/samples/README.md
 
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fconfidentialledger%2Fazure-security-confidentialledger%2FREADME.png)

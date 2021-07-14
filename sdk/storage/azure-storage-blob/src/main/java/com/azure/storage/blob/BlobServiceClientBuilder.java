@@ -9,6 +9,8 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelinePosition;
+import com.azure.core.http.policy.AzureSasCredentialPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.ClientOptions;
@@ -25,6 +27,7 @@ import com.azure.storage.common.implementation.connectionstring.StorageAuthentic
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
 import com.azure.storage.common.implementation.connectionstring.StorageEndpoint;
 import com.azure.storage.common.policy.RequestRetryOptions;
+import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -100,11 +103,6 @@ public final class BlobServiceClientBuilder {
 
         boolean anonymousAccess = false;
 
-        if (Objects.isNull(storageSharedKeyCredential) && Objects.isNull(tokenCredential)
-            && Objects.isNull(azureSasCredential) && Objects.isNull(sasToken)) {
-            anonymousAccess = true;
-        }
-
         if (Objects.nonNull(customerProvidedKey) && Objects.nonNull(encryptionScope)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("Customer provided key and encryption "
                 + "scope cannot both be set"));
@@ -115,6 +113,23 @@ public final class BlobServiceClientBuilder {
             storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
             endpoint, retryOptions, logOptions,
             clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, logger);
+
+        boolean foundCredential = false;
+        for (int i = 0; i < pipeline.getPolicyCount(); i++) {
+            if (pipeline.getPolicy(i) instanceof StorageSharedKeyCredentialPolicy) {
+                foundCredential = true;
+                break;
+            }
+            if (pipeline.getPolicy(i) instanceof BearerTokenAuthenticationPolicy) {
+                foundCredential = true;
+                break;
+            }
+            if (pipeline.getPolicy(i) instanceof AzureSasCredentialPolicy) {
+                foundCredential = true;
+                break;
+            }
+        }
+        anonymousAccess = !foundCredential;
 
         return new BlobServiceAsyncClient(pipeline, endpoint, serviceVersion, accountName, customerProvidedKey,
             encryptionScope, blobContainerEncryptionScope, anonymousAccess);
@@ -225,7 +240,8 @@ public final class BlobServiceClientBuilder {
     /**
      * Sets the SAS token used to authorize requests sent to the service.
      *
-     * @param sasToken The SAS token to use for authenticating requests.
+     * @param sasToken The SAS token to use for authenticating requests. This string should only be the query parameters
+     * (with or without a leading '?') and not a full url.
      * @return the updated BlobServiceClientBuilder
      * @throws NullPointerException If {@code sasToken} is {@code null}.
      */

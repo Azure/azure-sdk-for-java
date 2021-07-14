@@ -66,8 +66,8 @@ public final class BalancesClientImpl implements BalancesClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/providers/Microsoft.Billing/billingPeriods"
-                + "/{billingPeriodName}/providers/Microsoft.Consumption/balances")
+            "/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingPeriods/{billingPeriodName}"
+                + "/providers/Microsoft.Consumption/balances")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BalanceInner>> getForBillingPeriodByBillingAccount(

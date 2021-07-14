@@ -26,7 +26,7 @@ public final class ListMetricDimensionValuesOptions {
     /**
      * Gets limit indicating the number of items that will be included in a service returned page.
      *
-     * @return The maxPageSize value.
+     * @return The max page size value.
      */
     public Integer getMaxPageSize() {
         return this.maxPageSize;
@@ -57,11 +57,11 @@ public final class ListMetricDimensionValuesOptions {
     /**
      * Sets limit indicating the number of items to be included in a service returned page.
      *
-     * @param maxPageSize The maxPageSize value.
+     * @param maxPageSize The max page size value.
      *
      * @return The ListMetricDimensionValuesOptions object itself.
      */
-    public ListMetricDimensionValuesOptions setMaxPageSize(int maxPageSize) {
+    public ListMetricDimensionValuesOptions setMaxPageSize(Integer maxPageSize) {
         this.maxPageSize = maxPageSize;
         return this;
     }
@@ -74,7 +74,7 @@ public final class ListMetricDimensionValuesOptions {
      *
      * @return ListMetricDimensionValuesOptions itself.
      */
-    public ListMetricDimensionValuesOptions setSkip(int skip) {
+    public ListMetricDimensionValuesOptions setSkip(Integer skip) {
         this.skip = skip;
         return this;
     }

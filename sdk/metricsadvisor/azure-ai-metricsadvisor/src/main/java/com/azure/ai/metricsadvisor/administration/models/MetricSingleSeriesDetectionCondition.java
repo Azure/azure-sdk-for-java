@@ -12,7 +12,7 @@ import com.azure.core.annotation.Fluent;
 @Fluent
 public final class MetricSingleSeriesDetectionCondition {
     private final DimensionKey seriesKey;
-    private DetectionConditionsOperator crossConditionsOperator;
+    private DetectionConditionOperator conditionOperator;
     private SmartDetectionCondition smartDetectionCondition;
     private HardThresholdCondition hardThresholdCondition;
     private ChangeThresholdCondition changeThresholdCondition;
@@ -40,8 +40,8 @@ public final class MetricSingleSeriesDetectionCondition {
      *
      * @return The logical operator applied across conditions.
      */
-    public DetectionConditionsOperator getCrossConditionsOperator() {
-        return this.crossConditionsOperator;
+    public DetectionConditionOperator getConditionOperator() {
+        return this.conditionOperator;
     }
 
     /**
@@ -95,12 +95,12 @@ public final class MetricSingleSeriesDetectionCondition {
     /**
      * Sets the logical operator to apply across conditions.
      *
-     * @param crossConditionsOperator The logical operator.
+     * @param conditionOperator The logical operator.
      * @return The MetricSingleSeriesDetectionCondition object itself.
      */
-    public MetricSingleSeriesDetectionCondition setCrossConditionOperator(
-        DetectionConditionsOperator crossConditionsOperator) {
-        this.crossConditionsOperator = crossConditionsOperator;
+    public MetricSingleSeriesDetectionCondition setConditionOperator(
+        DetectionConditionOperator conditionOperator) {
+        this.conditionOperator = conditionOperator;
         return this;
     }
 

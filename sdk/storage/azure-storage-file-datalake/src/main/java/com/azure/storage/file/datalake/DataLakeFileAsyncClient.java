@@ -253,7 +253,6 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
 
     /**
      * Creates a new file.
-     * <p>
      * To avoid overwriting, pass "*" to {@link DataLakeRequestConditions#setIfNoneMatch(String)}.
      *
      * <p><strong>Code Samples</strong></p>
@@ -326,11 +325,19 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
                         .addProgressReporting(stream, validatedParallelTransferOptions.getProgressReceiver()),
                     fileOffset, length, options.getHeaders(), validatedUploadRequestConditions);
 
-            Flux<ByteBuffer> data = options.getDataFlux() == null ? Utility.convertStreamToByteBuffer(
-                options.getDataStream(), options.getLength(),
+            Flux<ByteBuffer> data = options.getDataFlux();
+            // no specified length: use azure.core's converter
+            if (data == null && options.getOptionalLength() == null) {
                 // We can only buffer up to max int due to restrictions in ByteBuffer.
-                (int) Math.min(Integer.MAX_VALUE, validatedParallelTransferOptions.getBlockSizeLong()), false)
-                : options.getDataFlux();
+                int chunkSize = (int) Math.min(Integer.MAX_VALUE, validatedParallelTransferOptions.getBlockSizeLong());
+                data = FluxUtil.toFluxByteBuffer(options.getDataStream(), chunkSize);
+            // specified length (legacy requirement): use custom converter. no marking because we buffer anyway.
+            } else if (data == null) {
+                // We can only buffer up to max int due to restrictions in ByteBuffer.
+                int chunkSize = (int) Math.min(Integer.MAX_VALUE, validatedParallelTransferOptions.getBlockSizeLong());
+                data = Utility.convertStreamToByteBuffer(
+                    options.getDataStream(), options.getOptionalLength(), chunkSize, false);
+            }
 
             return createWithResponse(options.getPermissions(), options.getUmask(), options.getHeaders(),
                 options.getMetadata(), validatedRequestConditions)

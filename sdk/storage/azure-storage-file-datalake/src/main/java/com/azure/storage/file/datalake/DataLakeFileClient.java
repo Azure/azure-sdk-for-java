@@ -17,6 +17,8 @@ import com.azure.storage.blob.models.BlobDownloadResponse;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobQueryResponse;
 import com.azure.storage.blob.options.BlobDownloadToFileOptions;
+import com.azure.storage.blob.options.BlobInputStreamOptions;
+import com.azure.storage.blob.specialized.BlobInputStream;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.Utility;
@@ -24,10 +26,14 @@ import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.FluxInputStream;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.UploadUtils;
+import com.azure.storage.file.datalake.implementation.models.InternalDataLakeFileOpenInputStreamResult;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
+import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
+import com.azure.storage.file.datalake.models.DataLakeFileOpenInputStreamResult;
 import com.azure.storage.file.datalake.models.FileQueryAsyncResponse;
+import com.azure.storage.file.datalake.options.DataLakeFileInputStreamOptions;
 import com.azure.storage.file.datalake.options.FileParallelUploadOptions;
 import com.azure.storage.file.datalake.options.FileQueryOptions;
 import com.azure.storage.file.datalake.models.FileQueryResponse;
@@ -207,7 +213,6 @@ public class DataLakeFileClient extends DataLakePathClient {
 
     /**
      * Creates a new file.
-     * <p>
      * To avoid overwriting, pass "*" to {@link DataLakeRequestConditions#setIfNoneMatch(String)}.
      *
      * <p><strong>Code Samples</strong></p>
@@ -496,6 +501,30 @@ public class DataLakeFileClient extends DataLakePathClient {
         }, logger);
     }
 
+    /**
+     * Opens a file input stream to download the file. Locks on ETags.
+     *
+     * @return An {@link InputStream} object that represents the stream to use for reading from the file.
+     * @throws DataLakeStorageException If a storage service error occurred.
+     */
+    public DataLakeFileOpenInputStreamResult openInputStream() {
+        return openInputStream(null);
+    }
+
+    /**
+     * Opens a file input stream to download the specified range of the file. Defaults to ETag locking if the option
+     * is not specified.
+     *
+     * @param options {@link DataLakeFileInputStreamOptions}
+     * @return A {@link DataLakeFileOpenInputStreamResult} object that contains the stream to use for reading from the file.
+     * @throws DataLakeStorageException If a storage service error occurred.
+     */
+    public DataLakeFileOpenInputStreamResult openInputStream(DataLakeFileInputStreamOptions options) {
+        BlobInputStreamOptions convertedOptions = Transforms.toBlobInputStreamOptions(options);
+        BlobInputStream inputStream = blockBlobClient.openInputStream(convertedOptions);
+        return new InternalDataLakeFileOpenInputStreamResult(inputStream,
+            Transforms.toPathProperties(inputStream.getProperties()));
+    }
 
     /**
      * Reads the entire file into a file specified by the path.

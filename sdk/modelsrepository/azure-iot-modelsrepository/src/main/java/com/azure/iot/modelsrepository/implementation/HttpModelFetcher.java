@@ -45,7 +45,7 @@ class HttpModelFetcher implements ModelFetcher {
 
             String tryContentPath = work.poll();
 
-            logger.info(String.format(StatusStrings.FETCHING_MODEL_CONTENT, tryContentPath));
+            logger.info(StatusStrings.FETCHING_MODEL_CONTENT, tryContentPath);
 
             return evaluatePath(tryContentPath, context)
                 .onErrorResume(error -> {

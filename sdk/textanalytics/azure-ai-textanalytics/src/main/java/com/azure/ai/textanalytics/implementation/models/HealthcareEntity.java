@@ -10,7 +10,7 @@ import java.util.List;
 
 /** The HealthcareEntity model. */
 @Fluent
-public final class HealthcareEntity extends Entity {
+public final class HealthcareEntity extends HealthcareEntityProperties {
     /*
      * The assertion property.
      */

@@ -3,6 +3,16 @@
 ## 1.11.0-beta.1 (Unreleased)
 
 
+## 1.10.1 (2021-07-01)
+
+### Features Added
+
+- Added support for new `HttpClientOptions` configurations.
+
+### Dependency Updates
+
+- Upgraded `azure-core` from `1.17.0` to `1.18.0`.
+
 ## 1.10.0 (2021-06-07)
 
 ### Dependency Updates
