@@ -147,7 +147,6 @@ public class MultivariateSample {
 
         //Check model status until the model get ready
         Instant start = Instant.now();
-        int timeout = 1000;
         Response<Model> trainResponse;
         while (true) {
             trainResponse = getModelStatus(client, modelId);
@@ -155,10 +154,6 @@ public class MultivariateSample {
             TimeUnit.SECONDS.sleep(10);
             if (modelStatus == ModelStatus.READY || modelStatus == ModelStatus.FAILED) {
                 break;
-            }
-            if (Duration.between(start, Instant.now()).getSeconds()>timeout){
-                System.out.println("Training time out");
-                return ;
             }
         }
 
@@ -185,10 +180,6 @@ public class MultivariateSample {
             TimeUnit.SECONDS.sleep(10);
             if (detectionStatus == DetectionStatus.READY || detectionStatus == DetectionStatus.FAILED) {
                 break;
-            }
-            if (Duration.between(start, Instant.now()).getSeconds()>timeout){
-                System.out.println("Inference time out");
-                return ;
             }
         }
 
