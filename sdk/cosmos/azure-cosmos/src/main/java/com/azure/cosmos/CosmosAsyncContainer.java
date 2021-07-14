@@ -841,7 +841,6 @@ public class CosmosAsyncContainer {
      */
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     @Deprecated() //forRemoval = true, since = "4.18"
-    @SuppressWarnings({ "removal" })
     public <TContext> Flux<CosmosBulkOperationResponse<TContext>> processBulkOperations(
         Flux<CosmosItemOperation> operations,
         BulkProcessingOptions<TContext> bulkOptions) {
@@ -884,7 +883,6 @@ public class CosmosAsyncContainer {
      * get the exception.
      */
     @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    @SuppressWarnings("deprecation")
     public <TContext> Flux<CosmosBulkOperationResponse<TContext>> processBulkOperations(
         Flux<CosmosItemOperation> operations,
         BulkExecutionOptions bulkOptions) {

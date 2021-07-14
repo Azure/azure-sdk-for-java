@@ -105,13 +105,11 @@ final class BulkExecutorUtil {
 
                     return docClientWrapper.getPartitionKeyRangeCache()
                         .tryLookupAsync(null, collection.getResourceId(), null, null)
-                        .map((Utils.ValueHolder<CollectionRoutingMap> routingMap) -> {
-
-                            return routingMap.v.getRangeByEffectivePartitionKey(
+                        .map((Utils.ValueHolder<CollectionRoutingMap> routingMap) ->
+                            routingMap.v.getRangeByEffectivePartitionKey(
                                 getEffectivePartitionKeyString(
                                     partitionKeyInternal,
-                                    definition)).getId();
-                        });
+                                    definition)).getId());
                 });
 
             return pkRangeIdMono;

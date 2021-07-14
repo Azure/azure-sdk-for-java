@@ -4,11 +4,9 @@
 package com.azure.cosmos.implementation.batch;
 
 import com.azure.cosmos.BulkExecutionOptions;
-import com.azure.cosmos.BulkProcessingOptions;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import reactor.util.function.Tuple2;
 
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;

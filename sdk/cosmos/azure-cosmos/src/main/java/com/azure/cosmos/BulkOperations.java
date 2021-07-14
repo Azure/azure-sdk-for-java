@@ -12,12 +12,12 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 
 /**
  * Utility for creating bulk operations which can be executed by calling
- * {@link CosmosAsyncContainer#processBulkOperations(Flux, BulkProcessingOptions)} .
+ * {@link CosmosAsyncContainer#processBulkOperations(Flux, BulkExecutionOptions)} .
  *
  * Also while creating these operation, if some options which are only for individual operation can be provided by passing
  * a {@link BulkItemRequestOptions} while creating the bulk operation.
  *
- * See also {@link BulkProcessingOptions}.
+ * See also {@link BulkExecutionOptions}.
  */
 @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class BulkOperations {

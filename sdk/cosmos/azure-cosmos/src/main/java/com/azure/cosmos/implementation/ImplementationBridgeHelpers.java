@@ -30,7 +30,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 
 public class ImplementationBridgeHelpers {
-    private static Logger logger = LoggerFactory.getLogger(ImplementationBridgeHelpers.class);
+    private final static Logger logger = LoggerFactory.getLogger(ImplementationBridgeHelpers.class);
     public static final class CosmosClientBuilderHelper {
         private static CosmosClientBuilderAccessor accessor;
 

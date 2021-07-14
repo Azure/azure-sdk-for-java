@@ -23,8 +23,8 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  */
 public final class ItemBulkOperation<TInternal, TContext> implements CosmosItemOperation {
 
-    private TInternal item;
-    private TContext context;
+    private final TInternal item;
+    private final TContext context;
     private final String id;
     private final PartitionKey partitionKey;
     private final CosmosItemOperationType operationType;
@@ -107,10 +107,6 @@ public final class ItemBulkOperation<TInternal, TContext> implements CosmosItemO
 
     TInternal getItemInternal() {
         return this.item;
-    }
-
-    TContext getContextInternal() {
-        return this.context;
     }
 
     @SuppressWarnings("unchecked")

@@ -40,13 +40,6 @@ public class BulkExecutionThresholds {
 
     static {
         ImplementationBridgeHelpers.BulkExecutionThresholdsHelper.setBulkExecutionThresholdsAccessor(
-            new ImplementationBridgeHelpers.BulkExecutionThresholdsHelper.BulkExecutionThresholdsAccessor() {
-                @Override
-                public ConcurrentMap<String, PartitionScopeThresholds> getPartitionScopeThresholds(
-                    BulkExecutionThresholds thresholds) {
-
-                    return thresholds.getPartitionScopeThresholds();
-                }
-            });
+            BulkExecutionThresholds::getPartitionScopeThresholds);
     }
 }

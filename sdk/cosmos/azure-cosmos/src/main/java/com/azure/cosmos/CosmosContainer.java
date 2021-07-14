@@ -689,7 +689,6 @@ public class CosmosContainer {
      */
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     @Deprecated() //forRemoval = true, since = "4.18"
-    @SuppressWarnings({ "removal" })
     public <TContext> List<CosmosBulkOperationResponse<TContext>> processBulkOperations(
         Iterable<CosmosItemOperation> operations,
         BulkProcessingOptions<TContext> bulkOptions) {
