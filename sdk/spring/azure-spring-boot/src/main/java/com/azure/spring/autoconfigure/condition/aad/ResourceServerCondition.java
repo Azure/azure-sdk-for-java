@@ -12,6 +12,8 @@ import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.context.annotation.ConditionContext;
 import org.springframework.core.type.AnnotatedTypeMetadata;
 
+import java.util.Optional;
+
 /**
  * Resource server or all in scenario condition.
  */
@@ -29,7 +31,9 @@ public final class ResourceServerCondition extends SpringBootCondition {
             return ConditionOutcome.noMatch(message.notAvailable("aad authorization properties"));
         }
 
-        AADApplicationType applicationType = properties.getApplicationType();
+        // Bind properties will not execute AADAuthenticationProperties#afterPropertiesSet()
+        AADApplicationType applicationType = Optional.ofNullable(properties.getApplicationType())
+                                                     .orElseGet(AADApplicationType::inferApplicationTypeByDependencies);
         if (applicationType == null) {
             return ConditionOutcome.noMatch(message.because("Not found the AAD application type."));
         }

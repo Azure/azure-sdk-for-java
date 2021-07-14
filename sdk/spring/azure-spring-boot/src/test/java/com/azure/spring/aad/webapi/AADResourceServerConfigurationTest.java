@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.aad.webapi;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
@@ -28,7 +27,7 @@ public class AADResourceServerConfigurationTest {
         this.contextRunner
             .withUserConfiguration(AADResourceServerConfiguration.class)
             .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
-            .run(context -> Assertions.assertNotNull(context.getStartupFailure()));
+            .run(context -> assertThat(context).doesNotHaveBean("jwtDecoderByJwkKeySetUri"));
     }
 
     @Test

@@ -13,6 +13,8 @@ import org.springframework.context.annotation.ConditionContext;
 import org.springframework.core.type.AnnotatedTypeMetadata;
 import org.springframework.util.StringUtils;
 
+import java.util.Optional;
+
 /**
  * Web application, web resource server or all in scenario condition.
  */
@@ -34,7 +36,9 @@ public final class ClientRegistrationCondition extends SpringBootCondition {
             return ConditionOutcome.noMatch(message.didNotFind("client-id").atAll());
         }
 
-        AADApplicationType applicationType = properties.getApplicationType();
+        // Bind properties will not execute AADAuthenticationProperties#afterPropertiesSet()
+        AADApplicationType applicationType = Optional.ofNullable(properties.getApplicationType())
+                                                     .orElseGet(AADApplicationType::inferApplicationTypeByDependencies);
         if (applicationType == null) {
             return ConditionOutcome.noMatch(message.because("Not found the AAD application type."));
         }

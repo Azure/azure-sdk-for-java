@@ -48,11 +48,11 @@ public class AADOAuth2ClientAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public OAuth2AuthorizedClientManager authorizedClientManager(ClientRegistrationRepository clients,
+    public OAuth2AuthorizedClientManager authorizedClientManager(ClientRegistrationRepository repository,
                                                                  OAuth2AuthorizedClientRepository authorizedClients) {
 
         DefaultOAuth2AuthorizedClientManager manager =
-            new DefaultOAuth2AuthorizedClientManager(clients, authorizedClients);
+            new DefaultOAuth2AuthorizedClientManager(repository, authorizedClients);
         OAuth2AuthorizedClientProvider authorizedClientProviders =
             OAuth2AuthorizedClientProviderBuilder.builder()
                                                  .authorizationCode()

@@ -28,8 +28,7 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import com.azure.spring.aad.AADApplicationType;
-import static com.azure.spring.aad.AADApplicationType.defaultApplicationType;
-import static com.azure.spring.aad.AADApplicationType.validateApplicationType;
+import static com.azure.spring.aad.AADApplicationType.inferApplicationTypeByDependencies;
 import static com.azure.spring.aad.AADAuthorizationGrantType.AUTHORIZATION_CODE;
 import static com.azure.spring.aad.AADAuthorizationGrantType.CLIENT_CREDENTIALS;
 import static com.azure.spring.aad.AADAuthorizationGrantType.ON_BEHALF_OF;
@@ -137,9 +136,6 @@ public class AADAuthenticationProperties implements InitializingBean {
     private AADApplicationType applicationType;
 
     public AADApplicationType getApplicationType() {
-        if (applicationType == null) {
-            applicationType = defaultApplicationType(this);
-        }
         return applicationType;
     }
 
@@ -460,6 +456,28 @@ public class AADAuthenticationProperties implements InitializingBean {
                 + allowedGroupIds);
         }
 
+        validateTenantId();
+        validateApplicationType(); // This must before validateClientId() and validateAuthorizationClients().
+        validateClientId();
+        validateAuthorizationClients();
+    }
+
+    private void validateAuthorizationClients() {
+        if (!CollectionUtils.isEmpty(authorizationClients)) {
+            authorizationClients.forEach(this::validateAuthorizationClientProperties);
+        }
+    }
+
+    private void validateClientId() {
+        if ((applicationType == AADApplicationType.WEB_APPLICATION
+            || applicationType == AADApplicationType.WEB_APPLICATION_AND_RESOURCE_SERVER)
+            && !StringUtils.hasText(clientId)) {
+            throw new IllegalStateException("'azure.activedirectory.client-id' must be configured when "
+                + "application type is 'web_application' or 'web_application_and_resource_server'.");
+        }
+    }
+
+    private void validateTenantId() {
         if (!StringUtils.hasText(tenantId)) {
             tenantId = "common";
         }
@@ -478,23 +496,32 @@ public class AADAuthenticationProperties implements InitializingBean {
                 + "But actually azure.activedirectory.tenant-id=" + tenantId
                 + ", and azure.activedirectory.user-group.allowed-group-ids=" + userGroup.getAllowedGroupIds());
         }
+    }
 
-        if (applicationType == null) {
-            applicationType = defaultApplicationType(this);
-            LOGGER.debug("The application type '{}' was detected.", applicationType.getValue());
+    /**
+     * Validate configured application type or set default value.
+     * @throws IllegalStateException Invalid property 'azure.activedirectory.application-type'
+     */
+    private void validateApplicationType() {
+        AADApplicationType inferredType = inferApplicationTypeByDependencies();
+        if (applicationType != null) {
+            if (!isValidApplicationTypeConfiguration(applicationType, inferredType)) {
+                throw new IllegalStateException(
+                    "Invalid property 'azure.activedirectory.application-type', the configured value is '"
+                        + applicationType.getValue() + "', " + "but the inferred value is '"
+                        + inferredType.getValue() + "'.");
+            }
         } else {
-            LOGGER.debug("The application type '{}' was configured.", applicationType.getValue());
-            if (!validateApplicationType(this)) {
-                throw new IllegalStateException("The application type '"
-                    + applicationType.getValue() + "' and the dependency do not match.");
-            }
+            applicationType = inferredType;
         }
-        if (!CollectionUtils.isEmpty(authorizationClients)) {
-            if (!StringUtils.hasText(clientId)) {
-                throw new IllegalStateException("'client-id' must be configured when using client registration.");
-            }
-            authorizationClients.forEach(this::validateAuthorizationClientProperties);
+    }
+
+    private boolean isValidApplicationTypeConfiguration(AADApplicationType configured, AADApplicationType inferred) {
+        if (configured == inferred) {
+            return true;
         }
+        return inferred == AADApplicationType.RESOURCE_SERVER_WITH_OBO
+            && configured == AADApplicationType.WEB_APPLICATION_AND_RESOURCE_SERVER;
     }
 
     private void validateAuthorizationClientProperties(String registrationId,

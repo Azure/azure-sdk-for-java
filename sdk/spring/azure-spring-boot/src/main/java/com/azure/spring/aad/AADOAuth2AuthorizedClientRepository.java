@@ -105,7 +105,7 @@ public class AADOAuth2AuthorizedClientRepository implements OAuth2AuthorizedClie
     }
 
     private String getAzureClientId() {
-        return repo.getAzureClientRegistration().getClient().getRegistrationId();
+        return repo.getAzureClient().getClient().getRegistrationId();
     }
 
     private OAuth2AuthorizedClient createFakeAuthzClient(OAuth2AuthorizedClient azureClient,

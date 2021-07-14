@@ -39,20 +39,20 @@ public class AADClientRegistrationRepository
 
     public static final String AZURE_CLIENT_REGISTRATION_ID = "azure";
 
-    protected final AzureClientRegistration azureClientRegistration;
-    protected final Map<String, ClientRegistration> delegatedClientRegistrations;
-    protected final Map<String, ClientRegistration> allClientRegistrations;
+    protected final AzureClientRegistration azureClient;
+    protected final Map<String, ClientRegistration> delegatedClients;
+    protected final Map<String, ClientRegistration> allClients;
     protected final AADAuthenticationProperties properties;
 
     public AADClientRegistrationRepository(AADAuthenticationProperties properties) {
         this.properties = properties;
-        this.azureClientRegistration = azureClientRegistration();
-        this.delegatedClientRegistrations = delegatedClientRegistrations();
-        this.allClientRegistrations = allClientRegistrations();
+        this.azureClient = azureClientRegistration();
+        this.delegatedClients = delegatedClientRegistrations();
+        this.allClients = allClientRegistrations();
     }
 
     private AzureClientRegistration azureClientRegistration() {
-        if (!needAzureClientRegistration()) {
+        if (notNeedDelegation()) {
             return emptyAzureClientRegistration();
         }
 
@@ -73,12 +73,12 @@ public class AADClientRegistrationRepository
         return new AzureClientRegistration(client, accessTokenScopes);
     }
 
-    private boolean needAzureClientRegistration() {
-        return properties.isWebApplicationOnly() || properties.isWebApplicationAndResourceServer();
+    private boolean notNeedDelegation() {
+        return !properties.isWebApplicationOnly() && !properties.isWebApplicationAndResourceServer();
     }
 
     private Map<String, ClientRegistration> delegatedClientRegistrations() {
-        if (!needAzureClientRegistration()) {
+        if (notNeedDelegation()) {
             return Collections.emptyMap();
         }
 
@@ -96,12 +96,12 @@ public class AADClientRegistrationRepository
             properties.getAuthorizationClients()
                       .entrySet()
                       .stream()
-                      .filter(entry -> !delegatedClientRegistrations.containsKey(entry.getKey()))
+                      .filter(entry -> !delegatedClients.containsKey(entry.getKey()))
                       .collect(Collectors.toMap(
                           Map.Entry::getKey,
                           entry -> toClientRegistration(entry.getKey(), entry.getValue())));
-        result.putAll(delegatedClientRegistrations);
-        ClientRegistration azureClient = azureClientRegistration.getClient();
+        result.putAll(delegatedClients);
+        ClientRegistration azureClient = this.azureClient.getClient();
         result.put(AZURE_CLIENT_REGISTRATION_ID, azureClient);
         return Collections.unmodifiableMap(result);
     }
@@ -249,25 +249,25 @@ public class AADClientRegistrationRepository
     @Override
     public ClientRegistration findByRegistrationId(String registrationId) {
         Assert.hasText(registrationId, "registrationId cannot be empty");
-        return allClientRegistrations.get(registrationId);
+        return allClients.get(registrationId);
     }
 
     @NotNull
     @Override
     public Iterator<ClientRegistration> iterator() {
-        return Collections.singleton(azureClientRegistration.getClient()).iterator();
+        return Collections.singleton(azureClient.getClient()).iterator();
     }
 
-    public AzureClientRegistration getAzureClientRegistration() {
-        return azureClientRegistration;
+    public AzureClientRegistration getAzureClient() {
+        return azureClient;
     }
 
     public boolean isAzureDelegatedClientRegistrations(ClientRegistration client) {
-        return delegatedClientRegistrations.containsValue(client);
+        return delegatedClients.containsValue(client);
     }
 
     public boolean isAzureDelegatedClientRegistrations(String registrationId) {
-        return delegatedClientRegistrations.containsKey(registrationId);
+        return delegatedClients.containsKey(registrationId);
     }
 
     public static boolean isDefaultClient(String registrationId) {

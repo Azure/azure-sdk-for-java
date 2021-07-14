@@ -86,7 +86,7 @@ public class AADOAuth2AuthorizationCodeGrantRequestEntityConverterTest {
     private HttpHeaders convertedHeaderOf(AADClientRegistrationRepository clientRepo,
                                           OAuth2AuthorizationCodeGrantRequest request) {
         AADOAuth2AuthorizationCodeGrantRequestEntityConverter converter =
-            new AADOAuth2AuthorizationCodeGrantRequestEntityConverter(clientRepo.getAzureClientRegistration());
+            new AADOAuth2AuthorizationCodeGrantRequestEntityConverter(clientRepo.getAzureClient());
         RequestEntity<?> entity = converter.convert(request);
         return Optional.ofNullable(entity)
             .map(HttpEntity::getHeaders)
@@ -94,7 +94,7 @@ public class AADOAuth2AuthorizationCodeGrantRequestEntityConverterTest {
     }
 
     private Object[] expectedHeaders(AADClientRegistrationRepository clientRepo) {
-        return new AADOAuth2AuthorizationCodeGrantRequestEntityConverter(clientRepo.getAzureClientRegistration())
+        return new AADOAuth2AuthorizationCodeGrantRequestEntityConverter(clientRepo.getAzureClient())
             .getHttpHeaders()
             .entrySet()
             .stream()
@@ -105,7 +105,7 @@ public class AADOAuth2AuthorizationCodeGrantRequestEntityConverterTest {
     private MultiValueMap<String, String> convertedBodyOf(AADClientRegistrationRepository clientRepo,
                                                           OAuth2AuthorizationCodeGrantRequest request) {
         AADOAuth2AuthorizationCodeGrantRequestEntityConverter converter =
-            new AADOAuth2AuthorizationCodeGrantRequestEntityConverter(clientRepo.getAzureClientRegistration());
+            new AADOAuth2AuthorizationCodeGrantRequestEntityConverter(clientRepo.getAzureClient());
         RequestEntity<?> entity = converter.convert(request);
         return WebApplicationContextRunnerUtils.toMultiValueMap(entity);
     }

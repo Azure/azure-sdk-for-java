@@ -41,10 +41,10 @@ public class AADWebApplicationConfigurationTest {
                 ClientRegistration azure = clientRepo.findByRegistrationId("azure");
                 ClientRegistration graph = clientRepo.findByRegistrationId("graph");
                 assertDefaultScopes(
-                    clientRepo.getAzureClientRegistration(),
+                    clientRepo.getAzureClient(),
                     "openid", "profile", "offline_access"
                 );
-                assertEquals(clientRepo.getAzureClientRegistration().getClient(), azure);
+                assertEquals(clientRepo.getAzureClient().getClient(), azure);
 
                 assertFalse(clientRepo.isAzureDelegatedClientRegistrations(azure));
                 assertTrue(clientRepo.isAzureDelegatedClientRegistrations(graph));
@@ -254,7 +254,7 @@ public class AADWebApplicationConfigurationTest {
                 AADClientRegistrationRepository clientRepo =
                     context.getBean(AADClientRegistrationRepository.class);
                 assertDefaultScopes(
-                    clientRepo.getAzureClientRegistration(),
+                    clientRepo.getAzureClient(),
                     "openid", "profile", "offline_access", "Calendars.Read"
                 );
             });
@@ -453,7 +453,7 @@ public class AADWebApplicationConfigurationTest {
                 AADClientRegistrationRepository clientRepo =
                     context.getBean(AADClientRegistrationRepository.class);
                 assertDefaultScopes(
-                    clientRepo.getAzureClientRegistration(),
+                    clientRepo.getAzureClient(),
                     "openid", "profile", "https://graph.microsoft.com/User.Read",
                     "https://graph.microsoft.com/Directory.Read.All"
                 );
@@ -471,7 +471,7 @@ public class AADWebApplicationConfigurationTest {
                 AADClientRegistrationRepository clientRepo =
                     context.getBean(AADClientRegistrationRepository.class);
                 assertDefaultScopes(
-                    clientRepo.getAzureClientRegistration(),
+                    clientRepo.getAzureClient(),
                     "openid", "profile", "https://graph.microsoft.com/User.Read",
                     "https://graph.microsoft.com/Directory.Read.All"
                 );
@@ -491,7 +491,7 @@ public class AADWebApplicationConfigurationTest {
             .run(context -> {
                 AADClientRegistrationRepository repo =
                     context.getBean(AADClientRegistrationRepository.class);
-                AzureClientRegistration azure = repo.getAzureClientRegistration();
+                AzureClientRegistration azure = repo.getAzureClient();
                 assertNotNull(azure);
                 int resourceServerCountInAuthCode = resourceServerCount(azure.getClient().getScopes());
                 assertTrue(resourceServerCountInAuthCode > 1);

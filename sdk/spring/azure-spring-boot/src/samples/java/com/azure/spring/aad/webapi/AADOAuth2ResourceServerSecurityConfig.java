@@ -3,8 +3,6 @@
 
 package com.azure.spring.aad.webapi;
 
-
-import com.azure.spring.aad.webapi.AADResourceServerWebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;

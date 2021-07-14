@@ -13,7 +13,7 @@ public class AuthorityController {
     @GetMapping("Admin")
     @ResponseBody
     @PreAuthorize("hasAuthority('APPROLE_Admin')")
-    public String Admin() {
+    public String admin() {
         return "Admin message";
     }
 }

@@ -12,18 +12,24 @@
 
     This property is optional, its value can be inferred by dependencies, only `web_application_and_resource_server` must be configured manually: `azure.activedirectory.application-type=web_application_and_resource_server`.
     
+    Here is the table about how the starter infer application type by dependencies:
+    
     | Has dependency: spring-security-oauth2-client | Has dependency: spring-security-oauth2-resource-server |                  Valid values of application type                 | Default value               |
     |-----------------------------------------------|--------------------------------------------------------|-------------------------------------------------------------------|-----------------------------|
     |                      Yes                      |                          No                            |                       `web_application`                           |       `web_application`     |
     |                      No                       |                          Yes                           |                       `resource_server`                           |       `resource_server`     |
     |                      Yes                      |                          Yes                           | `resource_server_with_obo`, `web_application_and_resource_server` | `resource_server_with_obo`  |
 
-- Support new value `on_behalf_of` for AAD Obo authorization grant type.
+- Support new value `on_behalf_of` for OBO authorization grant type, originally we only support `on-behalf-of`.
+
 
 ## 3.6.1 (2021-07-02)
-
+### New Features
+- Upgrade to [spring-boot-dependencies:2.5.2](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.5.2/spring-boot-dependencies-2.5.2.pom).
+- Upgrade to [spring-cloud-dependencies:2020.0.3](https://repo.maven.apache.org/maven2/org/springframework/cloud/spring-cloud-dependencies/2020.0.3/spring-cloud-dependencies-2020.0.3.pom).
 ### Key Bug Fixes
 - Fix [cve-2021-22119](https://tanzu.vmware.com/security/cve-2021-22119).
+
 
 ## 3.6.0 (2021-06-23)
 ### Breaking Changes

@@ -193,7 +193,7 @@ To use **aad-starter** in this scenario, we need these steps:
 
     (B). You can provide one by extending `AADResourceServerWebSecurityConfigurerAdapter` and call `super.configure(http)` explicitly
     in the `configure(HttpSecurity http)` function. Here is an example:
-    <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/aad/webapi/AADOAuth2ResourceServerSecurityConfig.java#L12-L23 -->
+    <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/aad/webapi/AADOAuth2ResourceServerSecurityConfig.java#L10-L21 -->
     ```java
     @EnableWebSecurity
     @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -265,10 +265,7 @@ To use **aad-starter** in this scenario, we need these steps:
 
 ### Web application and Resource server in the same application
 
-This scenario is a combination of `Accessing a web application` and `Accessing a resource server`.
-
-All the paths that contain the custom */api* path are resources of the `Resource Server`, everything else will be managed by `Web application`.
-High priority matches the resources of all `Resource Server`, if the URI matches, it will continue to process according to the process of `Accessing a resource server`; if it does not match, it will be processed according to the process of `Accessing a web application`.
+This scenario supports `Web application` and `Resource server` in the same application.
 
 To use **aad-starter** in this scenario, we need these steps:
 
@@ -300,25 +297,13 @@ To use **aad-starter** in this scenario, we need these steps:
         client-id: <Web-API-C-client-id>
         client-secret: <Web-API-C-client-secret>
         app-id-uri: <Web-API-C-app-id-url>
-        application-type: web_application_and_resource_server
+        application-type: web_application_and_resource_server  # this can not be omitted.
         authorization-clients:
           graph: # Web Application uses graph client to access restricted resources.
             authorizationGrantType: authorization_code
             scopes:
               - https://graph.microsoft.com/User.Read
               - https://graph.microsoft.com/Directory.Read.All
-          webapiA:  # Web Application uses webapiA client to access restricted resources.
-            authorizationGrantType: authorization_code
-            scopes:
-              - api://<Web-API-A-app-id-url>/Obo.WebApiA.ExampleScope
-          webapiBWithObo: # Resource server uses webapiBObo client to access restricted resources.
-            authorization-grant-type: on_behalf_of
-            scopes:
-              - api:/<Web-API-B-app-id-url>/WebApiB.ExampleScope
-          webapiBWithClientCredentials:  # Both Web Application or Resource Server can use webapiBWithClientCredentials client to access restricted resources.
-            authorization-grant-type: client_credentials
-            scopes:
-              - api://<Web-API-B-app-id-url>/.default
     ```
 
 * Step 3: Write Java code:
@@ -331,17 +316,18 @@ To use **aad-starter** in this scenario, we need these steps:
     
     Here is an example:
 
-    <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/aad/AADOAuth2SecurityMultiConfig.java#L14-L41 -->
+    <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/aad/AADWebApplicationAndResourceServerConfig.java#L14-L42 -->
     ```java
     @EnableWebSecurity
     @EnableGlobalMethodSecurity(prePostEnabled = true)
-    public class AADOAuth2SecurityMultiConfig {
+    public class AADWebApplicationAndResourceServerConfig {
     
         @Order(1)
         @Configuration
         public static class ApiWebSecurityConfigurationAdapter extends AADResourceServerWebSecurityConfigurerAdapter {
             protected void configure(HttpSecurity http) throws Exception {
                 super.configure(http);
+                // All the paths that match `/api/**`(configurable) work as `Resource Server`, other paths work as `Web application`.
                 http.antMatcher("/api/**")
                     .authorizeRequests().anyRequest().authenticated();
             }
@@ -362,10 +348,8 @@ To use **aad-starter** in this scenario, we need these steps:
         }
     }
     ```
-    
-    Other controller side codes refer to `Accessing a web application` and `Accessing a resource server` scenarios respectively. 
 
-### Application type usage
+### Application type
 
 This property is optional, its value can be inferred by dependencies, only `web_application_and_resource_server` must be configured manually: `azure.activedirectory.application-type=web_application_and_resource_server`.
 
@@ -385,7 +369,7 @@ This starter provides the following properties:
 | **azure.activedirectory**.authorization-clients                         | A map configure the resource APIs the application is going to visit. Each item corresponding to one resource API the application is going to visit. In Spring code, each item corresponding to one OAuth2AuthorizedClient object|
 | **azure.activedirectory**.authorization-clients.{client-name}.scopes    | API permissions of a resource server that the application is going to acquire.                 |
 | **azure.activedirectory**.authorization-clients.{client-name}.on-demand | This is used for incremental consent. The default value is false. If it's true, it's not consent when user login, when application needs the additional permission, incremental consent is performed with one OAuth2 authorization code flow.|
-| **azure.activedirectory**.authorization-clients.{client-name}.authorization-grant-type | Type of authorization client. Supported types are [authorization_code] (default type for webapp), [on-behalf-of] (default type for resource-server), [client_credentials]. |
+| **azure.activedirectory**.authorization-clients.{client-name}.authorization-grant-type | Type of authorization client. Supported types are [authorization_code] (default type for webapp), [on_behalf_of] (default type for resource-server), [client_credentials]. |
 | **azure.activedirectory**.base-uri                                      | Base uri for authorization server, the default value is `https://login.microsoftonline.com/`.  |
 | **azure.activedirectory**.client-id                                     | Registered application ID in Azure AD.                                                         |
 | **azure.activedirectory**.client-secret                                 | client secret of the registered application.                                                   |
@@ -395,7 +379,7 @@ This starter provides the following properties:
 | **azure.activedirectory**.user-group.allowed-group-names                | Users' group name can be use in `@PreAuthorize("hasRole('ROLE_group_name_1')")`. Not all group name will take effect, only group names configured in this property will take effect. |
 | **azure.activedirectory**.user-group.allowed-group-ids                  | Users' group id can be use in `@PreAuthorize("hasRole('ROLE_group_id_1')")`. Not all group id will take effect, only group id configured in this property will take effect. If this property's value is `all`, then all group id will take effect.|
 | **azure.activedirectory**.user-name-attribute                           | Decide which claim to be principal's name. |
-| **azure.activedirectory**.enable-web-app-and-resource-server                | This is the switch for whether `Web application` and `Resource server` are used at the same time. The default is false.|
+| **azure.activedirectory**.application-type                              | Refer to [Application type](#application-type).|
 
 Here are some examples about how to use these properties:
 
@@ -425,7 +409,7 @@ Here are some examples about how to use these properties:
 
 * Step 2: Add `@EnableGlobalMethodSecurity(prePostEnabled = true)` in web application:
 
-    <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/aad/webapp/AADOAuth2LoginSecurityConfig.java#L11-L25 -->
+    <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/aad/webapp/AADOAuth2LoginSecurityConfig.java#L10-L24 -->
     ```java
     @EnableWebSecurity
     @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -588,7 +572,7 @@ Follow the guide to [add app roles in your application and assign to users or gr
     @GetMapping("Admin")
     @ResponseBody
     @PreAuthorize("hasAuthority('APPROLE_Admin')")
-    public String Admin() {
+    public String admin() {
         return "Admin message";
     }
     ```

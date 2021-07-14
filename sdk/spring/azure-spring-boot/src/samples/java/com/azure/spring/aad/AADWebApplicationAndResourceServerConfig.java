@@ -13,13 +13,14 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class AADOAuth2SecurityMultiConfig {
+public class AADWebApplicationAndResourceServerConfig {
 
     @Order(1)
     @Configuration
     public static class ApiWebSecurityConfigurationAdapter extends AADResourceServerWebSecurityConfigurerAdapter {
         protected void configure(HttpSecurity http) throws Exception {
             super.configure(http);
+            // All the paths that match `/api/**`(configurable) work as `Resource Server`, other paths work as `Web application`.
             http.antMatcher("/api/**")
                 .authorizeRequests().anyRequest().authenticated();
         }

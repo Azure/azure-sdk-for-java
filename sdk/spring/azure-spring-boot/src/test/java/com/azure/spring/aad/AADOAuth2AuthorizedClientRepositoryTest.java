@@ -211,11 +211,10 @@ public class AADOAuth2AuthorizedClientRepositoryTest {
                  mockStatic(RequestContextHolder.class, Mockito.CALLS_REAL_METHODS)) {
             new WebApplicationContextRunner()
                 .withConfiguration(
-                    AutoConfigurations.of(OAuth2ClientAutoConfiguration.class,
-                        AADWebApplicationConfiguration.class,
+                    AutoConfigurations.of(AADWebApplicationConfiguration.class,
                         AADResourceServerConfiguration.class,
                         AADOAuth2ClientAutoConfiguration.class,
-                        AADOAuth2Config.class)
+                        AADWebApplicationAndResourceServerConfig.class)
                 )
                 .withPropertyValues(
                     "azure.activedirectory.client-id = fake-client-id",
@@ -285,7 +284,7 @@ public class AADOAuth2AuthorizedClientRepositoryTest {
 
     @EnableWebSecurity
     @EnableGlobalMethodSecurity(prePostEnabled = true)
-    public static class AADOAuth2Config {
+    public static class AADWebApplicationAndResourceServerConfig {
 
         @Order(1)
         @Configuration
