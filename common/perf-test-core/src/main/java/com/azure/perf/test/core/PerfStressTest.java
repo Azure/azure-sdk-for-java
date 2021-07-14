@@ -12,6 +12,7 @@ import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClientResponse;
 
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.ArrayList;
 import javax.net.ssl.SSLException;
@@ -35,6 +36,9 @@ public abstract class PerfStressTest<TOptions extends PerfStressOptions> {
     private String recordingId;
 
     protected final TOptions options;
+
+    // Derived classes should use the ConfigureClientBuilder() method by default.  If a ClientBuilder does not
+    // follow the standard convention, it can be configured manually using these fields.
     protected final HttpClient httpClient;
     protected final Iterable<HttpPipelinePolicy> policies;
 
@@ -83,6 +87,31 @@ public abstract class PerfStressTest<TOptions extends PerfStressOptions> {
             recordPlaybackHttpClient = null;
             testProxyPolicy = null;
             policies = null;
+        }
+    }
+
+    // Attempts to configure a ClientBuilder using reflection.  If a ClientBuilder does not follow the standard convention,
+    // it can be configured manually using the "httpClient" and "policies" fields.
+    protected void ConfigureClientBuilder(Object clientBuilder) {
+        if (httpClient != null || policies != null) {
+            Class<?> clientBuilderClass = clientBuilder.getClass();
+
+            try {
+                if (httpClient != null) {
+                    Method httpClientMethod = clientBuilderClass.getMethod("httpClient", HttpClient.class);
+                    httpClientMethod.invoke(clientBuilder, httpClient);
+                }
+    
+                if (policies != null) {
+                    Method addPolicyMethod = clientBuilderClass.getMethod("addPolicy", HttpPipelinePolicy.class);
+                    for (HttpPipelinePolicy policy : policies) {
+                        addPolicyMethod.invoke(clientBuilder, policy);
+                    }
+                }
+            }
+            catch (ReflectiveOperationException e) {
+                throw new IllegalStateException(e);
+            } 
         }
     }
 
