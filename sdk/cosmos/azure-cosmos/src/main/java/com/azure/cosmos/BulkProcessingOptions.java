@@ -4,7 +4,6 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.batch.BatchRequestResponseConstants;
-import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.util.Beta;
 import reactor.core.publisher.Flux;
 
@@ -36,8 +35,7 @@ public final class BulkProcessingOptions<TContext> {
         BatchRequestResponseConstants.DEFAULT_MAX_MICRO_BATCH_INTERVAL_IN_MILLISECONDS);
     private final TContext batchContext;
     private final BulkProcessingThresholds<TContext> thresholds;
-    private OperationContextAndListenerTuple operationContextAndListenerTuple;
-
+    
     /**
      *  @deprecated forRemoval = true, since = "4.18"
      *  This class is not necessary anymore and will be removed. Please use one of the following overloads instead
