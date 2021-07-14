@@ -5,11 +5,9 @@ package com.azure.core.util;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -27,7 +25,7 @@ public final class UrlBuilder {
     private String path;
 
     // LinkedHashMap preserves insertion order
-    private final Map<String, List<String>> query = new LinkedHashMap<>();
+    private final Map<String, QueryParameter> query = new LinkedHashMap<>();
 
     /**
      * Set the scheme/protocol that will be used to build the final URL.
@@ -143,7 +141,7 @@ public final class UrlBuilder {
      * @return The provided query parameter name and encoded value to query string for the final URL.
      */
     public UrlBuilder setQueryParameter(String queryParameterName, String queryParameterEncodedValue) {
-        query.put(queryParameterName, new ArrayList<String>(Arrays.asList(queryParameterEncodedValue)));
+        query.put(queryParameterName, new QueryParameter(queryParameterName, queryParameterEncodedValue));
         return this;
     }
 
@@ -157,9 +155,9 @@ public final class UrlBuilder {
     public UrlBuilder appendQueryParameter(String queryParameterName, String queryParameterEncodedValue) {
         query.compute(queryParameterName, (key, value) -> {
             if (value == null) {
-                return new ArrayList<String>(Arrays.asList(queryParameterEncodedValue));
+                return new QueryParameter(queryParameterName, queryParameterEncodedValue);
             }
-            value.add(queryParameterEncodedValue);
+            value.addValue(queryParameterEncodedValue);
             return value;
         });
         return this;
@@ -201,20 +199,26 @@ public final class UrlBuilder {
         // This contains a map of key=value query parameters, replacing
         // multiple values for a single key with the first value in the list
         // This is done to maintain backward compatibility.
-        final Map<String, String> singleKeyValueQuery = new LinkedHashMap<>();
+        final Map<String, String> singleKeyValueQuery =
+            this.query.entrySet()
+                      .stream()
+                      .collect(Collectors.toMap(
+                          e -> e.getKey(),
+                          e -> {
+                            QueryParameter parameter = e.getValue();
+                            String value = null;
 
-        if (query != null) {
-            for (Map.Entry<String, List<String>> entry : query.entrySet()) {
-                String value = null;
-                List<String> valueList = entry.getValue();
+                            if (parameter != null) {
+                                // return only the first in the list of multiple
+                                // values for the same named parameter.
+                                // e.g. name=a&name=b, returns name=a
+                                value = parameter.getValuesList().get(0);
+                            }
 
-                if (valueList != null && valueList.size() > 0) {
-                    value = valueList.get(0);
-                }
+                            return value;
+                          }
+                      ));
 
-                singleKeyValueQuery.put(entry.getKey(), value);
-            }
-        }
         return singleKeyValueQuery;
     }
 
@@ -228,8 +232,8 @@ public final class UrlBuilder {
         }
 
         StringBuilder queryBuilder = new StringBuilder("?");
-        for (Map.Entry<String, List<String>> entry : query.entrySet()) {
-            for (String queryValue : entry.getValue()) {
+        for (Map.Entry<String, QueryParameter> entry : query.entrySet()) {
+            for (String queryValue : entry.getValue().getValuesList()) {
                 if (queryBuilder.length() > 1) {
                     queryBuilder.append("&");
                 }
