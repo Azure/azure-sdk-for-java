@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.healthbot.implementation;
 
-import com.azure.resourcemanager.healthbot.HealthbotManager;
 import com.azure.resourcemanager.healthbot.fluent.models.OperationDetailInner;
 import com.azure.resourcemanager.healthbot.models.OperationDetail;
 import com.azure.resourcemanager.healthbot.models.OperationDisplay;
@@ -12,9 +11,10 @@ import com.azure.resourcemanager.healthbot.models.OperationDisplay;
 public final class OperationDetailImpl implements OperationDetail {
     private OperationDetailInner innerObject;
 
-    private final HealthbotManager serviceManager;
+    private final com.azure.resourcemanager.healthbot.HealthbotManager serviceManager;
 
-    OperationDetailImpl(OperationDetailInner innerObject, HealthbotManager serviceManager) {
+    OperationDetailImpl(
+        OperationDetailInner innerObject, com.azure.resourcemanager.healthbot.HealthbotManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -43,7 +43,7 @@ public final class OperationDetailImpl implements OperationDetail {
         return this.innerObject;
     }
 
-    private HealthbotManager manager() {
+    private com.azure.resourcemanager.healthbot.HealthbotManager manager() {
         return this.serviceManager;
     }
 }

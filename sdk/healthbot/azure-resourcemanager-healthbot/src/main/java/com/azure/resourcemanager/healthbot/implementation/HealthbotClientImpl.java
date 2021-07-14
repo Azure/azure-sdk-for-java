@@ -157,7 +157,7 @@ public final class HealthbotClientImpl implements HealthbotClient {
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2020-12-08";
+        this.apiVersion = "2021-06-10";
         this.bots = new BotsClientImpl(this);
         this.operations = new OperationsClientImpl(this);
     }
@@ -244,7 +244,7 @@ public final class HealthbotClientImpl implements HealthbotClient {
                         if (managementError.getCode() == null || managementError.getMessage() == null) {
                             managementError = null;
                         }
-                    } catch (IOException ioe) {
+                    } catch (IOException | RuntimeException ioe) {
                         logger.logThrowableAsWarning(ioe);
                     }
                 }
@@ -273,7 +273,7 @@ public final class HealthbotClientImpl implements HealthbotClient {
             super(null);
             this.statusCode = statusCode;
             this.httpHeaders = httpHeaders;
-            this.responseBody = responseBody.getBytes(StandardCharsets.UTF_8);
+            this.responseBody = responseBody == null ? null : responseBody.getBytes(StandardCharsets.UTF_8);
         }
 
         public int getStatusCode() {

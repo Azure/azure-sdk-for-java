@@ -177,15 +177,15 @@ public final class BotsClientImpl implements BotsClient {
     }
 
     /**
-     * Create a new HealthBot.
+     * Create a new Azure Health Bot.
      *
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param botName The name of the Bot resource.
-     * @param parameters The parameters to provide for the created bot.
+     * @param parameters The parameters to provide for the created Azure Health Bot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return healthBot resource definition.
+     * @return azure Health Bot resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -228,20 +228,20 @@ public final class BotsClientImpl implements BotsClient {
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Create a new HealthBot.
+     * Create a new Azure Health Bot.
      *
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param botName The name of the Bot resource.
-     * @param parameters The parameters to provide for the created bot.
+     * @param parameters The parameters to provide for the created Azure Health Bot.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return healthBot resource definition.
+     * @return azure Health Bot resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -285,15 +285,15 @@ public final class BotsClientImpl implements BotsClient {
     }
 
     /**
-     * Create a new HealthBot.
+     * Create a new Azure Health Bot.
      *
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param botName The name of the Bot resource.
-     * @param parameters The parameters to provide for the created bot.
+     * @param parameters The parameters to provide for the created Azure Health Bot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return healthBot resource definition.
+     * @return azure Health Bot resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PollerFlux<PollResult<HealthBotInner>, HealthBotInner> beginCreateAsync(
@@ -306,16 +306,16 @@ public final class BotsClientImpl implements BotsClient {
     }
 
     /**
-     * Create a new HealthBot.
+     * Create a new Azure Health Bot.
      *
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param botName The name of the Bot resource.
-     * @param parameters The parameters to provide for the created bot.
+     * @param parameters The parameters to provide for the created Azure Health Bot.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return healthBot resource definition.
+     * @return azure Health Bot resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PollerFlux<PollResult<HealthBotInner>, HealthBotInner> beginCreateAsync(
@@ -330,15 +330,15 @@ public final class BotsClientImpl implements BotsClient {
     }
 
     /**
-     * Create a new HealthBot.
+     * Create a new Azure Health Bot.
      *
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param botName The name of the Bot resource.
-     * @param parameters The parameters to provide for the created bot.
+     * @param parameters The parameters to provide for the created Azure Health Bot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return healthBot resource definition.
+     * @return azure Health Bot resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PollResult<HealthBotInner>, HealthBotInner> beginCreate(
@@ -347,16 +347,16 @@ public final class BotsClientImpl implements BotsClient {
     }
 
     /**
-     * Create a new HealthBot.
+     * Create a new Azure Health Bot.
      *
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param botName The name of the Bot resource.
-     * @param parameters The parameters to provide for the created bot.
+     * @param parameters The parameters to provide for the created Azure Health Bot.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return healthBot resource definition.
+     * @return azure Health Bot resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PollResult<HealthBotInner>, HealthBotInner> beginCreate(
@@ -365,15 +365,15 @@ public final class BotsClientImpl implements BotsClient {
     }
 
     /**
-     * Create a new HealthBot.
+     * Create a new Azure Health Bot.
      *
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param botName The name of the Bot resource.
-     * @param parameters The parameters to provide for the created bot.
+     * @param parameters The parameters to provide for the created Azure Health Bot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return healthBot resource definition.
+     * @return azure Health Bot resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<HealthBotInner> createAsync(String resourceGroupName, String botName, HealthBotInner parameters) {
@@ -383,16 +383,16 @@ public final class BotsClientImpl implements BotsClient {
     }
 
     /**
-     * Create a new HealthBot.
+     * Create a new Azure Health Bot.
      *
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param botName The name of the Bot resource.
-     * @param parameters The parameters to provide for the created bot.
+     * @param parameters The parameters to provide for the created Azure Health Bot.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return healthBot resource definition.
+     * @return azure Health Bot resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<HealthBotInner> createAsync(
@@ -403,15 +403,15 @@ public final class BotsClientImpl implements BotsClient {
     }
 
     /**
-     * Create a new HealthBot.
+     * Create a new Azure Health Bot.
      *
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param botName The name of the Bot resource.
-     * @param parameters The parameters to provide for the created bot.
+     * @param parameters The parameters to provide for the created Azure Health Bot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return healthBot resource definition.
+     * @return azure Health Bot resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HealthBotInner create(String resourceGroupName, String botName, HealthBotInner parameters) {
@@ -419,16 +419,16 @@ public final class BotsClientImpl implements BotsClient {
     }
 
     /**
-     * Create a new HealthBot.
+     * Create a new Azure Health Bot.
      *
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param botName The name of the Bot resource.
-     * @param parameters The parameters to provide for the created bot.
+     * @param parameters The parameters to provide for the created Azure Health Bot.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return healthBot resource definition.
+     * @return azure Health Bot resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HealthBotInner create(String resourceGroupName, String botName, HealthBotInner parameters, Context context) {
@@ -480,7 +480,7 @@ public final class BotsClientImpl implements BotsClient {
                             this.client.getApiVersion(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -589,11 +589,11 @@ public final class BotsClientImpl implements BotsClient {
      *
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param botName The name of the Bot resource.
-     * @param parameters The parameters to provide for the required bot.
+     * @param parameters The parameters to provide for the required Azure Health Bot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return healthBot resource definition.
+     * @return azure Health Bot resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<HealthBotInner>> updateWithResponseAsync(
@@ -636,7 +636,7 @@ public final class BotsClientImpl implements BotsClient {
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -644,12 +644,12 @@ public final class BotsClientImpl implements BotsClient {
      *
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param botName The name of the Bot resource.
-     * @param parameters The parameters to provide for the required bot.
+     * @param parameters The parameters to provide for the required Azure Health Bot.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return healthBot resource definition.
+     * @return azure Health Bot resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<HealthBotInner>> updateWithResponseAsync(
@@ -697,11 +697,11 @@ public final class BotsClientImpl implements BotsClient {
      *
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param botName The name of the Bot resource.
-     * @param parameters The parameters to provide for the required bot.
+     * @param parameters The parameters to provide for the required Azure Health Bot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return healthBot resource definition.
+     * @return azure Health Bot resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<HealthBotInner> updateAsync(
@@ -722,11 +722,11 @@ public final class BotsClientImpl implements BotsClient {
      *
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param botName The name of the Bot resource.
-     * @param parameters The parameters to provide for the required bot.
+     * @param parameters The parameters to provide for the required Azure Health Bot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return healthBot resource definition.
+     * @return azure Health Bot resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HealthBotInner update(String resourceGroupName, String botName, HealthBotUpdateParameters parameters) {
@@ -738,12 +738,12 @@ public final class BotsClientImpl implements BotsClient {
      *
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param botName The name of the Bot resource.
-     * @param parameters The parameters to provide for the required bot.
+     * @param parameters The parameters to provide for the required Azure Health Bot.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return healthBot resource definition.
+     * @return azure Health Bot resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<HealthBotInner> updateWithResponse(
@@ -795,7 +795,7 @@ public final class BotsClientImpl implements BotsClient {
                             this.client.getApiVersion(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -983,7 +983,7 @@ public final class BotsClientImpl implements BotsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Healthbot operation response.
+     * @return the list of Azure Health Bot operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<HealthBotInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -1024,7 +1024,7 @@ public final class BotsClientImpl implements BotsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1035,7 +1035,7 @@ public final class BotsClientImpl implements BotsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Healthbot operation response.
+     * @return the list of Azure Health Bot operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<HealthBotInner>> listByResourceGroupSinglePageAsync(
@@ -1084,7 +1084,7 @@ public final class BotsClientImpl implements BotsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Healthbot operation response.
+     * @return the list of Azure Health Bot operation response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<HealthBotInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -1101,7 +1101,7 @@ public final class BotsClientImpl implements BotsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Healthbot operation response.
+     * @return the list of Azure Health Bot operation response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<HealthBotInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -1117,7 +1117,7 @@ public final class BotsClientImpl implements BotsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Healthbot operation response.
+     * @return the list of Azure Health Bot operation response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HealthBotInner> listByResourceGroup(String resourceGroupName) {
@@ -1132,7 +1132,7 @@ public final class BotsClientImpl implements BotsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Healthbot operation response.
+     * @return the list of Azure Health Bot operation response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HealthBotInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -1144,7 +1144,7 @@ public final class BotsClientImpl implements BotsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Healthbot operation response.
+     * @return the list of Azure Health Bot operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<HealthBotInner>> listSinglePageAsync() {
@@ -1180,7 +1180,7 @@ public final class BotsClientImpl implements BotsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1190,7 +1190,7 @@ public final class BotsClientImpl implements BotsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Healthbot operation response.
+     * @return the list of Azure Health Bot operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<HealthBotInner>> listSinglePageAsync(Context context) {
@@ -1231,7 +1231,7 @@ public final class BotsClientImpl implements BotsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Healthbot operation response.
+     * @return the list of Azure Health Bot operation response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<HealthBotInner> listAsync() {
@@ -1245,7 +1245,7 @@ public final class BotsClientImpl implements BotsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Healthbot operation response.
+     * @return the list of Azure Health Bot operation response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<HealthBotInner> listAsync(Context context) {
@@ -1258,7 +1258,7 @@ public final class BotsClientImpl implements BotsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Healthbot operation response.
+     * @return the list of Azure Health Bot operation response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HealthBotInner> list() {
@@ -1272,7 +1272,7 @@ public final class BotsClientImpl implements BotsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Healthbot operation response.
+     * @return the list of Azure Health Bot operation response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HealthBotInner> list(Context context) {
@@ -1286,7 +1286,7 @@ public final class BotsClientImpl implements BotsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Healthbot operation response.
+     * @return the list of Azure Health Bot operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<HealthBotInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1312,7 +1312,7 @@ public final class BotsClientImpl implements BotsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1323,7 +1323,7 @@ public final class BotsClientImpl implements BotsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Healthbot operation response.
+     * @return the list of Azure Health Bot operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<HealthBotInner>> listByResourceGroupNextSinglePageAsync(
@@ -1359,7 +1359,7 @@ public final class BotsClientImpl implements BotsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Healthbot operation response.
+     * @return the list of Azure Health Bot operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<HealthBotInner>> listNextSinglePageAsync(String nextLink) {
@@ -1384,7 +1384,7 @@ public final class BotsClientImpl implements BotsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1395,7 +1395,7 @@ public final class BotsClientImpl implements BotsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Healthbot operation response.
+     * @return the list of Azure Health Bot operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<HealthBotInner>> listNextSinglePageAsync(String nextLink, Context context) {
