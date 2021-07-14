@@ -13,14 +13,14 @@ public final class CreateMode extends ExpandableStringEnum<CreateMode> {
     /** Static value Default for CreateMode. */
     public static final CreateMode DEFAULT = fromString("Default");
 
-    /** Static value Create for CreateMode. */
-    public static final CreateMode CREATE = fromString("Create");
-
-    /** Static value Update for CreateMode. */
-    public static final CreateMode UPDATE = fromString("Update");
-
     /** Static value PointInTimeRestore for CreateMode. */
     public static final CreateMode POINT_IN_TIME_RESTORE = fromString("PointInTimeRestore");
+
+    /** Static value GeoRestore for CreateMode. */
+    public static final CreateMode GEO_RESTORE = fromString("GeoRestore");
+
+    /** Static value Replica for CreateMode. */
+    public static final CreateMode REPLICA = fromString("Replica");
 
     /**
      * Creates or finds a CreateMode from its string representation.

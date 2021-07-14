@@ -90,7 +90,7 @@ public interface FirewallRulesClient {
         Context context);
 
     /**
-     * Deletes a PostgreSQL server firewall rule.
+     * Deletes a server firewall rule.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -105,7 +105,7 @@ public interface FirewallRulesClient {
         String resourceGroupName, String serverName, String firewallRuleName);
 
     /**
-     * Deletes a PostgreSQL server firewall rule.
+     * Deletes a server firewall rule.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -121,7 +121,7 @@ public interface FirewallRulesClient {
         String resourceGroupName, String serverName, String firewallRuleName, Context context);
 
     /**
-     * Deletes a PostgreSQL server firewall rule.
+     * Deletes a server firewall rule.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -134,7 +134,7 @@ public interface FirewallRulesClient {
     void delete(String resourceGroupName, String serverName, String firewallRuleName);
 
     /**
-     * Deletes a PostgreSQL server firewall rule.
+     * Deletes a server firewall rule.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -148,7 +148,7 @@ public interface FirewallRulesClient {
     void delete(String resourceGroupName, String serverName, String firewallRuleName, Context context);
 
     /**
-     * List all the firewall rules in a given server.
+     * Gets information about a server firewall rule.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -156,13 +156,13 @@ public interface FirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a server firewall rule.
+     * @return information about a server firewall rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     FirewallRuleInner get(String resourceGroupName, String serverName, String firewallRuleName);
 
     /**
-     * List all the firewall rules in a given server.
+     * Gets information about a server firewall rule.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -171,14 +171,14 @@ public interface FirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a server firewall rule.
+     * @return information about a server firewall rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<FirewallRuleInner> getWithResponse(
         String resourceGroupName, String serverName, String firewallRuleName, Context context);
 
     /**
-     * List all the firewall rules in a given PostgreSQL server.
+     * List all the firewall rules in a given server.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -191,7 +191,7 @@ public interface FirewallRulesClient {
     PagedIterable<FirewallRuleInner> listByServer(String resourceGroupName, String serverName);
 
     /**
-     * List all the firewall rules in a given PostgreSQL server.
+     * List all the firewall rules in a given server.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.

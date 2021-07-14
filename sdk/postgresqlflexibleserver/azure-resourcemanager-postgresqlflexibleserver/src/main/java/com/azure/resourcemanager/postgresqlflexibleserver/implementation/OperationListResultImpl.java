@@ -31,10 +31,6 @@ public final class OperationListResultImpl implements OperationListResult {
         }
     }
 
-    public String nextLink() {
-        return this.innerModel().nextLink();
-    }
-
     public OperationListResultInner innerModel() {
         return this.innerObject;
     }

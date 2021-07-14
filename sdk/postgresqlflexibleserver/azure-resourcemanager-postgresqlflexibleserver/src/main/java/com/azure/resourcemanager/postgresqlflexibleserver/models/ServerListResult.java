@@ -17,19 +17,13 @@ public final class ServerListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerListResult.class);
 
     /*
-     * The list of flexible servers
+     * The list of servers
      */
     @JsonProperty(value = "value")
     private List<ServerInner> value;
 
-    /*
-     * The link used to get the next page of operations.
-     */
-    @JsonProperty(value = "nextLink")
-    private String nextLink;
-
     /**
-     * Get the value property: The list of flexible servers.
+     * Get the value property: The list of servers.
      *
      * @return the value value.
      */
@@ -38,33 +32,13 @@ public final class ServerListResult {
     }
 
     /**
-     * Set the value property: The list of flexible servers.
+     * Set the value property: The list of servers.
      *
      * @param value the value value to set.
      * @return the ServerListResult object itself.
      */
     public ServerListResult withValue(List<ServerInner> value) {
         this.value = value;
-        return this;
-    }
-
-    /**
-     * Get the nextLink property: The link used to get the next page of operations.
-     *
-     * @return the nextLink value.
-     */
-    public String nextLink() {
-        return this.nextLink;
-    }
-
-    /**
-     * Set the nextLink property: The link used to get the next page of operations.
-     *
-     * @param nextLink the nextLink value to set.
-     * @return the ServerListResult object itself.
-     */
-    public ServerListResult withNextLink(String nextLink) {
-        this.nextLink = nextLink;
         return this;
     }
 

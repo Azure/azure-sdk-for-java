@@ -11,31 +11,6 @@ import com.azure.core.util.Context;
 /** Resource collection API of Configurations. */
 public interface Configurations {
     /**
-     * List all the configurations in a given server.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server configurations.
-     */
-    PagedIterable<Configuration> listByServer(String resourceGroupName, String serverName);
-
-    /**
-     * List all the configurations in a given server.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server configurations.
-     */
-    PagedIterable<Configuration> listByServer(String resourceGroupName, String serverName, Context context);
-
-    /**
      * Gets information about a configuration of server.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -62,6 +37,31 @@ public interface Configurations {
      */
     Response<Configuration> getWithResponse(
         String resourceGroupName, String serverName, String configurationName, Context context);
+
+    /**
+     * List all the configurations in a given server.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of server configurations.
+     */
+    PagedIterable<Configuration> listByServer(String resourceGroupName, String serverName);
+
+    /**
+     * List all the configurations in a given server.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of server configurations.
+     */
+    PagedIterable<Configuration> listByServer(String resourceGroupName, String serverName, Context context);
 
     /**
      * Gets information about a configuration of server.

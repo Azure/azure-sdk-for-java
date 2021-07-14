@@ -4,22 +4,14 @@
 
 package com.azure.resourcemanager.postgresqlflexibleserver.implementation;
 
-import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.DatabaseInner;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Database;
 
-public final class DatabaseImpl implements Database, Database.Definition {
+public final class DatabaseImpl implements Database, Database.Definition, Database.Update {
     private DatabaseInner innerObject;
 
     private final com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager;
-
-    DatabaseImpl(
-        DatabaseInner innerObject,
-        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
-        this.innerObject = innerObject;
-        this.serviceManager = serviceManager;
-    }
 
     public String id() {
         return this.innerModel().id();
@@ -31,10 +23,6 @@ public final class DatabaseImpl implements Database, Database.Definition {
 
     public String type() {
         return this.innerModel().type();
-    }
-
-    public SystemData systemData() {
-        return this.innerModel().systemData();
     }
 
     public String charset() {
@@ -59,7 +47,7 @@ public final class DatabaseImpl implements Database, Database.Definition {
 
     private String databaseName;
 
-    public DatabaseImpl withExistingFlexibleServer(String resourceGroupName, String serverName) {
+    public DatabaseImpl withExistingServer(String resourceGroupName, String serverName) {
         this.resourceGroupName = resourceGroupName;
         this.serverName = serverName;
         return this;
@@ -70,7 +58,7 @@ public final class DatabaseImpl implements Database, Database.Definition {
             serviceManager
                 .serviceClient()
                 .getDatabases()
-                .create(resourceGroupName, serverName, databaseName, this.innerModel(), Context.NONE);
+                .createOrUpdate(resourceGroupName, serverName, databaseName, this.innerModel(), Context.NONE);
         return this;
     }
 
@@ -79,7 +67,7 @@ public final class DatabaseImpl implements Database, Database.Definition {
             serviceManager
                 .serviceClient()
                 .getDatabases()
-                .create(resourceGroupName, serverName, databaseName, this.innerModel(), context);
+                .createOrUpdate(resourceGroupName, serverName, databaseName, this.innerModel(), context);
         return this;
     }
 
@@ -87,6 +75,38 @@ public final class DatabaseImpl implements Database, Database.Definition {
         this.innerObject = new DatabaseInner();
         this.serviceManager = serviceManager;
         this.databaseName = name;
+    }
+
+    public DatabaseImpl update() {
+        return this;
+    }
+
+    public Database apply() {
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getDatabases()
+                .createOrUpdate(resourceGroupName, serverName, databaseName, this.innerModel(), Context.NONE);
+        return this;
+    }
+
+    public Database apply(Context context) {
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getDatabases()
+                .createOrUpdate(resourceGroupName, serverName, databaseName, this.innerModel(), context);
+        return this;
+    }
+
+    DatabaseImpl(
+        DatabaseInner innerObject,
+        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
+        this.innerObject = innerObject;
+        this.serviceManager = serviceManager;
+        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.serverName = Utils.getValueFromIdByName(innerObject.id(), "servers");
+        this.databaseName = Utils.getValueFromIdByName(innerObject.id(), "databases");
     }
 
     public Database refresh() {

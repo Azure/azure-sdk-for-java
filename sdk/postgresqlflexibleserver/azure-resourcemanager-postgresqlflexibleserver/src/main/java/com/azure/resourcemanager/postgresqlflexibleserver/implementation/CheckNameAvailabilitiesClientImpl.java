@@ -58,7 +58,7 @@ public final class CheckNameAvailabilitiesClientImpl implements CheckNameAvailab
     @ServiceInterface(name = "PostgreSqlManagement")
     private interface CheckNameAvailabilitiesService {
         @Headers({"Content-Type: application/json"})
-        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.DBForPostgreSql/checkNameAvailability")
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.DBforPostgreSQL/checkNameAvailability")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<NameAvailabilityInner>> execute(
@@ -101,6 +101,7 @@ public final class CheckNameAvailabilitiesClientImpl implements CheckNameAvailab
         } else {
             nameAvailabilityRequest.validate();
         }
+        final String apiVersion = "2017-12-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -108,7 +109,7 @@ public final class CheckNameAvailabilitiesClientImpl implements CheckNameAvailab
                     service
                         .execute(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             nameAvailabilityRequest,
                             accept,
@@ -148,12 +149,13 @@ public final class CheckNameAvailabilitiesClientImpl implements CheckNameAvailab
         } else {
             nameAvailabilityRequest.validate();
         }
+        final String apiVersion = "2017-12-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .execute(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 nameAvailabilityRequest,
                 accept,

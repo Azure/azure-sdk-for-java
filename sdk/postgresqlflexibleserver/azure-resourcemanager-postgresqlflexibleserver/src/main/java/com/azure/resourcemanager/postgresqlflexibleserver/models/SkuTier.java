@@ -10,8 +10,8 @@ import java.util.Collection;
 
 /** Defines values for SkuTier. */
 public final class SkuTier extends ExpandableStringEnum<SkuTier> {
-    /** Static value Burstable for SkuTier. */
-    public static final SkuTier BURSTABLE = fromString("Burstable");
+    /** Static value Basic for SkuTier. */
+    public static final SkuTier BASIC = fromString("Basic");
 
     /** Static value GeneralPurpose for SkuTier. */
     public static final SkuTier GENERAL_PURPOSE = fromString("GeneralPurpose");

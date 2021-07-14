@@ -22,12 +22,6 @@ public final class FirewallRuleListResult {
     @JsonProperty(value = "value")
     private List<FirewallRuleInner> value;
 
-    /*
-     * The link used to get the next page of operations.
-     */
-    @JsonProperty(value = "nextLink")
-    private String nextLink;
-
     /**
      * Get the value property: The list of firewall rules in a server.
      *
@@ -45,26 +39,6 @@ public final class FirewallRuleListResult {
      */
     public FirewallRuleListResult withValue(List<FirewallRuleInner> value) {
         this.value = value;
-        return this;
-    }
-
-    /**
-     * Get the nextLink property: The link used to get the next page of operations.
-     *
-     * @return the nextLink value.
-     */
-    public String nextLink() {
-        return this.nextLink;
-    }
-
-    /**
-     * Set the nextLink property: The link used to get the next page of operations.
-     *
-     * @param nextLink the nextLink value to set.
-     * @return the FirewallRuleListResult object itself.
-     */
-    public FirewallRuleListResult withNextLink(String nextLink) {
-        this.nextLink = nextLink;
         return this;
     }
 

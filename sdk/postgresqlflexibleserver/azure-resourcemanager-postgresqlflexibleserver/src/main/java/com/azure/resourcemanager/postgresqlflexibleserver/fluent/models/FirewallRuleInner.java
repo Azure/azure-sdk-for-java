@@ -7,7 +7,6 @@ package com.azure.resourcemanager.postgresqlflexibleserver.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -17,12 +16,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public class FirewallRuleInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(FirewallRuleInner.class);
-
-    /*
-     * The system metadata relating to this resource.
-     */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData systemData;
 
     /*
      * The start IP address of the server firewall rule. Must be IPv4 format.
@@ -35,15 +28,6 @@ public class FirewallRuleInner extends ProxyResource {
      */
     @JsonProperty(value = "properties.endIpAddress", required = true)
     private String endIpAddress;
-
-    /**
-     * Get the systemData property: The system metadata relating to this resource.
-     *
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
-    }
 
     /**
      * Get the startIpAddress property: The start IP address of the server firewall rule. Must be IPv4 format.
