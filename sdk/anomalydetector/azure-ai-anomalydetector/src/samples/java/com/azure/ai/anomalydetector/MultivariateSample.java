@@ -152,7 +152,7 @@ public class MultivariateSample {
         while (true) {
             trainResponse = getModelStatus(client, modelId);
             ModelStatus modelStatus = trainResponse.getValue().getModelInfo().getStatus();
-            TimeUnit.SECONDS.sleep(5);
+            TimeUnit.SECONDS.sleep(10);
             if (modelStatus == ModelStatus.READY || modelStatus == ModelStatus.FAILED) {
                 break;
             }
@@ -182,7 +182,7 @@ public class MultivariateSample {
         while (true) {
             detectionResult = getInferenceStatus(client, resultId);
             DetectionStatus detectionStatus = detectionResult.getSummary().getStatus();;
-            TimeUnit.SECONDS.sleep(5);
+            TimeUnit.SECONDS.sleep(10);
             if (detectionStatus == DetectionStatus.READY || detectionStatus == DetectionStatus.FAILED) {
                 break;
             }
