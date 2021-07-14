@@ -449,7 +449,6 @@ For details on contributing to this repository, see the [contributing guide](htt
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
 
-
 <!-- LINKS -->
 [docs]: https://azure.github.io/azure-sdk-for-java/
 [jdk]: https://docs.microsoft.com/java/azure/jdk/
