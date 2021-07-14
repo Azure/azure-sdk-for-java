@@ -5,7 +5,6 @@ package com.azure.spring.aad.webapp;
 
 import com.azure.spring.aad.AADClientRegistrationRepository;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import java.util.Iterator;
 import java.util.List;
@@ -24,7 +23,6 @@ public class AADWebAppClientRegistrationRepository extends AADClientRegistration
         super(azureClient, otherClients, properties);
     }
 
-    @NotNull
     @Override
     public Iterator<ClientRegistration> iterator() {
         return Collections.singleton(azureClient.getClient()).iterator();

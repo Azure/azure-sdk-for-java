@@ -30,12 +30,16 @@ import com.azure.security.keyvault.certificates.models.KeyVaultCertificateWithPo
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.google.common.io.Files;
+
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+
+import com.google.common.io.Files;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -305,11 +309,9 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
     private Secret createKeyVaultSecret(String servicePrincipal, String identityPrincipal) throws Exception {
         String vaultName = generateRandomResourceName("vlt", 10);
         String secretName = generateRandomResourceName("srt", 10);
-        String secretValue =
-            Files
-                .readFirstLine(
-                    new File(getClass().getClassLoader().getResource("test.certificate").getFile()),
-                    Charset.defaultCharset());
+        BufferedReader Buff = new BufferedReader(new FileReader(new File(getClass().getClassLoader()
+            .getResource("test.certificate").getFile())));
+        String secretValue = Buff.readLine();
 
         Vault vault =
             keyVaultManager
