@@ -48,7 +48,7 @@ import java.util.stream.Collectors;
 
 /**
  * Custom serializer for serializing types with wrapped properties. For example, a property with annotation
- * <p>
+ *
  * {@code @JsonProperty(value = "properties.name")} will be mapped from a top level "name" property in the POJO model to
  * {@code {'properties' : { 'name' : 'my_name' }}} in the serialized payload.
  */
@@ -126,7 +126,7 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
         module.setSerializerModifier(new BeanSerializerModifier() {
             @Override
             public JsonSerializer<?> modifySerializer(SerializationConfig config, BeanDescription beanDesc,
-                                                      JsonSerializer<?> serializer) {
+                JsonSerializer<?> serializer) {
                 // If the class is annotated with @JsonFlatten add the serializer.
                 // Else if any property is annotated with @JsonFlatten add the serializer.
                 // Otherwise do not add the serializer.
@@ -216,7 +216,7 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
 
     @Override
     public void serializeWithType(Object value, JsonGenerator gen, SerializerProvider provider,
-                                  TypeSerializer typeSer) throws IOException {
+        TypeSerializer typeSer) throws IOException {
         if (value == null) {
             gen.writeNull();
             return;
@@ -249,7 +249,7 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
     }
 
     private void propertyOnlyFlattenSerialize(Object value, JsonGenerator gen, SerializerProvider provider,
-                                              ObjectNode node) throws IOException {
+        ObjectNode node) throws IOException {
         for (BeanPropertyDefinition beanProp : beanDescription.findProperties()) {
             ObjectNode nodeToUse = node;
             String propertyName = beanProp.getName();
@@ -362,7 +362,6 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
                     outNode = node.get(values[values.length - 1]);
                 } else if (CHECK_IF_ESCAPED_MAP_PATTERN.matcher(key).matches()) {
                     // Handle escaped map key
-                    // for #8372 identity node should pass thru this check
 
                     String originalKey = REPLACE_ESCAPED_MAP_PATTERN.matcher(key).replaceAll(".");
                     resCurrent.remove(key);
