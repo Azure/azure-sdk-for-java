@@ -43,7 +43,7 @@ public class RecognizePiiEntitiesBatchStringDocumentsAsync {
         // Show statistics, model version, and PII entities that only related to the given Pii entity categories.
         RecognizePiiEntitiesOptions options = new RecognizePiiEntitiesOptions()
                                                   .setCategoriesFilter(
-                                                      PiiEntityCategory.USSOCIAL_SECURITY_NUMBER,
+                                                      PiiEntityCategory.US_SOCIAL_SECURITY_NUMBER,
                                                       PiiEntityCategory.CREDIT_CARD_NUMBER)
                                                   .setIncludeStatistics(true)
                                                   .setModelVersion("latest");

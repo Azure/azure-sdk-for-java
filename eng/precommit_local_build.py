@@ -73,15 +73,17 @@ def get_artifacts_from_pom(pom_path: str, build_artifacts: list, debug: bool):
 
 def main():
     parser = argparse.ArgumentParser(description='Runs compilation, testing, and linting for the passed artifacts.')
-    parser.add_argument('--artifacts', '--a', type=str, default=None, help='Comma separated list of groupId:artifactId identifiers')
-    parser.add_argument('--poms', '--p', type=str, default=None, help='Comma separated list of POM paths')
-    parser.add_argument('--skip-tests', '--st', action='store_true', help='Skips running tests')
-    parser.add_argument('--skip-javadocs', '--sj', action='store_true', help='Skips javadoc generation')
-    parser.add_argument('--skip-checkstyle', '--sc', action='store_true', help='Skips checkstyle linting')
-    parser.add_argument('--skip-spotbugs', '--ss', action='store_true', help='Skips spotbugs linting')
-    parser.add_argument('--skip-revapi', '--sr', action='store_true', help='Skips revapi linting')
-    parser.add_argument('--command-only', '--co', action='store_true', help='Indicates that only the command should be generated and not ran')
-    parser.add_argument('--debug', '--d', action='store_true', help='Generates command with verbose logging')
+    parser.add_argument('--artifacts', '-a', type=str, default=None, help='Comma separated list of groupId:artifactId identifiers')
+    parser.add_argument('--poms', '-p', type=str, default=None, help='Comma separated list of POM paths')
+    parser.add_argument('--skip-tests', '-st', action='store_true', help='Skips running tests')
+    parser.add_argument('--skip-javadocs', '-sj', action='store_true', help='Skips javadoc generation')
+    parser.add_argument('--skip-checkstyle', '-sc', action='store_true', help='Skips checkstyle linting')
+    parser.add_argument('--skip-spotbugs', '-ss', action='store_true', help='Skips spotbugs linting')
+    parser.add_argument('--skip-revapi', '-sr', action='store_true', help='Skips revapi linting')
+    parser.add_argument('--skip-readme', '-smd', action='store_true', help='Skips README validation')
+    parser.add_argument('--skip-changelog', '-scl', action='store_true', help='Skips CHANGELOG validation')
+    parser.add_argument('--command-only', '-co', action='store_true', help='Indicates that only the command should be generated and not ran')
+    parser.add_argument('--debug', '-d', action='store_true', help='Generates command with verbose logging')
     args = parser.parse_args()
 
     if args.artifacts == None and args.poms == None:
@@ -101,23 +103,36 @@ def main():
     if build_artifacts.count == 0:
         raise ValueError('No build artifacts found.')
 
-    skip_arguments = []
+    arguments = []
     if args.skip_tests:
-        skip_arguments.append('"-DskipTests=true"')
+        arguments.append('"-DskipTests=true"')
 
     if args.skip_javadocs:
-        skip_arguments.append('"-Dmaven.javadocs.skip=true"')
+        arguments.append('"-Dmaven.javadocs.skip=true"')
 
     if args.skip_checkstyle:
-        skip_arguments.append('"-Dcheckstyle.skip=true"')
+        arguments.append('"-Dcheckstyle.skip=true"')
     
     if args.skip_spotbugs:
-        skip_arguments.append('"-Dspotbugs.skip=true"')
+        arguments.append('"-Dspotbugs.skip=true"')
     
     if args.skip_revapi:
-        skip_arguments.append('"-Drevapi.skip=true"')
+        arguments.append('"-Drevapi.skip=true"')
 
-    maven_command = base_command.format(','.join(list(set(build_artifacts))), ' '.join(skip_arguments))
+    if not args.skip_readme:
+        arguments.append('"-Dverify-readme"')
+
+    if not args.skip_changelog:
+        arguments.append('"-Dverify-changelog"')
+
+    # If Checkstyle, Spotbugs, or RevApi is being ran install sdk-build-tools to ensure the linting configuration is up-to-date.
+    if not args.skip_checkstyle or not args.skip_spotbugs or not args.skip_revapi:
+        if debug:
+            print('Installing sdk-build-tools as Checkstyle, Spotbugs, or RevApi linting is being performed.')
+        
+        os.system('mvn install -f ' + os.path.join('eng', 'code-quality-reports', 'pom.xml'))
+
+    maven_command = base_command.format(','.join(list(set(build_artifacts))), ' '.join(arguments))
 
     print('Running Maven command: {}'.format(maven_command))
 

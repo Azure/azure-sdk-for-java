@@ -6,7 +6,7 @@ package com.azure.spring.cloud.autoconfigure.cloudfoundry;
 import com.azure.spring.cloud.autoconfigure.storage.AzureStorageProperties;
 import com.azure.spring.cloud.autoconfigure.eventhub.AzureEventHubProperties;
 import com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusProperties;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.assertj.AssertableApplicationContext;

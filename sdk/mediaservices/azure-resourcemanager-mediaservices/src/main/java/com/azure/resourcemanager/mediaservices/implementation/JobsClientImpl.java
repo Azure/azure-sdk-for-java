@@ -217,6 +217,7 @@ public final class JobsClientImpl implements JobsClient {
         if (transformName == null) {
             return Mono.error(new IllegalArgumentException("Parameter transformName is required and cannot be null."));
         }
+        final String apiVersion = "2020-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -228,7 +229,7 @@ public final class JobsClientImpl implements JobsClient {
                             resourceGroupName,
                             accountName,
                             transformName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             filter,
                             orderby,
                             accept,
@@ -289,6 +290,7 @@ public final class JobsClientImpl implements JobsClient {
         if (transformName == null) {
             return Mono.error(new IllegalArgumentException("Parameter transformName is required and cannot be null."));
         }
+        final String apiVersion = "2020-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -298,7 +300,7 @@ public final class JobsClientImpl implements JobsClient {
                 resourceGroupName,
                 accountName,
                 transformName,
-                this.client.getApiVersion(),
+                apiVersion,
                 filter,
                 orderby,
                 accept,
@@ -465,6 +467,7 @@ public final class JobsClientImpl implements JobsClient {
         if (jobName == null) {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
+        final String apiVersion = "2020-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -477,7 +480,7 @@ public final class JobsClientImpl implements JobsClient {
                             accountName,
                             transformName,
                             jobName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -524,6 +527,7 @@ public final class JobsClientImpl implements JobsClient {
         if (jobName == null) {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
+        final String apiVersion = "2020-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -534,7 +538,7 @@ public final class JobsClientImpl implements JobsClient {
                 accountName,
                 transformName,
                 jobName,
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }
@@ -647,6 +651,7 @@ public final class JobsClientImpl implements JobsClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2020-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -659,7 +664,7 @@ public final class JobsClientImpl implements JobsClient {
                             accountName,
                             transformName,
                             jobName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             parameters,
                             accept,
                             context))
@@ -718,6 +723,7 @@ public final class JobsClientImpl implements JobsClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2020-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -728,7 +734,7 @@ public final class JobsClientImpl implements JobsClient {
                 accountName,
                 transformName,
                 jobName,
-                this.client.getApiVersion(),
+                apiVersion,
                 parameters,
                 accept,
                 context);
@@ -846,6 +852,7 @@ public final class JobsClientImpl implements JobsClient {
         if (jobName == null) {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
+        final String apiVersion = "2020-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -858,7 +865,7 @@ public final class JobsClientImpl implements JobsClient {
                             accountName,
                             transformName,
                             jobName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -905,6 +912,7 @@ public final class JobsClientImpl implements JobsClient {
         if (jobName == null) {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
+        final String apiVersion = "2020-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -915,7 +923,7 @@ public final class JobsClientImpl implements JobsClient {
                 accountName,
                 transformName,
                 jobName,
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }
@@ -1020,6 +1028,7 @@ public final class JobsClientImpl implements JobsClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2020-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1032,7 +1041,7 @@ public final class JobsClientImpl implements JobsClient {
                             accountName,
                             transformName,
                             jobName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             parameters,
                             accept,
                             context))
@@ -1092,6 +1101,7 @@ public final class JobsClientImpl implements JobsClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2020-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1102,7 +1112,7 @@ public final class JobsClientImpl implements JobsClient {
                 accountName,
                 transformName,
                 jobName,
-                this.client.getApiVersion(),
+                apiVersion,
                 parameters,
                 accept,
                 context);
@@ -1223,6 +1233,7 @@ public final class JobsClientImpl implements JobsClient {
         if (jobName == null) {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
+        final String apiVersion = "2020-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1235,7 +1246,7 @@ public final class JobsClientImpl implements JobsClient {
                             accountName,
                             transformName,
                             jobName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -1282,6 +1293,7 @@ public final class JobsClientImpl implements JobsClient {
         if (jobName == null) {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
+        final String apiVersion = "2020-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1292,7 +1304,7 @@ public final class JobsClientImpl implements JobsClient {
                 accountName,
                 transformName,
                 jobName,
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }

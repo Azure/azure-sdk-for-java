@@ -24,9 +24,15 @@ public final class PiiTaskParameters {
     private String modelVersion;
 
     /*
+     * The loggingOptOut property.
+     */
+    @JsonProperty(value = "loggingOptOut")
+    private Boolean loggingOptOut;
+
+    /*
      * (Optional) describes the PII categories to return
      */
-    @JsonProperty(value = "pii-categories")
+    @JsonProperty(value = "piiCategories")
     private List<PiiCategory> piiCategories;
 
     /*
@@ -72,6 +78,26 @@ public final class PiiTaskParameters {
      */
     public PiiTaskParameters setModelVersion(String modelVersion) {
         this.modelVersion = modelVersion;
+        return this;
+    }
+
+    /**
+     * Get the loggingOptOut property: The loggingOptOut property.
+     *
+     * @return the loggingOptOut value.
+     */
+    public Boolean isLoggingOptOut() {
+        return this.loggingOptOut;
+    }
+
+    /**
+     * Set the loggingOptOut property: The loggingOptOut property.
+     *
+     * @param loggingOptOut the loggingOptOut value to set.
+     * @return the PiiTaskParameters object itself.
+     */
+    public PiiTaskParameters setLoggingOptOut(Boolean loggingOptOut) {
+        this.loggingOptOut = loggingOptOut;
         return this;
     }
 

@@ -9,10 +9,12 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.ProxyOptions;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.handler.logging.LogLevel;
+import reactor.netty.resources.ConnectionProvider;
 import reactor.netty.tcp.TcpClient;
 
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
+import java.time.Duration;
 
 /**
  * Code snippets for {@link NettyAsyncHttpClientBuilder}
@@ -41,6 +43,27 @@ public class NettyAsyncHttpClientBuilderJavaDocCodeSnippets {
             .eventLoopGroup(new NioEventLoopGroup(threadCount))
             .build();
         // END: com.azure.core.http.netty.NettyAsyncHttpClientBuilder#eventLoopGroup
+    }
+
+    /**
+     * Code snippet for creating an HttpClient with a specified {@link ConnectionProvider}.
+     */
+    public void connectionProviderSample() {
+        // BEGIN: com.azure.core.http.netty.NettyAsyncHttpClientBuilder.connectionProvider#ConnectionProvider
+        // The following creates a connection provider which will have each connection use the base name
+        // 'myHttpConnection', has a limit of 500 concurrent connections in the connection pool, has no limit on the
+        // number of connection requests that can be pending when all connections are in use, and removes a connection
+        // from the pool if the connection isn't used for 60 seconds.
+        ConnectionProvider connectionProvider = ConnectionProvider.builder("myHttpConnection")
+            .maxConnections(500)
+            .pendingAcquireMaxCount(-1)
+            .maxIdleTime(Duration.ofSeconds(60))
+            .build();
+
+        HttpClient client = new NettyAsyncHttpClientBuilder()
+            .connectionProvider(connectionProvider)
+            .build();
+        // END: com.azure.core.http.netty.NettyAsyncHttpClientBuilder.connectionProvider#ConnectionProvider
     }
 
     /**

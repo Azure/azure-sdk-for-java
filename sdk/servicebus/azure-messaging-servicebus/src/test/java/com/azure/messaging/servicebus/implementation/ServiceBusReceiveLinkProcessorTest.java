@@ -233,6 +233,7 @@ class ServiceBusReceiveLinkProcessorTest {
     @Test
     void newLinkOnClose() {
         // Arrange
+        final int count = 4;
         final Message message3 = mock(Message.class);
         final Message message4 = mock(Message.class);
 
@@ -253,11 +254,15 @@ class ServiceBusReceiveLinkProcessorTest {
         when(link2.getCredits()).thenReturn(1);
         when(link3.getCredits()).thenReturn(1);
 
+        when(link1.closeAsync()).thenReturn(Mono.empty());
+        when(link2.closeAsync()).thenReturn(Mono.empty());
+        when(link3.closeAsync()).thenReturn(Mono.empty());
+
         final ServiceBusReceiveLink[] connections = new ServiceBusReceiveLink[]{link1, link2, link3};
         final ServiceBusReceiveLinkProcessor processor = createSink(connections).subscribeWith(linkProcessor);
 
         // Act & Assert
-        StepVerifier.create(processor)
+        StepVerifier.create(processor.take(count))
             .then(() -> messagePublisher.next(message1))
             .expectNext(message1)
             .then(() -> {
@@ -519,23 +524,29 @@ class ServiceBusReceiveLinkProcessorTest {
     }
 
     @Test
-    void receivesUntilFirstLinkClosed() {
+    void receivesUntilFirstLinkClosed() throws InterruptedException {
         // Arrange
         ServiceBusReceiveLinkProcessor processor = Flux.just(link1).subscribeWith(linkProcessor);
 
+        final Duration shortWait = Duration.ofSeconds(5);
+
         when(link1.getCredits()).thenReturn(0);
+        when(link1.closeAsync()).thenReturn(Mono.empty());
 
         // Act & Assert
         StepVerifier.create(processor)
             .then(() -> {
                 endpointProcessor.next(AmqpEndpointState.ACTIVE);
-                messagePublisher.next(message1, message2);
+                messagePublisher.next(message1);
             })
             .expectNext(message1)
+            .then(() -> messagePublisher.next(message2))
             .expectNext(message2)
             .then(() -> endpointProcessor.complete())
             .expectComplete()
-            .verify();
+            .verify(shortWait);
+
+        TimeUnit.SECONDS.sleep(shortWait.getSeconds());
 
         assertTrue(processor.isTerminated());
         assertFalse(processor.hasError());

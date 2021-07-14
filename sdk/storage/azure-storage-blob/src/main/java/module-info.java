@@ -6,6 +6,7 @@ module com.azure.storage.blob {
 
     requires com.fasterxml.jackson.dataformat.xml;
     requires com.azure.storage.internal.avro;
+    requires com.azure.core.experimental;
 
     exports com.azure.storage.blob;
     exports com.azure.storage.blob.models;
@@ -20,7 +21,8 @@ module com.azure.storage.blob {
         com.azure.storage.file.datalake;    // FIXME this should not be a long-term solution
 
     exports com.azure.storage.blob.implementation.models to
-        com.azure.storage.blob.batch;
+        com.azure.storage.blob.batch,
+        com.azure.storage.blob.cryptography;
 
     exports com.azure.storage.blob.implementation.util to
         com.azure.storage.blob.cryptography,

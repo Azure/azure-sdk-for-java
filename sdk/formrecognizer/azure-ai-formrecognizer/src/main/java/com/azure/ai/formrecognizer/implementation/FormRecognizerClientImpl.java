@@ -86,6 +86,18 @@ public final class FormRecognizerClientImpl {
         return this.endpoint;
     }
 
+    /** Form Recognizer API version. */
+    private final String apiVersion;
+
+    /**
+     * Gets Form Recognizer API version.
+     *
+     * @return the apiVersion value.
+     */
+    public String getApiVersion() {
+        return this.apiVersion;
+    }
+
     /** The HTTP pipeline to send requests through. */
     private final HttpPipeline httpPipeline;
 
@@ -115,14 +127,16 @@ public final class FormRecognizerClientImpl {
      *
      * @param endpoint Supported Cognitive Services endpoints (protocol and hostname, for example:
      *     https://westus2.api.cognitive.microsoft.com).
+     * @param apiVersion Form Recognizer API version.
      */
-    FormRecognizerClientImpl(String endpoint) {
+    FormRecognizerClientImpl(String endpoint, String apiVersion) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                         .build(),
                 JacksonAdapter.createDefaultSerializerAdapter(),
-                endpoint);
+                endpoint,
+                apiVersion);
     }
 
     /**
@@ -131,9 +145,10 @@ public final class FormRecognizerClientImpl {
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint Supported Cognitive Services endpoints (protocol and hostname, for example:
      *     https://westus2.api.cognitive.microsoft.com).
+     * @param apiVersion Form Recognizer API version.
      */
-    FormRecognizerClientImpl(HttpPipeline httpPipeline, String endpoint) {
-        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint);
+    FormRecognizerClientImpl(HttpPipeline httpPipeline, String endpoint, String apiVersion) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, apiVersion);
     }
 
     /**
@@ -143,11 +158,14 @@ public final class FormRecognizerClientImpl {
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param endpoint Supported Cognitive Services endpoints (protocol and hostname, for example:
      *     https://westus2.api.cognitive.microsoft.com).
+     * @param apiVersion Form Recognizer API version.
      */
-    FormRecognizerClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint) {
+    FormRecognizerClientImpl(
+            HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint, String apiVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
+        this.apiVersion = apiVersion;
         this.service =
                 RestProxy.create(FormRecognizerClientService.class, this.httpPipeline, this.getSerializerAdapter());
     }
@@ -156,14 +174,15 @@ public final class FormRecognizerClientImpl {
      * The interface defining all the services for FormRecognizerClient to be used by the proxy service to perform REST
      * calls.
      */
-    @Host("{endpoint}/formrecognizer/v2.1-preview.3")
+    @Host("{endpoint}/formrecognizer/{ApiVersion}")
     @ServiceInterface(name = "FormRecognizerClient")
-    private interface FormRecognizerClientService {
+    public interface FormRecognizerClientService {
         @Post("/custom/models")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<TrainCustomModelAsyncResponse> trainCustomModelAsync(
                 @HostParam("endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
                 @BodyParam("application/json") TrainRequest trainRequest,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -173,6 +192,7 @@ public final class FormRecognizerClientImpl {
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<Model>> getCustomModel(
                 @HostParam("endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
                 @PathParam("modelId") UUID modelId,
                 @QueryParam("includeKeys") Boolean includeKeys,
                 @HeaderParam("Accept") String accept,
@@ -183,6 +203,7 @@ public final class FormRecognizerClientImpl {
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<Void>> deleteCustomModel(
                 @HostParam("endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
                 @PathParam("modelId") UUID modelId,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -192,12 +213,13 @@ public final class FormRecognizerClientImpl {
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<AnalyzeWithCustomModelResponse> analyzeWithCustomModel(
                 @HostParam("endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
                 @PathParam("modelId") UUID modelId,
                 @QueryParam("includeTextDetails") Boolean includeTextDetails,
                 @QueryParam("pages") String pages,
                 @HeaderParam("Content-Type") ContentType contentType,
                 @BodyParam("application/octet-stream") Flux<ByteBuffer> fileStream,
-                @HeaderParam("Content-Length") long contentLength,
+                @HeaderParam("Content-Length") Long contentLength,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -206,6 +228,7 @@ public final class FormRecognizerClientImpl {
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<AnalyzeWithCustomModelResponse> analyzeWithCustomModel(
                 @HostParam("endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
                 @PathParam("modelId") UUID modelId,
                 @QueryParam("includeTextDetails") Boolean includeTextDetails,
                 @QueryParam("pages") String pages,
@@ -218,6 +241,7 @@ public final class FormRecognizerClientImpl {
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<AnalyzeOperationResult>> getAnalyzeFormResult(
                 @HostParam("endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
                 @PathParam("modelId") UUID modelId,
                 @PathParam("resultId") UUID resultId,
                 @HeaderParam("Accept") String accept,
@@ -228,6 +252,7 @@ public final class FormRecognizerClientImpl {
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<CopyCustomModelResponse> copyCustomModel(
                 @HostParam("endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
                 @PathParam("modelId") UUID modelId,
                 @BodyParam("application/json") CopyRequest copyRequest,
                 @HeaderParam("Accept") String accept,
@@ -238,6 +263,7 @@ public final class FormRecognizerClientImpl {
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<CopyOperationResult>> getCustomModelCopyResult(
                 @HostParam("endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
                 @PathParam("modelId") UUID modelId,
                 @PathParam("resultId") UUID resultId,
                 @HeaderParam("Accept") String accept,
@@ -247,13 +273,17 @@ public final class FormRecognizerClientImpl {
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<GenerateModelCopyAuthorizationResponse> generateModelCopyAuthorization(
-                @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
+                @HostParam("endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Post("/custom/models/compose")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<ComposeCustomModelsAsyncResponse> composeCustomModelsAsync(
                 @HostParam("endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
                 @BodyParam("application/json") ComposeRequest composeRequest,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -263,12 +293,13 @@ public final class FormRecognizerClientImpl {
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<AnalyzeBusinessCardAsyncResponse> analyzeBusinessCardAsync(
                 @HostParam("endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
                 @QueryParam("includeTextDetails") Boolean includeTextDetails,
                 @QueryParam("locale") Locale locale,
                 @QueryParam("pages") String pages,
                 @HeaderParam("Content-Type") ContentType contentType,
                 @BodyParam("application/octet-stream") Flux<ByteBuffer> fileStream,
-                @HeaderParam("Content-Length") long contentLength,
+                @HeaderParam("Content-Length") Long contentLength,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -277,6 +308,7 @@ public final class FormRecognizerClientImpl {
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<AnalyzeBusinessCardAsyncResponse> analyzeBusinessCardAsync(
                 @HostParam("endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
                 @QueryParam("includeTextDetails") Boolean includeTextDetails,
                 @QueryParam("locale") Locale locale,
                 @QueryParam("pages") String pages,
@@ -289,6 +321,7 @@ public final class FormRecognizerClientImpl {
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<AnalyzeOperationResult>> getAnalyzeBusinessCardResult(
                 @HostParam("endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
                 @PathParam("resultId") UUID resultId,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -298,12 +331,13 @@ public final class FormRecognizerClientImpl {
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<AnalyzeInvoiceAsyncResponse> analyzeInvoiceAsync(
                 @HostParam("endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
                 @QueryParam("includeTextDetails") Boolean includeTextDetails,
                 @QueryParam("locale") Locale locale,
                 @QueryParam("pages") String pages,
                 @HeaderParam("Content-Type") ContentType contentType,
                 @BodyParam("application/octet-stream") Flux<ByteBuffer> fileStream,
-                @HeaderParam("Content-Length") long contentLength,
+                @HeaderParam("Content-Length") Long contentLength,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -312,6 +346,7 @@ public final class FormRecognizerClientImpl {
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<AnalyzeInvoiceAsyncResponse> analyzeInvoiceAsync(
                 @HostParam("endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
                 @QueryParam("includeTextDetails") Boolean includeTextDetails,
                 @QueryParam("locale") Locale locale,
                 @QueryParam("pages") String pages,
@@ -324,6 +359,7 @@ public final class FormRecognizerClientImpl {
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<AnalyzeOperationResult>> getAnalyzeInvoiceResult(
                 @HostParam("endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
                 @PathParam("resultId") UUID resultId,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -333,11 +369,12 @@ public final class FormRecognizerClientImpl {
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<AnalyzeIdDocumentAsyncResponse> analyzeIdDocumentAsync(
                 @HostParam("endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
                 @QueryParam("includeTextDetails") Boolean includeTextDetails,
                 @QueryParam("pages") String pages,
                 @HeaderParam("Content-Type") ContentType contentType,
                 @BodyParam("application/octet-stream") Flux<ByteBuffer> fileStream,
-                @HeaderParam("Content-Length") long contentLength,
+                @HeaderParam("Content-Length") Long contentLength,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -346,6 +383,7 @@ public final class FormRecognizerClientImpl {
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<AnalyzeIdDocumentAsyncResponse> analyzeIdDocumentAsync(
                 @HostParam("endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
                 @QueryParam("includeTextDetails") Boolean includeTextDetails,
                 @QueryParam("pages") String pages,
                 @BodyParam("application/json") SourcePath fileStream,
@@ -357,6 +395,7 @@ public final class FormRecognizerClientImpl {
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<AnalyzeOperationResult>> getAnalyzeIdDocumentResult(
                 @HostParam("endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
                 @PathParam("resultId") UUID resultId,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -366,12 +405,13 @@ public final class FormRecognizerClientImpl {
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<AnalyzeReceiptAsyncResponse> analyzeReceiptAsync(
                 @HostParam("endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
                 @QueryParam("includeTextDetails") Boolean includeTextDetails,
                 @QueryParam("locale") Locale locale,
                 @QueryParam("pages") String pages,
                 @HeaderParam("Content-Type") ContentType contentType,
                 @BodyParam("application/octet-stream") Flux<ByteBuffer> fileStream,
-                @HeaderParam("Content-Length") long contentLength,
+                @HeaderParam("Content-Length") Long contentLength,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -380,6 +420,7 @@ public final class FormRecognizerClientImpl {
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<AnalyzeReceiptAsyncResponse> analyzeReceiptAsync(
                 @HostParam("endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
                 @QueryParam("includeTextDetails") Boolean includeTextDetails,
                 @QueryParam("locale") Locale locale,
                 @QueryParam("pages") String pages,
@@ -392,6 +433,7 @@ public final class FormRecognizerClientImpl {
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<AnalyzeOperationResult>> getAnalyzeReceiptResult(
                 @HostParam("endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
                 @PathParam("resultId") UUID resultId,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -401,12 +443,13 @@ public final class FormRecognizerClientImpl {
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<AnalyzeLayoutAsyncResponse> analyzeLayoutAsync(
                 @HostParam("endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
                 @QueryParam("pages") String pages,
                 @QueryParam("language") Language language,
                 @QueryParam("readingOrder") ReadingOrder readingOrder,
                 @HeaderParam("Content-Type") ContentType contentType,
                 @BodyParam("application/octet-stream") Flux<ByteBuffer> fileStream,
-                @HeaderParam("Content-Length") long contentLength,
+                @HeaderParam("Content-Length") Long contentLength,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -415,6 +458,7 @@ public final class FormRecognizerClientImpl {
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<AnalyzeLayoutAsyncResponse> analyzeLayoutAsync(
                 @HostParam("endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
                 @QueryParam("pages") String pages,
                 @QueryParam("language") Language language,
                 @QueryParam("readingOrder") ReadingOrder readingOrder,
@@ -427,6 +471,7 @@ public final class FormRecognizerClientImpl {
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<AnalyzeOperationResult>> getAnalyzeLayoutResult(
                 @HostParam("endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
                 @PathParam("resultId") UUID resultId,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -436,6 +481,7 @@ public final class FormRecognizerClientImpl {
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<Models>> listCustomModels(
                 @HostParam("endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
                 @QueryParam("op") String op,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -445,6 +491,7 @@ public final class FormRecognizerClientImpl {
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<Models>> getCustomModels(
                 @HostParam("endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
                 @QueryParam("op") String op,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -455,6 +502,7 @@ public final class FormRecognizerClientImpl {
         Mono<Response<Models>> listCustomModelsNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
                 @HeaderParam("Accept") String accept,
                 Context context);
     }
@@ -479,7 +527,9 @@ public final class FormRecognizerClientImpl {
     public Mono<TrainCustomModelAsyncResponse> trainCustomModelAsyncWithResponseAsync(TrainRequest trainRequest) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.trainCustomModelAsync(this.getEndpoint(), trainRequest, accept, context));
+                context ->
+                        service.trainCustomModelAsync(
+                                this.getEndpoint(), this.getApiVersion(), trainRequest, accept, context));
     }
 
     /**
@@ -503,7 +553,7 @@ public final class FormRecognizerClientImpl {
     public Mono<TrainCustomModelAsyncResponse> trainCustomModelAsyncWithResponseAsync(
             TrainRequest trainRequest, Context context) {
         final String accept = "application/json";
-        return service.trainCustomModelAsync(this.getEndpoint(), trainRequest, accept, context);
+        return service.trainCustomModelAsync(this.getEndpoint(), this.getApiVersion(), trainRequest, accept, context);
     }
 
     /**
@@ -589,7 +639,7 @@ public final class FormRecognizerClientImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> trainCustomModelAsyncWithResponse(TrainRequest trainRequest, Context context) {
+    public TrainCustomModelAsyncResponse trainCustomModelAsyncWithResponse(TrainRequest trainRequest, Context context) {
         return trainCustomModelAsyncWithResponseAsync(trainRequest, context).block();
     }
 
@@ -607,7 +657,9 @@ public final class FormRecognizerClientImpl {
     public Mono<Response<Model>> getCustomModelWithResponseAsync(UUID modelId, Boolean includeKeys) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.getCustomModel(this.getEndpoint(), modelId, includeKeys, accept, context));
+                context ->
+                        service.getCustomModel(
+                                this.getEndpoint(), this.getApiVersion(), modelId, includeKeys, accept, context));
     }
 
     /**
@@ -624,7 +676,7 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Model>> getCustomModelWithResponseAsync(UUID modelId, Boolean includeKeys, Context context) {
         final String accept = "application/json";
-        return service.getCustomModel(this.getEndpoint(), modelId, includeKeys, accept, context);
+        return service.getCustomModel(this.getEndpoint(), this.getApiVersion(), modelId, includeKeys, accept, context);
     }
 
     /**
@@ -717,7 +769,9 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteCustomModelWithResponseAsync(UUID modelId) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.deleteCustomModel(this.getEndpoint(), modelId, accept, context));
+        return FluxUtil.withContext(
+                context ->
+                        service.deleteCustomModel(this.getEndpoint(), this.getApiVersion(), modelId, accept, context));
     }
 
     /**
@@ -733,7 +787,7 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteCustomModelWithResponseAsync(UUID modelId, Context context) {
         final String accept = "application/json";
-        return service.deleteCustomModel(this.getEndpoint(), modelId, accept, context);
+        return service.deleteCustomModel(this.getEndpoint(), this.getApiVersion(), modelId, accept, context);
     }
 
     /**
@@ -801,11 +855,11 @@ public final class FormRecognizerClientImpl {
      *
      * @param modelId Model identifier.
      * @param contentType Upload file type.
-     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The contentLength parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -815,10 +869,10 @@ public final class FormRecognizerClientImpl {
     public Mono<AnalyzeWithCustomModelResponse> analyzeWithCustomModelWithResponseAsync(
             UUID modelId,
             ContentType contentType,
-            Flux<ByteBuffer> fileStream,
-            long contentLength,
             Boolean includeTextDetails,
-            List<String> pages) {
+            List<String> pages,
+            Flux<ByteBuffer> fileStream,
+            Long contentLength) {
         final String accept = "application/json";
         String pagesConverted =
                 JacksonAdapter.createDefaultSerializerAdapter().serializeList(pages, CollectionFormat.CSV);
@@ -826,6 +880,7 @@ public final class FormRecognizerClientImpl {
                 context ->
                         service.analyzeWithCustomModel(
                                 this.getEndpoint(),
+                                this.getApiVersion(),
                                 modelId,
                                 includeTextDetails,
                                 pagesConverted,
@@ -844,11 +899,11 @@ public final class FormRecognizerClientImpl {
      *
      * @param modelId Model identifier.
      * @param contentType Upload file type.
-     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The contentLength parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -859,16 +914,17 @@ public final class FormRecognizerClientImpl {
     public Mono<AnalyzeWithCustomModelResponse> analyzeWithCustomModelWithResponseAsync(
             UUID modelId,
             ContentType contentType,
-            Flux<ByteBuffer> fileStream,
-            long contentLength,
             Boolean includeTextDetails,
             List<String> pages,
+            Flux<ByteBuffer> fileStream,
+            Long contentLength,
             Context context) {
         final String accept = "application/json";
         String pagesConverted =
                 JacksonAdapter.createDefaultSerializerAdapter().serializeList(pages, CollectionFormat.CSV);
         return service.analyzeWithCustomModel(
                 this.getEndpoint(),
+                this.getApiVersion(),
                 modelId,
                 includeTextDetails,
                 pagesConverted,
@@ -887,11 +943,11 @@ public final class FormRecognizerClientImpl {
      *
      * @param modelId Model identifier.
      * @param contentType Upload file type.
-     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The contentLength parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -901,12 +957,12 @@ public final class FormRecognizerClientImpl {
     public Mono<Void> analyzeWithCustomModelAsync(
             UUID modelId,
             ContentType contentType,
-            Flux<ByteBuffer> fileStream,
-            long contentLength,
             Boolean includeTextDetails,
-            List<String> pages) {
+            List<String> pages,
+            Flux<ByteBuffer> fileStream,
+            Long contentLength) {
         return analyzeWithCustomModelWithResponseAsync(
-                        modelId, contentType, fileStream, contentLength, includeTextDetails, pages)
+                        modelId, contentType, includeTextDetails, pages, fileStream, contentLength)
                 .flatMap((AnalyzeWithCustomModelResponse res) -> Mono.empty());
     }
 
@@ -918,11 +974,11 @@ public final class FormRecognizerClientImpl {
      *
      * @param modelId Model identifier.
      * @param contentType Upload file type.
-     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The contentLength parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -933,13 +989,13 @@ public final class FormRecognizerClientImpl {
     public Mono<Void> analyzeWithCustomModelAsync(
             UUID modelId,
             ContentType contentType,
-            Flux<ByteBuffer> fileStream,
-            long contentLength,
             Boolean includeTextDetails,
             List<String> pages,
+            Flux<ByteBuffer> fileStream,
+            Long contentLength,
             Context context) {
         return analyzeWithCustomModelWithResponseAsync(
-                        modelId, contentType, fileStream, contentLength, includeTextDetails, pages, context)
+                        modelId, contentType, includeTextDetails, pages, fileStream, contentLength, context)
                 .flatMap((AnalyzeWithCustomModelResponse res) -> Mono.empty());
     }
 
@@ -951,11 +1007,11 @@ public final class FormRecognizerClientImpl {
      *
      * @param modelId Model identifier.
      * @param contentType Upload file type.
-     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The contentLength parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -964,11 +1020,11 @@ public final class FormRecognizerClientImpl {
     public void analyzeWithCustomModel(
             UUID modelId,
             ContentType contentType,
-            Flux<ByteBuffer> fileStream,
-            long contentLength,
             Boolean includeTextDetails,
-            List<String> pages) {
-        analyzeWithCustomModelAsync(modelId, contentType, fileStream, contentLength, includeTextDetails, pages).block();
+            List<String> pages,
+            Flux<ByteBuffer> fileStream,
+            Long contentLength) {
+        analyzeWithCustomModelAsync(modelId, contentType, includeTextDetails, pages, fileStream, contentLength).block();
     }
 
     /**
@@ -979,11 +1035,11 @@ public final class FormRecognizerClientImpl {
      *
      * @param modelId Model identifier.
      * @param contentType Upload file type.
-     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The contentLength parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -991,16 +1047,16 @@ public final class FormRecognizerClientImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> analyzeWithCustomModelWithResponse(
+    public AnalyzeWithCustomModelResponse analyzeWithCustomModelWithResponse(
             UUID modelId,
             ContentType contentType,
-            Flux<ByteBuffer> fileStream,
-            long contentLength,
             Boolean includeTextDetails,
             List<String> pages,
+            Flux<ByteBuffer> fileStream,
+            Long contentLength,
             Context context) {
         return analyzeWithCustomModelWithResponseAsync(
-                        modelId, contentType, fileStream, contentLength, includeTextDetails, pages, context)
+                        modelId, contentType, includeTextDetails, pages, fileStream, contentLength, context)
                 .block();
     }
 
@@ -1030,6 +1086,7 @@ public final class FormRecognizerClientImpl {
                 context ->
                         service.analyzeWithCustomModel(
                                 this.getEndpoint(),
+                                this.getApiVersion(),
                                 modelId,
                                 includeTextDetails,
                                 pagesConverted,
@@ -1062,7 +1119,14 @@ public final class FormRecognizerClientImpl {
         String pagesConverted =
                 JacksonAdapter.createDefaultSerializerAdapter().serializeList(pages, CollectionFormat.CSV);
         return service.analyzeWithCustomModel(
-                this.getEndpoint(), modelId, includeTextDetails, pagesConverted, fileStream, accept, context);
+                this.getEndpoint(),
+                this.getApiVersion(),
+                modelId,
+                includeTextDetails,
+                pagesConverted,
+                fileStream,
+                accept,
+                context);
     }
 
     /**
@@ -1151,7 +1215,7 @@ public final class FormRecognizerClientImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> analyzeWithCustomModelWithResponse(
+    public AnalyzeWithCustomModelResponse analyzeWithCustomModelWithResponse(
             UUID modelId, Boolean includeTextDetails, List<String> pages, SourcePath fileStream, Context context) {
         return analyzeWithCustomModelWithResponseAsync(modelId, includeTextDetails, pages, fileStream, context).block();
     }
@@ -1170,7 +1234,9 @@ public final class FormRecognizerClientImpl {
     public Mono<Response<AnalyzeOperationResult>> getAnalyzeFormResultWithResponseAsync(UUID modelId, UUID resultId) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.getAnalyzeFormResult(this.getEndpoint(), modelId, resultId, accept, context));
+                context ->
+                        service.getAnalyzeFormResult(
+                                this.getEndpoint(), this.getApiVersion(), modelId, resultId, accept, context));
     }
 
     /**
@@ -1188,7 +1254,8 @@ public final class FormRecognizerClientImpl {
     public Mono<Response<AnalyzeOperationResult>> getAnalyzeFormResultWithResponseAsync(
             UUID modelId, UUID resultId, Context context) {
         final String accept = "application/json";
-        return service.getAnalyzeFormResult(this.getEndpoint(), modelId, resultId, accept, context);
+        return service.getAnalyzeFormResult(
+                this.getEndpoint(), this.getApiVersion(), modelId, resultId, accept, context);
     }
 
     /**
@@ -1284,7 +1351,9 @@ public final class FormRecognizerClientImpl {
     public Mono<CopyCustomModelResponse> copyCustomModelWithResponseAsync(UUID modelId, CopyRequest copyRequest) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.copyCustomModel(this.getEndpoint(), modelId, copyRequest, accept, context));
+                context ->
+                        service.copyCustomModel(
+                                this.getEndpoint(), this.getApiVersion(), modelId, copyRequest, accept, context));
     }
 
     /**
@@ -1302,7 +1371,7 @@ public final class FormRecognizerClientImpl {
     public Mono<CopyCustomModelResponse> copyCustomModelWithResponseAsync(
             UUID modelId, CopyRequest copyRequest, Context context) {
         final String accept = "application/json";
-        return service.copyCustomModel(this.getEndpoint(), modelId, copyRequest, accept, context);
+        return service.copyCustomModel(this.getEndpoint(), this.getApiVersion(), modelId, copyRequest, accept, context);
     }
 
     /**
@@ -1364,7 +1433,7 @@ public final class FormRecognizerClientImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> copyCustomModelWithResponse(UUID modelId, CopyRequest copyRequest, Context context) {
+    public CopyCustomModelResponse copyCustomModelWithResponse(UUID modelId, CopyRequest copyRequest, Context context) {
         return copyCustomModelWithResponseAsync(modelId, copyRequest, context).block();
     }
 
@@ -1382,7 +1451,9 @@ public final class FormRecognizerClientImpl {
     public Mono<Response<CopyOperationResult>> getCustomModelCopyResultWithResponseAsync(UUID modelId, UUID resultId) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.getCustomModelCopyResult(this.getEndpoint(), modelId, resultId, accept, context));
+                context ->
+                        service.getCustomModelCopyResult(
+                                this.getEndpoint(), this.getApiVersion(), modelId, resultId, accept, context));
     }
 
     /**
@@ -1400,7 +1471,8 @@ public final class FormRecognizerClientImpl {
     public Mono<Response<CopyOperationResult>> getCustomModelCopyResultWithResponseAsync(
             UUID modelId, UUID resultId, Context context) {
         final String accept = "application/json";
-        return service.getCustomModelCopyResult(this.getEndpoint(), modelId, resultId, accept, context);
+        return service.getCustomModelCopyResult(
+                this.getEndpoint(), this.getApiVersion(), modelId, resultId, accept, context);
     }
 
     /**
@@ -1493,7 +1565,9 @@ public final class FormRecognizerClientImpl {
     public Mono<GenerateModelCopyAuthorizationResponse> generateModelCopyAuthorizationWithResponseAsync() {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.generateModelCopyAuthorization(this.getEndpoint(), accept, context));
+                context ->
+                        service.generateModelCopyAuthorization(
+                                this.getEndpoint(), this.getApiVersion(), accept, context));
     }
 
     /**
@@ -1509,7 +1583,7 @@ public final class FormRecognizerClientImpl {
     public Mono<GenerateModelCopyAuthorizationResponse> generateModelCopyAuthorizationWithResponseAsync(
             Context context) {
         final String accept = "application/json";
-        return service.generateModelCopyAuthorization(this.getEndpoint(), accept, context);
+        return service.generateModelCopyAuthorization(this.getEndpoint(), this.getApiVersion(), accept, context);
     }
 
     /**
@@ -1576,7 +1650,7 @@ public final class FormRecognizerClientImpl {
      * @return request parameter that contains authorization claims for copy operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CopyAuthorizationResult> generateModelCopyAuthorizationWithResponse(Context context) {
+    public GenerateModelCopyAuthorizationResponse generateModelCopyAuthorizationWithResponse(Context context) {
         return generateModelCopyAuthorizationWithResponseAsync(context).block();
     }
 
@@ -1595,7 +1669,9 @@ public final class FormRecognizerClientImpl {
             ComposeRequest composeRequest) {
         final String accept = "application/json, text/json";
         return FluxUtil.withContext(
-                context -> service.composeCustomModelsAsync(this.getEndpoint(), composeRequest, accept, context));
+                context ->
+                        service.composeCustomModelsAsync(
+                                this.getEndpoint(), this.getApiVersion(), composeRequest, accept, context));
     }
 
     /**
@@ -1613,7 +1689,8 @@ public final class FormRecognizerClientImpl {
     public Mono<ComposeCustomModelsAsyncResponse> composeCustomModelsAsyncWithResponseAsync(
             ComposeRequest composeRequest, Context context) {
         final String accept = "application/json, text/json";
-        return service.composeCustomModelsAsync(this.getEndpoint(), composeRequest, accept, context);
+        return service.composeCustomModelsAsync(
+                this.getEndpoint(), this.getApiVersion(), composeRequest, accept, context);
     }
 
     /**
@@ -1675,7 +1752,8 @@ public final class FormRecognizerClientImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> composeCustomModelsAsyncWithResponse(ComposeRequest composeRequest, Context context) {
+    public ComposeCustomModelsAsyncResponse composeCustomModelsAsyncWithResponse(
+            ComposeRequest composeRequest, Context context) {
         return composeCustomModelsAsyncWithResponseAsync(composeRequest, context).block();
     }
 
@@ -1685,13 +1763,13 @@ public final class FormRecognizerClientImpl {
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
      * @param contentType Upload file type.
-     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
      *     en-US(default).
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The contentLength parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1700,11 +1778,11 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeBusinessCardAsyncResponse> analyzeBusinessCardAsyncWithResponseAsync(
             ContentType contentType,
-            Flux<ByteBuffer> fileStream,
-            long contentLength,
             Boolean includeTextDetails,
             Locale locale,
-            List<String> pages) {
+            List<String> pages,
+            Flux<ByteBuffer> fileStream,
+            Long contentLength) {
         final String accept = "application/json";
         String pagesConverted =
                 JacksonAdapter.createDefaultSerializerAdapter().serializeList(pages, CollectionFormat.CSV);
@@ -1712,6 +1790,7 @@ public final class FormRecognizerClientImpl {
                 context ->
                         service.analyzeBusinessCardAsync(
                                 this.getEndpoint(),
+                                this.getApiVersion(),
                                 includeTextDetails,
                                 locale,
                                 pagesConverted,
@@ -1728,13 +1807,13 @@ public final class FormRecognizerClientImpl {
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
      * @param contentType Upload file type.
-     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
      *     en-US(default).
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The contentLength parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1744,17 +1823,18 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeBusinessCardAsyncResponse> analyzeBusinessCardAsyncWithResponseAsync(
             ContentType contentType,
-            Flux<ByteBuffer> fileStream,
-            long contentLength,
             Boolean includeTextDetails,
             Locale locale,
             List<String> pages,
+            Flux<ByteBuffer> fileStream,
+            Long contentLength,
             Context context) {
         final String accept = "application/json";
         String pagesConverted =
                 JacksonAdapter.createDefaultSerializerAdapter().serializeList(pages, CollectionFormat.CSV);
         return service.analyzeBusinessCardAsync(
                 this.getEndpoint(),
+                this.getApiVersion(),
                 includeTextDetails,
                 locale,
                 pagesConverted,
@@ -1771,13 +1851,13 @@ public final class FormRecognizerClientImpl {
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
      * @param contentType Upload file type.
-     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
      *     en-US(default).
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The contentLength parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1786,13 +1866,13 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> analyzeBusinessCardAsyncAsync(
             ContentType contentType,
-            Flux<ByteBuffer> fileStream,
-            long contentLength,
             Boolean includeTextDetails,
             Locale locale,
-            List<String> pages) {
+            List<String> pages,
+            Flux<ByteBuffer> fileStream,
+            Long contentLength) {
         return analyzeBusinessCardAsyncWithResponseAsync(
-                        contentType, fileStream, contentLength, includeTextDetails, locale, pages)
+                        contentType, includeTextDetails, locale, pages, fileStream, contentLength)
                 .flatMap((AnalyzeBusinessCardAsyncResponse res) -> Mono.empty());
     }
 
@@ -1802,13 +1882,13 @@ public final class FormRecognizerClientImpl {
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
      * @param contentType Upload file type.
-     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
      *     en-US(default).
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The contentLength parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1818,14 +1898,14 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> analyzeBusinessCardAsyncAsync(
             ContentType contentType,
-            Flux<ByteBuffer> fileStream,
-            long contentLength,
             Boolean includeTextDetails,
             Locale locale,
             List<String> pages,
+            Flux<ByteBuffer> fileStream,
+            Long contentLength,
             Context context) {
         return analyzeBusinessCardAsyncWithResponseAsync(
-                        contentType, fileStream, contentLength, includeTextDetails, locale, pages, context)
+                        contentType, includeTextDetails, locale, pages, fileStream, contentLength, context)
                 .flatMap((AnalyzeBusinessCardAsyncResponse res) -> Mono.empty());
     }
 
@@ -1835,13 +1915,13 @@ public final class FormRecognizerClientImpl {
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
      * @param contentType Upload file type.
-     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
      *     en-US(default).
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The contentLength parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1849,12 +1929,12 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void analyzeBusinessCardAsync(
             ContentType contentType,
-            Flux<ByteBuffer> fileStream,
-            long contentLength,
             Boolean includeTextDetails,
             Locale locale,
-            List<String> pages) {
-        analyzeBusinessCardAsyncAsync(contentType, fileStream, contentLength, includeTextDetails, locale, pages)
+            List<String> pages,
+            Flux<ByteBuffer> fileStream,
+            Long contentLength) {
+        analyzeBusinessCardAsyncAsync(contentType, includeTextDetails, locale, pages, fileStream, contentLength)
                 .block();
     }
 
@@ -1864,13 +1944,13 @@ public final class FormRecognizerClientImpl {
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
      * @param contentType Upload file type.
-     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
      *     en-US(default).
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The contentLength parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1878,16 +1958,16 @@ public final class FormRecognizerClientImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> analyzeBusinessCardAsyncWithResponse(
+    public AnalyzeBusinessCardAsyncResponse analyzeBusinessCardAsyncWithResponse(
             ContentType contentType,
-            Flux<ByteBuffer> fileStream,
-            long contentLength,
             Boolean includeTextDetails,
             Locale locale,
             List<String> pages,
+            Flux<ByteBuffer> fileStream,
+            Long contentLength,
             Context context) {
         return analyzeBusinessCardAsyncWithResponseAsync(
-                        contentType, fileStream, contentLength, includeTextDetails, locale, pages, context)
+                        contentType, includeTextDetails, locale, pages, fileStream, contentLength, context)
                 .block();
     }
 
@@ -1917,6 +1997,7 @@ public final class FormRecognizerClientImpl {
                 context ->
                         service.analyzeBusinessCardAsync(
                                 this.getEndpoint(),
+                                this.getApiVersion(),
                                 includeTextDetails,
                                 locale,
                                 pagesConverted,
@@ -1949,7 +2030,14 @@ public final class FormRecognizerClientImpl {
         String pagesConverted =
                 JacksonAdapter.createDefaultSerializerAdapter().serializeList(pages, CollectionFormat.CSV);
         return service.analyzeBusinessCardAsync(
-                this.getEndpoint(), includeTextDetails, locale, pagesConverted, fileStream, accept, context);
+                this.getEndpoint(),
+                this.getApiVersion(),
+                includeTextDetails,
+                locale,
+                pagesConverted,
+                fileStream,
+                accept,
+                context);
     }
 
     /**
@@ -2038,7 +2126,7 @@ public final class FormRecognizerClientImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> analyzeBusinessCardAsyncWithResponse(
+    public AnalyzeBusinessCardAsyncResponse analyzeBusinessCardAsyncWithResponse(
             Boolean includeTextDetails, Locale locale, List<String> pages, SourcePath fileStream, Context context) {
         return analyzeBusinessCardAsyncWithResponseAsync(includeTextDetails, locale, pages, fileStream, context)
                 .block();
@@ -2057,7 +2145,9 @@ public final class FormRecognizerClientImpl {
     public Mono<Response<AnalyzeOperationResult>> getAnalyzeBusinessCardResultWithResponseAsync(UUID resultId) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.getAnalyzeBusinessCardResult(this.getEndpoint(), resultId, accept, context));
+                context ->
+                        service.getAnalyzeBusinessCardResult(
+                                this.getEndpoint(), this.getApiVersion(), resultId, accept, context));
     }
 
     /**
@@ -2074,7 +2164,8 @@ public final class FormRecognizerClientImpl {
     public Mono<Response<AnalyzeOperationResult>> getAnalyzeBusinessCardResultWithResponseAsync(
             UUID resultId, Context context) {
         final String accept = "application/json";
-        return service.getAnalyzeBusinessCardResult(this.getEndpoint(), resultId, accept, context);
+        return service.getAnalyzeBusinessCardResult(
+                this.getEndpoint(), this.getApiVersion(), resultId, accept, context);
     }
 
     /**
@@ -2157,13 +2248,13 @@ public final class FormRecognizerClientImpl {
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
      * @param contentType Upload file type.
-     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
      *     en-US(default).
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The contentLength parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2172,11 +2263,11 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeInvoiceAsyncResponse> analyzeInvoiceAsyncWithResponseAsync(
             ContentType contentType,
-            Flux<ByteBuffer> fileStream,
-            long contentLength,
             Boolean includeTextDetails,
             Locale locale,
-            List<String> pages) {
+            List<String> pages,
+            Flux<ByteBuffer> fileStream,
+            Long contentLength) {
         final String accept = "application/json";
         String pagesConverted =
                 JacksonAdapter.createDefaultSerializerAdapter().serializeList(pages, CollectionFormat.CSV);
@@ -2184,6 +2275,7 @@ public final class FormRecognizerClientImpl {
                 context ->
                         service.analyzeInvoiceAsync(
                                 this.getEndpoint(),
+                                this.getApiVersion(),
                                 includeTextDetails,
                                 locale,
                                 pagesConverted,
@@ -2200,13 +2292,13 @@ public final class FormRecognizerClientImpl {
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
      * @param contentType Upload file type.
-     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
      *     en-US(default).
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The contentLength parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -2216,17 +2308,18 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeInvoiceAsyncResponse> analyzeInvoiceAsyncWithResponseAsync(
             ContentType contentType,
-            Flux<ByteBuffer> fileStream,
-            long contentLength,
             Boolean includeTextDetails,
             Locale locale,
             List<String> pages,
+            Flux<ByteBuffer> fileStream,
+            Long contentLength,
             Context context) {
         final String accept = "application/json";
         String pagesConverted =
                 JacksonAdapter.createDefaultSerializerAdapter().serializeList(pages, CollectionFormat.CSV);
         return service.analyzeInvoiceAsync(
                 this.getEndpoint(),
+                this.getApiVersion(),
                 includeTextDetails,
                 locale,
                 pagesConverted,
@@ -2243,13 +2336,13 @@ public final class FormRecognizerClientImpl {
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
      * @param contentType Upload file type.
-     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
      *     en-US(default).
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The contentLength parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2258,13 +2351,13 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> analyzeInvoiceAsyncAsync(
             ContentType contentType,
-            Flux<ByteBuffer> fileStream,
-            long contentLength,
             Boolean includeTextDetails,
             Locale locale,
-            List<String> pages) {
+            List<String> pages,
+            Flux<ByteBuffer> fileStream,
+            Long contentLength) {
         return analyzeInvoiceAsyncWithResponseAsync(
-                        contentType, fileStream, contentLength, includeTextDetails, locale, pages)
+                        contentType, includeTextDetails, locale, pages, fileStream, contentLength)
                 .flatMap((AnalyzeInvoiceAsyncResponse res) -> Mono.empty());
     }
 
@@ -2274,13 +2367,13 @@ public final class FormRecognizerClientImpl {
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
      * @param contentType Upload file type.
-     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
      *     en-US(default).
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The contentLength parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -2290,14 +2383,14 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> analyzeInvoiceAsyncAsync(
             ContentType contentType,
-            Flux<ByteBuffer> fileStream,
-            long contentLength,
             Boolean includeTextDetails,
             Locale locale,
             List<String> pages,
+            Flux<ByteBuffer> fileStream,
+            Long contentLength,
             Context context) {
         return analyzeInvoiceAsyncWithResponseAsync(
-                        contentType, fileStream, contentLength, includeTextDetails, locale, pages, context)
+                        contentType, includeTextDetails, locale, pages, fileStream, contentLength, context)
                 .flatMap((AnalyzeInvoiceAsyncResponse res) -> Mono.empty());
     }
 
@@ -2307,13 +2400,13 @@ public final class FormRecognizerClientImpl {
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
      * @param contentType Upload file type.
-     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
      *     en-US(default).
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The contentLength parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2321,12 +2414,12 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void analyzeInvoiceAsync(
             ContentType contentType,
-            Flux<ByteBuffer> fileStream,
-            long contentLength,
             Boolean includeTextDetails,
             Locale locale,
-            List<String> pages) {
-        analyzeInvoiceAsyncAsync(contentType, fileStream, contentLength, includeTextDetails, locale, pages).block();
+            List<String> pages,
+            Flux<ByteBuffer> fileStream,
+            Long contentLength) {
+        analyzeInvoiceAsyncAsync(contentType, includeTextDetails, locale, pages, fileStream, contentLength).block();
     }
 
     /**
@@ -2335,13 +2428,13 @@ public final class FormRecognizerClientImpl {
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
      * @param contentType Upload file type.
-     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
      *     en-US(default).
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The contentLength parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -2349,16 +2442,16 @@ public final class FormRecognizerClientImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> analyzeInvoiceAsyncWithResponse(
+    public AnalyzeInvoiceAsyncResponse analyzeInvoiceAsyncWithResponse(
             ContentType contentType,
-            Flux<ByteBuffer> fileStream,
-            long contentLength,
             Boolean includeTextDetails,
             Locale locale,
             List<String> pages,
+            Flux<ByteBuffer> fileStream,
+            Long contentLength,
             Context context) {
         return analyzeInvoiceAsyncWithResponseAsync(
-                        contentType, fileStream, contentLength, includeTextDetails, locale, pages, context)
+                        contentType, includeTextDetails, locale, pages, fileStream, contentLength, context)
                 .block();
     }
 
@@ -2388,6 +2481,7 @@ public final class FormRecognizerClientImpl {
                 context ->
                         service.analyzeInvoiceAsync(
                                 this.getEndpoint(),
+                                this.getApiVersion(),
                                 includeTextDetails,
                                 locale,
                                 pagesConverted,
@@ -2420,7 +2514,14 @@ public final class FormRecognizerClientImpl {
         String pagesConverted =
                 JacksonAdapter.createDefaultSerializerAdapter().serializeList(pages, CollectionFormat.CSV);
         return service.analyzeInvoiceAsync(
-                this.getEndpoint(), includeTextDetails, locale, pagesConverted, fileStream, accept, context);
+                this.getEndpoint(),
+                this.getApiVersion(),
+                includeTextDetails,
+                locale,
+                pagesConverted,
+                fileStream,
+                accept,
+                context);
     }
 
     /**
@@ -2509,7 +2610,7 @@ public final class FormRecognizerClientImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> analyzeInvoiceAsyncWithResponse(
+    public AnalyzeInvoiceAsyncResponse analyzeInvoiceAsyncWithResponse(
             Boolean includeTextDetails, Locale locale, List<String> pages, SourcePath fileStream, Context context) {
         return analyzeInvoiceAsyncWithResponseAsync(includeTextDetails, locale, pages, fileStream, context).block();
     }
@@ -2527,7 +2628,9 @@ public final class FormRecognizerClientImpl {
     public Mono<Response<AnalyzeOperationResult>> getAnalyzeInvoiceResultWithResponseAsync(UUID resultId) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.getAnalyzeInvoiceResult(this.getEndpoint(), resultId, accept, context));
+                context ->
+                        service.getAnalyzeInvoiceResult(
+                                this.getEndpoint(), this.getApiVersion(), resultId, accept, context));
     }
 
     /**
@@ -2544,7 +2647,7 @@ public final class FormRecognizerClientImpl {
     public Mono<Response<AnalyzeOperationResult>> getAnalyzeInvoiceResultWithResponseAsync(
             UUID resultId, Context context) {
         final String accept = "application/json";
-        return service.getAnalyzeInvoiceResult(this.getEndpoint(), resultId, accept, context);
+        return service.getAnalyzeInvoiceResult(this.getEndpoint(), this.getApiVersion(), resultId, accept, context);
     }
 
     /**
@@ -2627,11 +2730,11 @@ public final class FormRecognizerClientImpl {
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
      * @param contentType Upload file type.
-     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The contentLength parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2640,10 +2743,10 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeIdDocumentAsyncResponse> analyzeIdDocumentAsyncWithResponseAsync(
             ContentType contentType,
-            Flux<ByteBuffer> fileStream,
-            long contentLength,
             Boolean includeTextDetails,
-            List<String> pages) {
+            List<String> pages,
+            Flux<ByteBuffer> fileStream,
+            Long contentLength) {
         final String accept = "application/json";
         String pagesConverted =
                 JacksonAdapter.createDefaultSerializerAdapter().serializeList(pages, CollectionFormat.CSV);
@@ -2651,6 +2754,7 @@ public final class FormRecognizerClientImpl {
                 context ->
                         service.analyzeIdDocumentAsync(
                                 this.getEndpoint(),
+                                this.getApiVersion(),
                                 includeTextDetails,
                                 pagesConverted,
                                 contentType,
@@ -2666,11 +2770,11 @@ public final class FormRecognizerClientImpl {
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
      * @param contentType Upload file type.
-     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The contentLength parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -2680,16 +2784,17 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeIdDocumentAsyncResponse> analyzeIdDocumentAsyncWithResponseAsync(
             ContentType contentType,
-            Flux<ByteBuffer> fileStream,
-            long contentLength,
             Boolean includeTextDetails,
             List<String> pages,
+            Flux<ByteBuffer> fileStream,
+            Long contentLength,
             Context context) {
         final String accept = "application/json";
         String pagesConverted =
                 JacksonAdapter.createDefaultSerializerAdapter().serializeList(pages, CollectionFormat.CSV);
         return service.analyzeIdDocumentAsync(
                 this.getEndpoint(),
+                this.getApiVersion(),
                 includeTextDetails,
                 pagesConverted,
                 contentType,
@@ -2705,11 +2810,11 @@ public final class FormRecognizerClientImpl {
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
      * @param contentType Upload file type.
-     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The contentLength parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2718,12 +2823,12 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> analyzeIdDocumentAsyncAsync(
             ContentType contentType,
-            Flux<ByteBuffer> fileStream,
-            long contentLength,
             Boolean includeTextDetails,
-            List<String> pages) {
+            List<String> pages,
+            Flux<ByteBuffer> fileStream,
+            Long contentLength) {
         return analyzeIdDocumentAsyncWithResponseAsync(
-                        contentType, fileStream, contentLength, includeTextDetails, pages)
+                        contentType, includeTextDetails, pages, fileStream, contentLength)
                 .flatMap((AnalyzeIdDocumentAsyncResponse res) -> Mono.empty());
     }
 
@@ -2733,11 +2838,11 @@ public final class FormRecognizerClientImpl {
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
      * @param contentType Upload file type.
-     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The contentLength parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -2747,13 +2852,13 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> analyzeIdDocumentAsyncAsync(
             ContentType contentType,
-            Flux<ByteBuffer> fileStream,
-            long contentLength,
             Boolean includeTextDetails,
             List<String> pages,
+            Flux<ByteBuffer> fileStream,
+            Long contentLength,
             Context context) {
         return analyzeIdDocumentAsyncWithResponseAsync(
-                        contentType, fileStream, contentLength, includeTextDetails, pages, context)
+                        contentType, includeTextDetails, pages, fileStream, contentLength, context)
                 .flatMap((AnalyzeIdDocumentAsyncResponse res) -> Mono.empty());
     }
 
@@ -2763,11 +2868,11 @@ public final class FormRecognizerClientImpl {
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
      * @param contentType Upload file type.
-     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The contentLength parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2775,11 +2880,11 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void analyzeIdDocumentAsync(
             ContentType contentType,
-            Flux<ByteBuffer> fileStream,
-            long contentLength,
             Boolean includeTextDetails,
-            List<String> pages) {
-        analyzeIdDocumentAsyncAsync(contentType, fileStream, contentLength, includeTextDetails, pages).block();
+            List<String> pages,
+            Flux<ByteBuffer> fileStream,
+            Long contentLength) {
+        analyzeIdDocumentAsyncAsync(contentType, includeTextDetails, pages, fileStream, contentLength).block();
     }
 
     /**
@@ -2788,11 +2893,11 @@ public final class FormRecognizerClientImpl {
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
      * @param contentType Upload file type.
-     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The contentLength parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -2800,15 +2905,15 @@ public final class FormRecognizerClientImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> analyzeIdDocumentAsyncWithResponse(
+    public AnalyzeIdDocumentAsyncResponse analyzeIdDocumentAsyncWithResponse(
             ContentType contentType,
-            Flux<ByteBuffer> fileStream,
-            long contentLength,
             Boolean includeTextDetails,
             List<String> pages,
+            Flux<ByteBuffer> fileStream,
+            Long contentLength,
             Context context) {
         return analyzeIdDocumentAsyncWithResponseAsync(
-                        contentType, fileStream, contentLength, includeTextDetails, pages, context)
+                        contentType, includeTextDetails, pages, fileStream, contentLength, context)
                 .block();
     }
 
@@ -2835,7 +2940,13 @@ public final class FormRecognizerClientImpl {
         return FluxUtil.withContext(
                 context ->
                         service.analyzeIdDocumentAsync(
-                                this.getEndpoint(), includeTextDetails, pagesConverted, fileStream, accept, context));
+                                this.getEndpoint(),
+                                this.getApiVersion(),
+                                includeTextDetails,
+                                pagesConverted,
+                                fileStream,
+                                accept,
+                                context));
     }
 
     /**
@@ -2860,7 +2971,13 @@ public final class FormRecognizerClientImpl {
         String pagesConverted =
                 JacksonAdapter.createDefaultSerializerAdapter().serializeList(pages, CollectionFormat.CSV);
         return service.analyzeIdDocumentAsync(
-                this.getEndpoint(), includeTextDetails, pagesConverted, fileStream, accept, context);
+                this.getEndpoint(),
+                this.getApiVersion(),
+                includeTextDetails,
+                pagesConverted,
+                fileStream,
+                accept,
+                context);
     }
 
     /**
@@ -2940,7 +3057,7 @@ public final class FormRecognizerClientImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> analyzeIdDocumentAsyncWithResponse(
+    public AnalyzeIdDocumentAsyncResponse analyzeIdDocumentAsyncWithResponse(
             Boolean includeTextDetails, List<String> pages, SourcePath fileStream, Context context) {
         return analyzeIdDocumentAsyncWithResponseAsync(includeTextDetails, pages, fileStream, context).block();
     }
@@ -2958,7 +3075,9 @@ public final class FormRecognizerClientImpl {
     public Mono<Response<AnalyzeOperationResult>> getAnalyzeIdDocumentResultWithResponseAsync(UUID resultId) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.getAnalyzeIdDocumentResult(this.getEndpoint(), resultId, accept, context));
+                context ->
+                        service.getAnalyzeIdDocumentResult(
+                                this.getEndpoint(), this.getApiVersion(), resultId, accept, context));
     }
 
     /**
@@ -2975,7 +3094,7 @@ public final class FormRecognizerClientImpl {
     public Mono<Response<AnalyzeOperationResult>> getAnalyzeIdDocumentResultWithResponseAsync(
             UUID resultId, Context context) {
         final String accept = "application/json";
-        return service.getAnalyzeIdDocumentResult(this.getEndpoint(), resultId, accept, context);
+        return service.getAnalyzeIdDocumentResult(this.getEndpoint(), this.getApiVersion(), resultId, accept, context);
     }
 
     /**
@@ -3058,13 +3177,13 @@ public final class FormRecognizerClientImpl {
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
      * @param contentType Upload file type.
-     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
      *     en-US(default).
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The contentLength parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3073,11 +3192,11 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeReceiptAsyncResponse> analyzeReceiptAsyncWithResponseAsync(
             ContentType contentType,
-            Flux<ByteBuffer> fileStream,
-            long contentLength,
             Boolean includeTextDetails,
             Locale locale,
-            List<String> pages) {
+            List<String> pages,
+            Flux<ByteBuffer> fileStream,
+            Long contentLength) {
         final String accept = "application/json";
         String pagesConverted =
                 JacksonAdapter.createDefaultSerializerAdapter().serializeList(pages, CollectionFormat.CSV);
@@ -3085,6 +3204,7 @@ public final class FormRecognizerClientImpl {
                 context ->
                         service.analyzeReceiptAsync(
                                 this.getEndpoint(),
+                                this.getApiVersion(),
                                 includeTextDetails,
                                 locale,
                                 pagesConverted,
@@ -3101,13 +3221,13 @@ public final class FormRecognizerClientImpl {
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
      * @param contentType Upload file type.
-     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
      *     en-US(default).
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The contentLength parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -3117,17 +3237,18 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeReceiptAsyncResponse> analyzeReceiptAsyncWithResponseAsync(
             ContentType contentType,
-            Flux<ByteBuffer> fileStream,
-            long contentLength,
             Boolean includeTextDetails,
             Locale locale,
             List<String> pages,
+            Flux<ByteBuffer> fileStream,
+            Long contentLength,
             Context context) {
         final String accept = "application/json";
         String pagesConverted =
                 JacksonAdapter.createDefaultSerializerAdapter().serializeList(pages, CollectionFormat.CSV);
         return service.analyzeReceiptAsync(
                 this.getEndpoint(),
+                this.getApiVersion(),
                 includeTextDetails,
                 locale,
                 pagesConverted,
@@ -3144,13 +3265,13 @@ public final class FormRecognizerClientImpl {
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
      * @param contentType Upload file type.
-     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
      *     en-US(default).
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The contentLength parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3159,13 +3280,13 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> analyzeReceiptAsyncAsync(
             ContentType contentType,
-            Flux<ByteBuffer> fileStream,
-            long contentLength,
             Boolean includeTextDetails,
             Locale locale,
-            List<String> pages) {
+            List<String> pages,
+            Flux<ByteBuffer> fileStream,
+            Long contentLength) {
         return analyzeReceiptAsyncWithResponseAsync(
-                        contentType, fileStream, contentLength, includeTextDetails, locale, pages)
+                        contentType, includeTextDetails, locale, pages, fileStream, contentLength)
                 .flatMap((AnalyzeReceiptAsyncResponse res) -> Mono.empty());
     }
 
@@ -3175,13 +3296,13 @@ public final class FormRecognizerClientImpl {
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
      * @param contentType Upload file type.
-     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
      *     en-US(default).
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The contentLength parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -3191,14 +3312,14 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> analyzeReceiptAsyncAsync(
             ContentType contentType,
-            Flux<ByteBuffer> fileStream,
-            long contentLength,
             Boolean includeTextDetails,
             Locale locale,
             List<String> pages,
+            Flux<ByteBuffer> fileStream,
+            Long contentLength,
             Context context) {
         return analyzeReceiptAsyncWithResponseAsync(
-                        contentType, fileStream, contentLength, includeTextDetails, locale, pages, context)
+                        contentType, includeTextDetails, locale, pages, fileStream, contentLength, context)
                 .flatMap((AnalyzeReceiptAsyncResponse res) -> Mono.empty());
     }
 
@@ -3208,13 +3329,13 @@ public final class FormRecognizerClientImpl {
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
      * @param contentType Upload file type.
-     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
      *     en-US(default).
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The contentLength parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3222,12 +3343,12 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void analyzeReceiptAsync(
             ContentType contentType,
-            Flux<ByteBuffer> fileStream,
-            long contentLength,
             Boolean includeTextDetails,
             Locale locale,
-            List<String> pages) {
-        analyzeReceiptAsyncAsync(contentType, fileStream, contentLength, includeTextDetails, locale, pages).block();
+            List<String> pages,
+            Flux<ByteBuffer> fileStream,
+            Long contentLength) {
+        analyzeReceiptAsyncAsync(contentType, includeTextDetails, locale, pages, fileStream, contentLength).block();
     }
 
     /**
@@ -3236,13 +3357,13 @@ public final class FormRecognizerClientImpl {
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
      * @param contentType Upload file type.
-     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
      *     en-US(default).
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The contentLength parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -3250,16 +3371,16 @@ public final class FormRecognizerClientImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> analyzeReceiptAsyncWithResponse(
+    public AnalyzeReceiptAsyncResponse analyzeReceiptAsyncWithResponse(
             ContentType contentType,
-            Flux<ByteBuffer> fileStream,
-            long contentLength,
             Boolean includeTextDetails,
             Locale locale,
             List<String> pages,
+            Flux<ByteBuffer> fileStream,
+            Long contentLength,
             Context context) {
         return analyzeReceiptAsyncWithResponseAsync(
-                        contentType, fileStream, contentLength, includeTextDetails, locale, pages, context)
+                        contentType, includeTextDetails, locale, pages, fileStream, contentLength, context)
                 .block();
     }
 
@@ -3289,6 +3410,7 @@ public final class FormRecognizerClientImpl {
                 context ->
                         service.analyzeReceiptAsync(
                                 this.getEndpoint(),
+                                this.getApiVersion(),
                                 includeTextDetails,
                                 locale,
                                 pagesConverted,
@@ -3321,7 +3443,14 @@ public final class FormRecognizerClientImpl {
         String pagesConverted =
                 JacksonAdapter.createDefaultSerializerAdapter().serializeList(pages, CollectionFormat.CSV);
         return service.analyzeReceiptAsync(
-                this.getEndpoint(), includeTextDetails, locale, pagesConverted, fileStream, accept, context);
+                this.getEndpoint(),
+                this.getApiVersion(),
+                includeTextDetails,
+                locale,
+                pagesConverted,
+                fileStream,
+                accept,
+                context);
     }
 
     /**
@@ -3410,7 +3539,7 @@ public final class FormRecognizerClientImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> analyzeReceiptAsyncWithResponse(
+    public AnalyzeReceiptAsyncResponse analyzeReceiptAsyncWithResponse(
             Boolean includeTextDetails, Locale locale, List<String> pages, SourcePath fileStream, Context context) {
         return analyzeReceiptAsyncWithResponseAsync(includeTextDetails, locale, pages, fileStream, context).block();
     }
@@ -3428,7 +3557,9 @@ public final class FormRecognizerClientImpl {
     public Mono<Response<AnalyzeOperationResult>> getAnalyzeReceiptResultWithResponseAsync(UUID resultId) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.getAnalyzeReceiptResult(this.getEndpoint(), resultId, accept, context));
+                context ->
+                        service.getAnalyzeReceiptResult(
+                                this.getEndpoint(), this.getApiVersion(), resultId, accept, context));
     }
 
     /**
@@ -3445,7 +3576,7 @@ public final class FormRecognizerClientImpl {
     public Mono<Response<AnalyzeOperationResult>> getAnalyzeReceiptResultWithResponseAsync(
             UUID resultId, Context context) {
         final String accept = "application/json";
-        return service.getAnalyzeReceiptResult(this.getEndpoint(), resultId, accept, context);
+        return service.getAnalyzeReceiptResult(this.getEndpoint(), this.getApiVersion(), resultId, accept, context);
     }
 
     /**
@@ -3528,8 +3659,6 @@ public final class FormRecognizerClientImpl {
      * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
      *
      * @param contentType Upload file type.
-     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
      * @param language Currently, only Afrikaans (‘af’), Albanian (‘sq’), Asturian (‘ast’), Basque (‘eu’), Bislama
@@ -3550,6 +3679,8 @@ public final class FormRecognizerClientImpl {
      *     documented to be processed as that specific language.
      * @param readingOrder Reading order algorithm to sort the text lines returned. Supported reading orders include:
      *     basic(default), natural.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The contentLength parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3558,11 +3689,11 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeLayoutAsyncResponse> analyzeLayoutAsyncWithResponseAsync(
             ContentType contentType,
-            Flux<ByteBuffer> fileStream,
-            long contentLength,
             List<String> pages,
             Language language,
-            ReadingOrder readingOrder) {
+            ReadingOrder readingOrder,
+            Flux<ByteBuffer> fileStream,
+            Long contentLength) {
         final String accept = "application/json";
         String pagesConverted =
                 JacksonAdapter.createDefaultSerializerAdapter().serializeList(pages, CollectionFormat.CSV);
@@ -3570,6 +3701,7 @@ public final class FormRecognizerClientImpl {
                 context ->
                         service.analyzeLayoutAsync(
                                 this.getEndpoint(),
+                                this.getApiVersion(),
                                 pagesConverted,
                                 language,
                                 readingOrder,
@@ -3586,8 +3718,6 @@ public final class FormRecognizerClientImpl {
      * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
      *
      * @param contentType Upload file type.
-     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
      * @param language Currently, only Afrikaans (‘af’), Albanian (‘sq’), Asturian (‘ast’), Basque (‘eu’), Bislama
@@ -3608,6 +3738,8 @@ public final class FormRecognizerClientImpl {
      *     documented to be processed as that specific language.
      * @param readingOrder Reading order algorithm to sort the text lines returned. Supported reading orders include:
      *     basic(default), natural.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The contentLength parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -3617,17 +3749,18 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeLayoutAsyncResponse> analyzeLayoutAsyncWithResponseAsync(
             ContentType contentType,
-            Flux<ByteBuffer> fileStream,
-            long contentLength,
             List<String> pages,
             Language language,
             ReadingOrder readingOrder,
+            Flux<ByteBuffer> fileStream,
+            Long contentLength,
             Context context) {
         final String accept = "application/json";
         String pagesConverted =
                 JacksonAdapter.createDefaultSerializerAdapter().serializeList(pages, CollectionFormat.CSV);
         return service.analyzeLayoutAsync(
                 this.getEndpoint(),
+                this.getApiVersion(),
                 pagesConverted,
                 language,
                 readingOrder,
@@ -3644,8 +3777,6 @@ public final class FormRecognizerClientImpl {
      * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
      *
      * @param contentType Upload file type.
-     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
      * @param language Currently, only Afrikaans (‘af’), Albanian (‘sq’), Asturian (‘ast’), Basque (‘eu’), Bislama
@@ -3666,6 +3797,8 @@ public final class FormRecognizerClientImpl {
      *     documented to be processed as that specific language.
      * @param readingOrder Reading order algorithm to sort the text lines returned. Supported reading orders include:
      *     basic(default), natural.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The contentLength parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3674,13 +3807,13 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> analyzeLayoutAsyncAsync(
             ContentType contentType,
-            Flux<ByteBuffer> fileStream,
-            long contentLength,
             List<String> pages,
             Language language,
-            ReadingOrder readingOrder) {
+            ReadingOrder readingOrder,
+            Flux<ByteBuffer> fileStream,
+            Long contentLength) {
         return analyzeLayoutAsyncWithResponseAsync(
-                        contentType, fileStream, contentLength, pages, language, readingOrder)
+                        contentType, pages, language, readingOrder, fileStream, contentLength)
                 .flatMap((AnalyzeLayoutAsyncResponse res) -> Mono.empty());
     }
 
@@ -3690,8 +3823,6 @@ public final class FormRecognizerClientImpl {
      * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
      *
      * @param contentType Upload file type.
-     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
      * @param language Currently, only Afrikaans (‘af’), Albanian (‘sq’), Asturian (‘ast’), Basque (‘eu’), Bislama
@@ -3712,6 +3843,8 @@ public final class FormRecognizerClientImpl {
      *     documented to be processed as that specific language.
      * @param readingOrder Reading order algorithm to sort the text lines returned. Supported reading orders include:
      *     basic(default), natural.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The contentLength parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -3721,14 +3854,14 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> analyzeLayoutAsyncAsync(
             ContentType contentType,
-            Flux<ByteBuffer> fileStream,
-            long contentLength,
             List<String> pages,
             Language language,
             ReadingOrder readingOrder,
+            Flux<ByteBuffer> fileStream,
+            Long contentLength,
             Context context) {
         return analyzeLayoutAsyncWithResponseAsync(
-                        contentType, fileStream, contentLength, pages, language, readingOrder, context)
+                        contentType, pages, language, readingOrder, fileStream, contentLength, context)
                 .flatMap((AnalyzeLayoutAsyncResponse res) -> Mono.empty());
     }
 
@@ -3738,8 +3871,6 @@ public final class FormRecognizerClientImpl {
      * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
      *
      * @param contentType Upload file type.
-     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
      * @param language Currently, only Afrikaans (‘af’), Albanian (‘sq’), Asturian (‘ast’), Basque (‘eu’), Bislama
@@ -3760,6 +3891,8 @@ public final class FormRecognizerClientImpl {
      *     documented to be processed as that specific language.
      * @param readingOrder Reading order algorithm to sort the text lines returned. Supported reading orders include:
      *     basic(default), natural.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The contentLength parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3767,12 +3900,12 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void analyzeLayoutAsync(
             ContentType contentType,
-            Flux<ByteBuffer> fileStream,
-            long contentLength,
             List<String> pages,
             Language language,
-            ReadingOrder readingOrder) {
-        analyzeLayoutAsyncAsync(contentType, fileStream, contentLength, pages, language, readingOrder).block();
+            ReadingOrder readingOrder,
+            Flux<ByteBuffer> fileStream,
+            Long contentLength) {
+        analyzeLayoutAsyncAsync(contentType, pages, language, readingOrder, fileStream, contentLength).block();
     }
 
     /**
@@ -3781,8 +3914,6 @@ public final class FormRecognizerClientImpl {
      * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
      *
      * @param contentType Upload file type.
-     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
      * @param language Currently, only Afrikaans (‘af’), Albanian (‘sq’), Asturian (‘ast’), Basque (‘eu’), Bislama
@@ -3803,6 +3934,8 @@ public final class FormRecognizerClientImpl {
      *     documented to be processed as that specific language.
      * @param readingOrder Reading order algorithm to sort the text lines returned. Supported reading orders include:
      *     basic(default), natural.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The contentLength parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -3810,16 +3943,16 @@ public final class FormRecognizerClientImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> analyzeLayoutAsyncWithResponse(
+    public AnalyzeLayoutAsyncResponse analyzeLayoutAsyncWithResponse(
             ContentType contentType,
-            Flux<ByteBuffer> fileStream,
-            long contentLength,
             List<String> pages,
             Language language,
             ReadingOrder readingOrder,
+            Flux<ByteBuffer> fileStream,
+            Long contentLength,
             Context context) {
         return analyzeLayoutAsyncWithResponseAsync(
-                        contentType, fileStream, contentLength, pages, language, readingOrder, context)
+                        contentType, pages, language, readingOrder, fileStream, contentLength, context)
                 .block();
     }
 
@@ -3864,6 +3997,7 @@ public final class FormRecognizerClientImpl {
                 context ->
                         service.analyzeLayoutAsync(
                                 this.getEndpoint(),
+                                this.getApiVersion(),
                                 pagesConverted,
                                 language,
                                 readingOrder,
@@ -3911,7 +4045,14 @@ public final class FormRecognizerClientImpl {
         String pagesConverted =
                 JacksonAdapter.createDefaultSerializerAdapter().serializeList(pages, CollectionFormat.CSV);
         return service.analyzeLayoutAsync(
-                this.getEndpoint(), pagesConverted, language, readingOrder, fileStream, accept, context);
+                this.getEndpoint(),
+                this.getApiVersion(),
+                pagesConverted,
+                language,
+                readingOrder,
+                fileStream,
+                accept,
+                context);
     }
 
     /**
@@ -4060,7 +4201,7 @@ public final class FormRecognizerClientImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> analyzeLayoutAsyncWithResponse(
+    public AnalyzeLayoutAsyncResponse analyzeLayoutAsyncWithResponse(
             List<String> pages, Language language, ReadingOrder readingOrder, SourcePath fileStream, Context context) {
         return analyzeLayoutAsyncWithResponseAsync(pages, language, readingOrder, fileStream, context).block();
     }
@@ -4078,7 +4219,9 @@ public final class FormRecognizerClientImpl {
     public Mono<Response<AnalyzeOperationResult>> getAnalyzeLayoutResultWithResponseAsync(UUID resultId) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.getAnalyzeLayoutResult(this.getEndpoint(), resultId, accept, context));
+                context ->
+                        service.getAnalyzeLayoutResult(
+                                this.getEndpoint(), this.getApiVersion(), resultId, accept, context));
     }
 
     /**
@@ -4095,7 +4238,7 @@ public final class FormRecognizerClientImpl {
     public Mono<Response<AnalyzeOperationResult>> getAnalyzeLayoutResultWithResponseAsync(
             UUID resultId, Context context) {
         final String accept = "application/json";
-        return service.getAnalyzeLayoutResult(this.getEndpoint(), resultId, accept, context);
+        return service.getAnalyzeLayoutResult(this.getEndpoint(), this.getApiVersion(), resultId, accept, context);
     }
 
     /**
@@ -4183,7 +4326,9 @@ public final class FormRecognizerClientImpl {
     public Mono<PagedResponse<ModelInfo>> listCustomModelsSinglePageAsync() {
         final String op = "full";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listCustomModels(this.getEndpoint(), op, accept, context))
+        return FluxUtil.withContext(
+                        context ->
+                                service.listCustomModels(this.getEndpoint(), this.getApiVersion(), op, accept, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -4208,7 +4353,7 @@ public final class FormRecognizerClientImpl {
     public Mono<PagedResponse<ModelInfo>> listCustomModelsSinglePageAsync(Context context) {
         final String op = "full";
         final String accept = "application/json";
-        return service.listCustomModels(this.getEndpoint(), op, accept, context)
+        return service.listCustomModels(this.getEndpoint(), this.getApiVersion(), op, accept, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -4286,7 +4431,8 @@ public final class FormRecognizerClientImpl {
     public Mono<Response<Models>> getCustomModelsWithResponseAsync() {
         final String op = "summary";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getCustomModels(this.getEndpoint(), op, accept, context));
+        return FluxUtil.withContext(
+                context -> service.getCustomModels(this.getEndpoint(), this.getApiVersion(), op, accept, context));
     }
 
     /**
@@ -4302,7 +4448,7 @@ public final class FormRecognizerClientImpl {
     public Mono<Response<Models>> getCustomModelsWithResponseAsync(Context context) {
         final String op = "summary";
         final String accept = "application/json";
-        return service.getCustomModels(this.getEndpoint(), op, accept, context);
+        return service.getCustomModels(this.getEndpoint(), this.getApiVersion(), op, accept, context);
     }
 
     /**
@@ -4386,7 +4532,9 @@ public final class FormRecognizerClientImpl {
     public Mono<PagedResponse<ModelInfo>> listCustomModelsNextSinglePageAsync(String nextLink) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                        context -> service.listCustomModelsNext(nextLink, this.getEndpoint(), accept, context))
+                        context ->
+                                service.listCustomModelsNext(
+                                        nextLink, this.getEndpoint(), this.getApiVersion(), accept, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -4411,7 +4559,7 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ModelInfo>> listCustomModelsNextSinglePageAsync(String nextLink, Context context) {
         final String accept = "application/json";
-        return service.listCustomModelsNext(nextLink, this.getEndpoint(), accept, context)
+        return service.listCustomModelsNext(nextLink, this.getEndpoint(), this.getApiVersion(), accept, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(

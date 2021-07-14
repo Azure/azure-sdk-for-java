@@ -159,6 +159,9 @@ public class ShareAsyncClient {
      * @return a {@link ShareDirectoryAsyncClient} that interacts with the directory in the share
      */
     public ShareDirectoryAsyncClient getDirectoryClient(String directoryName) {
+        directoryName = "/".equals(directoryName)
+            ? ""
+            : directoryName;
         return new ShareDirectoryAsyncClient(azureFileStorageClient, shareName, directoryName, snapshot, accountName,
             serviceVersion);
     }

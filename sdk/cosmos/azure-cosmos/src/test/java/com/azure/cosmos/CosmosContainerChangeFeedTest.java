@@ -414,7 +414,8 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
         drainAndValidateChangeFeedResults(options, null, expectedEventCountAfterUpdates);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    //TODO Temporarily disabling
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT, enabled = false)
     public void asyncChangeFeed_fromNow_fullFidelity_forFullRange() throws Exception {
         this.createContainer(
             (cp) -> cp.setChangeFeedPolicy(ChangeFeedPolicy.createFullFidelityPolicy(Duration.ofMinutes(10)))

@@ -39,10 +39,17 @@ public final class VaultProperties {
     private List<AccessPolicyEntry> accessPolicies;
 
     /*
-     * The URI of the vault for performing operations on keys and secrets.
+     * The URI of the vault for performing operations on keys and secrets. This
+     * property is readonly
      */
     @JsonProperty(value = "vaultUri")
     private String vaultUri;
+
+    /*
+     * The resource id of HSM Pool.
+     */
+    @JsonProperty(value = "hsmPoolResourceId", access = JsonProperty.Access.WRITE_ONLY)
+    private String hsmPoolResourceId;
 
     /*
      * Property to specify whether Azure Virtual Machines are permitted to
@@ -67,10 +74,31 @@ public final class VaultProperties {
 
     /*
      * Property to specify whether the 'soft delete' functionality is enabled
-     * for this key vault. It does not accept false value.
+     * for this key vault. If it's not set to any value(true or false) when
+     * creating new key vault, it will be set to true by default. Once set to
+     * true, it cannot be reverted to false.
      */
     @JsonProperty(value = "enableSoftDelete")
     private Boolean enableSoftDelete;
+
+    /*
+     * softDelete data retention days. It accepts >=7 and <=90.
+     */
+    @JsonProperty(value = "softDeleteRetentionInDays")
+    private Integer softDeleteRetentionInDays;
+
+    /*
+     * Property that controls how data actions are authorized. When true, the
+     * key vault will use Role Based Access Control (RBAC) for authorization of
+     * data actions, and the access policies specified in vault properties will
+     * be  ignored (warning: this is a preview feature). When false, the key
+     * vault will use the access policies specified in vault properties, and
+     * any policy stored on Azure Resource Manager will be ignored. If null or
+     * not specified, the vault is created with the default value of false.
+     * Note that management actions are always authorized with RBAC.
+     */
+    @JsonProperty(value = "enableRbacAuthorization")
+    private Boolean enableRbacAuthorization;
 
     /*
      * The vault's create mode to indicate whether the vault need to be
@@ -96,6 +124,12 @@ public final class VaultProperties {
      */
     @JsonProperty(value = "networkAcls")
     private NetworkRuleSet networkAcls;
+
+    /*
+     * Provisioning state of the vault.
+     */
+    @JsonProperty(value = "provisioningState")
+    private VaultProvisioningState provisioningState;
 
     /*
      * List of private endpoint connections associated with the key vault.
@@ -170,7 +204,8 @@ public final class VaultProperties {
     }
 
     /**
-     * Get the vaultUri property: The URI of the vault for performing operations on keys and secrets.
+     * Get the vaultUri property: The URI of the vault for performing operations on keys and secrets. This property is
+     * readonly.
      *
      * @return the vaultUri value.
      */
@@ -179,7 +214,8 @@ public final class VaultProperties {
     }
 
     /**
-     * Set the vaultUri property: The URI of the vault for performing operations on keys and secrets.
+     * Set the vaultUri property: The URI of the vault for performing operations on keys and secrets. This property is
+     * readonly.
      *
      * @param vaultUri the vaultUri value to set.
      * @return the VaultProperties object itself.
@@ -187,6 +223,15 @@ public final class VaultProperties {
     public VaultProperties withVaultUri(String vaultUri) {
         this.vaultUri = vaultUri;
         return this;
+    }
+
+    /**
+     * Get the hsmPoolResourceId property: The resource id of HSM Pool.
+     *
+     * @return the hsmPoolResourceId value.
+     */
+    public String hsmPoolResourceId() {
+        return this.hsmPoolResourceId;
     }
 
     /**
@@ -257,7 +302,8 @@ public final class VaultProperties {
 
     /**
      * Get the enableSoftDelete property: Property to specify whether the 'soft delete' functionality is enabled for
-     * this key vault. It does not accept false value.
+     * this key vault. If it's not set to any value(true or false) when creating new key vault, it will be set to true
+     * by default. Once set to true, it cannot be reverted to false.
      *
      * @return the enableSoftDelete value.
      */
@@ -267,13 +313,64 @@ public final class VaultProperties {
 
     /**
      * Set the enableSoftDelete property: Property to specify whether the 'soft delete' functionality is enabled for
-     * this key vault. It does not accept false value.
+     * this key vault. If it's not set to any value(true or false) when creating new key vault, it will be set to true
+     * by default. Once set to true, it cannot be reverted to false.
      *
      * @param enableSoftDelete the enableSoftDelete value to set.
      * @return the VaultProperties object itself.
      */
     public VaultProperties withEnableSoftDelete(Boolean enableSoftDelete) {
         this.enableSoftDelete = enableSoftDelete;
+        return this;
+    }
+
+    /**
+     * Get the softDeleteRetentionInDays property: softDelete data retention days. It accepts &gt;=7 and &lt;=90.
+     *
+     * @return the softDeleteRetentionInDays value.
+     */
+    public Integer softDeleteRetentionInDays() {
+        return this.softDeleteRetentionInDays;
+    }
+
+    /**
+     * Set the softDeleteRetentionInDays property: softDelete data retention days. It accepts &gt;=7 and &lt;=90.
+     *
+     * @param softDeleteRetentionInDays the softDeleteRetentionInDays value to set.
+     * @return the VaultProperties object itself.
+     */
+    public VaultProperties withSoftDeleteRetentionInDays(Integer softDeleteRetentionInDays) {
+        this.softDeleteRetentionInDays = softDeleteRetentionInDays;
+        return this;
+    }
+
+    /**
+     * Get the enableRbacAuthorization property: Property that controls how data actions are authorized. When true, the
+     * key vault will use Role Based Access Control (RBAC) for authorization of data actions, and the access policies
+     * specified in vault properties will be ignored (warning: this is a preview feature). When false, the key vault
+     * will use the access policies specified in vault properties, and any policy stored on Azure Resource Manager will
+     * be ignored. If null or not specified, the vault is created with the default value of false. Note that management
+     * actions are always authorized with RBAC.
+     *
+     * @return the enableRbacAuthorization value.
+     */
+    public Boolean enableRbacAuthorization() {
+        return this.enableRbacAuthorization;
+    }
+
+    /**
+     * Set the enableRbacAuthorization property: Property that controls how data actions are authorized. When true, the
+     * key vault will use Role Based Access Control (RBAC) for authorization of data actions, and the access policies
+     * specified in vault properties will be ignored (warning: this is a preview feature). When false, the key vault
+     * will use the access policies specified in vault properties, and any policy stored on Azure Resource Manager will
+     * be ignored. If null or not specified, the vault is created with the default value of false. Note that management
+     * actions are always authorized with RBAC.
+     *
+     * @param enableRbacAuthorization the enableRbacAuthorization value to set.
+     * @return the VaultProperties object itself.
+     */
+    public VaultProperties withEnableRbacAuthorization(Boolean enableRbacAuthorization) {
+        this.enableRbacAuthorization = enableRbacAuthorization;
         return this;
     }
 
@@ -342,6 +439,26 @@ public final class VaultProperties {
      */
     public VaultProperties withNetworkAcls(NetworkRuleSet networkAcls) {
         this.networkAcls = networkAcls;
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: Provisioning state of the vault.
+     *
+     * @return the provisioningState value.
+     */
+    public VaultProvisioningState provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
+     * Set the provisioningState property: Provisioning state of the vault.
+     *
+     * @param provisioningState the provisioningState value to set.
+     * @return the VaultProperties object itself.
+     */
+    public VaultProperties withProvisioningState(VaultProvisioningState provisioningState) {
+        this.provisioningState = provisioningState;
         return this;
     }
 

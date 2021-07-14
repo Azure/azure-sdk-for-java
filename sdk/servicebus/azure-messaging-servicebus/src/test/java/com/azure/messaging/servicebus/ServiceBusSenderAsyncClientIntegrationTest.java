@@ -107,7 +107,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void nonSessionEntitySendMessageList(MessagingEntityType entityType) {
         // Arrange
-        setSenderAndReceiver(entityType, 0, false);
+        setSenderAndReceiver(entityType, TestUtils.USE_CASE_DEFAULT, false);
         int count = 4;
 
         final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(count, UUID.randomUUID().toString(), CONTENTS_BYTES);
@@ -126,7 +126,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void nonSessionMessageBatch(MessagingEntityType entityType) {
         // Arrange
-        setSenderAndReceiver(entityType, 0, false);
+        setSenderAndReceiver(entityType, TestUtils.USE_CASE_DEFAULT, false);
 
         final String messageId = UUID.randomUUID().toString();
         final CreateMessageBatchOptions options = new CreateMessageBatchOptions().setMaximumSizeInBytes(1024);
@@ -153,8 +153,8 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
         // Arrange
         final boolean useCredentials = false;
         final Duration shortTimeout = Duration.ofSeconds(15);
-        final int viaIntermediateEntity = TestUtils.USE_CASE_SEND_VIA_QUEUE_1;
-        final int destinationEntity = TestUtils.USE_CASE_SEND_VIA_QUEUE_2;
+        final int viaIntermediateEntity = TestUtils.USE_CASE_TXN_1;
+        final int destinationEntity = TestUtils.USE_CASE_TXN_2;
         final boolean shareConnection = true;
         final MessagingEntityType entityType = MessagingEntityType.QUEUE;
         final boolean isSessionEnabled = false;

@@ -53,6 +53,13 @@ public class ManagementEventRuleCondition extends RuleCondition {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ManagementEventRuleCondition withDataSource(RuleDataSource dataSource) {
+        super.withDataSource(dataSource);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

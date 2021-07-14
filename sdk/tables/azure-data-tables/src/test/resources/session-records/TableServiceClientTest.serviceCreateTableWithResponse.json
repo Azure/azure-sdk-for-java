@@ -1,0 +1,29 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.table.core.windows.net/Tables",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-data-tables/12.0.0-beta.7 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "4ed68b7c-1452-4553-a5a5-886b1a816665",
+      "Content-Type" : "application/json;odata=nometadata"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "Date" : "Wed, 21 Apr 2021 19:15:08 GMT",
+      "Cache-Control" : "no-cache",
+      "DataServiceId" : "https://tablesstoragetests.table.core.windows.net/Tables('test7799674684')",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "c61d1519-7002-0083-08e2-3635a0000000",
+      "Preference-Applied" : "return-no-content",
+      "x-ms-client-request-id" : "4ed68b7c-1452-4553-a5a5-886b1a816665",
+      "Location" : "https://tablesstoragetests.table.core.windows.net/Tables('test7799674684')"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "test7799674684" ]
+}

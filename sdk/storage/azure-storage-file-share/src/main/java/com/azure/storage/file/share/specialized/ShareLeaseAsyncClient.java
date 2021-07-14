@@ -49,9 +49,10 @@ public final class ShareLeaseAsyncClient {
     private final String shareSnapshot;
     private final String resourcePath;
     private final boolean isShareFile;
-    private final String leaseId;
     private final AzureFileStorageImpl client;
     private final String accountName;
+
+    private volatile String leaseId;
 
     ShareLeaseAsyncClient(HttpPipeline pipeline, String url, String shareName, String shareSnapshot,
         String resourcePath, String leaseId, boolean isShareFile, String accountName, String serviceVersion) {
@@ -163,17 +164,21 @@ public final class ShareLeaseAsyncClient {
         options = options == null ? new ShareAcquireLeaseOptions() : options;
         context = context == null ? Context.NONE : context;
 
+        Mono<Response<String>> response;
         if (this.isShareFile) {
-            return this.client.getFiles().acquireLeaseWithResponseAsync(shareName, resourcePath, null,
+            response = this.client.getFiles().acquireLeaseWithResponseAsync(shareName, resourcePath, null,
                 options.getDuration(), this.leaseId, null,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getXMsLeaseId()));
         } else {
-            return this.client.getShares().acquireLeaseWithResponseAsync(shareName, null,
+            response = this.client.getShares().acquireLeaseWithResponseAsync(shareName, null,
                 options.getDuration(), this.leaseId, shareSnapshot,
                 null, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getXMsLeaseId()));
         }
+
+        response = response.doOnSuccess(r -> this.leaseId = r.getValue());
+        return response;
     }
 
     /**
@@ -341,15 +346,20 @@ public final class ShareLeaseAsyncClient {
 
     Mono<Response<String>> changeLeaseWithResponse(String proposedId, Context context) {
         context = context == null ? Context.NONE : context;
+
+        Mono<Response<String>> response;
         if (this.isShareFile) {
-            return this.client.getFiles().changeLeaseWithResponseAsync(shareName, resourcePath, this.leaseId, null, proposedId,
+            response = this.client.getFiles().changeLeaseWithResponseAsync(shareName, resourcePath, this.leaseId, null, proposedId,
                 null, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getXMsLeaseId()));
         } else {
-            return this.client.getShares().changeLeaseWithResponseAsync(shareName, this.leaseId, null, proposedId, shareSnapshot,
+            response = this.client.getShares().changeLeaseWithResponseAsync(shareName, this.leaseId, null, proposedId, shareSnapshot,
                 null, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getXMsLeaseId()));
         }
+
+        response = response.doOnSuccess(r -> this.leaseId = r.getValue());
+        return response;
     }
 
     /**
@@ -390,14 +400,19 @@ public final class ShareLeaseAsyncClient {
 
     Mono<Response<String>> renewLeaseWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
+
+        Mono<Response<String>> response;
         if (this.isShareFile) {
             throw logger.logExceptionAsError(new UnsupportedOperationException(
                 "Cannot renew a lease on a share file."));
         } else {
-            return this.client.getShares().renewLeaseWithResponseAsync(shareName, this.leaseId, null,
+            response = this.client.getShares().renewLeaseWithResponseAsync(shareName, this.leaseId, null,
                 shareSnapshot, null, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getXMsLeaseId()));
         }
+
+        response = response.doOnSuccess(r -> this.leaseId = r.getValue());
+        return response;
     }
 
     /**

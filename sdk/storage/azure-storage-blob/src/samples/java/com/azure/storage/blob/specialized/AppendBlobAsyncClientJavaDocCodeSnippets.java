@@ -9,6 +9,7 @@ import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.options.AppendBlobSealOptions;
+import com.azure.storage.blob.options.AppendBlobAppendBlockFromUrlOptions;
 import reactor.core.publisher.Flux;
 
 import java.nio.ByteBuffer;
@@ -143,6 +144,26 @@ public class AppendBlobAsyncClientJavaDocCodeSnippets {
             appendBlobRequestConditions, modifiedRequestConditions).subscribe(response ->
             System.out.printf("AppendBlob has %d committed blocks%n", response.getValue().getBlobCommittedBlockCount()));
         // END: com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlockFromUrlWithResponse#String-BlobRange-byte-AppendBlobRequestConditions-BlobRequestConditions
+    }
+
+    /**
+     * Code snippet for {@link AppendBlobAsyncClient#appendBlockFromUrlWithResponse(String, BlobRange, byte[], AppendBlobRequestConditions, BlobRequestConditions)}
+     */
+    public void appendBlockFromUrlOptionBag() {
+        // BEGIN: com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlockFromUrlWithResponse#AppendBlobAppendBlockFromUrlOptions
+        AppendBlobRequestConditions appendBlobRequestConditions = new AppendBlobRequestConditions()
+            .setAppendPosition(POSITION)
+            .setMaxSize(maxSize);
+
+        BlobRequestConditions modifiedRequestConditions = new BlobRequestConditions()
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
+
+        client.appendBlockFromUrlWithResponse(new AppendBlobAppendBlockFromUrlOptions(sourceUrl)
+            .setSourceRange(new BlobRange(offset, count))
+            .setDestinationRequestConditions(appendBlobRequestConditions)
+            .setSourceRequestConditions(modifiedRequestConditions)).subscribe(response ->
+            System.out.printf("AppendBlob has %d committed blocks%n", response.getValue().getBlobCommittedBlockCount()));
+        // END: com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlockFromUrlWithResponse#AppendBlobAppendBlockFromUrlOptions
     }
 
     /**

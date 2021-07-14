@@ -24,6 +24,7 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.datalake.implementation.models.FileSystemsListPathsResponse;
 import com.azure.storage.file.datalake.implementation.models.PathResourceType;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
+import com.azure.storage.file.datalake.implementation.util.TransformUtils;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathItem;
@@ -548,9 +549,9 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      * If "false", the values will be returned as Azure Active Directory Object IDs.
      * The default value is false. Note that group and application Object IDs are not translated because they do not
      * have unique friendly names.
-     * @param maxResults Specifies the maximum number of blobs to return, including all BlobPrefix elements. If the
-     * request does not specify maxResults or specifies a value greater than 5,000, the server will return up to
-     * 5,000 items.
+     * @param maxResults Specifies the maximum number of blobs to return per page, including all BlobPrefix elements. If
+     * the request does not specify maxResults or specifies a value greater than 5,000, the server will return up to
+     * 5,000 items per page.
      * @return A reactive response emitting the list of files/directories.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -606,6 +607,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
 
         return new SpecializedBlobClientBuilder()
             .pipeline(getHttpPipeline())
+            .serviceVersion(TransformUtils.toBlobServiceVersion(getServiceVersion()))
             .endpoint(StorageImplUtils.appendToUrlPath(blobUrl, pathName).toString());
     }
 }

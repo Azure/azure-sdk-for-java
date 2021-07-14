@@ -42,7 +42,7 @@ import static com.azure.core.implementation.TypeUtil.typeImplementsInterface;
  * Decoder to decode body of HTTP response.
  */
 public final class HttpResponseBodyDecoder {
-    private static final Map<Type, Boolean> RETURN_TYPE_DECODE_ABLE_MAP = new ConcurrentHashMap<>();
+    private static final Map<Type, Boolean> RETURN_TYPE_DECODEABLE_MAP = new ConcurrentHashMap<>();
 
     // TODO (jogiles) JavaDoc (even though it is non-public
     static Mono<Object> decode(final String body,
@@ -359,7 +359,7 @@ public final class HttpResponseBodyDecoder {
             return false;
         }
 
-        return RETURN_TYPE_DECODE_ABLE_MAP.computeIfAbsent(returnType, type -> {
+        return RETURN_TYPE_DECODEABLE_MAP.computeIfAbsent(returnType, type -> {
             type = unwrapReturnType(type);
 
             return !TypeUtil.isTypeOrSubTypeOf(type, BinaryData.class)
@@ -369,6 +369,33 @@ public final class HttpResponseBodyDecoder {
                 && !TypeUtil.isTypeOrSubTypeOf(type, Void.TYPE)
                 && !TypeUtil.isTypeOrSubTypeOf(type, Void.class);
         });
+    }
+
+    /**
+     * Checks if the network response body should be eagerly read based on its {@code returnType}.
+     * <p>
+     * The following types, including sub-types, aren't eagerly read from the network:
+     * <ul>
+     * <li>BinaryData</li>
+     * <li>byte[]</li>
+     * <li>ByteBuffer</li>
+     * <li>InputStream</li>
+     * </ul>
+     *
+     * Reactive, {@link Mono} and {@link Flux}, and Response, {@link Response} and {@link ResponseBase}, generics are
+     * cracked open and their generic types are inspected for being one of the types above.
+     *
+     * @param returnType The return type of the method.
+     * @return Flag indicating if the network response body should be eagerly read.
+     */
+    public static boolean shouldEagerlyReadResponse(Type returnType) {
+        if (returnType == null) {
+            return false;
+        }
+
+        return isReturnTypeDecodable(returnType)
+            || TypeUtil.isTypeOrSubTypeOf(returnType, Void.TYPE)
+            || TypeUtil.isTypeOrSubTypeOf(returnType, Void.class);
     }
 
     private static Type unwrapReturnType(Type returnType) {

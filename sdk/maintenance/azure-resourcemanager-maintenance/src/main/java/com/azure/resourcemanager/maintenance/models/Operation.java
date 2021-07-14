@@ -37,6 +37,13 @@ public interface Operation {
     Object properties();
 
     /**
+     * Gets the isDataAction property: Indicates whether the operation is a data action.
+     *
+     * @return the isDataAction value.
+     */
+    Boolean isDataAction();
+
+    /**
      * Gets the inner com.azure.resourcemanager.maintenance.fluent.models.OperationInner object.
      *
      * @return the inner object.

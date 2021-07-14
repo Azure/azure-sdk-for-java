@@ -36,7 +36,7 @@ object SampleReadE2EMain {
       .master("local")
       .getOrCreate()
 
-    val df = spark.read.format("cosmos.items").options(cfg).load()
+    val df = spark.read.format("cosmos.oltp").options(cfg).load()
     df.where("number = 1").show()
 
       // With raw json as inference
@@ -47,7 +47,7 @@ object SampleReadE2EMain {
           "spark.cosmos.read.inferSchemaEnabled" -> "false"
       )
 
-      val dfForRaw = spark.read.format("cosmos.items").options(cfgForRaw).load()
+      val dfForRaw = spark.read.format("cosmos.oltp").options(cfgForRaw).load()
       dfForRaw.show(1)
       val rawJson = dfForRaw.first.getAs[String](CosmosTableSchemaInferrer.RawJsonBodyAttributeName)
       val mapper = new ObjectMapper();

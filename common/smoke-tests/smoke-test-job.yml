@@ -20,6 +20,7 @@ jobs:
       matrix: ${{ parameters.Matrix }}
 
     pool:
+      name: $(Pool)
       vmImage: $(OSVmImage)
 
     variables:

@@ -278,7 +278,7 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <!-- Javadoc checks                                   -->
     <!-- See http://checkstyle.sf.net/config_javadoc.html -->
     <module name="JavadocMethod">
-      <property name="scope" value="protected"/>
+      <property name="accessModifiers" value="public, protected"/>
     </module>
     <module name="MissingJavadocMethod"/>
     <module name="MissingJavadocType"/>

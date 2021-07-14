@@ -1,26 +1,26 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.queue.core.windows.net/queueaysncapitestssetmetadataqueueerror33132f87abc8e?comp=metadata",
+    "Uri" : "https://REDACTED.queue.core.windows.net/8fa85be18fa85be1a3742007ce3e327eb484449fae?comp=metadata",
     "Headers" : {
-      "x-ms-version" : "2019-12-12",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.6.0-beta.1 (11.0.6; Windows 10 10.0)",
-      "x-ms-client-request-id" : "58a96fff-559a-4443-8a96-1b7213f133fb"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ae700288-833a-4ca4-b1a8-9541d507a4f1"
     },
     "Response" : {
-      "x-ms-version" : "2019-12-12",
+      "content-length" : "217",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "QueueNotFound",
       "retry-after" : "0",
-      "Content-Length" : "217",
       "StatusCode" : "404",
-      "x-ms-request-id" : "37a3a129-3003-009b-6503-3a8ca5000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:37a3a129-3003-009b-6503-3a8ca5000000\nTime:2020-06-04T00:05:18.0211109Z</Message></Error>",
-      "Date" : "Thu, 04 Jun 2020 00:05:17 GMT",
-      "x-ms-client-request-id" : "58a96fff-559a-4443-8a96-1b7213f133fb",
+      "x-ms-request-id" : "d9b8998f-f003-0012-6709-418df1000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:d9b8998f-f003-0012-6709-418df1000000\nTime:2021-05-04T17:18:37.4830616Z</Message></Error>",
+      "x-ms-client-request-id" : "ae700288-833a-4ca4-b1a8-9541d507a4f1",
+      "Date" : "Tue, 04 May 2021 17:18:36 GMT",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "queueaysncapitestssetmetadataqueueerror33132f87abc8e" ]
+  "variables" : [ "8fa85be18fa85be1a3742007ce3e327eb484449fae" ]
 }

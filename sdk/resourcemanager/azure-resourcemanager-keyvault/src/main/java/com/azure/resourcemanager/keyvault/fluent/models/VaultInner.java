@@ -10,6 +10,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.keyvault.models.VaultProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /** Resource information with extended details. */
 @Fluent
@@ -39,6 +40,20 @@ public final class VaultInner extends Resource {
      */
     public VaultInner withProperties(VaultProperties properties) {
         this.properties = properties;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public VaultInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public VaultInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 

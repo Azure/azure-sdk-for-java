@@ -2,13 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.data.tables;
 
-import com.azure.data.tables.models.TableEntity;
-
-import java.time.OffsetDateTime;
-import java.util.UUID;
-
-public class SampleEntity extends TableEntity {
-    private byte[] byteField;
+// Will not be supporting subclasses of TableEntity for the time being.
+public class SampleEntity /*extends TableEntity*/ {
+    /*private byte[] byteField;
     private boolean booleanField;
     private OffsetDateTime dateTimeField;
     private double doubleField;
@@ -117,5 +113,5 @@ public class SampleEntity extends TableEntity {
         public String toString() {
             return String.valueOf(value);
         }
-    }
+    }*/
 }

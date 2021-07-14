@@ -4,23 +4,16 @@
 package com.azure.spring.integration.test.support;
 
 import com.azure.spring.integration.core.api.SubscribeOperation;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.messaging.Message;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class SubscribeOperationTest<O extends SubscribeOperation> {
+
     protected O subscribeOperation;
-    private String destination = "event-hub";
-
-    public O getSubscribeOperation() {
-        return subscribeOperation;
-    }
-
-    public void setSubscribeOperation(O subscribeOperation) {
-        this.subscribeOperation = subscribeOperation;
-    }
+    protected String destination = "event-hub";
 
     @Test
     public void testSubscribeAndUnsubscribe() {
@@ -73,4 +66,13 @@ public abstract class SubscribeOperationTest<O extends SubscribeOperation> {
     protected abstract void verifySubscriberRegistered(int times);
 
     protected abstract void verifySubscriberUnregistered(int times);
+
+    public O getSubscribeOperation() {
+        return subscribeOperation;
+    }
+
+    public void setSubscribeOperation(O subscribeOperation) {
+        this.subscribeOperation = subscribeOperation;
+    }
+
 }

@@ -207,11 +207,6 @@ public final class FilesGetPropertiesHeaders {
     @JsonProperty(value = "x-ms-file-last-write-time")
     private OffsetDateTime xMsFileLastWriteTime;
 
-    /** Creates an instance of FilesGetPropertiesHeaders class. */
-    public FilesGetPropertiesHeaders() {
-        xMsType = "File";
-    }
-
     /**
      * Get the xMsFileId property: The x-ms-file-id property.
      *

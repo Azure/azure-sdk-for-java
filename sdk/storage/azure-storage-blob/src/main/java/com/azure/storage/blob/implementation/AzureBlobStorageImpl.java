@@ -11,15 +11,14 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.storage.blob.models.PathRenameMode;
 
 /** Initializes a new instance of the AzureBlobStorage type. */
 public final class AzureBlobStorageImpl {
-    /** The URL of the service account, container, or blob that is the targe of the desired operation. */
+    /** The URL of the service account, container, or blob that is the target of the desired operation. */
     private final String url;
 
     /**
-     * Gets The URL of the service account, container, or blob that is the targe of the desired operation.
+     * Gets The URL of the service account, container, or blob that is the target of the desired operation.
      *
      * @return the url value.
      */
@@ -37,18 +36,6 @@ public final class AzureBlobStorageImpl {
      */
     public String getVersion() {
         return this.version;
-    }
-
-    /** Determines the behavior of the rename operation. */
-    private final PathRenameMode pathRenameMode;
-
-    /**
-     * Gets Determines the behavior of the rename operation.
-     *
-     * @return the pathRenameMode value.
-     */
-    public PathRenameMode getPathRenameMode() {
-        return this.pathRenameMode;
     }
 
     /** The HTTP pipeline to send requests through. */
@@ -97,18 +84,6 @@ public final class AzureBlobStorageImpl {
      */
     public ContainersImpl getContainers() {
         return this.containers;
-    }
-
-    /** The DirectoriesImpl object to access its operations. */
-    private final DirectoriesImpl directories;
-
-    /**
-     * Gets the DirectoriesImpl object to access its operations.
-     *
-     * @return the DirectoriesImpl object.
-     */
-    public DirectoriesImpl getDirectories() {
-        return this.directories;
     }
 
     /** The BlobsImpl object to access its operations. */
@@ -162,31 +137,28 @@ public final class AzureBlobStorageImpl {
     /**
      * Initializes an instance of AzureBlobStorage client.
      *
-     * @param url The URL of the service account, container, or blob that is the targe of the desired operation.
+     * @param url The URL of the service account, container, or blob that is the target of the desired operation.
      * @param version Specifies the version of the operation to use for this request.
-     * @param pathRenameMode Determines the behavior of the rename operation.
      */
-    AzureBlobStorageImpl(String url, String version, PathRenameMode pathRenameMode) {
+    AzureBlobStorageImpl(String url, String version) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                         .build(),
                 JacksonAdapter.createDefaultSerializerAdapter(),
                 url,
-                version,
-                pathRenameMode);
+                version);
     }
 
     /**
      * Initializes an instance of AzureBlobStorage client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
-     * @param url The URL of the service account, container, or blob that is the targe of the desired operation.
+     * @param url The URL of the service account, container, or blob that is the target of the desired operation.
      * @param version Specifies the version of the operation to use for this request.
-     * @param pathRenameMode Determines the behavior of the rename operation.
      */
-    AzureBlobStorageImpl(HttpPipeline httpPipeline, String url, String version, PathRenameMode pathRenameMode) {
-        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), url, version, pathRenameMode);
+    AzureBlobStorageImpl(HttpPipeline httpPipeline, String url, String version) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), url, version);
     }
 
     /**
@@ -194,24 +166,16 @@ public final class AzureBlobStorageImpl {
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
-     * @param url The URL of the service account, container, or blob that is the targe of the desired operation.
+     * @param url The URL of the service account, container, or blob that is the target of the desired operation.
      * @param version Specifies the version of the operation to use for this request.
-     * @param pathRenameMode Determines the behavior of the rename operation.
      */
-    AzureBlobStorageImpl(
-            HttpPipeline httpPipeline,
-            SerializerAdapter serializerAdapter,
-            String url,
-            String version,
-            PathRenameMode pathRenameMode) {
+    AzureBlobStorageImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String url, String version) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.url = url;
         this.version = version;
-        this.pathRenameMode = pathRenameMode;
         this.services = new ServicesImpl(this);
         this.containers = new ContainersImpl(this);
-        this.directories = new DirectoriesImpl(this);
         this.blobs = new BlobsImpl(this);
         this.pageBlobs = new PageBlobsImpl(this);
         this.appendBlobs = new AppendBlobsImpl(this);

@@ -8,17 +8,21 @@ import com.azure.cosmos.implementation.HttpConstants
 
 // cosmos db related constants
 private object CosmosConstants {
-  private[this] val currentVersion =
-    CoreUtils.getProperties(HttpConstants.Versions.AZURE_COSMOS_PROPERTIES_FILE_NAME).get("version")
-  val userAgentSuffix = s" SparkConnector/$currentVersion"
+  private[this] val propertiesFileName = "azure-cosmos-spark.properties"
+  val currentVersion: String =
+    CoreUtils.getProperties(propertiesFileName).get("version")
+  val currentName: String =
+    CoreUtils.getProperties(propertiesFileName).get("name")
+  val userAgentSuffix = s"SparkConnector/$currentName/$currentVersion"
 
   object Names {
-    val ItemsDataSourceShortName = "cosmos.items"
-    val ChangeFeedDataSourceShortName = "cosmos.changeFeed"
+    val ItemsDataSourceShortName = "cosmos.oltp"
+    val ChangeFeedDataSourceShortName = "cosmos.oltp.changeFeed"
   }
 
   object Properties {
     val Id = "id"
+    val ETag = "_etag"
   }
 
   object StatusCodes {
@@ -27,5 +31,10 @@ private object CosmosConstants {
     val InternalServerError = 500
     val Gone = 410
     val Timeout = 408
+    val PreconditionFailed = 412
+  }
+
+  object SystemProperties {
+    val LineSeparator = System.getProperty("line.separator")
   }
 }

@@ -9,7 +9,6 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -17,16 +16,19 @@ import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appconfiguration.fluent.AppConfigurationManagementClient;
 import com.azure.resourcemanager.appconfiguration.implementation.AppConfigurationManagementClientBuilder;
 import com.azure.resourcemanager.appconfiguration.implementation.ConfigurationStoresImpl;
+import com.azure.resourcemanager.appconfiguration.implementation.KeyValuesImpl;
 import com.azure.resourcemanager.appconfiguration.implementation.OperationsImpl;
 import com.azure.resourcemanager.appconfiguration.implementation.PrivateEndpointConnectionsImpl;
 import com.azure.resourcemanager.appconfiguration.implementation.PrivateLinkResourcesImpl;
 import com.azure.resourcemanager.appconfiguration.models.ConfigurationStores;
+import com.azure.resourcemanager.appconfiguration.models.KeyValues;
 import com.azure.resourcemanager.appconfiguration.models.Operations;
 import com.azure.resourcemanager.appconfiguration.models.PrivateEndpointConnections;
 import com.azure.resourcemanager.appconfiguration.models.PrivateLinkResources;
@@ -45,6 +47,8 @@ public final class AppConfigurationManager {
     private PrivateEndpointConnections privateEndpointConnections;
 
     private PrivateLinkResources privateLinkResources;
+
+    private KeyValues keyValues;
 
     private final AppConfigurationManagementClient clientObject;
 
@@ -89,6 +93,7 @@ public final class AppConfigurationManager {
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
         private final List<HttpPipelinePolicy> policies = new ArrayList<>();
+        private final List<String> scopes = new ArrayList<>();
         private RetryPolicy retryPolicy;
         private Duration defaultPollInterval;
 
@@ -125,6 +130,17 @@ public final class AppConfigurationManager {
          */
         public Configurable withPolicy(HttpPipelinePolicy policy) {
             this.policies.add(Objects.requireNonNull(policy, "'policy' cannot be null."));
+            return this;
+        }
+
+        /**
+         * Adds the scope to permission sets.
+         *
+         * @param scope the scope.
+         * @return the configurable object itself.
+         */
+        public Configurable withScope(String scope) {
+            this.scopes.add(Objects.requireNonNull(scope, "'scope' cannot be null."));
             return this;
         }
 
@@ -170,7 +186,7 @@ public final class AppConfigurationManager {
                 .append("-")
                 .append("com.azure.resourcemanager.appconfiguration")
                 .append("/")
-                .append("1.0.0-beta.1");
+                .append("1.0.0-beta.3");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -184,6 +200,9 @@ public final class AppConfigurationManager {
                 userAgentBuilder.append(" (auto-generated)");
             }
 
+            if (scopes.isEmpty()) {
+                scopes.add(profile.getEnvironment().getManagementEndpoint() + "/.default");
+            }
             if (retryPolicy == null) {
                 retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
             }
@@ -193,10 +212,7 @@ public final class AppConfigurationManager {
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
-            policies
-                .add(
-                    new BearerTokenAuthenticationPolicy(
-                        credential, profile.getEnvironment().getManagementEndpoint() + "/.default"));
+            policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
             policies.addAll(this.policies);
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
@@ -240,6 +256,14 @@ public final class AppConfigurationManager {
             this.privateLinkResources = new PrivateLinkResourcesImpl(clientObject.getPrivateLinkResources(), this);
         }
         return privateLinkResources;
+    }
+
+    /** @return Resource collection API of KeyValues. */
+    public KeyValues keyValues() {
+        if (this.keyValues == null) {
+            this.keyValues = new KeyValuesImpl(clientObject.getKeyValues(), this);
+        }
+        return keyValues;
     }
 
     /**

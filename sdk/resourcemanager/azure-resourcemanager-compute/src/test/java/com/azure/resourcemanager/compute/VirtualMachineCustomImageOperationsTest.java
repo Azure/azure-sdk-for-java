@@ -114,7 +114,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
                 .withoutPrimaryPublicIPAddress()
                 .withGeneralizedLinuxCustomImage(image.id())
                 .withRootUsername("javauser")
-                .withRootPassword("12NewPA$$w0rd!")
+                .withRootPassword(password())
                 .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                 .withOSDiskCaching(CachingTypes.READ_WRITE)
                 .create();

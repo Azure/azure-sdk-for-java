@@ -28,7 +28,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cognitiveservices.fluent.ResourceSkusClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.ResourceSkuInner;
-import com.azure.resourcemanager.cognitiveservices.models.ResourceSkusResult;
+import com.azure.resourcemanager.cognitiveservices.models.ResourceSkuListResult;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ResourceSkusClient. */
@@ -63,7 +63,7 @@ public final class ResourceSkusClientImpl implements ResourceSkusClient {
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/skus")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ResourceSkusResult>> list(
+        Mono<Response<ResourceSkuListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -74,7 +74,7 @@ public final class ResourceSkusClientImpl implements ResourceSkusClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ResourceSkusResult>> listNext(
+        Mono<Response<ResourceSkuListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept,

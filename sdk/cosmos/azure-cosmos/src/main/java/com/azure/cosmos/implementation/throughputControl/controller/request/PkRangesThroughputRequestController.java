@@ -87,7 +87,7 @@ public class PkRangesThroughputRequestController implements IThroughputRequestCo
         for (PartitionKeyRange pkRange : pkRanges) {
             requestThrottlerMap.compute(pkRange.getId(), (pkRangeId, requestThrottler) -> {
                 if (requestThrottler == null) {
-                    requestThrottler = new ThroughputRequestThrottler(throughputPerPkRange);
+                    requestThrottler = new ThroughputRequestThrottler(throughputPerPkRange, pkRangeId);
                 }
 
                 return requestThrottler;

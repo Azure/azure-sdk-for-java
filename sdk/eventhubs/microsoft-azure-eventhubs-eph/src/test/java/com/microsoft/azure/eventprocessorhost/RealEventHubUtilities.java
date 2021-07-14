@@ -20,7 +20,7 @@ final class RealEventHubUtilities {
     static final int QUERY_ENTITY_FOR_PARTITIONS = -1;
     static final String SYNTACTICALLY_CORRECT_DUMMY_EVENT_HUB_PATH = "doesnotexist";
     static final String SYNTACTICALLY_CORRECT_DUMMY_CONNECTION_STRING =
-            "Endpoint=sb://doesnotexist.servicebus.windows.net/;SharedAccessKeyName=doesnotexist;SharedAccessKey=dGhpcyBpcyBub3QgYSB2YWxpZCBrZXkgLi4uLi4uLi4=;EntityPath="
+            "Endpoint=sb://doesnotexist.servicebus.windows.net/;SharedAccessKeyName=doesnotexist;SharedAccessKey=fakekey;EntityPath="
                 + RealEventHubUtilities.SYNTACTICALLY_CORRECT_DUMMY_EVENT_HUB_PATH;
 
     private ConnectionStringBuilder hubConnectionString = null;

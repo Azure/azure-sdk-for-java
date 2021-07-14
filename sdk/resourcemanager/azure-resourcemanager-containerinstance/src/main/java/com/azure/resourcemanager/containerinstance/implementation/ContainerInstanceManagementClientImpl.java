@@ -171,7 +171,7 @@ public final class ContainerInstanceManagementClientImpl extends AzureServiceCli
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2019-12-01";
+        this.apiVersion = "2021-03-01";
         this.containerGroups = new ContainerGroupsClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.locations = new LocationsClientImpl(this);

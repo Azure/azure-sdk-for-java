@@ -65,7 +65,7 @@ public final class BlobUrlParts {
     }
 
     /**
-     * Gets the URL scheme, ex. "https://".
+     * Gets the URL scheme, ex. "https".
      *
      * @return the URL scheme.
      */
@@ -74,7 +74,7 @@ public final class BlobUrlParts {
     }
 
     /**
-     * Sets the URL scheme, ex. "https://".
+     * Sets the URL scheme, ex. "https".
      *
      * @param scheme The URL scheme.
      * @return the updated BlobUrlParts object.

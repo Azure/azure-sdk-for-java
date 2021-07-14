@@ -3,11 +3,15 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestOptions;
+import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.util.Beta;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Encapsulates options that can be specified for a request issued to cosmos Item.
@@ -15,6 +19,7 @@ import java.util.List;
 public class CosmosItemRequestOptions {
     private ConsistencyLevel consistencyLevel;
     private IndexingDirective indexingDirective;
+    private OperationContextAndListenerTuple operationContextAndListenerTuple;
     private List<String> preTriggerInclude;
     private List<String> postTriggerInclude;
     private String sessionToken;
@@ -23,6 +28,8 @@ public class CosmosItemRequestOptions {
     private String ifNoneMatchETag;
     private Boolean contentResponseOnWriteEnabled;
     private String throughputControlGroupName;
+    private DedicatedGatewayRequestOptions dedicatedGatewayRequestOptions;
+    private Map<String, String> customOptions;
 
     /**
      * copy constructor
@@ -38,6 +45,8 @@ public class CosmosItemRequestOptions {
         ifNoneMatchETag = options.ifNoneMatchETag;
         contentResponseOnWriteEnabled = options.contentResponseOnWriteEnabled;
         throughputControlGroupName = options.throughputControlGroupName;
+        dedicatedGatewayRequestOptions = options.dedicatedGatewayRequestOptions;
+        operationContextAndListenerTuple = options.operationContextAndListenerTuple;
     }
 
 
@@ -252,6 +261,26 @@ public class CosmosItemRequestOptions {
     }
 
     /**
+     * Gets the Dedicated Gateway Request Options
+     * @return the Dedicated Gateway Request Options
+     */
+    @Beta(value = Beta.SinceVersion.V4_15_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public DedicatedGatewayRequestOptions getDedicatedGatewayRequestOptions() {
+        return this.dedicatedGatewayRequestOptions;
+    }
+
+    /**
+     * Sets the Dedicated Gateway Request Options
+     * @param dedicatedGatewayRequestOptions Dedicated Gateway Request Options
+     * @return the CosmosItemRequestOptions
+     */
+    @Beta(value = Beta.SinceVersion.V4_15_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosItemRequestOptions setDedicatedGatewayRequestOptions(DedicatedGatewayRequestOptions dedicatedGatewayRequestOptions) {
+        this.dedicatedGatewayRequestOptions = dedicatedGatewayRequestOptions;
+        return this;
+    }
+
+    /**
      * Gets the partition key
      *
      * @return the partition key
@@ -284,6 +313,13 @@ public class CosmosItemRequestOptions {
         requestOptions.setPartitionKey(partitionKey);
         requestOptions.setContentResponseOnWriteEnabled(contentResponseOnWriteEnabled);
         requestOptions.setThroughputControlGroupName(throughputControlGroupName);
+        requestOptions.setOperationContextAndListenerTuple(operationContextAndListenerTuple);
+        requestOptions.setDedicatedGatewayRequestOptions(dedicatedGatewayRequestOptions);
+        if(this.customOptions != null) {
+            for(Map.Entry<String, String> entry : this.customOptions.entrySet()) {
+                requestOptions.setHeader(entry.getKey(), entry.getValue());
+            }
+        }
         return requestOptions;
     }
 
@@ -295,5 +331,76 @@ public class CosmosItemRequestOptions {
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public void setThroughputControlGroupName(String throughputControlGroupName) {
         this.throughputControlGroupName = throughputControlGroupName;
+    }
+
+    /**
+     * Sets the custom item request option value by key
+     *
+     * @param name  a string representing the custom option's name
+     * @param value a string representing the custom option's value
+     *
+     * @return the CosmosItemRequestOptions.
+     */
+    CosmosItemRequestOptions setHeader(String name, String value) {
+        if (this.customOptions == null) {
+            this.customOptions = new HashMap<>();
+        }
+        this.customOptions.put(name, value);
+        return this;
+    }
+
+    /**
+     * Gets the custom item request options
+     *
+     * @return Map of custom request options
+     */
+    Map<String, String> getHeaders() {
+        return this.customOptions;
+    }
+
+    void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {
+        this.operationContextAndListenerTuple = operationContextAndListenerTuple;
+    }
+
+    OperationContextAndListenerTuple getOperationContextAndListenerTuple() {
+        return this.operationContextAndListenerTuple;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    // the following helper/accessor only helps to access this class outside of this package.//
+    ///////////////////////////////////////////////////////////////////////////////////////////
+
+    static {
+        ImplementationBridgeHelpers.CosmosItemRequestOptionsHelper.setCosmosItemRequestOptionsAccessor(
+            new ImplementationBridgeHelpers.CosmosItemRequestOptionsHelper.CosmosItemRequestOptionsAccessor() {
+
+                @Override
+                public void setOperationContext(CosmosItemRequestOptions itemRequestOptions,
+                                                OperationContextAndListenerTuple operationContextAndListenerTuple) {
+                    itemRequestOptions.setOperationContextAndListenerTuple(operationContextAndListenerTuple);
+                }
+
+                @Override
+                public OperationContextAndListenerTuple getOperationContext(CosmosItemRequestOptions itemRequestOptions) {
+                    return itemRequestOptions.getOperationContextAndListenerTuple();
+                }
+
+                @Override
+                public CosmosItemRequestOptions clone(CosmosItemRequestOptions options) {
+                    return new CosmosItemRequestOptions(options);
+                }
+
+                @Override
+                public CosmosItemRequestOptions setHeader(CosmosItemRequestOptions cosmosItemRequestOptions,
+                                                          String name, String value) {
+                    return cosmosItemRequestOptions.setHeader(name, value);
+                }
+
+                @Override
+                public Map<String, String> getHeader(CosmosItemRequestOptions cosmosItemRequestOptions) {
+                    return cosmosItemRequestOptions.getHeaders();
+                }
+            }
+        );
     }
 }
