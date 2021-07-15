@@ -79,6 +79,7 @@ public class ServiceBusMessageConverter
 
         Map<String, Object> copyHeaders = new HashMap<String, Object>();
         copyHeaders.putAll(headers);
+
         // Spring MessageHeaders
         getStringHeader(headers, copyHeaders, MessageHeaders.ID).ifPresent(message::setMessageId);
         getStringHeader(headers, copyHeaders, MessageHeaders.CONTENT_TYPE).ifPresent(message::setContentType);
@@ -89,13 +90,14 @@ public class ServiceBusMessageConverter
             message.setMessageId(val);
             logOverriddenHeaders(AzureHeaders.RAW_ID, MessageHeaders.ID, headers);
         });
-        if (headers.containsKey(AzureHeaders.SCHEDULED_ENQUEUE_MESSAGE)) {
-            Integer enqueueTimePeriod = headers.get(AzureHeaders.SCHEDULED_ENQUEUE_MESSAGE, Integer.class);
-            Instant enqueueTimeInstant = Instant.now().plus(Duration.ofMillis(enqueueTimePeriod));
-            OffsetDateTime scheduledEnqueueTime = OffsetDateTime.ofInstant(enqueueTimeInstant, ZoneId.systemDefault());
-            message.setScheduledEnqueueTime(scheduledEnqueueTime);
-            copyHeaders.remove(AzureHeaders.SCHEDULED_ENQUEUE_MESSAGE);
-        }
+        Optional.ofNullable(headers.get(AzureHeaders.SCHEDULED_ENQUEUE_MESSAGE, Integer.class))
+                .map(Duration::ofMillis)
+                .map(Instant.now()::plus)
+                .map((ins) -> OffsetDateTime.ofInstant(ins, ZoneId.systemDefault()))
+                .ifPresent(val -> {
+                    message.setScheduledEnqueueTime(val);
+                    copyHeaders.remove(AzureHeaders.SCHEDULED_ENQUEUE_MESSAGE);
+                });
 
         // ServiceBusMessageHeaders, service bus headers have highest priority.
         getStringHeader(headers, copyHeaders, MESSAGE_ID).ifPresent(val -> {
@@ -104,17 +106,18 @@ public class ServiceBusMessageConverter
                 logOverriddenHeaders(MESSAGE_ID, MessageHeaders.ID, headers);
             }
         });
-        if (headers.containsKey(TIME_TO_LIVE)) {
-            message.setTimeToLive((Duration) headers.get(TIME_TO_LIVE));
+        Optional.ofNullable(headers.get(TIME_TO_LIVE, Duration.class)).ifPresent(val -> {
+            message.setTimeToLive(val);
             copyHeaders.remove(TIME_TO_LIVE);
-        }
-        if (headers.containsKey(SCHEDULED_ENQUEUE_TIME)) {
-            Instant enqueueTimeInstant = headers.get(SCHEDULED_ENQUEUE_TIME, Instant.class);
-            OffsetDateTime scheduledEnqueueTime = OffsetDateTime.ofInstant(enqueueTimeInstant, ZoneId.systemDefault());
-            message.setScheduledEnqueueTime(scheduledEnqueueTime);
-            logOverriddenHeaders(SCHEDULED_ENQUEUE_TIME, AzureHeaders.SCHEDULED_ENQUEUE_MESSAGE, headers);
-            copyHeaders.remove(SCHEDULED_ENQUEUE_TIME);
-        }
+        });
+
+        Optional.ofNullable((Instant) headers.get(SCHEDULED_ENQUEUE_TIME))
+                .map((ins) -> OffsetDateTime.ofInstant(ins, ZoneId.systemDefault()))
+                .ifPresent(val -> {
+                    message.setScheduledEnqueueTime(val);
+                    logOverriddenHeaders(SCHEDULED_ENQUEUE_TIME, AzureHeaders.SCHEDULED_ENQUEUE_MESSAGE, headers);
+                    copyHeaders.remove(SCHEDULED_ENQUEUE_TIME);
+                });
         getStringHeader(headers, copyHeaders, SESSION_ID).ifPresent(message::setSessionId);
         getStringHeader(headers, copyHeaders, CORRELATION_ID).ifPresent(message::setCorrelationId);
         getStringHeader(headers, copyHeaders, TO).ifPresent(message::setTo);
@@ -176,7 +179,7 @@ public class ServiceBusMessageConverter
         Boolean isExisted = false;
         if (springMessageHeaders.containsKey(overriddenHeader)) {
             isExisted = true;
-            LOGGER.warn("{} header detected, usage of {} header will be overridden if exists", currentHeader,
+            LOGGER.warn("{} header detected, usage of {} header will be overridden", currentHeader,
                 overriddenHeader);
         }
         return isExisted;
