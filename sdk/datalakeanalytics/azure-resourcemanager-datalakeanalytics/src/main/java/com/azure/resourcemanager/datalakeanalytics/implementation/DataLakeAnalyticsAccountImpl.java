@@ -165,6 +165,10 @@ public final class DataLakeAnalyticsAccountImpl
         }
     }
 
+    public String hierarchicalQueueState() {
+        return this.innerModel().hierarchicalQueueState();
+    }
+
     public List<VirtualNetworkRule> virtualNetworkRules() {
         List<VirtualNetworkRule> inner = this.innerModel().virtualNetworkRules();
         if (inner != null) {
@@ -206,6 +210,10 @@ public final class DataLakeAnalyticsAccountImpl
 
     public Integer maxJobCount() {
         return this.innerModel().maxJobCount();
+    }
+
+    public Integer maxQueuedJobCountPerUser() {
+        return this.innerModel().maxQueuedJobCountPerUser();
     }
 
     public Integer systemMaxJobCount() {

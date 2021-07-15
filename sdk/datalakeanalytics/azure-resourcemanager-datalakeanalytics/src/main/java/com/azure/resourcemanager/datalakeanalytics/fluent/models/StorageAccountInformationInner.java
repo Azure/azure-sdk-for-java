@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.datalakeanalytics.fluent.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Azure Storage account information. */
 @JsonFlatten
-@Immutable
+@Fluent
 public class StorageAccountInformationInner extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageAccountInformationInner.class);
 

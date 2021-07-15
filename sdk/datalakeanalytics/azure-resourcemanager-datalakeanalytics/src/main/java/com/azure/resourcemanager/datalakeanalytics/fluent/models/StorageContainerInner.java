@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.datalakeanalytics.fluent.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
@@ -14,7 +14,7 @@ import java.time.OffsetDateTime;
 
 /** Azure Storage blob container information. */
 @JsonFlatten
-@Immutable
+@Fluent
 public class StorageContainerInner extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageContainerInner.class);
 

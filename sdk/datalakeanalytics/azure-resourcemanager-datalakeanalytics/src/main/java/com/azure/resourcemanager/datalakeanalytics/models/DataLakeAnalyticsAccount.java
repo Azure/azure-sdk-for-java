@@ -134,6 +134,13 @@ public interface DataLakeAnalyticsAccount {
     List<HiveMetastore> hiveMetastores();
 
     /**
+     * Gets the hierarchicalQueueState property: The hierarchical queue state associated with this account.
+     *
+     * @return the hierarchicalQueueState value.
+     */
+    String hierarchicalQueueState();
+
+    /**
      * Gets the virtualNetworkRules property: The list of virtualNetwork rules associated with this account.
      *
      * @return the virtualNetworkRules value.
@@ -182,6 +189,13 @@ public interface DataLakeAnalyticsAccount {
      * @return the maxJobCount value.
      */
     Integer maxJobCount();
+
+    /**
+     * Gets the maxQueuedJobCountPerUser property: The maximum supported jobs queued under the account at the same time.
+     *
+     * @return the maxQueuedJobCountPerUser value.
+     */
+    Integer maxQueuedJobCountPerUser();
 
     /**
      * Gets the systemMaxJobCount property: The system defined maximum supported jobs running under the account at the

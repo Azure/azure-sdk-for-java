@@ -59,6 +59,12 @@ public final class DataLakeAnalyticsAccountProperties extends DataLakeAnalyticsA
     private List<HiveMetastore> hiveMetastores;
 
     /*
+     * The hierarchical queue state associated with this account.
+     */
+    @JsonProperty(value = "hierarchicalQueueState", access = JsonProperty.Access.WRITE_ONLY)
+    private String hierarchicalQueueState;
+
+    /*
      * The list of virtualNetwork rules associated with this account.
      */
     @JsonProperty(value = "virtualNetworkRules", access = JsonProperty.Access.WRITE_ONLY)
@@ -101,6 +107,12 @@ public final class DataLakeAnalyticsAccountProperties extends DataLakeAnalyticsA
      */
     @JsonProperty(value = "maxJobCount")
     private Integer maxJobCount;
+
+    /*
+     * The maximum supported jobs queued under the account at the same time.
+     */
+    @JsonProperty(value = "maxQueuedJobCountPerUser", access = JsonProperty.Access.WRITE_ONLY)
+    private Integer maxQueuedJobCountPerUser;
 
     /*
      * The system defined maximum supported jobs running under the account at
@@ -215,6 +227,15 @@ public final class DataLakeAnalyticsAccountProperties extends DataLakeAnalyticsA
     }
 
     /**
+     * Get the hierarchicalQueueState property: The hierarchical queue state associated with this account.
+     *
+     * @return the hierarchicalQueueState value.
+     */
+    public String hierarchicalQueueState() {
+        return this.hierarchicalQueueState;
+    }
+
+    /**
      * Get the virtualNetworkRules property: The list of virtualNetwork rules associated with this account.
      *
      * @return the virtualNetworkRules value.
@@ -322,6 +343,15 @@ public final class DataLakeAnalyticsAccountProperties extends DataLakeAnalyticsA
     public DataLakeAnalyticsAccountProperties withMaxJobCount(Integer maxJobCount) {
         this.maxJobCount = maxJobCount;
         return this;
+    }
+
+    /**
+     * Get the maxQueuedJobCountPerUser property: The maximum supported jobs queued under the account at the same time.
+     *
+     * @return the maxQueuedJobCountPerUser value.
+     */
+    public Integer maxQueuedJobCountPerUser() {
+        return this.maxQueuedJobCountPerUser;
     }
 
     /**
