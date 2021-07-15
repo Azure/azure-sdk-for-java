@@ -3,8 +3,8 @@
 
 package com.azure.spring.autoconfigure.storage;
 
-import com.azure.spring.autoconfigure.unity.AzurePropertyAutoConfiguration;
 import com.azure.spring.autoconfigure.unity.AzureProperties;
+import com.azure.spring.autoconfigure.unity.AzurePropertyAutoConfiguration;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.file.share.ShareServiceClientBuilder;
 import org.junit.jupiter.api.Test;
@@ -17,7 +17,6 @@ import org.springframework.core.io.ClassPathResource;
 
 import static com.azure.spring.autoconfigure.unity.AzureProperties.AZURE_PROPERTY_BEAN_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
-
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 

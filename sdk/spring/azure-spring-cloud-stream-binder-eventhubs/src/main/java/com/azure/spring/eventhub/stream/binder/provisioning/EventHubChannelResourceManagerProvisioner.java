@@ -5,7 +5,10 @@ package com.azure.spring.eventhub.stream.binder.provisioning;
 
 import com.azure.resourcemanager.eventhubs.models.EventHub;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespace;
-import com.azure.spring.cloud.context.core.util.Tuple;
+import com.azure.spring.core.impl.EventHubConsumerGroupManager;
+import com.azure.spring.core.impl.EventHubManager;
+import com.azure.spring.core.impl.EventHubNamespaceManager;
+import com.azure.spring.core.util.Tuple;
 import org.springframework.cloud.stream.provisioning.ProvisioningException;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;

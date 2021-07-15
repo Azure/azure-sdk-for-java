@@ -3,8 +3,8 @@
 
 package com.azure.spring.autoconfigure.jms;
 
-import com.azure.spring.autoconfigure.unity.AzurePropertyAutoConfiguration;
 import com.azure.spring.autoconfigure.unity.AzureProperties;
+import com.azure.spring.autoconfigure.unity.AzurePropertyAutoConfiguration;
 import com.microsoft.azure.servicebus.jms.ServiceBusJmsConnectionFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
