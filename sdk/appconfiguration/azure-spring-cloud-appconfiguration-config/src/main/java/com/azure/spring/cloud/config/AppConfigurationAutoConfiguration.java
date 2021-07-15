@@ -40,7 +40,6 @@ public class AppConfigurationAutoConfiguration {
     @Configuration
     @ConditionalOnBean(AppConfigurationRefresh.class)
     @ConditionalOnClass({ HealthIndicator.class })
-    //@PropertySource("classpath:/azure-spring-actuator.properties")
     static class KeyVaultHealthConfiguration {
 
         @Bean
