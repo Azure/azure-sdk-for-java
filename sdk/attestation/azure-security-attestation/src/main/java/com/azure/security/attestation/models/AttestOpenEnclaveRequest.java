@@ -154,8 +154,8 @@ public final class AttestOpenEnclaveRequest {
     public com.azure.security.attestation.implementation.models.AttestOpenEnclaveRequest toGenerated() {
         return new com.azure.security.attestation.implementation.models.AttestOpenEnclaveRequest()
             .setDraftPolicyForAttestation(draftPolicyForAttestation)
-            .setRuntimeData(runtimeData.toGenerated())
-            .setInitTimeData(initTimeData.toGenerated())
+            .setRuntimeData(runtimeData != null ? runtimeData.toGenerated() : null)
+            .setInitTimeData(initTimeData != null ? initTimeData.toGenerated() : null)
             .setReport(report.decodedBytes());
     }
 }

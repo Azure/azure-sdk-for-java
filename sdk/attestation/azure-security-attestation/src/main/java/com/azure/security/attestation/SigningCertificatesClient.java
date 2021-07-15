@@ -36,7 +36,8 @@ public final class SigningCertificatesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public JsonWebKeySet get() {
-        return JsonWebKeySet.fromGenerated(serviceClient.get());
+        var generated = serviceClient.get();
+        return JsonWebKeySet.fromGenerated(generated);
     }
 
     /**
