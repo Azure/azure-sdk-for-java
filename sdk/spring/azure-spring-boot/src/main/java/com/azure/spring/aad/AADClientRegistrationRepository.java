@@ -6,7 +6,6 @@ package com.azure.spring.aad;
 import com.azure.spring.aad.webapp.AuthorizationClientProperties;
 import com.azure.spring.aad.webapp.AzureClientRegistration;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
-import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
@@ -240,7 +239,6 @@ public class AADClientRegistrationRepository
         return allClients.get(registrationId);
     }
 
-    @NotNull
     @Override
     public Iterator<ClientRegistration> iterator() {
         if (!needDelegation()) {
