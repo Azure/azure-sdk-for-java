@@ -240,9 +240,9 @@ public final class PathsImpl {
         @UnexpectedResponseExceptionType(com.azure.storage.file.datalake.models.DataLakeStorageException.class)
         Mono<PathsSetAccessControlResponse> setAccessControl(
                 @HostParam("url") String url,
-                @QueryParam("action") String action,
                 @PathParam("filesystem") String fileSystem,
                 @PathParam("path") String path,
+                @QueryParam("action") String action,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-lease-id") String leaseId,
                 @HeaderParam("x-ms-owner") String owner,
@@ -263,9 +263,9 @@ public final class PathsImpl {
         @UnexpectedResponseExceptionType(com.azure.storage.file.datalake.models.DataLakeStorageException.class)
         Mono<PathsSetAccessControlRecursiveResponse> setAccessControlRecursive(
                 @HostParam("url") String url,
-                @QueryParam("action") String action,
                 @PathParam("filesystem") String fileSystem,
                 @PathParam("path") String path,
+                @QueryParam("action") String action,
                 @QueryParam("timeout") Integer timeout,
                 @QueryParam("continuation") String continuation,
                 @QueryParam("mode") PathSetAccessControlRecursiveMode mode,
@@ -282,9 +282,9 @@ public final class PathsImpl {
         @UnexpectedResponseExceptionType(com.azure.storage.file.datalake.models.DataLakeStorageException.class)
         Mono<PathsFlushDataResponse> flushData(
                 @HostParam("url") String url,
-                @QueryParam("action") String action,
                 @PathParam("filesystem") String fileSystem,
                 @PathParam("path") String path,
+                @QueryParam("action") String action,
                 @QueryParam("timeout") Integer timeout,
                 @QueryParam("position") Long position,
                 @QueryParam("retainUncommittedData") Boolean retainUncommittedData,
@@ -311,9 +311,9 @@ public final class PathsImpl {
         @UnexpectedResponseExceptionType(com.azure.storage.file.datalake.models.DataLakeStorageException.class)
         Mono<PathsAppendDataResponse> appendData(
                 @HostParam("url") String url,
-                @QueryParam("action") String action,
                 @PathParam("filesystem") String fileSystem,
                 @PathParam("path") String path,
+                @QueryParam("action") String action,
                 @QueryParam("position") Long position,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("Content-Length") Long contentLength,
@@ -331,9 +331,9 @@ public final class PathsImpl {
         @UnexpectedResponseExceptionType(com.azure.storage.file.datalake.models.DataLakeStorageException.class)
         Mono<PathsSetExpiryResponse> setExpiry(
                 @HostParam("url") String url,
-                @QueryParam("comp") String comp,
                 @PathParam("filesystem") String fileSystem,
                 @PathParam("path") String path,
+                @QueryParam("comp") String comp,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-client-request-id") String requestId,
@@ -347,9 +347,9 @@ public final class PathsImpl {
         @UnexpectedResponseExceptionType(com.azure.storage.file.datalake.models.DataLakeStorageException.class)
         Mono<PathsUndeleteResponse> undelete(
                 @HostParam("url") String url,
-                @QueryParam("comp") String comp,
                 @PathParam("filesystem") String fileSystem,
                 @PathParam("path") String path,
+                @QueryParam("comp") String comp,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-undelete-source") String undeleteSource,
                 @HeaderParam("x-ms-version") String version,
@@ -567,7 +567,7 @@ public final class PathsImpl {
      * @param continuation Optional. The number of paths processed with each invocation is limited. If the number of
      *     paths to be processed exceeds this limit, a continuation token is returned in the response header
      *     x-ms-continuation. When a continuation token is returned in the response, it must be percent-encoded and
-     *     specified in a subsequent invocation of setAcessControlRecursive operation.
+     *     specified in a subsequent invocation of setAccessControlRecursive operation.
      * @param forceFlag Optional. Valid for "SetAccessControlRecursive" operation. If set to false, the operation will
      *     terminate quickly on encountering user errors (4XX). If true, the operation will ignore user errors and
      *     proceed with the operation on other sub-entities of the directory. Continuation token will only be returned
@@ -1146,9 +1146,9 @@ public final class PathsImpl {
                 ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return service.setAccessControl(
                 this.client.getUrl(),
-                action,
                 this.client.getFileSystem(),
                 this.client.getPath(),
+                action,
                 timeout,
                 leaseId,
                 owner,
@@ -1166,7 +1166,7 @@ public final class PathsImpl {
     }
 
     /**
-     * Set the access control list for a path and subpaths.
+     * Set the access control list for a path and sub-paths.
      *
      * @param mode Mode "set" sets POSIX access control rights on files and directories, "modify" modifies one or more
      *     POSIX access control rights that pre-exist on files and directories, "remove" removes one or more POSIX
@@ -1209,9 +1209,9 @@ public final class PathsImpl {
         final String accept = "application/json";
         return service.setAccessControlRecursive(
                 this.client.getUrl(),
-                action,
                 this.client.getFileSystem(),
                 this.client.getPath(),
+                action,
                 timeout,
                 continuation,
                 mode,
@@ -1338,9 +1338,9 @@ public final class PathsImpl {
                 ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return service.flushData(
                 this.client.getUrl(),
-                action,
                 this.client.getFileSystem(),
                 this.client.getPath(),
+                action,
                 timeout,
                 position,
                 retainUncommittedData,
@@ -1416,9 +1416,9 @@ public final class PathsImpl {
         String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
         return service.appendData(
                 this.client.getUrl(),
-                action,
                 this.client.getFileSystem(),
                 this.client.getPath(),
+                action,
                 position,
                 timeout,
                 contentLength,
@@ -1455,9 +1455,9 @@ public final class PathsImpl {
         final String accept = "application/json";
         return service.setExpiry(
                 this.client.getUrl(),
-                comp,
                 this.client.getFileSystem(),
                 this.client.getPath(),
+                comp,
                 timeout,
                 this.client.getVersion(),
                 requestId,
@@ -1490,9 +1490,9 @@ public final class PathsImpl {
         final String accept = "application/json";
         return service.undelete(
                 this.client.getUrl(),
-                comp,
                 this.client.getFileSystem(),
                 this.client.getPath(),
+                comp,
                 timeout,
                 undeleteSource,
                 this.client.getVersion(),

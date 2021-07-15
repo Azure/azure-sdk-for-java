@@ -40,5 +40,5 @@ public final class EventRouteConverter {
         return mappedEventRoute;
     }
 
-    private EventRouteConverter() {}
+    private EventRouteConverter() { }
 }

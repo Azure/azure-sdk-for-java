@@ -24,7 +24,7 @@ from form documents. It includes the following main functionalities:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-formrecognizer</artifactId>
-    <version>3.1.0</version>
+    <version>3.1.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -53,17 +53,17 @@ Below is an example of how you can create a Form Recognizer resource using the C
 ```bash
 # Create a new resource group to hold the Form Recognizer resource -
 # if using an existing resource group, skip this step
-az group create --name my-resource-group --location westus2
+az group create --name <your-resource-group> --location <location>
 ```
 
 ```bash
 # Create Form Recognizer
 az cognitiveservices account create \
-    --name form-recognizer-resource \
-    --resource-group my-resource-group \
+    --name <your-form-recognizer-resource-name> \
+    --resource-group <your-resource-group> \
     --kind FormRecognizer \
-    --sku S0 \
-    --location westus2 \
+    --sku <sku> \
+    --location <location> \
     --yes
 ```
 ### Authenticate the client
@@ -71,7 +71,7 @@ In order to interact with the Form Recognizer service, you will need to create a
 Both the asynchronous and synchronous clients can be created by using `FormRecognizerClientBuilder`. Invoking `buildClient()`
 will create the synchronous client, while invoking `buildAsyncClient` will create its asynchronous counterpart.
 
-You will need an **endpoint** and a **key** to instantiate a client object.
+You will need an **endpoint**, and a **key** to instantiate a client object.
 
 ##### Looking up the endpoint
 You can find the **endpoint** for your Form Recognizer resource in the [Azure Portal][azure_portal],
@@ -130,14 +130,14 @@ Authentication with AAD requires some initial setup:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.3.0</version>
+    <version>1.3.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
 * [Register a new Azure Active Directory application][register_AAD_application]
 * [Grant access][grant_access] to Form Recognizer by assigning the `"Cognitive Services User"` role to your service principal.
 
-After setup, you can choose which type of [credential][azure_identity_credential_type] from azure.identity to use.
+After the setup, you can choose which type of [credential][azure_identity_credential_type] from azure.identity to use.
 As an example, [DefaultAzureCredential][wiki_identity] can be used to authenticate the client:
 Set the values of the client ID, tenant ID, and client secret of the AAD application as environment variables:
 AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET.
@@ -210,7 +210,7 @@ The following section provides several code snippets covering some of the most c
 * [Manage Your Models](#manage-your-models "Manage Your Models")
 
 ### Recognize Forms Using a Custom Model
-Recognize name/value pairs and table data from forms. These models are trained with your own data,
+Recognize the name/value pairs and table data from forms. These models are trained with your own data,
 so they're tailored to your forms. You should only recognize forms of the same form type that the custom model was trained on.
 <!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L93-L110 -->
 ```java

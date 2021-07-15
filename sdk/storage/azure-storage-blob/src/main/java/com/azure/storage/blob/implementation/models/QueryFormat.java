@@ -15,7 +15,7 @@ public final class QueryFormat {
     /*
      * The quick query format type.
      */
-    @JsonProperty(value = "Type")
+    @JsonProperty(value = "Type", required = true)
     private QueryFormatType type;
 
     /*
