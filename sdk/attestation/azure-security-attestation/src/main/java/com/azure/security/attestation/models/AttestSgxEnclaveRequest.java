@@ -150,4 +150,12 @@ public final class AttestSgxEnclaveRequest {
             getInitTimeData().validate();
         }
     }
+
+    public com.azure.security.attestation.implementation.models.AttestSgxEnclaveRequest toGenerated() {
+        return new com.azure.security.attestation.implementation.models.AttestSgxEnclaveRequest()
+            .setDraftPolicyForAttestation(draftPolicyForAttestation)
+            .setRuntimeData(runtimeData.toGenerated())
+            .setInitTimeData(initTimeData.toGenerated())
+            .setQuote(quote.decodedBytes());
+    }
 }

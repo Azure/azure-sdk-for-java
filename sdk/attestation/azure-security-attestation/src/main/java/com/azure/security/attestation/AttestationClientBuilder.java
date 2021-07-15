@@ -18,11 +18,16 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.security.attestation.implementation.AttestationClientImpl;
+import com.azure.security.attestation.implementation.AttestationsImpl;
+import com.azure.security.attestation.implementation.AzureAttestationRestClientImpl;
+import com.azure.security.attestation.implementation.AzureAttestationRestClientImplBuilder;
+
+import java.security.Policy;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /** A builder for creating a new instance of the AttestationClient type. */
 @ServiceClientBuilder(
@@ -53,23 +58,23 @@ public final class AttestationClientBuilder {
      * The attestation instance base URI, for example
      * https://mytenant.attest.azure.net.
      */
-    private String instanceUrl;
+    private String endpoint;
 
     /**
-     * Sets The attestation instance base URI, for example https://mytenant.attest.azure.net.
+     * Sets The attestation endpoint URI, for example https://mytenant.attest.azure.net.
      *
-     * @param instanceUrl the instanceUrl value.
+     * @param endpoint The endpoint to connect to.
      * @return the AttestationClientBuilder.
      */
-    public AttestationClientBuilder instanceUrl(String instanceUrl) {
-        this.instanceUrl = instanceUrl;
+    public AttestationClientBuilder endpoint(String endpoint) {
+        this.endpoint = endpoint;
         return this;
     }
 
     /*
      * The HTTP pipeline to send requests through
      */
-    private HttpPipeline pipeline;
+    private HttpPipeline httpPipeline;
 
     /**
      * Sets The HTTP pipeline to send requests through.
@@ -78,7 +83,7 @@ public final class AttestationClientBuilder {
      * @return the AttestationClientBuilder.
      */
     public AttestationClientBuilder pipeline(HttpPipeline pipeline) {
-        this.pipeline = pipeline;
+        this.httpPipeline = pipeline;
         return this;
     }
 
@@ -185,15 +190,23 @@ public final class AttestationClientBuilder {
      *
      * @return an instance of AttestationClientImpl.
      */
-    private AttestationClientImpl buildInnerClient() {
-        if (pipeline == null) {
-            this.pipeline = createHttpPipeline();
+    private AzureAttestationRestClientImpl buildInnerClient() {
+        Objects.requireNonNull(endpoint);
+
+        HttpPipeline pipeline;
+        if (httpPipeline != null) {
+            pipeline = httpPipeline;
+        }
+        else {
+            pipeline = createHttpPipeline();
         }
         if (serializerAdapter == null) {
             this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
         }
-        AttestationClientImpl client = new AttestationClientImpl(pipeline, serializerAdapter, instanceUrl);
-        return client;
+        AzureAttestationRestClientImplBuilder clientBuilder = new AzureAttestationRestClientImplBuilder()
+            .instanceUrl(endpoint)
+            .pipeline(pipeline);
+        return clientBuilder.buildClient();
     }
 
     private HttpPipeline createHttpPipeline() {

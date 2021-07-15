@@ -16,7 +16,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.security.attestation.models.CloudErrorException;
+import com.azure.security.attestation.implementation.models.CloudErrorException;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in MetadataConfigurations. */
@@ -25,14 +25,14 @@ public final class MetadataConfigurationsImpl {
     private final MetadataConfigurationsService service;
 
     /** The service client containing this operation class. */
-    private final AttestationClientImpl client;
+    private final AzureAttestationRestClientImpl client;
 
     /**
      * Initializes an instance of MetadataConfigurationsImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    MetadataConfigurationsImpl(AttestationClientImpl client) {
+    MetadataConfigurationsImpl(AzureAttestationRestClientImpl client) {
         this.service =
                 RestProxy.create(
                         MetadataConfigurationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
@@ -40,11 +40,11 @@ public final class MetadataConfigurationsImpl {
     }
 
     /**
-     * The interface defining all the services for AttestationClientMetadataConfigurations to be used by the proxy
-     * service to perform REST calls.
+     * The interface defining all the services for AzureAttestationRestClientMetadataConfigurations to be used by the
+     * proxy service to perform REST calls.
      */
     @Host("{instanceUrl}")
-    @ServiceInterface(name = "AttestationClientMet")
+    @ServiceInterface(name = "AzureAttestationRest")
     private interface MetadataConfigurationsService {
         @Get("/.well-known/openid-configuration")
         @ExpectedResponses({200})

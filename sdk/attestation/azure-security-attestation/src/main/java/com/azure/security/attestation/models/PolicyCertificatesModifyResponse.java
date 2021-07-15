@@ -45,4 +45,8 @@ public final class PolicyCertificatesModifyResponse {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {}
+
+    static public PolicyCertificatesModifyResponse fromGenerated(com.azure.security.attestation.implementation.models.PolicyCertificatesModifyResponse generated) {
+        return new PolicyCertificatesModifyResponse().setToken(generated.getToken());
+    }
 }

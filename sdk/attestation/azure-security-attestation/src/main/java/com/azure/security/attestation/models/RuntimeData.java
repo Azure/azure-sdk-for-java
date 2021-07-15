@@ -77,4 +77,10 @@ public final class RuntimeData {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {}
+
+    public com.azure.security.attestation.implementation.models.RuntimeData toGenerated() {
+        return new com.azure.security.attestation.implementation.models.RuntimeData()
+            .setData(data.decodedBytes())
+            .setDataType(com.azure.security.attestation.implementation.models.DataType.fromString(dataType.toString()));
+    }
 }

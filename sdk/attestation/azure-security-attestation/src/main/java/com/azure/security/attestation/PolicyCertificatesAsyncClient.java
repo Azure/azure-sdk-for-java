@@ -9,12 +9,12 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.security.attestation.implementation.PolicyCertificatesImpl;
-import com.azure.security.attestation.models.CloudErrorException;
-import com.azure.security.attestation.models.PolicyCertificatesModifyResponse;
-import com.azure.security.attestation.models.PolicyCertificatesResponse;
+import com.azure.security.attestation.implementation.models.CloudErrorException;
+import com.azure.security.attestation.implementation.models.PolicyCertificatesModifyResponse;
+import com.azure.security.attestation.implementation.models.PolicyCertificatesResponse;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the asynchronous AttestationClient type. */
+/** Initializes a new instance of the asynchronous AzureAttestationRestClient type. */
 @ServiceClient(builder = AttestationClientBuilder.class, isAsync = true)
 public final class PolicyCertificatesAsyncClient {
     private final PolicyCertificatesImpl serviceClient;

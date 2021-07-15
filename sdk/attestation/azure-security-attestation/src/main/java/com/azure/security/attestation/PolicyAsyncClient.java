@@ -14,7 +14,7 @@ import com.azure.security.attestation.models.CloudErrorException;
 import com.azure.security.attestation.models.PolicyResponse;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the asynchronous AttestationClient type. */
+/** Initializes a new instance of the asynchronous AzureAttestationRestClient type. */
 @ServiceClient(builder = AttestationClientBuilder.class, isAsync = true)
 public final class PolicyAsyncClient {
     private final PoliciesImpl serviceClient;
@@ -28,6 +28,10 @@ public final class PolicyAsyncClient {
         this.serviceClient = serviceClient;
     }
 
+    private com.azure.security.attestation.implementation.models.AttestationType attestationTypeToImplementation(AttestationType attestationType) {
+        return com.azure.security.attestation.implementation.models.AttestationType.fromString(attestationType.toString());
+    }
+
     /**
      * Retrieves the current policy for an attestation type.
      *
@@ -39,7 +43,8 @@ public final class PolicyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PolicyResponse>> getWithResponse(AttestationType attestationType) {
-        return this.serviceClient.getWithResponseAsync(attestationType);
+        return this.serviceClient.getWithResponseAsync(attestationTypeToImplementation(attestationType))
+            .map(response -> Utilities.generateResponseFromModelType(response, PolicyResponse.fromGenerated(response.getValue())));
     }
 
     /**
@@ -53,7 +58,9 @@ public final class PolicyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PolicyResponse> get(AttestationType attestationType) {
-        return this.serviceClient.getAsync(attestationType);
+        return serviceClient.getAsync(attestationTypeToImplementation(attestationType))
+            .map(response -> PolicyResponse.fromGenerated(response));
+
     }
 
     /**
@@ -69,7 +76,8 @@ public final class PolicyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PolicyResponse>> setWithResponse(
             AttestationType attestationType, String newAttestationPolicy) {
-        return this.serviceClient.setWithResponseAsync(attestationType, newAttestationPolicy);
+        return serviceClient.setWithResponseAsync(attestationTypeToImplementation(attestationType), newAttestationPolicy)
+            .map(response -> Utilities.generateResponseFromModelType(response, PolicyResponse.fromGenerated(response.getValue())));
     }
 
     /**
@@ -84,7 +92,8 @@ public final class PolicyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PolicyResponse> set(AttestationType attestationType, String newAttestationPolicy) {
-        return this.serviceClient.setAsync(attestationType, newAttestationPolicy);
+        return this.serviceClient.setAsync(attestationTypeToImplementation(attestationType), newAttestationPolicy)
+            .map(response -> PolicyResponse.fromGenerated(response));
     }
 
     /**
@@ -99,7 +108,8 @@ public final class PolicyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PolicyResponse>> resetWithResponse(AttestationType attestationType, String policyJws) {
-        return this.serviceClient.resetWithResponseAsync(attestationType, policyJws);
+        return this.serviceClient.resetWithResponseAsync(attestationTypeToImplementation(attestationType), policyJws)
+            .map(response -> Utilities.generateResponseFromModelType(response, PolicyResponse.fromGenerated(response.getValue())));
     }
 
     /**
@@ -114,6 +124,7 @@ public final class PolicyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PolicyResponse> reset(AttestationType attestationType, String policyJws) {
-        return this.serviceClient.resetAsync(attestationType, policyJws);
+        return this.serviceClient.resetAsync(attestationTypeToImplementation(attestationType), policyJws)
+            .map(response -> PolicyResponse.fromGenerated(response));
     }
 }

@@ -18,12 +18,12 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.security.attestation.models.AttestOpenEnclaveRequest;
-import com.azure.security.attestation.models.AttestSgxEnclaveRequest;
-import com.azure.security.attestation.models.AttestationResponse;
-import com.azure.security.attestation.models.CloudErrorException;
-import com.azure.security.attestation.models.TpmAttestationRequest;
-import com.azure.security.attestation.models.TpmAttestationResponse;
+import com.azure.security.attestation.implementation.models.AttestOpenEnclaveRequest;
+import com.azure.security.attestation.implementation.models.AttestSgxEnclaveRequest;
+import com.azure.security.attestation.implementation.models.AttestationResponse;
+import com.azure.security.attestation.implementation.models.CloudErrorException;
+import com.azure.security.attestation.implementation.models.TpmAttestationRequest;
+import com.azure.security.attestation.implementation.models.TpmAttestationResponse;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Attestations. */
@@ -32,25 +32,25 @@ public final class AttestationsImpl {
     private final AttestationsService service;
 
     /** The service client containing this operation class. */
-    private final AttestationClientImpl client;
+    private final AzureAttestationRestClientImpl client;
 
     /**
      * Initializes an instance of AttestationsImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    AttestationsImpl(AttestationClientImpl client) {
+    AttestationsImpl(AzureAttestationRestClientImpl client) {
         this.service =
                 RestProxy.create(AttestationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AttestationClientAttestations to be used by the proxy service to
-     * perform REST calls.
+     * The interface defining all the services for AzureAttestationRestClientAttestations to be used by the proxy
+     * service to perform REST calls.
      */
     @Host("{instanceUrl}")
-    @ServiceInterface(name = "AttestationClientAtt")
+    @ServiceInterface(name = "AzureAttestationRest")
     private interface AttestationsService {
         @Post("/attest/OpenEnclave")
         @ExpectedResponses({200})

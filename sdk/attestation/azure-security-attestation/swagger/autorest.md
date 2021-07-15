@@ -28,7 +28,10 @@ output-folder: "../"
 license-header: MICROSOFT_MIT_SMALL
 namespace: com.azure.security.attestation
 use: '@autorest/java@4.0.4'
+generate-client-interfaces: false
 generate-client-as-impl: true
+custom-types: AttestationType
+custom-types-subpackage: models
 models-subpackage: implementation.models
 add-context-parameter: true
 sync-methods: all
@@ -36,11 +39,13 @@ client-side-validations: true
 implementation-subpackage: implementation
 context-client-method-parameter: true
 custom-types-subpackage: models
-generate-sync-async-clients: true
+generate-sync-async-clients: false
 required-fields-as-ctor-args: true
 v3: true
 add-credentials: true
 credential-scopes: 'https://attest.azure.net/.default'
+enable-xml: false
+required-parameter-client-methods: true
 
 ```
 

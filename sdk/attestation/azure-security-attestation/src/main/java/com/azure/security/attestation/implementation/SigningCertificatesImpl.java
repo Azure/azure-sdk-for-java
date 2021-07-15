@@ -16,8 +16,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.security.attestation.models.CloudErrorException;
-import com.azure.security.attestation.models.JsonWebKeySet;
+import com.azure.security.attestation.implementation.models.CloudErrorException;
+import com.azure.security.attestation.implementation.models.JsonWebKeySet;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in SigningCertificates. */
@@ -26,14 +26,14 @@ public final class SigningCertificatesImpl {
     private final SigningCertificatesService service;
 
     /** The service client containing this operation class. */
-    private final AttestationClientImpl client;
+    private final AzureAttestationRestClientImpl client;
 
     /**
      * Initializes an instance of SigningCertificatesImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    SigningCertificatesImpl(AttestationClientImpl client) {
+    SigningCertificatesImpl(AzureAttestationRestClientImpl client) {
         this.service =
                 RestProxy.create(
                         SigningCertificatesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
@@ -41,11 +41,11 @@ public final class SigningCertificatesImpl {
     }
 
     /**
-     * The interface defining all the services for AttestationClientSigningCertificates to be used by the proxy service
-     * to perform REST calls.
+     * The interface defining all the services for AzureAttestationRestClientSigningCertificates to be used by the proxy
+     * service to perform REST calls.
      */
     @Host("{instanceUrl}")
-    @ServiceInterface(name = "AttestationClientSig")
+    @ServiceInterface(name = "AzureAttestationRest")
     private interface SigningCertificatesService {
         @Get("/certs")
         @ExpectedResponses({200})

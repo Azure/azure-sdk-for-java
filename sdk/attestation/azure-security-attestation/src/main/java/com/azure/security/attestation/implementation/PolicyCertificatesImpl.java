@@ -19,9 +19,9 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.security.attestation.models.CloudErrorException;
-import com.azure.security.attestation.models.PolicyCertificatesModifyResponse;
-import com.azure.security.attestation.models.PolicyCertificatesResponse;
+import com.azure.security.attestation.implementation.models.CloudErrorException;
+import com.azure.security.attestation.implementation.models.PolicyCertificatesModifyResponse;
+import com.azure.security.attestation.implementation.models.PolicyCertificatesResponse;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in PolicyCertificates. */
@@ -30,14 +30,14 @@ public final class PolicyCertificatesImpl {
     private final PolicyCertificatesService service;
 
     /** The service client containing this operation class. */
-    private final AttestationClientImpl client;
+    private final AzureAttestationRestClientImpl client;
 
     /**
      * Initializes an instance of PolicyCertificatesImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    PolicyCertificatesImpl(AttestationClientImpl client) {
+    PolicyCertificatesImpl(AzureAttestationRestClientImpl client) {
         this.service =
                 RestProxy.create(
                         PolicyCertificatesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
@@ -45,11 +45,11 @@ public final class PolicyCertificatesImpl {
     }
 
     /**
-     * The interface defining all the services for AttestationClientPolicyCertificates to be used by the proxy service
-     * to perform REST calls.
+     * The interface defining all the services for AzureAttestationRestClientPolicyCertificates to be used by the proxy
+     * service to perform REST calls.
      */
     @Host("{instanceUrl}")
-    @ServiceInterface(name = "AttestationClientPol")
+    @ServiceInterface(name = "AzureAttestationRest")
     private interface PolicyCertificatesService {
         @Get("/certificates")
         @ExpectedResponses({200})

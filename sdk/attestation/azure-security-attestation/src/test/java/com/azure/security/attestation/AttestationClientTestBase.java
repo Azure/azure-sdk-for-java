@@ -109,7 +109,7 @@ public class AttestationClientTestBase extends TestBase {
      * @return Returns an attestation client builder corresponding to the httpClient and clientUri.
      */
     AttestationClientBuilder getBuilder(HttpClient httpClient, String clientUri) {
-        return new AttestationClientBuilder().pipeline(getHttpPipeline(httpClient)).instanceUrl(clientUri);
+        return new AttestationClientBuilder().pipeline(getHttpPipeline(httpClient)).endpoint(clientUri);
     }
 
     /**
@@ -233,7 +233,7 @@ public class AttestationClientTestBase extends TestBase {
 
                 final String keyId = token.getHeader().getKeyID();
                 boolean foundKey = false;
-                for (JsonWebKey key : keySet.getKeys()) {
+                for (com.azure.security.attestation.models.JsonWebKey key : keySet.getKeys()) {
                     if (keyId.equals(key.getKid())) {
                         final Certificate cert;
                         try {
