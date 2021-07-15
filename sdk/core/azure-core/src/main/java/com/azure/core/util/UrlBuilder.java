@@ -8,6 +8,7 @@ import java.net.URL;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
+
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -220,6 +221,16 @@ public final class UrlBuilder {
                       ));
 
         return singleKeyValueQuery;
+    }
+
+    /**
+     * Get the query that has been assigned to this UrlBuilder, with {@link QueryParameter} as the
+     * value type.
+     *
+     * @return the query that has been assigned to this UrlBuilder.
+     */
+    public Map<String, QueryParameter> getQueryParameters() {
+        return this.query;
     }
 
     /**
