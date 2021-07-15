@@ -535,6 +535,18 @@ public interface VirtualMachine
             WithProximityPlacementGroup withNewPrimaryPublicIPAddress(String leafDnsLabel);
 
             /**
+             * Creates a new public IP address in the same region and resource group as the resource, with the specified
+             * DNS label and associates it with the VM's primary network interface.
+             *
+             * <p>The internal name for the public IP address will be derived from the DNS label.
+             *
+             * @param leafDnsLabel a leaf domain label
+             * @param deleteOptions the delete options to the IP address
+             * @return the next stage of the definition
+             */
+            WithProximityPlacementGroup withNewPrimaryPublicIPAddress(String leafDnsLabel, DeleteOptions deleteOptions);
+
+            /**
              * Associates an existing public IP address with the VM's primary network interface.
              *
              * @param publicIPAddress an existing public IP address
@@ -1134,6 +1146,14 @@ public interface VirtualMachine
              * @return the next stage of the definition
              */
             WithCreate withOSDiskName(String name);
+
+            /**
+             * Specifies the delete options for the OS disks.
+             *
+             * @param deleteOptions the delete options to the IP address version
+             * @return the next stage of the definition
+             */
+            WithCreate withOSDiskDeleteOptions(DeleteOptions deleteOptions);
         }
 
         /** The stage of a virtual machine definition allowing to select a VM size. */
@@ -1652,12 +1672,20 @@ public interface VirtualMachine
             WithManagedCreate withDataDiskDefaultCachingType(CachingTypes cachingType);
 
             /**
-             * Specifies the default caching type for managed data disks.
+             * Specifies the default delete options for managed data disks.
              *
              * @param storageAccountType a storage account type
              * @return the next stage of the definition
              */
             WithManagedCreate withDataDiskDefaultStorageAccountType(StorageAccountTypes storageAccountType);
+
+            /**
+             * Specifies the delete options for managed data disks.
+             *
+             * @param deleteOptions the delete options to the IP address version
+             * @return the next stage of the definition
+             */
+            WithManagedCreate withDataDiskDefaultDeleteOptions(DeleteOptions deleteOptions);
         }
 
         /**
@@ -1674,6 +1702,17 @@ public interface VirtualMachine
              * @return the next stage of the definition
              */
             WithUnmanagedCreate withOSDiskVhdLocation(String containerName, String vhdName);
+        }
+
+        /** The stage of the definition allowing to specify delete options to the network interface. */
+        interface WithNetworkInterfaceDeleteOptions {
+            /**
+             * Sets IP address delete options.
+             *
+             * @param deleteOptions the delete options to all network interfaces
+             * @return the next stage of the definition
+             */
+            WithCreate withPrimaryNetworkInterfaceDeleteOptions(DeleteOptions deleteOptions);
         }
 
         /**
@@ -1695,7 +1734,8 @@ public interface VirtualMachine
                 DefinitionStages.WithBillingProfile,
                 DefinitionStages.WithSystemAssignedManagedServiceIdentity,
                 DefinitionStages.WithUserAssignedManagedServiceIdentity,
-                DefinitionStages.WithLicenseType {
+                DefinitionStages.WithLicenseType,
+                DefinitionStages.WithNetworkInterfaceDeleteOptions {
 
             /**
              * Begins creating the virtual machine resource.

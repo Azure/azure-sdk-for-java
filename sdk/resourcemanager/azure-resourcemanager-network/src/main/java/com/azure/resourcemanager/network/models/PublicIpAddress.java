@@ -210,6 +210,17 @@ public interface PublicIpAddress
             WithCreate withIpAddressVersion(IpVersion ipVersion);
         }
 
+        /** The stage of the definition allowing to specify delete options to the IP address. */
+        interface WithDeleteOptions {
+            /**
+             * Sets IP address delete options.
+             *
+             * @param deleteOptions the delete options to the IP address
+             * @return the next stage of the definition
+             */
+            WithCreate withDeleteOptions(DeleteOptions deleteOptions);
+        }
+
         /**
          * The stage of the public IP definition which contains all the minimum required inputs for the resource to be
          * created (via {@link WithCreate#create()}), but also allows for any other optional settings to be specified.
@@ -224,6 +235,7 @@ public interface PublicIpAddress
                 DefinitionStages.WithSku,
                 DefinitionStages.WithIpTag,
                 DefinitionStages.WithIpAddressVersion,
+                DefinitionStages.WithDeleteOptions,
                 Resource.DefinitionWithTags<WithCreate> {
 
             /**
@@ -248,6 +260,7 @@ public interface PublicIpAddress
             UpdateStages.WithIdleTimout,
             UpdateStages.WithIpTag,
             UpdateStages.WithIpAddressVersion,
+            UpdateStages.WithDeleteOptions,
             Resource.UpdateWithTags<Update> {
     }
 
@@ -363,6 +376,17 @@ public interface PublicIpAddress
              * @return the next stage of the definition
              */
             Update withIpAddressVersion(IpVersion ipVersion);
+        }
+
+        /** The stage of the update allowing to specify delete options to the IP address. */
+        interface WithDeleteOptions {
+            /**
+             * Sets IP address delete options.
+             *
+             * @param deleteOptions the delete options to the IP address
+             * @return the next stage of the update
+             */
+            Update withDeleteOptions(DeleteOptions deleteOptions);
         }
     }
 }

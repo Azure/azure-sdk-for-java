@@ -12,6 +12,7 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.resourcemanager.compute.models.AvailabilitySet;
 import com.azure.resourcemanager.compute.models.CachingTypes;
+import com.azure.resourcemanager.compute.models.DeleteOptions;
 import com.azure.resourcemanager.compute.models.Disk;
 import com.azure.resourcemanager.compute.models.DiskState;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
@@ -913,6 +914,56 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         // check if nic exists after force delete vm
         NetworkInterface nic = networkManager.networkInterfaces().getById(nicId);
         Assertions.assertNotNull(nic);
+    }
+
+    @Test
+    public void canCreateVirtualMachineWithDeleteOption() throws Exception {
+        Region region = Region.fromName("eastus2euap");
+
+        final String publicIpDnsLabel = generateRandomResourceName("pip", 20);
+
+        Network network = this
+            .networkManager
+            .networks()
+            .define("network1")
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withAddressSpace("10.0.0.0/24")
+            .withSubnet("default", "10.0.0.0/24")
+            .create();
+
+        // Create
+        VirtualMachine vm1 = computeManager
+            .virtualMachines()
+            .define(vmName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withExistingPrimaryNetwork(network)
+            .withSubnet("default")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withNewPrimaryPublicIPAddress(publicIpDnsLabel, DeleteOptions.DELETE)
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
+            .withRootUsername("testuser")
+            .withSsh(sshPublicKey())
+            .withNewDataDisk(10)
+            .withNewDataDisk(computeManager.disks()
+                .define("datadisk2")
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
+                .withData()
+                .withSizeInGB(10))
+            .withDataDiskDefaultDeleteOptions(DeleteOptions.DELETE)
+            .withOSDiskDeleteOptions(DeleteOptions.DELETE)
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .withPrimaryNetworkInterfaceDeleteOptions(DeleteOptions.DELETE)
+            .create();
+
+        Assertions.assertEquals(vm1.id(), computeManager.virtualMachines().getById(vm1.id()).id());
+
+        computeManager.virtualMachines().deleteById(vm1.id());
+
+        // verify that nic, public ip, os/data disk is deleted
+        // TODO
     }
 
     private CreatablesInfo prepareCreatableVirtualMachines(

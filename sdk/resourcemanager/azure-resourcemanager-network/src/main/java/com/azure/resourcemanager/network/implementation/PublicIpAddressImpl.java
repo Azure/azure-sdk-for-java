@@ -4,6 +4,7 @@ package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.NetworkManager;
+import com.azure.resourcemanager.network.models.DeleteOptions;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
 import com.azure.resourcemanager.network.models.IpTag;
 import com.azure.resourcemanager.network.models.IpVersion;
@@ -363,6 +364,12 @@ class PublicIpAddressImpl
     @Override
     public PublicIpAddressImpl withIpAddressVersion(IpVersion ipVersion) {
         this.innerModel().withPublicIpAddressVersion(ipVersion);
+        return this;
+    }
+
+    @Override
+    public PublicIpAddressImpl withDeleteOptions(DeleteOptions deleteOptions) {
+        this.innerModel().withDeleteOption(deleteOptions);
         return this;
     }
 }

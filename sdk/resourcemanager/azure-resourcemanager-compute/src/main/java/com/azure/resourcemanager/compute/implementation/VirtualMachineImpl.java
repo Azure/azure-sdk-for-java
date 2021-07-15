@@ -17,9 +17,11 @@ import com.azure.resourcemanager.compute.models.BillingProfile;
 import com.azure.resourcemanager.compute.models.BootDiagnostics;
 import com.azure.resourcemanager.compute.models.CachingTypes;
 import com.azure.resourcemanager.compute.models.DataDisk;
+import com.azure.resourcemanager.compute.models.DeleteOptions;
 import com.azure.resourcemanager.compute.models.DiagnosticsProfile;
 import com.azure.resourcemanager.compute.models.Disk;
 import com.azure.resourcemanager.compute.models.DiskCreateOptionTypes;
+import com.azure.resourcemanager.compute.models.DiskDeleteOptionTypes;
 import com.azure.resourcemanager.compute.models.DiskEncryptionSettings;
 import com.azure.resourcemanager.compute.models.HardwareProfile;
 import com.azure.resourcemanager.compute.models.ImageReference;
@@ -537,6 +539,11 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachineImpl withNewPrimaryPublicIPAddress(String leafDnsLabel) {
+        return withNewPrimaryPublicIPAddress(leafDnsLabel, null);
+    }
+
+    @Override
+    public VirtualMachineImpl withNewPrimaryPublicIPAddress(String leafDnsLabel, DeleteOptions deleteOptions) {
         PublicIpAddress.DefinitionStages.WithGroup definitionWithGroup =
             this
                 .networkManager
@@ -550,6 +557,10 @@ class VirtualMachineImpl
             definitionAfterGroup = definitionWithGroup.withExistingResourceGroup(this.resourceGroupName());
         }
         this.implicitPipCreatable = definitionAfterGroup.withLeafDomainLabel(leafDnsLabel);
+        if (deleteOptions != null) {
+            this.implicitPipCreatable = this.implicitPipCreatable.withDeleteOptions(
+                com.azure.resourcemanager.network.models.DeleteOptions.fromString(deleteOptions.toString()));
+        }
         // Create NIC with creatable PIP
         Creatable<NetworkInterface> nicCreatable =
             this.nicDefinitionWithCreate.withNewPrimaryPublicIPAddress(this.implicitPipCreatable);
@@ -919,6 +930,12 @@ class VirtualMachineImpl
     }
 
     @Override
+    public VirtualMachineImpl withDataDiskDefaultDeleteOptions(DeleteOptions deleteOptions) {
+        this.managedDataDisks.setDefaultDeleteOptions(DiskDeleteOptionTypes.fromString(deleteOptions.toString()));
+        return this;
+    }
+
+    @Override
     public VirtualMachineImpl withOSDiskEncryptionSettings(DiskEncryptionSettings settings) {
         this.innerModel().storageProfile().osDisk().withEncryptionSettings(settings);
         return this;
@@ -933,6 +950,13 @@ class VirtualMachineImpl
     @Override
     public VirtualMachineImpl withOSDiskName(String name) {
         this.innerModel().storageProfile().osDisk().withName(name);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withOSDiskDeleteOptions(DeleteOptions deleteOptions) {
+        this.innerModel().storageProfile().osDisk()
+            .withDeleteOption(DiskDeleteOptionTypes.fromString(deleteOptions.toString()));
         return this;
     }
 
@@ -1937,6 +1961,12 @@ class VirtualMachineImpl
         return this;
     }
 
+    @Override
+    public VirtualMachineImpl withPrimaryNetworkInterfaceDeleteOptions(DeleteOptions deleteOptions) {
+        // TODO
+        return this;
+    }
+
     AzureEnvironment environment() {
         return manager().environment();
     }
@@ -2436,6 +2466,7 @@ class VirtualMachineImpl
         private final VirtualMachineImpl vm;
         private CachingTypes defaultCachingType;
         private StorageAccountTypes defaultStorageAccountType;
+        private DiskDeleteOptionTypes defaultDeleteOptions;
 
         ManagedDataDiskCollection(VirtualMachineImpl vm) {
             this.vm = vm;
@@ -2443,6 +2474,10 @@ class VirtualMachineImpl
 
         void setDefaultCachingType(CachingTypes cachingType) {
             this.defaultCachingType = cachingType;
+        }
+
+        void setDefaultDeleteOptions(DiskDeleteOptionTypes deleteOptions) {
+            this.defaultDeleteOptions = deleteOptions;
         }
 
         void setDefaultStorageAccountType(StorageAccountTypes defaultStorageAccountType) {
@@ -2544,6 +2579,9 @@ class VirtualMachineImpl
                 if (dataDisk.caching() == null) {
                     dataDisk.withCaching(getDefaultCachingType());
                 }
+                if (dataDisk.deleteOption() == null) {
+                    dataDisk.withDeleteOption(getDeleteOptions());
+                }
                 // Don't set default storage account type for the attachable managed disks, it is already
                 // defined in the managed disk and not allowed to change.
                 dataDisk.withName(null);
@@ -2626,6 +2664,13 @@ class VirtualMachineImpl
                 return StorageAccountTypes.STANDARD_LRS;
             }
             return defaultStorageAccountType;
+        }
+
+        private DiskDeleteOptionTypes getDeleteOptions() {
+            if (defaultDeleteOptions == null) {
+                return DiskDeleteOptionTypes.DETACH;
+            }
+            return defaultDeleteOptions;
         }
     }
 
