@@ -12,6 +12,7 @@ import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.util.Context;
 import com.azure.security.attestation.implementation.AttestationsImpl;
 import com.azure.security.attestation.implementation.models.TpmAttestationRequest;
+import com.azure.security.attestation.implementation.models.TpmAttestationResponse;
 import com.azure.security.attestation.models.AttestOpenEnclaveRequest;
 import com.azure.security.attestation.models.AttestSgxEnclaveRequest;
 import com.azure.security.attestation.models.AttestationResponse;
@@ -62,7 +63,7 @@ public final class AttestationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AttestationResponse> attestOpenEnclaveWithResponse(
             AttestOpenEnclaveRequest request, Context context) {
-        var response = this.serviceClient.attestOpenEnclaveWithResponse(request.toGenerated(), context);
+        Response<com.azure.security.attestation.implementation.models.AttestationResponse> response = this.serviceClient.attestOpenEnclaveWithResponse(request.toGenerated(), context);
         return Utilities.generateResponseFromModelType(response, AttestationResponse.fromGenerated(response.getValue()));
     }
 
@@ -95,7 +96,7 @@ public final class AttestationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AttestationResponse> attestSgxEnclaveWithResponse(
             AttestSgxEnclaveRequest request, Context context) {
-        var response = this.serviceClient.attestSgxEnclaveWithResponse(request.toGenerated(), context);
+        Response<com.azure.security.attestation.implementation.models.AttestationResponse> response = this.serviceClient.attestSgxEnclaveWithResponse(request.toGenerated(), context);
         return Utilities.generateResponseFromModelType(response, AttestationResponse.fromGenerated(response.getValue()));
     }
 
@@ -111,9 +112,9 @@ public final class AttestationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public String attestTpm(String request) {
-        return this.serviceClient.attestTpm(
+        return new String(this.serviceClient.attestTpm(
             new com.azure.security.attestation.implementation.models.TpmAttestationRequest()
-                .setData(request.getBytes(StandardCharsets.UTF_8))).getData().toString();
+                .setData(request.getBytes(StandardCharsets.UTF_8))).getData(), StandardCharsets.UTF_8);
     }
 
     /**
@@ -130,7 +131,7 @@ public final class AttestationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<String> attestTpmWithResponse(String request, Context context) {
 
-        var response = this.serviceClient.attestTpmWithResponse(new TpmAttestationRequest().setData(request.getBytes(StandardCharsets.UTF_8)), context);
-        return new ResponseBase(response.getRequest(), response.getStatusCode(), response.getHeaders(), response.getValue().getData().toString(), null);
+        Response<TpmAttestationResponse> response = this.serviceClient.attestTpmWithResponse(new TpmAttestationRequest().setData(request.getBytes(StandardCharsets.UTF_8)), context);
+        return Utilities.generateResponseFromModelType(response, new String(response.getValue().getData(), StandardCharsets.UTF_8));
     }
 }

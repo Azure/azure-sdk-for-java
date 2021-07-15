@@ -36,8 +36,7 @@ public final class SigningCertificatesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public JsonWebKeySet get() {
-        var generated = serviceClient.get();
-        return JsonWebKeySet.fromGenerated(generated);
+        return JsonWebKeySet.fromGenerated(serviceClient.get());
     }
 
     /**
@@ -51,7 +50,7 @@ public final class SigningCertificatesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<JsonWebKeySet> getWithResponse(Context context) {
-        var response = serviceClient.getWithResponse(context);
+        Response<com.azure.security.attestation.implementation.models.JsonWebKeySet> response = serviceClient.getWithResponse(context);
         return Utilities.generateResponseFromModelType(response, JsonWebKeySet.fromGenerated(response.getValue()));
     }
 }

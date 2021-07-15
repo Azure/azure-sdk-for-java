@@ -13,11 +13,8 @@ import com.azure.security.attestation.models.AttestOpenEnclaveRequest;
 import com.azure.security.attestation.models.AttestSgxEnclaveRequest;
 import com.azure.security.attestation.models.AttestationResponse;
 import com.azure.security.attestation.models.CloudErrorException;
-import com.azure.security.attestation.models.TpmAttestationRequest;
-import com.azure.security.attestation.models.TpmAttestationResponse;
 import reactor.core.publisher.Mono;
 
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 

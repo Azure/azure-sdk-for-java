@@ -13,7 +13,6 @@ import com.azure.security.attestation.implementation.PolicyCertificatesImpl;
 import com.azure.security.attestation.models.CloudErrorException;
 import com.azure.security.attestation.models.PolicyCertificatesModifyResponse;
 import com.azure.security.attestation.models.PolicyCertificatesResponse;
-import org.slf4j.helpers.Util;
 
 /** Initializes a new instance of the synchronous AzureAttestationRestClient type. */
 @ServiceClient(builder = AttestationClientBuilder.class)
@@ -52,7 +51,7 @@ public final class PolicyCertificatesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PolicyCertificatesResponse> getWithResponse(Context context) {
-        var response = serviceClient.getWithResponse(context);
+        Response<com.azure.security.attestation.implementation.models.PolicyCertificatesResponse> response = serviceClient.getWithResponse(context);
         return Utilities.generateResponseFromModelType(response, PolicyCertificatesResponse.fromGenerated(response.getValue()));
     }
 
@@ -82,7 +81,7 @@ public final class PolicyCertificatesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PolicyCertificatesModifyResponse> addWithResponse(String policyCertificateToAdd, Context context) {
-        var response = this.serviceClient.addWithResponse(policyCertificateToAdd, context);
+        Response<com.azure.security.attestation.implementation.models.PolicyCertificatesModifyResponse> response = this.serviceClient.addWithResponse(policyCertificateToAdd, context);
         return Utilities.generateResponseFromModelType(response, PolicyCertificatesModifyResponse.fromGenerated(response.getValue()));
     }
 
@@ -115,7 +114,7 @@ public final class PolicyCertificatesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PolicyCertificatesModifyResponse> removeWithResponse(
             String policyCertificateToRemove, Context context) {
-        var response = this.serviceClient.removeWithResponse(policyCertificateToRemove, context);
+        Response<com.azure.security.attestation.implementation.models.PolicyCertificatesModifyResponse> response = this.serviceClient.removeWithResponse(policyCertificateToRemove, context);
         return Utilities.generateResponseFromModelType(response, PolicyCertificatesModifyResponse.fromGenerated(response.getValue()));
 
     }

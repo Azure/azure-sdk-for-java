@@ -55,8 +55,8 @@ public final class PolicyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PolicyResponse> getWithResponse(AttestationType attestationType, Context context) {
-        var response = serviceClient.getWithResponse(attestationType, context);
-        return Utilities.generateResponseFromModelType(response, PolicyResponse.fromGenerated((response.getValue())));
+        Response<com.azure.security.attestation.implementation.models.PolicyResponse> response = serviceClient.getWithResponse(attestationType, context);
+        return Utilities.generateResponseFromModelType(response, PolicyResponse.fromGenerated(response.getValue()));
     }
 
     /**
@@ -88,7 +88,7 @@ public final class PolicyClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PolicyResponse> setWithResponse(
             AttestationType attestationType, String newAttestationPolicy, Context context) {
-        var response = this.serviceClient.setWithResponse(attestationType, newAttestationPolicy, context);
+        Response<com.azure.security.attestation.implementation.models.PolicyResponse> response = this.serviceClient.setWithResponse(attestationType, newAttestationPolicy, context);
         return Utilities.generateResponseFromModelType(response, PolicyResponse.fromGenerated((response.getValue())));
     }
 
@@ -121,7 +121,7 @@ public final class PolicyClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PolicyResponse> resetWithResponse(
             AttestationType attestationType, String policyJws, Context context) {
-        var response = this.serviceClient.resetWithResponse(attestationType, policyJws, context);
+        Response<com.azure.security.attestation.implementation.models.PolicyResponse> response = this.serviceClient.resetWithResponse(attestationType, policyJws, context);
         return Utilities.generateResponseFromModelType(response, PolicyResponse.fromGenerated((response.getValue())));
     }
 }
