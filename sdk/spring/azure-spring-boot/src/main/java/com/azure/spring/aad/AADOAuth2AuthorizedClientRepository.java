@@ -1,9 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.aad.webapp;
+package com.azure.spring.aad;
 
-import com.azure.spring.aad.AADClientRegistrationRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
@@ -24,6 +23,8 @@ import java.time.temporal.ChronoUnit;
 import java.util.Map;
 import java.util.function.Consumer;
 
+import static com.azure.spring.aad.AADClientRegistrationRepository.AZURE_CLIENT_REGISTRATION_ID;
+
 /**
  * OAuth2AuthorizedClientRepository used for AAD oauth2 clients.
  */
@@ -31,17 +32,17 @@ public class AADOAuth2AuthorizedClientRepository implements OAuth2AuthorizedClie
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AADOAuth2AuthorizedClientRepository.class);
 
-    private final AADWebAppClientRegistrationRepository repo;
+    private final AADClientRegistrationRepository repo;
     private final OAuth2AuthorizedClientRepository delegate;
     private final OAuth2AuthorizedClientProvider provider;
 
-    public AADOAuth2AuthorizedClientRepository(AADWebAppClientRegistrationRepository repo) {
+    public AADOAuth2AuthorizedClientRepository(AADClientRegistrationRepository repo) {
         this(repo,
             new JacksonHttpSessionOAuth2AuthorizedClientRepository(),
             new RefreshTokenOAuth2AuthorizedClientProvider());
     }
 
-    public AADOAuth2AuthorizedClientRepository(AADWebAppClientRegistrationRepository repo,
+    public AADOAuth2AuthorizedClientRepository(AADClientRegistrationRepository repo,
                                                OAuth2AuthorizedClientRepository delegate,
                                                OAuth2AuthorizedClientProvider provider) {
         this.repo = repo;
@@ -50,34 +51,37 @@ public class AADOAuth2AuthorizedClientRepository implements OAuth2AuthorizedClie
     }
 
     @Override
-    public void saveAuthorizedClient(OAuth2AuthorizedClient client,
+    public void saveAuthorizedClient(OAuth2AuthorizedClient authorizedClient,
                                      Authentication principal,
                                      HttpServletRequest request,
                                      HttpServletResponse response) {
-        delegate.saveAuthorizedClient(client, principal, request, response);
+        // Todo (rujche) Fix OAuth2AuthorizedClient deserializer and memory leakage problem
+        //  1. Fix the deserializer of grant type 'on_behalf_of' when loading OAuth2AuthorizedClient of OBO client from JacksonHttpSessionOAuth2AuthorizedClientRepository.
+        //  2. Fix the memory leakage problem when saving the resource server's OAuth2AuthorizedClient into InMemoryOAuth2AuthorizedClientService.
+        delegate.saveAuthorizedClient(authorizedClient, principal, request, response);
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public <T extends OAuth2AuthorizedClient> T loadAuthorizedClient(String id,
+    public <T extends OAuth2AuthorizedClient> T loadAuthorizedClient(String clientRegistrationId,
                                                                      Authentication principal,
                                                                      HttpServletRequest request) {
-        OAuth2AuthorizedClient result = delegate.loadAuthorizedClient(id, principal, request);
-        if (result != null || repo.isClientCredentials(id)) {
+        OAuth2AuthorizedClient result = delegate.loadAuthorizedClient(clientRegistrationId, principal, request);
+        if (result != null) {
             return (T) result;
         }
 
-        if (repo.isClientNeedConsentWhenLogin(id)) {
+        if (repo.isAzureDelegatedClientRegistration(clientRegistrationId)) {
             OAuth2AuthorizedClient azureClient = loadAuthorizedClient(getAzureClientId(), principal, request);
             if (azureClient == null) {
-                throw new ClientAuthorizationRequiredException(AADClientRegistrationRepository.AZURE_CLIENT_REGISTRATION_ID);
+                throw new ClientAuthorizationRequiredException(AZURE_CLIENT_REGISTRATION_ID);
             }
-            OAuth2AuthorizedClient fakeAuthzClient = createFakeAuthzClient(azureClient, id, principal);
+            OAuth2AuthorizedClient fakeAuthzClient = createFakeAuthzClient(azureClient, clientRegistrationId, principal);
             OAuth2AuthorizationContext.Builder contextBuilder =
                 OAuth2AuthorizationContext.withAuthorizedClient(fakeAuthzClient);
             String[] scopes = null;
-            if (!AADClientRegistrationRepository.isDefaultClient(id)) {
-                scopes = repo.findByRegistrationId(id).getScopes().toArray(new String[0]);
+            if (!AADClientRegistrationRepository.isDefaultClient(clientRegistrationId)) {
+                scopes = repo.findByRegistrationId(clientRegistrationId).getScopes().toArray(new String[0]);
             }
             OAuth2AuthorizationContext context = contextBuilder
                 .principal(principal)
@@ -105,7 +109,7 @@ public class AADOAuth2AuthorizedClientRepository implements OAuth2AuthorizedClie
     }
 
     private OAuth2AuthorizedClient createFakeAuthzClient(OAuth2AuthorizedClient azureClient,
-                                                         String id,
+                                                         String clientRegistrationId,
                                                          Authentication principal) {
         if (azureClient == null || azureClient.getRefreshToken() == null) {
             return null;
@@ -118,7 +122,7 @@ public class AADOAuth2AuthorizedClientRepository implements OAuth2AuthorizedClie
             Instant.now().minus(100, ChronoUnit.DAYS));
 
         return new OAuth2AuthorizedClient(
-            repo.findByRegistrationId(id),
+            repo.findByRegistrationId(clientRegistrationId),
             principal.getName(),
             accessToken,
             azureClient.getRefreshToken()
@@ -126,10 +130,10 @@ public class AADOAuth2AuthorizedClientRepository implements OAuth2AuthorizedClie
     }
 
     @Override
-    public void removeAuthorizedClient(String id,
+    public void removeAuthorizedClient(String clientRegistrationId,
                                        Authentication principal,
                                        HttpServletRequest request,
                                        HttpServletResponse response) {
-        delegate.removeAuthorizedClient(id, principal, request, response);
+        delegate.removeAuthorizedClient(clientRegistrationId, principal, request, response);
     }
 }
