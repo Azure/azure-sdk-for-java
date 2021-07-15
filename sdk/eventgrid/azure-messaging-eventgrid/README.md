@@ -158,7 +158,7 @@ EventGridPublisherAsyncClient<CloudEvent> cloudEventAsyncClient = new EventGridP
 ```
 
 ##### Using endpoint and Azure Active Directory (AAD) token credential to create the client
-To use the AAD token credential, you need to put `azure-identity` into your dependency. Refer to
+To use the AAD token credential, include `azure-identity` artifact as a dependency. Refer to
 [azure-identity README](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity) for details.
 
 Sync client:
