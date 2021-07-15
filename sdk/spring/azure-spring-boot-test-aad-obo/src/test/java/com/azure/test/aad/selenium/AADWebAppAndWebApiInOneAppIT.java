@@ -66,8 +66,9 @@ public class AADWebAppAndWebApiInOneAppIT {
             AAD_USER_NAME_2,
             AAD_USER_PASSWORD_2);
         aadSeleniumITHelper.logIn();
-        String httpResponse = aadSeleniumITHelper.httpGet("/home");
+        String httpResponse = aadSeleniumITHelper.httpGet("home");
         assertTrue(httpResponse.contains("home"));
+        aadSeleniumITHelper.destroy();
     }
 
     @Test
@@ -78,7 +79,8 @@ public class AADWebAppAndWebApiInOneAppIT {
             AAD_MULTI_TENANT_CLIENT_ID,
             AAD_MULTI_TENANT_CLIENT_SECRET,
             Collections.singletonList(MULTI_TENANT_SCOPE_GRAPH_READ));
-        assertEquals("Graph response success.", aadWebApiITHelper.httpGetStringByAccessToken("call-graph"));
+        assertEquals("Graph response success.",
+            aadWebApiITHelper.httpGetStringByAccessToken("/api/call-graph"));
     }
 
     @SpringBootApplication
@@ -98,7 +100,7 @@ public class AADWebAppAndWebApiInOneAppIT {
         }
 
         @RestController
-        class WebApplication {
+        class WebApplicationController {
 
             @GetMapping(value = "/home")
             public ResponseEntity<String> home(Principal principal) {
@@ -109,7 +111,7 @@ public class AADWebAppAndWebApiInOneAppIT {
 
         @RestController
         @RequestMapping("/api")
-        class ResourceServer {
+        class ResourceServerController {
 
             /**
              * Call the graph resource only with annotation, return user information
