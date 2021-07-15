@@ -91,6 +91,11 @@ public class Configs {
         "COSMOS.DEFAULT_SESSION_TOKEN_MISMATCH_MAXIMUM_BACKOFF_TIME_IN_MILLISECONDS";
     private static final int DEFAULT_SESSION_TOKEN_MISMATCH_MAXIMUM_BACKOFF_TIME_IN_MILLISECONDS = 50;
 
+    // TCP Constants
+    private static final String IDLE_TCP_CHANNEL_TIMER_RESOLUTION_IN_MILLISECONDS = "COSMOS.IDLE_TCP_CHANNEL_TIMER_RESOLUTION_IN_MILLISECONDS";
+    private static final int DEFAULT_IDLE_TCP_CHANNEL_TIMER_RESOLUTION_IN_MILLISECONDS = 100;
+
+
     public Configs() {
         this.sslContext = sslContextInit();
     }
@@ -250,6 +255,12 @@ public class Configs {
         return getJVMConfigAsInt(
             DEFAULT_SESSION_TOKEN_MISMATCH_MAXIMUM_BACKOFF_TIME_IN_MILLISECONDS_NAME,
             DEFAULT_SESSION_TOKEN_MISMATCH_MAXIMUM_BACKOFF_TIME_IN_MILLISECONDS);
+    }
+
+    public static int getDefaultIdleTcpChannelTimerResolutionInMilliseconds() {
+        return getJVMConfigAsInt(
+            IDLE_TCP_CHANNEL_TIMER_RESOLUTION_IN_MILLISECONDS,
+            DEFAULT_IDLE_TCP_CHANNEL_TIMER_RESOLUTION_IN_MILLISECONDS);
     }
 
     private static int getJVMConfigAsInt(String propName, int defaultValue) {

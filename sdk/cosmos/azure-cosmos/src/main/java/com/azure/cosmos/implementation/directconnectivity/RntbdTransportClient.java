@@ -457,7 +457,7 @@ public class RntbdTransportClient extends TransportClient {
             this.connectionEndpointRediscoveryEnabled = connectionPolicy.isTcpConnectionEndpointRediscoveryEnabled();
             this.connectTimeout = connectionPolicy.getConnectTimeout();
             this.idleChannelTimeout = connectionPolicy.getIdleTcpConnectionTimeout();
-            this.idleChannelTimerResolution = Duration.ofMillis(100);
+            this.idleChannelTimerResolution = Duration.ofMillis(Configs.getDefaultIdleTcpChannelTimerResolutionInMilliseconds());
             this.idleEndpointTimeout = connectionPolicy.getIdleTcpEndpointTimeout();
             this.maxBufferCapacity = 8192 << 10;
             this.maxChannelsPerEndpoint = connectionPolicy.getMaxConnectionsPerEndpoint();
