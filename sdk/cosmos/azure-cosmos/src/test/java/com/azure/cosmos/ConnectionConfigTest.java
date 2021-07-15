@@ -99,6 +99,7 @@ public class ConnectionConfigTest extends TestSuiteBase {
         directConnectionConfig.setIdleEndpointTimeout(IDLE_ENDPOINT_TIMEOUT);
         directConnectionConfig.setMaxConnectionsPerEndpoint(100);
         directConnectionConfig.setMaxRequestsPerConnection(100);
+        directConnectionConfig.setIdleChannelTimerResolution(Duration.ofMillis(10));
         final List<String> preferredRegions = new ArrayList<>();
         preferredRegions.add("West US");
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
@@ -217,5 +218,6 @@ public class ConnectionConfigTest extends TestSuiteBase {
         assertThat(connectionPolicy.getIdleTcpEndpointTimeout()).isEqualTo(directConnectionConfig.getIdleEndpointTimeout());
         assertThat(connectionPolicy.getMaxConnectionsPerEndpoint()).isEqualTo(directConnectionConfig.getMaxConnectionsPerEndpoint());
         assertThat(connectionPolicy.getMaxRequestsPerConnection()).isEqualTo(directConnectionConfig.getMaxRequestsPerConnection());
+        assertThat(connectionPolicy.getIdleTcpConnectionTimerResolution()).isEqualTo(directConnectionConfig.getIdleChannelTimerResolution());
     }
 }

@@ -22,6 +22,7 @@ public final class DirectConnectionConfig {
     private static final Duration DEFAULT_REQUEST_TIMEOUT = Duration.ofSeconds(5L);
     private static final int DEFAULT_MAX_CONNECTIONS_PER_ENDPOINT = 130;
     private static final int DEFAULT_MAX_REQUESTS_PER_CONNECTION = 30;
+    private static final Duration DEFAULT_IDLE_CHANNEL_TIMER_RESOLUTION = Duration.ofMillis(100);
 
     private boolean connectionEndpointRediscoveryEnabled;
     private Duration connectTimeout;
@@ -30,6 +31,7 @@ public final class DirectConnectionConfig {
     private Duration requestTimeout;
     private int maxConnectionsPerEndpoint;
     private int maxRequestsPerConnection;
+    private Duration idleChannelTimerResolution;
 
     /**
      * Constructor
@@ -42,6 +44,7 @@ public final class DirectConnectionConfig {
         this.maxConnectionsPerEndpoint = DEFAULT_MAX_CONNECTIONS_PER_ENDPOINT;
         this.maxRequestsPerConnection = DEFAULT_MAX_REQUESTS_PER_CONNECTION;
         this.requestTimeout = DEFAULT_REQUEST_TIMEOUT;
+        this.idleChannelTimerResolution = DEFAULT_IDLE_CHANNEL_TIMER_RESOLUTION;
     }
 
     /**
@@ -254,14 +257,41 @@ public final class DirectConnectionConfig {
         return this;
     }
 
+    /**
+     * Get the idle channel timer resolution.
+     * This represents the readerIdleTime and writeridleTime to be used in IdleStateHandler.
+     *
+     * Default value is 100ms.
+     *
+     * @return the idle channel timer resolution.
+     */
+    public Duration getIdleChannelTimerResolution() {
+        return this.idleChannelTimerResolution;
+    }
+
+    /**
+     * Set the idle channel timer resolution.
+     * This represents the readerIdleTime and writerIdleTime to be used in IdleStateHandler.
+     *
+     * Default value is 100ms.
+     *
+     * @param idleChannelTimerResolution the idle channel timer resolution.
+     * @return the {@link DirectConnectionConfig}
+     */
+    public DirectConnectionConfig setIdleChannelTimerResolution(Duration idleChannelTimerResolution) {
+        this.idleChannelTimerResolution = idleChannelTimerResolution;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "DirectConnectionConfig{" +
-            "connectTimeout=" + connectTimeout +
-            ", idleConnectionTimeout=" + idleConnectionTimeout +
-            ", idleEndpointTimeout=" + idleEndpointTimeout +
-            ", maxConnectionsPerEndpoint=" + maxConnectionsPerEndpoint +
-            ", maxRequestsPerConnection=" + maxRequestsPerConnection +
+            "connectTimeout=" + this.connectTimeout +
+            ", idleConnectionTimeout=" + this.idleConnectionTimeout +
+            ", idleEndpointTimeout=" + this.idleEndpointTimeout +
+            ", maxConnectionsPerEndpoint=" + this.maxConnectionsPerEndpoint +
+            ", maxRequestsPerConnection=" + this.maxRequestsPerConnection +
+            ", idleChannelTimerResolution=" + this.idleChannelTimerResolution +
             '}';
     }
 }

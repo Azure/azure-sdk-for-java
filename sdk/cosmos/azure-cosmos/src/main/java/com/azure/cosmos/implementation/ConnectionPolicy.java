@@ -42,6 +42,7 @@ public final class ConnectionPolicy {
     private Duration idleTcpEndpointTimeout;
     private int maxConnectionsPerEndpoint;
     private int maxRequestsPerConnection;
+    private Duration idleTcpConnectionTimerResolution;
 
     private boolean tcpConnectionEndpointRediscoveryEnabled;
 
@@ -69,6 +70,7 @@ public final class ConnectionPolicy {
         this.maxRequestsPerConnection = directConnectionConfig.getMaxRequestsPerConnection();
         this.requestTimeout = BridgeInternal.getRequestTimeoutFromDirectConnectionConfig(directConnectionConfig);
         this.tcpConnectionEndpointRediscoveryEnabled = directConnectionConfig.isConnectionEndpointRediscoveryEnabled();
+        this.idleTcpConnectionTimerResolution = directConnectionConfig.getIdleChannelTimerResolution();
     }
 
     private ConnectionPolicy(ConnectionMode connectionMode) {
@@ -508,6 +510,32 @@ public final class ConnectionPolicy {
         this.clientTelemetryEnabled = clientTelemetryEnabled;
     }
 
+    /**
+     * Get the idle channel timer resolution.
+     * This represents the readerIdleTime and writeridleTime to be used in IdleStateHandler.
+     *
+     * Default value is 100ms.
+     *
+     * @return the idle channel timer resolution.
+     */
+    public Duration getIdleTcpConnectionTimerResolution() {
+        return this.idleTcpConnectionTimerResolution;
+    }
+
+    /**
+     * Set the idle channel timer resolution.
+     * This represents the readerIdleTime and writerIdleTime to be used in IdleStateHandler.
+     *
+     * Default value is 100ms.
+     *
+     * @param idleTcpConnectionTimerResolution the idleChannelTimerResolution.
+     * @return the {@link ConnectionPolicy}
+     */
+    public ConnectionPolicy setIdleTcpConnectionTimerResolution(Duration idleTcpConnectionTimerResolution) {
+        this.idleTcpConnectionTimerResolution = idleTcpConnectionTimerResolution;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "ConnectionPolicy{" +
@@ -530,6 +558,7 @@ public final class ConnectionPolicy {
             ", maxRequestsPerConnection=" + maxRequestsPerConnection +
             ", tcpConnectionEndpointRediscoveryEnabled=" + tcpConnectionEndpointRediscoveryEnabled +
             ", clientTelemetryEnabled=" + clientTelemetryEnabled +
+            ", idleTcpConnectionTimerResolution=" + this.idleTcpConnectionTimerResolution +
             '}';
     }
 }
