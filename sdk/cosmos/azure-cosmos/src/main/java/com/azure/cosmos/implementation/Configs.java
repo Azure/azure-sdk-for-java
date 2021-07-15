@@ -94,8 +94,7 @@ public class Configs {
     // TCP Constants
     private static final String IDLE_TCP_CHANNEL_TIMER_RESOLUTION_IN_MILLISECONDS = "COSMOS.IDLE_TCP_CHANNEL_TIMER_RESOLUTION_IN_MILLISECONDS";
     private static final int DEFAULT_IDLE_TCP_CHANNEL_TIMER_RESOLUTION_IN_MILLISECONDS = 100;
-
-
+    
     public Configs() {
         this.sslContext = sslContextInit();
     }
