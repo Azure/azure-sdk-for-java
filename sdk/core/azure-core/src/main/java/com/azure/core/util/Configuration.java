@@ -301,7 +301,7 @@ public class Configuration implements Cloneable {
 
     /**
      * Adds a configuration with the given value.
-     * <p>
+     * <p>df
      * This will overwrite the previous configuration value if it existed.
      *
      * @param name Name of the configuration.
