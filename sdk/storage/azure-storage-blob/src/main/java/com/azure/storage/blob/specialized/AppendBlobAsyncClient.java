@@ -418,9 +418,8 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
         RequestConditions sourceRequestConditions = (options.getSourceRequestConditions() == null)
             ? new RequestConditions() : options.getSourceRequestConditions();
 
-        URL url;
         try {
-            url = new URL(options.getSourceUrl());
+            new URL(options.getSourceUrl());
         } catch (MalformedURLException ex) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'sourceUrl' is not a valid url."));
         }
@@ -428,7 +427,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
         String sourceAuth = options.getSourceAuthorization() == null
             ? null : options.getSourceAuthorization().toString();
 
-        return this.azureBlobStorage.getAppendBlobs().appendBlockFromUrlWithResponseAsync(containerName, blobName, url, 0,
+        return this.azureBlobStorage.getAppendBlobs().appendBlockFromUrlWithResponseAsync(containerName, blobName, options.getSourceUrl(), 0,
             sourceRange.toString(), options.getSourceContentMd5(), null, null, null, destRequestConditions.getLeaseId(),
             destRequestConditions.getMaxSize(), destRequestConditions.getAppendPosition(),
             destRequestConditions.getIfModifiedSince(), destRequestConditions.getIfUnmodifiedSince(),

@@ -214,7 +214,7 @@ public final class SignalRManagementClientImpl implements SignalRManagementClien
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-04-01-preview";
+        this.apiVersion = "2021-06-01-preview";
         this.operations = new OperationsClientImpl(this);
         this.signalRs = new SignalRsClientImpl(this);
         this.usages = new UsagesClientImpl(this);

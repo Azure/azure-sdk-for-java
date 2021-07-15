@@ -38,7 +38,7 @@ public final class AnalyzeHealthcareEntitiesResultCollection extends IterableStr
     }
 
     /**
-     * Create a {@link AnalyzeHealthcareEntitiesResultCollection} model that maintains a list of
+     * Creates a {@link AnalyzeHealthcareEntitiesResultCollection} model that maintains a list of
      * {@link AnalyzeHealthcareEntitiesResult} along with model version and batch's statistics.
      *
      * @param documentResults A list of {@link AnalyzeHealthcareEntitiesResult}.
@@ -59,7 +59,7 @@ public final class AnalyzeHealthcareEntitiesResultCollection extends IterableStr
     /**
      * Gets the healthcare document result statistics properties.
      *
-     * @return the healthcare document result statistics properties.
+     * @return The healthcare document result statistics properties.
      */
     public TextDocumentBatchStatistics getStatistics() {
         return statistics;
