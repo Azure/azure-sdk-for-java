@@ -202,7 +202,7 @@ public final class AttestationClientBuilder {
         if (serializerAdapter == null) {
             this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
         }
-        var client = new AttestationClientImplBuilder()
+        AttestationClientImplBuilder client = new AttestationClientImplBuilder()
             .pipeline(pipeline)
             .instanceUrl(endpoint)
             .serializerAdapter(serializerAdapter);
