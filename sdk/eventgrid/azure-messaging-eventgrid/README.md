@@ -173,7 +173,7 @@ Async client:
 <!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/samples/ReadmeSamples.java#L238-L241 -->
 ```java
 EventGridPublisherAsyncClient<CloudEvent> cloudEventClient = new EventGridPublisherClientBuilder()
-    .endpoint("<endpont of your event grid topic/domain that accepts CloudEvent schema>")
+    .endpoint("<endpoint of your event grid topic/domain that accepts CloudEvent schema>")
     .credential(new DefaultAzureCredentialBuilder().build())
     .buildCloudEventPublisherAsyncClient();
 ```
