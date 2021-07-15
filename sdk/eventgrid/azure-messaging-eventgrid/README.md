@@ -165,7 +165,7 @@ Sync client:
 <!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/samples/ReadmeSamples.java#L231-L234 -->
 ```java
 EventGridPublisherClient<CloudEvent> cloudEventClient = new EventGridPublisherClientBuilder()
-    .endpoint("<endpont of your event grid topic/domain that accepts CloudEvent schema>")
+    .endpoint("<endpoint of your event grid topic/domain that accepts CloudEvent schema>")
     .credential(new DefaultAzureCredentialBuilder().build())
     .buildCloudEventPublisherClient();
 ```
