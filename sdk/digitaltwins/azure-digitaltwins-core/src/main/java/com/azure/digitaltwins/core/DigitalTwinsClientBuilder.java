@@ -10,6 +10,7 @@ import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
@@ -47,7 +48,8 @@ public final class DigitalTwinsClientBuilder {
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
 
-    private final List<HttpPipelinePolicy> additionalPolicies;
+    private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
+    private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
 
     // mandatory
     private String endpoint;
@@ -79,7 +81,6 @@ public final class DigitalTwinsClientBuilder {
      * The public constructor for DigitalTwinsClientBuilder
      */
     public DigitalTwinsClientBuilder() {
-        additionalPolicies = new ArrayList<>();
         properties = CoreUtils.getProperties(DIGITAL_TWINS_PROPERTIES);
         httpLogOptions = new HttpLogOptions();
     }
@@ -90,7 +91,8 @@ public final class DigitalTwinsClientBuilder {
         HttpLogOptions httpLogOptions,
         ClientOptions clientOptions,
         HttpClient httpClient,
-        List<HttpPipelinePolicy> additionalPolicies,
+        List<HttpPipelinePolicy> perCallPolicies,
+        List<HttpPipelinePolicy> perRetryPolicies,
         RetryPolicy retryPolicy,
         Configuration configuration,
         Map<String, String> properties) {
@@ -111,6 +113,8 @@ public final class DigitalTwinsClientBuilder {
         // Adds a "x-ms-client-request-id" header to each request. This header is useful for tracing requests through Azure ecosystems
         policies.add(new RequestIdPolicy());
 
+        policies.addAll(perCallPolicies);
+
         // Only the RequestIdPolicy  and UserAgentPolicy will take effect prior to the retry policy since neither of those need
         // to change in any way upon retry
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
@@ -124,7 +128,7 @@ public final class DigitalTwinsClientBuilder {
         HttpPipelinePolicy credentialPolicy = new BearerTokenAuthenticationPolicy(tokenCredential, ADT_PUBLIC_SCOPE);
         policies.add(credentialPolicy);
 
-        policies.addAll(additionalPolicies);
+        policies.addAll(perRetryPolicies);
 
         // If client options has headers configured, add a policy for each
         if (clientOptions != null) {
@@ -135,7 +139,7 @@ public final class DigitalTwinsClientBuilder {
         }
 
         // Custom policies, authentication policy, and add date policy all take place after the retry policy which means
-        // they will be applied once per http request, and once for every retried http request. For instance, the
+        // they will be applied once per http request, and once for every retried http request. For example, the
         // AddDatePolicy will add a date time header for each request that is sent, and if the http request fails
         // and the retry policy dictates that the request should be retried, then the date time header policy will
         // be applied again and the current date time will be put in the header instead of the date time from
@@ -192,7 +196,8 @@ public final class DigitalTwinsClientBuilder {
                 this.httpLogOptions,
                 this.clientOptions,
                 this.httpClient,
-                this.additionalPolicies,
+                this.perCallPolicies,
+                this.perRetryPolicies,
                 retryPolicy,
                 buildConfiguration,
                 this.properties);
@@ -273,7 +278,14 @@ public final class DigitalTwinsClientBuilder {
      * @throws NullPointerException If {@code pipelinePolicy} is {@code null}.
      */
     public DigitalTwinsClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
-        this.additionalPolicies.add(Objects.requireNonNull(pipelinePolicy, "'pipelinePolicy' cannot be null"));
+        Objects.requireNonNull(pipelinePolicy, "'pipelinePolicy' cannot be null.");
+
+        if (pipelinePolicy.getPipelinePosition() == HttpPipelinePosition.PER_CALL) {
+            perCallPolicies.add(pipelinePolicy);
+        } else {
+            perRetryPolicies.add(pipelinePolicy);
+        }
+
         return this;
     }
 

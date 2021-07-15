@@ -21,6 +21,7 @@ import com.nimbusds.jose.crypto.RSASSASigner;
 import com.nimbusds.jose.crypto.RSASSAVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.provider.Arguments;
 import reactor.core.publisher.Mono;
 
@@ -46,6 +47,8 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+//import io.github.cdimascio.dotenv.Dotenv;
+
 /**
  * Specialization of the TestBase class for the attestation tests.
  *
@@ -64,6 +67,12 @@ public class AttestationClientTestBase extends TestBase {
         AAD,
     }
 
+    @BeforeAll
+    public static void beforeAll() {
+        TestBase.setupClass();
+//        Dotenv.configure().ignoreIfMissing().systemProperties().load();
+    }
+
     /**
      * Determine the Attestation instance type based on the client URI provided.
      * @param clientUri - URI for the attestation client.
@@ -72,7 +81,7 @@ public class AttestationClientTestBase extends TestBase {
     ClientTypes classifyClient(String clientUri) {
         assertNotNull(clientUri);
         String regionShortName = getLocationShortName();
-        String sharedUri = "https://shared" + regionShortName + "." + regionShortName + ".test.attest.azure.net";
+        String sharedUri = "https://shared" + regionShortName + "." + regionShortName + ".attest.azure.net";
         if (sharedUri.equals(clientUri)) {
             return ClientTypes.SHARED;
         } else if (getIsolatedUrl().equals(clientUri)) {
@@ -367,7 +376,7 @@ public class AttestationClientTestBase extends TestBase {
 
         final String regionShortName = getLocationShortName();
         return getHttpClients().flatMap(httpClient -> Stream.of(
-            Arguments.of(httpClient, "https://shared" + regionShortName + "." + regionShortName + ".test.attest.azure.net"),
+            Arguments.of(httpClient, "https://shared" + regionShortName + "." + regionShortName + ".attest.azure.net"),
             Arguments.of(httpClient, getIsolatedUrl()),
             Arguments.of(httpClient, getAadUrl())));
     }
