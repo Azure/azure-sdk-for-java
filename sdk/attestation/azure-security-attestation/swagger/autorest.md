@@ -19,33 +19,29 @@ Run `generate.ps1` in this directory to generate the code.
 ### Code generation settings
 
 ``` yaml
-title: AzureAttestationRestClient
 tag: package-2020-10-01
 require:
   - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/attestation/data-plane/readme.md
 java: true
-output-folder: "../"
+output-folder: ..\
 license-header: MICROSOFT_MIT_SMALL
 namespace: com.azure.security.attestation
-use: '@autorest/java@4.0.4'
-generate-client-interfaces: false
 generate-client-as-impl: true
+generate-client-interfaces: false
 custom-types: AttestationType
 custom-types-subpackage: models
+#implementation-subpackage: implementation
 models-subpackage: implementation.models
 add-context-parameter: true
 sync-methods: all
 client-side-validations: true
-implementation-subpackage: implementation
 context-client-method-parameter: true
-custom-types-subpackage: models
-generate-sync-async-clients: false
+#generate-sync-async-clients: true
 required-fields-as-ctor-args: true
 v3: true
 add-credentials: true
 credential-scopes: 'https://attest.azure.net/.default'
-enable-xml: false
-required-parameter-client-methods: true
+#required-parameter-client-methods: true
 
 ```
 

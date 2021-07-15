@@ -6,6 +6,7 @@ package com.azure.security.attestation.implementation;
 
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.ReturnType;
@@ -26,14 +27,14 @@ public final class SigningCertificatesImpl {
     private final SigningCertificatesService service;
 
     /** The service client containing this operation class. */
-    private final AzureAttestationRestClientImpl client;
+    private final AttestationClientImpl client;
 
     /**
      * Initializes an instance of SigningCertificatesImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    SigningCertificatesImpl(AzureAttestationRestClientImpl client) {
+    SigningCertificatesImpl(AttestationClientImpl client) {
         this.service =
                 RestProxy.create(
                         SigningCertificatesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
@@ -41,16 +42,17 @@ public final class SigningCertificatesImpl {
     }
 
     /**
-     * The interface defining all the services for AzureAttestationRestClientSigningCertificates to be used by the proxy
-     * service to perform REST calls.
+     * The interface defining all the services for AttestationClientSigningCertificates to be used by the proxy service
+     * to perform REST calls.
      */
     @Host("{instanceUrl}")
-    @ServiceInterface(name = "AzureAttestationRest")
+    @ServiceInterface(name = "AttestationClientSig")
     private interface SigningCertificatesService {
         @Get("/certs")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
-        Mono<Response<JsonWebKeySet>> get(@HostParam("instanceUrl") String instanceUrl, Context context);
+        Mono<Response<JsonWebKeySet>> get(
+                @HostParam("instanceUrl") String instanceUrl, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -67,7 +69,8 @@ public final class SigningCertificatesImpl {
                     new IllegalArgumentException(
                             "Parameter this.client.getInstanceUrl() is required and cannot be null."));
         }
-        return FluxUtil.withContext(context -> service.get(this.client.getInstanceUrl(), context));
+        final String accept = "application/jwk+json, application/json";
+        return FluxUtil.withContext(context -> service.get(this.client.getInstanceUrl(), accept, context));
     }
 
     /**
@@ -86,7 +89,8 @@ public final class SigningCertificatesImpl {
                     new IllegalArgumentException(
                             "Parameter this.client.getInstanceUrl() is required and cannot be null."));
         }
-        return service.get(this.client.getInstanceUrl(), context);
+        final String accept = "application/jwk+json, application/json";
+        return service.get(this.client.getInstanceUrl(), accept, context);
     }
 
     /**

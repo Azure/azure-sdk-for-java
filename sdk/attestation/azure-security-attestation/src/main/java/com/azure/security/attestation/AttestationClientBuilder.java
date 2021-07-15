@@ -18,9 +18,8 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.security.attestation.implementation.AttestationsImpl;
-import com.azure.security.attestation.implementation.AzureAttestationRestClientImpl;
-import com.azure.security.attestation.implementation.AzureAttestationRestClientImplBuilder;
+import com.azure.security.attestation.implementation.AttestationClientImplBuilder;
+import com.azure.security.attestation.implementation.AttestationClientImpl;
 
 import java.security.Policy;
 import java.util.ArrayList;
@@ -190,7 +189,7 @@ public final class AttestationClientBuilder {
      *
      * @return an instance of AttestationClientImpl.
      */
-    private AzureAttestationRestClientImpl buildInnerClient() {
+    private AttestationClientImpl buildInnerClient() {
         Objects.requireNonNull(endpoint);
 
         HttpPipeline pipeline;
@@ -203,10 +202,11 @@ public final class AttestationClientBuilder {
         if (serializerAdapter == null) {
             this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
         }
-        AzureAttestationRestClientImplBuilder clientBuilder = new AzureAttestationRestClientImplBuilder()
+        var client = new AttestationClientImplBuilder()
+            .pipeline(pipeline)
             .instanceUrl(endpoint)
-            .pipeline(pipeline);
-        return clientBuilder.buildClient();
+            .serializerAdapter(serializerAdapter);
+        return client.buildClient();
     }
 
     private HttpPipeline createHttpPipeline() {

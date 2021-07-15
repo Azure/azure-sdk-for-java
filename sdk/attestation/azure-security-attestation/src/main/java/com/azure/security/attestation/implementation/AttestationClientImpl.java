@@ -12,8 +12,8 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 
-/** Initializes a new instance of the AzureAttestationRestClient type. */
-public final class AzureAttestationRestClientImpl {
+/** Initializes a new instance of the AttestationClient type. */
+public final class AttestationClientImpl {
     /** The attestation instance base URI, for example https://mytenant.attest.azure.net. */
     private final String instanceUrl;
 
@@ -123,41 +123,46 @@ public final class AzureAttestationRestClientImpl {
     }
 
     /**
-     * Initializes an instance of AzureAttestationRestClient client.
+     * Initializes an instance of AttestationClient client.
      *
      * @param instanceUrl The attestation instance base URI, for example https://mytenant.attest.azure.net.
+     * @param apiVersion Api Version.
      */
-    AzureAttestationRestClientImpl(String instanceUrl) {
+    AttestationClientImpl(String instanceUrl, String apiVersion) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                         .build(),
                 JacksonAdapter.createDefaultSerializerAdapter(),
-                instanceUrl);
+                instanceUrl,
+                apiVersion);
     }
 
     /**
-     * Initializes an instance of AzureAttestationRestClient client.
+     * Initializes an instance of AttestationClient client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param instanceUrl The attestation instance base URI, for example https://mytenant.attest.azure.net.
+     * @param apiVersion Api Version.
      */
-    AzureAttestationRestClientImpl(HttpPipeline httpPipeline, String instanceUrl) {
-        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), instanceUrl);
+    AttestationClientImpl(HttpPipeline httpPipeline, String instanceUrl, String apiVersion) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), instanceUrl, apiVersion);
     }
 
     /**
-     * Initializes an instance of AzureAttestationRestClient client.
+     * Initializes an instance of AttestationClient client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param instanceUrl The attestation instance base URI, for example https://mytenant.attest.azure.net.
+     * @param apiVersion Api Version.
      */
-    AzureAttestationRestClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String instanceUrl) {
+    AttestationClientImpl(
+            HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String instanceUrl, String apiVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.instanceUrl = instanceUrl;
-        this.apiVersion = "2020-10-01";
+        this.apiVersion = apiVersion;
         this.policies = new PoliciesImpl(this);
         this.policyCertificates = new PolicyCertificatesImpl(this);
         this.attestations = new AttestationsImpl(this);

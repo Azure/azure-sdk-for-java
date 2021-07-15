@@ -6,6 +6,7 @@ package com.azure.security.attestation.implementation;
 
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Post;
@@ -32,25 +33,25 @@ public final class AttestationsImpl {
     private final AttestationsService service;
 
     /** The service client containing this operation class. */
-    private final AzureAttestationRestClientImpl client;
+    private final AttestationClientImpl client;
 
     /**
      * Initializes an instance of AttestationsImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    AttestationsImpl(AzureAttestationRestClientImpl client) {
+    AttestationsImpl(AttestationClientImpl client) {
         this.service =
                 RestProxy.create(AttestationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AzureAttestationRestClientAttestations to be used by the proxy
-     * service to perform REST calls.
+     * The interface defining all the services for AttestationClientAttestations to be used by the proxy service to
+     * perform REST calls.
      */
     @Host("{instanceUrl}")
-    @ServiceInterface(name = "AzureAttestationRest")
+    @ServiceInterface(name = "AttestationClientAtt")
     private interface AttestationsService {
         @Post("/attest/OpenEnclave")
         @ExpectedResponses({200})
@@ -59,6 +60,7 @@ public final class AttestationsImpl {
                 @HostParam("instanceUrl") String instanceUrl,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") AttestOpenEnclaveRequest request,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/attest/SgxEnclave")
@@ -68,6 +70,7 @@ public final class AttestationsImpl {
                 @HostParam("instanceUrl") String instanceUrl,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") AttestSgxEnclaveRequest request,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/attest/Tpm")
@@ -77,6 +80,7 @@ public final class AttestationsImpl {
                 @HostParam("instanceUrl") String instanceUrl,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") TpmAttestationRequest request,
+                @HeaderParam("Accept") String accept,
                 Context context);
     }
 
@@ -84,7 +88,7 @@ public final class AttestationsImpl {
      * Processes an OpenEnclave report , producing an artifact. The type of artifact produced is dependent upon
      * attestation policy.
      *
-     * @param request Attestation request for Intel SGX enclaves.
+     * @param request Request object containing the quote.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -102,17 +106,18 @@ public final class AttestationsImpl {
         } else {
             request.validate();
         }
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.attestOpenEnclave(
-                                this.client.getInstanceUrl(), this.client.getApiVersion(), request, context));
+                                this.client.getInstanceUrl(), this.client.getApiVersion(), request, accept, context));
     }
 
     /**
      * Processes an OpenEnclave report , producing an artifact. The type of artifact produced is dependent upon
      * attestation policy.
      *
-     * @param request Attestation request for Intel SGX enclaves.
+     * @param request Request object containing the quote.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -132,14 +137,16 @@ public final class AttestationsImpl {
         } else {
             request.validate();
         }
-        return service.attestOpenEnclave(this.client.getInstanceUrl(), this.client.getApiVersion(), request, context);
+        final String accept = "application/json";
+        return service.attestOpenEnclave(
+                this.client.getInstanceUrl(), this.client.getApiVersion(), request, accept, context);
     }
 
     /**
      * Processes an OpenEnclave report , producing an artifact. The type of artifact produced is dependent upon
      * attestation policy.
      *
-     * @param request Attestation request for Intel SGX enclaves.
+     * @param request Request object containing the quote.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -162,7 +169,7 @@ public final class AttestationsImpl {
      * Processes an OpenEnclave report , producing an artifact. The type of artifact produced is dependent upon
      * attestation policy.
      *
-     * @param request Attestation request for Intel SGX enclaves.
+     * @param request Request object containing the quote.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -186,7 +193,7 @@ public final class AttestationsImpl {
      * Processes an OpenEnclave report , producing an artifact. The type of artifact produced is dependent upon
      * attestation policy.
      *
-     * @param request Attestation request for Intel SGX enclaves.
+     * @param request Request object containing the quote.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -201,7 +208,7 @@ public final class AttestationsImpl {
      * Processes an OpenEnclave report , producing an artifact. The type of artifact produced is dependent upon
      * attestation policy.
      *
-     * @param request Attestation request for Intel SGX enclaves.
+     * @param request Request object containing the quote.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -218,7 +225,7 @@ public final class AttestationsImpl {
      * Processes an SGX enclave quote, producing an artifact. The type of artifact produced is dependent upon
      * attestation policy.
      *
-     * @param request Attestation request for Intel SGX enclaves.
+     * @param request Request object containing the quote.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -236,17 +243,18 @@ public final class AttestationsImpl {
         } else {
             request.validate();
         }
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.attestSgxEnclave(
-                                this.client.getInstanceUrl(), this.client.getApiVersion(), request, context));
+                                this.client.getInstanceUrl(), this.client.getApiVersion(), request, accept, context));
     }
 
     /**
      * Processes an SGX enclave quote, producing an artifact. The type of artifact produced is dependent upon
      * attestation policy.
      *
-     * @param request Attestation request for Intel SGX enclaves.
+     * @param request Request object containing the quote.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -266,14 +274,16 @@ public final class AttestationsImpl {
         } else {
             request.validate();
         }
-        return service.attestSgxEnclave(this.client.getInstanceUrl(), this.client.getApiVersion(), request, context);
+        final String accept = "application/json";
+        return service.attestSgxEnclave(
+                this.client.getInstanceUrl(), this.client.getApiVersion(), request, accept, context);
     }
 
     /**
      * Processes an SGX enclave quote, producing an artifact. The type of artifact produced is dependent upon
      * attestation policy.
      *
-     * @param request Attestation request for Intel SGX enclaves.
+     * @param request Request object containing the quote.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -296,7 +306,7 @@ public final class AttestationsImpl {
      * Processes an SGX enclave quote, producing an artifact. The type of artifact produced is dependent upon
      * attestation policy.
      *
-     * @param request Attestation request for Intel SGX enclaves.
+     * @param request Request object containing the quote.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -320,7 +330,7 @@ public final class AttestationsImpl {
      * Processes an SGX enclave quote, producing an artifact. The type of artifact produced is dependent upon
      * attestation policy.
      *
-     * @param request Attestation request for Intel SGX enclaves.
+     * @param request Request object containing the quote.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -335,7 +345,7 @@ public final class AttestationsImpl {
      * Processes an SGX enclave quote, producing an artifact. The type of artifact produced is dependent upon
      * attestation policy.
      *
-     * @param request Attestation request for Intel SGX enclaves.
+     * @param request Request object containing the quote.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -352,7 +362,7 @@ public final class AttestationsImpl {
      * Processes attestation evidence from a VBS enclave, producing an attestation result. The attestation result
      * produced is dependent upon the attestation policy.
      *
-     * @param request Attestation request for Trusted Platform Module (TPM) attestation.
+     * @param request Request object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -370,16 +380,18 @@ public final class AttestationsImpl {
         } else {
             request.validate();
         }
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.attestTpm(this.client.getInstanceUrl(), this.client.getApiVersion(), request, context));
+                        service.attestTpm(
+                                this.client.getInstanceUrl(), this.client.getApiVersion(), request, accept, context));
     }
 
     /**
      * Processes attestation evidence from a VBS enclave, producing an attestation result. The attestation result
      * produced is dependent upon the attestation policy.
      *
-     * @param request Attestation request for Trusted Platform Module (TPM) attestation.
+     * @param request Request object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -399,14 +411,15 @@ public final class AttestationsImpl {
         } else {
             request.validate();
         }
-        return service.attestTpm(this.client.getInstanceUrl(), this.client.getApiVersion(), request, context);
+        final String accept = "application/json";
+        return service.attestTpm(this.client.getInstanceUrl(), this.client.getApiVersion(), request, accept, context);
     }
 
     /**
      * Processes attestation evidence from a VBS enclave, producing an attestation result. The attestation result
      * produced is dependent upon the attestation policy.
      *
-     * @param request Attestation request for Trusted Platform Module (TPM) attestation.
+     * @param request Request object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -429,7 +442,7 @@ public final class AttestationsImpl {
      * Processes attestation evidence from a VBS enclave, producing an attestation result. The attestation result
      * produced is dependent upon the attestation policy.
      *
-     * @param request Attestation request for Trusted Platform Module (TPM) attestation.
+     * @param request Request object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -453,7 +466,7 @@ public final class AttestationsImpl {
      * Processes attestation evidence from a VBS enclave, producing an attestation result. The attestation result
      * produced is dependent upon the attestation policy.
      *
-     * @param request Attestation request for Trusted Platform Module (TPM) attestation.
+     * @param request Request object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -468,7 +481,7 @@ public final class AttestationsImpl {
      * Processes attestation evidence from a VBS enclave, producing an attestation result. The attestation result
      * produced is dependent upon the attestation policy.
      *
-     * @param request Attestation request for Trusted Platform Module (TPM) attestation.
+     * @param request Request object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.

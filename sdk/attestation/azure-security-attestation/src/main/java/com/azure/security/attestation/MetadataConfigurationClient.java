@@ -12,7 +12,7 @@ import com.azure.core.util.Context;
 import com.azure.security.attestation.implementation.MetadataConfigurationsImpl;
 import com.azure.security.attestation.implementation.models.CloudErrorException;
 
-/** Initializes a new instance of the synchronous AzureAttestationRestClient type. */
+/** Initializes a new instance of the synchronous AttestationClient type. */
 @ServiceClient(builder = AttestationClientBuilder.class)
 public final class MetadataConfigurationClient {
     private final MetadataConfigurationsImpl serviceClient;

@@ -12,7 +12,7 @@ import com.azure.security.attestation.implementation.MetadataConfigurationsImpl;
 import com.azure.security.attestation.implementation.models.CloudErrorException;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the asynchronous AzureAttestationRestClient type. */
+/** Initializes a new instance of the asynchronous AttestationClient type. */
 @ServiceClient(builder = AttestationClientBuilder.class, isAsync = true)
 public final class MetadataConfigurationAsyncClient {
     private final MetadataConfigurationsImpl serviceClient;

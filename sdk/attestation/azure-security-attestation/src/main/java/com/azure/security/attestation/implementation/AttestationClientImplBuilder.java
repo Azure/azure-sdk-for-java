@@ -23,16 +23,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/** A builder for creating a new instance of the AzureAttestationRestClient type. */
-@ServiceClientBuilder(serviceClients = {AzureAttestationRestClientImpl.class})
-public final class AzureAttestationRestClientImplBuilder {
+/** A builder for creating a new instance of the AttestationClient type. */
+@ServiceClientBuilder(serviceClients = {AttestationClientImpl.class})
+public final class AttestationClientImplBuilder {
     private static final String SDK_NAME = "name";
 
     private static final String SDK_VERSION = "version";
 
+    static final String[] DEFAULT_SCOPES = new String[] {"https://attest.azure.net/.default"};
+
     private final Map<String, String> properties = new HashMap<>();
 
-    public AzureAttestationRestClientImplBuilder() {
+    /** Create an instance of the AttestationClientImplBuilder. */
+    public AttestationClientImplBuilder() {
         this.pipelinePolicies = new ArrayList<>();
     }
 
@@ -46,10 +49,26 @@ public final class AzureAttestationRestClientImplBuilder {
      * Sets The attestation instance base URI, for example https://mytenant.attest.azure.net.
      *
      * @param instanceUrl the instanceUrl value.
-     * @return the AzureAttestationRestClientImplBuilder.
+     * @return the AttestationClientImplBuilder.
      */
-    public AzureAttestationRestClientImplBuilder instanceUrl(String instanceUrl) {
+    public AttestationClientImplBuilder instanceUrl(String instanceUrl) {
         this.instanceUrl = instanceUrl;
+        return this;
+    }
+
+    /*
+     * Api Version
+     */
+    private String apiVersion;
+
+    /**
+     * Sets Api Version.
+     *
+     * @param apiVersion the apiVersion value.
+     * @return the AttestationClientImplBuilder.
+     */
+    public AttestationClientImplBuilder apiVersion(String apiVersion) {
+        this.apiVersion = apiVersion;
         return this;
     }
 
@@ -62,9 +81,9 @@ public final class AzureAttestationRestClientImplBuilder {
      * Sets The HTTP pipeline to send requests through.
      *
      * @param pipeline the pipeline value.
-     * @return the AzureAttestationRestClientImplBuilder.
+     * @return the AttestationClientImplBuilder.
      */
-    public AzureAttestationRestClientImplBuilder pipeline(HttpPipeline pipeline) {
+    public AttestationClientImplBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
         return this;
     }
@@ -78,9 +97,9 @@ public final class AzureAttestationRestClientImplBuilder {
      * Sets The serializer to serialize an object into a string.
      *
      * @param serializerAdapter the serializerAdapter value.
-     * @return the AzureAttestationRestClientImplBuilder.
+     * @return the AttestationClientImplBuilder.
      */
-    public AzureAttestationRestClientImplBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
+    public AttestationClientImplBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
         this.serializerAdapter = serializerAdapter;
         return this;
     }
@@ -94,9 +113,9 @@ public final class AzureAttestationRestClientImplBuilder {
      * Sets The HTTP client used to send the request.
      *
      * @param httpClient the httpClient value.
-     * @return the AzureAttestationRestClientImplBuilder.
+     * @return the AttestationClientImplBuilder.
      */
-    public AzureAttestationRestClientImplBuilder httpClient(HttpClient httpClient) {
+    public AttestationClientImplBuilder httpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
         return this;
     }
@@ -111,9 +130,9 @@ public final class AzureAttestationRestClientImplBuilder {
      * Sets The configuration store that is used during construction of the service client.
      *
      * @param configuration the configuration value.
-     * @return the AzureAttestationRestClientImplBuilder.
+     * @return the AttestationClientImplBuilder.
      */
-    public AzureAttestationRestClientImplBuilder configuration(Configuration configuration) {
+    public AttestationClientImplBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
     }
@@ -127,9 +146,9 @@ public final class AzureAttestationRestClientImplBuilder {
      * Sets The logging configuration for HTTP requests and responses.
      *
      * @param httpLogOptions the httpLogOptions value.
-     * @return the AzureAttestationRestClientImplBuilder.
+     * @return the AttestationClientImplBuilder.
      */
-    public AzureAttestationRestClientImplBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
+    public AttestationClientImplBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
         this.httpLogOptions = httpLogOptions;
         return this;
     }
@@ -144,9 +163,9 @@ public final class AzureAttestationRestClientImplBuilder {
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
      *
      * @param retryPolicy the retryPolicy value.
-     * @return the AzureAttestationRestClientImplBuilder.
+     * @return the AttestationClientImplBuilder.
      */
-    public AzureAttestationRestClientImplBuilder retryPolicy(RetryPolicy retryPolicy) {
+    public AttestationClientImplBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
         return this;
     }
@@ -154,33 +173,35 @@ public final class AzureAttestationRestClientImplBuilder {
     /*
      * The list of Http pipeline policies to add.
      */
-    private List<HttpPipelinePolicy> pipelinePolicies;
+    private final List<HttpPipelinePolicy> pipelinePolicies;
 
     /**
      * Adds a custom Http pipeline policy.
      *
      * @param customPolicy The custom Http pipeline policy to add.
-     * @return the AzureAttestationRestClientImplBuilder.
+     * @return the AttestationClientImplBuilder.
      */
-    public AzureAttestationRestClientImplBuilder addPolicy(HttpPipelinePolicy customPolicy) {
+    public AttestationClientImplBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         pipelinePolicies.add(customPolicy);
         return this;
     }
 
     /**
-     * Builds an instance of AzureAttestationRestClientImpl with the provided parameters.
+     * Builds an instance of AttestationClientImpl with the provided parameters.
      *
-     * @return an instance of AzureAttestationRestClientImpl.
+     * @return an instance of AttestationClientImpl.
      */
-    public AzureAttestationRestClientImpl buildClient() {
+    public AttestationClientImpl buildClient() {
+        if (apiVersion == null) {
+            this.apiVersion = "2020-10-01";
+        }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }
         if (serializerAdapter == null) {
             this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
         }
-        AzureAttestationRestClientImpl client =
-                new AzureAttestationRestClientImpl(pipeline, serializerAdapter, instanceUrl);
+        AttestationClientImpl client = new AttestationClientImpl(pipeline, serializerAdapter, instanceUrl, apiVersion);
         return client;
     }
 
