@@ -42,7 +42,7 @@ import static com.azure.spring.integration.servicebus.converter.ServiceBusMessag
 public class ServiceBusMessageConverter
     extends AbstractAzureMessageConverter<ServiceBusReceivedMessage, ServiceBusMessage> {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(ServiceBusMessageConverter.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusMessageConverter.class);
     private final ObjectMapper objectMapper;
 
     public ServiceBusMessageConverter() {
@@ -100,7 +100,7 @@ public class ServiceBusMessageConverter
         // ServiceBusMessageHeaders, service bus headers have highest priority.
         getStringHeader(headers, copyHeaders, MESSAGE_ID).ifPresent(val -> {
             message.setMessageId(val);
-            if(!logOverriddenHeaders(MESSAGE_ID, AzureHeaders.RAW_ID, headers)) {
+            if (!logOverriddenHeaders(MESSAGE_ID, AzureHeaders.RAW_ID, headers)) {
                 logOverriddenHeaders(MESSAGE_ID, MessageHeaders.ID, headers);
             }
         });
@@ -163,7 +163,7 @@ public class ServiceBusMessageConverter
      * @param springMessageHeaders Original {@link MessageHeaders} to get header values.
      * @param copyHeaders A copy of keys for the original {@link MessageHeaders}.
      * @param key The header key to get value.
-     * @return
+     * @return {@link Optional} of the header value.
      */
     private Optional<String> getStringHeader(MessageHeaders springMessageHeaders, Map<String, Object> copyHeaders,
                                              String key) {
@@ -174,7 +174,7 @@ public class ServiceBusMessageConverter
     private Boolean logOverriddenHeaders(String currentHeader, String overriddenHeader,
                                       MessageHeaders springMessageHeaders) {
         Boolean isExisted = false;
-        if(springMessageHeaders.containsKey(overriddenHeader)) {
+        if (springMessageHeaders.containsKey(overriddenHeader)) {
             isExisted = true;
             LOGGER.warn("{} header detected, usage of {} header will be overridden if exists", currentHeader,
                 overriddenHeader);
