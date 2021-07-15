@@ -8,7 +8,12 @@ import com.azure.spring.cloud.autoconfigure.context.AzureResourceManagerAutoConf
 import com.azure.spring.cloud.autoconfigure.context.AzureContextProperties;
 import com.azure.spring.cloud.autoconfigure.eventhub.AzureEventHubAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.eventhub.AzureEventHubProperties;
+import com.azure.spring.cloud.autoconfigure.eventhub.EventHubConnectionStringProvider;
 import com.azure.spring.cloud.autoconfigure.eventhub.EventHubUtils;
+import com.azure.spring.core.AzureResourceMetadata;
+import com.azure.spring.core.impl.EventHubConsumerGroupManager;
+import com.azure.spring.core.impl.EventHubManager;
+import com.azure.spring.core.impl.EventHubNamespaceManager;
 import com.azure.spring.eventhub.stream.binder.EventHubMessageChannelBinder;
 import com.azure.spring.eventhub.stream.binder.properties.EventHubExtendedBindingProperties;
 import com.azure.spring.eventhub.stream.binder.provisioning.EventHubChannelProvisioner;
@@ -29,7 +34,6 @@ import org.springframework.context.annotation.Import;
 @Configuration
 @ConditionalOnMissingBean(Binder.class)
 @Import({
-    AzureEnvironmentAutoConfiguration.class,
     AzureResourceManagerAutoConfiguration.class,
     AzureEventHubAutoConfiguration.class,
     EventHubBinderHealthIndicatorConfiguration.class
@@ -40,15 +44,16 @@ public class EventHubBinderConfiguration {
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnBean(EventHubNamespaceManager.class)
-    public EventHubManager eventHubManager(AzureResourceManager azureResourceManager, AzureContextProperties azureContextProperties) {
-        return new EventHubManager(azureResourceManager, azureContextProperties);
+    public EventHubManager eventHubManager(AzureResourceManager azureResourceManager,
+                                           AzureResourceMetadata azureResourceMetadata) {
+        return new EventHubManager(azureResourceManager, azureResourceMetadata);
     }
 
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnBean(EventHubNamespaceManager.class)
     public EventHubConsumerGroupManager eventHubConsumerGroupManager(AzureResourceManager azureResourceManager,
-                                                                     AzureContextProperties azureContextProperties) {
+                                                                     AzureResourceMetadata azureContextProperties) {
         return new EventHubConsumerGroupManager(azureResourceManager, azureContextProperties);
     }
 

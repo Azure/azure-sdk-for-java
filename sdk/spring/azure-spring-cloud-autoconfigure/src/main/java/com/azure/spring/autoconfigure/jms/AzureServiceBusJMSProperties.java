@@ -4,7 +4,6 @@
 package com.azure.spring.autoconfigure.jms;
 
 import com.azure.spring.autoconfigure.unity.AzureProperties;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
@@ -68,7 +67,6 @@ public class AzureServiceBusJMSProperties extends AzureProperties {
      *
      * @throws IllegalArgumentException If connectionString is empty.
      */
-    @SuppressFBWarnings
     @PostConstruct
     public void validate() {
         if (!StringUtils.hasText(connectionString)) {

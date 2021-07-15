@@ -10,7 +10,6 @@ import com.azure.core.util.paging.ContinuablePagedIterable;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.security.keyvault.secrets.models.SecretProperties;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
@@ -30,7 +29,6 @@ import java.util.stream.StreamSupport;
 /**
  * KeyVaultOperation wraps the operations to access Key Vault.
  */
-@SuppressFBWarnings("ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD")
 public class KeyVaultOperation {
 
     private static final Logger LOG = LoggerFactory.getLogger(KeyVaultOperation.class);
