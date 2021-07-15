@@ -98,6 +98,13 @@ public final class FileSystemSource extends CopySource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public FileSystemSource withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

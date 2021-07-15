@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
@@ -19,7 +18,7 @@ import java.util.List;
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
-        property = "@odata\\.type",
+        property = "@odata.type",
         defaultImpl = SearchIndexerSkill.class)
 @JsonTypeName("SearchIndexerSkill")
 @JsonSubTypes({
@@ -40,7 +39,6 @@ import java.util.List;
     @JsonSubTypes.Type(name = "#Microsoft.Skills.Util.DocumentExtractionSkill", value = DocumentExtractionSkill.class),
     @JsonSubTypes.Type(name = "#Microsoft.Skills.Custom.WebApiSkill", value = WebApiSkill.class)
 })
-@JsonFlatten
 @Fluent
 public abstract class SearchIndexerSkill {
     /*

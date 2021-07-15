@@ -1,6 +1,22 @@
 # Release History
 
-## 2.4.0-beta.1 (Unreleased)
+## 2.7.0-beta.1 (Unreleased)
+### Key Bug Fixes
+- Fixed `EventHubMessageConverter` to load all system properties of `EventData` and put in the header of org.springframework.messaging.Message.([#22683](https://github.com/Azure/azure-sdk-for-java/pull/22683/))
+
+
+## 2.6.0 (2021-06-23)
+### Breaking Changes
+- Remove `azure-spring-cloud-telemetry` module dependency.
+
+## 2.5.0 (2021-05-24)
+### New Features
+- Upgrade to [spring-boot-dependencies:2.4.5](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.4.5/spring-boot-dependencies-2.4.5.pom).
+- Upgrade to [spring-cloud-dependencies:2020.0.2](https://repo.maven.apache.org/maven2/org/springframework/cloud/spring-cloud-dependencies/2020.0.2/spring-cloud-dependencies-2020.0.2.pom).
+
+
+
+## 2.4.0 (2021-04-19)
 
 
 ## 2.3.0 (2021-03-22)

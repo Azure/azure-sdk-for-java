@@ -111,6 +111,12 @@ public final class MetricSpecification {
     @JsonProperty(value = "supportedTimeGrainTypes")
     private List<String> supportedTimeGrainTypes;
 
+    /*
+     * The supportedAggregationTypes property.
+     */
+    @JsonProperty(value = "supportedAggregationTypes")
+    private List<String> supportedAggregationTypes;
+
     /**
      * Get the name property: The name property.
      *
@@ -428,6 +434,26 @@ public final class MetricSpecification {
      */
     public MetricSpecification withSupportedTimeGrainTypes(List<String> supportedTimeGrainTypes) {
         this.supportedTimeGrainTypes = supportedTimeGrainTypes;
+        return this;
+    }
+
+    /**
+     * Get the supportedAggregationTypes property: The supportedAggregationTypes property.
+     *
+     * @return the supportedAggregationTypes value.
+     */
+    public List<String> supportedAggregationTypes() {
+        return this.supportedAggregationTypes;
+    }
+
+    /**
+     * Set the supportedAggregationTypes property: The supportedAggregationTypes property.
+     *
+     * @param supportedAggregationTypes the supportedAggregationTypes value to set.
+     * @return the MetricSpecification object itself.
+     */
+    public MetricSpecification withSupportedAggregationTypes(List<String> supportedAggregationTypes) {
+        this.supportedAggregationTypes = supportedAggregationTypes;
         return this;
     }
 

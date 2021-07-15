@@ -16,12 +16,15 @@ class ChangeFeedStartFromNowImpl extends ChangeFeedStartFromInternal {
 
     @Override
     public void populatePropertyBag() {
-        super.populatePropertyBag();
+        
+            super.populatePropertyBag();
 
-        setProperty(
-            this,
-            Constants.Properties.CHANGE_FEED_START_FROM_TYPE,
-            ChangeFeedStartFromTypes.NOW);
+        synchronized(this) {
+            setProperty(
+                this,
+                Constants.Properties.CHANGE_FEED_START_FROM_TYPE,
+                ChangeFeedStartFromTypes.NOW);
+        }
     }
 
     @Override

@@ -49,6 +49,13 @@ public class StaticSiteUserInvitationResponseResourceInner extends ProxyOnlyReso
         return this.invitationUrl;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public StaticSiteUserInvitationResponseResourceInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

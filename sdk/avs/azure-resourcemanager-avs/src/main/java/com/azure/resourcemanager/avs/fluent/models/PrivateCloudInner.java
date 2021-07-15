@@ -74,7 +74,7 @@ public class PrivateCloudInner extends Resource {
      * (A.B.C.D/X) where A,B,C,D are between 0 and 255, and X is between 0 and
      * 22
      */
-    @JsonProperty(value = "properties.networkBlock", required = true)
+    @JsonProperty(value = "properties.networkBlock")
     private String networkBlock;
 
     /*
@@ -120,6 +120,12 @@ public class PrivateCloudInner extends Resource {
      */
     @JsonProperty(value = "properties.nsxtCertificateThumbprint", access = JsonProperty.Access.WRITE_ONLY)
     private String nsxtCertificateThumbprint;
+
+    /*
+     * Array of cloud link IDs from other clouds that connect to this one
+     */
+    @JsonProperty(value = "properties.externalCloudLinks", access = JsonProperty.Access.WRITE_ONLY)
+    private List<String> externalCloudLinks;
 
     /**
      * Get the sku property: The private cloud SKU.
@@ -348,6 +354,15 @@ public class PrivateCloudInner extends Resource {
         return this.nsxtCertificateThumbprint;
     }
 
+    /**
+     * Get the externalCloudLinks property: Array of cloud link IDs from other clouds that connect to this one.
+     *
+     * @return the externalCloudLinks value.
+     */
+    public List<String> externalCloudLinks() {
+        return this.externalCloudLinks;
+    }
+
     /** {@inheritDoc} */
     @Override
     public PrivateCloudInner withLocation(String location) {
@@ -386,11 +401,6 @@ public class PrivateCloudInner extends Resource {
         }
         if (endpoints() != null) {
             endpoints().validate();
-        }
-        if (networkBlock() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property networkBlock in model PrivateCloudInner"));
         }
     }
 }

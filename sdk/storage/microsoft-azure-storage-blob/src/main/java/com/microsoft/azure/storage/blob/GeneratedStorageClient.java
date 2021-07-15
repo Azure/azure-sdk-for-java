@@ -14,12 +14,12 @@ import io.reactivex.annotations.NonNull;
  */
 public final class GeneratedStorageClient extends ServiceClient {
     /**
-     * The URL of the service account, container, or blob that is the targe of the desired operation.
+     * The URL of the service account, container, or blob that is the target of the desired operation.
      */
     private String url;
 
     /**
-     * Gets The URL of the service account, container, or blob that is the targe of the desired operation.
+     * Gets The URL of the service account, container, or blob that is the target of the desired operation.
      *
      * @return the url value.
      */
@@ -28,7 +28,7 @@ public final class GeneratedStorageClient extends ServiceClient {
     }
 
     /**
-     * Sets The URL of the service account, container, or blob that is the targe of the desired operation.
+     * Sets The URL of the service account, container, or blob that is the target of the desired operation.
      *
      * @param url the url value.
      * @return the service client itself.

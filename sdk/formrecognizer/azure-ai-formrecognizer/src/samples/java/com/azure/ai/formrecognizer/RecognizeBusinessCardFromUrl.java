@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Sample for recognizing business card information from an URL.
+ * Sample for recognizing business card information from a URL.
  */
 public class RecognizeBusinessCardFromUrl {
     /**
@@ -29,8 +29,9 @@ public class RecognizeBusinessCardFromUrl {
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildClient();
 
-        String businessCardUrl = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/formrecognizer"
-            + "/azure-ai-formrecognizer/src/samples/java/sample-forms/businessCards/businessCard.jpg";
+        String businessCardUrl =
+            "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/formrecognizer"
+                + "/azure-ai-formrecognizer/src/samples/resources/sample-forms/businessCards/businessCard.jpg";
 
         SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> recognizeBusinessCardPoller =
             client.beginRecognizeBusinessCardsFromUrl(businessCardUrl);

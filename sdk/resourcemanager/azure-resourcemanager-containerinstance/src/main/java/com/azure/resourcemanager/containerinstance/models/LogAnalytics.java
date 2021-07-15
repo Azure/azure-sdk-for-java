@@ -39,6 +39,12 @@ public final class LogAnalytics {
     @JsonProperty(value = "metadata")
     private Map<String, String> metadata;
 
+    /*
+     * The workspace resource id for log analytics
+     */
+    @JsonProperty(value = "workspaceResourceId")
+    private Map<String, String> workspaceResourceId;
+
     /**
      * Get the workspaceId property: The workspace id for log analytics.
      *
@@ -116,6 +122,26 @@ public final class LogAnalytics {
      */
     public LogAnalytics withMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
+        return this;
+    }
+
+    /**
+     * Get the workspaceResourceId property: The workspace resource id for log analytics.
+     *
+     * @return the workspaceResourceId value.
+     */
+    public Map<String, String> workspaceResourceId() {
+        return this.workspaceResourceId;
+    }
+
+    /**
+     * Set the workspaceResourceId property: The workspace resource id for log analytics.
+     *
+     * @param workspaceResourceId the workspaceResourceId value to set.
+     * @return the LogAnalytics object itself.
+     */
+    public LogAnalytics withWorkspaceResourceId(Map<String, String> workspaceResourceId) {
+        this.workspaceResourceId = workspaceResourceId;
         return this;
     }
 

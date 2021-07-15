@@ -10,14 +10,16 @@ import com.azure.core.util.tracing.ProcessKind;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusProcessorClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder;
 import com.azure.messaging.servicebus.implementation.models.ServiceBusProcessorClientOptions;
-import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
+import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Signal;
 import reactor.core.scheduler.Schedulers;
 
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -59,7 +61,8 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
     private final Consumer<ServiceBusReceivedMessageContext> processMessage;
     private final Consumer<ServiceBusErrorContext> processError;
     private final ServiceBusProcessorClientOptions processorOptions;
-    private final AtomicReference<Subscription> receiverSubscription = new AtomicReference<>();
+    // Use ConcurrentHashMap as a set because there is no ConcurrentHashSet.
+    private final Map<Subscription, Subscription> receiverSubscriptions = new ConcurrentHashMap<>();
     private final AtomicReference<ServiceBusReceiverAsyncClient> asyncClient = new AtomicReference<>();
     private final AtomicBoolean isRunning = new AtomicBoolean();
     private final TracerProvider tracerProvider;
@@ -139,7 +142,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
             this.scheduledExecutor = Executors.newSingleThreadScheduledExecutor();
             scheduledExecutor.scheduleWithFixedDelay(() -> {
                 if (this.asyncClient.get().isConnectionClosed()) {
-                    restartMessageReceiver();
+                    restartMessageReceiver(null);
                 }
             }, SCHEDULER_INTERVAL_IN_SECONDS, SCHEDULER_INTERVAL_IN_SECONDS, TimeUnit.SECONDS);
         }
@@ -160,10 +163,8 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
     @Override
     public synchronized void close() {
         isRunning.set(false);
-        if (receiverSubscription.get() != null) {
-            receiverSubscription.get().cancel();
-            receiverSubscription.set(null);
-        }
+        receiverSubscriptions.keySet().forEach(Subscription::cancel);
+        receiverSubscriptions.clear();
         if (scheduledExecutor != null) {
             scheduledExecutor.shutdown();
             scheduledExecutor = null;
@@ -185,19 +186,25 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
     }
 
     private synchronized void receiveMessages() {
-        if (receiverSubscription.get() != null) {
-            receiverSubscription.get().request(1);
+        if (receiverSubscriptions.size() > 0) {
+            // For the case of start -> stop -> start again
+            receiverSubscriptions.keySet().forEach(subscription -> subscription.request(1L));
             return;
         }
         ServiceBusReceiverAsyncClient receiverClient = asyncClient.get();
-        receiverClient.receiveMessagesWithContext()
-            .parallel(processorOptions.getMaxConcurrentCalls())
-            .runOn(Schedulers.boundedElastic())
-            .subscribe(new Subscriber<ServiceBusMessageContext>() {
+
+        @SuppressWarnings({"unchecked", "rawtypes"})
+        CoreSubscriber<ServiceBusMessageContext>[] subscribers = new CoreSubscriber[processorOptions.getMaxConcurrentCalls()];
+
+        for (int i = 0; i < processorOptions.getMaxConcurrentCalls(); i++) {
+            subscribers[i] = new CoreSubscriber<ServiceBusMessageContext>() {
+                private Subscription subscription = null;
+
                 @Override
                 public void onSubscribe(Subscription subscription) {
-                    receiverSubscription.set(subscription);
-                    receiverSubscription.get().request(1);
+                    this.subscription = subscription;
+                    receiverSubscriptions.put(subscription, subscription);
+                    subscription.request(1);
                 }
 
                 @Override
@@ -229,7 +236,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
                     }
                     if (isRunning.get()) {
                         logger.verbose("Requesting 1 more message from upstream");
-                        receiverSubscription.get().request(1);
+                        subscription.request(1);
                     }
                 }
 
@@ -238,7 +245,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
                     logger.info("Error receiving messages.", throwable);
                     handleError(throwable);
                     if (isRunning.get()) {
-                        restartMessageReceiver();
+                        restartMessageReceiver(subscription);
                     }
                 }
 
@@ -246,10 +253,16 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
                 public void onComplete() {
                     logger.info("Completed receiving messages.");
                     if (isRunning.get()) {
-                        restartMessageReceiver();
+                        restartMessageReceiver(subscription);
                     }
                 }
-            });
+            };
+        }
+
+        receiverClient.receiveMessagesWithContext()
+            .parallel(processorOptions.getMaxConcurrentCalls(), 1)
+            .runOn(Schedulers.boundedElastic(), 1)
+            .subscribe(subscribers);
     }
 
     private void endProcessTracingSpan(Context processSpanContext, Signal<Void> signal) {
@@ -267,7 +280,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
             try {
                 close.close();
             } catch (Exception exception) {
-                logger.error("endTracingSpan().close() failed with an error %s", exception);
+                logger.error("endTracingSpan().close() failed with an error {}", exception);
             }
 
         } else {
@@ -320,11 +333,15 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
         }
     }
 
-    private void restartMessageReceiver() {
+    private synchronized void restartMessageReceiver(Subscription requester) {
         if (!isRunning()) {
             return;
         }
-        receiverSubscription.set(null);
+        if (requester != null && !receiverSubscriptions.containsKey(requester)) {
+            return;
+        }
+        receiverSubscriptions.keySet().forEach(Subscription::cancel);
+        receiverSubscriptions.clear();
         ServiceBusReceiverAsyncClient receiverClient = asyncClient.get();
         receiverClient.close();
         ServiceBusReceiverAsyncClient newReceiverClient = this.receiverBuilder == null

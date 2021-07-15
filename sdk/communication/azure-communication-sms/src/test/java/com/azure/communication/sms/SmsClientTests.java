@@ -132,7 +132,8 @@ public class SmsClientTests extends SmsTestBase {
         try {
             SmsSendResult response = client.send("+18007342577", TO_PHONE_NUMBER, MESSAGE);
         } catch (Exception exception) {
-            assertEquals(404, ((HttpResponseException) exception).getResponse().getStatusCode());
+            assertNotNull(((HttpResponseException) exception).getResponse().getStatusCode());
+            assertEquals(401, ((HttpResponseException) exception).getResponse().getStatusCode());
         }
     }
 
@@ -162,6 +163,19 @@ public class SmsClientTests extends SmsTestBase {
         assertNotEquals(firstResponse.getMessageId(), secondResponse.getMessageId());
         assertHappyPath(firstResponse);
         assertHappyPath(secondResponse);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void checkForRepeatabilityOptions(HttpClient httpClient) {
+        // Arrange
+        SmsClientBuilder builder = getSmsClientUsingConnectionString(httpClient);
+        client = setupSyncClient(builder, "checkForRepeatabilityOptions");
+        // Action & Assert
+        Response<Iterable<SmsSendResult>> response = client.sendWithResponse(FROM_PHONE_NUMBER, Arrays.asList(TO_PHONE_NUMBER, TO_PHONE_NUMBER), MESSAGE, null, Context.NONE);
+        String bodyRequest = new String(response.getRequest().getBody().blockLast().array());
+        assertTrue(bodyRequest.contains("repeatabilityRequestId"));
+        assertTrue(bodyRequest.contains("repeatabilityFirstSent"));
     }
 
     private SmsClient setupSyncClient(SmsClientBuilder builder, String testName) {

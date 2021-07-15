@@ -242,8 +242,8 @@ public final class AzureMonitorExporterBuilder {
         // Customize serializer to use NDJSON
         final SimpleModule ndjsonModule = new SimpleModule("Ndjson List Serializer");
         JacksonAdapter jacksonAdapter = new JacksonAdapter();
-        jacksonAdapter.serializer().registerModule(ndjsonModule);
         ndjsonModule.addSerializer(new NdJsonSerializer());
+        jacksonAdapter.serializer().registerModule(ndjsonModule);
         restServiceClientBuilder.serializerAdapter(jacksonAdapter);
         if (this.credential != null) {
             // Add authentication policy to HttpPipeline

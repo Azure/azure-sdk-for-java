@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.ConnectionMode;
-import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
@@ -31,9 +29,7 @@ import java.util.Set;
 @JsonSerialize(using = ClientSideRequestStatistics.ClientSideRequestStatisticsSerializer.class)
 public class ClientSideRequestStatistics {
     private static final int MAX_SUPPLEMENTAL_REQUESTS_FOR_TO_STRING = 10;
-    private final DiagnosticsClientContext clientContext;
     private final DiagnosticsClientContext diagnosticsClientContext;
-    private ConnectionMode connectionMode;
 
     private List<StoreResponseStatistics> responseStatisticsList;
     private List<StoreResponseStatistics> supplementalResponseStatisticsList;
@@ -52,7 +48,6 @@ public class ClientSideRequestStatistics {
 
     public ClientSideRequestStatistics(DiagnosticsClientContext diagnosticsClientContext) {
         this.diagnosticsClientContext = diagnosticsClientContext;
-        this.clientContext = null;
         this.requestStartTimeUTC = Instant.now();
         this.requestEndTimeUTC = Instant.now();
         this.responseStatisticsList = new ArrayList<>();
@@ -61,19 +56,26 @@ public class ClientSideRequestStatistics {
         this.contactedReplicas = Collections.synchronizedList(new ArrayList<>());
         this.failedReplicas = Collections.synchronizedSet(new HashSet<>());
         this.regionsContacted = Collections.synchronizedSet(new HashSet<>());
-        this.connectionMode = ConnectionMode.DIRECT;
         this.metadataDiagnosticsContext = new MetadataDiagnosticsContext();
         this.serializationDiagnosticsContext = new SerializationDiagnosticsContext();
+        this.retryContext = new RetryContext();
     }
 
     public Duration getDuration() {
         return Duration.between(requestStartTimeUTC, requestEndTimeUTC);
     }
 
+    public Instant getRequestStartTimeUTC() {
+        return requestStartTimeUTC;
+    }
+
+    public DiagnosticsClientContext getDiagnosticsClientContext() {
+        return diagnosticsClientContext;
+    }
+
     public void recordResponse(RxDocumentServiceRequest request, StoreResult storeResult) {
         Objects.requireNonNull(request, "request is required and cannot be null.");
         Instant responseTime = Instant.now();
-        connectionMode = ConnectionMode.DIRECT;
 
         StoreResponseStatistics storeResponseStatistics = new StoreResponseStatistics();
         storeResponseStatistics.requestResponseTimeUTC = responseTime;
@@ -83,7 +85,6 @@ public class ClientSideRequestStatistics {
 
         URI locationEndPoint = null;
         if (request.requestContext != null) {
-            this.retryContext = new RetryContext(request.requestContext.retryContext);
             if (request.requestContext.locationEndpointToRoute != null) {
                 locationEndPoint = request.requestContext.locationEndpointToRoute;
             }
@@ -111,8 +112,6 @@ public class ClientSideRequestStatistics {
         RxDocumentServiceRequest rxDocumentServiceRequest, StoreResponse storeResponse,
         CosmosException exception) {
         Instant responseTime = Instant.now();
-        connectionMode = ConnectionMode.GATEWAY;
-
 
         synchronized (this) {
             if (responseTime.isAfter(this.requestEndTimeUTC)) {
@@ -122,11 +121,8 @@ public class ClientSideRequestStatistics {
             URI locationEndPoint = null;
             if (rxDocumentServiceRequest != null && rxDocumentServiceRequest.requestContext != null) {
                 locationEndPoint = rxDocumentServiceRequest.requestContext.locationEndpointToRoute;
-                if (rxDocumentServiceRequest.requestContext.retryContext != null) {
-                    rxDocumentServiceRequest.requestContext.retryContext.retryEndTime = Instant.now();
-                    this.retryContext = new RetryContext(rxDocumentServiceRequest.requestContext.retryContext);
-                }
             }
+            this.recordRetryContextEndTime();
 
             if (locationEndPoint != null) {
                 this.regionsContacted.add(locationEndPoint);
@@ -134,6 +130,7 @@ public class ClientSideRequestStatistics {
             this.gatewayStatistics = new GatewayStatistics();
             if (rxDocumentServiceRequest != null) {
                 this.gatewayStatistics.operationType = rxDocumentServiceRequest.getOperationType();
+                this.gatewayStatistics.resourceType = rxDocumentServiceRequest.getResourceType();
             }
             if (storeResponse != null) {
                 this.gatewayStatistics.statusCode = storeResponse.getStatus();
@@ -143,6 +140,7 @@ public class ClientSideRequestStatistics {
                 this.gatewayStatistics.requestCharge = storeResponse
                                                            .getHeaderValue(HttpConstants.HttpHeaders.REQUEST_CHARGE);
                 this.gatewayStatistics.requestTimeline = DirectBridgeInternal.getRequestTimeline(storeResponse);
+                this.gatewayStatistics.partitionKeyRangeId = storeResponse.getPartitionKeyRangeId();
             } else if (exception != null) {
                 this.gatewayStatistics.statusCode = exception.getStatusCode();
                 this.gatewayStatistics.subStatusCode = exception.getSubStatusCode();
@@ -225,11 +223,28 @@ public class ClientSideRequestStatistics {
         return this.serializationDiagnosticsContext;
     }
 
-    public void recordRetryContext(RxDocumentServiceRequest request) {
-        if(request.requestContext.retryContext != null) {
-            request.requestContext.retryContext.retryEndTime =  Instant.now();
-            this.retryContext = new RetryContext(request.requestContext.retryContext);
-        }
+    public void recordRetryContextEndTime() {
+        this.retryContext.updateEndTime();
+    }
+
+    public RetryContext getRetryContext() {
+        return retryContext;
+    }
+
+    public List<StoreResponseStatistics> getResponseStatisticsList() {
+        return responseStatisticsList;
+    }
+
+    public List<StoreResponseStatistics> getSupplementalResponseStatisticsList() {
+        return supplementalResponseStatisticsList;
+    }
+
+    public Map<String, AddressResolutionStatistics> getAddressResolutionStatistics() {
+        return addressResolutionStatistics;
+    }
+
+    public GatewayStatistics getGatewayStatistics() {
+        return gatewayStatistics;
     }
 
     public static class StoreResponseStatistics {
@@ -241,6 +256,14 @@ public class ClientSideRequestStatistics {
         ResourceType requestResourceType;
         @JsonSerialize
         OperationType requestOperationType;
+
+        public StoreResult getStoreResult() {
+            return storeResult;
+        }
+
+        public Instant getRequestResponseTimeUTC() {
+            return requestResponseTimeUTC;
+        }
     }
 
     private static class SystemInformation {
@@ -284,22 +307,8 @@ public class ClientSideRequestStatistics {
             generator.writeNumberField("requestLatencyInMs", requestLatency);
             generator.writeStringField("requestStartTimeUTC", DiagnosticsInstantSerializer.fromInstant(statistics.requestStartTimeUTC));
             generator.writeStringField("requestEndTimeUTC", DiagnosticsInstantSerializer.fromInstant(statistics.requestEndTimeUTC));
-            generator.writeObjectField("connectionMode", statistics.connectionMode);
             generator.writeObjectField("responseStatisticsList", statistics.responseStatisticsList);
-            int supplementalResponseStatisticsListCount = statistics.supplementalResponseStatisticsList.size();
-            int initialIndex =
-                Math.max(supplementalResponseStatisticsListCount - MAX_SUPPLEMENTAL_REQUESTS_FOR_TO_STRING, 0);
-            if (initialIndex != 0) {
-                List<StoreResponseStatistics> subList = statistics.supplementalResponseStatisticsList
-                                                            .subList(initialIndex,
-                                                                     supplementalResponseStatisticsListCount);
-                generator.writeObjectField("supplementalResponseStatisticsList", subList);
-            } else {
-                generator
-                    .writeObjectField("supplementalResponseStatisticsList",
-                                      statistics.supplementalResponseStatisticsList);
-            }
-
+            generator.writeObjectField("supplementalResponseStatisticsList", getCappedSupplementalResponseStatisticsList(statistics.supplementalResponseStatisticsList));
             generator.writeObjectField("addressResolutionStatistics", statistics.addressResolutionStatistics);
             generator.writeObjectField("regionsContacted", statistics.regionsContacted);
             generator.writeObjectField("retryContext", statistics.retryContext);
@@ -308,17 +317,7 @@ public class ClientSideRequestStatistics {
             generator.writeObjectField("gatewayStatistics", statistics.gatewayStatistics);
 
             try {
-                SystemInformation systemInformation = new SystemInformation();
-                Runtime runtime = Runtime.getRuntime();
-                long totalMemory = runtime.totalMemory() / 1024;
-                long freeMemory = runtime.freeMemory() / 1024;
-                long maxMemory = runtime.maxMemory() / 1024;
-                systemInformation.usedMemory = totalMemory - freeMemory + " KB";
-                systemInformation.availableMemory = (maxMemory - (totalMemory - freeMemory)) + " KB";
-                systemInformation.availableProcessors = runtime.availableProcessors();
-
-                // TODO: other system related info also can be captured using a similar approach
-                systemInformation.systemCpuLoad = CpuMemoryMonitor.getCpuLoad().toString();
+                SystemInformation systemInformation = fetchSystemInformation();
                 generator.writeObjectField("systemInformation", systemInformation);
             } catch (Exception e) {
                 // Error while evaluating system information, do nothing
@@ -329,7 +328,20 @@ public class ClientSideRequestStatistics {
         }
     }
 
-    private static class AddressResolutionStatistics {
+    public static List<StoreResponseStatistics> getCappedSupplementalResponseStatisticsList(List<StoreResponseStatistics> supplementalResponseStatisticsList) {
+        int supplementalResponseStatisticsListCount = supplementalResponseStatisticsList.size();
+        int initialIndex =
+            Math.max(supplementalResponseStatisticsListCount - MAX_SUPPLEMENTAL_REQUESTS_FOR_TO_STRING, 0);
+        if (initialIndex != 0) {
+            List<StoreResponseStatistics> subList = supplementalResponseStatisticsList
+                .subList(initialIndex,
+                    supplementalResponseStatisticsListCount);
+            return subList;
+        }
+        return supplementalResponseStatisticsList;
+    }
+
+    public static class AddressResolutionStatistics {
         @JsonSerialize(using = DiagnosticsInstantSerializer.class)
         Instant startTimeUTC;
         @JsonSerialize(using = DiagnosticsInstantSerializer.class)
@@ -344,15 +356,21 @@ public class ClientSideRequestStatistics {
         // indicating background addressResolution is still inflight
         @JsonSerialize
         boolean inflightRequest = true;
+
+        public Instant getStartTimeUTC() {
+            return startTimeUTC;
+        }
     }
 
-    private static class GatewayStatistics {
+    public static class GatewayStatistics {
         String sessionToken;
         OperationType operationType;
+        ResourceType resourceType;
         int statusCode;
         int subStatusCode;
         String requestCharge;
         RequestTimeline requestTimeline;
+        String partitionKeyRangeId;
 
         public String getSessionToken() {
             return sessionToken;
@@ -377,5 +395,28 @@ public class ClientSideRequestStatistics {
         public RequestTimeline getRequestTimeline() {
             return requestTimeline;
         }
+
+        public ResourceType getResourceType() {
+            return resourceType;
+        }
+
+        public String getPartitionKeyRangeId() {
+            return partitionKeyRangeId;
+        }
+    }
+
+    public static SystemInformation fetchSystemInformation() {
+        SystemInformation systemInformation = new SystemInformation();
+        Runtime runtime = Runtime.getRuntime();
+        long totalMemory = runtime.totalMemory() / 1024;
+        long freeMemory = runtime.freeMemory() / 1024;
+        long maxMemory = runtime.maxMemory() / 1024;
+        systemInformation.usedMemory = totalMemory - freeMemory + " KB";
+        systemInformation.availableMemory = (maxMemory - (totalMemory - freeMemory)) + " KB";
+        systemInformation.availableProcessors = runtime.availableProcessors();
+
+        // TODO: other system related info also can be captured using a similar approach
+        systemInformation.systemCpuLoad = CpuMemoryMonitor.getCpuLoad().toString();
+        return systemInformation;
     }
 }

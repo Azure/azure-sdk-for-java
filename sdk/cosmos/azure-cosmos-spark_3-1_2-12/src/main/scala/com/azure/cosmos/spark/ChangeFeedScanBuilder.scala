@@ -4,6 +4,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
+import com.azure.cosmos.spark.diagnostics.LoggerHelper
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.connector.read.{Scan, ScanBuilder, SupportsPushDownFilters, SupportsPushDownRequiredColumns}
@@ -20,14 +21,16 @@ private case class ChangeFeedScanBuilder
   session: SparkSession,
   config: CaseInsensitiveStringMap,
   inputSchema: StructType,
-  cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot]
+  cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot],
+  diagnosticsConfig: DiagnosticsConfig
 )
   extends ScanBuilder
     with SupportsPushDownFilters
-    with SupportsPushDownRequiredColumns
-    with CosmosLoggingTrait {
+    with SupportsPushDownRequiredColumns {
 
-  logTrace(s"Instantiated ${this.getClass.getSimpleName}")
+  @transient private lazy val log = LoggerHelper.getLogger(diagnosticsConfig, this.getClass)
+
+  log.logTrace(s"Instantiated ${this.getClass.getSimpleName}")
 
   /**
    * Pushes down filters, and returns filters that need to be evaluated after scanning.
@@ -51,7 +54,8 @@ private case class ChangeFeedScanBuilder
       session,
       inputSchema,
       config.asScala.toMap,
-      cosmosClientStateHandle)
+      cosmosClientStateHandle,
+      diagnosticsConfig)
   }
 
   /**

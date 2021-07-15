@@ -21,6 +21,12 @@ public final class SlowRequestsBasedTrigger {
     private String timeTaken;
 
     /*
+     * Request Path.
+     */
+    @JsonProperty(value = "path")
+    private String path;
+
+    /*
      * Request Count.
      */
     @JsonProperty(value = "count")
@@ -49,6 +55,26 @@ public final class SlowRequestsBasedTrigger {
      */
     public SlowRequestsBasedTrigger withTimeTaken(String timeTaken) {
         this.timeTaken = timeTaken;
+        return this;
+    }
+
+    /**
+     * Get the path property: Request Path.
+     *
+     * @return the path value.
+     */
+    public String path() {
+        return this.path;
+    }
+
+    /**
+     * Set the path property: Request Path.
+     *
+     * @param path the path value to set.
+     * @return the SlowRequestsBasedTrigger object itself.
+     */
+    public SlowRequestsBasedTrigger withPath(String path) {
+        this.path = path;
         return this;
     }
 

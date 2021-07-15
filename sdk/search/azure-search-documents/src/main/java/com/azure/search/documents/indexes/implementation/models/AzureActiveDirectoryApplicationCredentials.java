@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -22,7 +21,7 @@ public final class AzureActiveDirectoryApplicationCredentials {
      * rest. The Application ID should not be confused with the Object ID for
      * your AAD Application.
      */
-    @JsonProperty(value = "applicationId", required = true)
+    @JsonProperty(value = "applicationId")
     private String applicationId;
 
     /*
@@ -30,17 +29,6 @@ public final class AzureActiveDirectoryApplicationCredentials {
      */
     @JsonProperty(value = "applicationSecret")
     private String applicationSecret;
-
-    /**
-     * Creates an instance of AzureActiveDirectoryApplicationCredentials class.
-     *
-     * @param applicationId the applicationId value to set.
-     */
-    @JsonCreator
-    public AzureActiveDirectoryApplicationCredentials(
-            @JsonProperty(value = "applicationId", required = true) String applicationId) {
-        this.applicationId = applicationId;
-    }
 
     /**
      * Get the applicationId property: An AAD Application ID that was granted the required access permissions to the
@@ -51,6 +39,19 @@ public final class AzureActiveDirectoryApplicationCredentials {
      */
     public String getApplicationId() {
         return this.applicationId;
+    }
+
+    /**
+     * Set the applicationId property: An AAD Application ID that was granted the required access permissions to the
+     * Azure Key Vault that is to be used when encrypting your data at rest. The Application ID should not be confused
+     * with the Object ID for your AAD Application.
+     *
+     * @param applicationId the applicationId value to set.
+     * @return the AzureActiveDirectoryApplicationCredentials object itself.
+     */
+    public AzureActiveDirectoryApplicationCredentials setApplicationId(String applicationId) {
+        this.applicationId = applicationId;
+        return this;
     }
 
     /**

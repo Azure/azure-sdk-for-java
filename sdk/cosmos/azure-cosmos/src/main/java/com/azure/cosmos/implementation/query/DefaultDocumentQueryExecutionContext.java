@@ -146,14 +146,18 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
         IPartitionKeyRangeCache partitionKeyRangeCache =  this.client.getPartitionKeyRangeCache();
         DocumentClientRetryPolicy retryPolicyInstance = this.client.getResetSessionTokenRetryPolicy().getRequestPolicy();
 
-        retryPolicyInstance = new InvalidPartitionExceptionRetryPolicy(collectionCache, retryPolicyInstance, resourceLink, cosmosQueryRequestOptions);
+        retryPolicyInstance = new InvalidPartitionExceptionRetryPolicy(
+            collectionCache,
+            retryPolicyInstance,
+            resourceLink,
+            ModelBridgeInternal.getPropertiesFromQueryRequestOptions(this.cosmosQueryRequestOptions));
         if (super.resourceTypeEnum.isPartitioned()) {
             retryPolicyInstance = new PartitionKeyRangeGoneRetryPolicy(this.diagnosticsClientContext,
                     collectionCache,
                     partitionKeyRangeCache,
                     PathsHelper.getCollectionPath(super.resourceLink),
                     retryPolicyInstance,
-                    cosmosQueryRequestOptions);
+                    ModelBridgeInternal.getPropertiesFromQueryRequestOptions(this.cosmosQueryRequestOptions));
         }
 
         final DocumentClientRetryPolicy finalRetryPolicyInstance = retryPolicyInstance;
@@ -182,7 +186,9 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
                                                     this.fetchExecutionRangeAccumulator.getExecutionRanges(),
                                                     Arrays.asList(schedulingTimeSpanMap)),
                                             tFeedResponse.getActivityId());
-                            BridgeInternal.putQueryMetricsIntoMap(tFeedResponse, DEFAULT_PARTITION_RANGE, qm);
+                            String pkrId = tFeedResponse.getResponseHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID);
+                            String queryMetricKey = DEFAULT_PARTITION_RANGE + ",pkrId:" + pkrId;
+                            BridgeInternal.putQueryMetricsIntoMap(tFeedResponse, queryMetricKey, qm);
                         }
                         return tFeedResponse;
                     });

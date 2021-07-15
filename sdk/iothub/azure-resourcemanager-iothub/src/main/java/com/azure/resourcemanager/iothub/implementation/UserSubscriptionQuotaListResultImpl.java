@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.iothub.implementation;
 
-import com.azure.resourcemanager.iothub.IotHubManager;
 import com.azure.resourcemanager.iothub.fluent.models.UserSubscriptionQuotaListResultInner;
 import com.azure.resourcemanager.iothub.models.UserSubscriptionQuota;
 import com.azure.resourcemanager.iothub.models.UserSubscriptionQuotaListResult;
@@ -14,10 +13,11 @@ import java.util.List;
 public final class UserSubscriptionQuotaListResultImpl implements UserSubscriptionQuotaListResult {
     private UserSubscriptionQuotaListResultInner innerObject;
 
-    private final IotHubManager serviceManager;
+    private final com.azure.resourcemanager.iothub.IotHubManager serviceManager;
 
     UserSubscriptionQuotaListResultImpl(
-        UserSubscriptionQuotaListResultInner innerObject, IotHubManager serviceManager) {
+        UserSubscriptionQuotaListResultInner innerObject,
+        com.azure.resourcemanager.iothub.IotHubManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -39,7 +39,7 @@ public final class UserSubscriptionQuotaListResultImpl implements UserSubscripti
         return this.innerObject;
     }
 
-    private IotHubManager manager() {
+    private com.azure.resourcemanager.iothub.IotHubManager manager() {
         return this.serviceManager;
     }
 }

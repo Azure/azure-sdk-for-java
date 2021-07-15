@@ -4,7 +4,7 @@ languages:
   - java
 products:
   - azure
-  - azure-data-schemaregistry
+  - azure-event-hubs
 urlFragment: schemaregistry-samples
 ---
 
@@ -35,11 +35,11 @@ See [Next steps][sdk_readme_next_steps].
 This project welcomes contributions and suggestions. See [Contributing][sdk_readme_contributing] for guidelines.
 
 <!-- Links -->
-[sdk_readme_key_concepts]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/schemaregistry/azure-data-schemaregistry/README.md#key-concepts
-[sdk_readme_getting_started]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/schemaregistry/azure-data-schemaregistry/README.md#getting-started
-[sdk_readme_troubleshooting]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/schemaregistry/azure-data-schemaregistry/README.md#troubleshooting
-[sdk_readme_next_steps]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/schemaregistry/azure-data-schemaregistry/README.md#next-steps
-[sdk_readme_contributing]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/schemaregistry/azure-data-schemaregistry/README.md#contributing
+[sdk_readme_key_concepts]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/schemaregistry/azure-data-schemaregistry/README.md#key-concepts
+[sdk_readme_getting_started]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/schemaregistry/azure-data-schemaregistry/README.md#getting-started
+[sdk_readme_troubleshooting]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/schemaregistry/azure-data-schemaregistry/README.md#troubleshooting
+[sdk_readme_next_steps]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/schemaregistry/azure-data-schemaregistry/README.md#next-steps
+[sdk_readme_contributing]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/schemaregistry/azure-data-schemaregistry/README.md#contributing
 [sample_register_schema]: ./java/com/azure/data/schemaregistry/RegisterSchemaSample.java
 [sample_get_schema]: ./java/com/azure/data/schemaregistry/GetSchemaSample.java
 [sample_get_schema_id]: ./java/com/azure/data/schemaregistry/GetSchemaIdSample.java

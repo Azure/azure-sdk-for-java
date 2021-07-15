@@ -32,6 +32,13 @@ public class SnapshotInner extends ProxyOnlyResource {
         return this.time;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public SnapshotInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

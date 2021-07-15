@@ -47,6 +47,17 @@ public interface RecommendationsClient {
     /**
      * Description for List all recommendations for a subscription.
      *
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of recommendations.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<RecommendationInner> list();
+
+    /**
+     * Description for List all recommendations for a subscription.
+     *
      * @param featured Specify &lt;code&gt;true&lt;/code&gt; to return only the most critical recommendations. The
      *     default is &lt;code&gt;false&lt;/code&gt;, which returns all recommendations.
      * @param filter Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq
@@ -61,17 +72,6 @@ public interface RecommendationsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RecommendationInner> list(Boolean featured, String filter, Context context);
-
-    /**
-     * Description for List all recommendations for a subscription.
-     *
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<RecommendationInner> list();
 
     /**
      * Description for Reset all recommendation opt-out settings for a subscription.
@@ -210,6 +210,21 @@ public interface RecommendationsClient {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param hostingEnvironmentName Name of the hosting environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of recommendations.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<RecommendationInner> listHistoryForHostingEnvironment(
+        String resourceGroupName, String hostingEnvironmentName);
+
+    /**
+     * Description for Get past recommendations for an app, optionally specified by the time range.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param hostingEnvironmentName Name of the hosting environment.
      * @param expiredOnly Specify &lt;code&gt;false&lt;/code&gt; to return all recommendations. The default is
      *     &lt;code&gt;true&lt;/code&gt;, which returns only expired recommendations.
      * @param filter Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq
@@ -227,22 +242,7 @@ public interface RecommendationsClient {
         String resourceGroupName, String hostingEnvironmentName, Boolean expiredOnly, String filter, Context context);
 
     /**
-     * Description for Get past recommendations for an app, optionally specified by the time range.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param hostingEnvironmentName Name of the hosting environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<RecommendationInner> listHistoryForHostingEnvironment(
-        String resourceGroupName, String hostingEnvironmentName);
-
-    /**
-     * Description for Get all recommendations for an app.
+     * Description for Get all recommendations for a hosting environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param hostingEnvironmentName Name of the app.
@@ -261,7 +261,7 @@ public interface RecommendationsClient {
         String resourceGroupName, String hostingEnvironmentName, Boolean featured, String filter);
 
     /**
-     * Description for Get all recommendations for an app.
+     * Description for Get all recommendations for a hosting environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param hostingEnvironmentName Name of the app.
@@ -276,7 +276,22 @@ public interface RecommendationsClient {
         String resourceGroupName, String hostingEnvironmentName);
 
     /**
-     * Description for Get all recommendations for an app.
+     * Description for Get all recommendations for a hosting environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param hostingEnvironmentName Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of recommendations.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<RecommendationInner> listRecommendedRulesForHostingEnvironment(
+        String resourceGroupName, String hostingEnvironmentName);
+
+    /**
+     * Description for Get all recommendations for a hosting environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param hostingEnvironmentName Name of the app.
@@ -294,21 +309,6 @@ public interface RecommendationsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RecommendationInner> listRecommendedRulesForHostingEnvironment(
         String resourceGroupName, String hostingEnvironmentName, Boolean featured, String filter, Context context);
-
-    /**
-     * Description for Get all recommendations for an app.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param hostingEnvironmentName Name of the app.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<RecommendationInner> listRecommendedRulesForHostingEnvironment(
-        String resourceGroupName, String hostingEnvironmentName);
 
     /**
      * Description for Disable all recommendations for an app.
@@ -651,6 +651,20 @@ public interface RecommendationsClient {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of recommendations.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<RecommendationInner> listHistoryForWebApp(String resourceGroupName, String siteName);
+
+    /**
+     * Description for Get past recommendations for an app, optionally specified by the time range.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param siteName Name of the app.
      * @param expiredOnly Specify &lt;code&gt;false&lt;/code&gt; to return all recommendations. The default is
      *     &lt;code&gt;true&lt;/code&gt;, which returns only expired recommendations.
      * @param filter Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq
@@ -666,20 +680,6 @@ public interface RecommendationsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RecommendationInner> listHistoryForWebApp(
         String resourceGroupName, String siteName, Boolean expiredOnly, String filter, Context context);
-
-    /**
-     * Description for Get past recommendations for an app, optionally specified by the time range.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param siteName Name of the app.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<RecommendationInner> listHistoryForWebApp(String resourceGroupName, String siteName);
 
     /**
      * Description for Get all recommendations for an app.
@@ -719,6 +719,20 @@ public interface RecommendationsClient {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of recommendations.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<RecommendationInner> listRecommendedRulesForWebApp(String resourceGroupName, String siteName);
+
+    /**
+     * Description for Get all recommendations for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param siteName Name of the app.
      * @param featured Specify &lt;code&gt;true&lt;/code&gt; to return only the most critical recommendations. The
      *     default is &lt;code&gt;false&lt;/code&gt;, which returns all recommendations.
      * @param filter Return only channels specified in the filter. Filter is specified by using OData syntax. Example:
@@ -733,20 +747,6 @@ public interface RecommendationsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RecommendationInner> listRecommendedRulesForWebApp(
         String resourceGroupName, String siteName, Boolean featured, String filter, Context context);
-
-    /**
-     * Description for Get all recommendations for an app.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param siteName Name of the app.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<RecommendationInner> listRecommendedRulesForWebApp(String resourceGroupName, String siteName);
 
     /**
      * Description for Disable all recommendations for an app.

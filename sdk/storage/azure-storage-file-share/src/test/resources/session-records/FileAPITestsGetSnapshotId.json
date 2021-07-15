@@ -1,25 +1,65 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://gaprastg71.file.core.windows.net/fileapitestsgetsnapshotidfileapitestsgetsnapshotid96c024289?restype=share",
+    "Uri" : "https://REDACTED.file.core.windows.net/12f8406e12f8406eecb1405340578d62d70743e187?restype=share",
     "Headers" : {
-      "x-ms-version" : "2019-07-07",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "e201d912-6e0b-440f-af3f-c9e0f280b553"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "3c32c7bf-f6b7-4178-97be-35f0161b2740"
     },
     "Response" : {
-      "x-ms-version" : "2019-07-07",
+      "content-length" : "0",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D77911D7A15B6D",
-      "Last-Modified" : "Wed, 04 Dec 2019 23:29:43 GMT",
+      "eTag" : "0x8D910031C187334",
+      "Last-Modified" : "Wed, 05 May 2021 20:19:39 GMT",
       "retry-after" : "0",
-      "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "77a675bf-f01a-002d-58fa-aa2148000000",
-      "Date" : "Wed, 04 Dec 2019 23:29:42 GMT",
-      "x-ms-client-request-id" : "e201d912-6e0b-440f-af3f-c9e0f280b553"
+      "x-ms-request-id" : "f606c1fe-201a-004e-28eb-41e439000000",
+      "x-ms-client-request-id" : "3c32c7bf-f6b7-4178-97be-35f0161b2740",
+      "Date" : "Wed, 05 May 2021 20:19:38 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.file.core.windows.net?comp=list&prefix=12f8406e&include=",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "269d6368-7516-4ff7-929f-ddb38b8f9584"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2020-06-12",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "03a9d7a0-001a-0004-80eb-4147b6000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://kasobolcanadacentral.file.core.windows.net/\"><Prefix>12f8406e</Prefix><Shares><Share><Name>12f8406e12f8406eecb1405340578d62d70743e187</Name><Properties><Last-Modified>Wed, 05 May 2021 20:19:39 GMT</Last-Modified><Etag>\"0x8D910031C187334\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><Quota>5120</Quota><AccessTier>TransactionOptimized</AccessTier><AccessTierChangeTime>Wed, 05 May 2021 20:19:39 GMT</AccessTierChangeTime><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride></Properties></Share></Shares><NextMarker /></EnumerationResults>",
+      "x-ms-client-request-id" : "269d6368-7516-4ff7-929f-ddb38b8f9584",
+      "Date" : "Wed, 05 May 2021 20:19:39 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.file.core.windows.net/12f8406e12f8406eecb1405340578d62d70743e187?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "a8366dce-8d80-48a1-9791-d7f420267b0e"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2020-06-12",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "f2c5a68e-601a-004f-18eb-41bbe5000000",
+      "x-ms-client-request-id" : "a8366dce-8d80-48a1-9791-d7f420267b0e",
+      "Date" : "Wed, 05 May 2021 20:19:38 GMT"
     },
     "Exception" : null
   } ],
-  "variables" : [ "fileapitestsgetsnapshotidfileapitestsgetsnapshotid96c024289", "fileapitestsgetsnapshotidfileapitestsgetsnapshotid96c867235" ]
+  "variables" : [ "12f8406e12f8406eecb1405340578d62d70743e187", "12f8406e12f8406eecb2901282c6333aa4584e568d" ]
 }

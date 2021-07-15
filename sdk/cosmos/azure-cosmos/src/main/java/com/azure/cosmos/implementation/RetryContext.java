@@ -7,43 +7,57 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class RetryContext {
-
     @JsonIgnore
-    public List<int[]> directRetrySpecificStatusAndSubStatusCodes;
+    private volatile Instant retryStartTime;
     @JsonIgnore
-    public List<int[]> genericRetrySpecificStatusAndSubStatusCodes;
+    private volatile Instant retryEndTime;
 
-    @JsonIgnore
-    public Instant retryStartTime;
-    @JsonIgnore
-    public Instant retryEndTime;
+    private List<int[]> statusAndSubStatusCodes;
 
-    public int retryCount;
-
-    public List<int[]> statusAndSubStatusCodes;
-
-    public RetryContext() {
-    }
-
-    public RetryContext(RetryContext retryContext) {
-        if (retryContext != null) {
-            this.retryCount = retryContext.retryCount;
-            this.statusAndSubStatusCodes = retryContext.statusAndSubStatusCodes;
-            if(this.retryStartTime == null) {
-                this.retryStartTime = retryContext.retryStartTime;
-            }
-            this.retryEndTime = retryContext.retryEndTime;
+    public void addStatusAndSubStatusCode(int statusCode, int subStatusCode) {
+        if (statusAndSubStatusCodes == null) {
+            statusAndSubStatusCodes = Collections.synchronizedList(new ArrayList<>());
         }
+        int[] statusAndSubStatusCode = {statusCode, subStatusCode};
+        statusAndSubStatusCodes.add(statusAndSubStatusCode);
     }
 
-    public long getRetryLatency(){
-        if(this.retryStartTime != null && this.retryEndTime != null) {
+    public List<int[]> getStatusAndSubStatusCodes() {
+        return statusAndSubStatusCodes;
+    }
+
+    public int getRetryCount() {
+        if (this.statusAndSubStatusCodes != null) {
+            return this.statusAndSubStatusCodes.size();
+        }
+
+        return 0;
+    }
+
+    public long getRetryLatency() {
+        if (this.retryStartTime != null && this.retryEndTime != null && this.statusAndSubStatusCodes != null) {
             return Duration.between(this.retryStartTime, this.retryEndTime).toMillis();
         } else {
             return 0;
         }
+    }
+
+    public void updateEndTime() {
+        this.retryEndTime = Instant.now();
+    }
+
+    public void captureStartTimeIfNotSet() {
+        if (this.retryStartTime == null) {
+            this.retryStartTime = Instant.now();
+        }
+    }
+
+    public Instant getRetryStartTime() {
+        return retryStartTime;
     }
 }

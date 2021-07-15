@@ -27,7 +27,7 @@ import static org.springframework.messaging.support.NativeMessageHeaderAccessor.
  *
  * @author Warren Zhu
  */
-public class EventHubMessageConverter extends AbstractAzureMessageConverter<EventData> {
+public class EventHubMessageConverter extends AbstractAzureMessageConverter<EventData, EventData> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubMessageConverter.class);
 
@@ -86,6 +86,7 @@ public class EventHubMessageConverter extends AbstractAzureMessageConverter<Even
 
     private Map<String, Object> getSystemProperties(EventData azureMessage) {
         Map<String, Object> result = new HashMap<>();
+        result.putAll(azureMessage.getSystemProperties());
         result.put(EventHubHeaders.ENQUEUED_TIME, azureMessage.getEnqueuedTime());
         result.put(EventHubHeaders.OFFSET, azureMessage.getOffset());
         result.put(EventHubHeaders.SEQUENCE_NUMBER, azureMessage.getSequenceNumber());

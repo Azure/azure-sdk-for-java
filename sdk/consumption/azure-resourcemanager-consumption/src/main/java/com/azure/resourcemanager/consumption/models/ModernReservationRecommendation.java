@@ -26,6 +26,12 @@ public class ModernReservationRecommendation extends ReservationRecommendationIn
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ModernReservationRecommendation.class);
 
     /*
+     * Resource eTag.
+     */
+    @JsonProperty(value = "eTag", access = JsonProperty.Access.WRITE_ONLY)
+    private String etag;
+
+    /*
      * Resource Location.
      */
     @JsonProperty(value = "properties.location", access = JsonProperty.Access.WRITE_ONLY)
@@ -120,6 +126,27 @@ public class ModernReservationRecommendation extends ReservationRecommendationIn
      */
     @JsonProperty(value = "properties.skuName", access = JsonProperty.Access.WRITE_ONLY)
     private String skuName;
+
+    /*
+     * The Azure resource type.
+     */
+    @JsonProperty(value = "properties.resourceType", access = JsonProperty.Access.WRITE_ONLY)
+    private String resourceType;
+
+    /*
+     * The Azure subscription ID.
+     */
+    @JsonProperty(value = "properties.subscriptionId", access = JsonProperty.Access.WRITE_ONLY)
+    private String subscriptionId;
+
+    /**
+     * Get the etag property: Resource eTag.
+     *
+     * @return the etag value.
+     */
+    public String etag() {
+        return this.etag;
+    }
 
     /**
      * Get the locationPropertiesLocation property: Resource Location.
@@ -263,6 +290,24 @@ public class ModernReservationRecommendation extends ReservationRecommendationIn
      */
     public String skuName() {
         return this.skuName;
+    }
+
+    /**
+     * Get the resourceType property: The Azure resource type.
+     *
+     * @return the resourceType value.
+     */
+    public String resourceType() {
+        return this.resourceType;
+    }
+
+    /**
+     * Get the subscriptionId property: The Azure subscription ID.
+     *
+     * @return the subscriptionId value.
+     */
+    public String subscriptionId() {
+        return this.subscriptionId;
     }
 
     /**

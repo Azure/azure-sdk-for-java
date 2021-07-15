@@ -232,6 +232,13 @@ public class DiagnosticDetectorResponseInner extends ProxyOnlyResource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public DiagnosticDetectorResponseInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

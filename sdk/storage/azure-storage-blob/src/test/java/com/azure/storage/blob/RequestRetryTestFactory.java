@@ -49,27 +49,32 @@ class RequestRetryTestFactory {
 
     static final int RETRY_TEST_SCENARIO_NON_REPLAYABLE_FLOWABLE = 9;
 
+    static final int RETRY_TEST_SCENARIO_WRAPPED_NETWORK_ERROR = 10;
+
+    static final int RETRY_TEST_SCENARIO_WRAPPED_TIMEOUT_ERROR = 11;
+
     // Cancelable
 
     static final String RETRY_TEST_PRIMARY_HOST = "PrimaryDC";
 
     static final String RETRY_TEST_SECONDARY_HOST = "SecondaryDC";
-    private static final ByteBuffer RETRY_TEST_DEFAULT_DATA = ByteBuffer.wrap("Default data".getBytes());
     private static final String RETRY_TEST_HEADER = "TestHeader";
     private static final String RETRY_TEST_QUERY_PARAM = "TestQueryParam";
-    private static final Mono<HttpResponse> RETRY_TEST_OK_RESPONSE = Mono.just(new RetryTestResponse(200));
+
+    private final ByteBuffer retryTestDefaultData = ByteBuffer.wrap("Default data".getBytes());
+    private final Mono<HttpResponse> retryTestOkResponse = Mono.just(new RetryTestResponse(200));
 
     /*
     We wrap the response in a StorageErrorException to mock the HttpClient. Any responses that the HttpClient receives
     that is not an expected response is wrapped in a StorageErrorException.
      */
-    private static final Mono<HttpResponse> RETRY_TEST_TEMPORARY_ERROR_RESPONSE = Mono.just(new RetryTestResponse(503));
+    private final Mono<HttpResponse> retryTestTemporaryErrorResponse = Mono.just(new RetryTestResponse(503));
 
-    private static final Mono<HttpResponse> RETRY_TEST_TIMEOUT_ERROR_RESPONSE = Mono.just(new RetryTestResponse(500));
+    private final Mono<HttpResponse> retryTestTimeoutErrorResponse = Mono.just(new RetryTestResponse(500));
 
-    private static final Mono<HttpResponse> RETRY_TEST_NON_RETRYABLE_ERROR = Mono.just(new RetryTestResponse(400));
+    private final Mono<HttpResponse> retryTestNonRetryableError = Mono.just(new RetryTestResponse(400));
 
-    private static final Mono<HttpResponse> RETRY_TEST_NOT_FOUND_RESPONSE = Mono.just(new RetryTestResponse(404));
+    private final Mono<HttpResponse> retryTestNotFoundResponse = Mono.just(new RetryTestResponse(404));
 
     private int retryTestScenario;
 
@@ -94,7 +99,7 @@ class RequestRetryTestFactory {
             .policies(new RequestRetryPolicy(this.options))
             .httpClient(new RetryTestClient(this))
             .build()
-            .send(new HttpRequest(HttpMethod.GET, url).setBody(Flux.just(RETRY_TEST_DEFAULT_DATA)));
+            .send(new HttpRequest(HttpMethod.GET, url).setBody(Flux.just(retryTestDefaultData)));
     }
 
     int getTryNumber() {
@@ -203,7 +208,7 @@ class RequestRetryTestFactory {
             while (!disposable.isDisposed()) {
                 System.out.println("Waiting for Flux to finish to prevent blocking on another thread exception");
             }
-            if (RETRY_TEST_DEFAULT_DATA.compareTo(ByteBuffer.wrap(outputStream.toByteArray())) != 0) {
+            if (retryTestDefaultData.compareTo(ByteBuffer.wrap(outputStream.toByteArray())) != 0) {
                 throw new IllegalArgumentException(("Body not reset."));
             }
 
@@ -232,31 +237,31 @@ class RequestRetryTestFactory {
                              */
                             return Mono.error(new TimeoutException());
                         case 2:
-                            return RETRY_TEST_TEMPORARY_ERROR_RESPONSE;
+                            return retryTestTemporaryErrorResponse;
                         case 3:
-                            return RETRY_TEST_TIMEOUT_ERROR_RESPONSE;
+                            return retryTestTimeoutErrorResponse;
                         case 4:
                             /*
                             By returning 404 when we should be testing against the secondary, we exercise the logic
                             that should prevent further tries to secondary when the secondary evidently doesn't have the
                             data.
                              */
-                            return RETRY_TEST_NOT_FOUND_RESPONSE;
+                            return retryTestNotFoundResponse;
                         case 5:
                             // Just to get to a sixth try where we ensure we should not be trying the secondary again.
-                            return RETRY_TEST_TEMPORARY_ERROR_RESPONSE;
+                            return retryTestTemporaryErrorResponse;
                         case 6:
-                            return RETRY_TEST_OK_RESPONSE;
+                            return retryTestOkResponse;
                         default:
                             throw new IllegalArgumentException("Continued trying after success.");
                     }
 
                 case RETRY_TEST_SCENARIO_RETRY_UNTIL_MAX_RETRIES:
-                    return RETRY_TEST_TEMPORARY_ERROR_RESPONSE;
+                    return retryTestTemporaryErrorResponse;
 
                 case RETRY_TEST_SCENARIO_NON_RETRYABLE:
                     if (this.factory.tryNumber == 1) {
-                        return RETRY_TEST_NON_RETRYABLE_ERROR;
+                        return retryTestNonRetryableError;
                     } else {
                         throw new IllegalArgumentException("Continued trying after non retryable error.");
                     }
@@ -264,9 +269,9 @@ class RequestRetryTestFactory {
                 case RETRY_TEST_SCENARIO_NON_RETRYABLE_SECONDARY:
                     switch (this.factory.tryNumber) {
                         case 1:
-                            return RETRY_TEST_TEMPORARY_ERROR_RESPONSE;
+                            return retryTestTemporaryErrorResponse;
                         case 2:
-                            return RETRY_TEST_NON_RETRYABLE_ERROR;
+                            return retryTestNonRetryableError;
                         default:
                             throw new IllegalArgumentException("Continued trying after non retryable error.");
                     }
@@ -278,7 +283,31 @@ class RequestRetryTestFactory {
                         case 2:
                             return Mono.error(new IOException());
                         case 3:
-                            return RETRY_TEST_OK_RESPONSE;
+                            return retryTestOkResponse;
+                        default:
+                            throw new IllegalArgumentException("Continued retrying after success.");
+                    }
+
+                case RETRY_TEST_SCENARIO_WRAPPED_NETWORK_ERROR:
+                    switch (this.factory.tryNumber) {
+                        case 1:
+                            // fall through
+                        case 2:
+                            return Mono.error(Exceptions.propagate(new IOException()));
+                        case 3:
+                            return retryTestOkResponse;
+                        default:
+                            throw new IllegalArgumentException("Continued retrying after success.");
+                    }
+
+                case RETRY_TEST_SCENARIO_WRAPPED_TIMEOUT_ERROR:
+                    switch (this.factory.tryNumber) {
+                        case 1:
+                            // fall through
+                        case 2:
+                            return Mono.error(Exceptions.propagate(new TimeoutException()));
+                        case 3:
+                            return retryTestOkResponse;
                         default:
                             throw new IllegalArgumentException("Continued retrying after success.");
                     }
@@ -287,9 +316,9 @@ class RequestRetryTestFactory {
                     switch (this.factory.tryNumber) {
                         case 1:
                         case 2:
-                            return RETRY_TEST_OK_RESPONSE.delaySubscription(options.getTryTimeoutDuration().plusSeconds(1));
+                            return retryTestOkResponse.delaySubscription(options.getTryTimeoutDuration().plusSeconds(1));
                         case 3:
-                            return RETRY_TEST_OK_RESPONSE.delaySubscription(options.getTryTimeoutDuration().minusSeconds(1));
+                            return retryTestOkResponse.delaySubscription(options.getTryTimeoutDuration().minusSeconds(1));
                         default:
                             throw new IllegalArgumentException("Continued retrying after success");
                     }
@@ -298,25 +327,25 @@ class RequestRetryTestFactory {
                     switch (this.factory.tryNumber) {
                         case 1:
                             this.factory.time = OffsetDateTime.now();
-                            return RETRY_TEST_TEMPORARY_ERROR_RESPONSE;
+                            return retryTestTemporaryErrorResponse;
                         case 2:
                             /*
                             Calculation for secondary is always the same, so we don't need to keep testing it. Not
                             trying the secondary any more will also speed up the test.
                              */
-                            return testDelayBounds(1, false, RETRY_TEST_NOT_FOUND_RESPONSE);
+                            return testDelayBounds(1, false, retryTestNotFoundResponse);
                         case 3:
-                            return testDelayBounds(2, true, RETRY_TEST_TEMPORARY_ERROR_RESPONSE);
+                            return testDelayBounds(2, true, retryTestTemporaryErrorResponse);
                         case 4:
-                            return testDelayBounds(3, true, RETRY_TEST_TEMPORARY_ERROR_RESPONSE);
+                            return testDelayBounds(3, true, retryTestTemporaryErrorResponse);
                         case 5:
                             /*
                             With the current configuration in RetryTest, the maxRetryDelay should be reached upon the
                             fourth try to the primary.
                              */
-                            return testMaxDelayBounds(RETRY_TEST_TEMPORARY_ERROR_RESPONSE);
+                            return testMaxDelayBounds(retryTestTemporaryErrorResponse);
                         case 6:
-                            return testMaxDelayBounds(RETRY_TEST_OK_RESPONSE);
+                            return testMaxDelayBounds(retryTestOkResponse);
                         default:
                             throw new IllegalArgumentException("Max retries exceeded/continued retrying after success");
                     }
@@ -325,16 +354,16 @@ class RequestRetryTestFactory {
                     switch (this.factory.tryNumber) {
                         case 1:
                             this.factory.time = OffsetDateTime.now();
-                            return RETRY_TEST_TEMPORARY_ERROR_RESPONSE;
+                            return retryTestTemporaryErrorResponse;
                         case 2:
-                            return testDelayBounds(1, false, RETRY_TEST_TEMPORARY_ERROR_RESPONSE);
+                            return testDelayBounds(1, false, retryTestTemporaryErrorResponse);
                         case 3:
-                            return testDelayBounds(2, true, RETRY_TEST_TEMPORARY_ERROR_RESPONSE);
+                            return testDelayBounds(2, true, retryTestTemporaryErrorResponse);
                         case 4:
                             /*
                             Fixed backoff means it's always the same and we never hit the max, no need to keep testing.
                              */
-                            return RETRY_TEST_OK_RESPONSE;
+                            return retryTestOkResponse;
                         default:
                             throw new IllegalArgumentException("Retries continued after success.");
                     }
@@ -342,7 +371,7 @@ class RequestRetryTestFactory {
                 case RETRY_TEST_SCENARIO_NON_REPLAYABLE_FLOWABLE:
                     switch (this.factory.tryNumber) {
                         case 1:
-                            return RETRY_TEST_TEMPORARY_ERROR_RESPONSE;
+                            return retryTestTemporaryErrorResponse;
                         case 2:
                             return Mono.error(new UnexpectedLengthException("Unexpected length", 5, 6));
                         default:

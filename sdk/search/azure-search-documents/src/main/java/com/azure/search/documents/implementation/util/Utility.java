@@ -40,6 +40,10 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -167,6 +171,14 @@ public final class Utility {
 
     public static synchronized String formatCoordinate(double coordinate) {
         return COORDINATE_FORMATTER.format(coordinate);
+    }
+
+    public static String readSynonymsFromFile(Path filePath) {
+        try {
+            return new String(Files.readAllBytes(filePath), StandardCharsets.UTF_8);
+        } catch (IOException ex) {
+            throw new ClientLogger(Utility.class).logExceptionAsError(new UncheckedIOException(ex));
+        }
     }
 
     private Utility() {

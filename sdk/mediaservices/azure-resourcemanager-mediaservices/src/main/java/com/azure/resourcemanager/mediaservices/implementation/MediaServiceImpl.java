@@ -11,9 +11,11 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.mediaservices.fluent.models.MediaServiceInner;
 import com.azure.resourcemanager.mediaservices.models.AccountEncryption;
 import com.azure.resourcemanager.mediaservices.models.EdgePolicies;
+import com.azure.resourcemanager.mediaservices.models.KeyDelivery;
 import com.azure.resourcemanager.mediaservices.models.ListEdgePoliciesInput;
 import com.azure.resourcemanager.mediaservices.models.MediaService;
 import com.azure.resourcemanager.mediaservices.models.MediaServiceIdentity;
+import com.azure.resourcemanager.mediaservices.models.MediaServiceUpdate;
 import com.azure.resourcemanager.mediaservices.models.StorageAccount;
 import com.azure.resourcemanager.mediaservices.models.StorageAuthentication;
 import com.azure.resourcemanager.mediaservices.models.SyncStorageKeysInput;
@@ -81,6 +83,10 @@ public final class MediaServiceImpl implements MediaService, MediaService.Defini
         return this.innerModel().encryption();
     }
 
+    public KeyDelivery keyDelivery() {
+        return this.innerModel().keyDelivery();
+    }
+
     public Region region() {
         return Region.fromName(this.regionName());
     }
@@ -100,6 +106,8 @@ public final class MediaServiceImpl implements MediaService, MediaService.Defini
     private String resourceGroupName;
 
     private String accountName;
+
+    private MediaServiceUpdate updateParameters;
 
     public MediaServiceImpl withExistingResourceGroup(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
@@ -133,6 +141,7 @@ public final class MediaServiceImpl implements MediaService, MediaService.Defini
     }
 
     public MediaServiceImpl update() {
+        this.updateParameters = new MediaServiceUpdate();
         return this;
     }
 
@@ -141,7 +150,7 @@ public final class MediaServiceImpl implements MediaService, MediaService.Defini
             serviceManager
                 .serviceClient()
                 .getMediaservices()
-                .updateWithResponse(resourceGroupName, accountName, this.innerModel(), Context.NONE)
+                .updateWithResponse(resourceGroupName, accountName, updateParameters, Context.NONE)
                 .getValue();
         return this;
     }
@@ -151,7 +160,7 @@ public final class MediaServiceImpl implements MediaService, MediaService.Defini
             serviceManager
                 .serviceClient()
                 .getMediaservices()
-                .updateWithResponse(resourceGroupName, accountName, this.innerModel(), context)
+                .updateWithResponse(resourceGroupName, accountName, updateParameters, context)
                 .getValue();
         return this;
     }
@@ -215,27 +224,66 @@ public final class MediaServiceImpl implements MediaService, MediaService.Defini
     }
 
     public MediaServiceImpl withTags(Map<String, String> tags) {
-        this.innerModel().withTags(tags);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withTags(tags);
+            return this;
+        } else {
+            this.updateParameters.withTags(tags);
+            return this;
+        }
     }
 
     public MediaServiceImpl withIdentity(MediaServiceIdentity identity) {
-        this.innerModel().withIdentity(identity);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withIdentity(identity);
+            return this;
+        } else {
+            this.updateParameters.withIdentity(identity);
+            return this;
+        }
     }
 
     public MediaServiceImpl withStorageAccounts(List<StorageAccount> storageAccounts) {
-        this.innerModel().withStorageAccounts(storageAccounts);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withStorageAccounts(storageAccounts);
+            return this;
+        } else {
+            this.updateParameters.withStorageAccounts(storageAccounts);
+            return this;
+        }
     }
 
     public MediaServiceImpl withStorageAuthentication(StorageAuthentication storageAuthentication) {
-        this.innerModel().withStorageAuthentication(storageAuthentication);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withStorageAuthentication(storageAuthentication);
+            return this;
+        } else {
+            this.updateParameters.withStorageAuthentication(storageAuthentication);
+            return this;
+        }
     }
 
     public MediaServiceImpl withEncryption(AccountEncryption encryption) {
-        this.innerModel().withEncryption(encryption);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withEncryption(encryption);
+            return this;
+        } else {
+            this.updateParameters.withEncryption(encryption);
+            return this;
+        }
+    }
+
+    public MediaServiceImpl withKeyDelivery(KeyDelivery keyDelivery) {
+        if (isInCreateMode()) {
+            this.innerModel().withKeyDelivery(keyDelivery);
+            return this;
+        } else {
+            this.updateParameters.withKeyDelivery(keyDelivery);
+            return this;
+        }
+    }
+
+    private boolean isInCreateMode() {
+        return this.innerModel().id() == null;
     }
 }

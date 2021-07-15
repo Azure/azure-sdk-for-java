@@ -3,45 +3,37 @@
 
 package com.azure.test.aad.webapi.obo;
 
-import com.azure.spring.test.AppRunner;
 import com.azure.spring.test.aad.AADWebApiITHelper;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClientProvider;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClientProviderBuilder;
 import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
-import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
-import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizedClientManager;
-import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Consumer;
 
 import static com.azure.spring.test.Constant.MULTI_TENANT_SCOPE_GRAPH_READ;
 import static com.azure.spring.test.EnvironmentVariable.AAD_MULTI_TENANT_CLIENT_ID;
 import static com.azure.spring.test.EnvironmentVariable.AAD_MULTI_TENANT_CLIENT_SECRET;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction.oauth2AuthorizedClient;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class AADWebApiOboIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AADWebApiOboIT.class);
@@ -49,8 +41,8 @@ public class AADWebApiOboIT {
 
     private AADWebApiITHelper aadWebApiITHelper;
 
-    @Before
-    public void init() {
+    @BeforeAll
+    public void beforeAll() {
         Map<String, String> properties = new HashMap<>();
         properties.put("azure.activedirectory.client-id", AAD_MULTI_TENANT_CLIENT_ID);
         properties.put("azure.activedirectory.client-secret", AAD_MULTI_TENANT_CLIENT_SECRET);
@@ -70,43 +62,18 @@ public class AADWebApiOboIT {
         assertEquals("Graph response success.", aadWebApiITHelper.httpGetStringByAccessToken("call-graph"));
     }
 
-    private void runApp(Consumer<AppRunner> command) {
-        try (AppRunner app = new AppRunner(DumbApp.class)) {
-            app.start();
-            command.accept(app);
-        }
+    @Test
+    public void testCallGraphWithAnonymousAuthenticationTokenAndReturnUnauthorized() {
+        Assertions.assertThrows(HttpClientErrorException.Unauthorized.class,
+            ()-> aadWebApiITHelper.httpGetStringWithoutAccessToken("call-graph"));
     }
 
-    @EnableWebSecurity
-    @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
     @SpringBootApplication
     @RestController
-    public static class DumbApp extends WebSecurityConfigurerAdapter {
+    public static class DumbApp {
 
         @Autowired
         private WebClient webClient;
-
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
-            http.authorizeRequests()
-                .anyRequest().authenticated()
-                .and()
-                .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
-        }
-
-        @Bean
-        public OAuth2AuthorizedClientManager authorizedClientManager(
-            ClientRegistrationRepository clientRegistrationRepository,
-            OAuth2AuthorizedClientRepository authorizedClientRepository) {
-            OAuth2AuthorizedClientProvider authorizedClientProvider =
-                OAuth2AuthorizedClientProviderBuilder.builder()
-                                                     .refreshToken()
-                                                     .build();
-            DefaultOAuth2AuthorizedClientManager authorizedClientManager =
-                new DefaultOAuth2AuthorizedClientManager(clientRegistrationRepository, authorizedClientRepository);
-            authorizedClientManager.setAuthorizedClientProvider(authorizedClientProvider);
-            return authorizedClientManager;
-        }
 
         @Bean
         public WebClient webClient(OAuth2AuthorizedClientManager authorizedClientManager) {
@@ -119,17 +86,19 @@ public class AADWebApiOboIT {
 
         /**
          * Call the graph resource only with annotation, return user information
-         * @param graph authorized client for Graph
+         *
+         * @param graphClient authorized client for Graph
          * @return Response with graph data
          */
         @GetMapping("call-graph")
         @PreAuthorize("hasAuthority('SCOPE_ResourceAccessGraph.Read')")
-        public String callGraph(@RegisteredOAuth2AuthorizedClient("graph") OAuth2AuthorizedClient graph) {
-            return callMicrosoftGraphMeEndpoint(graph);
+        public String callGraph(@RegisteredOAuth2AuthorizedClient("graph") OAuth2AuthorizedClient graphClient) {
+            return callMicrosoftGraphMeEndpoint(graphClient);
         }
 
         /**
          * Call microsoft graph me endpoint
+         *
          * @param graph Authorized Client
          * @return Response string data.
          */

@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Asynchronous sample for recognizing business card information from an URL.
+ * Asynchronous sample for recognizing business card information from a URL.
  */
 public class RecognizeBusinessCardFromUrlAsync {
     /**
@@ -32,8 +32,10 @@ public class RecognizeBusinessCardFromUrlAsync {
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildAsyncClient();
 
-        String businessCardUrl = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/formrecognizer"
-            + "/azure-ai-formrecognizer/src/samples/java/sample-forms/businessCards/businessCard.jpg";
+        String businessCardUrl =
+            "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/formrecognizer"
+                + "/azure-ai-formrecognizer/src/samples/resources/sample-forms/businessCards/businessCard.jpg";
+
         PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> recognizeBusinessCardPoller
             = client.beginRecognizeBusinessCardsFromUrl(businessCardUrl);
 
@@ -43,7 +45,6 @@ public class RecognizeBusinessCardFromUrlAsync {
             .flatMap(pollResponse -> {
                 if (LongRunningOperationStatus.SUCCESSFULLY_COMPLETED.equals(pollResponse.getStatus())) {
                     System.out.println("Polling completed successfully");
-                    // training completed successfully, retrieving final result.
                     return pollResponse.getFinalResult();
                 } else {
                     return Mono.error(new RuntimeException("Polling completed unsuccessfully with status:"

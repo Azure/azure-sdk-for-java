@@ -34,6 +34,12 @@ public final class ReservationRecommendationsListResult {
     @JsonProperty(value = "previousLink", access = JsonProperty.Access.WRITE_ONLY)
     private String previousLink;
 
+    /*
+     * The total amount of cost.
+     */
+    @JsonProperty(value = "totalCost", access = JsonProperty.Access.WRITE_ONLY)
+    private String totalCost;
+
     /**
      * Get the value property: The list of reservation recommendations.
      *
@@ -59,6 +65,15 @@ public final class ReservationRecommendationsListResult {
      */
     public String previousLink() {
         return this.previousLink;
+    }
+
+    /**
+     * Get the totalCost property: The total amount of cost.
+     *
+     * @return the totalCost value.
+     */
+    public String totalCost() {
+        return this.totalCost;
     }
 
     /**

@@ -11,6 +11,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.IpsecPolicy;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.RoutingConfiguration;
+import com.azure.resourcemanager.network.models.TrafficSelectorPolicy;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionProtocol;
 import com.azure.resourcemanager.network.models.VpnConnectionStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -107,6 +108,12 @@ public class VpnConnectionInner extends SubResource {
      */
     @JsonProperty(value = "properties.ipsecPolicies")
     private List<IpsecPolicy> ipsecPolicies;
+
+    /*
+     * The Traffic Selector Policies to be considered by this connection.
+     */
+    @JsonProperty(value = "properties.trafficSelectorPolicies")
+    private List<TrafficSelectorPolicy> trafficSelectorPolicies;
 
     /*
      * EnableBgp flag.
@@ -385,6 +392,26 @@ public class VpnConnectionInner extends SubResource {
     }
 
     /**
+     * Get the trafficSelectorPolicies property: The Traffic Selector Policies to be considered by this connection.
+     *
+     * @return the trafficSelectorPolicies value.
+     */
+    public List<TrafficSelectorPolicy> trafficSelectorPolicies() {
+        return this.trafficSelectorPolicies;
+    }
+
+    /**
+     * Set the trafficSelectorPolicies property: The Traffic Selector Policies to be considered by this connection.
+     *
+     * @param trafficSelectorPolicies the trafficSelectorPolicies value to set.
+     * @return the VpnConnectionInner object itself.
+     */
+    public VpnConnectionInner withTrafficSelectorPolicies(List<TrafficSelectorPolicy> trafficSelectorPolicies) {
+        this.trafficSelectorPolicies = trafficSelectorPolicies;
+        return this;
+    }
+
+    /**
      * Get the enableRateLimiting property: EnableBgp flag.
      *
      * @return the enableRateLimiting value.
@@ -510,6 +537,9 @@ public class VpnConnectionInner extends SubResource {
     public void validate() {
         if (ipsecPolicies() != null) {
             ipsecPolicies().forEach(e -> e.validate());
+        }
+        if (trafficSelectorPolicies() != null) {
+            trafficSelectorPolicies().forEach(e -> e.validate());
         }
         if (vpnLinkConnections() != null) {
             vpnLinkConnections().forEach(e -> e.validate());

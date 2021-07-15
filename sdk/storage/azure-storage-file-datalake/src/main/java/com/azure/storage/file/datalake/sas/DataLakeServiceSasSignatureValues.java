@@ -3,6 +3,8 @@
 
 package com.azure.storage.file.datalake.sas;
 
+import com.azure.core.util.Configuration;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.sas.SasIpRange;
 import com.azure.storage.common.sas.SasProtocol;
@@ -25,7 +27,8 @@ import java.time.OffsetDateTime;
  */
 public final class DataLakeServiceSasSignatureValues {
 
-    private final String version = DataLakeServiceVersion.getLatest().getVersion();
+    private static final String VERSION = Configuration.getGlobalConfiguration()
+        .get(Constants.PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION, DataLakeServiceVersion.getLatest().getVersion());
 
     private SasProtocol protocol;
 
@@ -97,7 +100,7 @@ public final class DataLakeServiceSasSignatureValues {
      * targeted by the library.
      */
     public String getVersion() {
-        return version;
+        return VERSION;
     }
 
     /**
@@ -213,6 +216,7 @@ public final class DataLakeServiceSasSignatureValues {
     /**
      * Sets the {@link SasIpRange} which determines the IP ranges that are allowed to use the SAS.
      *
+     * @see <a href=https://docs.microsoft.com/rest/api/storageservices/create-service-sas#specifying-ip-address-or-ip-range>Specifying IP Address or IP range</a>
      * @param sasIpRange Allowed IP range to set
      * @return the updated DataLakeServiceSasSignatureValues object
      */

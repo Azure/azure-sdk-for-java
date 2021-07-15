@@ -37,6 +37,20 @@ public interface Operation {
     Properties properties();
 
     /**
+     * Gets the isDataAction property: Whether the operation applies to data-plane.
+     *
+     * @return the isDataAction value.
+     */
+    Boolean isDataAction();
+
+    /**
+     * Gets the actionType property: Indicates the action type.
+     *
+     * @return the actionType value.
+     */
+    ActionType actionType();
+
+    /**
      * Gets the inner com.azure.resourcemanager.mediaservices.fluent.models.OperationInner object.
      *
      * @return the inner object.

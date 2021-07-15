@@ -39,10 +39,16 @@ public class WebSiteInstanceStatusInner extends ProxyOnlyResource {
     private String detectorUrl;
 
     /*
-     * Link to the Diagnose and Solve Portal
+     * Link to the console to web app instance
      */
     @JsonProperty(value = "properties.consoleUrl")
     private String consoleUrl;
+
+    /*
+     * Link to the console to web app instance
+     */
+    @JsonProperty(value = "properties.healthCheckUrl")
+    private String healthCheckUrl;
 
     /*
      * Dictionary of <ContainerInfo>
@@ -111,7 +117,7 @@ public class WebSiteInstanceStatusInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the consoleUrl property: Link to the Diagnose and Solve Portal.
+     * Get the consoleUrl property: Link to the console to web app instance.
      *
      * @return the consoleUrl value.
      */
@@ -120,13 +126,33 @@ public class WebSiteInstanceStatusInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the consoleUrl property: Link to the Diagnose and Solve Portal.
+     * Set the consoleUrl property: Link to the console to web app instance.
      *
      * @param consoleUrl the consoleUrl value to set.
      * @return the WebSiteInstanceStatusInner object itself.
      */
     public WebSiteInstanceStatusInner withConsoleUrl(String consoleUrl) {
         this.consoleUrl = consoleUrl;
+        return this;
+    }
+
+    /**
+     * Get the healthCheckUrl property: Link to the console to web app instance.
+     *
+     * @return the healthCheckUrl value.
+     */
+    public String healthCheckUrl() {
+        return this.healthCheckUrl;
+    }
+
+    /**
+     * Set the healthCheckUrl property: Link to the console to web app instance.
+     *
+     * @param healthCheckUrl the healthCheckUrl value to set.
+     * @return the WebSiteInstanceStatusInner object itself.
+     */
+    public WebSiteInstanceStatusInner withHealthCheckUrl(String healthCheckUrl) {
+        this.healthCheckUrl = healthCheckUrl;
         return this;
     }
 
@@ -147,6 +173,13 @@ public class WebSiteInstanceStatusInner extends ProxyOnlyResource {
      */
     public WebSiteInstanceStatusInner withContainers(Map<String, ContainerInfo> containers) {
         this.containers = containers;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public WebSiteInstanceStatusInner withKind(String kind) {
+        super.withKind(kind);
         return this;
     }
 

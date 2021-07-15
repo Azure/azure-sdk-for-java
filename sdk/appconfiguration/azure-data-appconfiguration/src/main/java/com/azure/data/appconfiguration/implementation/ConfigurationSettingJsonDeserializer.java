@@ -66,6 +66,12 @@ public final class ConfigurationSettingJsonDeserializer extends JsonDeserializer
                          configurationSettingSubclassDeserializer(FeatureFlagConfigurationSetting.class));
     }
 
+    /**
+     * Gets a module wrapping this deserializer as an adapter for the Jackson
+     * ObjectMapper.
+     *
+     * @return a simple module to be plugged onto Jackson ObjectMapper.
+     */
     public static SimpleModule getModule() {
         return MODULE;
     }
@@ -97,9 +103,9 @@ public final class ConfigurationSettingJsonDeserializer extends JsonDeserializer
                 return readSecretReferenceConfigurationSetting(node, baseSetting);
             }
         } catch (Exception exception) {
-            LOGGER.info(String.format(
-                "The setting is neither a 'FeatureFlagConfigurationSetting' nor 'SecretReferenceConfigurationSetting'"
-                    + ", return the setting as 'ConfigurationSetting', error is ", exception));
+            LOGGER.info("The setting is neither a 'FeatureFlagConfigurationSetting' nor "
+                + "'SecretReferenceConfigurationSetting', return the setting as 'ConfigurationSetting'. "
+                + "Error: ", exception);
         }
         return baseSetting;
     }
@@ -113,17 +119,8 @@ public final class ConfigurationSettingJsonDeserializer extends JsonDeserializer
             settingValue = valueNode.asText();
         }
 
-        final JsonNode settingValueNode = toJsonNode(settingValue);
-
-        final JsonNode uriNode = settingValueNode.get(URI);
-        String secretID = null;
-        if (uriNode != null && !uriNode.isNull()) {
-            secretID = uriNode.asText(); // uri node contains the secret ID value
-        }
-
         SecretReferenceConfigurationSetting secretReferenceConfigurationSetting =
-            new SecretReferenceConfigurationSetting(secretID, secretID)
-                .setKey(baseSetting.getKey())
+            readSecretReferenceConfigurationSettingValue(baseSetting.getKey(), settingValue)
                 .setValue(settingValue)
                 .setLabel(baseSetting.getLabel())
                 .setETag(baseSetting.getETag())
@@ -199,7 +196,34 @@ public final class ConfigurationSettingJsonDeserializer extends JsonDeserializer
         return setting;
     }
 
-    private static FeatureFlagConfigurationSetting readFeatureFlagConfigurationSettingValue(String settingValue) {
+    /**
+     * Given a JSON format string {@code settingValue}, deserializes it into a {@link JsonNode} and returns a
+     * {@link SecretReferenceConfigurationSetting} object.
+     *
+     * @param key the {@code key} property of setting.
+     * @param settingValue a JSON format string that represents the {@code value} property of setting.
+     * @return A {@link SecretReferenceConfigurationSetting} object.
+     */
+    public static SecretReferenceConfigurationSetting readSecretReferenceConfigurationSettingValue(String key,
+        String settingValue) {
+        final JsonNode settingValueNode = toJsonNode(settingValue);
+
+        final JsonNode uriNode = settingValueNode.get(URI);
+        String secretID = null;
+        if (uriNode != null && !uriNode.isNull()) {
+            secretID = uriNode.asText(); // uri node contains the secret ID value
+        }
+        return new SecretReferenceConfigurationSetting(key, secretID);
+    }
+
+    /**
+     * Given a JSON format string {@code settingValue}, deserializes it into a {@link JsonNode} and returns a
+     * {@link FeatureFlagConfigurationSetting} object.
+     *
+     * @param settingValue a JSON format string that represents the {@code value} property of setting.
+     * @return A {@link FeatureFlagConfigurationSetting} object which converted from the {@code settingValue}.
+     */
+    public static FeatureFlagConfigurationSetting readFeatureFlagConfigurationSettingValue(String settingValue) {
         JsonNode settingValueNode = toJsonNode(settingValue);
 
         final JsonNode featureIdNode = settingValueNode.get(ID);

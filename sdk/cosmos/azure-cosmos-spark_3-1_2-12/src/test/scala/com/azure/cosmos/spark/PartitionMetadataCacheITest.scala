@@ -96,7 +96,7 @@ class PartitionMetadataCacheITest
       newStaleCachedItemRefreshPeriodInMsOverride = Some(10 * 1000),
       newCachedItemTtlInMsOverride = Some(50))
 
-    Thread.sleep(500)
+    Thread.sleep(2000)
     //scalastyle:on magic.number
 
     PartitionMetadataCache.purge(containerConfig, feedRange) shouldEqual false

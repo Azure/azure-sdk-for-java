@@ -66,6 +66,13 @@ public interface ResourceManagementClient {
     ProvidersClient getProviders();
 
     /**
+     * Gets the ProviderResourceTypesClient object to access its operations.
+     *
+     * @return the ProviderResourceTypesClient object.
+     */
+    ProviderResourceTypesClient getProviderResourceTypes();
+
+    /**
      * Gets the ResourcesClient object to access its operations.
      *
      * @return the ResourcesClient object.

@@ -3,6 +3,8 @@
 
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
+
 import java.util
 import scala.collection.mutable.ArrayBuffer
 // scalastyle:off underscore.import
@@ -41,7 +43,7 @@ class CosmosCatalog
     extends CatalogPlugin
     with SupportsNamespaces
     with TableCatalog
-    with CosmosLoggingTrait {
+    with BasicLoggingTrait {
 
   private lazy val sparkSession = SparkSession.active
 
@@ -61,7 +63,10 @@ class CosmosCatalog
     */
   override def initialize(name: String,
                           options: CaseInsensitiveStringMap): Unit = {
-    val config = options.asCaseSensitiveMap().asScala.toMap
+    val config = CosmosConfig.getEffectiveConfig(
+        None,
+        None,
+        options.asCaseSensitiveMap().asScala.toMap)
     val readConfig = CosmosReadConfig.parseCosmosReadConfig(config)
     this.client = CosmosClientCache(CosmosClientConfiguration(config, readConfig.forceEventualConsistency), None)
 
@@ -590,8 +595,6 @@ class CosmosCatalog
         None
       }
     }
-
-    // TODO: add support for other container properties, indexing policy?
   }
 
   private object CosmosThroughputProperties {

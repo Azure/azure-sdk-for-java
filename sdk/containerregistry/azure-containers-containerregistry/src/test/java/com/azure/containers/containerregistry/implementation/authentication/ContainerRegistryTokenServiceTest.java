@@ -28,7 +28,7 @@ public class ContainerRegistryTokenServiceTest {
     private TokenServiceImpl tokenServiceImpl;
     private AccessTokenCacheImpl refreshTokenCache;
     private ContainerRegistryTokenRequestContext requestContext;
-    private ContainerRegistryTokenCredential refreshTokenCredential;
+    private ContainerRegistryRefreshTokenCredential refreshTokenCredential;
 
     private static final String SCOPE = "scope";
     private static final String SERVICENAME = "serviceName";
@@ -44,7 +44,7 @@ public class ContainerRegistryTokenServiceTest {
         TokenServiceImpl impl = mock(TokenServiceImpl.class);
         AccessToken refreshToken = new AccessToken(REFRESHTOKEN, OffsetDateTime.now().plusMinutes(30));
         AccessToken accessToken = new AccessToken(ACCESSTOKEN, OffsetDateTime.now().plusMinutes(30));
-        when(impl.getAcrAccessTokenAsync(anyString(), anyString(), anyString())).thenReturn(Mono.just(accessToken));
+        when(impl.getAcrAccessTokenAsync(anyString(), anyString(), anyString(), anyString())).thenReturn(Mono.just(accessToken));
         when(impl.getAcrRefreshTokenAsync(anyString(), anyString())).thenReturn(Mono.just(refreshToken));
 
         TokenCredential tokenCredential = mock(TokenCredential.class);
@@ -54,7 +54,7 @@ public class ContainerRegistryTokenServiceTest {
         when(tokenRequestContext.getScope()).thenReturn(SCOPE);
         when(tokenRequestContext.getServiceName()).thenReturn(SERVICENAME);
 
-        ContainerRegistryTokenCredential spyRefreshTokenCredential = spy(mock(ContainerRegistryTokenCredential.class));
+        ContainerRegistryRefreshTokenCredential spyRefreshTokenCredential = spy(mock(ContainerRegistryRefreshTokenCredential.class));
         doReturn(Mono.just(refreshToken)).when(spyRefreshTokenCredential).getToken(any(ContainerRegistryTokenRequestContext.class));
 
 
@@ -71,6 +71,7 @@ public class ContainerRegistryTokenServiceTest {
     public void refreshTokenRestAPICalledOnlyOnce() throws Exception {
         ContainerRegistryTokenService service = new ContainerRegistryTokenService(
             this.tokenCredential,
+            null,
             "myString",
             this.httpPipeline,
             this.serializerAdapter

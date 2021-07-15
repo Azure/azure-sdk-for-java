@@ -3,10 +3,12 @@
 
 package com.azure.resourcemanager.storage.implementation;
 
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.storage.models.Encryption;
 import com.azure.resourcemanager.storage.models.EncryptionService;
 import com.azure.resourcemanager.storage.models.EncryptionServices;
 import com.azure.resourcemanager.storage.models.KeySource;
+import com.azure.resourcemanager.storage.models.KeyType;
 import com.azure.resourcemanager.storage.models.KeyVaultProperties;
 import com.azure.resourcemanager.storage.models.StorageAccountCreateParameters;
 import com.azure.resourcemanager.storage.models.StorageAccountEncryptionKeySource;
@@ -17,7 +19,6 @@ import com.azure.resourcemanager.storage.fluent.models.StorageAccountInner;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Helper to operate on storage account encryption {@link StorageAccountInner#encryption} property. */
 final class StorageEncryptionHelper {
     private final boolean isInCreateMode;
     private final StorageAccountInner inner;
@@ -81,6 +82,11 @@ final class StorageEncryptionHelper {
         return statuses;
     }
 
+    boolean infrastructureEncryptionEnabled() {
+        return inner != null && inner.encryption() != null
+            && ResourceManagerUtils.toPrimitiveBoolean(inner.encryption().requireInfrastructureEncryption());
+    }
+
     /**
      * Specifies that storage blob encryption should be enabled.
      *
@@ -122,6 +128,44 @@ final class StorageEncryptionHelper {
         if (encryption.keySource() == null) {
             encryption.withKeySource(KeySource.MICROSOFT_STORAGE);
         }
+        return this;
+    }
+
+    StorageEncryptionHelper withTableEncryption() {
+        Encryption encryption = getEncryptionConfig(true);
+        if (encryption.services() == null) {
+            encryption.withServices(new EncryptionServices());
+        }
+        if (encryption.services().table() == null) {
+            encryption.services().withTable(new EncryptionService());
+        }
+        encryption.services().table().withEnabled(true);
+        encryption.services().table().withKeyType(KeyType.ACCOUNT);
+        if (encryption.keySource() == null) {
+            encryption.withKeySource(KeySource.MICROSOFT_STORAGE);
+        }
+        return this;
+    }
+
+    StorageEncryptionHelper withQueueEncryption() {
+        Encryption encryption = getEncryptionConfig(true);
+        if (encryption.services() == null) {
+            encryption.withServices(new EncryptionServices());
+        }
+        if (encryption.services().queue() == null) {
+            encryption.services().withQueue(new EncryptionService());
+        }
+        encryption.services().queue().withEnabled(true);
+        encryption.services().queue().withKeyType(KeyType.ACCOUNT);
+        if (encryption.keySource() == null) {
+            encryption.withKeySource(KeySource.MICROSOFT_STORAGE);
+        }
+        return this;
+    }
+
+    StorageEncryptionHelper withInfrastructureEncryption() {
+        Encryption encryption = getEncryptionConfig(true);
+        encryption.withRequireInfrastructureEncryption(true);
         return this;
     }
 
@@ -212,6 +256,10 @@ final class StorageEncryptionHelper {
                     //
                     Encryption clonedEncryption = new Encryption();
                     clonedEncryption.withKeySource(this.inner.encryption().keySource());
+                    if (this.inner.encryption().requireInfrastructureEncryption() != null) {
+                        clonedEncryption.withRequireInfrastructureEncryption(
+                            this.inner.encryption().requireInfrastructureEncryption());
+                    }
                     if (this.inner.encryption().keyVaultProperties() != null) {
                         clonedEncryption.withKeyVaultProperties(new KeyVaultProperties());
                         clonedEncryption
@@ -227,14 +275,32 @@ final class StorageEncryptionHelper {
                             clonedEncryption
                                 .services()
                                 .blob()
-                                .withEnabled(this.inner.encryption().services().blob().enabled());
+                                .withEnabled(this.inner.encryption().services().blob().enabled())
+                                .withKeyType(this.inner.encryption().services().blob().keyType());
                         }
                         if (this.inner.encryption().services().file() != null) {
                             clonedEncryption.services().withFile(new EncryptionService());
                             clonedEncryption
                                 .services()
                                 .file()
-                                .withEnabled(this.inner.encryption().services().file().enabled());
+                                .withEnabled(this.inner.encryption().services().file().enabled())
+                                .withKeyType(this.inner.encryption().services().file().keyType());
+                        }
+                        if (this.inner.encryption().services().table() != null) {
+                            clonedEncryption.services().withTable(new EncryptionService());
+                            clonedEncryption
+                                .services()
+                                .table()
+                                .withEnabled(this.inner.encryption().services().table().enabled())
+                                .withKeyType(this.inner.encryption().services().table().keyType());
+                        }
+                        if (this.inner.encryption().services().queue() != null) {
+                            clonedEncryption.services().withQueue(new EncryptionService());
+                            clonedEncryption
+                                .services()
+                                .queue()
+                                .withEnabled(this.inner.encryption().services().queue().enabled())
+                                .withKeyType(this.inner.encryption().services().queue().keyType());
                         }
                     }
                     this.updateParameters.withEncryption(clonedEncryption);

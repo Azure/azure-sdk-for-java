@@ -58,7 +58,6 @@ public class ComputeSampleTests extends SamplesTestBase {
     }
 
     @Test
-    @Disabled("Need to investigate - 'Disks or snapshot cannot be resized down.'")
     public void testCreateVirtualMachineUsingCustomImageFromVM() {
         Assertions.assertTrue(CreateVirtualMachineUsingCustomImageFromVM.runSample(azureResourceManager));
     }

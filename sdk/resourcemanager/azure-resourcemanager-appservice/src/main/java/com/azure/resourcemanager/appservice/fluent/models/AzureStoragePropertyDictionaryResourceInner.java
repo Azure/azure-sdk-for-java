@@ -43,6 +43,13 @@ public final class AzureStoragePropertyDictionaryResourceInner extends ProxyOnly
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public AzureStoragePropertyDictionaryResourceInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *
