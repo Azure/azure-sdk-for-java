@@ -2487,4 +2487,16 @@
     <Class name="~com\.azure\.messaging\.eventhubs\.perf\.[\w]+Test"/>
     <Bug pattern="BC_UNCONFIRMED_CAST"/>
   </Match>
+
+  <!-- We shouldn't return a zero-length array if null is provided to serialization/deserialization and clone methods. -->
+  <Match>
+    <Class name="com.azure.security.keyvault.keys.models.Base64UrlJsonDeserializer"/>
+    <Method name="deserialize"/>
+    <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
+  </Match>
+  <Match>
+    <Class name="com.azure.security.keyvault.keys.models.ByteExtensions"/>
+    <Method name="clone"/>
+    <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
+  </Match>
 </FindBugsFilter>
