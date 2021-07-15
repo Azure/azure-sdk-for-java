@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.directconnectivity.Protocol;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.SslProvider;
+import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,6 +47,7 @@ public class Configs {
     private static final String CLIENT_TELEMETRY_ENDPOINT = "COSMOS.CLIENT_TELEMETRY_ENDPOINT";
     private static final String ENVIRONMENT_NAME = "COSMOS.ENVIRONMENT_NAME";
     private static final String QUERYPLAN_CACHING_ENABLED = "COSMOS.QUERYPLAN_CACHING_ENABLED";
+    private static final String SKIP_SSL_CHECK = "COSMOS.SSL_CHECK_DISABLED";
 
     private static final int DEFAULT_CLIENT_TELEMETRY_SCHEDULING_IN_SECONDS = 10 * 60;
     private static final int DEFAULT_UNAVAILABLE_LOCATIONS_EXPIRATION_TIME_IN_SECONDS = 5 * 60;
@@ -102,7 +104,11 @@ public class Configs {
     private SslContext sslContextInit() {
         try {
             SslProvider sslProvider = SslContext.defaultClientProvider();
-            return SslContextBuilder.forClient().sslProvider(sslProvider).build();
+            SslContextBuilder sslContextBuilder = SslContextBuilder.forClient();
+            if (getJVMConfigAsBoolean(SKIP_SSL_CHECK, false)) {
+                sslContextBuilder.trustManager(InsecureTrustManagerFactory.INSTANCE);
+            }
+            return sslContextBuilder.sslProvider(sslProvider).build();
         } catch (SSLException sslException) {
             logger.error("Fatal error cannot instantiate ssl context due to {}", sslException.getMessage(), sslException);
             throw new IllegalStateException(sslException);
