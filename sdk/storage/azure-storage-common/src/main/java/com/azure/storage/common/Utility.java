@@ -261,8 +261,7 @@ public final class Utility {
                             totalLength, length), totalLength, length));
                 }
             } catch (IOException e) {
-                throw LOGGER.logExceptionAsError(new RuntimeException("I/O errors occurs. Error details: "
-                    + e.getMessage()));
+                throw LOGGER.logExceptionAsError(new RuntimeException("I/O errors occurred", e));
             }
         }
         return Flux.defer(() -> {
@@ -315,8 +314,7 @@ public final class Utility {
                                         + " requested: %d", currentTotalLength[0], length)));
                             }
                         } catch (IOException e) {
-                            throw LOGGER.logExceptionAsError(new RuntimeException("I/O errors occurs. Error details: "
-                                + e.getMessage()));
+                            throw LOGGER.logExceptionAsError(new RuntimeException("I/O errors occurred", e));
                         }
                     }
 
