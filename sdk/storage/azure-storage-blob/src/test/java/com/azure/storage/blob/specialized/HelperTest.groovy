@@ -173,7 +173,6 @@ class HelperTest extends APISpec {
 
         then:
         StepVerifier.create(flux)
-            .assertNext(){buffer -> assert buffer.compareTo(ByteBuffer.wrap(data, 0, 9)) == 0}
             .verifyError(IllegalStateException.class)
     }
 

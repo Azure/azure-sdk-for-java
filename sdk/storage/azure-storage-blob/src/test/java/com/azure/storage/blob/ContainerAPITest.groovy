@@ -48,6 +48,14 @@ import java.util.stream.Collectors
 
 class ContainerAPITest extends APISpec {
 
+    String tagKey
+    String tagValue
+
+    def setup() {
+        tagKey = namer.getRandomName(20)
+        tagValue = namer.getRandomName(20)
+    }
+
     def "Create all null"() {
         setup:
         // Overwrite the existing cc, which has already been created
@@ -732,7 +740,7 @@ class ContainerAPITest extends APISpec {
 
         def tagsBlob = cc.getBlobClient(tagsName).getPageBlobClient()
         def tags = new HashMap<String, String>()
-        tags.put("tag", "value")
+        tags.put(tagKey, tagValue)
         tagsBlob.createWithResponse(new PageBlobCreateOptions(512).setTags(tags), null, null)
 
         def uncommittedBlob = cc.getBlobClient(uncommittedName).getBlockBlobClient()
@@ -819,7 +827,7 @@ class ContainerAPITest extends APISpec {
         blobs.get(1).getProperties().getCopyCompletionTime() == null
         blobs.get(2).getName() == metadataName
         blobs.get(2).getMetadata() == null
-        blobs.get(3).getTags().get("tag") == "value"
+        blobs.get(3).getTags().get(tagKey) == tagValue
         blobs.get(3).getProperties().getTagCount() == 1
         blobs.size() == 4 // Normal, copy, metadata, tags
     }
@@ -1224,7 +1232,7 @@ class ContainerAPITest extends APISpec {
         blobs.get(1).getProperties().getCopyCompletionTime() == null
         blobs.get(2).getName() == metadataName
         blobs.get(2).getMetadata() == null
-        blobs.get(3).getTags().get("tag") == "value"
+        blobs.get(3).getTags().get(tagKey) == tagValue
         blobs.get(3).getProperties().getTagCount() == 1
         blobs.size() == 4 // Normal, copy, metadata, tags
     }
