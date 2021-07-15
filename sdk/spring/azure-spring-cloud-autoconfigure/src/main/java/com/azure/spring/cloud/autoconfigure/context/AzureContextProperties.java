@@ -27,7 +27,7 @@ public class AzureContextProperties {
 
     private String resourceGroup;
 
-    private AzureEnvironments environment = AzureEnvironments.Azure;
+    private String environment = "Azure";
 
     private String region;
 
@@ -82,11 +82,11 @@ public class AzureContextProperties {
         this.resourceGroup = resourceGroup;
     }
 
-    public AzureEnvironments getEnvironment() {
+    public String getEnvironment() {
         return environment;
     }
 
-    public void setEnvironment(AzureEnvironments environment) {
+    public void setEnvironment(String environment) {
         this.environment = environment;
     }
 

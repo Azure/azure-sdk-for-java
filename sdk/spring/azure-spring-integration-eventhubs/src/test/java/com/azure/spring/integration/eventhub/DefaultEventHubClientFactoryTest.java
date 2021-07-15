@@ -4,7 +4,6 @@
 package com.azure.spring.integration.eventhub;
 
 import com.azure.messaging.eventhubs.*;
-import com.azure.spring.integration.eventhub.factory.EventHubConnectionStringProvider;
 import com.azure.spring.integration.eventhub.impl.EventHubProcessor;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;

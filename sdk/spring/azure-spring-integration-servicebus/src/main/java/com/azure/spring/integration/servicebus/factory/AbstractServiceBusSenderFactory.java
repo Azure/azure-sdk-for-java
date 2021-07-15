@@ -15,13 +15,8 @@ abstract class AbstractServiceBusSenderFactory implements ServiceBusSenderFactor
     protected final String connectionString;
 
     @Nullable
-    protected ServiceBusNamespaceManager serviceBusNamespaceManager;
-    @Nullable
-    protected ServiceBusQueueManager serviceBusQueueManager;
-    @Nullable
-    protected ServiceBusTopicManager serviceBusTopicManager;
-    @Nullable
-    protected ServiceBusTopicSubscriptionManager serviceBusTopicSubscriptionManager;
+    protected ServiceBusProvisioner serviceBusProvisioner;
+
     @Nullable
     protected String namespace;
 
@@ -29,21 +24,8 @@ abstract class AbstractServiceBusSenderFactory implements ServiceBusSenderFactor
         this.connectionString = connectionString;
     }
 
-    public void setServiceBusNamespaceManager(ServiceBusNamespaceManager serviceBusNamespaceManager) {
-        this.serviceBusNamespaceManager = serviceBusNamespaceManager;
-    }
-
-    public void setServiceBusQueueManager(ServiceBusQueueManager serviceBusQueueManager) {
-        this.serviceBusQueueManager = serviceBusQueueManager;
-    }
-
-    public void setServiceBusTopicManager(ServiceBusTopicManager serviceBusTopicManager) {
-        this.serviceBusTopicManager = serviceBusTopicManager;
-    }
-
-    public void setServiceBusTopicSubscriptionManager(
-            ServiceBusTopicSubscriptionManager serviceBusTopicSubscriptionManager) {
-        this.serviceBusTopicSubscriptionManager = serviceBusTopicSubscriptionManager;
+    public void setServiceBusProvisioner(@Nullable ServiceBusProvisioner serviceBusProvisioner) {
+        this.serviceBusProvisioner = serviceBusProvisioner;
     }
 
     public void setNamespace(String namespace) {

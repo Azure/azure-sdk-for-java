@@ -5,9 +5,11 @@ package com.azure.spring.cloud.autoconfigure.servicebus;
 
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.spring.cloud.autoconfigure.context.AzureContextProperties;
+import com.azure.spring.cloud.context.core.impl.ServiceBusNamespaceManager;
+import com.azure.spring.cloud.context.core.impl.ServiceBusTopicManager;
+import com.azure.spring.cloud.context.core.impl.ServiceBusTopicSubscriptionManager;
 import com.azure.spring.integration.servicebus.converter.ServiceBusMessageConverter;
 import com.azure.spring.integration.servicebus.factory.DefaultServiceBusTopicClientFactory;
-import com.azure.spring.integration.servicebus.factory.ServiceBusConnectionStringProvider;
 import com.azure.spring.integration.servicebus.factory.ServiceBusTopicClientFactory;
 import com.azure.spring.integration.servicebus.topic.ServiceBusTopicOperation;
 import com.azure.spring.integration.servicebus.topic.ServiceBusTopicTemplate;
@@ -70,7 +72,7 @@ public class AzureServiceBusTopicAutoConfiguration {
 
         DefaultServiceBusTopicClientFactory clientFactory = new DefaultServiceBusTopicClientFactory(connectionString, properties.getTransportType());
         clientFactory.setNamespace(properties.getNamespace());
-        clientFactory.setServiceBusNamespaceManager(namespaceManager);
+        clientFactory.setServiceBusProvisioner(namespaceManager);
         clientFactory.setServiceBusTopicManager(topicManager);
         clientFactory.setServiceBusTopicSubscriptionManager(topicSubscriptionManager);
 

@@ -29,6 +29,7 @@ com.azure.spring.autoconfigure.storage.StorageAutoConfiguration,\
 com.azure.spring.autoconfigure.storage.StorageHealthConfiguration,\
 com.azure.spring.keyvault.KeyVaultHealthConfiguration,\
 com.azure.spring.autoconfigure.unity.AzurePropertyAutoConfiguration,\
+com.azure.spring.cloud.autoconfigure.context.AzureResourceManagerAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.cache.AzureRedisAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.eventhub.AzureEventHubKafkaAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.eventhub.AzureEventHubAutoConfiguration,\

@@ -4,9 +4,8 @@
 package com.azure.spring.eventhub.stream.binder.config;
 
 import com.azure.resourcemanager.AzureResourceManager;
-import com.azure.spring.cloud.autoconfigure.context.AzureContextAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.context.AzureResourceManagerAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.context.AzureContextProperties;
-import com.azure.spring.cloud.autoconfigure.context.AzureEnvironmentAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.eventhub.AzureEventHubAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.eventhub.AzureEventHubProperties;
 import com.azure.spring.cloud.autoconfigure.eventhub.EventHubUtils;
@@ -15,7 +14,6 @@ import com.azure.spring.eventhub.stream.binder.properties.EventHubExtendedBindin
 import com.azure.spring.eventhub.stream.binder.provisioning.EventHubChannelProvisioner;
 import com.azure.spring.eventhub.stream.binder.provisioning.EventHubChannelResourceManagerProvisioner;
 import com.azure.spring.integration.eventhub.api.EventHubOperation;
-import com.azure.spring.integration.eventhub.factory.EventHubConnectionStringProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -32,7 +30,7 @@ import org.springframework.context.annotation.Import;
 @ConditionalOnMissingBean(Binder.class)
 @Import({
     AzureEnvironmentAutoConfiguration.class,
-    AzureContextAutoConfiguration.class,
+    AzureResourceManagerAutoConfiguration.class,
     AzureEventHubAutoConfiguration.class,
     EventHubBinderHealthIndicatorConfiguration.class
 })

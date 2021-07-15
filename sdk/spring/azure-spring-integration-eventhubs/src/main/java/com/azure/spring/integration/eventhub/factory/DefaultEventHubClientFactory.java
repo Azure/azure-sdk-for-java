@@ -11,8 +11,8 @@ import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.messaging.eventhubs.EventProcessorClient;
 import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
 import com.azure.messaging.eventhubs.checkpointstore.blob.BlobCheckpointStore;
-import com.azure.spring.core.util.Memoizer;
-import com.azure.spring.core.util.Tuple;
+import com.azure.spring.cloud.context.core.util.Memoizer;
+import com.azure.spring.cloud.context.core.util.Tuple;
 import com.azure.spring.integration.eventhub.api.EventHubClientFactory;
 import com.azure.spring.integration.eventhub.impl.EventHubProcessor;
 import com.azure.storage.blob.BlobContainerAsyncClient;
@@ -31,8 +31,9 @@ import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import static com.azure.spring.core.ApplicationId.AZURE_SPRING_EVENT_HUB;
-import static com.azure.spring.core.ApplicationId.VERSION;
+import static com.azure.spring.cloud.context.core.ApplicationId.AZURE_SPRING_EVENT_HUB;
+import static com.azure.spring.cloud.context.core.ApplicationId.VERSION;
+
 
 /**
  * Default implementation of {@link EventHubClientFactory}.
