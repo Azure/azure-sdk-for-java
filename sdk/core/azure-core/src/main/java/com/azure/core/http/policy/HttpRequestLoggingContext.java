@@ -9,12 +9,12 @@ import com.azure.core.util.Context;
 /**
  * Options class containing information available during HTTP request logging.
  */
-public final class HttpRequestLoggingOptions {
+public final class HttpRequestLoggingContext {
     private final HttpRequest httpRequest;
     private final Context context;
     private final Integer tryCount;
 
-    HttpRequestLoggingOptions(HttpRequest httpRequest, Context context, Integer tryCount) {
+    HttpRequestLoggingContext(HttpRequest httpRequest, Context context, Integer tryCount) {
         this.httpRequest = httpRequest;
         this.context = context;
         this.tryCount = tryCount;

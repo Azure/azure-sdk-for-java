@@ -11,13 +11,13 @@ import java.time.Duration;
 /**
  * Options class containing information available during HTTP response logging.
  */
-public final class HttpResponseLoggingOptions {
+public final class HttpResponseLoggingContext {
     private final HttpResponse httpResponse;
     private final Duration responseDuration;
     private final Context context;
     private final Integer tryCount;
 
-    HttpResponseLoggingOptions(HttpResponse httpResponse, Duration responseDuration, Context context,
+    HttpResponseLoggingContext(HttpResponse httpResponse, Duration responseDuration, Context context,
         Integer tryCount) {
         this.httpResponse = httpResponse;
         this.responseDuration = responseDuration;

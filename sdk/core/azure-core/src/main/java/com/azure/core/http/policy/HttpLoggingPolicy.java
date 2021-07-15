@@ -108,22 +108,22 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             .doOnError(throwable -> logger.warning("<-- HTTP FAILED: ", throwable));
     }
 
-    private HttpRequestLoggingOptions getRequestLoggingOptions(HttpPipelineCallContext callContext) {
-        return new HttpRequestLoggingOptions(callContext.getHttpRequest(),
+    private HttpRequestLoggingContext getRequestLoggingOptions(HttpPipelineCallContext callContext) {
+        return new HttpRequestLoggingContext(callContext.getHttpRequest(),
             HttpPipelineCallContextHelper.getContext(callContext),
             getRequestRetryCount(HttpPipelineCallContextHelper.getContext(callContext), getHttpLoggingPolicyLogger()));
     }
 
-    private HttpResponseLoggingOptions getResponseLoggingOptions(HttpResponse httpResponse, long startNs,
+    private HttpResponseLoggingContext getResponseLoggingOptions(HttpResponse httpResponse, long startNs,
         HttpPipelineCallContext callContext) {
-        return new HttpResponseLoggingOptions(httpResponse, Duration.ofNanos(System.nanoTime() - startNs),
+        return new HttpResponseLoggingContext(httpResponse, Duration.ofNanos(System.nanoTime() - startNs),
             HttpPipelineCallContextHelper.getContext(callContext),
             getRequestRetryCount(HttpPipelineCallContextHelper.getContext(callContext), getHttpLoggingPolicyLogger()));
     }
 
     private final class DefaultHttpRequestLogger implements HttpRequestLogger {
         @Override
-        public Mono<Void> logRequest(ClientLogger logger, HttpRequestLoggingOptions loggingOptions) {
+        public Mono<Void> logRequest(ClientLogger logger, HttpRequestLoggingContext loggingOptions) {
             final LogLevel logLevel = getLogLevel(loggingOptions);
 
             if (!logger.canLogAtLevel(logLevel)) {
@@ -207,7 +207,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
 
     private final class DefaultHttpResponseLogger implements HttpResponseLogger {
         @Override
-        public Mono<HttpResponse> logResponse(ClientLogger logger, HttpResponseLoggingOptions loggingOptions) {
+        public Mono<HttpResponse> logResponse(ClientLogger logger, HttpResponseLoggingContext loggingOptions) {
             final LogLevel logLevel = getLogLevel(loggingOptions);
             final HttpResponse response = loggingOptions.getHttpResponse();
 

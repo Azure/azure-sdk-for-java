@@ -21,18 +21,18 @@ public interface HttpResponseLogger {
      * @param loggingOptions The information available during response logging.
      * @return The {@link LogLevel} used to log the HTTP response.
      */
-    default LogLevel getLogLevel(HttpResponseLoggingOptions loggingOptions) {
+    default LogLevel getLogLevel(HttpResponseLoggingContext loggingOptions) {
         return LogLevel.INFORMATIONAL;
     }
 
     /**
      * Logs the HTTP response.
      * <p>
-     * To get the {@link LogLevel} used to log the HTTP response use {@link #getLogLevel(HttpResponseLoggingOptions)}.
+     * To get the {@link LogLevel} used to log the HTTP response use {@link #getLogLevel(HttpResponseLoggingContext)}.
      *
      * @param logger The {@link ClientLogger} used to log the response.
      * @param loggingOptions The information available during response logging.
      * @return A reactive response that returns the HTTP response that was logged.
      */
-    Mono<HttpResponse> logResponse(ClientLogger logger, HttpResponseLoggingOptions loggingOptions);
+    Mono<HttpResponse> logResponse(ClientLogger logger, HttpResponseLoggingContext loggingOptions);
 }
