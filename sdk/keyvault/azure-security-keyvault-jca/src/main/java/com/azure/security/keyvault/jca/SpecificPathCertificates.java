@@ -29,25 +29,27 @@ import static java.util.logging.Level.WARNING;
 /**
  * Store certificates loaded from file system.
  */
-public final class FileSystemCertificates implements AzureCertificates {
+public final class SpecificPathCertificates implements AzureCertificates {
+
+    private static final Map<String, SpecificPathCertificates> CACHE = new HashMap<>();
 
     /**
      * Stores the logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(FileSystemCertificates.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(SpecificPathCertificates.class.getName());
 
     /**
-     * Stores the jre key store aliases.
+     * Stores the specific path aliases.
      */
     private final List<String> aliases = new ArrayList<>();
 
     /**
-     * Stores the file system certificates by alias.
+     * Stores the specific path certificates by alias.
      */
     private final Map<String, Certificate> certificates = new HashMap<>();
 
     /**
-     * Stores the file system certificate keys by alias.
+     * Stores the specific path certificate keys by alias.
      */
     private final Map<String, Key> certificateKeys = new HashMap<>();
 
@@ -80,8 +82,9 @@ public final class FileSystemCertificates implements AzureCertificates {
      *
      * @param certificatePath Store the file path where certificates are placed
      */
-    private FileSystemCertificates(String certificatePath) {
+    private SpecificPathCertificates(String certificatePath) {
         this.certificatePath = certificatePath;
+        loadCertificatesFromSpecificPath();
     }
 
     /**
@@ -93,7 +96,7 @@ public final class FileSystemCertificates implements AzureCertificates {
     public void setCertificateEntry(String alias, Certificate certificate) {
         //Add verification to avoid certificate files with the same file name but different suffixes
         if (aliases.contains(alias)) {
-            LOGGER.log(WARNING, "Cannot load certificates with the same alias in file system", alias);
+            LOGGER.log(WARNING, "Cannot load certificates with the same alias in specific path", alias);
             return;
         }
         aliases.add(alias);
@@ -119,26 +122,27 @@ public final class FileSystemCertificates implements AzureCertificates {
                     new Object[]{alias, file.getName()});
             }
         } catch (CertificateException e) {
-            LOGGER.log(WARNING, "Unable to load file system certificate from: " + file.getName(), e);
+            LOGGER.log(WARNING, "Unable to load specific path certificate from: " + file.getName(), e);
         }
     }
 
     /**
      * Load certificates in the file directory
      */
-    void loadCertificatesFromFileSystem() {
+    private void loadCertificatesFromSpecificPath() {
         try {
             List<File> files = getFiles();
             for (File file : files) {
                 setCertificateByFile(file);
             }
         } catch (IOException ioe) {
-            LOGGER.log(WARNING, "Unable to determine certificates to file system", ioe);
+            LOGGER.log(WARNING, "Unable to determine certificates to specific path", ioe);
         }
     }
 
     /**
      * Get alias from file
+     *
      * @param file File containing certificate information
      * @return certificate alias
      */
@@ -170,45 +174,17 @@ public final class FileSystemCertificates implements AzureCertificates {
     }
 
     /**
-     * Factory of FileSystemCertificate, to avoid loading files multiple times
+     * Get File System certificates by path
+     *
+     * @param path certificate path, which works only in first time
+     * @return file certificate
      */
-    public static class FileSystemCertificatesFactory {
-
-        private static volatile FileSystemCertificates customFileSystemCertificates;
-
-        /**
-         * Get Singleton custom file system certificates
-         * @param path custom certificate path, which works only in first time
-         * @return custom file certificate
-         */
-        public static FileSystemCertificates getCustomFileSystemCertificates(String path) {
-            if (customFileSystemCertificates == null) {
-                synchronized (FileSystemCertificatesFactory.class) {
-                    if (customFileSystemCertificates == null) {
-                        customFileSystemCertificates = new FileSystemCertificates(path);
-                    }
-                }
-            }
-            return customFileSystemCertificates;
+    public static synchronized SpecificPathCertificates getSpecificPathCertificates(String path) {
+        SpecificPathCertificates result = CACHE.getOrDefault(path, null);
+        if (result == null) {
+            result = new SpecificPathCertificates(path);
+            CACHE.put(path, result);
         }
-
-        private static volatile FileSystemCertificates wellKnownFileSystemCertificates;
-
-        /**
-         * Get Singleton well known file system certificates
-         * @param path well known certificate path, which works only in first time
-         * @return well known file certificate
-         */
-        public static FileSystemCertificates getWellKnownFileSystemCertificates(String path) {
-            if (wellKnownFileSystemCertificates == null) {
-                synchronized (FileSystemCertificatesFactory.class) {
-                    if (wellKnownFileSystemCertificates == null) {
-                        wellKnownFileSystemCertificates = new FileSystemCertificates(path);
-                    }
-                }
-            }
-            return wellKnownFileSystemCertificates;
-        }
+        return result;
     }
-
 }
