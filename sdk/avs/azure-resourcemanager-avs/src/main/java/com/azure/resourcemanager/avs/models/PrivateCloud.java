@@ -156,6 +156,13 @@ public interface PrivateCloud {
     String nsxtCertificateThumbprint();
 
     /**
+     * Gets the externalCloudLinks property: Array of cloud link IDs from other clouds that connect to this one.
+     *
+     * @return the externalCloudLinks value.
+     */
+    List<String> externalCloudLinks();
+
+    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -182,7 +189,6 @@ public interface PrivateCloud {
             DefinitionStages.WithLocation,
             DefinitionStages.WithResourceGroup,
             DefinitionStages.WithSku,
-            DefinitionStages.WithNetworkBlock,
             DefinitionStages.WithCreate {
     }
     /** The PrivateCloud definition stages. */
@@ -226,21 +232,7 @@ public interface PrivateCloud {
              * @param sku The private cloud SKU.
              * @return the next definition stage.
              */
-            WithNetworkBlock withSku(Sku sku);
-        }
-        /** The stage of the PrivateCloud definition allowing to specify networkBlock. */
-        interface WithNetworkBlock {
-            /**
-             * Specifies the networkBlock property: The block of addresses should be unique across VNet in your
-             * subscription as well as on-premise. Make sure the CIDR format is conformed to (A.B.C.D/X) where A,B,C,D
-             * are between 0 and 255, and X is between 0 and 22.
-             *
-             * @param networkBlock The block of addresses should be unique across VNet in your subscription as well as
-             *     on-premise. Make sure the CIDR format is conformed to (A.B.C.D/X) where A,B,C,D are between 0 and
-             *     255, and X is between 0 and 22.
-             * @return the next definition stage.
-             */
-            WithCreate withNetworkBlock(String networkBlock);
+            WithCreate withSku(Sku sku);
         }
         /**
          * The stage of the PrivateCloud definition which contains all the minimum required properties for the resource
@@ -252,6 +244,7 @@ public interface PrivateCloud {
                 DefinitionStages.WithInternet,
                 DefinitionStages.WithIdentitySources,
                 DefinitionStages.WithCircuit,
+                DefinitionStages.WithNetworkBlock,
                 DefinitionStages.WithVcenterPassword,
                 DefinitionStages.WithNsxtPassword {
             /**
@@ -319,6 +312,20 @@ public interface PrivateCloud {
              */
             WithCreate withCircuit(Circuit circuit);
         }
+        /** The stage of the PrivateCloud definition allowing to specify networkBlock. */
+        interface WithNetworkBlock {
+            /**
+             * Specifies the networkBlock property: The block of addresses should be unique across VNet in your
+             * subscription as well as on-premise. Make sure the CIDR format is conformed to (A.B.C.D/X) where A,B,C,D
+             * are between 0 and 255, and X is between 0 and 22.
+             *
+             * @param networkBlock The block of addresses should be unique across VNet in your subscription as well as
+             *     on-premise. Make sure the CIDR format is conformed to (A.B.C.D/X) where A,B,C,D are between 0 and
+             *     255, and X is between 0 and 22.
+             * @return the next definition stage.
+             */
+            WithCreate withNetworkBlock(String networkBlock);
+        }
         /** The stage of the PrivateCloud definition allowing to specify vcenterPassword. */
         interface WithVcenterPassword {
             /**
@@ -375,7 +382,7 @@ public interface PrivateCloud {
         /** The stage of the PrivateCloud update allowing to specify tags. */
         interface WithTags {
             /**
-             * Specifies the tags property: Resource tags..
+             * Specifies the tags property: Resource tags.
              *
              * @param tags Resource tags.
              * @return the next definition stage.
@@ -427,6 +434,42 @@ public interface PrivateCloud {
      * @return the refreshed resource.
      */
     PrivateCloud refresh(Context context);
+
+    /**
+     * Rotate the vCenter password.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void rotateVcenterPassword();
+
+    /**
+     * Rotate the vCenter password.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void rotateVcenterPassword(Context context);
+
+    /**
+     * Rotate the NSX-T Manager password.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void rotateNsxtPassword();
+
+    /**
+     * Rotate the NSX-T Manager password.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void rotateNsxtPassword(Context context);
 
     /**
      * List the admin credentials for the private cloud.

@@ -4,8 +4,10 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.implementation.RequestTimeline;
+import com.azure.cosmos.implementation.DiagnosticsInstantSerializer;
 import com.azure.cosmos.implementation.query.aggregation.AggregateOperator;
 import com.azure.cosmos.implementation.JsonSerializable;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
@@ -173,7 +175,9 @@ public final class QueryInfo extends JsonSerializable {
     }
 
     public static final class QueryPlanDiagnosticsContext {
+        @JsonSerialize(using = DiagnosticsInstantSerializer.class)
         private volatile Instant startTimeUTC;
+        @JsonSerialize(using = DiagnosticsInstantSerializer.class)
         private volatile Instant endTimeUTC;
         private volatile RequestTimeline requestTimeline;
         public QueryPlanDiagnosticsContext(Instant startTimeUTC, Instant endTimeUTC) {
