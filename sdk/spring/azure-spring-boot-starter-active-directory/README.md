@@ -263,7 +263,7 @@ To use **aad-starter** in this scenario, we need these steps:
     }
     ```
 
-### Web application and Resource server in the same application
+### Web application and Resource server in one application
 
 This scenario supports `Web application` and `Resource server` in one application.
 
@@ -297,10 +297,10 @@ To use **aad-starter** in this scenario, we need these steps:
         client-id: <Web-API-C-client-id>
         client-secret: <Web-API-C-client-secret>
         app-id-uri: <Web-API-C-app-id-url>
-        application-type: web_application_and_resource_server  # this can not be omitted.
+        application-type: web_application_and_resource_server  # This is required.
         authorization-clients:
-          graph: # Web Application uses graph client to access restricted resources.
-            authorizationGrantType: authorization_code
+          graph:
+            authorizationGrantType: authorization_code # This is required.
             scopes:
               - https://graph.microsoft.com/User.Read
               - https://graph.microsoft.com/Directory.Read.All
@@ -310,9 +310,9 @@ To use **aad-starter** in this scenario, we need these steps:
 
     Configure multiple HttpSecurity instances, `AADOAuth2SecurityMultiConfig` contain two security configurations for resource server and web application.
     
-        (A). The class `ApiWebSecurityConfigurationAdapter` has a high priority to configure the `Resource Server` security adapter.
-    
-        (B). The class `HtmlWebSecurityConfigurerAdapter` has a low priority to config the `Web Application` security adapter. 
+    1. The class `ApiWebSecurityConfigurationAdapter` has a high priority to configure the `Resource Server` security adapter.
+
+    1. The class `HtmlWebSecurityConfigurerAdapter` has a low priority to config the `Web Application` security adapter. 
     
     Here is an example:
 
@@ -351,7 +351,7 @@ To use **aad-starter** in this scenario, we need these steps:
 
 ### Application type
 
-This property is optional, its value can be inferred by dependencies, only `web_application_and_resource_server` must be configured manually: `azure.activedirectory.application-type=web_application_and_resource_server`.
+This property(`azure.activedirectory.application-type`) is optional, its value can be inferred by dependencies, only `web_application_and_resource_server` must be configured manually: `azure.activedirectory.application-type=web_application_and_resource_server`.
 
 | Has dependency: spring-security-oauth2-client | Has dependency: spring-security-oauth2-resource-server |                  Valid values of application type                 | Default value               |
 |-----------------------------------------------|--------------------------------------------------------|-------------------------------------------------------------------|-----------------------------|

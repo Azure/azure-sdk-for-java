@@ -91,7 +91,6 @@ public class AADOBOOAuth2AuthorizedClientProvider implements OAuth2AuthorizedCli
     @SuppressWarnings({ "unchecked", "rawtypes" })
     private <T extends OAuth2AuthorizedClient> T getOboAuthorizedClient(ClientRegistration clientRegistration,
                                                                         Authentication principal) {
-        // Todo(v-moaryc) Add integration test.
         if (principal instanceof AnonymousAuthenticationToken) {
             LOGGER.debug("Found anonymous authentication.");
             return null;

@@ -2,14 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.spring.aad.webapi;
 
-import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
+import com.azure.spring.autoconfigure.aad.AADAutoConfiguration;
 import com.nimbusds.jwt.proc.JWTClaimsSetAwareJWSKeySelector;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.core.OAuth2TokenValidator;
@@ -29,17 +26,10 @@ public class AADResourceServerConfigurationTest {
         .withClassLoader(new FilteredClassLoader(ClientRegistration.class))
         .withPropertyValues("azure.activedirectory.tenant-id=fake-tenant-id");
 
-    @Configuration
-    @EnableConfigurationProperties(AADAuthenticationProperties.class)
-    @Import(AADResourceServerConfiguration.class)
-    static class ResourceServerConfiguration {
-
-    }
-
     @Test
     public void testNotExistBearerTokenAuthenticationToken() {
         this.contextRunner
-            .withUserConfiguration(ResourceServerConfiguration.class)
+            .withUserConfiguration(AADAutoConfiguration.class)
             .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
             .run(context -> assertThrows(IllegalStateException.class,
                 () -> context.getBean(JWTClaimsSetAwareJWSKeySelector.class)));
@@ -48,7 +38,7 @@ public class AADResourceServerConfigurationTest {
     @Test
     public void testCreateJwtDecoderByJwkKeySetUri() {
         this.contextRunner
-            .withUserConfiguration(ResourceServerConfiguration.class)
+            .withUserConfiguration(AADAutoConfiguration.class)
             .run(context -> {
                 final JwtDecoder jwtDecoder = context.getBean(JwtDecoder.class);
                 assertThat(jwtDecoder).isNotNull();
@@ -59,7 +49,7 @@ public class AADResourceServerConfigurationTest {
     @Test
     public void testNotAudienceDefaultValidator() {
         this.contextRunner
-            .withUserConfiguration(ResourceServerConfiguration.class)
+            .withUserConfiguration(AADAutoConfiguration.class)
             .run(context -> {
                 AADResourceServerConfiguration bean = context
                     .getBean(AADResourceServerConfiguration.class);
@@ -72,7 +62,7 @@ public class AADResourceServerConfigurationTest {
     @Test
     public void testExistAudienceDefaultValidator() {
         this.contextRunner
-            .withUserConfiguration(ResourceServerConfiguration.class)
+            .withUserConfiguration(AADAutoConfiguration.class)
             .withPropertyValues("azure.activedirectory.app-id-uri=fake-app-id-uri")
             .run(context -> {
                 AADResourceServerConfiguration bean = context
@@ -86,7 +76,7 @@ public class AADResourceServerConfigurationTest {
     @Test
     public void testCreateWebSecurityConfigurerAdapter() {
         this.contextRunner
-            .withUserConfiguration(ResourceServerConfiguration.class)
+            .withUserConfiguration(AADAutoConfiguration.class)
             .run(context -> {
                 WebSecurityConfigurerAdapter webSecurityConfigurerAdapter = context
                     .getBean(AADResourceServerConfiguration.DefaultAADResourceServerWebSecurityConfigurerAdapter.class);

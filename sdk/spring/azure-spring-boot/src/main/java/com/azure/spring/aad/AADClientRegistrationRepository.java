@@ -110,9 +110,6 @@ public class AADClientRegistrationRepository
 
     private ClientRegistration.Builder toClientRegistrationBuilder(String registrationId,
                                                                    AuthorizationClientProperties clientProperties) {
-        Assert.notNull(clientProperties.getAuthorizationGrantType(),
-            "AuthorizationGrantType can not be empty. " + "registrationId: " + registrationId + ".");
-        LOGGER.debug("Client {} AuthorizationClientProperties: {}.", registrationId, clientProperties);
         AADAuthorizationServerEndpoints endpoints =
             new AADAuthorizationServerEndpoints(properties.getBaseUri(), properties.getTenantId());
         AuthorizationGrantType authorizationGrantType;

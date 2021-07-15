@@ -24,8 +24,7 @@ public final class ClientRegistrationCondition extends SpringBootCondition {
 
     @Override
     public ConditionOutcome getMatchOutcome(ConditionContext context, AnnotatedTypeMetadata metadata) {
-        ConditionMessage.Builder message = ConditionMessage.forCondition(
-            "AAD Application Client Condition");
+        ConditionMessage.Builder message = ConditionMessage.forCondition("AAD Application Client Condition");
         AADAuthenticationProperties properties =
             Binder.get(context.getEnvironment())
                   .bind("azure.activedirectory", AADAuthenticationProperties.class)

@@ -3,16 +3,11 @@
 
 package com.azure.spring.aad.webapp;
 
-import com.azure.spring.aad.AADOAuth2ClientConfiguration;
-import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
-import org.springframework.boot.autoconfigure.AutoConfigurations;
+import com.azure.spring.autoconfigure.aad.AADAutoConfiguration;
 import org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.logging.LogLevel;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.RequestEntity;
 import org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken;
@@ -21,13 +16,6 @@ import org.springframework.util.MultiValueMap;
 import java.util.Optional;
 
 public class WebApplicationContextRunnerUtils {
-
-    @Configuration
-    @EnableConfigurationProperties(AADAuthenticationProperties.class)
-    @Import({ AADWebApplicationConfiguration.class, AADOAuth2ClientConfiguration.class })
-    static class WebApplicationConfiguration {
-
-    }
 
     public static WebApplicationContextRunner getContextRunnerWithRequiredProperties() {
         return getContextRunner().withPropertyValues(
@@ -39,7 +27,7 @@ public class WebApplicationContextRunnerUtils {
     public static WebApplicationContextRunner getContextRunner() {
         return new WebApplicationContextRunner()
             .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
-            .withConfiguration(AutoConfigurations.of(WebApplicationConfiguration.class))
+            .withUserConfiguration(AADAutoConfiguration.class)
             .withInitializer(new ConditionEvaluationReportLoggingListener(LogLevel.INFO));
     }
 

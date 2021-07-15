@@ -25,12 +25,11 @@ public final class WebApplicationCondition extends SpringBootCondition {
 
     @Override
     public ConditionOutcome getMatchOutcome(ConditionContext context, AnnotatedTypeMetadata metadata) {
-        ConditionMessage.Builder message = ConditionMessage.forCondition(
-            "AAD Web Application Condition");
-        AADAuthenticationProperties properties = Binder.get(context.getEnvironment())
-                                                       .bind("azure.activedirectory",
-                                                           AADAuthenticationProperties.class)
-                                                       .orElse(null);
+        ConditionMessage.Builder message = ConditionMessage.forCondition("AAD Web Application Condition");
+        AADAuthenticationProperties properties =
+            Binder.get(context.getEnvironment())
+                  .bind("azure.activedirectory", AADAuthenticationProperties.class)
+                  .orElse(null);
         if (properties == null) {
             return ConditionOutcome.noMatch(message.notAvailable("aad authorization properties"));
         }

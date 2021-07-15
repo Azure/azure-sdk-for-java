@@ -8,7 +8,7 @@
     - *web_application*: Web Application.
     - *resource_server*: Resource Server.
     - *resource_server_with_obo*: Resource Server with authorization grant type `on_behalf_of`.
-    - *web_application_and_resource_server*: Web Application and Resource Server in the same application, it also supports `on_behalf_of`.
+    - *web_application_and_resource_server*: Web Application and Resource Server in one application, it also supports `on_behalf_of`.
 
     This property is optional, its value can be inferred by dependencies, only `web_application_and_resource_server` must be configured manually: `azure.activedirectory.application-type=web_application_and_resource_server`.
     

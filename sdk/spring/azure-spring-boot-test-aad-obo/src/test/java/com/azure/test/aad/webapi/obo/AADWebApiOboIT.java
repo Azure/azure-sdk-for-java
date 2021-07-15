@@ -4,6 +4,7 @@
 package com.azure.test.aad.webapi.obo;
 
 import com.azure.spring.test.aad.AADWebApiITHelper;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -19,6 +20,7 @@ import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2Aut
 import org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.Collections;
@@ -58,6 +60,12 @@ public class AADWebApiOboIT {
     @Test
     public void testCallGraph() {
         assertEquals("Graph response success.", aadWebApiITHelper.httpGetStringByAccessToken("call-graph"));
+    }
+
+    @Test
+    public void testCallGraphWithAnonymousAuthenticationTokenAndReturnUnauthorized() {
+        Assertions.assertThrows(HttpClientErrorException.Unauthorized.class,
+            ()-> aadWebApiITHelper.httpGetStringWithoutAccessToken("call-graph"));
     }
 
     @SpringBootApplication
