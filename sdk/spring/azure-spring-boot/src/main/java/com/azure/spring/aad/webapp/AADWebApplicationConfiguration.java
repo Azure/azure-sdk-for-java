@@ -3,18 +3,14 @@
 
 package com.azure.spring.aad.webapp;
 
-import com.azure.spring.aad.AADOAuth2ClientAutoConfiguration;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import com.azure.spring.autoconfigure.condition.aad.WebApplicationCondition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -27,10 +23,7 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;
  * Configure the necessary beans used for aad authentication and authorization.
  */
 @Configuration
-@ConditionalOnResource(resources = "classpath:aad.enable.config")
-@EnableConfigurationProperties(AADAuthenticationProperties.class)
 @Conditional(WebApplicationCondition.class)
-@Import(AADOAuth2ClientAutoConfiguration.class)
 public class AADWebApplicationConfiguration {
 
     @Autowired

@@ -15,6 +15,8 @@ import org.springframework.util.StringUtils;
 
 import java.util.Optional;
 
+import static com.azure.spring.aad.AADApplicationType.RESOURCE_SERVER;
+
 /**
  * Web application, web resource server or all in scenario condition.
  */
@@ -24,45 +26,27 @@ public final class ClientRegistrationCondition extends SpringBootCondition {
     public ConditionOutcome getMatchOutcome(ConditionContext context, AnnotatedTypeMetadata metadata) {
         ConditionMessage.Builder message = ConditionMessage.forCondition(
             "AAD Application Client Condition");
-        AADAuthenticationProperties properties = Binder.get(context.getEnvironment())
-                                                       .bind("azure.activedirectory",
-                                                           AADAuthenticationProperties.class)
-                                                       .orElse(null);
+        AADAuthenticationProperties properties =
+            Binder.get(context.getEnvironment())
+                  .bind("azure.activedirectory", AADAuthenticationProperties.class)
+                  .orElse(null);
         if (properties == null) {
-            return ConditionOutcome.noMatch(message.notAvailable("aad authorization properties"));
+            return ConditionOutcome.noMatch(
+                message.notAvailable("AAD authorization properties(azure.activedirectory" + ".xxx)"));
         }
 
         if (!StringUtils.hasText(properties.getClientId())) {
-            return ConditionOutcome.noMatch(message.didNotFind("client-id").atAll());
+            return ConditionOutcome.noMatch(message.didNotFind("azure.activedirectory.client-id").atAll());
         }
 
         // Bind properties will not execute AADAuthenticationProperties#afterPropertiesSet()
         AADApplicationType applicationType = Optional.ofNullable(properties.getApplicationType())
                                                      .orElseGet(AADApplicationType::inferApplicationTypeByDependencies);
-        if (applicationType == null) {
-            return ConditionOutcome.noMatch(message.because("Not found the AAD application type."));
+        if (applicationType == null || applicationType == RESOURCE_SERVER) {
+            return ConditionOutcome.noMatch(
+                message.because("Resource server does not need client registration."));
         }
-
-        StringBuilder details = new StringBuilder();
-        switch (applicationType) {
-            case WEB_APPLICATION:
-                details.append("classes EnableWebSecurity and ClientRegistration, "
-                    + "or property 'azure.activedirectory.application-type=web_application'");
-                break;
-            case RESOURCE_SERVER_WITH_OBO:
-                details.append("classes EnableWebSecurity, ClientRegistration and BearerTokenAuthenticationToken, "
-                    + "or property 'azure.activedirectory.application-type=resource_server_with_obo'");
-                break;
-            case WEB_APPLICATION_AND_RESOURCE_SERVER:
-                details.append("classes EnableWebSecurity, ClientRegistration and BearerTokenAuthenticationToken "
-                    + "and property 'azure.activedirectory.application-type=web_application_and_resource_server'");
-                break;
-            default:
-                return ConditionOutcome.noMatch(
-                    message.didNotFind("necessary dependencies")
-                           .items("classes EnableWebSecurity, ClientRegistration and BearerTokenAuthenticationToken",
-                               "property 'azure.activedirectory.application-type'"));
-        }
-        return ConditionOutcome.match(message.foundExactly(details.toString()));
+        return ConditionOutcome.match(
+            message.foundExactly("azure.activedirectory.application-type=" + applicationType));
     }
 }

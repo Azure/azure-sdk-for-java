@@ -71,7 +71,7 @@ public class AADOAuth2AuthorizedClientRepository implements OAuth2AuthorizedClie
             return (T) result;
         }
 
-        if (repo.isAzureDelegatedClientRegistrations(clientRegistrationId)) {
+        if (repo.isAzureDelegatedClientRegistration(clientRegistrationId)) {
             OAuth2AuthorizedClient azureClient = loadAuthorizedClient(getAzureClientId(), principal, request);
             if (azureClient == null) {
                 throw new ClientAuthorizationRequiredException(AZURE_CLIENT_REGISTRATION_ID);

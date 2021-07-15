@@ -2,16 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.spring.aad;
 
-import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import org.springframework.util.ClassUtils;
 
 /**
  * AAD application type.
- * <p>Provides some common methods to determine the application type according to {@link
- * AADAuthenticationProperties}.</p>
- *
- * <p>The value can be inferred by dependencies, only 'web_application_and_resource_server' must be configured
- * manually.</p>
+ * <p>The value can be inferred by dependencies, only 'web_application_and_resource_server' must be configured manually.</p>
  * <pre>
  * | Has dependency: spring-security-oauth2-client | Has dependency: spring-security-oauth2-resource-server | Valid values of application type                                   | Default value               |
  * |-----------------------------------------------|--------------------------------------------------------|--------------------------------------------------------------------|-----------------------------|

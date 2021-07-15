@@ -5,33 +5,81 @@ package com.azure.spring.autoconfigure.condition.aad;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.FilteredClassLoader;
-import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken;
 
 public class WebApplicationConditionTest extends AbstractCondition {
 
-    private final ApplicationContextRunner contextRunner = new ApplicationContextRunner();
-
     @Test
-    void testWebAppConditionWhenEnableWebAppClientMode() {
+    void testWebApplicationConditionWhenApplicationTypeIsEmpty() {
         this.contextRunner
-            .withPropertyValues("azure.activedirectory.client-id = fake-client-id")
-            .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
-            .withUserConfiguration(WebAppConditionConfig.class).run(match(true));
+            .withPropertyValues(
+                "azure.activedirectory.client-id = fake-client-id")
+            .withUserConfiguration(WebApplicationConditionConfig.class)
+            .run(assertConditionMatch(false));
     }
 
     @Test
-    void testWebAppConditionWhenEnableAllInClientMode() {
+    void testWebAppConditionWhenNoOAuth2ResourceDependency() {
+        this.contextRunner
+            .withPropertyValues("azure.activedirectory.client-id = fake-client-id")
+            .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
+            .withUserConfiguration(WebApplicationConditionConfig.class)
+            .run(assertConditionMatch(true));
+    }
+
+    @Test
+    void testWebAppConditionWhenNoOAuth2ClientDependency() {
+        this.contextRunner
+            .withPropertyValues("azure.activedirectory.client-id = fake-client-id")
+            .withClassLoader(new FilteredClassLoader(ClientRegistration.class))
+            .withUserConfiguration(WebApplicationConditionConfig.class)
+            .run(assertConditionMatch(false));
+    }
+
+    @Test
+    void testWebAppConditionWhenApplicationTypeIsWebApplication() {
+        this.contextRunner
+            .withPropertyValues(
+                "azure.activedirectory.client-id = fake-client-id",
+                "azure.activedirectory.application-type=web_application")
+            .withUserConfiguration(WebApplicationConditionConfig.class)
+            .run(assertConditionMatch(true));
+    }
+
+    @Test
+    void testWebAppConditionWhenApplicationTypeIsResourceServer() {
+        this.contextRunner
+            .withPropertyValues(
+                "azure.activedirectory.client-id = fake-client-id",
+                "azure.activedirectory.application-type=resource_server")
+            .withUserConfiguration(WebApplicationConditionConfig.class)
+            .run(assertConditionMatch(false));
+    }
+
+    @Test
+    void testWebAppConditionWhenApplicationTypeIsResourceServerWithOBO() {
+        this.contextRunner
+            .withPropertyValues(
+                "azure.activedirectory.client-id = fake-client-id",
+                "azure.activedirectory.application-type=resource_server_with_obo")
+            .withUserConfiguration(WebApplicationConditionConfig.class)
+            .run(assertConditionMatch(false));
+    }
+
+    @Test
+    void testWebAppConditionWhenApplicationTypeIsWebApplicationAndResourceServer() {
         this.contextRunner
             .withPropertyValues(
                 "azure.activedirectory.client-id = fake-client-id",
                 "azure.activedirectory.application-type=web_application_and_resource_server")
-            .withUserConfiguration(WebAppConditionConfig.class).run(match(true));
+            .withUserConfiguration(WebApplicationConditionConfig.class)
+            .run(assertConditionMatch(true));
     }
 
-    @Configuration(proxyBeanMethods = false)
+    @Configuration
     @Conditional(WebApplicationCondition.class)
-    static class WebAppConditionConfig extends Config { }
+    static class WebApplicationConditionConfig extends Config { }
 }

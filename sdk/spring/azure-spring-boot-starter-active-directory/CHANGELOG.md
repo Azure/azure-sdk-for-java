@@ -12,7 +12,7 @@
 
     This property is optional, its value can be inferred by dependencies, only `web_application_and_resource_server` must be configured manually: `azure.activedirectory.application-type=web_application_and_resource_server`.
     
-    Here is the table about how to infer application type by dependencies:
+    Here is the table about how the AAD starter infers application type by dependencies:
     
     | Has dependency: spring-security-oauth2-client | Has dependency: spring-security-oauth2-resource-server |                  Valid values of application type                 | Default value               |
     |-----------------------------------------------|--------------------------------------------------------|-------------------------------------------------------------------|-----------------------------|

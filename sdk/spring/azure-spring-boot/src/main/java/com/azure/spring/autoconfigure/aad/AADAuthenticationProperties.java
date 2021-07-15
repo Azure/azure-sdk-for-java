@@ -13,7 +13,6 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 
@@ -30,7 +29,6 @@ import java.util.concurrent.TimeUnit;
 import com.azure.spring.aad.AADApplicationType;
 import static com.azure.spring.aad.AADApplicationType.inferApplicationTypeByDependencies;
 import static com.azure.spring.aad.AADAuthorizationGrantType.AUTHORIZATION_CODE;
-import static com.azure.spring.aad.AADAuthorizationGrantType.CLIENT_CREDENTIALS;
 import static com.azure.spring.aad.AADAuthorizationGrantType.ON_BEHALF_OF;
 import static com.azure.spring.aad.AADClientRegistrationRepository.AZURE_CLIENT_REGISTRATION_ID;
 
@@ -463,17 +461,17 @@ public class AADAuthenticationProperties implements InitializingBean {
     }
 
     private void validateAuthorizationClients() {
-        if (!CollectionUtils.isEmpty(authorizationClients)) {
-            authorizationClients.forEach(this::validateAuthorizationClientProperties);
-        }
+        authorizationClients.forEach(this::validateAuthorizationClientProperties);
     }
 
     private void validateClientId() {
         if ((applicationType == AADApplicationType.WEB_APPLICATION
-            || applicationType == AADApplicationType.WEB_APPLICATION_AND_RESOURCE_SERVER)
+            || applicationType == AADApplicationType.WEB_APPLICATION_AND_RESOURCE_SERVER
+            || applicationType == AADApplicationType.RESOURCE_SERVER_WITH_OBO)
             && !StringUtils.hasText(clientId)) {
             throw new IllegalStateException("'azure.activedirectory.client-id' must be configured when "
-                + "application type is 'web_application' or 'web_application_and_resource_server'.");
+                + "application type is 'web_application', "
+                + "'resource_server_with_obo' or 'web_application_and_resource_server'.");
         }
     }
 
@@ -526,35 +524,70 @@ public class AADAuthenticationProperties implements InitializingBean {
 
     private void validateAuthorizationClientProperties(String registrationId,
                                                        AuthorizationClientProperties properties) {
-        String type = Optional.of(properties)
-                              .map(AuthorizationClientProperties::getAuthorizationGrantType)
-                              .map(AADAuthorizationGrantType::getValue)
-                              .orElse(null);
-        if (null == type) {
-            if (isWebApplicationOnly() || AZURE_CLIENT_REGISTRATION_ID.equals(registrationId)) {
-                properties.setAuthorizationGrantType(AUTHORIZATION_CODE);
-                LOGGER.debug("The client '{}' sets the default value of AADAuthorizationGrantType to "
-                    + "'authorization_code'.", registrationId);
-            } else if (isResourceServerOnly() || isResourceServerWithObo()) {
-                properties.setAuthorizationGrantType(AADAuthorizationGrantType.ON_BEHALF_OF);
-                LOGGER.debug("The client '{}' sets the default value of AADAuthorizationGrantType to "
-                    + "'on_behalf_of'.", registrationId);
-            } else if (isWebApplicationAndResourceServer()) {
-                throw new IllegalStateException("azure.activedirectory.authorization-clients." + registrationId
-                    + ".authorization-grant-type must be configured. ");
+        String grantType = Optional.of(properties)
+                                   .map(AuthorizationClientProperties::getAuthorizationGrantType)
+                                   .map(AADAuthorizationGrantType::getValue)
+                                   .orElse(null);
+        if (null == grantType) {
+            // Set default value for authorization grant grantType
+            switch (applicationType) {
+                case WEB_APPLICATION:
+                    properties.setAuthorizationGrantType(AUTHORIZATION_CODE);
+                    LOGGER.debug("The client '{}' sets the default value of AADAuthorizationGrantType to "
+                        + "'authorization_code'.", registrationId);
+                    break;
+                case RESOURCE_SERVER:
+                case RESOURCE_SERVER_WITH_OBO:
+                    properties.setAuthorizationGrantType(AADAuthorizationGrantType.ON_BEHALF_OF);
+                    LOGGER.debug("The client '{}' sets the default value of AADAuthorizationGrantType to "
+                        + "'on_behalf_of'.", registrationId);
+                    break;
+                case WEB_APPLICATION_AND_RESOURCE_SERVER:
+                    throw new IllegalStateException("azure.activedirectory.authorization-clients." + registrationId
+                        + ".authorization-grant-grantType must be configured. ");
+                default:
+                    throw new IllegalStateException("Unsupported authorization grantType " + applicationType.getValue());
             }
         } else {
-            if (!AUTHORIZATION_CODE.getValue().equals(type)
-                && !CLIENT_CREDENTIALS.getValue().equals(type)
-                && !ON_BEHALF_OF.getValue().equals(type)) {
-                throw new IllegalStateException("Valid values are: authorization_code, client_credentials, on_behalf_of");
+            // Validate authorization grant grantType
+            switch (applicationType) {
+                case WEB_APPLICATION:
+                    if (ON_BEHALF_OF.getValue().equals(grantType)) {
+                        throw new IllegalStateException("When 'azure.activedirectory.application-type=web_application',"
+                            + " 'azure.activedirectory.authorization-clients." + registrationId
+                            + ".authorization-grant-type' can not be 'on_behalf_of'.");
+                    }
+                    break;
+                case RESOURCE_SERVER:
+                    if (AUTHORIZATION_CODE.getValue().equals(grantType)) {
+                        throw new IllegalStateException("When 'azure.activedirectory.application-type=resource_server',"
+                            + " 'azure.activedirectory.authorization-clients." + registrationId
+                            + ".authorization-grant-type' can not be 'authorization_code'.");
+                    }
+                    if (ON_BEHALF_OF.getValue().equals(grantType)) {
+                        throw new IllegalStateException("When 'azure.activedirectory.application-type=resource_server',"
+                            + " 'azure.activedirectory.authorization-clients." + registrationId
+                            + ".authorization-grant-type' can not be 'on_behalf_of'.");
+                    }
+                    break;
+                case RESOURCE_SERVER_WITH_OBO:
+                    if (AUTHORIZATION_CODE.getValue().equals(grantType)) {
+                        throw new IllegalStateException("When 'azure.activedirectory.application-type=resource_server_with_obo',"
+                            + " 'azure.activedirectory.authorization-clients." + registrationId
+                            + ".authorization-grant-type' can not be 'authorization_code'.");
+                    }
+                    break;
+                case WEB_APPLICATION_AND_RESOURCE_SERVER:
+                default:
+                    LOGGER.debug("'azure.activedirectory.authorization-clients." + registrationId
+                        + ".authorization-grant-type' is valid.");
             }
 
             if (properties.isOnDemand()
-                && !AUTHORIZATION_CODE.getValue().equals(type)) {
-                throw new IllegalStateException("onDemand only support authorization_code grant type. Please set "
+                && !AUTHORIZATION_CODE.getValue().equals(grantType)) {
+                throw new IllegalStateException("onDemand only support authorization_code grant grantType. Please set "
                     + "'azure.activedirectory.authorization-clients." + registrationId
-                    + ".authorization-grant-type=authorization_code'"
+                    + ".authorization-grant-grantType=authorization_code'"
                     + " or 'azure.activedirectory.authorization-clients." + registrationId + ".on-demand=false'.");
             }
 
@@ -562,7 +595,7 @@ public class AADAuthenticationProperties implements InitializingBean {
                 && !AUTHORIZATION_CODE.equals(properties.getAuthorizationGrantType())) {
                 throw new IllegalStateException("azure.activedirectory.authorization-clients."
                     + AZURE_CLIENT_REGISTRATION_ID
-                    + ".authorization-grant-type must be configured to 'authorization_code'.");
+                    + ".authorization-grant-grantType must be configured to 'authorization_code'.");
             }
         }
 
@@ -570,22 +603,6 @@ public class AADAuthenticationProperties implements InitializingBean {
             throw new IllegalStateException(
                 "'azure.activedirectory.authorization-clients." + registrationId + ".scopes' must be configured");
         }
-    }
-
-    public boolean isWebApplicationOnly() {
-        return AADApplicationType.WEB_APPLICATION == applicationType;
-    }
-
-    public boolean isResourceServerOnly() {
-        return AADApplicationType.RESOURCE_SERVER == applicationType;
-    }
-
-    public boolean isResourceServerWithObo() {
-        return AADApplicationType.RESOURCE_SERVER_WITH_OBO == applicationType;
-    }
-
-    public boolean isWebApplicationAndResourceServer() {
-        return AADApplicationType.WEB_APPLICATION_AND_RESOURCE_SERVER == applicationType;
     }
 
     private boolean isMultiTenantsApplication(String tenantId) {

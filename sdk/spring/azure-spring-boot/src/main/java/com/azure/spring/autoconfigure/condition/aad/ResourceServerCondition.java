@@ -14,6 +14,8 @@ import org.springframework.core.type.AnnotatedTypeMetadata;
 
 import java.util.Optional;
 
+import static com.azure.spring.aad.AADApplicationType.WEB_APPLICATION;
+
 /**
  * Resource server or all in scenario condition.
  */
@@ -34,30 +36,11 @@ public final class ResourceServerCondition extends SpringBootCondition {
         // Bind properties will not execute AADAuthenticationProperties#afterPropertiesSet()
         AADApplicationType applicationType = Optional.ofNullable(properties.getApplicationType())
                                                      .orElseGet(AADApplicationType::inferApplicationTypeByDependencies);
-        if (applicationType == null) {
-            return ConditionOutcome.noMatch(message.because("Not found the AAD application type."));
+        if (applicationType == null || applicationType == WEB_APPLICATION) {
+            return ConditionOutcome.noMatch(
+                message.because("azure.activedirectory.application-type=" + applicationType));
         }
-
-        StringBuilder details = new StringBuilder();
-        switch (applicationType) {
-            case RESOURCE_SERVER:
-                details.append("classes BearerTokenAuthenticationToken, "
-                    + "or property 'azure.activedirectory.application-type=resource_server'");
-                break;
-            case RESOURCE_SERVER_WITH_OBO:
-                details.append("classes EnableWebSecurity, ClientRegistration and BearerTokenAuthenticationToken "
-                    + "or property 'azure.activedirectory.application-type=resource_server_with_obo'");
-                break;
-            case WEB_APPLICATION_AND_RESOURCE_SERVER:
-                details.append("classes EnableWebSecurity, ClientRegistration and BearerTokenAuthenticationToken "
-                    + "and property 'azure.activedirectory.application-type=web_application_and_resource_server'");
-                break;
-            default:
-                return ConditionOutcome.noMatch(
-                    message.didNotFind("necessary dependencies")
-                           .items("classes EnableWebSecurity, ClientRegistration and BearerTokenAuthenticationToken",
-                               "property 'azure.activedirectory.application-type'"));
-        }
-        return ConditionOutcome.match(message.foundExactly(details.toString()));
+        return ConditionOutcome.match(
+            message.foundExactly("azure.activedirectory.application-type=" + applicationType));
     }
 }

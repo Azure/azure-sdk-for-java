@@ -3,16 +3,14 @@
 
 package com.azure.spring.aad;
 
-import com.azure.spring.aad.webapi.AADResourceServerConfiguration;
 import com.azure.spring.aad.webapi.AADResourceServerWebSecurityConfigurerAdapter;
-import com.azure.spring.aad.webapp.AADWebApplicationConfiguration;
 import com.azure.spring.aad.webapp.AADWebSecurityConfigurerAdapter;
+import com.azure.spring.autoconfigure.aad.AADAutoConfiguration;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
-import org.springframework.boot.autoconfigure.security.oauth2.client.servlet.OAuth2ClientAutoConfiguration;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.context.annotation.Configuration;
@@ -54,11 +52,7 @@ public class AADOAuth2AuthorizedClientRepositoryTest {
         try (MockedStatic<RequestContextHolder> requestContextHolder =
                  mockStatic(RequestContextHolder.class, Mockito.CALLS_REAL_METHODS)) {
             new WebApplicationContextRunner()
-                .withConfiguration(
-                    AutoConfigurations.of(OAuth2ClientAutoConfiguration.class,
-                        AADWebApplicationConfiguration.class,
-                        AADOAuth2ClientAutoConfiguration.class)
-                )
+                .withConfiguration(AutoConfigurations.of(AADAutoConfiguration.class))
                 .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
                 .withPropertyValues(
                     "azure.activedirectory.client-id = fake-client-id",
@@ -111,12 +105,8 @@ public class AADOAuth2AuthorizedClientRepositoryTest {
         try (MockedStatic<RequestContextHolder> requestContextHolder =
                  mockStatic(RequestContextHolder.class, Mockito.CALLS_REAL_METHODS)) {
             new WebApplicationContextRunner()
-                .withConfiguration(
-                    AutoConfigurations.of(OAuth2ClientAutoConfiguration.class,
-                        AADWebApplicationConfiguration.class,
-                        AADOAuth2ClientAutoConfiguration.class))
-                .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class)
-                )
+                .withConfiguration(AutoConfigurations.of(AADAutoConfiguration.class))
+                .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
                 .withPropertyValues(
                     "azure.activedirectory.client-id = fake-client-id",
                     "azure.activedirectory.client-secret = fake-client-secret",
@@ -168,10 +158,7 @@ public class AADOAuth2AuthorizedClientRepositoryTest {
     public void resourceServerWithOboSaveAndLoadAuthzClient() {
         new WebApplicationContextRunner()
             .withConfiguration(
-                AutoConfigurations.of(OAuth2ClientAutoConfiguration.class,
-                    AADResourceServerConfiguration.class,
-                    AADOAuth2ClientAutoConfiguration.class)
-            )
+                AutoConfigurations.of(AADAutoConfiguration.class))
             .withPropertyValues(
                 "azure.activedirectory.client-id = fake-client-id",
                 "azure.activedirectory.client-secret = fake-client-secret",
@@ -211,9 +198,8 @@ public class AADOAuth2AuthorizedClientRepositoryTest {
                  mockStatic(RequestContextHolder.class, Mockito.CALLS_REAL_METHODS)) {
             new WebApplicationContextRunner()
                 .withConfiguration(
-                    AutoConfigurations.of(AADWebApplicationConfiguration.class,
-                        AADResourceServerConfiguration.class,
-                        AADOAuth2ClientAutoConfiguration.class,
+                    AutoConfigurations.of(
+                        AADAutoConfiguration.class,
                         AADWebApplicationAndResourceServerConfig.class)
                 )
                 .withPropertyValues(

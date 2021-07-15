@@ -35,7 +35,7 @@ A `web application` is any web based application that allows user to login, wher
 1. Web application accessing resource servers.
 1. Accessing a resource server.
 1. Resource server accessing other resource servers.
-1. Web application and Resource server in the same application.
+1. Web application and Resource server in one application.
 
 ### Accessing a web application
 
@@ -265,7 +265,7 @@ To use **aad-starter** in this scenario, we need these steps:
 
 ### Web application and Resource server in the same application
 
-This scenario supports `Web application` and `Resource server` in the same application.
+This scenario supports `Web application` and `Resource server` in one application.
 
 To use **aad-starter** in this scenario, we need these steps:
 
@@ -288,7 +288,7 @@ To use **aad-starter** in this scenario, we need these steps:
 
 * Step 2: Add properties in application.yml:
     
-    Set property `azure.activedirectory.application-type` is `web_application_and_resource_server`, and specify the authorization type for each authorization client.
+    Set property `azure.activedirectory.application-type` to `web_application_and_resource_server`, and specify the authorization type for each authorization client.
     
     ```yaml
     azure:

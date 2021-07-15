@@ -22,7 +22,7 @@ public abstract class AbstractCondition {
         }
     }
 
-    protected ContextConsumer<AssertableApplicationContext> match(boolean expected) {
+    protected ContextConsumer<AssertableApplicationContext> assertConditionMatch(boolean expected) {
         return (context) -> {
             if (expected) {
                 assertThat(context).hasBean("myBean");

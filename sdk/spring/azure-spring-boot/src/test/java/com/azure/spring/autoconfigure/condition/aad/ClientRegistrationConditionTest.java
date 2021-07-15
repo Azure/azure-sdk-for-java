@@ -7,35 +7,71 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken;
 
 public class ClientRegistrationConditionTest extends AbstractCondition {
 
     @Test
-    void testClientConditionWhenEnableWebAppClientMode() {
+    void testClientConditionWhenApplicationTypeIsEmpty() {
+        this.contextRunner
+            .withPropertyValues(
+                "azure.activedirectory.client-id = fake-client-id")
+            .withUserConfiguration(ClientRegistrationConditionConfig.class)
+            .run(assertConditionMatch(true));
+    }
+    
+    @Test
+    void testClientConditionWhenNoOAuth2ClientDependency() {
         this.contextRunner
             .withPropertyValues("azure.activedirectory.client-id = fake-client-id")
+            .withClassLoader(new FilteredClassLoader(ClientRegistration.class))
+            .withUserConfiguration(ClientRegistrationConditionConfig.class)
+            .run(assertConditionMatch(false));
+    }
+
+    @Test
+    void testClientConditionWhenApplicationTypeIsWebApplication() {
+        this.contextRunner
+            .withPropertyValues(
+                "azure.activedirectory.client-id = fake-client-id",
+                "azure.activedirectory.application-type=web_application")
             .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
-            .withUserConfiguration(ClientRegistrationConditionConfig.class).run(match(true));
+            .withUserConfiguration(ClientRegistrationConditionConfig.class)
+            .run(assertConditionMatch(true));
     }
 
     @Test
-    void testClientConditionWhenEnableWebApiClientMode() {
+    void testClientConditionWhenApplicationTypeIsResourceServer() {
         this.contextRunner
-            .withPropertyValues("azure.activedirectory.client-id = fake-client-id")
-            .withUserConfiguration(ClientRegistrationConditionConfig.class).run(match(true));
+            .withPropertyValues(
+                "azure.activedirectory.client-id = fake-client-id",
+                "azure.activedirectory.application-type=resource_server")
+            .withUserConfiguration(ClientRegistrationConditionConfig.class)
+            .run(assertConditionMatch(false));
     }
 
     @Test
-    void testClientConditionWhenEnableAllInClientMode() {
+    void testClientConditionWhenApplicationTypeIsResourceServerWithOBO() {
+        this.contextRunner
+            .withPropertyValues(
+                "azure.activedirectory.client-id = fake-client-id",
+                "azure.activedirectory.application-type=resource_server_with_obo")
+            .withUserConfiguration(ClientRegistrationConditionConfig.class)
+            .run(assertConditionMatch(true));
+    }
+
+    @Test
+    void testClientConditionWhenApplicationTypeIsWebApplicationAndResourceServer() {
         this.contextRunner
             .withPropertyValues(
                 "azure.activedirectory.client-id = fake-client-id",
                 "azure.activedirectory.application-type=web_application_and_resource_server")
-            .withUserConfiguration(ClientRegistrationConditionConfig.class).run(match(true));
+            .withUserConfiguration(ClientRegistrationConditionConfig.class)
+            .run(assertConditionMatch(true));
     }
 
-    @Configuration(proxyBeanMethods = false)
+    @Configuration
     @Conditional(ClientRegistrationCondition.class)
     static class ClientRegistrationConditionConfig extends Config { }
 }

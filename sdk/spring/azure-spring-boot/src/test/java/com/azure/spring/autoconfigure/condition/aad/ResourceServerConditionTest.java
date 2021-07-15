@@ -12,24 +12,64 @@ import org.springframework.security.oauth2.server.resource.BearerTokenAuthentica
 public class ResourceServerConditionTest extends AbstractCondition {
 
     @Test
-    void testWebAppConditionWhenEnableWebAppClientMode() {
+    void testResourceServerConditionWhenApplicationTypeIsEmpty() {
         this.contextRunner
             .withPropertyValues(
                 "azure.activedirectory.client-id = fake-client-id")
-            .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
-            .withUserConfiguration(WebAppConditionConfig.class).run(match(true));
+            .withUserConfiguration(ResourceServerConditionConfig.class)
+            .run(assertConditionMatch(true));
     }
 
     @Test
-    void testWebAppConditionWhenEnableAllInClientMode() {
+    void testResourceServerConditionWhenNoOAuth2ResourceDependency() {
+        this.contextRunner
+            .withPropertyValues("azure.activedirectory.client-id = fake-client-id")
+            .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
+            .withUserConfiguration(ResourceServerConditionConfig.class)
+            .run(assertConditionMatch(false));
+    }
+
+    @Test
+    void testResourceServerConditionWhenApplicationTypeIsWebApplication() {
+        this.contextRunner
+            .withPropertyValues(
+                "azure.activedirectory.client-id = fake-client-id",
+                "azure.activedirectory.application-type=web_application")
+            .withUserConfiguration(ResourceServerConditionConfig.class)
+            .run(assertConditionMatch(false));
+    }
+
+    @Test
+    void testResourceServerConditionWhenApplicationTypeIsResourceServer() {
+        this.contextRunner
+            .withPropertyValues(
+                "azure.activedirectory.client-id = fake-client-id",
+                "azure.activedirectory.application-type=resource_server")
+            .withUserConfiguration(ResourceServerConditionConfig.class)
+            .run(assertConditionMatch(true));
+    }
+
+    @Test
+    void testResourceServerConditionWhenApplicationTypeIsResourceServerWithOBO() {
+        this.contextRunner
+            .withPropertyValues(
+                "azure.activedirectory.client-id = fake-client-id",
+                "azure.activedirectory.application-type=resource_server_with_obo")
+            .withUserConfiguration(ResourceServerConditionConfig.class)
+            .run(assertConditionMatch(true));
+    }
+
+    @Test
+    void testResourceServerConditionWhenApplicationTypeIsWebApplicationAndResourceServer() {
         this.contextRunner
             .withPropertyValues(
                 "azure.activedirectory.client-id = fake-client-id",
                 "azure.activedirectory.application-type=web_application_and_resource_server")
-            .withUserConfiguration(WebAppConditionConfig.class).run(match(true));
+            .withUserConfiguration(ResourceServerConditionConfig.class)
+            .run(assertConditionMatch(true));
     }
 
-    @Configuration(proxyBeanMethods = false)
-    @Conditional(WebApplicationCondition.class)
-    static class WebAppConditionConfig extends Config { }
+    @Configuration
+    @Conditional(ResourceServerCondition.class)
+    static class ResourceServerConditionConfig extends Config { }
 }

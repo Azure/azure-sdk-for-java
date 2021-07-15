@@ -13,10 +13,10 @@ public enum AADAuthorizationGrantType {
     AUTHORIZATION_CODE("authorization_code"),
     ON_BEHALF_OF("on_behalf_of");
 
-    private String authorizationGrantType;
+    private final String authorizationGrantType;
 
     AADAuthorizationGrantType(String authorizationGrantType) {
-        // Unified format, compatible with previous usage.
+        // For backward compatibility, we support 'on-behalf-of'.
         if ("on-behalf-of".equals(authorizationGrantType)) {
             this.authorizationGrantType = "on_behalf_of";
         } else {

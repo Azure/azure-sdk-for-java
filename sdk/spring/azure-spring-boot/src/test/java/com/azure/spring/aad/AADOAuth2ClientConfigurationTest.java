@@ -3,8 +3,8 @@
 
 package com.azure.spring.aad;
 
-import com.azure.spring.aad.webapp.AADWebApplicationConfiguration;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
+import com.azure.spring.autoconfigure.aad.AADAutoConfiguration;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.FilteredClassLoader;
@@ -18,7 +18,7 @@ import java.util.Set;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class AADOAuth2ClientAutoConfigurationTest {
+public class AADOAuth2ClientConfigurationTest {
 
     private final WebApplicationContextRunner contextRunner = new WebApplicationContextRunner()
         .withPropertyValues(
@@ -29,7 +29,7 @@ public class AADOAuth2ClientAutoConfigurationTest {
     @Test
     public void testWithoutAnyPropertiesSet() {
         new WebApplicationContextRunner()
-            .withUserConfiguration(AADOAuth2ClientAutoConfiguration.class)
+            .withUserConfiguration(AADOAuth2ClientConfiguration.class)
             .run(context -> {
                 assertThat(context).doesNotHaveBean(AADAuthenticationProperties.class);
                 assertThat(context).doesNotHaveBean(ClientRegistrationRepository.class);
@@ -40,7 +40,7 @@ public class AADOAuth2ClientAutoConfigurationTest {
     @Test
     public void testWithRequiredPropertiesSet() {
         new WebApplicationContextRunner()
-            .withConfiguration(AutoConfigurations.of(AADOAuth2ClientAutoConfiguration.class))
+            .withConfiguration(AutoConfigurations.of(AADAutoConfiguration.class))
             .withPropertyValues("azure.activedirectory.client-id=fake-client-id")
             .run(context -> {
                 assertThat(context).hasSingleBean(AADAuthenticationProperties.class);
@@ -50,10 +50,10 @@ public class AADOAuth2ClientAutoConfigurationTest {
     }
 
     @Test
-    public void testNotExistBearerTokenAuthenticationTokenClass() {
+    public void testWebApplication() {
         this.contextRunner
-            .withConfiguration(AutoConfigurations.of(AADWebApplicationConfiguration.class,
-                AADOAuth2ClientAutoConfiguration.class))
+            .withConfiguration(AutoConfigurations.of(AADAutoConfiguration.class,
+                AADOAuth2ClientConfiguration.class))
             .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
             .run(context -> {
                 assertThat(context).hasSingleBean(AADAuthenticationProperties.class);
@@ -63,17 +63,17 @@ public class AADOAuth2ClientAutoConfigurationTest {
     }
 
     @Test
-    public void testNotExistOAuth2LoginAuthenticationFilter() {
+    public void testResourceServer() {
         this.contextRunner
             .withClassLoader(new FilteredClassLoader(ClientRegistration.class))
-            .withConfiguration(AutoConfigurations.of(AADOAuth2ClientAutoConfiguration.class))
+            .withConfiguration(AutoConfigurations.of(AADOAuth2ClientConfiguration.class))
             .run(context -> assertThat(context).doesNotHaveBean(AADOAuth2AuthorizedClientRepository.class));
     }
 
     @Test
     public void testOnlyGraphClient() {
         this.contextRunner
-            .withConfiguration(AutoConfigurations.of(AADOAuth2ClientAutoConfiguration.class))
+            .withConfiguration(AutoConfigurations.of(AADAutoConfiguration.class))
             .withPropertyValues("azure.activedirectory.authorization-clients.graph.scopes="
                 + "https://graph.microsoft.com/User.Read")
             .run(context -> {
@@ -95,7 +95,7 @@ public class AADOAuth2ClientAutoConfigurationTest {
     @Test
     public void testGrantTypeIsAuthorizationCodeClient() {
         this.contextRunner
-            .withUserConfiguration(AADOAuth2ClientAutoConfiguration.class)
+            .withUserConfiguration(AADOAuth2ClientConfiguration.class)
             .withPropertyValues("azure.activedirectory.authorization-clients.graph.authorization-grant-type="
                 + "authorization_code")
             .run(context -> {
@@ -106,7 +106,7 @@ public class AADOAuth2ClientAutoConfigurationTest {
     @Test
     public void clientWhichGrantTypeIsOboButOnDemandExceptionTest() {
         this.contextRunner
-            .withUserConfiguration(AADOAuth2ClientAutoConfiguration.class)
+            .withUserConfiguration(AADAutoConfiguration.class)
             .withPropertyValues("azure.activedirectory.authorization-clients.graph.authorization-grant-type="
                 + "on_behalf_of")
             .withPropertyValues("azure.activedirectory.authorization-clients.graph.on-demand = true")
@@ -118,7 +118,7 @@ public class AADOAuth2ClientAutoConfigurationTest {
     @Test
     public void testExistCustomAndGraphClient() {
         this.contextRunner
-            .withConfiguration(AutoConfigurations.of(AADOAuth2ClientAutoConfiguration.class))
+            .withConfiguration(AutoConfigurations.of(AADAutoConfiguration.class))
             .withPropertyValues("azure.activedirectory.authorization-clients.graph.scopes="
                 + "https://graph.microsoft.com/User.Read")
             .withPropertyValues("azure.activedirectory.authorization-clients.custom.scopes="
