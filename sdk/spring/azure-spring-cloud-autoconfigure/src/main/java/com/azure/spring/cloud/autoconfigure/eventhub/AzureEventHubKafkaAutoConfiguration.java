@@ -10,7 +10,6 @@ import com.azure.resourcemanager.eventhubs.models.EventHubNamespace;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespaceAuthorizationRule;
 import com.azure.spring.cloud.autoconfigure.context.AzureContextAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.context.AzureContextProperties;
-import com.azure.spring.cloud.context.core.impl.EventHubNamespaceManager;
 import com.azure.spring.integration.eventhub.factory.EventHubConnectionStringProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;

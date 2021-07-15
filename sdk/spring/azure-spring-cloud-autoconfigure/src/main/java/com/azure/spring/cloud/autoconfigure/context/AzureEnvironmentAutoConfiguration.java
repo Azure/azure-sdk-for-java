@@ -1,0 +1,31 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.spring.cloud.autoconfigure.context;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+/**
+ * Auto-config to provide default {@link EnvironmentProvider} for all Azure services
+ *
+ * @author Warren Zhu
+ */
+@Configuration
+public class AzureEnvironmentAutoConfiguration {
+
+    @Bean
+    @ConditionalOnMissingBean
+    public EnvironmentProvider environmentProvider(@Autowired(required = false) AzureContextProperties azureContextProperties) {
+        DefaultEnvironmentProvider defaultEnvironmentProvider = new DefaultEnvironmentProvider();
+
+        if (azureContextProperties != null) {
+            defaultEnvironmentProvider.setEnvironment(azureContextProperties.getEnvironment().getAzureEnvironment());
+        }
+
+        return defaultEnvironmentProvider;
+    }
+
+}
