@@ -61,7 +61,7 @@ public final class JsonWebKeySet {
     }
 
     static public JsonWebKeySet fromGenerated(com.azure.security.attestation.implementation.models.JsonWebKeySet generated) {
-        List keys = generated.getKeys().stream().map(key -> JsonWebKey.fromGenerated(key)).collect(Collectors.toList());
+        List<JsonWebKey> keys = generated.getKeys().stream().map(key -> JsonWebKey.fromGenerated(key)).collect(Collectors.toList());
         return new JsonWebKeySet().setKeys(keys);
     }
 }
