@@ -48,6 +48,9 @@ public final class AttestationClientBuilder {
 
     private final Map<String, String> properties = new HashMap<>();
 
+    /**
+     * Creates a new instance of the AttestationClientBuilder class.
+     */
     public AttestationClientBuilder() {
         this.pipelinePolicies = new ArrayList<>();
     }
@@ -170,7 +173,7 @@ public final class AttestationClientBuilder {
     /*
      * The list of Http pipeline policies to add.
      */
-    private List<HttpPipelinePolicy> pipelinePolicies;
+    private final List<HttpPipelinePolicy> pipelinePolicies;
 
     /**
      * Adds a custom Http pipeline policy.
@@ -224,12 +227,10 @@ public final class AttestationClientBuilder {
         policies.addAll(this.pipelinePolicies);
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
-        HttpPipeline httpPipeline =
-                new HttpPipelineBuilder()
-                        .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                        .httpClient(httpClient)
-                        .build();
-        return httpPipeline;
+        return new HttpPipelineBuilder()
+                .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                .httpClient(httpClient)
+                .build();
     }
 
     /**
