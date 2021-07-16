@@ -3,7 +3,9 @@
 
 package com.azure.spring.cloud.context.core.api;
 
-
+/**
+ * Metadata defining an Azure resource.
+ */
 public class AzureResourceMetadata {
 
     private String region;
