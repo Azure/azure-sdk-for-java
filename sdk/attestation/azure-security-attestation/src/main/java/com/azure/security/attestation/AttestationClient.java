@@ -18,6 +18,7 @@ import com.azure.security.attestation.models.AttestationResponse;
 import com.azure.security.attestation.models.CloudErrorException;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 
 /** Initializes a new instance of the synchronous AzureAttestationRestClient type. */
 @ServiceClient(builder = AttestationClientBuilder.class)
@@ -111,9 +112,9 @@ public final class AttestationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public String attestTpm(String request) {
-        return new String(this.serviceClient.attestTpm(
-            new com.azure.security.attestation.implementation.models.TpmAttestationRequest()
-                .setData(request.getBytes(StandardCharsets.UTF_8))).getData(), StandardCharsets.UTF_8);
+        return new String(Objects.requireNonNull(this.serviceClient.attestTpm(
+            new TpmAttestationRequest()
+                .setData(request.getBytes(StandardCharsets.UTF_8))).getData()), StandardCharsets.UTF_8);
     }
 
     /**
@@ -131,6 +132,6 @@ public final class AttestationClient {
     public Response<String> attestTpmWithResponse(String request, Context context) {
 
         Response<TpmAttestationResponse> response = this.serviceClient.attestTpmWithResponse(new TpmAttestationRequest().setData(request.getBytes(StandardCharsets.UTF_8)), context);
-        return Utilities.generateResponseFromModelType(response, new String(response.getValue().getData(), StandardCharsets.UTF_8));
+        return Utilities.generateResponseFromModelType(response, new String(Objects.requireNonNull(response.getValue().getData()), StandardCharsets.UTF_8));
     }
 }
