@@ -4,6 +4,8 @@
 
 package com.azure.resourcemanager.policyinsights.models;
 
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.policyinsights.fluent.models.RemediationInner;
 import java.time.OffsetDateTime;
@@ -281,4 +283,45 @@ public interface Remediation {
      * @return the refreshed resource.
      */
     Remediation refresh(Context context);
+
+    /**
+     * Gets all deployments for a remediation at resource group scope.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all deployments for a remediation at resource group scope.
+     */
+    PagedIterable<RemediationDeployment> listDeploymentsAtResourceGroup();
+
+    /**
+     * Gets all deployments for a remediation at resource group scope.
+     *
+     * @param top Maximum number of records to return.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all deployments for a remediation at resource group scope.
+     */
+    PagedIterable<RemediationDeployment> listDeploymentsAtResourceGroup(Integer top, Context context);
+
+    /**
+     * Cancels a remediation at resource group scope.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the remediation definition.
+     */
+    Remediation cancelAtResourceGroup();
+
+    /**
+     * Cancels a remediation at resource group scope.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the remediation definition.
+     */
+    Response<Remediation> cancelAtResourceGroupWithResponse(Context context);
 }

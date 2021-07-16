@@ -4,9 +4,12 @@
 
 package com.azure.resourcemanager.policyinsights.implementation;
 
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.policyinsights.fluent.models.RemediationInner;
 import com.azure.resourcemanager.policyinsights.models.Remediation;
+import com.azure.resourcemanager.policyinsights.models.RemediationDeployment;
 import com.azure.resourcemanager.policyinsights.models.RemediationDeploymentSummary;
 import com.azure.resourcemanager.policyinsights.models.RemediationFilters;
 import com.azure.resourcemanager.policyinsights.models.ResourceDiscoveryMode;
@@ -158,6 +161,26 @@ public final class RemediationImpl implements Remediation, Remediation.Definitio
                 .getByResourceGroupWithResponse(resourceGroupName, remediationName, context)
                 .getValue();
         return this;
+    }
+
+    public PagedIterable<RemediationDeployment> listDeploymentsAtResourceGroup() {
+        return serviceManager.remediations().listDeploymentsAtResourceGroup(resourceGroupName, remediationName);
+    }
+
+    public PagedIterable<RemediationDeployment> listDeploymentsAtResourceGroup(Integer top, Context context) {
+        return serviceManager
+            .remediations()
+            .listDeploymentsAtResourceGroup(resourceGroupName, remediationName, top, context);
+    }
+
+    public Remediation cancelAtResourceGroup() {
+        return serviceManager.remediations().cancelAtResourceGroup(resourceGroupName, remediationName);
+    }
+
+    public Response<Remediation> cancelAtResourceGroupWithResponse(Context context) {
+        return serviceManager
+            .remediations()
+            .cancelAtResourceGroupWithResponse(resourceGroupName, remediationName, context);
     }
 
     public RemediationImpl withPolicyAssignmentId(String policyAssignmentId) {
