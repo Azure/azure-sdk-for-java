@@ -5,7 +5,6 @@
 package com.azure.security.attestation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.security.attestation.implementation.models.JsonWebKeySet;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -517,6 +516,11 @@ public final class JsonWebKey {
         }
     }
 
+    /**
+     * JWK
+     * @param generated
+     * @return
+     */
     public static JsonWebKey fromGenerated(com.azure.security.attestation.implementation.models.JsonWebKey generated) {
         return new JsonWebKey(generated.getKty())
             .setX5C(generated.getX5C())

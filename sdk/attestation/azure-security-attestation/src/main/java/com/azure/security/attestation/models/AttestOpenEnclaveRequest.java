@@ -151,6 +151,10 @@ public final class AttestOpenEnclaveRequest {
         }
     }
 
+    /**
+     * Returns an internal type from a public type.
+     * @return
+     */
     public com.azure.security.attestation.implementation.models.AttestOpenEnclaveRequest toGenerated() {
         return new com.azure.security.attestation.implementation.models.AttestOpenEnclaveRequest()
             .setDraftPolicyForAttestation(draftPolicyForAttestation)

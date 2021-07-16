@@ -44,6 +44,11 @@ public final class PolicyResponse {
      */
     public void validate() {}
 
+    /**
+     * Returns a public model type from an implementation model type.
+     * @param generated
+     * @return
+     */
     public static PolicyResponse fromGenerated(com.azure.security.attestation.implementation.models.PolicyResponse generated) {
         return new PolicyResponse().setToken(generated.getToken());
     }

@@ -78,6 +78,10 @@ public final class RuntimeData {
      */
     public void validate() {}
 
+    /**
+     * Create a implementation type from a public type.
+     * @return
+     */
     public com.azure.security.attestation.implementation.models.RuntimeData toGenerated() {
         return new com.azure.security.attestation.implementation.models.RuntimeData()
             .setData(data.decodedBytes())

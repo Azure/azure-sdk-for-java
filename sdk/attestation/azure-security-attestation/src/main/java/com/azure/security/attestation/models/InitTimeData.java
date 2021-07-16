@@ -79,6 +79,10 @@ public final class InitTimeData {
      */
     public void validate() {}
 
+    /**
+     * Create an internal type from a public type
+     * @return
+     */
     public com.azure.security.attestation.implementation.models.InitTimeData toGenerated() {
         return new com.azure.security.attestation.implementation.models.InitTimeData()
             .setData(data.decodedBytes())

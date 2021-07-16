@@ -44,7 +44,12 @@ public final class AttestationResponse {
      */
     public void validate() {}
 
-    static public AttestationResponse fromGenerated(com.azure.security.attestation.implementation.models.AttestationResponse generated) {
+    /**
+     * From Generated.
+     * @param generated
+     * @return
+     */
+    public static AttestationResponse fromGenerated(com.azure.security.attestation.implementation.models.AttestationResponse generated) {
         return new AttestationResponse().setToken(generated.getToken());
     }
 }

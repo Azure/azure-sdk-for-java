@@ -21,7 +21,6 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.security.attestation.implementation.AttestationClientImplBuilder;
 import com.azure.security.attestation.implementation.AttestationClientImpl;
 
-import java.security.Policy;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -195,8 +194,7 @@ public final class AttestationClientBuilder {
         HttpPipeline pipeline;
         if (httpPipeline != null) {
             pipeline = httpPipeline;
-        }
-        else {
+        } else {
             pipeline = createHttpPipeline();
         }
         if (serializerAdapter == null) {
