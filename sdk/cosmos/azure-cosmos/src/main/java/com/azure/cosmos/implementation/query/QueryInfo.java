@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.query;
 
+import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.DiagnosticsInstantSerializer;
 import com.azure.cosmos.implementation.query.aggregation.AggregateOperator;
 import com.azure.cosmos.implementation.JsonSerializable;
@@ -178,9 +179,16 @@ public final class QueryInfo extends JsonSerializable {
         private volatile Instant startTimeUTC;
         @JsonSerialize(using = DiagnosticsInstantSerializer.class)
         private volatile Instant endTimeUTC;
+        private volatile RequestTimeline requestTimeline;
         public QueryPlanDiagnosticsContext(Instant startTimeUTC, Instant endTimeUTC) {
             this.startTimeUTC = startTimeUTC;
             this.endTimeUTC = endTimeUTC;
+        }
+
+        public QueryPlanDiagnosticsContext(Instant startTimeUTC, Instant endTimeUTC, RequestTimeline requestTimeline) {
+            this.startTimeUTC = startTimeUTC;
+            this.endTimeUTC = endTimeUTC;
+            this.requestTimeline = requestTimeline;
         }
 
         public Instant getStartTimeUTC() {
@@ -189,6 +197,10 @@ public final class QueryInfo extends JsonSerializable {
 
         public Instant getEndTimeUTC() {
             return endTimeUTC;
+        }
+
+        public RequestTimeline getRequestTimeline() {
+            return requestTimeline;
         }
     }
 

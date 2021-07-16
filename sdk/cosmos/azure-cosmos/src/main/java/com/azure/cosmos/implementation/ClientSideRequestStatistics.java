@@ -42,7 +42,7 @@ public class ClientSideRequestStatistics {
     private Set<URI> regionsContacted;
     private RetryContext retryContext;
     private GatewayStatistics gatewayStatistics;
-    private RequestTimeline transportRequestTimeline;
+    private RequestTimeline gatewayRequestTimeline;
     private MetadataDiagnosticsContext metadataDiagnosticsContext;
     private SerializationDiagnosticsContext serializationDiagnosticsContext;
 
@@ -144,13 +144,17 @@ public class ClientSideRequestStatistics {
             } else if (exception != null) {
                 this.gatewayStatistics.statusCode = exception.getStatusCode();
                 this.gatewayStatistics.subStatusCode = exception.getSubStatusCode();
-                this.gatewayStatistics.requestTimeline = this.transportRequestTimeline;
+                this.gatewayStatistics.requestTimeline = this.gatewayRequestTimeline;
             }
         }
     }
 
-    public void setTransportClientRequestTimeline(RequestTimeline transportRequestTimeline) {
-        this.transportRequestTimeline = transportRequestTimeline;
+    public void setGatewayRequestTimeline(RequestTimeline transportRequestTimeline) {
+        this.gatewayRequestTimeline = transportRequestTimeline;
+    }
+
+    public RequestTimeline getGatewayRequestTimeline() {
+        return this.gatewayRequestTimeline;
     }
 
     public String recordAddressResolutionStart(URI targetEndpoint) {

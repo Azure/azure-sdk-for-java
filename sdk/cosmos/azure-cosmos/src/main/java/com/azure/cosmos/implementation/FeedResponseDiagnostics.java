@@ -65,6 +65,17 @@ public class FeedResponseDiagnostics {
                     .append(EQUALS)
                     .append(Duration.between(diagnosticsContext.getStartTimeUTC(),
                         diagnosticsContext.getEndTimeUTC()).toMillis()).append(System.lineSeparator());
+                if (diagnosticsContext.getRequestTimeline() != null) {
+                    try {
+                        stringBuilder.append(QUERY_PLAN + SPACE + "RequestTimeline ")
+                            .append(EQUALS)
+                            .append(Utils.getSimpleObjectMapper().writeValueAsString(diagnosticsContext.getRequestTimeline()))
+                            .append(System.lineSeparator())
+                            .append(System.lineSeparator());
+                    } catch (JsonProcessingException e) {
+                        LOGGER.error("Error while parsing diagnostics ", e);
+                    }
+                }
             }
         }
 
