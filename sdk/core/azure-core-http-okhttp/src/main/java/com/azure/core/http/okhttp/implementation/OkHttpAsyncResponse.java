@@ -11,6 +11,9 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
+import java.util.Comparator;
+import java.util.Objects;
+import java.util.TreeSet;
 
 /**
  * Default HTTP response for OkHttp.
@@ -29,6 +32,7 @@ public final class OkHttpAsyncResponse extends OkHttpAsyncResponseBase {
         // [b]. for the cases described here
         // [ref](https://square.github.io/okhttp/4.x/okhttp/okhttp3/-response/body/).
         this.responseBody = response.body();
+        new TreeSet<>(Comparator.comparing(Objects::hashCode))
     }
 
     @Override
