@@ -28,6 +28,9 @@ parameters:
   - name: MatrixReplace
     type: object
     default: []
+  - name: AdditionalJobs
+    type: jobList
+    default: [ ]
 
 jobs:
   - job: 'Build'
@@ -279,6 +282,8 @@ jobs:
       - template: ../steps/upload-repository-on-failure.yml
 
       - template: /eng/common/pipelines/templates/steps/eng-common-workflow-enforcer.yml
+
+  - ${{ parameters.AdditionalJobs }}
 
   - template: /eng/common/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
     parameters:
