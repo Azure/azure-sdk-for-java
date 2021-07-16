@@ -5,7 +5,7 @@ package com.azure.spring.integration.storage.queue.factory;
 
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.spring.core.util.Memoizer;
+import com.azure.spring.cloud.context.core.util.Memoizer;
 import com.azure.storage.queue.QueueAsyncClient;
 import com.azure.storage.queue.QueueClientBuilder;
 import org.slf4j.Logger;
@@ -14,8 +14,8 @@ import org.springframework.lang.NonNull;
 
 import java.util.function.Function;
 
-import static com.azure.spring.core.ApplicationId.VERSION;
-import static com.azure.spring.core.ApplicationId.AZURE_SPRING_STORAGE_QUEUE;
+import static com.azure.spring.cloud.context.core.ApplicationId.VERSION;
+import static com.azure.spring.cloud.context.core.ApplicationId.AZURE_SPRING_STORAGE_QUEUE;
 
 /**
  * Default client factory for Storage Queue.

@@ -5,10 +5,7 @@ package com.azure.spring.servicebus.stream.binder.provisioning;
 
 import com.azure.resourcemanager.servicebus.models.ServiceBusNamespace;
 import com.azure.resourcemanager.servicebus.models.Topic;
-import com.azure.spring.cloud.context.core.impl.ServiceBusNamespaceManager;
-import com.azure.spring.cloud.context.core.impl.ServiceBusTopicManager;
-import com.azure.spring.cloud.context.core.impl.ServiceBusTopicSubscriptionManager;
-import com.azure.spring.core.util.Tuple;
+import com.azure.spring.cloud.context.core.util.Tuple;
 import org.springframework.cloud.stream.provisioning.ProvisioningException;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;

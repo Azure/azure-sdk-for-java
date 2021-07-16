@@ -3,7 +3,7 @@
 
 package com.azure.spring.utils.test;
 
-import com.azure.spring.core.ApplicationId;
+import com.azure.spring.cloud.context.core.ApplicationId;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

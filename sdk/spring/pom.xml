@@ -13,10 +13,9 @@
     <profile>
       <id>coverage</id>
       <modules>
-        <module>azure-spring-boot-core</module>
-        <module>azure-spring-boot</module>
         <module>azure-spring-cloud-autoconfigure</module>
         <module>azure-spring-cloud-context</module>
+        <module>azure-spring-cloud-resourcemanager</module>
         <module>azure-spring-cloud-storage</module>
         <module>azure-spring-integration-core</module>
         <module>azure-spring-integration-eventhubs</module>

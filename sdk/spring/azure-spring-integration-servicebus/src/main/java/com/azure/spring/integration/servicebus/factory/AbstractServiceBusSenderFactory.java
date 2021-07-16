@@ -3,11 +3,6 @@
 
 package com.azure.spring.integration.servicebus.factory;
 
-import com.azure.spring.cloud.context.core.impl.ServiceBusNamespaceManager;
-import com.azure.spring.cloud.context.core.impl.ServiceBusQueueManager;
-import com.azure.spring.cloud.context.core.impl.ServiceBusTopicManager;
-import com.azure.spring.cloud.context.core.impl.ServiceBusTopicSubscriptionManager;
-
 import javax.annotation.Nullable;
 
 /**
