@@ -50,8 +50,8 @@ public final class PolicyCertificatesResponse {
 
     /**
      *
-     * @param generated
-     * @return
+     * @param generated generated
+     * @return implementation type.
      */
     public static PolicyCertificatesResponse fromGenerated(com.azure.security.attestation.implementation.models.PolicyCertificatesResponse generated) {
         return new PolicyCertificatesResponse().setToken(generated.getToken());

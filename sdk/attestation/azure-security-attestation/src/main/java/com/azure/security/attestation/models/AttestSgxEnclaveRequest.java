@@ -153,7 +153,7 @@ public final class AttestSgxEnclaveRequest {
 
     /**
      * Returns an internal type from a public type.
-     * @return
+     * @return implementation type.
      */
     public com.azure.security.attestation.implementation.models.AttestSgxEnclaveRequest toGenerated() {
         return new com.azure.security.attestation.implementation.models.AttestSgxEnclaveRequest()

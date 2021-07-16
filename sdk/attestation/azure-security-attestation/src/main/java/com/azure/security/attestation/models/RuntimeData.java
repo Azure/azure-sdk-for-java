@@ -80,7 +80,7 @@ public final class RuntimeData {
 
     /**
      * Create a implementation type from a public type.
-     * @return
+     * @return implementation type.
      */
     public com.azure.security.attestation.implementation.models.RuntimeData toGenerated() {
         return new com.azure.security.attestation.implementation.models.RuntimeData()

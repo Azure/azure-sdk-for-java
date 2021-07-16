@@ -518,8 +518,8 @@ public final class JsonWebKey {
 
     /**
      * JWK
-     * @param generated
-     * @return
+     * @param generated generated key.
+     * @return implementation type.
      */
     public static JsonWebKey fromGenerated(com.azure.security.attestation.implementation.models.JsonWebKey generated) {
         return new JsonWebKey(generated.getKty())
