@@ -14,7 +14,7 @@
   <artifactId>azure-spring-cloud-resourcemanager</artifactId>
   <version>2.7.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-resourcemanager;current} -->
 
-  <name>Azure Spring Cloud Context</name>
+  <name>Azure Spring Cloud Resource Manager</name>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <properties>
