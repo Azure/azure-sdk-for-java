@@ -10,9 +10,8 @@ import java.math.BigInteger;
  */
 public class KeyVaultEncode {
 
-    private static final byte TAG_SEQUENCE = 0x30;
-
     private static final byte TAG_INTEGER = 0x02;
+    private static final byte TAG_SEQUENCE = 0x30;
 
     /**
      * Decode signatures imitating ECUtil
@@ -20,46 +19,33 @@ public class KeyVaultEncode {
      * @return decoded signatures
      */
     public static byte[] encodeByte(byte[] signature) {
-        int n = signature.length >> 1;
-        byte[] rByteContext = new byte[n];
-        System.arraycopy(signature, 0, rByteContext, 0, n);
-        BigInteger r = new BigInteger(1, rByteContext);
-        rByteContext = r.toByteArray();
+        int halfLength = signature.length >> 1;
+        byte[] leftResult = toBigIntegerBytesWithLengthPrefix(signature, 0, halfLength);
+        byte[] rightResult = toBigIntegerBytesWithLengthPrefix(signature, halfLength, halfLength);
+        byte[] resultLengthBytes = buildLengthBytes(TAG_SEQUENCE, leftResult.length + rightResult.length);
+        return concatBytes(resultLengthBytes, leftResult, rightResult);
+    }
 
-        byte[] sByteContext = new byte[n];
-        System.arraycopy(signature, n, sByteContext, 0, n);
-        BigInteger s = new BigInteger(1, sByteContext);
-        sByteContext = s.toByteArray();
+    static byte[] toBigIntegerBytesWithLengthPrefix(byte[] bytes, int offset, int length) {
+        byte[] magnitude = new byte[length];
+        System.arraycopy(bytes, offset, magnitude, 0, length);
+        BigInteger bigInteger = new BigInteger(1, magnitude);
+        return concatBytes(buildLengthBytes(TAG_INTEGER, length), bigInteger.toByteArray());
+    }
 
-        byte[] rTag = setTagWithContextLength(TAG_INTEGER, rByteContext.length);
-        byte[] sTag = setTagWithContextLength(TAG_INTEGER, sByteContext.length);
-
-        byte[] rResult = concatByte(rTag, rByteContext);
-        byte[] sResult = concatByte(sTag, sByteContext);
-
-        int length = rResult.length + sResult.length;
-
-        byte[] resultTag = setTagWithContextLength(TAG_SEQUENCE, length);
-        byte[] result = new byte[length + resultTag.length];
-
-        System.arraycopy(resultTag, 0, result, 0, resultTag.length);
-        System.arraycopy(rResult, 0, result, resultTag.length, rResult.length);
-        System.arraycopy(sResult, 0, result, rResult.length + resultTag.length, sResult.length);
-
+    static byte[] concatBytes(byte[] bytes1, byte[] bytes2) {
+        byte[] result = new byte[bytes1.length + bytes2.length];
+        System.arraycopy(bytes1, 0, result, 0, bytes1.length);
+        System.arraycopy(bytes2, 0, result, bytes1.length, bytes2.length);
         return result;
     }
 
-    /**
-     * concat two byte[]
-     * @param tag result's tag
-     * @param context result's tag
-     * @return result of concat byte[]
-     */
-    private static byte[] concatByte(byte[] tag, byte[] context) {
-        byte[] rResult = new byte[tag.length + context.length];
-        System.arraycopy(tag, 0, rResult, 0, tag.length);
-        System.arraycopy(context, 0, rResult, tag.length, context.length);
-        return rResult;
+    static byte[] concatBytes(byte[] bytes1, byte[] bytes2, byte[] bytes3) {
+        byte[] result = new byte[bytes1.length + bytes2.length + bytes3.length];
+        System.arraycopy(bytes1, 0, result, 0, bytes1.length);
+        System.arraycopy(bytes2, 0, result, bytes1.length, bytes2.length);
+        System.arraycopy(bytes3, 0, result, bytes1.length + bytes2.length, bytes3.length);
+        return result;
     }
 
     /**
@@ -68,7 +54,7 @@ public class KeyVaultEncode {
      * @param len context length
      * @return tag's Context
      */
-    private static byte[] setTagWithContextLength(byte tag, int len) {
+    static byte[] buildLengthBytes(byte tag, int len) {
         if (len < 128) {
             return new byte[] {tag, ((byte) len)};
         } else if (len < (1 << 8)) {
@@ -80,7 +66,6 @@ public class KeyVaultEncode {
         } else {
             return new byte[] {tag, (byte) 0x084, (byte) (len >> 24), (byte) (len >> 16), (byte) (len >> 8), (byte) len};
         }
-
     }
 
 }

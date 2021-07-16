@@ -325,22 +325,7 @@ public class KeyVaultClient extends DelegateRestClient {
         String algorithm = certificateBundle.getPolicy().getKeyProperties().getKty();
         String kid = certificateBundle.getKid();
         String version = kid.substring(kid.lastIndexOf("/") + 1);
-        return new PrivateKey() {
-            @Override
-            public String getAlgorithm() {
-                return algorithm;
-            }
-
-            @Override
-            public String getFormat() {
-                return alias;
-            }
-
-            @Override
-            public byte[] getEncoded() {
-                return version.getBytes();
-            }
-        };
+        return new KeyVaultPrivateKey(algorithm, version, alias);
     }
 
     /**
@@ -395,6 +380,7 @@ public class KeyVaultClient extends DelegateRestClient {
         }
         byte[] bytes = Base64.getDecoder().decode(builder.toString());
         PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(bytes);
+        // TODO (zhicliu): support EC
         KeyFactory factory = KeyFactory.getInstance("RSA");
         return factory.generatePrivate(spec);
     }

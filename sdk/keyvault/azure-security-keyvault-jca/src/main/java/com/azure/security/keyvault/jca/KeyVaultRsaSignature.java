@@ -67,10 +67,15 @@ public class KeyVaultRsaSignature extends SignatureSpi {
     // initialize for signing. See JCA doc
     @Override
     protected void engineInitSign(PrivateKey privateKey, SecureRandom random) {
-        //TODO: verify privateKey is faked if open key less
-        alias = privateKey.getFormat();
-        version = new String(privateKey.getEncoded());
-        resetDigest();
+
+        if (privateKey instanceof KeyVaultPrivateKey) {
+            alias = privateKey.getFormat();
+            version = new String(privateKey.getEncoded());
+            resetDigest();
+        } else {
+            throw new UnsupportedOperationException("engineInitSign() not supported which private key is not instance of KeyVaultPrivateKey");
+        }
+
     }
 
     /**
