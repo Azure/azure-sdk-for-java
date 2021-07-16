@@ -112,7 +112,8 @@ extends:
             - template: /eng/common/pipelines/templates/steps/check-spelling.yml
               parameters:
                 CspellConfigPath: .vscode/cspell.json
-             - task: PowerShell@2
+
+            - task: PowerShell@2
               displayName: 'Verify versions in POM files'
               inputs:
                 pwsh: true
@@ -127,13 +128,15 @@ extends:
                 JobType: 'Analyze'
                 SDKType: ${{parameters.SDKType}}
                 ServiceDirectory: ${{parameters.ServiceDirectory}}
-             - task: PythonScript@0
+
+            - task: PythonScript@0
               displayName: 'Generate directories variable for sparse checkout'
               inputs:
                 scriptPath: 'eng/scripts/generate_from_source_pom.py'
                 arguments: '--set-pipeline-variable CheckoutDirectories --project-list $(ProjectList)'
                 workingDirectory: '$(System.DefaultWorkingDirectory)'
-             - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+
+            - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
               parameters:
                 Paths: $(CheckoutDirectories)
                 SkipDefaultCheckout: true
