@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.core.storage;
+package com.azure.spring.cloud.context.core.storage;
 
 import com.azure.core.management.AzureEnvironment;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;

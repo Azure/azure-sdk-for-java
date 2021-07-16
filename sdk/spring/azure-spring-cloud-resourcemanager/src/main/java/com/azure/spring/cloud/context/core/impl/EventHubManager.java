@@ -1,13 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.core.impl;
+package com.azure.spring.cloud.context.core.impl;
 
 import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.eventhubs.models.EventHub;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespace;
-import com.azure.spring.core.AzureResourceMetadata;
+import com.azure.spring.cloud.context.core.AzureResourceMetadata;
 import com.azure.spring.core.util.Tuple;
 
 /**

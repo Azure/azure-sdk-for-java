@@ -4,4 +4,4 @@
 /**
  * Package com.azure.spring.core;
  */
-package com.azure.spring.core;
+package com.azure.spring.cloud.context.core;

@@ -4,4 +4,4 @@
 /**
  * Package com.azure.spring.cloud.context.core.storage;
  */
-package com.azure.spring.core.storage;
+package com.azure.spring.cloud.context.core.storage;

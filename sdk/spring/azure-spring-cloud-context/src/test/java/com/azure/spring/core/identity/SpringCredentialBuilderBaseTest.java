@@ -7,6 +7,7 @@ import com.azure.identity.AzureAuthorityHosts;
 import com.azure.identity.ClientCertificateCredential;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ManagedIdentityCredential;
+import com.azure.spring.identity.SpringCredentialBuilderBase;
 import org.junit.jupiter.api.Test;
 
 import java.util.Properties;

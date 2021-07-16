@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.core.impl;
+package com.azure.spring.cloud.context.core.impl;
 
 import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.servicebus.models.ServiceBusSubscription;
 import com.azure.resourcemanager.servicebus.models.Topic;
-import com.azure.spring.core.AzureResourceMetadata;
+import com.azure.spring.cloud.context.core.AzureResourceMetadata;
 import com.azure.spring.core.util.Tuple;
 
 /**

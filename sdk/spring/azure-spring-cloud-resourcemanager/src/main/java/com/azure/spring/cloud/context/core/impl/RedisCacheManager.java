@@ -1,23 +1,21 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.core.impl;
+package com.azure.spring.cloud.context.core.impl;
 
 import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.AzureResourceManager;
-import com.azure.resourcemanager.storage.models.StorageAccount;
-import com.azure.spring.core.AzureResourceMetadata;
-
-import javax.annotation.Nonnull;
+import com.azure.resourcemanager.redis.models.RedisCache;
+import com.azure.spring.cloud.context.core.AzureResourceMetadata;
 
 /**
- * Resource manager for Storage account.
+ * Resource manager for Redis cache.
  */
-public class StorageAccountManager extends AzureManager<StorageAccount, String> {
+public class RedisCacheManager extends AzureManager<RedisCache, String> {
 
     private final AzureResourceManager azureResourceManager;
 
-    public StorageAccountManager(@Nonnull AzureResourceManager azureResourceManager, AzureResourceMetadata azureResourceMetadata) {
+    public RedisCacheManager(AzureResourceManager azureResourceManager, AzureResourceMetadata azureResourceMetadata) {
         super(azureResourceMetadata);
         this.azureResourceManager = azureResourceManager;
     }
@@ -29,13 +27,13 @@ public class StorageAccountManager extends AzureManager<StorageAccount, String> 
 
     @Override
     String getResourceType() {
-        return StorageAccount.class.getSimpleName();
+        return RedisCache.class.getSimpleName();
     }
 
     @Override
-    public StorageAccount internalGet(String key) {
+    public RedisCache internalGet(String name) {
         try {
-            return azureResourceManager.storageAccounts().getByResourceGroup(resourceGroup, key);
+            return azureResourceManager.redisCaches().getByResourceGroup(resourceGroup, name);
         } catch (ManagementException e) {
             if (e.getResponse().getStatusCode() == 404) {
                 return null;
@@ -46,11 +44,12 @@ public class StorageAccountManager extends AzureManager<StorageAccount, String> 
     }
 
     @Override
-    public StorageAccount internalCreate(String key) {
-        return azureResourceManager.storageAccounts()
-                                   .define(key)
+    public RedisCache internalCreate(String name) {
+        return azureResourceManager.redisCaches()
+                                   .define(name)
                                    .withRegion(region)
                                    .withExistingResourceGroup(resourceGroup)
+                                   .withBasicSku()
                                    .create();
     }
 }

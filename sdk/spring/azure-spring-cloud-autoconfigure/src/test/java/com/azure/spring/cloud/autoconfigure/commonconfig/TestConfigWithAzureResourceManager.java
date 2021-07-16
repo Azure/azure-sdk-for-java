@@ -5,7 +5,7 @@ package com.azure.spring.cloud.autoconfigure.commonconfig;
 
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.autoconfigure.context.AzureContextProperties;
-import com.azure.spring.core.AzureResourceMetadata;
+import com.azure.spring.cloud.context.core.AzureResourceMetadata;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -4,12 +4,11 @@
 package com.azure.spring.cloud.autoconfigure.servicebus;
 
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
-import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.autoconfigure.commonconfig.TestConfigWithAzureResourceManager;
 import com.azure.spring.cloud.autoconfigure.context.AzureContextProperties;
-import com.azure.spring.core.AzureResourceMetadata;
-import com.azure.spring.core.impl.ServiceBusNamespaceManager;
-import com.azure.spring.core.impl.ServiceBusQueueManager;
+import com.azure.spring.cloud.context.core.AzureResourceMetadata;
+import com.azure.spring.cloud.context.core.impl.ServiceBusNamespaceManager;
+import com.azure.spring.cloud.context.core.impl.ServiceBusQueueManager;
 import com.azure.spring.integration.servicebus.converter.ServiceBusMessageConverter;
 import com.azure.spring.integration.servicebus.factory.ServiceBusQueueClientFactory;
 import com.azure.spring.integration.servicebus.queue.ServiceBusQueueOperation;
