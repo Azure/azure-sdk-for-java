@@ -5,6 +5,9 @@ package com.azure.spring.cloud.autoconfigure.storage;
 
 import com.azure.core.management.AzureEnvironment;
 import com.azure.resourcemanager.storage.models.StorageAccount;
+import com.azure.spring.cloud.autoconfigure.context.AzureResourceManagerAutoConfiguration;
+import com.azure.spring.cloud.context.core.impl.StorageAccountManager;
+import com.azure.spring.cloud.context.core.storage.StorageConnectionStringProvider;
 import com.azure.spring.integration.storage.queue.StorageQueueOperation;
 import com.azure.spring.integration.storage.queue.StorageQueueTemplate;
 import com.azure.spring.integration.storage.queue.factory.DefaultStorageQueueClientFactory;
@@ -26,7 +29,7 @@ import java.util.Optional;
  * Auto-configuration class for Azure Storage Queue.
  */
 @Configuration
-@AutoConfigureAfter({ AzureContextAutoConfiguration.class, AzureEnvironmentAutoConfiguration.class })
+@AutoConfigureAfter({ AzureResourceManagerAutoConfiguration.class})
 @ConditionalOnClass({ QueueServiceClient.class, StorageQueueClientFactory.class })
 @ConditionalOnProperty(name = "spring.cloud.azure.storage.account")
 @EnableConfigurationProperties(AzureStorageProperties.class)
@@ -36,14 +39,13 @@ public class AzureStorageQueueAutoConfiguration {
     @ConditionalOnMissingBean({ StorageQueueClientFactory.class, StorageAccountManager.class })
     StorageQueueClientFactory storageQueueClientFactory(
         AzureStorageProperties storageProperties,
-        @Autowired(required = false) EnvironmentProvider environmentProvider) {
+        @Autowired(required = false) AzureEnvironment azureEnvironment1) {
 
         final String accountName = storageProperties.getAccount();
         final String accessKey = storageProperties.getAccessKey();
 
-        final AzureEnvironment azureEnvironment = Optional.ofNullable(environmentProvider)
-                                                          .orElse(new DefaultEnvironmentProvider())
-                                                          .getEnvironment();
+        final AzureEnvironment azureEnvironment = Optional.ofNullable(azureEnvironment1)
+                                                          .orElse(AzureEnvironment.AZURE);
 
 
         final String connectionString = new StorageConnectionStringProvider(accountName, accessKey, azureEnvironment)

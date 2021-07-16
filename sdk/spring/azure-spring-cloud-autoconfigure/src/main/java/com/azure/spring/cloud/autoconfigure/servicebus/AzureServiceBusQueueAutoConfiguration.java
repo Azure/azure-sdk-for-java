@@ -4,14 +4,20 @@
 package com.azure.spring.cloud.autoconfigure.servicebus;
 
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
+import com.azure.resourcemanager.servicebus.models.ServiceBusNamespace;
+import com.azure.spring.cloud.context.core.AzureResourceMetadata;
+import com.azure.spring.cloud.context.core.impl.ServiceBusNamespaceManager;
+import com.azure.spring.cloud.context.core.impl.ServiceBusQueueManager;
+import com.azure.spring.cloud.context.core.util.Tuple;
 import com.azure.spring.integration.servicebus.converter.ServiceBusMessageConverter;
 import com.azure.spring.integration.servicebus.factory.DefaultServiceBusQueueClientFactory;
-import com.azure.spring.integration.servicebus.factory.ServiceBusConnectionStringProvider;
+import com.azure.spring.integration.servicebus.factory.ServiceBusProvisioner;
 import com.azure.spring.integration.servicebus.factory.ServiceBusQueueClientFactory;
 import com.azure.spring.integration.servicebus.queue.ServiceBusQueueOperation;
 import com.azure.spring.integration.servicebus.queue.ServiceBusQueueTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -38,8 +44,8 @@ public class AzureServiceBusQueueAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnBean(ServiceBusNamespaceManager.class)
-    public ServiceBusQueueManager serviceBusQueueManager(AzureContextProperties azureContextProperties) {
-        return new ServiceBusQueueManager(azureContextProperties);
+    public ServiceBusQueueManager serviceBusQueueManager(ObjectProvider<AzureResourceMetadata> objectProvider) {
+        return new ServiceBusQueueManager(objectProvider.getIfAvailable());
     }
 
     @Bean
@@ -60,11 +66,35 @@ public class AzureServiceBusQueueAutoConfiguration {
         Assert.notNull(connectionString, "Service Bus connection string must not be null");
 
         DefaultServiceBusQueueClientFactory clientFactory = new DefaultServiceBusQueueClientFactory(connectionString, properties.getTransportType());
-        clientFactory.setNamespace(properties.getNamespace());
-        clientFactory.setServiceBusNamespaceManager(namespaceManager);
-        clientFactory.setServiceBusQueueManager(queueManager);
+        clientFactory.setServiceBusProvisioner(serviceBusProvisioner(namespaceManager, queueManager));
 
         return clientFactory;
+    }
+
+    private ServiceBusProvisioner serviceBusProvisioner(ServiceBusNamespaceManager namespaceManager,
+                                                        ServiceBusQueueManager queueManager) {
+        return new ServiceBusProvisioner() {
+            @Override
+            public void provisionNamespace(String namespace) {
+                namespaceManager.create(namespace);
+            }
+
+            @Override
+            public void provisionQueue(String namespace, String queue) {
+                final ServiceBusNamespace serviceBusNamespace = namespaceManager.get(namespace);
+                queueManager.create(Tuple.of(serviceBusNamespace, queue));
+            }
+
+            @Override
+            public void provisionTopic(String namespace, String topic) {
+                throw new UnsupportedOperationException("Can't provision topic in a queue client");
+            }
+
+            @Override
+            public void provisionSubscription(String namespace, String topic, String subscription) {
+                throw new UnsupportedOperationException("Can't provision subscription in a queue client");
+            }
+        };
     }
 
     @Bean

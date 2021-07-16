@@ -10,9 +10,6 @@ import com.azure.identity.ManagedIdentityCredential;
 import com.azure.identity.ManagedIdentityCredentialBuilder;
 import org.springframework.core.env.Environment;
 
-import java.util.Optional;
-
-import static com.azure.spring.cloud.context.core.env.AzureEnvironment.toAuthorityHost;
 
 /**
  *
@@ -85,11 +82,14 @@ public abstract class SpringCredentialBuilderBase<T extends SpringCredentialBuil
     }
 
     protected String getAuthorityHost(String prefix) {
-        return Optional.ofNullable(getPropertyValue(prefix + "authority-host"))
-                       .orElse(Optional.ofNullable(getPropertyValue(prefix + "environment"))
-                                       .filter(env -> !env.isEmpty())
-                                       .map(env -> toAuthorityHost(env))
-                                       .orElse(AzureAuthorityHosts.AZURE_PUBLIC_CLOUD));
+
+        // TODO (xiada) authority host
+        return AzureAuthorityHosts.AZURE_PUBLIC_CLOUD;
+//        return Optional.ofNullable(getPropertyValue(prefix + "authority-host"))
+//                       .orElse(Optional.ofNullable(getPropertyValue(prefix + "environment"))
+//                                       .filter(env -> !env.isEmpty())
+//                                       .map(env -> toAuthorityHost(env))
+//                                       .orElse(AzureAuthorityHosts.AZURE_PUBLIC_CLOUD));
     }
 
 }

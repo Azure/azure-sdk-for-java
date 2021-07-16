@@ -6,10 +6,13 @@ package com.azure.spring.cloud.autoconfigure.eventhub;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.messaging.eventhubs.EventHubConsumerAsyncClient;
 import com.azure.resourcemanager.AzureResourceManager;
+import com.azure.spring.cloud.context.core.AzureResourceMetadata;
+import com.azure.spring.cloud.context.core.impl.EventHubNamespaceManager;
+import com.azure.spring.cloud.context.core.impl.StorageAccountManager;
+import com.azure.spring.cloud.context.core.storage.StorageConnectionStringProvider;
 import com.azure.spring.integration.eventhub.api.EventHubClientFactory;
 import com.azure.spring.integration.eventhub.api.EventHubOperation;
 import com.azure.spring.integration.eventhub.factory.DefaultEventHubClientFactory;
-import com.azure.spring.integration.eventhub.factory.EventHubConnectionStringProvider;
 import com.azure.spring.integration.eventhub.impl.EventHubTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +33,7 @@ import org.springframework.util.StringUtils;
  * @author Warren Zhu
  */
 @Configuration
-@AutoConfigureAfter(AzureContextAutoConfiguration.class)
+@AutoConfigureAfter(AzureResourceManagerAutoConfiguration.class)
 @ConditionalOnClass(EventHubConsumerAsyncClient.class)
 @ConditionalOnProperty(value = "spring.cloud.azure.eventhub.enabled", matchIfMissing = true)
 @EnableConfigurationProperties(AzureEventHubProperties.class)
@@ -42,16 +45,16 @@ public class AzureEventHubAutoConfiguration {
     @ConditionalOnMissingBean
     @ConditionalOnBean(AzureResourceManager.class)
     public EventHubNamespaceManager eventHubNamespaceManager(AzureResourceManager azureResourceManager,
-                                                             AzureContextProperties azureContextProperties) {
-        return new EventHubNamespaceManager(azureResourceManager, azureContextProperties);
+                                                             AzureResourceMetadata azureResourceMetadata) {
+        return new EventHubNamespaceManager(azureResourceManager, azureResourceMetadata);
     }
 
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnBean(AzureResourceManager.class)
     public StorageAccountManager storageAccountManager(AzureResourceManager azureResourceManager,
-                                                       AzureContextProperties azureContextProperties) {
-        return new StorageAccountManager(azureResourceManager, azureContextProperties);
+                                                       AzureResourceMetadata azureResourceMetadata) {
+        return new StorageAccountManager(azureResourceManager, azureResourceMetadata);
     }
 
     /**
@@ -87,7 +90,7 @@ public class AzureEventHubAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public EventHubClientFactory eventhubClientFactory(
-        @Autowired(required = false) EnvironmentProvider environmentProvider,
+        @Autowired(required = false) AzureEnvironment azureEnvironment,
         @Autowired(required = false) StorageAccountManager storageAccountManager,
         EventHubConnectionStringProvider eventHubConnectionStringProvider,
         AzureEventHubProperties properties
@@ -99,8 +102,7 @@ public class AzureEventHubAutoConfiguration {
 
         final String eventHubConnectionString = eventHubConnectionStringProvider.getConnectionString();
         final String storageConnectionString = getStorageConnectionString(properties,
-            storageAccountManager,
-            environmentProvider == null ? null : environmentProvider.getEnvironment());
+                                                                          storageAccountManager, azureEnvironment);
 
         return new DefaultEventHubClientFactory(eventHubConnectionString, storageConnectionString,
             properties.getCheckpointContainer());

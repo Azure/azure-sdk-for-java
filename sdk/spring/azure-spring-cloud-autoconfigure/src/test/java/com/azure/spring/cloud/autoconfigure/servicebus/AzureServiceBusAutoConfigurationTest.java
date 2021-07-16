@@ -6,7 +6,8 @@ package com.azure.spring.cloud.autoconfigure.servicebus;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.resourcemanager.AzureResourceManager;
-import com.azure.spring.integration.servicebus.factory.ServiceBusConnectionStringProvider;
+import com.azure.spring.cloud.autoconfigure.context.AzureContextProperties;
+import com.azure.spring.cloud.context.core.impl.ServiceBusNamespaceManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -18,8 +19,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.mock;
 
 public class AzureServiceBusAutoConfigurationTest {
 

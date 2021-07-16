@@ -8,7 +8,8 @@ import com.azure.resourcemanager.eventhubs.models.AuthorizationRule;
 import com.azure.resourcemanager.eventhubs.models.EventHubAuthorizationKey;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespace;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespaceAuthorizationRule;
-import com.azure.spring.integration.eventhub.factory.EventHubConnectionStringProvider;
+import com.azure.spring.cloud.context.core.AzureResourceMetadata;
+import com.azure.spring.cloud.context.core.impl.EventHubNamespaceManager;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -30,7 +31,7 @@ import java.util.Arrays;
  * @author Warren Zhu
  */
 @Configuration
-@AutoConfigureAfter(AzureContextAutoConfiguration.class)
+@AutoConfigureAfter(AzureResourceManagerAutoConfiguration.class)
 @ConditionalOnClass(KafkaTemplate.class)
 @ConditionalOnProperty(prefix = "spring.cloud.azure.eventhub", value = "namespace")
 @EnableConfigurationProperties(AzureEventHubProperties.class)
@@ -68,8 +69,8 @@ public class AzureEventHubKafkaAutoConfiguration {
     @ConditionalOnMissingBean
     @ConditionalOnBean(AzureResourceManager.class)
     public EventHubNamespaceManager eventHubNamespaceManager(AzureResourceManager azureResourceManager,
-                                                             AzureContextProperties azureContextProperties) {
-        return new EventHubNamespaceManager(azureResourceManager, azureContextProperties);
+                                                             AzureResourceMetadata azureResourceMetadata) {
+        return new EventHubNamespaceManager(azureResourceManager, azureResourceMetadata);
     }
 
 

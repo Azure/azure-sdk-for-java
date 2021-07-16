@@ -26,7 +26,7 @@ import org.springframework.context.annotation.Import;
 @ConditionalOnMissingBean(Binder.class)
 @Import({
     AzureEnvironmentAutoConfiguration.class,
-    AzureContextAutoConfiguration.class,
+    AzureResourceManagerAutoConfiguration.class,
     AzureServiceBusAutoConfiguration.class,
     AzureServiceBusTopicAutoConfiguration.class
 })
