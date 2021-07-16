@@ -6,9 +6,7 @@ package com.azure.security.attestation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.util.ArrayBuilders;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -60,6 +58,11 @@ public final class JsonWebKeySet {
         }
     }
 
+    /**
+     * Create from generated
+     * @param generated generated key set
+     * @return public key set.
+     */
     public static JsonWebKeySet fromGenerated(com.azure.security.attestation.implementation.models.JsonWebKeySet generated) {
         List<JsonWebKey> keys = generated.getKeys().stream().map(key -> JsonWebKey.fromGenerated(key)).collect(Collectors.toList());
         return new JsonWebKeySet().setKeys(keys);

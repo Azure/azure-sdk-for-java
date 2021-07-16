@@ -6,6 +6,9 @@ package com.azure.security.attestation;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 
+/**
+ * Utility class with helper functions.
+ */
 public class Utilities {
 
     /**
