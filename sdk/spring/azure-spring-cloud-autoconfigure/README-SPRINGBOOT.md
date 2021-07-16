@@ -1,7 +1,7 @@
 # Azure Spring Boot client library for Java
 This repo is for Spring Boot Starters of Azure services. It helps Spring Boot developers to adopt Azure services.
 
-[Source code][src] | [Package (Maven)][package] | [API reference documentation][refdocs] | [Product documentation][docs] | [Samples][sample]
+[Package (Maven)][package] | [API reference documentation][refdocs] | [Product documentation][docs] | [Samples][sample]
 
 ## Getting started
 
@@ -90,7 +90,6 @@ To suggest a new feature or changes that could be made, file an issue the same w
 You can participate community driven [![Gitter](https://badges.gitter.im/Microsoft/spring-on-azure.svg)](https://gitter.im/Microsoft/spring-on-azure)
 
 <!-- LINKS -->
-[src]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-boot/src
 [docs]: https://docs.microsoft.com/azure/developer/java/spring-framework/spring-boot-starters-for-azure
 [refdocs]: https://azure.github.io/azure-sdk-for-java/springboot.html#azure-spring-boot
 [package]: https://mvnrepository.com/artifact/com.microsoft.azure/azure-spring-boot
