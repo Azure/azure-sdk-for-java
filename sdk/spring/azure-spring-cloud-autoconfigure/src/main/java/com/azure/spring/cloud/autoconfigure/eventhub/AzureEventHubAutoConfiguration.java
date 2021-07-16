@@ -17,6 +17,7 @@ import com.azure.spring.integration.eventhub.factory.DefaultEventHubClientFactor
 import com.azure.spring.integration.eventhub.impl.EventHubTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -44,7 +45,7 @@ public class AzureEventHubAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnBean(AzureResourceManager.class)
+    @ConditionalOnBean({ AzureResourceManager.class, AzureResourceMetadata.class })
     public EventHubNamespaceManager eventHubNamespaceManager(AzureResourceManager azureResourceManager,
                                                              AzureResourceMetadata azureResourceMetadata) {
         return new EventHubNamespaceManager(azureResourceManager, azureResourceMetadata);
@@ -52,7 +53,7 @@ public class AzureEventHubAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnBean(AzureResourceManager.class)
+    @ConditionalOnBean({ AzureResourceManager.class, AzureResourceMetadata.class })
     public StorageAccountManager storageAccountManager(AzureResourceManager azureResourceManager,
                                                        AzureResourceMetadata azureResourceMetadata) {
         return new StorageAccountManager(azureResourceManager, azureResourceMetadata);

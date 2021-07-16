@@ -8,7 +8,9 @@ import com.azure.resourcemanager.redis.models.RedisCache;
 import com.azure.spring.cloud.autoconfigure.context.AzureResourceManagerAutoConfiguration;
 import com.azure.spring.core.AzureResourceMetadata;
 import com.azure.spring.core.impl.RedisCacheManager;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -33,8 +35,10 @@ import java.util.Arrays;
 @EnableConfigurationProperties(AzureRedisProperties.class)
 public class AzureRedisAutoConfiguration {
 
-    @ConditionalOnMissingBean
+
     @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnBean({ AzureResourceManager.class, AzureResourceMetadata.class })
     public RedisCacheManager redisCacheManager(AzureResourceManager azureResourceManager,
                                                AzureResourceMetadata azureResourceMetadata) {
         return new RedisCacheManager(azureResourceManager, azureResourceMetadata);

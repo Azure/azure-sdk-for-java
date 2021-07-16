@@ -3,6 +3,7 @@
 
 package com.azure.spring.servicebus.stream.binder.config;
 
+import com.azure.spring.cloud.autoconfigure.context.AzureResourceManagerAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusProperties;
 import com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusQueueAutoConfiguration;

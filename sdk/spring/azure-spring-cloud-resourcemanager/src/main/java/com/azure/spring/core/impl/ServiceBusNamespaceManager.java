@@ -7,6 +7,7 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.servicebus.models.ServiceBusNamespace;
 import com.azure.spring.core.AzureResourceMetadata;
+import org.springframework.lang.NonNull;
 
 /**
  * Resource manager for Service Bus namespace.
@@ -15,7 +16,8 @@ public class ServiceBusNamespaceManager extends AzureManager<ServiceBusNamespace
 
     private final AzureResourceManager azureResourceManager;
 
-    public ServiceBusNamespaceManager(AzureResourceManager azureResourceManager, AzureResourceMetadata azureResourceMetadata) {
+    public ServiceBusNamespaceManager(@NonNull AzureResourceManager azureResourceManager,
+                                      @NonNull AzureResourceMetadata azureResourceMetadata) {
         super(azureResourceMetadata);
         this.azureResourceManager = azureResourceManager;
     }

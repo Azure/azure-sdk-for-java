@@ -344,8 +344,6 @@
                 <include>org.springframework.boot:spring-boot-autoconfigure:[2.5.2]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-autoconfigure;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-configuration-processor:[2.5.2]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-starter-test:[2.5.2]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-starter-web:[2.5.2]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-web;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-starter-webflux:[2.5.2]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-webflux;external_dependency} -->
                 <include>org.springframework.data:spring-data-mongodb:[3.2.2]</include> <!-- {x-include-update;org.springframework.data:spring-data-mongodb;external_dependency} -->
                 <include>org.springframework.data:spring-data-redis:[2.5.2]</include> <!-- {x-include-update;org.springframework.data:spring-data-redis;external_dependency} -->
                 <include>org.springframework.kafka:spring-kafka:[2.7.3]</include> <!-- {x-include-update;org.springframework.kafka:spring-kafka;external_dependency} -->
@@ -367,15 +365,6 @@
       </plugin>
     </plugins>
 
-    <resources>
-      <!-- Raw Resource -->
-      <resource>
-        <directory>src/main/resources</directory>
-        <includes>
-          <include>META-INF/spring.factories</include>
-        </includes>
-      </resource>
-    </resources>
   </build>
   <profiles>
     <!-- Generate "spring-configuration-metadata.json" by annotation process -->

@@ -19,6 +19,7 @@ import com.azure.spring.integration.servicebus.topic.ServiceBusTopicOperation;
 import com.azure.spring.integration.servicebus.topic.ServiceBusTopicTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -44,14 +45,14 @@ public class AzureServiceBusTopicAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnBean(ServiceBusNamespaceManager.class)
+    @ConditionalOnBean({ ServiceBusNamespaceManager.class, AzureResourceMetadata.class })
     public ServiceBusTopicManager serviceBusTopicManager(AzureResourceMetadata azureResourceMetadata) {
         return new ServiceBusTopicManager(azureResourceMetadata);
     }
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnBean(ServiceBusTopicManager.class)
+    @ConditionalOnBean({ ServiceBusTopicManager.class, AzureResourceMetadata.class })
     public ServiceBusTopicSubscriptionManager serviceBusTopicSubscriptionManager(AzureResourceMetadata azureResourceMetadata) {
         return new ServiceBusTopicSubscriptionManager(azureResourceMetadata);
     }

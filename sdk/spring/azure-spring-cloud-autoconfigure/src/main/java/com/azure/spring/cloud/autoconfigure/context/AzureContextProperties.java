@@ -3,7 +3,6 @@
 
 package com.azure.spring.cloud.autoconfigure.context;
 
-import com.azure.spring.cloud.context.core.enums.AzureEnvironments;
 import com.google.common.base.Strings;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.util.Assert;

@@ -68,7 +68,7 @@ public class AzureEventHubKafkaAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnBean(AzureResourceManager.class)
+    @ConditionalOnBean({ AzureResourceManager.class, AzureResourceMetadata.class })
     public EventHubNamespaceManager eventHubNamespaceManager(AzureResourceManager azureResourceManager,
                                                              AzureResourceMetadata azureResourceMetadata) {
         return new EventHubNamespaceManager(azureResourceManager, azureResourceMetadata);

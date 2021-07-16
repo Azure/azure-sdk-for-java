@@ -43,9 +43,9 @@ public class AzureServiceBusQueueAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnBean(ServiceBusNamespaceManager.class)
-    public ServiceBusQueueManager serviceBusQueueManager(ObjectProvider<AzureResourceMetadata> objectProvider) {
-        return new ServiceBusQueueManager(objectProvider.getIfAvailable());
+    @ConditionalOnBean({ ServiceBusNamespaceManager.class, AzureResourceMetadata.class })
+    public ServiceBusQueueManager serviceBusQueueManager(AzureResourceMetadata azureResourceMetadata) {
+        return new ServiceBusQueueManager(azureResourceMetadata);
     }
 
     @Bean

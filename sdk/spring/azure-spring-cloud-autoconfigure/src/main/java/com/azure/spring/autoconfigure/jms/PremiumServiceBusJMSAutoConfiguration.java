@@ -21,8 +21,8 @@ import org.springframework.jms.config.JmsListenerContainerFactory;
 import javax.jms.ConnectionFactory;
 
 import static com.azure.spring.autoconfigure.unity.AzureProperties.AZURE_PROPERTY_BEAN_NAME;
-import static com.azure.spring.cloud.context.core.ApplicationId.AZURE_SPRING_SERVICE_BUS;
-import static com.azure.spring.cloud.context.core.ApplicationId.VERSION;
+import static com.azure.spring.core.ApplicationId.AZURE_SPRING_SERVICE_BUS;
+import static com.azure.spring.core.ApplicationId.VERSION;
 
 /**
  * Automatic configuration class of ServiceBusJMS for Premium Service Bus

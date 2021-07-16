@@ -29,8 +29,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static com.azure.spring.cloud.context.core.ApplicationId.AZURE_SPRING_KEY_VAULT;
-import static com.azure.spring.cloud.context.core.ApplicationId.VERSION;
+import static com.azure.spring.core.ApplicationId.AZURE_SPRING_KEY_VAULT;
+import static com.azure.spring.core.ApplicationId.VERSION;
 import static com.azure.spring.keyvault.KeyVaultProperties.DELIMITER;
 import static org.springframework.core.env.StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME;
 
