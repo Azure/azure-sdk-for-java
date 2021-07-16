@@ -67,6 +67,8 @@
       <artifactId>jackson-databind</artifactId>
       <version>2.12.3</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
     </dependency>
+
+    <!--    TODO-->
     <dependency>
       <groupId>io.projectreactor.netty</groupId>
       <artifactId>reactor-netty</artifactId>

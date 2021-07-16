@@ -66,7 +66,6 @@
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-cloud-resourcemanager</artifactId>
       <version>2.7.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-resourcemanager;current} -->
-      <optional>true</optional>
     </dependency>
     <!-- Added this dependency to include necessary annotations used by reactor core.
             Without this dependency, javadoc throws a warning as it cannot find enum When.MAYBE

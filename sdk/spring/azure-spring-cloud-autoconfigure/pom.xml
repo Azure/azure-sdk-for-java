@@ -44,6 +44,8 @@
       <optional>true</optional>
     </dependency>
 
+
+<!--TODO -->
     <dependency>
       <groupId>com.zaxxer</groupId>
       <artifactId>HikariCP</artifactId>
@@ -271,11 +273,13 @@
       <version>6.2.0.Final</version> <!-- {x-version-update;org.hibernate.validator:hibernate-validator;external_dependency} -->
     </dependency>
 
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-core</artifactId>
-      <version>2.12.3</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
-    </dependency>
+
+<!--    TODO -->
+<!--    <dependency>-->
+<!--      <groupId>com.fasterxml.jackson.core</groupId>-->
+<!--      <artifactId>jackson-core</artifactId>-->
+<!--      <version>2.12.3</version> &lt;!&ndash; {x-version-update;com.fasterxml.jackson.core:jackson-core;external_dependency} &ndash;&gt;-->
+<!--    </dependency>-->
 
     <!-- Added this dependency to include necessary annotations used by reactor core.
         Without this dependency, javadoc throws a warning as it cannot find enum When.MAYBE
