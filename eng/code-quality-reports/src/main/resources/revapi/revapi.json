@@ -628,6 +628,17 @@
         "code": "java.method.added",
         "new": "method boolean com.google.gson.JsonArray::isEmpty()",
         "justification": "com.google.code.gson:gson:jar:2.8.7 added this new method."
+      },
+      {
+        "code": "java.field.serialVersionUIDUnchanged",
+        "old": "field com.azure.security.keyvault.jca.model.KeyProperties.serialVersionUID",
+        "new": "field com.azure.security.keyvault.jca.model.KeyProperties.serialVersionUID",
+        "justification": "The field ErrorInfo was added to AmqpErrorContext, but no existing fields were removed or changed."
+      },
+      {
+        "code": "java.method.addedToInterface",
+        "new": "method java.lang.String com.azure.security.keyvault.jca.RestClient::post(java.lang.String, java.util.Map<java.lang.String, java.lang.String>, java.lang.String, java.lang.String)",
+        "justification": "Method add to RestClient"
       }
     ]
   }
