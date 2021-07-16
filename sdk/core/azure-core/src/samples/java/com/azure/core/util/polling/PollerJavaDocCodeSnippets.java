@@ -7,12 +7,10 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
-import com.azure.core.util.polling.strategy.OperationResourcePollingStrategy;
-import com.azure.core.util.polling.strategy.PollingStrategy;
+import com.azure.core.util.serializer.TypeReference;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -180,20 +178,24 @@ public final class PollerJavaDocCodeSnippets {
 
     /**
      * Instantiating and subscribing to PollerFlux created from a
-     * {@link com.azure.core.util.polling.strategy.PollingStrategy}.
+     * {@link PollingStrategy}.
      */
     public void initializeAndSubscribeWithPollingStrategy() {
         // BEGIN: com.azure.core.util.polling.poller.instantiationAndSubscribeWithPollingStrategy
         // Create poller instance
-        PollerFlux<BinaryData, String> poller = PollerFlux.create(Duration.ofMillis(100),
+        PollerFlux<BinaryData, String> poller = PollerFlux.create(
+            Duration.ofMillis(100),
             // pass in your custom activation operation
-            () -> Mono.just(new SimpleResponse<Void>(
-                new HttpRequest(HttpMethod.POST, "http://httpbin.org"),
-                202, new HttpHeaders().set("Operation-Location", "http://httpbin.org"), null)),
-            new OperationResourcePollingStrategy(),
-            String.class,
-            new HttpPipelineBuilder().build(),
-            Context.NONE);
+            () -> Mono.just(new SimpleResponse<Void>(new HttpRequest(
+                HttpMethod.POST,
+                "http://httpbin.org"),
+                202,
+                new HttpHeaders().set("Operation-Location", "http://httpbin.org"),
+                null)),
+            new OperationResourcePollingStrategy(
+                new HttpPipelineBuilder().build(),
+                Context.NONE),
+            TypeReference.createInstance(String.class));
 
         // Listen to poll responses
         poller.subscribe(response -> {
@@ -207,31 +209,36 @@ public final class PollerJavaDocCodeSnippets {
 
     /**
      * Instantiating and subscribing to PollerFlux created from a custom modified
-     * {@link com.azure.core.util.polling.strategy.PollingStrategy}.
+     * {@link PollingStrategy}.
      */
     public void initializeAndSubscribeWithCustomPollingStrategy() {
         // BEGIN: com.azure.core.util.polling.poller.initializeAndSubscribeWithCustomPollingStrategy
 
         // Create custom polling strategy based on OperationResourcePollingStrategy
-        PollingStrategy strategy = new OperationResourcePollingStrategy() {
+        PollingStrategy strategy = new OperationResourcePollingStrategy(
+                new HttpPipelineBuilder().build(),
+                Context.NONE) {
             // override any interface method to customize the polling behavior
             @Override
-            public Mono<LongRunningOperationStatus> onPollingResponse(HttpResponse response,
-                                                                      PollingContext<BinaryData> context) {
-                return Mono.just(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
+            public Mono<PollResponse<BinaryData>> poll(PollingContext<BinaryData> context) {
+                return Mono.just(new PollResponse<>(
+                    LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+                    BinaryData.fromString("")));
             }
         };
 
         // Create poller instance
-        PollerFlux<BinaryData, String> poller = PollerFlux.create(Duration.ofMillis(100),
+        PollerFlux<BinaryData, String> poller = PollerFlux.create(
+            Duration.ofMillis(100),
             // pass in your custom activation operation
-            () -> Mono.just(new SimpleResponse<Void>(
-                new HttpRequest(HttpMethod.POST, "http://httpbin.org"),
-                202, new HttpHeaders().set("Operation-Location", "http://httpbin.org"), null)),
+            () -> Mono.just(new SimpleResponse<Void>(new HttpRequest(
+                HttpMethod.POST,
+                "http://httpbin.org"),
+                202,
+                new HttpHeaders().set("Operation-Location", "http://httpbin.org"),
+                null)),
             strategy,
-            String.class,
-            new HttpPipelineBuilder().build(),
-            Context.NONE);
+            TypeReference.createInstance(String.class));
 
         // Listen to poll responses
         poller.subscribe(response -> {

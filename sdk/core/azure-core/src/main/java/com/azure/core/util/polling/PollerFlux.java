@@ -12,7 +12,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.strategy.PollingStrategy;
+import com.azure.core.util.serializer.TypeReference;
 import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -163,33 +163,29 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
      * and how to create a custom strategy.
      *
      * @param pollInterval the polling interval
-     * @param activationOperation the activation operation to activate (start) the long running operation.
+     * @param initialOperation the activation operation to activate (start) the long running operation.
      *     This operation will be invoked at most once across all subscriptions. This parameter is required.
      *     If there is no specific activation work to be done then invocation should return Mono.empty(),
      *     this operation will be called with a new {@link PollingContext}.
      * @param strategy a known strategy for polling a long running operation in Azure
      * @param resultType the {@link Type} of the final result object to deserialize into, or BinaryData if raw response
      *                   body should be kept. This should match the generic parameter {@link U}.
-     * @param httpPipeline an instance of {@link HttpPipeline} to send requests with
-     * @param context additional metadata to pass along with the request
      * @param <U> The type of the final result of long running operation
      * @return PollerFlux
      */
     public static <U> PollerFlux<BinaryData, U>
         create(Duration pollInterval,
-               Supplier<Mono<? extends Response<?>>> activationOperation,
+               Supplier<Mono<? extends Response<?>>> initialOperation,
                PollingStrategy strategy,
-               Type resultType,
-               HttpPipeline httpPipeline,
-               Context context) {
+               TypeReference<U> resultType) {
         return create(
             pollInterval,
-            ctx -> activationOperation.get()
-                .flatMap(r -> {
-                    if (!strategy.canPoll(r)) {
+            ctx -> initialOperation.get()
+                .flatMap(r -> strategy.canPoll(r).flatMap(canPoll -> {
+                    if (!canPoll) {
                         return Mono.error(new IllegalStateException("Cannot poll with strategy " + strategy));
                     }
-                    return strategy.onActivationResponse(r, ctx)
+                    return strategy.onInitialResponse(r, ctx)
                         .map(status -> {
                             if (r.getValue() instanceof BinaryData) {
                                 return new PollResponse<>(status, (BinaryData) r.getValue());
@@ -197,36 +193,10 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
                                 return new PollResponse<>(status, BinaryData.fromObject(r.getValue()));
                             }
                         });
-                }),
-            ctx -> {
-                HttpRequest request = new HttpRequest(HttpMethod.GET, strategy.getPollingUrl(ctx));
-                Mono<HttpResponse> responseMono;
-                if (context == null) {
-                    responseMono = httpPipeline.send(request);
-                } else {
-                    responseMono = httpPipeline.send(request, context);
-                }
-                return responseMono.flatMap(r -> strategy.onPollingResponse(r, ctx)
-                    .flatMap(status -> BinaryData.fromFlux(r.getBody())
-                        .map(body -> new PollResponse<>(status, body))));
-            },
-            (ctx, pr) -> Mono.error(new IllegalStateException("Cancellation is not supported.")),
-            ctx -> {
-                String finalResultUrl = strategy.getFinalGetUrl(ctx);
-                if (finalResultUrl == null) {
-                    return strategy.getFinalResult(null, ctx, resultType);
-                } else {
-                    HttpRequest request = new HttpRequest(HttpMethod.GET, finalResultUrl);
-                    Mono<HttpResponse> responseMono;
-                    if (context == null) {
-                        responseMono = httpPipeline.send(request);
-                    } else {
-                        responseMono = httpPipeline.send(request, context);
-                    }
-                    return responseMono.flatMap(res ->
-                        strategy.getFinalResult(res, ctx, resultType));
-                }
-            });
+                })),
+            strategy::poll,
+            strategy::cancel,
+            ctx -> strategy.getResult(ctx, resultType));
     }
 
     private PollerFlux(Duration pollInterval,
