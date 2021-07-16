@@ -82,8 +82,8 @@ public class AzureResourceManagerAutoConfiguration {
     public ResourceGroupManager resourceGroupManager(AzureResourceManager azureResourceManager,
                                                      AzureResourceMetadata azureResourceMetadata) {
         ResourceGroupManager resourceGroupManager = new ResourceGroupManager(azureResourceManager, azureResourceMetadata);
-        if (azureResourceMetadata.isAutoCreateResources() &&
-                !resourceGroupManager.exists(azureResourceMetadata.getResourceGroup())) {
+        if (azureResourceMetadata.isAutoCreateResources()
+                && !resourceGroupManager.exists(azureResourceMetadata.getResourceGroup())) {
             resourceGroupManager.create(azureResourceMetadata.getResourceGroup());
         }
         return resourceGroupManager;
@@ -93,7 +93,9 @@ public class AzureResourceManagerAutoConfiguration {
     private AzureEnvironment parseAzureEnvironment(String environment) {
         AzureEnvironment azureEnvironment = AzureEnvironment.AZURE;
 
-        if (!StringUtils.hasText(environment)) return azureEnvironment;
+        if (!StringUtils.hasText(environment)) {
+            return azureEnvironment;
+        }
 
         switch (environment.toUpperCase(Locale.ROOT)) {
             case "AZURE_CHINA":
