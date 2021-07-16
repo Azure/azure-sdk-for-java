@@ -8,7 +8,10 @@ import com.azure.identity.ClientCertificateCredentialBuilder;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.identity.ManagedIdentityCredential;
 import com.azure.identity.ManagedIdentityCredentialBuilder;
+import com.azure.spring.core.env.AzureEnvironment;
 import org.springframework.core.env.Environment;
+
+import java.util.Optional;
 
 
 /**
@@ -82,14 +85,11 @@ public abstract class SpringCredentialBuilderBase<T extends SpringCredentialBuil
     }
 
     protected String getAuthorityHost(String prefix) {
-
-        // TODO (xiada) authority host
-        return AzureAuthorityHosts.AZURE_PUBLIC_CLOUD;
-//        return Optional.ofNullable(getPropertyValue(prefix + "authority-host"))
-//                       .orElse(Optional.ofNullable(getPropertyValue(prefix + "environment"))
-//                                       .filter(env -> !env.isEmpty())
-//                                       .map(env -> toAuthorityHost(env))
-//                                       .orElse(AzureAuthorityHosts.AZURE_PUBLIC_CLOUD));
+        return Optional.ofNullable(getPropertyValue(prefix + "authority-host"))
+                       .orElse(Optional.ofNullable(getPropertyValue(prefix + "environment"))
+                                       .filter(env -> !env.isEmpty())
+                                       .map(AzureEnvironment::toAuthorityHost)
+                                       .orElse(AzureAuthorityHosts.AZURE_PUBLIC_CLOUD));
     }
 
 }
