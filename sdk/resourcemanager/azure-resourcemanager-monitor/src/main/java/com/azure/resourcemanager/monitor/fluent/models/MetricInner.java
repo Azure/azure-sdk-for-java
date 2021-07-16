@@ -37,7 +37,25 @@ public final class MetricInner {
     private LocalizableStringInner name;
 
     /*
-     * the unit of the metric.
+     * Detailed description of this metric.
+     */
+    @JsonProperty(value = "displayDescription")
+    private String displayDescription;
+
+    /*
+     * 'Success' or the error details on query failures for this metric.
+     */
+    @JsonProperty(value = "errorCode")
+    private String errorCode;
+
+    /*
+     * Error message encountered querying this specific metric.
+     */
+    @JsonProperty(value = "errorMessage")
+    private String errorMessage;
+
+    /*
+     * The unit of the metric.
      */
     @JsonProperty(value = "unit", required = true)
     private Unit unit;
@@ -109,7 +127,67 @@ public final class MetricInner {
     }
 
     /**
-     * Get the unit property: the unit of the metric.
+     * Get the displayDescription property: Detailed description of this metric.
+     *
+     * @return the displayDescription value.
+     */
+    public String displayDescription() {
+        return this.displayDescription;
+    }
+
+    /**
+     * Set the displayDescription property: Detailed description of this metric.
+     *
+     * @param displayDescription the displayDescription value to set.
+     * @return the MetricInner object itself.
+     */
+    public MetricInner withDisplayDescription(String displayDescription) {
+        this.displayDescription = displayDescription;
+        return this;
+    }
+
+    /**
+     * Get the errorCode property: 'Success' or the error details on query failures for this metric.
+     *
+     * @return the errorCode value.
+     */
+    public String errorCode() {
+        return this.errorCode;
+    }
+
+    /**
+     * Set the errorCode property: 'Success' or the error details on query failures for this metric.
+     *
+     * @param errorCode the errorCode value to set.
+     * @return the MetricInner object itself.
+     */
+    public MetricInner withErrorCode(String errorCode) {
+        this.errorCode = errorCode;
+        return this;
+    }
+
+    /**
+     * Get the errorMessage property: Error message encountered querying this specific metric.
+     *
+     * @return the errorMessage value.
+     */
+    public String errorMessage() {
+        return this.errorMessage;
+    }
+
+    /**
+     * Set the errorMessage property: Error message encountered querying this specific metric.
+     *
+     * @param errorMessage the errorMessage value to set.
+     * @return the MetricInner object itself.
+     */
+    public MetricInner withErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+        return this;
+    }
+
+    /**
+     * Get the unit property: The unit of the metric.
      *
      * @return the unit value.
      */
@@ -118,7 +196,7 @@ public final class MetricInner {
     }
 
     /**
-     * Set the unit property: the unit of the metric.
+     * Set the unit property: The unit of the metric.
      *
      * @param unit the unit value to set.
      * @return the MetricInner object itself.

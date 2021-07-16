@@ -5,7 +5,6 @@ package com.azure.search.documents;
 import com.azure.core.http.rest.PagedIterableBase;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
-import com.azure.core.test.annotation.TestingServiceVersions;
 import com.azure.core.util.Context;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.models.AutocompleteItem;
@@ -28,7 +27,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class AutocompleteSyncTests extends SearchTestBase {
-    private static final String HOTELS_DATA_JSON = "HotelsDataArray.json";
     private static final String INDEX_NAME = "azsearch-autocomplete-shared-instance";
 
     private static SearchIndexClient searchIndexClient;

@@ -4,40 +4,40 @@
     "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/feedback/metric",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.5 (11.0.11; Mac OS X; 11.4)",
-      "x-ms-client-request-id" : "656e34ab-0df3-4c9e-a768-bdd909bcf0b6",
+      "x-ms-client-request-id" : "089d1f76-4699-4f8f-a7cd-53843e9ad929",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "x-request-id" : "b67a3807-b9e3-4572-9dea-d85574ea3c89",
+      "x-request-id" : "e5eb9310-163f-4827-a76f-2647e9302f9a",
       "content-length" : "0",
-      "x-envoy-upstream-service-time" : "231",
+      "x-envoy-upstream-service-time" : "421",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "b67a3807-b9e3-4572-9dea-d85574ea3c89",
+      "apim-request-id" : "e5eb9310-163f-4827-a76f-2647e9302f9a",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "Date" : "Mon, 21 Jun 2021 23:23:28 GMT",
-      "Location" : "https://js-metrics-advisor.cognitiveservices.azure.com/metricsadvisor/v1.0/feedback/metric/fbbd8b65-31f9-4082-b685-20319739086a"
+      "Date" : "Tue, 06 Jul 2021 19:51:32 GMT",
+      "Location" : "https://js-metrics-advisor.cognitiveservices.azure.com/metricsadvisor/v1.0/feedback/metric/335a61dd-2888-48e9-9626-090b1a07a13d"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/feedback/metric/fbbd8b65-31f9-4082-b685-20319739086a",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/feedback/metric/335a61dd-2888-48e9-9626-090b1a07a13d",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.5 (11.0.11; Mac OS X; 11.4)",
-      "x-ms-client-request-id" : "ba16c0eb-566a-4eec-8ad6-ac32d7b3780c"
+      "x-ms-client-request-id" : "bdefa543-91a6-4b04-b59d-d2000544a313"
     },
     "Response" : {
-      "x-request-id" : "66ed2cc6-1e83-453f-837d-956f22cf957a",
+      "x-request-id" : "40b221bc-5c28-4b7e-82d4-09707e99b011",
       "content-length" : "415",
-      "x-envoy-upstream-service-time" : "38",
+      "x-envoy-upstream-service-time" : "93",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "66ed2cc6-1e83-453f-837d-956f22cf957a",
+      "apim-request-id" : "40b221bc-5c28-4b7e-82d4-09707e99b011",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"feedbackId\":\"fbbd8b65-31f9-4082-b685-20319739086a\",\"createdTime\":\"2021-06-21T23:23:29.229Z\",\"userPrincipal\":\"f850650c-1fcf-4489-b46f-71af2e30d360\",\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimensionFilter\":{\"dimension\":{\"city\":\"Miami\",\"category\":\"Health & Personal Care\"}},\"feedbackType\":\"Anomaly\",\"startTime\":\"2020-01-01T00:00:00Z\",\"endTime\":\"2020-10-22T00:00:00Z\",\"value\":{\"anomalyValue\":\"NotAnomaly\"}}",
-      "Date" : "Mon, 21 Jun 2021 23:23:28 GMT",
+      "Body" : "{\"feedbackId\":\"335a61dd-2888-48e9-9626-090b1a07a13d\",\"createdTime\":\"2021-07-06T19:51:33.023Z\",\"userPrincipal\":\"f850650c-1fcf-4489-b46f-71af2e30d360\",\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimensionFilter\":{\"dimension\":{\"city\":\"Miami\",\"category\":\"Health & Personal Care\"}},\"feedbackType\":\"Anomaly\",\"startTime\":\"2020-01-01T00:00:00Z\",\"endTime\":\"2020-10-22T00:00:00Z\",\"value\":{\"anomalyValue\":\"NotAnomaly\"}}",
+      "Date" : "Tue, 06 Jul 2021 19:51:35 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
@@ -46,20 +46,20 @@
     "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/feedback/metric/query",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.5 (11.0.11; Mac OS X; 11.4)",
-      "x-ms-client-request-id" : "159fed65-64d6-47ca-9587-ed83c67520f1",
+      "x-ms-client-request-id" : "d10518a5-3863-41f9-9bba-a03885f04e46",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "x-request-id" : "fca03d5a-396b-4c20-a563-adcba8a323f2",
-      "content-length" : "427",
-      "x-envoy-upstream-service-time" : "64",
+      "x-request-id" : "d23152c4-de93-4f60-b381-dc7b740f1b03",
+      "content-length" : "2114",
+      "x-envoy-upstream-service-time" : "94",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "fca03d5a-396b-4c20-a563-adcba8a323f2",
+      "apim-request-id" : "d23152c4-de93-4f60-b381-dc7b740f1b03",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"value\":[{\"feedbackId\":\"fbbd8b65-31f9-4082-b685-20319739086a\",\"createdTime\":\"2021-06-21T23:23:29.229Z\",\"userPrincipal\":\"f850650c-1fcf-4489-b46f-71af2e30d360\",\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimensionFilter\":{\"dimension\":{\"city\":\"Miami\",\"category\":\"Health & Personal Care\"}},\"feedbackType\":\"Anomaly\",\"startTime\":\"2020-01-01T00:00:00Z\",\"endTime\":\"2020-10-22T00:00:00Z\",\"value\":{\"anomalyValue\":\"NotAnomaly\"}}]}",
-      "Date" : "Mon, 21 Jun 2021 23:23:28 GMT",
+      "Body" : "{\"value\":[{\"feedbackId\":\"1a5c812a-6e08-42c2-80f3-21f844375454\",\"createdTime\":\"2021-07-06T19:51:34.947Z\",\"userPrincipal\":\"f850650c-1fcf-4489-b46f-71af2e30d360\",\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimensionFilter\":{\"dimension\":{\"city\":\"Miami\",\"category\":\"Health & Personal Care\"}},\"feedbackType\":\"ChangePoint\",\"startTime\":\"2020-01-01T00:00:00Z\",\"endTime\":\"2020-10-22T00:00:00Z\",\"value\":{\"changePointValue\":\"AutoDetect\"}},{\"feedbackId\":\"ab55f224-e97c-4840-9253-c3074b606225\",\"createdTime\":\"2021-07-06T19:51:34.604Z\",\"userPrincipal\":\"f850650c-1fcf-4489-b46f-71af2e30d360\",\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimensionFilter\":{\"dimension\":{\"city\":\"Miami\",\"category\":\"Health & Personal Care\"}},\"feedbackType\":\"Comment\",\"startTime\":\"2020-01-01T00:00:00Z\",\"endTime\":\"2020-10-22T00:00:00Z\",\"value\":{\"commentValue\":\"Not an anomaly.\"}},{\"feedbackId\":\"1f56d02a-63ba-4e42-bcda-27ac84d0270e\",\"createdTime\":\"2021-07-06T19:51:34.025Z\",\"userPrincipal\":\"f850650c-1fcf-4489-b46f-71af2e30d360\",\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimensionFilter\":{\"dimension\":{\"city\":\"Miami\",\"category\":\"Health & Personal Care\"}},\"feedbackType\":\"Comment\",\"startTime\":\"2020-01-01T00:00:00Z\",\"endTime\":\"2020-10-22T00:00:00Z\",\"value\":{\"commentValue\":\"Not an anomaly.\"}},{\"feedbackId\":\"1c652c15-9619-492f-aff8-e67e7aacd7ea\",\"createdTime\":\"2021-07-06T19:51:33.846Z\",\"userPrincipal\":\"f850650c-1fcf-4489-b46f-71af2e30d360\",\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimensionFilter\":{\"dimension\":{\"city\":\"Miami\",\"category\":\"Health & Personal Care\"}},\"feedbackType\":\"Comment\",\"startTime\":\"2020-01-01T00:00:00Z\",\"endTime\":\"2020-10-22T00:00:00Z\",\"value\":{\"commentValue\":\"Not an anomaly.\"}},{\"feedbackId\":\"335a61dd-2888-48e9-9626-090b1a07a13d\",\"createdTime\":\"2021-07-06T19:51:33.023Z\",\"userPrincipal\":\"f850650c-1fcf-4489-b46f-71af2e30d360\",\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimensionFilter\":{\"dimension\":{\"city\":\"Miami\",\"category\":\"Health & Personal Care\"}},\"feedbackType\":\"Anomaly\",\"startTime\":\"2020-01-01T00:00:00Z\",\"endTime\":\"2020-10-22T00:00:00Z\",\"value\":{\"anomalyValue\":\"NotAnomaly\"}}]}",
+      "Date" : "Tue, 06 Jul 2021 19:51:34 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

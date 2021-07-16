@@ -76,9 +76,9 @@ If you need to override pipeline behavior, such as provide your own `HttpClient`
 It provides an opportunity to override default behavior including:
 
 - Specifying API version
-- Overriding [HttpPipeline](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/src/main/java/com/azure/core/http/HttpPipeline.java).
-- Enabling [HttpLogOptions](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/src/main/java/com/azure/core/http/policy/HttpLogOptions.java).
-- Controlling [retry strategy](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/src/main/java/com/azure/core/http/policy/RetryPolicy.java).
+- Overriding [HttpPipeline](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/http/HttpPipeline.java).
+- Enabling [HttpLogOptions](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/http/policy/HttpLogOptions.java).
+- Controlling [retry strategy](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/http/policy/RetryPolicy.java).
 
 ## Publish models
 
@@ -196,13 +196,13 @@ System.out.println(fullyQualifiedModelUri);
 
 <!-- LINKS -->
 [modelsrepository_github_repo]: https://github.com/Azure/iot-plugandplay-models
-[modelsrepository_sample_extension]: https://github.com/Azure/azure-sdk-for-net/blob/master/sdk/modelsrepository/Azure.IoT.ModelsRepository/samples/ModelsRepositoryClientSamples/ModelsRepositoryClientExtensions.cs
-[modelsrepository_clientoptions]: https://github.com/Azure/azure-sdk-for-net/blob/master/sdk/modelsrepository/Azure.IoT.ModelsRepository/src/ModelsRepositoryClientOptions.cs
+[modelsrepository_sample_extension]: https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/modelsrepository/Azure.IoT.ModelsRepository/samples/ModelsRepositoryClientSamples/ModelsRepositoryClientExtensions.cs
+[modelsrepository_clientoptions]: https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/modelsrepository/Azure.IoT.ModelsRepository/src/ModelsRepositoryClientOptions.cs
 [modelsrepository_msdocs]: https://docs.microsoft.com/azure/iot-pnp/concepts-model-repository
 [modelsrepository_publish_msdocs]: https://docs.microsoft.com/azure/iot-pnp/concepts-model-repository#publish-a-model
 [modelsrepository_iot_endpoint]: https://devicemodels.azure.com/
 [json_ld_reference]: https://json-ld.org
 [dtdlv2_reference]: https://github.com/Azure/opendigitaltwins-dtdl/blob/master/DTDL/v2/dtdlv2.md
-[azure_core_transport]: https://github.com/Azure/azure-sdk-for-net/blob/master/sdk/core/Azure.Core/samples/Pipeline.md
-[azure_core_diagnostics]: https://github.com/Azure/azure-sdk-for-net/blob/master/sdk/core/Azure.Core/samples/Diagnostics.md
-[azure_core_configuration]: https://github.com/Azure/azure-sdk-for-net/blob/master/sdk/core/Azure.Core/samples/Configuration.md
+[azure_core_transport]: https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/core/Azure.Core/samples/Pipeline.md
+[azure_core_diagnostics]: https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/core/Azure.Core/samples/Diagnostics.md
+[azure_core_configuration]: https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/core/Azure.Core/samples/Configuration.md

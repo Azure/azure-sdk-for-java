@@ -1068,7 +1068,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
 
     private static Object[][] clientBuildersWithDirectAllConsistencies(boolean contentResponseOnWriteEnabled, boolean retryOnThrottledRequests, Protocol... protocols) {
         logger.info("Max test consistency to use is [{}]", accountConsistency);
-        return clientBuildersWithDirect(desiredConsistencies, contentResponseOnWriteEnabled, retryOnThrottledRequests);
+        return clientBuildersWithDirect(desiredConsistencies, contentResponseOnWriteEnabled, retryOnThrottledRequests, protocols);
     }
 
     static List<ConsistencyLevel> parseDesiredConsistencies(String consistencies) {

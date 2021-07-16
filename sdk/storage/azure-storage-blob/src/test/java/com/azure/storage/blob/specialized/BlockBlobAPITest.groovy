@@ -44,7 +44,6 @@ import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
-import spock.lang.Ignore
 import spock.lang.IgnoreIf
 import spock.lang.Unroll
 
@@ -788,7 +787,7 @@ class BlockBlobAPITest extends APISpec {
     @LiveOnly
     def "Upload from file with tags"() {
         given:
-        def tags = Collections.singletonMap("tag", "value")
+        def tags = Collections.singletonMap(namer.getRandomName(20), namer.getRandomName(20))
         def file = getRandomFile(Constants.KB)
         def outStream = new ByteArrayOutputStream()
 

@@ -91,7 +91,7 @@ function readPom(artifact, version) {
     if (startCnt == endCnt) {
       // update file for listing all latest releases of the packages
       var content = '# Single-Service Packages Latest Releases\n\n' +
-        'The single-service packages provide easy-to-use APIs for each Azure service following the design principals of [Azure Management Libraries for Java](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/resourcemanager). If you have specific requirement on certain service API version, you may find appropriate package below. If not, you could always choose the latest release.\n\n' +
+        'The single-service packages provide easy-to-use APIs for each Azure service following the design principals of [Azure Management Libraries for Java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/resourcemanager). If you have specific requirement on certain service API version, you may find appropriate package below. If not, you could always choose the latest release.\n\n' +
         'According to [Azure REST API reference](https://docs.microsoft.com/rest/api/azure/), most request URIs of Azure services require `api-version` as the query-string parameter. All supported API versions for each Azure service can be found via [Azure REST API Specifications](https://github.com/Azure/azure-rest-api-specs/tree/master/specification). For your convenience, we provide more details of the published packages by format below.\n\n' +
         '```\n' +
         'service\n' +

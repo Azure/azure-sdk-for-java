@@ -526,7 +526,9 @@ the main ServiceBusClientBuilder. -->
 
   <!-- TODO: (https://github.com/Azure/azure-sdk-for-java/issues/18279) -->
   <!-- Suppress DigitalTwins for now -->
-  <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-digitaltwins-core[/\\]src[/\\]"/>
+  <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-digitaltwins-core[/\\]src[/\\]main[/\\]java[/\\]com[/\\]azure[/\\]digitaltwins[/\\]core[/\\]implementation[/\\]"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClient" files="[/\\]azure-digitaltwins-core[/\\]src[/\\]main[/\\]java[/\\]com[/\\]azure[/\\]digitaltwins[/\\]core[/\\]DigitalTwinsClient.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClient" files="[/\\]azure-digitaltwins-core[/\\]src[/\\]main[/\\]java[/\\]com[/\\]azure[/\\]digitaltwins[/\\]core[/\\]DigitalTwinsAsyncClient.java"/>
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-ai-anomalydetector[/\\]src[/\\]"/>
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-iot-deviceupdate[/\\]src[/\\]"/>
 
@@ -570,6 +572,10 @@ the main ServiceBusClientBuilder. -->
             files="com.azure.ai.formrecognizer.training.models.(TrainingDocumentInfo|CustomFormSubmodel|CustomFormModelProperties|CustomFormModelInfo|CustomFormModel).java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.OnlyFinalFieldsForImmutableClass"
             files="com.azure.ai.formrecognizer.models.(TextAppearance|RecognizedForm|FormTable|FormSelectionMark|FormPage|FormLine).java"/>
+
+  <!-- Suppress for the OnlyFinalFieldsForImmutableClass on Text Analytics -->
+  <suppress checks="com.azure.tools.checkstyle.checks.OnlyFinalFieldsForImmutableClass"
+            files="com.azure.ai.textanalytics.(models|util).*\.java"/>
 
   <!-- Suppress checks on AutoRest generated Video Analyzer code -->
   <suppress checks="WhitespaceAround" files="com.azure.media.videoanalyzer.edge.models.CertificateSource"/>

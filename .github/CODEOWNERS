@@ -1,16 +1,16 @@
 # Instructions for CODEOWNERS file format and automatic build failure notifications:
-# https://github.com/Azure/azure-sdk/blob/master/docs/policies/opensource.md#codeowners
+# https://github.com/Azure/azure-sdk/blob/main/docs/policies/opensource.md#codeowners
 
 ###########
 # SDK
 ###########
 
 # Catch all
-/sdk/                                               @joshfree @srnagar @hemanttanwar @anuchandy @conniey @jianghaolu
+/sdk/                                               @joshfree @srnagar @anuchandy @conniey @jianghaolu
 
 # BOM
 # PRLabel: %bom
-/sdk/boms/azure-sdk-bom/                            @alzimmermsft @jonathangiles @srnagar @hemanttanwar @anuchandy @pallavit
+/sdk/boms/azure-sdk-bom/                            @alzimmermsft @jonathangiles @srnagar @anuchandy @pallavit
 # PRLabel: %azure-spring
 /sdk/boms/azure-spring-boot-bom/                    @saragluna @yiliuTo @chenrujun @backwind1233 @stliu
 
@@ -23,6 +23,12 @@
 /sdk/appconfiguration/azure-spring-cloud-*/         @mrm9084 @zhenlan @saragluna @yiliuTo @chenrujun @backwind1233 @stliu
 /sdk/appconfiguration/spring-cloud-azure-*/         @mrm9084 @zhenlan @saragluna @yiliuTo @chenrujun @backwind1233 @stliu
 
+
+# PRLabel: %Attestation
+/sdk/attestation/                                   @azure-sdk-write-attestation @larryosterman
+/sdk/attestation/azure-security-attestation         @azure-sdk-write-attestation @larryosterman
+/sdk/attestation/azure-resourcemanager-attestation  @azure-sdk-write-attestation @larryosterman
+
 # PRLabel: %Batch
 /sdk/batch/                                         @xingwu1 @bgklein @matthchr
 
@@ -33,7 +39,10 @@
 /sdk/containerregistry/                             @pallavit @alzimmermsft @jianghaolu
 
 # PRLabel: %Azure.Core
-/sdk/core/                                          @alzimmermsft @jianghaolu @srnagar @hemanttanwar @anuchandy @lmolkova
+/sdk/core/                                          @alzimmermsft @jianghaolu @srnagar @anuchandy @lmolkova
+
+# PRLabel: %Azure.Core.AMQP
+/sdk/core/azure-core-amqp/                          @conniey @yijunxiems @ki1729 @srnagar @anuchandy
 
 # PRLabel: %Azure.Core
 /sdk/core/azure-core-tracing-opentelemetry/         @samvaity @alzimmermsft @trask @lmolkova
@@ -46,10 +55,10 @@
 /sdk/cosmos/azure-spring-data-cosmos-test/          @kushagraThapar @saragluna @yiliuTo @chenrujun @backwind1233 @mbhaskar @stliu
 
 # PRLabel: %Digital Twins
-/sdk/digitaltwins/                                  @drwill-ms @timtay-microsoft @abhipsaMisra @vinagesh @azabbasi @bikamani @barustum
+/sdk/digitaltwins/                                  @drwill-ms @timtay-microsoft @abhipsaMisra @vinagesh @azabbasi @barustum
 
 # PRLabel: %Models Repository
-/sdk/modelsrepository                               @drwill-ms @timtay-microsoft @abhipsaMisra @vinagesh @azabbasi @bikamani @barustum @digimaun
+/sdk/modelsrepository                               @drwill-ms @timtay-microsoft @abhipsaMisra @vinagesh @azabbasi @barustum @digimaun
 
 # PRLabel: %Event Grid
 /sdk/eventgrid/                                     @srnagar @yijunxiems
@@ -89,13 +98,13 @@
 /sdk/schemaregistry/                                @arerlend @sjkwak
 
 # PRLabel: %Search
-/sdk/search/                                        @alzimmermsft @hemanttanwar @mssfang @samvaity @conniey
+/sdk/search/                                        @alzimmermsft @mssfang @samvaity @conniey
 
 # PRLabel: %Service Bus
-/sdk/servicebus/                                    @yvgopal @nemakam @hemanttanwar @conniey @yijunxiems
+/sdk/servicebus/                                    @yvgopal @nemakam @ki1729 @conniey @yijunxiems
 
 # PRLabel: %Storage
-/sdk/storage/                                       @amishra-dev @rickle-msft @jaschrep-msft @gapra-msft @alzimmermsft @kasobol-msft
+/sdk/storage/                                       @amishra-dev @rickle-msft @jaschrep-msft @alzimmermsft @kasobol-msft
 
 # PRLabel: %Tables
 /sdk/tables/                                        @vcolin7 @conniey
@@ -115,21 +124,24 @@
 /common/smoke-tests/                                @joshfree @jonathangiles @alzimmermsft @g2vinay @conniey @srnagar
 
 # Management Plane
-/sdk/resourcemanager/                               @ChenTanyi @weidongxu-microsoft @yungezz
-/sdk/**/azure-resourcemanager-*                     @ChenTanyi @weidongxu-microsoft @yungezz
-/sdk/**/mgmt*/                                      @ChenTanyi @weidongxu-microsoft @yungezz
+/sdk/resourcemanager/                               @ChenTanyi @weidongxu-microsoft @yungezz @qwordy @haolingdong-msft
+/sdk/**/azure-resourcemanager-*                     @ChenTanyi @weidongxu-microsoft @yungezz @qwordy @haolingdong-msft
+/sdk/**/mgmt*/                                      @weidongxu-microsoft @yungezz
 
 ###########
 # Eng Sys
 ###########
-/eng/                                               @JimSuplizio @mitchdenny @weshaggard @danieljurek
+/eng/                                               @JimSuplizio @benbp @weshaggard @danieljurek
 /eng/code-quality-reports/                          @mssfang @JonathanGiles
 /eng/jacoco-test-coverage/                          @srnagar @JonathanGiles
 /eng/spotbugs-aggregate-report/                     @srnagar @JonathanGiles
-/eng/mgmt/                                          @JimSuplizio @mitchdenny @weshaggard @danieljurek @ChenTanyi @weidongxu-microsoft @yungezz
-/eng/versioning/                                    @JimSuplizio @mitchdenny @danieljurek @alzimmermsft @samvaity @g2vinay
-/eng/versioning/external_dependencies.txt           @JimSuplizio @mitchdenny @danieljurek @alzimmermsft @samvaity @g2vinay @saragluna @yiliuTo @chenrujun @backwind1233 @stliu
+/eng/mgmt/                                          @JimSuplizio @benbp @weshaggard @danieljurek @ChenTanyi @weidongxu-microsoft @yungezz
+/eng/versioning/                                    @JimSuplizio @benbp @danieljurek @alzimmermsft @samvaity @g2vinay
+/eng/versioning/external_dependencies.txt           @JimSuplizio @benbp @danieljurek @alzimmermsft @samvaity @g2vinay @saragluna @yiliuTo @chenrujun @backwind1233 @stliu
 /parent/                                            @JimSuplizio @alzimmermsft
 
 /**/tests.yml                                       @benbp
-/**/ci.yml                                          @mitchdenny
+/**/ci.yml                                          @benbp
+
+# Add owners for notifications for specific pipelines
+/eng/pipelines/aggregate-reports.yml                @joshfree

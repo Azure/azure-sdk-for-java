@@ -3,6 +3,14 @@
 ## 4.4.0-beta.1 (Unreleased)
 
 
+## 4.3.1 (2021-07-08)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.18.0`
+- Upgraded `azure-core-http-netty` dependency to `1.10.1`
+
 ## 4.3.0 (2021-06-17)
 
 ### Features Added
@@ -203,7 +211,7 @@ Version 4.0.0-preview.1 is a preview of our efforts in creating a client library
 
 For details on the Azure SDK for Java (July 2019 Preview) release, you can refer to the [release announcement](https://aka.ms/azure-sdk-preview1-java).
 
-This library is not a direct replacement for secrets management operations from [microsoft-azure-keyvault](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/keyvault/microsoft-azure-keyvault). Applications using that library would require code changes to use `azure-keyvault-secrets`.
+This library is not a direct replacement for secrets management operations from [microsoft-azure-keyvault](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault/microsoft-azure-keyvault). Applications using that library would require code changes to use `azure-keyvault-secrets`.
 This package's
 [documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-keyvault-secrets_4.0.0-preview.1/keyvault/client/secrets/README.md)
 and
@@ -222,7 +230,7 @@ only)
   - see this package's
   [documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-keyvault-secrets_4.0.0-preview.1/keyvault/client/secrets/README.md)
   , and the
-  [Azure Identity documentation](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/identity/azure-identity/README.md)
+  [Azure Identity documentation](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity/README.md)
   for more information
   
 ### `azure-keyvault` features not implemented in this library

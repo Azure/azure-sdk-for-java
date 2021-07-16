@@ -147,7 +147,7 @@ public abstract class StorageInputStream extends InputStream {
     }
 
     /**
-     * Dispatches a read operation of N bytes.
+     * Dispatches a read operation of N bytes and updates stream state accordingly.
      *
      * @param readLength An <code>int</code> which represents the number of bytes to read.
      * @param offset The start point of data to be acquired.

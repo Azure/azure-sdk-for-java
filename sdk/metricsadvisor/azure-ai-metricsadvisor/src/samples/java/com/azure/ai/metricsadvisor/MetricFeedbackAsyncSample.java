@@ -4,6 +4,7 @@
 package com.azure.ai.metricsadvisor;
 
 import com.azure.ai.metricsadvisor.models.ChangePointValue;
+import com.azure.ai.metricsadvisor.models.DimensionKey;
 import com.azure.ai.metricsadvisor.models.MetricAnomalyFeedback;
 import com.azure.ai.metricsadvisor.models.MetricChangePointFeedback;
 import com.azure.ai.metricsadvisor.models.MetricCommentFeedback;
@@ -14,6 +15,7 @@ import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
 
+import static com.azure.ai.metricsadvisor.FeedbackTestBase.DIMENSION_FILTER;
 import static com.azure.ai.metricsadvisor.models.FeedbackType.ANOMALY;
 import static com.azure.ai.metricsadvisor.models.FeedbackType.CHANGE_POINT;
 import static com.azure.ai.metricsadvisor.models.FeedbackType.COMMENT;
@@ -35,7 +37,8 @@ public class MetricFeedbackAsyncSample {
         final OffsetDateTime startTime = OffsetDateTime.parse("2020-01-01T00:00:00Z");
         final OffsetDateTime endTime = OffsetDateTime.parse("2020-09-09T00:00:00Z");
         final MetricChangePointFeedback metricChangePointFeedback
-            = new MetricChangePointFeedback(startTime, endTime, ChangePointValue.AUTO_DETECT);
+            = new MetricChangePointFeedback(startTime, endTime, ChangePointValue.AUTO_DETECT)
+            .setDimensionFilter(new DimensionKey(DIMENSION_FILTER));
 
         System.out.printf("Creating Metric Feedback%n");
         final Mono<MetricFeedback> createdFeedbackMono
