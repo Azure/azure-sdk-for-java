@@ -308,6 +308,13 @@
       <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-jca;current} -->
       <scope>test</scope>
     </dependency>
+    <!-- for the samples   -->
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpclient</artifactId>
+      <version>4.5.13</version> <!-- {x-version-update;org.apache.httpcomponents:httpclient;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
 
   </dependencies>
 
