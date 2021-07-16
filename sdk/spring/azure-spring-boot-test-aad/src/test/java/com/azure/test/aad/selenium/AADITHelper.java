@@ -1,9 +1,8 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.test.aad.selenium;
 
 import com.azure.spring.utils.AzureCloudUrls;
-import com.azure.test.aad.common.AbstractAADSeleniumITHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,13 +10,9 @@ import java.util.Map;
 import static com.azure.spring.test.EnvironmentVariable.AAD_SINGLE_TENANT_CLIENT_ID;
 import static com.azure.spring.test.EnvironmentVariable.AAD_SINGLE_TENANT_CLIENT_SECRET;
 import static com.azure.spring.test.EnvironmentVariable.AAD_TENANT_ID_1;
-import static com.azure.spring.test.EnvironmentVariable.AAD_USER_NAME_1;
-import static com.azure.spring.test.EnvironmentVariable.AAD_USER_PASSWORD_1;
 import static com.azure.spring.test.EnvironmentVariable.AZURE_CLOUD_TYPE;
 
-public class AADSeleniumITHelper extends AbstractAADSeleniumITHelper {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(AADSeleniumITHelper.class);
+public class AADITHelper {
 
     public static Map<String, String> createDefaultProperties() {
         Map<String, String> defaultProperties = new HashMap<>();
@@ -29,15 +24,5 @@ public class AADSeleniumITHelper extends AbstractAADSeleniumITHelper {
         defaultProperties.put("azure.activedirectory.base-uri", AzureCloudUrls.getBaseUrl(AZURE_CLOUD_TYPE));
         defaultProperties.put("azure.activedirectory.graph-base-uri", AzureCloudUrls.getGraphBaseUrl(AZURE_CLOUD_TYPE));
         return defaultProperties;
-    }
-
-    public AADSeleniumITHelper(Class<?> appClass, Map<String, String> properties) {
-        super(appClass, properties, AZURE_CLOUD_TYPE,
-            AAD_TENANT_ID_1, AAD_USER_NAME_1, AAD_USER_PASSWORD_1);
-    }
-
-    public AADSeleniumITHelper(Class<?> appClass, Map<String, String> properties, String username, String password) {
-        super(appClass, properties, AZURE_CLOUD_TYPE,
-            AAD_TENANT_ID_1, username, password);
     }
 }

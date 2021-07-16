@@ -11,26 +11,28 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
+import static com.azure.spring.test.EnvironmentVariable.AAD_TENANT_ID_1;
+import static com.azure.spring.test.EnvironmentVariable.AAD_USER_NAME_1;
+import static com.azure.spring.test.EnvironmentVariable.AAD_USER_PASSWORD_1;
+import static com.azure.spring.test.EnvironmentVariable.AZURE_CLOUD_TYPE;
 import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElementLocated;
 
-public abstract class AbstractAADSeleniumITHelper extends SeleniumITHelper {
+public class AADSeleniumITHelper extends SeleniumITHelper {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractAADSeleniumITHelper.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AADSeleniumITHelper.class);
 
     private final String username;
     private final String password;
-    private final String tenantId;
-    private final String azureCloudType;
 
-    public AbstractAADSeleniumITHelper(Class<?> appClass,
-                                       Map<String, String> properties,
-                                       String azureCloudType,
-                                       String tenantId,
-                                       String username,
-                                       String password) {
+    public AADSeleniumITHelper(Class<?> appClass, Map<String, String> properties) {
+        this(appClass, properties, AAD_USER_NAME_1, AAD_USER_PASSWORD_1);
+    }
+
+    public AADSeleniumITHelper(Class<?> appClass,
+                               Map<String, String> properties,
+                               String username,
+                               String password) {
         super(appClass, properties);
-        this.azureCloudType = azureCloudType;
-        this.tenantId = tenantId;
         this.username = username;
         this.password = password;
     }
@@ -84,8 +86,8 @@ public abstract class AbstractAADSeleniumITHelper extends SeleniumITHelper {
     public String httpGetWithIncrementalConsent(String endpoint) {
         driver.get((app.root() + endpoint));
 
-        String oauth2AuthorizationUrlFraction = String.format(AzureCloudUrls.getBaseUrl(azureCloudType)
-            + "%s/oauth2/v2.0/" + "authorize?", tenantId);
+        String oauth2AuthorizationUrlFraction = String.format(AzureCloudUrls.getBaseUrl(AZURE_CLOUD_TYPE)
+            + "%s/oauth2/v2.0/" + "authorize?", AAD_TENANT_ID_1);
         wait.until(ExpectedConditions.urlContains(oauth2AuthorizationUrlFraction));
 
         String onDemandAuthorizationUrl = driver.getCurrentUrl();

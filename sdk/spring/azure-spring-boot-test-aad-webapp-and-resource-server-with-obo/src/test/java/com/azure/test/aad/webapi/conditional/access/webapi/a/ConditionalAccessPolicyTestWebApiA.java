@@ -1,6 +1,5 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-
 package com.azure.test.aad.webapi.conditional.access.webapi.a;
 
 import com.azure.spring.test.AppRunner;
