@@ -2460,8 +2460,8 @@
   <!-- Machine generated classes for MAA service generate spotBugs errors -->
   <Match>
     <Or>
-      <Class name="com.azure.security.attestation.implementation.models.*"/>
-      <Class name="com.azure.security.attestation.models.*"/>
+      <Class name="~com.azure.security.attestation.implementation.models.*"/>
+      <Class name="~com.azure.security.attestation.models.*+"/>
     </Or>
     <Or>
       <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
