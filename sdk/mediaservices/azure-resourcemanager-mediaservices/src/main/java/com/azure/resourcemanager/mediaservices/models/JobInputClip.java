@@ -32,7 +32,8 @@ public class JobInputClip extends JobInput {
 
     /*
      * List of files. Required for JobInputHttp. Maximum of 4000 characters
-     * each.
+     * each. Query strings will not be returned in service responses to prevent
+     * sensitive data exposure.
      */
     @JsonProperty(value = "files")
     private List<String> files;
@@ -70,7 +71,8 @@ public class JobInputClip extends JobInput {
     private List<InputDefinition> inputDefinitions;
 
     /**
-     * Get the files property: List of files. Required for JobInputHttp. Maximum of 4000 characters each.
+     * Get the files property: List of files. Required for JobInputHttp. Maximum of 4000 characters each. Query strings
+     * will not be returned in service responses to prevent sensitive data exposure.
      *
      * @return the files value.
      */
@@ -79,7 +81,8 @@ public class JobInputClip extends JobInput {
     }
 
     /**
-     * Set the files property: List of files. Required for JobInputHttp. Maximum of 4000 characters each.
+     * Set the files property: List of files. Required for JobInputHttp. Maximum of 4000 characters each. Query strings
+     * will not be returned in service responses to prevent sensitive data exposure.
      *
      * @param files the files value to set.
      * @return the JobInputClip object itself.
