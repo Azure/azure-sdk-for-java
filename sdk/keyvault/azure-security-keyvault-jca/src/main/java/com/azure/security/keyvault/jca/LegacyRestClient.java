@@ -70,6 +70,24 @@ class LegacyRestClient implements RestClient {
         return result;
     }
 
+    @Override
+    public String post(String url, Map<String, String> headers, String body, String contentType) {
+        String result = null;
+        try (CloseableHttpClient client = HttpClients.createDefault()) {
+            HttpPost httpPost = new HttpPost(url);
+            httpPost.addHeader(USER_AGENT_KEY, USER_AGENT_VALUE);
+            if (headers != null) {
+                headers.forEach(httpPost::addHeader);
+            }
+            httpPost.addHeader("Content-Type", "application/json");
+            httpPost.setEntity(new StringEntity(body, ContentType.create(contentType)));
+            result = client.execute(httpPost, createResponseHandler());
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+        return result;
+    }
+
     static String getUserAgentPrefix() {
         return Optional.of(LegacyRestClient.class)
                        .map(Class::getClassLoader)

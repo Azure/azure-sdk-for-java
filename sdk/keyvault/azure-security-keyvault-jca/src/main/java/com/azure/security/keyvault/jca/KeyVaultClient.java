@@ -8,6 +8,7 @@ import com.azure.security.keyvault.jca.model.CertificateListResult;
 import com.azure.security.keyvault.jca.model.CertificatePolicy;
 import com.azure.security.keyvault.jca.model.KeyProperties;
 import com.azure.security.keyvault.jca.model.SecretBundle;
+import com.azure.security.keyvault.jca.model.PrivateKeyOperationResult;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -312,6 +313,58 @@ public class KeyVaultClient extends DelegateRestClient {
         //
         LOGGER.exiting("KeyVaultClient", "getKey", key);
         return key;
+    }
+
+    /**
+     * Create a virtual privateKey according to Policy
+     * @param alias certificate alias
+     * @return fake key
+     */
+    public Key getFakeKey(String alias) {
+        CertificateBundle certificateBundle = getCertificateBundle(alias);
+        String algorithm = certificateBundle.getPolicy().getKeyProperties().getKty();
+        String kid = certificateBundle.getKid();
+        String version = kid.substring(kid.lastIndexOf("/") + 1);
+        return new PrivateKey() {
+            @Override
+            public String getAlgorithm() {
+                return algorithm;
+            }
+
+            @Override
+            public String getFormat() {
+                return alias;
+            }
+
+            @Override
+            public byte[] getEncoded() {
+                return version.getBytes();
+            }
+        };
+    }
+
+    /**
+     * get signature by key vault
+     * @param digestName digestName
+     * @param digestValue digestValue
+     * @param alias certificate alias
+     * @param version current certificate alias version
+     * @return signature
+     */
+    public byte[] getSignedWithPrivateKey(String digestName, String digestValue, String alias, String version) {
+        PrivateKeyOperationResult result = null;
+
+        String bodyString = String.format("{\"alg\": \"" + digestName + "\", \"value\": \"%s\"}", digestValue);
+
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put("Authorization", "Bearer " + getAccessToken());
+        String url = String.format("%skeys/%s/%s/sign%s", keyVaultUrl, alias, version, API_VERSION_POSTFIX);
+        String response = post(url, headers, bodyString, "application/json");
+        if (response != null) {
+            JsonConverter converter = JsonConverterFactory.createJsonConverter();
+            result = (PrivateKeyOperationResult) converter.fromJson(response, PrivateKeyOperationResult.class);
+        }
+        return Base64.getUrlDecoder().decode(result.getValue());
     }
 
     /**

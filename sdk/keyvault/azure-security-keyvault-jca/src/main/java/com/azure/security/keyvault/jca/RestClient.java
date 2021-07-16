@@ -28,4 +28,16 @@ public interface RestClient {
      * @return the response body as a string.
      */
     String post(String url, String body, String contentType);
+
+
+    /**
+     * Issue a POST request.
+     *
+     * @param url the URL.
+     * @param headers the request headers map.
+     * @param body the request body.
+     * @param contentType the content type
+     * @return the response body as a string.
+     */
+    String post(String url, Map<String, String> headers, String body, String contentType);
 }

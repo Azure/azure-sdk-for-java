@@ -43,6 +43,8 @@ public class KeyVaultCertificates implements AzureCertificates {
 
     private final long refreshInterval;
 
+    private boolean keyLess = false;
+
     KeyVaultCertificates(long refreshInterval,
                          String keyVaultUri,
                          String tenantId,
@@ -56,6 +58,14 @@ public class KeyVaultCertificates implements AzureCertificates {
     KeyVaultCertificates(long refreshInterval, KeyVaultClient keyVaultClient) {
         this.refreshInterval = refreshInterval;
         this.keyVaultClient = keyVaultClient;
+    }
+
+    /**
+     * set key less
+     * @param keyLess key less
+     */
+    public void setKeyLess(boolean keyLess) {
+        this.keyLess = keyLess;
     }
 
     /**
@@ -144,7 +154,12 @@ public class KeyVaultCertificates implements AzureCertificates {
         Optional.ofNullable(aliases)
                 .orElse(Collections.emptyList())
                 .forEach(alias -> {
-                    Key key = keyVaultClient.getKey(alias, null);
+                    Key key;
+                    if (keyLess) {
+                        key = keyVaultClient.getFakeKey(alias);
+                    } else {
+                        key = keyVaultClient.getKey(alias, null);
+                    }
                     if (!Objects.isNull(key)) {
                         certificateKeys.put(alias, key);
                     }

@@ -41,6 +41,11 @@ class DelegateRestClient implements RestClient {
         return delegate.post(url, body, contentType);
     }
 
+    @Override
+    public String post(String url, Map<String, String> headers, String body, String contentType) {
+        return delegate.post(url, headers, body, contentType);
+    }
+
     /**
      * Set the delegate.
      *

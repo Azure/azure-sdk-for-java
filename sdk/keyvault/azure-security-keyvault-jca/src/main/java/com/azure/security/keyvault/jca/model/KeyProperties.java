@@ -9,7 +9,7 @@ import java.io.Serializable;
  * The KeyProperties REST model.
  */
 public class KeyProperties implements Serializable {
-    
+
     /**
      * Stores the serial version UID.
      */
@@ -19,6 +19,42 @@ public class KeyProperties implements Serializable {
      * Stores if the key is exportable.
      */
     private boolean exportable;
+
+    private String kty;
+
+    /**
+     * get kty
+     * @return kty
+     */
+    public String getKty() {
+        return kty;
+    }
+
+    /**
+     * set kty
+     * @param kty key
+     */
+    public void setKty(String kty) {
+        this.kty = kty;
+    }
+
+    /**
+     * get key size
+     * @return key size
+     */
+    public Integer getKeySize() {
+        return keySize;
+    }
+
+    /**
+     * set key size
+     * @param keySize key size
+     */
+    public void setKeySize(Integer keySize) {
+        this.keySize = keySize;
+    }
+
+    private Integer keySize;
 
     /**
      * Is the key exportable.
