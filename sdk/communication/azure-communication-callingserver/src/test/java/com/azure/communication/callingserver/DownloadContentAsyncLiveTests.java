@@ -186,6 +186,28 @@ public class DownloadContentAsyncLiveTests extends CallingServerTestBase {
             () -> FluxUtil.collectBytesInByteBufferStream(response.getValue()).block());
     }
 
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @DisabledIfEnvironmentVariable(
+        named = "SKIP_LIVE_TEST",
+        matches = "(?i)(true)",
+        disabledReason = "Requires human intervention")
+    public void downloadMetadataWithRedirectAsync(HttpClient httpClient) {
+        CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
+        CallingServerAsyncClient conversationAsyncClient = setupAsyncClient(builder, "downloadMetadataAsync");
+
+        try {
+            Flux<ByteBuffer> content = conversationAsyncClient.downloadStream(METADATA_URL);
+            byte[] contentBytes = FluxUtil.collectBytesInByteBufferStream(content).block();
+            assertThat(contentBytes, is(notNullValue()));
+            String metadata = new String(contentBytes, StandardCharsets.UTF_8);
+            assertThat(metadata.contains("0-eus-d2-3cca2175891f21c6c9a5975a12c0141c"), is(true));
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+            throw e;
+        }
+    }
+
 
     private CallingServerAsyncClient setupAsyncClient(CallingServerClientBuilder builder, String testName) {
         return addLoggingPolicy(builder, testName).buildAsyncClient();

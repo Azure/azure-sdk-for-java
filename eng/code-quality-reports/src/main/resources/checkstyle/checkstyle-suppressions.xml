@@ -605,4 +605,8 @@ the main ServiceBusClientBuilder. -->
   <!-- Avoiding PagedFlux check if already using RetriableDownloadFlux. -->
   <!-- Issue: https://github.com/Azure/azure-sdk-for-java/issues/22117 -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.communication.callingserver.CallingServerAsyncClient"/>
+  
+  <!-- Checkstyle suppressions to keep HttpPipelinePolicy in implementation folder. -->
+  <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicyCheck"
+            files="com.azure.communication.callingserver.implementation.RedirectPolicy.java"/>
 </suppressions>

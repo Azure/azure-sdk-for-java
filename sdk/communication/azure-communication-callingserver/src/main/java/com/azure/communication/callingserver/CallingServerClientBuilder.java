@@ -5,6 +5,7 @@ package com.azure.communication.callingserver;
 
 import com.azure.communication.callingserver.implementation.AzureCommunicationCallingServerServiceImpl;
 import com.azure.communication.callingserver.implementation.AzureCommunicationCallingServerServiceImplBuilder;
+import com.azure.communication.callingserver.implementation.RedirectPolicy;
 import com.azure.communication.common.implementation.CommunicationConnectionString;
 import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
 import com.azure.core.annotation.ServiceClientBuilder;
@@ -317,6 +318,7 @@ public final class CallingServerClientBuilder {
         policyList.add(new UserAgentPolicy(applicationId, clientName, clientVersion, configuration));
         policyList.add(new RequestIdPolicy());
         policyList.add((retryPolicy == null) ? new RetryPolicy() : retryPolicy);
+        policyList.add(new RedirectPolicy());
         policyList.add(createHttpPipelineAuthPolicy());
         policyList.add(new CookiePolicy());
 
