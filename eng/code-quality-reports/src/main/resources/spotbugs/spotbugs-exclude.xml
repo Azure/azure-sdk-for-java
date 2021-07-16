@@ -2307,7 +2307,7 @@
   </Match>
 
   <Match>
-    <Class name="com.azure.spring.cloud.context.core.identity.SpringCredentialBuilderBase"/>
+    <Class name="com.azure.spring.identity.SpringCredentialBuilderBase"/>
     <Field name="environment"/>
     <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
   </Match>
