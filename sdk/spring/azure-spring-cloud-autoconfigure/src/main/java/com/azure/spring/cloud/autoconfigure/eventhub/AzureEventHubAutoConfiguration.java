@@ -7,7 +7,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.messaging.eventhubs.EventHubConsumerAsyncClient;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.autoconfigure.context.AzureResourceManagerAutoConfiguration;
-import com.azure.spring.cloud.context.core.AzureResourceMetadata;
+import com.azure.spring.cloud.context.core.api.AzureResourceMetadata;
 import com.azure.spring.cloud.context.core.impl.EventHubNamespaceManager;
 import com.azure.spring.cloud.context.core.impl.StorageAccountManager;
 import com.azure.spring.cloud.context.core.storage.StorageConnectionStringProvider;

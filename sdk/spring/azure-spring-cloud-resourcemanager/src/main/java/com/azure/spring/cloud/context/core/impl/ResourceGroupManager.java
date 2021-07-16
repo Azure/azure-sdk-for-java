@@ -6,7 +6,7 @@ package com.azure.spring.cloud.context.core.impl;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
-import com.azure.spring.cloud.context.core.AzureResourceMetadata;
+import com.azure.spring.cloud.context.core.api.AzureResourceMetadata;
 
 /**
  * Resource manager for resource group.

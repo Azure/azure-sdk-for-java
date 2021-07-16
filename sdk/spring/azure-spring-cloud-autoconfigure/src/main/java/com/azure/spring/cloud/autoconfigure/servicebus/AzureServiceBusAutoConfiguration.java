@@ -6,7 +6,7 @@ package com.azure.spring.cloud.autoconfigure.servicebus;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.autoconfigure.context.AzureResourceManagerAutoConfiguration;
-import com.azure.spring.cloud.context.core.AzureResourceMetadata;
+import com.azure.spring.cloud.context.core.api.AzureResourceMetadata;
 import com.azure.spring.cloud.context.core.impl.ServiceBusNamespaceManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

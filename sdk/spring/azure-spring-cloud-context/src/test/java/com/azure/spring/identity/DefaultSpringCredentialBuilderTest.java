@@ -1,11 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.core.identity;
+package com.azure.spring.identity;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.identity.ChainedTokenCredential;
 import com.azure.identity.ManagedIdentityCredential;
-import com.azure.spring.identity.DefaultSpringCredentialBuilder;
 import com.google.common.collect.Lists;
 import org.junit.jupiter.api.Test;
 

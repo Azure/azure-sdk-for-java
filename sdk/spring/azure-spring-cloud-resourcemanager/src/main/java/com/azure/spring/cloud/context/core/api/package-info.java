@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Package com.azure.spring.core;
+ * Package com.azure.spring.cloud.context.core.api;
  */
-package com.azure.spring.cloud.context.core;
+package com.azure.spring.cloud.context.core.api;

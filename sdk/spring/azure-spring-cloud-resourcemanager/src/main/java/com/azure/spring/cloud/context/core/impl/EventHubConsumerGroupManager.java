@@ -6,7 +6,7 @@ package com.azure.spring.cloud.context.core.impl;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.eventhubs.models.EventHub;
 import com.azure.resourcemanager.eventhubs.models.EventHubConsumerGroup;
-import com.azure.spring.cloud.context.core.AzureResourceMetadata;
+import com.azure.spring.cloud.context.core.api.AzureResourceMetadata;
 import com.azure.spring.core.util.Tuple;
 
 /**

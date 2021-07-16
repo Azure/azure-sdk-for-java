@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.core;
+package com.azure.spring.cloud.context.core;
 
 import com.azure.spring.core.util.Memoizer;
 import com.azure.spring.core.util.Tuple;

@@ -5,7 +5,7 @@ package com.azure.spring.cloud.autoconfigure.servicebus;
 
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.resourcemanager.servicebus.models.ServiceBusNamespace;
-import com.azure.spring.cloud.context.core.AzureResourceMetadata;
+import com.azure.spring.cloud.context.core.api.AzureResourceMetadata;
 import com.azure.spring.cloud.context.core.impl.ServiceBusNamespaceManager;
 import com.azure.spring.cloud.context.core.impl.ServiceBusQueueManager;
 import com.azure.spring.core.util.Tuple;
