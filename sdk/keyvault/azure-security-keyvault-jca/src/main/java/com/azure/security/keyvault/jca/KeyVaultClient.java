@@ -352,7 +352,7 @@ public class KeyVaultClient extends DelegateRestClient {
         if (result != null) {
             return Base64.getUrlDecoder().decode(result.getValue());
         }
-        return null;
+        return new byte[0];
     }
 
     /**
