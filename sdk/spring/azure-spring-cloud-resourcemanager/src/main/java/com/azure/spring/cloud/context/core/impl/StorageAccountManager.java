@@ -7,8 +7,7 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.spring.cloud.context.core.api.AzureResourceMetadata;
-
-import javax.annotation.Nonnull;
+import org.springframework.lang.NonNull;
 
 /**
  * Resource manager for Storage account.
@@ -17,7 +16,7 @@ public class StorageAccountManager extends AzureManager<StorageAccount, String> 
 
     private final AzureResourceManager azureResourceManager;
 
-    public StorageAccountManager(@Nonnull AzureResourceManager azureResourceManager, AzureResourceMetadata azureResourceMetadata) {
+    public StorageAccountManager(@NonNull AzureResourceManager azureResourceManager, AzureResourceMetadata azureResourceMetadata) {
         super(azureResourceMetadata);
         this.azureResourceManager = azureResourceManager;
     }
