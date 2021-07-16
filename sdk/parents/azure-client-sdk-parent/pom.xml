@@ -1159,6 +1159,7 @@
               <systemPropertyVariables>
                 <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
               </systemPropertyVariables>
+              <systemPropertiesFile>${AZURE_TEST_SYSTEM_PLAYBACK_PROPERTIES_FILE}</systemPropertiesFile>
             </configuration>
           </plugin>
         </plugins>
@@ -1183,6 +1184,7 @@
               <systemPropertyVariables>
                 <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
               </systemPropertyVariables>
+              <systemPropertiesFile>${AZURE_TEST_SYSTEM_PLAYBACK_PROPERTIES_FILE}</systemPropertiesFile>
             </configuration>
           </plugin>
         </plugins>
@@ -1206,6 +1208,7 @@
               <systemPropertyVariables>
                 <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
               </systemPropertyVariables>
+              <systemPropertiesFile>${AZURE_TEST_SYSTEM_PLAYBACK_PROPERTIES_FILE}</systemPropertiesFile>
             </configuration>
           </plugin>
         </plugins>
@@ -1230,6 +1233,7 @@
               <systemPropertyVariables>
                 <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
               </systemPropertyVariables>
+              <systemPropertiesFile>${AZURE_TEST_SYSTEM_PLAYBACK_PROPERTIES_FILE}</systemPropertiesFile>
             </configuration>
           </plugin>
         </plugins>

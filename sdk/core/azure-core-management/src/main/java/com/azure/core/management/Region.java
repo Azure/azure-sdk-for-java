@@ -54,6 +54,10 @@ public final class Region {
      */
     public static final Region US_WEST_CENTRAL = new Region("westcentralus", "West Central US");
     /**
+     * West US 3 (US) (recommended)
+     */
+    public static final Region US_WEST3 = new Region("westus3", "West US 3");
+    /**
      * Canada Central (Canada) (recommended)
      */
     public static final Region CANADA_CENTRAL = new Region("canadacentral", "Canada Central");

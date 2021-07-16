@@ -1,62 +1,62 @@
 {
   "networkCallRecords" : [ {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1//prebuilt/businessCard/analyzeResults/048a2e56-40e4-41c8-b35d-d2a7875a7af7",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "9a1e889b-e811-4900-bdf4-350559fb0a47"
-    },
-    "Response" : {
-      "content-length" : "977",
-      "x-envoy-upstream-service-time" : "17",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "ce82441d-a9a6-4b1d-9e3e-fd495cf8b266",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"status\":\"succeeded\",\"createdDateTime\":\"2021-05-11T21:16:53Z\",\"lastUpdatedDateTime\":\"2021-05-11T21:16:56Z\",\"analyzeResult\":{\"version\":\"2.1.0\",\"readResults\":[{\"page\":1,\"angle\":0.1273,\"width\":1688,\"height\":3000,\"unit\":\"pixel\"}],\"documentResults\":[{\"docType\":\"prebuilt:businesscard\",\"pageRange\":[1,1],\"fields\":{\"Addresses\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"string\",\"valueString\":\"123 Main Street Redmond, WA 98052\",\"text\":\"123 Main Street Redmond, WA 98052\",\"boundingBox\":[298.6,675.8,844.8,782.2,810.6,957.9,264.4,851.5],\"page\":1,\"confidence\":0.984}]},\"CompanyNames\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"string\",\"valueString\":\"Contoso Contoso\",\"text\":\"Contoso Contoso\",\"boundingBox\":[379.4,288.6,1100.9,475.5,1011.5,820.9,290,634],\"page\":1,\"confidence\":0.516}]},\"OtherPhones\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"phoneNumber\",\"valuePhoneNumber\":\"+19876543210\",\"text\":\"987-654-3210\",\"boundingBox\":[274,1000,651,1049,643,1125,268,1076],\"page\":1,\"confidence\":0.989}]}}}]}}",
-      "Date" : "Tue, 11 May 2021 21:16:58 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1//prebuilt/businessCard/analyzeResults/048a2e56-40e4-41c8-b35d-d2a7875a7af7",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "d1d1d70b-3646-46e9-9c15-f68de9974c53"
-    },
-    "Response" : {
-      "content-length" : "977",
-      "x-envoy-upstream-service-time" : "17",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "e5088923-5b74-4b96-82a9-1c9a0580b4e2",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"status\":\"succeeded\",\"createdDateTime\":\"2021-05-11T21:16:53Z\",\"lastUpdatedDateTime\":\"2021-05-11T21:16:56Z\",\"analyzeResult\":{\"version\":\"2.1.0\",\"readResults\":[{\"page\":1,\"angle\":0.1273,\"width\":1688,\"height\":3000,\"unit\":\"pixel\"}],\"documentResults\":[{\"docType\":\"prebuilt:businesscard\",\"pageRange\":[1,1],\"fields\":{\"Addresses\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"string\",\"valueString\":\"123 Main Street Redmond, WA 98052\",\"text\":\"123 Main Street Redmond, WA 98052\",\"boundingBox\":[298.6,675.8,844.8,782.2,810.6,957.9,264.4,851.5],\"page\":1,\"confidence\":0.984}]},\"CompanyNames\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"string\",\"valueString\":\"Contoso Contoso\",\"text\":\"Contoso Contoso\",\"boundingBox\":[379.4,288.6,1100.9,475.5,1011.5,820.9,290,634],\"page\":1,\"confidence\":0.516}]},\"OtherPhones\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"phoneNumber\",\"valuePhoneNumber\":\"+19876543210\",\"text\":\"987-654-3210\",\"boundingBox\":[274,1000,651,1049,643,1125,268,1076],\"page\":1,\"confidence\":0.989}]}}}]}}",
-      "Date" : "Tue, 11 May 2021 21:16:58 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1//prebuilt/businessCard/analyze?includeTextDetails=false&locale=en-US",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1/prebuilt/businessCard/analyze?includeTextDetails=false&locale=en-US",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "364b4e9a-d53b-4568-b0c2-e090da9f59eb",
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "e23f620b-fa3e-40b2-8e4f-062ac0855d3c",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "content-length" : "0",
-      "x-envoy-upstream-service-time" : "220",
+      "x-envoy-upstream-service-time" : "614",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "048a2e56-40e4-41c8-b35d-d2a7875a7af7",
+      "apim-request-id" : "b9fa4b52-148b-4430-89ea-0caf84103cb2",
       "retry-after" : "0",
       "StatusCode" : "202",
-      "Operation-Location" : "https://mariari-canada-central.cognitiveservices.azure.com/formrecognizer/v2.1/prebuilt/businessCard/analyzeResults/048a2e56-40e4-41c8-b35d-d2a7875a7af7",
-      "Date" : "Tue, 11 May 2021 21:16:53 GMT"
+      "Operation-Location" : "https://shafangfr.cognitiveservices.azure.com/formrecognizer/v2.1/prebuilt/businessCard/analyzeResults/b9fa4b52-148b-4430-89ea-0caf84103cb2",
+      "Date" : "Wed, 07 Jul 2021 06:32:01 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1/prebuilt/businessCard/analyzeResults/b9fa4b52-148b-4430-89ea-0caf84103cb2",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "906a876d-b180-4c64-b320-ba94842249f0"
+    },
+    "Response" : {
+      "content-length" : "2684",
+      "x-envoy-upstream-service-time" : "24",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "fcfa5c57-0417-4c1c-a4df-369664e279be",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"status\":\"succeeded\",\"createdDateTime\":\"2021-07-07T06:32:02Z\",\"lastUpdatedDateTime\":\"2021-07-07T06:32:04Z\",\"analyzeResult\":{\"version\":\"2.1.0\",\"readResults\":[{\"page\":1,\"angle\":-16.6836,\"width\":4032,\"height\":3024,\"unit\":\"pixel\"}],\"documentResults\":[{\"docType\":\"prebuilt:businesscard\",\"pageRange\":[1,1],\"fields\":{\"Addresses\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"string\",\"valueString\":\"2 Kingdom Street Paddington, London, W2 6BD\",\"text\":\"2 Kingdom Street Paddington, London, W2 6BD\",\"boundingBox\":[1227.3,2138.3,2520.2,1690.5,2597,1912.3,1304.1,2360.1],\"page\":1,\"confidence\":0.98}]},\"CompanyNames\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"string\",\"valueString\":\"Contoso\",\"text\":\"Contoso\",\"boundingBox\":[1146,1926,2224,1587,2285,1756,1202,2099],\"page\":1,\"confidence\":0.168}]},\"ContactNames\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"object\",\"valueObject\":{\"FirstName\":{\"type\":\"string\",\"valueString\":\"Avery\",\"text\":\"Avery\",\"boundingBox\":[666,1102,1111,995,1140,1114,696,1216],\"page\":1},\"LastName\":{\"type\":\"string\",\"valueString\":\"Smith\",\"text\":\"Smith\",\"boundingBox\":[1170,981,1571,881,1600,1000,1200,1100],\"page\":1}},\"text\":\"Dr. Avery Smith\",\"boundingBox\":[414.1,1153,1572,880.8,1601.3,1005.6,443.5,1277.9],\"page\":1,\"confidence\":0.979}]},\"Departments\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"string\",\"valueString\":\"Cloud & Al Department\",\"text\":\"Cloud & Al Department\",\"boundingBox\":[473.6,1409.5,1586,1134,1607.3,1219.8,494.9,1495.3],\"page\":1,\"confidence\":0.989}]},\"Emails\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"string\",\"valueString\":\"avery.smith@contoso.com\",\"text\":\"avery.smith@contoso.com\",\"boundingBox\":[2106,934,2908,706,2921,769,2122,993],\"page\":1,\"confidence\":0.99}]},\"Faxes\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"phoneNumber\",\"text\":\"+44 (0) 20 6789 2345\",\"boundingBox\":[2520.4,1195.5,3191.8,983.5,3215.8,1059.2,2544.3,1271.3],\"page\":1,\"confidence\":0.99}]},\"JobTitles\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"string\",\"valueString\":\"Senior Researcher\",\"text\":\"Senior Researcher\",\"boundingBox\":[451,1312,1315.9,1103.6,1334.7,1181.7,469.8,1390],\"page\":1,\"confidence\":0.99}]},\"MobilePhones\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"phoneNumber\",\"text\":\"+44 (0) 7911 123456\",\"boundingBox\":[2426.8,1040.1,3065.5,846,3087.2,917.6,2448.5,1111.7],\"page\":1,\"confidence\":0.99}]},\"Websites\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"string\",\"valueString\":\"https://www.contoso.com/\",\"text\":\"https://www.contoso.com/\",\"boundingBox\":[2120,1003,2981,757,3006,824,2139,1075],\"page\":1,\"confidence\":0.99}]},\"WorkPhones\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"phoneNumber\",\"text\":\"+44 (0) 20 9876 5432\",\"boundingBox\":[2468.2,1118.1,3130.3,914.6,3152.9,988.2,2490.8,1191.6],\"page\":1,\"confidence\":0.989}]}}}]}}",
+      "Date" : "Wed, 07 Jul 2021 06:32:07 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1/prebuilt/businessCard/analyzeResults/b9fa4b52-148b-4430-89ea-0caf84103cb2",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "be6cd3c2-fa72-4250-9e90-7910abededc3"
+    },
+    "Response" : {
+      "content-length" : "2684",
+      "x-envoy-upstream-service-time" : "22",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "67ee0723-a7de-404c-b838-7e2cafe21330",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"status\":\"succeeded\",\"createdDateTime\":\"2021-07-07T06:32:02Z\",\"lastUpdatedDateTime\":\"2021-07-07T06:32:04Z\",\"analyzeResult\":{\"version\":\"2.1.0\",\"readResults\":[{\"page\":1,\"angle\":-16.6836,\"width\":4032,\"height\":3024,\"unit\":\"pixel\"}],\"documentResults\":[{\"docType\":\"prebuilt:businesscard\",\"pageRange\":[1,1],\"fields\":{\"Addresses\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"string\",\"valueString\":\"2 Kingdom Street Paddington, London, W2 6BD\",\"text\":\"2 Kingdom Street Paddington, London, W2 6BD\",\"boundingBox\":[1227.3,2138.3,2520.2,1690.5,2597,1912.3,1304.1,2360.1],\"page\":1,\"confidence\":0.98}]},\"CompanyNames\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"string\",\"valueString\":\"Contoso\",\"text\":\"Contoso\",\"boundingBox\":[1146,1926,2224,1587,2285,1756,1202,2099],\"page\":1,\"confidence\":0.168}]},\"ContactNames\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"object\",\"valueObject\":{\"FirstName\":{\"type\":\"string\",\"valueString\":\"Avery\",\"text\":\"Avery\",\"boundingBox\":[666,1102,1111,995,1140,1114,696,1216],\"page\":1},\"LastName\":{\"type\":\"string\",\"valueString\":\"Smith\",\"text\":\"Smith\",\"boundingBox\":[1170,981,1571,881,1600,1000,1200,1100],\"page\":1}},\"text\":\"Dr. Avery Smith\",\"boundingBox\":[414.1,1153,1572,880.8,1601.3,1005.6,443.5,1277.9],\"page\":1,\"confidence\":0.979}]},\"Departments\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"string\",\"valueString\":\"Cloud & Al Department\",\"text\":\"Cloud & Al Department\",\"boundingBox\":[473.6,1409.5,1586,1134,1607.3,1219.8,494.9,1495.3],\"page\":1,\"confidence\":0.989}]},\"Emails\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"string\",\"valueString\":\"avery.smith@contoso.com\",\"text\":\"avery.smith@contoso.com\",\"boundingBox\":[2106,934,2908,706,2921,769,2122,993],\"page\":1,\"confidence\":0.99}]},\"Faxes\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"phoneNumber\",\"text\":\"+44 (0) 20 6789 2345\",\"boundingBox\":[2520.4,1195.5,3191.8,983.5,3215.8,1059.2,2544.3,1271.3],\"page\":1,\"confidence\":0.99}]},\"JobTitles\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"string\",\"valueString\":\"Senior Researcher\",\"text\":\"Senior Researcher\",\"boundingBox\":[451,1312,1315.9,1103.6,1334.7,1181.7,469.8,1390],\"page\":1,\"confidence\":0.99}]},\"MobilePhones\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"phoneNumber\",\"text\":\"+44 (0) 7911 123456\",\"boundingBox\":[2426.8,1040.1,3065.5,846,3087.2,917.6,2448.5,1111.7],\"page\":1,\"confidence\":0.99}]},\"Websites\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"string\",\"valueString\":\"https://www.contoso.com/\",\"text\":\"https://www.contoso.com/\",\"boundingBox\":[2120,1003,2981,757,3006,824,2139,1075],\"page\":1,\"confidence\":0.99}]},\"WorkPhones\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"phoneNumber\",\"text\":\"+44 (0) 20 9876 5432\",\"boundingBox\":[2468.2,1118.1,3130.3,914.6,3152.9,988.2,2490.8,1191.6],\"page\":1,\"confidence\":0.989}]}}}]}}",
+      "Date" : "Wed, 07 Jul 2021 06:32:07 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   } ],

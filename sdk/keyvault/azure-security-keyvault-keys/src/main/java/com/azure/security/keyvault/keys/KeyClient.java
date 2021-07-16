@@ -25,6 +25,7 @@ import com.azure.security.keyvault.keys.models.JsonWebKey;
 import com.azure.security.keyvault.keys.models.KeyCurveName;
 import com.azure.security.keyvault.keys.models.KeyOperation;
 import com.azure.security.keyvault.keys.models.KeyType;
+import com.azure.security.keyvault.keys.models.RandomBytes;
 
 /**
  * The KeyClient provides synchronous methods to manage {@link KeyVaultKey keys} in the Azure Key Vault. The client supports
@@ -883,5 +884,40 @@ public final class KeyClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KeyProperties> listPropertiesOfKeyVersions(String name, Context context) {
         return new PagedIterable<>(client.listPropertiesOfKeyVersions(name, context));
+    }
+
+    /**
+     * Get the requested number of bytes containing random values from a managed HSM.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Gets a number of bytes containing random values from a Managed HSM. Prints out the retrieved bytes in
+     * base64Url format.</p>
+     *
+     * {@codesnippet com.azure.security.keyvault.keys.KeyClient.getRandomBytes#int}
+     *
+     * @param count The requested number of random bytes.
+     *
+     * @return The requested number of bytes containing random values from a managed HSM.
+     */
+    public RandomBytes getRandomBytes(int count) {
+        return client.getRandomBytes(count).block();
+    }
+
+    /**
+     * Get the requested number of bytes containing random values from a managed HSM.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Gets a number of bytes containing random values from a Managed HSM. Prints out the
+     * {@link Response HTTP Response} details and the retrieved bytes in base64Url format.</p>
+     *
+     * {@codesnippet com.azure.security.keyvault.keys.KeyClient.getRandomBytesWithResponse#int-Context}
+     *
+     * @param count The requested number of random bytes.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
+     * @return The requested number of bytes containing random values from a managed HSM.
+     */
+    public Response<RandomBytes> getRandomBytesWithResponse(int count, Context context) {
+        return client.getRandomBytesWithResponse(count, context).block();
     }
 }

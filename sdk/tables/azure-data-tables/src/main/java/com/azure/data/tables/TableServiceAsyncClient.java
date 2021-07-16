@@ -52,11 +52,13 @@ import com.azure.data.tables.sas.TableAccountSasSignatureValues;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
+import java.time.Duration;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.data.tables.implementation.TableUtils.applyOptionalTimeout;
 import static com.azure.data.tables.implementation.TableUtils.swallowExceptionForStatusCode;
 
 /**
@@ -391,10 +393,10 @@ public final class TableServiceAsyncClient {
             token -> withContext(context -> listTablesNextPage(token, context, options)));
     }
 
-    PagedFlux<TableItem> listTables(ListTablesOptions options, Context context) {
+    PagedFlux<TableItem> listTables(ListTablesOptions options, Context context, Duration timeout) {
         return new PagedFlux<>(
-            () -> listTablesFirstPage(context, options),
-            token -> listTablesNextPage(token, context, options));
+            () -> applyOptionalTimeout(listTablesFirstPage(context, options), timeout),
+            token -> applyOptionalTimeout(listTablesNextPage(token, context, options), timeout));
     }
 
     private Mono<PagedResponse<TableItem>> listTablesFirstPage(Context context, ListTablesOptions options) {

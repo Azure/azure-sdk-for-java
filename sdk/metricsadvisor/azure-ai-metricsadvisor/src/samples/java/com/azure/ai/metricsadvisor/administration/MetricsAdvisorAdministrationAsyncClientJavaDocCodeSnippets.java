@@ -20,8 +20,8 @@ import com.azure.ai.metricsadvisor.administration.models.DataFeedRollupSettings;
 import com.azure.ai.metricsadvisor.administration.models.DataFeedRollupType;
 import com.azure.ai.metricsadvisor.administration.models.DataFeedSchema;
 import com.azure.ai.metricsadvisor.administration.models.DataFeedStatus;
-import com.azure.ai.metricsadvisor.administration.models.DatasourceCredentialEntity;
-import com.azure.ai.metricsadvisor.administration.models.DatasourceServicePrincipalInKeyVault;
+import com.azure.ai.metricsadvisor.administration.models.DataSourceCredentialEntity;
+import com.azure.ai.metricsadvisor.administration.models.DataSourceServicePrincipalInKeyVault;
 import com.azure.ai.metricsadvisor.administration.models.DetectionConditionOperator;
 import com.azure.ai.metricsadvisor.models.DimensionKey;
 import com.azure.ai.metricsadvisor.administration.models.EmailNotificationHook;
@@ -108,12 +108,12 @@ public class MetricsAdvisorAdministrationAsyncClientJavaDocCodeSnippets {
             .setGranularity(new DataFeedGranularity().setGranularityType(DataFeedGranularityType.DAILY))
             .setSchema(new DataFeedSchema(
                 Arrays.asList(
-                    new DataFeedMetric().setName("cost"),
-                    new DataFeedMetric().setName("revenue")
+                    new DataFeedMetric("cost"),
+                    new DataFeedMetric("revenue")
                 )).setDimensions(
                     Arrays.asList(
-                        new DataFeedDimension().setName("city"),
-                        new DataFeedDimension().setName("category")
+                        new DataFeedDimension("city"),
+                        new DataFeedDimension("category")
                     ))
             )
             .setIngestionSettings(new DataFeedIngestionSettings(OffsetDateTime.parse("2020-01-01T00:00:00Z")))
@@ -143,8 +143,8 @@ public class MetricsAdvisorAdministrationAsyncClientJavaDocCodeSnippets {
             .setGranularity(new DataFeedGranularity().setGranularityType(DataFeedGranularityType.DAILY))
             .setSchema(new DataFeedSchema(
                 Arrays.asList(
-                    new DataFeedMetric().setName("metric1"),
-                    new DataFeedMetric().setName("metric2")
+                    new DataFeedMetric("metric1"),
+                    new DataFeedMetric("metric2")
                 )
             ))
             .setIngestionSettings(new DataFeedIngestionSettings(OffsetDateTime.parse("2020-01-01T00:00:00Z")))
@@ -538,7 +538,7 @@ public class MetricsAdvisorAdministrationAsyncClientJavaDocCodeSnippets {
                         System.out.printf("Email Hook Description: %s%n", emailHook.getDescription());
                         System.out.printf("Email Hook External Link: %s%n", emailHook.getExternalLink());
                         System.out.printf("Email Hook Emails: %s%n", String.join(",", emailHook.getEmailsToAlert()));
-                        System.out.printf("Email Hook Admins: %s%n", String.join(",", emailHook.getAdminEmails()));
+                        System.out.printf("Email Hook Admins: %s%n", String.join(",", emailHook.getAdmins()));
                     } else if (notificationHook instanceof WebNotificationHook) {
                         WebNotificationHook webHook = (WebNotificationHook) notificationHook;
                         System.out.printf("Web Hook Id: %s%n", webHook.getId());
@@ -547,7 +547,7 @@ public class MetricsAdvisorAdministrationAsyncClientJavaDocCodeSnippets {
                         System.out.printf("Web Hook External Link: %s%n", webHook.getExternalLink());
                         System.out.printf("Web Hook Endpoint: %s%n", webHook.getEndpoint());
                         System.out.printf("Web Hook Headers: %s%n", webHook.getHttpHeaders());
-                        System.out.printf("Web Hook Admins: %s%n", String.join(",", webHook.getAdminEmails()));
+                        System.out.printf("Web Hook Admins: %s%n", String.join(",", webHook.getAdmins()));
                     }
                 }
             });
@@ -640,21 +640,21 @@ public class MetricsAdvisorAdministrationAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createDetectionConfig#String-AnomalyDetectionConfiguration
         final MetricWholeSeriesDetectionCondition wholeSeriesCondition = new MetricWholeSeriesDetectionCondition()
             .setConditionOperator(DetectionConditionOperator.OR)
-            .setSmartDetectionCondition(new SmartDetectionCondition()
-                .setSensitivity(50)
-                .setAnomalyDetectorDirection(AnomalyDetectorDirection.BOTH)
-                .setSuppressCondition(new SuppressCondition().setMinNumber(50).setMinRatio(50)))
-            .setHardThresholdCondition(new HardThresholdCondition()
+            .setSmartDetectionCondition(new SmartDetectionCondition(
+                50,
+                AnomalyDetectorDirection.BOTH,
+                new SuppressCondition(50, 50)))
+            .setHardThresholdCondition(new HardThresholdCondition(
+                AnomalyDetectorDirection.BOTH,
+                new SuppressCondition(5, 5))
                 .setLowerBound(0.0)
-                .setUpperBound(100.0)
-                .setAnomalyDetectorDirection(AnomalyDetectorDirection.BOTH)
-                .setSuppressCondition(new SuppressCondition().setMinNumber(5).setMinRatio(5)))
-            .setChangeThresholdCondition(new ChangeThresholdCondition()
-                .setChangePercentage(50)
-                .setShiftPoint(30)
-                .setWithinRange(true)
-                .setAnomalyDetectorDirection(AnomalyDetectorDirection.BOTH)
-                .setSuppressCondition(new SuppressCondition().setMinNumber(2).setMinRatio(2)));
+                .setUpperBound(100.0))
+            .setChangeThresholdCondition(new ChangeThresholdCondition(
+                50,
+                30,
+                true,
+                AnomalyDetectorDirection.BOTH,
+                new SuppressCondition(2, 2)));
 
         final String detectionConfigName = "my_detection_config";
         final String detectionConfigDescription = "anomaly detection config for metric";
@@ -682,21 +682,21 @@ public class MetricsAdvisorAdministrationAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createDetectionConfigWithResponse#String-AnomalyDetectionConfiguration
         final MetricWholeSeriesDetectionCondition wholeSeriesCondition = new MetricWholeSeriesDetectionCondition()
             .setConditionOperator(DetectionConditionOperator.OR)
-            .setSmartDetectionCondition(new SmartDetectionCondition()
-                .setSensitivity(50)
-                .setAnomalyDetectorDirection(AnomalyDetectorDirection.BOTH)
-                .setSuppressCondition(new SuppressCondition().setMinNumber(50).setMinRatio(50)))
-            .setHardThresholdCondition(new HardThresholdCondition()
+            .setSmartDetectionCondition(new SmartDetectionCondition(
+                50,
+                AnomalyDetectorDirection.BOTH,
+                new SuppressCondition(50, 50)))
+            .setHardThresholdCondition(new HardThresholdCondition(
+                AnomalyDetectorDirection.BOTH,
+                new SuppressCondition(5, 5))
                 .setLowerBound(0.0)
-                .setUpperBound(100.0)
-                .setAnomalyDetectorDirection(AnomalyDetectorDirection.BOTH)
-                .setSuppressCondition(new SuppressCondition().setMinNumber(5).setMinRatio(5)))
-            .setChangeThresholdCondition(new ChangeThresholdCondition()
-                .setChangePercentage(50)
-                .setShiftPoint(30)
-                .setWithinRange(true)
-                .setAnomalyDetectorDirection(AnomalyDetectorDirection.BOTH)
-                .setSuppressCondition(new SuppressCondition().setMinNumber(2).setMinRatio(2)));
+                .setUpperBound(100.0))
+            .setChangeThresholdCondition(new ChangeThresholdCondition(
+                50,
+                30,
+                true,
+                AnomalyDetectorDirection.BOTH,
+                new SuppressCondition(2, 2)));
 
         final String detectionConfigName = "my_detection_config";
         final String detectionConfigDescription = "anomaly detection config for metric";
@@ -1122,10 +1122,10 @@ public class MetricsAdvisorAdministrationAsyncClientJavaDocCodeSnippets {
                     .put("city", "Seoul");
                 detectionConfig.addSeriesGroupDetectionCondition(
                     new MetricSeriesGroupDetectionCondition(seriesGroupKey)
-                        .setSmartDetectionCondition(new SmartDetectionCondition()
-                            .setSensitivity(10.0)
-                            .setAnomalyDetectorDirection(AnomalyDetectorDirection.UP)
-                            .setSuppressCondition(new SuppressCondition().setMinNumber(2).setMinRatio(2))));
+                        .setSmartDetectionCondition(new SmartDetectionCondition(
+                            10.0,
+                            AnomalyDetectorDirection.UP,
+                            new SuppressCondition(2, 2))));
                 return metricsAdvisorAdminAsyncClient
                     .updateDetectionConfig(detectionConfig);
             })
@@ -1154,10 +1154,10 @@ public class MetricsAdvisorAdministrationAsyncClientJavaDocCodeSnippets {
                     .put("city", "Seoul");
                 detectionConfig.addSeriesGroupDetectionCondition(
                     new MetricSeriesGroupDetectionCondition(seriesGroupKey)
-                        .setSmartDetectionCondition(new SmartDetectionCondition()
-                            .setSensitivity(10.0)
-                            .setAnomalyDetectorDirection(AnomalyDetectorDirection.UP)
-                            .setSuppressCondition(new SuppressCondition().setMinNumber(2).setMinRatio(2))));
+                        .setSmartDetectionCondition(new SmartDetectionCondition(
+                            10.0,
+                            AnomalyDetectorDirection.UP,
+                            new SuppressCondition(2, 2))));
                 return metricsAdvisorAdminAsyncClient
                     .updateDetectionConfigWithResponse(detectionConfig);
             })
@@ -1215,7 +1215,7 @@ public class MetricsAdvisorAdministrationAsyncClientJavaDocCodeSnippets {
                     new MetricAlertConfiguration(detectionConfigurationId2,
                         MetricAnomalyAlertScope.forWholeSeries())
                         .setAlertConditions(new MetricAnomalyAlertConditions()
-                            .setSeverityRangeCondition(new SeverityCondition().setMaxAlertSeverity(AnomalySeverity.HIGH)))))
+                            .setSeverityRangeCondition(new SeverityCondition(AnomalySeverity.HIGH, AnomalySeverity.HIGH)))))
                 .setCrossMetricsOperator(MetricAlertConfigurationsOperator.AND)
                 .setHookIdsToAlert(Arrays.asList(hookId1, hookId2)))
             .subscribe(anomalyAlertConfiguration -> {
@@ -1250,7 +1250,7 @@ public class MetricsAdvisorAdministrationAsyncClientJavaDocCodeSnippets {
                     new MetricAlertConfiguration(detectionConfigurationId2,
                         MetricAnomalyAlertScope.forWholeSeries())
                         .setAlertConditions(new MetricAnomalyAlertConditions()
-                            .setSeverityRangeCondition(new SeverityCondition().setMaxAlertSeverity(AnomalySeverity.HIGH)))))
+                            .setSeverityRangeCondition(new SeverityCondition(AnomalySeverity.HIGH, AnomalySeverity.HIGH)))))
                 .setCrossMetricsOperator(MetricAlertConfigurationsOperator.AND)
                 .setHookIdsToAlert(Arrays.asList(hookId1, hookId2)))
             .subscribe(alertConfigurationResponse -> {
@@ -1415,262 +1415,262 @@ public class MetricsAdvisorAdministrationAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#createDatasourceCredential(DatasourceCredentialEntity)}.
+     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#createDataSourceCredential(DataSourceCredentialEntity)}.
      */
     public void createDatasourceCredential() {
-        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createDatasourceCredential#DatasourceCredentialEntity
-        DatasourceCredentialEntity datasourceCredential;
+        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createDataSourceCredential#DatasourceCredentialEntity
+        DataSourceCredentialEntity datasourceCredential;
         final String name = "sample_name" + UUID.randomUUID();
         final String cId = "f45668b2-bffa-11eb-8529-0246ac130003";
         final String tId = "67890ded-5e07-4e52-b225-4ae8f905afb5";
         final String mockSecr = "890hy69-5e07-4e52-b225-4ae8f905afb5";
 
-        datasourceCredential = new DatasourceServicePrincipalInKeyVault()
+        datasourceCredential = new DataSourceServicePrincipalInKeyVault()
             .setName(name)
-            .setKeyVaultForDatasourceSecrets("kv", cId, mockSecr)
+            .setKeyVaultForDataSourceSecrets("kv", cId, mockSecr)
             .setTenantId(tId)
-            .setSecretNameForDatasourceClientId("DSClientID_1")
-            .setSecretNameForDatasourceClientSecret("DSClientSer_1");
+            .setSecretNameForDataSourceClientId("DSClientID_1")
+            .setSecretNameForDataSourceClientSecret("DSClientSer_1");
 
-        metricsAdvisorAdminAsyncClient.createDatasourceCredential(datasourceCredential)
+        metricsAdvisorAdminAsyncClient.createDataSourceCredential(datasourceCredential)
             .subscribe(credentialEntity -> {
-                if (credentialEntity instanceof DatasourceServicePrincipalInKeyVault) {
-                    DatasourceServicePrincipalInKeyVault actualCredentialSPInKV
-                        = (DatasourceServicePrincipalInKeyVault) credentialEntity;
+                if (credentialEntity instanceof DataSourceServicePrincipalInKeyVault) {
+                    DataSourceServicePrincipalInKeyVault actualCredentialSPInKV
+                        = (DataSourceServicePrincipalInKeyVault) credentialEntity;
                     System.out
                         .printf("Actual credential entity key vault endpoint: %s%n",
                             actualCredentialSPInKV.getKeyVaultEndpoint());
                     System.out.printf("Actual credential entity key vault client Id: %s%n",
                         actualCredentialSPInKV.getKeyVaultClientId());
                     System.out.printf("Actual credential entity key vault secret name for data source: %s%n",
-                        actualCredentialSPInKV.getSecretNameForDatasourceClientId());
+                        actualCredentialSPInKV.getSecretNameForDataSourceClientId());
                     System.out.printf("Actual credential entity key vault secret for data source: %s%n",
-                        actualCredentialSPInKV.getSecretNameForDatasourceClientSecret());
+                        actualCredentialSPInKV.getSecretNameForDataSourceClientSecret());
                 }
             });
-        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createDatasourceCredential#DatasourceCredentialEntity
+        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createDataSourceCredential#DatasourceCredentialEntity
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#createDatasourceCredentialWithResponse(DatasourceCredentialEntity)}.
+     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#createDataSourceCredentialWithResponse(DataSourceCredentialEntity)}.
      */
     public void createDatasourceCredentialWithResponse() {
-        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createDatasourceCredentialWithResponse#DatasourceCredentialEntity
-        DatasourceCredentialEntity datasourceCredential;
+        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createDataSourceCredentialWithResponse#DatasourceCredentialEntity
+        DataSourceCredentialEntity datasourceCredential;
         final String name = "sample_name" + UUID.randomUUID();
         final String cId = "f45668b2-bffa-11eb-8529-0246ac130003";
         final String tId = "67890ded-5e07-4e52-b225-4ae8f905afb5";
         final String mockSecr = "890hy69-5e07-4e52-b225-4ae8f905afb5";
 
-        datasourceCredential = new DatasourceServicePrincipalInKeyVault()
+        datasourceCredential = new DataSourceServicePrincipalInKeyVault()
             .setName(name)
-            .setKeyVaultForDatasourceSecrets("kv", cId, mockSecr)
+            .setKeyVaultForDataSourceSecrets("kv", cId, mockSecr)
             .setTenantId(tId)
-            .setSecretNameForDatasourceClientId("DSClientID_1")
-            .setSecretNameForDatasourceClientSecret("DSClientSer_1");
+            .setSecretNameForDataSourceClientId("DSClientID_1")
+            .setSecretNameForDataSourceClientSecret("DSClientSer_1");
 
-        metricsAdvisorAdminAsyncClient.createDatasourceCredentialWithResponse(datasourceCredential)
+        metricsAdvisorAdminAsyncClient.createDataSourceCredentialWithResponse(datasourceCredential)
             .subscribe(credentialEntityWithResponse -> {
                 System.out.printf("Credential Entity creation operation status: %s%n",
                     credentialEntityWithResponse.getStatusCode());
-                if (credentialEntityWithResponse.getValue() instanceof DatasourceServicePrincipalInKeyVault) {
-                    DatasourceServicePrincipalInKeyVault actualCredentialSPInKV
-                        = (DatasourceServicePrincipalInKeyVault) credentialEntityWithResponse.getValue();
+                if (credentialEntityWithResponse.getValue() instanceof DataSourceServicePrincipalInKeyVault) {
+                    DataSourceServicePrincipalInKeyVault actualCredentialSPInKV
+                        = (DataSourceServicePrincipalInKeyVault) credentialEntityWithResponse.getValue();
                     System.out
                         .printf("Actual credential entity key vault endpoint: %s%n",
                             actualCredentialSPInKV.getKeyVaultEndpoint());
                     System.out.printf("Actual credential entity key vault client Id: %s%n",
                         actualCredentialSPInKV.getKeyVaultClientId());
                     System.out.printf("Actual credential entity key vault secret name for data source: %s%n",
-                        actualCredentialSPInKV.getSecretNameForDatasourceClientId());
+                        actualCredentialSPInKV.getSecretNameForDataSourceClientId());
                     System.out.printf("Actual credential entity key vault secret for data source: %s%n",
-                        actualCredentialSPInKV.getSecretNameForDatasourceClientSecret());
+                        actualCredentialSPInKV.getSecretNameForDataSourceClientSecret());
                 }
             });
-        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createDatasourceCredentialWithResponse#DatasourceCredentialEntity
+        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createDataSourceCredentialWithResponse#DatasourceCredentialEntity
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#updateDatasourceCredential(DatasourceCredentialEntity)}.
+     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#updateDataSourceCredential(DataSourceCredentialEntity)}.
      */
     public void updateDatasourceCredential() {
-        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateDatasourceCredential#DatasourceCredentialEntity
+        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateDataSourceCredential#DatasourceCredentialEntity
         String credentialId = "";
-        metricsAdvisorAdminAsyncClient.getDatasourceCredential(credentialId)
+        metricsAdvisorAdminAsyncClient.getDataSourceCredential(credentialId)
             .flatMap(existingDatasourceCredential -> {
-                DatasourceServicePrincipalInKeyVault actualCredentialSPInKV = null;
-                if (existingDatasourceCredential instanceof DatasourceServicePrincipalInKeyVault) {
-                    actualCredentialSPInKV  = (DatasourceServicePrincipalInKeyVault) existingDatasourceCredential;
+                DataSourceServicePrincipalInKeyVault actualCredentialSPInKV = null;
+                if (existingDatasourceCredential instanceof DataSourceServicePrincipalInKeyVault) {
+                    actualCredentialSPInKV  = (DataSourceServicePrincipalInKeyVault) existingDatasourceCredential;
                 }
-                return metricsAdvisorAdminAsyncClient.updateDatasourceCredential(
+                return metricsAdvisorAdminAsyncClient.updateDataSourceCredential(
                     actualCredentialSPInKV.setDescription("set updated description"));
             })
             .subscribe(credentialEntity -> {
-                if (credentialEntity instanceof DatasourceServicePrincipalInKeyVault) {
-                    DatasourceServicePrincipalInKeyVault actualCredentialSPInKV
-                        = (DatasourceServicePrincipalInKeyVault) credentialEntity;
+                if (credentialEntity instanceof DataSourceServicePrincipalInKeyVault) {
+                    DataSourceServicePrincipalInKeyVault actualCredentialSPInKV
+                        = (DataSourceServicePrincipalInKeyVault) credentialEntity;
                     System.out.printf("Actual credential entity key vault endpoint: %s%n",
                             actualCredentialSPInKV.getKeyVaultEndpoint());
                     System.out.printf("Actual credential entity key vault updated description: %s%n",
                         actualCredentialSPInKV.getDescription());
                 }
             });
-        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateDatasourceCredential#DatasourceCredentialEntity
+        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateDataSourceCredential#DatasourceCredentialEntity
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#updateDatasourceCredentialWithResponse(DatasourceCredentialEntity)}.
+     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#updateDataSourceCredentialWithResponse(DataSourceCredentialEntity)}.
      */
     public void updateDatasourceCredentialWithResponse() {
-        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateDatasourceCredentialWithResponse#DatasourceCredentialEntity
+        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateDataSourceCredentialWithResponse#DatasourceCredentialEntity
         String credentialId = "";
-        metricsAdvisorAdminAsyncClient.getDatasourceCredential(credentialId)
+        metricsAdvisorAdminAsyncClient.getDataSourceCredential(credentialId)
             .flatMap(existingDatasourceCredential -> {
-                DatasourceServicePrincipalInKeyVault actualCredentialSPInKV = null;
-                if (existingDatasourceCredential instanceof DatasourceServicePrincipalInKeyVault) {
-                    actualCredentialSPInKV  = (DatasourceServicePrincipalInKeyVault) existingDatasourceCredential;
+                DataSourceServicePrincipalInKeyVault actualCredentialSPInKV = null;
+                if (existingDatasourceCredential instanceof DataSourceServicePrincipalInKeyVault) {
+                    actualCredentialSPInKV  = (DataSourceServicePrincipalInKeyVault) existingDatasourceCredential;
                 }
-                return metricsAdvisorAdminAsyncClient.updateDatasourceCredentialWithResponse(
+                return metricsAdvisorAdminAsyncClient.updateDataSourceCredentialWithResponse(
                     actualCredentialSPInKV.setDescription("set updated description"));
             })
             .subscribe(credentialEntityWithResponse -> {
                 System.out.printf("Credential Entity creation operation status: %s%n",
                     credentialEntityWithResponse.getStatusCode());
-                if (credentialEntityWithResponse.getValue() instanceof DatasourceServicePrincipalInKeyVault) {
-                    DatasourceServicePrincipalInKeyVault actualCredentialSPInKV
-                        = (DatasourceServicePrincipalInKeyVault) credentialEntityWithResponse.getValue();
+                if (credentialEntityWithResponse.getValue() instanceof DataSourceServicePrincipalInKeyVault) {
+                    DataSourceServicePrincipalInKeyVault actualCredentialSPInKV
+                        = (DataSourceServicePrincipalInKeyVault) credentialEntityWithResponse.getValue();
                     System.out.printf("Actual credential entity key vault endpoint: %s%n",
                         actualCredentialSPInKV.getKeyVaultEndpoint());
                     System.out.printf("Actual credential entity key vault updated description: %s%n",
                         actualCredentialSPInKV.getDescription());
                 }
             });
-        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateDatasourceCredentialWithResponse#DatasourceCredentialEntity
+        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateDataSourceCredentialWithResponse#DatasourceCredentialEntity
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#getDatasourceCredential(String)}.
+     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#getDataSourceCredential(String)}.
      */
     public void getDatasourceCredential() {
-        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getDatasourceCredential#String
+        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getDataSourceCredential#String
         final String datasourceCredentialId = "f45668b2-bffa-11eb-8529-0246ac130003";
 
-        metricsAdvisorAdminAsyncClient.getDatasourceCredential(datasourceCredentialId)
+        metricsAdvisorAdminAsyncClient.getDataSourceCredential(datasourceCredentialId)
             .subscribe(credentialEntity -> {
-                if (credentialEntity instanceof DatasourceServicePrincipalInKeyVault) {
-                    DatasourceServicePrincipalInKeyVault actualCredentialSPInKV
-                        = (DatasourceServicePrincipalInKeyVault) credentialEntity;
+                if (credentialEntity instanceof DataSourceServicePrincipalInKeyVault) {
+                    DataSourceServicePrincipalInKeyVault actualCredentialSPInKV
+                        = (DataSourceServicePrincipalInKeyVault) credentialEntity;
                     System.out
                         .printf("Actual credential entity key vault endpoint: %s%n",
                             actualCredentialSPInKV.getKeyVaultEndpoint());
                     System.out.printf("Actual credential entity key vault client Id: %s%n",
                         actualCredentialSPInKV.getKeyVaultClientId());
                     System.out.printf("Actual credential entity key vault secret name for data source: %s%n",
-                        actualCredentialSPInKV.getSecretNameForDatasourceClientId());
+                        actualCredentialSPInKV.getSecretNameForDataSourceClientId());
                     System.out.printf("Actual credential entity key vault secret for data source: %s%n",
-                        actualCredentialSPInKV.getSecretNameForDatasourceClientSecret());
+                        actualCredentialSPInKV.getSecretNameForDataSourceClientSecret());
                 }
             });
-        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getDatasourceCredential#String
+        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getDataSourceCredential#String
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#getDatasourceCredentialWithResponse(String)}.
+     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#getDataSourceCredentialWithResponse(String)}.
      */
     public void getDatasourceCredentialWithResponse() {
-        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getDatasourceCredentialWithResponse#String
+        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getDataSourceCredentialWithResponse#String
         final String datasourceCredentialId = "f45668b2-bffa-11eb-8529-0246ac130003";
 
-        metricsAdvisorAdminAsyncClient.getDatasourceCredentialWithResponse(datasourceCredentialId)
+        metricsAdvisorAdminAsyncClient.getDataSourceCredentialWithResponse(datasourceCredentialId)
             .subscribe(credentialEntityWithResponse -> {
                 System.out.printf("Credential Entity creation operation status: %s%n",
                     credentialEntityWithResponse.getStatusCode());
-                if (credentialEntityWithResponse.getValue() instanceof DatasourceServicePrincipalInKeyVault) {
-                    DatasourceServicePrincipalInKeyVault actualCredentialSPInKV
-                        = (DatasourceServicePrincipalInKeyVault) credentialEntityWithResponse.getValue();
+                if (credentialEntityWithResponse.getValue() instanceof DataSourceServicePrincipalInKeyVault) {
+                    DataSourceServicePrincipalInKeyVault actualCredentialSPInKV
+                        = (DataSourceServicePrincipalInKeyVault) credentialEntityWithResponse.getValue();
                     System.out
                         .printf("Actual credential entity key vault endpoint: %s%n",
                             actualCredentialSPInKV.getKeyVaultEndpoint());
                     System.out.printf("Actual credential entity key vault client Id: %s%n",
                         actualCredentialSPInKV.getKeyVaultClientId());
                     System.out.printf("Actual credential entity key vault secret name for data source: %s%n",
-                        actualCredentialSPInKV.getSecretNameForDatasourceClientId());
+                        actualCredentialSPInKV.getSecretNameForDataSourceClientId());
                     System.out.printf("Actual credential entity key vault secret for data source: %s%n",
-                        actualCredentialSPInKV.getSecretNameForDatasourceClientSecret());
+                        actualCredentialSPInKV.getSecretNameForDataSourceClientSecret());
                 }
             });
-        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getDatasourceCredentialWithResponse#String
+        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getDataSourceCredentialWithResponse#String
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#deleteDatasourceCredential(String)}.
+     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#deleteDataSourceCredential(String)}.
      */
     public void deleteDatasourceCredential() {
-        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteDatasourceCredential#String
+        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteDataSourceCredential#String
         final String datasourceCredentialId = "t00853f1-9080-447f-bacf-8dccf2e86f";
         metricsAdvisorAdminAsyncClient.deleteDataFeed(datasourceCredentialId);
-        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteDatasourceCredential#String
+        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteDataSourceCredential#String
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#deleteDatasourceCredentialWithResponse(String)}
+     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#deleteDataSourceCredentialWithResponse(String)}
      */
     public void deleteDatasourceCredentialWithResponse() {
-        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteDatasourceCredentialWithResponse#String
+        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteDataSourceCredentialWithResponse#String
         final String datasourceCredentialId = "eh0854f1-8927-447f-bacf-8dccf2e86fwe";
-        metricsAdvisorAdminAsyncClient.deleteDatasourceCredentialWithResponse(datasourceCredentialId)
+        metricsAdvisorAdminAsyncClient.deleteDataSourceCredentialWithResponse(datasourceCredentialId)
             .subscribe(response ->
                 System.out.printf("Datasource credential delete operation status : %s%n", response.getStatusCode()));
-        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteDatasourceCredentialWithResponse#String
+        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteDataSourceCredentialWithResponse#String
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#listDatasourceCredentials()}
+     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#listDataSourceCredentials()}
      */
     public void listDatasourceCredentials() {
-        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listDatasourceCredentials
-        metricsAdvisorAdminAsyncClient.listDatasourceCredentials()
+        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listDataSourceCredentials
+        metricsAdvisorAdminAsyncClient.listDataSourceCredentials()
             .subscribe(datasourceCredentialEntity -> {
-                if (datasourceCredentialEntity instanceof DatasourceServicePrincipalInKeyVault) {
-                    DatasourceServicePrincipalInKeyVault actualCredentialSPInKV
-                        = (DatasourceServicePrincipalInKeyVault) datasourceCredentialEntity;
+                if (datasourceCredentialEntity instanceof DataSourceServicePrincipalInKeyVault) {
+                    DataSourceServicePrincipalInKeyVault actualCredentialSPInKV
+                        = (DataSourceServicePrincipalInKeyVault) datasourceCredentialEntity;
                     System.out
                         .printf("Actual credential entity key vault endpoint: %s%n",
                             actualCredentialSPInKV.getKeyVaultEndpoint());
                     System.out.printf("Actual credential entity key vault client Id: %s%n",
                         actualCredentialSPInKV.getKeyVaultClientId());
                     System.out.printf("Actual credential entity key vault secret name for data source: %s%n",
-                        actualCredentialSPInKV.getSecretNameForDatasourceClientId());
+                        actualCredentialSPInKV.getSecretNameForDataSourceClientId());
                     System.out.printf("Actual credential entity key vault secret for data source: %s%n",
-                        actualCredentialSPInKV.getSecretNameForDatasourceClientSecret());
+                        actualCredentialSPInKV.getSecretNameForDataSourceClientSecret());
                 }
             });
-        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listDatasourceCredentials
+        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listDataSourceCredentials
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#listDatasourceCredentials(ListCredentialEntityOptions)} with options.
+     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#listDataSourceCredentials(ListCredentialEntityOptions)} with options.
      */
     public void listDatasourceCredentialsWithOptions() {
-        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listDatasourceCredentials#ListCredentialEntityOptions
-        metricsAdvisorAdminAsyncClient.listDatasourceCredentials(
+        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listDataSourceCredentials#ListCredentialEntityOptions
+        metricsAdvisorAdminAsyncClient.listDataSourceCredentials(
             new ListCredentialEntityOptions()
                 .setMaxPageSize(3))
             .subscribe(datasourceCredentialEntity -> {
-                if (datasourceCredentialEntity instanceof DatasourceServicePrincipalInKeyVault) {
-                    DatasourceServicePrincipalInKeyVault actualCredentialSPInKV
-                        = (DatasourceServicePrincipalInKeyVault) datasourceCredentialEntity;
+                if (datasourceCredentialEntity instanceof DataSourceServicePrincipalInKeyVault) {
+                    DataSourceServicePrincipalInKeyVault actualCredentialSPInKV
+                        = (DataSourceServicePrincipalInKeyVault) datasourceCredentialEntity;
                     System.out
                         .printf("Actual credential entity key vault endpoint: %s%n",
                             actualCredentialSPInKV.getKeyVaultEndpoint());
                     System.out.printf("Actual credential entity key vault client Id: %s%n",
                         actualCredentialSPInKV.getKeyVaultClientId());
                     System.out.printf("Actual credential entity key vault secret name for data source: %s%n",
-                        actualCredentialSPInKV.getSecretNameForDatasourceClientId());
+                        actualCredentialSPInKV.getSecretNameForDataSourceClientId());
                     System.out.printf("Actual credential entity key vault secret for data source: %s%n",
-                        actualCredentialSPInKV.getSecretNameForDatasourceClientSecret());
+                        actualCredentialSPInKV.getSecretNameForDataSourceClientSecret());
                 }
             });
-        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listDatasourceCredentials#ListCredentialEntityOptions
+        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listDataSourceCredentials#ListCredentialEntityOptions
     }
 }

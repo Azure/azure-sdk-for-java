@@ -45,6 +45,13 @@ public interface ReservationRecommendationDetailsModel {
     String sku();
 
     /**
+     * Gets the etag property: Resource eTag.
+     *
+     * @return the etag value.
+     */
+    String etag();
+
+    /**
      * Gets the currency property: An ISO 4217 currency code identifier for the costs and savings.
      *
      * @return the currency value.
@@ -85,13 +92,6 @@ public interface ReservationRecommendationDetailsModel {
      * @return the usage value.
      */
     ReservationRecommendationDetailsUsageProperties usage();
-
-    /**
-     * Gets the etag property: Resource etag.
-     *
-     * @return the etag value.
-     */
-    String etag();
 
     /**
      * Gets the tags property: Resource tags.

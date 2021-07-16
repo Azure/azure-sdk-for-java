@@ -1,7 +1,15 @@
 # Release History
 
 ## 1.4.0-beta.1 (Unreleased)
+### Features Added
 
+- Added support to `ManagedIdentityCredential` for Bridge to Kubernetes local development authentication.
+- Added regional STS support to client credential types.
+    - Added the `RegionalAuthority` type, that allows specifying Azure regions.
+    - Added `regionalAuthority()` setter to `ClientSecretCredentialBuilder` and `ClientCertificateCredentialBuilder`.
+    - If instead of a region, `RegionalAuthority.AutoDiscoverRegion` is specified as the value for `regionalAuthority`, MSAL will be used to attempt to discover the region.
+    - A region can also be specified through the `AZURE_REGIONAL_AUTHORITY_NAME` environment variable.
+- Added `loginHint()` setter to `InteractiveBrowserCredentialBuilder` which allows a username to be pre-selected for interactive logins.
 
 ## 1.3.1 (2021-06-08)
 

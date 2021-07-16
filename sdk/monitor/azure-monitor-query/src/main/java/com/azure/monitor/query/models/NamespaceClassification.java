@@ -3,47 +3,34 @@
 
 package com.azure.monitor.query.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /** Defines values for NamespaceClassification. */
-public enum NamespaceClassification {
-    /** Enum value Platform. */
-    PLATFORM("Platform"),
+public final class NamespaceClassification extends ExpandableStringEnum<NamespaceClassification> {
+    /** Static value Platform for NamespaceClassification. */
+    public static final NamespaceClassification PLATFORM = fromString("Platform");
 
-    /** Enum value Custom. */
-    CUSTOM("Custom"),
+    /** Static value Custom for NamespaceClassification. */
+    public static final NamespaceClassification CUSTOM = fromString("Custom");
 
-    /** Enum value Qos. */
-    QOS("Qos");
-
-    /** The actual serialized value for a NamespaceClassification instance. */
-    private final String value;
-
-    NamespaceClassification(String value) {
-        this.value = value;
-    }
+    /** Static value Qos for NamespaceClassification. */
+    public static final NamespaceClassification QOS = fromString("Qos");
 
     /**
-     * Parses a serialized value to a NamespaceClassification instance.
+     * Creates or finds a NamespaceClassification from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed NamespaceClassification object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding NamespaceClassification.
      */
     @JsonCreator
-    public static NamespaceClassification fromString(String value) {
-        NamespaceClassification[] items = NamespaceClassification.values();
-        for (NamespaceClassification item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static NamespaceClassification fromString(String name) {
+        return fromString(name, NamespaceClassification.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /** @return known NamespaceClassification values. */
+    public static Collection<NamespaceClassification> values() {
+        return values(NamespaceClassification.class);
     }
 }

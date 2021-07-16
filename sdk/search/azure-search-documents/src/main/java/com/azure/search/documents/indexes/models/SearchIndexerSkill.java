@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+
 import java.util.List;
 
 /** Base type for skills. */
@@ -19,7 +20,8 @@ import java.util.List;
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
         property = "@odata.type",
-        defaultImpl = SearchIndexerSkill.class)
+        defaultImpl = SearchIndexerSkill.class,
+        visible = true)
 @JsonTypeName("SearchIndexerSkill")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "#Microsoft.Skills.Util.ConditionalSkill", value = ConditionalSkill.class),
@@ -32,12 +34,16 @@ import java.util.List;
     @JsonSubTypes.Type(name = "#Microsoft.Skills.Util.ShaperSkill", value = ShaperSkill.class),
     @JsonSubTypes.Type(name = "#Microsoft.Skills.Text.MergeSkill", value = MergeSkill.class),
     @JsonSubTypes.Type(name = "#Microsoft.Skills.Text.EntityRecognitionSkill", value = EntityRecognitionSkill.class),
+    @JsonSubTypes.Type(name = "#Microsoft.Skills.Text.V3.EntityRecognitionSkill", value = EntityRecognitionSkill.class),
     @JsonSubTypes.Type(name = "#Microsoft.Skills.Text.SentimentSkill", value = SentimentSkill.class),
+    @JsonSubTypes.Type(name = "#Microsoft.Skills.Text.V3.SentimentSkill", value = SentimentSkill.class),
+    @JsonSubTypes.Type(name = "#Microsoft.Skills.Text.V3.EntityLinkingSkill", value = EntityLinkingSkill.class),
     @JsonSubTypes.Type(name = "#Microsoft.Skills.Text.SplitSkill", value = SplitSkill.class),
     @JsonSubTypes.Type(name = "#Microsoft.Skills.Text.CustomEntityLookupSkill", value = CustomEntityLookupSkill.class),
     @JsonSubTypes.Type(name = "#Microsoft.Skills.Text.TranslationSkill", value = TextTranslationSkill.class),
     @JsonSubTypes.Type(name = "#Microsoft.Skills.Util.DocumentExtractionSkill", value = DocumentExtractionSkill.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Skills.Custom.WebApiSkill", value = WebApiSkill.class)
+    @JsonSubTypes.Type(name = "#Microsoft.Skills.Custom.WebApiSkill", value = WebApiSkill.class),
+    @JsonSubTypes.Type(name = "#Microsoft.Skills.Text.PIIDetectionSkill", value = PiiDetectionSkill.class)
 })
 @Fluent
 public abstract class SearchIndexerSkill {

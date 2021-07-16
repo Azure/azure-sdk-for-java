@@ -1,5 +1,25 @@
 # Release History
 
+## 3.2.0-beta.1 (Unreleased)
+
+
+## 3.1.2 (2021-07-08)
+### Other changes
+- Updated test infrastructure to remove dependency on network call recorded data.
+
+#### Dependency Updates
+- Updated `azure-core` to `1.18.0`.
+- Updated `azure-core-http-netty` to `1.10.1`.
+
+## 3.1.1 (2021-06-09)
+
+### Bug Fixes
+
+- Fixed invoices and other recognition operations to avoid Null Pointer Exception when data returned with no
+  sub-line item fields detected.
+- Fixed invoices and other recognition operations that return a `FormField` with `text`
+  and no `boundingBox` or `page` information.
+
 ## 3.1.0 (2021-05-26)
 ### Features Added
 - This General Availability (GA) release marks the stability of the changes introduced in package versions `3.1.0-beta.1` through `3.1.0-beta.3`.

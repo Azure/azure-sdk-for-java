@@ -3,7 +3,7 @@
 
 package com.azure.ai.metricsadvisor.implementation.util;
 
-import com.azure.ai.metricsadvisor.administration.models.DatasourceServicePrincipalInKeyVault;
+import com.azure.ai.metricsadvisor.administration.models.DataSourceServicePrincipalInKeyVault;
 
 public final class DataSourceServicePrincipalInKeyVaultAccessor {
     private static Accessor accessor;
@@ -13,15 +13,15 @@ public final class DataSourceServicePrincipalInKeyVaultAccessor {
 
     /**
      * Type defining the methods to set the non-public properties of
-     * an {@link DatasourceServicePrincipalInKeyVault} instance.
+     * an {@link DataSourceServicePrincipalInKeyVault} instance.
      */
     public interface Accessor {
-        void setId(DatasourceServicePrincipalInKeyVault entity, String id);
-        String getKeyVaultClientSecret(DatasourceServicePrincipalInKeyVault entity);
+        void setId(DataSourceServicePrincipalInKeyVault entity, String id);
+        String getKeyVaultClientSecret(DataSourceServicePrincipalInKeyVault entity);
     }
 
     /**
-     * The method called from {@link DatasourceServicePrincipalInKeyVault} to set it's accessor.
+     * The method called from {@link DataSourceServicePrincipalInKeyVault} to set it's accessor.
      *
      * @param accessor The accessor.
      */
@@ -29,11 +29,11 @@ public final class DataSourceServicePrincipalInKeyVaultAccessor {
         DataSourceServicePrincipalInKeyVaultAccessor.accessor = accessor;
     }
 
-    public static void setId(DatasourceServicePrincipalInKeyVault entity, String id) {
+    public static void setId(DataSourceServicePrincipalInKeyVault entity, String id) {
         accessor.setId(entity, id);
     }
 
-    public static String getKeyVaultClientSecret(DatasourceServicePrincipalInKeyVault entity) {
+    public static String getKeyVaultClientSecret(DataSourceServicePrincipalInKeyVault entity) {
         return accessor.getKeyVaultClientSecret(entity);
     }
 }

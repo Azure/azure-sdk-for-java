@@ -1,7 +1,28 @@
 # Release History
 
-## 1.18.0-beta.1 (Unreleased)
+## 1.19.0-beta.2 (Unreleased)
 
+
+## 1.19.0-beta.1 (2021-07-07)
+
+### Features Added
+
+ - Added `RequestOptions` for protocol methods
+ - Added support for `BinaryData` type as the request body or response body in `RestProxy`
+
+## 1.18.0 (2021-07-01)
+
+### Features Added
+
+- Added additional configurations of `maximumConnectionPoolSize` and `connectionIdleTimeout` to `HttpClientOptions`.
+- Added new `addEvent` overload to `Tracer`. 
+- Added new constants to `Configuration`.
+
+### Fixed
+
+- Fixed a bug where a negative delay could be used when retrying a request with a delay.
+- Fixed a bug where `JsonFlatten` on a property didn't flatten properties annotated with `JsonFlatten`.
+- Fixed error messages that didn't properly format format-able message strings.
 
 ## 1.17.0 (2021-06-07)
 

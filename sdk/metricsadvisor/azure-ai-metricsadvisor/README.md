@@ -8,7 +8,7 @@ of business dataFeedMetrics.
 ## Getting started
 
 ### Prerequisites
-- Java Development Kit [JDK][jdk_link] with version 8 or above
+- [Java Development Kit (JDK)][jdk_link] version 8 or later
 - [Azure Subscription][azure_subscription]
 - [Cognitive Services or Metrics Advisor account][metrics_advisor_account] to use this package.
 
@@ -20,7 +20,7 @@ of business dataFeedMetrics.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-metricsadvisor</artifactId>
-    <version>1.0.0-beta.3</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -81,7 +81,7 @@ Authentication with AAD requires some initial setup:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.2.3</version>
+    <version>1.3.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -169,7 +169,7 @@ A notification hook is the entry point that allows the users to subscribe to rea
 * [Check ingestion status](#check-ingestion-status "Check ingestion status")
 * [Configure anomaly detection configuration](#configure-anomaly-detection-configuration "Configure anomaly detection configuration")
 * [Add hooks for receiving anomaly alerts](#add-hooks-for-receiving-anomaly-alerts "Add hooks for receiving anomaly alerts")
-* [Configure an anomaly alert configuration](#configure-anomaly-alert-configuration "Configure anomalyAlert configuration")
+* [Configure an anomaly alert configuration](#configure-an-anomaly-alert-configuration "Configure an anomaly alert configuration")
 * [Query anomaly detection results](#query-anomaly-detection-results "Query anomaly detection results")
 
 #### Add a data feed from a sample or data source
@@ -182,12 +182,12 @@ DataFeed dataFeed = new DataFeed()
     .setGranularity(new DataFeedGranularity().setGranularityType(DataFeedGranularityType.DAILY))
     .setSchema(new DataFeedSchema(
         Arrays.asList(
-            new DataFeedMetric().setName("cost"),
-            new DataFeedMetric().setName("revenue")
+            new DataFeedMetric("cost"),
+            new DataFeedMetric("revenue")
         )).setDimensions(
         Arrays.asList(
-            new DataFeedDimension().setName("city"),
-            new DataFeedDimension().setName("category")
+            new DataFeedDimension("city"),
+            new DataFeedDimension("category")
         ))
     )
     .setIngestionSettings(new DataFeedIngestionSettings(OffsetDateTime.parse("2020-01-01T00:00:00Z")))
@@ -239,22 +239,22 @@ This example demonstrates how a user can configure an anomaly detection configur
 ```java
 String metricId = "3d48er30-6e6e-4391-b78f-b00dfee1e6f5";
 
-ChangeThresholdCondition changeThresholdCondition = new ChangeThresholdCondition()
-    .setAnomalyDetectorDirection(AnomalyDetectorDirection.BOTH)
-    .setChangePercentage(20)
-    .setShiftPoint(10)
-    .setWithinRange(true)
-    .setSuppressCondition(new SuppressCondition().setMinNumber(1).setMinRatio(2));
+ChangeThresholdCondition changeThresholdCondition = new ChangeThresholdCondition(
+        20, 
+        10, 
+        true, 
+        AnomalyDetectorDirection.BOTH, 
+        new SuppressCondition(1, 2));
 
-HardThresholdCondition hardThresholdCondition = new HardThresholdCondition()
-    .setAnomalyDetectorDirection(AnomalyDetectorDirection.DOWN)
-    .setLowerBound(5.0)
-    .setSuppressCondition(new SuppressCondition().setMinNumber(1).setMinRatio(1));
+HardThresholdCondition hardThresholdCondition = new HardThresholdCondition(
+        AnomalyDetectorDirection.DOWN, 
+        new SuppressCondition(1, 1))
+    .setLowerBound(5.0);
 
-SmartDetectionCondition smartDetectionCondition = new SmartDetectionCondition()
-    .setAnomalyDetectorDirection(AnomalyDetectorDirection.UP)
-    .setSensitivity(10.0)
-    .setSuppressCondition(new SuppressCondition().setMinNumber(1).setMinRatio(2));
+SmartDetectionCondition smartDetectionCondition = new SmartDetectionCondition(
+        10.0, 
+        AnomalyDetectorDirection.UP,
+        new SuppressCondition(1, 2));
 
 final AnomalyDetectionConfiguration anomalyDetectionConfiguration =
     metricsAdvisorAdminClient.createMetricAnomalyDetectionConfig(
@@ -396,7 +396,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 
 <!-- LINKS -->
 [aad_authorization]: https://docs.microsoft.com/azure/cognitive-services/authentication#authenticate-with-azure-active-directory
-[key]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows#get-the-keys-for-your-resource
 [api_reference_doc]: https://docs.microsoft.com/java/api/com.azure.ai.metricsadvisor?view=azure-java-preview
 [azure_identity_credential_type]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity#credentials
 [azure_cli]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account-cli?tabs=windows
@@ -409,13 +408,16 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
 [create_new_resource]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows#create-a-new-azure-cognitive-services-resource
+[grant_access]: https://docs.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
 [http_clients_wiki]: https://github.com/Azure/azure-sdk-for-java/wiki/HTTP-clients
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
-[register_AAD_application]: https://docs.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
+[key]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows#get-the-keys-for-your-resource
+[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
 [metrics_advisor_account]: https://ms.portal.azure.com/#create/Microsoft.CognitiveServicesMetricsAdvisor
 [metrics_advisor_doc]: https://docs.microsoft.com/azure/cognitive-services/Metrics-advisor/glossary
-[mvn_package]: https://search.maven.org/artifact/com.azure/azure-ai-metricsadvisor/1.0.0-beta.1/jar
+[mvn_package]: https://search.maven.org/search?q=a:azure-ai-metricsadvisor
 [product_documentation]: https://docs.microsoft.com/azure/cognitive-services/metrics-advisor/overview
+[register_AAD_application]: https://docs.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
 [source_code]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/metricsadvisor/azure-ai-metricsadvisor/src
 [samples]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/metricsadvisor/azure-ai-metricsadvisor/src/samples
 [samples_readme]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/metricsadvisor/azure-ai-metricsadvisor/src/samples/README.md
