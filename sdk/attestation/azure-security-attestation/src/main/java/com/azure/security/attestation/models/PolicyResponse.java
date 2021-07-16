@@ -42,7 +42,7 @@ public final class PolicyResponse {
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    public void validate() {}
+    public void validate() { }
 
     /**
      * Returns a public model type from an implementation model type.

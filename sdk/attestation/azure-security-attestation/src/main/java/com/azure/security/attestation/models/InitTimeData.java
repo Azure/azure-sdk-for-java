@@ -77,7 +77,7 @@ public final class InitTimeData {
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    public void validate() {}
+    public void validate() { }
 
     /**
      * Create an internal type from a public type
