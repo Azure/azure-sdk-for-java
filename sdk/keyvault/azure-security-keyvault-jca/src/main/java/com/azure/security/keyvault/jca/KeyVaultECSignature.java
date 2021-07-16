@@ -138,8 +138,8 @@ public abstract class KeyVaultECSignature extends SignatureSpi {
     @Override
     protected void engineInitSign(PrivateKey privateKey, SecureRandom random) {
         if (privateKey instanceof KeyVaultPrivateKey) {
-            alias = privateKey.getFormat();
-            version = new String(privateKey.getEncoded());
+            alias = ((KeyVaultPrivateKey) privateKey).getAlias();
+            version = ((KeyVaultPrivateKey) privateKey).getVersion();
             resetDigest();
         } else {
             throw new UnsupportedOperationException("engineInitSign() not supported which private key is not instance of KeyVaultPrivateKey");

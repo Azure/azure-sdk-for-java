@@ -10,12 +10,23 @@ import java.security.PrivateKey;
  */
 public class KeyVaultPrivateKey implements PrivateKey {
 
+    /**
+     * Stores the serial version UID.
+     */
+    private static final long serialVersionUID = 1L;
+
     private String algorithm;
 
     private String version;
 
     private String alias;
 
+    /**
+     * builder for key vault private key
+     * @param algorithm algorithm
+     * @param version certificate version
+     * @param alias certificate alias
+     */
     public KeyVaultPrivateKey(String algorithm, String version, String alias) {
         this.algorithm = algorithm;
         this.version = version;
@@ -24,7 +35,7 @@ public class KeyVaultPrivateKey implements PrivateKey {
 
     /**
      * set key vault certificate algorithm
-     * @param algorithm
+     * @param algorithm algorithm
      */
     public void setAlgorithm(String algorithm) {
         this.algorithm = algorithm;

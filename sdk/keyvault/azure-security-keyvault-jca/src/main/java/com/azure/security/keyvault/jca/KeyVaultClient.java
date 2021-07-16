@@ -349,7 +349,10 @@ public class KeyVaultClient extends DelegateRestClient {
             JsonConverter converter = JsonConverterFactory.createJsonConverter();
             result = (PrivateKeyOperationResult) converter.fromJson(response, PrivateKeyOperationResult.class);
         }
-        return Base64.getUrlDecoder().decode(result.getValue());
+        if (result != null) {
+            return Base64.getUrlDecoder().decode(result.getValue());
+        }
+        return null;
     }
 
     /**
