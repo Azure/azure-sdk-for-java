@@ -1,4 +1,5 @@
-org.springframework.boot.env.EnvironmentPostProcessor=com.azure.spring.cloudfoundry.environment.VcapProcessor
+org.springframework.boot.env.EnvironmentPostProcessor=com.azure.spring.cloudfoundry.environment.VcapProcessor,\
+com.azure.spring.autoconfigure.unity.LegacyPropertyMappingEnvironmentPostProcessor
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
 com.azure.spring.aad.webapi.AADResourceServerConfiguration, \
 com.azure.spring.aad.webapi.AADResourceServerClientConfiguration,\
