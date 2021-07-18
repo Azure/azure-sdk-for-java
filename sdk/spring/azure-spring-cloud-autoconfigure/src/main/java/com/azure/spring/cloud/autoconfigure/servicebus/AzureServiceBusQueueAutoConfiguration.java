@@ -65,35 +65,43 @@ public class AzureServiceBusQueueAutoConfiguration {
         Assert.notNull(connectionString, "Service Bus connection string must not be null");
 
         DefaultServiceBusQueueClientFactory clientFactory = new DefaultServiceBusQueueClientFactory(connectionString, properties.getTransportType());
-        clientFactory.setServiceBusProvisioner(serviceBusProvisioner(namespaceManager, queueManager));
+        clientFactory.setServiceBusProvisioner(new ServiceBusQueueProvisioner(namespaceManager, queueManager) {
+        });
 
         return clientFactory;
     }
 
-    private ServiceBusProvisioner serviceBusProvisioner(ServiceBusNamespaceManager namespaceManager,
-                                                        ServiceBusQueueManager queueManager) {
-        return new ServiceBusProvisioner() {
-            @Override
-            public void provisionNamespace(String namespace) {
-                namespaceManager.create(namespace);
-            }
+    static class ServiceBusQueueProvisioner implements ServiceBusProvisioner {
 
-            @Override
-            public void provisionQueue(String namespace, String queue) {
-                final ServiceBusNamespace serviceBusNamespace = namespaceManager.get(namespace);
-                queueManager.create(Tuple.of(serviceBusNamespace, queue));
-            }
+        private final ServiceBusNamespaceManager namespaceManager;
+        private final ServiceBusQueueManager queueManager;
 
-            @Override
-            public void provisionTopic(String namespace, String topic) {
-                throw new UnsupportedOperationException("Can't provision topic in a queue client");
-            }
+        ServiceBusQueueProvisioner(ServiceBusNamespaceManager namespaceManager,
+                                   ServiceBusQueueManager queueManager) {
+            this.namespaceManager = namespaceManager;
+            this.queueManager = queueManager;
+        }
 
-            @Override
-            public void provisionSubscription(String namespace, String topic, String subscription) {
-                throw new UnsupportedOperationException("Can't provision subscription in a queue client");
-            }
-        };
+        @Override
+        public void provisionNamespace(String namespace) {
+            this.namespaceManager.create(namespace);
+        }
+
+        @Override
+        public void provisionQueue(String namespace, String queue) {
+            final ServiceBusNamespace serviceBusNamespace = namespaceManager.get(namespace);
+            this.queueManager.create(Tuple.of(serviceBusNamespace, queue));
+        }
+
+        @Override
+        public void provisionTopic(String namespace, String topic) {
+            throw new UnsupportedOperationException("Can't provision topic in a queue client");
+        }
+
+        @Override
+        public void provisionSubscription(String namespace, String topic, String subscription) {
+            throw new UnsupportedOperationException("Can't provision subscription in a queue client");
+        }
     }
 
     @Bean

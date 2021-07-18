@@ -73,7 +73,7 @@ public class AzureServiceBusJMSProperties extends AzureProperties {
             throw new IllegalArgumentException("'spring.jms.servicebus.connection-string' should be provided");
         }
 
-        if (!pricingTier.matches("(?i)premium|standard|basic")) {
+        if (StringUtils.hasText(pricingTier) && !pricingTier.matches("(?i)premium|standard|basic")) {
             throw new IllegalArgumentException("'spring.jms.servicebus.pricing-tier' is not valid");
         }
     }
