@@ -77,16 +77,16 @@ public class ServiceBusMessageConverter
     @Override
     protected void setCustomHeaders(MessageHeaders headers, ServiceBusMessage message) {
 
-        Map<String, Object> headersForApplicationProperties = new HashMap<String, Object>();
-        headersForApplicationProperties.putAll(headers);
+        Map<String, Object> copySpringMessageHeaders = new HashMap<String, Object>();
+        copySpringMessageHeaders.putAll(headers);
 
         // Spring MessageHeaders
-        getHeaderAsStringAndRemove(headers, headersForApplicationProperties, MessageHeaders.ID).ifPresent(message::setMessageId);
-        getHeaderAsStringAndRemove(headers, headersForApplicationProperties, MessageHeaders.CONTENT_TYPE).ifPresent(message::setContentType);
-        getHeaderAsStringAndRemove(headers, headersForApplicationProperties, MessageHeaders.REPLY_CHANNEL).ifPresent(message::setReplyTo);
+        getAndRemove(copySpringMessageHeaders, MessageHeaders.ID).ifPresent(message::setMessageId);
+        getAndRemove(copySpringMessageHeaders, MessageHeaders.CONTENT_TYPE).ifPresent(message::setContentType);
+        getAndRemove(copySpringMessageHeaders, MessageHeaders.REPLY_CHANNEL).ifPresent(message::setReplyTo);
 
         // AzureHeaders.
-        getHeaderAsStringAndRemove(headers, headersForApplicationProperties, AzureHeaders.RAW_ID).ifPresent(val -> {
+        getAndRemove(copySpringMessageHeaders, AzureHeaders.RAW_ID).ifPresent(val -> {
             message.setMessageId(val);
             logOverriddenHeaders(AzureHeaders.RAW_ID, MessageHeaders.ID, headers);
         });
@@ -96,11 +96,11 @@ public class ServiceBusMessageConverter
                 .map((ins) -> OffsetDateTime.ofInstant(ins, ZoneId.systemDefault()))
                 .ifPresent(val -> {
                     message.setScheduledEnqueueTime(val);
-                    headersForApplicationProperties.remove(AzureHeaders.SCHEDULED_ENQUEUE_MESSAGE);
+                    copySpringMessageHeaders.remove(AzureHeaders.SCHEDULED_ENQUEUE_MESSAGE);
                 });
 
         // ServiceBusMessageHeaders, service bus headers have highest priority.
-        getHeaderAsStringAndRemove(headers, headersForApplicationProperties, MESSAGE_ID).ifPresent(val -> {
+        getAndRemove(copySpringMessageHeaders, MESSAGE_ID).ifPresent(val -> {
             message.setMessageId(val);
             if (!logOverriddenHeaders(MESSAGE_ID, AzureHeaders.RAW_ID, headers)) {
                 logOverriddenHeaders(MESSAGE_ID, MessageHeaders.ID, headers);
@@ -108,7 +108,7 @@ public class ServiceBusMessageConverter
         });
         Optional.ofNullable(headers.get(TIME_TO_LIVE, Duration.class)).ifPresent(val -> {
             message.setTimeToLive(val);
-            headersForApplicationProperties.remove(TIME_TO_LIVE);
+            copySpringMessageHeaders.remove(TIME_TO_LIVE);
         });
 
         Optional.ofNullable((Instant) headers.get(SCHEDULED_ENQUEUE_TIME))
@@ -116,15 +116,15 @@ public class ServiceBusMessageConverter
                 .ifPresent(val -> {
                     message.setScheduledEnqueueTime(val);
                     logOverriddenHeaders(SCHEDULED_ENQUEUE_TIME, AzureHeaders.SCHEDULED_ENQUEUE_MESSAGE, headers);
-                    headersForApplicationProperties.remove(SCHEDULED_ENQUEUE_TIME);
+                    copySpringMessageHeaders.remove(SCHEDULED_ENQUEUE_TIME);
                 });
-        getHeaderAsStringAndRemove(headers, headersForApplicationProperties, SESSION_ID).ifPresent(message::setSessionId);
-        getHeaderAsStringAndRemove(headers, headersForApplicationProperties, CORRELATION_ID).ifPresent(message::setCorrelationId);
-        getHeaderAsStringAndRemove(headers, headersForApplicationProperties, TO).ifPresent(message::setTo);
-        getHeaderAsStringAndRemove(headers, headersForApplicationProperties, REPLY_TO_SESSION_ID).ifPresent(message::setReplyToSessionId);
-        getHeaderAsStringAndRemove(headers, headersForApplicationProperties, PARTITION_KEY).ifPresent(message::setPartitionKey);
+        getAndRemove(copySpringMessageHeaders, SESSION_ID).ifPresent(message::setSessionId);
+        getAndRemove(copySpringMessageHeaders, CORRELATION_ID).ifPresent(message::setCorrelationId);
+        getAndRemove(copySpringMessageHeaders, TO).ifPresent(message::setTo);
+        getAndRemove(copySpringMessageHeaders, REPLY_TO_SESSION_ID).ifPresent(message::setReplyToSessionId);
+        getAndRemove(copySpringMessageHeaders, PARTITION_KEY).ifPresent(message::setPartitionKey);
 
-        headersForApplicationProperties.forEach((key, value) -> {
+        copySpringMessageHeaders.forEach((key, value) -> {
             message.getApplicationProperties().put(key, value.toString());
         });
     }
@@ -163,19 +163,20 @@ public class ServiceBusMessageConverter
      * Get the value of a header key from {@link MessageHeaders} as {@link String}, and if the value exists, remove the
      * header from a copy {@link Set} of original {@link MessageHeaders}.
      *
-     * @param springMessageHeaders Original {@link MessageHeaders} to get header values.
-     * @param copyHeaders A copy of keys for the original {@link MessageHeaders}.
+     * @param copySpringMessageHeaders A copy of keys for the original {@link MessageHeaders}.
      * @param key The header key to get value.
      * @return {@link Optional} of the header value.
      */
-    private Optional<String> getHeaderAsStringAndRemove(MessageHeaders springMessageHeaders, Map<String, Object> copyHeaders,
-                                                        String key) {
-        copyHeaders.remove(key);
-        return Optional.ofNullable(springMessageHeaders.get(key)).map(Object::toString).filter(StringUtils::hasText);
+    private Optional<String> getAndRemove(Map<String, Object> copySpringMessageHeaders, String key) {
+        return Optional.ofNullable(copySpringMessageHeaders.get(key))
+                       .map(val -> {
+                           copySpringMessageHeaders.remove(key);
+                           return val.toString();
+                       }).filter(StringUtils::hasText);
     }
 
     private Boolean logOverriddenHeaders(String currentHeader, String overriddenHeader,
-                                      MessageHeaders springMessageHeaders) {
+                                         MessageHeaders springMessageHeaders) {
         Boolean isExisted = false;
         if (springMessageHeaders.containsKey(overriddenHeader)) {
             isExisted = true;
