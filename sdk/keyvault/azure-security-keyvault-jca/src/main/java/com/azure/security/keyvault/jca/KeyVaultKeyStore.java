@@ -119,10 +119,6 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
                                        .map(System::getProperty)
                                        .map(Long::valueOf)
                                        .orElse(0L);
-        boolean keyLess =  Optional.of("azure.keyvault.keyless")
-                    .map(System::getProperty)
-                    .map(Boolean::parseBoolean)
-                    .orElse(false);
         refreshCertificatesWhenHaveUnTrustCertificate =
             Optional.of("azure.keyvault.jca.refresh-certificates-when-have-un-trust-certificate")
                     .map(System::getProperty)
@@ -133,7 +129,6 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         customCertificates = SpecificPathCertificates.getSpecificPathCertificates(customPath);
         keyVaultCertificates = new KeyVaultCertificates(
             refreshInterval, keyVaultUri, tenantId, clientId, clientSecret, managedIdentity);
-        keyVaultCertificates.setKeyLess(keyLess);
         classpathCertificates = new ClasspathCertificates();
         allCertificates = Arrays.asList(
             jreCertificates, wellKnowCertificates, customCertificates, keyVaultCertificates, classpathCertificates);

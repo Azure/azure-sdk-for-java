@@ -37,7 +37,6 @@ public class KeyVaultCertificatesEnvironmentPostProcessor implements Environment
         putEnvironmentPropertyToSystemProperty(environment, "azure.keyvault.jca.refresh-certificates-when-have-un-trust-certificate");
         putEnvironmentPropertyToSystemProperty(environment, "azure.cert-path.well-known");
         putEnvironmentPropertyToSystemProperty(environment, "azure.cert-path.custom");
-        putEnvironmentPropertyToSystemProperty(environment, "azure.keyvault.keyless");
 
         MutablePropertySources propertySources = environment.getPropertySources();
         if (KeyVaultKeyStore.KEY_STORE_TYPE.equals(environment.getProperty("server.ssl.key-store-type"))) {
