@@ -10,7 +10,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.security.attestation.implementation.MetadataConfigurationsImpl;
-import com.azure.security.attestation.implementation.models.CloudErrorException;
+import com.azure.security.attestation.models.CloudErrorException;
 
 /** Initializes a new instance of the synchronous AttestationClient type. */
 @ServiceClient(builder = AttestationClientBuilder.class)

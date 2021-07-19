@@ -9,7 +9,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.security.attestation.implementation.MetadataConfigurationsImpl;
-import com.azure.security.attestation.implementation.models.CloudErrorException;
+import com.azure.security.attestation.models.CloudErrorException;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the asynchronous AttestationClient type. */
