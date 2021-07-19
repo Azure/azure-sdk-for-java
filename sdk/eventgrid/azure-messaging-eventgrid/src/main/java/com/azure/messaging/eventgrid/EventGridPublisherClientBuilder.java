@@ -136,8 +136,8 @@ public final class EventGridPublisherClientBuilder {
 
         httpPipelinePolicies.add(new AddDatePolicy());
 
-        final int credentialCount = (sasToken != null? 1 : 0) + (keyCredential != null? 1 : 0) +
-            (tokenCredential != null? 1 : 0);
+        final int credentialCount = (sasToken != null ? 1 : 0) + (keyCredential != null ? 1 : 0)
+            + (tokenCredential != null ? 1 : 0);
         if (credentialCount > 1) {
             throw logger.logExceptionAsError(
                 new IllegalStateException(
