@@ -104,7 +104,7 @@ public class KeyVaultEncodeTest {
                 value = Arrays.copyOfRange(result, 2, result.length);
         }
         BigInteger bigInteger = new BigInteger(value);
-        Assertions.assertEquals(bigInteger, new BigInteger(1, testByte, offset, length));
+        Assertions.assertEquals(bigInteger, new BigInteger(1, Arrays.copyOfRange(testByte, offset, offset + length)));
     }
 
     @Test
