@@ -14,9 +14,17 @@ parameters:
   - name: TestPipeline
     type: boolean
     default: false
+  - name: FromSource
+    type: boolean
+    default: false
 
 jobs:
   - job: 'Analyze'
+  - ${{ if eq(parameters.FromSource, true) }}
+    displayName: 'Analyze from source'
+    condition: and(succeeded(), ne(variables['Skip.Analyze'], 'true'), eq('${{ parameters.ServiceDirectory }}', 'core'))
+  - ${{ if not(eq(parameters.FromSource, true) }}
+    displayName: 'Analyze'
     condition: and(succeeded(), ne(variables['Skip.Analyze'], 'true'))
 
     variables:

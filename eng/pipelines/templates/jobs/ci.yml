@@ -47,14 +47,13 @@ jobs:
       TestPipeline: ${{ parameters.TestPipeline }}
 
   - template: /eng/pipelines/templates/jobs/analyze.yml
-    condition: and(succeeded(), eq(parameters.ServiceDirectory, 'core'))
-    displayName: 'Analyze from source'
     parameters:
       SDKType: ${{ parameters.SDKType }}
       ServiceDirectory: ${{ parameters.ServiceDirectory }}
       Artifacts: ${{ parameters.Artifacts }}
       AdditionalModules: ${{ parameters.AdditionalModules }}
       TestPipeline: ${{ parameters.TestPipeline }}
+      FromSource: true
 
   - template: /eng/common/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
     parameters:
