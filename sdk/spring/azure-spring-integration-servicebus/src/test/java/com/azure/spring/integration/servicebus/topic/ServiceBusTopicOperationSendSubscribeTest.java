@@ -5,6 +5,7 @@ package com.azure.spring.integration.servicebus.topic;
 
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 import com.azure.spring.integration.servicebus.factory.ServiceBusTopicClientFactory;
+import com.azure.spring.integration.servicebus.health.InstrumentationManager;
 import com.azure.spring.integration.servicebus.support.ServiceBusTopicTestOperation;
 import com.azure.spring.integration.test.support.SendSubscribeWithGroupOperationTest;
 import org.junit.jupiter.api.AfterEach;
@@ -26,10 +27,12 @@ public class ServiceBusTopicOperationSendSubscribeTest
 
     private AutoCloseable closeable;
 
+    private InstrumentationManager instrumentationManager = new InstrumentationManager();
+
     @BeforeEach
     public void setUp() {
         this.closeable = MockitoAnnotations.openMocks(this);
-        this.sendSubscribeOperation = new ServiceBusTopicTestOperation(clientFactory);
+        this.sendSubscribeOperation = new ServiceBusTopicTestOperation(clientFactory, instrumentationManager);
     }
 
     @AfterEach

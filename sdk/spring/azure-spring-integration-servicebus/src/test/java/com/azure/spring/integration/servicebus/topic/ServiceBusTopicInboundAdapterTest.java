@@ -4,6 +4,7 @@
 package com.azure.spring.integration.servicebus.topic;
 
 import com.azure.spring.integration.servicebus.factory.ServiceBusTopicClientFactory;
+import com.azure.spring.integration.servicebus.health.InstrumentationManager;
 import com.azure.spring.integration.servicebus.inbound.ServiceBusTopicInboundChannelAdapter;
 import com.azure.spring.integration.servicebus.support.ServiceBusTopicTestOperation;
 import com.azure.spring.integration.test.support.InboundChannelAdapterTest;
@@ -19,16 +20,19 @@ public class ServiceBusTopicInboundAdapterTest extends InboundChannelAdapterTest
 
     private AutoCloseable closeable;
 
+    private InstrumentationManager instrumentationManager = new InstrumentationManager();
+
     @AfterEach
     public void close() throws Exception {
         closeable.close();
     }
+
     @BeforeEach
     @Override
     public void setUp() {
         this.closeable = MockitoAnnotations.openMocks(this);
         this.adapter = new ServiceBusTopicInboundChannelAdapter(destination,
-                                                                new ServiceBusTopicTestOperation(clientFactory),
-                                                                consumerGroup);
+            new ServiceBusTopicTestOperation(clientFactory, instrumentationManager),
+            consumerGroup);
     }
 }

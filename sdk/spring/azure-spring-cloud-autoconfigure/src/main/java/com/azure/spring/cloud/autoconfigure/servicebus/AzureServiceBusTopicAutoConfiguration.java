@@ -12,6 +12,7 @@ import com.azure.spring.integration.servicebus.converter.ServiceBusMessageConver
 import com.azure.spring.integration.servicebus.factory.DefaultServiceBusTopicClientFactory;
 import com.azure.spring.integration.servicebus.factory.ServiceBusConnectionStringProvider;
 import com.azure.spring.integration.servicebus.factory.ServiceBusTopicClientFactory;
+import com.azure.spring.integration.servicebus.health.InstrumentationManager;
 import com.azure.spring.integration.servicebus.topic.ServiceBusTopicOperation;
 import com.azure.spring.integration.servicebus.topic.ServiceBusTopicTemplate;
 import org.slf4j.Logger;
@@ -33,7 +34,7 @@ import org.springframework.util.Assert;
  */
 @Configuration
 @AutoConfigureAfter(AzureServiceBusAutoConfiguration.class)
-@ConditionalOnClass(value = {ServiceBusProcessorClient.class, ServiceBusTopicClientFactory.class})
+@ConditionalOnClass(value = { ServiceBusProcessorClient.class, ServiceBusTopicClientFactory.class })
 @ConditionalOnProperty(value = "spring.cloud.azure.servicebus.enabled", matchIfMissing = true)
 public class AzureServiceBusTopicAutoConfiguration {
 
@@ -71,7 +72,8 @@ public class AzureServiceBusTopicAutoConfiguration {
 
         Assert.notNull(connectionString, "Service Bus connection string must not be null");
 
-        DefaultServiceBusTopicClientFactory clientFactory = new DefaultServiceBusTopicClientFactory(connectionString, properties.getTransportType());
+        DefaultServiceBusTopicClientFactory clientFactory = new DefaultServiceBusTopicClientFactory(connectionString,
+            properties.getTransportType());
         clientFactory.setNamespace(properties.getNamespace());
         clientFactory.setServiceBusNamespaceManager(namespaceManager);
         clientFactory.setServiceBusTopicManager(topicManager);
@@ -90,8 +92,8 @@ public class AzureServiceBusTopicAutoConfiguration {
     @ConditionalOnMissingBean
     @ConditionalOnBean(ServiceBusTopicClientFactory.class)
     public ServiceBusTopicOperation topicOperation(ServiceBusTopicClientFactory factory,
-                                                   ServiceBusMessageConverter messageConverter) {
-        return new ServiceBusTopicTemplate(factory, messageConverter);
+                                                   ServiceBusMessageConverter messageConverter,
+                                                   InstrumentationManager instrumentationManager) {
+        return new ServiceBusTopicTemplate(factory, messageConverter, instrumentationManager);
     }
-
 }

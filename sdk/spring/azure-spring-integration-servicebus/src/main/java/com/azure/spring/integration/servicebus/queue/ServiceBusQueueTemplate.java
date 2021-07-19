@@ -12,11 +12,15 @@ import com.azure.spring.integration.servicebus.ServiceBusTemplate;
 import com.azure.spring.integration.servicebus.converter.ServiceBusMessageConverter;
 import com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders;
 import com.azure.spring.integration.servicebus.factory.ServiceBusQueueClientFactory;
+import com.azure.spring.integration.servicebus.health.Instrumentation;
+import com.azure.spring.integration.servicebus.health.InstrumentationManager;
 import com.google.common.collect.Sets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.integration.support.MessageBuilder;
 import org.springframework.lang.NonNull;
 import org.springframework.messaging.Message;
+import org.springframework.messaging.MessagingException;
 import org.springframework.util.Assert;
 
 import java.util.Set;
@@ -36,13 +40,15 @@ public class ServiceBusQueueTemplate extends ServiceBusTemplate<ServiceBusQueueC
 
     private final Set<String> subscribedQueues = Sets.newConcurrentHashSet();
 
-    public ServiceBusQueueTemplate(ServiceBusQueueClientFactory clientFactory) {
-        super(clientFactory);
+    public ServiceBusQueueTemplate(ServiceBusQueueClientFactory clientFactory,
+                                   InstrumentationManager instrumentationManager) {
+        super(clientFactory, instrumentationManager);
     }
 
     public ServiceBusQueueTemplate(ServiceBusQueueClientFactory clientFactory,
-                                   ServiceBusMessageConverter messageConverter) {
-        super(clientFactory, messageConverter);
+                                   ServiceBusMessageConverter messageConverter,
+                                   InstrumentationManager instrumentationManager) {
+        super(clientFactory, messageConverter, instrumentationManager);
     }
 
     /**
@@ -68,10 +74,19 @@ public class ServiceBusQueueTemplate extends ServiceBusTemplate<ServiceBusQueueC
                 return String.format(MSG_SUCCESS_CHECKPOINT, message, name, getCheckpointConfig().getCheckpointMode());
             }
         };
-
-        ServiceBusProcessorClient processorClient = this.clientFactory.getOrCreateProcessor(name, clientConfig,
-                                                                                            messageProcessor);
-        processorClient.start();
+        try {
+            instrumentationManager.addHealthInstrumentation(new Instrumentation(name));
+            ServiceBusProcessorClient processorClient = this.clientFactory.getOrCreateProcessor(name, clientConfig,
+                messageProcessor);
+            processorClient.start();
+            instrumentationManager.getHealthInstrumentation(name).markStartedSuccessfully();
+        } catch (Exception e) {
+            instrumentationManager.getHealthInstrumentation(name).markStartFailed(e);
+            LOGGER.error("ServiceBus processorClient startup failed, Caused by " + e.getMessage());
+            throw new MessagingException(MessageBuilder.withPayload(
+                "ServiceBus processorClient startup failed, Caused by " + e.getMessage())
+                                                       .build(), e);
+        }
     }
 
     @Override

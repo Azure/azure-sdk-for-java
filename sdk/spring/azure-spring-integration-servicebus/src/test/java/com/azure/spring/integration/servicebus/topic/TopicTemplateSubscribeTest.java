@@ -5,6 +5,7 @@ package com.azure.spring.integration.servicebus.topic;
 
 import com.azure.spring.integration.servicebus.converter.ServiceBusMessageConverter;
 import com.azure.spring.integration.servicebus.factory.ServiceBusTopicClientFactory;
+import com.azure.spring.integration.servicebus.health.InstrumentationManager;
 import com.azure.spring.integration.servicebus.support.ServiceBusProcessorClientWrapper;
 import com.azure.spring.integration.test.support.SubscribeByGroupOperationTest;
 import org.junit.jupiter.api.AfterEach;
@@ -26,6 +27,7 @@ public class TopicTemplateSubscribeTest extends SubscribeByGroupOperationTest<Se
     private ServiceBusTopicClientFactory mockClientFactory;
     private ServiceBusProcessorClientWrapper processorClientWrapper;
     private AutoCloseable closeable;
+    private InstrumentationManager instrumentationManager = new InstrumentationManager();
     @BeforeEach
     public void setUp() {
         this.closeable = MockitoAnnotations.openMocks(this);
@@ -33,7 +35,7 @@ public class TopicTemplateSubscribeTest extends SubscribeByGroupOperationTest<Se
         ServiceBusProcessorClientWrapper anotherProcessorClientWrapper = new ServiceBusProcessorClientWrapper();
 
         this.subscribeByGroupOperation = new ServiceBusTopicTemplate(mockClientFactory,
-                                                                     new ServiceBusMessageConverter());
+            new ServiceBusMessageConverter(), instrumentationManager);
         when(this.mockClientFactory.getOrCreateProcessor(eq(this.destination),
                                                          eq(this.consumerGroup),
                                                          any(),

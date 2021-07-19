@@ -11,11 +11,15 @@ import com.azure.spring.integration.servicebus.ServiceBusRuntimeException;
 import com.azure.spring.integration.servicebus.ServiceBusTemplate;
 import com.azure.spring.integration.servicebus.converter.ServiceBusMessageConverter;
 import com.azure.spring.integration.servicebus.factory.ServiceBusTopicClientFactory;
+import com.azure.spring.integration.servicebus.health.Instrumentation;
+import com.azure.spring.integration.servicebus.health.InstrumentationManager;
 import com.google.common.collect.Sets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.integration.support.MessageBuilder;
 import org.springframework.lang.NonNull;
 import org.springframework.messaging.Message;
+import org.springframework.messaging.MessagingException;
 import org.springframework.util.Assert;
 
 import java.util.Set;
@@ -38,13 +42,15 @@ public class ServiceBusTopicTemplate extends ServiceBusTemplate<ServiceBusTopicC
 
     private final Set<Tuple<String, String>> nameAndConsumerGroups = Sets.newConcurrentHashSet();
 
-    public ServiceBusTopicTemplate(ServiceBusTopicClientFactory clientFactory) {
-        super(clientFactory);
+    public ServiceBusTopicTemplate(ServiceBusTopicClientFactory clientFactory,
+                                   InstrumentationManager instrumentationManager) {
+        super(clientFactory, instrumentationManager);
     }
 
     public ServiceBusTopicTemplate(ServiceBusTopicClientFactory clientFactory,
-                                   ServiceBusMessageConverter messageConverter) {
-        super(clientFactory, messageConverter);
+                                   ServiceBusMessageConverter messageConverter,
+                                   InstrumentationManager instrumentationManager) {
+        super(clientFactory, messageConverter, instrumentationManager);
     }
 
     @Override
@@ -104,13 +110,23 @@ public class ServiceBusTopicTemplate extends ServiceBusTemplate<ServiceBusTopicC
             @Override
             protected String buildCheckpointSuccessMessage(Message<?> message) {
                 return String.format(MSG_SUCCESS_CHECKPOINT, consumer, name, message,
-                                     getCheckpointConfig().getCheckpointMode());
+                    getCheckpointConfig().getCheckpointMode());
             }
         };
-        ServiceBusProcessorClient processorClient = this.clientFactory.getOrCreateProcessor(name, consumerGroup,
-                                                                                            this.clientConfig,
-                                                                                            messageProcessor);
-        processorClient.start();
+
+        try {
+            instrumentationManager.addHealthInstrumentation(new Instrumentation(name + consumerGroup));
+            ServiceBusProcessorClient processorClient = this.clientFactory.getOrCreateProcessor(name, consumerGroup,
+                this.clientConfig, messageProcessor);
+            processorClient.start();
+            instrumentationManager.getHealthInstrumentation(name + consumerGroup).markStartedSuccessfully();
+        } catch (Exception e) {
+            instrumentationManager.getHealthInstrumentation(name + consumerGroup).markStartFailed(e);
+            LOGGER.error("ServiceBus processorClient startup failed, Caused by " + e.getMessage());
+            throw new MessagingException(MessageBuilder.withPayload(
+                "ServiceBus processorClient startup failed, Caused by " + e.getMessage())
+                                                       .build(), e);
+        }
     }
 
 

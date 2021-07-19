@@ -9,6 +9,7 @@ import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 import com.azure.spring.integration.core.api.PartitionSupplier;
 import com.azure.spring.integration.servicebus.DefaultServiceBusMessageProcessor;
 import com.azure.spring.integration.servicebus.factory.ServiceBusQueueClientFactory;
+import com.azure.spring.integration.servicebus.health.InstrumentationManager;
 import com.azure.spring.integration.servicebus.queue.ServiceBusQueueTemplate;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
@@ -40,8 +41,9 @@ public class ServiceBusQueueTestOperation extends ServiceBusQueueTemplate {
     private final AtomicInteger completeCalledTimes = new AtomicInteger(0);
     private final AtomicInteger deadLetterCalledTimes = new AtomicInteger(0);
 
-    public ServiceBusQueueTestOperation(ServiceBusQueueClientFactory clientFactory) {
-        super(clientFactory);
+    public ServiceBusQueueTestOperation(ServiceBusQueueClientFactory clientFactory,
+                                        InstrumentationManager instrumentationManager) {
+        super(clientFactory, instrumentationManager);
     }
 
     @Override

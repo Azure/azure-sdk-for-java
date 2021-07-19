@@ -6,6 +6,7 @@ package com.azure.spring.integration.servicebus.queue;
 import com.azure.spring.integration.servicebus.ServiceBusClientConfig;
 import com.azure.spring.integration.servicebus.converter.ServiceBusMessageConverter;
 import com.azure.spring.integration.servicebus.factory.ServiceBusQueueClientFactory;
+import com.azure.spring.integration.servicebus.health.InstrumentationManager;
 import com.azure.spring.integration.servicebus.support.ServiceBusProcessorClientWrapper;
 import com.azure.spring.integration.test.support.SubscribeOperationTest;
 import org.junit.jupiter.api.AfterEach;
@@ -31,11 +32,14 @@ public class QueueTemplateSubscribeTest extends SubscribeOperationTest<ServiceBu
 
     private AutoCloseable closeable;
 
+    private InstrumentationManager instrumentationManager = new InstrumentationManager();
+
+
     @BeforeEach
     public void setUp() {
         this.closeable = MockitoAnnotations.openMocks(this);
         this.processorClientWrapper = new ServiceBusProcessorClientWrapper();
-        this.subscribeOperation = new ServiceBusQueueTemplate(mockClientFactory, new ServiceBusMessageConverter());
+        this.subscribeOperation = new ServiceBusQueueTemplate(mockClientFactory, new ServiceBusMessageConverter(),instrumentationManager);
         when(this.mockClientFactory.getOrCreateProcessor(eq(this.destination), any(), any())).thenReturn(
             processorClientWrapper.getClient());
     }

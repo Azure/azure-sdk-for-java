@@ -32,7 +32,9 @@ import org.springframework.context.annotation.Import;
     AzureEnvironmentAutoConfiguration.class,
     AzureContextAutoConfiguration.class,
     AzureServiceBusAutoConfiguration.class,
-    AzureServiceBusQueueAutoConfiguration.class })
+    AzureServiceBusQueueAutoConfiguration.class,
+    ServiceBusQueueBinderHealthIndicatorConfiguration.class
+})
 @EnableConfigurationProperties({ AzureServiceBusProperties.class, ServiceBusQueueExtendedBindingProperties.class })
 public class ServiceBusQueueBinderConfiguration {
 
