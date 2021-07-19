@@ -138,11 +138,9 @@ public class SearchIndexerClientBuilder {
      *
      * @param credential The {@link AzureKeyCredential} used to authenticate HTTP requests.
      * @return The updated SearchIndexerClientBuilder object.
-     * @throws NullPointerException If {@code credential} is {@code null}.
-     * @throws IllegalArgumentException If {@link AzureKeyCredential#getKey()} is {@code null} or empty.
      */
     public SearchIndexerClientBuilder credential(AzureKeyCredential credential) {
-        this.azureKeyCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
+        this.azureKeyCredential = credential;
         return this;
     }
 
@@ -151,10 +149,9 @@ public class SearchIndexerClientBuilder {
      *
      * @param credential The {@link TokenCredential} used to authenticate HTTP requests.
      * @return The updated SearchIndexerClientBuilder object.
-     * @throws NullPointerException If {@code credential} is {@code null}.
      */
     public SearchIndexerClientBuilder credential(TokenCredential credential) {
-        this.tokenCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
+        this.tokenCredential = credential;
         return this;
     }
 

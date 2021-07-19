@@ -190,11 +190,9 @@ public final class SearchClientBuilder {
      *
      * @param credential The {@link AzureKeyCredential} used to authenticate HTTP requests.
      * @return The updated SearchClientBuilder object.
-     * @throws NullPointerException If {@code credential} is null.
-     * @throws IllegalArgumentException If {@link AzureKeyCredential#getKey()} is null or empty.
      */
     public SearchClientBuilder credential(AzureKeyCredential credential) {
-        this.azureKeyCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
+        this.azureKeyCredential = credential;
         return this;
     }
 
@@ -203,10 +201,9 @@ public final class SearchClientBuilder {
      *
      * @param credential The {@link TokenCredential} used to authenticate HTTP requests.
      * @return The updated SearchClientBuilder object.
-     * @throws NullPointerException If {@code credential} is {@code null}.
      */
     public SearchClientBuilder credential(TokenCredential credential) {
-        this.tokenCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
+        this.tokenCredential = credential;
         return this;
     }
 

@@ -3,7 +3,6 @@
 package com.azure.search.documents.indexes;
 
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
@@ -108,18 +107,6 @@ public class SearchIndexerClientBuilderTests {
     @Test
     public void emptyEndpointThrowsIllegalArgumentException() {
         assertThrows(IllegalArgumentException.class, () -> new SearchIndexerClientBuilder().endpoint(""));
-    }
-
-    @Test
-    public void nullAzureKeyCredentialThrowsNullPointerException() {
-        assertThrows(NullPointerException.class,
-            () -> new SearchIndexerClientBuilder().credential((AzureKeyCredential) null));
-    }
-
-    @Test
-    public void nullTokenCredentialThrowsNullPointerException() {
-        assertThrows(NullPointerException.class,
-            () -> new SearchIndexerClientBuilder().credential((TokenCredential) null));
     }
 
     @Test
