@@ -37,6 +37,7 @@ import com.azure.search.documents.implementation.models.SuggestRequest;
 import com.azure.search.documents.models.AutocompleteMode;
 import com.azure.search.documents.models.AutocompleteOptions;
 import com.azure.search.documents.models.AutocompleteResult;
+import com.azure.search.documents.models.Captions;
 import com.azure.search.documents.models.QueryLanguage;
 import com.azure.search.documents.models.QuerySpeller;
 import com.azure.search.documents.models.QueryType;
@@ -112,6 +113,8 @@ public final class DocumentsImpl {
                 @QueryParam("$select") String select,
                 @QueryParam("$skip") Integer skip,
                 @QueryParam("$top") Integer top,
+                @QueryParam("captions") Captions captions,
+                @QueryParam("semanticFields") String semanticFields,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
                 @HeaderParam("Accept") String accept,
@@ -370,6 +373,16 @@ public final class DocumentsImpl {
             topInternal = searchOptions.getTop();
         }
         Integer top = topInternal;
+        Captions captionsInternal = null;
+        if (searchOptions != null) {
+            captionsInternal = searchOptions.getCaptions();
+        }
+        Captions captions = captionsInternal;
+        List<String> semanticFieldsInternal = null;
+        if (searchOptions != null) {
+            semanticFieldsInternal = searchOptions.getSemanticFields();
+        }
+        List<String> semanticFields = semanticFieldsInternal;
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
@@ -387,6 +400,8 @@ public final class DocumentsImpl {
                 JacksonAdapter.createDefaultSerializerAdapter().serializeList(searchFields, CollectionFormat.CSV);
         String selectConverted =
                 JacksonAdapter.createDefaultSerializerAdapter().serializeList(select, CollectionFormat.CSV);
+        String semanticFieldsConverted =
+                JacksonAdapter.createDefaultSerializerAdapter().serializeList(semanticFields, CollectionFormat.CSV);
         return service.searchGet(
                 this.client.getEndpoint(),
                 this.client.getIndexName(),
@@ -412,6 +427,8 @@ public final class DocumentsImpl {
                 selectConverted,
                 skip,
                 top,
+                captions,
+                semanticFieldsConverted,
                 this.client.getApiVersion(),
                 xMsClientRequestId,
                 accept,
