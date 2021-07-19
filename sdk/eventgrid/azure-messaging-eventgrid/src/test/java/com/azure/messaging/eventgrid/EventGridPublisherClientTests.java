@@ -163,6 +163,7 @@ public class EventGridPublisherClientTests extends TestBase {
     }
 
     @Test
+    @Disabled
     public void publishWithTokenCredential() {
         DefaultAzureCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
         EventGridPublisherAsyncClient<CloudEvent> egClient = builder
