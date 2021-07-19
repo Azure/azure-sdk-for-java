@@ -1,7 +1,8 @@
 # Release History
 
 ## 4.5.0-beta.1 (Unreleased)
-
+### Features Added
+- Added `EventGridPublisherClientBuilder#credential(TokenCredential credential)` to support Azure Active Directory authentication.
 
 ## 4.4.0 (2021-06-09)
 ### New Features
