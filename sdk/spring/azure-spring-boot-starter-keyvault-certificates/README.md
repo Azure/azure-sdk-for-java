@@ -340,6 +340,20 @@ certificate will be added with the alias of `mycert`.
     4. Certificates from Azure Key Vault. 
     5. Certificates from classpath.
 
+### Key-Less certificates
+You can set the private key as non-exportable to ensure the security of the key.
+
+Note if you want to use a key less certificate, you must add `sign` permissions to the principal.
+
+To grant access use the command line below:
+```shell
+  az keyvault set-policy --name ${KEY_VAULT} \
+        --object-id ${MANAGED_IDENTITY} \
+        --key-permissions sign\
+        --secret-permissions sign\
+        --certificate-permissions sign
+```
+
 
 ## Troubleshooting
 ### Enable client logging

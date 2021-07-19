@@ -122,6 +122,11 @@ azure:
     custom:         # The file location where you store the custom certificate
 ```
 
+### Key-Less certificates
+You can set the private key as non-exportable to ensure the security of the key.
+
+Note if you want to use a key less certificate, you must add `sign` permissions to the principal.
+
 ## Troubleshooting
 ### General
 Azure Key Vault JCA clients raise exceptions. For example, if you try to check a client's identity with a certificate chain that does not include a trusted certificate, a `CertificateException` will be thrown. In the following snippet, the error is handled gracefully by catching the exception and displaying additional information about the error.
