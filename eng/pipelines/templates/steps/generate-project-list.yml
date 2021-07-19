@@ -14,9 +14,6 @@ parameters:
   - name: AdditionalModules
     type: object
     default: []
-  - name: JobType
-    type: string
-    default: test
   - name: SDKType
     type: string
     default: client
@@ -27,7 +24,6 @@ parameters:
 steps:
 - template: ../steps/cache-maven-repository.yml
   parameters:
-    JobType: ${{ parameters.JobType }}
     SDKType: ${{ parameters.SDKType }}
     ServiceDirectory: ${{ parameters.ServiceDirectory }}
 

@@ -68,7 +68,6 @@ jobs:
         parameters:
           Artifacts: ${{ parameters.Artifacts }}
           AdditionalModules: ${{ parameters.AdditionalModules }}
-          JobType: 'Analyze'
           SDKType: ${{parameters.SDKType}}
           ServiceDirectory: ${{parameters.ServiceDirectory}}
 

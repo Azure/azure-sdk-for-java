@@ -1,7 +1,4 @@
 parameters:
-  - name: JobType
-    type: string
-    default: test
   - name: SDKType
     type: string
     default: client
@@ -12,6 +9,6 @@ parameters:
 steps:
 - task: Cache@2
   inputs:
-    key: 'maven | "$(CacheSalt)" | "$(Agent.OS)" | $(Build.SourcesDirectory)/eng/versioning/external_dependencies.txt | "${{ parameters.SDKType }}" | "${{ parameters.ServiceDirectory }}" | "${{ parameters.JobType }}" | "$(TestFromSource)"'
+    key: 'maven | "$(CacheSalt)" | "$(Agent.JobName)" | $(Build.SourcesDirectory)/eng/versioning/external_dependencies.txt | "${{ parameters.SDKType }}" | "${{ parameters.ServiceDirectory }}"'
     path: $(MAVEN_CACHE_FOLDER)
   displayName: Cache Maven local repo
