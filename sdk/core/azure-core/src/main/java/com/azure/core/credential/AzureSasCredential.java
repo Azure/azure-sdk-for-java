@@ -13,8 +13,9 @@ import java.util.function.Function;
  */
 public final class AzureSasCredential {
     private final ClientLogger logger = new ClientLogger(AzureSasCredential.class);
+    private final Function<String, String> signatureEncoder;
+
     private volatile String signature;
-    private final Function<String, String> sanitationFunction;
 
     /**
      * Creates a credential that authorizes request with the given shared access signature.
@@ -34,22 +35,23 @@ public final class AzureSasCredential {
     /**
      * Creates a credential that authorizes request within the given shared access signature.
      * <p>
-     * If {@code sanitationFunction} is non-null the {@code signature}, and all {@link #update(String) updated
-     * signatures}, will be sanitized using the function.
+     * If {@code signatureEncoder} is non-null the {@code signature}, and all {@link #update(String) updated
+     * signatures}, will be encoded using the function. {@code signatureEncoder} should be as idempotent as possible to
+     * reduce the chance of double encoding errors.
      *
      * @param signature The shared access signature used to authorize requests.
-     * @param sanitationFunction An optional sanitation function to sanitize the {@code signature}.
+     * @param signatureEncoder An optional function which encodes the {@code signature}.
      * @throws NullPointerException If {@code signature} is {@code null}.
      * @throws IllegalArgumentException If {@code signature} is an empty string.
      */
-    public AzureSasCredential(String signature, Function<String, String> sanitationFunction) {
+    public AzureSasCredential(String signature, Function<String, String> signatureEncoder) {
         Objects.requireNonNull(signature, "'signature' cannot be null.");
         if (signature.isEmpty()) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'signature' cannot be empty."));
         }
 
-        this.sanitationFunction = sanitationFunction;
-        this.signature = sanitizeSignature(signature, sanitationFunction);
+        this.signatureEncoder = signatureEncoder;
+        this.signature = (signatureEncoder == null) ? signature : signatureEncoder.apply(signature);
     }
 
     /**
@@ -75,11 +77,7 @@ public final class AzureSasCredential {
             throw logger.logExceptionAsError(new IllegalArgumentException("'signature' cannot be empty."));
         }
 
-        this.signature = sanitizeSignature(signature, sanitationFunction);
+        this.signature = (signatureEncoder == null) ? signature : signatureEncoder.apply(signature);
         return this;
-    }
-
-    private static String sanitizeSignature(String signature, Function<String, String> sanitationFunction) {
-        return (sanitationFunction == null) ? signature : sanitationFunction.apply(signature);
     }
 }
