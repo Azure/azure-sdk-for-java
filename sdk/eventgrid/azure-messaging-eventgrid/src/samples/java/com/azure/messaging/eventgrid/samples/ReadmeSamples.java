@@ -235,7 +235,7 @@ public class ReadmeSamples {
 
     public void createPublisherAsyncClientWithTokenCredential() {
         EventGridPublisherAsyncClient<CloudEvent> cloudEventClient = new EventGridPublisherClientBuilder()
-            .endpoint("<endpont of your event grid topic/domain that accepts CloudEvent schema>")
+            .endpoint("<endpoint of your event grid topic/domain that accepts CloudEvent schema>")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildCloudEventPublisherAsyncClient();
     }
