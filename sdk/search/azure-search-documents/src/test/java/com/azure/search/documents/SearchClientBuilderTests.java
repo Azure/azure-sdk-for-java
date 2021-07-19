@@ -4,6 +4,7 @@
 package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.policy.FixedDelay;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -120,8 +121,15 @@ public class SearchClientBuilderTests {
     }
 
     @Test
-    public void nullCredentialThrowsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> new SearchClientBuilder().credential(null));
+    public void nullAzureKeyCredentialThrowsNullPointerException() {
+        assertThrows(NullPointerException.class,
+            () -> new SearchClientBuilder().credential((AzureKeyCredential) null));
+    }
+
+    @Test
+    public void nullTokenCredentialThrowsNullPointerException() {
+        assertThrows(NullPointerException.class,
+            () -> new SearchClientBuilder().credential((TokenCredential) null));
     }
 
     @Test
