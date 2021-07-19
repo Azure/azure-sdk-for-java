@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.communication.callingserver.implementation;
+package com.azure.communication.common.implementation;
 
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
@@ -13,11 +13,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * HttpPipelinePolicy to redirect requests to the new location.
+ * HttpPipelinePolicy to redirect requests when 302 message is received to the new location marked by the
+ * Location header.
  */
 public final class RedirectPolicy implements HttpPipelinePolicy {
     private static final int MAX_REDIRECTS = 10;
+    private static final String LOCATION_HEADER_NAME = "Location";
     private final List<String> locations = new ArrayList<>();
+
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
@@ -28,7 +31,7 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
                                                   int redirectNumber) {
         return next.clone().process().flatMap(httpResponse -> {
             if (shouldRedirect(httpResponse, redirectNumber)) {
-                String newLocation = httpResponse.getHeaderValue("Location");
+                String newLocation = httpResponse.getHeaderValue(LOCATION_HEADER_NAME);
                 locations.add(newLocation);
 
                 HttpRequest newRequest = context.getHttpRequest().copy();
@@ -43,7 +46,7 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
 
     private boolean shouldRedirect(HttpResponse response, int redirectNumber) {
         return response.getStatusCode() == 302
-            && !locations.contains(response.getHeaderValue("Location"))
+            && !locations.contains(response.getHeaderValue(LOCATION_HEADER_NAME))
             && redirectNumber < MAX_REDIRECTS;
     }
 }

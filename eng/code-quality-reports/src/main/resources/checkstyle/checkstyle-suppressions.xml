@@ -608,5 +608,5 @@ the main ServiceBusClientBuilder. -->
   
   <!-- Checkstyle suppressions to keep HttpPipelinePolicy in implementation folder. -->
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicyCheck"
-            files="com.azure.communication.callingserver.implementation.RedirectPolicy.java"/>
+            files="com.azure.communication.common.implementation.RedirectPolicy.java"/>
 </suppressions>
