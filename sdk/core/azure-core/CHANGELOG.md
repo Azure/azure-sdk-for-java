@@ -2,6 +2,9 @@
 
 ## 1.19.0-beta.2 (Unreleased)
 
+### Feature Added
+ - Added a new constructor `HttpHeaders(int initialCapacity)` which allows configuration of the initial backing map 
+   capacity may allow short-circuiting scenarios where the map would need to be resized and copied in memory.
 
 ## 1.19.0-beta.1 (2021-07-07)
 

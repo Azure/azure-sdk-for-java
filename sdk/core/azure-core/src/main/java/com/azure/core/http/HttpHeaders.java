@@ -17,12 +17,13 @@ import java.util.stream.Stream;
  */
 public class HttpHeaders implements Iterable<HttpHeader> {
     // This map is a case-insensitive key (i.e. lower-cased), but the returned HttpHeader key will be as-provided to us
-    private final Map<String, HttpHeader> headers = new HashMap<>();
+    private final Map<String, HttpHeader> headers;
 
     /**
      * Create an empty HttpHeaders instance.
      */
     public HttpHeaders() {
+        headers = new HashMap<>();
     }
 
     /**
@@ -31,6 +32,7 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      * @param headers the map of initial headers
      */
     public HttpHeaders(Map<String, String> headers) {
+        this.headers = new HashMap<>(headers.size());
         headers.forEach(this::set);
     }
 
@@ -40,9 +42,19 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      * @param headers the collection of initial headers
      */
     public HttpHeaders(Iterable<HttpHeader> headers) {
+        this.headers = new HashMap<>();
         for (final HttpHeader header : headers) {
             this.set(header.getName(), header.getValue());
         }
+    }
+
+    /**
+     * Create a HttpHeaders instance with an initial {@code size} empty headers
+     *
+     * @param initialCapacity the initial capacity of headers map.
+     */
+    public HttpHeaders(int initialCapacity) {
+        this.headers = new HashMap<>(initialCapacity);
     }
 
     /**
