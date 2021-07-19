@@ -26,6 +26,18 @@ public final class AccountEncryption {
     @JsonProperty(value = "keyVaultProperties")
     private KeyVaultProperties keyVaultProperties;
 
+    /*
+     * The Key Vault identity.
+     */
+    @JsonProperty(value = "identity")
+    private ResourceIdentity identity;
+
+    /*
+     * The current status of the Key Vault mapping.
+     */
+    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
+    private String status;
+
     /**
      * Get the type property: The type of key used to encrypt the Account Key.
      *
@@ -67,6 +79,35 @@ public final class AccountEncryption {
     }
 
     /**
+     * Get the identity property: The Key Vault identity.
+     *
+     * @return the identity value.
+     */
+    public ResourceIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The Key Vault identity.
+     *
+     * @param identity the identity value to set.
+     * @return the AccountEncryption object itself.
+     */
+    public AccountEncryption withIdentity(ResourceIdentity identity) {
+        this.identity = identity;
+        return this;
+    }
+
+    /**
+     * Get the status property: The current status of the Key Vault mapping.
+     *
+     * @return the status value.
+     */
+    public String status() {
+        return this.status;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -79,6 +120,9 @@ public final class AccountEncryption {
         }
         if (keyVaultProperties() != null) {
             keyVaultProperties().validate();
+        }
+        if (identity() != null) {
+            identity().validate();
         }
     }
 }

@@ -6,6 +6,7 @@ package com.azure.resourcemanager.monitor.implementation;
 
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -53,7 +54,7 @@ public final class VMInsightsClientImpl implements VMInsightsClient {
     @Host("{$host}")
     @ServiceInterface(name = "MonitorClientVMInsig")
     private interface VMInsightsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("/{resourceUri}/providers/Microsoft.Insights/vmInsightsOnboardingStatuses/default")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -61,6 +62,7 @@ public final class VMInsightsClientImpl implements VMInsightsClient {
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam(value = "resourceUri", encoded = true) String resourceUri,
+            @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -86,10 +88,12 @@ public final class VMInsightsClientImpl implements VMInsightsClient {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
         }
         final String apiVersion = "2018-11-27-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context -> service.getOnboardingStatus(this.client.getEndpoint(), apiVersion, resourceUri, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+                context ->
+                    service.getOnboardingStatus(this.client.getEndpoint(), apiVersion, resourceUri, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -116,8 +120,9 @@ public final class VMInsightsClientImpl implements VMInsightsClient {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
         }
         final String apiVersion = "2018-11-27-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getOnboardingStatus(this.client.getEndpoint(), apiVersion, resourceUri, context);
+        return service.getOnboardingStatus(this.client.getEndpoint(), apiVersion, resourceUri, accept, context);
     }
 
     /**

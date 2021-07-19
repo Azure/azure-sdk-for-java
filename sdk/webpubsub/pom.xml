@@ -52,6 +52,7 @@
       </activation>
       <modules>
         <module>azure-messaging-webpubsub</module>
+        <module>azure-resourcemanager-webpubsub</module>
       </modules>
     </profile>
   </profiles>

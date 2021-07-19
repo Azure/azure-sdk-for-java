@@ -1,32 +1,42 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.digitaltwins.core;
 
-    import com.azure.core.http.policy.HttpLogOptions;
-    import com.azure.core.http.rest.PagedIterable;
-    import com.azure.core.http.rest.Response;
-    import com.azure.core.util.Context;
-    import com.azure.digitaltwins.core.helpers.ConsoleLogger;
-    import com.azure.digitaltwins.core.helpers.SamplesArguments;
-    import com.azure.digitaltwins.core.helpers.SamplesConstants;
-    import com.azure.digitaltwins.core.helpers.UniqueIdHelper;
-    import com.azure.digitaltwins.core.implementation.models.ErrorResponseException;
-    import com.azure.digitaltwins.core.models.*;
-    import com.azure.identity.ClientSecretCredentialBuilder;
-    import com.fasterxml.jackson.core.JsonProcessingException;
-    import com.fasterxml.jackson.databind.ObjectMapper;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
+import com.azure.core.util.Context;
+import com.azure.digitaltwins.core.helpers.ConsoleLogger;
+import com.azure.digitaltwins.core.helpers.SamplesArguments;
+import com.azure.digitaltwins.core.helpers.SamplesConstants;
+import com.azure.digitaltwins.core.helpers.UniqueIdHelper;
+import com.azure.digitaltwins.core.implementation.models.ErrorResponseException;
+import com.azure.digitaltwins.core.models.DigitalTwinsModelData;
+import com.azure.digitaltwins.core.models.IncomingRelationship;
+import com.azure.identity.ClientSecretCredentialBuilder;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-    import java.io.IOException;
-    import java.net.HttpURLConnection;
-    import java.util.*;
-    import java.util.function.Function;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Random;
+import java.util.function.Function;
 
 public class RelationshipsSyncSamples {
     private static DigitalTwinsClient client;
-    private static final ObjectMapper mapper = new ObjectMapper();
+    private static final ObjectMapper MAPPER = new ObjectMapper();
 
-    public static Function<Integer, String> randomIntegerStringGenerator = (maxLength) -> {
-        int randInt = new Random().nextInt((int)Math.pow(10, 8) - 1) + 1;
-        return String.valueOf(randInt);
-    };
+    private static Function<Integer, String> randomIntegerStringGenerator;
+
+    static {
+        randomIntegerStringGenerator = (maxLength) -> {
+            int randInt = new Random().nextInt((int) Math.pow(10, 8) - 1) + 1;
+            return String.valueOf(randInt);
+        };
+    }
 
     public static void main(String[] args) throws IOException {
 
@@ -107,7 +117,7 @@ public class RelationshipsSyncSamples {
 
         client.createOrReplaceRelationship(buildingTwinId, buildingFloorRelationshipId, buildingFloorRelationshipPayload, BasicRelationship.class);
 
-        ConsoleLogger.printSuccess("Created a digital twin relationship "+ buildingFloorRelationshipId + " from twin: " + buildingTwinId + " to twin: " + floorTwinId);
+        ConsoleLogger.printSuccess("Created a digital twin relationship " + buildingFloorRelationshipId + " from twin: " + buildingTwinId + " to twin: " + floorTwinId);
 
         ConsoleLogger.printHeader("Get Relationship");
         Response<BasicRelationship> getRelationshipResponse = client.getRelationshipWithResponse(
@@ -118,9 +128,9 @@ public class RelationshipsSyncSamples {
 
         if (getRelationshipResponse.getStatusCode() == HttpURLConnection.HTTP_OK) {
             BasicRelationship retrievedRelationship = getRelationshipResponse.getValue();
-            ConsoleLogger.printSuccess("Retrieved relationship: " + retrievedRelationship.getId() + " from twin: " + retrievedRelationship.getSourceId() + "\n\t" +
-                "Prop1: " + retrievedRelationship.getProperties().get("Prop1") + "\n\t" +
-                "Prop2: " + retrievedRelationship.getProperties().get("Prop2") + "\n");
+            ConsoleLogger.printSuccess("Retrieved relationship: " + retrievedRelationship.getId() + " from twin: " + retrievedRelationship.getSourceId() + "\n\t"
+                + "Prop1: " + retrievedRelationship.getProperties().get("Prop1") + "\n\t"
+                + "Prop2: " + retrievedRelationship.getProperties().get("Prop2") + "\n");
 
             ConsoleLogger.printSuccess("Retrieved relationship has ETag: " + retrievedRelationship.getETag() + "\n\t");
         }
@@ -154,8 +164,7 @@ public class RelationshipsSyncSamples {
             // Delete all twins
             client.deleteDigitalTwin(buildingTwinId);
             client.deleteDigitalTwin(floorTwinId);
-        }
-        catch (ErrorResponseException ex) {
+        } catch (ErrorResponseException ex) {
             ConsoleLogger.printFatal("Failed to delete digital twin due to" + ex);
         }
 
@@ -163,8 +172,7 @@ public class RelationshipsSyncSamples {
             // Delete all models
             client.deleteModel(sampleBuildingModelId);
             client.deleteModel(sampleFloorModelId);
-        }
-        catch (ErrorResponseException ex) {
+        } catch (ErrorResponseException ex) {
             ConsoleLogger.printFatal("Failed to delete models due to" + ex);
         }
     }
