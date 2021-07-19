@@ -173,7 +173,7 @@ public class ServiceBusMessageConverter
      * @return {@link Optional} of the header value.
      */
     private <T> Optional<T> getAndRemove(Map<String, Object> copySpringMessageHeaders, String key, Class<T> clazz) {
-        return Optional.ofNullable((T) copySpringMessageHeaders.remove(key));
+        return Optional.ofNullable(clazz.cast(copySpringMessageHeaders.remove(key)));
     }
 
     private Boolean logOverriddenHeaders(String currentHeader, String overriddenHeader,
