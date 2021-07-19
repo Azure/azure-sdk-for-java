@@ -304,8 +304,9 @@ public class KeyVaultClient extends DelegateRestClient {
                     }
                 }
             }
+        } else {
+            return new KeyVaultPrivateKey(certificateBundle.getPolicy().getKeyProperties().getKty(), certificateBundle.getKid());
         }
-
         //
         // If the private key is not available the certificate cannot be
         // used for server side certificates or mTLS. Then we do not know
@@ -316,34 +317,20 @@ public class KeyVaultClient extends DelegateRestClient {
     }
 
     /**
-     * Create a virtual privateKey according to Policy
-     * @param alias certificate alias
-     * @return fake key
-     */
-    public Key getFakeKey(String alias) {
-        CertificateBundle certificateBundle = getCertificateBundle(alias);
-        String algorithm = certificateBundle.getPolicy().getKeyProperties().getKty();
-        String kid = certificateBundle.getKid();
-        String version = kid.substring(kid.lastIndexOf("/") + 1);
-        return new KeyVaultPrivateKey(algorithm, version, alias);
-    }
-
-    /**
      * get signature by key vault
      * @param digestName digestName
      * @param digestValue digestValue
-     * @param alias certificate alias
-     * @param version current certificate alias version
+     * @param kid The key id
      * @return signature
      */
-    public byte[] getSignedWithPrivateKey(String digestName, String digestValue, String alias, String version) {
+    public byte[] getSignedWithPrivateKey(String digestName, String digestValue, String kid) {
         PrivateKeyOperationResult result = null;
 
         String bodyString = String.format("{\"alg\": \"" + digestName + "\", \"value\": \"%s\"}", digestValue);
 
         HashMap<String, String> headers = new HashMap<>();
         headers.put("Authorization", "Bearer " + getAccessToken());
-        String url = String.format("%skeys/%s/%s/sign%s", keyVaultUrl, alias, version, API_VERSION_POSTFIX);
+        String url = String.format("%s/sign%s", kid, API_VERSION_POSTFIX);
         String response = post(url, headers, bodyString, "application/json");
         if (response != null) {
             JsonConverter converter = JsonConverterFactory.createJsonConverter();

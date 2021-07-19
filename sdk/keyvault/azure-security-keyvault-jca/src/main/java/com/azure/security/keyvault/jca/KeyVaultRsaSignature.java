@@ -34,9 +34,7 @@ public class KeyVaultRsaSignature extends SignatureSpi {
 
     private final KeyVaultClient keyVaultClient;
 
-    private String alias;
-
-    private String version;
+    private String kid;
 
     /**
      * Construct a new RSAPSSSignatur with arbitrary digest algorithm
@@ -69,8 +67,7 @@ public class KeyVaultRsaSignature extends SignatureSpi {
     protected void engineInitSign(PrivateKey privateKey, SecureRandom random) {
 
         if (privateKey instanceof KeyVaultPrivateKey) {
-            alias = ((KeyVaultPrivateKey) privateKey).getAlias();
-            version = ((KeyVaultPrivateKey) privateKey).getVersion();
+            kid = ((KeyVaultPrivateKey) privateKey).getKid();
             resetDigest();
         } else {
             throw new UnsupportedOperationException("engineInitSign() not supported which private key is not instance of KeyVaultPrivateKey");
@@ -144,7 +141,7 @@ public class KeyVaultRsaSignature extends SignatureSpi {
         byte[] mHash = getDigestValue();
 
         String encode = Base64.getEncoder().encodeToString(mHash);
-        byte[] encrypted = keyVaultClient.getSignedWithPrivateKey("PS256", encode, alias, version);
+        byte[] encrypted = keyVaultClient.getSignedWithPrivateKey("PS256", encode, kid);
         return encrypted;
     }
 

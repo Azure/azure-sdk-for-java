@@ -40,9 +40,7 @@ public abstract class KeyVaultECSignature extends SignatureSpi {
 
     private KeyVaultClient keyVaultClient;
 
-    private String alias;
-
-    private String version;
+    private String kid;
 
     /**
      * Constructs a new ECDSASignature.
@@ -138,8 +136,7 @@ public abstract class KeyVaultECSignature extends SignatureSpi {
     @Override
     protected void engineInitSign(PrivateKey privateKey, SecureRandom random) {
         if (privateKey instanceof KeyVaultPrivateKey) {
-            alias = ((KeyVaultPrivateKey) privateKey).getAlias();
-            version = ((KeyVaultPrivateKey) privateKey).getVersion();
+            kid = ((KeyVaultPrivateKey) privateKey).getKid();
             resetDigest();
         } else {
             throw new UnsupportedOperationException("engineInitSign() not supported which private key is not instance of KeyVaultPrivateKey");
@@ -199,7 +196,7 @@ public abstract class KeyVaultECSignature extends SignatureSpi {
 
         byte[] mHash = getDigestValue();
         String encode = Base64.getEncoder().encodeToString(mHash);
-        byte[] encrypted = keyVaultClient.getSignedWithPrivateKey(digestName, encode, alias, version);
+        byte[] encrypted = keyVaultClient.getSignedWithPrivateKey(digestName, encode, kid);
         if (p1363Format) {
             return encrypted;
         } else {

@@ -15,67 +15,47 @@ public class KeyVaultPrivateKey implements PrivateKey {
      */
     private static final long serialVersionUID = 1L;
 
+    private String kid;
+
     private String algorithm;
 
-    private String version;
-
-    private String alias;
-
     /**
-     * builder for key vault private key
+     * Builder for key vault private key
      * @param algorithm algorithm
-     * @param version certificate version
-     * @param alias certificate alias
+     * @param kid The key id
      */
-    public KeyVaultPrivateKey(String algorithm, String version, String alias) {
+    public KeyVaultPrivateKey(String algorithm, String kid) {
         this.algorithm = algorithm;
-        this.version = version;
-        this.alias = alias;
+        this.kid = kid;
     }
 
     /**
-     * set key vault certificate algorithm
+     * Get the kid
+     * @return the kid
+     */
+    public String getKid() {
+        return kid;
+    }
+
+    /**
+     * Store the kid
+     * @param kid the kid
+     */
+    public void setKid(String kid) {
+        this.kid = kid;
+    }
+
+    /**
+     * Store key vault certificate algorithm
      * @param algorithm algorithm
      */
     public void setAlgorithm(String algorithm) {
         this.algorithm = algorithm;
     }
 
-    /**
-     * Get key vault certificate alias
-     * @return version
-     */
-    public String getVersion() {
-        return version;
-    }
-
-    /**
-     * Set key vault certificate version
-     * @param version version
-     */
-    public void setVersion(String version) {
-        this.version = version;
-    }
-
-    /**
-     * Get key vault certificate alias
-     * @return alias
-     */
-    public String getAlias() {
-        return alias;
-    }
-
-    /**
-     * Set key vault certificate alias
-     * @param alias alias
-     */
-    public void setAlias(String alias) {
-        this.alias = alias;
-    }
-
     @Override
     public String getAlgorithm() {
-        return null;
+        return algorithm;
     }
 
     @Override

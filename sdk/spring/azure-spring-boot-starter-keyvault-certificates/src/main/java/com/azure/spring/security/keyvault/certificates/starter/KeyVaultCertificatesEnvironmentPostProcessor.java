@@ -57,9 +57,7 @@ public class KeyVaultCertificatesEnvironmentPostProcessor implements Environment
             propertySources.addFirst(new PropertiesPropertySource("TrustStorePropertySource", properties));
         }
         Security.insertProviderAt(new KeyVaultJcaProvider(), 1);
-        if (environmentPropertyIsTrue(environment, "azure.keyvault.keyless")) {
-            Security.insertProviderAt(new KeyVaultJcaSignProvider(), 1);
-        }
+        Security.insertProviderAt(new KeyVaultJcaSignProvider(), 1);
 
         if (overrideTrustManagerFactory(environment)) {
             Security.insertProviderAt(new KeyVaultTrustManagerFactoryProvider(), 1);

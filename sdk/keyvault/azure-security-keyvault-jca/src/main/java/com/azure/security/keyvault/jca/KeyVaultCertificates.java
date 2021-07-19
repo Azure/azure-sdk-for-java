@@ -154,12 +154,7 @@ public class KeyVaultCertificates implements AzureCertificates {
         Optional.ofNullable(aliases)
                 .orElse(Collections.emptyList())
                 .forEach(alias -> {
-                    Key key;
-                    if (keyLess) {
-                        key = keyVaultClient.getFakeKey(alias);
-                    } else {
-                        key = keyVaultClient.getKey(alias, null);
-                    }
+                    Key key = keyVaultClient.getKey(alias, null);
                     if (!Objects.isNull(key)) {
                         certificateKeys.put(alias, key);
                     }
