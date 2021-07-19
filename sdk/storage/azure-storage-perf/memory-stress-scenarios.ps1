@@ -26,5 +26,5 @@ Run-Scenario "400m" "uploadblob --warmup 0 --duration 1 --size 1048576000 --sync
 Run-Scenario "400m" "uploadblobnolength --warmup 0 --duration 1 --size 1048576000 --sync"
 
 $env:STORAGE_CONNECTION_STRING=$env:STORAGE_DATA_LAKE_CONNECTION_STRING
-Run-Scenario "300m" "uploadfiledatalake --warmup 0 --duration 1 --size 1048576000 --sync"
+Run-Scenario "200m" "uploadfiledatalake --warmup 0 --duration 1 --size 1048576000 --sync"
 Run-Scenario "300m" "uploadfiledatalake --warmup 0 --duration 1 --size 1048576000"
