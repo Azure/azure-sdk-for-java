@@ -176,17 +176,23 @@ public final class TextAnalyticsActions {
     }
 
     /**
+     * Gets the list of {@link ExtractSummaryAction} to be executed.
      *
-     * @return
+     * @return the list of {@link ExtractSummaryAction} to be executed.
      */
     public Iterable<ExtractSummaryAction> getExtractSummaryActions() {
         return extractSummaryActions;
     }
 
     /**
+     * Sets the list of {@link ExtractSummaryAction} to be executed.
      *
-     * @param extractSummaryActions
-     * @return
+     * @param extractSummaryActions The list of {@link ExtractSummaryAction} to be executed.
+     *
+     * @return The {@link TextAnalyticsActions} object itself.
+     *
+     * @throws IllegalArgumentException if more than one {@link ExtractSummaryAction} action are passed in.
+     * Currently service v3.2-preview.1 only accepts up to one action per type.
      */
     public TextAnalyticsActions setExtractSummaryActions(ExtractSummaryAction... extractSummaryActions) {
         validateActionsNumber(extractSummaryActions, ExtractSummaryAction.class.getName());

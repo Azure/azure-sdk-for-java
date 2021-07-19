@@ -66,16 +66,18 @@ public final class ExtractSummaryAction {
     /**
      * Gets the maximum extractive summarization sentences number to be returned in the response.
      *
-     * @return
+     * @return The maximum extractive summarization sentences number to be returned in the response.
      */
     public int getMaxSentenceCount() {
         return this.maxSentenceCount;
     }
 
     /**
+     * Gets the maximum extractive summarization sentences number to be returned in the response.
      *
-     * @param maxSentenceCount
-     * @return
+     * @param maxSentenceCount The maximum extractive summarization sentences number to be returned in the response.
+     *
+     * @return The {@link ExtractSummaryAction} object itself.
      */
     public ExtractSummaryAction setMaxSentenceCount(int maxSentenceCount) {
         this.maxSentenceCount = maxSentenceCount;
@@ -83,17 +85,21 @@ public final class ExtractSummaryAction {
     }
 
     /**
+     * Gets the type of summary sentences order.
      *
-     * @return
+     * @return The type of summary sentences order.
      */
     public SummarySentencesOrder getSentencesOrderBy() {
         return sentencesOrderBy;
     }
 
     /**
+     * Sets the type of summary sentences order.The default value is {@link SummarySentencesOrder#OFFSET}.
      *
-     * @param sentencesOrderBy
-     * @return
+     * @param sentencesOrderBy The type of summary sentences order.The default value is
+     * {@link SummarySentencesOrder#OFFSET}.
+     * 
+     * @return The {@link ExtractSummaryAction} object itself.
      */
     public ExtractSummaryAction setSentencesOrderBy(SummarySentencesOrder sentencesOrderBy) {
         this.sentencesOrderBy = sentencesOrderBy;
