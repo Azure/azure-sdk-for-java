@@ -55,7 +55,7 @@ public final class PolicyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PolicyResponse> get(AttestationType attestationType) {
         return serviceClient.getAsync(attestationType)
-            .map(response -> PolicyResponse.fromGenerated(response));
+            .map(PolicyResponse::fromGenerated);
 
     }
 
@@ -89,7 +89,7 @@ public final class PolicyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PolicyResponse> set(AttestationType attestationType, String newAttestationPolicy) {
         return this.serviceClient.setAsync(attestationType, newAttestationPolicy)
-            .map(response -> PolicyResponse.fromGenerated(response));
+            .map(PolicyResponse::fromGenerated);
     }
 
     /**
@@ -121,6 +121,6 @@ public final class PolicyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PolicyResponse> reset(AttestationType attestationType, String policyJws) {
         return this.serviceClient.resetAsync(attestationType, policyJws)
-            .map(response -> PolicyResponse.fromGenerated(response));
+            .map(PolicyResponse::fromGenerated);
     }
 }

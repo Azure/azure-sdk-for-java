@@ -50,6 +50,6 @@ public final class SigningCertificatesAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<JsonWebKeySet> get() {
         return this.serviceClient.getAsync()
-            .map(response -> JsonWebKeySet.fromGenerated(response));
+            .map(JsonWebKeySet::fromGenerated);
     }
 }
