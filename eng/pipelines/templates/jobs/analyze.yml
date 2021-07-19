@@ -20,10 +20,10 @@ parameters:
 
 jobs:
   - job: 'Analyze'
-    ${{ if eq(parameters.FromSource, true) }}
+    ${{ if eq('${{ parameters.FromSource }}', true) }}
       displayName: 'Analyze from source'
       condition: and(succeeded(), ne(variables['Skip.Analyze'], 'true'), eq('${{ parameters.ServiceDirectory }}', 'core'))
-    ${{ if not(eq(parameters.FromSource, true)) }}
+    ${{ if not(eq('${{ parameters.FromSource }}', true)) }}
       displayName: 'Analyze'
       condition: and(succeeded(), ne(variables['Skip.Analyze'], 'true'))
 
