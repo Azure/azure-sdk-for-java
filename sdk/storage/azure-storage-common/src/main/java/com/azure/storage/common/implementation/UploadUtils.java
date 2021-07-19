@@ -103,7 +103,7 @@ public class UploadUtils {
                             duplicate.limit(Math.min(duplicate.limit(), (i + 1) * chunkSize));
                             return duplicate;
                         });
-                }, 1 , 1);
+                }, 1, 1);
         } else {
             return data;
         }
