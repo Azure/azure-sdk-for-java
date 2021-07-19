@@ -27,6 +27,30 @@ This project provides Spring Integration adaption with Azure Service Bus and the
 ### Configure ServiceBusMessageConverter to customize ObjectMapper
 `ServiceBusMessageConverter` is made as a configurable bean to allow users to customized `ObjectMapper`.
 
+### Support for Service Bus Message Headers and Properties
+The following table illustrates how Spring message headers are mapped to Service Bus message headers and properties.
+When creat a message, developers can specify the header or property of a Service Bus message by below constants.
+
+For some Service Bus headers that can be mapped to multiple Spring header constants, the priority of different Spring headers is listed.
+
+Service Bus Message Headers and Properties | Spring Message Header Constants | Type | Priority Number (Descending priority)
+---|---|---|---
+MessageId | com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.MESSAGE_ID | String | 1
+MessageId | com.azure.spring.integration.core.AzureHeaders.RAW_ID | String | 2
+MessageId | org.springframework.messaging.MessageHeaders.ID | String | 3
+ContentType | org.springframework.messaging.MessageHeaders.CONTENT_TYPE | String | NA
+ReplyTo | org.springframework.messaging.MessageHeaders.REPLY_CHANNEL | String | NA
+ScheduledEnqueueTimeUtc | com.azure.spring.integration.core.AzureHeaders.SCHEDULED_ENQUEUE_MESSAGE | Integer | 1
+ScheduledEnqueueTimeUtc | com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders#SCHEDULED_ENQUEUE_TIME | Instant | 2
+TimeToLive | com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.TIME_TO_LIVE | Duration | NA
+SessionID | com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.SESSION_ID | Duration | NA
+CorrelationId | com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.CORRELATION_ID | String | NA
+CorrelationId | com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.CORRELATION_ID | String | NA
+To | com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.TO | String | NA
+ReplyToSessionId | com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders#REPLY_TO_SESSION_ID | String | NA
+PartitionKey | com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders#PARTITION_KEY | String | NA
+
+
 ## Examples
 
 
