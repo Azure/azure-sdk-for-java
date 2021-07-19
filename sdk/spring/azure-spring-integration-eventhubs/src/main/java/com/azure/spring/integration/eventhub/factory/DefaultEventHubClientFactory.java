@@ -34,6 +34,7 @@ import java.util.function.Function;
 import static com.azure.spring.core.ApplicationId.AZURE_SPRING_EVENT_HUB;
 import static com.azure.spring.core.ApplicationId.VERSION;
 
+
 /**
  * Default implementation of {@link EventHubClientFactory}.
  *
