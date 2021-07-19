@@ -204,21 +204,21 @@ public final class UrlBuilder {
             this.query.entrySet()
                       .stream()
                       .collect(Collectors.toMap(
-                          e -> e.getKey(),
-                          e -> {
-                            QueryParameter parameter = e.getValue();
-                            String value = null;
+                            e -> e.getKey(),
+                            e -> {
+                                QueryParameter parameter = e.getValue();
+                                String value = null;
 
-                            if (parameter != null) {
-                                // return only the first in the list of multiple
-                                // values for the same named parameter.
-                                // e.g. name=a&name=b, returns name=a
-                                value = parameter.getValuesList().get(0);
+                                if (parameter != null) {
+                                    // return only the first in the list of multiple
+                                    // values for the same named parameter.
+                                    // e.g. name=a&name=b, returns name=a
+                                    value = parameter.getValuesList().get(0);
+                                }
+
+                                return value;
                             }
-
-                            return value;
-                          }
-                      ));
+                        ));
 
         return singleKeyValueQuery;
     }
