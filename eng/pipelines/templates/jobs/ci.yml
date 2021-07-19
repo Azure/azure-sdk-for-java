@@ -54,6 +54,7 @@ jobs:
       AdditionalModules: ${{ parameters.AdditionalModules }}
       TestPipeline: ${{ parameters.TestPipeline }}
       FromSource: true
+      DisplayName: 'Analyze from source'
 
   - template: /eng/common/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
     parameters:
