@@ -101,7 +101,7 @@ public class ReadmeSamples {
 
     public void createPublisherClientWithSas() {
         EventGridPublisherClient<CloudEvent> cloudEventClient = new EventGridPublisherClientBuilder()
-            .endpoint("<endpont of your event grid topic/domain that accepts CloudEvent schema>")
+            .endpoint("<endpoint of your event grid topic/domain that accepts CloudEvent schema>")
             .credential(new AzureSasCredential("<sas token that can access the endpoint>"))
             .buildCloudEventPublisherClient();
     }
