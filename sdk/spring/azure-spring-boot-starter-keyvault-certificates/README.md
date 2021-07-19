@@ -349,9 +349,9 @@ To grant access use the command line below:
 ```shell
   az keyvault set-policy --name ${KEY_VAULT} \
         --object-id ${MANAGED_IDENTITY} \
-        --key-permissions sign\
-        --secret-permissions sign\
-        --certificate-permissions sign
+        --key-permissions get list sign\
+        --secret-permissions get list \
+        --certificate-permissions get list
 ```
 
 
