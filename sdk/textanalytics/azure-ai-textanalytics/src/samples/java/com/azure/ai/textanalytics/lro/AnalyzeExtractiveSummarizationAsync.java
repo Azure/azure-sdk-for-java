@@ -8,11 +8,11 @@ import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
 import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
-import com.azure.ai.textanalytics.models.ExtractKeySentencesAction;
-import com.azure.ai.textanalytics.models.ExtractKeySentencesActionResult;
-import com.azure.ai.textanalytics.models.ExtractKeySentencesResult;
-import com.azure.ai.textanalytics.models.KeySentence;
-import com.azure.ai.textanalytics.models.KeySentencesOrder;
+import com.azure.ai.textanalytics.models.ExtractSummaryAction;
+import com.azure.ai.textanalytics.models.ExtractSummaryActionResult;
+import com.azure.ai.textanalytics.models.ExtractSummaryResult;
+import com.azure.ai.textanalytics.models.SummarySentence;
+import com.azure.ai.textanalytics.models.SummarySentencesOrder;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.core.credential.AzureKeyCredential;
@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit;
  * Sample demonstrates how to asynchronously execute actions in a batch of documents, such as key phrases extraction,
  * PII entities recognition actions.
  */
-public class AnalyzeKeySentencesActionAsync {
+public class AnalyzeExtractiveSummarizationAsync {
     /**
      * Main method to invoke this demo about how to analyze a batch of tasks.
      *
@@ -67,10 +67,10 @@ public class AnalyzeKeySentencesActionAsync {
         client.beginAnalyzeActions(documents,
             new TextAnalyticsActions()
                 .setDisplayName("{tasks_display_name}")
-                .setExtractKeySentencesActions(
-                    new ExtractKeySentencesAction()
+                .setExtractSummaryActions(
+                    new ExtractSummaryAction()
                         .setMaxSentenceCount(2)
-                        .setSentencesOrder(KeySentencesOrder.IMPORTANCE)),
+                        .setSentencesOrderBy(SummarySentencesOrder.RANK)),
             new AnalyzeActionsOptions().setIncludeStatistics(false))
             .flatMap(result -> {
                 AnalyzeActionsOperationDetail operationDetail = result.getValue();
@@ -103,15 +103,15 @@ public class AnalyzeKeySentencesActionAsync {
 
         for (AnalyzeActionsResult actionsResult : perPage.getElements()) {
             System.out.println("Key sentences extraction action results:");
-            for (ExtractKeySentencesActionResult actionResult : actionsResult.getExtractKeySentencesResults()) {
+            for (ExtractSummaryActionResult actionResult : actionsResult.getExtractSummaryResults()) {
                 if (!actionResult.isError()) {
-                    for (ExtractKeySentencesResult documentResult : actionResult.getDocumentsResults()) {
+                    for (ExtractSummaryResult documentResult : actionResult.getDocumentsResults()) {
                         if (!documentResult.isError()) {
                             System.out.println("\tExtracted key sentences:");
-                            for (KeySentence keySentence : documentResult.getSentences()) {
-                                System.out.printf("\t\t Key sentence text: %s, length: %d, offset: %d, importance score: %d.%n",
-                                    keySentence.getText(), keySentence.getLength(),
-                                    keySentence.getOffset(), keySentence.getImportanceScore());
+                            for (SummarySentence summarySentence : documentResult.getSentences()) {
+                                System.out.printf("\t\t Sentence text: %s, length: %d, offset: %d, importance score: %f.%n",
+                                    summarySentence.getText(), summarySentence.getLength(),
+                                    summarySentence.getOffset(), summarySentence.getRankScore());
                             }
                         } else {
                             System.out.printf("\tCannot extract key sentences. Error: %s%n",

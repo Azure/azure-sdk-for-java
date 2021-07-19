@@ -3,14 +3,21 @@
 
 package com.azure.ai.textanalytics.models;
 
+import com.azure.ai.textanalytics.implementation.ExtractSummaryResultPropertiesHelper;
 import com.azure.core.annotation.Immutable;
 
 /**
  *
  */
 @Immutable
-public final class ExtractKeySentencesResult extends TextAnalyticsResult {
-    private KeySentenceCollection sentences;
+public final class ExtractSummaryResult extends TextAnalyticsResult {
+    private SummarySentenceCollection sentences;
+
+    static {
+        ExtractSummaryResultPropertiesHelper.setAccessor(
+            ((extractSummaryResult, sentences) -> extractSummaryResult.setSentences(sentences))
+        );
+    }
 
     /**
      * Creates a {@link AnalyzeSentimentResult} model that describes analyzed sentiment result.
@@ -19,8 +26,7 @@ public final class ExtractKeySentencesResult extends TextAnalyticsResult {
      * @param textDocumentStatistics The text document statistics.
      * @param error The document error.
      */
-    public ExtractKeySentencesResult(String id, TextDocumentStatistics textDocumentStatistics,
-        TextAnalyticsError error) {
+    public ExtractSummaryResult(String id, TextDocumentStatistics textDocumentStatistics, TextAnalyticsError error) {
         super(id, textDocumentStatistics, error);
     }
 
@@ -32,8 +38,12 @@ public final class ExtractKeySentencesResult extends TextAnalyticsResult {
      * @throws TextAnalyticsException if result has {@code isError} equals to true and when a non-error property
      * was accessed.
      */
-    public KeySentenceCollection getSentences() {
+    public SummarySentenceCollection getSentences() {
         throwExceptionIfError();
         return sentences;
+    }
+
+    private void setSentences(SummarySentenceCollection sentences) {
+        this.sentences = sentences;
     }
 }

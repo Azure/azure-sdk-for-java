@@ -8,11 +8,11 @@ import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
 import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
-import com.azure.ai.textanalytics.models.ExtractKeySentencesAction;
-import com.azure.ai.textanalytics.models.ExtractKeySentencesActionResult;
-import com.azure.ai.textanalytics.models.ExtractKeySentencesResult;
-import com.azure.ai.textanalytics.models.KeySentence;
-import com.azure.ai.textanalytics.models.KeySentencesOrder;
+import com.azure.ai.textanalytics.models.ExtractSummaryAction;
+import com.azure.ai.textanalytics.models.ExtractSummaryActionResult;
+import com.azure.ai.textanalytics.models.ExtractSummaryResult;
+import com.azure.ai.textanalytics.models.SummarySentence;
+import com.azure.ai.textanalytics.models.SummarySentencesOrder;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.util.AnalyzeActionsResultPagedIterable;
@@ -24,7 +24,7 @@ import com.azure.core.util.polling.SyncPoller;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AnalyzeKeySentencesAction {
+public class AnalyzeExtractiveSummarization {
     /**
      * Main method to invoke this demo about how to analyze a batch of tasks.
      *
@@ -65,10 +65,10 @@ public class AnalyzeKeySentencesAction {
         SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedIterable> syncPoller =
             client.beginAnalyzeActions(documents,
                 new TextAnalyticsActions().setDisplayName("{tasks_display_name}")
-                    .setExtractKeySentencesActions(
-                        new ExtractKeySentencesAction()
+                    .setExtractSummaryActions(
+                        new ExtractSummaryAction()
                             .setMaxSentenceCount(2)
-                            .setSentencesOrder(KeySentencesOrder.IMPORTANCE)),
+                            .setSentencesOrderBy(SummarySentencesOrder.RANK)),
                 new AnalyzeActionsOptions().setIncludeStatistics(false),
                 Context.NONE);
 
@@ -78,16 +78,16 @@ public class AnalyzeKeySentencesAction {
         for (PagedResponse<AnalyzeActionsResult> perPage : pagedResults) {
             for (AnalyzeActionsResult actionsResult : perPage.getElements()) {
                 System.out.println("Key sentences extraction action results:");
-                for (ExtractKeySentencesActionResult actionResult : actionsResult.getExtractKeySentencesResults()) {
+                for (ExtractSummaryActionResult actionResult : actionsResult.getExtractSummaryResults()) {
                     if (!actionResult.isError()) {
-                        for (ExtractKeySentencesResult documentResult : actionResult.getDocumentsResults()) {
+                        for (ExtractSummaryResult documentResult : actionResult.getDocumentsResults()) {
                             if (!documentResult.isError()) {
-                                System.out.println("\tExtracted key sentences:");
-                                for (KeySentence keySentence : documentResult.getSentences()) {
+                                System.out.println("\tExtracted summary sentences:");
+                                for (SummarySentence summarySentence : documentResult.getSentences()) {
                                     System.out.printf(
-                                        "\t\t Key sentence text: %s, length: %d, offset: %d, importance score: %d.%n",
-                                        keySentence.getText(), keySentence.getLength(),
-                                        keySentence.getOffset(), keySentence.getImportanceScore());
+                                        "\t\t Sentence text: %s, length: %d, offset: %d, importance score: %f.%n",
+                                        summarySentence.getText(), summarySentence.getLength(),
+                                        summarySentence.getOffset(), summarySentence.getRankScore());
                                 }
                             } else {
                                 System.out.printf("\tCannot extract key sentences. Error: %s%n",

@@ -16,6 +16,9 @@ import com.azure.ai.textanalytics.implementation.models.EntityLinkingResult;
 import com.azure.ai.textanalytics.implementation.models.ErrorCodeValue;
 import com.azure.ai.textanalytics.implementation.models.ErrorResponse;
 import com.azure.ai.textanalytics.implementation.models.ErrorResponseException;
+import com.azure.ai.textanalytics.implementation.models.ExtractedDocumentSummary;
+import com.azure.ai.textanalytics.implementation.models.ExtractedSummarySentence;
+import com.azure.ai.textanalytics.implementation.models.ExtractiveSummarizationResult;
 import com.azure.ai.textanalytics.implementation.models.HealthcareAssertion;
 import com.azure.ai.textanalytics.implementation.models.HealthcareResult;
 import com.azure.ai.textanalytics.implementation.models.InnerError;
@@ -48,6 +51,7 @@ import com.azure.ai.textanalytics.models.EntityCertainty;
 import com.azure.ai.textanalytics.models.EntityConditionality;
 import com.azure.ai.textanalytics.models.EntityDataSource;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
+import com.azure.ai.textanalytics.models.ExtractSummaryResult;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
 import com.azure.ai.textanalytics.models.HealthcareEntityAssertion;
 import com.azure.ai.textanalytics.models.HealthcareEntityCategory;
@@ -67,6 +71,8 @@ import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.models.SentenceOpinion;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
+import com.azure.ai.textanalytics.models.SummarySentence;
+import com.azure.ai.textanalytics.models.SummarySentenceCollection;
 import com.azure.ai.textanalytics.models.TargetSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsErrorCode;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
@@ -78,6 +84,7 @@ import com.azure.ai.textanalytics.models.TextSentiment;
 import com.azure.ai.textanalytics.models.WarningCode;
 import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
+import com.azure.ai.textanalytics.util.ExtractSummaryResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeLinkedEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
@@ -750,6 +757,58 @@ public final class Utility {
         }
         return new AnalyzeSentimentResultCollection(analyzeSentimentResults, sentimentResponse.getModelVersion(),
             sentimentResponse.getStatistics() == null ? null : toBatchStatistics(sentimentResponse.getStatistics()));
+    }
+
+    public static ExtractSummaryResultCollection toExtractSummaryResultCollection(
+        ExtractiveSummarizationResult extractiveSummarizationResult) {
+        final List<ExtractSummaryResult> extractSummaryResults = new ArrayList<>();
+        final List<ExtractedDocumentSummary> extractedDocumentSummaries = extractiveSummarizationResult.getDocuments();
+
+        for (ExtractedDocumentSummary documentSummary : extractedDocumentSummaries) {
+            extractSummaryResults.add(convertToExtractSummaryResult(documentSummary));
+        }
+        for (DocumentError documentError : extractiveSummarizationResult.getErrors()) {
+            extractSummaryResults.add(new ExtractSummaryResult(documentError.getId(), null,
+                toTextAnalyticsError(documentError.getError())));
+        }
+        return new ExtractSummaryResultCollection(extractSummaryResults,
+            extractiveSummarizationResult.getModelVersion(),
+            extractiveSummarizationResult.getStatistics() == null ? null
+                : toBatchStatistics(extractiveSummarizationResult.getStatistics()));
+    }
+
+    private static ExtractSummaryResult convertToExtractSummaryResult(ExtractedDocumentSummary documentSummary) {
+        final List<ExtractedSummarySentence> sentences = documentSummary.getSentences();
+        final List<SummarySentence> summarySentences = sentences.stream().map(sentence -> {
+            final SummarySentence summarySentence = new SummarySentence();
+            SummarySentencePropertiesHelper.setText(summarySentence, sentence.getText());
+            SummarySentencePropertiesHelper.setRankScore(summarySentence, sentence.getRankScore());
+            SummarySentencePropertiesHelper.setLength(summarySentence, sentence.getLength());
+            SummarySentencePropertiesHelper.setOffset(summarySentence, sentence.getOffset());
+            return summarySentence;
+        }).collect(Collectors.toList());
+
+        // Warnings
+        final List<TextAnalyticsWarning> warnings = documentSummary.getWarnings().stream().map(
+            warning -> {
+                final WarningCodeValue warningCodeValue = warning.getCode();
+                return new TextAnalyticsWarning(
+                    WarningCode.fromString(warningCodeValue == null ? null : warningCodeValue.toString()),
+                    warning.getMessage());
+            }).collect(Collectors.toList());
+
+        final SummarySentenceCollection summarySentenceCollection = new SummarySentenceCollection(
+            new IterableStream<>(summarySentences),
+            new IterableStream<>(warnings)
+        );
+
+        final ExtractSummaryResult extractSummaryResult = new ExtractSummaryResult(documentSummary.getId(),
+            documentSummary.getStatistics() == null
+                ? null : toTextDocumentStatistics(documentSummary.getStatistics()),
+            null
+            );
+        ExtractSummaryResultPropertiesHelper.setSentences(extractSummaryResult, summarySentenceCollection);
+        return extractSummaryResult;
     }
 
     /**

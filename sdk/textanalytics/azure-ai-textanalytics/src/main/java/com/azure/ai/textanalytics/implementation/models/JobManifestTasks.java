@@ -41,6 +41,12 @@ public final class JobManifestTasks {
     @JsonProperty(value = "sentimentAnalysisTasks")
     private List<SentimentAnalysisTask> sentimentAnalysisTasks;
 
+    /*
+     * The extractiveSummarizationTasks property.
+     */
+    @JsonProperty(value = "extractiveSummarizationTasks")
+    private List<ExtractiveSummarizationTask> extractiveSummarizationTasks;
+
     /**
      * Get the entityRecognitionTasks property: The entityRecognitionTasks property.
      *
@@ -138,6 +144,27 @@ public final class JobManifestTasks {
      */
     public JobManifestTasks setSentimentAnalysisTasks(List<SentimentAnalysisTask> sentimentAnalysisTasks) {
         this.sentimentAnalysisTasks = sentimentAnalysisTasks;
+        return this;
+    }
+
+    /**
+     * Get the extractiveSummarizationTasks property: The extractiveSummarizationTasks property.
+     *
+     * @return the extractiveSummarizationTasks value.
+     */
+    public List<ExtractiveSummarizationTask> getExtractiveSummarizationTasks() {
+        return this.extractiveSummarizationTasks;
+    }
+
+    /**
+     * Set the extractiveSummarizationTasks property: The extractiveSummarizationTasks property.
+     *
+     * @param extractiveSummarizationTasks the extractiveSummarizationTasks value to set.
+     * @return the JobManifestTasks object itself.
+     */
+    public JobManifestTasks setExtractiveSummarizationTasks(
+            List<ExtractiveSummarizationTask> extractiveSummarizationTasks) {
+        this.extractiveSummarizationTasks = extractiveSummarizationTasks;
         return this;
     }
 }

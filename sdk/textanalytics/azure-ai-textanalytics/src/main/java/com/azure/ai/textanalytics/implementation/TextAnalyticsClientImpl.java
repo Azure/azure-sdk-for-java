@@ -46,10 +46,9 @@ import com.azure.core.util.Context;
 import com.azure.core.util.serializer.CollectionFormat;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
-import reactor.core.publisher.Mono;
-
 import java.util.List;
 import java.util.UUID;
+import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the TextAnalyticsClient type. */
 public final class TextAnalyticsClientImpl {

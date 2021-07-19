@@ -10,6 +10,8 @@ import com.azure.ai.textanalytics.implementation.AnalyzeSentimentActionResultPro
 import com.azure.ai.textanalytics.implementation.AssessmentSentimentPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.CategorizedEntityPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.ExtractKeyPhrasesActionResultPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.ExtractSummaryActionResultPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.ExtractSummaryResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.HealthcareEntityPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.HealthcareEntityRelationPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.HealthcareEntityRelationRolePropertiesHelper;
@@ -21,6 +23,7 @@ import com.azure.ai.textanalytics.implementation.RecognizeLinkedEntitiesActionRe
 import com.azure.ai.textanalytics.implementation.RecognizePiiEntitiesActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.SentenceOpinionPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.SentenceSentimentPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.SummarySentencePropertiesHelper;
 import com.azure.ai.textanalytics.implementation.TargetSentimentPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
@@ -37,6 +40,8 @@ import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.EntityCategory;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesActionResult;
+import com.azure.ai.textanalytics.models.ExtractSummaryActionResult;
+import com.azure.ai.textanalytics.models.ExtractSummaryResult;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
 import com.azure.ai.textanalytics.models.HealthcareEntityCategory;
 import com.azure.ai.textanalytics.models.HealthcareEntityRelation;
@@ -58,6 +63,8 @@ import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.models.SentenceOpinion;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
+import com.azure.ai.textanalytics.models.SummarySentence;
+import com.azure.ai.textanalytics.models.SummarySentenceCollection;
 import com.azure.ai.textanalytics.models.TargetSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsErrorCode;
@@ -69,6 +76,7 @@ import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection
 import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
 import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
+import com.azure.ai.textanalytics.util.ExtractSummaryResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeLinkedEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
@@ -103,6 +111,29 @@ final class TestUtils {
     static final String VALID_HTTPS_LOCALHOST = "https://localhost:8080";
     static final String FAKE_API_KEY = "1234567890";
     static final String AZURE_TEXT_ANALYTICS_API_KEY = "AZURE_TEXT_ANALYTICS_API_KEY";
+
+    static final List<String> SUMMARY_INPUTS = asList(
+        "The government of British Prime Minster Theresa May has been plunged into turmoil with "
+            + "the resignation of two senior Cabinet ministers in a deep split over her Brexit strategy."
+            + "The Foreign Secretary Boris Johnson, quit on Monday, hours after the resignation late on"
+            + "Sunday night of the minister in charge of Brexit negotiations, David Davis.  Their"
+            + "decision to leave the government came three days after May appeared to have agreed a"
+            + "deal with her fractured Cabinet on the UK's post-Brexit relationship with the EU."
+            + "That plan is now in tatters and her political future appears uncertain."
+            + "May appeared in Parliament on Monday afternoon to defend her plan, minutes after"
+            + "Downing Street confirmed the departure of Johnson. May acknowledged the splits in"
+            + "her statement to MPs, saying of the ministers who quit: \"We do not agree about the"
+            + "best way of delivering our shared commitment to honoring the result of the referendum.\""
+            + "The Prime Minister's latest plitical drama began late on Sunday night when Davis quit,"
+            + "declaring he could not support May's Brexit plan.  He said it involved too close a "
+            + "relationship with the EU and gave only an illusion of control being returned to the UK"
+            + "after it left the EU. \"It seems to me we're giving too much away, too easily, and"
+            + "that's a dangerous strategy at this time,\" Davis said in a BBC radio interview Monday"
+            + "morning. Johnson's resignation came Monday afternoon local time, just before the Prime"
+            + " Minister was due to make a scheduled statement in Parliament. \"This afternoon, the Prime"
+            + "Minister accepted the resignation of Boris Johnson as Foreign Secretary,\" a"
+            + "statement from Downing Street said."
+    );
 
     static final List<String> SENTIMENT_INPUTS = asList("The hotel was dark and unclean. The restaurant had amazing gnocchi.",
         "The restaurant had amazing gnocchi. The hotel was dark and unclean.");
@@ -494,6 +525,41 @@ final class TestUtils {
         List<ExtractKeyPhraseResult> extractKeyPhraseResultList = asList(extractKeyPhraseResult1, extractKeyPhraseResult2);
 
         return new ExtractKeyPhrasesResultCollection(extractKeyPhraseResultList, DEFAULT_MODEL_VERSION, textDocumentBatchStatistics);
+    }
+
+    static ExtractSummaryResultCollection getExpectedExtractSummaryResultCollection() {
+        final ExtractSummaryResultCollection expectResultCollection = new ExtractSummaryResultCollection(
+            asList(getExpectedExtractSummaryResult()), null, null);
+        return expectResultCollection;
+    }
+
+    static ExtractSummaryResult getExpectedExtractSummaryResult() {
+        final TextDocumentStatistics textDocumentStatistics = new TextDocumentStatistics(67, 1);
+        final ExtractSummaryResult extractSummaryResult = new ExtractSummaryResult("0", textDocumentStatistics, null);
+
+        final IterableStream<SummarySentence> summarySentences = IterableStream.of(asList(
+            getExpectedSummarySentence(
+                "The government of British Prime Minster Theresa May has been plunged into turmoil with the resignation of two senior Cabinet ministers in a deep split over her Brexit strategy.",
+                1, 0, 176),
+            getExpectedSummarySentence("The Foreign Secretary Boris Johnson, quit on Monday, hours after the resignation late onSunday night of the minister in charge of Brexit negotiations, David Davis.",
+                0.9909339592938046, 176, 163),
+            getExpectedSummarySentence("Theirdecision to leave the government came three days after May appeared to have agreed adeal with her fractured Cabinet on the UK's post-Brexit relationship with the EU.",
+                0.8899765592117193, 341, 170)));
+
+        SummarySentenceCollection sentences = new SummarySentenceCollection(summarySentences, null);
+
+
+        ExtractSummaryResultPropertiesHelper.setSentences(extractSummaryResult, sentences);
+        return extractSummaryResult;
+    }
+
+    static SummarySentence getExpectedSummarySentence(String text, double rankScore, int offset, int length) {
+        final SummarySentence summarySentence = new SummarySentence();
+        SummarySentencePropertiesHelper.setText(summarySentence, text);
+        SummarySentencePropertiesHelper.setRankScore(summarySentence, rankScore);
+        SummarySentencePropertiesHelper.setOffset(summarySentence, offset);
+        SummarySentencePropertiesHelper.setLength(summarySentence, length);
+        return summarySentence;
     }
 
     /**
@@ -1100,6 +1166,16 @@ final class TestUtils {
         return actionResult;
     }
 
+    static ExtractSummaryActionResult getExtractSummaryActionResult(boolean isError,
+        OffsetDateTime completeAt, ExtractSummaryResultCollection resultCollection, TextAnalyticsError actionError) {
+        ExtractSummaryActionResult actionResult = new ExtractSummaryActionResult();
+        ExtractSummaryActionResultPropertiesHelper.setDocumentsResults(actionResult, resultCollection);
+        TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult, completeAt);
+        TextAnalyticsActionResultPropertiesHelper.setIsError(actionResult, isError);
+        TextAnalyticsActionResultPropertiesHelper.setError(actionResult, actionError);
+        return actionResult;
+    }
+
     /**
      * Helper method that get the expected AnalyzeBatchActionsResult result.
      */
@@ -1108,7 +1184,8 @@ final class TestUtils {
         IterableStream<RecognizeLinkedEntitiesActionResult> recognizeLinkedEntitiesActionResults,
         IterableStream<RecognizePiiEntitiesActionResult> recognizePiiEntitiesActionResults,
         IterableStream<ExtractKeyPhrasesActionResult> extractKeyPhrasesActionResults,
-        IterableStream<AnalyzeSentimentActionResult> analyzeSentimentActionResults) {
+        IterableStream<AnalyzeSentimentActionResult> analyzeSentimentActionResults,
+        IterableStream<ExtractSummaryActionResult> extractSummaryActionResults) {
 
         final AnalyzeActionsResult analyzeActionsResult = new AnalyzeActionsResult();
         AnalyzeActionsResultPropertiesHelper.setRecognizeEntitiesResults(analyzeActionsResult,
@@ -1121,6 +1198,8 @@ final class TestUtils {
             recognizeLinkedEntitiesActionResults);
         AnalyzeActionsResultPropertiesHelper.setAnalyzeSentimentResults(analyzeActionsResult,
             analyzeSentimentActionResults);
+        AnalyzeActionsResultPropertiesHelper.setExtractSummaryResults(analyzeActionsResult,
+            extractSummaryActionResults);
         return analyzeActionsResult;
     }
 
@@ -1227,7 +1306,8 @@ final class TestUtils {
             IterableStream.of(asList(getExpectedExtractKeyPhrasesActionResult(
                 false, TIME_NOW, getExtractKeyPhrasesResultCollectionForPagination(startIndex, firstPage), null))),
             IterableStream.of(asList(getExpectedAnalyzeSentimentActionResult(
-                false, TIME_NOW, getAnalyzeSentimentResultCollectionForPagination(startIndex, firstPage), null)))
+                false, TIME_NOW, getAnalyzeSentimentResultCollectionForPagination(startIndex, firstPage), null))),
+            null
         ));
         // Second Page
         startIndex += firstPage;
@@ -1241,7 +1321,8 @@ final class TestUtils {
             IterableStream.of(asList(getExpectedExtractKeyPhrasesActionResult(
                 false, TIME_NOW, getExtractKeyPhrasesResultCollectionForPagination(startIndex, secondPage), null))),
             IterableStream.of(asList(getExpectedAnalyzeSentimentActionResult(
-                false, TIME_NOW, getAnalyzeSentimentResultCollectionForPagination(startIndex, secondPage), null)))
+                false, TIME_NOW, getAnalyzeSentimentResultCollectionForPagination(startIndex, secondPage), null))),
+            null
         ));
         return analyzeActionsResults;
     }

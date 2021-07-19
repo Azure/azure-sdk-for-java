@@ -9,10 +9,10 @@ import com.azure.core.annotation.Fluent;
  *
  */
 @Fluent
-public final class ExtractKeySentencesAction {
+public final class ExtractSummaryAction {
     private String modelVersion;
     private int maxSentenceCount;
-    private KeySentencesOrder sentencesOrder;
+    private SummarySentencesOrder sentencesOrderBy;
     private boolean disableServiceLogs;
 
 
@@ -31,9 +31,9 @@ public final class ExtractKeySentencesAction {
      *
      * @param modelVersion The model version.
      *
-     * @return The {@link ExtractKeySentencesAction} object itself.
+     * @return The {@link ExtractSummaryAction} object itself.
      */
-    public ExtractKeySentencesAction setModelVersion(String modelVersion) {
+    public ExtractSummaryAction setModelVersion(String modelVersion) {
         this.modelVersion = modelVersion;
         return this;
     }
@@ -56,9 +56,9 @@ public final class ExtractKeySentencesAction {
      * your input text for 48 hours, solely to allow for troubleshooting issues. Setting this property to true,
      * disables input logging and may limit our ability to investigate issues that occur.
      *
-     * @return The {@link ExtractKeySentencesAction} object itself.
+     * @return The {@link ExtractSummaryAction} object itself.
      */
-    public ExtractKeySentencesAction setServiceLogsDisabled(boolean disableServiceLogs) {
+    public ExtractSummaryAction setServiceLogsDisabled(boolean disableServiceLogs) {
         this.disableServiceLogs = disableServiceLogs;
         return this;
     }
@@ -76,7 +76,7 @@ public final class ExtractKeySentencesAction {
      * @param maxSentenceCount
      * @return
      */
-    public ExtractKeySentencesAction setMaxSentenceCount(int maxSentenceCount) {
+    public ExtractSummaryAction setMaxSentenceCount(int maxSentenceCount) {
         this.maxSentenceCount = maxSentenceCount;
         return this;
     }
@@ -85,17 +85,17 @@ public final class ExtractKeySentencesAction {
      *
      * @return
      */
-    public KeySentencesOrder getSentencesOrder() {
-        return sentencesOrder;
+    public SummarySentencesOrder getSentencesOrderBy() {
+        return sentencesOrderBy;
     }
 
     /**
      *
-     * @param sentencesOrder
+     * @param sentencesOrderBy
      * @return
      */
-    public ExtractKeySentencesAction setSentencesOrder(KeySentencesOrder sentencesOrder) {
-        this.sentencesOrder = sentencesOrder;
+    public ExtractSummaryAction setSentencesOrderBy(SummarySentencesOrder sentencesOrderBy) {
+        this.sentencesOrderBy = sentencesOrderBy;
         return this;
     }
 }
