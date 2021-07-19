@@ -136,7 +136,16 @@ public final class EventGridPublisherClientBuilder {
 
         httpPipelinePolicies.add(new AddDatePolicy());
 
-        // Using token before key if both are set
+        final int credentialCount = (sasToken != null? 1 : 0) + (keyCredential != null? 1 : 0) +
+            (tokenCredential != null? 1 : 0);
+        if (credentialCount > 1) {
+            throw logger.logExceptionAsError(
+                new IllegalStateException(
+                    "More than 1 credentials are set while building a client. You should set one and only one."));
+        } else if (credentialCount == 0) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Missing credential information while building a client."));
+        }
         if (sasToken != null) {
             httpPipelinePolicies.add((context, next) -> {
                 context.getHttpRequest().getHeaders().set(AEG_SAS_TOKEN, sasToken.getSignature());
