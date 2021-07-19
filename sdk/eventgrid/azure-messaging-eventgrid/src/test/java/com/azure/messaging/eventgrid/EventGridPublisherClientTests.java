@@ -167,7 +167,7 @@ public class EventGridPublisherClientTests extends TestBase {
         DefaultAzureCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
         EventGridPublisherAsyncClient<CloudEvent> egClient = builder
             .credential(defaultCredential)
-            .endpoint(getEndpoint(EVENTGRID_ENDPOINT))
+            .endpoint(getEndpoint(CLOUD_ENDPOINT))
             .buildCloudEventPublisherAsyncClient();
 
         List<CloudEvent> events = new ArrayList<>();

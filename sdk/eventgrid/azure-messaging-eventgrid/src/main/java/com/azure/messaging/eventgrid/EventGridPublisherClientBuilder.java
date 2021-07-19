@@ -140,11 +140,14 @@ public final class EventGridPublisherClientBuilder {
             + (tokenCredential != null ? 1 : 0);
         if (credentialCount > 1) {
             throw logger.logExceptionAsError(
-                new IllegalStateException(
-                    "More than 1 credentials are set while building a client. You should set one and only one."));
+                new IllegalStateException("More than 1 credentials are set while building a client. "
+                    + "You should set one and only one credential of type 'TokenCredential', 'AzureSasCredential', "
+                    + "or 'AzureKeyCredential'."));
         } else if (credentialCount == 0) {
             throw logger.logExceptionAsError(
-                new IllegalArgumentException("Missing credential information while building a client."));
+                new IllegalStateException("Missing credential information while building a client."
+                    + "You should set one and only one credential of type 'TokenCredential', 'AzureSasCredential', "
+                    + "or 'AzureKeyCredential'."));
         }
         if (sasToken != null) {
             httpPipelinePolicies.add((context, next) -> {
