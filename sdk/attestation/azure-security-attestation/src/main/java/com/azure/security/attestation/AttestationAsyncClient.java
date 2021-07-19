@@ -8,6 +8,7 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.Context;
 import com.azure.security.attestation.implementation.AttestationsImpl;
 import com.azure.security.attestation.models.AttestOpenEnclaveRequest;
 import com.azure.security.attestation.models.AttestSgxEnclaveRequest;
@@ -37,14 +38,15 @@ public final class AttestationAsyncClient {
      * attestation policy.
      *
      * @param request Attestation request for Intel SGX enclaves.
+     * @param context
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of an attestation operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AttestationResponse>> attestOpenEnclaveWithResponse(AttestOpenEnclaveRequest request) {
-        return this.serviceClient.attestOpenEnclaveWithResponseAsync(request.toGenerated())
+    public Mono<Response<AttestationResponse>> attestOpenEnclaveWithResponse(AttestOpenEnclaveRequest request, Context context) {
+        return this.serviceClient.attestOpenEnclaveWithResponseAsync(request.toGenerated(), context)
             .map(response -> Utilities.generateResponseFromModelType(response, AttestationResponse.fromGenerated(response.getValue())));
     }
 
@@ -69,14 +71,15 @@ public final class AttestationAsyncClient {
      * attestation policy.
      *
      * @param request Attestation request for Intel SGX enclaves.
+     * @param context
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of an attestation operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AttestationResponse>> attestSgxEnclaveWithResponse(AttestSgxEnclaveRequest request) {
-        return this.serviceClient.attestSgxEnclaveWithResponseAsync(request.toGenerated())
+    public Mono<Response<AttestationResponse>> attestSgxEnclaveWithResponse(AttestSgxEnclaveRequest request, Context context) {
+        return this.serviceClient.attestSgxEnclaveWithResponseAsync(request.toGenerated(), context)
             .map(response ->  Utilities.generateResponseFromModelType(response, AttestationResponse.fromGenerated(response.getValue())));
     }
 
@@ -101,14 +104,15 @@ public final class AttestationAsyncClient {
      * produced is dependent upon the attestation policy.
      *
      * @param request Attestation request for Trusted Platform Module (TPM) attestation.
+     * @param context
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return attestation response for Trusted Platform Module (TPM) attestation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<String>> attestTpmWithResponse(String request) {
-        return this.serviceClient.attestTpmWithResponseAsync(new com.azure.security.attestation.implementation.models.TpmAttestationRequest().setData(request.getBytes(StandardCharsets.UTF_8)))
+    public Mono<Response<String>> attestTpmWithResponse(String request, Context context) {
+        return this.serviceClient.attestTpmWithResponseAsync(new com.azure.security.attestation.implementation.models.TpmAttestationRequest().setData(request.getBytes(StandardCharsets.UTF_8)), context)
             .map(response -> Utilities.generateResponseFromModelType(response, new String(Objects.requireNonNull(response.getValue().getData()), StandardCharsets.UTF_8)));
     }
 

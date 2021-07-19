@@ -40,7 +40,7 @@ public class AttestationSignersTest extends AttestationClientTestBase {
     @MethodSource("getAttestationClients")
     void testGetSigningCertificatesAsync(HttpClient client, String clientUri) {
 
-        AttestationClientBuilder attestationBuilder = getBuilder(client, clientUri);
+        AttestationAsyncClientBuilder attestationBuilder = getAsyncBuilder(client, clientUri);
 
         StepVerifier.create(attestationBuilder.buildSigningCertificatesAsyncClient().get())
             .assertNext(certs -> Assertions.assertDoesNotThrow(() -> verifySigningCertificatesResponse(clientUri, certs)))

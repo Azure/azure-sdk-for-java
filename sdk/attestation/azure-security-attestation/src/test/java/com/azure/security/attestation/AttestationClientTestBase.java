@@ -112,6 +112,16 @@ public class AttestationClientTestBase extends TestBase {
     }
 
     /**
+     * Retrieve an attestationClientBuilder for the specified HTTP client and client URI
+     * @param httpClient - HTTP client ot be used for the attestation client.
+     * @param clientUri - Client base URI to access the service.
+     * @return Returns an attestation client builder corresponding to the httpClient and clientUri.
+     */
+    AttestationAsyncClientBuilder getAsyncBuilder(HttpClient httpClient, String clientUri) {
+        return new AttestationAsyncClientBuilder().pipeline(getHttpPipeline(httpClient)).endpoint(clientUri);
+    }
+
+    /**
      * Retrieves an HTTP pipeline configured on the specified HTTP pipeline.
      *
      * Used by getBuilder().
@@ -219,7 +229,7 @@ public class AttestationClientTestBase extends TestBase {
      * @return X509Certificate which will have been used to sign the token.
      */
     Mono<X509Certificate> getSigningCertificateByKeyId(SignedJWT token, HttpClient client, String clientUri) {
-        AttestationClientBuilder builder = getBuilder(client, clientUri);
+        AttestationAsyncClientBuilder builder = getAsyncBuilder(client, clientUri);
         return builder.buildSigningCertificatesAsyncClient().get()
             .handle((keySet, sink) -> {
                 final CertificateFactory cf;

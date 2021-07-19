@@ -34,7 +34,7 @@ public class AttestationMetadataTest extends AttestationClientTestBase {
     @MethodSource("getAttestationClients")
     void testGetMetadataConfigurationAsync(HttpClient client, String clientUri) {
 
-        AttestationClientBuilder attestationBuilder = getBuilder(client, clientUri);
+        AttestationAsyncClientBuilder attestationBuilder = getAsyncBuilder(client, clientUri);
 
         StepVerifier.create(attestationBuilder.buildMetadataConfigurationAsyncClient().get())
             .assertNext(metadataConfigResponse -> verifyMetadataConfigurationResponse(clientUri, metadataConfigResponse))

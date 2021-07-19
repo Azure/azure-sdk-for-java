@@ -15,15 +15,15 @@ import com.azure.security.attestation.models.CloudErrorException;
 /** Initializes a new instance of the synchronous AttestationClient type. */
 @ServiceClient(builder = AttestationClientBuilder.class)
 public final class MetadataConfigurationClient {
-    private final MetadataConfigurationsImpl serviceClient;
+    private final MetadataConfigurationAsyncClient asyncClient;
 
     /**
      * Initializes an instance of MetadataConfigurations client.
      *
      * @param serviceClient the service client implementation.
      */
-    MetadataConfigurationClient(MetadataConfigurationsImpl serviceClient) {
-        this.serviceClient = serviceClient;
+    MetadataConfigurationClient(MetadataConfigurationAsyncClient asyncClient) {
+        this.asyncClient = asyncClient;
     }
 
     /**
@@ -35,7 +35,7 @@ public final class MetadataConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Object get() {
-        return this.serviceClient.get();
+        return this.asyncClient.get().block();
     }
 
     /**
@@ -49,6 +49,6 @@ public final class MetadataConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Object> getWithResponse(Context context) {
-        return this.serviceClient.getWithResponse(context);
+        return this.asyncClient.getWithResponse(context).block();
     }
 }

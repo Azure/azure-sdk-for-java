@@ -16,15 +16,15 @@ import com.azure.security.attestation.models.JsonWebKeySet;
 /** Initializes a new instance of the synchronous AzureAttestationRestClient type. */
 @ServiceClient(builder = AttestationClientBuilder.class)
 public final class SigningCertificatesClient {
-    private final SigningCertificatesImpl serviceClient;
+    private final SigningCertificatesAsyncClient asyncClient;
 
     /**
      * Initializes an instance of SigningCertificates client.
      *
-     * @param serviceClient the service client implementation.
+     * @param asyncClient the service client implementation.
      */
-    SigningCertificatesClient(SigningCertificatesImpl serviceClient) {
-        this.serviceClient = serviceClient;
+    SigningCertificatesClient(SigningCertificatesAsyncClient asyncClient) {
+        this.asyncClient = asyncClient;
     }
 
     /**
@@ -36,7 +36,7 @@ public final class SigningCertificatesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public JsonWebKeySet get() {
-        return JsonWebKeySet.fromGenerated(serviceClient.get());
+        return asyncClient.get().block();
     }
 
     /**
@@ -50,7 +50,6 @@ public final class SigningCertificatesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<JsonWebKeySet> getWithResponse(Context context) {
-        Response<com.azure.security.attestation.implementation.models.JsonWebKeySet> response = serviceClient.getWithResponse(context);
-        return Utilities.generateResponseFromModelType(response, JsonWebKeySet.fromGenerated(response.getValue()));
+        return asyncClient.getWithResponse(context).block();
     }
 }

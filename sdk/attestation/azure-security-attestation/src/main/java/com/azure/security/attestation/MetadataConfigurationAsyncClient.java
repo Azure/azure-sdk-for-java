@@ -8,6 +8,7 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.Context;
 import com.azure.security.attestation.implementation.MetadataConfigurationsImpl;
 import com.azure.security.attestation.models.CloudErrorException;
 import reactor.core.publisher.Mono;
@@ -32,10 +33,11 @@ public final class MetadataConfigurationAsyncClient {
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any object.
+     * @param context
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> getWithResponse() {
-        return this.serviceClient.getWithResponseAsync();
+    public Mono<Response<Object>> getWithResponse(Context context) {
+        return this.serviceClient.getWithResponseAsync(context);
     }
 
     /**
