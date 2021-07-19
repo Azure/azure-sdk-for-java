@@ -22,7 +22,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
+import java.util.UUID;
 
 import static com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.CORRELATION_ID;
 import static com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.MESSAGE_ID;
@@ -81,7 +81,8 @@ public class ServiceBusMessageConverter
         copySpringMessageHeaders.putAll(headers);
 
         // Spring MessageHeaders
-        getAndRemove(copySpringMessageHeaders, MessageHeaders.ID).ifPresent(message::setMessageId);
+        getAndRemove(copySpringMessageHeaders, MessageHeaders.ID, UUID.class)
+            .ifPresent(val -> message.setMessageId(val.toString()));
         getAndRemove(copySpringMessageHeaders, MessageHeaders.CONTENT_TYPE).ifPresent(message::setContentType);
         getAndRemove(copySpringMessageHeaders, MessageHeaders.REPLY_CHANNEL).ifPresent(message::setReplyTo);
 
@@ -90,14 +91,11 @@ public class ServiceBusMessageConverter
             message.setMessageId(val);
             logOverriddenHeaders(AzureHeaders.RAW_ID, MessageHeaders.ID, headers);
         });
-        Optional.ofNullable(headers.get(AzureHeaders.SCHEDULED_ENQUEUE_MESSAGE, Integer.class))
-                .map(Duration::ofMillis)
-                .map(Instant.now()::plus)
-                .map((ins) -> OffsetDateTime.ofInstant(ins, ZoneId.systemDefault()))
-                .ifPresent(val -> {
-                    message.setScheduledEnqueueTime(val);
-                    copySpringMessageHeaders.remove(AzureHeaders.SCHEDULED_ENQUEUE_MESSAGE);
-                });
+        getAndRemove(copySpringMessageHeaders, AzureHeaders.SCHEDULED_ENQUEUE_MESSAGE, Integer.class)
+            .map(Duration::ofMillis)
+            .map(Instant.now()::plus)
+            .map((ins) -> OffsetDateTime.ofInstant(ins, ZoneId.systemDefault()))
+            .ifPresent(message::setScheduledEnqueueTime);
 
         // ServiceBusMessageHeaders, service bus headers have highest priority.
         getAndRemove(copySpringMessageHeaders, MESSAGE_ID).ifPresent(val -> {
@@ -106,18 +104,13 @@ public class ServiceBusMessageConverter
                 logOverriddenHeaders(MESSAGE_ID, MessageHeaders.ID, headers);
             }
         });
-        Optional.ofNullable(headers.get(TIME_TO_LIVE, Duration.class)).ifPresent(val -> {
-            message.setTimeToLive(val);
-            copySpringMessageHeaders.remove(TIME_TO_LIVE);
-        });
-
-        Optional.ofNullable((Instant) headers.get(SCHEDULED_ENQUEUE_TIME))
-                .map((ins) -> OffsetDateTime.ofInstant(ins, ZoneId.systemDefault()))
-                .ifPresent(val -> {
-                    message.setScheduledEnqueueTime(val);
-                    logOverriddenHeaders(SCHEDULED_ENQUEUE_TIME, AzureHeaders.SCHEDULED_ENQUEUE_MESSAGE, headers);
-                    copySpringMessageHeaders.remove(SCHEDULED_ENQUEUE_TIME);
-                });
+        getAndRemove(copySpringMessageHeaders, TIME_TO_LIVE, Duration.class).ifPresent(message::setTimeToLive);
+        getAndRemove(copySpringMessageHeaders, SCHEDULED_ENQUEUE_TIME, Instant.class)
+            .map((ins) -> OffsetDateTime.ofInstant(ins, ZoneId.systemDefault()))
+            .ifPresent(val -> {
+                message.setScheduledEnqueueTime(val);
+                logOverriddenHeaders(SCHEDULED_ENQUEUE_TIME, AzureHeaders.SCHEDULED_ENQUEUE_MESSAGE, headers);
+            });
         getAndRemove(copySpringMessageHeaders, SESSION_ID).ifPresent(message::setSessionId);
         getAndRemove(copySpringMessageHeaders, CORRELATION_ID).ifPresent(message::setCorrelationId);
         getAndRemove(copySpringMessageHeaders, TO).ifPresent(message::setTo);
@@ -160,19 +153,27 @@ public class ServiceBusMessageConverter
     }
 
     /**
-     * Get the value of a header key from {@link MessageHeaders} as {@link String}, and if the value exists, remove the
-     * header from a copy {@link Set} of original {@link MessageHeaders}.
+     * Get and remove the header value as {@link String} from a copy of {@link MessageHeaders} .
      *
-     * @param copySpringMessageHeaders A copy of keys for the original {@link MessageHeaders}.
+     * @param copySpringMessageHeaders A copy of the original {@link MessageHeaders}.
      * @param key The header key to get value.
      * @return {@link Optional} of the header value.
      */
     private Optional<String> getAndRemove(Map<String, Object> copySpringMessageHeaders, String key) {
-        return Optional.ofNullable(copySpringMessageHeaders.get(key))
-                       .map(val -> {
-                           copySpringMessageHeaders.remove(key);
-                           return val.toString();
-                       }).filter(StringUtils::hasText);
+        return getAndRemove(copySpringMessageHeaders, key, String.class).filter(StringUtils::hasText);
+    }
+
+    /**
+     * Get and remove the header value from a copy of {@link MessageHeaders} and convert to the target type.
+     *
+     * @param copySpringMessageHeaders A copy of the original {@link MessageHeaders}.
+     * @param key The header key to get value.
+     * @param clazz The class that the header value converts to.
+     * @param <T> The generic type of the class.
+     * @return {@link Optional} of the header value.
+     */
+    private <T> Optional<T> getAndRemove(Map<String, Object> copySpringMessageHeaders, String key, Class<T> clazz) {
+        return Optional.ofNullable((T) copySpringMessageHeaders.remove(key));
     }
 
     private Boolean logOverriddenHeaders(String currentHeader, String overriddenHeader,
