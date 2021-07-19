@@ -366,7 +366,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
          parallelTransferOptions.getMaxConcurrency() appends will be happening at once, so we guarantee buffering of
          only concurrency + 1 chunks at a time.
          */
-        return chunkedSource.flatMapSequential(stagingArea::write, 1)
+        return chunkedSource.flatMapSequential(stagingArea::write, 1, 1)
             .concatWith(Flux.defer(stagingArea::flush))
             /* Map the data to a tuple 3, of buffer, buffer length, buffer offset */
             .map(bufferAggregator -> Tuples.of(bufferAggregator, bufferAggregator.length(), 0L))
@@ -398,7 +398,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
                     requestConditions.getLeaseId())
                     .map(resp -> offset) /* End of file after append to pass to flush. */
                     .flux();
-            }, parallelTransferOptions.getMaxConcurrency())
+            }, parallelTransferOptions.getMaxConcurrency(), 1)
             .last()
             .flatMap(length -> flushWithResponse(length, false, false, httpHeaders, requestConditions));
     }

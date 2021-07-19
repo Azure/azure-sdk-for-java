@@ -10,6 +10,7 @@ import com.azure.core.models.CloudEventDataFormat;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.core.models.CloudEvent;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.eventgrid.EventGridEvent;
 import com.azure.messaging.eventgrid.EventGridPublisherAsyncClient;
 import com.azure.messaging.eventgrid.EventGridPublisherClient;
@@ -99,8 +100,8 @@ public class ReadmeSamples {
     }
 
     public void createPublisherClientWithSas() {
-        EventGridPublisherClient<CloudEvent> eventGridEventClient = new EventGridPublisherClientBuilder()
-            .endpoint("<endpont of your event grid topic/domain that accepts CloudEvent schema>")
+        EventGridPublisherClient<CloudEvent> cloudEventClient = new EventGridPublisherClientBuilder()
+            .endpoint("<endpoint of your event grid topic/domain that accepts CloudEvent schema>")
             .credential(new AzureSasCredential("<sas token that can access the endpoint>"))
             .buildCloudEventPublisherClient();
     }
@@ -223,5 +224,19 @@ public class ReadmeSamples {
                     break;
             }
         }
+    }
+
+    public void createPublisherClientWithTokenCredential() {
+        EventGridPublisherClient<CloudEvent> cloudEventClient = new EventGridPublisherClientBuilder()
+            .endpoint("<endpoint of your event grid topic/domain that accepts CloudEvent schema>")
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .buildCloudEventPublisherClient();
+    }
+
+    public void createPublisherAsyncClientWithTokenCredential() {
+        EventGridPublisherAsyncClient<CloudEvent> cloudEventClient = new EventGridPublisherClientBuilder()
+            .endpoint("<endpoint of your event grid topic/domain that accepts CloudEvent schema>")
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .buildCloudEventPublisherAsyncClient();
     }
 }

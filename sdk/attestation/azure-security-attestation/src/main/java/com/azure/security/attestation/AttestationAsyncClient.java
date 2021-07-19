@@ -13,11 +13,12 @@ import com.azure.security.attestation.models.AttestOpenEnclaveRequest;
 import com.azure.security.attestation.models.AttestSgxEnclaveRequest;
 import com.azure.security.attestation.models.AttestationResponse;
 import com.azure.security.attestation.models.CloudErrorException;
-import com.azure.security.attestation.models.TpmAttestationRequest;
-import com.azure.security.attestation.models.TpmAttestationResponse;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the asynchronous AttestationClient type. */
+import java.nio.charset.StandardCharsets;
+import java.util.Objects;
+
+/** Initializes a new instance of the asynchronous AzureAttestationRestClient type. */
 @ServiceClient(builder = AttestationClientBuilder.class, isAsync = true)
 public final class AttestationAsyncClient {
     private final AttestationsImpl serviceClient;
@@ -43,7 +44,8 @@ public final class AttestationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AttestationResponse>> attestOpenEnclaveWithResponse(AttestOpenEnclaveRequest request) {
-        return this.serviceClient.attestOpenEnclaveWithResponseAsync(request);
+        return this.serviceClient.attestOpenEnclaveWithResponseAsync(request.toGenerated())
+            .map(response -> Utilities.generateResponseFromModelType(response, AttestationResponse.fromGenerated(response.getValue())));
     }
 
     /**
@@ -58,7 +60,8 @@ public final class AttestationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AttestationResponse> attestOpenEnclave(AttestOpenEnclaveRequest request) {
-        return this.serviceClient.attestOpenEnclaveAsync(request);
+        return serviceClient.attestOpenEnclaveAsync(request.toGenerated())
+            .map(AttestationResponse::fromGenerated);
     }
 
     /**
@@ -73,7 +76,8 @@ public final class AttestationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AttestationResponse>> attestSgxEnclaveWithResponse(AttestSgxEnclaveRequest request) {
-        return this.serviceClient.attestSgxEnclaveWithResponseAsync(request);
+        return this.serviceClient.attestSgxEnclaveWithResponseAsync(request.toGenerated())
+            .map(response ->  Utilities.generateResponseFromModelType(response, AttestationResponse.fromGenerated(response.getValue())));
     }
 
     /**
@@ -88,7 +92,8 @@ public final class AttestationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AttestationResponse> attestSgxEnclave(AttestSgxEnclaveRequest request) {
-        return this.serviceClient.attestSgxEnclaveAsync(request);
+        return this.serviceClient.attestSgxEnclaveAsync(request.toGenerated())
+            .map(AttestationResponse::fromGenerated);
     }
 
     /**
@@ -102,8 +107,9 @@ public final class AttestationAsyncClient {
      * @return attestation response for Trusted Platform Module (TPM) attestation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TpmAttestationResponse>> attestTpmWithResponse(TpmAttestationRequest request) {
-        return this.serviceClient.attestTpmWithResponseAsync(request);
+    public Mono<Response<String>> attestTpmWithResponse(String request) {
+        return this.serviceClient.attestTpmWithResponseAsync(new com.azure.security.attestation.implementation.models.TpmAttestationRequest().setData(request.getBytes(StandardCharsets.UTF_8)))
+            .map(response -> Utilities.generateResponseFromModelType(response, new String(Objects.requireNonNull(response.getValue().getData()), StandardCharsets.UTF_8)));
     }
 
     /**
@@ -117,7 +123,8 @@ public final class AttestationAsyncClient {
      * @return attestation response for Trusted Platform Module (TPM) attestation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TpmAttestationResponse> attestTpm(TpmAttestationRequest request) {
-        return this.serviceClient.attestTpmAsync(request);
+    public Mono<String> attestTpm(String request) {
+        return this.serviceClient.attestTpmAsync(new com.azure.security.attestation.implementation.models.TpmAttestationRequest().setData(request.getBytes(StandardCharsets.UTF_8)))
+            .map(response -> new String(response.getData(), StandardCharsets.UTF_8));
     }
 }
