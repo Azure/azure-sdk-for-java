@@ -7,14 +7,15 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 /**
- *
+ * The {@link SummarySentenceCollection} model.
  */
 @Immutable
 public final class SummarySentenceCollection extends IterableStream<SummarySentence> {
     private final IterableStream<TextAnalyticsWarning> warnings;
 
     /**
-     * Creates a {@link SummarySentenceCollection} model that describes a key sentence collection including warnings.
+     * Creates a {@link SummarySentenceCollection} model that describes a extractive summarization sentence collection
+     * including warnings.
      *
      * @param sentences An {@link IterableStream} of {@link SummarySentence}.
      * @param warnings An {@link IterableStream} of {@link TextAnalyticsWarning warnings}.

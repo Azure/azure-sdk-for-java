@@ -504,6 +504,53 @@ public final class Utility {
     }
 
     /**
+     * Helper method to convert {@link SentimentResponse} to {@link AnalyzeSentimentResultCollection}.
+     *
+     * @param sentimentResponse The {@link SentimentResponse}.
+     *
+     * @return A {@link AnalyzeSentimentResultCollection}.
+     */
+    public static AnalyzeSentimentResultCollection toAnalyzeSentimentResultCollection(
+        SentimentResponse sentimentResponse) {
+        final List<AnalyzeSentimentResult> analyzeSentimentResults = new ArrayList<>();
+        final List<DocumentSentiment> documentSentiments = sentimentResponse.getDocuments();
+        for (DocumentSentiment documentSentiment : documentSentiments) {
+            analyzeSentimentResults.add(toAnalyzeSentimentResult(documentSentiment, documentSentiments));
+        }
+        for (DocumentError documentError : sentimentResponse.getErrors()) {
+            analyzeSentimentResults.add(new AnalyzeSentimentResult(documentError.getId(), null,
+                toTextAnalyticsError(documentError.getError()), null));
+        }
+        return new AnalyzeSentimentResultCollection(analyzeSentimentResults, sentimentResponse.getModelVersion(),
+            sentimentResponse.getStatistics() == null ? null : toBatchStatistics(sentimentResponse.getStatistics()));
+    }
+
+    /**
+     * Helper method to convert {@link ExtractiveSummarizationResult} to {@link ExtractSummaryResultCollection}.
+     *
+     * @param extractiveSummarizationResult The {@link ExtractiveSummarizationResult}.
+     *
+     * @return A {@link ExtractSummaryResultCollection}.
+     */
+    public static ExtractSummaryResultCollection toExtractSummaryResultCollection(
+        ExtractiveSummarizationResult extractiveSummarizationResult) {
+        final List<ExtractSummaryResult> extractSummaryResults = new ArrayList<>();
+        final List<ExtractedDocumentSummary> extractedDocumentSummaries = extractiveSummarizationResult.getDocuments();
+
+        for (ExtractedDocumentSummary documentSummary : extractedDocumentSummaries) {
+            extractSummaryResults.add(toExtractSummaryResult(documentSummary));
+        }
+        for (DocumentError documentError : extractiveSummarizationResult.getErrors()) {
+            extractSummaryResults.add(new ExtractSummaryResult(documentError.getId(), null,
+                toTextAnalyticsError(documentError.getError())));
+        }
+        return new ExtractSummaryResultCollection(extractSummaryResults,
+            extractiveSummarizationResult.getModelVersion(),
+            extractiveSummarizationResult.getStatistics() == null ? null
+                : toBatchStatistics(extractiveSummarizationResult.getStatistics()));
+    }
+
+    /**
      * Transfer {@link HealthcareResult} into {@link IterableStream} of {@link AnalyzeHealthcareEntitiesResult}.
      *
      * @param healthcareResult the service side raw data, HealthcareResult.
@@ -738,80 +785,6 @@ public final class Utility {
     }
 
     /**
-     * Helper method to convert {@link SentimentResponse} to {@link AnalyzeSentimentResultCollection}.
-     *
-     * @param sentimentResponse The {@link SentimentResponse}.
-     *
-     * @return A {@link AnalyzeSentimentResultCollection}.
-     */
-    public static AnalyzeSentimentResultCollection toAnalyzeSentimentResultCollection(
-        SentimentResponse sentimentResponse) {
-        final List<AnalyzeSentimentResult> analyzeSentimentResults = new ArrayList<>();
-        final List<DocumentSentiment> documentSentiments = sentimentResponse.getDocuments();
-        for (DocumentSentiment documentSentiment : documentSentiments) {
-            analyzeSentimentResults.add(convertToAnalyzeSentimentResult(documentSentiment, documentSentiments));
-        }
-        for (DocumentError documentError : sentimentResponse.getErrors()) {
-            analyzeSentimentResults.add(new AnalyzeSentimentResult(documentError.getId(), null,
-                toTextAnalyticsError(documentError.getError()), null));
-        }
-        return new AnalyzeSentimentResultCollection(analyzeSentimentResults, sentimentResponse.getModelVersion(),
-            sentimentResponse.getStatistics() == null ? null : toBatchStatistics(sentimentResponse.getStatistics()));
-    }
-
-    public static ExtractSummaryResultCollection toExtractSummaryResultCollection(
-        ExtractiveSummarizationResult extractiveSummarizationResult) {
-        final List<ExtractSummaryResult> extractSummaryResults = new ArrayList<>();
-        final List<ExtractedDocumentSummary> extractedDocumentSummaries = extractiveSummarizationResult.getDocuments();
-
-        for (ExtractedDocumentSummary documentSummary : extractedDocumentSummaries) {
-            extractSummaryResults.add(convertToExtractSummaryResult(documentSummary));
-        }
-        for (DocumentError documentError : extractiveSummarizationResult.getErrors()) {
-            extractSummaryResults.add(new ExtractSummaryResult(documentError.getId(), null,
-                toTextAnalyticsError(documentError.getError())));
-        }
-        return new ExtractSummaryResultCollection(extractSummaryResults,
-            extractiveSummarizationResult.getModelVersion(),
-            extractiveSummarizationResult.getStatistics() == null ? null
-                : toBatchStatistics(extractiveSummarizationResult.getStatistics()));
-    }
-
-    private static ExtractSummaryResult convertToExtractSummaryResult(ExtractedDocumentSummary documentSummary) {
-        final List<ExtractedSummarySentence> sentences = documentSummary.getSentences();
-        final List<SummarySentence> summarySentences = sentences.stream().map(sentence -> {
-            final SummarySentence summarySentence = new SummarySentence();
-            SummarySentencePropertiesHelper.setText(summarySentence, sentence.getText());
-            SummarySentencePropertiesHelper.setRankScore(summarySentence, sentence.getRankScore());
-            SummarySentencePropertiesHelper.setLength(summarySentence, sentence.getLength());
-            SummarySentencePropertiesHelper.setOffset(summarySentence, sentence.getOffset());
-            return summarySentence;
-        }).collect(Collectors.toList());
-
-        // Warnings
-        final List<TextAnalyticsWarning> warnings = documentSummary.getWarnings().stream().map(
-            warning -> {
-                final WarningCodeValue warningCodeValue = warning.getCode();
-                return new TextAnalyticsWarning(
-                    WarningCode.fromString(warningCodeValue == null ? null : warningCodeValue.toString()),
-                    warning.getMessage());
-            }).collect(Collectors.toList());
-
-        final SummarySentenceCollection summarySentenceCollection = new SummarySentenceCollection(
-            new IterableStream<>(summarySentences),
-            new IterableStream<>(warnings)
-        );
-
-        final ExtractSummaryResult extractSummaryResult = new ExtractSummaryResult(documentSummary.getId(),
-            documentSummary.getStatistics() == null
-                ? null : toTextDocumentStatistics(documentSummary.getStatistics()),
-            null
-            );
-        ExtractSummaryResultPropertiesHelper.setSentences(extractSummaryResult, summarySentenceCollection);
-        return extractSummaryResult;
-    }
-
-    /**
      * Helper method to convert the service response of {@link DocumentSentiment} to {@link AnalyzeSentimentResult}.
      *
      * @param documentSentiment The {@link DocumentSentiment} returned by the service.
@@ -819,7 +792,7 @@ public final class Utility {
      *
      * @return The {@link AnalyzeSentimentResult} to be returned by the SDK.
      */
-    private static AnalyzeSentimentResult convertToAnalyzeSentimentResult(DocumentSentiment documentSentiment,
+    private static AnalyzeSentimentResult toAnalyzeSentimentResult(DocumentSentiment documentSentiment,
         List<DocumentSentiment> documentSentimentList) {
         // Document text sentiment
         final SentimentConfidenceScorePerLabel confidenceScorePerLabel = documentSentiment.getConfidenceScores();
@@ -928,6 +901,40 @@ public final class Utility {
         AssessmentSentimentPropertiesHelper.setOffset(assessmentSentiment, sentenceAssessment.getOffset());
         AssessmentSentimentPropertiesHelper.setLength(assessmentSentiment, sentenceAssessment.getLength());
         return assessmentSentiment;
+    }
+
+    private static ExtractSummaryResult toExtractSummaryResult(ExtractedDocumentSummary documentSummary) {
+        final List<ExtractedSummarySentence> sentences = documentSummary.getSentences();
+        final List<SummarySentence> summarySentences = sentences.stream().map(sentence -> {
+            final SummarySentence summarySentence = new SummarySentence();
+            SummarySentencePropertiesHelper.setText(summarySentence, sentence.getText());
+            SummarySentencePropertiesHelper.setRankScore(summarySentence, sentence.getRankScore());
+            SummarySentencePropertiesHelper.setLength(summarySentence, sentence.getLength());
+            SummarySentencePropertiesHelper.setOffset(summarySentence, sentence.getOffset());
+            return summarySentence;
+        }).collect(Collectors.toList());
+
+        // Warnings
+        final List<TextAnalyticsWarning> warnings = documentSummary.getWarnings().stream().map(
+            warning -> {
+                final WarningCodeValue warningCodeValue = warning.getCode();
+                return new TextAnalyticsWarning(
+                    WarningCode.fromString(warningCodeValue == null ? null : warningCodeValue.toString()),
+                    warning.getMessage());
+            }).collect(Collectors.toList());
+
+        final SummarySentenceCollection summarySentenceCollection = new SummarySentenceCollection(
+            new IterableStream<>(summarySentences),
+            new IterableStream<>(warnings)
+        );
+
+        final ExtractSummaryResult extractSummaryResult = new ExtractSummaryResult(documentSummary.getId(),
+            documentSummary.getStatistics() == null
+                ? null : toTextDocumentStatistics(documentSummary.getStatistics()),
+            null
+        );
+        ExtractSummaryResultPropertiesHelper.setSentences(extractSummaryResult, summarySentenceCollection);
+        return extractSummaryResult;
     }
 
     /*

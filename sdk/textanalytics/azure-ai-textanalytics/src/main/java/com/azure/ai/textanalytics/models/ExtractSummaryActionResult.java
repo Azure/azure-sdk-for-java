@@ -8,7 +8,7 @@ import com.azure.ai.textanalytics.util.ExtractSummaryResultCollection;
 import com.azure.core.annotation.Immutable;
 
 /**
- *
+ * The {@link ExtractSummaryActionResult} model.
  */
 @Immutable
 public final class ExtractSummaryActionResult extends TextAnalyticsActionResult {
@@ -20,9 +20,9 @@ public final class ExtractSummaryActionResult extends TextAnalyticsActionResult 
     }
 
     /**
-     * Gets the key sentences extraction action result.
+     * Gets the extractive summarization action result.
      *
-     * @return the key sentences extraction action result.
+     * @return The extractive summarization action result.
      *
      * @throws TextAnalyticsException if result has {@code isError} equals to true and when a non-error property
      * was accessed.

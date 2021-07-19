@@ -3,12 +3,11 @@
 
 package com.azure.ai.textanalytics.implementation;
 
-import com.azure.ai.textanalytics.models.ExtractKeyPhrasesActionResult;
 import com.azure.ai.textanalytics.models.ExtractSummaryActionResult;
 import com.azure.ai.textanalytics.util.ExtractSummaryResultCollection;
 
 /**
- *
+ * The helper class to set the non-public properties of an {@link ExtractSummaryActionResult} instance.
  */
 public final class ExtractSummaryActionResultPropertiesHelper {
     private static ExtractSummaryActionResultAccessor accessor;
@@ -16,7 +15,7 @@ public final class ExtractSummaryActionResultPropertiesHelper {
     private ExtractSummaryActionResultPropertiesHelper() { }
 
     /**
-     * Type defining the methods to set the non-public properties of an {@link ExtractKeyPhrasesActionResult}
+     * Type defining the methods to set the non-public properties of an {@link ExtractSummaryActionResult}
      * instance.
      */
     public interface ExtractSummaryActionResultAccessor {

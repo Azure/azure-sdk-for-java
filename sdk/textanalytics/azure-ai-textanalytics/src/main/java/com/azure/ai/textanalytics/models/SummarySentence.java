@@ -7,7 +7,7 @@ import com.azure.ai.textanalytics.implementation.SummarySentencePropertiesHelper
 import com.azure.core.annotation.Immutable;
 
 /**
- *
+ * The {@link SummarySentence} model.
  */
 @Immutable
 public final class SummarySentence {
@@ -43,32 +43,36 @@ public final class SummarySentence {
     }
 
     /**
+     * Gets the text property: extractive summarization sentence text.
      *
-     * @return
+     * @return The {@code text} value.
      */
     public String getText() {
         return text;
     }
 
     /**
+     * Gets the rank score of the extractive text summarization. Higher the score, higher importance of the sentence.
      *
-     * @return
+     * @return The rank score value.
      */
     public double getRankScore() {
         return rankScore;
     }
 
     /**
+     * Gets the length of sentence.
      *
-     * @return
+     * @return The length of sentence.
      */
     public int getLength() {
         return length;
     }
 
     /**
+     * Gets the offset of sentence.
      *
-     * @return
+     * @return The offset of sentence.
      */
     public int getOffset() {
         return offset;

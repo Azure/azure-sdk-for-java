@@ -6,7 +6,8 @@ package com.azure.ai.textanalytics.models;
 import com.azure.core.annotation.Fluent;
 
 /**
- *
+ * Configurations that allow callers to specify details about how to execute an extractive summarization action in a
+ * set of documents.
  */
 @Fluent
 public final class ExtractSummaryAction {
@@ -14,7 +15,6 @@ public final class ExtractSummaryAction {
     private int maxSentenceCount;
     private SummarySentencesOrder sentencesOrderBy;
     private boolean disableServiceLogs;
-
 
     /**
      * Gets the version of the text analytics model used by this operation.
@@ -64,6 +64,7 @@ public final class ExtractSummaryAction {
     }
 
     /**
+     * Gets the maximum extractive summarization sentences number to be returned in the response.
      *
      * @return
      */

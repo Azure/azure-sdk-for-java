@@ -7,7 +7,7 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.ExpandableStringEnum;
 
 /**
- *
+ * Defines values for SummarySentencesOrder.
  */
 @Immutable
 public final class SummarySentencesOrder extends ExpandableStringEnum<SummarySentencesOrder> {

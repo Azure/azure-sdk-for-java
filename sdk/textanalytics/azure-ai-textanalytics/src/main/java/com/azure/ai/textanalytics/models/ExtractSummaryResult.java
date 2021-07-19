@@ -7,7 +7,7 @@ import com.azure.ai.textanalytics.implementation.ExtractSummaryResultPropertiesH
 import com.azure.core.annotation.Immutable;
 
 /**
- *
+ * The {@link ExtractSummaryResult} model.
  */
 @Immutable
 public final class ExtractSummaryResult extends TextAnalyticsResult {
@@ -20,7 +20,7 @@ public final class ExtractSummaryResult extends TextAnalyticsResult {
     }
 
     /**
-     * Creates a {@link AnalyzeSentimentResult} model that describes analyzed sentiment result.
+     * Creates a {@link ExtractSummaryResult} model that describes extractive summarization result.
      *
      * @param id Unique, non-empty document identifier.
      * @param textDocumentStatistics The text document statistics.
@@ -31,9 +31,9 @@ public final class ExtractSummaryResult extends TextAnalyticsResult {
     }
 
     /**
-     * Get the key sentences.
+     * Get the extractive summarization sentence collection.
      *
-     * @return The key sentences.
+     * @return The extractive summarization sentence collection.
      *
      * @throws TextAnalyticsException if result has {@code isError} equals to true and when a non-error property
      * was accessed.
