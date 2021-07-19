@@ -1648,9 +1648,9 @@ public class SqlServerOperationsTests extends SqlServerTest {
 
     @Test
     public void testRandomSku() {
-        List<DatabaseSku> databaseSkus = Arrays.asList(DatabaseSku.getAll().toArray(new DatabaseSku[0]));
+        List<DatabaseSku> databaseSkus = new LinkedList<>(Arrays.asList(DatabaseSku.getAll().toArray(new DatabaseSku[0])));
         Collections.shuffle(databaseSkus);
-        List<ElasticPoolSku> elasticPoolSkus = Arrays.asList(ElasticPoolSku.getAll().toArray(new ElasticPoolSku[0]));
+        List<ElasticPoolSku> elasticPoolSkus = new LinkedList<>(Arrays.asList(ElasticPoolSku.getAll().toArray(new ElasticPoolSku[0])));
         Collections.shuffle(elasticPoolSkus);
 
         sqlServerManager.sqlServers().getCapabilitiesByRegion(Region.US_EAST).supportedCapabilitiesByServerVersion()

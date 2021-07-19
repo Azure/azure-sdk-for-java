@@ -170,6 +170,9 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
         nodeLables.put("environment", "dev");
         nodeLables.put("app.1", "spring");
 
+        List<String> nodeTaints = new ArrayList<>(1);
+        nodeTaints.add("key=value:NoSchedule");
+
         // create cluster
         KubernetesCluster kubernetesCluster = containerServiceManager.kubernetesClusters().define(aksName)
             .withRegion(Region.US_CENTRAL)
@@ -194,7 +197,7 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
                 .withAgentPoolVirtualMachineCount(1)
                 .withAutoScaling(1, 3)
                 .withNodeLabels(Collections.unmodifiableMap(nodeLables))
-                .withNodeTaints(Collections.unmodifiableList(Arrays.asList("key=value:NoSchedule")))
+                .withNodeTaints(Collections.unmodifiableList(nodeTaints))
                 .attach()
             // number of nodes = 0
             .defineAgentPool(agentPoolName2)
@@ -217,16 +220,12 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
         Assertions.assertEquals(Arrays.asList("1", "2", "3"), agentPoolProfile.availabilityZones());
         Assertions.assertEquals(Code.RUNNING, agentPoolProfile.powerState().code());
 
-        Map<String, String> expectedNodeLables = new HashMap<>(2);
-        nodeLables.put("environment", "dev");
-        nodeLables.put("app.1", "spring");
-
         KubernetesClusterAgentPool agentPoolProfile1 = kubernetesCluster.agentPools().get(agentPoolName1);
         Assertions.assertEquals(1, agentPoolProfile1.nodeSize());
         Assertions.assertTrue(agentPoolProfile1.isAutoScalingEnabled());
         Assertions.assertEquals(1, agentPoolProfile1.minimumNodeSize());
         Assertions.assertEquals(3, agentPoolProfile1.maximumNodeSize());
-        Assertions.assertEquals(Collections.unmodifiableMap(expectedNodeLables), agentPoolProfile1.nodeLabels());
+        Assertions.assertEquals(Collections.unmodifiableMap(nodeLables), agentPoolProfile1.nodeLabels());
         Assertions.assertEquals("key=value:NoSchedule", agentPoolProfile1.nodeTaints().iterator().next());
 
         KubernetesClusterAgentPool agentPoolProfile2 = kubernetesCluster.agentPools().get(agentPoolName2);
