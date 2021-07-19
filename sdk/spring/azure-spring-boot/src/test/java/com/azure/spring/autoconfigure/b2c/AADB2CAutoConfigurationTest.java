@@ -36,7 +36,7 @@ public class AADB2CAutoConfigurationTest extends AbstractAADB2COAuth2ClientTestC
             .withPropertyValues(getWebappCommonPropertyValues());
     }
 
-''    private String[] getWebappCommonPropertyValues() {
+    private String[] getWebappCommonPropertyValues() {
         return new String[] { String.format("%s=%s", AADB2CConstants.BASE_URI, AADB2CConstants.TEST_BASE_URI),
             String.format("%s=%s", AADB2CConstants.TENANT_ID, AADB2CConstants.TEST_TENANT_ID),
             String.format("%s=%s", AADB2CConstants.CLIENT_ID, AADB2CConstants.TEST_CLIENT_ID),
