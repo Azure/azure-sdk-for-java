@@ -44,9 +44,6 @@ parameters:
 - name: MatrixReplace
   type: object
   default: []
-- name: AdditionalBuildJobs
-  type: jobList
-  default: []
 
 stages:
   - stage: Build
