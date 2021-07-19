@@ -22,7 +22,7 @@ parameters:
     default: 'Analyze'
 
 jobs:
-  - job: 'Analyze'
+  - job: ${{ parameters.DisplayName }}
     displayName: ${{ parameters.DisplayName }}
     condition: and(succeeded(), ne(variables['Skip.Analyze'], 'true'), or(not(eq('${{ parameters.FromSource }}', true)), and(eq('${{ parameters.ServiceDirectory }}', 'core'), eq('${{ parameters.FromSource }}', true))))
 
