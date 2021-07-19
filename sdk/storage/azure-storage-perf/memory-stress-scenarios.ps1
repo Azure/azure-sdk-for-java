@@ -22,3 +22,4 @@ function Run-Scenario {
 Run-Scenario "600m" "uploadoutputstream --warmup 0 --duration 1 --size 1048576000 --sync"
 Run-Scenario "600m" "uploadblob --warmup 0 --duration 1 --size 1048576000"
 Run-Scenario "400m" "uploadblob --warmup 0 --duration 1 --size 1048576000 --sync"
+Run-Scenario "400m" "uploadblobnolength --warmup 0 --duration 1 --size 1048576000 --sync"
