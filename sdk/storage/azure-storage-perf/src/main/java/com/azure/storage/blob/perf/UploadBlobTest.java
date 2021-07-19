@@ -28,6 +28,7 @@ public class UploadBlobTest extends BlobTestBase<PerfStressOptions> {
     @Override
     public void run() {
         inputStream.reset();
+        // This one uses Storage's stream->flux converter
         blobClient.upload(inputStream, options.getSize(), true);
     }
 

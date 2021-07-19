@@ -515,4 +515,27 @@ public final class JsonWebKey {
             throw new IllegalArgumentException("Missing required property kty in model JsonWebKey");
         }
     }
+
+    /**
+     * JWK
+     * @param generated generated key.
+     * @return implementation type.
+     */
+    public static JsonWebKey fromGenerated(com.azure.security.attestation.implementation.models.JsonWebKey generated) {
+        return new JsonWebKey(generated.getKty())
+            .setX5C(generated.getX5C())
+            .setX(generated.getX())
+            .setAlg(generated.getAlg())
+            .setCrv(generated.getCrv())
+            .setD(generated.getD())
+            .setDp(generated.getDp())
+            .setDq(generated.getDq())
+            .setE(generated.getE())
+            .setKid(generated.getKid())
+            .setN(generated.getN())
+            .setQ(generated.getQ())
+            .setQi(generated.getQi())
+            .setUse(generated.getUse())
+            .setY(generated.getY());
+    }
 }

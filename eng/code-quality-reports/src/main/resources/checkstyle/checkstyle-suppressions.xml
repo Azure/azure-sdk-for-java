@@ -551,10 +551,10 @@ the main ServiceBusClientBuilder. -->
             files="com.azure.search.documents.SearchIndexingBufferedSender"/>
 
   <!-- Suppress checks on AutoRest generated Attestation service code -->
-  <suppress checks="(MissingJavadocMethod|EnforceFinalFields)"
-            files=".*[/\\]azure[/\\]security[/\\]attestation[/\\]AttestationClientBuilder.java"/>
+  <suppress checks="ThrowFromClientLogger"
+            files="com.azure.security.attestation.models.JsonWebKey.java"/>
   <suppress checks="WhitespaceAround|ThrowFromClientLogger"
-            files="com.azure.security.attestation.models.*\.java"/>
+            files="com.azure.security.attestation.implementation.models.*\.java"/>
 
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck"
             files="com.azure.core.test.AzureTestWatcher.java"/>
