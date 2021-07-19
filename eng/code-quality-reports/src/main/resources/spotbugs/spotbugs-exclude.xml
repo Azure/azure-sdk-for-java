@@ -2355,6 +2355,18 @@
   </Match>
 
   <Match>
+    <Class name="com.azure.spring.autoconfigure.jms.AzureServiceBusJMSProperties"/>
+    <Field name="pricingTier"/>
+    <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
+  </Match>
+
+  <Match>
+    <Class name="com.azure.spring.keyvault.KeyVaultOperation" />
+    <Field name="timer" />
+    <Bug pattern="ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD"/>
+  </Match>
+
+  <Match>
     <Class name="com.azure.spring.autoconfigure.cosmos.CosmosAutoConfiguration"/>
     <Field name="azureProperties"/>
     <Bug pattern="URF_UNREAD_FIELD"/>

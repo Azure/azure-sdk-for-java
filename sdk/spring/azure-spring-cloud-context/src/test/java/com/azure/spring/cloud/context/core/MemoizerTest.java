@@ -3,16 +3,20 @@
 
 package com.azure.spring.cloud.context.core;
 
-import static org.mockito.Mockito.*;
-
 import com.azure.spring.core.util.Memoizer;
 import com.azure.spring.core.util.Tuple;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiFunction;
 import java.util.function.Function;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class MemoizerTest {
 

@@ -6,13 +6,12 @@ package com.azure.spring.cloud.autoconfigure.servicebus;
 import com.azure.core.amqp.AmqpRetryMode;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
-import com.azure.resourcemanager.AzureResourceManager;
+import com.azure.spring.cloud.autoconfigure.commonconfig.TestConfigWithAzureResourceManager;
 import com.azure.spring.cloud.autoconfigure.context.AzureContextProperties;
 import com.azure.spring.cloud.context.core.impl.ServiceBusNamespaceManager;
 import com.azure.spring.cloud.context.core.impl.ServiceBusTopicManager;
 import com.azure.spring.cloud.context.core.impl.ServiceBusTopicSubscriptionManager;
 import com.azure.spring.integration.servicebus.converter.ServiceBusMessageConverter;
-import com.azure.spring.integration.servicebus.factory.ServiceBusConnectionStringProvider;
 import com.azure.spring.integration.servicebus.factory.ServiceBusTopicClientFactory;
 import com.azure.spring.integration.servicebus.topic.ServiceBusTopicOperation;
 import com.azure.spring.integration.servicebus.topic.ServiceBusTopicTemplate;
@@ -27,6 +26,7 @@ import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
 import static com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusQueueAutoConfigurationTest.NAMESPACE_CONNECTION_STRING;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -133,7 +133,7 @@ public class AzureServiceBusTopicAutoConfigurationTest {
     @Test
     public void testResourceManagerProvided() {
         this.contextRunner.withUserConfiguration(TestConfigWithAzureResourceManager.class,
-            TestConfigWithConnectionStringProvider.class, AzureServiceBusAutoConfiguration.class)
+                                                 TestConfigWithConnectionStringProvider.class, AzureServiceBusAutoConfiguration.class)
                           .withPropertyValues(
                               AZURE_PROPERTY_PREFIX + "resource-group=rg1",
                               SERVICE_BUS_PROPERTY_PREFIX + "namespace=ns1"
@@ -167,7 +167,7 @@ public class AzureServiceBusTopicAutoConfigurationTest {
     }
 
     @Configuration
-    @EnableConfigurationProperties(AzureContextProperties.class)
+    @Import(TestConfigWithAzureResourceManager.class)
     public static class TestConfigWithServiceBusNamespaceManager {
 
         @Bean
@@ -185,18 +185,6 @@ public class AzureServiceBusTopicAutoConfigurationTest {
         public ServiceBusConnectionStringProvider serviceBusConnectionStringProvider() {
             return new ServiceBusConnectionStringProvider(NAMESPACE_CONNECTION_STRING);
         }
-
-    }
-
-    @Configuration
-    @EnableConfigurationProperties(AzureContextProperties.class)
-    public static class TestConfigWithAzureResourceManager {
-
-        @Bean
-        public AzureResourceManager azureResourceManager() {
-            return mock(AzureResourceManager.class);
-        }
-
 
     }
 

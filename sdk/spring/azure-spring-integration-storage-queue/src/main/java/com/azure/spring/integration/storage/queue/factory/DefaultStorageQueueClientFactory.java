@@ -14,8 +14,8 @@ import org.springframework.lang.NonNull;
 
 import java.util.function.Function;
 
-import static com.azure.spring.core.ApplicationId.VERSION;
 import static com.azure.spring.core.ApplicationId.AZURE_SPRING_STORAGE_QUEUE;
+import static com.azure.spring.core.ApplicationId.VERSION;
 
 /**
  * Default client factory for Storage Queue.
