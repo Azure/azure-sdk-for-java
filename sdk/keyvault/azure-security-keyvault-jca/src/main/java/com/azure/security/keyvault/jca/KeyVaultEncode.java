@@ -48,12 +48,6 @@ public class KeyVaultEncode {
         return result;
     }
 
-    /**
-     * get tag
-     * @param tag tag type
-     * @param len context length
-     * @return tag's Context
-     */
     static byte[] buildLengthBytes(byte tag, int len) {
         if (len < 128) {
             return new byte[] {tag, ((byte) len)};

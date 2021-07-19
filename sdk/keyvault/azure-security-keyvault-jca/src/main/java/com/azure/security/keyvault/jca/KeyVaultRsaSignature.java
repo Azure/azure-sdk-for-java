@@ -32,12 +32,12 @@ public class KeyVaultRsaSignature extends SignatureSpi {
     // PSS parameters from signatures and keys respectively
     private PSSParameterSpec sigParams = null; // required for PSS signatures
 
-    private final KeyVaultClient keyVaultClient;
+    private KeyVaultClient keyVaultClient;
 
     private String kid;
 
     /**
-     * Construct a new RSAPSSSignatur with arbitrary digest algorithm
+     * Construct a new KeyVaultRsaSignature
      */
     public KeyVaultRsaSignature() {
         String keyVaultUri = System.getProperty("azure.keyvault.uri");
@@ -50,19 +50,24 @@ public class KeyVaultRsaSignature extends SignatureSpi {
         this.md = null;
     }
 
-    // initialize for verification. See JCA doc
+    void setKeyVaultClient(KeyVaultClient keyVaultClient) {
+        this.keyVaultClient = keyVaultClient;
+    }
+
+    //This class is only used for keyLess signatures, other functions will
+    //call other suitable algorithms, such as RSAPSSSignature
     @Override
     protected void engineInitVerify(PublicKey publicKey) {
         throw new UnsupportedOperationException("getParameter() not supported");
     }
 
-    // initialize for signing. See JCA doc
     @Override
     protected void engineInitSign(PrivateKey privateKey) {
         engineInitSign(privateKey, null);
     }
 
-    // initialize for signing. See JCA doc
+    //This class is only used for keyLess signatures, other functions will
+    //call other suitable algorithms, such as RSAPSSSignature
     @Override
     protected void engineInitSign(PrivateKey privateKey, SecureRandom random) {
 
@@ -104,7 +109,6 @@ public class KeyVaultRsaSignature extends SignatureSpi {
         return this.md.digest();
     }
 
-    // update the signature with the plaintext data. See JCA doc
     @Override
     protected void engineUpdate(byte b) throws SignatureException {
         ensureInit();
@@ -112,7 +116,6 @@ public class KeyVaultRsaSignature extends SignatureSpi {
         digestReset = false;
     }
 
-    // update the signature with the plaintext data. See JCA doc
     @Override
     protected void engineUpdate(byte[] b, int off, int len)
         throws SignatureException {
@@ -121,7 +124,6 @@ public class KeyVaultRsaSignature extends SignatureSpi {
         digestReset = false;
     }
 
-    // update the signature with the plaintext data. See JCA doc
     @Override
     protected void engineUpdate(ByteBuffer b) {
         try {
@@ -134,7 +136,6 @@ public class KeyVaultRsaSignature extends SignatureSpi {
         digestReset = false;
     }
 
-    // sign the data and return the signature. See JCA doc
     @Override
     protected byte[] engineSign() throws SignatureException {
         ensureInit();
@@ -145,14 +146,15 @@ public class KeyVaultRsaSignature extends SignatureSpi {
         return encrypted;
     }
 
-    // verify the data and return the result. See JCA doc
-    // should be reset to the state after engineInitVerify call.
+    //This class is only used for keyLess signatures, other functions will
+    //call other suitable algorithms, such as RSAPSSSignature
     @Override
     protected boolean engineVerify(byte[] sigBytes) {
         throw new UnsupportedOperationException("engineVerify() not supported");
     }
 
-    // set parameter, not supported. See JCA doc
+    //This class is only used for keyLess signatures, other functions will
+    //call other suitable algorithms, such as RSAPSSSignature
     @Deprecated
     @Override
     protected void engineSetParameter(String param, Object value) {
@@ -180,7 +182,8 @@ public class KeyVaultRsaSignature extends SignatureSpi {
         }
     }
 
-    // get parameter, not supported. See JCA doc
+    //This class is only used for keyLess signatures, other functions will
+    //call other suitable algorithms, such as RSAPSSSignature
     @Deprecated
     @Override
     protected Object engineGetParameter(String param) {

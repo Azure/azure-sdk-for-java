@@ -112,7 +112,6 @@ public class KeyVaultClient extends DelegateRestClient {
         this(keyVaultUri, tenantId, clientId, clientSecret, null);
     }
 
-
     /**
      * Constructor.
      *

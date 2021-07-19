@@ -33,9 +33,6 @@ public abstract class KeyVaultECSignature extends SignatureSpi {
     // signature parameters
     private ECParameterSpec sigParams = null;
 
-    // The format. true for the IEEE P1363 format. false (default) for ASN.1
-    private final boolean p1363Format;
-
     private String digestName;
 
     private KeyVaultClient keyVaultClient;
@@ -43,19 +40,20 @@ public abstract class KeyVaultECSignature extends SignatureSpi {
     private String kid;
 
     /**
-     * Constructs a new ECDSASignature.
+     * Constructs a new KeyVaultECSignature.
      *
      * @exception ProviderException if the native ECC library is unavailable.
      */
     public KeyVaultECSignature() {
-        this(false);
+        this.messageDigest = null;
         initKeyVaultClient();
     }
 
     /**
      * init key vault client
      */
-    public void initKeyVaultClient() {
+    //TODO (zhicliu): Should we provide KeyVaultClient through privateKey to ensure that there is only one best practice?
+    private void initKeyVaultClient() {
         String keyVaultUri = System.getProperty("azure.keyvault.uri");
         String tenantId = System.getProperty("azure.keyvault.tenant-id");
         String clientId = System.getProperty("azure.keyvault.client-id");
@@ -63,6 +61,10 @@ public abstract class KeyVaultECSignature extends SignatureSpi {
         String managedIdentity = System.getProperty("azure.keyvault.managed-identity");
 
         keyVaultClient = new KeyVaultClient(keyVaultUri, tenantId, clientId, clientSecret, managedIdentity);
+    }
+
+    void setKeyVaultClient(KeyVaultClient keyVaultClient) {
+        this.keyVaultClient = keyVaultClient;
     }
 
     /**
@@ -74,32 +76,9 @@ public abstract class KeyVaultECSignature extends SignatureSpi {
     }
 
     /**
-     * Constructs a new ECDSASignature that will use the specified
-     * signature format. {@code p1363Format} should be {@code true} to
-     * use the IEEE P1363 format. If {@code p1363Format} is {@code false},
-     * the DER-encoded ASN.1 format will be used. This constructor is
-     * used by the RawECDSA subclasses.
-     */
-    KeyVaultECSignature(boolean p1363Format) {
-        this.messageDigest = null;
-        this.p1363Format = p1363Format;
-    }
-
-    /**
-     * Constructs a new ECDSASignature. Used by subclasses.
+     * Constructs a new KeyVaultECSignature that will use the specified digest
      */
     KeyVaultECSignature(String digestName) {
-        this(digestName, false);
-    }
-
-    /**
-     * Constructs a new ECDSASignature that will use the specified
-     * digest and signature format. {@code p1363Format} should be
-     * {@code true} to use the IEEE P1363 format. If {@code p1363Format}
-     * is {@code false}, the DER-encoded ASN.1 format will be used. This
-     * constructor is used by subclasses.
-     */
-    KeyVaultECSignature(String digestName, boolean p1363Format) {
         initKeyVaultClient();
         try {
             messageDigest = MessageDigest.getInstance(digestName);
@@ -117,22 +96,22 @@ public abstract class KeyVaultECSignature extends SignatureSpi {
                 this.digestName = null;
         }
         this.needsReset = false;
-        this.p1363Format = p1363Format;
     }
 
-    // initialize for verification. See JCA doc
+    //This class is only used for keyLess signatures, other functions will
+    //call other suitable algorithms, such as ECDSASignature
     @Override
     protected void engineInitVerify(PublicKey publicKey) {
         throw new UnsupportedOperationException("engineInitVerify() not supported");
     }
 
-    // initialize for signing. See JCA doc
     @Override
     protected void engineInitSign(PrivateKey privateKey) {
         engineInitSign(privateKey, null);
     }
 
-    // initialize for signing. See JCA doc
+    //This class is only used for keyLess signatures, other functions will
+    //call other suitable algorithms, such as ECDSASignature
     @Override
     protected void engineInitSign(PrivateKey privateKey, SecureRandom random) {
         if (privateKey instanceof KeyVaultPrivateKey) {
@@ -164,21 +143,18 @@ public abstract class KeyVaultECSignature extends SignatureSpi {
         return messageDigest.digest();
     }
 
-    // update the signature with the plaintext data. See JCA doc
     @Override
     protected void engineUpdate(byte b) {
         messageDigest.update(b);
         needsReset = true;
     }
 
-    // update the signature with the plaintext data. See JCA doc
     @Override
     protected void engineUpdate(byte[] b, int off, int len) {
         messageDigest.update(b, off, len);
         needsReset = true;
     }
 
-    // update the signature with the plaintext data. See JCA doc
     @Override
     protected void engineUpdate(ByteBuffer byteBuffer) {
         int len = byteBuffer.remaining();
@@ -190,27 +166,24 @@ public abstract class KeyVaultECSignature extends SignatureSpi {
         needsReset = true;
     }
 
-    // sign the data and return the signature. See JCA doc
     @Override
     protected byte[] engineSign() {
 
         byte[] mHash = getDigestValue();
         String encode = Base64.getEncoder().encodeToString(mHash);
         byte[] encrypted = keyVaultClient.getSignedWithPrivateKey(digestName, encode, kid);
-        if (p1363Format) {
-            return encrypted;
-        } else {
-            return encodeByte(encrypted);
-        }
+        return encodeByte(encrypted);
     }
 
-    // verify the data and return the result. See JCA doc
+    //This class is only used for keyLess signatures, other functions will
+    //call other suitable algorithms, such as ECDSASignature
     @Override
     protected boolean engineVerify(byte[] signature) {
         throw new UnsupportedOperationException("getParameter() not supported");
     }
 
-    // set parameter, not supported. See JCA doc
+    //This class is only used for keyLess signatures, other functions will
+    //call other suitable algorithms, such as ECDSASignature
     @Override
     @Deprecated
     protected void engineSetParameter(String param, Object value)
@@ -218,6 +191,8 @@ public abstract class KeyVaultECSignature extends SignatureSpi {
         throw new UnsupportedOperationException("setParameter() not supported");
     }
 
+    //This class is only used for keyLess signatures, other functions will
+    //call other suitable algorithms, such as ECDSASignature
     @Override
     protected void engineSetParameter(AlgorithmParameterSpec params)
         throws InvalidAlgorithmParameterException {
@@ -228,7 +203,8 @@ public abstract class KeyVaultECSignature extends SignatureSpi {
         sigParams = (ECParameterSpec) params;
     }
 
-    // get parameter, not supported. See JCA doc
+    //This class is only used for keyLess signatures, other functions will
+    //call other suitable algorithms, such as ECDSASignature
     @Override
     @Deprecated
     protected Object engineGetParameter(String param)
