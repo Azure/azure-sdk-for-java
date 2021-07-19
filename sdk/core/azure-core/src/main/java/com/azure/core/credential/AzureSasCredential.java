@@ -20,9 +20,8 @@ public final class AzureSasCredential {
     /**
      * Creates a credential that authorizes request with the given shared access signature.
      * <p>
-     * The {@code signature} passed is assumed to be sanitized of any illegal characters. This constructor is
-     * effectively the same as calling {@link #AzureSasCredential(String, Function) new AzureSasCredential(signature,
-     * null))}.
+     * The {@code signature} passed is assumed to be encoded. This constructor is effectively the same as calling {@link
+     * #AzureSasCredential(String, Function) new AzureSasCredential(signature, null))}.
      *
      * @param signature The shared access signature used to authorize requests.
      * @throws NullPointerException If {@code signature} is {@code null}.

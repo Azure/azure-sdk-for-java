@@ -40,7 +40,7 @@ public class AzureSasCredentialTests {
     }
 
     @Test
-    public void constructorWithoutSanitationFunctionReturnsSignatureAsIs() {
+    public void constructorWithoutEncodingFunctionReturnsSignatureAsIs() {
         final String signature = "sas=a bc";
 
         AzureSasCredential credential = new AzureSasCredential(signature, null);
@@ -48,7 +48,7 @@ public class AzureSasCredentialTests {
     }
 
     @Test
-    public void constructorSanitizesSignature() {
+    public void constructorEncodesSignature() {
         final String signature = "sas=a bc";
         final String expectedSignature = "sas=a%20bc";
 
@@ -57,7 +57,7 @@ public class AzureSasCredentialTests {
     }
 
     @Test
-    public void credentialWithoutSanitationFunctionDoesNotSanitizeUpdates() {
+    public void credentialWithoutEncodingFunctionDoesNotEncodeUpdates() {
         final String signature = "sas=a bc";
         final String updatedSignature = "sas=a b c";
 
@@ -66,7 +66,7 @@ public class AzureSasCredentialTests {
     }
 
     @Test
-    public void credentialWithSanitationFunctionSanitizesSignatureUpdates() {
+    public void credentialWithEncodingFunctionEncodesSignatureUpdates() {
         final String signature = "sas=a bc";
         final String updatedSignature = "sas=a b c";
         final String expectedSignature = "sas=a%20b%20c";
