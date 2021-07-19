@@ -24,7 +24,6 @@ import java.util.Objects;
 @ServiceClientBuilder(
         serviceClients = {
             AttestationAsyncClient.class,
-            MetadataConfigurationAsyncClient.class,
             SigningCertificatesAsyncClient.class
         })
 public final class AttestationAsyncClientBuilder {
@@ -148,7 +147,7 @@ public final class AttestationAsyncClientBuilder {
      * @return an instance of AttestationAsyncClient.
      */
     public AttestationAsyncClient buildAttestationAsyncClient() {
-        return new AttestationAsyncClient(buildInnerClient().getAttestations());
+        return new AttestationAsyncClient(buildInnerClient());
     }
     /**
      * Builds an instance of SigningCertificatesAsyncClient async client.
@@ -157,15 +156,6 @@ public final class AttestationAsyncClientBuilder {
      */
     public SigningCertificatesAsyncClient buildSigningCertificatesAsyncClient() {
         return new SigningCertificatesAsyncClient(buildInnerClient().getSigningCertificates());
-    }
-
-    /**
-     * Builds an instance of MetadataConfigurationAsyncClient async client.
-     *
-     * @return an instance of MetadataConfigurationAsyncClient.
-     */
-    public MetadataConfigurationAsyncClient buildMetadataConfigurationAsyncClient() {
-        return new MetadataConfigurationAsyncClient(buildInnerClient().getMetadataConfigurations());
     }
 
 }

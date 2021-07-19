@@ -9,9 +9,6 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.security.attestation.AttestationAsyncClient;
-import com.azure.security.attestation.implementation.models.TpmAttestationRequest;
-import com.azure.security.attestation.implementation.models.TpmAttestationResponse;
 import com.azure.security.attestation.models.AttestOpenEnclaveRequest;
 import com.azure.security.attestation.models.AttestSgxEnclaveRequest;
 import com.azure.security.attestation.models.AttestationResponse;
@@ -22,7 +19,7 @@ import java.util.Objects;
 
 import static com.azure.core.util.FluxUtil.withContext;
 
-/** Initializes a new instance of the synchronous AzureAttestationRestClient type. */
+/** Initializes a new instance of the synchronous AttestationClient object. */
 @ServiceClient(builder = AttestationClientBuilder.class)
 public final class AttestationClient {
     private final AttestationAsyncClient asyncClient;
@@ -34,6 +31,25 @@ public final class AttestationClient {
      */
     AttestationClient(AttestationAsyncClient serviceClient) {
         this.asyncClient = serviceClient;
+    }
+
+    /**
+     * Retrieves the OpenId Metadata for this AttestationClient instance.
+     * @return Object containing the OpenId metadata configuration for this instance.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Object getOpenIdMetadata() {
+        return withContext(context -> asyncClient.getOpenIdMetadataWithResponse(context))
+            .map(response -> response.getValue()).block();
+    }
+
+    /**
+     * Retrieves the OpenId Metadata for this AttestationClient instance.
+     * @return Object containing the OpenId metadata configuration for this instance.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Object> getOpenIdMetadataWithResponse(Context context) {
+        return asyncClient.getOpenIdMetadataWithResponse(context).block();
     }
 
     /**

@@ -9,7 +9,10 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.security.attestation.implementation.AttestationClientImpl;
+import com.azure.security.attestation.implementation.AttestationClientImplBuilder;
 import com.azure.security.attestation.implementation.AttestationsImpl;
+import com.azure.security.attestation.implementation.MetadataConfigurationsImpl;
 import com.azure.security.attestation.models.AttestOpenEnclaveRequest;
 import com.azure.security.attestation.models.AttestSgxEnclaveRequest;
 import com.azure.security.attestation.models.AttestationResponse;
@@ -19,18 +22,51 @@ import reactor.core.publisher.Mono;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
+import static com.azure.core.util.FluxUtil.withContext;
+
 /** Initializes a new instance of the asynchronous AzureAttestationRestClient type. */
-@ServiceClient(builder = AttestationClientBuilder.class, isAsync = true)
+@ServiceClient(builder = AttestationAsyncClientBuilder.class, isAsync = true)
 public final class AttestationAsyncClient {
-    private final AttestationsImpl serviceClient;
+    private final AttestationsImpl attestImpl;
+    private final MetadataConfigurationsImpl metadataImpl;
 
     /**
      * Initializes an instance of Attestations client.
      *
-     * @param serviceClient the service client implementation.
+     * @param clientImpl the service client implementation.
      */
-    AttestationAsyncClient(AttestationsImpl serviceClient) {
-        this.serviceClient = serviceClient;
+    AttestationAsyncClient(AttestationClientImpl clientImpl)
+    {
+        this.attestImpl = clientImpl.getAttestations();
+        this.metadataImpl = clientImpl.getMetadataConfigurations();
+    }
+
+    /**
+     * Retrieves metadata about the attestation signing keys in use by the attestation service.
+     *
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any object.
+     * @param context
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Object>> getOpenIdMetadataWithResponse(Context context) {
+        return this.metadataImpl.getWithResponseAsync(context);
+    }
+
+    /**
+     * Retrieves metadata about the attestation signing keys in use by the attestation service.
+     *
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Object> getOpenIdMetadata()
+    {
+        // Forward the getOpenIdMetadata to the getOpenIdMetadataWithResponse API implementation.
+        return withContext(context -> this.getOpenIdMetadataWithResponse(context))
+            .map(response -> response.getValue());
     }
 
     /**
@@ -46,7 +82,7 @@ public final class AttestationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AttestationResponse>> attestOpenEnclaveWithResponse(AttestOpenEnclaveRequest request, Context context) {
-        return this.serviceClient.attestOpenEnclaveWithResponseAsync(request.toGenerated(), context)
+        return this.attestImpl.attestOpenEnclaveWithResponseAsync(request.toGenerated(), context)
             .map(response -> Utilities.generateResponseFromModelType(response, AttestationResponse.fromGenerated(response.getValue())));
     }
 
@@ -62,8 +98,8 @@ public final class AttestationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AttestationResponse> attestOpenEnclave(AttestOpenEnclaveRequest request) {
-        return serviceClient.attestOpenEnclaveAsync(request.toGenerated())
-            .map(AttestationResponse::fromGenerated);
+        return withContext(context -> attestOpenEnclaveWithResponse(request, context))
+            .map(Response::getValue);
     }
 
     /**
@@ -79,7 +115,7 @@ public final class AttestationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AttestationResponse>> attestSgxEnclaveWithResponse(AttestSgxEnclaveRequest request, Context context) {
-        return this.serviceClient.attestSgxEnclaveWithResponseAsync(request.toGenerated(), context)
+        return this.attestImpl.attestSgxEnclaveWithResponseAsync(request.toGenerated(), context)
             .map(response ->  Utilities.generateResponseFromModelType(response, AttestationResponse.fromGenerated(response.getValue())));
     }
 
@@ -95,8 +131,8 @@ public final class AttestationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AttestationResponse> attestSgxEnclave(AttestSgxEnclaveRequest request) {
-        return this.serviceClient.attestSgxEnclaveAsync(request.toGenerated())
-            .map(AttestationResponse::fromGenerated);
+        return withContext(context -> attestSgxEnclaveWithResponse(request, context))
+            .map(Response::getValue);
     }
 
     /**
@@ -112,7 +148,8 @@ public final class AttestationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<String>> attestTpmWithResponse(String request, Context context) {
-        return this.serviceClient.attestTpmWithResponseAsync(new com.azure.security.attestation.implementation.models.TpmAttestationRequest().setData(request.getBytes(StandardCharsets.UTF_8)), context)
+        Objects.requireNonNull(request);
+        return this.attestImpl.attestTpmWithResponseAsync(new com.azure.security.attestation.implementation.models.TpmAttestationRequest().setData(request.getBytes(StandardCharsets.UTF_8)), context)
             .map(response -> Utilities.generateResponseFromModelType(response, new String(Objects.requireNonNull(response.getValue().getData()), StandardCharsets.UTF_8)));
     }
 
@@ -128,7 +165,7 @@ public final class AttestationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<String> attestTpm(String request) {
-        return this.serviceClient.attestTpmAsync(new com.azure.security.attestation.implementation.models.TpmAttestationRequest().setData(request.getBytes(StandardCharsets.UTF_8)))
-            .map(response -> new String(response.getData(), StandardCharsets.UTF_8));
+        return withContext(context -> attestTpmWithResponse(request, context))
+            .map(Response::getValue);
     }
 }

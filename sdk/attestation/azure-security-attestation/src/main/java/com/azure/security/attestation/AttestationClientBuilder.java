@@ -27,7 +27,6 @@ import java.util.Objects;
             PolicyCertificatesClient.class,
             AttestationClient.class,
             SigningCertificatesClient.class,
-            MetadataConfigurationClient.class,
             PolicyAsyncClient.class,
             PolicyCertificatesAsyncClient.class,
         })
@@ -173,16 +172,6 @@ public final class AttestationClientBuilder {
     public SigningCertificatesClient buildSigningCertificatesClient() {
         return new SigningCertificatesClient(asyncClientBuilder.buildSigningCertificatesAsyncClient());
     }
-
-    /**
-     * Builds an instance of MetadataConfigurationClient sync client.
-     *
-     * @return an instance of MetadataConfigurationClient.
-     */
-    public MetadataConfigurationClient buildMetadataConfigurationClient() {
-        return new MetadataConfigurationClient(asyncClientBuilder.buildMetadataConfigurationAsyncClient());
-    }
-
 
     /**
      * Legacy API surface which will be removed shortly.
