@@ -268,6 +268,14 @@ public class ClientSideRequestStatistics {
         public Instant getRequestResponseTimeUTC() {
             return requestResponseTimeUTC;
         }
+
+        public ResourceType getRequestResourceType() {
+            return requestResourceType;
+        }
+
+        public OperationType getRequestOperationType() {
+            return requestOperationType;
+        }
     }
 
     public static class SystemInformation {
@@ -359,10 +367,26 @@ public class ClientSideRequestStatistics {
         // on other replica  valid response, we end the current user request,
         // indicating background addressResolution is still inflight
         @JsonSerialize
-        boolean inflightRequest = true;
+        private boolean inflightRequest = true;
 
         public Instant getStartTimeUTC() {
             return startTimeUTC;
+        }
+
+        public Instant getEndTimeUTC() {
+            return endTimeUTC;
+        }
+
+        public String getTargetEndpoint() {
+            return targetEndpoint;
+        }
+
+        public String getErrorMessage() {
+            return errorMessage;
+        }
+
+        public boolean isInflightRequest() {
+            return inflightRequest;
         }
     }
 
