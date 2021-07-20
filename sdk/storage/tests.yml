@@ -44,7 +44,7 @@ stages:
       TestMode: 'LIVE'
       TimeoutInMinutes: 60
       Location: canadacentral
-      Clouds: 'Preview'
+#      Clouds: 'Preview'
       TestStepMavenInputs:
         options: '$(DefaultTestOptions) -T 1C'
         mavenOptions: '$(DefaultTestMavenOptions)'
