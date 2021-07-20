@@ -92,7 +92,7 @@ public class KeyVaultJcaProvider extends Provider {
                     "Signature",
                     "RSASSA-PSS",
                     KeyVaultKeyLessRsaSignature.class.getName(),
-                    Collections.singletonList(KeyVaultKeyStore.ALGORITHM_NAME),
+                    null,
                     null
                 )
             );
@@ -103,7 +103,7 @@ public class KeyVaultJcaProvider extends Provider {
                     "Signature",
                     "SHA256withECDSA",
                     KeyVaultKeyLessECSignature.KeyVaultSHA256.class.getName(),
-                    Collections.singletonList(KeyVaultKeyStore.ALGORITHM_NAME),
+                    null,
                     null
                 )
             );
@@ -113,7 +113,7 @@ public class KeyVaultJcaProvider extends Provider {
                     "Signature",
                     "SHA384withECDSA",
                     KeyVaultKeyLessECSignature.KeyVaultSHA384.class.getName(),
-                    Collections.singletonList(KeyVaultKeyStore.ALGORITHM_NAME),
+                    null,
                     null
                 )
             );
