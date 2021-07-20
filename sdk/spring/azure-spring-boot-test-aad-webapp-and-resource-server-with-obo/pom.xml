@@ -13,8 +13,8 @@
   </parent>
 
   <groupId>com.azure.spring</groupId>
-  <artifactId>azure-spring-boot-test-aad-obo</artifactId>
-  <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-test-aad-obo;current} -->
+  <artifactId>azure-spring-boot-test-aad-webapp-and-resource-server-with-obo</artifactId>
+  <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-test-aad-webapp-and-resource-server-with-obo;current} -->
 
   <dependencies>
     <dependency>
@@ -47,6 +47,12 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.azure.spring</groupId>
+      <artifactId>azure-spring-boot-test-selenium-common</artifactId>
+      <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-test-selenium-common;current} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

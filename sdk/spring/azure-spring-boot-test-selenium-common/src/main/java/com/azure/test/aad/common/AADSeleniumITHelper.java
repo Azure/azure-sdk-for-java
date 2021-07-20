@@ -1,18 +1,16 @@
-package com.azure.test.aad.selenium;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+package com.azure.test.aad.common;
 
 import com.azure.spring.utils.AzureCloudUrls;
-import com.azure.test.aad.common.SeleniumITHelper;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
 import java.util.Map;
 
-import static com.azure.spring.test.EnvironmentVariable.AAD_SINGLE_TENANT_CLIENT_ID;
-import static com.azure.spring.test.EnvironmentVariable.AAD_SINGLE_TENANT_CLIENT_SECRET;
 import static com.azure.spring.test.EnvironmentVariable.AAD_TENANT_ID_1;
 import static com.azure.spring.test.EnvironmentVariable.AAD_USER_NAME_1;
 import static com.azure.spring.test.EnvironmentVariable.AAD_USER_PASSWORD_1;
@@ -26,23 +24,14 @@ public class AADSeleniumITHelper extends SeleniumITHelper {
     private final String username;
     private final String password;
 
-    public static Map<String, String> createDefaultProperties() {
-        Map<String, String> defaultProperties = new HashMap<>();
-        defaultProperties.put("azure.activedirectory.tenant-id", AAD_TENANT_ID_1);
-        defaultProperties.put("azure.activedirectory.client-id", AAD_SINGLE_TENANT_CLIENT_ID);
-        defaultProperties.put("azure.activedirectory.client-secret", AAD_SINGLE_TENANT_CLIENT_SECRET);
-        defaultProperties.put("azure.activedirectory.user-group.allowed-groups", "group1");
-        defaultProperties.put("azure.activedirectory.post-logout-redirect-uri", "http://localhost:${server.port}");
-        defaultProperties.put("azure.activedirectory.base-uri", AzureCloudUrls.getBaseUrl(AZURE_CLOUD_TYPE));
-        defaultProperties.put("azure.activedirectory.graph-base-uri", AzureCloudUrls.getGraphBaseUrl(AZURE_CLOUD_TYPE));
-        return defaultProperties;
-    }
-
     public AADSeleniumITHelper(Class<?> appClass, Map<String, String> properties) {
         this(appClass, properties, AAD_USER_NAME_1, AAD_USER_PASSWORD_1);
     }
 
-    public AADSeleniumITHelper(Class<?> appClass, Map<String, String> properties, String username, String password) {
+    public AADSeleniumITHelper(Class<?> appClass,
+                               Map<String, String> properties,
+                               String username,
+                               String password) {
         super(appClass, properties);
         this.username = username;
         this.password = password;

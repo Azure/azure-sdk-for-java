@@ -65,7 +65,7 @@ public class AADWebApiOboIT {
     @Test
     public void testCallGraphWithAnonymousAuthenticationTokenAndReturnUnauthorized() {
         Assertions.assertThrows(HttpClientErrorException.Unauthorized.class,
-            ()-> aadWebApiITHelper.httpGetStringWithoutAccessToken("call-graph"));
+            () -> aadWebApiITHelper.httpGetStringWithoutAccessToken("call-graph"));
     }
 
     @SpringBootApplication
