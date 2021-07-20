@@ -7,7 +7,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.annotation.AzureMethodSource;
-import com.azure.core.test.annotation.TestingServiceVersions;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.ServiceVersion;
 import com.azure.core.util.logging.ClientLogger;
@@ -45,11 +45,6 @@ public final class AzureMethodSourceArgumentsProvider
     private static final Map<Class<? extends ServiceVersion>, Map<String, ServiceVersion>>
         CLASS_TO_MAP_STRING_SERVICE_VERSION = new ConcurrentHashMap<>();
 
-    private static final String SERVICE_VERSION_TYPES_MUST_MATCH = "The 'serviceVersionType' used by the "
-        + "'TestingServiceVersions' and 'HttpClientServiceVersionAugmentedSource' annotations do not match. "
-        + "For proper testing behavior they must match. The give was, 'TestingServiceVersions': '%s' and "
-        + "'HttpClientServiceVersionAugmentedSource': '%s'.";
-
     private static final String MUST_BE_STATIC = "Source supplier method is required to be static. Method: %s.";
 
     private static final String MUST_BE_STREAM_ARGUMENTS =
@@ -86,10 +81,10 @@ public final class AzureMethodSourceArgumentsProvider
             httpClientsToUse = TestBase.getHttpClients().collect(Collectors.toList());
         }
 
-        TestingServiceVersions testingServiceVersions = context.getRequiredTestClass()
-            .getAnnotation(TestingServiceVersions.class);
-        List<? extends ServiceVersion> serviceVersionsToUse = getServiceVersions(testingServiceVersions,
-            minimumServiceVersion, maximumServiceVersion, serviceVersionType, TEST_MODE);
+        boolean testAllServiceVersions = Configuration.getGlobalConfiguration()
+            .get("AZURE_TEST_ALL_SERVICE_VERSIONS", false);
+        List<? extends ServiceVersion> serviceVersionsToUse = getServiceVersions(minimumServiceVersion,
+            maximumServiceVersion, serviceVersionType, TEST_MODE, testAllServiceVersions);
 
         // If the sourceSupplier isn't provided don't retrieve parameterized testing values.
         List<Arguments> testValues = null;
@@ -139,36 +134,18 @@ public final class AzureMethodSourceArgumentsProvider
      * If the test class is not annotated with TestingServiceVersions the latest service version will be used for
      * testing.
      */
-    static List<? extends ServiceVersion> getServiceVersions(TestingServiceVersions testingServiceVersions,
-        String minimumServiceVersion, String maximumServiceVersion, Class<? extends ServiceVersion> serviceVersionType,
-        TestMode testMode) {
+    static List<? extends ServiceVersion> getServiceVersions(String minimumServiceVersion, String maximumServiceVersion,
+        Class<? extends ServiceVersion> serviceVersionType, TestMode testMode, boolean testAllServiceVersions) {
         loadServiceVersion(serviceVersionType);
 
-        if (testingServiceVersions != null) {
-            // If the ServiceVersion types between the method and class annotations do not match throw an error.
-            // This is likely a configuration error.
-            if (testingServiceVersions.serviceVersionType() != serviceVersionType) {
-                throw new IllegalStateException(String.format(SERVICE_VERSION_TYPES_MUST_MATCH,
-                    testingServiceVersions.serviceVersionType().getName(), serviceVersionType.getName()));
-            }
-
-            // If the test mode isn't live return the recording/playback service version.
-            if (testMode != TestMode.LIVE) {
-                // If the recording service version hasn't been set use the latest.
-                if (CoreUtils.isNullOrEmpty(testingServiceVersions.recordingServiceVersion())) {
-                    return Collections.singletonList(CLASS_TO_LATEST_SERVICE_VERSION.get(serviceVersionType));
-                } else {
-                    return Collections.singletonList(CLASS_TO_MAP_STRING_SERVICE_VERSION.get(serviceVersionType)
-                        .get(testingServiceVersions.recordingServiceVersion()));
-                }
-            }
+        // If all ServiceVersions are to be tested, and the test mode is LIVE, create the intersection of all service
+        // versions and the minimum and maximum service versions supported by the test.
+        if (testAllServiceVersions && testMode == TestMode.LIVE) {
 
             // Otherwise compute all service versions which fall in the intersection of the class and method service
             // version range intersection.
-            int minimumOrdinal = getServiceVersionRangeBound(testingServiceVersions.minimumLiveServiceVersion(),
-                minimumServiceVersion, serviceVersionType, false);
-            int maximumOrdinal = getServiceVersionRangeBound(testingServiceVersions.maximumLiveServiceVersion(),
-                maximumServiceVersion, serviceVersionType, true);
+            int minimumOrdinal = getServiceVersionRangeBound(minimumServiceVersion, serviceVersionType, false);
+            int maximumOrdinal = getServiceVersionRangeBound(maximumServiceVersion, serviceVersionType, true);
 
             return CLASS_TO_MAP_STRING_SERVICE_VERSION.get(serviceVersionType).values().stream()
                 .filter(sv -> {
@@ -176,29 +153,35 @@ public final class AzureMethodSourceArgumentsProvider
                     return ordinal >= minimumOrdinal && ordinal <= maximumOrdinal;
                 }).collect(Collectors.toList());
         } else {
-            return Collections.singletonList(CLASS_TO_LATEST_SERVICE_VERSION.get(serviceVersionType));
+            // Otherwise, use either the latest service version or the maximum service version, whichever is lesser.
+            Enum<?> maximumServiceVersionEnum = getEnumOrNull(maximumServiceVersion, serviceVersionType);
+            ServiceVersion latestServiceVersion = CLASS_TO_LATEST_SERVICE_VERSION.get(serviceVersionType);
+
+            if (maximumServiceVersionEnum == null) {
+                // If the maximum service version isn't configured use the latest service version.
+                return Collections.singletonList(latestServiceVersion);
+            } else {
+                // Otherwise use the lesser of maximum and latest service version.
+                if (maximumServiceVersionEnum.ordinal() >= ((Enum<?>) latestServiceVersion).ordinal()) {
+                    return Collections.singletonList(latestServiceVersion);
+                } else {
+                    return Collections.singletonList(CLASS_TO_MAP_STRING_SERVICE_VERSION.get(serviceVersionType)
+                        .get(maximumServiceVersion));
+                }
+            }
         }
     }
 
-    private static int getServiceVersionRangeBound(String classServiceVersion, String methodServiceVersion,
+    private static int getServiceVersionRangeBound(String serviceVersion,
         Class<? extends ServiceVersion> serviceVersionType, boolean isMaximum) {
-        Enum<?> classServiceVersionEnum = getEnumOrNull(classServiceVersion, serviceVersionType);
-        Enum<?> methodServiceVersionEnum = getEnumOrNull(methodServiceVersion, serviceVersionType);
+        Enum<?> serviceVersionEnum = getEnumOrNull(serviceVersion, serviceVersionType);
 
-        if (classServiceVersionEnum == null && methodServiceVersionEnum == null) {
-            // If neither is set return int32 bound based on min or max so all values pass.
+        if (serviceVersionEnum == null) {
+            // If the ServiceVersion isn't set, or is invalid, return the int32 bound based on min or max.
             return isMaximum ? Integer.MAX_VALUE : Integer.MIN_VALUE;
-
-        } else if (classServiceVersionEnum == null) {
-            return methodServiceVersionEnum.ordinal();
-        } else if (methodServiceVersionEnum == null) {
-            return classServiceVersionEnum.ordinal();
         } else {
-            // If the maximum is being found take the lesser ordinal, otherwise take the greater ordinal.
-            // This will determine the intersection of versions.
-            return isMaximum
-                ? Math.min(classServiceVersionEnum.ordinal(), methodServiceVersionEnum.ordinal())
-                : Math.max(classServiceVersionEnum.ordinal(), methodServiceVersionEnum.ordinal());
+            // Otherwise, return the ordinal of the ServiceVersion enum.
+            return serviceVersionEnum.ordinal();
         }
     }
 

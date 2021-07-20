@@ -1,2 +1,1 @@
 com.azure.core.test.AzureTestWatcher
-com.azure.core.test.implementation.PlaybackOnlyExecutionCondition
