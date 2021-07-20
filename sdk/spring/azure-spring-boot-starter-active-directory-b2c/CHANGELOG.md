@@ -1,6 +1,7 @@
 # Release History
 
 ## 3.7.0 (2021-07-20)
+No changes from 3.6.1.
 
 ## 3.6.1 (2021-07-02)
 ### New Features
