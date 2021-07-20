@@ -1,32 +1,32 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/synonymmaps?api-version=2020-06-30-Preview",
+    "Uri" : "https://REDACTED.search.windows.net/synonymmaps?api-version=2021-04-30-Preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "e50cedab-8ac2-45e6-9241-72efd72b939d",
+      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d5958bd0-6366-4cff-bb3e-c06cd5d87feb",
       "Content-Type" : "application/json"
     },
     "Response" : {
+      "content-length" : "327",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "e50cedab-8ac2-45e6-9241-72efd72b939d",
+      "request-id" : "d5958bd0-6366-4cff-bb3e-c06cd5d87feb",
       "StatusCode" : "400",
-      "Date" : "Fri, 02 Apr 2021 22:40:55 GMT",
+      "Date" : "Tue, 13 Jul 2021 19:28:27 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "e50cedab-8ac2-45e6-9241-72efd72b939d",
-      "elapsed-time" : "17",
+      "client-request-id" : "d5958bd0-6366-4cff-bb3e-c06cd5d87feb",
+      "elapsed-time" : "7",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "327",
       "Body" : "{\"error\":{\"code\":\"InvalidRequestParameter\",\"message\":\"Syntax error in line 1: 'a => b => c'. Only one explicit mapping (=>) can be specified in a synonym rule.\",\"details\":[{\"code\":\"InvalidSynonymMapSyntax\",\"message\":\"Syntax error in line 1: 'a => b => c'. Only one explicit mapping (=>) can be specified in a synonym rule.\"}]}}",
       "Content-Language" : "en",
-      "x-ms-client-request-id" : "e50cedab-8ac2-45e6-9241-72efd72b939d",
+      "x-ms-client-request-id" : "d5958bd0-6366-4cff-bb3e-c06cd5d87feb",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
     "Exception" : null
   } ],
-  "variables" : [ "test-synonym47234be652df" ]
+  "variables" : [ "test-synonym9646520abb6e" ]
 }
