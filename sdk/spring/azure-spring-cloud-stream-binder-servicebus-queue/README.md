@@ -116,16 +116,16 @@ Service Bus Message Headers and Properties | Spring Message Header Constants | T
 **MessageId** | com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.MESSAGE_ID | String | 1
 **MessageId** | com.azure.spring.integration.core.AzureHeaders.RAW_ID | String | 2
 **MessageId** | org.springframework.messaging.MessageHeaders.ID | UUID | 3
-ContentType | org.springframework.messaging.MessageHeaders.CONTENT_TYPE | String | NA
-ReplyTo | org.springframework.messaging.MessageHeaders.REPLY_CHANNEL | String | NA
+ContentType | org.springframework.messaging.MessageHeaders.CONTENT_TYPE | String | N/A
+ReplyTo | org.springframework.messaging.MessageHeaders.REPLY_CHANNEL | String | N/A
 **ScheduledEnqueueTimeUtc** | com.azure.spring.integration.core.AzureHeaders.SCHEDULED_ENQUEUE_MESSAGE | Integer | 1
 **ScheduledEnqueueTimeUtc** | com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.SCHEDULED_ENQUEUE_TIME | Instant | 2
-TimeToLive | com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.TIME_TO_LIVE | Duration | NA
-SessionID | com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.SESSION_ID | String | NA
-CorrelationId | com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.CORRELATION_ID | String | NA
-To | com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.TO | String | NA
-ReplyToSessionId | com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.REPLY_TO_SESSION_ID | String | NA
-PartitionKey | com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.PARTITION_KEY | String | NA
+TimeToLive | com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.TIME_TO_LIVE | Duration | N/A
+SessionID | com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.SESSION_ID | String | N/A
+CorrelationId | com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.CORRELATION_ID | String | N/A
+To | com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.TO | String | N/A
+ReplyToSessionId | com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.REPLY_TO_SESSION_ID | String | N/A
+PartitionKey | com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.PARTITION_KEY | String | N/A
 
 ## Examples
 
