@@ -3,7 +3,8 @@
 ## 2.7.0-beta.1 (Unreleased)
 ### Key Bug Fixes
 - Fixed `EventHubMessageConverter` to load all system properties of `EventData` and put in the header of org.springframework.messaging.Message.([#22683](https://github.com/Azure/azure-sdk-for-java/pull/22683/))
-
+### New Features
+- Support configure `AmqpTransportType` by adding `spring.cloud.azure.servicebus.transportType`.
 
 ## 2.6.0 (2021-06-23)
 ### Breaking Changes
