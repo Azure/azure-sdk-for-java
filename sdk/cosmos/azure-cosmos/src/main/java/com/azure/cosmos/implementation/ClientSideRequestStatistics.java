@@ -270,7 +270,7 @@ public class ClientSideRequestStatistics {
         }
     }
 
-    private static class SystemInformation {
+    public static class SystemInformation {
         String usedMemory;
         String availableMemory;
         String systemCpuLoad;
