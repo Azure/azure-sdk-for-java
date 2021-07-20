@@ -253,13 +253,13 @@ public class ClientSideRequestStatistics {
 
     public static class StoreResponseStatistics {
         @JsonSerialize(using = StoreResult.StoreResultSerializer.class)
-        StoreResult storeResult;
+        private StoreResult storeResult;
         @JsonSerialize(using = DiagnosticsInstantSerializer.class)
-        Instant requestResponseTimeUTC;
+        private Instant requestResponseTimeUTC;
         @JsonSerialize
-        ResourceType requestResourceType;
+        private ResourceType requestResourceType;
         @JsonSerialize
-        OperationType requestOperationType;
+        private OperationType requestOperationType;
 
         public StoreResult getStoreResult() {
             return storeResult;
@@ -271,10 +271,10 @@ public class ClientSideRequestStatistics {
     }
 
     public static class SystemInformation {
-        String usedMemory;
-        String availableMemory;
-        String systemCpuLoad;
-        int availableProcessors;
+        private String usedMemory;
+        private String availableMemory;
+        private String systemCpuLoad;
+        private int availableProcessors;
 
         public String getUsedMemory() {
             return usedMemory;
@@ -347,13 +347,13 @@ public class ClientSideRequestStatistics {
 
     public static class AddressResolutionStatistics {
         @JsonSerialize(using = DiagnosticsInstantSerializer.class)
-        Instant startTimeUTC;
+        private Instant startTimeUTC;
         @JsonSerialize(using = DiagnosticsInstantSerializer.class)
-        Instant endTimeUTC;
+        private Instant endTimeUTC;
         @JsonSerialize
-        String targetEndpoint;
+        private String targetEndpoint;
         @JsonSerialize
-        String errorMessage;
+        private String errorMessage;
 
         // If one replica return error we start address call in parallel,
         // on other replica  valid response, we end the current user request,
@@ -367,14 +367,14 @@ public class ClientSideRequestStatistics {
     }
 
     public static class GatewayStatistics {
-        String sessionToken;
-        OperationType operationType;
-        ResourceType resourceType;
-        int statusCode;
-        int subStatusCode;
-        String requestCharge;
-        RequestTimeline requestTimeline;
-        String partitionKeyRangeId;
+        private String sessionToken;
+        private OperationType operationType;
+        private ResourceType resourceType;
+        private int statusCode;
+        private int subStatusCode;
+        private String requestCharge;
+        private RequestTimeline requestTimeline;
+        private String partitionKeyRangeId;
 
         public String getSessionToken() {
             return sessionToken;
