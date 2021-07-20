@@ -918,7 +918,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
 
     @Test
     public void canCreateVirtualMachineWithDeleteOption() throws Exception {
-        Region region = Region.fromName("eastus2euap");
+        Region region = Region.US_WEST2;
 
         final String publicIpDnsLabel = generateRandomResourceName("pip", 20);
 
