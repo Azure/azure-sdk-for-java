@@ -1,6 +1,6 @@
 # Release History
 
-## 2.7.0-beta.1 (Unreleased)
+## 2.7.0 (2021-07-20)
 ### Key Bug Fixes
 - Fixed `EventHubMessageConverter` to load all system properties of `EventData` and put in the header of org.springframework.messaging.Message.([#22683](https://github.com/Azure/azure-sdk-for-java/pull/22683/))
 

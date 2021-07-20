@@ -1,6 +1,6 @@
 # Release History
 
-## 2.7.0-beta.1 (Unreleased)
+## 2.7.0 (2021-07-20)
 ### Key Bug Fixes
 - Fix bug of setting message headers repeatedly with different value types. ([#22939](https://github.com/Azure/azure-sdk-for-java/pull/22939))
 

@@ -1,6 +1,6 @@
 # Release History
 
-## 2.6.0 (2021-06-23)
+## 2.7.0 (2021-07-20)
 This release is compatible with Spring Cloud 2020.0.2. 
 ### Breaking Changes
 - Remove `azure-spring-cloud-telemetry` module dependency.

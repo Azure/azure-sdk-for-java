@@ -1,6 +1,6 @@
 # Release History
 
-## 3.7.0-beta.1 (Unreleased)
+## 3.7.0 (2021-07-20)
 
 ## 3.6.1 (2021-07-02)
 ### New Features
