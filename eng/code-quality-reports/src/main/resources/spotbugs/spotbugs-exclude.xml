@@ -2309,6 +2309,11 @@
     <Bug pattern="NP_NULL_ON_SOME_PATH"/>
   </Match>
 
+  <Match>
+    <Class name="com.azure.spring.integration.servicebus.converter.ServiceBusMessageConverter"/>
+    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+  </Match>
+
   <!-- The transient fields are not used if deserialization happens. -->
   <Match>
     <Class name="com.azure.identity.implementation.MsalAuthenticationAccount"/>
