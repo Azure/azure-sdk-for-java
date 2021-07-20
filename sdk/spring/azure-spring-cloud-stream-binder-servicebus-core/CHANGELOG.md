@@ -1,7 +1,8 @@
 # Release History
 
 ## 2.7.0-beta.1 (Unreleased)
-
+### New Features
+- Support configure `AmqpTransportType` by adding `spring.cloud.azure.servicebus.transportType`.
 
 ## 2.6.0 (2021-06-23)
 ### New Features
