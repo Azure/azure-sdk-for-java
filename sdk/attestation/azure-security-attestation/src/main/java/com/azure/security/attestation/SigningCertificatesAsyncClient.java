@@ -10,7 +10,6 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.security.attestation.implementation.SigningCertificatesImpl;
-import com.azure.security.attestation.models.CloudErrorException;
 import com.azure.security.attestation.models.JsonWebKeySet;
 import reactor.core.publisher.Mono;
 
@@ -36,7 +35,7 @@ public final class SigningCertificatesAsyncClient {
      * @param context - Context to associate with this operation.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+//    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<JsonWebKeySet>> getWithResponse(Context context) {
         return this.serviceClient.getWithResponseAsync(context)
             .map(response -> Utilities.generateResponseFromModelType(response, JsonWebKeySet.fromGenerated(response.getValue())));

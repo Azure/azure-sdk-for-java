@@ -49,8 +49,7 @@ public final class PolicyCertificatesAsyncClient {
      * @return the response to an attestation policy management API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PolicyCertificatesResponse> get()
-    {
+    public Mono<PolicyCertificatesResponse> get() {
         return this.serviceClient.getAsync()
             .map(PolicyCertificatesResponse::fromGenerated);
     }

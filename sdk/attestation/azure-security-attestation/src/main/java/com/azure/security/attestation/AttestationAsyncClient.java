@@ -10,7 +10,6 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.security.attestation.implementation.AttestationClientImpl;
-import com.azure.security.attestation.implementation.AttestationClientImplBuilder;
 import com.azure.security.attestation.implementation.AttestationsImpl;
 import com.azure.security.attestation.implementation.MetadataConfigurationsImpl;
 import com.azure.security.attestation.models.AttestOpenEnclaveRequest;
@@ -35,8 +34,7 @@ public final class AttestationAsyncClient {
      *
      * @param clientImpl the service client implementation.
      */
-    AttestationAsyncClient(AttestationClientImpl clientImpl)
-    {
+    AttestationAsyncClient(AttestationClientImpl clientImpl) {
         this.attestImpl = clientImpl.getAttestations();
         this.metadataImpl = clientImpl.getMetadataConfigurations();
     }
@@ -44,12 +42,12 @@ public final class AttestationAsyncClient {
     /**
      * Retrieves metadata about the attestation signing keys in use by the attestation service.
      *
+     * @param context - Context for the operation
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any object.
-     * @param context
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+//    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Object>> getOpenIdMetadataWithResponse(Context context) {
         return this.metadataImpl.getWithResponseAsync(context);
     }
@@ -62,8 +60,7 @@ public final class AttestationAsyncClient {
      * @return any object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> getOpenIdMetadata()
-    {
+    public Mono<Object> getOpenIdMetadata() {
         // Forward the getOpenIdMetadata to the getOpenIdMetadataWithResponse API implementation.
         return withContext(context -> this.getOpenIdMetadataWithResponse(context))
             .map(response -> response.getValue());
@@ -74,13 +71,13 @@ public final class AttestationAsyncClient {
      * attestation policy.
      *
      * @param request Attestation request for Intel SGX enclaves.
-     * @param context
+     * @param context - Context for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of an attestation operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+//    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AttestationResponse>> attestOpenEnclaveWithResponse(AttestOpenEnclaveRequest request, Context context) {
         return this.attestImpl.attestOpenEnclaveWithResponseAsync(request.toGenerated(), context)
             .map(response -> Utilities.generateResponseFromModelType(response, AttestationResponse.fromGenerated(response.getValue())));
@@ -107,13 +104,13 @@ public final class AttestationAsyncClient {
      * attestation policy.
      *
      * @param request Attestation request for Intel SGX enclaves.
-     * @param context
+     * @param context - Context for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of an attestation operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+//    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AttestationResponse>> attestSgxEnclaveWithResponse(AttestSgxEnclaveRequest request, Context context) {
         return this.attestImpl.attestSgxEnclaveWithResponseAsync(request.toGenerated(), context)
             .map(response ->  Utilities.generateResponseFromModelType(response, AttestationResponse.fromGenerated(response.getValue())));
@@ -140,13 +137,13 @@ public final class AttestationAsyncClient {
      * produced is dependent upon the attestation policy.
      *
      * @param request Attestation request for Trusted Platform Module (TPM) attestation.
-     * @param context
+     * @param context - Context for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return attestation response for Trusted Platform Module (TPM) attestation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+//    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<String>> attestTpmWithResponse(String request, Context context) {
         Objects.requireNonNull(request);
         return this.attestImpl.attestTpmWithResponseAsync(new com.azure.security.attestation.implementation.models.TpmAttestationRequest().setData(request.getBytes(StandardCharsets.UTF_8)), context)

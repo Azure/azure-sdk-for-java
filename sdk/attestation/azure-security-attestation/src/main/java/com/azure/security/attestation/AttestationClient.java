@@ -14,9 +14,6 @@ import com.azure.security.attestation.models.AttestSgxEnclaveRequest;
 import com.azure.security.attestation.models.AttestationResponse;
 import com.azure.security.attestation.models.CloudErrorException;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Objects;
-
 import static com.azure.core.util.FluxUtil.withContext;
 
 /** Initializes a new instance of the synchronous AttestationClient object. */
@@ -45,6 +42,8 @@ public final class AttestationClient {
 
     /**
      * Retrieves the OpenId Metadata for this AttestationClient instance.
+     *
+     * @param context - Context for this operation.
      * @return Object containing the OpenId metadata configuration for this instance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

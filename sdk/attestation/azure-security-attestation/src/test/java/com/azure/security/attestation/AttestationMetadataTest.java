@@ -26,15 +26,11 @@ public class AttestationMetadataTest extends AttestationClientTestBase {
 
         AttestationClientBuilder attestationBuilder = getBuilder(client, clientUri);
 
-        {
-            Object metadataConfig = attestationBuilder.buildAttestationClient().getOpenIdMetadata();
-            verifyMetadataConfigurationResponse(clientUri, metadataConfig);
-        }
+        Object metadataConfig1 = attestationBuilder.buildAttestationClient().getOpenIdMetadata();
+        verifyMetadataConfigurationResponse(clientUri, metadataConfig1);
 
-        {
-            Response<Object> metadataConfig = attestationBuilder.buildAttestationClient().getOpenIdMetadataWithResponse(null);
-            verifyMetadataConfigurationResponse(clientUri, metadataConfig.getValue());
-        }
+        Response<Object> metadataConfig2 = attestationBuilder.buildAttestationClient().getOpenIdMetadataWithResponse(null);
+        verifyMetadataConfigurationResponse(clientUri, metadataConfig2.getValue());
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -43,19 +39,15 @@ public class AttestationMetadataTest extends AttestationClientTestBase {
 
         AttestationAsyncClientBuilder attestationBuilder = getAsyncBuilder(client, clientUri);
 
-        {
-            StepVerifier.create(attestationBuilder.buildAttestationAsyncClient().getOpenIdMetadata())
-                .assertNext(metadataConfigResponse -> verifyMetadataConfigurationResponse(clientUri, metadataConfigResponse))
-                .expectComplete()
-                .verify();
-        }
+        StepVerifier.create(attestationBuilder.buildAttestationAsyncClient().getOpenIdMetadata())
+            .assertNext(metadataConfigResponse -> verifyMetadataConfigurationResponse(clientUri, metadataConfigResponse))
+            .expectComplete()
+            .verify();
 
-        {
-            StepVerifier.create(attestationBuilder.buildAttestationAsyncClient().getOpenIdMetadataWithResponse(null))
-                .assertNext(metadataConfigResponse -> verifyMetadataConfigurationResponse(clientUri, metadataConfigResponse.getValue()))
-                .expectComplete()
-                .verify();
-        }
+        StepVerifier.create(attestationBuilder.buildAttestationAsyncClient().getOpenIdMetadataWithResponse(null))
+            .assertNext(metadataConfigResponse -> verifyMetadataConfigurationResponse(clientUri, metadataConfigResponse.getValue()))
+            .expectComplete()
+            .verify();
 
     }
 
