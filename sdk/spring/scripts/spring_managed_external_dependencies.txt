@@ -94,7 +94,7 @@ com.jcraft:jsch;0.1.55
 com.microsoft.sqlserver:mssql-jdbc;9.2.1.jre8
 com.netflix.eureka:eureka-client;1.10.14
 com.netflix.eureka:eureka-core;1.10.14
-com.nimbusds:nimbus-jose-jwt;9.10
+com.nimbusds:nimbus-jose-jwt;9.11
 com.nimbusds:oauth2-oidc-sdk;9.9
 com.oracle.database.ha:ons;21.1.0.0
 com.oracle.database.ha:simplefan;21.1.0.0
