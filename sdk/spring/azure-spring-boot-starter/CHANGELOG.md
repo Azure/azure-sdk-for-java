@@ -1,7 +1,8 @@
 # Release History
 
 ## 3.7.0 (2021-07-20)
-No changes from 3.6.1.
+### Dependency Upgrades
+- Upgrade to [Azure Spring Boot AutoConfigure 3.7.0](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot/CHANGELOG.md).
 
 
 ## 3.6.1 (2021-07-02)
