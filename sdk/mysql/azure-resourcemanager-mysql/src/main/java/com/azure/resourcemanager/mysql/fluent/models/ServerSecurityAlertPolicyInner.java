@@ -5,65 +5,44 @@
 package com.azure.resourcemanager.mysql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.mysql.implementation.SecurityAlertPolicyProperties;
 import com.azure.resourcemanager.mysql.models.ServerSecurityAlertPolicyState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A server security alert policy. */
-@JsonFlatten
 @Fluent
-public class ServerSecurityAlertPolicyInner extends ProxyResource {
+public final class ServerSecurityAlertPolicyInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerSecurityAlertPolicyInner.class);
 
     /*
-     * Specifies the state of the policy, whether it is enabled or disabled.
+     * Resource properties.
      */
-    @JsonProperty(value = "properties.state")
-    private ServerSecurityAlertPolicyState state;
+    @JsonProperty(value = "properties")
+    private SecurityAlertPolicyProperties properties;
 
-    /*
-     * Specifies an array of alerts that are disabled. Allowed values are:
-     * Sql_Injection, Sql_Injection_Vulnerability, Access_Anomaly
+    /**
+     * Get the properties property: Resource properties.
+     *
+     * @return the properties value.
      */
-    @JsonProperty(value = "properties.disabledAlerts")
-    private List<String> disabledAlerts;
+    private SecurityAlertPolicyProperties properties() {
+        return this.properties;
+    }
 
-    /*
-     * Specifies an array of e-mail addresses to which the alert is sent.
+    /**
+     * Set the properties property: Resource properties.
+     *
+     * @param properties the properties value to set.
+     * @return the ServerSecurityAlertPolicyInner object itself.
      */
-    @JsonProperty(value = "properties.emailAddresses")
-    private List<String> emailAddresses;
-
-    /*
-     * Specifies that the alert is sent to the account administrators.
-     */
-    @JsonProperty(value = "properties.emailAccountAdmins")
-    private Boolean emailAccountAdmins;
-
-    /*
-     * Specifies the blob storage endpoint (e.g.
-     * https://MyAccount.blob.core.windows.net). This blob storage will hold
-     * all Threat Detection audit logs.
-     */
-    @JsonProperty(value = "properties.storageEndpoint")
-    private String storageEndpoint;
-
-    /*
-     * Specifies the identifier key of the Threat Detection audit storage
-     * account.
-     */
-    @JsonProperty(value = "properties.storageAccountAccessKey")
-    private String storageAccountAccessKey;
-
-    /*
-     * Specifies the number of days to keep in the Threat Detection audit logs.
-     */
-    @JsonProperty(value = "properties.retentionDays")
-    private Integer retentionDays;
+    private ServerSecurityAlertPolicyInner withProperties(SecurityAlertPolicyProperties properties) {
+        this.properties = properties;
+        return this;
+    }
 
     /**
      * Get the state property: Specifies the state of the policy, whether it is enabled or disabled.
@@ -71,7 +50,11 @@ public class ServerSecurityAlertPolicyInner extends ProxyResource {
      * @return the state value.
      */
     public ServerSecurityAlertPolicyState state() {
-        return this.state;
+        if (this.properties() == null) {
+            return null;
+        } else {
+            return this.properties().state();
+        }
     }
 
     /**
@@ -81,7 +64,10 @@ public class ServerSecurityAlertPolicyInner extends ProxyResource {
      * @return the ServerSecurityAlertPolicyInner object itself.
      */
     public ServerSecurityAlertPolicyInner withState(ServerSecurityAlertPolicyState state) {
-        this.state = state;
+        if (this.properties() == null) {
+            this.withProperties(new SecurityAlertPolicyProperties());
+        }
+        this.properties().withState(state);
         return this;
     }
 
@@ -92,7 +78,11 @@ public class ServerSecurityAlertPolicyInner extends ProxyResource {
      * @return the disabledAlerts value.
      */
     public List<String> disabledAlerts() {
-        return this.disabledAlerts;
+        if (this.properties() == null) {
+            return null;
+        } else {
+            return this.properties().disabledAlerts();
+        }
     }
 
     /**
@@ -103,7 +93,10 @@ public class ServerSecurityAlertPolicyInner extends ProxyResource {
      * @return the ServerSecurityAlertPolicyInner object itself.
      */
     public ServerSecurityAlertPolicyInner withDisabledAlerts(List<String> disabledAlerts) {
-        this.disabledAlerts = disabledAlerts;
+        if (this.properties() == null) {
+            this.withProperties(new SecurityAlertPolicyProperties());
+        }
+        this.properties().withDisabledAlerts(disabledAlerts);
         return this;
     }
 
@@ -113,7 +106,11 @@ public class ServerSecurityAlertPolicyInner extends ProxyResource {
      * @return the emailAddresses value.
      */
     public List<String> emailAddresses() {
-        return this.emailAddresses;
+        if (this.properties() == null) {
+            return null;
+        } else {
+            return this.properties().emailAddresses();
+        }
     }
 
     /**
@@ -123,7 +120,10 @@ public class ServerSecurityAlertPolicyInner extends ProxyResource {
      * @return the ServerSecurityAlertPolicyInner object itself.
      */
     public ServerSecurityAlertPolicyInner withEmailAddresses(List<String> emailAddresses) {
-        this.emailAddresses = emailAddresses;
+        if (this.properties() == null) {
+            this.withProperties(new SecurityAlertPolicyProperties());
+        }
+        this.properties().withEmailAddresses(emailAddresses);
         return this;
     }
 
@@ -133,7 +133,11 @@ public class ServerSecurityAlertPolicyInner extends ProxyResource {
      * @return the emailAccountAdmins value.
      */
     public Boolean emailAccountAdmins() {
-        return this.emailAccountAdmins;
+        if (this.properties() == null) {
+            return null;
+        } else {
+            return this.properties().emailAccountAdmins();
+        }
     }
 
     /**
@@ -143,7 +147,10 @@ public class ServerSecurityAlertPolicyInner extends ProxyResource {
      * @return the ServerSecurityAlertPolicyInner object itself.
      */
     public ServerSecurityAlertPolicyInner withEmailAccountAdmins(Boolean emailAccountAdmins) {
-        this.emailAccountAdmins = emailAccountAdmins;
+        if (this.properties() == null) {
+            this.withProperties(new SecurityAlertPolicyProperties());
+        }
+        this.properties().withEmailAccountAdmins(emailAccountAdmins);
         return this;
     }
 
@@ -154,7 +161,11 @@ public class ServerSecurityAlertPolicyInner extends ProxyResource {
      * @return the storageEndpoint value.
      */
     public String storageEndpoint() {
-        return this.storageEndpoint;
+        if (this.properties() == null) {
+            return null;
+        } else {
+            return this.properties().storageEndpoint();
+        }
     }
 
     /**
@@ -165,7 +176,10 @@ public class ServerSecurityAlertPolicyInner extends ProxyResource {
      * @return the ServerSecurityAlertPolicyInner object itself.
      */
     public ServerSecurityAlertPolicyInner withStorageEndpoint(String storageEndpoint) {
-        this.storageEndpoint = storageEndpoint;
+        if (this.properties() == null) {
+            this.withProperties(new SecurityAlertPolicyProperties());
+        }
+        this.properties().withStorageEndpoint(storageEndpoint);
         return this;
     }
 
@@ -176,7 +190,11 @@ public class ServerSecurityAlertPolicyInner extends ProxyResource {
      * @return the storageAccountAccessKey value.
      */
     public String storageAccountAccessKey() {
-        return this.storageAccountAccessKey;
+        if (this.properties() == null) {
+            return null;
+        } else {
+            return this.properties().storageAccountAccessKey();
+        }
     }
 
     /**
@@ -187,7 +205,10 @@ public class ServerSecurityAlertPolicyInner extends ProxyResource {
      * @return the ServerSecurityAlertPolicyInner object itself.
      */
     public ServerSecurityAlertPolicyInner withStorageAccountAccessKey(String storageAccountAccessKey) {
-        this.storageAccountAccessKey = storageAccountAccessKey;
+        if (this.properties() == null) {
+            this.withProperties(new SecurityAlertPolicyProperties());
+        }
+        this.properties().withStorageAccountAccessKey(storageAccountAccessKey);
         return this;
     }
 
@@ -197,7 +218,11 @@ public class ServerSecurityAlertPolicyInner extends ProxyResource {
      * @return the retentionDays value.
      */
     public Integer retentionDays() {
-        return this.retentionDays;
+        if (this.properties() == null) {
+            return null;
+        } else {
+            return this.properties().retentionDays();
+        }
     }
 
     /**
@@ -207,7 +232,10 @@ public class ServerSecurityAlertPolicyInner extends ProxyResource {
      * @return the ServerSecurityAlertPolicyInner object itself.
      */
     public ServerSecurityAlertPolicyInner withRetentionDays(Integer retentionDays) {
-        this.retentionDays = retentionDays;
+        if (this.properties() == null) {
+            this.withProperties(new SecurityAlertPolicyProperties());
+        }
+        this.properties().withRetentionDays(retentionDays);
         return this;
     }
 
@@ -217,5 +245,8 @@ public class ServerSecurityAlertPolicyInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (properties() != null) {
+            properties().validate();
+        }
     }
 }

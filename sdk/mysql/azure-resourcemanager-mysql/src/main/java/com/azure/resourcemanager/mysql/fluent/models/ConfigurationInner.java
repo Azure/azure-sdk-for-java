@@ -5,53 +5,42 @@
 package com.azure.resourcemanager.mysql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.mysql.implementation.ConfigurationProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represents a Configuration. */
-@JsonFlatten
 @Fluent
-public class ConfigurationInner extends ProxyResource {
+public final class ConfigurationInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ConfigurationInner.class);
 
     /*
-     * Value of the configuration.
+     * The properties of a configuration.
      */
-    @JsonProperty(value = "properties.value")
-    private String value;
+    @JsonProperty(value = "properties")
+    private ConfigurationProperties properties;
 
-    /*
-     * Description of the configuration.
+    /**
+     * Get the properties property: The properties of a configuration.
+     *
+     * @return the properties value.
      */
-    @JsonProperty(value = "properties.description", access = JsonProperty.Access.WRITE_ONLY)
-    private String description;
+    private ConfigurationProperties properties() {
+        return this.properties;
+    }
 
-    /*
-     * Default value of the configuration.
+    /**
+     * Set the properties property: The properties of a configuration.
+     *
+     * @param properties the properties value to set.
+     * @return the ConfigurationInner object itself.
      */
-    @JsonProperty(value = "properties.defaultValue", access = JsonProperty.Access.WRITE_ONLY)
-    private String defaultValue;
-
-    /*
-     * Data type of the configuration.
-     */
-    @JsonProperty(value = "properties.dataType", access = JsonProperty.Access.WRITE_ONLY)
-    private String dataType;
-
-    /*
-     * Allowed values of the configuration.
-     */
-    @JsonProperty(value = "properties.allowedValues", access = JsonProperty.Access.WRITE_ONLY)
-    private String allowedValues;
-
-    /*
-     * Source of the configuration.
-     */
-    @JsonProperty(value = "properties.source")
-    private String source;
+    private ConfigurationInner withProperties(ConfigurationProperties properties) {
+        this.properties = properties;
+        return this;
+    }
 
     /**
      * Get the value property: Value of the configuration.
@@ -59,7 +48,11 @@ public class ConfigurationInner extends ProxyResource {
      * @return the value value.
      */
     public String value() {
-        return this.value;
+        if (this.properties() == null) {
+            return null;
+        } else {
+            return this.properties().value();
+        }
     }
 
     /**
@@ -69,7 +62,10 @@ public class ConfigurationInner extends ProxyResource {
      * @return the ConfigurationInner object itself.
      */
     public ConfigurationInner withValue(String value) {
-        this.value = value;
+        if (this.properties() == null) {
+            this.withProperties(new ConfigurationProperties());
+        }
+        this.properties().withValue(value);
         return this;
     }
 
@@ -79,7 +75,11 @@ public class ConfigurationInner extends ProxyResource {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        if (this.properties() == null) {
+            return null;
+        } else {
+            return this.properties().description();
+        }
     }
 
     /**
@@ -88,7 +88,11 @@ public class ConfigurationInner extends ProxyResource {
      * @return the defaultValue value.
      */
     public String defaultValue() {
-        return this.defaultValue;
+        if (this.properties() == null) {
+            return null;
+        } else {
+            return this.properties().defaultValue();
+        }
     }
 
     /**
@@ -97,7 +101,11 @@ public class ConfigurationInner extends ProxyResource {
      * @return the dataType value.
      */
     public String dataType() {
-        return this.dataType;
+        if (this.properties() == null) {
+            return null;
+        } else {
+            return this.properties().dataType();
+        }
     }
 
     /**
@@ -106,7 +114,11 @@ public class ConfigurationInner extends ProxyResource {
      * @return the allowedValues value.
      */
     public String allowedValues() {
-        return this.allowedValues;
+        if (this.properties() == null) {
+            return null;
+        } else {
+            return this.properties().allowedValues();
+        }
     }
 
     /**
@@ -115,7 +127,11 @@ public class ConfigurationInner extends ProxyResource {
      * @return the source value.
      */
     public String source() {
-        return this.source;
+        if (this.properties() == null) {
+            return null;
+        } else {
+            return this.properties().source();
+        }
     }
 
     /**
@@ -125,7 +141,10 @@ public class ConfigurationInner extends ProxyResource {
      * @return the ConfigurationInner object itself.
      */
     public ConfigurationInner withSource(String source) {
-        this.source = source;
+        if (this.properties() == null) {
+            this.withProperties(new ConfigurationProperties());
+        }
+        this.properties().withSource(source);
         return this;
     }
 
@@ -135,5 +154,8 @@ public class ConfigurationInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (properties() != null) {
+            properties().validate();
+        }
     }
 }

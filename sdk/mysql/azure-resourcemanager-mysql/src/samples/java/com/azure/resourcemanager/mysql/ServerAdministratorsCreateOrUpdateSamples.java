@@ -6,7 +6,6 @@ package com.azure.resourcemanager.mysql;
 
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mysql.fluent.models.ServerAdministratorResourceInner;
-import com.azure.resourcemanager.mysql.models.AdministratorType;
 import java.util.UUID;
 
 /** Samples for ServerAdministrators CreateOrUpdate. */
@@ -25,7 +24,6 @@ public final class ServerAdministratorsCreateOrUpdateSamples {
                 "testrg",
                 "mysqltestsvc4",
                 new ServerAdministratorResourceInner()
-                    .withAdministratorType(AdministratorType.ACTIVE_DIRECTORY)
                     .withLogin("bob@contoso.com")
                     .withSid(UUID.fromString("c6b82b90-a647-49cb-8a62-0d2d3cb7ac7c"))
                     .withTenantId(UUID.fromString("c6b82b90-a647-49cb-8a62-0d2d3cb7ac7c")),

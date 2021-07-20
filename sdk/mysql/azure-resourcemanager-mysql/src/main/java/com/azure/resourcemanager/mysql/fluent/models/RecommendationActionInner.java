@@ -5,67 +5,44 @@
 package com.azure.resourcemanager.mysql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.mysql.implementation.RecommendationActionProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
 /** Represents a Recommendation Action. */
-@JsonFlatten
 @Fluent
-public class RecommendationActionInner extends ProxyResource {
+public final class RecommendationActionInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RecommendationActionInner.class);
 
     /*
-     * Advisor name.
+     * The properties of a recommendation action.
      */
-    @JsonProperty(value = "properties.advisorName")
-    private String advisorName;
+    @JsonProperty(value = "properties")
+    private RecommendationActionProperties properties;
 
-    /*
-     * Recommendation action session identifier.
+    /**
+     * Get the properties property: The properties of a recommendation action.
+     *
+     * @return the properties value.
      */
-    @JsonProperty(value = "properties.sessionId")
-    private String sessionId;
+    private RecommendationActionProperties properties() {
+        return this.properties;
+    }
 
-    /*
-     * Recommendation action identifier.
+    /**
+     * Set the properties property: The properties of a recommendation action.
+     *
+     * @param properties the properties value to set.
+     * @return the RecommendationActionInner object itself.
      */
-    @JsonProperty(value = "properties.actionId")
-    private Integer actionId;
-
-    /*
-     * Recommendation action creation time.
-     */
-    @JsonProperty(value = "properties.createdTime")
-    private OffsetDateTime createdTime;
-
-    /*
-     * Recommendation action expiration time.
-     */
-    @JsonProperty(value = "properties.expirationTime")
-    private OffsetDateTime expirationTime;
-
-    /*
-     * Recommendation action reason.
-     */
-    @JsonProperty(value = "properties.reason")
-    private String reason;
-
-    /*
-     * Recommendation action type.
-     */
-    @JsonProperty(value = "properties.recommendationType")
-    private String recommendationType;
-
-    /*
-     * Recommendation action details.
-     */
-    @JsonProperty(value = "properties.details")
-    private Map<String, String> details;
+    private RecommendationActionInner withProperties(RecommendationActionProperties properties) {
+        this.properties = properties;
+        return this;
+    }
 
     /**
      * Get the advisorName property: Advisor name.
@@ -73,7 +50,11 @@ public class RecommendationActionInner extends ProxyResource {
      * @return the advisorName value.
      */
     public String advisorName() {
-        return this.advisorName;
+        if (this.properties() == null) {
+            return null;
+        } else {
+            return this.properties().advisorName();
+        }
     }
 
     /**
@@ -83,7 +64,10 @@ public class RecommendationActionInner extends ProxyResource {
      * @return the RecommendationActionInner object itself.
      */
     public RecommendationActionInner withAdvisorName(String advisorName) {
-        this.advisorName = advisorName;
+        if (this.properties() == null) {
+            this.withProperties(new RecommendationActionProperties());
+        }
+        this.properties().withAdvisorName(advisorName);
         return this;
     }
 
@@ -93,7 +77,11 @@ public class RecommendationActionInner extends ProxyResource {
      * @return the sessionId value.
      */
     public String sessionId() {
-        return this.sessionId;
+        if (this.properties() == null) {
+            return null;
+        } else {
+            return this.properties().sessionId();
+        }
     }
 
     /**
@@ -103,7 +91,10 @@ public class RecommendationActionInner extends ProxyResource {
      * @return the RecommendationActionInner object itself.
      */
     public RecommendationActionInner withSessionId(String sessionId) {
-        this.sessionId = sessionId;
+        if (this.properties() == null) {
+            this.withProperties(new RecommendationActionProperties());
+        }
+        this.properties().withSessionId(sessionId);
         return this;
     }
 
@@ -113,7 +104,11 @@ public class RecommendationActionInner extends ProxyResource {
      * @return the actionId value.
      */
     public Integer actionId() {
-        return this.actionId;
+        if (this.properties() == null) {
+            return null;
+        } else {
+            return this.properties().actionId();
+        }
     }
 
     /**
@@ -123,7 +118,10 @@ public class RecommendationActionInner extends ProxyResource {
      * @return the RecommendationActionInner object itself.
      */
     public RecommendationActionInner withActionId(Integer actionId) {
-        this.actionId = actionId;
+        if (this.properties() == null) {
+            this.withProperties(new RecommendationActionProperties());
+        }
+        this.properties().withActionId(actionId);
         return this;
     }
 
@@ -133,7 +131,11 @@ public class RecommendationActionInner extends ProxyResource {
      * @return the createdTime value.
      */
     public OffsetDateTime createdTime() {
-        return this.createdTime;
+        if (this.properties() == null) {
+            return null;
+        } else {
+            return this.properties().createdTime();
+        }
     }
 
     /**
@@ -143,7 +145,10 @@ public class RecommendationActionInner extends ProxyResource {
      * @return the RecommendationActionInner object itself.
      */
     public RecommendationActionInner withCreatedTime(OffsetDateTime createdTime) {
-        this.createdTime = createdTime;
+        if (this.properties() == null) {
+            this.withProperties(new RecommendationActionProperties());
+        }
+        this.properties().withCreatedTime(createdTime);
         return this;
     }
 
@@ -153,7 +158,11 @@ public class RecommendationActionInner extends ProxyResource {
      * @return the expirationTime value.
      */
     public OffsetDateTime expirationTime() {
-        return this.expirationTime;
+        if (this.properties() == null) {
+            return null;
+        } else {
+            return this.properties().expirationTime();
+        }
     }
 
     /**
@@ -163,7 +172,10 @@ public class RecommendationActionInner extends ProxyResource {
      * @return the RecommendationActionInner object itself.
      */
     public RecommendationActionInner withExpirationTime(OffsetDateTime expirationTime) {
-        this.expirationTime = expirationTime;
+        if (this.properties() == null) {
+            this.withProperties(new RecommendationActionProperties());
+        }
+        this.properties().withExpirationTime(expirationTime);
         return this;
     }
 
@@ -173,7 +185,11 @@ public class RecommendationActionInner extends ProxyResource {
      * @return the reason value.
      */
     public String reason() {
-        return this.reason;
+        if (this.properties() == null) {
+            return null;
+        } else {
+            return this.properties().reason();
+        }
     }
 
     /**
@@ -183,7 +199,10 @@ public class RecommendationActionInner extends ProxyResource {
      * @return the RecommendationActionInner object itself.
      */
     public RecommendationActionInner withReason(String reason) {
-        this.reason = reason;
+        if (this.properties() == null) {
+            this.withProperties(new RecommendationActionProperties());
+        }
+        this.properties().withReason(reason);
         return this;
     }
 
@@ -193,7 +212,11 @@ public class RecommendationActionInner extends ProxyResource {
      * @return the recommendationType value.
      */
     public String recommendationType() {
-        return this.recommendationType;
+        if (this.properties() == null) {
+            return null;
+        } else {
+            return this.properties().recommendationType();
+        }
     }
 
     /**
@@ -203,7 +226,10 @@ public class RecommendationActionInner extends ProxyResource {
      * @return the RecommendationActionInner object itself.
      */
     public RecommendationActionInner withRecommendationType(String recommendationType) {
-        this.recommendationType = recommendationType;
+        if (this.properties() == null) {
+            this.withProperties(new RecommendationActionProperties());
+        }
+        this.properties().withRecommendationType(recommendationType);
         return this;
     }
 
@@ -213,7 +239,11 @@ public class RecommendationActionInner extends ProxyResource {
      * @return the details value.
      */
     public Map<String, String> details() {
-        return this.details;
+        if (this.properties() == null) {
+            return null;
+        } else {
+            return this.properties().details();
+        }
     }
 
     /**
@@ -223,7 +253,10 @@ public class RecommendationActionInner extends ProxyResource {
      * @return the RecommendationActionInner object itself.
      */
     public RecommendationActionInner withDetails(Map<String, String> details) {
-        this.details = details;
+        if (this.properties() == null) {
+            this.withProperties(new RecommendationActionProperties());
+        }
+        this.properties().withDetails(details);
         return this;
     }
 
@@ -233,5 +266,8 @@ public class RecommendationActionInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (properties() != null) {
+            properties().validate();
+        }
     }
 }

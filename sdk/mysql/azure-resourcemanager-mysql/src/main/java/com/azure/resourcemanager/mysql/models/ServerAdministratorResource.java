@@ -35,7 +35,7 @@ public interface ServerAdministratorResource {
      *
      * @return the administratorType value.
      */
-    AdministratorType administratorType();
+    String administratorType();
 
     /**
      * Gets the login property: The server administrator login account name.

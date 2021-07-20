@@ -5,9 +5,9 @@
 package com.azure.resourcemanager.mysql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.mysql.implementation.ServerProperties;
 import com.azure.resourcemanager.mysql.models.InfrastructureEncryption;
 import com.azure.resourcemanager.mysql.models.MinimalTlsVersionEnum;
 import com.azure.resourcemanager.mysql.models.PublicNetworkAccessEnum;
@@ -25,9 +25,8 @@ import java.util.List;
 import java.util.Map;
 
 /** Represents a server. */
-@JsonFlatten
 @Fluent
-public class ServerInner extends Resource {
+public final class ServerInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerInner.class);
 
     /*
@@ -43,97 +42,10 @@ public class ServerInner extends Resource {
     private Sku sku;
 
     /*
-     * The administrator's login name of a server. Can only be specified when
-     * the server is being created (and is required for creation).
+     * Properties of the server.
      */
-    @JsonProperty(value = "properties.administratorLogin")
-    private String administratorLogin;
-
-    /*
-     * Server version.
-     */
-    @JsonProperty(value = "properties.version")
-    private ServerVersion version;
-
-    /*
-     * Enable ssl enforcement or not when connect to server.
-     */
-    @JsonProperty(value = "properties.sslEnforcement")
-    private SslEnforcementEnum sslEnforcement;
-
-    /*
-     * Enforce a minimal Tls version for the server.
-     */
-    @JsonProperty(value = "properties.minimalTlsVersion")
-    private MinimalTlsVersionEnum minimalTlsVersion;
-
-    /*
-     * Status showing whether the server data encryption is enabled with
-     * customer-managed keys.
-     */
-    @JsonProperty(value = "properties.byokEnforcement", access = JsonProperty.Access.WRITE_ONLY)
-    private String byokEnforcement;
-
-    /*
-     * Status showing whether the server enabled infrastructure encryption.
-     */
-    @JsonProperty(value = "properties.infrastructureEncryption")
-    private InfrastructureEncryption infrastructureEncryption;
-
-    /*
-     * A state of a server that is visible to user.
-     */
-    @JsonProperty(value = "properties.userVisibleState")
-    private ServerState userVisibleState;
-
-    /*
-     * The fully qualified domain name of a server.
-     */
-    @JsonProperty(value = "properties.fullyQualifiedDomainName")
-    private String fullyQualifiedDomainName;
-
-    /*
-     * Earliest restore point creation time (ISO8601 format)
-     */
-    @JsonProperty(value = "properties.earliestRestoreDate")
-    private OffsetDateTime earliestRestoreDate;
-
-    /*
-     * Storage profile of a server.
-     */
-    @JsonProperty(value = "properties.storageProfile")
-    private StorageProfile storageProfile;
-
-    /*
-     * The replication role of the server.
-     */
-    @JsonProperty(value = "properties.replicationRole")
-    private String replicationRole;
-
-    /*
-     * The master server id of a replica server.
-     */
-    @JsonProperty(value = "properties.masterServerId")
-    private String masterServerId;
-
-    /*
-     * The maximum number of replicas that a master server can have.
-     */
-    @JsonProperty(value = "properties.replicaCapacity")
-    private Integer replicaCapacity;
-
-    /*
-     * Whether or not public network access is allowed for this server. Value
-     * is optional but if passed in, must be 'Enabled' or 'Disabled'
-     */
-    @JsonProperty(value = "properties.publicNetworkAccess")
-    private PublicNetworkAccessEnum publicNetworkAccess;
-
-    /*
-     * List of private endpoint connections on a server
-     */
-    @JsonProperty(value = "properties.privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
-    private List<ServerPrivateEndpointConnection> privateEndpointConnections;
+    @JsonProperty(value = "properties")
+    private ServerProperties properties;
 
     /**
      * Get the identity property: The Azure Active Directory identity of the server.
@@ -176,286 +88,23 @@ public class ServerInner extends Resource {
     }
 
     /**
-     * Get the administratorLogin property: The administrator's login name of a server. Can only be specified when the
-     * server is being created (and is required for creation).
+     * Get the properties property: Properties of the server.
      *
-     * @return the administratorLogin value.
+     * @return the properties value.
      */
-    public String administratorLogin() {
-        return this.administratorLogin;
+    private ServerProperties properties() {
+        return this.properties;
     }
 
     /**
-     * Set the administratorLogin property: The administrator's login name of a server. Can only be specified when the
-     * server is being created (and is required for creation).
+     * Set the properties property: Properties of the server.
      *
-     * @param administratorLogin the administratorLogin value to set.
+     * @param properties the properties value to set.
      * @return the ServerInner object itself.
      */
-    public ServerInner withAdministratorLogin(String administratorLogin) {
-        this.administratorLogin = administratorLogin;
+    private ServerInner withProperties(ServerProperties properties) {
+        this.properties = properties;
         return this;
-    }
-
-    /**
-     * Get the version property: Server version.
-     *
-     * @return the version value.
-     */
-    public ServerVersion version() {
-        return this.version;
-    }
-
-    /**
-     * Set the version property: Server version.
-     *
-     * @param version the version value to set.
-     * @return the ServerInner object itself.
-     */
-    public ServerInner withVersion(ServerVersion version) {
-        this.version = version;
-        return this;
-    }
-
-    /**
-     * Get the sslEnforcement property: Enable ssl enforcement or not when connect to server.
-     *
-     * @return the sslEnforcement value.
-     */
-    public SslEnforcementEnum sslEnforcement() {
-        return this.sslEnforcement;
-    }
-
-    /**
-     * Set the sslEnforcement property: Enable ssl enforcement or not when connect to server.
-     *
-     * @param sslEnforcement the sslEnforcement value to set.
-     * @return the ServerInner object itself.
-     */
-    public ServerInner withSslEnforcement(SslEnforcementEnum sslEnforcement) {
-        this.sslEnforcement = sslEnforcement;
-        return this;
-    }
-
-    /**
-     * Get the minimalTlsVersion property: Enforce a minimal Tls version for the server.
-     *
-     * @return the minimalTlsVersion value.
-     */
-    public MinimalTlsVersionEnum minimalTlsVersion() {
-        return this.minimalTlsVersion;
-    }
-
-    /**
-     * Set the minimalTlsVersion property: Enforce a minimal Tls version for the server.
-     *
-     * @param minimalTlsVersion the minimalTlsVersion value to set.
-     * @return the ServerInner object itself.
-     */
-    public ServerInner withMinimalTlsVersion(MinimalTlsVersionEnum minimalTlsVersion) {
-        this.minimalTlsVersion = minimalTlsVersion;
-        return this;
-    }
-
-    /**
-     * Get the byokEnforcement property: Status showing whether the server data encryption is enabled with
-     * customer-managed keys.
-     *
-     * @return the byokEnforcement value.
-     */
-    public String byokEnforcement() {
-        return this.byokEnforcement;
-    }
-
-    /**
-     * Get the infrastructureEncryption property: Status showing whether the server enabled infrastructure encryption.
-     *
-     * @return the infrastructureEncryption value.
-     */
-    public InfrastructureEncryption infrastructureEncryption() {
-        return this.infrastructureEncryption;
-    }
-
-    /**
-     * Set the infrastructureEncryption property: Status showing whether the server enabled infrastructure encryption.
-     *
-     * @param infrastructureEncryption the infrastructureEncryption value to set.
-     * @return the ServerInner object itself.
-     */
-    public ServerInner withInfrastructureEncryption(InfrastructureEncryption infrastructureEncryption) {
-        this.infrastructureEncryption = infrastructureEncryption;
-        return this;
-    }
-
-    /**
-     * Get the userVisibleState property: A state of a server that is visible to user.
-     *
-     * @return the userVisibleState value.
-     */
-    public ServerState userVisibleState() {
-        return this.userVisibleState;
-    }
-
-    /**
-     * Set the userVisibleState property: A state of a server that is visible to user.
-     *
-     * @param userVisibleState the userVisibleState value to set.
-     * @return the ServerInner object itself.
-     */
-    public ServerInner withUserVisibleState(ServerState userVisibleState) {
-        this.userVisibleState = userVisibleState;
-        return this;
-    }
-
-    /**
-     * Get the fullyQualifiedDomainName property: The fully qualified domain name of a server.
-     *
-     * @return the fullyQualifiedDomainName value.
-     */
-    public String fullyQualifiedDomainName() {
-        return this.fullyQualifiedDomainName;
-    }
-
-    /**
-     * Set the fullyQualifiedDomainName property: The fully qualified domain name of a server.
-     *
-     * @param fullyQualifiedDomainName the fullyQualifiedDomainName value to set.
-     * @return the ServerInner object itself.
-     */
-    public ServerInner withFullyQualifiedDomainName(String fullyQualifiedDomainName) {
-        this.fullyQualifiedDomainName = fullyQualifiedDomainName;
-        return this;
-    }
-
-    /**
-     * Get the earliestRestoreDate property: Earliest restore point creation time (ISO8601 format).
-     *
-     * @return the earliestRestoreDate value.
-     */
-    public OffsetDateTime earliestRestoreDate() {
-        return this.earliestRestoreDate;
-    }
-
-    /**
-     * Set the earliestRestoreDate property: Earliest restore point creation time (ISO8601 format).
-     *
-     * @param earliestRestoreDate the earliestRestoreDate value to set.
-     * @return the ServerInner object itself.
-     */
-    public ServerInner withEarliestRestoreDate(OffsetDateTime earliestRestoreDate) {
-        this.earliestRestoreDate = earliestRestoreDate;
-        return this;
-    }
-
-    /**
-     * Get the storageProfile property: Storage profile of a server.
-     *
-     * @return the storageProfile value.
-     */
-    public StorageProfile storageProfile() {
-        return this.storageProfile;
-    }
-
-    /**
-     * Set the storageProfile property: Storage profile of a server.
-     *
-     * @param storageProfile the storageProfile value to set.
-     * @return the ServerInner object itself.
-     */
-    public ServerInner withStorageProfile(StorageProfile storageProfile) {
-        this.storageProfile = storageProfile;
-        return this;
-    }
-
-    /**
-     * Get the replicationRole property: The replication role of the server.
-     *
-     * @return the replicationRole value.
-     */
-    public String replicationRole() {
-        return this.replicationRole;
-    }
-
-    /**
-     * Set the replicationRole property: The replication role of the server.
-     *
-     * @param replicationRole the replicationRole value to set.
-     * @return the ServerInner object itself.
-     */
-    public ServerInner withReplicationRole(String replicationRole) {
-        this.replicationRole = replicationRole;
-        return this;
-    }
-
-    /**
-     * Get the masterServerId property: The master server id of a replica server.
-     *
-     * @return the masterServerId value.
-     */
-    public String masterServerId() {
-        return this.masterServerId;
-    }
-
-    /**
-     * Set the masterServerId property: The master server id of a replica server.
-     *
-     * @param masterServerId the masterServerId value to set.
-     * @return the ServerInner object itself.
-     */
-    public ServerInner withMasterServerId(String masterServerId) {
-        this.masterServerId = masterServerId;
-        return this;
-    }
-
-    /**
-     * Get the replicaCapacity property: The maximum number of replicas that a master server can have.
-     *
-     * @return the replicaCapacity value.
-     */
-    public Integer replicaCapacity() {
-        return this.replicaCapacity;
-    }
-
-    /**
-     * Set the replicaCapacity property: The maximum number of replicas that a master server can have.
-     *
-     * @param replicaCapacity the replicaCapacity value to set.
-     * @return the ServerInner object itself.
-     */
-    public ServerInner withReplicaCapacity(Integer replicaCapacity) {
-        this.replicaCapacity = replicaCapacity;
-        return this;
-    }
-
-    /**
-     * Get the publicNetworkAccess property: Whether or not public network access is allowed for this server. Value is
-     * optional but if passed in, must be 'Enabled' or 'Disabled'.
-     *
-     * @return the publicNetworkAccess value.
-     */
-    public PublicNetworkAccessEnum publicNetworkAccess() {
-        return this.publicNetworkAccess;
-    }
-
-    /**
-     * Set the publicNetworkAccess property: Whether or not public network access is allowed for this server. Value is
-     * optional but if passed in, must be 'Enabled' or 'Disabled'.
-     *
-     * @param publicNetworkAccess the publicNetworkAccess value to set.
-     * @return the ServerInner object itself.
-     */
-    public ServerInner withPublicNetworkAccess(PublicNetworkAccessEnum publicNetworkAccess) {
-        this.publicNetworkAccess = publicNetworkAccess;
-        return this;
-    }
-
-    /**
-     * Get the privateEndpointConnections property: List of private endpoint connections on a server.
-     *
-     * @return the privateEndpointConnections value.
-     */
-    public List<ServerPrivateEndpointConnection> privateEndpointConnections() {
-        return this.privateEndpointConnections;
     }
 
     /** {@inheritDoc} */
@@ -473,6 +122,388 @@ public class ServerInner extends Resource {
     }
 
     /**
+     * Get the administratorLogin property: The administrator's login name of a server. Can only be specified when the
+     * server is being created (and is required for creation).
+     *
+     * @return the administratorLogin value.
+     */
+    public String administratorLogin() {
+        if (this.properties() == null) {
+            return null;
+        } else {
+            return this.properties().administratorLogin();
+        }
+    }
+
+    /**
+     * Set the administratorLogin property: The administrator's login name of a server. Can only be specified when the
+     * server is being created (and is required for creation).
+     *
+     * @param administratorLogin the administratorLogin value to set.
+     * @return the ServerInner object itself.
+     */
+    public ServerInner withAdministratorLogin(String administratorLogin) {
+        if (this.properties() == null) {
+            this.withProperties(new ServerProperties());
+        }
+        this.properties().withAdministratorLogin(administratorLogin);
+        return this;
+    }
+
+    /**
+     * Get the version property: Server version.
+     *
+     * @return the version value.
+     */
+    public ServerVersion version() {
+        if (this.properties() == null) {
+            return null;
+        } else {
+            return this.properties().version();
+        }
+    }
+
+    /**
+     * Set the version property: Server version.
+     *
+     * @param version the version value to set.
+     * @return the ServerInner object itself.
+     */
+    public ServerInner withVersion(ServerVersion version) {
+        if (this.properties() == null) {
+            this.withProperties(new ServerProperties());
+        }
+        this.properties().withVersion(version);
+        return this;
+    }
+
+    /**
+     * Get the sslEnforcement property: Enable ssl enforcement or not when connect to server.
+     *
+     * @return the sslEnforcement value.
+     */
+    public SslEnforcementEnum sslEnforcement() {
+        if (this.properties() == null) {
+            return null;
+        } else {
+            return this.properties().sslEnforcement();
+        }
+    }
+
+    /**
+     * Set the sslEnforcement property: Enable ssl enforcement or not when connect to server.
+     *
+     * @param sslEnforcement the sslEnforcement value to set.
+     * @return the ServerInner object itself.
+     */
+    public ServerInner withSslEnforcement(SslEnforcementEnum sslEnforcement) {
+        if (this.properties() == null) {
+            this.withProperties(new ServerProperties());
+        }
+        this.properties().withSslEnforcement(sslEnforcement);
+        return this;
+    }
+
+    /**
+     * Get the minimalTlsVersion property: Enforce a minimal Tls version for the server.
+     *
+     * @return the minimalTlsVersion value.
+     */
+    public MinimalTlsVersionEnum minimalTlsVersion() {
+        if (this.properties() == null) {
+            return null;
+        } else {
+            return this.properties().minimalTlsVersion();
+        }
+    }
+
+    /**
+     * Set the minimalTlsVersion property: Enforce a minimal Tls version for the server.
+     *
+     * @param minimalTlsVersion the minimalTlsVersion value to set.
+     * @return the ServerInner object itself.
+     */
+    public ServerInner withMinimalTlsVersion(MinimalTlsVersionEnum minimalTlsVersion) {
+        if (this.properties() == null) {
+            this.withProperties(new ServerProperties());
+        }
+        this.properties().withMinimalTlsVersion(minimalTlsVersion);
+        return this;
+    }
+
+    /**
+     * Get the byokEnforcement property: Status showing whether the server data encryption is enabled with
+     * customer-managed keys.
+     *
+     * @return the byokEnforcement value.
+     */
+    public String byokEnforcement() {
+        if (this.properties() == null) {
+            return null;
+        } else {
+            return this.properties().byokEnforcement();
+        }
+    }
+
+    /**
+     * Get the infrastructureEncryption property: Status showing whether the server enabled infrastructure encryption.
+     *
+     * @return the infrastructureEncryption value.
+     */
+    public InfrastructureEncryption infrastructureEncryption() {
+        if (this.properties() == null) {
+            return null;
+        } else {
+            return this.properties().infrastructureEncryption();
+        }
+    }
+
+    /**
+     * Set the infrastructureEncryption property: Status showing whether the server enabled infrastructure encryption.
+     *
+     * @param infrastructureEncryption the infrastructureEncryption value to set.
+     * @return the ServerInner object itself.
+     */
+    public ServerInner withInfrastructureEncryption(InfrastructureEncryption infrastructureEncryption) {
+        if (this.properties() == null) {
+            this.withProperties(new ServerProperties());
+        }
+        this.properties().withInfrastructureEncryption(infrastructureEncryption);
+        return this;
+    }
+
+    /**
+     * Get the userVisibleState property: A state of a server that is visible to user.
+     *
+     * @return the userVisibleState value.
+     */
+    public ServerState userVisibleState() {
+        if (this.properties() == null) {
+            return null;
+        } else {
+            return this.properties().userVisibleState();
+        }
+    }
+
+    /**
+     * Set the userVisibleState property: A state of a server that is visible to user.
+     *
+     * @param userVisibleState the userVisibleState value to set.
+     * @return the ServerInner object itself.
+     */
+    public ServerInner withUserVisibleState(ServerState userVisibleState) {
+        if (this.properties() == null) {
+            this.withProperties(new ServerProperties());
+        }
+        this.properties().withUserVisibleState(userVisibleState);
+        return this;
+    }
+
+    /**
+     * Get the fullyQualifiedDomainName property: The fully qualified domain name of a server.
+     *
+     * @return the fullyQualifiedDomainName value.
+     */
+    public String fullyQualifiedDomainName() {
+        if (this.properties() == null) {
+            return null;
+        } else {
+            return this.properties().fullyQualifiedDomainName();
+        }
+    }
+
+    /**
+     * Set the fullyQualifiedDomainName property: The fully qualified domain name of a server.
+     *
+     * @param fullyQualifiedDomainName the fullyQualifiedDomainName value to set.
+     * @return the ServerInner object itself.
+     */
+    public ServerInner withFullyQualifiedDomainName(String fullyQualifiedDomainName) {
+        if (this.properties() == null) {
+            this.withProperties(new ServerProperties());
+        }
+        this.properties().withFullyQualifiedDomainName(fullyQualifiedDomainName);
+        return this;
+    }
+
+    /**
+     * Get the earliestRestoreDate property: Earliest restore point creation time (ISO8601 format).
+     *
+     * @return the earliestRestoreDate value.
+     */
+    public OffsetDateTime earliestRestoreDate() {
+        if (this.properties() == null) {
+            return null;
+        } else {
+            return this.properties().earliestRestoreDate();
+        }
+    }
+
+    /**
+     * Set the earliestRestoreDate property: Earliest restore point creation time (ISO8601 format).
+     *
+     * @param earliestRestoreDate the earliestRestoreDate value to set.
+     * @return the ServerInner object itself.
+     */
+    public ServerInner withEarliestRestoreDate(OffsetDateTime earliestRestoreDate) {
+        if (this.properties() == null) {
+            this.withProperties(new ServerProperties());
+        }
+        this.properties().withEarliestRestoreDate(earliestRestoreDate);
+        return this;
+    }
+
+    /**
+     * Get the storageProfile property: Storage profile of a server.
+     *
+     * @return the storageProfile value.
+     */
+    public StorageProfile storageProfile() {
+        if (this.properties() == null) {
+            return null;
+        } else {
+            return this.properties().storageProfile();
+        }
+    }
+
+    /**
+     * Set the storageProfile property: Storage profile of a server.
+     *
+     * @param storageProfile the storageProfile value to set.
+     * @return the ServerInner object itself.
+     */
+    public ServerInner withStorageProfile(StorageProfile storageProfile) {
+        if (this.properties() == null) {
+            this.withProperties(new ServerProperties());
+        }
+        this.properties().withStorageProfile(storageProfile);
+        return this;
+    }
+
+    /**
+     * Get the replicationRole property: The replication role of the server.
+     *
+     * @return the replicationRole value.
+     */
+    public String replicationRole() {
+        if (this.properties() == null) {
+            return null;
+        } else {
+            return this.properties().replicationRole();
+        }
+    }
+
+    /**
+     * Set the replicationRole property: The replication role of the server.
+     *
+     * @param replicationRole the replicationRole value to set.
+     * @return the ServerInner object itself.
+     */
+    public ServerInner withReplicationRole(String replicationRole) {
+        if (this.properties() == null) {
+            this.withProperties(new ServerProperties());
+        }
+        this.properties().withReplicationRole(replicationRole);
+        return this;
+    }
+
+    /**
+     * Get the masterServerId property: The master server id of a replica server.
+     *
+     * @return the masterServerId value.
+     */
+    public String masterServerId() {
+        if (this.properties() == null) {
+            return null;
+        } else {
+            return this.properties().masterServerId();
+        }
+    }
+
+    /**
+     * Set the masterServerId property: The master server id of a replica server.
+     *
+     * @param masterServerId the masterServerId value to set.
+     * @return the ServerInner object itself.
+     */
+    public ServerInner withMasterServerId(String masterServerId) {
+        if (this.properties() == null) {
+            this.withProperties(new ServerProperties());
+        }
+        this.properties().withMasterServerId(masterServerId);
+        return this;
+    }
+
+    /**
+     * Get the replicaCapacity property: The maximum number of replicas that a master server can have.
+     *
+     * @return the replicaCapacity value.
+     */
+    public Integer replicaCapacity() {
+        if (this.properties() == null) {
+            return null;
+        } else {
+            return this.properties().replicaCapacity();
+        }
+    }
+
+    /**
+     * Set the replicaCapacity property: The maximum number of replicas that a master server can have.
+     *
+     * @param replicaCapacity the replicaCapacity value to set.
+     * @return the ServerInner object itself.
+     */
+    public ServerInner withReplicaCapacity(Integer replicaCapacity) {
+        if (this.properties() == null) {
+            this.withProperties(new ServerProperties());
+        }
+        this.properties().withReplicaCapacity(replicaCapacity);
+        return this;
+    }
+
+    /**
+     * Get the publicNetworkAccess property: Whether or not public network access is allowed for this server. Value is
+     * optional but if passed in, must be 'Enabled' or 'Disabled'.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccessEnum publicNetworkAccess() {
+        if (this.properties() == null) {
+            return null;
+        } else {
+            return this.properties().publicNetworkAccess();
+        }
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Whether or not public network access is allowed for this server. Value is
+     * optional but if passed in, must be 'Enabled' or 'Disabled'.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the ServerInner object itself.
+     */
+    public ServerInner withPublicNetworkAccess(PublicNetworkAccessEnum publicNetworkAccess) {
+        if (this.properties() == null) {
+            this.withProperties(new ServerProperties());
+        }
+        this.properties().withPublicNetworkAccess(publicNetworkAccess);
+        return this;
+    }
+
+    /**
+     * Get the privateEndpointConnections property: List of private endpoint connections on a server.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    public List<ServerPrivateEndpointConnection> privateEndpointConnections() {
+        if (this.properties() == null) {
+            return null;
+        } else {
+            return this.properties().privateEndpointConnections();
+        }
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -484,11 +515,8 @@ public class ServerInner extends Resource {
         if (sku() != null) {
             sku().validate();
         }
-        if (storageProfile() != null) {
-            storageProfile().validate();
-        }
-        if (privateEndpointConnections() != null) {
-            privateEndpointConnections().forEach(e -> e.validate());
+        if (properties() != null) {
+            properties().validate();
         }
     }
 }

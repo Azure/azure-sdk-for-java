@@ -274,7 +274,7 @@ public final class MySqlManager {
                 .append("-")
                 .append("com.azure.resourcemanager.mysql")
                 .append("/")
-                .append("1.0.1");
+                .append("1.1.0-beta.1");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")

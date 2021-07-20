@@ -5,18 +5,17 @@
 package com.azure.resourcemanager.mysql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.mysql.implementation.ServerKeyProperties;
 import com.azure.resourcemanager.mysql.models.ServerKeyType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** A MySQL Server key. */
-@JsonFlatten
 @Fluent
-public class ServerKeyInner extends ProxyResource {
+public final class ServerKeyInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerKeyInner.class);
 
     /*
@@ -26,22 +25,10 @@ public class ServerKeyInner extends ProxyResource {
     private String kind;
 
     /*
-     * The key type like 'AzureKeyVault'.
+     * Properties of the ServerKey Resource.
      */
-    @JsonProperty(value = "properties.serverKeyType")
-    private ServerKeyType serverKeyType;
-
-    /*
-     * The URI of the key.
-     */
-    @JsonProperty(value = "properties.uri")
-    private String uri;
-
-    /*
-     * The key creation date.
-     */
-    @JsonProperty(value = "properties.creationDate", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime creationDate;
+    @JsonProperty(value = "properties")
+    private ServerKeyProperties properties;
 
     /**
      * Get the kind property: Kind of encryption protector used to protect the key.
@@ -53,12 +40,36 @@ public class ServerKeyInner extends ProxyResource {
     }
 
     /**
+     * Get the properties property: Properties of the ServerKey Resource.
+     *
+     * @return the properties value.
+     */
+    private ServerKeyProperties properties() {
+        return this.properties;
+    }
+
+    /**
+     * Set the properties property: Properties of the ServerKey Resource.
+     *
+     * @param properties the properties value to set.
+     * @return the ServerKeyInner object itself.
+     */
+    private ServerKeyInner withProperties(ServerKeyProperties properties) {
+        this.properties = properties;
+        return this;
+    }
+
+    /**
      * Get the serverKeyType property: The key type like 'AzureKeyVault'.
      *
      * @return the serverKeyType value.
      */
     public ServerKeyType serverKeyType() {
-        return this.serverKeyType;
+        if (this.properties() == null) {
+            return null;
+        } else {
+            return this.properties().serverKeyType();
+        }
     }
 
     /**
@@ -68,7 +79,10 @@ public class ServerKeyInner extends ProxyResource {
      * @return the ServerKeyInner object itself.
      */
     public ServerKeyInner withServerKeyType(ServerKeyType serverKeyType) {
-        this.serverKeyType = serverKeyType;
+        if (this.properties() == null) {
+            this.withProperties(new ServerKeyProperties());
+        }
+        this.properties().withServerKeyType(serverKeyType);
         return this;
     }
 
@@ -78,7 +92,11 @@ public class ServerKeyInner extends ProxyResource {
      * @return the uri value.
      */
     public String uri() {
-        return this.uri;
+        if (this.properties() == null) {
+            return null;
+        } else {
+            return this.properties().uri();
+        }
     }
 
     /**
@@ -88,7 +106,10 @@ public class ServerKeyInner extends ProxyResource {
      * @return the ServerKeyInner object itself.
      */
     public ServerKeyInner withUri(String uri) {
-        this.uri = uri;
+        if (this.properties() == null) {
+            this.withProperties(new ServerKeyProperties());
+        }
+        this.properties().withUri(uri);
         return this;
     }
 
@@ -98,7 +119,11 @@ public class ServerKeyInner extends ProxyResource {
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
-        return this.creationDate;
+        if (this.properties() == null) {
+            return null;
+        } else {
+            return this.properties().creationDate();
+        }
     }
 
     /**
@@ -107,5 +132,8 @@ public class ServerKeyInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (properties() != null) {
+            properties().validate();
+        }
     }
 }
