@@ -25,9 +25,10 @@ import org.springframework.cloud.stream.binder.HeaderMode;
 @RunWith(MockitoJUnitRunner.class)
 public class ServiceBusQueuePartitionBinderTests
     extends AzurePartitionBinderTests<ServiceBusQueueTestBinder,
-                                         ExtendedConsumerProperties<ServiceBusConsumerProperties>,
-                                         ExtendedProducerProperties<ServiceBusProducerProperties>> {
-    //TODO (Xiaobing Zhu): It is currently impossible to upgrade JUnit 4 to JUnit 5 due to the inheritance of Spring unit tests.
+    ExtendedConsumerProperties<ServiceBusConsumerProperties>,
+    ExtendedProducerProperties<ServiceBusProducerProperties>> {
+    //TODO (Xiaobing Zhu): It is currently impossible to upgrade JUnit 4 to JUnit 5 due to the inheritance of Spring
+    // unit tests.
 
     @Mock
     ServiceBusQueueClientFactory clientFactory;
@@ -38,7 +39,8 @@ public class ServiceBusQueuePartitionBinderTests
 
     @Before
     public void setUp() {
-        this.binder = new ServiceBusQueueTestBinder(new ServiceBusQueueTestOperation(this.clientFactory,instrumentationManager));
+        this.binder = new ServiceBusQueueTestBinder(new ServiceBusQueueTestOperation(this.clientFactory,
+            instrumentationManager));
     }
 
     @Override

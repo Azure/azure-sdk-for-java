@@ -33,8 +33,9 @@ public class ServiceBusTopicTestOperation extends ServiceBusTopicTemplate {
     private final Map<String, Map<String, DefaultServiceBusMessageProcessor>> processorsByTopicAndSub =
         new ConcurrentHashMap<>();
 
-    public ServiceBusTopicTestOperation(ServiceBusTopicClientFactory clientFactory, InstrumentationManager instrumentationManager) {
-        super(clientFactory,instrumentationManager);
+    public ServiceBusTopicTestOperation(ServiceBusTopicClientFactory clientFactory,
+                                        InstrumentationManager instrumentationManager) {
+        super(clientFactory, instrumentationManager);
     }
 
     @Override

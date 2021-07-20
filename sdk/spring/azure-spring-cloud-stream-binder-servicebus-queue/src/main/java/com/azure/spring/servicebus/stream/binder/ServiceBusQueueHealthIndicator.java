@@ -7,9 +7,13 @@ import com.azure.spring.integration.servicebus.health.InstrumentationManager;
 import org.springframework.boot.actuate.health.AbstractHealthIndicator;
 import org.springframework.boot.actuate.health.Health;
 
+/**
+ *  Implementation of a {@link AbstractHealthIndicator} returning status information for
+ *  service bus queue.
+ */
 public class ServiceBusQueueHealthIndicator extends AbstractHealthIndicator {
 
-    private InstrumentationManager instrumentationManager;
+    private final InstrumentationManager instrumentationManager;
 
     public ServiceBusQueueHealthIndicator(InstrumentationManager instrumentationManager) {
         this.instrumentationManager = instrumentationManager;
