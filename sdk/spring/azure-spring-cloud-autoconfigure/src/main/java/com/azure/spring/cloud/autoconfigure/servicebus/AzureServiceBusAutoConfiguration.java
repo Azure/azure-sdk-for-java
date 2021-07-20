@@ -9,7 +9,6 @@ import com.azure.spring.cloud.autoconfigure.context.AzureContextAutoConfiguratio
 import com.azure.spring.cloud.context.core.config.AzureProperties;
 import com.azure.spring.cloud.context.core.impl.ServiceBusNamespaceManager;
 import com.azure.spring.integration.servicebus.factory.ServiceBusConnectionStringProvider;
-import com.azure.spring.integration.servicebus.health.InstrumentationManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
