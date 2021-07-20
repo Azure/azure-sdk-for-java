@@ -113,19 +113,19 @@ For some Service Bus headers that can be mapped to multiple Spring header consta
 
 Service Bus Message Headers and Properties | Spring Message Header Constants | Type | Priority Number (Descending priority)
 ---|---|---|---
-MessageId | com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.MESSAGE_ID | String | 1
-MessageId | com.azure.spring.integration.core.AzureHeaders.RAW_ID | String | 2
-MessageId | org.springframework.messaging.MessageHeaders.ID | UUID | 3
+**MessageId** | com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.MESSAGE_ID | String | 1
+**MessageId** | com.azure.spring.integration.core.AzureHeaders.RAW_ID | String | 2
+**MessageId** | org.springframework.messaging.MessageHeaders.ID | UUID | 3
 ContentType | org.springframework.messaging.MessageHeaders.CONTENT_TYPE | String | NA
 ReplyTo | org.springframework.messaging.MessageHeaders.REPLY_CHANNEL | String | NA
-ScheduledEnqueueTimeUtc | com.azure.spring.integration.core.AzureHeaders.SCHEDULED_ENQUEUE_MESSAGE | Integer | 1
-ScheduledEnqueueTimeUtc | com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders#SCHEDULED_ENQUEUE_TIME | Instant | 2
+**ScheduledEnqueueTimeUtc** | com.azure.spring.integration.core.AzureHeaders.SCHEDULED_ENQUEUE_MESSAGE | Integer | 1
+**ScheduledEnqueueTimeUtc** | com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.SCHEDULED_ENQUEUE_TIME | Instant | 2
 TimeToLive | com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.TIME_TO_LIVE | Duration | NA
 SessionID | com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.SESSION_ID | String | NA
 CorrelationId | com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.CORRELATION_ID | String | NA
 To | com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.TO | String | NA
-ReplyToSessionId | com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders#REPLY_TO_SESSION_ID | String | NA
-PartitionKey | com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders#PARTITION_KEY | String | NA
+ReplyToSessionId | com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.REPLY_TO_SESSION_ID | String | NA
+PartitionKey | com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.PARTITION_KEY | String | NA
 
 ## Examples
 
