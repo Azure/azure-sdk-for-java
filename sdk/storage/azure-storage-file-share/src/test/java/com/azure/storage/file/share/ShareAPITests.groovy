@@ -519,7 +519,7 @@ class ShareAPITests extends APISpec {
 
         then:
         def e = thrown(ShareStorageException)
-        FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.SHARE_NOT_FOUND)
+//        FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.SHARE_NOT_FOUND)
     }
 
     def "Set properties quota"() {

@@ -4,6 +4,7 @@ stages:
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
       ServiceDirectory: eventhubs
+      Clouds: 'Public,UsGov,China,Canary'
       Artifacts:
         - name: azure-messaging-eventhubs
           groupId: com.azure
@@ -12,6 +13,5 @@ stages:
           groupId: com.azure
           safeName: azuremessagingeventhubscheckpointstoreblob
       TimeoutInMinutes: 120
-      Clouds: 'Public'
       EnvVars:
         AZURE_LOG_LEVEL: 2

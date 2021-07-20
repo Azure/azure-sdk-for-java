@@ -425,7 +425,7 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
         final Set<Integer> expectedPartitions = new HashSet<>(allPartitions);
         final int expectedNumber = 6;
 
-        Assumptions.assumeTrue(expectedPartitions.size() <= expectedNumber,
+        Assumptions.assumeTrue(expectedPartitions.size() > expectedNumber,
             "Cannot run this test if there are more partitions than expected.");
 
         final EventHubProducerAsyncClient producer = builder.buildAsyncProducerClient();
