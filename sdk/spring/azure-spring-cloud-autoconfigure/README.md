@@ -91,12 +91,12 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [event_hubs_kafka]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-cloud-starter-eventhubs-kafka
 [service_bus]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-cloud-starter-servicebus
 [storage_queue]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-cloud-starter-storage-queue
-[app_configuration_sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/azure-spring-boot_3.6.0/appconfiguration/azure-appconfiguration-sample
-[app_configuration_conversation_sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/azure-spring-boot_3.6.0/appconfiguration/azure-appconfiguration-conversion-sample-complete
-[cache_sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/azure-spring-boot_3.6.0/cache/azure-spring-cloud-sample-cache
-[event_hubs_sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/azure-spring-boot_3.6.0/eventhubs/azure-spring-integration-sample-eventhubs
-[event_hubs_kafka_sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/azure-spring-boot_3.6.0/eventhubs/azure-spring-cloud-sample-eventhubs-kafka
-[service_bus_sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/azure-spring-boot_3.6.0/servicebus/azure-spring-integration-sample-servicebus
-[storage_queue_sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/azure-spring-boot_3.6.0/storage/azure-spring-integration-sample-storage-queue
+[app_configuration_sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/azure-spring-boot_3.7.0/appconfiguration/azure-appconfiguration-sample
+[app_configuration_conversation_sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/azure-spring-boot_3.7.0/appconfiguration/azure-appconfiguration-conversion-sample-complete
+[cache_sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/azure-spring-boot_3.7.0/cache/azure-spring-cloud-sample-cache
+[event_hubs_sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/azure-spring-boot_3.7.0/eventhubs/azure-spring-integration-sample-eventhubs
+[event_hubs_kafka_sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/azure-spring-boot_3.7.0/eventhubs/azure-spring-cloud-sample-eventhubs-kafka
+[service_bus_sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/azure-spring-boot_3.7.0/servicebus/azure-spring-integration-sample-servicebus
+[storage_queue_sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/azure-spring-boot_3.7.0/storage/azure-spring-integration-sample-storage-queue
 [environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
 [Add azure-spring-cloud-dependencies]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/AZURE_SPRING_BOMS_USAGE.md#add-azure-spring-cloud-dependencies
