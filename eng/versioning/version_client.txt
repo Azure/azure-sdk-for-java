@@ -89,7 +89,7 @@ com.azure:azure-identity;1.3.3;1.4.0-beta.1
 com.azure:azure-identity-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-iot-deviceupdate;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-iot-modelsrepository;1.0.0-beta.1;1.0.0-beta.2
-com.azure:azure-messaging-eventgrid;4.4.0;4.5.0-beta.1
+com.azure:azure-messaging-eventgrid;4.4.0;4.5.0
 com.azure:azure-messaging-eventhubs;5.9.0;5.10.0-beta.1
 com.azure:azure-messaging-eventhubs-checkpointstore-blob;1.8.1;1.9.0-beta.1
 com.azure:azure-messaging-eventhubs-track1-perf;1.0.0-beta.1;1.0.0-beta.1
@@ -176,7 +176,7 @@ com.azure.spring:azure-spring-integration-test;2.6.0;2.7.0-beta.1
 com.azure.spring:azure-spring-boot-test-aad;1.0.0;1.0.0
 com.azure.spring:azure-spring-boot-test-aad-b2c;1.0.0;1.0.0
 com.azure.spring:azure-spring-boot-test-selenium-common;1.0.0;1.0.0
-com.azure.spring:azure-spring-boot-test-aad-obo;1.0.0;1.0.0
+com.azure.spring:azure-spring-boot-test-aad-webapp-and-resource-server-with-obo;1.0.0;1.0.0
 com.azure.spring:azure-spring-boot-test-aad-resource-server;1.0.0;1.0.0
 com.azure.spring:azure-spring-boot-test-aad-resource-server-by-filter;1.0.0;1.0.0
 com.azure.spring:azure-spring-boot-test-core;1.0.0;1.0.0

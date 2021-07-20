@@ -1,8 +1,10 @@
 # Release History
 
 ## 2.7.0-beta.1 (Unreleased)
+### Key Bug Fixes
+- Fix bug of setting message headers repeatedly with different value types. ([#22939](https://github.com/Azure/azure-sdk-for-java/pull/22939))
 ### New Features
-- Support configure `AmqpTransportType` by adding `spring.cloud.azure.servicebus.transportType`.
+- Support configure of `AmqpTransportType` by adding `spring.cloud.azure.servicebus.transportType`.
 
 ## 2.6.0 (2021-06-23)
 ### New Features

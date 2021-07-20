@@ -13,13 +13,26 @@
   - If it isn't, update it
 - Use this link to install [Azure CLI](https://docs.microsoft.com/cli/azure/install-azure-cli?view=azure-cli-latest])
 
-## Delete
+### Install Bicep
 
-To delete the digital twins instance, you need to first delete the endpoint added by the script (the service doesn't yet support cascading delete).
+- Install using the instructions in [bicep](https://github.com/Azure/bicep/blob/main/docs/installing.md)
+- Note that to deploy Bicep files, use Bicep CLI version 0.3.1 or later. To check your Bicep CLI version, run:
 
-1. To do this, run the command `az dt endpoint delete -n <dt name> -g <rg name> --en someEventHubEndpoint`.
-1. If you have other endpoints that have been added outside this script, you can discover them with the command `az dt endpoint list -n <dt name> -g <rg name>`.
-1. Then delete them with the same command in step 1.
+```bash
+bicep --version
+```
+
+### Run the setup script
+
+The script outputs [test-resources.bicep](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/digitaltwins/test-resources.bicep) file in the root folder [digitaltwins](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/digitaltwins)
+
+- `.\setup.ps1`
+
+### Generate the ARM template
+
+The ARM template [test-resources.json](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/digitaltwins/test-resources.json) is generated from the [test-resources.bicep](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/digitaltwins/test-resources.bicep) file by running the following script
+
+- `.\generateArmTemplate.ps1`
 
 ## Maintenance
 
