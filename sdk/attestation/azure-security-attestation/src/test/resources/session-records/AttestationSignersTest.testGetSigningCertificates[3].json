@@ -4,7 +4,7 @@
     "Uri" : "https://REDACTED.wus.attest.azure.net/certs",
     "Headers" : { },
     "Response" : {
-      "content-length" : "40822",
+      "content-length" : "40830",
       "Server" : "Kestrel",
       "x-ms-maa-service-version" : "1.10.01644.0004",
       "retry-after" : "0",
