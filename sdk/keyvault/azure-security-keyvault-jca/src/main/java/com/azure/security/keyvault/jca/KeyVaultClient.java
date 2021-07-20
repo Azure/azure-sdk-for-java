@@ -142,6 +142,15 @@ public class KeyVaultClient extends DelegateRestClient {
         this.managedIdentity = managedIdentity;
     }
 
+    static KeyVaultClient createKeyVaultClientBySystemProperty() {
+        String keyVaultUri = System.getProperty("azure.keyvault.uri");
+        String tenantId = System.getProperty("azure.keyvault.tenant-id");
+        String clientId = System.getProperty("azure.keyvault.client-id");
+        String clientSecret = System.getProperty("azure.keyvault.client-secret");
+        String managedIdentity = System.getProperty("azure.keyvault.managed-identity");
+        return new KeyVaultClient(keyVaultUri, tenantId, clientId, clientSecret, managedIdentity);
+    }
+
     /**
      * Get the access token.
      *

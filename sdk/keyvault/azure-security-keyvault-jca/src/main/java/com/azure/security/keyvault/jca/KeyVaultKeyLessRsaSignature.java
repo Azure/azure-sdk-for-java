@@ -19,43 +19,45 @@ import java.security.spec.AlgorithmParameterSpec;
 import java.security.spec.PSSParameterSpec;
 import java.util.Base64;
 
+import static com.azure.security.keyvault.jca.KeyVaultClient.createKeyVaultClientBySystemProperty;
+
 /**
  * key vault Rsa signature to support key less
  */
-public class KeyVaultRsaSignature extends SignatureSpi {
+public class KeyVaultKeyLessRsaSignature extends SignatureSpi {
 
     // message digest implementation we use for hashing the data
-    private MessageDigest md;
+    private MessageDigest messageDigest;
+
     // flag indicating whether the digest is reset
     private boolean digestReset = true;
 
     // PSS parameters from signatures and keys respectively
-    private PSSParameterSpec sigParams = null; // required for PSS signatures
+    // required for PSS signatures
+    private PSSParameterSpec signatureParameters = null;
 
-    private KeyVaultClient keyVaultClient;
+    private final KeyVaultClient keyVaultClient;
 
-    private String kid;
+    private String keyId;
 
     /**
-     * Construct a new KeyVaultRsaSignature
+     * Construct a new KeyVaultKeyLessRsaSignature
      */
-    public KeyVaultRsaSignature() {
-        String keyVaultUri = System.getProperty("azure.keyvault.uri");
-        String tenantId = System.getProperty("azure.keyvault.tenant-id");
-        String clientId = System.getProperty("azure.keyvault.client-id");
-        String clientSecret = System.getProperty("azure.keyvault.client-secret");
-        String managedIdentity = System.getProperty("azure.keyvault.managed-identity");
-
-        keyVaultClient = new KeyVaultClient(keyVaultUri, tenantId, clientId, clientSecret, managedIdentity);
-        this.md = null;
+    public KeyVaultKeyLessRsaSignature() {
+        this(createKeyVaultClientBySystemProperty());
     }
 
-    void setKeyVaultClient(KeyVaultClient keyVaultClient) {
+    /**
+     * Construct a new KeyVaultKeyLessRsaSignature with key vault client
+     * @param keyVaultClient keyVaultClient
+     */
+    public KeyVaultKeyLessRsaSignature(KeyVaultClient keyVaultClient) {
         this.keyVaultClient = keyVaultClient;
+        this.messageDigest = null;
     }
 
-    //This class is only used for keyLess signatures, other functions will
-    //call other suitable algorithms, such as RSAPSSSignature
+    // After throw UnsupportedOperationException, other methods will be called.
+    // such as RSAPSSSignature#engineInitVerify.
     @Override
     protected void engineInitVerify(PublicKey publicKey) {
         throw new UnsupportedOperationException("getParameter() not supported");
@@ -66,18 +68,16 @@ public class KeyVaultRsaSignature extends SignatureSpi {
         engineInitSign(privateKey, null);
     }
 
-    //This class is only used for keyLess signatures, other functions will
-    //call other suitable algorithms, such as RSAPSSSignature
+    // After throw UnsupportedOperationException, other methods will be called.
+    // such as RSAPSSSignature#engineInitSign..
     @Override
     protected void engineInitSign(PrivateKey privateKey, SecureRandom random) {
-
         if (privateKey instanceof KeyVaultPrivateKey) {
-            kid = ((KeyVaultPrivateKey) privateKey).getKid();
+            keyId = ((KeyVaultPrivateKey) privateKey).getKid();
             resetDigest();
         } else {
             throw new UnsupportedOperationException("engineInitSign() not supported which private key is not instance of KeyVaultPrivateKey");
         }
-
     }
 
     /**
@@ -85,7 +85,7 @@ public class KeyVaultRsaSignature extends SignatureSpi {
      * reset digest
      */
     private void ensureInit() throws SignatureException {
-        if (this.sigParams == null) {
+        if (this.signatureParameters == null) {
             // Parameters are required for signature verification
             throw new SignatureException("Parameters required for KeyVault signatures");
         }
@@ -96,7 +96,7 @@ public class KeyVaultRsaSignature extends SignatureSpi {
      */
     private void resetDigest() {
         if (!digestReset) {
-            this.md.reset();
+            this.messageDigest.reset();
             digestReset = true;
         }
     }
@@ -106,13 +106,13 @@ public class KeyVaultRsaSignature extends SignatureSpi {
      */
     private byte[] getDigestValue() {
         digestReset = true;
-        return this.md.digest();
+        return this.messageDigest.digest();
     }
 
     @Override
     protected void engineUpdate(byte b) throws SignatureException {
         ensureInit();
-        this.md.update(b);
+        this.messageDigest.update(b);
         digestReset = false;
     }
 
@@ -120,7 +120,7 @@ public class KeyVaultRsaSignature extends SignatureSpi {
     protected void engineUpdate(byte[] b, int off, int len)
         throws SignatureException {
         ensureInit();
-        this.md.update(b, off, len);
+        this.messageDigest.update(b, off, len);
         digestReset = false;
     }
 
@@ -132,7 +132,7 @@ public class KeyVaultRsaSignature extends SignatureSpi {
             // hack for working around API bug
             throw new RuntimeException(se.getMessage());
         }
-        this.md.update(b);
+        this.messageDigest.update(b);
         digestReset = false;
     }
 
@@ -142,19 +142,19 @@ public class KeyVaultRsaSignature extends SignatureSpi {
         byte[] mHash = getDigestValue();
 
         String encode = Base64.getEncoder().encodeToString(mHash);
-        byte[] encrypted = keyVaultClient.getSignedWithPrivateKey("PS256", encode, kid);
+        byte[] encrypted = keyVaultClient.getSignedWithPrivateKey("PS256", encode, keyId);
         return encrypted;
     }
 
-    //This class is only used for keyLess signatures, other functions will
-    //call other suitable algorithms, such as RSAPSSSignature
+    // After throw UnsupportedOperationException, other methods will be called.
+    // such as RSAPSSSignature#engineVerify.
     @Override
     protected boolean engineVerify(byte[] sigBytes) {
         throw new UnsupportedOperationException("engineVerify() not supported");
     }
 
-    //This class is only used for keyLess signatures, other functions will
-    //call other suitable algorithms, such as RSAPSSSignature
+    // After throw UnsupportedOperationException, other methods will be called.
+    // such as RSAPSSSignature#engineSetParameter.
     @Deprecated
     @Override
     protected void engineSetParameter(String param, Object value) {
@@ -164,17 +164,17 @@ public class KeyVaultRsaSignature extends SignatureSpi {
     @Override
     protected void engineSetParameter(AlgorithmParameterSpec params)
         throws InvalidAlgorithmParameterException {
-        this.sigParams = (PSSParameterSpec) params;
+        this.signatureParameters = (PSSParameterSpec) params;
 
         // disallow changing parameters when digest has been used
         if (!digestReset) {
             throw new ProviderException("Cannot set parameters during operations");
         }
-        String newHashAlg = this.sigParams.getDigestAlgorithm();
+        String newHashAlg = this.signatureParameters.getDigestAlgorithm();
         // re-allocate md if not yet assigned or algorithm changed
-        if ((this.md == null) || !(this.md.getAlgorithm().equalsIgnoreCase(newHashAlg))) {
+        if ((this.messageDigest == null) || !(this.messageDigest.getAlgorithm().equalsIgnoreCase(newHashAlg))) {
             try {
-                this.md = MessageDigest.getInstance(newHashAlg);
+                this.messageDigest = MessageDigest.getInstance(newHashAlg);
             } catch (NoSuchAlgorithmException nsae) {
                 // should not happen as we pick default digest algorithm
                 throw new InvalidAlgorithmParameterException("Unsupported digest algorithm " + newHashAlg, nsae);
@@ -182,8 +182,8 @@ public class KeyVaultRsaSignature extends SignatureSpi {
         }
     }
 
-    //This class is only used for keyLess signatures, other functions will
-    //call other suitable algorithms, such as RSAPSSSignature
+    // After throw UnsupportedOperationException, other methods will be called.
+    // such as RSAPSSSignature#engineGetParameter.
     @Deprecated
     @Override
     protected Object engineGetParameter(String param) {
@@ -193,10 +193,10 @@ public class KeyVaultRsaSignature extends SignatureSpi {
     @Override
     protected AlgorithmParameters engineGetParameters() {
         AlgorithmParameters ap = null;
-        if (this.sigParams != null) {
+        if (this.signatureParameters != null) {
             try {
                 ap = AlgorithmParameters.getInstance("RSASSA-PSS");
-                ap.init(this.sigParams);
+                ap.init(this.signatureParameters);
             } catch (GeneralSecurityException gse) {
                 throw new ProviderException(gse.getMessage());
             }

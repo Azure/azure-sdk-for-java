@@ -20,16 +20,16 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class KeyVaultRsaSignatureTest {
+public class KeyVaultKeyLessRsaSignatureTest {
 
-    KeyVaultRsaSignature keyVaultRsaSignature;
+    KeyVaultKeyLessRsaSignature keyVaultKeyLessRsaSignature;
 
     private final KeyVaultClient keyVaultClient = mock(KeyVaultClient.class);
 
     @BeforeEach
     public void before() {
         System.setProperty("azure.keyvault.uri", KeyVaultClientTest.KEY_VAULT_TEST_URI_GLOBAL);
-        keyVaultRsaSignature = new KeyVaultRsaSignature();
+        keyVaultKeyLessRsaSignature = new KeyVaultKeyLessRsaSignature();
     }
 
     private final PublicKey publicKey = new PublicKey() {
@@ -68,35 +68,35 @@ public class KeyVaultRsaSignatureTest {
 
     @Test
     public void engineInitVerifyTest() {
-        assertThrows(UnsupportedOperationException.class, () -> keyVaultRsaSignature.engineInitVerify(publicKey));
+        assertThrows(UnsupportedOperationException.class, () -> keyVaultKeyLessRsaSignature.engineInitVerify(publicKey));
     }
 
     @Test
     public void engineInitSignTest() {
-        assertThrows(UnsupportedOperationException.class, () -> keyVaultRsaSignature.engineInitSign(privateKey));
+        assertThrows(UnsupportedOperationException.class, () -> keyVaultKeyLessRsaSignature.engineInitSign(privateKey));
     }
 
     @Test
     public void engineInitSignWithRandomTest() {
-        assertThrows(UnsupportedOperationException.class, () -> keyVaultRsaSignature.engineInitSign(privateKey, null));
+        assertThrows(UnsupportedOperationException.class, () -> keyVaultKeyLessRsaSignature.engineInitSign(privateKey, null));
     }
 
     @Test
     public void engineVerify() {
-        assertThrows(UnsupportedOperationException.class, () -> keyVaultRsaSignature.engineVerify(null));
+        assertThrows(UnsupportedOperationException.class, () -> keyVaultKeyLessRsaSignature.engineVerify(null));
     }
 
     @Test
     public void engineSetParameterTest() {
-        assertThrows(UnsupportedOperationException.class, () -> keyVaultRsaSignature.engineSetParameter("", null));
+        assertThrows(UnsupportedOperationException.class, () -> keyVaultKeyLessRsaSignature.engineSetParameter("", null));
     }
 
     @Test
     public void setDigestNameAndEngineSignTest() throws SignatureException, InvalidAlgorithmParameterException {
-        keyVaultRsaSignature.engineSetParameter(new PSSParameterSpec("SHA-1", "MGF1", MGF1ParameterSpec.SHA1, 20, 1));
+        keyVaultKeyLessRsaSignature = new KeyVaultKeyLessRsaSignature(keyVaultClient);
+        keyVaultKeyLessRsaSignature.engineSetParameter(new PSSParameterSpec("SHA-1", "MGF1", MGF1ParameterSpec.SHA1, 20, 1));
         when(keyVaultClient.getSignedWithPrivateKey(ArgumentMatchers.eq("PS256"), anyString(), ArgumentMatchers.eq(null))).thenReturn("fakeValue".getBytes());
-        keyVaultRsaSignature.setKeyVaultClient(keyVaultClient);
-        assertArrayEquals("fakeValue".getBytes(), keyVaultRsaSignature.engineSign());
+        assertArrayEquals("fakeValue".getBytes(), keyVaultKeyLessRsaSignature.engineSign());
     }
 
 }

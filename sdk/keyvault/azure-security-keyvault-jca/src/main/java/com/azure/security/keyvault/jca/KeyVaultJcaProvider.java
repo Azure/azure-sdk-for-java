@@ -86,6 +86,37 @@ public class KeyVaultJcaProvider extends Provider {
                     null
                 )
             );
+            putService(
+                new Service(
+                    this,
+                    "Signature",
+                    "RSASSA-PSS",
+                    KeyVaultKeyLessRsaSignature.class.getName(),
+                    Collections.singletonList(KeyVaultKeyStore.ALGORITHM_NAME),
+                    null
+                )
+            );
+            //TODO: support EC256K & ECP-521
+            putService(
+                new Service(
+                    this,
+                    "Signature",
+                    "SHA256withECDSA",
+                    KeyVaultKeyLessECSignature.KeyVaultSHA256.class.getName(),
+                    Collections.singletonList(KeyVaultKeyStore.ALGORITHM_NAME),
+                    null
+                )
+            );
+            putService(
+                new Service(
+                    this,
+                    "Signature",
+                    "SHA384withECDSA",
+                    KeyVaultKeyLessECSignature.KeyVaultSHA384.class.getName(),
+                    Collections.singletonList(KeyVaultKeyStore.ALGORITHM_NAME),
+                    null
+                )
+            );
             return null;
         });
     }

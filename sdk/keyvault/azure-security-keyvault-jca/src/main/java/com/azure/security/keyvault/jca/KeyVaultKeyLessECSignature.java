@@ -18,12 +18,13 @@ import java.security.spec.AlgorithmParameterSpec;
 import java.security.spec.ECParameterSpec;
 import java.util.Base64;
 
+import static com.azure.security.keyvault.jca.KeyVaultClient.createKeyVaultClientBySystemProperty;
 import static com.azure.security.keyvault.jca.KeyVaultEncode.encodeByte;
 
 /**
  * KeyVault EC signature to support key less
  */
-public abstract class KeyVaultECSignature extends SignatureSpi {
+public abstract class KeyVaultKeyLessECSignature extends SignatureSpi {
     // message digest implementation we use
     private final MessageDigest messageDigest;
 
@@ -33,53 +34,17 @@ public abstract class KeyVaultECSignature extends SignatureSpi {
     // signature parameters
     private ECParameterSpec sigParams = null;
 
-    private String digestName;
+    private final String digestName;
 
     private KeyVaultClient keyVaultClient;
 
-    private String kid;
+    private String keyId;
 
     /**
-     * Constructs a new KeyVaultECSignature.
-     *
-     * @exception ProviderException if the native ECC library is unavailable.
+     * Constructs a new KeyVaultKeyLessECSignature that will use the specified digest
      */
-    public KeyVaultECSignature() {
-        this.messageDigest = null;
-        initKeyVaultClient();
-    }
-
-    /**
-     * init key vault client
-     */
-    //TODO (zhicliu): Should we provide KeyVaultClient through privateKey to ensure that there is only one best practice?
-    private void initKeyVaultClient() {
-        String keyVaultUri = System.getProperty("azure.keyvault.uri");
-        String tenantId = System.getProperty("azure.keyvault.tenant-id");
-        String clientId = System.getProperty("azure.keyvault.client-id");
-        String clientSecret = System.getProperty("azure.keyvault.client-secret");
-        String managedIdentity = System.getProperty("azure.keyvault.managed-identity");
-
-        keyVaultClient = new KeyVaultClient(keyVaultUri, tenantId, clientId, clientSecret, managedIdentity);
-    }
-
-    void setKeyVaultClient(KeyVaultClient keyVaultClient) {
-        this.keyVaultClient = keyVaultClient;
-    }
-
-    /**
-     * In order to pass checkstyle
-     * @param digestName digestName
-     */
-    public void setDigestName(String digestName) {
-        this.digestName = digestName;
-    }
-
-    /**
-     * Constructs a new KeyVaultECSignature that will use the specified digest
-     */
-    KeyVaultECSignature(String digestName) {
-        initKeyVaultClient();
+    KeyVaultKeyLessECSignature(String digestName) {
+        setKeyVaultClient(createKeyVaultClientBySystemProperty());
         try {
             messageDigest = MessageDigest.getInstance(digestName);
         } catch (NoSuchAlgorithmException e) {
@@ -98,8 +63,13 @@ public abstract class KeyVaultECSignature extends SignatureSpi {
         this.needsReset = false;
     }
 
-    //This class is only used for keyLess signatures, other functions will
-    //call other suitable algorithms, such as ECDSASignature
+    //add this for test
+    void setKeyVaultClient(KeyVaultClient keyVaultClient) {
+        this.keyVaultClient = keyVaultClient;
+    }
+
+    // After throw UnsupportedOperationException, other methods will be called.
+    // such as RSAPSSSignature#engineInitVerify.
     @Override
     protected void engineInitVerify(PublicKey publicKey) {
         throw new UnsupportedOperationException("engineInitVerify() not supported");
@@ -110,12 +80,12 @@ public abstract class KeyVaultECSignature extends SignatureSpi {
         engineInitSign(privateKey, null);
     }
 
-    //This class is only used for keyLess signatures, other functions will
-    //call other suitable algorithms, such as ECDSASignature
+    // After throw UnsupportedOperationException, other methods will be called.
+    // such as RSAPSSSignature#engineInitSign.
     @Override
     protected void engineInitSign(PrivateKey privateKey, SecureRandom random) {
         if (privateKey instanceof KeyVaultPrivateKey) {
-            kid = ((KeyVaultPrivateKey) privateKey).getKid();
+            keyId = ((KeyVaultPrivateKey) privateKey).getKid();
             resetDigest();
         } else {
             throw new UnsupportedOperationException("engineInitSign() not supported which private key is not instance of KeyVaultPrivateKey");
@@ -171,19 +141,19 @@ public abstract class KeyVaultECSignature extends SignatureSpi {
 
         byte[] mHash = getDigestValue();
         String encode = Base64.getEncoder().encodeToString(mHash);
-        byte[] encrypted = keyVaultClient.getSignedWithPrivateKey(digestName, encode, kid);
+        byte[] encrypted = keyVaultClient.getSignedWithPrivateKey(digestName, encode, keyId);
         return encodeByte(encrypted);
     }
 
-    //This class is only used for keyLess signatures, other functions will
-    //call other suitable algorithms, such as ECDSASignature
+    // After throw UnsupportedOperationException, other methods will be called.
+    // such as RSAPSSSignature#engineVerify.
     @Override
     protected boolean engineVerify(byte[] signature) {
         throw new UnsupportedOperationException("getParameter() not supported");
     }
 
-    //This class is only used for keyLess signatures, other functions will
-    //call other suitable algorithms, such as ECDSASignature
+    // After throw UnsupportedOperationException, other methods will be called.
+    // such as RSAPSSSignature#engineSetParameter.
     @Override
     @Deprecated
     protected void engineSetParameter(String param, Object value)
@@ -191,8 +161,8 @@ public abstract class KeyVaultECSignature extends SignatureSpi {
         throw new UnsupportedOperationException("setParameter() not supported");
     }
 
-    //This class is only used for keyLess signatures, other functions will
-    //call other suitable algorithms, such as ECDSASignature
+    // After throw UnsupportedOperationException, other methods will be called.
+    // such as ECDSASignature#engineSetParameter.
     @Override
     protected void engineSetParameter(AlgorithmParameterSpec params)
         throws InvalidAlgorithmParameterException {
@@ -203,8 +173,8 @@ public abstract class KeyVaultECSignature extends SignatureSpi {
         sigParams = (ECParameterSpec) params;
     }
 
-    //This class is only used for keyLess signatures, other functions will
-    //call other suitable algorithms, such as ECDSASignature
+    // After throw UnsupportedOperationException, other methods will be called.
+    // such as ECDSASignature#engineGetParameter.
     @Override
     @Deprecated
     protected Object engineGetParameter(String param)
@@ -230,7 +200,7 @@ public abstract class KeyVaultECSignature extends SignatureSpi {
     /**
      * key vault SHA384
      */
-    public static final class KeyVaultSHA384 extends KeyVaultECSignature {
+    public static final class KeyVaultSHA384 extends KeyVaultKeyLessECSignature {
         /**
          * support SHA-384
          */
@@ -242,7 +212,7 @@ public abstract class KeyVaultECSignature extends SignatureSpi {
     /**
      * key vault SHA256
      */
-    public static final class KeyVaultSHA256 extends KeyVaultECSignature {
+    public static final class KeyVaultSHA256 extends KeyVaultKeyLessECSignature {
         /**
          * support SHA-256
          */

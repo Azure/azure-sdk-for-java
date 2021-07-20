@@ -3,7 +3,6 @@
 package com.azure.spring.security.keyvault.certificates.starter;
 
 import com.azure.security.keyvault.jca.KeyVaultJcaProvider;
-import com.azure.security.keyvault.jca.KeyVaultJcaSignProvider;
 import com.azure.security.keyvault.jca.KeyVaultKeyStore;
 import com.azure.security.keyvault.jca.KeyVaultTrustManagerFactoryProvider;
 import org.springframework.boot.SpringApplication;
@@ -56,7 +55,6 @@ public class KeyVaultCertificatesEnvironmentPostProcessor implements Environment
             propertySources.addFirst(new PropertiesPropertySource("TrustStorePropertySource", properties));
         }
         Security.insertProviderAt(new KeyVaultJcaProvider(), 1);
-        Security.insertProviderAt(new KeyVaultJcaSignProvider(), 1);
 
         if (overrideTrustManagerFactory(environment)) {
             Security.insertProviderAt(new KeyVaultTrustManagerFactoryProvider(), 1);
