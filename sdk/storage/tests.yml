@@ -42,11 +42,11 @@ stages:
         - name: azure-storage-perf
           groupId: com.azure
       TestMode: 'LIVE'
-      TimeoutInMinutes: 240
-#      Location: canadacentral
-#      Clouds: 'Preview'
+      TimeoutInMinutes: 60
+      Location: canadacentral
+      Clouds: 'Preview'
       TestStepMavenInputs:
-        options: '$(DefaultTestOptions) $(AdditionalOptions) -T 1C'
+        options: '$(DefaultTestOptions) -T 1C'
         mavenOptions: '$(DefaultTestMavenOptions)'
       MatrixReplace:
         # Use dedicated storage pool in canadacentral with higher memory capacity
@@ -62,8 +62,6 @@ stages:
             Path: sdk/storage/platform-matrix.json
             Selection: sparse
             GenerateVMJobs: true
-      PreSteps:
-          - template: /sdk/storage/tests-install-azurite.yml
       PostSteps:
           - task: PowerShell@2
             displayName: 'Run Stress Scenarios'
@@ -75,7 +73,6 @@ stages:
                 JAVA_HOME: $(JAVA_HOME_11_X64)
               ${{ if eq(variables['JavaTestVersion'], '1.8') }}:
                 JAVA_HOME: $(JAVA_HOME_8_X64)
-            condition: and(succeeded(), eq(variables['StorageRunStressScenarios'], 'true'))
           - pwsh: |
               New-Item $(Build.ArtifactStagingDirectory)/test-logs -ItemType directory
               Copy-Item sdk/storage/azure-storage-blob/target/test.log $(Build.ArtifactStagingDirectory)/test-logs/azure-storage-blob-test.log -ErrorAction SilentlyContinue
@@ -94,19 +91,6 @@ stages:
             displayName: 'Publish test logs'
             artifact: test-log-$(System.StageName)-$(System.JobName)-$(System.JobAttempt)
             condition: always()
-#      CloudConfig:
-#          Public:
-#              SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
-#              Locatain: 'canadacentral'
-#          Canary:
-#              SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
-#              Location: 'centraluseuap'
-#          UsGov:
-#              SubscriptionConfiguration: $(sub-config-gov-test-resources)
-#              Location: 'usgoviowa'
-#          China:
-#              SubscriptionConfiguration: $(sub-config-cn-test-resources)
-#              Location: 'chinanorth'
       EnvVars:
         AZURE_TENANT_ID: $(aad-azure-sdk-test-tenant-id)
         AZURE_CLIENT_ID: $(aad-azure-sdk-test-client-id)
