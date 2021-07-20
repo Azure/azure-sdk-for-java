@@ -9,7 +9,7 @@ This release is compatible with Spring Boot 2.5 and Spring Cloud 2020.0.3.
 - Upgrade to [Azure Service Bus 7.3.0](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/CHANGELOG.md#730-2021-07-08).
 - Upgrade to [Azure Event Hubs 5.9.0](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/CHANGELOG.md#590-2021-07-09).
 - Upgrade to [Azure Event Hubs Checkpoint Store Blob 1.8.1](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob/CHANGELOG.md#181-2021-07-09).  
-- Upgrade to Spring Cloud Azure App Configuration 2.0.0.
+- Upgrade to [Spring Cloud Azure App Configuration 2.0.0](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/appconfiguration/azure-spring-cloud-appconfiguration-config/CHANGELOG.md).
 - Upgrade to [Spring Cloud Azure Feature Management 2.0.0](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/appconfiguration/azure-spring-cloud-feature-management/CHANGELOG.md#200-2021-06-21).
 - Upgrade to [Spring Cloud Azure Feature Management Web 2.0.0](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/appconfiguration/azure-spring-cloud-feature-management-web/CHANGELOG.md#200-2021-06-21).
 
