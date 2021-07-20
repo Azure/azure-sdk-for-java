@@ -628,6 +628,12 @@
         "code": "java.method.added",
         "new": "method boolean com.google.gson.JsonArray::isEmpty()",
         "justification": "com.google.code.gson:gson:jar:2.8.7 added this new method."
+      },
+      {
+        "code": "java.field.serialVersionUIDUnchanged",
+        "old": "field com.azure.security.keyvault.jca.model.KeyProperties.serialVersionUID",
+        "new": "field com.azure.security.keyvault.jca.model.KeyProperties.serialVersionUID",
+        "justification": "The Error in KeyProperties. It might be ok."
       }
     ]
   }
