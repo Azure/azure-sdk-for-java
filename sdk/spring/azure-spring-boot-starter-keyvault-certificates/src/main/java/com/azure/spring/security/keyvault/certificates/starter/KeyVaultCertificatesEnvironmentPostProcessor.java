@@ -27,11 +27,6 @@ public class KeyVaultCertificatesEnvironmentPostProcessor implements Environment
     @Override
     public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
 
-        if (environment.getProperty("azure.keyvault.uri") == null) {
-            return;
-        }
-
-        putEnvironmentPropertyToSystemProperty(environment, "azure.keyvault.aad-authentication-url");
         putEnvironmentPropertyToSystemProperty(environment, "azure.keyvault.uri");
         putEnvironmentPropertyToSystemProperty(environment, "azure.keyvault.tenant-id");
         putEnvironmentPropertyToSystemProperty(environment, "azure.keyvault.client-id");

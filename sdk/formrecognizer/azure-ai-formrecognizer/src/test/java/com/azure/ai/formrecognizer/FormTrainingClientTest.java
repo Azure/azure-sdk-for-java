@@ -341,10 +341,8 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
                 FormRecognizerException formRecognizerException = assertThrows(FormRecognizerException.class,
                     () -> client.beginCopyModel(actualModel.getModelId(), target, durationTestMode, Context.NONE)
                         .getFinalResult());
-                FormRecognizerErrorInformation errorInformation = formRecognizerException.getErrorInformation().get(0);
-                // TODO: Service bug https://github.com/Azure/azure-sdk-for-java/issues/12046
-                // assertEquals(RESOURCE_RESOLVER_ERROR, errorInformation.getCode());
-                // assertTrue(formRecognizerException.getMessage().startsWith(COPY_OPERATION_FAILED_STATUS_MESSAGE));
+                assertTrue(formRecognizerException.getMessage().startsWith(
+                    FormRecognizerClientTestBase.COPY_OPERATION_FAILED_STATUS_MESSAGE));
             });
         });
     }

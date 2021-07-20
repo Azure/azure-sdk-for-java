@@ -7,6 +7,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.resourcemanager.compute.models.AvailabilitySet;
@@ -833,6 +834,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
     }
 
     @Test
+    @DoNotRecord(skipInPlayback = true)
     public void canPerformSimulateEvictionOnSpotVirtualMachine() {
         VirtualMachine virtualMachine = computeManager.virtualMachines()
             .define(vmName)
@@ -843,7 +845,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withoutPrimaryPublicIPAddress()
             .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
             .withRootUsername("firstuser")
-            .withRootPassword(password())
+            .withSsh(sshPublicKey())
             .withSpotPriority(VirtualMachineEvictionPolicyTypes.DEALLOCATE)
             .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
             .create();
@@ -856,12 +858,23 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
 
         // call simulate eviction
         virtualMachine.simulateEviction();
-        ResourceManagerUtils.sleep(Duration.ofMinutes(30));
+        boolean deallocated = false;
+        int pollIntervalInMinutes = 5;
+        for (int i = 0; i < 30; i += pollIntervalInMinutes) {
+            ResourceManagerUtils.sleep(Duration.ofMinutes(pollIntervalInMinutes));
+
+            virtualMachine = computeManager.virtualMachines().getById(virtualMachine.id());
+            if (virtualMachine.powerState() == PowerState.DEALLOCATED) {
+                deallocated = true;
+                break;
+            }
+        }
+        Assertions.assertTrue(deallocated);
 
         virtualMachine = computeManager.virtualMachines().getById(virtualMachine.id());
         Assertions.assertNotNull(virtualMachine);
         Assertions.assertNull(virtualMachine.osDiskStorageAccountType());
-        Assertions.assertTrue(virtualMachine.osDiskSize() == 0);
+        Assertions.assertEquals(0, virtualMachine.osDiskSize());
         disk = computeManager.disks().getById(virtualMachine.osDiskId());
         Assertions.assertEquals(DiskState.RESERVED, disk.innerModel().diskState());
     }

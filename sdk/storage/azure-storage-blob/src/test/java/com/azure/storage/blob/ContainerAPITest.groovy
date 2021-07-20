@@ -3,15 +3,13 @@
 
 package com.azure.storage.blob
 
-import com.azure.core.http.rest.PagedIterable
-import com.azure.core.http.rest.PagedResponse
+
 import com.azure.core.http.rest.Response
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.AppendBlobItem
 import com.azure.storage.blob.models.BlobAccessPolicy
 import com.azure.storage.blob.models.BlobErrorCode
-import com.azure.storage.blob.models.BlobItem
 import com.azure.storage.blob.models.BlobListDetails
 import com.azure.storage.blob.models.BlobProperties
 import com.azure.storage.blob.models.BlobRequestConditions
@@ -31,14 +29,10 @@ import com.azure.storage.blob.options.BlobSetAccessTierOptions
 import com.azure.storage.blob.options.PageBlobCreateOptions
 import com.azure.storage.blob.specialized.AppendBlobClient
 import com.azure.storage.blob.specialized.BlobClientBase
-import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.Utility
-import com.azure.storage.common.implementation.StorageImplUtils
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import reactor.test.StepVerifier
-import spock.lang.Requires
-import spock.lang.ResourceLock
 import spock.lang.Unroll
 
 import java.time.Duration
@@ -47,6 +41,14 @@ import java.time.ZoneId
 import java.util.stream.Collectors
 
 class ContainerAPITest extends APISpec {
+
+    String tagKey
+    String tagValue
+
+    def setup() {
+        tagKey = namer.getRandomName(20)
+        tagValue = namer.getRandomName(20)
+    }
 
     def "Create all null"() {
         setup:
@@ -732,7 +734,7 @@ class ContainerAPITest extends APISpec {
 
         def tagsBlob = cc.getBlobClient(tagsName).getPageBlobClient()
         def tags = new HashMap<String, String>()
-        tags.put("tag", "value")
+        tags.put(tagKey, tagValue)
         tagsBlob.createWithResponse(new PageBlobCreateOptions(512).setTags(tags), null, null)
 
         def uncommittedBlob = cc.getBlobClient(uncommittedName).getBlockBlobClient()
@@ -819,7 +821,7 @@ class ContainerAPITest extends APISpec {
         blobs.get(1).getProperties().getCopyCompletionTime() == null
         blobs.get(2).getName() == metadataName
         blobs.get(2).getMetadata() == null
-        blobs.get(3).getTags().get("tag") == "value"
+        blobs.get(3).getTags().get(tagKey) == tagValue
         blobs.get(3).getProperties().getTagCount() == 1
         blobs.size() == 4 // Normal, copy, metadata, tags
     }
@@ -919,6 +921,29 @@ class ContainerAPITest extends APISpec {
         StepVerifier.create(ccAsync.listBlobs(options).byPage(PAGE_SIZE).limitRequest(1))
             .assertNext({ assert it.getValue().size() == PAGE_SIZE })
             .verifyComplete()
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_10_02")
+    def "list blobs flat options deleted with versions"() {
+        setup:
+        def blobName = generateBlobName()
+        def blob = cc.getBlobClient(blobName).getAppendBlobClient()
+        blob.create()
+        def metadata = new HashMap<String, String>()
+        metadata.put("foo", "bar")
+        blob.setMetadata(metadata)
+        blob.delete()
+        def options = new ListBlobsOptions().setPrefix(blobName)
+            .setDetails(new BlobListDetails().setRetrieveDeletedBlobsWithVersions(true))
+
+        when:
+        def blobs = cc.listBlobs(options, null).iterator()
+
+        then:
+        def b = blobs.next()
+        !blobs.hasNext()
+        b.getName() == blobName
+        b.hasVersionsOnly()
     }
 
     def "List blobs prefix with comma"() {
@@ -1224,7 +1249,7 @@ class ContainerAPITest extends APISpec {
         blobs.get(1).getProperties().getCopyCompletionTime() == null
         blobs.get(2).getName() == metadataName
         blobs.get(2).getMetadata() == null
-        blobs.get(3).getTags().get("tag") == "value"
+        blobs.get(3).getTags().get(tagKey) == tagValue
         blobs.get(3).getProperties().getTagCount() == 1
         blobs.size() == 4 // Normal, copy, metadata, tags
     }
@@ -1301,6 +1326,29 @@ class ContainerAPITest extends APISpec {
         for (def page : iterableByPage) {
             assert page.value.size() == 1
         }
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_10_02")
+    def "list blobs hier options deleted with versions"() {
+        setup:
+        def blobName = generateBlobName()
+        def blob = cc.getBlobClient(blobName).getAppendBlobClient()
+        blob.create()
+        def metadata = new HashMap<String, String>()
+        metadata.put("foo", "bar")
+        blob.setMetadata(metadata)
+        blob.delete()
+        def options = new ListBlobsOptions().setPrefix(blobName)
+            .setDetails(new BlobListDetails().setRetrieveDeletedBlobsWithVersions(true))
+
+        when:
+        def blobs = cc.listBlobsByHierarchy("", options, null).iterator()
+
+        then:
+        def b = blobs.next()
+        !blobs.hasNext()
+        b.getName() == blobName
+        b.hasVersionsOnly()
     }
 
     @Unroll

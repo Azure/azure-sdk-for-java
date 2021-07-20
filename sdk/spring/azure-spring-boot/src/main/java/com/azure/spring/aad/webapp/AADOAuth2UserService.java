@@ -3,6 +3,8 @@
 
 package com.azure.spring.aad.webapp;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import com.azure.spring.autoconfigure.aad.AADTokenClaim;
 import org.springframework.security.core.Authentication;
@@ -44,6 +46,8 @@ import static com.azure.spring.autoconfigure.aad.Constants.ROLE_PREFIX;
  */
 public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, OidcUser> {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(AADOAuth2UserService.class);
+
     private final OidcUserService oidcUserService;
     private final List<String> allowedGroupNames;
     private final Set<String> allowedGroupIds;
@@ -84,6 +88,7 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
         HttpSession session = attr.getRequest().getSession(true);
 
         if (authentication != null) {
+            LOGGER.debug("User {}'s authorities saved from session: {}.", authentication.getName(), authentication.getAuthorities());
             return (DefaultOidcUser) session.getAttribute(DEFAULT_OIDC_USER);
         }
 
@@ -104,6 +109,7 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
                     .map(ClientRegistration.ProviderDetails.UserInfoEndpoint::getUserNameAttributeName)
                     .filter(StringUtils::hasText)
                     .orElse(AADTokenClaim.NAME);
+        LOGGER.debug("User {}'s authorities extracted by id token and access token: {}.", oidcUser.getClaim(nameAttributeKey), authorities);
         // Create a copy of oidcUser but use the mappedAuthorities instead
         DefaultOidcUser defaultOidcUser = new DefaultOidcUser(authorities, idToken, nameAttributeKey);
 

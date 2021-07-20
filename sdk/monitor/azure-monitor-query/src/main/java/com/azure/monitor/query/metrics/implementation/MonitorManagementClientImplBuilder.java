@@ -18,10 +18,10 @@ import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -32,7 +32,7 @@ public final class MonitorManagementClientImplBuilder {
 
     private static final String SDK_VERSION = "version";
 
-    private final Map<String, String> properties = new HashMap<>();
+    private final Map<String, String> properties = CoreUtils.getProperties("azure-monitor-query.properties");
 
     /** Create an instance of the MonitorManagementClientImplBuilder. */
     public MonitorManagementClientImplBuilder() {
@@ -211,7 +211,7 @@ public final class MonitorManagementClientImplBuilder {
             this.host = "https://management.azure.com";
         }
         if (apiVersion == null) {
-            this.apiVersion = "2017-05-01-preview";
+            this.apiVersion = "2018-01-01";
         }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
@@ -236,10 +236,10 @@ public final class MonitorManagementClientImplBuilder {
         policies.add(
                 new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion, buildConfiguration));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
-        BearerTokenAuthenticationPolicy tokenPolicy = new BearerTokenAuthenticationPolicy(this.tokenCredential, " https://management.azure.com" +
-            "/.default");
-        policies.add(tokenPolicy);
         policies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
+        BearerTokenAuthenticationPolicy tokenPolicy = new BearerTokenAuthenticationPolicy(this.tokenCredential, " https://management.azure.com" +
+                "/.default");
+        policies.add(tokenPolicy);
         policies.add(new CookiePolicy());
         policies.addAll(this.pipelinePolicies);
         HttpPolicyProviders.addAfterRetryPolicies(policies);

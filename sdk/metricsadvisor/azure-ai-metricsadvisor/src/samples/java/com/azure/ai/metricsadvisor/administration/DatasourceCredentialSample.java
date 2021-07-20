@@ -3,8 +3,8 @@
 
 package com.azure.ai.metricsadvisor.administration;
 
-import com.azure.ai.metricsadvisor.administration.models.DatasourceCredentialEntity;
-import com.azure.ai.metricsadvisor.administration.models.DatasourceServicePrincipalInKeyVault;
+import com.azure.ai.metricsadvisor.administration.models.DataSourceCredentialEntity;
+import com.azure.ai.metricsadvisor.administration.models.DataSourceServicePrincipalInKeyVault;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
 
 import java.util.UUID;
@@ -28,81 +28,81 @@ public class DatasourceCredentialSample {
         final String tId = "67890ded-5e07-4e52-b225-4ae8f905afb5";
         final String mockSecr = "890hy69-5e07-4e52-b225-4ae8f905afb5";
 
-        DatasourceCredentialEntity datasourceCredential = new DatasourceServicePrincipalInKeyVault()
+        DataSourceCredentialEntity datasourceCredential = new DataSourceServicePrincipalInKeyVault()
             .setName(name)
-            .setKeyVaultForDatasourceSecrets("kv", cId, mockSecr)
+            .setKeyVaultForDataSourceSecrets("kv", cId, mockSecr)
             .setTenantId(tId)
-            .setSecretNameForDatasourceClientId("DSClientID_1")
-            .setSecretNameForDatasourceClientSecret("DSClientSer_1");
+            .setSecretNameForDataSourceClientId("DSClientID_1")
+            .setSecretNameForDataSourceClientSecret("DSClientSer_1");
 
-        DatasourceCredentialEntity createdDatasourceCredentialEntity = advisorAdministrationClient
-            .createDatasourceCredential(datasourceCredential);
+        DataSourceCredentialEntity createdDataSourceCredentialEntity = advisorAdministrationClient
+            .createDataSourceCredential(datasourceCredential);
 
 
-        System.out.printf("Created Datasource credential entity: %s");
+        System.out.printf("Created Datasource credential entity: %s%n", createdDataSourceCredentialEntity.getName());
 
         // Retrieve the datasource credential entity that just created.
-        DatasourceCredentialEntity fetchDatasourceCredEntity
-            = advisorAdministrationClient.getDatasourceCredential(createdDatasourceCredentialEntity.getId());
+        DataSourceCredentialEntity fetchDatasourceCredEntity
+            = advisorAdministrationClient.getDataSourceCredential(createdDataSourceCredentialEntity.getId());
         System.out.printf("Fetched Datasource credential entity%n");
 
         System.out.printf("Datasource credential entity Id : %s%n", fetchDatasourceCredEntity.getId());
         System.out.printf("Datasource credential entity name : %s%n", fetchDatasourceCredEntity.getName());
-        if (fetchDatasourceCredEntity instanceof DatasourceServicePrincipalInKeyVault) {
-            DatasourceServicePrincipalInKeyVault actualCredentialSPInKV
-                = (DatasourceServicePrincipalInKeyVault) fetchDatasourceCredEntity;
+        if (fetchDatasourceCredEntity instanceof DataSourceServicePrincipalInKeyVault) {
+            DataSourceServicePrincipalInKeyVault actualCredentialSPInKV
+                = (DataSourceServicePrincipalInKeyVault) fetchDatasourceCredEntity;
             System.out
                 .printf("Actual credential entity key vault endpoint: %s%n",
                     actualCredentialSPInKV.getKeyVaultEndpoint());
             System.out.printf("Actual credential entity key vault client Id: %s%n",
                 actualCredentialSPInKV.getKeyVaultClientId());
             System.out.printf("Actual credential entity key vault secret name for data source: %s%n",
-                actualCredentialSPInKV.getSecretNameForDatasourceClientId());
+                actualCredentialSPInKV.getSecretNameForDataSourceClientId());
             System.out.printf("Actual credential entity key vault secret for data source: %s%n",
-                actualCredentialSPInKV.getSecretNameForDatasourceClientSecret());
+                actualCredentialSPInKV.getSecretNameForDataSourceClientSecret());
         }
 
         // Update the datasource credential entity.
-        DatasourceServicePrincipalInKeyVault actualCredentialSPInKV = null;
-        if (fetchDatasourceCredEntity instanceof DatasourceServicePrincipalInKeyVault) {
-            actualCredentialSPInKV = (DatasourceServicePrincipalInKeyVault) fetchDatasourceCredEntity;
+        DataSourceServicePrincipalInKeyVault actualCredentialSPInKV = null;
+        if (fetchDatasourceCredEntity instanceof DataSourceServicePrincipalInKeyVault) {
+            actualCredentialSPInKV = (DataSourceServicePrincipalInKeyVault) fetchDatasourceCredEntity;
         }
 
-        DatasourceCredentialEntity updatedDatasourceCred =
-            advisorAdministrationClient.updateDatasourceCredential(
-                actualCredentialSPInKV.setSecretNameForDatasourceClientId("clientIdSecretName"));
+        DataSourceCredentialEntity updatedDatasourceCred =
+            advisorAdministrationClient.updateDataSourceCredential(
+                actualCredentialSPInKV.setSecretNameForDataSourceClientId("clientIdSecretName"));
 
         System.out.printf("Updated datasource credential entity%n");
         System.out.printf("Updated datasource credential entity client Id: %s%n",
-            ((DatasourceServicePrincipalInKeyVault) updatedDatasourceCred)
-                .getSecretNameForDatasourceClientId());
+            ((DataSourceServicePrincipalInKeyVault) updatedDatasourceCred)
+                .getSecretNameForDataSourceClientId());
 
 
         // Delete the datasource credential entity.
-        advisorAdministrationClient.deleteDatasourceCredential(fetchDatasourceCredEntity.getId());
+        advisorAdministrationClient.deleteDataSourceCredential(fetchDatasourceCredEntity.getId());
 
         System.out.printf("Deleted datasource credential entity%n");
 
         // List datasource credential entity.
         System.out.printf("Listing datasource credential entity%n");
-        advisorAdministrationClient.listDatasourceCredentials()
+        advisorAdministrationClient.listDataSourceCredentials()
             .forEach(datasourceCredentialEntity -> {
                 System.out.printf("Datasource credential entity Id: %s%n", datasourceCredentialEntity.getId());
                 System.out.printf("Datasource credential entity name: %s%n", datasourceCredentialEntity.getName());
                 System.out.printf("Datasource credential entity description: %s%n",
                     datasourceCredentialEntity.getDescription());
-                if (datasourceCredentialEntity instanceof DatasourceServicePrincipalInKeyVault) {
-                    DatasourceServicePrincipalInKeyVault actualCredentialSPInKVItem
-                        = (DatasourceServicePrincipalInKeyVault) datasourceCredentialEntity;
+                if (datasourceCredentialEntity instanceof DataSourceServicePrincipalInKeyVault) {
+                    DataSourceServicePrincipalInKeyVault actualCredentialSPInKVItem
+                        = (DataSourceServicePrincipalInKeyVault) datasourceCredentialEntity;
                     System.out
                         .printf("Actual credential entity key vault endpoint: %s%n",
                             actualCredentialSPInKVItem.getKeyVaultEndpoint());
                     System.out.printf("Actual credential entity key vault client Id: %s%n",
                         actualCredentialSPInKVItem.getKeyVaultClientId());
                     System.out.printf("Actual credential entity key vault secret name for data source: %s%n",
-                        actualCredentialSPInKVItem.getSecretNameForDatasourceClientId());
+                        actualCredentialSPInKVItem.getSecretNameForDataSourceClientId());
                     System.out.printf("Actual credential entity key vault secret for data source: %s%n",
-                        actualCredentialSPInKVItem.getSecretNameForDatasourceClientSecret());
+                        actualCredentialSPInKVItem.getSecretNameForDataSourceClientSecret());
                 }
             });
     }

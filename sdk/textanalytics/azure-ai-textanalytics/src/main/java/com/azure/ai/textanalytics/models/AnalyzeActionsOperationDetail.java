@@ -4,19 +4,21 @@
 package com.azure.ai.textanalytics.models;
 
 import com.azure.ai.textanalytics.implementation.AnalyzeActionsOperationDetailPropertiesHelper;
+import com.azure.core.annotation.Immutable;
 
 import java.time.OffsetDateTime;
 
 /**
  * The {@link AnalyzeActionsOperationDetail} model.
  */
+@Immutable
 public final class AnalyzeActionsOperationDetail {
     private String operationId;
     private String displayName;
-    private int actionsFailed;
-    private int actionsInProgress;
-    private int actionsSucceeded;
-    private int actionsInTotal;
+    private int failedCount;
+    private int inProgressCount;
+    private int succeededCount;
+    private int totalCount;
     private OffsetDateTime expiresAt;
     private OffsetDateTime createdAt;
     private OffsetDateTime lastModifiedAt;
@@ -35,26 +37,23 @@ public final class AnalyzeActionsOperationDetail {
                 }
 
                 @Override
-                public void setActionsFailed(AnalyzeActionsOperationDetail operationDetail,
-                    int actionsFailed) {
-                    operationDetail.setActionsFailed(actionsFailed);
+                public void setFailedCount(AnalyzeActionsOperationDetail operationDetail, int failedCount) {
+                    operationDetail.setFailedCount(failedCount);
                 }
 
                 @Override
-                public void setActionsInProgress(AnalyzeActionsOperationDetail operationDetail,
-                    int actionsInProgress) {
-                    operationDetail.setActionsInProgress(actionsInProgress);
+                public void setInProgressCount(AnalyzeActionsOperationDetail operationDetail, int inProgressCount) {
+                    operationDetail.setInProgressCount(inProgressCount);
                 }
 
                 @Override
-                public void setActionsSucceeded(AnalyzeActionsOperationDetail operationDetail,
-                    int actionsSucceeded) {
-                    operationDetail.setActionsSucceeded(actionsSucceeded);
+                public void setSucceededCount(AnalyzeActionsOperationDetail operationDetail, int succeededCount) {
+                    operationDetail.setSucceededCount(succeededCount);
                 }
 
                 @Override
-                public void setActionsInTotal(AnalyzeActionsOperationDetail operationDetail, int actionsInTotal) {
-                    operationDetail.setActionsInTotal(actionsInTotal);
+                public void setTotalCount(AnalyzeActionsOperationDetail operationDetail, int totalCount) {
+                    operationDetail.setTotalCount(totalCount);
                 }
 
                 @Override
@@ -80,7 +79,7 @@ public final class AnalyzeActionsOperationDetail {
     /**
      * Gets the operationId property of the {@link AnalyzeActionsOperationDetail}.
      *
-     * @return the operationId property of the {@link AnalyzeActionsOperationDetail}.
+     * @return The operationId property of the {@link AnalyzeActionsOperationDetail}.
      */
     public String getOperationId() {
         return operationId;
@@ -89,7 +88,7 @@ public final class AnalyzeActionsOperationDetail {
     /**
      * Gets the displayName property of the {@link AnalyzeActionsOperationDetail}.
      *
-     * @return the displayName property of the {@link AnalyzeActionsOperationDetail}.
+     * @return The displayName property of the {@link AnalyzeActionsOperationDetail}.
      */
     public String getDisplayName() {
         return displayName;
@@ -98,43 +97,43 @@ public final class AnalyzeActionsOperationDetail {
     /**
      * Gets the failed number of actions.
      *
-     * @return the failed number of actions.
+     * @return The failed number of actions.
      */
-    public int getActionsFailed() {
-        return actionsFailed;
+    public int getFailedCount() {
+        return failedCount;
     }
 
     /**
      * Gets the in-progress number of actions.
      *
-     * @return the in-progress number of actions.
+     * @return The in-progress number of actions.
      */
-    public int getActionsInProgress() {
-        return actionsInProgress;
+    public int getInProgressCount() {
+        return inProgressCount;
     }
 
     /**
      * Gets the successfully completed number of actions.
      *
-     * @return the successfully completed number of actions.
+     * @return The successfully completed number of actions.
      */
-    public int getActionsSucceeded() {
-        return actionsSucceeded;
+    public int getSucceededCount() {
+        return succeededCount;
     }
 
     /**
      * Gets the total number of actions.
      *
-     * @return the total number of actions.
+     * @return The total number of actions.
      */
-    public int getActionsInTotal() {
-        return actionsInTotal;
+    public int getTotalCount() {
+        return totalCount;
     }
 
     /**
      * Gets the created time of an action.
      *
-     * @return the created time of an action.
+     * @return The created time of an action.
      */
     public OffsetDateTime getCreatedAt() {
         return createdAt;
@@ -143,7 +142,7 @@ public final class AnalyzeActionsOperationDetail {
     /**
      * Gets the expiration time of an action.
      *
-     * @return the expiration time of an action.
+     * @return The expiration time of an action.
      */
     public OffsetDateTime getExpiresAt() {
         return expiresAt;
@@ -152,7 +151,7 @@ public final class AnalyzeActionsOperationDetail {
     /**
      * Gets the last updated time of an action.
      *
-     * @return the last updated time of an action.
+     * @return The last updated time of an action.
      */
     public OffsetDateTime getLastModifiedAt() {
         return lastModifiedAt;
@@ -166,20 +165,20 @@ public final class AnalyzeActionsOperationDetail {
         this.displayName = displayName;
     }
 
-    private void setActionsFailed(int actionsFailed) {
-        this.actionsFailed = actionsFailed;
+    private void setFailedCount(int failedCount) {
+        this.failedCount = failedCount;
     }
 
-    private void setActionsInProgress(int actionsInProgress) {
-        this.actionsInProgress = actionsInProgress;
+    private void setInProgressCount(int inProgressCount) {
+        this.inProgressCount = inProgressCount;
     }
 
-    private void setActionsSucceeded(int actionsSucceeded) {
-        this.actionsSucceeded = actionsSucceeded;
+    private void setSucceededCount(int succeededCount) {
+        this.succeededCount = succeededCount;
     }
 
-    private void setActionsInTotal(int actionsInTotal) {
-        this.actionsInTotal = actionsInTotal;
+    private void setTotalCount(int totalCount) {
+        this.totalCount = totalCount;
     }
 
     private void setCreatedAt(OffsetDateTime createdAt) {

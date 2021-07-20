@@ -12,7 +12,7 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.util.LinkedMultiValueMap;
 
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -44,7 +44,7 @@ public class EventHubMessageConverter extends AbstractAzureMessageConverter<Even
 
     @Override
     protected EventData fromString(String payload) {
-        return new EventData(payload.getBytes(Charset.defaultCharset()));
+        return new EventData(payload.getBytes(StandardCharsets.UTF_8));
     }
 
     @Override
@@ -86,6 +86,7 @@ public class EventHubMessageConverter extends AbstractAzureMessageConverter<Even
 
     private Map<String, Object> getSystemProperties(EventData azureMessage) {
         Map<String, Object> result = new HashMap<>();
+        result.putAll(azureMessage.getSystemProperties());
         result.put(EventHubHeaders.ENQUEUED_TIME, azureMessage.getEnqueuedTime());
         result.put(EventHubHeaders.OFFSET, azureMessage.getOffset());
         result.put(EventHubHeaders.SEQUENCE_NUMBER, azureMessage.getSequenceNumber());

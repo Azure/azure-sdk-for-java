@@ -72,7 +72,24 @@ stages:
                 JAVA_HOME: $(JAVA_HOME_11_X64)
               ${{ if eq(variables['JavaTestVersion'], '1.8') }}:
                 JAVA_HOME: $(JAVA_HOME_8_X64)
-              STORAGE_CONNECTION_STRING: $(PRIMARY_STORAGE_CONNECTION_STRING)
+          - pwsh: |
+              New-Item $(Build.ArtifactStagingDirectory)/test-logs -ItemType directory
+              Copy-Item sdk/storage/azure-storage-blob/target/test.log $(Build.ArtifactStagingDirectory)/test-logs/azure-storage-blob-test.log -ErrorAction SilentlyContinue
+              Copy-Item sdk/storage/azure-storage-blob-batch/target/test.log $(Build.ArtifactStagingDirectory)/test-logs/azure-storage-blob-batch-test.log -ErrorAction SilentlyContinue
+              Copy-Item sdk/storage/azure-storage-blob-changefeed/target/test.log $(Build.ArtifactStagingDirectory)/test-logs/azure-storage-blob-changefeed-test.log -ErrorAction SilentlyContinue
+              Copy-Item sdk/storage/azure-storage-blob-cryptography/target/test.log $(Build.ArtifactStagingDirectory)/test-logs/azure-storage-blob-cryptography-test.log -ErrorAction SilentlyContinue
+              Copy-Item sdk/storage/azure-storage-blob-nio/target/test.log $(Build.ArtifactStagingDirectory)/test-logs/azure-storage-blob-nio-test.log -ErrorAction SilentlyContinue
+              Copy-Item sdk/storage/azure-storage-common/target/test.log $(Build.ArtifactStagingDirectory)/test-logs/azure-storage-common-test.log -ErrorAction SilentlyContinue
+              Copy-Item sdk/storage/azure-storage-file-datalake/target/test.log $(Build.ArtifactStagingDirectory)/test-logs/azure-storage-file-datalake-test.log -ErrorAction SilentlyContinue
+              Copy-Item sdk/storage/azure-storage-file-share/target/test.log $(Build.ArtifactStagingDirectory)/test-logs/azure-storage-file-share-test.log -ErrorAction SilentlyContinue
+              Copy-Item sdk/storage/azure-storage-internal-avro/target/test.log $(Build.ArtifactStagingDirectory)/test-logs/azure-storage-internal-avro-test.log -ErrorAction SilentlyContinue
+              Copy-Item sdk/storage/azure-storage-queue/target/test.log $(Build.ArtifactStagingDirectory)/test-logs/azure-storage-queue-test.log -ErrorAction SilentlyContinue
+            displayName: 'Copy test logs to artifact staging'
+            condition: always()
+          - publish: $(Build.ArtifactStagingDirectory)/test-logs
+            displayName: 'Publish test logs'
+            artifact: test-log-$(System.StageName)-$(System.JobName)-$(System.JobAttempt)
+            condition: always()
       EnvVars:
         AZURE_TENANT_ID: $(aad-azure-sdk-test-tenant-id)
         AZURE_CLIENT_ID: $(aad-azure-sdk-test-client-id)

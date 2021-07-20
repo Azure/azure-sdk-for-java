@@ -7,6 +7,7 @@
 package com.azure.search.documents.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.search.documents.models.Captions;
 import com.azure.search.documents.models.QueryLanguage;
 import com.azure.search.documents.models.QuerySpeller;
 import com.azure.search.documents.models.QueryType;
@@ -202,6 +203,19 @@ public final class SearchRequest {
      */
     @JsonProperty(value = "top")
     private Integer top;
+
+    /*
+     * A value that specifies whether captions should be returned as part of
+     * the search response.
+     */
+    @JsonProperty(value = "captions")
+    private Captions captions;
+
+    /*
+     * The comma-separated list of field names used for semantic search.
+     */
+    @JsonProperty(value = "semanticFields")
+    private String semanticFields;
 
     /**
      * Get the includeTotalResultCount property: A value that specifies whether to fetch the total count of results.
@@ -712,6 +726,48 @@ public final class SearchRequest {
      */
     public SearchRequest setTop(Integer top) {
         this.top = top;
+        return this;
+    }
+
+    /**
+     * Get the captions property: A value that specifies whether captions should be returned as part of the search
+     * response.
+     *
+     * @return the captions value.
+     */
+    public Captions getCaptions() {
+        return this.captions;
+    }
+
+    /**
+     * Set the captions property: A value that specifies whether captions should be returned as part of the search
+     * response.
+     *
+     * @param captions the captions value to set.
+     * @return the SearchRequest object itself.
+     */
+    public SearchRequest setCaptions(Captions captions) {
+        this.captions = captions;
+        return this;
+    }
+
+    /**
+     * Get the semanticFields property: The comma-separated list of field names used for semantic search.
+     *
+     * @return the semanticFields value.
+     */
+    public String getSemanticFields() {
+        return this.semanticFields;
+    }
+
+    /**
+     * Set the semanticFields property: The comma-separated list of field names used for semantic search.
+     *
+     * @param semanticFields the semanticFields value to set.
+     * @return the SearchRequest object itself.
+     */
+    public SearchRequest setSemanticFields(String semanticFields) {
+        this.semanticFields = semanticFields;
         return this;
     }
 }

@@ -103,11 +103,11 @@
         <Method name="getDataFromMessageBody"/>
       </And>
       <And>
-        <Class name="com.azure.security.keyvault.keys.models.Base64UrlJsonDeserializer"/>
+        <Class name="com.azure.security.keyvault.keys.implementation.Base64UrlJsonDeserializer"/>
         <Method name="deserialize"/>
       </And>
       <And>
-        <Class name="com.azure.security.keyvault.keys.models.ByteExtensions"/>
+        <Class name="com.azure.security.keyvault.keys.implementation.ByteExtensions"/>
         <Method name="clone"/>
       </And>
       <And>
@@ -2278,21 +2278,12 @@
   <!-- Exclude from spring related classes -->
   <Match>
     <Or>
-      <Class name="com.azure.spring.utils.GetHashMac"/> <!-- false positive -->
       <Class name="com.azure.spring.utils.PropertyLoader"/> <!-- false positive -->
-      <Class name="com.azure.spring.cloud.telemetry.GetHashMac"/> <!-- false positive -->
     </Or>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE,
                   NP_LOAD_OF_KNOWN_NULL_VALUE,
                   RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE,
                   RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE"/>
-  </Match>
-
-  <Match>
-    <Or>
-      <Class name="com.azure.spring.telemetry.TelemetryEventData$EventData$CustomData"/> <!-- false positive -->
-    </Or>
-    <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
   </Match>
 
   <Match>
@@ -2316,6 +2307,11 @@
   <Match>
     <Class name="com.azure.spring.messaging.config.AzureListenerEndpointRegistrar"/>
     <Bug pattern="NP_NULL_ON_SOME_PATH"/>
+  </Match>
+
+  <Match>
+    <Class name="com.azure.spring.integration.servicebus.converter.ServiceBusMessageConverter"/>
+    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
 
   <!-- The transient fields are not used if deserialization happens. -->
@@ -2468,8 +2464,14 @@
 
   <!-- Machine generated classes for MAA service generate spotBugs errors -->
   <Match>
-    <Class name="~com.azure.security.attestation.models\.[\w]+"/>
-    <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
+    <Or>
+      <Class name="~com.azure.security.attestation.implementation.models.*"/>
+      <Class name="~com.azure.security.attestation.models.*+"/>
+    </Or>
+    <Or>
+      <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
+      <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
+    </Or>
   </Match>
 
   <!-- Generated implementation of Anomaly Detector is using an inline class -->
@@ -2495,5 +2497,17 @@
   <Match>
     <Class name="~com\.azure\.messaging\.eventhubs\.perf\.[\w]+Test"/>
     <Bug pattern="BC_UNCONFIRMED_CAST"/>
+  </Match>
+
+  <!-- We shouldn't return a zero-length array if null is provided to serialization/deserialization and clone methods. -->
+  <Match>
+    <Class name="com.azure.security.keyvault.keys.models.Base64UrlJsonDeserializer"/>
+    <Method name="deserialize"/>
+    <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
+  </Match>
+  <Match>
+    <Class name="com.azure.security.keyvault.keys.models.ByteExtensions"/>
+    <Method name="clone"/>
+    <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
   </Match>
 </FindBugsFilter>

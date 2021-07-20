@@ -13,7 +13,7 @@ Azure Tables is a service that stores structured NoSQL data in the cloud, provid
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-data-tables</artifactId>
-  <version>12.0.0</version>
+  <version>12.1.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -51,9 +51,9 @@ Your Table API account URL, subsequently identified as `<your-table-account-url>
 `http(s)://<cosmosdb-account-name>.table.cosmosdb.azure.com`.
 
 ### Authenticate the client
-Every request made to the Tables service must be authorized using a connection string, named key credential, or Shared Access Signature. The samples below demonstrate the usage of these methods.
+Every request made to the Tables service must be authorized using a connection string, named key credential, Shared Access Signature, or token credentials. The samples below demonstrate the usage of these methods.
 
-Note: Azure Tables doesn't support Azure Active Directory (AAD) authentication.
+Note: Only Azure Storage API endpoints currently support AAD authorization via token credentials.
 
 #### Connection string
 A connection string includes the authentication information required for your application to access data in an Azure table at runtime using Shared Key authorization. See [Authenticate with a Connection String](#authenticate-with-a-connection-string) for an example of how to use a connection string with a `TableServiceClient`.
@@ -72,8 +72,8 @@ az cosmosdb list-connection-strings \
     --name <cosmosdb-account-name>
 ```
 
-#### Named Key credential
-Named Key authorization relies on your account access keys and other parameters to produce an encrypted signature string that is passed on the request in the Authorization header. See [Authenticate with a Named Key credential](#authenticate-with-a-named-key) for an example of how to use Named Key authorization with a `TableServiceClient`.
+#### Shared Key credential
+Shared Key authorization relies on your account access keys and other parameters to produce an encrypted signature string that is passed on the request in the Authorization header. See [Authenticate with a Shared Key credential](#authenticate-with-a-shared-key) for an example of how to use Named Key authorization with a `TableServiceClient`.
 
 To use Named Key authorization you'll need your account name and URL, as well as an account access key. You can obtain your primary access key from the Azure Portal (click **Access keys** under **Settings** in the Portal Storage account blade, or **Connection String** under **Settings** in the Portal Cosmos DB account blade) or using the Azure CLI:
 
@@ -107,6 +107,14 @@ az storage account generate-sas \
 az storage table generate-sas \
     --name <table-name>
 ```
+
+## TokenCredential
+Azure Tables provides integration with Azure Active Directory (AAD) for identity-based authentication of requests to the Table service when targeting a Storage endpoint. With AAD, you can use role-based access control (RBAC) to grant access to your Azure Table resources to users, groups, or applications.
+
+To access a table resource with a `TokenCredential`, the authenticated identity should have either the "Storage Table Data Contributor" or "Storage Table Data Reader" role.
+
+With the `azure-identity` package, you can seamlessly authorize requests in both development and production environments.
+To learn more about Azure AD integration in Azure Storage, see the [Azure Identity README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md).
 
 ## Key concepts
 
@@ -147,17 +155,17 @@ Common uses of the Tables service include:
 #### Authenticate with a connection string
 To use a connection string to authorize your client, call the builder's `connectionString` method with your connection string.
 
-<!-- embedme src/samples/java/ReadmeSamples.java#L36-L38 -->
+<!-- embedme src/samples/java/ReadmeSamples.java#L38-L40 -->
 ```java
 TableServiceClient tableServiceClient = new TableServiceClientBuilder()
     .connectionString("<your-connection-string>")
     .buildClient();
 ```
 
-#### Authenticate with a Named Key
-To use a Named Key to authorize your client, create an instance of `AzureNamedKeyCredential` with your account name and access key. Call the builder's `endpoint` method with your account URL and the `credential` method with the `AzureNamedKeyCredential` object you created.
+#### Authenticate with a Shared Key
+To use a Shared Key to authorize your client, create an instance of `AzureNamedKeyCredential` with your account name and access key. Call the builder's `endpoint` method with your account URL and the `credential` method with the `AzureNamedKeyCredential` object you created.
 
-<!-- embedme src/samples/java/ReadmeSamples.java#L45-L49 -->
+<!-- embedme src/samples/java/ReadmeSamples.java#L47-L51 -->
 ```java
 AzureNamedKeyCredential credential = new AzureNamedKeyCredential("<your-account-name>", "<account-access-key>");
 TableServiceClient tableServiceClient = new TableServiceClientBuilder()
@@ -169,11 +177,23 @@ TableServiceClient tableServiceClient = new TableServiceClientBuilder()
 #### Authenticate with a Shared Access Signature (SAS)
 To use a SAS to authorize your client, call the builder's `endpoint` method with your account URL and the `sasToken` method with your SAS.
 
-<!-- embedme src/samples/java/ReadmeSamples.java#L56-L59 -->
+<!-- embedme src/samples/java/ReadmeSamples.java#L58-L61 -->
 ```java
 TableServiceClient tableServiceClient = new TableServiceClientBuilder()
     .endpoint("<your-table-account-url>")
     .sasToken("<sas-token-string>")
+    .buildClient();
+```
+
+#### Authenticate with a Token Credentials
+To authorize your client via AAD, create an instance of a credentials class that implements `TokenCredential`. Call the builder's `endpoint` method with your account URL and the `credential` method with the `TokenCredential` object you created.
+
+<!-- embedme src/samples/java/ReadmeSamples.java#L68-L72 -->
+```java
+TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
+TableServiceClient tableServiceClient = new TableServiceClientBuilder()
+    .endpoint("<your-table-account-url>")
+    .credential(tokenCredential)
     .buildClient();
 ```
 
@@ -182,7 +202,7 @@ TableServiceClient tableServiceClient = new TableServiceClientBuilder()
 #### Construct a `TableServiceClient`
 Construct a `TableServiceClient` by creating an instance of `TableServiceClientBuilder` and then calling the builder's `buildClient` or `buildAsyncClient` methods.
 
-<!-- embedme src/samples/java/ReadmeSamples.java#L66-L68 -->
+<!-- embedme src/samples/java/ReadmeSamples.java#L79-L81 -->
 ```java
 TableServiceClient tableServiceClient = new TableServiceClientBuilder()
     .connectionString("<your-connection-string>") // or use any of the other authentication methods
@@ -192,14 +212,14 @@ TableServiceClient tableServiceClient = new TableServiceClientBuilder()
 #### Create a table
 Create a table by calling the `TableServiceClient`'s `createTable` method. A `TableClient` will be returned, this client allows to perform operations on the table. An exception will be thrown if a table with the provided name exists.
 
-<!-- embedme src/samples/java/ReadmeSamples.java#L77-L77 -->
+<!-- embedme src/samples/java/ReadmeSamples.java#L90-L90 -->
 ```java
 TableClient tableClient = tableServiceClient.createTable(tableName);
 ```
 
 Alternatively, you can call the `createTableIfNotExists` method which will create the table only if no such table exists, and does not throw an exception. A `TableClient` will be returned as well.
 
-<!-- embedme src/samples/java/ReadmeSamples.java#L84-L84 -->
+<!-- embedme src/samples/java/ReadmeSamples.java#L97-L97 -->
 ```java
 TableClient tableClient = tableServiceClient.createTableIfNotExists(tableName);
 ```
@@ -207,7 +227,7 @@ TableClient tableClient = tableServiceClient.createTableIfNotExists(tableName);
 #### List tables
 List or query the set of existing tables by calling the `TableServiceClient`'s `listTables` method, optionally passing in a `ListTablesOptions` instance to filter or limit the query results. See [Supported Query Options][query_options] for details about supported query options.
 
-<!-- embedme src/samples/java/ReadmeSamples.java#L91-L96 -->
+<!-- embedme src/samples/java/ReadmeSamples.java#L104-L109 -->
 ```java
 ListTablesOptions options = new ListTablesOptions()
     .setFilter(String.format("TableName eq '%s'", tableName));
@@ -220,7 +240,7 @@ for (TableItem tableItem : tableServiceClient.listTables(options, null, null)) {
 #### Delete a table
 Delete a table by calling the `TableServiceClient`'s `deleteTable` method.
 
-<!-- embedme src/samples/java/ReadmeSamples.java#L103-L103 -->
+<!-- embedme src/samples/java/ReadmeSamples.java#L116-L116 -->
 ```java
 tableServiceClient.deleteTable(tableName);
 ```
@@ -230,7 +250,7 @@ tableServiceClient.deleteTable(tableName);
 #### Construct a `TableClient`
 Construct a `TableClient` by creating an instance of `TableClientBuilder`, calling the builder's `tableName` method with the name of the table, and then calling its `buildClient` or `buildAsyncClient` methods.
 
-<!-- embedme src/samples/java/ReadmeSamples.java#L110-L113 -->
+<!-- embedme src/samples/java/ReadmeSamples.java#L123-L126 -->
 ```java
 TableClient tableClient = new TableClientBuilder()
     .connectionString("<your-connection-string>") // or use any of the other authentication methods
@@ -240,7 +260,7 @@ TableClient tableClient = new TableClientBuilder()
 
 Alternatively, a `TableClient` can be retrieved from an existing `TableServiceClient` by calling its `getTableClient` method.
 
-<!-- embedme src/samples/java/ReadmeSamples.java#L120-L120 -->
+<!-- embedme src/samples/java/ReadmeSamples.java#L133-L133 -->
 ```java
 TableClient tableClient = tableServiceClient.getTableClient(tableName);
 ```
@@ -248,7 +268,7 @@ TableClient tableClient = tableServiceClient.getTableClient(tableName);
 #### Create an entity
 Create a new `TableEntity` instance, providing the partition key and row key of the entity to create, optionally adding properties to the created object. Then pass the object to the `TableClient`'s `createEntity` method. An exception will be thrown if an entity with the provided partition key and row key exists within the table.
 
-<!-- embedme src/samples/java/ReadmeSamples.java#L129-L134 -->
+<!-- embedme src/samples/java/ReadmeSamples.java#L142-L147 -->
 ```java
 TableEntity entity = new TableEntity(partitionKey, rowKey)
     .addProperty("Product", "Marker Set")
@@ -261,7 +281,7 @@ tableClient.createEntity(entity);
 #### List entities
 List or query the set of entities within the table by calling the `TableClient`'s `listEntities` method, optionally passing in a `ListEntitiesOptions` instance to filter, select, or limit the query results. See [Supported Query Options][query_options] for details about supported query options.
 
-<!-- embedme src/samples/java/ReadmeSamples.java#L141-L152 -->
+<!-- embedme src/samples/java/ReadmeSamples.java#L154-L165 -->
 ```java
 List<String> propertiesToSelect = new ArrayList<>();
 propertiesToSelect.add("Product");
@@ -280,7 +300,7 @@ for (TableEntity entity : tableClient.listEntities(options, null, null)) {
 #### Delete an entity
 Delete an entity by calling the `TableClient`'s `deleteEntity` method.
 
-<!-- embedme src/samples/java/ReadmeSamples.java#L159-L159 -->
+<!-- embedme src/samples/java/ReadmeSamples.java#L172-L172 -->
 ```java
 tableClient.deleteEntity(partitionKey, rowKey);
 ```
@@ -292,7 +312,7 @@ When you interact with Tables service using the Azure Tables library for Java, e
 
 For example, if you try to create a table that already exists, a `409` error is returned, indicating "Conflict".
 
-<!-- embedme src/samples/java/ReadmeSamples.java#L166-L174 -->
+<!-- embedme src/samples/java/ReadmeSamples.java#L179-L187 -->
 ```java
 // Create the table if it doesn't already exist.
 tableServiceClient.createTableIfNotExists(tableName);
@@ -330,13 +350,13 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [cosmosdb_create_cli]: https://docs.microsoft.com/azure/cosmos-db/scripts/cli/table/create
 [cosmosdb_create_portal]: https://docs.microsoft.com/azure/cosmos-db/create-table-java#create-a-database-account
 [jdk]: https://docs.microsoft.com/java/azure/jdk/
-[log_level]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/src/main/java/com/azure/core/util/logging/LogLevel.java
+[log_level]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/util/logging/LogLevel.java
 [package]: https://search.maven.org/artifact/com.azure/azure-data-tables
 [product_documentation]: https://docs.microsoft.com/azure/cosmos-db/table-storage-overview
 [query_options]: https://docs.microsoft.com/rest/api/storageservices/querying-tables-and-entities#supported-query-options
 [rest_api]: https://docs.microsoft.com/rest/api/storageservices/table-service-rest-api
-[samples]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/tables/azure-data-tables/src/samples/java/
-[source_code]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/tables/azure-data-tables/src
+[samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/tables/azure-data-tables/src/samples/java/
+[source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/tables/azure-data-tables/src
 [storage_account_create_cli]: https://docs.microsoft.com/azure/storage/common/storage-account-create?tabs=azure-cli
 [storage_account_create_portal]: https://docs.microsoft.com/azure/storage/common/storage-account-create?tabs=azure-portal
 

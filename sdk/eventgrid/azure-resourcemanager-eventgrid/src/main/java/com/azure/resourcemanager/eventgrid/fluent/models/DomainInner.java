@@ -10,10 +10,12 @@ import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventgrid.models.DomainProvisioningState;
+import com.azure.resourcemanager.eventgrid.models.IdentityInfo;
 import com.azure.resourcemanager.eventgrid.models.InboundIpRule;
 import com.azure.resourcemanager.eventgrid.models.InputSchema;
 import com.azure.resourcemanager.eventgrid.models.InputSchemaMapping;
 import com.azure.resourcemanager.eventgrid.models.PublicNetworkAccess;
+import com.azure.resourcemanager.eventgrid.models.ResourceSku;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -26,7 +28,19 @@ public class DomainInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DomainInner.class);
 
     /*
-     * The system metadata relating to Domain resource.
+     * The Sku pricing tier for the Event Grid Domain resource.
+     */
+    @JsonProperty(value = "sku")
+    private ResourceSku sku;
+
+    /*
+     * Identity information for the Event Grid Domain resource.
+     */
+    @JsonProperty(value = "identity")
+    private IdentityInfo identity;
+
+    /*
+     * The system metadata relating to the Event Grid Domain resource.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
@@ -38,20 +52,21 @@ public class DomainInner extends Resource {
     private List<PrivateEndpointConnectionInner> privateEndpointConnections;
 
     /*
-     * Provisioning state of the domain.
+     * Provisioning state of the Event Grid Domain Resource.
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private DomainProvisioningState provisioningState;
 
     /*
-     * Endpoint for the domain.
+     * Endpoint for the Event Grid Domain Resource which is used for publishing
+     * the events.
      */
     @JsonProperty(value = "properties.endpoint", access = JsonProperty.Access.WRITE_ONLY)
     private String endpoint;
 
     /*
      * This determines the format that Event Grid should expect for incoming
-     * events published to the domain.
+     * events published to the Event Grid Domain Resource.
      */
     @JsonProperty(value = "properties.inputSchema")
     private InputSchema inputSchema;
@@ -64,7 +79,7 @@ public class DomainInner extends Resource {
     private InputSchemaMapping inputSchemaMapping;
 
     /*
-     * Metric resource id for the domain.
+     * Metric resource id for the Event Grid Domain Resource.
      */
     @JsonProperty(value = "properties.metricResourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String metricResourceId;
@@ -86,8 +101,104 @@ public class DomainInner extends Resource {
     @JsonProperty(value = "properties.inboundIpRules")
     private List<InboundIpRule> inboundIpRules;
 
+    /*
+     * This boolean is used to enable or disable local auth. Default value is
+     * false. When the property is set to true, only AAD token will be used to
+     * authenticate if user is allowed to publish to the domain.
+     */
+    @JsonProperty(value = "properties.disableLocalAuth")
+    private Boolean disableLocalAuth;
+
+    /*
+     * This Boolean is used to specify the creation mechanism for 'all' the
+     * Event Grid Domain Topics associated with this Event Grid Domain
+     * resource.
+     * In this context, creation of domain topic can be auto-managed (when
+     * true) or self-managed (when false). The default value for this property
+     * is true.
+     * When this property is null or set to true, Event Grid is responsible of
+     * automatically creating the domain topic when the first event
+     * subscription is
+     * created at the scope of the domain topic. If this property is set to
+     * false, then creating the first event subscription will require creating
+     * a domain topic
+     * by the user. The self-management mode can be used if the user wants full
+     * control of when the domain topic is created, while auto-managed mode
+     * provides the
+     * flexibility to perform less operations and manage fewer resources by the
+     * user. Also, note that in auto-managed creation mode, user is allowed to
+     * create the
+     * domain topic on demand if needed.
+     */
+    @JsonProperty(value = "properties.autoCreateTopicWithFirstSubscription")
+    private Boolean autoCreateTopicWithFirstSubscription;
+
+    /*
+     * This Boolean is used to specify the deletion mechanism for 'all' the
+     * Event Grid Domain Topics associated with this Event Grid Domain
+     * resource.
+     * In this context, deletion of domain topic can be auto-managed (when
+     * true) or self-managed (when false). The default value for this property
+     * is true.
+     * When this property is set to true, Event Grid is responsible of
+     * automatically deleting the domain topic when the last event subscription
+     * at the scope
+     * of the domain topic is deleted. If this property is set to false, then
+     * the user needs to manually delete the domain topic when it is no longer
+     * needed
+     * (e.g., when last event subscription is deleted and the resource needs to
+     * be cleaned up). The self-management mode can be used if the user wants
+     * full
+     * control of when the domain topic needs to be deleted, while auto-managed
+     * mode provides the flexibility to perform less operations and manage
+     * fewer
+     * resources by the user.
+     */
+    @JsonProperty(value = "properties.autoDeleteTopicWithLastSubscription")
+    private Boolean autoDeleteTopicWithLastSubscription;
+
     /**
-     * Get the systemData property: The system metadata relating to Domain resource.
+     * Get the sku property: The Sku pricing tier for the Event Grid Domain resource.
+     *
+     * @return the sku value.
+     */
+    public ResourceSku sku() {
+        return this.sku;
+    }
+
+    /**
+     * Set the sku property: The Sku pricing tier for the Event Grid Domain resource.
+     *
+     * @param sku the sku value to set.
+     * @return the DomainInner object itself.
+     */
+    public DomainInner withSku(ResourceSku sku) {
+        this.sku = sku;
+        return this;
+    }
+
+    /**
+     * Get the identity property: Identity information for the Event Grid Domain resource.
+     *
+     * @return the identity value.
+     */
+    public IdentityInfo identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Identity information for the Event Grid Domain resource.
+     *
+     * @param identity the identity value to set.
+     * @return the DomainInner object itself.
+     */
+    public DomainInner withIdentity(IdentityInfo identity) {
+        this.identity = identity;
+        return this;
+    }
+
+    /**
+     * Get the systemData property: The system metadata relating to the Event Grid Domain resource.
      *
      * @return the systemData value.
      */
@@ -105,7 +216,7 @@ public class DomainInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: Provisioning state of the domain.
+     * Get the provisioningState property: Provisioning state of the Event Grid Domain Resource.
      *
      * @return the provisioningState value.
      */
@@ -114,7 +225,7 @@ public class DomainInner extends Resource {
     }
 
     /**
-     * Get the endpoint property: Endpoint for the domain.
+     * Get the endpoint property: Endpoint for the Event Grid Domain Resource which is used for publishing the events.
      *
      * @return the endpoint value.
      */
@@ -124,7 +235,7 @@ public class DomainInner extends Resource {
 
     /**
      * Get the inputSchema property: This determines the format that Event Grid should expect for incoming events
-     * published to the domain.
+     * published to the Event Grid Domain Resource.
      *
      * @return the inputSchema value.
      */
@@ -134,7 +245,7 @@ public class DomainInner extends Resource {
 
     /**
      * Set the inputSchema property: This determines the format that Event Grid should expect for incoming events
-     * published to the domain.
+     * published to the Event Grid Domain Resource.
      *
      * @param inputSchema the inputSchema value to set.
      * @return the DomainInner object itself.
@@ -167,7 +278,7 @@ public class DomainInner extends Resource {
     }
 
     /**
-     * Get the metricResourceId property: Metric resource id for the domain.
+     * Get the metricResourceId property: Metric resource id for the Event Grid Domain Resource.
      *
      * @return the metricResourceId value.
      */
@@ -221,6 +332,102 @@ public class DomainInner extends Resource {
         return this;
     }
 
+    /**
+     * Get the disableLocalAuth property: This boolean is used to enable or disable local auth. Default value is false.
+     * When the property is set to true, only AAD token will be used to authenticate if user is allowed to publish to
+     * the domain.
+     *
+     * @return the disableLocalAuth value.
+     */
+    public Boolean disableLocalAuth() {
+        return this.disableLocalAuth;
+    }
+
+    /**
+     * Set the disableLocalAuth property: This boolean is used to enable or disable local auth. Default value is false.
+     * When the property is set to true, only AAD token will be used to authenticate if user is allowed to publish to
+     * the domain.
+     *
+     * @param disableLocalAuth the disableLocalAuth value to set.
+     * @return the DomainInner object itself.
+     */
+    public DomainInner withDisableLocalAuth(Boolean disableLocalAuth) {
+        this.disableLocalAuth = disableLocalAuth;
+        return this;
+    }
+
+    /**
+     * Get the autoCreateTopicWithFirstSubscription property: This Boolean is used to specify the creation mechanism for
+     * 'all' the Event Grid Domain Topics associated with this Event Grid Domain resource. In this context, creation of
+     * domain topic can be auto-managed (when true) or self-managed (when false). The default value for this property is
+     * true. When this property is null or set to true, Event Grid is responsible of automatically creating the domain
+     * topic when the first event subscription is created at the scope of the domain topic. If this property is set to
+     * false, then creating the first event subscription will require creating a domain topic by the user. The
+     * self-management mode can be used if the user wants full control of when the domain topic is created, while
+     * auto-managed mode provides the flexibility to perform less operations and manage fewer resources by the user.
+     * Also, note that in auto-managed creation mode, user is allowed to create the domain topic on demand if needed.
+     *
+     * @return the autoCreateTopicWithFirstSubscription value.
+     */
+    public Boolean autoCreateTopicWithFirstSubscription() {
+        return this.autoCreateTopicWithFirstSubscription;
+    }
+
+    /**
+     * Set the autoCreateTopicWithFirstSubscription property: This Boolean is used to specify the creation mechanism for
+     * 'all' the Event Grid Domain Topics associated with this Event Grid Domain resource. In this context, creation of
+     * domain topic can be auto-managed (when true) or self-managed (when false). The default value for this property is
+     * true. When this property is null or set to true, Event Grid is responsible of automatically creating the domain
+     * topic when the first event subscription is created at the scope of the domain topic. If this property is set to
+     * false, then creating the first event subscription will require creating a domain topic by the user. The
+     * self-management mode can be used if the user wants full control of when the domain topic is created, while
+     * auto-managed mode provides the flexibility to perform less operations and manage fewer resources by the user.
+     * Also, note that in auto-managed creation mode, user is allowed to create the domain topic on demand if needed.
+     *
+     * @param autoCreateTopicWithFirstSubscription the autoCreateTopicWithFirstSubscription value to set.
+     * @return the DomainInner object itself.
+     */
+    public DomainInner withAutoCreateTopicWithFirstSubscription(Boolean autoCreateTopicWithFirstSubscription) {
+        this.autoCreateTopicWithFirstSubscription = autoCreateTopicWithFirstSubscription;
+        return this;
+    }
+
+    /**
+     * Get the autoDeleteTopicWithLastSubscription property: This Boolean is used to specify the deletion mechanism for
+     * 'all' the Event Grid Domain Topics associated with this Event Grid Domain resource. In this context, deletion of
+     * domain topic can be auto-managed (when true) or self-managed (when false). The default value for this property is
+     * true. When this property is set to true, Event Grid is responsible of automatically deleting the domain topic
+     * when the last event subscription at the scope of the domain topic is deleted. If this property is set to false,
+     * then the user needs to manually delete the domain topic when it is no longer needed (e.g., when last event
+     * subscription is deleted and the resource needs to be cleaned up). The self-management mode can be used if the
+     * user wants full control of when the domain topic needs to be deleted, while auto-managed mode provides the
+     * flexibility to perform less operations and manage fewer resources by the user.
+     *
+     * @return the autoDeleteTopicWithLastSubscription value.
+     */
+    public Boolean autoDeleteTopicWithLastSubscription() {
+        return this.autoDeleteTopicWithLastSubscription;
+    }
+
+    /**
+     * Set the autoDeleteTopicWithLastSubscription property: This Boolean is used to specify the deletion mechanism for
+     * 'all' the Event Grid Domain Topics associated with this Event Grid Domain resource. In this context, deletion of
+     * domain topic can be auto-managed (when true) or self-managed (when false). The default value for this property is
+     * true. When this property is set to true, Event Grid is responsible of automatically deleting the domain topic
+     * when the last event subscription at the scope of the domain topic is deleted. If this property is set to false,
+     * then the user needs to manually delete the domain topic when it is no longer needed (e.g., when last event
+     * subscription is deleted and the resource needs to be cleaned up). The self-management mode can be used if the
+     * user wants full control of when the domain topic needs to be deleted, while auto-managed mode provides the
+     * flexibility to perform less operations and manage fewer resources by the user.
+     *
+     * @param autoDeleteTopicWithLastSubscription the autoDeleteTopicWithLastSubscription value to set.
+     * @return the DomainInner object itself.
+     */
+    public DomainInner withAutoDeleteTopicWithLastSubscription(Boolean autoDeleteTopicWithLastSubscription) {
+        this.autoDeleteTopicWithLastSubscription = autoDeleteTopicWithLastSubscription;
+        return this;
+    }
+
     /** {@inheritDoc} */
     @Override
     public DomainInner withLocation(String location) {
@@ -241,6 +448,12 @@ public class DomainInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (sku() != null) {
+            sku().validate();
+        }
+        if (identity() != null) {
+            identity().validate();
+        }
         if (privateEndpointConnections() != null) {
             privateEndpointConnections().forEach(e -> e.validate());
         }

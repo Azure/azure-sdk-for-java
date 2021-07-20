@@ -26,7 +26,6 @@ import com.azure.data.tables.sas.TableSasSignatureValues;
 import java.time.Duration;
 import java.util.List;
 
-import static com.azure.data.tables.implementation.TableUtils.applyOptionalTimeout;
 import static com.azure.data.tables.implementation.TableUtils.blockWithOptionalTimeout;
 
 /**
@@ -466,7 +465,7 @@ public final class TableClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TableEntity> listEntities(ListEntitiesOptions options, Duration timeout, Context context) {
-        return new PagedIterable<>(applyOptionalTimeout(client.listEntities(options, context), timeout));
+        return new PagedIterable<>(client.listEntities(options, context, timeout));
     }
 
     /**
