@@ -208,7 +208,7 @@ public final class SearchIndexClientImplBuilder {
      */
     public SearchIndexClientImpl buildClient() {
         if (apiVersion == null) {
-            this.apiVersion = "2020-06-30-Preview";
+            this.apiVersion = "2021-04-30-Preview";
         }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
