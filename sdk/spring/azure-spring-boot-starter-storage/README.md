@@ -24,7 +24,7 @@ Name | Description | Required
  azure.storage.file-endpoint | The file endpoint URL of the Azure Storage account. | [Optional] Required when storage file service is used |
 
 #### Autowire a resource 
-You can use the annotation of `@Value("azure-blob://[your-containerName]/[your-blobName]")` to autowire a **bolb** `Resource`.
+You can use the annotation of `@Value("azure-blob://[your-containerName]/[your-blobName]")` to autowire a **blob** `Resource`.
 
 ```java
 @Value("azure-blob://[your-containerName]/[your-blobName]")
