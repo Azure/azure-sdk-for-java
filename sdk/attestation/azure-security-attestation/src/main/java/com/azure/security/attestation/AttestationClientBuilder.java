@@ -165,15 +165,6 @@ public final class AttestationClientBuilder {
     }
 
     /**
-     * Builds an instance of SigningCertificatesClient sync client.
-     *
-     * @return an instance of SigningCertificatesClient.
-     */
-    public SigningCertificatesClient buildSigningCertificatesClient() {
-        return new SigningCertificatesClient(asyncClientBuilder.buildSigningCertificatesAsyncClient());
-    }
-
-    /**
      * Legacy API surface which will be removed shortly.
      */
 

@@ -4,6 +4,9 @@
 ### Features Added
 
 ### Breaking Changes
+ * Removed `buildSigningCertificatesClient` and `buildSigningCertificatesAsyncClient` replaced
+   with `getAttestationSigners` and `getAttestationSignersWithResponse` on `AttestationClient` 
+   and `AttestationAsyncClient`. 
  * Removed `buildMetadataConfigurationClient` and `buildMetadataConfigurationAsyncClient` API
    * `get` API becomes `getMetadataConfiguration` on `AttestationClient`
    * `getWithResponse` becomes `getMetadataConfigurationWithResponse`
@@ -16,6 +19,7 @@
    
 
 ### Bugs Fixed
+* Attestation tests now all pass when run in Live mode.
 
 ### Other Changes
 

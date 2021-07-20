@@ -12,9 +12,11 @@ import com.azure.core.util.Context;
 import com.azure.security.attestation.implementation.AttestationClientImpl;
 import com.azure.security.attestation.implementation.AttestationsImpl;
 import com.azure.security.attestation.implementation.MetadataConfigurationsImpl;
+import com.azure.security.attestation.implementation.SigningCertificatesImpl;
 import com.azure.security.attestation.models.AttestOpenEnclaveRequest;
 import com.azure.security.attestation.models.AttestSgxEnclaveRequest;
 import com.azure.security.attestation.models.AttestationResponse;
+import com.azure.security.attestation.models.AttestationSigner;
 import com.azure.security.attestation.models.CloudErrorException;
 import reactor.core.publisher.Mono;
 
@@ -28,6 +30,7 @@ import static com.azure.core.util.FluxUtil.withContext;
 public final class AttestationAsyncClient {
     private final AttestationsImpl attestImpl;
     private final MetadataConfigurationsImpl metadataImpl;
+    private final SigningCertificatesImpl signerImpl;
 
     /**
      * Initializes an instance of Attestations client.
@@ -37,6 +40,7 @@ public final class AttestationAsyncClient {
     AttestationAsyncClient(AttestationClientImpl clientImpl) {
         this.attestImpl = clientImpl.getAttestations();
         this.metadataImpl = clientImpl.getMetadataConfigurations();
+        this.signerImpl = clientImpl.getSigningCertificates();
     }
 
     /**
@@ -63,7 +67,35 @@ public final class AttestationAsyncClient {
     public Mono<Object> getOpenIdMetadata() {
         // Forward the getOpenIdMetadata to the getOpenIdMetadataWithResponse API implementation.
         return withContext(context -> this.getOpenIdMetadataWithResponse(context))
-            .map(response -> response.getValue());
+            .map(Response::getValue);
+    }
+
+    /**
+     * Retrieves the list of {@link AttestationSigner} objects associated with this attestation instance.
+     * An {@link AttestationSigner} represents an X.509 certificate chain and KeyId which can be used
+     * to validate an attestation token returned by the service.
+     *
+     * @return Returns an array of {@link AttestationSigner} objects.
+     */
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AttestationSigner[]> getAttestationSigners() {
+        return withContext(context -> this.getAttestationSignersWithResponse(context))
+            .map(Response::getValue);
+    }
+
+    /**
+     * Retrieves the list of {@link AttestationSigner} objects associated with this attestation instance.
+     *
+     * An {@link AttestationSigner} represents an X.509 certificate chain and KeyId which can be used
+     * to validate an attestation token returned by the service.
+     *
+     * @param context Context for the operation.
+     * @return Returns an array of {@link AttestationSigner} objects.
+     */
+    public Mono<Response<AttestationSigner[]>> getAttestationSignersWithResponse(Context context) {
+        return this.signerImpl.getWithResponseAsync(context)
+            .map(response -> Utilities.generateResponseFromModelType(response, Utilities.attestationSignersFromJwks(response.getValue())));
     }
 
     /**

@@ -149,13 +149,4 @@ public final class AttestationAsyncClientBuilder {
     public AttestationAsyncClient buildAttestationAsyncClient() {
         return new AttestationAsyncClient(buildInnerClient());
     }
-    /**
-     * Builds an instance of SigningCertificatesAsyncClient async client.
-     *
-     * @return an instance of SigningCertificatesAsyncClient.
-     */
-    public SigningCertificatesAsyncClient buildSigningCertificatesAsyncClient() {
-        return new SigningCertificatesAsyncClient(buildInnerClient().getSigningCertificates());
-    }
-
 }

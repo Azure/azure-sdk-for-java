@@ -12,6 +12,7 @@ import com.azure.core.util.Context;
 import com.azure.security.attestation.models.AttestOpenEnclaveRequest;
 import com.azure.security.attestation.models.AttestSgxEnclaveRequest;
 import com.azure.security.attestation.models.AttestationResponse;
+import com.azure.security.attestation.models.AttestationSigner;
 import com.azure.security.attestation.models.CloudErrorException;
 
 import static com.azure.core.util.FluxUtil.withContext;
@@ -37,7 +38,7 @@ public final class AttestationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Object getOpenIdMetadata() {
         return withContext(context -> asyncClient.getOpenIdMetadataWithResponse(context))
-            .map(response -> response.getValue()).block();
+            .map(Response::getValue).block();
     }
 
     /**
@@ -50,6 +51,35 @@ public final class AttestationClient {
     public Response<Object> getOpenIdMetadataWithResponse(Context context) {
         return asyncClient.getOpenIdMetadataWithResponse(context).block();
     }
+
+    /**
+     * Retrieves the list of {@link AttestationSigner} objects associated with this attestation instance.
+     * An {@link AttestationSigner} represents an X.509 certificate chain and KeyId which can be used
+     * to validate an attestation token returned by the service.
+     *
+     * @return Returns an array of {@link AttestationSigner} objects.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AttestationSigner[] getAttestationSigners() {
+        return withContext(context -> asyncClient.getAttestationSignersWithResponse(context))
+            .map(Response::getValue).block();
+    }
+
+    /**
+     * Retrieves the list of {@link AttestationSigner} objects associated with this attestation instance.
+     * An {@link AttestationSigner} represents an X.509 certificate chain and KeyId which can be used
+     * to validate an attestation token returned by the service.
+     *
+     * @param context Context for the operation.
+     *
+     * @return Returns an array of {@link AttestationSigner} objects.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AttestationSigner[]> getAttestationSignersWithResponse(Context context) {
+        return asyncClient.getAttestationSignersWithResponse(context).block();
+    }
+
+
 
     /**
      * Processes an OpenEnclave report , producing an artifact. The type of artifact produced is dependent upon
