@@ -11,22 +11,22 @@ import java.time.Duration;
  *
  * In a sense, the track 2 SDK is always primary-only or primary-then-secondary. However, by passing the secondary
  * endpoint as the primary and the primary as the secondary, the behavior of secondary-only or secondary-then-primary
- * can be achieved. To avoid confusion in this example, 'preferred' and 'fallback' will refer to the location that is
- * tried first and then second respectively, whereas 'primary' and 'secondary' will refer to the Storage concept of
- * primary read-write storage and back-up/redundant/read-only storage.
+ * can be achieved. To avoid confusion of terms in this example, 'preferred' and 'fallback' will refer to the location
+ * that is tried by the client first and then second respectively, whereas 'primary' and 'secondary' will refer to the
+ * Storage concept of primary read-write storage and back-up/redundant/read-only storage respectively.
  *
- * The general pattern is to create any form of a BlobClient and pass the preferred location to the builder as the
- * endpoint. To configure a fallback location, set it as the `secondaryEndpoint` on {@link RequestRetryOptions} and pass
- * the configured options to {@link BlobClientBuilder#retryOptions(RequestRetryOptions)}. Switching LocationMode
- * requires using a different client that is configured for the new request behavior. In this case, concurrency control
- * should be carefully considered to prevent race conditions.
+ * The general pattern is to create a BlobClient and pass the preferred location to the builder as the endpoint. To
+ * configure a fallback location, set it as the `secondaryEndpoint` on {@link RequestRetryOptions} and pass the
+ * configured options to {@link BlobClientBuilder#retryOptions(RequestRetryOptions)}. Switching LocationMode requires
+ * using a different client that is configured for the new request behavior. In this case, concurrency control should
+ * be carefully considered to prevent race conditions.
  *
  * Requests will always go first to the preferred location passed as the endpoint. If a request must be retried, it will
  * and the error indicates it may be helped by checking the fallback, a request will immediately be reissued to the
  * fallback. If that also fails and still a retry may be helpful, the client will wait for a backoff period specified by
  * the retry options before retrying the initial location again.
  *
- * The client does not internally track the LocationMode or read it off of an object that is passed because of how that
+ * The client does not internally track the LocationMode or read it from an object that is passed because of how that
  * might cause race conditions if it is shared between clients.
  *
  * Each of the clients constructed in this sample will have behavior according to the variable name. This sample does
