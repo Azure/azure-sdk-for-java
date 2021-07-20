@@ -633,7 +633,7 @@
         "code": "java.field.serialVersionUIDUnchanged",
         "old": "field com.azure.security.keyvault.jca.model.KeyProperties.serialVersionUID",
         "new": "field com.azure.security.keyvault.jca.model.KeyProperties.serialVersionUID",
-        "justification": "The field ErrorInfo was added to AmqpErrorContext, but no existing fields were removed or changed."
+        "justification": "The Error in KeyProperties. It might be ok."
       },
       {
         "code": "java.method.addedToInterface",
