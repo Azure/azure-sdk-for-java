@@ -80,8 +80,8 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        // Test is running in LIVE mode so it won't be able to record the network call, skip recording code.
-        if (TEST_MODE == TestMode.LIVE) {
+        // If TEST_MODE isn't RECORD do not record.
+        if (TEST_MODE != TestMode.RECORD) {
             return next.process();
         }
 

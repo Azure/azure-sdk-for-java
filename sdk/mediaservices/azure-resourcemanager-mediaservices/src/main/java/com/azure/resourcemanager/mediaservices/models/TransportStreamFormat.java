@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.mediaservices.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,7 +16,7 @@ import java.util.List;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Media.TransportStreamFormat")
 @JsonFlatten
-@Immutable
+@Fluent
 public class TransportStreamFormat extends MultiBitrateFormat {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TransportStreamFormat.class);
 

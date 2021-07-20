@@ -3,8 +3,8 @@
 
 package com.azure.test.aad.webapi.obo;
 
-import com.azure.spring.aad.webapi.AADResourceServerWebSecurityConfigurerAdapter;
 import com.azure.spring.test.aad.AADWebApiITHelper;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -14,15 +14,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.Collections;
@@ -64,19 +62,18 @@ public class AADWebApiOboIT {
         assertEquals("Graph response success.", aadWebApiITHelper.httpGetStringByAccessToken("call-graph"));
     }
 
-    @EnableWebSecurity
-    @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
+    @Test
+    public void testCallGraphWithAnonymousAuthenticationTokenAndReturnUnauthorized() {
+        Assertions.assertThrows(HttpClientErrorException.Unauthorized.class,
+            ()-> aadWebApiITHelper.httpGetStringWithoutAccessToken("call-graph"));
+    }
+
     @SpringBootApplication
     @RestController
-    public static class DumbApp extends AADResourceServerWebSecurityConfigurerAdapter {
+    public static class DumbApp {
 
         @Autowired
         private WebClient webClient;
-
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
-            super.configure(http);
-        }
 
         @Bean
         public WebClient webClient(OAuth2AuthorizedClientManager authorizedClientManager) {

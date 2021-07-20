@@ -3,11 +3,6 @@
 
 package com.azure.spring.integration.servicebus.factory;
 
-import com.azure.spring.cloud.context.core.impl.ServiceBusNamespaceManager;
-import com.azure.spring.cloud.context.core.impl.ServiceBusQueueManager;
-import com.azure.spring.cloud.context.core.impl.ServiceBusTopicManager;
-import com.azure.spring.cloud.context.core.impl.ServiceBusTopicSubscriptionManager;
-
 import javax.annotation.Nullable;
 
 /**
@@ -20,13 +15,8 @@ abstract class AbstractServiceBusSenderFactory implements ServiceBusSenderFactor
     protected final String connectionString;
 
     @Nullable
-    protected ServiceBusNamespaceManager serviceBusNamespaceManager;
-    @Nullable
-    protected ServiceBusQueueManager serviceBusQueueManager;
-    @Nullable
-    protected ServiceBusTopicManager serviceBusTopicManager;
-    @Nullable
-    protected ServiceBusTopicSubscriptionManager serviceBusTopicSubscriptionManager;
+    protected ServiceBusProvisioner serviceBusProvisioner;
+
     @Nullable
     protected String namespace;
 
@@ -34,21 +24,8 @@ abstract class AbstractServiceBusSenderFactory implements ServiceBusSenderFactor
         this.connectionString = connectionString;
     }
 
-    public void setServiceBusNamespaceManager(ServiceBusNamespaceManager serviceBusNamespaceManager) {
-        this.serviceBusNamespaceManager = serviceBusNamespaceManager;
-    }
-
-    public void setServiceBusQueueManager(ServiceBusQueueManager serviceBusQueueManager) {
-        this.serviceBusQueueManager = serviceBusQueueManager;
-    }
-
-    public void setServiceBusTopicManager(ServiceBusTopicManager serviceBusTopicManager) {
-        this.serviceBusTopicManager = serviceBusTopicManager;
-    }
-
-    public void setServiceBusTopicSubscriptionManager(
-            ServiceBusTopicSubscriptionManager serviceBusTopicSubscriptionManager) {
-        this.serviceBusTopicSubscriptionManager = serviceBusTopicSubscriptionManager;
+    public void setServiceBusProvisioner(@Nullable ServiceBusProvisioner serviceBusProvisioner) {
+        this.serviceBusProvisioner = serviceBusProvisioner;
     }
 
     public void setNamespace(String namespace) {
