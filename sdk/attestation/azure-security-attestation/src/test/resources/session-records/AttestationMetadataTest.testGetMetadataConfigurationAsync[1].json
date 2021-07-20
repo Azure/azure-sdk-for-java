@@ -9,9 +9,9 @@
       "x-ms-maa-service-version" : "1.10.01644.0004",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "00-abf326d3151c67988fb50831f33e9c84-0000000000000000-00",
+      "x-ms-request-id" : "00-536f15bd77d4c6f698bdb20555e34573-0000000000000000-00",
       "Body" : "{\"response_types_supported\":[\"token\",\"none\"],\"id_token_signing_alg_values_supported\":[\"RS256\"],\"revocation_endpoint\":\"https://sharedwus.wus.attest.azure.net/revoke\",\"issuer\":\"https://sharedwus.wus.attest.azure.net\",\"jwks_uri\":\"https://sharedwus.wus.attest.azure.net/certs\",\"claims_supported\":[\"cnf\",\"nonce\",\"x-ms-ver\",\"x-ms-attestation-type\",\"x-ms-policy-hash\",\"x-ms-policy-signer\",\"x-ms-sgx-is-debuggable\",\"x-ms-sgx-mrenclave\",\"x-ms-sgx-mrsigner\",\"x-ms-sgx-svn\",\"x-ms-sgx-ehd\",\"x-ms-sgx-collateral\",\"is-debuggable\",\"sgx-mrsigner\",\"sgx-mrenclave\",\"product-id\",\"svn\",\"tee\"]}",
-      "Date" : "Mon, 19 Jul 2021 23:48:09 GMT",
+      "Date" : "Tue, 20 Jul 2021 00:17:51 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
@@ -25,9 +25,9 @@
       "x-ms-maa-service-version" : "1.10.01644.0004",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "00-79734ede21e0622642173bf309d77ccb-0000000000000000-00",
+      "x-ms-request-id" : "00-c5cbf7f484b1583d7b4ad8ed22d49326-0000000000000000-00",
       "Body" : "{\"response_types_supported\":[\"token\",\"none\"],\"id_token_signing_alg_values_supported\":[\"RS256\"],\"revocation_endpoint\":\"https://sharedwus.wus.attest.azure.net/revoke\",\"issuer\":\"https://sharedwus.wus.attest.azure.net\",\"jwks_uri\":\"https://sharedwus.wus.attest.azure.net/certs\",\"claims_supported\":[\"cnf\",\"nonce\",\"x-ms-ver\",\"x-ms-attestation-type\",\"x-ms-policy-hash\",\"x-ms-policy-signer\",\"x-ms-sgx-is-debuggable\",\"x-ms-sgx-mrenclave\",\"x-ms-sgx-mrsigner\",\"x-ms-sgx-svn\",\"x-ms-sgx-ehd\",\"x-ms-sgx-collateral\",\"is-debuggable\",\"sgx-mrsigner\",\"sgx-mrenclave\",\"product-id\",\"svn\",\"tee\"]}",
-      "Date" : "Mon, 19 Jul 2021 23:48:09 GMT",
+      "Date" : "Tue, 20 Jul 2021 00:17:51 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

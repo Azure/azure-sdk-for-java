@@ -82,7 +82,7 @@ public final class AttestationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AttestationResponse>> attestOpenEnclaveWithResponse(AttestOpenEnclaveRequest request, Context context) {
-        return this.serviceClient.attestOpenEnclaveWithResponseAsync(request);
+        return this.attestImpl.attestOpenEnclaveWithResponseAsync(request.toGenerated(), context)
             .map(response -> Utilities.generateResponseFromModelType(response, AttestationResponse.fromGenerated(response.getValue())));
     }
 
@@ -115,7 +115,7 @@ public final class AttestationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AttestationResponse>> attestSgxEnclaveWithResponse(AttestSgxEnclaveRequest request, Context context) {
-        return this.serviceClient.attestSgxEnclaveWithResponseAsync(request);
+        return this.attestImpl.attestSgxEnclaveWithResponseAsync(request.toGenerated(), context)
             .map(response ->  Utilities.generateResponseFromModelType(response, AttestationResponse.fromGenerated(response.getValue())));
     }
 
