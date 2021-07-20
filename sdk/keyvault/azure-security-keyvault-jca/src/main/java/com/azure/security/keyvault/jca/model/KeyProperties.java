@@ -39,24 +39,6 @@ public class KeyProperties implements Serializable {
     }
 
     /**
-     * get key size
-     * @return key size
-     */
-    public Integer getKeySize() {
-        return keySize;
-    }
-
-    /**
-     * set key size
-     * @param keySize key size
-     */
-    public void setKeySize(Integer keySize) {
-        this.keySize = keySize;
-    }
-
-    private Integer keySize;
-
-    /**
      * Is the key exportable.
      *
      * @return true if exportable, false otherwise.
