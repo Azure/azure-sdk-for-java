@@ -245,8 +245,8 @@ For more information about setting logging in spring, please refer to the [offic
 ## Next steps
 The following section provides sample projects illustrating how to use the starter in different cases.
 ### More sample code
-- [JMS Service Bus Queue](https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/servicebus/azure-spring-boot-sample-servicebus-jms-queue)
-- [JMS Service Bus Topic](https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/servicebus/azure-spring-boot-sample-servicebus-jms-topic)
+- [JMS Service Bus Queue](https://github.com/Azure-Samples/azure-spring-boot-samples/tree/azure-spring-boot_3.6.0/servicebus/azure-spring-boot-sample-servicebus-jms-queue)
+- [JMS Service Bus Topic](https://github.com/Azure-Samples/azure-spring-boot-samples/tree/azure-spring-boot_3.6.0/servicebus/azure-spring-boot-sample-servicebus-jms-topic)
 
 
 ## Contributing
