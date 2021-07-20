@@ -787,7 +787,7 @@ class BlockBlobAPITest extends APISpec {
     @LiveOnly
     def "Upload from file with tags"() {
         given:
-        def tags = Collections.singletonMap("tag", "value")
+        def tags = Collections.singletonMap(namer.getRandomName(20), namer.getRandomName(20))
         def file = getRandomFile(Constants.KB)
         def outStream = new ByteArrayOutputStream()
 

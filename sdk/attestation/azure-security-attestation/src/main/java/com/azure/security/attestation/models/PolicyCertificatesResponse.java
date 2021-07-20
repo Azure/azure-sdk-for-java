@@ -45,5 +45,16 @@ public final class PolicyCertificatesResponse {
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    public void validate() {}
+    public void validate() { }
+
+
+    /**
+     *
+     * @param generated generated
+     * @return implementation type.
+     */
+    public static PolicyCertificatesResponse fromGenerated(com.azure.security.attestation.implementation.models.PolicyCertificatesResponse generated) {
+        return new PolicyCertificatesResponse().setToken(generated.getToken());
+    }
+
 }

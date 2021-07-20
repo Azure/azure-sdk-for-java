@@ -172,7 +172,7 @@ public class AzureADGraphClient {
             LOGGER.error("acquire on behalf of token for graph api error", e);
         }
         if (result == null) {
-            throw new ServiceUnavailableException("unable to acquire on-behalf-of token for client "
+            throw new ServiceUnavailableException("unable to acquire on_behalf_of token for client "
                 + clientId);
         }
         return result;
