@@ -4,6 +4,20 @@ The project provides a Spring Boot Starter `azure-spring-boot-starter-storage` t
 
 [Package (Maven)][package] | [API reference documentation][refdocs] | [Product documentation][docs] | [Samples][sample]
 
+## Getting started
+
+### Prerequisites
+- [Environment checklist][environment_checklist]
+
+### Include the package
+1. [Add azure-spring-boot-bom].
+1. Add dependency. `<version>` can be skipped because we already add `azure-spring-boot-bom`.
+```xml
+<dependency>
+  <groupId>com.azure.spring</groupId>
+  <artifactId>azure-spring-boot-starter-storage</artifactId>
+</dependency>
+```
 
 ## Key concepts
 The [Azure Storage platform][azure_storage] is Microsoft's cloud storage solution for modern data storage scenarios. Core storage services offer a massively scalable object store for data objects, disk storage for Azure virtual machines (VMs), a file system service for the cloud, a messaging store for reliable messaging, and a NoSQL store.
