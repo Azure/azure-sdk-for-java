@@ -48,6 +48,7 @@ spring.cloud.azure.credential-file-path | Location of azure credential file | Ye
 spring.cloud.azure.resource-group | Name of Azure resource group | Yes |
 spring.cloud.azure.region | Region name of the Azure resource group, e.g. westus | Yes | 
 spring.cloud.azure.servicebus.namespace | Service Bus Namespace. Auto creating if missing | Yes |
+spring.cloud.azure.servicebus.transportType | Service Bus transportType, supported value of `AMQP` and `AMQP_WEB_SOCKETS` | No | `AMQP`
 
 ##### Serivce Bus Queue Producer Properties
 
