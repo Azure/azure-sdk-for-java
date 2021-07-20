@@ -4,7 +4,7 @@
 package com.azure.test.aad.selenium.oauth2client.issuedat;
 
 import com.azure.spring.utils.AzureCloudUrls;
-import com.azure.test.aad.selenium.AADSeleniumITHelper;
+import com.azure.test.aad.common.AADSeleniumITHelper;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import static com.azure.spring.test.EnvironmentVariable.AZURE_CLOUD_TYPE;
-import static com.azure.test.aad.selenium.AADSeleniumITHelper.createDefaultProperties;
+import static com.azure.test.aad.selenium.AADITHelper.createDefaultProperties;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)

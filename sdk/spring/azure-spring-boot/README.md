@@ -32,20 +32,20 @@ This module also provides the ability to automatically inject credentials from C
 applications consuming Azure services. It does this by reading the `VCAP_SERVICES` environment
 variable and setting the appropriate properties used by auto-configuration code.
 
-For details, please see sample code in the [azure-spring-boot-sample-cloud-foundry](https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/cloudfoundry/azure-cloud-foundry-service-sample) 
+For details, please see sample code in the [azure-spring-boot-sample-cloud-foundry](https://github.com/Azure-Samples/azure-spring-boot-samples/tree/azure-spring-boot_3.7/cloudfoundry/azure-cloud-foundry-service-sample) 
 
 ## Examples
 The following section provides sample projects illustrating how to use the Azure Spring Boot starters.
 ### More sample code
-- [Azure Active Directory for Web Application](https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/aad/azure-spring-boot-sample-active-directory-webapp)
-- [Azure Active Directory for Resource Server](https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/aad/azure-spring-boot-sample-active-directory-resource-server)
-- [Azure Active Directory for Resource Server with Obo Clients](https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/aad/azure-spring-boot-sample-active-directory-resource-server-obo)
-- [Azure Active Directory for Resource Server by Filter(Deprecated)](https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/aad/azure-spring-boot-sample-active-directory-resource-server-by-filter)
-- [Azure Active Directory B2C](https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/aad/azure-spring-boot-sample-active-directory-b2c-oidc)
-- [Cosmos DB SQL API](https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/cosmos/azure-spring-boot-sample-cosmos)
-- [Key Vault](https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/keyvault/azure-spring-boot-sample-keyvault-secrets)
-- [JMS Service Bus Queue](https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/servicebus/azure-spring-boot-sample-servicebus-jms-queue)
-- [JMS Service Bus Topic](https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/servicebus/azure-spring-boot-sample-servicebus-jms-topic)
+- [Azure Active Directory for Web Application](https://github.com/Azure-Samples/azure-spring-boot-samples/tree/azure-spring-boot_3.7/aad/azure-spring-boot-sample-active-directory-webapp)
+- [Azure Active Directory for Resource Server](https://github.com/Azure-Samples/azure-spring-boot-samples/tree/azure-spring-boot_3.7/aad/azure-spring-boot-sample-active-directory-resource-server)
+- [Azure Active Directory for Resource Server with Obo Clients](https://github.com/Azure-Samples/azure-spring-boot-samples/tree/azure-spring-boot_3.7/aad/azure-spring-boot-sample-active-directory-resource-server-obo)
+- [Azure Active Directory for Resource Server by Filter(Deprecated)](https://github.com/Azure-Samples/azure-spring-boot-samples/tree/azure-spring-boot_3.7/aad/azure-spring-boot-sample-active-directory-resource-server-by-filter)
+- [Azure Active Directory B2C](https://github.com/Azure-Samples/azure-spring-boot-samples/tree/azure-spring-boot_3.7/aad/azure-spring-boot-sample-active-directory-b2c-oidc)
+- [Cosmos DB SQL API](https://github.com/Azure-Samples/azure-spring-boot-samples/tree/azure-spring-boot_3.7/cosmos/azure-spring-boot-sample-cosmos)
+- [Key Vault](https://github.com/Azure-Samples/azure-spring-boot-samples/tree/azure-spring-boot_3.7/keyvault/azure-spring-boot-sample-keyvault-secrets)
+- [JMS Service Bus Queue](https://github.com/Azure-Samples/azure-spring-boot-samples/tree/azure-spring-boot_3.7/servicebus/azure-spring-boot-sample-servicebus-jms-queue)
+- [JMS Service Bus Topic](https://github.com/Azure-Samples/azure-spring-boot-samples/tree/azure-spring-boot_3.7/servicebus/azure-spring-boot-sample-servicebus-jms-topic)
 
 ## Troubleshooting
 ### Enable client logging
@@ -68,15 +68,15 @@ For more information about setting logging in spring, please refer to the [offic
 ## Next steps
 The following section provides sample projects illustrating how to use the Azure Spring Boot starters.
 ### More sample code
-- [Azure Active Directory for Web Application](https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/aad/azure-spring-boot-sample-active-directory-webapp)
-- [Azure Active Directory for Resource Server](https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/aad/azure-spring-boot-sample-active-directory-resource-server)
-- [Azure Active Directory for Resource Server with Obo Clients](https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/aad/azure-spring-boot-sample-active-directory-resource-server-obo)
-- [Azure Active Directory for Resource Server by Filter(Deprecated)](https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/aad/azure-spring-boot-sample-active-directory-resource-server-by-filter)
-- [Azure Active Directory B2C](https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/aad/azure-spring-boot-sample-active-directory-b2c-oidc)
-- [Cosmos DB SQL API](https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/cosmos/azure-spring-boot-sample-cosmos)
-- [Key Vault](https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/keyvault/azure-spring-boot-sample-keyvault-secrets)
-- [JMS Service Bus Queue](https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/servicebus/azure-spring-boot-sample-servicebus-jms-queue)
-- [JMS Service Bus Topic](https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/servicebus/azure-spring-boot-sample-servicebus-jms-topic)
+- [Azure Active Directory for Web Application](https://github.com/Azure-Samples/azure-spring-boot-samples/tree/azure-spring-boot_3.7/aad/azure-spring-boot-sample-active-directory-webapp)
+- [Azure Active Directory for Resource Server](https://github.com/Azure-Samples/azure-spring-boot-samples/tree/azure-spring-boot_3.7/aad/azure-spring-boot-sample-active-directory-resource-server)
+- [Azure Active Directory for Resource Server with Obo Clients](https://github.com/Azure-Samples/azure-spring-boot-samples/tree/azure-spring-boot_3.7/aad/azure-spring-boot-sample-active-directory-resource-server-obo)
+- [Azure Active Directory for Resource Server by Filter(Deprecated)](https://github.com/Azure-Samples/azure-spring-boot-samples/tree/azure-spring-boot_3.7/aad/azure-spring-boot-sample-active-directory-resource-server-by-filter)
+- [Azure Active Directory B2C](https://github.com/Azure-Samples/azure-spring-boot-samples/tree/azure-spring-boot_3.7/aad/azure-spring-boot-sample-active-directory-b2c-oidc)
+- [Cosmos DB SQL API](https://github.com/Azure-Samples/azure-spring-boot-samples/tree/azure-spring-boot_3.7/cosmos/azure-spring-boot-sample-cosmos)
+- [Key Vault](https://github.com/Azure-Samples/azure-spring-boot-samples/tree/azure-spring-boot_3.7/keyvault/azure-spring-boot-sample-keyvault-secrets)
+- [JMS Service Bus Queue](https://github.com/Azure-Samples/azure-spring-boot-samples/tree/azure-spring-boot_3.7/servicebus/azure-spring-boot-sample-servicebus-jms-queue)
+- [JMS Service Bus Topic](https://github.com/Azure-Samples/azure-spring-boot-samples/tree/azure-spring-boot_3.7/servicebus/azure-spring-boot-sample-servicebus-jms-topic)
 
 ## Contributing
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
