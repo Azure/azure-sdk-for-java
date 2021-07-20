@@ -4,6 +4,20 @@ stages:
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
       ServiceDirectory: identity
+      Clouds: 'Public,UsGov,China,Canary'
+      CloudConfig:
+        Public:
+            ScenarioName: AzureCloud
+            SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
+        UsGov:
+            ScenarioName: AzureUSGovernment
+            SubscriptionConfiguration: $(sub-config-gov-test-resources)
+        China:
+            ScenarioName: AzureChinaCloud
+            SubscriptionConfiguration: $(sub-config-cn-test-resources)
+        Canary:
+            ScenarioName: AzureCloudCanary
+            SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources-preview)
       Artifacts:
         - name: azure-identity
           groupId: com.azure
