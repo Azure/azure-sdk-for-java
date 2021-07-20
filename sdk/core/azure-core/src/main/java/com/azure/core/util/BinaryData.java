@@ -29,8 +29,33 @@ import java.nio.file.Path;
 import java.util.Objects;
 
 /**
- * This class is an abstraction for the many ways binary data can be represented.
+ *
+ * BinaryData is a convenient data interchange class for use throughout the Azure SDK for Java. Put simply, BinaryData
+ * enables developers to bring data in from external sources, and read it back from Azure services, in formats that
+ * appeal to them. This leaves BinaryData, and the Azure SDK for Java, the task of converting this data into appropriate
+ * formats to be transferred to and from these external services. This enables developers to focus on their business
+ * logic, and enables the Azure SDK for Java to optimize operations for best performance.
  * <p>
+ * BinaryData in its simplest form can be thought of as a container for content. Often this content is already in-memory
+ * as a String, byte array, or an Object that can be serialized into a String or byte[] (for example, if the Object has
+ * appropriate annotations for a library such as Jackson). When the BinaryData is about to be sent to an Azure Service,
+ * this in-memory content is copied into the network request and sent to the service.
+ * </p>
+ * <p>
+ * In more performance critical scenarios, where copying data into memory results in increased memory pressure, it is
+ * possible to create a BinaryData instance from a stream of data. From this, BinaryData can be connected directly to
+ * the outgoing network connection so that the stream is read directly to the network, without needing to first be read
+ * into memory on the system. Similarly, it is possible to read a stream of data from a BinaryData returned from an
+ * Azure Service without it first being read into memory. In many situations, these streaming operations can drastically
+ * reduce the memory pressure in applications, and so it is encouraged that all developers very carefully consider their
+ * ability to use the most appropriate API in BinaryData whenever they encounter an client library that makes use of
+ * BinaryData.
+ * </p>
+ * <p>
+ * Refer to the documentation of each method in the BinaryData class to better understand its performance
+ * characteristics, and refer to the samples below to understand the common usage scenarios of this class.
+ * </p>
+ *
  * {@link BinaryData} can be created from an {@link InputStream}, a {@link Flux} of {@link ByteBuffer}, a {@link
  * String}, an {@link Object}, or a byte array.
  *
@@ -110,7 +135,6 @@ public final class BinaryData {
     /**
      * Creates an instance of {@link BinaryData} from the given {@link Flux} of {@link ByteBuffer}.
      * <p>
-     * If the {@code data} is null an empty {@link BinaryData} will be returned.
      *
      * <p><strong>Create an instance from a Flux of ByteBuffer</strong></p>
      *
@@ -120,13 +144,12 @@ public final class BinaryData {
      * @return A {@link Mono} of {@link BinaryData} representing the {@link Flux} of {@link ByteBuffer}.
      */
     public static Mono<BinaryData> fromFlux(Flux<ByteBuffer> data) {
-        return fromFlux(data, null);
+        Objects.requireNonNull(data, "'content' cannot be null.");
+        return Mono.just(new BinaryData(new FluxByteBufferContent(data)));
     }
 
     /**
      * Creates an instance of {@link BinaryData} from the given {@link Flux} of {@link ByteBuffer}.
-     * <p>
-     * If the {@code data} is null an empty {@link BinaryData} will be returned.
      *
      * <p><strong>Create an instance from a Flux of ByteBuffer</strong></p>
      *
@@ -135,10 +158,12 @@ public final class BinaryData {
      * @param data The {@link Flux} of {@link ByteBuffer} that {@link BinaryData} will represent.
      * @param length The length of {@code data} in bytes.
      * @return A {@link Mono} of {@link BinaryData} representing the {@link Flux} of {@link ByteBuffer}.
+     * @throws IllegalArgumentException if the length is less than zero.
+     * @throws NullPointerException if {@code data} is null.
      */
     public static Mono<BinaryData> fromFlux(Flux<ByteBuffer> data, Long length) {
         Objects.requireNonNull(data, "'content' cannot be null.");
-        if (length != null && length < 0) {
+        if (length < 0) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'length' cannot be less than 0."));
         }
         return Mono.just(new BinaryData(new FluxByteBufferContent(data, length)));

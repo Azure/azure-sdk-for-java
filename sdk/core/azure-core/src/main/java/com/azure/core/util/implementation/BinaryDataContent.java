@@ -5,7 +5,6 @@ package com.azure.core.util.implementation;
 
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.serializer.JsonSerializer;
-import com.azure.core.util.serializer.JsonSerializerProviders;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
 import reactor.core.publisher.Flux;
@@ -20,8 +19,7 @@ import java.nio.ReadOnlyBufferException;
 public abstract class BinaryDataContent {
 
     static final byte[] ZERO_BYTE_ARRAY = new byte[0];
-    static final int STREAM_READ_SIZE = 1024;
-    static final JsonSerializer SERIALIZER = JsonSerializerProviders.createInstance(true);
+    static final int STREAM_READ_SIZE = 8092;
 
     /**
      * Gets the length of the {@link BinaryDataContent} if it is able to be calculated.

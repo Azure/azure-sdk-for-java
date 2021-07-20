@@ -16,7 +16,7 @@ import java.util.Objects;
 /**
  * A {@link BinaryDataContent} implementation which is backed by a {@code byte[]}.
  */
-public class ByteArrayContent extends BinaryDataContent {
+public final class ByteArrayContent extends BinaryDataContent {
     private final byte[] content;
 
     /**
@@ -49,9 +49,6 @@ public class ByteArrayContent extends BinaryDataContent {
 
     @Override
     public <T> T toObject(TypeReference<T> typeReference, ObjectSerializer serializer) {
-        Objects.requireNonNull(typeReference, "'typeReference' cannot be null.");
-        Objects.requireNonNull(serializer, "'serializer' cannot be null.");
-
         return serializer.deserializeFromBytes(this.content, typeReference);
     }
 

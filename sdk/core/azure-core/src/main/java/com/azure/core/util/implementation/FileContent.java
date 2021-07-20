@@ -29,12 +29,11 @@ import java.util.concurrent.atomic.AtomicReference;
 /**
  * A {@link BinaryDataContent} backed by a file.
  */
-public class FileContent extends BinaryDataContent {
+public final class FileContent extends BinaryDataContent {
     private static final ClientLogger LOGGER = new ClientLogger(FileContent.class);
     private final Path file;
     private final int chunkSize;
     private final long length;
-    private final Scheduler scheduler;
     private final AtomicReference<byte[]> bytes = new AtomicReference<>();
 
     /**
@@ -58,7 +57,6 @@ public class FileContent extends BinaryDataContent {
         }
 
         this.length = file.toFile().length();
-        this.scheduler = Schedulers.boundedElastic();
     }
 
     @Override
@@ -80,7 +78,7 @@ public class FileContent extends BinaryDataContent {
 
     @Override
     public <T> T toObject(TypeReference<T> typeReference, ObjectSerializer serializer) {
-        return serializer.deserializeFromBytes(toBytes(), typeReference);
+        return serializer.deserialize(toStream(), typeReference);
     }
 
     @Override

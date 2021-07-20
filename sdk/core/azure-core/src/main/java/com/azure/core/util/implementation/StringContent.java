@@ -18,7 +18,7 @@ import java.util.concurrent.atomic.AtomicReference;
 /**
  * A {@link BinaryDataContent} implementation which is backed by a {@code String}.
  */
-public class StringContent extends BinaryDataContent {
+public final class StringContent extends BinaryDataContent {
     private String content;
     private final AtomicReference<byte[]> bytes = new AtomicReference<>();
 
@@ -55,8 +55,6 @@ public class StringContent extends BinaryDataContent {
 
     @Override
     public <T> T toObject(TypeReference<T> typeReference, ObjectSerializer serializer) {
-        Objects.requireNonNull(typeReference, "'typeReference' cannot be null.");
-        Objects.requireNonNull(serializer, "'serializer' cannot be null.");
         return serializer.deserializeFromBytes(toBytes(), typeReference);
     }
 

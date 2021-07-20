@@ -20,7 +20,7 @@ import java.util.concurrent.atomic.AtomicReference;
 /**
  * A {@link BinaryDataContent} implementation which is backed by a {@link Flux} of {@link ByteBuffer}.
  */
-public class FluxByteBufferContent extends BinaryDataContent {
+public final class FluxByteBufferContent extends BinaryDataContent {
 
     private final Flux<ByteBuffer> content;
     private final AtomicReference<byte[]> bytes = new AtomicReference<>();

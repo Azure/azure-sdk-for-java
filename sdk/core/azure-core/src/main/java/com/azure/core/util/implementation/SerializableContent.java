@@ -33,7 +33,7 @@ public class SerializableContent extends BinaryDataContent {
         this.content = content;
         if (content == null) {
             bytes.set(ZERO_BYTE_ARRAY);
-            this.serializer = SERIALIZER;
+            this.serializer = serializer;
             return;
         }
         Objects.requireNonNull(serializer, "'serializer' cannot be null.");
@@ -52,9 +52,12 @@ public class SerializableContent extends BinaryDataContent {
 
     @Override
     public byte[] toBytes() {
-        bytes.compareAndSet(null, getBytes());
-        byte[] data = this.bytes.get();
-        return Arrays.copyOf(data, data.length);
+        byte[] retVal = this.bytes.get();
+        if (retVal == null) {
+            bytes.set(getBytes());
+            retVal = this.bytes.get();
+        }
+        return retVal;
     }
 
     @Override
@@ -81,6 +84,9 @@ public class SerializableContent extends BinaryDataContent {
     }
 
     private byte[] getBytes() {
+        // if (content == ZERO_BYTE_ARRAY) {
+        //     return ZERO_BYTE_ARRAY;
+        // }
         return serializer.serializeToBytes(content);
     }
 
