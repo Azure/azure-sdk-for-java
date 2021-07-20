@@ -96,4 +96,10 @@ public class AzureServiceBusTopicAutoConfiguration {
                                                    InstrumentationManager instrumentationManager) {
         return new ServiceBusTopicTemplate(factory, messageConverter, instrumentationManager);
     }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public InstrumentationManager instrumentationManager() {
+        return new InstrumentationManager();
+    }
 }

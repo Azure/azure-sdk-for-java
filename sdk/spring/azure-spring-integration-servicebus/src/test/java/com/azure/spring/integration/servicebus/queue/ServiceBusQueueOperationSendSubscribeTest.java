@@ -34,7 +34,7 @@ public class ServiceBusQueueOperationSendSubscribeTest
     @Override
     public void setUp() {
         this.closeable = MockitoAnnotations.openMocks(this);
-        this.sendSubscribeOperation = new ServiceBusQueueTestOperation(clientFactory,instrumentationManager);
+        this.sendSubscribeOperation = new ServiceBusQueueTestOperation(clientFactory, instrumentationManager);
     }
 
     @AfterEach

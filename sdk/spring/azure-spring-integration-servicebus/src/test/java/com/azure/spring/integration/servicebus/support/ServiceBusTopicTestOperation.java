@@ -38,8 +38,9 @@ public class ServiceBusTopicTestOperation extends ServiceBusTopicTemplate {
     private final AtomicInteger completeCalledTimes = new AtomicInteger(0);
 
 
-    public ServiceBusTopicTestOperation(ServiceBusTopicClientFactory clientFactory,InstrumentationManager instrumentationManager) {
-        super(clientFactory,instrumentationManager);
+    public ServiceBusTopicTestOperation(ServiceBusTopicClientFactory clientFactory,
+                                        InstrumentationManager instrumentationManager) {
+        super(clientFactory, instrumentationManager);
     }
 
     @Override

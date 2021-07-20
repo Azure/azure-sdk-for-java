@@ -86,5 +86,11 @@ public class AzureServiceBusQueueAutoConfiguration {
         return new ServiceBusQueueTemplate(factory, messageConverter,instrumentationManager);
     }
 
+    @Bean
+    @ConditionalOnMissingBean
+    public InstrumentationManager instrumentationManager() {
+        return new InstrumentationManager();
+    }
+
 
 }

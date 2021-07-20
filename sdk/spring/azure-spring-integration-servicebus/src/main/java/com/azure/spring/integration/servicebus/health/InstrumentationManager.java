@@ -9,6 +9,9 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
+/**
+ * ServiceBus health details management class.
+ */
 public class InstrumentationManager {
 
     private final Map<String, Object> runtime = new ConcurrentHashMap<>();

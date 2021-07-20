@@ -78,9 +78,5 @@ public class AzureServiceBusAutoConfiguration {
         return null;
     }
 
-    @Bean
-    public InstrumentationManager instrumentationManager() {
-        return new InstrumentationManager();
-    }
 
 }

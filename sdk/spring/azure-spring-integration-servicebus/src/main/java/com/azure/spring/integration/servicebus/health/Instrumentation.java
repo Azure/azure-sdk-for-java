@@ -5,6 +5,9 @@ package com.azure.spring.integration.servicebus.health;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/**
+ * ServiceBus health details entity class.
+ */
 public class Instrumentation {
 
     private final String name;
