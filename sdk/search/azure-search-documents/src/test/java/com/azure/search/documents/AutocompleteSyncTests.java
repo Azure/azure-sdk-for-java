@@ -27,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class AutocompleteSyncTests extends SearchTestBase {
+    private static final String HOTELS_DATA_JSON = "HotelsDataArray.json";
     private static final String INDEX_NAME = "azsearch-autocomplete-shared-instance";
 
     private static SearchIndexClient searchIndexClient;

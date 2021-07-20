@@ -6,7 +6,6 @@ package com.azure.search.documents;
 import com.azure.core.models.GeoPoint;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
-import com.azure.core.test.annotation.TestingServiceVersions;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.search.documents.indexes.SearchIndexClient;
@@ -64,7 +63,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@TestingServiceVersions(serviceVersionType = SearchServiceVersion.class)
 public class SearchSyncTests extends SearchTestBase {
     private final List<String> indexesToDelete = new ArrayList<>();
     private String synonymMapToDelete = "";
