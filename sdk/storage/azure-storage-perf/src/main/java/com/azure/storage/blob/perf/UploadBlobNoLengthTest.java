@@ -4,6 +4,7 @@
 package com.azure.storage.blob.perf;
 
 import com.azure.perf.test.core.RepeatingInputStream;
+import com.azure.storage.StoragePerfStressOptions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.options.BlobParallelUploadOptions;
 import com.azure.storage.blob.perf.core.BlobTestBase;
@@ -15,11 +16,11 @@ import java.nio.ByteBuffer;
 import static com.azure.perf.test.core.TestDataCreationHelper.createRandomByteBufferFlux;
 import static com.azure.perf.test.core.TestDataCreationHelper.createRandomInputStream;
 
-public class UploadBlobNoLengthTest extends BlobTestBase<UploadBlobPerfStressOptions> {
+public class UploadBlobNoLengthTest extends BlobTestBase<StoragePerfStressOptions> {
     protected final RepeatingInputStream inputStream;
     protected final Flux<ByteBuffer> byteBufferFlux;
 
-    public UploadBlobNoLengthTest(UploadBlobPerfStressOptions options) {
+    public UploadBlobNoLengthTest(StoragePerfStressOptions options) {
         super(options);
         inputStream = (RepeatingInputStream) createRandomInputStream(options.getSize());
         inputStream.mark(Integer.MAX_VALUE);

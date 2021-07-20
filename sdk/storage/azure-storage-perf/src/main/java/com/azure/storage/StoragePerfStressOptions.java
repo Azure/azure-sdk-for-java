@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob.perf;
+package com.azure.storage;
 
 import com.azure.perf.test.core.PerfStressOptions;
 import com.beust.jcommander.Parameter;
 
-public class UploadBlobPerfStressOptions extends PerfStressOptions {
+public class StoragePerfStressOptions extends PerfStressOptions {
 
     @Parameter(names = { "--transfer-single-upload-size" })
     private Long transferSingleUploadSize;
