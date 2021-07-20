@@ -46,7 +46,7 @@ public final class AttestationAsyncClientBuilder {
     public AttestationAsyncClientBuilder endpoint(String endpoint) {
         Objects.requireNonNull(endpoint);
         try {
-            URL url = new URL(endpoint);
+            new URL(endpoint);
         } catch (MalformedURLException ex) {
             throw logger.logExceptionAsError(new IllegalArgumentException(ex));
         }
