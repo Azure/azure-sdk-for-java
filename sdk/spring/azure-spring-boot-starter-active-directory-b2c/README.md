@@ -172,7 +172,7 @@ This scenario uses the [The OAuth 2.0 authorization code grant] flow to login in
     }
     ```
     
-    Copy the *home.html* from [Azure AD B2C Spring Boot Sample](https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/aad/azure-spring-boot-sample-active-directory-b2c-oidc/src/main/resources/templates), and replace the
+    Copy the *home.html* from [Azure AD B2C Spring Boot Sample](https://github.com/Azure-Samples/azure-spring-boot-samples/tree/azure-spring-boot_3.7/aad/azure-spring-boot-sample-active-directory-b2c-oidc/src/main/resources/templates), and replace the
     `${your-profile-edit-user-flow}` and `${your-password-reset-user-flow}` with your user flow name
     respectively that completed earlier.
     
@@ -524,6 +524,6 @@ Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/bl
 [The OAuth 2.0 authorization code grant]: https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-auth-code-flow
 [The OAuth 2.0 client credentials grant]: https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-client-creds-grant-flow
 [web_application_accessing_resource_servers]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-boot-starter-active-directory-b2c#web-application-accessing-resource-servers
-[azure-spring-boot-sample-active-directory-b2c-oidc]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/aad/azure-spring-boot-sample-active-directory-b2c-oidc
-[azure-spring-boot-sample-active-directory-b2c-resource-server]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/aad/azure-spring-boot-sample-active-directory-b2c-resource-server
+[azure-spring-boot-sample-active-directory-b2c-oidc]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/azure-spring-boot_3.7/aad/azure-spring-boot-sample-active-directory-b2c-oidc
+[azure-spring-boot-sample-active-directory-b2c-resource-server]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/azure-spring-boot_3.7/aad/azure-spring-boot-sample-active-directory-b2c-resource-server
 [ms-identity-java-spring-tutorial]:https://github.com/Azure-Samples/ms-identity-java-spring-tutorial
