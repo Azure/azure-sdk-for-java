@@ -30,7 +30,8 @@ public class KeyVaultEncode {
         byte[] magnitude = new byte[length];
         System.arraycopy(bytes, offset, magnitude, 0, length);
         BigInteger bigInteger = new BigInteger(1, magnitude);
-        return concatBytes(buildLengthBytes(TAG_INTEGER, length), bigInteger.toByteArray());
+        byte[] bigIntegerArray = bigInteger.toByteArray();
+        return concatBytes(buildLengthBytes(TAG_INTEGER, bigIntegerArray.length), bigIntegerArray);
     }
 
     static byte[] concatBytes(byte[] bytes1, byte[] bytes2) {
