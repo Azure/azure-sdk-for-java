@@ -3,6 +3,9 @@
 ## 2.7.0 (2021-07-20)
 ### Key Bug Fixes
 - Fix bug of setting message headers repeatedly with different value types. ([#22939](https://github.com/Azure/azure-sdk-for-java/pull/22939))
+### New Features
+- Support configuration of `AmqpTransportType` for ServiceBusClientBuilder with property of `spring.cloud.azure.servicebus.transportType`, supported values are `AMQP` and `AMQP_WEB_SOCKETS`.
+
 
 ### Dependency Upgrades
 - Upgrade to [Spring Integration 5.5.1](https://mvnrepository.com/artifact/org.springframework.integration/spring-integration-core/5.5.1).
