@@ -9,8 +9,8 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import reactor.core.publisher.Mono;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * HttpPipelinePolicy to redirect requests when 302 message is received to the new location marked by the
@@ -19,18 +19,17 @@ import java.util.List;
 public final class RedirectPolicy implements HttpPipelinePolicy {
     private static final int MAX_REDIRECTS = 10;
     private static final String LOCATION_HEADER_NAME = "Location";
-    private final List<String> locations = new ArrayList<>();
 
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        return attemptRedirection(context, next, 0);
+        return attemptRedirection(context, next, 0, new HashSet<>());
     }
 
     private Mono<HttpResponse> attemptRedirection(HttpPipelineCallContext context, HttpPipelineNextPolicy next,
-                                                  int redirectNumber) {
+                                                  int redirectNumber, Set<String> locations) {
         return next.clone().process().flatMap(httpResponse -> {
-            if (shouldRedirect(httpResponse, redirectNumber)) {
+            if (shouldRedirect(httpResponse, redirectNumber, locations)) {
                 String newLocation = httpResponse.getHeaderValue(LOCATION_HEADER_NAME);
                 locations.add(newLocation);
 
@@ -38,13 +37,13 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
                 newRequest.setUrl(newLocation);
                 context.setHttpRequest(newRequest);
 
-                return attemptRedirection(context, next, redirectNumber + 1);
+                return attemptRedirection(context, next, redirectNumber + 1, locations);
             }
             return Mono.just(httpResponse);
         });
     }
 
-    private boolean shouldRedirect(HttpResponse response, int redirectNumber) {
+    private boolean shouldRedirect(HttpResponse response, int redirectNumber, Set<String> locations) {
         return response.getStatusCode() == 302
             && !locations.contains(response.getHeaderValue(LOCATION_HEADER_NAME))
             && redirectNumber < MAX_REDIRECTS;
