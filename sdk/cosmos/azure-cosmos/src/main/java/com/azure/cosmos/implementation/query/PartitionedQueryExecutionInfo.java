@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.query;
 
+import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.JsonSerializable;
@@ -20,6 +21,7 @@ public final class PartitionedQueryExecutionInfo extends JsonSerializable {
 
     private QueryInfo queryInfo;
     private List<Range<String>> queryRanges;
+    private RequestTimeline queryPlanRequestTimeline;
 
     PartitionedQueryExecutionInfo(QueryInfo queryInfo, List<Range<String>> queryRanges) {
         this.queryInfo = queryInfo;
@@ -30,8 +32,9 @@ public final class PartitionedQueryExecutionInfo extends JsonSerializable {
                 Constants.PartitionedQueryExecutionInfo.VERSION_1);
     }
 
-    public PartitionedQueryExecutionInfo(byte[] bytes) {
+    public PartitionedQueryExecutionInfo(byte[] bytes, RequestTimeline queryPlanRequestTimeline) {
         super(bytes);
+        this.queryPlanRequestTimeline = queryPlanRequestTimeline;
     }
 
     public PartitionedQueryExecutionInfo(String jsonString) {
@@ -52,6 +55,10 @@ public final class PartitionedQueryExecutionInfo extends JsonSerializable {
         return this.queryRanges != null ? this.queryRanges
                 : (this.queryRanges = super.getList(
                         PartitionedQueryExecutionInfoInternal.QUERY_RANGES_PROPERTY, QUERY_RANGES_CLASS));
+    }
+
+    public RequestTimeline getQueryPlanRequestTimeline() {
+        return queryPlanRequestTimeline;
     }
 
     @Override

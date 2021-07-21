@@ -43,8 +43,8 @@ public final class TimeSeriesBaseline {
     /*
      * The baseline metadata values.
      */
-    @JsonProperty(value = "metadata")
-    private List<BaselineMetadata> metadata;
+    @JsonProperty(value = "metadataValues")
+    private List<BaselineMetadata> metadataValues;
 
     /**
      * Get the aggregation property: The aggregation type of the metric.
@@ -127,22 +127,22 @@ public final class TimeSeriesBaseline {
     }
 
     /**
-     * Get the metadata property: The baseline metadata values.
+     * Get the metadataValues property: The baseline metadata values.
      *
-     * @return the metadata value.
+     * @return the metadataValues value.
      */
-    public List<BaselineMetadata> metadata() {
-        return this.metadata;
+    public List<BaselineMetadata> metadataValues() {
+        return this.metadataValues;
     }
 
     /**
-     * Set the metadata property: The baseline metadata values.
+     * Set the metadataValues property: The baseline metadata values.
      *
-     * @param metadata the metadata value to set.
+     * @param metadataValues the metadataValues value to set.
      * @return the TimeSeriesBaseline object itself.
      */
-    public TimeSeriesBaseline withMetadata(List<BaselineMetadata> metadata) {
-        this.metadata = metadata;
+    public TimeSeriesBaseline withMetadataValues(List<BaselineMetadata> metadataValues) {
+        this.metadataValues = metadataValues;
         return this;
     }
 
@@ -172,8 +172,8 @@ public final class TimeSeriesBaseline {
         } else {
             data().forEach(e -> e.validate());
         }
-        if (metadata() != null) {
-            metadata().forEach(e -> e.validate());
+        if (metadataValues() != null) {
+            metadataValues().forEach(e -> e.validate());
         }
     }
 }
