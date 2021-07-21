@@ -197,12 +197,6 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
             return;
         }
 
-        // Why should we avoid escaping flattening of Map keys in a final class?
-        // int mod = value.getClass().getModifiers();
-        // if (Modifier.isFinal(mod) || Modifier.isStatic(mod)) {
-        //     return;
-        // }
-
         for (Field f : getAllDeclaredFields(value.getClass())) {
             // Why is this setting accessible to true?
             f.setAccessible(true);
