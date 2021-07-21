@@ -67,7 +67,8 @@ public class WebPubSubServiceClientTests extends TestBase {
     public void testBroadcastString() {
         assertResponse(client.sendToAllWithResponse(
                 BinaryData.fromString("Hello World - Broadcast test!"),
-                new RequestOptions().addHeader("Content-Type", "text/plain"),
+                new RequestOptions().addRequestCallback(request -> request.getHeaders().set("Content-Type","text" +
+                        "/plain")),
                 Context.NONE), 202);
     }
 
@@ -76,7 +77,8 @@ public class WebPubSubServiceClientTests extends TestBase {
         byte[] bytes = "Hello World - Broadcast test!".getBytes();
         assertResponse(client.sendToAllWithResponse(
                 BinaryData.fromBytes(bytes),
-                new RequestOptions().addHeader("Content-Type", "application/octet-stream"),
+                new RequestOptions().addRequestCallback(request -> request.getHeaders().set("Content-Type",
+                        "application/octet-stream")),
                 Context.NONE), 202);
     }
 
@@ -84,7 +86,8 @@ public class WebPubSubServiceClientTests extends TestBase {
     public void testSendToUserString() {
         assertResponse(client.sendToUserWithResponse("test_user",
                 BinaryData.fromString("Hello World!"),
-                new RequestOptions().addHeader("Content-Type", "text/plain"),
+                new RequestOptions().addRequestCallback(request -> request.getHeaders().set("Content-Type","text" +
+                        "/plain")),
                 Context.NONE), 202);
     }
 
@@ -92,7 +95,8 @@ public class WebPubSubServiceClientTests extends TestBase {
     public void testSendToUserBytes() {
         assertResponse(client.sendToUserWithResponse("test_user",
                 BinaryData.fromBytes("Hello World!".getBytes(StandardCharsets.UTF_8)),
-                new RequestOptions().addHeader("Content-Type", "application/octet-stream"),
+                new RequestOptions().addRequestCallback(request -> request.getHeaders().set("Content-Type",
+                        "application/octet-stream")),
                 Context.NONE), 202);
     }
 
@@ -100,7 +104,8 @@ public class WebPubSubServiceClientTests extends TestBase {
     public void testSendToConnectionString() {
         assertResponse(client.sendToConnectionWithResponse("test_connection",
                 BinaryData.fromString("Hello World!"),
-                new RequestOptions().addHeader("Content-Type", "text/plain"),
+                new RequestOptions().addRequestCallback(request -> request.getHeaders().set("Content-Type","text" +
+                        "/plain")),
                 Context.NONE), 202);
     }
 
@@ -108,7 +113,8 @@ public class WebPubSubServiceClientTests extends TestBase {
     public void testSendToConnectionBytes() {
         assertResponse(client.sendToConnectionWithResponse("test_connection",
                 BinaryData.fromBytes("Hello World!".getBytes(StandardCharsets.UTF_8)),
-                new RequestOptions().addHeader("Content-Type", "application/octet-stream"),
+                new RequestOptions().addRequestCallback(request -> request.getHeaders().set("Content-Type",
+                        "application/octet-stream")),
                 Context.NONE), 202);
     }
 
@@ -116,13 +122,15 @@ public class WebPubSubServiceClientTests extends TestBase {
     public void testSendToConnectionJson() {
         assertResponse(client.sendToConnectionWithResponse("test_connection",
                 BinaryData.fromString("{\"data\": true}"),
-                new RequestOptions().addHeader("Content-Type", "application/json"),
+                new RequestOptions()
+                        .addRequestCallback(request -> request.getHeaders().set("Content-Type", "application/json")),
                 Context.NONE), 202);
     }
 
     @Test
     public void testSendToAllJson() {
-        RequestOptions requestOptions = new RequestOptions().addHeader("Content-Type", "application/json");
+        RequestOptions requestOptions = new RequestOptions().addRequestCallback(request -> request.getHeaders().set(
+                "Content-Type","application/json"));
 
         assertResponse(client.sendToAllWithResponse(BinaryData.fromString("{\"boolvalue\": true}"),
                 requestOptions,
@@ -163,6 +171,7 @@ public class WebPubSubServiceClientTests extends TestBase {
     public void testSendMessageToGroup() {
         assertResponse(client.sendToGroupWithResponse("java",
                 BinaryData.fromString("Hello World!"),
-                new RequestOptions().addHeader("Content-Type", "text/plain"), Context.NONE), 202);
+                new RequestOptions().addRequestCallback(request -> request.getHeaders().set("Content-Type","text" +
+                        "/plain")), Context.NONE), 202);
     }
 }

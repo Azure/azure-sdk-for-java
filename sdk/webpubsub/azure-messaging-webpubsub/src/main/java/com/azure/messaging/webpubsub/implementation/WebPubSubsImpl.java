@@ -3207,24 +3207,4 @@ public final class WebPubSubsImpl {
             String hub, String permission, String connectionId, RequestOptions requestOptions, Context context) {
         return checkPermissionWithResponseAsync(hub, permission, connectionId, requestOptions, context).block();
     }
-
-    // private List<BinaryData> getValues(BinaryData binaryData, String path) {
-    //     try {
-    //         Object obj = binaryData.toObject(Object.class);
-    //         Object values = ((Map) obj).get(path);
-    //         return (List<BinaryData>)
-    //                 (((List) values).stream().map(BinaryData::fromObject).collect(Collectors.toList()));
-    //     } catch (Exception e) {
-    //         return null;
-    //     }
-    // }
-    //
-    // private String getNextLink(BinaryData binaryData, String path) {
-    //     try {
-    //         Object obj = binaryData.toObject(Object.class);
-    //         return (String) ((Map) obj).getOrDefault(path, null);
-    //     } catch (Exception e) {
-    //         return null;
-    //     }
-    // }
 }
