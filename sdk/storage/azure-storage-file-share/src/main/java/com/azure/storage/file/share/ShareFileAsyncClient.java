@@ -1546,7 +1546,7 @@ public class ShareFileAsyncClient {
          parallelTransferOptions.getMaxConcurrency() appends will be happening at once, so we guarantee buffering of
          only concurrency + 1 chunks at a time.
          */
-        return chunkedSource.flatMapSequential(stagingArea::write, 1)
+        return chunkedSource.flatMapSequential(stagingArea::write, 1, 1)
             .concatWith(Flux.defer(stagingArea::flush))
             .map(bufferAggregator -> Tuples.of(bufferAggregator, bufferAggregator.length(), 0L))
             /* Scan reduces a flux with an accumulator while emitting the intermediate results. */
@@ -1575,7 +1575,7 @@ public class ShareFileAsyncClient {
                 return uploadRangeWithResponse(new ShareFileUploadRangeOptions(progressData, currentBufferLength)
                     .setOffset(currentOffset).setRequestConditions(requestConditions), context)
                     .flux();
-            }, parallelTransferOptions.getMaxConcurrency())
+            }, parallelTransferOptions.getMaxConcurrency(), 1)
             .last();
     }
 

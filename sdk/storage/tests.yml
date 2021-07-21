@@ -72,7 +72,7 @@ stages:
                 JAVA_HOME: $(JAVA_HOME_11_X64)
               ${{ if eq(variables['JavaTestVersion'], '1.8') }}:
                 JAVA_HOME: $(JAVA_HOME_8_X64)
-              STORAGE_CONNECTION_STRING: $(PRIMARY_STORAGE_CONNECTION_STRING)
+            condition: and(succeeded(), not(contains(variables['OSVmImage'], 'mac')))
           - pwsh: |
               New-Item $(Build.ArtifactStagingDirectory)/test-logs -ItemType directory
               Copy-Item sdk/storage/azure-storage-blob/target/test.log $(Build.ArtifactStagingDirectory)/test-logs/azure-storage-blob-test.log -ErrorAction SilentlyContinue

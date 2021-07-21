@@ -4,6 +4,8 @@
 ### Key Bug Fixes
 - Fixed `EventHubMessageConverter` to load all system properties of `EventData` and put in the header of org.springframework.messaging.Message.([#22683](https://github.com/Azure/azure-sdk-for-java/pull/22683/))
 
+### Breaking Changes
+- Encode message payload with UTF-8 charset instead of default charset of JVM when the payload is String. ([#23056](https://github.com/Azure/azure-sdk-for-java/pull/23056))
 
 ## 2.6.0 (2021-06-23)
 ### Breaking Changes

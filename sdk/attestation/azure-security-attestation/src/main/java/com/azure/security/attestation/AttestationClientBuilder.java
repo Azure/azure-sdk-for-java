@@ -18,11 +18,14 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.security.attestation.implementation.AttestationClientImplBuilder;
 import com.azure.security.attestation.implementation.AttestationClientImpl;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /** A builder for creating a new instance of the AttestationClient type. */
 @ServiceClientBuilder(
@@ -45,6 +48,9 @@ public final class AttestationClientBuilder {
 
     private final Map<String, String> properties = new HashMap<>();
 
+    /**
+     * Creates a new instance of the AttestationClientBuilder class.
+     */
     public AttestationClientBuilder() {
         this.pipelinePolicies = new ArrayList<>();
     }
@@ -53,23 +59,23 @@ public final class AttestationClientBuilder {
      * The attestation instance base URI, for example
      * https://mytenant.attest.azure.net.
      */
-    private String instanceUrl;
+    private String endpoint;
 
     /**
-     * Sets The attestation instance base URI, for example https://mytenant.attest.azure.net.
+     * Sets The attestation endpoint URI, for example https://mytenant.attest.azure.net.
      *
-     * @param instanceUrl the instanceUrl value.
+     * @param endpoint The endpoint to connect to.
      * @return the AttestationClientBuilder.
      */
-    public AttestationClientBuilder instanceUrl(String instanceUrl) {
-        this.instanceUrl = instanceUrl;
+    public AttestationClientBuilder endpoint(String endpoint) {
+        this.endpoint = endpoint;
         return this;
     }
 
     /*
      * The HTTP pipeline to send requests through
      */
-    private HttpPipeline pipeline;
+    private HttpPipeline httpPipeline;
 
     /**
      * Sets The HTTP pipeline to send requests through.
@@ -78,7 +84,7 @@ public final class AttestationClientBuilder {
      * @return the AttestationClientBuilder.
      */
     public AttestationClientBuilder pipeline(HttpPipeline pipeline) {
-        this.pipeline = pipeline;
+        this.httpPipeline = pipeline;
         return this;
     }
 
@@ -167,7 +173,7 @@ public final class AttestationClientBuilder {
     /*
      * The list of Http pipeline policies to add.
      */
-    private List<HttpPipelinePolicy> pipelinePolicies;
+    private final List<HttpPipelinePolicy> pipelinePolicies;
 
     /**
      * Adds a custom Http pipeline policy.
@@ -186,14 +192,22 @@ public final class AttestationClientBuilder {
      * @return an instance of AttestationClientImpl.
      */
     private AttestationClientImpl buildInnerClient() {
-        if (pipeline == null) {
-            this.pipeline = createHttpPipeline();
+        Objects.requireNonNull(endpoint);
+
+        HttpPipeline pipeline;
+        if (httpPipeline != null) {
+            pipeline = httpPipeline;
+        } else {
+            pipeline = createHttpPipeline();
         }
         if (serializerAdapter == null) {
             this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
         }
-        AttestationClientImpl client = new AttestationClientImpl(pipeline, serializerAdapter, instanceUrl);
-        return client;
+        AttestationClientImplBuilder client = new AttestationClientImplBuilder()
+            .pipeline(pipeline)
+            .instanceUrl(endpoint)
+            .serializerAdapter(serializerAdapter);
+        return client.buildClient();
     }
 
     private HttpPipeline createHttpPipeline() {
@@ -213,12 +227,10 @@ public final class AttestationClientBuilder {
         policies.addAll(this.pipelinePolicies);
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
-        HttpPipeline httpPipeline =
-                new HttpPipelineBuilder()
-                        .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                        .httpClient(httpClient)
-                        .build();
-        return httpPipeline;
+        return new HttpPipelineBuilder()
+                .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                .httpClient(httpClient)
+                .build();
     }
 
     /**

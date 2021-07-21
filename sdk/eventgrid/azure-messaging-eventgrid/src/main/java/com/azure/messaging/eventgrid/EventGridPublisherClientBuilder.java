@@ -6,6 +6,7 @@ package com.azure.messaging.eventgrid;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
@@ -14,6 +15,7 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.AzureKeyCredentialPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -53,6 +55,7 @@ public final class EventGridPublisherClientBuilder {
     private static final String EVENTGRID_PROPERTIES = "azure-messaging-eventgrid.properties";
     private static final String NAME = "name";
     private static final String VERSION = "version";
+    private static final String DEFAULT_EVENTGRID_SCOPE = "https://eventgrid.azure.net/.default";
 
     private final String clientName;
 
@@ -69,6 +72,8 @@ public final class EventGridPublisherClientBuilder {
     private AzureKeyCredential keyCredential;
 
     private AzureSasCredential sasToken;
+
+    private TokenCredential tokenCredential;
 
     private EventGridServiceVersion serviceVersion;
 
@@ -131,14 +136,29 @@ public final class EventGridPublisherClientBuilder {
 
         httpPipelinePolicies.add(new AddDatePolicy());
 
-        // Using token before key if both are set
+        final int credentialCount = (sasToken != null ? 1 : 0) + (keyCredential != null ? 1 : 0)
+            + (tokenCredential != null ? 1 : 0);
+        if (credentialCount > 1) {
+            throw logger.logExceptionAsError(
+                new IllegalStateException("More than 1 credentials are set while building a client. "
+                    + "You should set one and only one credential of type 'TokenCredential', 'AzureSasCredential', "
+                    + "or 'AzureKeyCredential'."));
+        } else if (credentialCount == 0) {
+            throw logger.logExceptionAsError(
+                new IllegalStateException("Missing credential information while building a client."
+                    + "You should set one and only one credential of type 'TokenCredential', 'AzureSasCredential', "
+                    + "or 'AzureKeyCredential'."));
+        }
         if (sasToken != null) {
             httpPipelinePolicies.add((context, next) -> {
                 context.getHttpRequest().getHeaders().set(AEG_SAS_TOKEN, sasToken.getSignature());
                 return next.process();
             });
-        } else {
+        } else if (keyCredential != null) {
             httpPipelinePolicies.add(new AzureKeyCredentialPolicy(AEG_SAS_KEY, keyCredential));
+        } else {
+            httpPipelinePolicies.add(new BearerTokenAuthenticationPolicy(this.tokenCredential,
+                DEFAULT_EVENTGRID_SCOPE));
         }
 
         httpPipelinePolicies.addAll(policies);
@@ -238,12 +258,25 @@ public final class EventGridPublisherClientBuilder {
 
     /**
      * Set the domain or topic authentication using an already obtained Shared Access Signature token.
-     * @param credential the token credential to use.
+     * @param credential the sas credential to use.
      *
      * @return the builder itself.
      */
     public EventGridPublisherClientBuilder credential(AzureSasCredential credential) {
         this.sasToken = credential;
+        return this;
+    }
+
+    /**
+     * Set the domain or topic authentication using Azure Activity Directory authentication.
+     * Refer to <a href="https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity">azure-identity</a>
+     *
+     * @param credential the token credential to use.
+     *
+     * @return the builder itself.
+     */
+    public EventGridPublisherClientBuilder credential(TokenCredential credential) {
+        this.tokenCredential = credential;
         return this;
     }
 
