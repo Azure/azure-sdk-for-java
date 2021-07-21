@@ -14,7 +14,7 @@ function Run-Scenario {
         [string] $ExtraFlags
     )
     Write-Host "Executing '$Scenario' with '$HeapSize' heap"
-    Invoke-Expression "& '$JavaPath' -Xms$HeapSize -Xmx$HeapSize $ExtraFlags -jar '$PerfJarPath' $Scenario"
+    Invoke-Expression "& '$JavaPath' -Xms$HeapSize -Xmx$HeapSize '$ExtraFlags' -jar '$PerfJarPath' $Scenario"
     if ($LASTEXITCODE -ne 0) {
         Write-Host "Scenario failed, exiting"
         exit 1
