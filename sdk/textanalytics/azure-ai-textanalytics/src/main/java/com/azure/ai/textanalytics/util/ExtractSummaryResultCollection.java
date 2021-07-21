@@ -9,7 +9,8 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 /**
- *
+ * A collection model that contains a list of {@link ExtractSummaryResult} along with model version and
+ * batch's statistics.
  */
 @Immutable
 public final class ExtractSummaryResultCollection extends IterableStream<ExtractSummaryResult> {

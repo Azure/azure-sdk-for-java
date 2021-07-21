@@ -85,20 +85,21 @@ public final class ExtractSummaryAction {
     }
 
     /**
-     * Gets the type of summary sentences order.
+     * Gets the order in which the summary sentences will be presented by.
      *
-     * @return The type of summary sentences order.
+     * @return The order in which the summary sentences will be presented by.
      */
     public SummarySentencesOrder getSentencesOrderBy() {
         return sentencesOrderBy;
     }
 
     /**
-     * Sets the type of summary sentences order.The default value is {@link SummarySentencesOrder#OFFSET}.
+     * Sets the order in which the summary sentences will be presented by.
+     * Defaults to {@link SummarySentencesOrder#OFFSET} if not specified.
      *
-     * @param sentencesOrderBy The type of summary sentences order.The default value is
-     * {@link SummarySentencesOrder#OFFSET}.
-     * 
+     * @param sentencesOrderBy The type of summary sentences order. Defaults to {@link SummarySentencesOrder#OFFSET}
+     * if not specified.
+     *
      * @return The {@link ExtractSummaryAction} object itself.
      */
     public ExtractSummaryAction setSentencesOrderBy(SummarySentencesOrder sentencesOrderBy) {

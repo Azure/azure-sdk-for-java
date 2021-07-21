@@ -23,10 +23,12 @@ import com.azure.core.util.polling.SyncPoller;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Sample demonstrates how to synchronously execute an "Extractive Summarization" action in a batch of documents,
+ */
 public class AnalyzeExtractiveSummarization {
     /**
-     * Main method to invoke this demo about how to analyze a batch of tasks.
+     * Main method to invoke this demo about how to analyze an "Extractive Summarization" action.
      *
      * @param args Unused arguments to the program.
      */
@@ -69,35 +71,42 @@ public class AnalyzeExtractiveSummarization {
                         new ExtractSummaryAction()
                             .setMaxSentenceCount(2)
                             .setSentencesOrderBy(SummarySentencesOrder.RANK)),
-                new AnalyzeActionsOptions().setIncludeStatistics(false),
+                new AnalyzeActionsOptions(),
                 Context.NONE);
 
         syncPoller.waitForCompletion();
 
         Iterable<PagedResponse<AnalyzeActionsResult>> pagedResults = syncPoller.getFinalResult().iterableByPage();
         for (PagedResponse<AnalyzeActionsResult> perPage : pagedResults) {
-            for (AnalyzeActionsResult actionsResult : perPage.getElements()) {
-                System.out.println("Key sentences extraction action results:");
-                for (ExtractSummaryActionResult actionResult : actionsResult.getExtractSummaryResults()) {
-                    if (!actionResult.isError()) {
-                        for (ExtractSummaryResult documentResult : actionResult.getDocumentsResults()) {
-                            if (!documentResult.isError()) {
-                                System.out.println("\tExtracted summary sentences:");
-                                for (SummarySentence summarySentence : documentResult.getSentences()) {
-                                    System.out.printf(
-                                        "\t\t Sentence text: %s, length: %d, offset: %d, importance score: %f.%n",
-                                        summarySentence.getText(), summarySentence.getLength(),
-                                        summarySentence.getOffset(), summarySentence.getRankScore());
-                                }
-                            } else {
-                                System.out.printf("\tCannot extract key sentences. Error: %s%n",
-                                    documentResult.getError().getMessage());
+            processAnalyzeActionsResult(perPage);
+        }
+    }
+
+    private static void processAnalyzeActionsResult(PagedResponse<AnalyzeActionsResult> perPage) {
+        System.out.printf("Response code: %d, Continuation Token: %s.%n",
+            perPage.getStatusCode(), perPage.getContinuationToken());
+
+        for (AnalyzeActionsResult actionsResult : perPage.getElements()) {
+            System.out.println("Extractive Summarization action results:");
+            for (ExtractSummaryActionResult actionResult : actionsResult.getExtractSummaryResults()) {
+                if (!actionResult.isError()) {
+                    for (ExtractSummaryResult documentResult : actionResult.getDocumentsResults()) {
+                        if (!documentResult.isError()) {
+                            System.out.println("\tExtracted summary sentences:");
+                            for (SummarySentence summarySentence : documentResult.getSentences()) {
+                                System.out.printf(
+                                    "\t\t Sentence text: %s, length: %d, offset: %d, rank score: %f.%n",
+                                    summarySentence.getText(), summarySentence.getLength(),
+                                    summarySentence.getOffset(), summarySentence.getRankScore());
                             }
+                        } else {
+                            System.out.printf("\tCannot extract summary sentences. Error: %s%n",
+                                documentResult.getError().getMessage());
                         }
-                    } else {
-                        System.out.printf("\tCannot execute Key Sentences Extraction action. Error: %s%n",
-                            actionResult.getError().getMessage());
                     }
+                } else {
+                    System.out.printf("\tCannot execute Extractive Summarization action. Error: %s%n",
+                        actionResult.getError().getMessage());
                 }
             }
         }

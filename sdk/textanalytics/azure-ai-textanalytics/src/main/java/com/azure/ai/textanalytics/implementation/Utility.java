@@ -236,6 +236,14 @@ public final class Utility {
             innerError.getTarget());
     }
 
+    public static TextAnalyticsWarning toTextAnalyticsWarning(
+        com.azure.ai.textanalytics.implementation.models.TextAnalyticsWarning warning) {
+        final WarningCodeValue warningCodeValue = warning.getCode();
+        return new TextAnalyticsWarning(
+            WarningCode.fromString(warningCodeValue == null ? null : warningCodeValue.toString()),
+            warning.getMessage());
+    }
+
     /**
      * Convert the incoming input {@link TextDocumentInput} to the service expected {@link MultiLanguageInput}.
      *
@@ -347,14 +355,8 @@ public final class Utility {
                         CategorizedEntityPropertiesHelper.setOffset(categorizedEntity, entity.getOffset());
                         return categorizedEntity;
                     }).collect(Collectors.toList())),
-                    new IterableStream<>(documentEntities.getWarnings().stream()
-                        .map(warning -> {
-                            final WarningCodeValue warningCodeValue = warning.getCode();
-                            return new TextAnalyticsWarning(
-                                WarningCode.fromString(warningCodeValue == null ? null : warningCodeValue.toString()),
-                                warning.getMessage());
-                        }).collect(Collectors.toList())))
-            )));
+                    new IterableStream<>(documentEntities.getWarnings().stream().map(
+                        warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList()))))));
         // Document errors
         for (DocumentError documentError : entitiesResult.getErrors()) {
             recognizeEntitiesResults.add(new RecognizeEntitiesResult(documentError.getId(), null,
@@ -381,13 +383,8 @@ public final class Utility {
                 return piiEntity;
             }).collect(Collectors.toList());
             // Warnings
-            final List<TextAnalyticsWarning> warnings = documentEntities.getWarnings().stream()
-                .map(warning -> {
-                    final WarningCodeValue warningCodeValue = warning.getCode();
-                    return new TextAnalyticsWarning(
-                        WarningCode.fromString(warningCodeValue == null ? null : warningCodeValue.toString()),
-                        warning.getMessage());
-                }).collect(Collectors.toList());
+            final List<TextAnalyticsWarning> warnings = documentEntities.getWarnings().stream().map(
+                warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList());
 
             recognizeEntitiesResults.add(new RecognizePiiEntitiesResult(
                 documentEntities.getId(),
@@ -420,12 +417,8 @@ public final class Utility {
                     : toTextDocumentStatistics(documentKeyPhrases.getStatistics()), null,
                 new KeyPhrasesCollection(
                     new IterableStream<>(documentKeyPhrases.getKeyPhrases()),
-                    new IterableStream<>(documentKeyPhrases.getWarnings().stream().map(warning -> {
-                        final WarningCodeValue warningCodeValue = warning.getCode();
-                        return new TextAnalyticsWarning(
-                            WarningCode.fromString(warningCodeValue == null ? null : warningCodeValue.toString()),
-                            warning.getMessage());
-                    }).collect(Collectors.toList())))));
+                    new IterableStream<>(documentKeyPhrases.getWarnings().stream().map(
+                        warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList())))));
         }
         // Document errors
         for (DocumentError documentError : keyPhraseResult.getErrors()) {
@@ -481,14 +474,7 @@ public final class Utility {
                                 return entity;
                             }).collect(Collectors.toList())),
                         new IterableStream<>(documentLinkedEntities.getWarnings().stream().map(
-                            warning -> {
-                                final WarningCodeValue warningCodeValue = warning.getCode();
-                                return new TextAnalyticsWarning(
-                                    WarningCode.fromString(warningCodeValue == null ? null
-                                                               : warningCodeValue.toString()),
-                                    warning.getMessage());
-                            }).collect(Collectors.toList())
-                        )
+                            warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList()))
                     )
                 )
             ).collect(Collectors.toList());
@@ -815,12 +801,7 @@ public final class Utility {
 
         // Warnings
         final List<TextAnalyticsWarning> warnings = documentSentiment.getWarnings().stream().map(
-            warning -> {
-                final WarningCodeValue warningCodeValue = warning.getCode();
-                return new TextAnalyticsWarning(
-                    WarningCode.fromString(warningCodeValue == null ? null : warningCodeValue.toString()),
-                    warning.getMessage());
-            }).collect(Collectors.toList());
+            warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList());
 
         final DocumentSentimentValue documentSentimentValue = documentSentiment.getSentiment();
         return new AnalyzeSentimentResult(
@@ -916,12 +897,7 @@ public final class Utility {
 
         // Warnings
         final List<TextAnalyticsWarning> warnings = documentSummary.getWarnings().stream().map(
-            warning -> {
-                final WarningCodeValue warningCodeValue = warning.getCode();
-                return new TextAnalyticsWarning(
-                    WarningCode.fromString(warningCodeValue == null ? null : warningCodeValue.toString()),
-                    warning.getMessage());
-            }).collect(Collectors.toList());
+            warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList());
 
         final SummarySentenceCollection summarySentenceCollection = new SummarySentenceCollection(
             new IterableStream<>(summarySentences),

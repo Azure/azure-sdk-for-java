@@ -1,6 +1,6 @@
 # Azure Text Analytics client library for Java
 Text Analytics is a cloud-based service that provides advanced natural language processing over raw text, 
-and includes six main functions:
+and includes the main functions below:
 
 - Sentiment Analysis
 - Language Detection
@@ -31,13 +31,14 @@ and includes six main functions:
 </dependency>
 ```
 [//]: # ({x-version-update-end})
-**Note:** This version of the client library defaults to the `v3.1` version of the service.
+**Note:** This version of the client library defaults to the `v3.2-preview.1` version of the service.
 
 This table shows the relationship between SDK services and supported API versions of the service:
 
 |SDK version|Supported API version of service
 |-|-
-|5.1.x | 3.0, 3.1 (default)
+|5.2.x | 3.0, 3.1, 3.2-preview.1 (default)
+|5.1.x | 3.0, 3.1 
 |5.0.x | 3.0
 
 #### Create a Cognitive Services or Text Analytics resource
@@ -379,7 +380,8 @@ syncPoller.getFinalResult().forEach(
 ### Analyze multiple actions
 The `Analyze` functionality allows to choose which of the supported Text Analytics features to execute in the same
 set of documents. Currently, the supported features are: `entity recognition`, `linked entity recognition`,
-`Personally Identifiable Information (PII) entity recognition`, `key phrase extraction`, and `sentiment analysis`. 
+`Personally Identifiable Information (PII) entity recognition`, `key phrase extraction`, `sentiment analysis`, and
+`extractive summarization`. 
 <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L243-L291 -->
 ```java
 List<TextDocumentInput> documents = Arrays.asList(

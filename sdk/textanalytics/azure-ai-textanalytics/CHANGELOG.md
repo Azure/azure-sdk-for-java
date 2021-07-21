@@ -1,6 +1,7 @@
 # Release History
 ## 5.2.0-beta.1 (Unreleased)
 ### Feature Added
+- We are now targeting the service's v3.2-preview.1 API as the default instead of v3.1.
 - Added support for the `Extractive Summmarization` new feature.
 
 ## 5.1.0 (2021-07-07)

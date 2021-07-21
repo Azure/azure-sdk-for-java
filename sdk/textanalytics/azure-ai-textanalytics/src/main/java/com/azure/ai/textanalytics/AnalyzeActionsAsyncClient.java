@@ -107,9 +107,9 @@ class AnalyzeActionsAsyncClient {
     private static final String ENTITY_LINKING_TASKS = "entityLinkingTasks";
     private static final String SENTIMENT_ANALYSIS_TASKS = "sentimentAnalysisTasks";
     private static final String EXTRACTIVE_SUMMARIZATION_TASKS = "extractiveSummarizationTasks";
-    private static final String REGEX_ACTION_ERROR_TARGET = "#/tasks/(keyPhraseExtractionTasks|"
-        + "entityRecognitionPiiTasks|entityRecognitionTasks|entityLinkingTasks|sentimentAnalysisTasks|"
-        + "extractiveSummarizationTasks)/(\\d+)";
+    private static final String REGEX_ACTION_ERROR_TARGET =
+        String.format("#/tasks/(%s|%s|%s|%s|%s|%s)/(\\d+)", KEY_PHRASE_EXTRACTION_TASKS, ENTITY_RECOGNITION_PII_TASKS,
+            ENTITY_RECOGNITION_TASKS, ENTITY_LINKING_TASKS, SENTIMENT_ANALYSIS_TASKS, EXTRACTIVE_SUMMARIZATION_TASKS);
 
     private final ClientLogger logger = new ClientLogger(AnalyzeActionsAsyncClient.class);
     private final TextAnalyticsClientImpl service;

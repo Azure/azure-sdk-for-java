@@ -2406,8 +2406,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         analyzeExtractSummaryRunner((documents, tasks) -> {
             SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedIterable> syncPoller =
-                client.beginAnalyzeActions(documents, tasks, "en",
-                    new AnalyzeActionsOptions().setIncludeStatistics(false));
+                client.beginAnalyzeActions(documents, tasks, "en", new AnalyzeActionsOptions());
             syncPoller = setPollInterval(syncPoller);
             syncPoller.waitForCompletion();
             AnalyzeActionsResultPagedIterable result = syncPoller.getFinalResult();
