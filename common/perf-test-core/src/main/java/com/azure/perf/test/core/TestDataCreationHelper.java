@@ -16,7 +16,8 @@ import java.util.Random;
  * Utility class to help with data creation for perf testing.
  */
 public class TestDataCreationHelper {
-    private static final int RANDOM_BYTES_LENGTH = 1024 * 1024; // 1MB
+    private static final int RANDOM_BYTES_LENGTH = Integer.parseInt(
+        System.getProperty("azure.core.perf.test.data.buffer.size", "1048576")); // 1MB default;
     private static final byte[] RANDOM_BYTES;
     private static final int SIZE = (1024 * 1024 * 1024) + 1;
 
@@ -34,10 +35,10 @@ public class TestDataCreationHelper {
      * @return The created {@link Flux}
      */
     private static Flux<ByteBuffer> createCircularByteBufferFlux(byte[] array, long size) {
-        int quotient = (int) size / array.length;
-        int remainder = (int) size % array.length;
+        long quotient = size / array.length;
+        int remainder = (int) (size % array.length);
 
-        return Flux.range(0, quotient)
+        return Flux.just(Boolean.TRUE).repeat(quotient)
             .map(i -> allocateByteBuffer(array, array.length))
             .concatWithValues(allocateByteBuffer(array, remainder));
     }

@@ -9,10 +9,12 @@ function Run-Scenario {
         [Parameter(Mandatory=$true, Position=0)]
         [string] $HeapSize,
         [Parameter(Mandatory=$true, Position=1)]
-        [string] $Scenario
+        [string] $Scenario,
+        [Parameter(Mandatory=$false, Position=2)]
+        [string] $ExtraFlags
     )
     Write-Host "Executing '$Scenario' with '$HeapSize' heap"
-    Invoke-Expression "& '$JavaPath' -Xms$HeapSize -Xmx$HeapSize -jar '$PerfJarPath' $Scenario"
+    Invoke-Expression "& '$JavaPath' -Xms$HeapSize -Xmx$HeapSize $ExtraFlags -jar '$PerfJarPath' $Scenario"
     if ($LASTEXITCODE -ne 0) {
         Write-Host "Scenario failed, exiting"
         exit 1
@@ -31,6 +33,8 @@ Run-Scenario "50m" "uploadoutputstream --warmup 0 --duration 1 --size 1048576000
 Run-Scenario "50m" "uploadblobnolength --warmup 0 --duration 1 --size 1048576000 --transfer-single-upload-size 4194304 --transfer-block-size 1048576 --sync"
 Run-Scenario "50m" "uploadblob --warmup 0 --duration 1 --size 1048576000 --transfer-single-upload-size 4194304 --transfer-block-size 1048576 --sync"
 Run-Scenario "50m" "uploadblob --warmup 0 --duration 1 --size 1048576000 --transfer-single-upload-size 4194304 --transfer-block-size 1048576"
+# Jumbo blobs
+Run-Scenario "7g" "uploadblob --warmup 0 --duration 1 --size 8388608000 --transfer-block-size 2147483648 --transfer-concurrency 1" "-Dazure.core.perf.test.data.buffer.size=104857600"
 
 # DataLake
 $env:STORAGE_CONNECTION_STRING=$env:STORAGE_DATA_LAKE_CONNECTION_STRING
