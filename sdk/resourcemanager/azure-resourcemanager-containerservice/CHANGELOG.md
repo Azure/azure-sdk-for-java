@@ -1,6 +1,12 @@
 # Release History
 
-## 2.6.0-beta.1 (Unreleased)
+## 2.7.0-beta.1 (Unreleased)
+
+### Features Added
+
+- Supported `start` and `stop` for `KubernetesCluster`.
+
+## 2.6.0 (2021-06-18)
 
 - Updated `api-version` to `2021-05-01`
 - Supported spot virtual machine for agent pool of `KubernetesCluster`.

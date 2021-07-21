@@ -8,7 +8,6 @@ import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.directconnectivity.Address;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
-import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -29,6 +28,7 @@ public class RxDocumentServiceResponse {
     private final int statusCode;
     private final Map<String, String> headersMap;
     private final StoreResponse storeResponse;
+    private RequestTimeline gatewayHttpRequestTimeline;
 
     public RxDocumentServiceResponse(DiagnosticsClientContext diagnosticsClientContext, StoreResponse response) {
         String[] headerNames = response.getResponseHeaderNames();
@@ -46,6 +46,12 @@ public class RxDocumentServiceResponse {
 
         this.storeResponse = response;
         this.diagnosticsClientContext = diagnosticsClientContext;
+    }
+
+    public RxDocumentServiceResponse(DiagnosticsClientContext diagnosticsClientContext, StoreResponse response,
+                                     RequestTimeline gatewayHttpRequestTimeline) {
+        this(diagnosticsClientContext, response);
+        this.gatewayHttpRequestTimeline = gatewayHttpRequestTimeline;
     }
 
     public static <T extends Resource> String getResourceKey(Class<T> c) {
@@ -94,6 +100,10 @@ public class RxDocumentServiceResponse {
 
     public String getResponseBodyAsString() {
         return Utils.utf8StringFromOrNull(this.getResponseBodyAsByteArray());
+    }
+
+    public RequestTimeline getGatewayHttpRequestTimeline() {
+        return gatewayHttpRequestTimeline;
     }
 
     public <T extends Resource> T getResource(Class<T> c) {

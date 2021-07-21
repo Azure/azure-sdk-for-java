@@ -13,6 +13,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+/**
+ * Common class for authenticating refresh requests.
+ */
 public class AppConfigurationEndpoint {
 
     private static final String CONFIG_STORE_TOPIC = "configurationstores";
@@ -21,10 +24,18 @@ public class AppConfigurationEndpoint {
 
     private final String store;
 
-    private List<ConfigStore> configStores;
+    private final List<ConfigStore> configStores;
 
-    private Map<String, String> allRequestParams;
+    private final Map<String, String> allRequestParams;
 
+    /**
+     * Base Authentication for refresh endpoints.
+     * 
+     * @param request Json body of the request
+     * @param configStores List of all of the config stores that request could be for
+     * @param allRequestParams paramaters to validate the request.
+     * @throws IllegalArgumentException Request missing valid topic field.
+     */
     public AppConfigurationEndpoint(JsonNode request, List<ConfigStore> configStores,
         Map<String, String> allRequestParams) {
         this.configStores = configStores;

@@ -103,6 +103,13 @@ public class CopySink {
     private Object maxConcurrentConnections;
 
     /*
+     * If true, disable data store metrics collection. Default is false. Type:
+     * boolean (or Expression with resultType boolean).
+     */
+    @JsonProperty(value = "disableMetricsCollection")
+    private Object disableMetricsCollection;
+
+    /*
      * A copy activity sink.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
@@ -212,6 +219,28 @@ public class CopySink {
      */
     public CopySink withMaxConcurrentConnections(Object maxConcurrentConnections) {
         this.maxConcurrentConnections = maxConcurrentConnections;
+        return this;
+    }
+
+    /**
+     * Get the disableMetricsCollection property: If true, disable data store metrics collection. Default is false.
+     * Type: boolean (or Expression with resultType boolean).
+     *
+     * @return the disableMetricsCollection value.
+     */
+    public Object disableMetricsCollection() {
+        return this.disableMetricsCollection;
+    }
+
+    /**
+     * Set the disableMetricsCollection property: If true, disable data store metrics collection. Default is false.
+     * Type: boolean (or Expression with resultType boolean).
+     *
+     * @param disableMetricsCollection the disableMetricsCollection value to set.
+     * @return the CopySink object itself.
+     */
+    public CopySink withDisableMetricsCollection(Object disableMetricsCollection) {
+        this.disableMetricsCollection = disableMetricsCollection;
         return this;
     }
 

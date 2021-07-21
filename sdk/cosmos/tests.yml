@@ -3,7 +3,7 @@ trigger: none
 variables:
   - template: ../../eng/pipelines/templates/variables/globals.yml
   - name: AdditionalArgs
-    value: '-DCOSMOS.CLIENT_TELEMETRY_ENDPOINT=$(cosmos-client-telemetry-endpoint)'
+    value: '-DCOSMOS.CLIENT_TELEMETRY_ENDPOINT=$(cosmos-client-telemetry-endpoint) -DCOSMOS.CLIENT_TELEMETRY_COSMOS_ACCOUNT=$(cosmos-client-telemetry-cosmos-account)'
 
 stages:
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
@@ -62,11 +62,3 @@ stages:
         goals: clean verify
         options: '$(DefaultTestOptions) $(ProfileFlag)'
         mavenOptions: '$(DefaultTestMavenOptions)'
-
-  - ${{ if or(eq(variables['Build.Reason'], 'Manual'), eq(variables['Build.Reason'], 'PullRequest')) }}:
-    - template: /sdk/cosmos/ci.spark.databricks.yml
-      parameters:
-        CosmosEndpoint: $(spark-databricks-cosmos-endpoint)
-        CosmosKey: $(spark-databricks-cosmos-key)
-        DatabricksEndpoint: $(spark-databricks-endpoint)
-        DatabricksToken: $(spark-databricks-token)

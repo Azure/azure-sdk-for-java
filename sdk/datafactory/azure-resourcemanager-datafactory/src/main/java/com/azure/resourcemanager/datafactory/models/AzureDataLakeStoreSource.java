@@ -68,6 +68,13 @@ public final class AzureDataLakeStoreSource extends CopySource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public AzureDataLakeStoreSource withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

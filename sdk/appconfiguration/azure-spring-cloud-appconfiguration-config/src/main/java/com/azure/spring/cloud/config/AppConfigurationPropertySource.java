@@ -47,6 +47,11 @@ import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 
+/**
+ * Azure App Configuration PropertySource unique per Store Label(Profile) combo. 
+ * 
+ * <p>i.e. If connecting to 2 stores and have 2 labels set 4 AppConfigurationPropertySources need to be created.</p> 
+ */
 public class AppConfigurationPropertySource extends EnumerablePropertySource<ConfigurationClient> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationPropertySource.class);
@@ -261,14 +266,15 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
      *
      * @param item Used to create Features before being converted to be set into properties.
      * @return Feature created from KeyValueItem
-     * @throws IOException
+     * @throws IOException - If a ConfigurationSetting isn't of the feature flag content type. 
      */
     @SuppressWarnings("unchecked")
     private Object createFeature(ConfigurationSetting item) throws IOException {
         if (item.getContentType() == null || !item.getContentType().equals(FEATURE_FLAG_CONTENT_TYPE)) {
-            String message = String.format("Found Feature Flag %s with invalid Content Type of %s", item.getKey(),
+            String message = String.format("Found Feature Flag %s with invalid Content Type of %s. Ignoring and continuing to process Feature Flags.", item.getKey(),
                 item.getContentType());
-            throw new IOException(message);
+            LOGGER.warn(message);
+            return null;
         }
         String key = getFeatureSimpleName(item);
         try {

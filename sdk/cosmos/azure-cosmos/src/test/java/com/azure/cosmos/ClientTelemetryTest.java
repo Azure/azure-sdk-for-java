@@ -217,9 +217,14 @@ public class ClientTelemetryTest extends TestSuiteBase {
         IllegalAccessException {
         CosmosClient cosmosClient = null;
         try {
+            String whiteListedAccountForTelemetry = System.getProperty("COSMOS.CLIENT_TELEMETRY_COSMOS_ACCOUNT");
+            String[] credentialList = whiteListedAccountForTelemetry.split(";");
+            String host = credentialList[0].substring("AccountEndpoint=".length());
+            String key = credentialList[1].substring("AccountKey=".length());
+
             cosmosClient = new CosmosClientBuilder()
-                .endpoint(TestConfigurations.HOST)
-                .key(TestConfigurations.MASTER_KEY)
+                .endpoint(host)
+                .key(key)
                 .clientTelemetryEnabled(true)
                 .buildClient();
             CosmosAsyncContainer asyncContainer =

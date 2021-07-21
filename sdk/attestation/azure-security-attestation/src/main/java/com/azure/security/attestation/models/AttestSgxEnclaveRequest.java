@@ -150,4 +150,16 @@ public final class AttestSgxEnclaveRequest {
             getInitTimeData().validate();
         }
     }
+
+    /**
+     * Returns an internal type from a public type.
+     * @return implementation type.
+     */
+    public com.azure.security.attestation.implementation.models.AttestSgxEnclaveRequest toGenerated() {
+        return new com.azure.security.attestation.implementation.models.AttestSgxEnclaveRequest()
+            .setDraftPolicyForAttestation(draftPolicyForAttestation)
+            .setRuntimeData(runtimeData != null ? runtimeData.toGenerated() : null)
+            .setInitTimeData(initTimeData != null ? initTimeData.toGenerated() : null)
+            .setQuote(quote.decodedBytes());
+    }
 }

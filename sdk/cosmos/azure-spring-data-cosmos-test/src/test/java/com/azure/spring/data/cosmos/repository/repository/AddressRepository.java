@@ -24,7 +24,11 @@ public interface AddressRepository extends CosmosRepository<Address, String> {
 
     Iterable<Address> findByCity(String city);
 
+    Iterable<Address> findByCityIn(List<String> cities);
+
     Iterable<Address> findByPostalCode(String postalCode);
+
+    Iterable<Address> findByPostalCodeInAndCity(List<String> postalCodes, String city);
 
     Iterable<Address> findByStreetOrCity(String street, String city);
 

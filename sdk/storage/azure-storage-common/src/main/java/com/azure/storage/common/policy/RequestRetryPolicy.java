@@ -12,6 +12,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.UrlBuilder;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -109,7 +110,7 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
         /*
         Update the RETRY_COUNT_CONTEXT to log retries.
          */
-        context.setData(HttpLoggingPolicy.RETRY_COUNT_CONTEXT, attempt + 1);
+        context.setData(HttpLoggingPolicy.RETRY_COUNT_CONTEXT, attempt);
 
         /*
          We want to send the request with a given timeout, but we don't want to kickoff that timeout-bound operation
@@ -181,9 +182,10 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
                     A Timeout Exception is a client-side timeout coming from Rx.
                      */
                 String action;
-                if (throwable instanceof IOException) {
+                Throwable unwrappedThrowable = Exceptions.unwrap(throwable);
+                if (unwrappedThrowable instanceof IOException) {
                     action = "Retry: Network error";
-                } else if (throwable instanceof TimeoutException) {
+                } else if (unwrappedThrowable instanceof TimeoutException) {
                     action = "Retry: Client timeout";
                 } else {
                     action = "NoRetry: Unknown error";

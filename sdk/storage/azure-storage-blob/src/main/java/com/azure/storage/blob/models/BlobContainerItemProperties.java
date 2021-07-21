@@ -86,6 +86,12 @@ public final class BlobContainerItemProperties {
     @JsonProperty(value = "RemainingRetentionDays")
     private Integer remainingRetentionDays;
 
+    /*
+     * Indicates if version level worm is enabled on this container.
+     */
+    @JsonProperty(value = "ImmutableStorageWithVersioningEnabled")
+    private Boolean isImmutableStorageWithVersioningEnabled;
+
     /**
      * Get the lastModified property: The Last-Modified property.
      *
@@ -338,6 +344,29 @@ public final class BlobContainerItemProperties {
      */
     public BlobContainerItemProperties setRemainingRetentionDays(Integer remainingRetentionDays) {
         this.remainingRetentionDays = remainingRetentionDays;
+        return this;
+    }
+
+    /**
+     * Get the isImmutableStorageWithVersioningEnabled property: Indicates if version level worm is enabled on this
+     * container.
+     *
+     * @return the isImmutableStorageWithVersioningEnabled value.
+     */
+    public Boolean isImmutableStorageWithVersioningEnabled() {
+        return this.isImmutableStorageWithVersioningEnabled;
+    }
+
+    /**
+     * Set the isImmutableStorageWithVersioningEnabled property: Indicates if version level worm is enabled on this
+     * container.
+     *
+     * @param isImmutableStorageWithVersioningEnabled the isImmutableStorageWithVersioningEnabled value to set.
+     * @return the BlobContainerItemProperties object itself.
+     */
+    public BlobContainerItemProperties setImmutableStorageWithVersioningEnabled(
+            Boolean isImmutableStorageWithVersioningEnabled) {
+        this.isImmutableStorageWithVersioningEnabled = isImmutableStorageWithVersioningEnabled;
         return this;
     }
 }

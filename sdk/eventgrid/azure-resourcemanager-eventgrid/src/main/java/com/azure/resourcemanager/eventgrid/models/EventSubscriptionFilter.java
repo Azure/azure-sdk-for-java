@@ -49,6 +49,13 @@ public final class EventSubscriptionFilter {
     private Boolean isSubjectCaseSensitive;
 
     /*
+     * Allows advanced filters to be evaluated against an array of values
+     * instead of expecting a singular value.
+     */
+    @JsonProperty(value = "enableAdvancedFilteringOnArrays")
+    private Boolean enableAdvancedFilteringOnArrays;
+
+    /*
      * An array of advanced filters that are used for filtering event
      * subscriptions.
      */
@@ -142,6 +149,28 @@ public final class EventSubscriptionFilter {
      */
     public EventSubscriptionFilter withIsSubjectCaseSensitive(Boolean isSubjectCaseSensitive) {
         this.isSubjectCaseSensitive = isSubjectCaseSensitive;
+        return this;
+    }
+
+    /**
+     * Get the enableAdvancedFilteringOnArrays property: Allows advanced filters to be evaluated against an array of
+     * values instead of expecting a singular value.
+     *
+     * @return the enableAdvancedFilteringOnArrays value.
+     */
+    public Boolean enableAdvancedFilteringOnArrays() {
+        return this.enableAdvancedFilteringOnArrays;
+    }
+
+    /**
+     * Set the enableAdvancedFilteringOnArrays property: Allows advanced filters to be evaluated against an array of
+     * values instead of expecting a singular value.
+     *
+     * @param enableAdvancedFilteringOnArrays the enableAdvancedFilteringOnArrays value to set.
+     * @return the EventSubscriptionFilter object itself.
+     */
+    public EventSubscriptionFilter withEnableAdvancedFilteringOnArrays(Boolean enableAdvancedFilteringOnArrays) {
+        this.enableAdvancedFilteringOnArrays = enableAdvancedFilteringOnArrays;
         return this;
     }
 

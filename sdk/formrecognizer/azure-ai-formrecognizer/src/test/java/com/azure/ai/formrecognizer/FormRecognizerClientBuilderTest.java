@@ -32,7 +32,7 @@ import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.INVALID_E
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.AZURE_FORM_RECOGNIZER_API_KEY;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.AZURE_FORM_RECOGNIZER_ENDPOINT;
 import static com.azure.ai.formrecognizer.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
-import static com.azure.ai.formrecognizer.TestUtils.FORM_JPG;
+import static com.azure.ai.formrecognizer.TestUtils.CONTENT_FORM_JPG;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_KEY;
 import static com.azure.ai.formrecognizer.TestUtils.URL_TEST_FILE_FORMAT;
 import static com.azure.ai.formrecognizer.TestUtils.VALID_HTTP_LOCALHOST;
@@ -145,7 +145,7 @@ public class FormRecognizerClientBuilderTest extends TestBase {
                 })
                 .buildClient();
         assertThrows(HttpResponseException.class,
-            () -> formRecognizerClient.beginRecognizeContentFromUrl(URL_TEST_FILE_FORMAT + FORM_JPG));
+            () -> formRecognizerClient.beginRecognizeContentFromUrl(URL_TEST_FILE_FORMAT + CONTENT_FORM_JPG));
     }
 
     @Test
@@ -163,7 +163,7 @@ public class FormRecognizerClientBuilderTest extends TestBase {
                 })
                 .buildClient();
         assertThrows(HttpResponseException.class,
-            () -> formRecognizerClient.beginRecognizeContentFromUrl(URL_TEST_FILE_FORMAT + FORM_JPG));
+            () -> formRecognizerClient.beginRecognizeContentFromUrl(URL_TEST_FILE_FORMAT + CONTENT_FORM_JPG));
     }
 
     @Test
@@ -182,7 +182,7 @@ public class FormRecognizerClientBuilderTest extends TestBase {
                 })
                 .buildClient();
         assertThrows(HttpResponseException.class,
-            () -> formRecognizerClient.beginRecognizeContentFromUrl(URL_TEST_FILE_FORMAT + FORM_JPG));
+            () -> formRecognizerClient.beginRecognizeContentFromUrl(URL_TEST_FILE_FORMAT + CONTENT_FORM_JPG));
     }
 
     // Client builder runner
@@ -191,7 +191,7 @@ public class FormRecognizerClientBuilderTest extends TestBase {
         Function<FormRecognizerClientBuilder, BiConsumer<String, HttpResponseException>> testRunner) {
         final FormRecognizerClientBuilder clientBuilder = createClientBuilder(httpClient, serviceVersion, getEndpoint(),
             new AzureKeyCredential(INVALID_KEY));
-        testRunner.apply(clientBuilder).accept(FORM_JPG, new HttpResponseException("", null));
+        testRunner.apply(clientBuilder).accept(CONTENT_FORM_JPG, new HttpResponseException("", null));
     }
 
     void clientBuilderWithRotateToInvalidKeyRunner(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion,
@@ -201,7 +201,7 @@ public class FormRecognizerClientBuilderTest extends TestBase {
             getEndpoint(), credential);
         // Update to invalid key
         credential.update(INVALID_KEY);
-        testRunner.apply(clientBuilder).accept(FORM_JPG, new HttpResponseException("", null));
+        testRunner.apply(clientBuilder).accept(CONTENT_FORM_JPG, new HttpResponseException("", null));
     }
 
     String getEndpoint() {
@@ -217,7 +217,7 @@ public class FormRecognizerClientBuilderTest extends TestBase {
             getEndpoint(), credential);
         // Update to valid key
         credential.update(getApiKey());
-        testRunner.apply(clientBuilder).accept(URL_TEST_FILE_FORMAT + FORM_JPG);
+        testRunner.apply(clientBuilder).accept(URL_TEST_FILE_FORMAT + CONTENT_FORM_JPG);
     }
 
     void clientBuilderWithNullServiceVersionRunner(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion,
@@ -226,7 +226,7 @@ public class FormRecognizerClientBuilderTest extends TestBase {
             createClientBuilder(httpClient, serviceVersion, getEndpoint(), new AzureKeyCredential(getApiKey()))
                 .retryPolicy(new RetryPolicy())
                 .serviceVersion(null);
-        testRunner.apply(clientBuilder).accept(URL_TEST_FILE_FORMAT + FORM_JPG);
+        testRunner.apply(clientBuilder).accept(URL_TEST_FILE_FORMAT + CONTENT_FORM_JPG);
     }
 
     void clientBuilderWithDefaultPipelineRunner(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion,
@@ -235,7 +235,7 @@ public class FormRecognizerClientBuilderTest extends TestBase {
             createClientBuilder(httpClient, serviceVersion, getEndpoint(), new AzureKeyCredential(getApiKey()))
                 .configuration(Configuration.getGlobalConfiguration())
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
-        testRunner.apply(clientBuilder).accept(URL_TEST_FILE_FORMAT + FORM_JPG);
+        testRunner.apply(clientBuilder).accept(URL_TEST_FILE_FORMAT + CONTENT_FORM_JPG);
     }
 
     /**
