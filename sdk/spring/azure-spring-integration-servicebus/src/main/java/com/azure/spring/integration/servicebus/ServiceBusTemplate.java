@@ -53,7 +53,9 @@ public class ServiceBusTemplate<T extends ServiceBusSenderFactory> implements Se
                                                  Message<U> message,
                                                  PartitionSupplier partitionSupplier) {
         Assert.hasText(destination, "destination can't be null or empty");
+
         String partitionKey = getPartitionKey(partitionSupplier);
+
         ServiceBusMessage serviceBusMessage = messageConverter.fromMessage(message, ServiceBusMessage.class);
 
         if (StringUtils.hasText(partitionKey)) {
