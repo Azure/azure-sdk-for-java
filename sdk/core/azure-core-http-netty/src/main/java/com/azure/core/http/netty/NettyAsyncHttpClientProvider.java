@@ -8,14 +8,19 @@ import com.azure.core.http.HttpClientProvider;
 import com.azure.core.util.HttpClientOptions;
 import reactor.netty.resources.ConnectionProvider;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 /**
  * An {@link HttpClientProvider} that provides an implementation of HttpClient based on Netty.
  */
 public final class NettyAsyncHttpClientProvider implements HttpClientProvider {
+    private static final AtomicReference<HttpClient> DEFAULT_HTTP_CLIENT = new AtomicReference<>();
 
     @Override
     public HttpClient createInstance() {
-        return new NettyAsyncHttpClientBuilder().build();
+        DEFAULT_HTTP_CLIENT.compareAndSet(null, new NettyAsyncHttpClientBuilder().build());
+
+        return DEFAULT_HTTP_CLIENT.get();
     }
 
     @Override

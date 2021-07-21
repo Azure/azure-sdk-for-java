@@ -9,15 +9,19 @@ import com.azure.core.util.HttpClientOptions;
 import okhttp3.ConnectionPool;
 
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * An {@link HttpClientProvider} that provides an implementation of HttpClient based on OkHttp.
  */
 public final class OkHttpAsyncClientProvider implements HttpClientProvider {
+    private static final AtomicReference<HttpClient> DEFAULT_HTTP_CLIENT = new AtomicReference<>();
 
     @Override
     public HttpClient createInstance() {
-        return new OkHttpAsyncHttpClientBuilder().build();
+        DEFAULT_HTTP_CLIENT.compareAndSet(null, new OkHttpAsyncHttpClientBuilder().build());
+
+        return DEFAULT_HTTP_CLIENT.get();
     }
 
     @Override
