@@ -87,19 +87,10 @@ public class AsyncCtlWorkload {
     private int queryPct;
 
     public AsyncCtlWorkload(Configuration cfg) {
-        String preferredRegionsList = cfg.getPreferredRegionsList();
-        List<String> preferredRegions = null;
-        if (StringUtils.isNotEmpty(preferredRegionsList)) {
-            String[] preferredArray = preferredRegionsList.split(",");
-            if (preferredArray != null && preferredArray.length > 0) {
-                preferredRegions = new ArrayList<>(Arrays.asList(preferredArray));
-            }
-        }
-
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
             .endpoint(cfg.getServiceEndpoint())
             .key(cfg.getMasterKey())
-            .preferredRegions(preferredRegions)
+            .preferredRegions(cfg.getPreferredRegionsList())
             .consistencyLevel(cfg.getConsistencyLevel())
             .clientTelemetryEnabled(true)
             .contentResponseOnWriteEnabled(Boolean.parseBoolean(cfg.isContentResponseOnWriteEnabled()));
