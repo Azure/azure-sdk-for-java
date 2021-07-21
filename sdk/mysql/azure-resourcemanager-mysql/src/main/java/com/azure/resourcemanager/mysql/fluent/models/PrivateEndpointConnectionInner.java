@@ -34,27 +34,12 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
     }
 
     /**
-     * Set the properties property: Resource properties.
-     *
-     * @param properties the properties value to set.
-     * @return the PrivateEndpointConnectionInner object itself.
-     */
-    private PrivateEndpointConnectionInner withProperties(PrivateEndpointConnectionProperties properties) {
-        this.properties = properties;
-        return this;
-    }
-
-    /**
      * Get the privateEndpoint property: Private endpoint which the connection belongs to.
      *
      * @return the privateEndpoint value.
      */
     public PrivateEndpointProperty privateEndpoint() {
-        if (this.properties() == null) {
-            return null;
-        } else {
-            return this.properties().privateEndpoint();
-        }
+        return this.properties() == null ? null : this.properties().privateEndpoint();
     }
 
     /**
@@ -65,7 +50,7 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
      */
     public PrivateEndpointConnectionInner withPrivateEndpoint(PrivateEndpointProperty privateEndpoint) {
         if (this.properties() == null) {
-            this.withProperties(new PrivateEndpointConnectionProperties());
+            this.properties = new PrivateEndpointConnectionProperties();
         }
         this.properties().withPrivateEndpoint(privateEndpoint);
         return this;
@@ -77,11 +62,7 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
      * @return the privateLinkServiceConnectionState value.
      */
     public PrivateLinkServiceConnectionStateProperty privateLinkServiceConnectionState() {
-        if (this.properties() == null) {
-            return null;
-        } else {
-            return this.properties().privateLinkServiceConnectionState();
-        }
+        return this.properties() == null ? null : this.properties().privateLinkServiceConnectionState();
     }
 
     /**
@@ -93,7 +74,7 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
     public PrivateEndpointConnectionInner withPrivateLinkServiceConnectionState(
         PrivateLinkServiceConnectionStateProperty privateLinkServiceConnectionState) {
         if (this.properties() == null) {
-            this.withProperties(new PrivateEndpointConnectionProperties());
+            this.properties = new PrivateEndpointConnectionProperties();
         }
         this.properties().withPrivateLinkServiceConnectionState(privateLinkServiceConnectionState);
         return this;
@@ -105,11 +86,7 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
      * @return the provisioningState value.
      */
     public String provisioningState() {
-        if (this.properties() == null) {
-            return null;
-        } else {
-            return this.properties().provisioningState();
-        }
+        return this.properties() == null ? null : this.properties().provisioningState();
     }
 
     /**

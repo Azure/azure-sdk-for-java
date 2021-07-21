@@ -32,27 +32,12 @@ public final class QueryTextInner extends ProxyResource {
     }
 
     /**
-     * Set the properties property: The properties of a query text.
-     *
-     * @param properties the properties value to set.
-     * @return the QueryTextInner object itself.
-     */
-    private QueryTextInner withProperties(QueryTextProperties properties) {
-        this.properties = properties;
-        return this;
-    }
-
-    /**
      * Get the queryId property: Query identifier unique to the server.
      *
      * @return the queryId value.
      */
     public String queryId() {
-        if (this.properties() == null) {
-            return null;
-        } else {
-            return this.properties().queryId();
-        }
+        return this.properties() == null ? null : this.properties().queryId();
     }
 
     /**
@@ -63,7 +48,7 @@ public final class QueryTextInner extends ProxyResource {
      */
     public QueryTextInner withQueryId(String queryId) {
         if (this.properties() == null) {
-            this.withProperties(new QueryTextProperties());
+            this.properties = new QueryTextProperties();
         }
         this.properties().withQueryId(queryId);
         return this;
@@ -75,11 +60,7 @@ public final class QueryTextInner extends ProxyResource {
      * @return the queryText value.
      */
     public String queryText() {
-        if (this.properties() == null) {
-            return null;
-        } else {
-            return this.properties().queryText();
-        }
+        return this.properties() == null ? null : this.properties().queryText();
     }
 
     /**
@@ -90,7 +71,7 @@ public final class QueryTextInner extends ProxyResource {
      */
     public QueryTextInner withQueryText(String queryText) {
         if (this.properties() == null) {
-            this.withProperties(new QueryTextProperties());
+            this.properties = new QueryTextProperties();
         }
         this.properties().withQueryText(queryText);
         return this;

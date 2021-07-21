@@ -32,27 +32,12 @@ public final class WaitStatisticsInput {
     }
 
     /**
-     * Set the properties property: The properties of a wait statistics input.
-     *
-     * @param properties the properties value to set.
-     * @return the WaitStatisticsInput object itself.
-     */
-    private WaitStatisticsInput withProperties(WaitStatisticsInputProperties properties) {
-        this.properties = properties;
-        return this;
-    }
-
-    /**
      * Get the observationStartTime property: Observation start time.
      *
      * @return the observationStartTime value.
      */
     public OffsetDateTime observationStartTime() {
-        if (this.properties() == null) {
-            return null;
-        } else {
-            return this.properties().observationStartTime();
-        }
+        return this.properties() == null ? null : this.properties().observationStartTime();
     }
 
     /**
@@ -63,7 +48,7 @@ public final class WaitStatisticsInput {
      */
     public WaitStatisticsInput withObservationStartTime(OffsetDateTime observationStartTime) {
         if (this.properties() == null) {
-            this.withProperties(new WaitStatisticsInputProperties());
+            this.properties = new WaitStatisticsInputProperties();
         }
         this.properties().withObservationStartTime(observationStartTime);
         return this;
@@ -75,11 +60,7 @@ public final class WaitStatisticsInput {
      * @return the observationEndTime value.
      */
     public OffsetDateTime observationEndTime() {
-        if (this.properties() == null) {
-            return null;
-        } else {
-            return this.properties().observationEndTime();
-        }
+        return this.properties() == null ? null : this.properties().observationEndTime();
     }
 
     /**
@@ -90,7 +71,7 @@ public final class WaitStatisticsInput {
      */
     public WaitStatisticsInput withObservationEndTime(OffsetDateTime observationEndTime) {
         if (this.properties() == null) {
-            this.withProperties(new WaitStatisticsInputProperties());
+            this.properties = new WaitStatisticsInputProperties();
         }
         this.properties().withObservationEndTime(observationEndTime);
         return this;
@@ -102,11 +83,7 @@ public final class WaitStatisticsInput {
      * @return the aggregationWindow value.
      */
     public String aggregationWindow() {
-        if (this.properties() == null) {
-            return null;
-        } else {
-            return this.properties().aggregationWindow();
-        }
+        return this.properties() == null ? null : this.properties().aggregationWindow();
     }
 
     /**
@@ -117,7 +94,7 @@ public final class WaitStatisticsInput {
      */
     public WaitStatisticsInput withAggregationWindow(String aggregationWindow) {
         if (this.properties() == null) {
-            this.withProperties(new WaitStatisticsInputProperties());
+            this.properties = new WaitStatisticsInputProperties();
         }
         this.properties().withAggregationWindow(aggregationWindow);
         return this;

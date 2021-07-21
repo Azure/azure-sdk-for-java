@@ -33,27 +33,12 @@ public final class LogFileInner extends ProxyResource {
     }
 
     /**
-     * Set the properties property: The properties of the log file.
-     *
-     * @param properties the properties value to set.
-     * @return the LogFileInner object itself.
-     */
-    private LogFileInner withProperties(LogFileProperties properties) {
-        this.properties = properties;
-        return this;
-    }
-
-    /**
      * Get the sizeInKB property: Size of the log file.
      *
      * @return the sizeInKB value.
      */
     public Long sizeInKB() {
-        if (this.properties() == null) {
-            return null;
-        } else {
-            return this.properties().sizeInKB();
-        }
+        return this.properties() == null ? null : this.properties().sizeInKB();
     }
 
     /**
@@ -64,7 +49,7 @@ public final class LogFileInner extends ProxyResource {
      */
     public LogFileInner withSizeInKB(Long sizeInKB) {
         if (this.properties() == null) {
-            this.withProperties(new LogFileProperties());
+            this.properties = new LogFileProperties();
         }
         this.properties().withSizeInKB(sizeInKB);
         return this;
@@ -76,11 +61,7 @@ public final class LogFileInner extends ProxyResource {
      * @return the createdTime value.
      */
     public OffsetDateTime createdTime() {
-        if (this.properties() == null) {
-            return null;
-        } else {
-            return this.properties().createdTime();
-        }
+        return this.properties() == null ? null : this.properties().createdTime();
     }
 
     /**
@@ -89,11 +70,7 @@ public final class LogFileInner extends ProxyResource {
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
-        if (this.properties() == null) {
-            return null;
-        } else {
-            return this.properties().lastModifiedTime();
-        }
+        return this.properties() == null ? null : this.properties().lastModifiedTime();
     }
 
     /**
@@ -102,11 +79,7 @@ public final class LogFileInner extends ProxyResource {
      * @return the typePropertiesType value.
      */
     public String typePropertiesType() {
-        if (this.properties() == null) {
-            return null;
-        } else {
-            return this.properties().typePropertiesType();
-        }
+        return this.properties() == null ? null : this.properties().typePropertiesType();
     }
 
     /**
@@ -117,7 +90,7 @@ public final class LogFileInner extends ProxyResource {
      */
     public LogFileInner withTypePropertiesType(String typePropertiesType) {
         if (this.properties() == null) {
-            this.withProperties(new LogFileProperties());
+            this.properties = new LogFileProperties();
         }
         this.properties().withTypePropertiesType(typePropertiesType);
         return this;
@@ -129,11 +102,7 @@ public final class LogFileInner extends ProxyResource {
      * @return the url value.
      */
     public String url() {
-        if (this.properties() == null) {
-            return null;
-        } else {
-            return this.properties().url();
-        }
+        return this.properties() == null ? null : this.properties().url();
     }
 
     /**
@@ -144,7 +113,7 @@ public final class LogFileInner extends ProxyResource {
      */
     public LogFileInner withUrl(String url) {
         if (this.properties() == null) {
-            this.withProperties(new LogFileProperties());
+            this.properties = new LogFileProperties();
         }
         this.properties().withUrl(url);
         return this;

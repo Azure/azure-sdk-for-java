@@ -31,27 +31,12 @@ public final class ServerUpgradeParameters {
     }
 
     /**
-     * Set the properties property: The properties that can be updated for a server.
-     *
-     * @param properties the properties value to set.
-     * @return the ServerUpgradeParameters object itself.
-     */
-    private ServerUpgradeParameters withProperties(ServerUpgradeParametersProperties properties) {
-        this.properties = properties;
-        return this;
-    }
-
-    /**
      * Get the targetServerVersion property: Represents an server storage profile.
      *
      * @return the targetServerVersion value.
      */
     public String targetServerVersion() {
-        if (this.properties() == null) {
-            return null;
-        } else {
-            return this.properties().targetServerVersion();
-        }
+        return this.properties() == null ? null : this.properties().targetServerVersion();
     }
 
     /**
@@ -62,7 +47,7 @@ public final class ServerUpgradeParameters {
      */
     public ServerUpgradeParameters withTargetServerVersion(String targetServerVersion) {
         if (this.properties() == null) {
-            this.withProperties(new ServerUpgradeParametersProperties());
+            this.properties = new ServerUpgradeParametersProperties();
         }
         this.properties().withTargetServerVersion(targetServerVersion);
         return this;

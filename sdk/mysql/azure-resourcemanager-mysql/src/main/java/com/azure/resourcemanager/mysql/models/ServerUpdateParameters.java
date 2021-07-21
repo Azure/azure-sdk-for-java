@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mysql.implementation.ServerUpdateParametersProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
@@ -38,6 +39,7 @@ public final class ServerUpdateParameters {
      * Application-specific metadata in the form of key-value pairs.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /**
@@ -90,17 +92,6 @@ public final class ServerUpdateParameters {
     }
 
     /**
-     * Set the properties property: The properties that can be updated for a server.
-     *
-     * @param properties the properties value to set.
-     * @return the ServerUpdateParameters object itself.
-     */
-    private ServerUpdateParameters withProperties(ServerUpdateParametersProperties properties) {
-        this.properties = properties;
-        return this;
-    }
-
-    /**
      * Get the tags property: Application-specific metadata in the form of key-value pairs.
      *
      * @return the tags value.
@@ -126,11 +117,7 @@ public final class ServerUpdateParameters {
      * @return the storageProfile value.
      */
     public StorageProfile storageProfile() {
-        if (this.properties() == null) {
-            return null;
-        } else {
-            return this.properties().storageProfile();
-        }
+        return this.properties() == null ? null : this.properties().storageProfile();
     }
 
     /**
@@ -141,7 +128,7 @@ public final class ServerUpdateParameters {
      */
     public ServerUpdateParameters withStorageProfile(StorageProfile storageProfile) {
         if (this.properties() == null) {
-            this.withProperties(new ServerUpdateParametersProperties());
+            this.properties = new ServerUpdateParametersProperties();
         }
         this.properties().withStorageProfile(storageProfile);
         return this;
@@ -153,11 +140,7 @@ public final class ServerUpdateParameters {
      * @return the administratorLoginPassword value.
      */
     public String administratorLoginPassword() {
-        if (this.properties() == null) {
-            return null;
-        } else {
-            return this.properties().administratorLoginPassword();
-        }
+        return this.properties() == null ? null : this.properties().administratorLoginPassword();
     }
 
     /**
@@ -168,7 +151,7 @@ public final class ServerUpdateParameters {
      */
     public ServerUpdateParameters withAdministratorLoginPassword(String administratorLoginPassword) {
         if (this.properties() == null) {
-            this.withProperties(new ServerUpdateParametersProperties());
+            this.properties = new ServerUpdateParametersProperties();
         }
         this.properties().withAdministratorLoginPassword(administratorLoginPassword);
         return this;
@@ -180,11 +163,7 @@ public final class ServerUpdateParameters {
      * @return the version value.
      */
     public ServerVersion version() {
-        if (this.properties() == null) {
-            return null;
-        } else {
-            return this.properties().version();
-        }
+        return this.properties() == null ? null : this.properties().version();
     }
 
     /**
@@ -195,7 +174,7 @@ public final class ServerUpdateParameters {
      */
     public ServerUpdateParameters withVersion(ServerVersion version) {
         if (this.properties() == null) {
-            this.withProperties(new ServerUpdateParametersProperties());
+            this.properties = new ServerUpdateParametersProperties();
         }
         this.properties().withVersion(version);
         return this;
@@ -207,11 +186,7 @@ public final class ServerUpdateParameters {
      * @return the sslEnforcement value.
      */
     public SslEnforcementEnum sslEnforcement() {
-        if (this.properties() == null) {
-            return null;
-        } else {
-            return this.properties().sslEnforcement();
-        }
+        return this.properties() == null ? null : this.properties().sslEnforcement();
     }
 
     /**
@@ -222,7 +197,7 @@ public final class ServerUpdateParameters {
      */
     public ServerUpdateParameters withSslEnforcement(SslEnforcementEnum sslEnforcement) {
         if (this.properties() == null) {
-            this.withProperties(new ServerUpdateParametersProperties());
+            this.properties = new ServerUpdateParametersProperties();
         }
         this.properties().withSslEnforcement(sslEnforcement);
         return this;
@@ -234,11 +209,7 @@ public final class ServerUpdateParameters {
      * @return the minimalTlsVersion value.
      */
     public MinimalTlsVersionEnum minimalTlsVersion() {
-        if (this.properties() == null) {
-            return null;
-        } else {
-            return this.properties().minimalTlsVersion();
-        }
+        return this.properties() == null ? null : this.properties().minimalTlsVersion();
     }
 
     /**
@@ -249,7 +220,7 @@ public final class ServerUpdateParameters {
      */
     public ServerUpdateParameters withMinimalTlsVersion(MinimalTlsVersionEnum minimalTlsVersion) {
         if (this.properties() == null) {
-            this.withProperties(new ServerUpdateParametersProperties());
+            this.properties = new ServerUpdateParametersProperties();
         }
         this.properties().withMinimalTlsVersion(minimalTlsVersion);
         return this;
@@ -262,11 +233,7 @@ public final class ServerUpdateParameters {
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccessEnum publicNetworkAccess() {
-        if (this.properties() == null) {
-            return null;
-        } else {
-            return this.properties().publicNetworkAccess();
-        }
+        return this.properties() == null ? null : this.properties().publicNetworkAccess();
     }
 
     /**
@@ -278,7 +245,7 @@ public final class ServerUpdateParameters {
      */
     public ServerUpdateParameters withPublicNetworkAccess(PublicNetworkAccessEnum publicNetworkAccess) {
         if (this.properties() == null) {
-            this.withProperties(new ServerUpdateParametersProperties());
+            this.properties = new ServerUpdateParametersProperties();
         }
         this.properties().withPublicNetworkAccess(publicNetworkAccess);
         return this;
@@ -290,11 +257,7 @@ public final class ServerUpdateParameters {
      * @return the replicationRole value.
      */
     public String replicationRole() {
-        if (this.properties() == null) {
-            return null;
-        } else {
-            return this.properties().replicationRole();
-        }
+        return this.properties() == null ? null : this.properties().replicationRole();
     }
 
     /**
@@ -305,7 +268,7 @@ public final class ServerUpdateParameters {
      */
     public ServerUpdateParameters withReplicationRole(String replicationRole) {
         if (this.properties() == null) {
-            this.withProperties(new ServerUpdateParametersProperties());
+            this.properties = new ServerUpdateParametersProperties();
         }
         this.properties().withReplicationRole(replicationRole);
         return this;

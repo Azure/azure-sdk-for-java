@@ -32,27 +32,12 @@ public final class FirewallRuleInner extends ProxyResource {
     }
 
     /**
-     * Set the properties property: The properties of a firewall rule.
-     *
-     * @param properties the properties value to set.
-     * @return the FirewallRuleInner object itself.
-     */
-    private FirewallRuleInner withProperties(FirewallRuleProperties properties) {
-        this.properties = properties;
-        return this;
-    }
-
-    /**
      * Get the startIpAddress property: The start IP address of the server firewall rule. Must be IPv4 format.
      *
      * @return the startIpAddress value.
      */
     public String startIpAddress() {
-        if (this.properties() == null) {
-            return null;
-        } else {
-            return this.properties().startIpAddress();
-        }
+        return this.properties() == null ? null : this.properties().startIpAddress();
     }
 
     /**
@@ -63,7 +48,7 @@ public final class FirewallRuleInner extends ProxyResource {
      */
     public FirewallRuleInner withStartIpAddress(String startIpAddress) {
         if (this.properties() == null) {
-            this.withProperties(new FirewallRuleProperties());
+            this.properties = new FirewallRuleProperties();
         }
         this.properties().withStartIpAddress(startIpAddress);
         return this;
@@ -75,11 +60,7 @@ public final class FirewallRuleInner extends ProxyResource {
      * @return the endIpAddress value.
      */
     public String endIpAddress() {
-        if (this.properties() == null) {
-            return null;
-        } else {
-            return this.properties().endIpAddress();
-        }
+        return this.properties() == null ? null : this.properties().endIpAddress();
     }
 
     /**
@@ -90,7 +71,7 @@ public final class FirewallRuleInner extends ProxyResource {
      */
     public FirewallRuleInner withEndIpAddress(String endIpAddress) {
         if (this.properties() == null) {
-            this.withProperties(new FirewallRuleProperties());
+            this.properties = new FirewallRuleProperties();
         }
         this.properties().withEndIpAddress(endIpAddress);
         return this;

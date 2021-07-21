@@ -33,27 +33,12 @@ public final class VirtualNetworkRuleInner extends ProxyResource {
     }
 
     /**
-     * Set the properties property: Resource properties.
-     *
-     * @param properties the properties value to set.
-     * @return the VirtualNetworkRuleInner object itself.
-     */
-    private VirtualNetworkRuleInner withProperties(VirtualNetworkRuleProperties properties) {
-        this.properties = properties;
-        return this;
-    }
-
-    /**
      * Get the virtualNetworkSubnetId property: The ARM resource id of the virtual network subnet.
      *
      * @return the virtualNetworkSubnetId value.
      */
     public String virtualNetworkSubnetId() {
-        if (this.properties() == null) {
-            return null;
-        } else {
-            return this.properties().virtualNetworkSubnetId();
-        }
+        return this.properties() == null ? null : this.properties().virtualNetworkSubnetId();
     }
 
     /**
@@ -64,7 +49,7 @@ public final class VirtualNetworkRuleInner extends ProxyResource {
      */
     public VirtualNetworkRuleInner withVirtualNetworkSubnetId(String virtualNetworkSubnetId) {
         if (this.properties() == null) {
-            this.withProperties(new VirtualNetworkRuleProperties());
+            this.properties = new VirtualNetworkRuleProperties();
         }
         this.properties().withVirtualNetworkSubnetId(virtualNetworkSubnetId);
         return this;
@@ -77,11 +62,7 @@ public final class VirtualNetworkRuleInner extends ProxyResource {
      * @return the ignoreMissingVnetServiceEndpoint value.
      */
     public Boolean ignoreMissingVnetServiceEndpoint() {
-        if (this.properties() == null) {
-            return null;
-        } else {
-            return this.properties().ignoreMissingVnetServiceEndpoint();
-        }
+        return this.properties() == null ? null : this.properties().ignoreMissingVnetServiceEndpoint();
     }
 
     /**
@@ -93,7 +74,7 @@ public final class VirtualNetworkRuleInner extends ProxyResource {
      */
     public VirtualNetworkRuleInner withIgnoreMissingVnetServiceEndpoint(Boolean ignoreMissingVnetServiceEndpoint) {
         if (this.properties() == null) {
-            this.withProperties(new VirtualNetworkRuleProperties());
+            this.properties = new VirtualNetworkRuleProperties();
         }
         this.properties().withIgnoreMissingVnetServiceEndpoint(ignoreMissingVnetServiceEndpoint);
         return this;
@@ -105,11 +86,7 @@ public final class VirtualNetworkRuleInner extends ProxyResource {
      * @return the state value.
      */
     public VirtualNetworkRuleState state() {
-        if (this.properties() == null) {
-            return null;
-        } else {
-            return this.properties().state();
-        }
+        return this.properties() == null ? null : this.properties().state();
     }
 
     /**

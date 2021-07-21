@@ -96,17 +96,6 @@ public final class ServerInner extends Resource {
         return this.properties;
     }
 
-    /**
-     * Set the properties property: Properties of the server.
-     *
-     * @param properties the properties value to set.
-     * @return the ServerInner object itself.
-     */
-    private ServerInner withProperties(ServerProperties properties) {
-        this.properties = properties;
-        return this;
-    }
-
     /** {@inheritDoc} */
     @Override
     public ServerInner withLocation(String location) {
@@ -128,11 +117,7 @@ public final class ServerInner extends Resource {
      * @return the administratorLogin value.
      */
     public String administratorLogin() {
-        if (this.properties() == null) {
-            return null;
-        } else {
-            return this.properties().administratorLogin();
-        }
+        return this.properties() == null ? null : this.properties().administratorLogin();
     }
 
     /**
@@ -144,7 +129,7 @@ public final class ServerInner extends Resource {
      */
     public ServerInner withAdministratorLogin(String administratorLogin) {
         if (this.properties() == null) {
-            this.withProperties(new ServerProperties());
+            this.properties = new ServerProperties();
         }
         this.properties().withAdministratorLogin(administratorLogin);
         return this;
@@ -156,11 +141,7 @@ public final class ServerInner extends Resource {
      * @return the version value.
      */
     public ServerVersion version() {
-        if (this.properties() == null) {
-            return null;
-        } else {
-            return this.properties().version();
-        }
+        return this.properties() == null ? null : this.properties().version();
     }
 
     /**
@@ -171,7 +152,7 @@ public final class ServerInner extends Resource {
      */
     public ServerInner withVersion(ServerVersion version) {
         if (this.properties() == null) {
-            this.withProperties(new ServerProperties());
+            this.properties = new ServerProperties();
         }
         this.properties().withVersion(version);
         return this;
@@ -183,11 +164,7 @@ public final class ServerInner extends Resource {
      * @return the sslEnforcement value.
      */
     public SslEnforcementEnum sslEnforcement() {
-        if (this.properties() == null) {
-            return null;
-        } else {
-            return this.properties().sslEnforcement();
-        }
+        return this.properties() == null ? null : this.properties().sslEnforcement();
     }
 
     /**
@@ -198,7 +175,7 @@ public final class ServerInner extends Resource {
      */
     public ServerInner withSslEnforcement(SslEnforcementEnum sslEnforcement) {
         if (this.properties() == null) {
-            this.withProperties(new ServerProperties());
+            this.properties = new ServerProperties();
         }
         this.properties().withSslEnforcement(sslEnforcement);
         return this;
@@ -210,11 +187,7 @@ public final class ServerInner extends Resource {
      * @return the minimalTlsVersion value.
      */
     public MinimalTlsVersionEnum minimalTlsVersion() {
-        if (this.properties() == null) {
-            return null;
-        } else {
-            return this.properties().minimalTlsVersion();
-        }
+        return this.properties() == null ? null : this.properties().minimalTlsVersion();
     }
 
     /**
@@ -225,7 +198,7 @@ public final class ServerInner extends Resource {
      */
     public ServerInner withMinimalTlsVersion(MinimalTlsVersionEnum minimalTlsVersion) {
         if (this.properties() == null) {
-            this.withProperties(new ServerProperties());
+            this.properties = new ServerProperties();
         }
         this.properties().withMinimalTlsVersion(minimalTlsVersion);
         return this;
@@ -238,11 +211,7 @@ public final class ServerInner extends Resource {
      * @return the byokEnforcement value.
      */
     public String byokEnforcement() {
-        if (this.properties() == null) {
-            return null;
-        } else {
-            return this.properties().byokEnforcement();
-        }
+        return this.properties() == null ? null : this.properties().byokEnforcement();
     }
 
     /**
@@ -251,11 +220,7 @@ public final class ServerInner extends Resource {
      * @return the infrastructureEncryption value.
      */
     public InfrastructureEncryption infrastructureEncryption() {
-        if (this.properties() == null) {
-            return null;
-        } else {
-            return this.properties().infrastructureEncryption();
-        }
+        return this.properties() == null ? null : this.properties().infrastructureEncryption();
     }
 
     /**
@@ -266,7 +231,7 @@ public final class ServerInner extends Resource {
      */
     public ServerInner withInfrastructureEncryption(InfrastructureEncryption infrastructureEncryption) {
         if (this.properties() == null) {
-            this.withProperties(new ServerProperties());
+            this.properties = new ServerProperties();
         }
         this.properties().withInfrastructureEncryption(infrastructureEncryption);
         return this;
@@ -278,11 +243,7 @@ public final class ServerInner extends Resource {
      * @return the userVisibleState value.
      */
     public ServerState userVisibleState() {
-        if (this.properties() == null) {
-            return null;
-        } else {
-            return this.properties().userVisibleState();
-        }
+        return this.properties() == null ? null : this.properties().userVisibleState();
     }
 
     /**
@@ -293,7 +254,7 @@ public final class ServerInner extends Resource {
      */
     public ServerInner withUserVisibleState(ServerState userVisibleState) {
         if (this.properties() == null) {
-            this.withProperties(new ServerProperties());
+            this.properties = new ServerProperties();
         }
         this.properties().withUserVisibleState(userVisibleState);
         return this;
@@ -305,11 +266,7 @@ public final class ServerInner extends Resource {
      * @return the fullyQualifiedDomainName value.
      */
     public String fullyQualifiedDomainName() {
-        if (this.properties() == null) {
-            return null;
-        } else {
-            return this.properties().fullyQualifiedDomainName();
-        }
+        return this.properties() == null ? null : this.properties().fullyQualifiedDomainName();
     }
 
     /**
@@ -320,7 +277,7 @@ public final class ServerInner extends Resource {
      */
     public ServerInner withFullyQualifiedDomainName(String fullyQualifiedDomainName) {
         if (this.properties() == null) {
-            this.withProperties(new ServerProperties());
+            this.properties = new ServerProperties();
         }
         this.properties().withFullyQualifiedDomainName(fullyQualifiedDomainName);
         return this;
@@ -332,11 +289,7 @@ public final class ServerInner extends Resource {
      * @return the earliestRestoreDate value.
      */
     public OffsetDateTime earliestRestoreDate() {
-        if (this.properties() == null) {
-            return null;
-        } else {
-            return this.properties().earliestRestoreDate();
-        }
+        return this.properties() == null ? null : this.properties().earliestRestoreDate();
     }
 
     /**
@@ -347,7 +300,7 @@ public final class ServerInner extends Resource {
      */
     public ServerInner withEarliestRestoreDate(OffsetDateTime earliestRestoreDate) {
         if (this.properties() == null) {
-            this.withProperties(new ServerProperties());
+            this.properties = new ServerProperties();
         }
         this.properties().withEarliestRestoreDate(earliestRestoreDate);
         return this;
@@ -359,11 +312,7 @@ public final class ServerInner extends Resource {
      * @return the storageProfile value.
      */
     public StorageProfile storageProfile() {
-        if (this.properties() == null) {
-            return null;
-        } else {
-            return this.properties().storageProfile();
-        }
+        return this.properties() == null ? null : this.properties().storageProfile();
     }
 
     /**
@@ -374,7 +323,7 @@ public final class ServerInner extends Resource {
      */
     public ServerInner withStorageProfile(StorageProfile storageProfile) {
         if (this.properties() == null) {
-            this.withProperties(new ServerProperties());
+            this.properties = new ServerProperties();
         }
         this.properties().withStorageProfile(storageProfile);
         return this;
@@ -386,11 +335,7 @@ public final class ServerInner extends Resource {
      * @return the replicationRole value.
      */
     public String replicationRole() {
-        if (this.properties() == null) {
-            return null;
-        } else {
-            return this.properties().replicationRole();
-        }
+        return this.properties() == null ? null : this.properties().replicationRole();
     }
 
     /**
@@ -401,7 +346,7 @@ public final class ServerInner extends Resource {
      */
     public ServerInner withReplicationRole(String replicationRole) {
         if (this.properties() == null) {
-            this.withProperties(new ServerProperties());
+            this.properties = new ServerProperties();
         }
         this.properties().withReplicationRole(replicationRole);
         return this;
@@ -413,11 +358,7 @@ public final class ServerInner extends Resource {
      * @return the masterServerId value.
      */
     public String masterServerId() {
-        if (this.properties() == null) {
-            return null;
-        } else {
-            return this.properties().masterServerId();
-        }
+        return this.properties() == null ? null : this.properties().masterServerId();
     }
 
     /**
@@ -428,7 +369,7 @@ public final class ServerInner extends Resource {
      */
     public ServerInner withMasterServerId(String masterServerId) {
         if (this.properties() == null) {
-            this.withProperties(new ServerProperties());
+            this.properties = new ServerProperties();
         }
         this.properties().withMasterServerId(masterServerId);
         return this;
@@ -440,11 +381,7 @@ public final class ServerInner extends Resource {
      * @return the replicaCapacity value.
      */
     public Integer replicaCapacity() {
-        if (this.properties() == null) {
-            return null;
-        } else {
-            return this.properties().replicaCapacity();
-        }
+        return this.properties() == null ? null : this.properties().replicaCapacity();
     }
 
     /**
@@ -455,7 +392,7 @@ public final class ServerInner extends Resource {
      */
     public ServerInner withReplicaCapacity(Integer replicaCapacity) {
         if (this.properties() == null) {
-            this.withProperties(new ServerProperties());
+            this.properties = new ServerProperties();
         }
         this.properties().withReplicaCapacity(replicaCapacity);
         return this;
@@ -468,11 +405,7 @@ public final class ServerInner extends Resource {
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccessEnum publicNetworkAccess() {
-        if (this.properties() == null) {
-            return null;
-        } else {
-            return this.properties().publicNetworkAccess();
-        }
+        return this.properties() == null ? null : this.properties().publicNetworkAccess();
     }
 
     /**
@@ -484,7 +417,7 @@ public final class ServerInner extends Resource {
      */
     public ServerInner withPublicNetworkAccess(PublicNetworkAccessEnum publicNetworkAccess) {
         if (this.properties() == null) {
-            this.withProperties(new ServerProperties());
+            this.properties = new ServerProperties();
         }
         this.properties().withPublicNetworkAccess(publicNetworkAccess);
         return this;
@@ -496,11 +429,7 @@ public final class ServerInner extends Resource {
      * @return the privateEndpointConnections value.
      */
     public List<ServerPrivateEndpointConnection> privateEndpointConnections() {
-        if (this.properties() == null) {
-            return null;
-        } else {
-            return this.properties().privateEndpointConnections();
-        }
+        return this.properties() == null ? null : this.properties().privateEndpointConnections();
     }
 
     /**

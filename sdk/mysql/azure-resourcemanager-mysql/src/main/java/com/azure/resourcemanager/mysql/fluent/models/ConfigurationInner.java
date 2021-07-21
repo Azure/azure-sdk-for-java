@@ -32,27 +32,12 @@ public final class ConfigurationInner extends ProxyResource {
     }
 
     /**
-     * Set the properties property: The properties of a configuration.
-     *
-     * @param properties the properties value to set.
-     * @return the ConfigurationInner object itself.
-     */
-    private ConfigurationInner withProperties(ConfigurationProperties properties) {
-        this.properties = properties;
-        return this;
-    }
-
-    /**
      * Get the value property: Value of the configuration.
      *
      * @return the value value.
      */
     public String value() {
-        if (this.properties() == null) {
-            return null;
-        } else {
-            return this.properties().value();
-        }
+        return this.properties() == null ? null : this.properties().value();
     }
 
     /**
@@ -63,7 +48,7 @@ public final class ConfigurationInner extends ProxyResource {
      */
     public ConfigurationInner withValue(String value) {
         if (this.properties() == null) {
-            this.withProperties(new ConfigurationProperties());
+            this.properties = new ConfigurationProperties();
         }
         this.properties().withValue(value);
         return this;
@@ -75,11 +60,7 @@ public final class ConfigurationInner extends ProxyResource {
      * @return the description value.
      */
     public String description() {
-        if (this.properties() == null) {
-            return null;
-        } else {
-            return this.properties().description();
-        }
+        return this.properties() == null ? null : this.properties().description();
     }
 
     /**
@@ -88,11 +69,7 @@ public final class ConfigurationInner extends ProxyResource {
      * @return the defaultValue value.
      */
     public String defaultValue() {
-        if (this.properties() == null) {
-            return null;
-        } else {
-            return this.properties().defaultValue();
-        }
+        return this.properties() == null ? null : this.properties().defaultValue();
     }
 
     /**
@@ -101,11 +78,7 @@ public final class ConfigurationInner extends ProxyResource {
      * @return the dataType value.
      */
     public String dataType() {
-        if (this.properties() == null) {
-            return null;
-        } else {
-            return this.properties().dataType();
-        }
+        return this.properties() == null ? null : this.properties().dataType();
     }
 
     /**
@@ -114,11 +87,7 @@ public final class ConfigurationInner extends ProxyResource {
      * @return the allowedValues value.
      */
     public String allowedValues() {
-        if (this.properties() == null) {
-            return null;
-        } else {
-            return this.properties().allowedValues();
-        }
+        return this.properties() == null ? null : this.properties().allowedValues();
     }
 
     /**
@@ -127,11 +96,7 @@ public final class ConfigurationInner extends ProxyResource {
      * @return the source value.
      */
     public String source() {
-        if (this.properties() == null) {
-            return null;
-        } else {
-            return this.properties().source();
-        }
+        return this.properties() == null ? null : this.properties().source();
     }
 
     /**
@@ -142,7 +107,7 @@ public final class ConfigurationInner extends ProxyResource {
      */
     public ConfigurationInner withSource(String source) {
         if (this.properties() == null) {
-            this.withProperties(new ConfigurationProperties());
+            this.properties = new ConfigurationProperties();
         }
         this.properties().withSource(source);
         return this;

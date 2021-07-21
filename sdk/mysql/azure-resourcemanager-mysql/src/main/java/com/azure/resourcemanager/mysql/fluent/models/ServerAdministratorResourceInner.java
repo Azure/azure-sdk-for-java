@@ -33,27 +33,12 @@ public final class ServerAdministratorResourceInner extends ProxyResource {
     }
 
     /**
-     * Set the properties property: Properties of the server AAD administrator.
-     *
-     * @param properties the properties value to set.
-     * @return the ServerAdministratorResourceInner object itself.
-     */
-    private ServerAdministratorResourceInner withProperties(ServerAdministratorProperties properties) {
-        this.properties = properties;
-        return this;
-    }
-
-    /**
      * Get the administratorType property: The type of administrator.
      *
      * @return the administratorType value.
      */
     public String administratorType() {
-        if (this.properties() == null) {
-            return null;
-        } else {
-            return this.properties().administratorType();
-        }
+        return this.properties() == null ? null : this.properties().administratorType();
     }
 
     /**
@@ -64,7 +49,7 @@ public final class ServerAdministratorResourceInner extends ProxyResource {
      */
     public ServerAdministratorResourceInner withAdministratorType(String administratorType) {
         if (this.properties() == null) {
-            this.withProperties(new ServerAdministratorProperties());
+            this.properties = new ServerAdministratorProperties();
         }
         this.properties().withAdministratorType(administratorType);
         return this;
@@ -76,11 +61,7 @@ public final class ServerAdministratorResourceInner extends ProxyResource {
      * @return the login value.
      */
     public String login() {
-        if (this.properties() == null) {
-            return null;
-        } else {
-            return this.properties().login();
-        }
+        return this.properties() == null ? null : this.properties().login();
     }
 
     /**
@@ -91,7 +72,7 @@ public final class ServerAdministratorResourceInner extends ProxyResource {
      */
     public ServerAdministratorResourceInner withLogin(String login) {
         if (this.properties() == null) {
-            this.withProperties(new ServerAdministratorProperties());
+            this.properties = new ServerAdministratorProperties();
         }
         this.properties().withLogin(login);
         return this;
@@ -103,11 +84,7 @@ public final class ServerAdministratorResourceInner extends ProxyResource {
      * @return the sid value.
      */
     public UUID sid() {
-        if (this.properties() == null) {
-            return null;
-        } else {
-            return this.properties().sid();
-        }
+        return this.properties() == null ? null : this.properties().sid();
     }
 
     /**
@@ -118,7 +95,7 @@ public final class ServerAdministratorResourceInner extends ProxyResource {
      */
     public ServerAdministratorResourceInner withSid(UUID sid) {
         if (this.properties() == null) {
-            this.withProperties(new ServerAdministratorProperties());
+            this.properties = new ServerAdministratorProperties();
         }
         this.properties().withSid(sid);
         return this;
@@ -130,11 +107,7 @@ public final class ServerAdministratorResourceInner extends ProxyResource {
      * @return the tenantId value.
      */
     public UUID tenantId() {
-        if (this.properties() == null) {
-            return null;
-        } else {
-            return this.properties().tenantId();
-        }
+        return this.properties() == null ? null : this.properties().tenantId();
     }
 
     /**
@@ -145,7 +118,7 @@ public final class ServerAdministratorResourceInner extends ProxyResource {
      */
     public ServerAdministratorResourceInner withTenantId(UUID tenantId) {
         if (this.properties() == null) {
-            this.withProperties(new ServerAdministratorProperties());
+            this.properties = new ServerAdministratorProperties();
         }
         this.properties().withTenantId(tenantId);
         return this;

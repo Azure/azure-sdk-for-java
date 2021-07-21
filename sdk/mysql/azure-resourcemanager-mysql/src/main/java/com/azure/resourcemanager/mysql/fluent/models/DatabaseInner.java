@@ -32,27 +32,12 @@ public final class DatabaseInner extends ProxyResource {
     }
 
     /**
-     * Set the properties property: The properties of a database.
-     *
-     * @param properties the properties value to set.
-     * @return the DatabaseInner object itself.
-     */
-    private DatabaseInner withProperties(DatabaseProperties properties) {
-        this.properties = properties;
-        return this;
-    }
-
-    /**
      * Get the charset property: The charset of the database.
      *
      * @return the charset value.
      */
     public String charset() {
-        if (this.properties() == null) {
-            return null;
-        } else {
-            return this.properties().charset();
-        }
+        return this.properties() == null ? null : this.properties().charset();
     }
 
     /**
@@ -63,7 +48,7 @@ public final class DatabaseInner extends ProxyResource {
      */
     public DatabaseInner withCharset(String charset) {
         if (this.properties() == null) {
-            this.withProperties(new DatabaseProperties());
+            this.properties = new DatabaseProperties();
         }
         this.properties().withCharset(charset);
         return this;
@@ -75,11 +60,7 @@ public final class DatabaseInner extends ProxyResource {
      * @return the collation value.
      */
     public String collation() {
-        if (this.properties() == null) {
-            return null;
-        } else {
-            return this.properties().collation();
-        }
+        return this.properties() == null ? null : this.properties().collation();
     }
 
     /**
@@ -90,7 +71,7 @@ public final class DatabaseInner extends ProxyResource {
      */
     public DatabaseInner withCollation(String collation) {
         if (this.properties() == null) {
-            this.withProperties(new DatabaseProperties());
+            this.properties = new DatabaseProperties();
         }
         this.properties().withCollation(collation);
         return this;

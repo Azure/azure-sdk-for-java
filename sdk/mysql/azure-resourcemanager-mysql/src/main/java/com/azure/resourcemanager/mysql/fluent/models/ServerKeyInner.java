@@ -49,27 +49,12 @@ public final class ServerKeyInner extends ProxyResource {
     }
 
     /**
-     * Set the properties property: Properties of the ServerKey Resource.
-     *
-     * @param properties the properties value to set.
-     * @return the ServerKeyInner object itself.
-     */
-    private ServerKeyInner withProperties(ServerKeyProperties properties) {
-        this.properties = properties;
-        return this;
-    }
-
-    /**
      * Get the serverKeyType property: The key type like 'AzureKeyVault'.
      *
      * @return the serverKeyType value.
      */
     public ServerKeyType serverKeyType() {
-        if (this.properties() == null) {
-            return null;
-        } else {
-            return this.properties().serverKeyType();
-        }
+        return this.properties() == null ? null : this.properties().serverKeyType();
     }
 
     /**
@@ -80,7 +65,7 @@ public final class ServerKeyInner extends ProxyResource {
      */
     public ServerKeyInner withServerKeyType(ServerKeyType serverKeyType) {
         if (this.properties() == null) {
-            this.withProperties(new ServerKeyProperties());
+            this.properties = new ServerKeyProperties();
         }
         this.properties().withServerKeyType(serverKeyType);
         return this;
@@ -92,11 +77,7 @@ public final class ServerKeyInner extends ProxyResource {
      * @return the uri value.
      */
     public String uri() {
-        if (this.properties() == null) {
-            return null;
-        } else {
-            return this.properties().uri();
-        }
+        return this.properties() == null ? null : this.properties().uri();
     }
 
     /**
@@ -107,7 +88,7 @@ public final class ServerKeyInner extends ProxyResource {
      */
     public ServerKeyInner withUri(String uri) {
         if (this.properties() == null) {
-            this.withProperties(new ServerKeyProperties());
+            this.properties = new ServerKeyProperties();
         }
         this.properties().withUri(uri);
         return this;
@@ -119,11 +100,7 @@ public final class ServerKeyInner extends ProxyResource {
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
-        if (this.properties() == null) {
-            return null;
-        } else {
-            return this.properties().creationDate();
-        }
+        return this.properties() == null ? null : this.properties().creationDate();
     }
 
     /**
