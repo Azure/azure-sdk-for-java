@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.clienttelemetry.ReportPayload;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpResponse;
+import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
@@ -216,6 +217,7 @@ public class ClientTelemetryTest extends TestSuiteBase {
     public void clientTelemetryWithStageJunoEndpoint() throws InterruptedException, NoSuchFieldException,
         IllegalAccessException {
         CosmosClient cosmosClient = null;
+        String databaseId = UUID.randomUUID().toString();
         try {
             String whiteListedAccountForTelemetry = System.getProperty("COSMOS.CLIENT_TELEMETRY_COSMOS_ACCOUNT");
             String[] credentialList = whiteListedAccountForTelemetry.split(";");
@@ -227,10 +229,14 @@ public class ClientTelemetryTest extends TestSuiteBase {
                 .key(key)
                 .clientTelemetryEnabled(true)
                 .buildClient();
-            CosmosAsyncContainer asyncContainer =
-                getSharedMultiPartitionCosmosContainer(cosmosClient.asyncClient());
+            String containerId = UUID.randomUUID().toString();
+            cosmosClient.createDatabase(databaseId);
+
+            CosmosContainerProperties containerProperties =
+                new CosmosContainerProperties(containerId, "/id");
+            cosmosClient.getDatabase(databaseId).createContainer(containerProperties);
             CosmosContainer cosmosContainer =
-                cosmosClient.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
+                cosmosClient.getDatabase(databaseId).getContainer(containerId);
             ClientTelemetry clientTelemetry = cosmosClient.asyncClient().getContextClient().getClientTelemetry();
             setClientTelemetrySchedulingInSec(clientTelemetry, 5);
             clientTelemetry.init();
@@ -265,6 +271,7 @@ public class ClientTelemetryTest extends TestSuiteBase {
                 return httpResponse.statusCode() == HttpConstants.StatusCodes.OK;
             }).verifyComplete();
         } finally {
+            cosmosClient.getDatabase(databaseId).delete();
             safeCloseSyncClient(cosmosClient);
         }
     }
