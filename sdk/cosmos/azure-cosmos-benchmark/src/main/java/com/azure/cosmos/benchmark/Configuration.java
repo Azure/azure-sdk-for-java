@@ -91,6 +91,9 @@ public class Configuration {
     @Parameter(names = "-manageDatabase", description = "Control switch for creating/deleting underlying database resource")
     private boolean manageDatabase = false;
 
+    @Parameter(names = "-preferredRegionsList", description = "Comma separated preferred regions list")
+    private String preferredRegionsList;
+
     @Parameter(names = "-operation", description = "Type of Workload:\n"
         + "\tReadThroughput- run a READ workload that prints only throughput *\n"
         + "\tReadThroughputWithMultipleClients - run a READ workload that prints throughput and latency for multiple client read.*\n"
@@ -445,6 +448,10 @@ public class Configuration {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
     }
 
+    public String getPreferredRegionsList() {
+        return preferredRegionsList;
+    }
+
     public void tryGetValuesFromSystem() {
         serviceEndpoint = StringUtils.defaultString(Strings.emptyToNull(System.getenv().get("SERVICE_END_POINT")),
                                                     serviceEndpoint);
@@ -483,6 +490,9 @@ public class Configuration {
         String throughputValue = StringUtils.defaultString(
                 Strings.emptyToNull(System.getenv().get("THROUGHPUT")), Integer.toString(throughput));
         throughput = Integer.parseInt(throughputValue);
+
+        preferredRegionsList = StringUtils.defaultString(Strings.emptyToNull(System.getenv().get("PREFERRED_REGIONS_LIST")),
+            preferredRegionsList);
     }
 
     private synchronized MeterRegistry azureMonitorMeterRegistry(String instrumentationKey) {
