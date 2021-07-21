@@ -9,7 +9,6 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -17,23 +16,40 @@ import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.fluent.AvsClient;
+import com.azure.resourcemanager.avs.implementation.AddonsImpl;
 import com.azure.resourcemanager.avs.implementation.AuthorizationsImpl;
 import com.azure.resourcemanager.avs.implementation.AvsClientBuilder;
+import com.azure.resourcemanager.avs.implementation.CloudLinksImpl;
 import com.azure.resourcemanager.avs.implementation.ClustersImpl;
+import com.azure.resourcemanager.avs.implementation.DatastoresImpl;
+import com.azure.resourcemanager.avs.implementation.GlobalReachConnectionsImpl;
 import com.azure.resourcemanager.avs.implementation.HcxEnterpriseSitesImpl;
 import com.azure.resourcemanager.avs.implementation.LocationsImpl;
 import com.azure.resourcemanager.avs.implementation.OperationsImpl;
 import com.azure.resourcemanager.avs.implementation.PrivateCloudsImpl;
+import com.azure.resourcemanager.avs.implementation.ScriptCmdletsImpl;
+import com.azure.resourcemanager.avs.implementation.ScriptExecutionsImpl;
+import com.azure.resourcemanager.avs.implementation.ScriptPackagesImpl;
+import com.azure.resourcemanager.avs.implementation.WorkloadNetworksImpl;
+import com.azure.resourcemanager.avs.models.Addons;
 import com.azure.resourcemanager.avs.models.Authorizations;
+import com.azure.resourcemanager.avs.models.CloudLinks;
 import com.azure.resourcemanager.avs.models.Clusters;
+import com.azure.resourcemanager.avs.models.Datastores;
+import com.azure.resourcemanager.avs.models.GlobalReachConnections;
 import com.azure.resourcemanager.avs.models.HcxEnterpriseSites;
 import com.azure.resourcemanager.avs.models.Locations;
 import com.azure.resourcemanager.avs.models.Operations;
 import com.azure.resourcemanager.avs.models.PrivateClouds;
+import com.azure.resourcemanager.avs.models.ScriptCmdlets;
+import com.azure.resourcemanager.avs.models.ScriptExecutions;
+import com.azure.resourcemanager.avs.models.ScriptPackages;
+import com.azure.resourcemanager.avs.models.WorkloadNetworks;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -50,9 +66,25 @@ public final class AvsManager {
 
     private Clusters clusters;
 
+    private Datastores datastores;
+
     private HcxEnterpriseSites hcxEnterpriseSites;
 
     private Authorizations authorizations;
+
+    private GlobalReachConnections globalReachConnections;
+
+    private WorkloadNetworks workloadNetworks;
+
+    private CloudLinks cloudLinks;
+
+    private Addons addons;
+
+    private ScriptPackages scriptPackages;
+
+    private ScriptCmdlets scriptCmdlets;
+
+    private ScriptExecutions scriptExecutions;
 
     private final AvsClient clientObject;
 
@@ -97,6 +129,7 @@ public final class AvsManager {
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
         private final List<HttpPipelinePolicy> policies = new ArrayList<>();
+        private final List<String> scopes = new ArrayList<>();
         private RetryPolicy retryPolicy;
         private Duration defaultPollInterval;
 
@@ -133,6 +166,17 @@ public final class AvsManager {
          */
         public Configurable withPolicy(HttpPipelinePolicy policy) {
             this.policies.add(Objects.requireNonNull(policy, "'policy' cannot be null."));
+            return this;
+        }
+
+        /**
+         * Adds the scope to permission sets.
+         *
+         * @param scope the scope.
+         * @return the configurable object itself.
+         */
+        public Configurable withScope(String scope) {
+            this.scopes.add(Objects.requireNonNull(scope, "'scope' cannot be null."));
             return this;
         }
 
@@ -178,7 +222,7 @@ public final class AvsManager {
                 .append("-")
                 .append("com.azure.resourcemanager.avs")
                 .append("/")
-                .append("1.0.0-beta.1");
+                .append("1.0.0-beta.2");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -192,6 +236,9 @@ public final class AvsManager {
                 userAgentBuilder.append(" (auto-generated)");
             }
 
+            if (scopes.isEmpty()) {
+                scopes.add(profile.getEnvironment().getManagementEndpoint() + "/.default");
+            }
             if (retryPolicy == null) {
                 retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
             }
@@ -201,10 +248,7 @@ public final class AvsManager {
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
-            policies
-                .add(
-                    new BearerTokenAuthenticationPolicy(
-                        credential, profile.getEnvironment().getManagementEndpoint() + "/.default"));
+            policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
             policies.addAll(this.policies);
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
@@ -249,6 +293,14 @@ public final class AvsManager {
         return clusters;
     }
 
+    /** @return Resource collection API of Datastores. */
+    public Datastores datastores() {
+        if (this.datastores == null) {
+            this.datastores = new DatastoresImpl(clientObject.getDatastores(), this);
+        }
+        return datastores;
+    }
+
     /** @return Resource collection API of HcxEnterpriseSites. */
     public HcxEnterpriseSites hcxEnterpriseSites() {
         if (this.hcxEnterpriseSites == null) {
@@ -263,6 +315,63 @@ public final class AvsManager {
             this.authorizations = new AuthorizationsImpl(clientObject.getAuthorizations(), this);
         }
         return authorizations;
+    }
+
+    /** @return Resource collection API of GlobalReachConnections. */
+    public GlobalReachConnections globalReachConnections() {
+        if (this.globalReachConnections == null) {
+            this.globalReachConnections =
+                new GlobalReachConnectionsImpl(clientObject.getGlobalReachConnections(), this);
+        }
+        return globalReachConnections;
+    }
+
+    /** @return Resource collection API of WorkloadNetworks. */
+    public WorkloadNetworks workloadNetworks() {
+        if (this.workloadNetworks == null) {
+            this.workloadNetworks = new WorkloadNetworksImpl(clientObject.getWorkloadNetworks(), this);
+        }
+        return workloadNetworks;
+    }
+
+    /** @return Resource collection API of CloudLinks. */
+    public CloudLinks cloudLinks() {
+        if (this.cloudLinks == null) {
+            this.cloudLinks = new CloudLinksImpl(clientObject.getCloudLinks(), this);
+        }
+        return cloudLinks;
+    }
+
+    /** @return Resource collection API of Addons. */
+    public Addons addons() {
+        if (this.addons == null) {
+            this.addons = new AddonsImpl(clientObject.getAddons(), this);
+        }
+        return addons;
+    }
+
+    /** @return Resource collection API of ScriptPackages. */
+    public ScriptPackages scriptPackages() {
+        if (this.scriptPackages == null) {
+            this.scriptPackages = new ScriptPackagesImpl(clientObject.getScriptPackages(), this);
+        }
+        return scriptPackages;
+    }
+
+    /** @return Resource collection API of ScriptCmdlets. */
+    public ScriptCmdlets scriptCmdlets() {
+        if (this.scriptCmdlets == null) {
+            this.scriptCmdlets = new ScriptCmdletsImpl(clientObject.getScriptCmdlets(), this);
+        }
+        return scriptCmdlets;
+    }
+
+    /** @return Resource collection API of ScriptExecutions. */
+    public ScriptExecutions scriptExecutions() {
+        if (this.scriptExecutions == null) {
+            this.scriptExecutions = new ScriptExecutionsImpl(clientObject.getScriptExecutions(), this);
+        }
+        return scriptExecutions;
     }
 
     /**

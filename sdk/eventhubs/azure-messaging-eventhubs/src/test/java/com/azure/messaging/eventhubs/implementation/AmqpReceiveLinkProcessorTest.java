@@ -153,8 +153,8 @@ class AmqpReceiveLinkProcessorTest {
         Assertions.assertNotNull(value);
 
         final Integer creditValue = value.get();
-        // Expecting 1 because it is Long.MAX_VALUE.
-        Assertions.assertEquals(1, creditValue);
+        // Expecting PREFETCH because it is Long.MAX_VALUE.
+        Assertions.assertEquals(PREFETCH, creditValue);
     }
 
     /**
@@ -462,8 +462,8 @@ class AmqpReceiveLinkProcessorTest {
         Assertions.assertNotNull(value);
 
         final Integer creditValue = value.get();
-        // Expecting 1 because it is Long.MAX_VALUE.
-        Assertions.assertEquals(1, creditValue);
+        // Expecting PREFETCH because it is Long.MAX_VALUE.
+        Assertions.assertEquals(PREFETCH, creditValue);
     }
 
     @Test
@@ -496,8 +496,8 @@ class AmqpReceiveLinkProcessorTest {
         Assertions.assertNotNull(value);
 
         final Integer creditValue = value.get();
-        // Expecting 1 because it is Long.MAX_VALUE.
-        Assertions.assertEquals(1, creditValue);
+        // Expecting PREFETCH because it is Long.MAX_VALUE.
+        Assertions.assertEquals(PREFETCH, creditValue);
     }
 
     /**

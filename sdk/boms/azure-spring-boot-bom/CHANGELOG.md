@@ -1,5 +1,15 @@
 # Release History
 
+## 3.6.1 (2021-07-12)
+This release is compatible with Spring Boot 2.5.
+### New Features
+- Upgrade to [spring-boot-dependencies:2.5.2](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.5.2/spring-boot-dependencies-2.5.2.pom).
+- Upgrade to [azure-spring-boot-starter-keyvault-certificates:3.0.1](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot-starter-keyvault-certificates/CHANGELOG.md#301-2021-07-01).
+- Upgrade to [azure-spring-boot:3.6.1](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot/CHANGELOG.md#361-2021-07-02).
+- Upgrade to [azure-spring-boot-starter:3.6.1](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot-starter/CHANGELOG.md#361-2021-07-02).
+- Upgrade to [azure-spring-boot-starter-active-directory:3.6.1](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot-starter-active-directory/CHANGELOG.md#361-2021-07-02).
+- Upgrade to [azure-spring-boot-starter-active-directory-b2c:3.6.1](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot-starter-active-directory-b2c/CHANGELOG.md#361-2021-07-02).
+
 ## 3.6.0 (2021-06-23)
 This release is compatible with Spring Boot 2.5. 
 ### Dependency Upgrades

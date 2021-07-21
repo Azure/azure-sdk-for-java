@@ -12,7 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -58,7 +57,6 @@ public class AADOnDemandIT {
         aadSeleniumITHelper.destroy();
     }
 
-    @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
     @SpringBootApplication
     @RestController
     public static class DumbApp {
