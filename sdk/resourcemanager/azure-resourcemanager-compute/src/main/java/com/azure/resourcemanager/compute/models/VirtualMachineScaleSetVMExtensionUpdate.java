@@ -6,7 +6,7 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.compute.implementation.VirtualMachineExtensionUpdateProperties;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineExtensionUpdateProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

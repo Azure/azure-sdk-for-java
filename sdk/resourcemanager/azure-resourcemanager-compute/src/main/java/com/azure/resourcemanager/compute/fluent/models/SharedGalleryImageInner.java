@@ -6,7 +6,6 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.compute.implementation.SharedGalleryImageProperties;
 import com.azure.resourcemanager.compute.models.Disallowed;
 import com.azure.resourcemanager.compute.models.GalleryImageFeature;
 import com.azure.resourcemanager.compute.models.GalleryImageIdentifier;
@@ -41,12 +40,12 @@ public final class SharedGalleryImageInner extends PirSharedGalleryResource {
         return this.properties;
     }
 
-//    /** {@inheritDoc} */
-//    @Override
-//    public SharedGalleryImageInner withIdentifier(SharedGalleryIdentifier identifier) {
-//        super.withIdentifier(identifier);
-//        return this;
-//    }
+    /** {@inheritDoc} */
+    @Override
+    public SharedGalleryImageInner withUniqueId(String uniqueId) {
+        super.withUniqueId(uniqueId);
+        return this;
+    }
 
     /**
      * Get the osType property: This property allows you to specify the type of the OS that is included in the disk when

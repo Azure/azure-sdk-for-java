@@ -7,7 +7,6 @@ package com.azure.resourcemanager.compute.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.compute.implementation.GalleryApplicationVersionProperties;
 import com.azure.resourcemanager.compute.models.GalleryApplicationVersionPropertiesProvisioningState;
 import com.azure.resourcemanager.compute.models.GalleryApplicationVersionPublishingProfile;
 import com.azure.resourcemanager.compute.models.ReplicationStatus;

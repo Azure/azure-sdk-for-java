@@ -7,7 +7,6 @@ package com.azure.resourcemanager.compute.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.compute.implementation.PrivateEndpointConnectionProperties;
 import com.azure.resourcemanager.compute.models.PrivateEndpoint;
 import com.azure.resourcemanager.compute.models.PrivateEndpointConnectionProvisioningState;
 import com.azure.resourcemanager.compute.models.PrivateLinkServiceConnectionState;

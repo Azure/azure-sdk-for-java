@@ -14,12 +14,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public final class SharedGalleryInner extends PirSharedGalleryResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SharedGalleryInner.class);
 
-//    /** {@inheritDoc} */
-//    @Override
-//    public SharedGalleryInner withIdentifier(SharedGalleryIdentifier identifier) {
-//        super.withIdentifier(identifier);
-//        return this;
-//    }
+    /** {@inheritDoc} */
+    @Override
+    public SharedGalleryInner withUniqueId(String uniqueId) {
+        super.withUniqueId(uniqueId);
+        return this;
+    }
 
     /**
      * Validates the instance.
