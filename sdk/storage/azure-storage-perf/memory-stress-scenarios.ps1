@@ -47,3 +47,6 @@ Run-Scenario "300m" "uploadfiledatalake --warmup 0 --duration 1 --size 104857600
 # Small transfer options
 Run-Scenario "50m" "uploadfiledatalake --warmup 0 --duration 1 --size 1048576000 --transfer-single-upload-size 4194304 --transfer-block-size 1048576 --sync"
 Run-Scenario "50m" "uploadfiledatalake --warmup 0 --duration 1 --size 1048576000 --transfer-single-upload-size 4194304 --transfer-block-size 1048576"
+# Jumbo blobs
+Run-Scenario "7g" "uploadfiledatalake --warmup 0 --duration 1 --size 8388608000 --transfer-block-size 2147483648 --transfer-concurrency 1 --sync" "-Dazure.core.perf.test.data.buffer.size=104857600"
+Run-Scenario "7g" "uploadfiledatalake --warmup 0 --duration 1 --size 8388608000 --transfer-block-size 2147483648 --transfer-concurrency 1" "-Dazure.core.perf.test.data.buffer.size=104857600"
