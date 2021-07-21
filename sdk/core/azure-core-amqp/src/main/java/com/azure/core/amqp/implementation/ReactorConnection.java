@@ -397,7 +397,7 @@ public class ReactorConnection implements AmqpConnection {
         return createChannel
             .subscribeWith(new AmqpChannelProcessor<>(connectionId, entityPath,
                 channel -> channel.getEndpointStates(), retryPolicy,
-                new ClientLogger(RequestResponseChannel.class + ":" + entityPath)));
+                new ClientLogger(RequestResponseChannel.class.getName() + ":" + entityPath)));
     }
 
     @Override
