@@ -24,7 +24,7 @@ public class UploadBlobTest extends BlobTestBase<StoragePerfStressOptions> {
         super(options);
         if (options.isSync()) {
             inputStream = (RepeatingInputStream) createRandomInputStream(options.getSize());
-            inputStream.mark(Integer.MAX_VALUE);
+            inputStream.mark(Long.MAX_VALUE);
             byteBufferFlux = null;
         } else {
             inputStream = null;

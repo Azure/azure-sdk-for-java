@@ -19,7 +19,6 @@ public class TestDataCreationHelper {
     private static final int RANDOM_BYTES_LENGTH = Integer.parseInt(
         System.getProperty("azure.core.perf.test.data.buffer.size", "1048576")); // 1MB default;
     private static final byte[] RANDOM_BYTES;
-    private static final int SIZE = (1024 * 1024 * 1024) + 1;
 
     static {
         Random random = new Random(0);
@@ -67,14 +66,9 @@ public class TestDataCreationHelper {
      *
      * @param size the size of the stream
      * @return the {@link InputStream} of {@code size}
-     * @throws IllegalArgumentException if {@code size} is more than {@link #SIZE}
      */
     public static InputStream createRandomInputStream(long size) {
-        if (size > SIZE) {
-            throw new IllegalArgumentException("size must be <= " + SIZE);
-        }
-
-        return new RepeatingInputStream((int) size);
+        return new RepeatingInputStream(size);
     }
 
     /**
@@ -85,10 +79,10 @@ public class TestDataCreationHelper {
      * @throws IOException If an IO error occurs.
      */
     public static void writeBytesToOutputStream(OutputStream outputStream, long size) throws IOException {
-        int quotient = (int) size / RANDOM_BYTES.length;
-        int remainder = (int) size % RANDOM_BYTES.length;
+        long quotient = size / RANDOM_BYTES.length;
+        int remainder = (int) (size % RANDOM_BYTES.length);
 
-        for (int i = 0; i < quotient; i++) {
+        for (long i = 0; i < quotient; i++) {
             outputStream.write(RANDOM_BYTES);
         }
 
