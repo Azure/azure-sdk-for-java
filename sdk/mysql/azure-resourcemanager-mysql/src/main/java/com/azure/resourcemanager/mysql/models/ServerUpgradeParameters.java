@@ -46,10 +46,8 @@ public final class ServerUpgradeParameters {
      * @return the ServerUpgradeParameters object itself.
      */
     public ServerUpgradeParameters withTargetServerVersion(String targetServerVersion) {
-        synchronized (this) {
-            if (this.properties() == null) {
-                this.properties = new ServerUpgradeParametersProperties();
-            }
+        if (this.properties() == null) {
+            this.properties = new ServerUpgradeParametersProperties();
         }
         this.properties().withTargetServerVersion(targetServerVersion);
         return this;

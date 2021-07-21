@@ -47,10 +47,8 @@ public final class ConfigurationInner extends ProxyResource {
      * @return the ConfigurationInner object itself.
      */
     public ConfigurationInner withValue(String value) {
-        synchronized (this) {
-            if (this.properties() == null) {
-                this.properties = new ConfigurationProperties();
-            }
+        if (this.properties() == null) {
+            this.properties = new ConfigurationProperties();
         }
         this.properties().withValue(value);
         return this;
@@ -108,10 +106,8 @@ public final class ConfigurationInner extends ProxyResource {
      * @return the ConfigurationInner object itself.
      */
     public ConfigurationInner withSource(String source) {
-        synchronized (this) {
-            if (this.properties() == null) {
-                this.properties = new ConfigurationProperties();
-            }
+        if (this.properties() == null) {
+            this.properties = new ConfigurationProperties();
         }
         this.properties().withSource(source);
         return this;

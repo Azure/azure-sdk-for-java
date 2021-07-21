@@ -48,10 +48,8 @@ public final class LogFileInner extends ProxyResource {
      * @return the LogFileInner object itself.
      */
     public LogFileInner withSizeInKB(Long sizeInKB) {
-        synchronized (this) {
-            if (this.properties() == null) {
-                this.properties = new LogFileProperties();
-            }
+        if (this.properties() == null) {
+            this.properties = new LogFileProperties();
         }
         this.properties().withSizeInKB(sizeInKB);
         return this;
@@ -91,10 +89,8 @@ public final class LogFileInner extends ProxyResource {
      * @return the LogFileInner object itself.
      */
     public LogFileInner withTypePropertiesType(String typePropertiesType) {
-        synchronized (this) {
-            if (this.properties() == null) {
-                this.properties = new LogFileProperties();
-            }
+        if (this.properties() == null) {
+            this.properties = new LogFileProperties();
         }
         this.properties().withTypePropertiesType(typePropertiesType);
         return this;
@@ -116,10 +112,8 @@ public final class LogFileInner extends ProxyResource {
      * @return the LogFileInner object itself.
      */
     public LogFileInner withUrl(String url) {
-        synchronized (this) {
-            if (this.properties() == null) {
-                this.properties = new LogFileProperties();
-            }
+        if (this.properties() == null) {
+            this.properties = new LogFileProperties();
         }
         this.properties().withUrl(url);
         return this;

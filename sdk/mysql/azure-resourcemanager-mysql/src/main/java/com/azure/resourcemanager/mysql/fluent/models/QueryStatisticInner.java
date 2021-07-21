@@ -49,10 +49,8 @@ public final class QueryStatisticInner extends ProxyResource {
      * @return the QueryStatisticInner object itself.
      */
     public QueryStatisticInner withQueryId(String queryId) {
-        synchronized (this) {
-            if (this.properties() == null) {
-                this.properties = new QueryStatisticProperties();
-            }
+        if (this.properties() == null) {
+            this.properties = new QueryStatisticProperties();
         }
         this.properties().withQueryId(queryId);
         return this;
@@ -74,10 +72,8 @@ public final class QueryStatisticInner extends ProxyResource {
      * @return the QueryStatisticInner object itself.
      */
     public QueryStatisticInner withStartTime(OffsetDateTime startTime) {
-        synchronized (this) {
-            if (this.properties() == null) {
-                this.properties = new QueryStatisticProperties();
-            }
+        if (this.properties() == null) {
+            this.properties = new QueryStatisticProperties();
         }
         this.properties().withStartTime(startTime);
         return this;
@@ -99,10 +95,8 @@ public final class QueryStatisticInner extends ProxyResource {
      * @return the QueryStatisticInner object itself.
      */
     public QueryStatisticInner withEndTime(OffsetDateTime endTime) {
-        synchronized (this) {
-            if (this.properties() == null) {
-                this.properties = new QueryStatisticProperties();
-            }
+        if (this.properties() == null) {
+            this.properties = new QueryStatisticProperties();
         }
         this.properties().withEndTime(endTime);
         return this;
@@ -124,10 +118,8 @@ public final class QueryStatisticInner extends ProxyResource {
      * @return the QueryStatisticInner object itself.
      */
     public QueryStatisticInner withAggregationFunction(String aggregationFunction) {
-        synchronized (this) {
-            if (this.properties() == null) {
-                this.properties = new QueryStatisticProperties();
-            }
+        if (this.properties() == null) {
+            this.properties = new QueryStatisticProperties();
         }
         this.properties().withAggregationFunction(aggregationFunction);
         return this;
@@ -149,10 +141,8 @@ public final class QueryStatisticInner extends ProxyResource {
      * @return the QueryStatisticInner object itself.
      */
     public QueryStatisticInner withDatabaseNames(List<String> databaseNames) {
-        synchronized (this) {
-            if (this.properties() == null) {
-                this.properties = new QueryStatisticProperties();
-            }
+        if (this.properties() == null) {
+            this.properties = new QueryStatisticProperties();
         }
         this.properties().withDatabaseNames(databaseNames);
         return this;
@@ -174,10 +164,8 @@ public final class QueryStatisticInner extends ProxyResource {
      * @return the QueryStatisticInner object itself.
      */
     public QueryStatisticInner withQueryExecutionCount(Long queryExecutionCount) {
-        synchronized (this) {
-            if (this.properties() == null) {
-                this.properties = new QueryStatisticProperties();
-            }
+        if (this.properties() == null) {
+            this.properties = new QueryStatisticProperties();
         }
         this.properties().withQueryExecutionCount(queryExecutionCount);
         return this;
@@ -199,10 +187,8 @@ public final class QueryStatisticInner extends ProxyResource {
      * @return the QueryStatisticInner object itself.
      */
     public QueryStatisticInner withMetricName(String metricName) {
-        synchronized (this) {
-            if (this.properties() == null) {
-                this.properties = new QueryStatisticProperties();
-            }
+        if (this.properties() == null) {
+            this.properties = new QueryStatisticProperties();
         }
         this.properties().withMetricName(metricName);
         return this;
@@ -224,10 +210,8 @@ public final class QueryStatisticInner extends ProxyResource {
      * @return the QueryStatisticInner object itself.
      */
     public QueryStatisticInner withMetricDisplayName(String metricDisplayName) {
-        synchronized (this) {
-            if (this.properties() == null) {
-                this.properties = new QueryStatisticProperties();
-            }
+        if (this.properties() == null) {
+            this.properties = new QueryStatisticProperties();
         }
         this.properties().withMetricDisplayName(metricDisplayName);
         return this;
@@ -249,10 +233,8 @@ public final class QueryStatisticInner extends ProxyResource {
      * @return the QueryStatisticInner object itself.
      */
     public QueryStatisticInner withMetricValue(Double metricValue) {
-        synchronized (this) {
-            if (this.properties() == null) {
-                this.properties = new QueryStatisticProperties();
-            }
+        if (this.properties() == null) {
+            this.properties = new QueryStatisticProperties();
         }
         this.properties().withMetricValue(metricValue);
         return this;
@@ -274,10 +256,8 @@ public final class QueryStatisticInner extends ProxyResource {
      * @return the QueryStatisticInner object itself.
      */
     public QueryStatisticInner withMetricValueUnit(String metricValueUnit) {
-        synchronized (this) {
-            if (this.properties() == null) {
-                this.properties = new QueryStatisticProperties();
-            }
+        if (this.properties() == null) {
+            this.properties = new QueryStatisticProperties();
         }
         this.properties().withMetricValueUnit(metricValueUnit);
         return this;

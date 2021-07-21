@@ -64,10 +64,8 @@ public final class ServerKeyInner extends ProxyResource {
      * @return the ServerKeyInner object itself.
      */
     public ServerKeyInner withServerKeyType(ServerKeyType serverKeyType) {
-        synchronized (this) {
-            if (this.properties() == null) {
-                this.properties = new ServerKeyProperties();
-            }
+        if (this.properties() == null) {
+            this.properties = new ServerKeyProperties();
         }
         this.properties().withServerKeyType(serverKeyType);
         return this;
@@ -89,10 +87,8 @@ public final class ServerKeyInner extends ProxyResource {
      * @return the ServerKeyInner object itself.
      */
     public ServerKeyInner withUri(String uri) {
-        synchronized (this) {
-            if (this.properties() == null) {
-                this.properties = new ServerKeyProperties();
-            }
+        if (this.properties() == null) {
+            this.properties = new ServerKeyProperties();
         }
         this.properties().withUri(uri);
         return this;

@@ -47,10 +47,8 @@ public final class TopQueryStatisticsInput {
      * @return the TopQueryStatisticsInput object itself.
      */
     public TopQueryStatisticsInput withNumberOfTopQueries(int numberOfTopQueries) {
-        synchronized (this) {
-            if (this.properties() == null) {
-                this.properties = new TopQueryStatisticsInputProperties();
-            }
+        if (this.properties() == null) {
+            this.properties = new TopQueryStatisticsInputProperties();
         }
         this.properties().withNumberOfTopQueries(numberOfTopQueries);
         return this;
@@ -72,10 +70,8 @@ public final class TopQueryStatisticsInput {
      * @return the TopQueryStatisticsInput object itself.
      */
     public TopQueryStatisticsInput withAggregationFunction(String aggregationFunction) {
-        synchronized (this) {
-            if (this.properties() == null) {
-                this.properties = new TopQueryStatisticsInputProperties();
-            }
+        if (this.properties() == null) {
+            this.properties = new TopQueryStatisticsInputProperties();
         }
         this.properties().withAggregationFunction(aggregationFunction);
         return this;
@@ -97,10 +93,8 @@ public final class TopQueryStatisticsInput {
      * @return the TopQueryStatisticsInput object itself.
      */
     public TopQueryStatisticsInput withObservedMetric(String observedMetric) {
-        synchronized (this) {
-            if (this.properties() == null) {
-                this.properties = new TopQueryStatisticsInputProperties();
-            }
+        if (this.properties() == null) {
+            this.properties = new TopQueryStatisticsInputProperties();
         }
         this.properties().withObservedMetric(observedMetric);
         return this;
@@ -122,10 +116,8 @@ public final class TopQueryStatisticsInput {
      * @return the TopQueryStatisticsInput object itself.
      */
     public TopQueryStatisticsInput withObservationStartTime(OffsetDateTime observationStartTime) {
-        synchronized (this) {
-            if (this.properties() == null) {
-                this.properties = new TopQueryStatisticsInputProperties();
-            }
+        if (this.properties() == null) {
+            this.properties = new TopQueryStatisticsInputProperties();
         }
         this.properties().withObservationStartTime(observationStartTime);
         return this;
@@ -147,10 +139,8 @@ public final class TopQueryStatisticsInput {
      * @return the TopQueryStatisticsInput object itself.
      */
     public TopQueryStatisticsInput withObservationEndTime(OffsetDateTime observationEndTime) {
-        synchronized (this) {
-            if (this.properties() == null) {
-                this.properties = new TopQueryStatisticsInputProperties();
-            }
+        if (this.properties() == null) {
+            this.properties = new TopQueryStatisticsInputProperties();
         }
         this.properties().withObservationEndTime(observationEndTime);
         return this;
@@ -172,10 +162,8 @@ public final class TopQueryStatisticsInput {
      * @return the TopQueryStatisticsInput object itself.
      */
     public TopQueryStatisticsInput withAggregationWindow(String aggregationWindow) {
-        synchronized (this) {
-            if (this.properties() == null) {
-                this.properties = new TopQueryStatisticsInputProperties();
-            }
+        if (this.properties() == null) {
+            this.properties = new TopQueryStatisticsInputProperties();
         }
         this.properties().withAggregationWindow(aggregationWindow);
         return this;
