@@ -372,6 +372,10 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         }
     }
 
+    public Mono<BlockBlobItem> uploadProtocol(BinaryData data) {
+        return getBlockBlobAsyncClient().uploadProtocol(data).map(Response::getValue);
+    }
+
 
     /**
      * Creates a new block blob. By default this method will not overwrite an existing blob.

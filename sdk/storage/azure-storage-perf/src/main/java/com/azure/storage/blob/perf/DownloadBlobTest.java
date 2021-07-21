@@ -3,6 +3,8 @@
 
 package com.azure.storage.blob.perf;
 
+import com.azure.core.http.rest.Response;
+import com.azure.core.util.BinaryData;
 import com.azure.perf.test.core.NullOutputStream;
 import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.storage.blob.BlobAsyncClient;
@@ -46,17 +48,18 @@ public class DownloadBlobTest extends ContainerTest<PerfStressOptions> {
 
     @Override
     public Mono<Void> runAsync() {
-        return blobAsyncClient.download()
-            .map(b -> {
-                int readCount = 0;
-                int remaining = b.remaining();
-                while (readCount < remaining) {
-                    int expectedReadCount = Math.min(remaining - readCount, BUFFER_SIZE);
-                    b.get(buffer, 0, expectedReadCount);
-                    readCount += expectedReadCount;
-                }
-
-                return 1;
-            }).then();
+        return blobAsyncClient.downloadProtocol()
+                .map(Response::getValue)
+                .flatMapMany(BinaryData::toFluxByteBuffer)
+                .map(b -> {
+                    int readCount = 0;
+                    int remaining = b.remaining();
+                    while (readCount < remaining) {
+                        int expectedReadCount = Math.min(remaining - readCount, BUFFER_SIZE);
+                        b.get(buffer, 0, expectedReadCount);
+                        readCount += expectedReadCount;
+                    }
+                    return 1;
+                }).then();
     }
 }

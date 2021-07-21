@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.messaging.webpubsub.models;
 
-import com.azure.messaging.webpubsub.WebPubSubAsyncServiceClient;
+import com.azure.messaging.webpubsub.WebPubSubServiceAsyncClient;
 import com.azure.messaging.webpubsub.WebPubSubServiceClient;
 
 import java.time.Duration;
@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  * Options class for configuring the
- * {@link WebPubSubAsyncServiceClient#getAuthenticationToken(GetAuthenticationTokenOptions)} and
+ * {@link WebPubSubServiceAsyncClient#getAuthenticationToken(GetAuthenticationTokenOptions)} and
  * {@link WebPubSubServiceClient#getAuthenticationToken(GetAuthenticationTokenOptions)} methods.
  */
 public final class GetAuthenticationTokenOptions {

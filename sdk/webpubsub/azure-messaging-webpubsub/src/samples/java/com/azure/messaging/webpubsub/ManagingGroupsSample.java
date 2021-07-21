@@ -3,6 +3,7 @@
 
 package com.azure.messaging.webpubsub;
 
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.Configuration;
 
 public class ManagingGroupsSample {
@@ -10,19 +11,17 @@ public class ManagingGroupsSample {
 
     public static void main(String[] args) {
         // build a sync client
-        WebPubSubServiceClient chatHub = new WebPubSubClientBuilder()
+        WebPubSubServiceClient chatHub = new WebPubSubServiceClientBuilder()
             .connectionString(CONNECTION_STRING)
             .hub("chat")
             .buildClient();
 
-        WebPubSubGroup adminGroup = chatHub.getGroup("admin");
-
         // adding and removing users
-        adminGroup.addUser("jogiles");
-        adminGroup.removeUser("another_user");
+        chatHub.addUserToGroup("admin", "jogiles", new RequestOptions());
+        chatHub.removeUserFromGroup("admin", "another_user", new RequestOptions());
 
         // adding and removing specific connections
-        adminGroup.addConnection("Tn3XcrAbHI0OE36XvbWwige4ac096c1");
-        adminGroup.removeConnection("Tn3XcrAbHI0OE36XvbWwige4ac096c1");
+        chatHub.addConnectionToGroup("admin", "Tn3XcrAbHI0OE36XvbWwige4ac096c1", new RequestOptions());
+        chatHub.removeConnectionFromGroup("admin", "Tn3XcrAbHI0OE36XvbWwige4ac096c1", new RequestOptions());
     }
 }

@@ -29,10 +29,10 @@ import static java.time.LocalDateTime.now;
 
 /**
  * An {@link HttpPipelinePolicy} for authenticating against the Azure Web Pub Sub service. Used in the default HTTP
- * pipeline when built using the {@link WebPubSubClientBuilder}, but available here in case an HTTP pipeline is built
- * outside of the {@link WebPubSubClientBuilder}.
+ * pipeline when built using the {@link WebPubSubServiceClientBuilder}, but available here in case an HTTP pipeline is built
+ * outside of the {@link WebPubSubServiceClientBuilder}.
  *
- * @see WebPubSubClientBuilder
+ * @see WebPubSubServiceClientBuilder
  */
 public final class WebPubSubAuthenticationPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(WebPubSubAuthenticationPolicy.class);
