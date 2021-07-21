@@ -16,6 +16,9 @@ parameters:
   - name: FromSource
     type: string
     default: 'false'
+  - name: OSVmImage
+    type: string
+    default: 'not-specified' # Set a default that breaks in obvious ways.
 
 steps:
   - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
@@ -34,7 +37,7 @@ steps:
 
   - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
     parameters:
-      AgentImage: $(OSVmImage)
+      AgentImage: ${{ parameters.OSVmImage }}
 
   - task: PythonScript@0
     displayName: 'Set versions for source build'
