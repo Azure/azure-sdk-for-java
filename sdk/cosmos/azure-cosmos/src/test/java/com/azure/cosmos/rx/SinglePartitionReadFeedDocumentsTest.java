@@ -27,7 +27,7 @@ public class SinglePartitionReadFeedDocumentsTest extends TestSuiteBase {
 
     private CosmosAsyncClient client;
 
-    @Factory(dataProvider = "clientBuildersWithDirect")
+    @Factory(dataProvider = "clientBuildersWithDirectTcp")
     public SinglePartitionReadFeedDocumentsTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }

@@ -22,7 +22,7 @@ public class UserDefinedFunctionUpsertReplaceTest extends TestSuiteBase {
 
     private CosmosAsyncClient client;
 
-    @Factory(dataProvider = "clientBuildersWithDirect")
+    @Factory(dataProvider = "clientBuildersWithDirectTcp")
     public UserDefinedFunctionUpsertReplaceTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }

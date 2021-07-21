@@ -52,7 +52,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
         return TestUtils.getCollectionNameLink(createdDatabase.getId(), createdCollection.getId());
     }
 
-    @Factory(dataProvider = "clientBuildersWithDirect")
+    @Factory(dataProvider = "clientBuildersWithDirectTcp")
     public SinglePartitionDocumentQueryTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }

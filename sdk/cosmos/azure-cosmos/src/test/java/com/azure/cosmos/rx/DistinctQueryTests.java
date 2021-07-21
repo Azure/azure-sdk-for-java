@@ -45,7 +45,7 @@ public class DistinctQueryTests extends TestSuiteBase {
 
     private CosmosAsyncClient client;
 
-    @Factory(dataProvider = "clientBuildersWithDirect")
+    @Factory(dataProvider = "clientBuildersWithDirectTcp")
     public DistinctQueryTests(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }

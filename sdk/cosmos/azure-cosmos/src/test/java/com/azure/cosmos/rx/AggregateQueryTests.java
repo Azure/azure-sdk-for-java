@@ -82,7 +82,7 @@ public class AggregateQueryTests extends TestSuiteBase {
 
     private CosmosAsyncClient client;
 
-    @Factory(dataProvider = "clientBuildersWithDirect")
+    @Factory(dataProvider = "clientBuildersWithDirectTcp")
     public AggregateQueryTests(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }

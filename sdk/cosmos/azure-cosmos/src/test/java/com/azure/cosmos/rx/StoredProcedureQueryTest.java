@@ -31,7 +31,7 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
 
     private CosmosAsyncClient client;
 
-    @Factory(dataProvider = "clientBuildersWithDirect")
+    @Factory(dataProvider = "clientBuildersWithDirectTcp")
     public StoredProcedureQueryTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }

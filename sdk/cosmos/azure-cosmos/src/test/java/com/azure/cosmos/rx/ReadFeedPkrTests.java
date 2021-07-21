@@ -27,7 +27,7 @@ public class ReadFeedPkrTests extends TestSuiteBase {
 
     private AsyncDocumentClient client;
 
-    @Factory(dataProvider = "clientBuildersWithDirect")
+    @Factory(dataProvider = "clientBuildersWithDirectTcp")
     public ReadFeedPkrTests(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }

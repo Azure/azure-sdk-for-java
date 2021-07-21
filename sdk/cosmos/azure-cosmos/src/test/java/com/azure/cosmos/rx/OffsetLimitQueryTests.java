@@ -48,7 +48,7 @@ public class OffsetLimitQueryTests extends TestSuiteBase {
 
     private CosmosAsyncClient client;
 
-    @Factory(dataProvider = "clientBuildersWithDirect")
+    @Factory(dataProvider = "clientBuildersWithDirectTcp")
     public OffsetLimitQueryTests(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }

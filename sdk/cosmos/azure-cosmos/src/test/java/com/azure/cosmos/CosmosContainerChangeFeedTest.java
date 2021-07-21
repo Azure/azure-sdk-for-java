@@ -70,7 +70,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
     private final Multimap<String, ObjectNode> partitionKeyToDocuments = ArrayListMultimap.create();
     private final String preExistingDatabaseId = CosmosDatabaseForTest.generateId();
 
-    @Factory(dataProvider = "simpleClientBuildersWithDirect")
+    @Factory(dataProvider = "simpleClientBuildersWithDirectTcp")
     public CosmosContainerChangeFeedTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }

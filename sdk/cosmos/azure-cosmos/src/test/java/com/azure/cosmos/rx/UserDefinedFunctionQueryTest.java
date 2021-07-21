@@ -38,7 +38,7 @@ public class UserDefinedFunctionQueryTest extends TestSuiteBase {
         return TestUtils.getCollectionNameLink(createdDatabase.getId(), createdCollection.getId());
     }
 
-    @Factory(dataProvider = "clientBuildersWithDirect")
+    @Factory(dataProvider = "clientBuildersWithDirectTcp")
     public UserDefinedFunctionQueryTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }

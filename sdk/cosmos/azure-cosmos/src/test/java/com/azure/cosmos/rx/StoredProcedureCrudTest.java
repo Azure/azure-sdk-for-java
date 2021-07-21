@@ -28,7 +28,7 @@ public class StoredProcedureCrudTest extends TestSuiteBase {
     private CosmosAsyncClient client;
     private CosmosAsyncContainer container;
 
-    @Factory(dataProvider = "clientBuildersWithDirect")
+    @Factory(dataProvider = "clientBuildersWithDirectTcp")
     public StoredProcedureCrudTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }

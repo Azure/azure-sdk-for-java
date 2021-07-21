@@ -26,7 +26,7 @@ public class DistributedClientTest extends TestSuiteBase {
     private CosmosAsyncClient client;
     private CosmosAsyncContainer container;
 
-    @Factory(dataProvider = "clientBuildersWithDirect")
+    @Factory(dataProvider = "clientBuildersWithDirectTcp")
     public DistributedClientTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }

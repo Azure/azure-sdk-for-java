@@ -41,7 +41,7 @@ public class TopQueryTests extends TestSuiteBase {
 
     private CosmosAsyncClient client;
 
-    @Factory(dataProvider = "clientBuildersWithDirect")
+    @Factory(dataProvider = "clientBuildersWithDirectTcp")
     public TopQueryTests(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }

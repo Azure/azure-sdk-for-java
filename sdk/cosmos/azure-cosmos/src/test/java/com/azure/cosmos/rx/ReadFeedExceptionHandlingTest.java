@@ -28,7 +28,7 @@ public class ReadFeedExceptionHandlingTest extends TestSuiteBase {
 
     private CosmosAsyncClient client;
 
-    @Factory(dataProvider = "clientBuildersWithDirect")
+    @Factory(dataProvider = "clientBuildersWithDirectTcp")
     public ReadFeedExceptionHandlingTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }

@@ -69,7 +69,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
 
     private int numberOfPartitions;
 
-    @Factory(dataProvider = "clientBuildersWithDirect")
+    @Factory(dataProvider = "clientBuildersWithDirectTcp")
     public OrderbyDocumentQueryTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }

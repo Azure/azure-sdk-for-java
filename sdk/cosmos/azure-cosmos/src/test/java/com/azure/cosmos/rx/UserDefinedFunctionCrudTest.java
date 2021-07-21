@@ -22,7 +22,7 @@ public class UserDefinedFunctionCrudTest extends TestSuiteBase {
     private CosmosAsyncContainer createdCollection;
     private CosmosAsyncClient client;
 
-    @Factory(dataProvider = "clientBuildersWithDirect")
+    @Factory(dataProvider = "clientBuildersWithDirectTcp")
     public UserDefinedFunctionCrudTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }

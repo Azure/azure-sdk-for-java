@@ -27,7 +27,7 @@ public class ReadFeedStoredProceduresTest extends TestSuiteBase {
 
     private CosmosAsyncClient client;
 
-    @Factory(dataProvider = "clientBuildersWithDirect")
+    @Factory(dataProvider = "clientBuildersWithDirectTcp")
     public ReadFeedStoredProceduresTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }

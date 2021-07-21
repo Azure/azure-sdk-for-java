@@ -46,7 +46,7 @@ public class FeedRangeQueryTests extends TestSuiteBase {
     private CosmosAsyncContainer createdContainer;
     private CosmosAsyncClient client;
 
-    @Factory(dataProvider = "clientBuildersWithDirect")
+    @Factory(dataProvider = "clientBuildersWithDirectTcp")
     public FeedRangeQueryTests(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
         random = new Random();

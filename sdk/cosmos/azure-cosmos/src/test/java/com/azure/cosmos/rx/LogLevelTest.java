@@ -5,39 +5,32 @@ package com.azure.cosmos.rx;
 
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.http.ReactorNettyClient;
-import com.azure.cosmos.models.CosmosItemResponse;
-import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
-import io.netty.handler.logging.LogLevel;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.appender.WriterAppender;
 import org.apache.logging.log4j.core.config.AppenderRef;
 import org.apache.logging.log4j.core.config.Configuration;
-import org.apache.logging.log4j.core.config.ConfigurationSource;
-import org.apache.logging.log4j.core.config.Configurator;
 import org.apache.logging.log4j.core.config.LoggerConfig;
-import org.apache.logging.log4j.core.config.builder.api.ConfigurationBuilderFactory;
 import org.apache.logging.log4j.core.layout.PatternLayout;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
-import reactor.core.publisher.Mono;
 
 import java.io.StringWriter;
 import java.io.Writer;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
 
 public class LogLevelTest extends TestSuiteBase {
     public final static String COSMOS_DB_LOGGING_CATEGORY = "com.azure.cosmos";
@@ -51,8 +44,9 @@ public class LogLevelTest extends TestSuiteBase {
     private static CosmosAsyncContainer createdCollection;
     private static CosmosAsyncClient client;
 
-    public LogLevelTest() {
-        super(createGatewayRxDocumentClient());
+    @Factory(dataProvider = "clientBuildersWithGateway")
+    public LogLevelTest(CosmosClientBuilder clientBuilder) {
+        super(clientBuilder);
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
@@ -276,28 +270,9 @@ public class LogLevelTest extends TestSuiteBase {
      * Resets the logging configuration.
      */
     static void resetLoggingConfiguration() {
-        final URL resource = LogLevelTest.class.getClassLoader().getResource("log4j2-test.properties");
-        assertThat(resource).isNotNull();
-
-        final ConfigurationSource defaultConfigurationSource;
-        try {
-            defaultConfigurationSource = ConfigurationSource.fromUri(resource.toURI());
-        } catch (URISyntaxException e) {
-            fail("Should have been able to load test properties from: " + resource, e);
-            return;
-        }
-
-        final Configuration defaultConfiguration = ConfigurationBuilderFactory.newConfigurationBuilder()
-                                                                              .setConfigurationSource(defaultConfigurationSource)
-                                                                              .build();
-
-        // Stopping the old context so we can reinitialise it.
-        final LoggerContext oldContext = (LoggerContext) LogManager.getContext(false);
-        oldContext.stop();
-
-        final LoggerContext context = Configurator.initialize(defaultConfiguration);
-
-        assertThat(context).isNotSameAs(oldContext);
+        //  Reconfigure the logging context
+        final LoggerContext loggerContext = (LoggerContext) LogManager.getContext(false);
+        loggerContext.reconfigure();
     }
 
     /**

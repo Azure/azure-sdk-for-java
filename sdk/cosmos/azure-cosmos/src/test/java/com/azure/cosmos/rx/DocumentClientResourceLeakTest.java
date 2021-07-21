@@ -26,7 +26,7 @@ public class DocumentClientResourceLeakTest extends TestSuiteBase {
     private CosmosAsyncDatabase createdDatabase;
     private CosmosAsyncContainer createdCollection;
 
-    @Factory(dataProvider = "simpleClientBuildersWithDirect")
+    @Factory(dataProvider = "simpleClientBuildersWithDirectTcp")
     public DocumentClientResourceLeakTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }
