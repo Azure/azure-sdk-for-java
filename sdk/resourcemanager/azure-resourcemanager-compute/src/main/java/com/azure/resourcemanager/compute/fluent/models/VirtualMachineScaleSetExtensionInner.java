@@ -5,17 +5,16 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.compute.implementation.VirtualMachineScaleSetExtensionProperties;
 import com.azure.resourcemanager.compute.models.SubResourceReadOnly;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Describes a Virtual Machine Scale Set Extension. */
-@JsonFlatten
 @Fluent
-public class VirtualMachineScaleSetExtensionInner extends SubResourceReadOnly {
+public final class VirtualMachineScaleSetExtensionInner extends SubResourceReadOnly {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetExtensionInner.class);
 
     /*
@@ -31,73 +30,10 @@ public class VirtualMachineScaleSetExtensionInner extends SubResourceReadOnly {
     private String type;
 
     /*
-     * If a value is provided and is different from the previous value, the
-     * extension handler will be forced to update even if the extension
-     * configuration has not changed.
+     * Describes the properties of a Virtual Machine Scale Set Extension.
      */
-    @JsonProperty(value = "properties.forceUpdateTag")
-    private String forceUpdateTag;
-
-    /*
-     * The name of the extension handler publisher.
-     */
-    @JsonProperty(value = "properties.publisher")
-    private String publisher;
-
-    /*
-     * Specifies the type of the extension; an example is
-     * "CustomScriptExtension".
-     */
-    @JsonProperty(value = "properties.type")
-    private String typePropertiesType;
-
-    /*
-     * Specifies the version of the script handler.
-     */
-    @JsonProperty(value = "properties.typeHandlerVersion")
-    private String typeHandlerVersion;
-
-    /*
-     * Indicates whether the extension should use a newer minor version if one
-     * is available at deployment time. Once deployed, however, the extension
-     * will not upgrade minor versions unless redeployed, even with this
-     * property set to true.
-     */
-    @JsonProperty(value = "properties.autoUpgradeMinorVersion")
-    private Boolean autoUpgradeMinorVersion;
-
-    /*
-     * Indicates whether the extension should be automatically upgraded by the
-     * platform if there is a newer version of the extension available.
-     */
-    @JsonProperty(value = "properties.enableAutomaticUpgrade")
-    private Boolean enableAutomaticUpgrade;
-
-    /*
-     * Json formatted public settings for the extension.
-     */
-    @JsonProperty(value = "properties.settings")
-    private Object settings;
-
-    /*
-     * The extension can contain either protectedSettings or
-     * protectedSettingsFromKeyVault or no protected settings at all.
-     */
-    @JsonProperty(value = "properties.protectedSettings")
-    private Object protectedSettings;
-
-    /*
-     * The provisioning state, which only appears in the response.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
-
-    /*
-     * Collection of extension names after which this extension needs to be
-     * provisioned.
-     */
-    @JsonProperty(value = "properties.provisionAfterExtensions")
-    private List<String> provisionAfterExtensions;
+    @JsonProperty(value = "properties")
+    private VirtualMachineScaleSetExtensionProperties properties;
 
     /**
      * Get the name property: The name of the extension.
@@ -129,13 +65,22 @@ public class VirtualMachineScaleSetExtensionInner extends SubResourceReadOnly {
     }
 
     /**
+     * Get the properties property: Describes the properties of a Virtual Machine Scale Set Extension.
+     *
+     * @return the properties value.
+     */
+    private VirtualMachineScaleSetExtensionProperties properties() {
+        return this.properties;
+    }
+
+    /**
      * Get the forceUpdateTag property: If a value is provided and is different from the previous value, the extension
      * handler will be forced to update even if the extension configuration has not changed.
      *
      * @return the forceUpdateTag value.
      */
     public String forceUpdateTag() {
-        return this.forceUpdateTag;
+        return this.properties() == null ? null : this.properties().forceUpdateTag();
     }
 
     /**
@@ -146,7 +91,10 @@ public class VirtualMachineScaleSetExtensionInner extends SubResourceReadOnly {
      * @return the VirtualMachineScaleSetExtensionInner object itself.
      */
     public VirtualMachineScaleSetExtensionInner withForceUpdateTag(String forceUpdateTag) {
-        this.forceUpdateTag = forceUpdateTag;
+        if (this.properties() == null) {
+            this.properties = new VirtualMachineScaleSetExtensionProperties();
+        }
+        this.properties().withForceUpdateTag(forceUpdateTag);
         return this;
     }
 
@@ -156,7 +104,7 @@ public class VirtualMachineScaleSetExtensionInner extends SubResourceReadOnly {
      * @return the publisher value.
      */
     public String publisher() {
-        return this.publisher;
+        return this.properties() == null ? null : this.properties().publisher();
     }
 
     /**
@@ -166,7 +114,10 @@ public class VirtualMachineScaleSetExtensionInner extends SubResourceReadOnly {
      * @return the VirtualMachineScaleSetExtensionInner object itself.
      */
     public VirtualMachineScaleSetExtensionInner withPublisher(String publisher) {
-        this.publisher = publisher;
+        if (this.properties() == null) {
+            this.properties = new VirtualMachineScaleSetExtensionProperties();
+        }
+        this.properties().withPublisher(publisher);
         return this;
     }
 
@@ -176,7 +127,7 @@ public class VirtualMachineScaleSetExtensionInner extends SubResourceReadOnly {
      * @return the typePropertiesType value.
      */
     public String typePropertiesType() {
-        return this.typePropertiesType;
+        return this.properties() == null ? null : this.properties().typePropertiesType();
     }
 
     /**
@@ -186,7 +137,10 @@ public class VirtualMachineScaleSetExtensionInner extends SubResourceReadOnly {
      * @return the VirtualMachineScaleSetExtensionInner object itself.
      */
     public VirtualMachineScaleSetExtensionInner withTypePropertiesType(String typePropertiesType) {
-        this.typePropertiesType = typePropertiesType;
+        if (this.properties() == null) {
+            this.properties = new VirtualMachineScaleSetExtensionProperties();
+        }
+        this.properties().withTypePropertiesType(typePropertiesType);
         return this;
     }
 
@@ -196,7 +150,7 @@ public class VirtualMachineScaleSetExtensionInner extends SubResourceReadOnly {
      * @return the typeHandlerVersion value.
      */
     public String typeHandlerVersion() {
-        return this.typeHandlerVersion;
+        return this.properties() == null ? null : this.properties().typeHandlerVersion();
     }
 
     /**
@@ -206,7 +160,10 @@ public class VirtualMachineScaleSetExtensionInner extends SubResourceReadOnly {
      * @return the VirtualMachineScaleSetExtensionInner object itself.
      */
     public VirtualMachineScaleSetExtensionInner withTypeHandlerVersion(String typeHandlerVersion) {
-        this.typeHandlerVersion = typeHandlerVersion;
+        if (this.properties() == null) {
+            this.properties = new VirtualMachineScaleSetExtensionProperties();
+        }
+        this.properties().withTypeHandlerVersion(typeHandlerVersion);
         return this;
     }
 
@@ -218,7 +175,7 @@ public class VirtualMachineScaleSetExtensionInner extends SubResourceReadOnly {
      * @return the autoUpgradeMinorVersion value.
      */
     public Boolean autoUpgradeMinorVersion() {
-        return this.autoUpgradeMinorVersion;
+        return this.properties() == null ? null : this.properties().autoUpgradeMinorVersion();
     }
 
     /**
@@ -230,7 +187,10 @@ public class VirtualMachineScaleSetExtensionInner extends SubResourceReadOnly {
      * @return the VirtualMachineScaleSetExtensionInner object itself.
      */
     public VirtualMachineScaleSetExtensionInner withAutoUpgradeMinorVersion(Boolean autoUpgradeMinorVersion) {
-        this.autoUpgradeMinorVersion = autoUpgradeMinorVersion;
+        if (this.properties() == null) {
+            this.properties = new VirtualMachineScaleSetExtensionProperties();
+        }
+        this.properties().withAutoUpgradeMinorVersion(autoUpgradeMinorVersion);
         return this;
     }
 
@@ -241,7 +201,7 @@ public class VirtualMachineScaleSetExtensionInner extends SubResourceReadOnly {
      * @return the enableAutomaticUpgrade value.
      */
     public Boolean enableAutomaticUpgrade() {
-        return this.enableAutomaticUpgrade;
+        return this.properties() == null ? null : this.properties().enableAutomaticUpgrade();
     }
 
     /**
@@ -252,7 +212,10 @@ public class VirtualMachineScaleSetExtensionInner extends SubResourceReadOnly {
      * @return the VirtualMachineScaleSetExtensionInner object itself.
      */
     public VirtualMachineScaleSetExtensionInner withEnableAutomaticUpgrade(Boolean enableAutomaticUpgrade) {
-        this.enableAutomaticUpgrade = enableAutomaticUpgrade;
+        if (this.properties() == null) {
+            this.properties = new VirtualMachineScaleSetExtensionProperties();
+        }
+        this.properties().withEnableAutomaticUpgrade(enableAutomaticUpgrade);
         return this;
     }
 
@@ -262,7 +225,7 @@ public class VirtualMachineScaleSetExtensionInner extends SubResourceReadOnly {
      * @return the settings value.
      */
     public Object settings() {
-        return this.settings;
+        return this.properties() == null ? null : this.properties().settings();
     }
 
     /**
@@ -272,7 +235,10 @@ public class VirtualMachineScaleSetExtensionInner extends SubResourceReadOnly {
      * @return the VirtualMachineScaleSetExtensionInner object itself.
      */
     public VirtualMachineScaleSetExtensionInner withSettings(Object settings) {
-        this.settings = settings;
+        if (this.properties() == null) {
+            this.properties = new VirtualMachineScaleSetExtensionProperties();
+        }
+        this.properties().withSettings(settings);
         return this;
     }
 
@@ -283,7 +249,7 @@ public class VirtualMachineScaleSetExtensionInner extends SubResourceReadOnly {
      * @return the protectedSettings value.
      */
     public Object protectedSettings() {
-        return this.protectedSettings;
+        return this.properties() == null ? null : this.properties().protectedSettings();
     }
 
     /**
@@ -294,7 +260,10 @@ public class VirtualMachineScaleSetExtensionInner extends SubResourceReadOnly {
      * @return the VirtualMachineScaleSetExtensionInner object itself.
      */
     public VirtualMachineScaleSetExtensionInner withProtectedSettings(Object protectedSettings) {
-        this.protectedSettings = protectedSettings;
+        if (this.properties() == null) {
+            this.properties = new VirtualMachineScaleSetExtensionProperties();
+        }
+        this.properties().withProtectedSettings(protectedSettings);
         return this;
     }
 
@@ -304,7 +273,7 @@ public class VirtualMachineScaleSetExtensionInner extends SubResourceReadOnly {
      * @return the provisioningState value.
      */
     public String provisioningState() {
-        return this.provisioningState;
+        return this.properties() == null ? null : this.properties().provisioningState();
     }
 
     /**
@@ -314,7 +283,7 @@ public class VirtualMachineScaleSetExtensionInner extends SubResourceReadOnly {
      * @return the provisionAfterExtensions value.
      */
     public List<String> provisionAfterExtensions() {
-        return this.provisionAfterExtensions;
+        return this.properties() == null ? null : this.properties().provisionAfterExtensions();
     }
 
     /**
@@ -325,7 +294,10 @@ public class VirtualMachineScaleSetExtensionInner extends SubResourceReadOnly {
      * @return the VirtualMachineScaleSetExtensionInner object itself.
      */
     public VirtualMachineScaleSetExtensionInner withProvisionAfterExtensions(List<String> provisionAfterExtensions) {
-        this.provisionAfterExtensions = provisionAfterExtensions;
+        if (this.properties() == null) {
+            this.properties = new VirtualMachineScaleSetExtensionProperties();
+        }
+        this.properties().withProvisionAfterExtensions(provisionAfterExtensions);
         return this;
     }
 
@@ -337,5 +309,8 @@ public class VirtualMachineScaleSetExtensionInner extends SubResourceReadOnly {
     @Override
     public void validate() {
         super.validate();
+        if (properties() != null) {
+            properties().validate();
+        }
     }
 }

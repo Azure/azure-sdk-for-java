@@ -5,9 +5,9 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.compute.implementation.GalleryProperties;
 import com.azure.resourcemanager.compute.models.GalleryIdentifier;
 import com.azure.resourcemanager.compute.models.GalleryPropertiesProvisioningState;
 import com.azure.resourcemanager.compute.models.SharingProfile;
@@ -16,103 +16,23 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Specifies information about the Shared Image Gallery that you want to create or update. */
-@JsonFlatten
 @Fluent
-public class GalleryInner extends Resource {
+public final class GalleryInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryInner.class);
 
     /*
-     * The description of this Shared Image Gallery resource. This property is
-     * updatable.
+     * Describes the properties of a Shared Image Gallery.
      */
-    @JsonProperty(value = "properties.description")
-    private String description;
-
-    /*
-     * Describes the gallery unique name.
-     */
-    @JsonProperty(value = "properties.identifier")
-    private GalleryIdentifier identifier;
-
-    /*
-     * The provisioning state, which only appears in the response.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private GalleryPropertiesProvisioningState provisioningState;
-
-    /*
-     * Profile for gallery sharing to subscription or tenant
-     */
-    @JsonProperty(value = "properties.sharingProfile")
-    private SharingProfile sharingProfile;
+    @JsonProperty(value = "properties")
+    private GalleryProperties properties;
 
     /**
-     * Get the description property: The description of this Shared Image Gallery resource. This property is updatable.
+     * Get the properties property: Describes the properties of a Shared Image Gallery.
      *
-     * @return the description value.
+     * @return the properties value.
      */
-    public String description() {
-        return this.description;
-    }
-
-    /**
-     * Set the description property: The description of this Shared Image Gallery resource. This property is updatable.
-     *
-     * @param description the description value to set.
-     * @return the GalleryInner object itself.
-     */
-    public GalleryInner withDescription(String description) {
-        this.description = description;
-        return this;
-    }
-
-    /**
-     * Get the identifier property: Describes the gallery unique name.
-     *
-     * @return the identifier value.
-     */
-    public GalleryIdentifier identifier() {
-        return this.identifier;
-    }
-
-    /**
-     * Set the identifier property: Describes the gallery unique name.
-     *
-     * @param identifier the identifier value to set.
-     * @return the GalleryInner object itself.
-     */
-    public GalleryInner withIdentifier(GalleryIdentifier identifier) {
-        this.identifier = identifier;
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: The provisioning state, which only appears in the response.
-     *
-     * @return the provisioningState value.
-     */
-    public GalleryPropertiesProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the sharingProfile property: Profile for gallery sharing to subscription or tenant.
-     *
-     * @return the sharingProfile value.
-     */
-    public SharingProfile sharingProfile() {
-        return this.sharingProfile;
-    }
-
-    /**
-     * Set the sharingProfile property: Profile for gallery sharing to subscription or tenant.
-     *
-     * @param sharingProfile the sharingProfile value to set.
-     * @return the GalleryInner object itself.
-     */
-    public GalleryInner withSharingProfile(SharingProfile sharingProfile) {
-        this.sharingProfile = sharingProfile;
-        return this;
+    private GalleryProperties properties() {
+        return this.properties;
     }
 
     /** {@inheritDoc} */
@@ -130,16 +50,91 @@ public class GalleryInner extends Resource {
     }
 
     /**
+     * Get the description property: The description of this Shared Image Gallery resource. This property is updatable.
+     *
+     * @return the description value.
+     */
+    public String description() {
+        return this.properties() == null ? null : this.properties().description();
+    }
+
+    /**
+     * Set the description property: The description of this Shared Image Gallery resource. This property is updatable.
+     *
+     * @param description the description value to set.
+     * @return the GalleryInner object itself.
+     */
+    public GalleryInner withDescription(String description) {
+        if (this.properties() == null) {
+            this.properties = new GalleryProperties();
+        }
+        this.properties().withDescription(description);
+        return this;
+    }
+
+    /**
+     * Get the identifier property: Describes the gallery unique name.
+     *
+     * @return the identifier value.
+     */
+    public GalleryIdentifier identifier() {
+        return this.properties() == null ? null : this.properties().identifier();
+    }
+
+    /**
+     * Set the identifier property: Describes the gallery unique name.
+     *
+     * @param identifier the identifier value to set.
+     * @return the GalleryInner object itself.
+     */
+    public GalleryInner withIdentifier(GalleryIdentifier identifier) {
+        if (this.properties() == null) {
+            this.properties = new GalleryProperties();
+        }
+        this.properties().withIdentifier(identifier);
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state, which only appears in the response.
+     *
+     * @return the provisioningState value.
+     */
+    public GalleryPropertiesProvisioningState provisioningState() {
+        return this.properties() == null ? null : this.properties().provisioningState();
+    }
+
+    /**
+     * Get the sharingProfile property: Profile for gallery sharing to subscription or tenant.
+     *
+     * @return the sharingProfile value.
+     */
+    public SharingProfile sharingProfile() {
+        return this.properties() == null ? null : this.properties().sharingProfile();
+    }
+
+    /**
+     * Set the sharingProfile property: Profile for gallery sharing to subscription or tenant.
+     *
+     * @param sharingProfile the sharingProfile value to set.
+     * @return the GalleryInner object itself.
+     */
+    public GalleryInner withSharingProfile(SharingProfile sharingProfile) {
+        if (this.properties() == null) {
+            this.properties = new GalleryProperties();
+        }
+        this.properties().withSharingProfile(sharingProfile);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (identifier() != null) {
-            identifier().validate();
-        }
-        if (sharingProfile() != null) {
-            sharingProfile().validate();
+        if (properties() != null) {
+            properties().validate();
         }
     }
 }

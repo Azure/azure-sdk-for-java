@@ -349,8 +349,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
-     * @param tempDisk Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage
-     *     parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * @param vmScaleSetVMReimageInput Parameters for the Reimaging Virtual machine in ScaleSet.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -358,7 +357,10 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> reimageWithResponseAsync(
-        String resourceGroupName, String vmScaleSetName, String instanceId, Boolean tempDisk) {
+        String resourceGroupName,
+        String vmScaleSetName,
+        String instanceId,
+        VirtualMachineScaleSetVMReimageParameters vmScaleSetVMReimageInput) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -381,13 +383,10 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
-        VirtualMachineScaleSetVMReimageParameters vmScaleSetVMReimageInputInternal = null;
-        if (tempDisk != null) {
-            vmScaleSetVMReimageInputInternal = new VirtualMachineScaleSetVMReimageParameters();
-            vmScaleSetVMReimageInputInternal.withTempDisk(tempDisk);
+        if (vmScaleSetVMReimageInput != null) {
+            vmScaleSetVMReimageInput.validate();
         }
-        VirtualMachineScaleSetVMReimageParameters vmScaleSetVMReimageInput = vmScaleSetVMReimageInputInternal;
+        final String apiVersion = "2021-03-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -410,8 +409,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
-     * @param tempDisk Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage
-     *     parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * @param vmScaleSetVMReimageInput Parameters for the Reimaging Virtual machine in ScaleSet.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -420,7 +418,11 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> reimageWithResponseAsync(
-        String resourceGroupName, String vmScaleSetName, String instanceId, Boolean tempDisk, Context context) {
+        String resourceGroupName,
+        String vmScaleSetName,
+        String instanceId,
+        VirtualMachineScaleSetVMReimageParameters vmScaleSetVMReimageInput,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -443,13 +445,10 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
-        VirtualMachineScaleSetVMReimageParameters vmScaleSetVMReimageInputInternal = null;
-        if (tempDisk != null) {
-            vmScaleSetVMReimageInputInternal = new VirtualMachineScaleSetVMReimageParameters();
-            vmScaleSetVMReimageInputInternal.withTempDisk(tempDisk);
+        if (vmScaleSetVMReimageInput != null) {
+            vmScaleSetVMReimageInput.validate();
         }
-        VirtualMachineScaleSetVMReimageParameters vmScaleSetVMReimageInput = vmScaleSetVMReimageInputInternal;
+        final String apiVersion = "2021-03-01";
         context = this.client.mergeContext(context);
         return service
             .reimage(
@@ -469,8 +468,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
-     * @param tempDisk Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage
-     *     parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * @param vmScaleSetVMReimageInput Parameters for the Reimaging Virtual machine in ScaleSet.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -478,9 +476,12 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginReimageAsync(
-        String resourceGroupName, String vmScaleSetName, String instanceId, Boolean tempDisk) {
+        String resourceGroupName,
+        String vmScaleSetName,
+        String instanceId,
+        VirtualMachineScaleSetVMReimageParameters vmScaleSetVMReimageInput) {
         Mono<Response<Flux<ByteBuffer>>> mono =
-            reimageWithResponseAsync(resourceGroupName, vmScaleSetName, instanceId, tempDisk);
+            reimageWithResponseAsync(resourceGroupName, vmScaleSetName, instanceId, vmScaleSetVMReimageInput);
         return this
             .client
             .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
@@ -492,8 +493,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
-     * @param tempDisk Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage
-     *     parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * @param vmScaleSetVMReimageInput Parameters for the Reimaging Virtual machine in ScaleSet.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -502,10 +502,14 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PollerFlux<PollResult<Void>, Void> beginReimageAsync(
-        String resourceGroupName, String vmScaleSetName, String instanceId, Boolean tempDisk, Context context) {
+        String resourceGroupName,
+        String vmScaleSetName,
+        String instanceId,
+        VirtualMachineScaleSetVMReimageParameters vmScaleSetVMReimageInput,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
-            reimageWithResponseAsync(resourceGroupName, vmScaleSetName, instanceId, tempDisk, context);
+            reimageWithResponseAsync(resourceGroupName, vmScaleSetName, instanceId, vmScaleSetVMReimageInput, context);
         return this
             .client
             .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
@@ -517,8 +521,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
-     * @param tempDisk Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage
-     *     parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * @param vmScaleSetVMReimageInput Parameters for the Reimaging Virtual machine in ScaleSet.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -526,8 +529,12 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PollResult<Void>, Void> beginReimage(
-        String resourceGroupName, String vmScaleSetName, String instanceId, Boolean tempDisk) {
-        return beginReimageAsync(resourceGroupName, vmScaleSetName, instanceId, tempDisk).getSyncPoller();
+        String resourceGroupName,
+        String vmScaleSetName,
+        String instanceId,
+        VirtualMachineScaleSetVMReimageParameters vmScaleSetVMReimageInput) {
+        return beginReimageAsync(resourceGroupName, vmScaleSetName, instanceId, vmScaleSetVMReimageInput)
+            .getSyncPoller();
     }
 
     /**
@@ -536,8 +543,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
-     * @param tempDisk Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage
-     *     parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * @param vmScaleSetVMReimageInput Parameters for the Reimaging Virtual machine in ScaleSet.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -546,8 +552,13 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PollResult<Void>, Void> beginReimage(
-        String resourceGroupName, String vmScaleSetName, String instanceId, Boolean tempDisk, Context context) {
-        return beginReimageAsync(resourceGroupName, vmScaleSetName, instanceId, tempDisk, context).getSyncPoller();
+        String resourceGroupName,
+        String vmScaleSetName,
+        String instanceId,
+        VirtualMachineScaleSetVMReimageParameters vmScaleSetVMReimageInput,
+        Context context) {
+        return beginReimageAsync(resourceGroupName, vmScaleSetName, instanceId, vmScaleSetVMReimageInput, context)
+            .getSyncPoller();
     }
 
     /**
@@ -556,8 +567,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
-     * @param tempDisk Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage
-     *     parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * @param vmScaleSetVMReimageInput Parameters for the Reimaging Virtual machine in ScaleSet.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -565,8 +575,11 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> reimageAsync(
-        String resourceGroupName, String vmScaleSetName, String instanceId, Boolean tempDisk) {
-        return beginReimageAsync(resourceGroupName, vmScaleSetName, instanceId, tempDisk)
+        String resourceGroupName,
+        String vmScaleSetName,
+        String instanceId,
+        VirtualMachineScaleSetVMReimageParameters vmScaleSetVMReimageInput) {
+        return beginReimageAsync(resourceGroupName, vmScaleSetName, instanceId, vmScaleSetVMReimageInput)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -584,8 +597,8 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> reimageAsync(String resourceGroupName, String vmScaleSetName, String instanceId) {
-        final Boolean tempDisk = null;
-        return beginReimageAsync(resourceGroupName, vmScaleSetName, instanceId, tempDisk)
+        final VirtualMachineScaleSetVMReimageParameters vmScaleSetVMReimageInput = null;
+        return beginReimageAsync(resourceGroupName, vmScaleSetName, instanceId, vmScaleSetVMReimageInput)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -596,8 +609,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
-     * @param tempDisk Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage
-     *     parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * @param vmScaleSetVMReimageInput Parameters for the Reimaging Virtual machine in ScaleSet.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -606,8 +618,12 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> reimageAsync(
-        String resourceGroupName, String vmScaleSetName, String instanceId, Boolean tempDisk, Context context) {
-        return beginReimageAsync(resourceGroupName, vmScaleSetName, instanceId, tempDisk, context)
+        String resourceGroupName,
+        String vmScaleSetName,
+        String instanceId,
+        VirtualMachineScaleSetVMReimageParameters vmScaleSetVMReimageInput,
+        Context context) {
+        return beginReimageAsync(resourceGroupName, vmScaleSetName, instanceId, vmScaleSetVMReimageInput, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -618,15 +634,18 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
-     * @param tempDisk Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage
-     *     parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * @param vmScaleSetVMReimageInput Parameters for the Reimaging Virtual machine in ScaleSet.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void reimage(String resourceGroupName, String vmScaleSetName, String instanceId, Boolean tempDisk) {
-        reimageAsync(resourceGroupName, vmScaleSetName, instanceId, tempDisk).block();
+    public void reimage(
+        String resourceGroupName,
+        String vmScaleSetName,
+        String instanceId,
+        VirtualMachineScaleSetVMReimageParameters vmScaleSetVMReimageInput) {
+        reimageAsync(resourceGroupName, vmScaleSetName, instanceId, vmScaleSetVMReimageInput).block();
     }
 
     /**
@@ -641,8 +660,8 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void reimage(String resourceGroupName, String vmScaleSetName, String instanceId) {
-        final Boolean tempDisk = null;
-        reimageAsync(resourceGroupName, vmScaleSetName, instanceId, tempDisk).block();
+        final VirtualMachineScaleSetVMReimageParameters vmScaleSetVMReimageInput = null;
+        reimageAsync(resourceGroupName, vmScaleSetName, instanceId, vmScaleSetVMReimageInput).block();
     }
 
     /**
@@ -651,8 +670,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
-     * @param tempDisk Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage
-     *     parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * @param vmScaleSetVMReimageInput Parameters for the Reimaging Virtual machine in ScaleSet.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -660,8 +678,12 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void reimage(
-        String resourceGroupName, String vmScaleSetName, String instanceId, Boolean tempDisk, Context context) {
-        reimageAsync(resourceGroupName, vmScaleSetName, instanceId, tempDisk, context).block();
+        String resourceGroupName,
+        String vmScaleSetName,
+        String instanceId,
+        VirtualMachineScaleSetVMReimageParameters vmScaleSetVMReimageInput,
+        Context context) {
+        reimageAsync(resourceGroupName, vmScaleSetName, instanceId, vmScaleSetVMReimageInput, context).block();
     }
 
     /**

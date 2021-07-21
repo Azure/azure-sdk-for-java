@@ -5,22 +5,30 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.compute.implementation.SharedGalleryIdentifier;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Base information about the shared gallery resource in pir. */
-@JsonFlatten
 @Fluent
 public class PirSharedGalleryResource extends PirResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PirSharedGalleryResource.class);
 
     /*
-     * The unique id of this shared gallery.
+     * The identifier information of shared gallery.
      */
-    @JsonProperty(value = "identifier.uniqueId")
-    private String uniqueId;
+    @JsonProperty(value = "identifier")
+    private SharedGalleryIdentifier identifier;
+
+    /**
+     * Get the identifier property: The identifier information of shared gallery.
+     *
+     * @return the identifier value.
+     */
+    private SharedGalleryIdentifier identifier() {
+        return this.identifier;
+    }
 
     /**
      * Get the uniqueId property: The unique id of this shared gallery.
@@ -28,7 +36,7 @@ public class PirSharedGalleryResource extends PirResource {
      * @return the uniqueId value.
      */
     public String uniqueId() {
-        return this.uniqueId;
+        return this.identifier() == null ? null : this.identifier().uniqueId();
     }
 
     /**
@@ -38,7 +46,10 @@ public class PirSharedGalleryResource extends PirResource {
      * @return the PirSharedGalleryResource object itself.
      */
     public PirSharedGalleryResource withUniqueId(String uniqueId) {
-        this.uniqueId = uniqueId;
+        if (this.identifier() == null) {
+            this.identifier = new SharedGalleryIdentifier();
+        }
+        this.identifier().withUniqueId(uniqueId);
         return this;
     }
 
@@ -50,5 +61,8 @@ public class PirSharedGalleryResource extends PirResource {
     @Override
     public void validate() {
         super.validate();
+        if (identifier() != null) {
+            identifier().validate();
+        }
     }
 }

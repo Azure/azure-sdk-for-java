@@ -26,6 +26,7 @@ import com.azure.resourcemanager.compute.models.InstanceViewTypes;
 import com.azure.resourcemanager.compute.models.RunCommandInput;
 import com.azure.resourcemanager.compute.models.VirtualMachineCaptureParameters;
 import com.azure.resourcemanager.compute.models.VirtualMachineInstallPatchesParameters;
+import com.azure.resourcemanager.compute.models.VirtualMachineReimageParameters;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
@@ -1581,8 +1582,7 @@ public interface VirtualMachinesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param tempDisk Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage
-     *     parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * @param parameters Parameters supplied to the Reimage Virtual Machine operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1590,45 +1590,44 @@ public interface VirtualMachinesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> reimageWithResponseAsync(
-        String resourceGroupName, String vmName, Boolean tempDisk);
+        String resourceGroupName, String vmName, VirtualMachineReimageParameters parameters);
 
     /**
      * Reimages the virtual machine which has an ephemeral OS disk back to its initial state.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param tempDisk Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage
-     *     parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * @param parameters Parameters supplied to the Reimage Virtual Machine operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<Void>, Void> beginReimageAsync(String resourceGroupName, String vmName, Boolean tempDisk);
+    PollerFlux<PollResult<Void>, Void> beginReimageAsync(
+        String resourceGroupName, String vmName, VirtualMachineReimageParameters parameters);
 
     /**
      * Reimages the virtual machine which has an ephemeral OS disk back to its initial state.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param tempDisk Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage
-     *     parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * @param parameters Parameters supplied to the Reimage Virtual Machine operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginReimage(String resourceGroupName, String vmName, Boolean tempDisk);
+    SyncPoller<PollResult<Void>, Void> beginReimage(
+        String resourceGroupName, String vmName, VirtualMachineReimageParameters parameters);
 
     /**
      * Reimages the virtual machine which has an ephemeral OS disk back to its initial state.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param tempDisk Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage
-     *     parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * @param parameters Parameters supplied to the Reimage Virtual Machine operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1637,22 +1636,21 @@ public interface VirtualMachinesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SyncPoller<PollResult<Void>, Void> beginReimage(
-        String resourceGroupName, String vmName, Boolean tempDisk, Context context);
+        String resourceGroupName, String vmName, VirtualMachineReimageParameters parameters, Context context);
 
     /**
      * Reimages the virtual machine which has an ephemeral OS disk back to its initial state.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param tempDisk Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage
-     *     parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * @param parameters Parameters supplied to the Reimage Virtual Machine operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> reimageAsync(String resourceGroupName, String vmName, Boolean tempDisk);
+    Mono<Void> reimageAsync(String resourceGroupName, String vmName, VirtualMachineReimageParameters parameters);
 
     /**
      * Reimages the virtual machine which has an ephemeral OS disk back to its initial state.
@@ -1672,14 +1670,13 @@ public interface VirtualMachinesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param tempDisk Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage
-     *     parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * @param parameters Parameters supplied to the Reimage Virtual Machine operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void reimage(String resourceGroupName, String vmName, Boolean tempDisk);
+    void reimage(String resourceGroupName, String vmName, VirtualMachineReimageParameters parameters);
 
     /**
      * Reimages the virtual machine which has an ephemeral OS disk back to its initial state.
@@ -1698,15 +1695,14 @@ public interface VirtualMachinesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param tempDisk Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage
-     *     parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * @param parameters Parameters supplied to the Reimage Virtual Machine operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void reimage(String resourceGroupName, String vmName, Boolean tempDisk, Context context);
+    void reimage(String resourceGroupName, String vmName, VirtualMachineReimageParameters parameters, Context context);
 
     /**
      * The operation to retrieve SAS URIs for a virtual machine's boot diagnostic logs.

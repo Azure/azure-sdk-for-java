@@ -5,34 +5,40 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.compute.implementation.SharedGalleryIdentifier;
+import com.azure.resourcemanager.compute.implementation.SharedGalleryImageVersionProperties;
 import com.azure.resourcemanager.compute.models.PirSharedGalleryResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Specifies information about the gallery image version that you want to create or update. */
-@JsonFlatten
 @Fluent
-public class SharedGalleryImageVersionInner extends PirSharedGalleryResource {
+public final class SharedGalleryImageVersionInner extends PirSharedGalleryResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SharedGalleryImageVersionInner.class);
 
     /*
-     * The published date of the gallery image version Definition. This
-     * property can be used for decommissioning purposes. This property is
-     * updatable.
+     * Describes the properties of a gallery image version.
      */
-    @JsonProperty(value = "properties.publishedDate")
-    private OffsetDateTime publishedDate;
+    @JsonProperty(value = "properties")
+    private SharedGalleryImageVersionProperties properties;
 
-    /*
-     * The end of life date of the gallery image version Definition. This
-     * property can be used for decommissioning purposes. This property is
-     * updatable.
+    /**
+     * Get the properties property: Describes the properties of a gallery image version.
+     *
+     * @return the properties value.
      */
-    @JsonProperty(value = "properties.endOfLifeDate")
-    private OffsetDateTime endOfLifeDate;
+    private SharedGalleryImageVersionProperties properties() {
+        return this.properties;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SharedGalleryImageVersionInner withIdentifier(SharedGalleryIdentifier identifier) {
+        super.withIdentifier(identifier);
+        return this;
+    }
 
     /**
      * Get the publishedDate property: The published date of the gallery image version Definition. This property can be
@@ -41,7 +47,7 @@ public class SharedGalleryImageVersionInner extends PirSharedGalleryResource {
      * @return the publishedDate value.
      */
     public OffsetDateTime publishedDate() {
-        return this.publishedDate;
+        return this.properties() == null ? null : this.properties().publishedDate();
     }
 
     /**
@@ -52,7 +58,10 @@ public class SharedGalleryImageVersionInner extends PirSharedGalleryResource {
      * @return the SharedGalleryImageVersionInner object itself.
      */
     public SharedGalleryImageVersionInner withPublishedDate(OffsetDateTime publishedDate) {
-        this.publishedDate = publishedDate;
+        if (this.properties() == null) {
+            this.properties = new SharedGalleryImageVersionProperties();
+        }
+        this.properties().withPublishedDate(publishedDate);
         return this;
     }
 
@@ -63,7 +72,7 @@ public class SharedGalleryImageVersionInner extends PirSharedGalleryResource {
      * @return the endOfLifeDate value.
      */
     public OffsetDateTime endOfLifeDate() {
-        return this.endOfLifeDate;
+        return this.properties() == null ? null : this.properties().endOfLifeDate();
     }
 
     /**
@@ -74,14 +83,10 @@ public class SharedGalleryImageVersionInner extends PirSharedGalleryResource {
      * @return the SharedGalleryImageVersionInner object itself.
      */
     public SharedGalleryImageVersionInner withEndOfLifeDate(OffsetDateTime endOfLifeDate) {
-        this.endOfLifeDate = endOfLifeDate;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public SharedGalleryImageVersionInner withUniqueId(String uniqueId) {
-        super.withUniqueId(uniqueId);
+        if (this.properties() == null) {
+            this.properties = new SharedGalleryImageVersionProperties();
+        }
+        this.properties().withEndOfLifeDate(endOfLifeDate);
         return this;
     }
 
@@ -93,5 +98,8 @@ public class SharedGalleryImageVersionInner extends PirSharedGalleryResource {
     @Override
     public void validate() {
         super.validate();
+        if (properties() != null) {
+            properties().validate();
+        }
     }
 }

@@ -5,17 +5,16 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.compute.implementation.VirtualMachineNetworkInterfaceConfigurationProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Describes a virtual machine network interface configurations. */
-@JsonFlatten
 @Fluent
-public class VirtualMachineNetworkInterfaceConfiguration {
+public final class VirtualMachineNetworkInterfaceConfiguration {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineNetworkInterfaceConfiguration.class);
 
     /*
@@ -25,60 +24,10 @@ public class VirtualMachineNetworkInterfaceConfiguration {
     private String name;
 
     /*
-     * Specifies the primary network interface in case the virtual machine has
-     * more than 1 network interface.
+     * Describes a virtual machine network profile's IP configuration.
      */
-    @JsonProperty(value = "properties.primary")
-    private Boolean primary;
-
-    /*
-     * Specify what happens to the network interface when the VM is deleted
-     */
-    @JsonProperty(value = "properties.deleteOption")
-    private DeleteOptions deleteOption;
-
-    /*
-     * Specifies whether the network interface is accelerated
-     * networking-enabled.
-     */
-    @JsonProperty(value = "properties.enableAcceleratedNetworking")
-    private Boolean enableAcceleratedNetworking;
-
-    /*
-     * Specifies whether the network interface is FPGA networking-enabled.
-     */
-    @JsonProperty(value = "properties.enableFpga")
-    private Boolean enableFpga;
-
-    /*
-     * Whether IP forwarding enabled on this NIC.
-     */
-    @JsonProperty(value = "properties.enableIPForwarding")
-    private Boolean enableIpForwarding;
-
-    /*
-     * The network security group.
-     */
-    @JsonProperty(value = "properties.networkSecurityGroup")
-    private SubResource networkSecurityGroup;
-
-    /*
-     * The dns settings to be applied on the network interfaces.
-     */
-    @JsonProperty(value = "properties.dnsSettings")
-    private VirtualMachineNetworkInterfaceDnsSettingsConfiguration dnsSettings;
-
-    /*
-     * Specifies the IP configurations of the network interface.
-     */
-    @JsonProperty(value = "properties.ipConfigurations")
-    private List<VirtualMachineNetworkInterfaceIpConfiguration> ipConfigurations;
-
-    /*
-     * The dscpConfiguration property.
-     */
-    @JsonProperty(value = "properties.dscpConfiguration")
-    private SubResource dscpConfiguration;
+    @JsonProperty(value = "properties")
+    private VirtualMachineNetworkInterfaceConfigurationProperties properties;
 
     /**
      * Get the name property: The network interface configuration name.
@@ -101,13 +50,22 @@ public class VirtualMachineNetworkInterfaceConfiguration {
     }
 
     /**
+     * Get the properties property: Describes a virtual machine network profile's IP configuration.
+     *
+     * @return the properties value.
+     */
+    private VirtualMachineNetworkInterfaceConfigurationProperties properties() {
+        return this.properties;
+    }
+
+    /**
      * Get the primary property: Specifies the primary network interface in case the virtual machine has more than 1
      * network interface.
      *
      * @return the primary value.
      */
     public Boolean primary() {
-        return this.primary;
+        return this.properties() == null ? null : this.properties().primary();
     }
 
     /**
@@ -118,7 +76,10 @@ public class VirtualMachineNetworkInterfaceConfiguration {
      * @return the VirtualMachineNetworkInterfaceConfiguration object itself.
      */
     public VirtualMachineNetworkInterfaceConfiguration withPrimary(Boolean primary) {
-        this.primary = primary;
+        if (this.properties() == null) {
+            this.properties = new VirtualMachineNetworkInterfaceConfigurationProperties();
+        }
+        this.properties().withPrimary(primary);
         return this;
     }
 
@@ -128,7 +89,7 @@ public class VirtualMachineNetworkInterfaceConfiguration {
      * @return the deleteOption value.
      */
     public DeleteOptions deleteOption() {
-        return this.deleteOption;
+        return this.properties() == null ? null : this.properties().deleteOption();
     }
 
     /**
@@ -138,7 +99,10 @@ public class VirtualMachineNetworkInterfaceConfiguration {
      * @return the VirtualMachineNetworkInterfaceConfiguration object itself.
      */
     public VirtualMachineNetworkInterfaceConfiguration withDeleteOption(DeleteOptions deleteOption) {
-        this.deleteOption = deleteOption;
+        if (this.properties() == null) {
+            this.properties = new VirtualMachineNetworkInterfaceConfigurationProperties();
+        }
+        this.properties().withDeleteOption(deleteOption);
         return this;
     }
 
@@ -149,7 +113,7 @@ public class VirtualMachineNetworkInterfaceConfiguration {
      * @return the enableAcceleratedNetworking value.
      */
     public Boolean enableAcceleratedNetworking() {
-        return this.enableAcceleratedNetworking;
+        return this.properties() == null ? null : this.properties().enableAcceleratedNetworking();
     }
 
     /**
@@ -161,7 +125,10 @@ public class VirtualMachineNetworkInterfaceConfiguration {
      */
     public VirtualMachineNetworkInterfaceConfiguration withEnableAcceleratedNetworking(
         Boolean enableAcceleratedNetworking) {
-        this.enableAcceleratedNetworking = enableAcceleratedNetworking;
+        if (this.properties() == null) {
+            this.properties = new VirtualMachineNetworkInterfaceConfigurationProperties();
+        }
+        this.properties().withEnableAcceleratedNetworking(enableAcceleratedNetworking);
         return this;
     }
 
@@ -171,7 +138,7 @@ public class VirtualMachineNetworkInterfaceConfiguration {
      * @return the enableFpga value.
      */
     public Boolean enableFpga() {
-        return this.enableFpga;
+        return this.properties() == null ? null : this.properties().enableFpga();
     }
 
     /**
@@ -181,7 +148,10 @@ public class VirtualMachineNetworkInterfaceConfiguration {
      * @return the VirtualMachineNetworkInterfaceConfiguration object itself.
      */
     public VirtualMachineNetworkInterfaceConfiguration withEnableFpga(Boolean enableFpga) {
-        this.enableFpga = enableFpga;
+        if (this.properties() == null) {
+            this.properties = new VirtualMachineNetworkInterfaceConfigurationProperties();
+        }
+        this.properties().withEnableFpga(enableFpga);
         return this;
     }
 
@@ -191,7 +161,7 @@ public class VirtualMachineNetworkInterfaceConfiguration {
      * @return the enableIpForwarding value.
      */
     public Boolean enableIpForwarding() {
-        return this.enableIpForwarding;
+        return this.properties() == null ? null : this.properties().enableIpForwarding();
     }
 
     /**
@@ -201,7 +171,10 @@ public class VirtualMachineNetworkInterfaceConfiguration {
      * @return the VirtualMachineNetworkInterfaceConfiguration object itself.
      */
     public VirtualMachineNetworkInterfaceConfiguration withEnableIpForwarding(Boolean enableIpForwarding) {
-        this.enableIpForwarding = enableIpForwarding;
+        if (this.properties() == null) {
+            this.properties = new VirtualMachineNetworkInterfaceConfigurationProperties();
+        }
+        this.properties().withEnableIpForwarding(enableIpForwarding);
         return this;
     }
 
@@ -211,7 +184,7 @@ public class VirtualMachineNetworkInterfaceConfiguration {
      * @return the networkSecurityGroup value.
      */
     public SubResource networkSecurityGroup() {
-        return this.networkSecurityGroup;
+        return this.properties() == null ? null : this.properties().networkSecurityGroup();
     }
 
     /**
@@ -221,7 +194,10 @@ public class VirtualMachineNetworkInterfaceConfiguration {
      * @return the VirtualMachineNetworkInterfaceConfiguration object itself.
      */
     public VirtualMachineNetworkInterfaceConfiguration withNetworkSecurityGroup(SubResource networkSecurityGroup) {
-        this.networkSecurityGroup = networkSecurityGroup;
+        if (this.properties() == null) {
+            this.properties = new VirtualMachineNetworkInterfaceConfigurationProperties();
+        }
+        this.properties().withNetworkSecurityGroup(networkSecurityGroup);
         return this;
     }
 
@@ -231,7 +207,7 @@ public class VirtualMachineNetworkInterfaceConfiguration {
      * @return the dnsSettings value.
      */
     public VirtualMachineNetworkInterfaceDnsSettingsConfiguration dnsSettings() {
-        return this.dnsSettings;
+        return this.properties() == null ? null : this.properties().dnsSettings();
     }
 
     /**
@@ -242,7 +218,10 @@ public class VirtualMachineNetworkInterfaceConfiguration {
      */
     public VirtualMachineNetworkInterfaceConfiguration withDnsSettings(
         VirtualMachineNetworkInterfaceDnsSettingsConfiguration dnsSettings) {
-        this.dnsSettings = dnsSettings;
+        if (this.properties() == null) {
+            this.properties = new VirtualMachineNetworkInterfaceConfigurationProperties();
+        }
+        this.properties().withDnsSettings(dnsSettings);
         return this;
     }
 
@@ -252,7 +231,7 @@ public class VirtualMachineNetworkInterfaceConfiguration {
      * @return the ipConfigurations value.
      */
     public List<VirtualMachineNetworkInterfaceIpConfiguration> ipConfigurations() {
-        return this.ipConfigurations;
+        return this.properties() == null ? null : this.properties().ipConfigurations();
     }
 
     /**
@@ -263,7 +242,10 @@ public class VirtualMachineNetworkInterfaceConfiguration {
      */
     public VirtualMachineNetworkInterfaceConfiguration withIpConfigurations(
         List<VirtualMachineNetworkInterfaceIpConfiguration> ipConfigurations) {
-        this.ipConfigurations = ipConfigurations;
+        if (this.properties() == null) {
+            this.properties = new VirtualMachineNetworkInterfaceConfigurationProperties();
+        }
+        this.properties().withIpConfigurations(ipConfigurations);
         return this;
     }
 
@@ -273,7 +255,7 @@ public class VirtualMachineNetworkInterfaceConfiguration {
      * @return the dscpConfiguration value.
      */
     public SubResource dscpConfiguration() {
-        return this.dscpConfiguration;
+        return this.properties() == null ? null : this.properties().dscpConfiguration();
     }
 
     /**
@@ -283,7 +265,10 @@ public class VirtualMachineNetworkInterfaceConfiguration {
      * @return the VirtualMachineNetworkInterfaceConfiguration object itself.
      */
     public VirtualMachineNetworkInterfaceConfiguration withDscpConfiguration(SubResource dscpConfiguration) {
-        this.dscpConfiguration = dscpConfiguration;
+        if (this.properties() == null) {
+            this.properties = new VirtualMachineNetworkInterfaceConfigurationProperties();
+        }
+        this.properties().withDscpConfiguration(dscpConfiguration);
         return this;
     }
 
@@ -299,11 +284,8 @@ public class VirtualMachineNetworkInterfaceConfiguration {
                     new IllegalArgumentException(
                         "Missing required property name in model VirtualMachineNetworkInterfaceConfiguration"));
         }
-        if (dnsSettings() != null) {
-            dnsSettings().validate();
-        }
-        if (ipConfigurations() != null) {
-            ipConfigurations().forEach(e -> e.validate());
+        if (properties() != null) {
+            properties().validate();
         }
     }
 }

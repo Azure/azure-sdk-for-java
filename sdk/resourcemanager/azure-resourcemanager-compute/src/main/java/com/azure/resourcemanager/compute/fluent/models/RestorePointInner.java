@@ -7,6 +7,7 @@ package com.azure.resourcemanager.compute.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.compute.implementation.RestorePointProperties;
 import com.azure.resourcemanager.compute.models.ApiEntityReference;
 import com.azure.resourcemanager.compute.models.ConsistencyModeTypes;
 import com.azure.resourcemanager.compute.models.RestorePointProvisioningDetails;
@@ -21,75 +22,18 @@ public final class RestorePointInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RestorePointInner.class);
 
     /*
-     * Gets the details of the VM captured at the time of the restore point
-     * creation.
+     * The restore point properties.
      */
-    @JsonProperty(value = "sourceMetadata", access = JsonProperty.Access.WRITE_ONLY)
-    private RestorePointSourceMetadata sourceMetadata;
-
-    /*
-     * Gets the provisioning state of the restore point.
-     */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
-
-    /*
-     * Gets the consistency mode for the restore point. Please refer to
-     * https://aka.ms/RestorePoints for more details.
-     */
-    @JsonProperty(value = "consistencyMode", access = JsonProperty.Access.WRITE_ONLY)
-    private ConsistencyModeTypes consistencyMode;
-
-    /*
-     * Gets the provisioning details set by the server during Create restore
-     * point operation.
-     */
-    @JsonProperty(value = "provisioningDetails", access = JsonProperty.Access.WRITE_ONLY)
-    private RestorePointProvisioningDetails provisioningDetails;
-
-    /*
-     * List of disk resource ids that the customer wishes to exclude from the
-     * restore point. If no disks are specified, all disks will be included.
-     */
-    @JsonProperty(value = "excludeDisks")
-    private List<ApiEntityReference> excludeDisks;
+    @JsonProperty(value = "properties")
+    private RestorePointProperties properties;
 
     /**
-     * Get the sourceMetadata property: Gets the details of the VM captured at the time of the restore point creation.
+     * Get the properties property: The restore point properties.
      *
-     * @return the sourceMetadata value.
+     * @return the properties value.
      */
-    public RestorePointSourceMetadata sourceMetadata() {
-        return this.sourceMetadata;
-    }
-
-    /**
-     * Get the provisioningState property: Gets the provisioning state of the restore point.
-     *
-     * @return the provisioningState value.
-     */
-    public String provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the consistencyMode property: Gets the consistency mode for the restore point. Please refer to
-     * https://aka.ms/RestorePoints for more details.
-     *
-     * @return the consistencyMode value.
-     */
-    public ConsistencyModeTypes consistencyMode() {
-        return this.consistencyMode;
-    }
-
-    /**
-     * Get the provisioningDetails property: Gets the provisioning details set by the server during Create restore point
-     * operation.
-     *
-     * @return the provisioningDetails value.
-     */
-    public RestorePointProvisioningDetails provisioningDetails() {
-        return this.provisioningDetails;
+    private RestorePointProperties properties() {
+        return this.properties;
     }
 
     /**
@@ -99,7 +43,7 @@ public final class RestorePointInner extends ProxyResource {
      * @return the excludeDisks value.
      */
     public List<ApiEntityReference> excludeDisks() {
-        return this.excludeDisks;
+        return this.properties() == null ? null : this.properties().excludeDisks();
     }
 
     /**
@@ -110,8 +54,49 @@ public final class RestorePointInner extends ProxyResource {
      * @return the RestorePointInner object itself.
      */
     public RestorePointInner withExcludeDisks(List<ApiEntityReference> excludeDisks) {
-        this.excludeDisks = excludeDisks;
+        if (this.properties() == null) {
+            this.properties = new RestorePointProperties();
+        }
+        this.properties().withExcludeDisks(excludeDisks);
         return this;
+    }
+
+    /**
+     * Get the sourceMetadata property: Gets the details of the VM captured at the time of the restore point creation.
+     *
+     * @return the sourceMetadata value.
+     */
+    public RestorePointSourceMetadata sourceMetadata() {
+        return this.properties() == null ? null : this.properties().sourceMetadata();
+    }
+
+    /**
+     * Get the provisioningState property: Gets the provisioning state of the restore point.
+     *
+     * @return the provisioningState value.
+     */
+    public String provisioningState() {
+        return this.properties() == null ? null : this.properties().provisioningState();
+    }
+
+    /**
+     * Get the consistencyMode property: Gets the consistency mode for the restore point. Please refer to
+     * https://aka.ms/RestorePoints for more details.
+     *
+     * @return the consistencyMode value.
+     */
+    public ConsistencyModeTypes consistencyMode() {
+        return this.properties() == null ? null : this.properties().consistencyMode();
+    }
+
+    /**
+     * Get the provisioningDetails property: Gets the provisioning details set by the server during Create restore point
+     * operation.
+     *
+     * @return the provisioningDetails value.
+     */
+    public RestorePointProvisioningDetails provisioningDetails() {
+        return this.properties() == null ? null : this.properties().provisioningDetails();
     }
 
     /**
@@ -120,14 +105,8 @@ public final class RestorePointInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (sourceMetadata() != null) {
-            sourceMetadata().validate();
-        }
-        if (provisioningDetails() != null) {
-            provisioningDetails().validate();
-        }
-        if (excludeDisks() != null) {
-            excludeDisks().forEach(e -> e.validate());
+        if (properties() != null) {
+            properties().validate();
         }
     }
 }

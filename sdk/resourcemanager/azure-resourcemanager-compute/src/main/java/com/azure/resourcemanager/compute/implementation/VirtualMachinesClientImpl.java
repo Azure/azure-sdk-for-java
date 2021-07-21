@@ -4431,8 +4431,7 @@ public final class VirtualMachinesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param tempDisk Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage
-     *     parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * @param parameters Parameters supplied to the Reimage Virtual Machine operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4440,7 +4439,7 @@ public final class VirtualMachinesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> reimageWithResponseAsync(
-        String resourceGroupName, String vmName, Boolean tempDisk) {
+        String resourceGroupName, String vmName, VirtualMachineReimageParameters parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -4460,13 +4459,10 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
-        VirtualMachineReimageParameters parametersInternal = null;
-        if (tempDisk != null) {
-            parametersInternal = new VirtualMachineReimageParameters();
-            parametersInternal.withTempDisk(tempDisk);
+        if (parameters != null) {
+            parameters.validate();
         }
-        VirtualMachineReimageParameters parameters = parametersInternal;
+        final String apiVersion = "2021-03-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -4487,8 +4483,7 @@ public final class VirtualMachinesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param tempDisk Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage
-     *     parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * @param parameters Parameters supplied to the Reimage Virtual Machine operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -4497,7 +4492,7 @@ public final class VirtualMachinesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> reimageWithResponseAsync(
-        String resourceGroupName, String vmName, Boolean tempDisk, Context context) {
+        String resourceGroupName, String vmName, VirtualMachineReimageParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -4517,13 +4512,10 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
-        VirtualMachineReimageParameters parametersInternal = null;
-        if (tempDisk != null) {
-            parametersInternal = new VirtualMachineReimageParameters();
-            parametersInternal.withTempDisk(tempDisk);
+        if (parameters != null) {
+            parameters.validate();
         }
-        VirtualMachineReimageParameters parameters = parametersInternal;
+        final String apiVersion = "2021-03-01";
         context = this.client.mergeContext(context);
         return service
             .reimage(
@@ -4541,8 +4533,7 @@ public final class VirtualMachinesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param tempDisk Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage
-     *     parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * @param parameters Parameters supplied to the Reimage Virtual Machine operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4550,8 +4541,8 @@ public final class VirtualMachinesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginReimageAsync(
-        String resourceGroupName, String vmName, Boolean tempDisk) {
-        Mono<Response<Flux<ByteBuffer>>> mono = reimageWithResponseAsync(resourceGroupName, vmName, tempDisk);
+        String resourceGroupName, String vmName, VirtualMachineReimageParameters parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono = reimageWithResponseAsync(resourceGroupName, vmName, parameters);
         return this
             .client
             .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
@@ -4562,8 +4553,7 @@ public final class VirtualMachinesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param tempDisk Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage
-     *     parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * @param parameters Parameters supplied to the Reimage Virtual Machine operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -4572,9 +4562,10 @@ public final class VirtualMachinesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PollerFlux<PollResult<Void>, Void> beginReimageAsync(
-        String resourceGroupName, String vmName, Boolean tempDisk, Context context) {
+        String resourceGroupName, String vmName, VirtualMachineReimageParameters parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = reimageWithResponseAsync(resourceGroupName, vmName, tempDisk, context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            reimageWithResponseAsync(resourceGroupName, vmName, parameters, context);
         return this
             .client
             .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
@@ -4585,16 +4576,16 @@ public final class VirtualMachinesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param tempDisk Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage
-     *     parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * @param parameters Parameters supplied to the Reimage Virtual Machine operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginReimage(String resourceGroupName, String vmName, Boolean tempDisk) {
-        return beginReimageAsync(resourceGroupName, vmName, tempDisk).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginReimage(
+        String resourceGroupName, String vmName, VirtualMachineReimageParameters parameters) {
+        return beginReimageAsync(resourceGroupName, vmName, parameters).getSyncPoller();
     }
 
     /**
@@ -4602,8 +4593,7 @@ public final class VirtualMachinesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param tempDisk Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage
-     *     parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * @param parameters Parameters supplied to the Reimage Virtual Machine operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -4612,8 +4602,8 @@ public final class VirtualMachinesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PollResult<Void>, Void> beginReimage(
-        String resourceGroupName, String vmName, Boolean tempDisk, Context context) {
-        return beginReimageAsync(resourceGroupName, vmName, tempDisk, context).getSyncPoller();
+        String resourceGroupName, String vmName, VirtualMachineReimageParameters parameters, Context context) {
+        return beginReimageAsync(resourceGroupName, vmName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -4621,16 +4611,16 @@ public final class VirtualMachinesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param tempDisk Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage
-     *     parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * @param parameters Parameters supplied to the Reimage Virtual Machine operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> reimageAsync(String resourceGroupName, String vmName, Boolean tempDisk) {
-        return beginReimageAsync(resourceGroupName, vmName, tempDisk)
+    public Mono<Void> reimageAsync(
+        String resourceGroupName, String vmName, VirtualMachineReimageParameters parameters) {
+        return beginReimageAsync(resourceGroupName, vmName, parameters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -4647,8 +4637,8 @@ public final class VirtualMachinesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> reimageAsync(String resourceGroupName, String vmName) {
-        final Boolean tempDisk = null;
-        return beginReimageAsync(resourceGroupName, vmName, tempDisk)
+        final VirtualMachineReimageParameters parameters = null;
+        return beginReimageAsync(resourceGroupName, vmName, parameters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -4658,8 +4648,7 @@ public final class VirtualMachinesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param tempDisk Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage
-     *     parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * @param parameters Parameters supplied to the Reimage Virtual Machine operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -4667,8 +4656,9 @@ public final class VirtualMachinesClientImpl
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> reimageAsync(String resourceGroupName, String vmName, Boolean tempDisk, Context context) {
-        return beginReimageAsync(resourceGroupName, vmName, tempDisk, context)
+    private Mono<Void> reimageAsync(
+        String resourceGroupName, String vmName, VirtualMachineReimageParameters parameters, Context context) {
+        return beginReimageAsync(resourceGroupName, vmName, parameters, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -4678,15 +4668,14 @@ public final class VirtualMachinesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param tempDisk Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage
-     *     parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * @param parameters Parameters supplied to the Reimage Virtual Machine operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void reimage(String resourceGroupName, String vmName, Boolean tempDisk) {
-        reimageAsync(resourceGroupName, vmName, tempDisk).block();
+    public void reimage(String resourceGroupName, String vmName, VirtualMachineReimageParameters parameters) {
+        reimageAsync(resourceGroupName, vmName, parameters).block();
     }
 
     /**
@@ -4700,8 +4689,8 @@ public final class VirtualMachinesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void reimage(String resourceGroupName, String vmName) {
-        final Boolean tempDisk = null;
-        reimageAsync(resourceGroupName, vmName, tempDisk).block();
+        final VirtualMachineReimageParameters parameters = null;
+        reimageAsync(resourceGroupName, vmName, parameters).block();
     }
 
     /**
@@ -4709,16 +4698,16 @@ public final class VirtualMachinesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param tempDisk Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage
-     *     parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * @param parameters Parameters supplied to the Reimage Virtual Machine operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void reimage(String resourceGroupName, String vmName, Boolean tempDisk, Context context) {
-        reimageAsync(resourceGroupName, vmName, tempDisk, context).block();
+    public void reimage(
+        String resourceGroupName, String vmName, VirtualMachineReimageParameters parameters, Context context) {
+        reimageAsync(resourceGroupName, vmName, parameters, context).block();
     }
 
     /**

@@ -4,20 +4,21 @@
 
 package com.azure.resourcemanager.compute.fluent.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.compute.implementation.SharedGalleryIdentifier;
 import com.azure.resourcemanager.compute.models.PirSharedGalleryResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /** Specifies information about the Shared Gallery that you want to create or update. */
-@Immutable
+@Fluent
 public final class SharedGalleryInner extends PirSharedGalleryResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SharedGalleryInner.class);
 
     /** {@inheritDoc} */
     @Override
-    public SharedGalleryInner withUniqueId(String uniqueId) {
-        super.withUniqueId(uniqueId);
+    public SharedGalleryInner withIdentifier(SharedGalleryIdentifier identifier) {
+        super.withIdentifier(identifier);
         return this;
     }
 

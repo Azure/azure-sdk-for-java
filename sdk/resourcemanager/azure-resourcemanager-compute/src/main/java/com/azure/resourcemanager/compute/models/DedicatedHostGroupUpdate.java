@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.compute.implementation.DedicatedHostGroupProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -16,10 +16,15 @@ import java.util.Map;
  * Specifies information about the dedicated host group that the dedicated host should be assigned to. Only tags may be
  * updated.
  */
-@JsonFlatten
 @Fluent
-public class DedicatedHostGroupUpdate extends UpdateResource {
+public final class DedicatedHostGroupUpdate extends UpdateResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DedicatedHostGroupUpdate.class);
+
+    /*
+     * Dedicated Host Group Properties.
+     */
+    @JsonProperty(value = "properties")
+    private DedicatedHostGroupProperties properties;
 
     /*
      * Availability Zone to use for this host group. Only single zone is
@@ -30,34 +35,14 @@ public class DedicatedHostGroupUpdate extends UpdateResource {
     @JsonProperty(value = "zones")
     private List<String> zones;
 
-    /*
-     * Number of fault domains that the host group can span.
+    /**
+     * Get the properties property: Dedicated Host Group Properties.
+     *
+     * @return the properties value.
      */
-    @JsonProperty(value = "properties.platformFaultDomainCount")
-    private Integer platformFaultDomainCount;
-
-    /*
-     * A list of references to all dedicated hosts in the dedicated host group.
-     */
-    @JsonProperty(value = "properties.hosts", access = JsonProperty.Access.WRITE_ONLY)
-    private List<SubResourceReadOnly> hosts;
-
-    /*
-     * The dedicated host group instance view, which has the list of instance
-     * view of the dedicated hosts under the dedicated host group.
-     */
-    @JsonProperty(value = "properties.instanceView", access = JsonProperty.Access.WRITE_ONLY)
-    private DedicatedHostGroupInstanceView instanceView;
-
-    /*
-     * Specifies whether virtual machines or virtual machine scale sets can be
-     * placed automatically on the dedicated host group. Automatic placement
-     * means resources are allocated on dedicated hosts, that are chosen by
-     * Azure, under the dedicated host group. The value is defaulted to 'false'
-     * when not provided. <br><br>Minimum api-version: 2020-06-01.
-     */
-    @JsonProperty(value = "properties.supportAutomaticPlacement")
-    private Boolean supportAutomaticPlacement;
+    private DedicatedHostGroupProperties properties() {
+        return this.properties;
+    }
 
     /**
      * Get the zones property: Availability Zone to use for this host group. Only single zone is supported. The zone can
@@ -83,13 +68,20 @@ public class DedicatedHostGroupUpdate extends UpdateResource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public DedicatedHostGroupUpdate withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
+
     /**
      * Get the platformFaultDomainCount property: Number of fault domains that the host group can span.
      *
      * @return the platformFaultDomainCount value.
      */
     public Integer platformFaultDomainCount() {
-        return this.platformFaultDomainCount;
+        return this.properties() == null ? null : this.properties().platformFaultDomainCount();
     }
 
     /**
@@ -99,7 +91,10 @@ public class DedicatedHostGroupUpdate extends UpdateResource {
      * @return the DedicatedHostGroupUpdate object itself.
      */
     public DedicatedHostGroupUpdate withPlatformFaultDomainCount(Integer platformFaultDomainCount) {
-        this.platformFaultDomainCount = platformFaultDomainCount;
+        if (this.properties() == null) {
+            this.properties = new DedicatedHostGroupProperties();
+        }
+        this.properties().withPlatformFaultDomainCount(platformFaultDomainCount);
         return this;
     }
 
@@ -109,7 +104,7 @@ public class DedicatedHostGroupUpdate extends UpdateResource {
      * @return the hosts value.
      */
     public List<SubResourceReadOnly> hosts() {
-        return this.hosts;
+        return this.properties() == null ? null : this.properties().hosts();
     }
 
     /**
@@ -119,7 +114,7 @@ public class DedicatedHostGroupUpdate extends UpdateResource {
      * @return the instanceView value.
      */
     public DedicatedHostGroupInstanceView instanceView() {
-        return this.instanceView;
+        return this.properties() == null ? null : this.properties().instanceView();
     }
 
     /**
@@ -131,7 +126,7 @@ public class DedicatedHostGroupUpdate extends UpdateResource {
      * @return the supportAutomaticPlacement value.
      */
     public Boolean supportAutomaticPlacement() {
-        return this.supportAutomaticPlacement;
+        return this.properties() == null ? null : this.properties().supportAutomaticPlacement();
     }
 
     /**
@@ -144,14 +139,10 @@ public class DedicatedHostGroupUpdate extends UpdateResource {
      * @return the DedicatedHostGroupUpdate object itself.
      */
     public DedicatedHostGroupUpdate withSupportAutomaticPlacement(Boolean supportAutomaticPlacement) {
-        this.supportAutomaticPlacement = supportAutomaticPlacement;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public DedicatedHostGroupUpdate withTags(Map<String, String> tags) {
-        super.withTags(tags);
+        if (this.properties() == null) {
+            this.properties = new DedicatedHostGroupProperties();
+        }
+        this.properties().withSupportAutomaticPlacement(supportAutomaticPlacement);
         return this;
     }
 
@@ -163,11 +154,8 @@ public class DedicatedHostGroupUpdate extends UpdateResource {
     @Override
     public void validate() {
         super.validate();
-        if (hosts() != null) {
-            hosts().forEach(e -> e.validate());
-        }
-        if (instanceView() != null) {
-            instanceView().validate();
+        if (properties() != null) {
+            properties().validate();
         }
     }
 }

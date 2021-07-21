@@ -5,42 +5,38 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.compute.implementation.GalleryProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Specifies information about the Shared Image Gallery that you want to update. */
-@JsonFlatten
 @Fluent
-public class GalleryUpdate extends UpdateResourceDefinition {
+public final class GalleryUpdate extends UpdateResourceDefinition {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryUpdate.class);
 
     /*
-     * The description of this Shared Image Gallery resource. This property is
-     * updatable.
+     * Describes the properties of a Shared Image Gallery.
      */
-    @JsonProperty(value = "properties.description")
-    private String description;
+    @JsonProperty(value = "properties")
+    private GalleryProperties properties;
 
-    /*
-     * Describes the gallery unique name.
+    /**
+     * Get the properties property: Describes the properties of a Shared Image Gallery.
+     *
+     * @return the properties value.
      */
-    @JsonProperty(value = "properties.identifier")
-    private GalleryIdentifier identifier;
+    private GalleryProperties properties() {
+        return this.properties;
+    }
 
-    /*
-     * The provisioning state, which only appears in the response.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private GalleryPropertiesProvisioningState provisioningState;
-
-    /*
-     * Profile for gallery sharing to subscription or tenant
-     */
-    @JsonProperty(value = "properties.sharingProfile")
-    private SharingProfile sharingProfile;
+    /** {@inheritDoc} */
+    @Override
+    public GalleryUpdate withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
 
     /**
      * Get the description property: The description of this Shared Image Gallery resource. This property is updatable.
@@ -48,7 +44,7 @@ public class GalleryUpdate extends UpdateResourceDefinition {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.properties() == null ? null : this.properties().description();
     }
 
     /**
@@ -58,7 +54,10 @@ public class GalleryUpdate extends UpdateResourceDefinition {
      * @return the GalleryUpdate object itself.
      */
     public GalleryUpdate withDescription(String description) {
-        this.description = description;
+        if (this.properties() == null) {
+            this.properties = new GalleryProperties();
+        }
+        this.properties().withDescription(description);
         return this;
     }
 
@@ -68,7 +67,7 @@ public class GalleryUpdate extends UpdateResourceDefinition {
      * @return the identifier value.
      */
     public GalleryIdentifier identifier() {
-        return this.identifier;
+        return this.properties() == null ? null : this.properties().identifier();
     }
 
     /**
@@ -78,7 +77,10 @@ public class GalleryUpdate extends UpdateResourceDefinition {
      * @return the GalleryUpdate object itself.
      */
     public GalleryUpdate withIdentifier(GalleryIdentifier identifier) {
-        this.identifier = identifier;
+        if (this.properties() == null) {
+            this.properties = new GalleryProperties();
+        }
+        this.properties().withIdentifier(identifier);
         return this;
     }
 
@@ -88,7 +90,7 @@ public class GalleryUpdate extends UpdateResourceDefinition {
      * @return the provisioningState value.
      */
     public GalleryPropertiesProvisioningState provisioningState() {
-        return this.provisioningState;
+        return this.properties() == null ? null : this.properties().provisioningState();
     }
 
     /**
@@ -97,7 +99,7 @@ public class GalleryUpdate extends UpdateResourceDefinition {
      * @return the sharingProfile value.
      */
     public SharingProfile sharingProfile() {
-        return this.sharingProfile;
+        return this.properties() == null ? null : this.properties().sharingProfile();
     }
 
     /**
@@ -107,14 +109,10 @@ public class GalleryUpdate extends UpdateResourceDefinition {
      * @return the GalleryUpdate object itself.
      */
     public GalleryUpdate withSharingProfile(SharingProfile sharingProfile) {
-        this.sharingProfile = sharingProfile;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public GalleryUpdate withTags(Map<String, String> tags) {
-        super.withTags(tags);
+        if (this.properties() == null) {
+            this.properties = new GalleryProperties();
+        }
+        this.properties().withSharingProfile(sharingProfile);
         return this;
     }
 
@@ -126,11 +124,8 @@ public class GalleryUpdate extends UpdateResourceDefinition {
     @Override
     public void validate() {
         super.validate();
-        if (identifier() != null) {
-            identifier().validate();
-        }
-        if (sharingProfile() != null) {
-            sharingProfile().validate();
+        if (properties() != null) {
+            properties().validate();
         }
     }
 }

@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.compute.implementation.GalleryImageProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -14,102 +14,31 @@ import java.util.List;
 import java.util.Map;
 
 /** Specifies information about the gallery image definition that you want to update. */
-@JsonFlatten
 @Fluent
-public class GalleryImageUpdate extends UpdateResourceDefinition {
+public final class GalleryImageUpdate extends UpdateResourceDefinition {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryImageUpdate.class);
 
     /*
-     * The description of this gallery image definition resource. This property
-     * is updatable.
+     * Describes the properties of a gallery image definition.
      */
-    @JsonProperty(value = "properties.description")
-    private String description;
+    @JsonProperty(value = "properties")
+    private GalleryImageProperties properties;
 
-    /*
-     * The Eula agreement for the gallery image definition.
+    /**
+     * Get the properties property: Describes the properties of a gallery image definition.
+     *
+     * @return the properties value.
      */
-    @JsonProperty(value = "properties.eula")
-    private String eula;
+    private GalleryImageProperties properties() {
+        return this.properties;
+    }
 
-    /*
-     * The privacy statement uri.
-     */
-    @JsonProperty(value = "properties.privacyStatementUri")
-    private String privacyStatementUri;
-
-    /*
-     * The release note uri.
-     */
-    @JsonProperty(value = "properties.releaseNoteUri")
-    private String releaseNoteUri;
-
-    /*
-     * This property allows you to specify the type of the OS that is included
-     * in the disk when creating a VM from a managed image. <br><br> Possible
-     * values are: <br><br> **Windows** <br><br> **Linux**
-     */
-    @JsonProperty(value = "properties.osType")
-    private OperatingSystemTypes osType;
-
-    /*
-     * This property allows the user to specify whether the virtual machines
-     * created under this image are 'Generalized' or 'Specialized'.
-     */
-    @JsonProperty(value = "properties.osState")
-    private OperatingSystemStateTypes osState;
-
-    /*
-     * The hypervisor generation of the Virtual Machine. Applicable to OS disks
-     * only.
-     */
-    @JsonProperty(value = "properties.hyperVGeneration")
-    private HyperVGeneration hyperVGeneration;
-
-    /*
-     * The end of life date of the gallery image definition. This property can
-     * be used for decommissioning purposes. This property is updatable.
-     */
-    @JsonProperty(value = "properties.endOfLifeDate")
-    private OffsetDateTime endOfLifeDate;
-
-    /*
-     * This is the gallery image definition identifier.
-     */
-    @JsonProperty(value = "properties.identifier")
-    private GalleryImageIdentifier identifier;
-
-    /*
-     * The properties describe the recommended machine configuration for this
-     * Image Definition. These properties are updatable.
-     */
-    @JsonProperty(value = "properties.recommended")
-    private RecommendedMachineConfiguration recommended;
-
-    /*
-     * Describes the disallowed disk types.
-     */
-    @JsonProperty(value = "properties.disallowed")
-    private Disallowed disallowed;
-
-    /*
-     * Describes the gallery image definition purchase plan. This is used by
-     * marketplace images.
-     */
-    @JsonProperty(value = "properties.purchasePlan")
-    private ImagePurchasePlan purchasePlan;
-
-    /*
-     * The provisioning state, which only appears in the response.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private GalleryImagePropertiesProvisioningState provisioningState;
-
-    /*
-     * A list of gallery image features.
-     */
-    @JsonProperty(value = "properties.features")
-    private List<GalleryImageFeature> features;
+    /** {@inheritDoc} */
+    @Override
+    public GalleryImageUpdate withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
 
     /**
      * Get the description property: The description of this gallery image definition resource. This property is
@@ -118,7 +47,7 @@ public class GalleryImageUpdate extends UpdateResourceDefinition {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.properties() == null ? null : this.properties().description();
     }
 
     /**
@@ -129,7 +58,10 @@ public class GalleryImageUpdate extends UpdateResourceDefinition {
      * @return the GalleryImageUpdate object itself.
      */
     public GalleryImageUpdate withDescription(String description) {
-        this.description = description;
+        if (this.properties() == null) {
+            this.properties = new GalleryImageProperties();
+        }
+        this.properties().withDescription(description);
         return this;
     }
 
@@ -139,7 +71,7 @@ public class GalleryImageUpdate extends UpdateResourceDefinition {
      * @return the eula value.
      */
     public String eula() {
-        return this.eula;
+        return this.properties() == null ? null : this.properties().eula();
     }
 
     /**
@@ -149,7 +81,10 @@ public class GalleryImageUpdate extends UpdateResourceDefinition {
      * @return the GalleryImageUpdate object itself.
      */
     public GalleryImageUpdate withEula(String eula) {
-        this.eula = eula;
+        if (this.properties() == null) {
+            this.properties = new GalleryImageProperties();
+        }
+        this.properties().withEula(eula);
         return this;
     }
 
@@ -159,7 +94,7 @@ public class GalleryImageUpdate extends UpdateResourceDefinition {
      * @return the privacyStatementUri value.
      */
     public String privacyStatementUri() {
-        return this.privacyStatementUri;
+        return this.properties() == null ? null : this.properties().privacyStatementUri();
     }
 
     /**
@@ -169,7 +104,10 @@ public class GalleryImageUpdate extends UpdateResourceDefinition {
      * @return the GalleryImageUpdate object itself.
      */
     public GalleryImageUpdate withPrivacyStatementUri(String privacyStatementUri) {
-        this.privacyStatementUri = privacyStatementUri;
+        if (this.properties() == null) {
+            this.properties = new GalleryImageProperties();
+        }
+        this.properties().withPrivacyStatementUri(privacyStatementUri);
         return this;
     }
 
@@ -179,7 +117,7 @@ public class GalleryImageUpdate extends UpdateResourceDefinition {
      * @return the releaseNoteUri value.
      */
     public String releaseNoteUri() {
-        return this.releaseNoteUri;
+        return this.properties() == null ? null : this.properties().releaseNoteUri();
     }
 
     /**
@@ -189,7 +127,10 @@ public class GalleryImageUpdate extends UpdateResourceDefinition {
      * @return the GalleryImageUpdate object itself.
      */
     public GalleryImageUpdate withReleaseNoteUri(String releaseNoteUri) {
-        this.releaseNoteUri = releaseNoteUri;
+        if (this.properties() == null) {
+            this.properties = new GalleryImageProperties();
+        }
+        this.properties().withReleaseNoteUri(releaseNoteUri);
         return this;
     }
 
@@ -201,7 +142,7 @@ public class GalleryImageUpdate extends UpdateResourceDefinition {
      * @return the osType value.
      */
     public OperatingSystemTypes osType() {
-        return this.osType;
+        return this.properties() == null ? null : this.properties().osType();
     }
 
     /**
@@ -213,7 +154,10 @@ public class GalleryImageUpdate extends UpdateResourceDefinition {
      * @return the GalleryImageUpdate object itself.
      */
     public GalleryImageUpdate withOsType(OperatingSystemTypes osType) {
-        this.osType = osType;
+        if (this.properties() == null) {
+            this.properties = new GalleryImageProperties();
+        }
+        this.properties().withOsType(osType);
         return this;
     }
 
@@ -224,7 +168,7 @@ public class GalleryImageUpdate extends UpdateResourceDefinition {
      * @return the osState value.
      */
     public OperatingSystemStateTypes osState() {
-        return this.osState;
+        return this.properties() == null ? null : this.properties().osState();
     }
 
     /**
@@ -235,7 +179,10 @@ public class GalleryImageUpdate extends UpdateResourceDefinition {
      * @return the GalleryImageUpdate object itself.
      */
     public GalleryImageUpdate withOsState(OperatingSystemStateTypes osState) {
-        this.osState = osState;
+        if (this.properties() == null) {
+            this.properties = new GalleryImageProperties();
+        }
+        this.properties().withOsState(osState);
         return this;
     }
 
@@ -245,7 +192,7 @@ public class GalleryImageUpdate extends UpdateResourceDefinition {
      * @return the hyperVGeneration value.
      */
     public HyperVGeneration hyperVGeneration() {
-        return this.hyperVGeneration;
+        return this.properties() == null ? null : this.properties().hyperVGeneration();
     }
 
     /**
@@ -255,7 +202,10 @@ public class GalleryImageUpdate extends UpdateResourceDefinition {
      * @return the GalleryImageUpdate object itself.
      */
     public GalleryImageUpdate withHyperVGeneration(HyperVGeneration hyperVGeneration) {
-        this.hyperVGeneration = hyperVGeneration;
+        if (this.properties() == null) {
+            this.properties = new GalleryImageProperties();
+        }
+        this.properties().withHyperVGeneration(hyperVGeneration);
         return this;
     }
 
@@ -266,7 +216,7 @@ public class GalleryImageUpdate extends UpdateResourceDefinition {
      * @return the endOfLifeDate value.
      */
     public OffsetDateTime endOfLifeDate() {
-        return this.endOfLifeDate;
+        return this.properties() == null ? null : this.properties().endOfLifeDate();
     }
 
     /**
@@ -277,7 +227,10 @@ public class GalleryImageUpdate extends UpdateResourceDefinition {
      * @return the GalleryImageUpdate object itself.
      */
     public GalleryImageUpdate withEndOfLifeDate(OffsetDateTime endOfLifeDate) {
-        this.endOfLifeDate = endOfLifeDate;
+        if (this.properties() == null) {
+            this.properties = new GalleryImageProperties();
+        }
+        this.properties().withEndOfLifeDate(endOfLifeDate);
         return this;
     }
 
@@ -287,7 +240,7 @@ public class GalleryImageUpdate extends UpdateResourceDefinition {
      * @return the identifier value.
      */
     public GalleryImageIdentifier identifier() {
-        return this.identifier;
+        return this.properties() == null ? null : this.properties().identifier();
     }
 
     /**
@@ -297,7 +250,10 @@ public class GalleryImageUpdate extends UpdateResourceDefinition {
      * @return the GalleryImageUpdate object itself.
      */
     public GalleryImageUpdate withIdentifier(GalleryImageIdentifier identifier) {
-        this.identifier = identifier;
+        if (this.properties() == null) {
+            this.properties = new GalleryImageProperties();
+        }
+        this.properties().withIdentifier(identifier);
         return this;
     }
 
@@ -308,7 +264,7 @@ public class GalleryImageUpdate extends UpdateResourceDefinition {
      * @return the recommended value.
      */
     public RecommendedMachineConfiguration recommended() {
-        return this.recommended;
+        return this.properties() == null ? null : this.properties().recommended();
     }
 
     /**
@@ -319,7 +275,10 @@ public class GalleryImageUpdate extends UpdateResourceDefinition {
      * @return the GalleryImageUpdate object itself.
      */
     public GalleryImageUpdate withRecommended(RecommendedMachineConfiguration recommended) {
-        this.recommended = recommended;
+        if (this.properties() == null) {
+            this.properties = new GalleryImageProperties();
+        }
+        this.properties().withRecommended(recommended);
         return this;
     }
 
@@ -329,7 +288,7 @@ public class GalleryImageUpdate extends UpdateResourceDefinition {
      * @return the disallowed value.
      */
     public Disallowed disallowed() {
-        return this.disallowed;
+        return this.properties() == null ? null : this.properties().disallowed();
     }
 
     /**
@@ -339,7 +298,10 @@ public class GalleryImageUpdate extends UpdateResourceDefinition {
      * @return the GalleryImageUpdate object itself.
      */
     public GalleryImageUpdate withDisallowed(Disallowed disallowed) {
-        this.disallowed = disallowed;
+        if (this.properties() == null) {
+            this.properties = new GalleryImageProperties();
+        }
+        this.properties().withDisallowed(disallowed);
         return this;
     }
 
@@ -350,7 +312,7 @@ public class GalleryImageUpdate extends UpdateResourceDefinition {
      * @return the purchasePlan value.
      */
     public ImagePurchasePlan purchasePlan() {
-        return this.purchasePlan;
+        return this.properties() == null ? null : this.properties().purchasePlan();
     }
 
     /**
@@ -361,7 +323,10 @@ public class GalleryImageUpdate extends UpdateResourceDefinition {
      * @return the GalleryImageUpdate object itself.
      */
     public GalleryImageUpdate withPurchasePlan(ImagePurchasePlan purchasePlan) {
-        this.purchasePlan = purchasePlan;
+        if (this.properties() == null) {
+            this.properties = new GalleryImageProperties();
+        }
+        this.properties().withPurchasePlan(purchasePlan);
         return this;
     }
 
@@ -371,7 +336,7 @@ public class GalleryImageUpdate extends UpdateResourceDefinition {
      * @return the provisioningState value.
      */
     public GalleryImagePropertiesProvisioningState provisioningState() {
-        return this.provisioningState;
+        return this.properties() == null ? null : this.properties().provisioningState();
     }
 
     /**
@@ -380,7 +345,7 @@ public class GalleryImageUpdate extends UpdateResourceDefinition {
      * @return the features value.
      */
     public List<GalleryImageFeature> features() {
-        return this.features;
+        return this.properties() == null ? null : this.properties().features();
     }
 
     /**
@@ -390,14 +355,10 @@ public class GalleryImageUpdate extends UpdateResourceDefinition {
      * @return the GalleryImageUpdate object itself.
      */
     public GalleryImageUpdate withFeatures(List<GalleryImageFeature> features) {
-        this.features = features;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public GalleryImageUpdate withTags(Map<String, String> tags) {
-        super.withTags(tags);
+        if (this.properties() == null) {
+            this.properties = new GalleryImageProperties();
+        }
+        this.properties().withFeatures(features);
         return this;
     }
 
@@ -409,20 +370,8 @@ public class GalleryImageUpdate extends UpdateResourceDefinition {
     @Override
     public void validate() {
         super.validate();
-        if (identifier() != null) {
-            identifier().validate();
-        }
-        if (recommended() != null) {
-            recommended().validate();
-        }
-        if (disallowed() != null) {
-            disallowed().validate();
-        }
-        if (purchasePlan() != null) {
-            purchasePlan().validate();
-        }
-        if (features() != null) {
-            features().forEach(e -> e.validate());
+        if (properties() != null) {
+            properties().validate();
         }
     }
 }

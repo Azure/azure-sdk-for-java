@@ -5,27 +5,38 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.compute.implementation.SshPublicKeyResourceProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Specifies information about the SSH public key. */
-@JsonFlatten
 @Fluent
-public class SshPublicKeyUpdateResource extends UpdateResource {
+public final class SshPublicKeyUpdateResource extends UpdateResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SshPublicKeyUpdateResource.class);
 
     /*
-     * SSH public key used to authenticate to a virtual machine through ssh. If
-     * this property is not initially provided when the resource is created,
-     * the publicKey property will be populated when generateKeyPair is called.
-     * If the public key is provided upon resource creation, the provided
-     * public key needs to be at least 2048-bit and in ssh-rsa format.
+     * Properties of the SSH public key.
      */
-    @JsonProperty(value = "properties.publicKey")
-    private String publicKey;
+    @JsonProperty(value = "properties")
+    private SshPublicKeyResourceProperties properties;
+
+    /**
+     * Get the properties property: Properties of the SSH public key.
+     *
+     * @return the properties value.
+     */
+    private SshPublicKeyResourceProperties properties() {
+        return this.properties;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SshPublicKeyUpdateResource withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
 
     /**
      * Get the publicKey property: SSH public key used to authenticate to a virtual machine through ssh. If this
@@ -36,7 +47,7 @@ public class SshPublicKeyUpdateResource extends UpdateResource {
      * @return the publicKey value.
      */
     public String publicKey() {
-        return this.publicKey;
+        return this.properties() == null ? null : this.properties().publicKey();
     }
 
     /**
@@ -49,14 +60,10 @@ public class SshPublicKeyUpdateResource extends UpdateResource {
      * @return the SshPublicKeyUpdateResource object itself.
      */
     public SshPublicKeyUpdateResource withPublicKey(String publicKey) {
-        this.publicKey = publicKey;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public SshPublicKeyUpdateResource withTags(Map<String, String> tags) {
-        super.withTags(tags);
+        if (this.properties() == null) {
+            this.properties = new SshPublicKeyResourceProperties();
+        }
+        this.properties().withPublicKey(publicKey);
         return this;
     }
 
@@ -68,5 +75,8 @@ public class SshPublicKeyUpdateResource extends UpdateResource {
     @Override
     public void validate() {
         super.validate();
+        if (properties() != null) {
+            properties().validate();
+        }
     }
 }

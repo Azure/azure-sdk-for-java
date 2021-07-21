@@ -5,72 +5,38 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.compute.implementation.VirtualMachineExtensionUpdateProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Describes a Virtual Machine Extension. */
-@JsonFlatten
 @Fluent
-public class VirtualMachineExtensionUpdate extends UpdateResource {
+public final class VirtualMachineExtensionUpdate extends UpdateResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineExtensionUpdate.class);
 
     /*
-     * How the extension handler should be forced to update even if the
-     * extension configuration has not changed.
+     * Describes the properties of a Virtual Machine Extension.
      */
-    @JsonProperty(value = "properties.forceUpdateTag")
-    private String forceUpdateTag;
+    @JsonProperty(value = "properties")
+    private VirtualMachineExtensionUpdateProperties properties;
 
-    /*
-     * The name of the extension handler publisher.
+    /**
+     * Get the properties property: Describes the properties of a Virtual Machine Extension.
+     *
+     * @return the properties value.
      */
-    @JsonProperty(value = "properties.publisher")
-    private String publisher;
+    private VirtualMachineExtensionUpdateProperties properties() {
+        return this.properties;
+    }
 
-    /*
-     * Specifies the type of the extension; an example is
-     * "CustomScriptExtension".
-     */
-    @JsonProperty(value = "properties.type")
-    private String type;
-
-    /*
-     * Specifies the version of the script handler.
-     */
-    @JsonProperty(value = "properties.typeHandlerVersion")
-    private String typeHandlerVersion;
-
-    /*
-     * Indicates whether the extension should use a newer minor version if one
-     * is available at deployment time. Once deployed, however, the extension
-     * will not upgrade minor versions unless redeployed, even with this
-     * property set to true.
-     */
-    @JsonProperty(value = "properties.autoUpgradeMinorVersion")
-    private Boolean autoUpgradeMinorVersion;
-
-    /*
-     * Indicates whether the extension should be automatically upgraded by the
-     * platform if there is a newer version of the extension available.
-     */
-    @JsonProperty(value = "properties.enableAutomaticUpgrade")
-    private Boolean enableAutomaticUpgrade;
-
-    /*
-     * Json formatted public settings for the extension.
-     */
-    @JsonProperty(value = "properties.settings")
-    private Object settings;
-
-    /*
-     * The extension can contain either protectedSettings or
-     * protectedSettingsFromKeyVault or no protected settings at all.
-     */
-    @JsonProperty(value = "properties.protectedSettings")
-    private Object protectedSettings;
+    /** {@inheritDoc} */
+    @Override
+    public VirtualMachineExtensionUpdate withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
 
     /**
      * Get the forceUpdateTag property: How the extension handler should be forced to update even if the extension
@@ -79,7 +45,7 @@ public class VirtualMachineExtensionUpdate extends UpdateResource {
      * @return the forceUpdateTag value.
      */
     public String forceUpdateTag() {
-        return this.forceUpdateTag;
+        return this.properties() == null ? null : this.properties().forceUpdateTag();
     }
 
     /**
@@ -90,7 +56,10 @@ public class VirtualMachineExtensionUpdate extends UpdateResource {
      * @return the VirtualMachineExtensionUpdate object itself.
      */
     public VirtualMachineExtensionUpdate withForceUpdateTag(String forceUpdateTag) {
-        this.forceUpdateTag = forceUpdateTag;
+        if (this.properties() == null) {
+            this.properties = new VirtualMachineExtensionUpdateProperties();
+        }
+        this.properties().withForceUpdateTag(forceUpdateTag);
         return this;
     }
 
@@ -100,7 +69,7 @@ public class VirtualMachineExtensionUpdate extends UpdateResource {
      * @return the publisher value.
      */
     public String publisher() {
-        return this.publisher;
+        return this.properties() == null ? null : this.properties().publisher();
     }
 
     /**
@@ -110,27 +79,33 @@ public class VirtualMachineExtensionUpdate extends UpdateResource {
      * @return the VirtualMachineExtensionUpdate object itself.
      */
     public VirtualMachineExtensionUpdate withPublisher(String publisher) {
-        this.publisher = publisher;
+        if (this.properties() == null) {
+            this.properties = new VirtualMachineExtensionUpdateProperties();
+        }
+        this.properties().withPublisher(publisher);
         return this;
     }
 
     /**
-     * Get the type property: Specifies the type of the extension; an example is "CustomScriptExtension".
+     * Get the typePropertiesType property: Specifies the type of the extension; an example is "CustomScriptExtension".
      *
-     * @return the type value.
+     * @return the typePropertiesType value.
      */
-    public String type() {
-        return this.type;
+    public String typePropertiesType() {
+        return this.properties() == null ? null : this.properties().typePropertiesType();
     }
 
     /**
-     * Set the type property: Specifies the type of the extension; an example is "CustomScriptExtension".
+     * Set the typePropertiesType property: Specifies the type of the extension; an example is "CustomScriptExtension".
      *
-     * @param type the type value to set.
+     * @param typePropertiesType the typePropertiesType value to set.
      * @return the VirtualMachineExtensionUpdate object itself.
      */
-    public VirtualMachineExtensionUpdate withType(String type) {
-        this.type = type;
+    public VirtualMachineExtensionUpdate withTypePropertiesType(String typePropertiesType) {
+        if (this.properties() == null) {
+            this.properties = new VirtualMachineExtensionUpdateProperties();
+        }
+        this.properties().withTypePropertiesType(typePropertiesType);
         return this;
     }
 
@@ -140,7 +115,7 @@ public class VirtualMachineExtensionUpdate extends UpdateResource {
      * @return the typeHandlerVersion value.
      */
     public String typeHandlerVersion() {
-        return this.typeHandlerVersion;
+        return this.properties() == null ? null : this.properties().typeHandlerVersion();
     }
 
     /**
@@ -150,7 +125,10 @@ public class VirtualMachineExtensionUpdate extends UpdateResource {
      * @return the VirtualMachineExtensionUpdate object itself.
      */
     public VirtualMachineExtensionUpdate withTypeHandlerVersion(String typeHandlerVersion) {
-        this.typeHandlerVersion = typeHandlerVersion;
+        if (this.properties() == null) {
+            this.properties = new VirtualMachineExtensionUpdateProperties();
+        }
+        this.properties().withTypeHandlerVersion(typeHandlerVersion);
         return this;
     }
 
@@ -162,7 +140,7 @@ public class VirtualMachineExtensionUpdate extends UpdateResource {
      * @return the autoUpgradeMinorVersion value.
      */
     public Boolean autoUpgradeMinorVersion() {
-        return this.autoUpgradeMinorVersion;
+        return this.properties() == null ? null : this.properties().autoUpgradeMinorVersion();
     }
 
     /**
@@ -174,7 +152,10 @@ public class VirtualMachineExtensionUpdate extends UpdateResource {
      * @return the VirtualMachineExtensionUpdate object itself.
      */
     public VirtualMachineExtensionUpdate withAutoUpgradeMinorVersion(Boolean autoUpgradeMinorVersion) {
-        this.autoUpgradeMinorVersion = autoUpgradeMinorVersion;
+        if (this.properties() == null) {
+            this.properties = new VirtualMachineExtensionUpdateProperties();
+        }
+        this.properties().withAutoUpgradeMinorVersion(autoUpgradeMinorVersion);
         return this;
     }
 
@@ -185,7 +166,7 @@ public class VirtualMachineExtensionUpdate extends UpdateResource {
      * @return the enableAutomaticUpgrade value.
      */
     public Boolean enableAutomaticUpgrade() {
-        return this.enableAutomaticUpgrade;
+        return this.properties() == null ? null : this.properties().enableAutomaticUpgrade();
     }
 
     /**
@@ -196,7 +177,10 @@ public class VirtualMachineExtensionUpdate extends UpdateResource {
      * @return the VirtualMachineExtensionUpdate object itself.
      */
     public VirtualMachineExtensionUpdate withEnableAutomaticUpgrade(Boolean enableAutomaticUpgrade) {
-        this.enableAutomaticUpgrade = enableAutomaticUpgrade;
+        if (this.properties() == null) {
+            this.properties = new VirtualMachineExtensionUpdateProperties();
+        }
+        this.properties().withEnableAutomaticUpgrade(enableAutomaticUpgrade);
         return this;
     }
 
@@ -206,7 +190,7 @@ public class VirtualMachineExtensionUpdate extends UpdateResource {
      * @return the settings value.
      */
     public Object settings() {
-        return this.settings;
+        return this.properties() == null ? null : this.properties().settings();
     }
 
     /**
@@ -216,7 +200,10 @@ public class VirtualMachineExtensionUpdate extends UpdateResource {
      * @return the VirtualMachineExtensionUpdate object itself.
      */
     public VirtualMachineExtensionUpdate withSettings(Object settings) {
-        this.settings = settings;
+        if (this.properties() == null) {
+            this.properties = new VirtualMachineExtensionUpdateProperties();
+        }
+        this.properties().withSettings(settings);
         return this;
     }
 
@@ -227,7 +214,7 @@ public class VirtualMachineExtensionUpdate extends UpdateResource {
      * @return the protectedSettings value.
      */
     public Object protectedSettings() {
-        return this.protectedSettings;
+        return this.properties() == null ? null : this.properties().protectedSettings();
     }
 
     /**
@@ -238,14 +225,10 @@ public class VirtualMachineExtensionUpdate extends UpdateResource {
      * @return the VirtualMachineExtensionUpdate object itself.
      */
     public VirtualMachineExtensionUpdate withProtectedSettings(Object protectedSettings) {
-        this.protectedSettings = protectedSettings;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public VirtualMachineExtensionUpdate withTags(Map<String, String> tags) {
-        super.withTags(tags);
+        if (this.properties() == null) {
+            this.properties = new VirtualMachineExtensionUpdateProperties();
+        }
+        this.properties().withProtectedSettings(protectedSettings);
         return this;
     }
 
@@ -257,5 +240,8 @@ public class VirtualMachineExtensionUpdate extends UpdateResource {
     @Override
     public void validate() {
         super.validate();
+        if (properties() != null) {
+            properties().validate();
+        }
     }
 }

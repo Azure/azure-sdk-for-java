@@ -16,12 +16,11 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.compute.fluent.models.DiskAccessInner;
 import com.azure.resourcemanager.compute.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.compute.fluent.models.PrivateLinkResourceListResultInner;
-import com.azure.resourcemanager.compute.models.PrivateLinkServiceConnectionState;
+import com.azure.resourcemanager.compute.models.DiskAccessUpdate;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import java.nio.ByteBuffer;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -155,7 +154,7 @@ public interface DiskAccessesClient
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
      *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
      *     name length is 80 characters.
-     * @param tags Resource tags.
+     * @param diskAccess disk access object supplied in the body of the Patch disk access operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -163,7 +162,7 @@ public interface DiskAccessesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String diskAccessName, Map<String, String> tags);
+        String resourceGroupName, String diskAccessName, DiskAccessUpdate diskAccess);
 
     /**
      * Updates (patches) a disk access resource.
@@ -172,7 +171,7 @@ public interface DiskAccessesClient
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
      *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
      *     name length is 80 characters.
-     * @param tags Resource tags.
+     * @param diskAccess disk access object supplied in the body of the Patch disk access operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -180,7 +179,7 @@ public interface DiskAccessesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     PollerFlux<PollResult<DiskAccessInner>, DiskAccessInner> beginUpdateAsync(
-        String resourceGroupName, String diskAccessName, Map<String, String> tags);
+        String resourceGroupName, String diskAccessName, DiskAccessUpdate diskAccess);
 
     /**
      * Updates (patches) a disk access resource.
@@ -189,7 +188,7 @@ public interface DiskAccessesClient
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
      *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
      *     name length is 80 characters.
-     * @param tags Resource tags.
+     * @param diskAccess disk access object supplied in the body of the Patch disk access operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -197,7 +196,7 @@ public interface DiskAccessesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SyncPoller<PollResult<DiskAccessInner>, DiskAccessInner> beginUpdate(
-        String resourceGroupName, String diskAccessName, Map<String, String> tags);
+        String resourceGroupName, String diskAccessName, DiskAccessUpdate diskAccess);
 
     /**
      * Updates (patches) a disk access resource.
@@ -206,7 +205,7 @@ public interface DiskAccessesClient
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
      *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
      *     name length is 80 characters.
-     * @param tags Resource tags.
+     * @param diskAccess disk access object supplied in the body of the Patch disk access operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -215,7 +214,7 @@ public interface DiskAccessesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SyncPoller<PollResult<DiskAccessInner>, DiskAccessInner> beginUpdate(
-        String resourceGroupName, String diskAccessName, Map<String, String> tags, Context context);
+        String resourceGroupName, String diskAccessName, DiskAccessUpdate diskAccess, Context context);
 
     /**
      * Updates (patches) a disk access resource.
@@ -224,14 +223,14 @@ public interface DiskAccessesClient
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
      *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
      *     name length is 80 characters.
-     * @param tags Resource tags.
+     * @param diskAccess disk access object supplied in the body of the Patch disk access operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return disk access resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DiskAccessInner> updateAsync(String resourceGroupName, String diskAccessName, Map<String, String> tags);
+    Mono<DiskAccessInner> updateAsync(String resourceGroupName, String diskAccessName, DiskAccessUpdate diskAccess);
 
     /**
      * Updates (patches) a disk access resource.
@@ -240,13 +239,14 @@ public interface DiskAccessesClient
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
      *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
      *     name length is 80 characters.
+     * @param diskAccess disk access object supplied in the body of the Patch disk access operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return disk access resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DiskAccessInner> updateAsync(String resourceGroupName, String diskAccessName);
+    DiskAccessInner update(String resourceGroupName, String diskAccessName, DiskAccessUpdate diskAccess);
 
     /**
      * Updates (patches) a disk access resource.
@@ -255,38 +255,7 @@ public interface DiskAccessesClient
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
      *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
      *     name length is 80 characters.
-     * @param tags Resource tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk access resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DiskAccessInner update(String resourceGroupName, String diskAccessName, Map<String, String> tags);
-
-    /**
-     * Updates (patches) a disk access resource.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
-     *     name length is 80 characters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk access resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DiskAccessInner update(String resourceGroupName, String diskAccessName);
-
-    /**
-     * Updates (patches) a disk access resource.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
-     *     name length is 80 characters.
-     * @param tags Resource tags.
+     * @param diskAccess disk access object supplied in the body of the Patch disk access operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -294,7 +263,8 @@ public interface DiskAccessesClient
      * @return disk access resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DiskAccessInner update(String resourceGroupName, String diskAccessName, Map<String, String> tags, Context context);
+    DiskAccessInner update(
+        String resourceGroupName, String diskAccessName, DiskAccessUpdate diskAccess, Context context);
 
     /**
      * Gets information about a disk access resource.
@@ -606,8 +576,8 @@ public interface DiskAccessesClient
      *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
      *     name length is 80 characters.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param privateLinkServiceConnectionState A collection of information about the state of the connection between
-     *     DiskAccess and Virtual Network.
+     * @param privateEndpointConnection private endpoint connection object supplied in the body of the Put private
+     *     endpoint connection operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -618,7 +588,7 @@ public interface DiskAccessesClient
         String resourceGroupName,
         String diskAccessName,
         String privateEndpointConnectionName,
-        PrivateLinkServiceConnectionState privateLinkServiceConnectionState);
+        PrivateEndpointConnectionInner privateEndpointConnection);
 
     /**
      * Approve or reject a private endpoint connection under disk access resource, this can't be used to create a new
@@ -629,8 +599,8 @@ public interface DiskAccessesClient
      *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
      *     name length is 80 characters.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param privateLinkServiceConnectionState A collection of information about the state of the connection between
-     *     DiskAccess and Virtual Network.
+     * @param privateEndpointConnection private endpoint connection object supplied in the body of the Put private
+     *     endpoint connection operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -642,7 +612,7 @@ public interface DiskAccessesClient
             String resourceGroupName,
             String diskAccessName,
             String privateEndpointConnectionName,
-            PrivateLinkServiceConnectionState privateLinkServiceConnectionState);
+            PrivateEndpointConnectionInner privateEndpointConnection);
 
     /**
      * Approve or reject a private endpoint connection under disk access resource, this can't be used to create a new
@@ -653,8 +623,8 @@ public interface DiskAccessesClient
      *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
      *     name length is 80 characters.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param privateLinkServiceConnectionState A collection of information about the state of the connection between
-     *     DiskAccess and Virtual Network.
+     * @param privateEndpointConnection private endpoint connection object supplied in the body of the Put private
+     *     endpoint connection operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -666,7 +636,7 @@ public interface DiskAccessesClient
             String resourceGroupName,
             String diskAccessName,
             String privateEndpointConnectionName,
-            PrivateLinkServiceConnectionState privateLinkServiceConnectionState);
+            PrivateEndpointConnectionInner privateEndpointConnection);
 
     /**
      * Approve or reject a private endpoint connection under disk access resource, this can't be used to create a new
@@ -677,8 +647,8 @@ public interface DiskAccessesClient
      *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
      *     name length is 80 characters.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param privateLinkServiceConnectionState A collection of information about the state of the connection between
-     *     DiskAccess and Virtual Network.
+     * @param privateEndpointConnection private endpoint connection object supplied in the body of the Put private
+     *     endpoint connection operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -691,7 +661,7 @@ public interface DiskAccessesClient
             String resourceGroupName,
             String diskAccessName,
             String privateEndpointConnectionName,
-            PrivateLinkServiceConnectionState privateLinkServiceConnectionState,
+            PrivateEndpointConnectionInner privateEndpointConnection,
             Context context);
 
     /**
@@ -703,8 +673,8 @@ public interface DiskAccessesClient
      *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
      *     name length is 80 characters.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param privateLinkServiceConnectionState A collection of information about the state of the connection between
-     *     DiskAccess and Virtual Network.
+     * @param privateEndpointConnection private endpoint connection object supplied in the body of the Put private
+     *     endpoint connection operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -715,7 +685,7 @@ public interface DiskAccessesClient
         String resourceGroupName,
         String diskAccessName,
         String privateEndpointConnectionName,
-        PrivateLinkServiceConnectionState privateLinkServiceConnectionState);
+        PrivateEndpointConnectionInner privateEndpointConnection);
 
     /**
      * Approve or reject a private endpoint connection under disk access resource, this can't be used to create a new
@@ -726,26 +696,8 @@ public interface DiskAccessesClient
      *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
      *     name length is 80 characters.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Private Endpoint Connection resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<PrivateEndpointConnectionInner> updateAPrivateEndpointConnectionAsync(
-        String resourceGroupName, String diskAccessName, String privateEndpointConnectionName);
-
-    /**
-     * Approve or reject a private endpoint connection under disk access resource, this can't be used to create a new
-     * private endpoint connection.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
-     *     name length is 80 characters.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param privateLinkServiceConnectionState A collection of information about the state of the connection between
-     *     DiskAccess and Virtual Network.
+     * @param privateEndpointConnection private endpoint connection object supplied in the body of the Put private
+     *     endpoint connection operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -756,7 +708,7 @@ public interface DiskAccessesClient
         String resourceGroupName,
         String diskAccessName,
         String privateEndpointConnectionName,
-        PrivateLinkServiceConnectionState privateLinkServiceConnectionState);
+        PrivateEndpointConnectionInner privateEndpointConnection);
 
     /**
      * Approve or reject a private endpoint connection under disk access resource, this can't be used to create a new
@@ -767,26 +719,8 @@ public interface DiskAccessesClient
      *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
      *     name length is 80 characters.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Private Endpoint Connection resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionInner updateAPrivateEndpointConnection(
-        String resourceGroupName, String diskAccessName, String privateEndpointConnectionName);
-
-    /**
-     * Approve or reject a private endpoint connection under disk access resource, this can't be used to create a new
-     * private endpoint connection.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
-     *     name length is 80 characters.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param privateLinkServiceConnectionState A collection of information about the state of the connection between
-     *     DiskAccess and Virtual Network.
+     * @param privateEndpointConnection private endpoint connection object supplied in the body of the Put private
+     *     endpoint connection operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -798,7 +732,7 @@ public interface DiskAccessesClient
         String resourceGroupName,
         String diskAccessName,
         String privateEndpointConnectionName,
-        PrivateLinkServiceConnectionState privateLinkServiceConnectionState,
+        PrivateEndpointConnectionInner privateEndpointConnection,
         Context context);
 
     /**
