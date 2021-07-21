@@ -20,7 +20,6 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
     private static final int MAX_REDIRECTS = 10;
     private static final String LOCATION_HEADER_NAME = "Location";
 
-
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         return attemptRedirection(context, next, 0, new HashSet<>());

@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -62,31 +63,37 @@ public class RedirectPolicyTests {
     public void noRedirectionPerformedTest() {
         setSuccessMockResponse();
 
-        assertThat(executePipeline(), is(equalTo(response200)));
+        verifyCorrectness(response200);
     }
 
     @Test
     public void redirectionPerformedTest() {
         setRedirectSuccessMockResponses();
 
-        assertThat(executePipeline(), is(equalTo(response200)));
+        verifyCorrectness(response200);
     }
 
     @Test
     public void sameLocationUsedShortCircuitTest() {
         setRedirectRedirectMockResponse();
 
-        assertThat(executePipeline(), is(equalTo(response302)));
+        verifyCorrectness(response302);
     }
 
     @Test
     public void sameLocationUsedInDifferentRequestsSuccessTest() {
-        setRedirectSuccessMockResponses();
-        executePipeline();
+        for (int i = 0; i < 3; i++) {
+            setRedirectSuccessMockResponses();
+            verifyCorrectness(response200);
+        }
+    }
 
-        setRedirectSuccessMockResponses();
-
-        assertThat(executePipeline(), is(equalTo(response200)));
+    private void setSuccessMockResponse() {
+        doAnswer(invocation -> {
+            HttpRequest request = invocation.getArgument(0);
+            assertThat(request.getUrl().toString(), is(equalTo(ORIGINAL_LOCATION)));
+            return Mono.just(response200);
+        }).when(httpClient).send(any(HttpRequest.class), any(Context.class));
     }
 
     private void setRedirectSuccessMockResponses() {
@@ -103,21 +110,13 @@ public class RedirectPolicyTests {
             .when(httpClient).send(any(HttpRequest.class), any(Context.class));
     }
 
-    private void setSuccessMockResponse() {
-        doAnswer(invocation -> {
-            HttpRequest request = invocation.getArgument(0);
-            assertThat(request.getUrl().toString(), is(equalTo(ORIGINAL_LOCATION)));
-            return Mono.just(response200);
-        }).when(httpClient).send(any(HttpRequest.class), any(Context.class));
-    }
-
     private void setRedirectRedirectMockResponse() {
         doAnswer(invocation -> Mono.just(response302))
             .doAnswer(invocation -> Mono.just(response302))
             .when(httpClient).send(any(HttpRequest.class), any(Context.class));
     }
 
-    private HttpResponse executePipeline() {
-        return pipeline.send(request).block();
+    private void verifyCorrectness(HttpResponse expectedResponse) {
+        StepVerifier.create(pipeline.send(request)).expectNext(expectedResponse).verifyComplete();
     }
 }
