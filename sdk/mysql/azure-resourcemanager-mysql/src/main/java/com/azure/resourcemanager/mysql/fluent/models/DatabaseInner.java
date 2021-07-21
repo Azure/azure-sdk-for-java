@@ -47,8 +47,10 @@ public final class DatabaseInner extends ProxyResource {
      * @return the DatabaseInner object itself.
      */
     public DatabaseInner withCharset(String charset) {
-        if (this.properties() == null) {
-            this.properties = new DatabaseProperties();
+        synchronized (this) {
+            if (this.properties() == null) {
+                this.properties = new DatabaseProperties();
+            }
         }
         this.properties().withCharset(charset);
         return this;
@@ -70,8 +72,10 @@ public final class DatabaseInner extends ProxyResource {
      * @return the DatabaseInner object itself.
      */
     public DatabaseInner withCollation(String collation) {
-        if (this.properties() == null) {
-            this.properties = new DatabaseProperties();
+        synchronized (this) {
+            if (this.properties() == null) {
+                this.properties = new DatabaseProperties();
+            }
         }
         this.properties().withCollation(collation);
         return this;

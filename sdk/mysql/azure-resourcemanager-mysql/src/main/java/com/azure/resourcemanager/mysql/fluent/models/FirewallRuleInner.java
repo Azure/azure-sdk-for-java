@@ -47,8 +47,10 @@ public final class FirewallRuleInner extends ProxyResource {
      * @return the FirewallRuleInner object itself.
      */
     public FirewallRuleInner withStartIpAddress(String startIpAddress) {
-        if (this.properties() == null) {
-            this.properties = new FirewallRuleProperties();
+        synchronized (this) {
+            if (this.properties() == null) {
+                this.properties = new FirewallRuleProperties();
+            }
         }
         this.properties().withStartIpAddress(startIpAddress);
         return this;
@@ -70,8 +72,10 @@ public final class FirewallRuleInner extends ProxyResource {
      * @return the FirewallRuleInner object itself.
      */
     public FirewallRuleInner withEndIpAddress(String endIpAddress) {
-        if (this.properties() == null) {
-            this.properties = new FirewallRuleProperties();
+        synchronized (this) {
+            if (this.properties() == null) {
+                this.properties = new FirewallRuleProperties();
+            }
         }
         this.properties().withEndIpAddress(endIpAddress);
         return this;

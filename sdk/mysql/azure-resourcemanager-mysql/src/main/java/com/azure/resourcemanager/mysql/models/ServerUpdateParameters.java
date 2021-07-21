@@ -127,8 +127,10 @@ public final class ServerUpdateParameters {
      * @return the ServerUpdateParameters object itself.
      */
     public ServerUpdateParameters withStorageProfile(StorageProfile storageProfile) {
-        if (this.properties() == null) {
-            this.properties = new ServerUpdateParametersProperties();
+        synchronized (this) {
+            if (this.properties() == null) {
+                this.properties = new ServerUpdateParametersProperties();
+            }
         }
         this.properties().withStorageProfile(storageProfile);
         return this;
@@ -150,8 +152,10 @@ public final class ServerUpdateParameters {
      * @return the ServerUpdateParameters object itself.
      */
     public ServerUpdateParameters withAdministratorLoginPassword(String administratorLoginPassword) {
-        if (this.properties() == null) {
-            this.properties = new ServerUpdateParametersProperties();
+        synchronized (this) {
+            if (this.properties() == null) {
+                this.properties = new ServerUpdateParametersProperties();
+            }
         }
         this.properties().withAdministratorLoginPassword(administratorLoginPassword);
         return this;
@@ -173,8 +177,10 @@ public final class ServerUpdateParameters {
      * @return the ServerUpdateParameters object itself.
      */
     public ServerUpdateParameters withVersion(ServerVersion version) {
-        if (this.properties() == null) {
-            this.properties = new ServerUpdateParametersProperties();
+        synchronized (this) {
+            if (this.properties() == null) {
+                this.properties = new ServerUpdateParametersProperties();
+            }
         }
         this.properties().withVersion(version);
         return this;
@@ -196,8 +202,10 @@ public final class ServerUpdateParameters {
      * @return the ServerUpdateParameters object itself.
      */
     public ServerUpdateParameters withSslEnforcement(SslEnforcementEnum sslEnforcement) {
-        if (this.properties() == null) {
-            this.properties = new ServerUpdateParametersProperties();
+        synchronized (this) {
+            if (this.properties() == null) {
+                this.properties = new ServerUpdateParametersProperties();
+            }
         }
         this.properties().withSslEnforcement(sslEnforcement);
         return this;
@@ -219,8 +227,10 @@ public final class ServerUpdateParameters {
      * @return the ServerUpdateParameters object itself.
      */
     public ServerUpdateParameters withMinimalTlsVersion(MinimalTlsVersionEnum minimalTlsVersion) {
-        if (this.properties() == null) {
-            this.properties = new ServerUpdateParametersProperties();
+        synchronized (this) {
+            if (this.properties() == null) {
+                this.properties = new ServerUpdateParametersProperties();
+            }
         }
         this.properties().withMinimalTlsVersion(minimalTlsVersion);
         return this;
@@ -244,8 +254,10 @@ public final class ServerUpdateParameters {
      * @return the ServerUpdateParameters object itself.
      */
     public ServerUpdateParameters withPublicNetworkAccess(PublicNetworkAccessEnum publicNetworkAccess) {
-        if (this.properties() == null) {
-            this.properties = new ServerUpdateParametersProperties();
+        synchronized (this) {
+            if (this.properties() == null) {
+                this.properties = new ServerUpdateParametersProperties();
+            }
         }
         this.properties().withPublicNetworkAccess(publicNetworkAccess);
         return this;
@@ -267,8 +279,10 @@ public final class ServerUpdateParameters {
      * @return the ServerUpdateParameters object itself.
      */
     public ServerUpdateParameters withReplicationRole(String replicationRole) {
-        if (this.properties() == null) {
-            this.properties = new ServerUpdateParametersProperties();
+        synchronized (this) {
+            if (this.properties() == null) {
+                this.properties = new ServerUpdateParametersProperties();
+            }
         }
         this.properties().withReplicationRole(replicationRole);
         return this;

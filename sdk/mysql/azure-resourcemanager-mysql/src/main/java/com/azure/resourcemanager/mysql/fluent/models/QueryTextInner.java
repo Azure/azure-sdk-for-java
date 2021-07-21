@@ -47,8 +47,10 @@ public final class QueryTextInner extends ProxyResource {
      * @return the QueryTextInner object itself.
      */
     public QueryTextInner withQueryId(String queryId) {
-        if (this.properties() == null) {
-            this.properties = new QueryTextProperties();
+        synchronized (this) {
+            if (this.properties() == null) {
+                this.properties = new QueryTextProperties();
+            }
         }
         this.properties().withQueryId(queryId);
         return this;
@@ -70,8 +72,10 @@ public final class QueryTextInner extends ProxyResource {
      * @return the QueryTextInner object itself.
      */
     public QueryTextInner withQueryText(String queryText) {
-        if (this.properties() == null) {
-            this.properties = new QueryTextProperties();
+        synchronized (this) {
+            if (this.properties() == null) {
+                this.properties = new QueryTextProperties();
+            }
         }
         this.properties().withQueryText(queryText);
         return this;

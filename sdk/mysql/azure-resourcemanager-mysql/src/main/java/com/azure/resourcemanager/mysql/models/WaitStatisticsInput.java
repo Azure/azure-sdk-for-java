@@ -47,8 +47,10 @@ public final class WaitStatisticsInput {
      * @return the WaitStatisticsInput object itself.
      */
     public WaitStatisticsInput withObservationStartTime(OffsetDateTime observationStartTime) {
-        if (this.properties() == null) {
-            this.properties = new WaitStatisticsInputProperties();
+        synchronized (this) {
+            if (this.properties() == null) {
+                this.properties = new WaitStatisticsInputProperties();
+            }
         }
         this.properties().withObservationStartTime(observationStartTime);
         return this;
@@ -70,8 +72,10 @@ public final class WaitStatisticsInput {
      * @return the WaitStatisticsInput object itself.
      */
     public WaitStatisticsInput withObservationEndTime(OffsetDateTime observationEndTime) {
-        if (this.properties() == null) {
-            this.properties = new WaitStatisticsInputProperties();
+        synchronized (this) {
+            if (this.properties() == null) {
+                this.properties = new WaitStatisticsInputProperties();
+            }
         }
         this.properties().withObservationEndTime(observationEndTime);
         return this;
@@ -93,8 +97,10 @@ public final class WaitStatisticsInput {
      * @return the WaitStatisticsInput object itself.
      */
     public WaitStatisticsInput withAggregationWindow(String aggregationWindow) {
-        if (this.properties() == null) {
-            this.properties = new WaitStatisticsInputProperties();
+        synchronized (this) {
+            if (this.properties() == null) {
+                this.properties = new WaitStatisticsInputProperties();
+            }
         }
         this.properties().withAggregationWindow(aggregationWindow);
         return this;

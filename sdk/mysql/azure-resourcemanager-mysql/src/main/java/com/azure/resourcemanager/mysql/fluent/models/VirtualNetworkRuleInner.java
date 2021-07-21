@@ -48,8 +48,10 @@ public final class VirtualNetworkRuleInner extends ProxyResource {
      * @return the VirtualNetworkRuleInner object itself.
      */
     public VirtualNetworkRuleInner withVirtualNetworkSubnetId(String virtualNetworkSubnetId) {
-        if (this.properties() == null) {
-            this.properties = new VirtualNetworkRuleProperties();
+        synchronized (this) {
+            if (this.properties() == null) {
+                this.properties = new VirtualNetworkRuleProperties();
+            }
         }
         this.properties().withVirtualNetworkSubnetId(virtualNetworkSubnetId);
         return this;
@@ -73,8 +75,10 @@ public final class VirtualNetworkRuleInner extends ProxyResource {
      * @return the VirtualNetworkRuleInner object itself.
      */
     public VirtualNetworkRuleInner withIgnoreMissingVnetServiceEndpoint(Boolean ignoreMissingVnetServiceEndpoint) {
-        if (this.properties() == null) {
-            this.properties = new VirtualNetworkRuleProperties();
+        synchronized (this) {
+            if (this.properties() == null) {
+                this.properties = new VirtualNetworkRuleProperties();
+            }
         }
         this.properties().withIgnoreMissingVnetServiceEndpoint(ignoreMissingVnetServiceEndpoint);
         return this;

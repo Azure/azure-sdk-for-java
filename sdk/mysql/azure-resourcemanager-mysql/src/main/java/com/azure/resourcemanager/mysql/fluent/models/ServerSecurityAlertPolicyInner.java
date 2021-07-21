@@ -49,8 +49,10 @@ public final class ServerSecurityAlertPolicyInner extends ProxyResource {
      * @return the ServerSecurityAlertPolicyInner object itself.
      */
     public ServerSecurityAlertPolicyInner withState(ServerSecurityAlertPolicyState state) {
-        if (this.properties() == null) {
-            this.properties = new SecurityAlertPolicyProperties();
+        synchronized (this) {
+            if (this.properties() == null) {
+                this.properties = new SecurityAlertPolicyProperties();
+            }
         }
         this.properties().withState(state);
         return this;
@@ -74,8 +76,10 @@ public final class ServerSecurityAlertPolicyInner extends ProxyResource {
      * @return the ServerSecurityAlertPolicyInner object itself.
      */
     public ServerSecurityAlertPolicyInner withDisabledAlerts(List<String> disabledAlerts) {
-        if (this.properties() == null) {
-            this.properties = new SecurityAlertPolicyProperties();
+        synchronized (this) {
+            if (this.properties() == null) {
+                this.properties = new SecurityAlertPolicyProperties();
+            }
         }
         this.properties().withDisabledAlerts(disabledAlerts);
         return this;
@@ -97,8 +101,10 @@ public final class ServerSecurityAlertPolicyInner extends ProxyResource {
      * @return the ServerSecurityAlertPolicyInner object itself.
      */
     public ServerSecurityAlertPolicyInner withEmailAddresses(List<String> emailAddresses) {
-        if (this.properties() == null) {
-            this.properties = new SecurityAlertPolicyProperties();
+        synchronized (this) {
+            if (this.properties() == null) {
+                this.properties = new SecurityAlertPolicyProperties();
+            }
         }
         this.properties().withEmailAddresses(emailAddresses);
         return this;
@@ -120,8 +126,10 @@ public final class ServerSecurityAlertPolicyInner extends ProxyResource {
      * @return the ServerSecurityAlertPolicyInner object itself.
      */
     public ServerSecurityAlertPolicyInner withEmailAccountAdmins(Boolean emailAccountAdmins) {
-        if (this.properties() == null) {
-            this.properties = new SecurityAlertPolicyProperties();
+        synchronized (this) {
+            if (this.properties() == null) {
+                this.properties = new SecurityAlertPolicyProperties();
+            }
         }
         this.properties().withEmailAccountAdmins(emailAccountAdmins);
         return this;
@@ -145,8 +153,10 @@ public final class ServerSecurityAlertPolicyInner extends ProxyResource {
      * @return the ServerSecurityAlertPolicyInner object itself.
      */
     public ServerSecurityAlertPolicyInner withStorageEndpoint(String storageEndpoint) {
-        if (this.properties() == null) {
-            this.properties = new SecurityAlertPolicyProperties();
+        synchronized (this) {
+            if (this.properties() == null) {
+                this.properties = new SecurityAlertPolicyProperties();
+            }
         }
         this.properties().withStorageEndpoint(storageEndpoint);
         return this;
@@ -170,8 +180,10 @@ public final class ServerSecurityAlertPolicyInner extends ProxyResource {
      * @return the ServerSecurityAlertPolicyInner object itself.
      */
     public ServerSecurityAlertPolicyInner withStorageAccountAccessKey(String storageAccountAccessKey) {
-        if (this.properties() == null) {
-            this.properties = new SecurityAlertPolicyProperties();
+        synchronized (this) {
+            if (this.properties() == null) {
+                this.properties = new SecurityAlertPolicyProperties();
+            }
         }
         this.properties().withStorageAccountAccessKey(storageAccountAccessKey);
         return this;
@@ -193,8 +205,10 @@ public final class ServerSecurityAlertPolicyInner extends ProxyResource {
      * @return the ServerSecurityAlertPolicyInner object itself.
      */
     public ServerSecurityAlertPolicyInner withRetentionDays(Integer retentionDays) {
-        if (this.properties() == null) {
-            this.properties = new SecurityAlertPolicyProperties();
+        synchronized (this) {
+            if (this.properties() == null) {
+                this.properties = new SecurityAlertPolicyProperties();
+            }
         }
         this.properties().withRetentionDays(retentionDays);
         return this;

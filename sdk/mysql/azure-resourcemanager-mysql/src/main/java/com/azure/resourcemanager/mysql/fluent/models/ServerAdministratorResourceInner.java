@@ -48,8 +48,10 @@ public final class ServerAdministratorResourceInner extends ProxyResource {
      * @return the ServerAdministratorResourceInner object itself.
      */
     public ServerAdministratorResourceInner withAdministratorType(String administratorType) {
-        if (this.properties() == null) {
-            this.properties = new ServerAdministratorProperties();
+        synchronized (this) {
+            if (this.properties() == null) {
+                this.properties = new ServerAdministratorProperties();
+            }
         }
         this.properties().withAdministratorType(administratorType);
         return this;
@@ -71,8 +73,10 @@ public final class ServerAdministratorResourceInner extends ProxyResource {
      * @return the ServerAdministratorResourceInner object itself.
      */
     public ServerAdministratorResourceInner withLogin(String login) {
-        if (this.properties() == null) {
-            this.properties = new ServerAdministratorProperties();
+        synchronized (this) {
+            if (this.properties() == null) {
+                this.properties = new ServerAdministratorProperties();
+            }
         }
         this.properties().withLogin(login);
         return this;
@@ -94,8 +98,10 @@ public final class ServerAdministratorResourceInner extends ProxyResource {
      * @return the ServerAdministratorResourceInner object itself.
      */
     public ServerAdministratorResourceInner withSid(UUID sid) {
-        if (this.properties() == null) {
-            this.properties = new ServerAdministratorProperties();
+        synchronized (this) {
+            if (this.properties() == null) {
+                this.properties = new ServerAdministratorProperties();
+            }
         }
         this.properties().withSid(sid);
         return this;
@@ -117,8 +123,10 @@ public final class ServerAdministratorResourceInner extends ProxyResource {
      * @return the ServerAdministratorResourceInner object itself.
      */
     public ServerAdministratorResourceInner withTenantId(UUID tenantId) {
-        if (this.properties() == null) {
-            this.properties = new ServerAdministratorProperties();
+        synchronized (this) {
+            if (this.properties() == null) {
+                this.properties = new ServerAdministratorProperties();
+            }
         }
         this.properties().withTenantId(tenantId);
         return this;

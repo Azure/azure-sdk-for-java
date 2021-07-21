@@ -128,8 +128,10 @@ public final class ServerInner extends Resource {
      * @return the ServerInner object itself.
      */
     public ServerInner withAdministratorLogin(String administratorLogin) {
-        if (this.properties() == null) {
-            this.properties = new ServerProperties();
+        synchronized (this) {
+            if (this.properties() == null) {
+                this.properties = new ServerProperties();
+            }
         }
         this.properties().withAdministratorLogin(administratorLogin);
         return this;
@@ -151,8 +153,10 @@ public final class ServerInner extends Resource {
      * @return the ServerInner object itself.
      */
     public ServerInner withVersion(ServerVersion version) {
-        if (this.properties() == null) {
-            this.properties = new ServerProperties();
+        synchronized (this) {
+            if (this.properties() == null) {
+                this.properties = new ServerProperties();
+            }
         }
         this.properties().withVersion(version);
         return this;
@@ -174,8 +178,10 @@ public final class ServerInner extends Resource {
      * @return the ServerInner object itself.
      */
     public ServerInner withSslEnforcement(SslEnforcementEnum sslEnforcement) {
-        if (this.properties() == null) {
-            this.properties = new ServerProperties();
+        synchronized (this) {
+            if (this.properties() == null) {
+                this.properties = new ServerProperties();
+            }
         }
         this.properties().withSslEnforcement(sslEnforcement);
         return this;
@@ -197,8 +203,10 @@ public final class ServerInner extends Resource {
      * @return the ServerInner object itself.
      */
     public ServerInner withMinimalTlsVersion(MinimalTlsVersionEnum minimalTlsVersion) {
-        if (this.properties() == null) {
-            this.properties = new ServerProperties();
+        synchronized (this) {
+            if (this.properties() == null) {
+                this.properties = new ServerProperties();
+            }
         }
         this.properties().withMinimalTlsVersion(minimalTlsVersion);
         return this;
@@ -230,8 +238,10 @@ public final class ServerInner extends Resource {
      * @return the ServerInner object itself.
      */
     public ServerInner withInfrastructureEncryption(InfrastructureEncryption infrastructureEncryption) {
-        if (this.properties() == null) {
-            this.properties = new ServerProperties();
+        synchronized (this) {
+            if (this.properties() == null) {
+                this.properties = new ServerProperties();
+            }
         }
         this.properties().withInfrastructureEncryption(infrastructureEncryption);
         return this;
@@ -253,8 +263,10 @@ public final class ServerInner extends Resource {
      * @return the ServerInner object itself.
      */
     public ServerInner withUserVisibleState(ServerState userVisibleState) {
-        if (this.properties() == null) {
-            this.properties = new ServerProperties();
+        synchronized (this) {
+            if (this.properties() == null) {
+                this.properties = new ServerProperties();
+            }
         }
         this.properties().withUserVisibleState(userVisibleState);
         return this;
@@ -276,8 +288,10 @@ public final class ServerInner extends Resource {
      * @return the ServerInner object itself.
      */
     public ServerInner withFullyQualifiedDomainName(String fullyQualifiedDomainName) {
-        if (this.properties() == null) {
-            this.properties = new ServerProperties();
+        synchronized (this) {
+            if (this.properties() == null) {
+                this.properties = new ServerProperties();
+            }
         }
         this.properties().withFullyQualifiedDomainName(fullyQualifiedDomainName);
         return this;
@@ -299,8 +313,10 @@ public final class ServerInner extends Resource {
      * @return the ServerInner object itself.
      */
     public ServerInner withEarliestRestoreDate(OffsetDateTime earliestRestoreDate) {
-        if (this.properties() == null) {
-            this.properties = new ServerProperties();
+        synchronized (this) {
+            if (this.properties() == null) {
+                this.properties = new ServerProperties();
+            }
         }
         this.properties().withEarliestRestoreDate(earliestRestoreDate);
         return this;
@@ -322,8 +338,10 @@ public final class ServerInner extends Resource {
      * @return the ServerInner object itself.
      */
     public ServerInner withStorageProfile(StorageProfile storageProfile) {
-        if (this.properties() == null) {
-            this.properties = new ServerProperties();
+        synchronized (this) {
+            if (this.properties() == null) {
+                this.properties = new ServerProperties();
+            }
         }
         this.properties().withStorageProfile(storageProfile);
         return this;
@@ -345,8 +363,10 @@ public final class ServerInner extends Resource {
      * @return the ServerInner object itself.
      */
     public ServerInner withReplicationRole(String replicationRole) {
-        if (this.properties() == null) {
-            this.properties = new ServerProperties();
+        synchronized (this) {
+            if (this.properties() == null) {
+                this.properties = new ServerProperties();
+            }
         }
         this.properties().withReplicationRole(replicationRole);
         return this;
@@ -368,8 +388,10 @@ public final class ServerInner extends Resource {
      * @return the ServerInner object itself.
      */
     public ServerInner withMasterServerId(String masterServerId) {
-        if (this.properties() == null) {
-            this.properties = new ServerProperties();
+        synchronized (this) {
+            if (this.properties() == null) {
+                this.properties = new ServerProperties();
+            }
         }
         this.properties().withMasterServerId(masterServerId);
         return this;
@@ -391,8 +413,10 @@ public final class ServerInner extends Resource {
      * @return the ServerInner object itself.
      */
     public ServerInner withReplicaCapacity(Integer replicaCapacity) {
-        if (this.properties() == null) {
-            this.properties = new ServerProperties();
+        synchronized (this) {
+            if (this.properties() == null) {
+                this.properties = new ServerProperties();
+            }
         }
         this.properties().withReplicaCapacity(replicaCapacity);
         return this;
@@ -416,8 +440,10 @@ public final class ServerInner extends Resource {
      * @return the ServerInner object itself.
      */
     public ServerInner withPublicNetworkAccess(PublicNetworkAccessEnum publicNetworkAccess) {
-        if (this.properties() == null) {
-            this.properties = new ServerProperties();
+        synchronized (this) {
+            if (this.properties() == null) {
+                this.properties = new ServerProperties();
+            }
         }
         this.properties().withPublicNetworkAccess(publicNetworkAccess);
         return this;
