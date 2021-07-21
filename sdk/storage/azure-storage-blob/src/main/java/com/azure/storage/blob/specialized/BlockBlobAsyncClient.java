@@ -9,7 +9,6 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
@@ -186,33 +185,6 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
     public Mono<BlockBlobItem> upload(Flux<ByteBuffer> data, long length) {
         try {
             return upload(data, length, false);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BlockBlobItem>> uploadProtocol(BinaryData data) {
-
-        try {
-            BlobRequestConditions blobRequestConditions = new BlobRequestConditions();
-            blobRequestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
-
-            return withContext(context -> {
-                        return this.azureBlobStorage.getBlockBlobs().uploadWithResponseAsync(
-                                containerName, blobName, data.getLength(), data, null, null, null,
-                                null, null, null, null, null, null, null, null,
-                                null, null, null, null, null, getCustomerProvidedKey(),
-                                encryptionScope, context.addData(AZ_TRACING_NAMESPACE_KEY,
-                                        STORAGE_TRACING_NAMESPACE_VALUE));
-                    }
-            ).map(rb -> {
-                BlockBlobsUploadHeaders hd = rb.getDeserializedHeaders();
-                BlockBlobItem item = new BlockBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
-                        hd.isXMsRequestServerEncrypted(), hd.getXMsEncryptionKeySha256(), hd.getXMsEncryptionScope(),
-                        hd.getXMsVersionId());
-                return new SimpleResponse<>(rb, item);
-            });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

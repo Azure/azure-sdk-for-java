@@ -918,12 +918,6 @@ public class BlobAsyncClientBase {
         return downloadStream();
     }
 
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Mono<Response<BinaryData>> downloadProtocol() {
-        return withContext(context -> azureBlobStorage.getBlobs().downloadProtocol(containerName, blobName, snapshot,
-                versionId, null, null, null, null, null, null, null, null, null, null, null, null, context));
-    }
-
     /**
      * Reads the entire blob. Uploading data must be done from the {@link BlockBlobClient}, {@link PageBlobClient}, or
      * {@link AppendBlobClient}.

@@ -104,8 +104,6 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <modules>
-        <module>../core/azure-core</module>
-        <module>../core/azure-core-experimental</module>
         <module>azure-storage-common</module>
         <module>azure-storage-blob</module>
         <module>azure-storage-blob-batch</module>

@@ -20,11 +20,9 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
-import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.util.Base64Util;
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.storage.blob.implementation.models.BlobDeleteType;
@@ -95,33 +93,6 @@ public final class BlobsImpl {
         @ExpectedResponses({200, 206})
         @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<StreamResponse> download(
-                @HostParam("url") String url,
-                @PathParam("containerName") String containerName,
-                @PathParam("blob") String blob,
-                @QueryParam("snapshot") String snapshot,
-                @QueryParam("versionid") String versionId,
-                @QueryParam("timeout") Integer timeout,
-                @HeaderParam("x-ms-range") String range,
-                @HeaderParam("x-ms-lease-id") String leaseId,
-                @HeaderParam("x-ms-range-get-content-md5") Boolean rangeGetContentMD5,
-                @HeaderParam("x-ms-range-get-content-crc64") Boolean rangeGetContentCRC64,
-                @HeaderParam("x-ms-encryption-key") String encryptionKey,
-                @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256,
-                @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm,
-                @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
-                @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince,
-                @HeaderParam("If-Match") String ifMatch,
-                @HeaderParam("If-None-Match") String ifNoneMatch,
-                @HeaderParam("x-ms-if-tags") String ifTags,
-                @HeaderParam("x-ms-version") String version,
-                @HeaderParam("x-ms-client-request-id") String requestId,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
-        @Get("/{containerName}/{blob}")
-        @ExpectedResponses({200, 206})
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
-        Mono<Response<BinaryData>> downloadProtocol(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
@@ -710,70 +681,6 @@ public final class BlobsImpl {
         DateTimeRfc1123 ifUnmodifiedSinceConverted =
                 ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return service.download(
-                this.client.getUrl(),
-                containerName,
-                blob,
-                snapshot,
-                versionId,
-                timeout,
-                range,
-                leaseId,
-                rangeGetContentMD5,
-                rangeGetContentCRC64,
-                encryptionKey,
-                encryptionKeySha256,
-                encryptionAlgorithm,
-                ifModifiedSinceConverted,
-                ifUnmodifiedSinceConverted,
-                ifMatch,
-                ifNoneMatch,
-                ifTags,
-                this.client.getVersion(),
-                requestId,
-                accept,
-                context);
-    }
-
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> downloadProtocol(
-            String containerName,
-            String blob,
-            String snapshot,
-            String versionId,
-            Integer timeout,
-            String range,
-            String leaseId,
-            Boolean rangeGetContentMD5,
-            Boolean rangeGetContentCRC64,
-            OffsetDateTime ifModifiedSince,
-            OffsetDateTime ifUnmodifiedSince,
-            String ifMatch,
-            String ifNoneMatch,
-            String ifTags,
-            String requestId,
-            CpkInfo cpkInfo,
-            Context context) {
-        final String accept = "application/xml";
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        DateTimeRfc1123 ifModifiedSinceConverted =
-                ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted =
-                ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.downloadProtocol(
                 this.client.getUrl(),
                 containerName,
                 blob,
