@@ -47,15 +47,15 @@ az eventgrid domain create --location <location> --resource-group <your-resource
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-eventgrid</artifactId>
-    <version>4.4.0</version>
+    <version>4.5.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
 
 ### Authenticate the Client
 
-In order to send events, we need an endpoint to send to and some authentication for the endpoint, either as a 
-key credential or a shared access signature.
+In order to send events, we need an endpoint to send to and some authentication for the endpoint. The authentication can be 
+a key credential, a shared access signature, or Azure Active Directory token authentication.
 The endpoint and key can both be obtained through [Azure Portal][portal] or [Azure CLI][cli].
 
 #### Endpoint
@@ -74,6 +74,11 @@ using the following command in [Azure CLI][cli]. Anyone of the keys listed will 
 ```bash
 az eventgrid topic key list --name <your-resource-name> --resource-group <your-resource-group-name>
 ```
+
+#### Azure Active Directory (AAD) Token authentication
+Azure Event Grid provides integration with Azure Active Directory (Azure AD) for identity-based authentication of requests. 
+With Azure AD, you can use role-based access control (RBAC) to grant access to your Azure Event Grid resources to users, groups, or applications.
+To send events to a topic or domain with a `TokenCredential`, the authenticated identity should have the "EventGrid Data Sender" role assigned.
 
 #### Creating the Client
 
@@ -138,7 +143,7 @@ limited time, you can use it to create the publisher client:
 Sync client:
 <!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/samples/ReadmeSamples.java#L102-L105 -->
 ```java
-EventGridPublisherClient<CloudEvent> eventGridEventClient = new EventGridPublisherClientBuilder()
+EventGridPublisherClient<CloudEvent> cloudEventClient = new EventGridPublisherClientBuilder()
     .endpoint("<endpont of your event grid topic/domain that accepts CloudEvent schema>")
     .credential(new AzureSasCredential("<sas token that can access the endpoint>"))
     .buildCloudEventPublisherClient();
@@ -149,6 +154,27 @@ Async client:
 EventGridPublisherAsyncClient<CloudEvent> cloudEventAsyncClient = new EventGridPublisherClientBuilder()
     .endpoint("<endpont of your event grid topic/domain that accepts CloudEvent schema>")
     .credential(new AzureSasCredential("<sas token that can access the endpoint>"))
+    .buildCloudEventPublisherAsyncClient();
+```
+
+##### Using endpoint and Azure Active Directory (AAD) token credential to create the client
+To use the AAD token credential, include `azure-identity` artifact as a dependency. Refer to
+[azure-identity README](https://docs.microsoft.com/java/api/overview/azure/identity-readme) for details.
+
+Sync client:
+<!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/samples/ReadmeSamples.java#L231-L234 -->
+```java
+EventGridPublisherClient<CloudEvent> cloudEventClient = new EventGridPublisherClientBuilder()
+    .endpoint("<endpoint of your event grid topic/domain that accepts CloudEvent schema>")
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .buildCloudEventPublisherClient();
+```
+Async client:
+<!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/samples/ReadmeSamples.java#L238-L241 -->
+```java
+EventGridPublisherAsyncClient<CloudEvent> cloudEventClient = new EventGridPublisherClientBuilder()
+    .endpoint("<endpoint of your event grid topic/domain that accepts CloudEvent schema>")
+    .credential(new DefaultAzureCredentialBuilder().build())
     .buildCloudEventPublisherAsyncClient();
 ```
 
@@ -191,10 +217,10 @@ Regardless of what schema your topic or domain is configured to use,
 `EventGridPublisherClient` will be used to publish events to it. However, you must use the correct type to instantiate
 it:
 
-| Event Schema       | Publishr Client Generic Instantiation     |
+| Event Schema       | Publisher Client Generic Instantiation    |
 | ------------ | --------------------- |
-| Event Grid Events  | `EventGridPublisherClient<CloudEvent>`       |
-| Cloud Events | `EventGridPublisherClient<EventGridEvent>`  |
+| Event Grid Events  | `EventGridPublisherClient<EventGridEvent>`       |
+| Cloud Events | `EventGridPublisherClient<CloudEvent>`  |
 | Custom Events       | `EventGridPublisherClient<BinaryData>` |
 
 Using the wrong type will result in a BadRequest error from the service and your events will not be published.

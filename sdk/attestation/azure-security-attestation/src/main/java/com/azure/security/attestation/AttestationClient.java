@@ -10,14 +10,17 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.security.attestation.implementation.AttestationsImpl;
+import com.azure.security.attestation.implementation.models.TpmAttestationRequest;
+import com.azure.security.attestation.implementation.models.TpmAttestationResponse;
 import com.azure.security.attestation.models.AttestOpenEnclaveRequest;
 import com.azure.security.attestation.models.AttestSgxEnclaveRequest;
 import com.azure.security.attestation.models.AttestationResponse;
 import com.azure.security.attestation.models.CloudErrorException;
-import com.azure.security.attestation.models.TpmAttestationRequest;
-import com.azure.security.attestation.models.TpmAttestationResponse;
 
-/** Initializes a new instance of the synchronous AttestationClient type. */
+import java.nio.charset.StandardCharsets;
+import java.util.Objects;
+
+/** Initializes a new instance of the synchronous AzureAttestationRestClient type. */
 @ServiceClient(builder = AttestationClientBuilder.class)
 public final class AttestationClient {
     private final AttestationsImpl serviceClient;
@@ -43,7 +46,7 @@ public final class AttestationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AttestationResponse attestOpenEnclave(AttestOpenEnclaveRequest request) {
-        return this.serviceClient.attestOpenEnclave(request);
+        return AttestationResponse.fromGenerated(this.serviceClient.attestOpenEnclave(request.toGenerated()));
     }
 
     /**
@@ -60,7 +63,8 @@ public final class AttestationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AttestationResponse> attestOpenEnclaveWithResponse(
             AttestOpenEnclaveRequest request, Context context) {
-        return this.serviceClient.attestOpenEnclaveWithResponse(request, context);
+        Response<com.azure.security.attestation.implementation.models.AttestationResponse> response = this.serviceClient.attestOpenEnclaveWithResponse(request.toGenerated(), context);
+        return Utilities.generateResponseFromModelType(response, AttestationResponse.fromGenerated(response.getValue()));
     }
 
     /**
@@ -75,7 +79,7 @@ public final class AttestationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AttestationResponse attestSgxEnclave(AttestSgxEnclaveRequest request) {
-        return this.serviceClient.attestSgxEnclave(request);
+        return AttestationResponse.fromGenerated(serviceClient.attestSgxEnclave(request.toGenerated()));
     }
 
     /**
@@ -92,7 +96,8 @@ public final class AttestationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AttestationResponse> attestSgxEnclaveWithResponse(
             AttestSgxEnclaveRequest request, Context context) {
-        return this.serviceClient.attestSgxEnclaveWithResponse(request, context);
+        Response<com.azure.security.attestation.implementation.models.AttestationResponse> response = this.serviceClient.attestSgxEnclaveWithResponse(request.toGenerated(), context);
+        return Utilities.generateResponseFromModelType(response, AttestationResponse.fromGenerated(response.getValue()));
     }
 
     /**
@@ -106,8 +111,10 @@ public final class AttestationClient {
      * @return attestation response for Trusted Platform Module (TPM) attestation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TpmAttestationResponse attestTpm(TpmAttestationRequest request) {
-        return this.serviceClient.attestTpm(request);
+    public String attestTpm(String request) {
+        return new String(Objects.requireNonNull(this.serviceClient.attestTpm(
+            new TpmAttestationRequest()
+                .setData(request.getBytes(StandardCharsets.UTF_8))).getData()), StandardCharsets.UTF_8);
     }
 
     /**
@@ -122,7 +129,9 @@ public final class AttestationClient {
      * @return attestation response for Trusted Platform Module (TPM) attestation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TpmAttestationResponse> attestTpmWithResponse(TpmAttestationRequest request, Context context) {
-        return this.serviceClient.attestTpmWithResponse(request, context);
+    public Response<String> attestTpmWithResponse(String request, Context context) {
+
+        Response<TpmAttestationResponse> response = this.serviceClient.attestTpmWithResponse(new TpmAttestationRequest().setData(request.getBytes(StandardCharsets.UTF_8)), context);
+        return Utilities.generateResponseFromModelType(response, new String(Objects.requireNonNull(response.getValue().getData()), StandardCharsets.UTF_8));
     }
 }
