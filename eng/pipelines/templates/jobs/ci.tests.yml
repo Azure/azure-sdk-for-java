@@ -62,7 +62,7 @@ jobs:
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
           CheckoutRecordings: true
           SDKType: ${{ parameters.SDKType }}
-          FromSource: variables['TestFromSource']
+          FromSource: ${{ variables.TestFromSource }}
 
       - template: ../steps/install-reporting-tools.yml
 
