@@ -7,7 +7,6 @@ package com.azure.resourcemanager.mysql.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.mysql.implementation.ServerProperties;
 import com.azure.resourcemanager.mysql.models.InfrastructureEncryption;
 import com.azure.resourcemanager.mysql.models.MinimalTlsVersionEnum;
 import com.azure.resourcemanager.mysql.models.PublicNetworkAccessEnum;

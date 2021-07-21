@@ -7,7 +7,7 @@ package com.azure.resourcemanager.mysql.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.mysql.implementation.ServerAdministratorProperties;
+import com.azure.resourcemanager.mysql.models.AdministratorType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
@@ -37,7 +37,7 @@ public final class ServerAdministratorResourceInner extends ProxyResource {
      *
      * @return the administratorType value.
      */
-    public String administratorType() {
+    public AdministratorType administratorType() {
         return this.properties() == null ? null : this.properties().administratorType();
     }
 
@@ -47,7 +47,7 @@ public final class ServerAdministratorResourceInner extends ProxyResource {
      * @param administratorType the administratorType value to set.
      * @return the ServerAdministratorResourceInner object itself.
      */
-    public ServerAdministratorResourceInner withAdministratorType(String administratorType) {
+    public ServerAdministratorResourceInner withAdministratorType(AdministratorType administratorType) {
         if (this.properties() == null) {
             this.properties = new ServerAdministratorProperties();
         }

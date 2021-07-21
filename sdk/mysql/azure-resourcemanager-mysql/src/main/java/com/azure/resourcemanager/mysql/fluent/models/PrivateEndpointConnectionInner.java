@@ -7,7 +7,6 @@ package com.azure.resourcemanager.mysql.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.mysql.implementation.PrivateEndpointConnectionProperties;
 import com.azure.resourcemanager.mysql.models.PrivateEndpointProperty;
 import com.azure.resourcemanager.mysql.models.PrivateLinkServiceConnectionStateProperty;
 import com.fasterxml.jackson.annotation.JsonIgnore;

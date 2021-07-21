@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.mysql.implementation;
 
 import com.azure.resourcemanager.mysql.fluent.models.ServerAdministratorResourceInner;
+import com.azure.resourcemanager.mysql.models.AdministratorType;
 import com.azure.resourcemanager.mysql.models.ServerAdministratorResource;
 import java.util.UUID;
 
@@ -31,7 +32,7 @@ public final class ServerAdministratorResourceImpl implements ServerAdministrato
         return this.innerModel().type();
     }
 
-    public String administratorType() {
+    public AdministratorType administratorType() {
         return this.innerModel().administratorType();
     }
 

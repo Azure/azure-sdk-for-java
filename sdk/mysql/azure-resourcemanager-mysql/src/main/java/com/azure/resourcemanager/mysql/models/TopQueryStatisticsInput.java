@@ -6,7 +6,7 @@ package com.azure.resourcemanager.mysql.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.mysql.implementation.TopQueryStatisticsInputProperties;
+import com.azure.resourcemanager.mysql.fluent.models.TopQueryStatisticsInputProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
