@@ -14,8 +14,8 @@ parameters:
     type: string
     default: client
   - name: FromSource
-    type: boolean
-    default: false
+    type: string
+    default: 'false'
 
 steps:
   - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
