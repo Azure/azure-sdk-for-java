@@ -37,20 +37,14 @@ jobs:
       vmImage: MMSUbuntu20.04
 
     steps:
-      - task: UsePythonVersion@0
-        displayName: 'Use Python 3.6'
-        inputs:
-          versionSpec: '3.6'
-
-      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+      - template: /eng/pipelines/templates/steps/initialize-environment.yml
         parameters:
-          Paths:
-            - 'sdk/${{ parameters.ServiceDirectory }}'
-            - '**/*.xml'
-            - '**/*.md'
-            - '.vscode/cspell.json'
-            - '!sdk/**/test-recordings'
-            - '!sdk/**/session-records'
+          Artifacts: ${{ parameters.Artifacts }}
+          AdditionalModules: ${{ parameters.AdditionalModules }}
+          ServiceDirectory: ${{ parameters.ServiceDirectory }}
+          CheckoutRecordings: false
+          SDKType: ${{ parameters.SDKType }}
+          FromSource: ${{ parameters.FromSource }}
 
       - template: /eng/common/pipelines/templates/steps/check-spelling.yml
         parameters:
@@ -64,24 +58,12 @@ jobs:
           filePath: eng/versioning/pom_file_version_scanner.ps1
           arguments: -Debug:$$(IsDebug)
 
-      - template: ../steps/generate-project-list.yml
-        parameters:
-          Artifacts: ${{ parameters.Artifacts }}
-          AdditionalModules: ${{ parameters.AdditionalModules }}
-          SDKType: ${{parameters.SDKType}}
-          ServiceDirectory: ${{parameters.ServiceDirectory}}
-
       - task: PythonScript@0
         displayName: 'Generate directories variable for sparse checkout'
         inputs:
           scriptPath: 'eng/scripts/generate_from_source_pom.py'
           arguments: '--set-pipeline-variable CheckoutDirectories --project-list $(ProjectList)'
           workingDirectory: '$(System.DefaultWorkingDirectory)'
-
-      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-        parameters:
-          Paths: $(CheckoutDirectories)
-          SkipDefaultCheckout: true
 
       - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
         parameters:
