@@ -89,7 +89,6 @@ public class AppendBlobClientJavaDocCodeSnippets {
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
         Map<String, String> tags = Collections.singletonMap("tags", "value");
         BlobRequestConditions requestConditions = new BlobRequestConditions()
-            .setLeaseId(leaseId)
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
         Context context = new Context("key", "value");
 
