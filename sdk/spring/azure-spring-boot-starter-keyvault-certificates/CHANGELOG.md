@@ -1,8 +1,9 @@
 # Release History
 
 
-## 3.1.0-beta.1 (Unreleased)
-
+## 3.1.0 (2021-07-20)
+### Dependency Upgrades
+- Upgrade to [spring-boot-dependencies:2.5.2](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.5.2/spring-boot-dependencies-2.5.2.pom).
 
 ## 3.0.1 (2021-07-01)
 ### Bug Fixes

@@ -19,12 +19,24 @@ function Run-Scenario {
     }
 }
 
+# Blobs
 $env:STORAGE_CONNECTION_STRING=$env:PRIMARY_STORAGE_CONNECTION_STRING
+# Default transfer options
 Run-Scenario "600m" "uploadoutputstream --warmup 0 --duration 1 --size 1048576000 --sync"
 Run-Scenario "600m" "uploadblob --warmup 0 --duration 1 --size 1048576000"
 Run-Scenario "400m" "uploadblob --warmup 0 --duration 1 --size 1048576000 --sync"
 Run-Scenario "400m" "uploadblobnolength --warmup 0 --duration 1 --size 1048576000 --sync"
+# Small transfer options
+Run-Scenario "50m" "uploadoutputstream --warmup 0 --duration 1 --size 1048576000 --transfer-single-upload-size 4194304 --transfer-block-size 1048576 --sync"
+Run-Scenario "50m" "uploadblobnolength --warmup 0 --duration 1 --size 1048576000 --transfer-single-upload-size 4194304 --transfer-block-size 1048576 --sync"
+Run-Scenario "50m" "uploadblob --warmup 0 --duration 1 --size 1048576000 --transfer-single-upload-size 4194304 --transfer-block-size 1048576 --sync"
+Run-Scenario "50m" "uploadblob --warmup 0 --duration 1 --size 1048576000 --transfer-single-upload-size 4194304 --transfer-block-size 1048576"
 
+# DataLake
 $env:STORAGE_CONNECTION_STRING=$env:STORAGE_DATA_LAKE_CONNECTION_STRING
+# Default transfer options
 Run-Scenario "200m" "uploadfiledatalake --warmup 0 --duration 1 --size 1048576000 --sync"
 Run-Scenario "300m" "uploadfiledatalake --warmup 0 --duration 1 --size 1048576000"
+# Small transfer options
+Run-Scenario "50m" "uploadfiledatalake --warmup 0 --duration 1 --size 1048576000 --transfer-single-upload-size 4194304 --transfer-block-size 1048576 --sync"
+Run-Scenario "50m" "uploadfiledatalake --warmup 0 --duration 1 --size 1048576000 --transfer-single-upload-size 4194304 --transfer-block-size 1048576"

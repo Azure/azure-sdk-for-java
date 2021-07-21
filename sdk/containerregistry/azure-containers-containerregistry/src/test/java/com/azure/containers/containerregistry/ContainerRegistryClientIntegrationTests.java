@@ -7,7 +7,6 @@ package com.azure.containers.containerregistry;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestMode;
-import com.azure.core.test.implementation.ImplUtils;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -51,9 +50,9 @@ public class ContainerRegistryClientIntegrationTests extends ContainerRegistryCl
 
     @BeforeEach
     void beforeEach() {
-        TestUtils.importImage(ImplUtils.getTestMode(), HELLO_WORLD_REPOSITORY_NAME, Arrays.asList("latest", "v1", "v2", "v3", "v4"));
+        TestUtils.importImage(getTestMode(), HELLO_WORLD_REPOSITORY_NAME, Arrays.asList("latest", "v1", "v2", "v3", "v4"));
         TestUtils.importImage(
-            ImplUtils.getTestMode(),
+            getTestMode(),
             ALPINE_REPOSITORY_NAME,
             Arrays.asList(
                 LATEST_TAG_NAME,
@@ -72,7 +71,7 @@ public class ContainerRegistryClientIntegrationTests extends ContainerRegistryCl
         StepVerifier.create(registryAsyncClient.listRepositoryNames())
             .recordWith(ArrayList::new)
             .thenConsumeWhile(x -> true)
-            .expectRecordedMatches(repositories -> validateRepositories(repositories))
+            .expectRecordedMatches(this::validateRepositories)
             .verifyComplete();
 
         List<String> repositories = registryClient.listRepositoryNames().stream().collect(Collectors.toList());
@@ -88,11 +87,12 @@ public class ContainerRegistryClientIntegrationTests extends ContainerRegistryCl
         StepVerifier.create(registryAsyncClient.listRepositoryNames().byPage(PAGESIZE_1))
             .recordWith(ArrayList::new)
             .thenConsumeWhile(x -> true)
-            .expectRecordedMatches(pagedResList -> validateRepositoriesByPage(pagedResList))
+            .expectRecordedMatches(this::validateRepositoriesByPage)
             .verifyComplete();
 
         ArrayList<String> repositories = new ArrayList<>();
-        registryClient.listRepositoryNames().iterableByPage(PAGESIZE_1).forEach(res -> res.getValue().forEach(repo -> repositories.add(repo)));
+        registryClient.listRepositoryNames().iterableByPage(PAGESIZE_1)
+            .forEach(res -> repositories.addAll(res.getValue()));
         validateRepositories(repositories);
     }
 
@@ -103,7 +103,8 @@ public class ContainerRegistryClientIntegrationTests extends ContainerRegistryCl
         registryClient = getContainerRegistryClient(httpClient);
 
         ArrayList<String> repositories = new ArrayList<>();
-        assertThrows(IllegalArgumentException.class, () -> registryClient.listRepositoryNames().iterableByPage(-1).forEach(res -> res.getValue().forEach(repo -> repositories.add(repo))));
+        assertThrows(IllegalArgumentException.class, () -> registryClient.listRepositoryNames().iterableByPage(-1)
+            .forEach(res -> repositories.addAll(res.getValue())));
 
         StepVerifier.create(registryAsyncClient.listRepositoryNames().byPage(-1))
             .verifyError(IllegalArgumentException.class);
@@ -132,7 +133,7 @@ public class ContainerRegistryClientIntegrationTests extends ContainerRegistryCl
         ContainerRepositoryAsync repositoryAsync = registryAsyncClient.getRepository(HELLO_WORLD_REPOSITORY_NAME);
         assertNotNull(repositoryAsync);
         StepVerifier.create(repositoryAsync.getProperties())
-            .assertNext(res -> validateProperties(res))
+            .assertNext(this::validateProperties)
             .verifyComplete();
 
         ContainerRepository repository = registryClient.getRepository(HELLO_WORLD_REPOSITORY_NAME);

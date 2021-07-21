@@ -3,7 +3,7 @@
 
 package com.azure.test.aad.selenium.role;
 
-import com.azure.test.aad.selenium.AADSeleniumITHelper;
+import com.azure.test.aad.common.AADSeleniumITHelper;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -22,7 +22,7 @@ import java.util.Map;
 
 import static com.azure.spring.test.EnvironmentVariable.AAD_SINGLE_TENANT_CLIENT_ID_WITH_ROLE;
 import static com.azure.spring.test.EnvironmentVariable.AAD_SINGLE_TENANT_CLIENT_SECRET_WITH_ROLE;
-import static com.azure.test.aad.selenium.AADSeleniumITHelper.createDefaultProperties;
+import static com.azure.test.aad.selenium.AADITHelper.createDefaultProperties;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class AADRoleIT {
