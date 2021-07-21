@@ -275,7 +275,7 @@ public abstract class TestBase implements BeforeEachCallback {
      * @param <U> The type of the final result of long-running operation.
      * @return The updated {@link PollerFlux}.
      */
-    protected <T, U> PollerFlux<T, U> setPollerFluxPollInterval(PollerFlux<T, U> pollerFlux) {
+    protected <T, U> PollerFlux<T, U> setPlaybackPollerFluxPollInterval(PollerFlux<T, U> pollerFlux) {
         return (testMode == TestMode.PLAYBACK) ? pollerFlux.setPollInterval(PLAYBACK_POLL_INTERVAL) : pollerFlux;
     }
 
