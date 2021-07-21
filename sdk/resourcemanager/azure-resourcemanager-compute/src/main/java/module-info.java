@@ -20,4 +20,7 @@ module com.azure.resourcemanager.compute {
     opens com.azure.resourcemanager.compute.models to
         com.azure.core,
         com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.compute.implementation to
+        com.azure.core,
+        com.fasterxml.jackson.databind;
 }

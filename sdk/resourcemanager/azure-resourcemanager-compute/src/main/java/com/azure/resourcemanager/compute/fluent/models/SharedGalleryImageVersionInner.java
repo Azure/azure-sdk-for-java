@@ -6,7 +6,6 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.compute.implementation.SharedGalleryIdentifier;
 import com.azure.resourcemanager.compute.implementation.SharedGalleryImageVersionProperties;
 import com.azure.resourcemanager.compute.models.PirSharedGalleryResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -33,12 +32,12 @@ public final class SharedGalleryImageVersionInner extends PirSharedGalleryResour
         return this.properties;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public SharedGalleryImageVersionInner withIdentifier(SharedGalleryIdentifier identifier) {
-        super.withIdentifier(identifier);
-        return this;
-    }
+//    /** {@inheritDoc} */
+//    @Override
+//    public SharedGalleryImageVersionInner withIdentifier(SharedGalleryIdentifier identifier) {
+//        super.withIdentifier(identifier);
+//        return this;
+//    }
 
     /**
      * Get the publishedDate property: The published date of the gallery image version Definition. This property can be
