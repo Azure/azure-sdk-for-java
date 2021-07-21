@@ -29,6 +29,6 @@ public class BroadcastingSample {
             data[i] = (byte) i;
         }
         chatHub.sendToAll(BinaryData.fromBytes(data), new RequestOptions()
-                .addHeader("Content-Type", "application/octet-stream"));
+                .addRequestCallback(request -> request.getHeaders().set("Content-Type", "application/octet-stream")));
     }
 }

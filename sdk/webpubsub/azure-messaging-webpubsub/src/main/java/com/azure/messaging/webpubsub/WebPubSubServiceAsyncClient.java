@@ -121,7 +121,8 @@ public final class WebPubSubServiceAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> sendToAll(String message, String contentType) {
         return sendToAll(BinaryData.fromString(message),
-                new RequestOptions().addHeader("Content-Type", contentType));
+                new RequestOptions().addRequestCallback(request -> request.getHeaders().set("Content-Type",
+                        contentType)));
     }
 
     /**
@@ -271,8 +272,9 @@ public final class WebPubSubServiceAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> sendToConnection(
             String connectionId, String message, String contentType) {
-        return this.sendToConnection(connectionId, BinaryData.fromString(message), new RequestOptions().addHeader(
-                "Content-Type", contentType));
+        return this.sendToConnection(connectionId, BinaryData.fromString(message),
+                new RequestOptions().addRequestCallback(request -> request.getHeaders()
+                        .set("Content-Type", contentType)));
     }
 
     /**
@@ -393,7 +395,7 @@ public final class WebPubSubServiceAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> sendToGroup(String group, String message, String contentType) {
         return sendToGroup(group, BinaryData.fromString(message), new RequestOptions()
-                .addHeader("Content-Type", contentType));
+                .addRequestCallback(request -> request.getHeaders().set("Content-Type", contentType)));
     }
 
     /**
@@ -577,7 +579,7 @@ public final class WebPubSubServiceAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> sendToUser(String userId, String message, String contentType) {
         return sendToUser(userId, BinaryData.fromString(message), new RequestOptions()
-                .addHeader("Content-Type", contentType));
+                .addRequestCallback(request -> request.getHeaders().set("Content-Type", contentType)));
     }
 
 

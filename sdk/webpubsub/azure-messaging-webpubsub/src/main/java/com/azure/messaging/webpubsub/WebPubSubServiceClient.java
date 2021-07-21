@@ -108,7 +108,8 @@ public final class WebPubSubServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void sendToAll(String message, String contentType) {
         sendToAll(BinaryData.fromString(message),
-                new RequestOptions().addHeader("Content-Type", contentType));
+                new RequestOptions().addRequestCallback(request -> request.getHeaders().set("Content-Type",
+                        contentType)));
     }
 
     /**
@@ -259,8 +260,9 @@ public final class WebPubSubServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void sendToConnection(
             String connectionId, String message, String contentType) {
-        this.sendToConnection(connectionId, BinaryData.fromString(message), new RequestOptions().addHeader(
-                "Content-Type", contentType));
+        this.sendToConnection(connectionId, BinaryData.fromString(message),
+                new RequestOptions().addRequestCallback(request -> request.getHeaders()
+                        .set("Content-Type", contentType)));
     }
 
     /**
@@ -384,7 +386,7 @@ public final class WebPubSubServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void sendToGroup(String group, String message, String contentType) {
         sendToGroup(group, BinaryData.fromString(message), new RequestOptions()
-                .addHeader("Content-Type", contentType));
+                .addRequestCallback(request -> request.getHeaders().set("Content-Type", contentType)));
     }
 
     /**
