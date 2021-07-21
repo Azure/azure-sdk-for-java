@@ -1,7 +1,6 @@
 package com.azure.analytics.purview.catalog;
 
 import com.azure.analytics.purview.catalog.implementation.TypesImpl;
-import com.azure.analytics.purview.catalog.models.AtlasTypeDefHeader;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -9,7 +8,6 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
-import java.util.List;
 
 /** Initializes a new instance of the synchronous PurviewCatalogServiceRestAPIDocument type. */
 @ServiceClient(builder = PurviewCatalogServiceRestAPIDocumentBuilder.class)
@@ -4932,7 +4930,7 @@ public final class TypesClient {
      * }</pre>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<AtlasTypeDefHeader> listTypeDefinitionHeaders(RequestOptions requestOptions) {
+    public BinaryData listTypeDefinitionHeaders(RequestOptions requestOptions) {
         return this.serviceClient.listTypeDefinitionHeaders(requestOptions);
     }
 
@@ -4962,8 +4960,7 @@ public final class TypesClient {
      * }</pre>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<AtlasTypeDefHeader>> listTypeDefinitionHeadersWithResponse(
-            RequestOptions requestOptions, Context context) {
+    public Response<BinaryData> listTypeDefinitionHeadersWithResponse(RequestOptions requestOptions, Context context) {
         return this.serviceClient.listTypeDefinitionHeadersWithResponse(requestOptions, context);
     }
 

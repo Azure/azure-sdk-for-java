@@ -1,12 +1,6 @@
 package com.azure.analytics.purview.catalog;
 
 import com.azure.analytics.purview.catalog.implementation.GlossariesImpl;
-import com.azure.analytics.purview.catalog.models.AtlasGlossary;
-import com.azure.analytics.purview.catalog.models.AtlasGlossaryCategory;
-import com.azure.analytics.purview.catalog.models.AtlasGlossaryTerm;
-import com.azure.analytics.purview.catalog.models.AtlasRelatedCategoryHeader;
-import com.azure.analytics.purview.catalog.models.AtlasRelatedObjectId;
-import com.azure.analytics.purview.catalog.models.AtlasRelatedTermHeader;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -14,8 +8,6 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import java.nio.ByteBuffer;
-import java.util.List;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -108,7 +100,7 @@ public final class GlossaryAsyncClient {
      * }</pre>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<AtlasGlossary>>> listGlossariesWithResponse(RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> listGlossariesWithResponse(RequestOptions requestOptions) {
         return this.serviceClient.listGlossariesWithResponseAsync(requestOptions);
     }
 
@@ -187,7 +179,7 @@ public final class GlossaryAsyncClient {
      * }</pre>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<AtlasGlossary>> listGlossaries(RequestOptions requestOptions) {
+    public Mono<BinaryData> listGlossaries(RequestOptions requestOptions) {
         return this.serviceClient.listGlossariesAsync(requestOptions);
     }
 
@@ -415,7 +407,7 @@ public final class GlossaryAsyncClient {
      * }</pre>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<AtlasGlossaryCategory>>> createGlossaryCategoriesWithResponse(
+    public Mono<Response<BinaryData>> createGlossaryCategoriesWithResponse(
             BinaryData glossaryCategory, RequestOptions requestOptions) {
         return this.serviceClient.createGlossaryCategoriesWithResponseAsync(glossaryCategory, requestOptions);
     }
@@ -497,8 +489,7 @@ public final class GlossaryAsyncClient {
      * }</pre>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<AtlasGlossaryCategory>> createGlossaryCategories(
-            BinaryData glossaryCategory, RequestOptions requestOptions) {
+    public Mono<BinaryData> createGlossaryCategories(BinaryData glossaryCategory, RequestOptions requestOptions) {
         return this.serviceClient.createGlossaryCategoriesAsync(glossaryCategory, requestOptions);
     }
 
@@ -1183,7 +1174,7 @@ public final class GlossaryAsyncClient {
      * @param categoryGuid The globally unique identifier of the category.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Map<String, List<AtlasRelatedCategoryHeader>>>> listRelatedCategoriesWithResponse(
+    public Mono<Response<BinaryData>> listRelatedCategoriesWithResponse(
             String categoryGuid, RequestOptions requestOptions) {
         return this.serviceClient.listRelatedCategoriesWithResponseAsync(categoryGuid, requestOptions);
     }
@@ -1221,8 +1212,7 @@ public final class GlossaryAsyncClient {
      * @param categoryGuid The globally unique identifier of the category.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Map<String, List<AtlasRelatedCategoryHeader>>> listRelatedCategories(
-            String categoryGuid, RequestOptions requestOptions) {
+    public Mono<BinaryData> listRelatedCategories(String categoryGuid, RequestOptions requestOptions) {
         return this.serviceClient.listRelatedCategoriesAsync(categoryGuid, requestOptions);
     }
 
@@ -1259,7 +1249,7 @@ public final class GlossaryAsyncClient {
      * @param categoryGuid The globally unique identifier of the category.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<AtlasRelatedTermHeader>>> listCategoryTermsWithResponse(
+    public Mono<Response<BinaryData>> listCategoryTermsWithResponse(
             String categoryGuid, RequestOptions requestOptions) {
         return this.serviceClient.listCategoryTermsWithResponseAsync(categoryGuid, requestOptions);
     }
@@ -1297,7 +1287,7 @@ public final class GlossaryAsyncClient {
      * @param categoryGuid The globally unique identifier of the category.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<AtlasRelatedTermHeader>> listCategoryTerms(String categoryGuid, RequestOptions requestOptions) {
+    public Mono<BinaryData> listCategoryTerms(String categoryGuid, RequestOptions requestOptions) {
         return this.serviceClient.listCategoryTermsAsync(categoryGuid, requestOptions);
     }
 
@@ -2871,7 +2861,7 @@ public final class GlossaryAsyncClient {
      * }</pre>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<AtlasGlossaryTerm>>> createGlossaryTermsWithResponse(
+    public Mono<Response<BinaryData>> createGlossaryTermsWithResponse(
             BinaryData glossaryTerm, RequestOptions requestOptions) {
         return this.serviceClient.createGlossaryTermsWithResponseAsync(glossaryTerm, requestOptions);
     }
@@ -3049,7 +3039,7 @@ public final class GlossaryAsyncClient {
      * }</pre>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<AtlasGlossaryTerm>> createGlossaryTerms(BinaryData glossaryTerm, RequestOptions requestOptions) {
+    public Mono<BinaryData> createGlossaryTerms(BinaryData glossaryTerm, RequestOptions requestOptions) {
         return this.serviceClient.createGlossaryTermsAsync(glossaryTerm, requestOptions);
     }
 
@@ -3095,7 +3085,7 @@ public final class GlossaryAsyncClient {
      * @param termGuid The globally unique identifier for glossary term.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<AtlasRelatedObjectId>>> getEntitiesAssignedWithTermWithResponse(
+    public Mono<Response<BinaryData>> getEntitiesAssignedWithTermWithResponse(
             String termGuid, RequestOptions requestOptions) {
         return this.serviceClient.getEntitiesAssignedWithTermWithResponseAsync(termGuid, requestOptions);
     }
@@ -3142,8 +3132,7 @@ public final class GlossaryAsyncClient {
      * @param termGuid The globally unique identifier for glossary term.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<AtlasRelatedObjectId>> getEntitiesAssignedWithTerm(
-            String termGuid, RequestOptions requestOptions) {
+    public Mono<BinaryData> getEntitiesAssignedWithTerm(String termGuid, RequestOptions requestOptions) {
         return this.serviceClient.getEntitiesAssignedWithTermAsync(termGuid, requestOptions);
     }
 
@@ -3407,8 +3396,7 @@ public final class GlossaryAsyncClient {
      * @param termGuid The globally unique identifier for glossary term.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Map<String, List<AtlasRelatedTermHeader>>>> listRelatedTermsWithResponse(
-            String termGuid, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> listRelatedTermsWithResponse(String termGuid, RequestOptions requestOptions) {
         return this.serviceClient.listRelatedTermsWithResponseAsync(termGuid, requestOptions);
     }
 
@@ -3448,8 +3436,7 @@ public final class GlossaryAsyncClient {
      * @param termGuid The globally unique identifier for glossary term.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Map<String, List<AtlasRelatedTermHeader>>> listRelatedTerms(
-            String termGuid, RequestOptions requestOptions) {
+    public Mono<BinaryData> listRelatedTerms(String termGuid, RequestOptions requestOptions) {
         return this.serviceClient.listRelatedTermsAsync(termGuid, requestOptions);
     }
 
@@ -3844,7 +3831,7 @@ public final class GlossaryAsyncClient {
      * @param glossaryGuid The globally unique identifier for glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<AtlasGlossaryCategory>>> listGlossaryCategoriesWithResponse(
+    public Mono<Response<BinaryData>> listGlossaryCategoriesWithResponse(
             String glossaryGuid, RequestOptions requestOptions) {
         return this.serviceClient.listGlossaryCategoriesWithResponseAsync(glossaryGuid, requestOptions);
     }
@@ -3930,8 +3917,7 @@ public final class GlossaryAsyncClient {
      * @param glossaryGuid The globally unique identifier for glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<AtlasGlossaryCategory>> listGlossaryCategories(
-            String glossaryGuid, RequestOptions requestOptions) {
+    public Mono<BinaryData> listGlossaryCategories(String glossaryGuid, RequestOptions requestOptions) {
         return this.serviceClient.listGlossaryCategoriesAsync(glossaryGuid, requestOptions);
     }
 
@@ -3965,7 +3951,7 @@ public final class GlossaryAsyncClient {
      * @param glossaryGuid The globally unique identifier for glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<AtlasRelatedCategoryHeader>>> listGlossaryCategoriesHeadersWithResponse(
+    public Mono<Response<BinaryData>> listGlossaryCategoriesHeadersWithResponse(
             String glossaryGuid, RequestOptions requestOptions) {
         return this.serviceClient.listGlossaryCategoriesHeadersWithResponseAsync(glossaryGuid, requestOptions);
     }
@@ -4000,8 +3986,7 @@ public final class GlossaryAsyncClient {
      * @param glossaryGuid The globally unique identifier for glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<AtlasRelatedCategoryHeader>> listGlossaryCategoriesHeaders(
-            String glossaryGuid, RequestOptions requestOptions) {
+    public Mono<BinaryData> listGlossaryCategoriesHeaders(String glossaryGuid, RequestOptions requestOptions) {
         return this.serviceClient.listGlossaryCategoriesHeadersAsync(glossaryGuid, requestOptions);
     }
 
@@ -4782,7 +4767,7 @@ public final class GlossaryAsyncClient {
      * @param glossaryGuid The globally unique identifier for glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<AtlasGlossaryTerm>>> listGlossaryTermsWithResponse(
+    public Mono<Response<BinaryData>> listGlossaryTermsWithResponse(
             String glossaryGuid, RequestOptions requestOptions) {
         return this.serviceClient.listGlossaryTermsWithResponseAsync(glossaryGuid, requestOptions);
     }
@@ -4957,7 +4942,7 @@ public final class GlossaryAsyncClient {
      * @param glossaryGuid The globally unique identifier for glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<AtlasGlossaryTerm>> listGlossaryTerms(String glossaryGuid, RequestOptions requestOptions) {
+    public Mono<BinaryData> listGlossaryTerms(String glossaryGuid, RequestOptions requestOptions) {
         return this.serviceClient.listGlossaryTermsAsync(glossaryGuid, requestOptions);
     }
 
@@ -4994,7 +4979,7 @@ public final class GlossaryAsyncClient {
      * @param glossaryGuid The globally unique identifier for glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<AtlasRelatedTermHeader>>> listGlossaryTermHeadersWithResponse(
+    public Mono<Response<BinaryData>> listGlossaryTermHeadersWithResponse(
             String glossaryGuid, RequestOptions requestOptions) {
         return this.serviceClient.listGlossaryTermHeadersWithResponseAsync(glossaryGuid, requestOptions);
     }
@@ -5032,8 +5017,7 @@ public final class GlossaryAsyncClient {
      * @param glossaryGuid The globally unique identifier for glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<AtlasRelatedTermHeader>> listGlossaryTermHeaders(
-            String glossaryGuid, RequestOptions requestOptions) {
+    public Mono<BinaryData> listGlossaryTermHeaders(String glossaryGuid, RequestOptions requestOptions) {
         return this.serviceClient.listGlossaryTermHeadersAsync(glossaryGuid, requestOptions);
     }
 
@@ -5563,7 +5547,7 @@ public final class GlossaryAsyncClient {
      * @param glossaryName The name of the glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<AtlasGlossaryTerm>>> listTermsByGlossaryNameWithResponse(
+    public Mono<Response<BinaryData>> listTermsByGlossaryNameWithResponse(
             String glossaryName, RequestOptions requestOptions) {
         return this.serviceClient.listTermsByGlossaryNameWithResponseAsync(glossaryName, requestOptions);
     }
@@ -5738,7 +5722,7 @@ public final class GlossaryAsyncClient {
      * @param glossaryName The name of the glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<AtlasGlossaryTerm>> listTermsByGlossaryName(String glossaryName, RequestOptions requestOptions) {
+    public Mono<BinaryData> listTermsByGlossaryName(String glossaryName, RequestOptions requestOptions) {
         return this.serviceClient.listTermsByGlossaryNameAsync(glossaryName, requestOptions);
     }
 }

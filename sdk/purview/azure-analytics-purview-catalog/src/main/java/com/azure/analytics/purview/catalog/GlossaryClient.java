@@ -1,12 +1,6 @@
 package com.azure.analytics.purview.catalog;
 
 import com.azure.analytics.purview.catalog.implementation.GlossariesImpl;
-import com.azure.analytics.purview.catalog.models.AtlasGlossary;
-import com.azure.analytics.purview.catalog.models.AtlasGlossaryCategory;
-import com.azure.analytics.purview.catalog.models.AtlasGlossaryTerm;
-import com.azure.analytics.purview.catalog.models.AtlasRelatedCategoryHeader;
-import com.azure.analytics.purview.catalog.models.AtlasRelatedObjectId;
-import com.azure.analytics.purview.catalog.models.AtlasRelatedTermHeader;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -15,8 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import java.nio.ByteBuffer;
-import java.util.List;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 
 /** Initializes a new instance of the synchronous PurviewCatalogServiceRestAPIDocument type. */
@@ -108,7 +100,7 @@ public final class GlossaryClient {
      * }</pre>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<AtlasGlossary> listGlossaries(RequestOptions requestOptions) {
+    public BinaryData listGlossaries(RequestOptions requestOptions) {
         return this.serviceClient.listGlossaries(requestOptions);
     }
 
@@ -187,7 +179,7 @@ public final class GlossaryClient {
      * }</pre>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<AtlasGlossary>> listGlossariesWithResponse(RequestOptions requestOptions, Context context) {
+    public Response<BinaryData> listGlossariesWithResponse(RequestOptions requestOptions, Context context) {
         return this.serviceClient.listGlossariesWithResponse(requestOptions, context);
     }
 
@@ -415,8 +407,7 @@ public final class GlossaryClient {
      * }</pre>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<AtlasGlossaryCategory> createGlossaryCategories(
-            BinaryData glossaryCategory, RequestOptions requestOptions) {
+    public BinaryData createGlossaryCategories(BinaryData glossaryCategory, RequestOptions requestOptions) {
         return this.serviceClient.createGlossaryCategories(glossaryCategory, requestOptions);
     }
 
@@ -497,7 +488,7 @@ public final class GlossaryClient {
      * }</pre>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<AtlasGlossaryCategory>> createGlossaryCategoriesWithResponse(
+    public Response<BinaryData> createGlossaryCategoriesWithResponse(
             BinaryData glossaryCategory, RequestOptions requestOptions, Context context) {
         return this.serviceClient.createGlossaryCategoriesWithResponse(glossaryCategory, requestOptions, context);
     }
@@ -1184,8 +1175,7 @@ public final class GlossaryClient {
      * @param categoryGuid The globally unique identifier of the category.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Map<String, List<AtlasRelatedCategoryHeader>> listRelatedCategories(
-            String categoryGuid, RequestOptions requestOptions) {
+    public BinaryData listRelatedCategories(String categoryGuid, RequestOptions requestOptions) {
         return this.serviceClient.listRelatedCategories(categoryGuid, requestOptions);
     }
 
@@ -1222,7 +1212,7 @@ public final class GlossaryClient {
      * @param categoryGuid The globally unique identifier of the category.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Map<String, List<AtlasRelatedCategoryHeader>>> listRelatedCategoriesWithResponse(
+    public Response<BinaryData> listRelatedCategoriesWithResponse(
             String categoryGuid, RequestOptions requestOptions, Context context) {
         return this.serviceClient.listRelatedCategoriesWithResponse(categoryGuid, requestOptions, context);
     }
@@ -1260,7 +1250,7 @@ public final class GlossaryClient {
      * @param categoryGuid The globally unique identifier of the category.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<AtlasRelatedTermHeader> listCategoryTerms(String categoryGuid, RequestOptions requestOptions) {
+    public BinaryData listCategoryTerms(String categoryGuid, RequestOptions requestOptions) {
         return this.serviceClient.listCategoryTerms(categoryGuid, requestOptions);
     }
 
@@ -1297,7 +1287,7 @@ public final class GlossaryClient {
      * @param categoryGuid The globally unique identifier of the category.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<AtlasRelatedTermHeader>> listCategoryTermsWithResponse(
+    public Response<BinaryData> listCategoryTermsWithResponse(
             String categoryGuid, RequestOptions requestOptions, Context context) {
         return this.serviceClient.listCategoryTermsWithResponse(categoryGuid, requestOptions, context);
     }
@@ -2874,7 +2864,7 @@ public final class GlossaryClient {
      * }</pre>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<AtlasGlossaryTerm> createGlossaryTerms(BinaryData glossaryTerm, RequestOptions requestOptions) {
+    public BinaryData createGlossaryTerms(BinaryData glossaryTerm, RequestOptions requestOptions) {
         return this.serviceClient.createGlossaryTerms(glossaryTerm, requestOptions);
     }
 
@@ -3051,7 +3041,7 @@ public final class GlossaryClient {
      * }</pre>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<AtlasGlossaryTerm>> createGlossaryTermsWithResponse(
+    public Response<BinaryData> createGlossaryTermsWithResponse(
             BinaryData glossaryTerm, RequestOptions requestOptions, Context context) {
         return this.serviceClient.createGlossaryTermsWithResponse(glossaryTerm, requestOptions, context);
     }
@@ -3098,7 +3088,7 @@ public final class GlossaryClient {
      * @param termGuid The globally unique identifier for glossary term.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<AtlasRelatedObjectId> getEntitiesAssignedWithTerm(String termGuid, RequestOptions requestOptions) {
+    public BinaryData getEntitiesAssignedWithTerm(String termGuid, RequestOptions requestOptions) {
         return this.serviceClient.getEntitiesAssignedWithTerm(termGuid, requestOptions);
     }
 
@@ -3144,7 +3134,7 @@ public final class GlossaryClient {
      * @param termGuid The globally unique identifier for glossary term.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<AtlasRelatedObjectId>> getEntitiesAssignedWithTermWithResponse(
+    public Response<BinaryData> getEntitiesAssignedWithTermWithResponse(
             String termGuid, RequestOptions requestOptions, Context context) {
         return this.serviceClient.getEntitiesAssignedWithTermWithResponse(termGuid, requestOptions, context);
     }
@@ -3408,7 +3398,7 @@ public final class GlossaryClient {
      * @param termGuid The globally unique identifier for glossary term.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Map<String, List<AtlasRelatedTermHeader>> listRelatedTerms(String termGuid, RequestOptions requestOptions) {
+    public BinaryData listRelatedTerms(String termGuid, RequestOptions requestOptions) {
         return this.serviceClient.listRelatedTerms(termGuid, requestOptions);
     }
 
@@ -3448,7 +3438,7 @@ public final class GlossaryClient {
      * @param termGuid The globally unique identifier for glossary term.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Map<String, List<AtlasRelatedTermHeader>>> listRelatedTermsWithResponse(
+    public Response<BinaryData> listRelatedTermsWithResponse(
             String termGuid, RequestOptions requestOptions, Context context) {
         return this.serviceClient.listRelatedTermsWithResponse(termGuid, requestOptions, context);
     }
@@ -3845,7 +3835,7 @@ public final class GlossaryClient {
      * @param glossaryGuid The globally unique identifier for glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<AtlasGlossaryCategory> listGlossaryCategories(String glossaryGuid, RequestOptions requestOptions) {
+    public BinaryData listGlossaryCategories(String glossaryGuid, RequestOptions requestOptions) {
         return this.serviceClient.listGlossaryCategories(glossaryGuid, requestOptions);
     }
 
@@ -3930,7 +3920,7 @@ public final class GlossaryClient {
      * @param glossaryGuid The globally unique identifier for glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<AtlasGlossaryCategory>> listGlossaryCategoriesWithResponse(
+    public Response<BinaryData> listGlossaryCategoriesWithResponse(
             String glossaryGuid, RequestOptions requestOptions, Context context) {
         return this.serviceClient.listGlossaryCategoriesWithResponse(glossaryGuid, requestOptions, context);
     }
@@ -3965,8 +3955,7 @@ public final class GlossaryClient {
      * @param glossaryGuid The globally unique identifier for glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<AtlasRelatedCategoryHeader> listGlossaryCategoriesHeaders(
-            String glossaryGuid, RequestOptions requestOptions) {
+    public BinaryData listGlossaryCategoriesHeaders(String glossaryGuid, RequestOptions requestOptions) {
         return this.serviceClient.listGlossaryCategoriesHeaders(glossaryGuid, requestOptions);
     }
 
@@ -4000,7 +3989,7 @@ public final class GlossaryClient {
      * @param glossaryGuid The globally unique identifier for glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<AtlasRelatedCategoryHeader>> listGlossaryCategoriesHeadersWithResponse(
+    public Response<BinaryData> listGlossaryCategoriesHeadersWithResponse(
             String glossaryGuid, RequestOptions requestOptions, Context context) {
         return this.serviceClient.listGlossaryCategoriesHeadersWithResponse(glossaryGuid, requestOptions, context);
     }
@@ -4783,7 +4772,7 @@ public final class GlossaryClient {
      * @param glossaryGuid The globally unique identifier for glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<AtlasGlossaryTerm> listGlossaryTerms(String glossaryGuid, RequestOptions requestOptions) {
+    public BinaryData listGlossaryTerms(String glossaryGuid, RequestOptions requestOptions) {
         return this.serviceClient.listGlossaryTerms(glossaryGuid, requestOptions);
     }
 
@@ -4957,7 +4946,7 @@ public final class GlossaryClient {
      * @param glossaryGuid The globally unique identifier for glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<AtlasGlossaryTerm>> listGlossaryTermsWithResponse(
+    public Response<BinaryData> listGlossaryTermsWithResponse(
             String glossaryGuid, RequestOptions requestOptions, Context context) {
         return this.serviceClient.listGlossaryTermsWithResponse(glossaryGuid, requestOptions, context);
     }
@@ -4995,7 +4984,7 @@ public final class GlossaryClient {
      * @param glossaryGuid The globally unique identifier for glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<AtlasRelatedTermHeader> listGlossaryTermHeaders(String glossaryGuid, RequestOptions requestOptions) {
+    public BinaryData listGlossaryTermHeaders(String glossaryGuid, RequestOptions requestOptions) {
         return this.serviceClient.listGlossaryTermHeaders(glossaryGuid, requestOptions);
     }
 
@@ -5032,7 +5021,7 @@ public final class GlossaryClient {
      * @param glossaryGuid The globally unique identifier for glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<AtlasRelatedTermHeader>> listGlossaryTermHeadersWithResponse(
+    public Response<BinaryData> listGlossaryTermHeadersWithResponse(
             String glossaryGuid, RequestOptions requestOptions, Context context) {
         return this.serviceClient.listGlossaryTermHeadersWithResponse(glossaryGuid, requestOptions, context);
     }
@@ -5563,7 +5552,7 @@ public final class GlossaryClient {
      * @param glossaryName The name of the glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<AtlasGlossaryTerm> listTermsByGlossaryName(String glossaryName, RequestOptions requestOptions) {
+    public BinaryData listTermsByGlossaryName(String glossaryName, RequestOptions requestOptions) {
         return this.serviceClient.listTermsByGlossaryName(glossaryName, requestOptions);
     }
 
@@ -5737,7 +5726,7 @@ public final class GlossaryClient {
      * @param glossaryName The name of the glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<AtlasGlossaryTerm>> listTermsByGlossaryNameWithResponse(
+    public Response<BinaryData> listTermsByGlossaryNameWithResponse(
             String glossaryName, RequestOptions requestOptions, Context context) {
         return this.serviceClient.listTermsByGlossaryNameWithResponse(glossaryName, requestOptions, context);
     }

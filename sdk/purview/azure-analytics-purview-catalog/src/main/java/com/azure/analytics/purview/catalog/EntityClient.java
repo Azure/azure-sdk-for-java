@@ -8,7 +8,6 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
-import java.util.List;
 
 /** Initializes a new instance of the synchronous PurviewCatalogServiceRestAPIDocument type. */
 @ServiceClient(builder = PurviewCatalogServiceRestAPIDocumentBuilder.class)
@@ -2826,7 +2825,7 @@ public final class EntityClient {
      * }</pre>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<String> setClassifications(BinaryData entityHeaders, RequestOptions requestOptions) {
+    public BinaryData setClassifications(BinaryData entityHeaders, RequestOptions requestOptions) {
         return this.serviceClient.setClassifications(entityHeaders, requestOptions);
     }
 
@@ -2904,7 +2903,7 @@ public final class EntityClient {
      * }</pre>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<String>> setClassificationsWithResponse(
+    public Response<BinaryData> setClassificationsWithResponse(
             BinaryData entityHeaders, RequestOptions requestOptions, Context context) {
         return this.serviceClient.setClassificationsWithResponse(entityHeaders, requestOptions, context);
     }

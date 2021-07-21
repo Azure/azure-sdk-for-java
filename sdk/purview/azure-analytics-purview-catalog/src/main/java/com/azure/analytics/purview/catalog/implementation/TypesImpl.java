@@ -1,6 +1,5 @@
 package com.azure.analytics.purview.catalog.implementation;
 
-import com.azure.analytics.purview.catalog.models.AtlasTypeDefHeader;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.Get;
@@ -20,7 +19,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import java.util.List;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Types. */
@@ -182,7 +180,7 @@ public final class TypesImpl {
                 Context context);
 
         @Get("/atlas/v2/types/typedefs/headers")
-        Mono<Response<List<AtlasTypeDefHeader>>> listTypeDefinitionHeaders(
+        Mono<Response<BinaryData>> listTypeDefinitionHeaders(
                 @HostParam("Endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
@@ -15192,8 +15190,7 @@ public final class TypesImpl {
      * }</pre>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<AtlasTypeDefHeader>>> listTypeDefinitionHeadersWithResponseAsync(
-            RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> listTypeDefinitionHeadersWithResponseAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -15226,7 +15223,7 @@ public final class TypesImpl {
      * }</pre>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<AtlasTypeDefHeader>>> listTypeDefinitionHeadersWithResponseAsync(
+    public Mono<Response<BinaryData>> listTypeDefinitionHeadersWithResponseAsync(
             RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
         return service.listTypeDefinitionHeaders(this.client.getEndpoint(), accept, requestOptions, context);
@@ -15258,10 +15255,10 @@ public final class TypesImpl {
      * }</pre>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<AtlasTypeDefHeader>> listTypeDefinitionHeadersAsync(RequestOptions requestOptions) {
+    public Mono<BinaryData> listTypeDefinitionHeadersAsync(RequestOptions requestOptions) {
         return listTypeDefinitionHeadersWithResponseAsync(requestOptions)
                 .flatMap(
-                        (Response<List<AtlasTypeDefHeader>> res) -> {
+                        (Response<BinaryData> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -15296,11 +15293,10 @@ public final class TypesImpl {
      * }</pre>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<AtlasTypeDefHeader>> listTypeDefinitionHeadersAsync(
-            RequestOptions requestOptions, Context context) {
+    public Mono<BinaryData> listTypeDefinitionHeadersAsync(RequestOptions requestOptions, Context context) {
         return listTypeDefinitionHeadersWithResponseAsync(requestOptions, context)
                 .flatMap(
-                        (Response<List<AtlasTypeDefHeader>> res) -> {
+                        (Response<BinaryData> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -15335,7 +15331,7 @@ public final class TypesImpl {
      * }</pre>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<AtlasTypeDefHeader> listTypeDefinitionHeaders(RequestOptions requestOptions) {
+    public BinaryData listTypeDefinitionHeaders(RequestOptions requestOptions) {
         return listTypeDefinitionHeadersAsync(requestOptions).block();
     }
 
@@ -15365,8 +15361,7 @@ public final class TypesImpl {
      * }</pre>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<AtlasTypeDefHeader>> listTypeDefinitionHeadersWithResponse(
-            RequestOptions requestOptions, Context context) {
+    public Response<BinaryData> listTypeDefinitionHeadersWithResponse(RequestOptions requestOptions, Context context) {
         return listTypeDefinitionHeadersWithResponseAsync(requestOptions, context).block();
     }
 

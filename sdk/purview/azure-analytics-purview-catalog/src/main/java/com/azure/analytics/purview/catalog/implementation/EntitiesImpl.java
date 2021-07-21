@@ -18,7 +18,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import java.util.List;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Entities. */
@@ -199,7 +198,7 @@ public final class EntitiesImpl {
                 Context context);
 
         @Post("/atlas/v2/entity/bulk/setClassifications")
-        Mono<Response<List<String>>> setClassifications(
+        Mono<Response<BinaryData>> setClassifications(
                 @HostParam("Endpoint") String endpoint,
                 @BodyParam("application/json") BinaryData entityHeaders,
                 @HeaderParam("Accept") String accept,
@@ -8784,7 +8783,7 @@ public final class EntitiesImpl {
      * }</pre>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<String>>> setClassificationsWithResponseAsync(
+    public Mono<Response<BinaryData>> setClassificationsWithResponseAsync(
             BinaryData entityHeaders, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -8867,7 +8866,7 @@ public final class EntitiesImpl {
      * }</pre>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<String>>> setClassificationsWithResponseAsync(
+    public Mono<Response<BinaryData>> setClassificationsWithResponseAsync(
             BinaryData entityHeaders, RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
         return service.setClassifications(this.client.getEndpoint(), entityHeaders, accept, requestOptions, context);
@@ -8947,10 +8946,10 @@ public final class EntitiesImpl {
      * }</pre>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<String>> setClassificationsAsync(BinaryData entityHeaders, RequestOptions requestOptions) {
+    public Mono<BinaryData> setClassificationsAsync(BinaryData entityHeaders, RequestOptions requestOptions) {
         return setClassificationsWithResponseAsync(entityHeaders, requestOptions)
                 .flatMap(
-                        (Response<List<String>> res) -> {
+                        (Response<BinaryData> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -9033,11 +9032,11 @@ public final class EntitiesImpl {
      * }</pre>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<String>> setClassificationsAsync(
+    public Mono<BinaryData> setClassificationsAsync(
             BinaryData entityHeaders, RequestOptions requestOptions, Context context) {
         return setClassificationsWithResponseAsync(entityHeaders, requestOptions, context)
                 .flatMap(
-                        (Response<List<String>> res) -> {
+                        (Response<BinaryData> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -9120,7 +9119,7 @@ public final class EntitiesImpl {
      * }</pre>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<String> setClassifications(BinaryData entityHeaders, RequestOptions requestOptions) {
+    public BinaryData setClassifications(BinaryData entityHeaders, RequestOptions requestOptions) {
         return setClassificationsAsync(entityHeaders, requestOptions).block();
     }
 
@@ -9198,7 +9197,7 @@ public final class EntitiesImpl {
      * }</pre>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<String>> setClassificationsWithResponse(
+    public Response<BinaryData> setClassificationsWithResponse(
             BinaryData entityHeaders, RequestOptions requestOptions, Context context) {
         return setClassificationsWithResponseAsync(entityHeaders, requestOptions, context).block();
     }

@@ -1,11 +1,5 @@
 package com.azure.analytics.purview.catalog.implementation;
 
-import com.azure.analytics.purview.catalog.models.AtlasGlossary;
-import com.azure.analytics.purview.catalog.models.AtlasGlossaryCategory;
-import com.azure.analytics.purview.catalog.models.AtlasGlossaryTerm;
-import com.azure.analytics.purview.catalog.models.AtlasRelatedCategoryHeader;
-import com.azure.analytics.purview.catalog.models.AtlasRelatedObjectId;
-import com.azure.analytics.purview.catalog.models.AtlasRelatedTermHeader;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.Get;
@@ -26,8 +20,6 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import java.nio.ByteBuffer;
-import java.util.List;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -58,7 +50,7 @@ public final class GlossariesImpl {
     @ServiceInterface(name = "PurviewCatalogServic")
     private interface GlossariesService {
         @Get("/atlas/v2/glossary")
-        Mono<Response<List<AtlasGlossary>>> listGlossaries(
+        Mono<Response<BinaryData>> listGlossaries(
                 @HostParam("Endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
@@ -73,7 +65,7 @@ public final class GlossariesImpl {
                 Context context);
 
         @Post("/atlas/v2/glossary/categories")
-        Mono<Response<List<AtlasGlossaryCategory>>> createGlossaryCategories(
+        Mono<Response<BinaryData>> createGlossaryCategories(
                 @HostParam("Endpoint") String endpoint,
                 @BodyParam("application/json") BinaryData glossaryCategory,
                 @HeaderParam("Accept") String accept,
@@ -122,7 +114,7 @@ public final class GlossariesImpl {
                 Context context);
 
         @Get("/atlas/v2/glossary/category/{categoryGuid}/related")
-        Mono<Response<Map<String, List<AtlasRelatedCategoryHeader>>>> listRelatedCategories(
+        Mono<Response<BinaryData>> listRelatedCategories(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("categoryGuid") String categoryGuid,
                 @HeaderParam("Accept") String accept,
@@ -130,7 +122,7 @@ public final class GlossariesImpl {
                 Context context);
 
         @Get("/atlas/v2/glossary/category/{categoryGuid}/terms")
-        Mono<Response<List<AtlasRelatedTermHeader>>> listCategoryTerms(
+        Mono<Response<BinaryData>> listCategoryTerms(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("categoryGuid") String categoryGuid,
                 @HeaderParam("Accept") String accept,
@@ -179,7 +171,7 @@ public final class GlossariesImpl {
                 Context context);
 
         @Post("/atlas/v2/glossary/terms")
-        Mono<Response<List<AtlasGlossaryTerm>>> createGlossaryTerms(
+        Mono<Response<BinaryData>> createGlossaryTerms(
                 @HostParam("Endpoint") String endpoint,
                 @BodyParam("application/json") BinaryData glossaryTerm,
                 @HeaderParam("Accept") String accept,
@@ -187,7 +179,7 @@ public final class GlossariesImpl {
                 Context context);
 
         @Get("/atlas/v2/glossary/terms/{termGuid}/assignedEntities")
-        Mono<Response<List<AtlasRelatedObjectId>>> getEntitiesAssignedWithTerm(
+        Mono<Response<BinaryData>> getEntitiesAssignedWithTerm(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("termGuid") String termGuid,
                 @HeaderParam("Accept") String accept,
@@ -219,7 +211,7 @@ public final class GlossariesImpl {
                 Context context);
 
         @Get("/atlas/v2/glossary/terms/{termGuid}/related")
-        Mono<Response<Map<String, List<AtlasRelatedTermHeader>>>> listRelatedTerms(
+        Mono<Response<BinaryData>> listRelatedTerms(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("termGuid") String termGuid,
                 @HeaderParam("Accept") String accept,
@@ -251,7 +243,7 @@ public final class GlossariesImpl {
                 Context context);
 
         @Get("/atlas/v2/glossary/{glossaryGuid}/categories")
-        Mono<Response<List<AtlasGlossaryCategory>>> listGlossaryCategories(
+        Mono<Response<BinaryData>> listGlossaryCategories(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("glossaryGuid") String glossaryGuid,
                 @HeaderParam("Accept") String accept,
@@ -259,7 +251,7 @@ public final class GlossariesImpl {
                 Context context);
 
         @Get("/atlas/v2/glossary/{glossaryGuid}/categories/headers")
-        Mono<Response<List<AtlasRelatedCategoryHeader>>> listGlossaryCategoriesHeaders(
+        Mono<Response<BinaryData>> listGlossaryCategoriesHeaders(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("glossaryGuid") String glossaryGuid,
                 @HeaderParam("Accept") String accept,
@@ -284,7 +276,7 @@ public final class GlossariesImpl {
                 Context context);
 
         @Get("/atlas/v2/glossary/{glossaryGuid}/terms")
-        Mono<Response<List<AtlasGlossaryTerm>>> listGlossaryTerms(
+        Mono<Response<BinaryData>> listGlossaryTerms(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("glossaryGuid") String glossaryGuid,
                 @HeaderParam("Accept") String accept,
@@ -292,7 +284,7 @@ public final class GlossariesImpl {
                 Context context);
 
         @Get("/atlas/v2/glossary/{glossaryGuid}/terms/headers")
-        Mono<Response<List<AtlasRelatedTermHeader>>> listGlossaryTermHeaders(
+        Mono<Response<BinaryData>> listGlossaryTermHeaders(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("glossaryGuid") String glossaryGuid,
                 @HeaderParam("Accept") String accept,
@@ -341,7 +333,7 @@ public final class GlossariesImpl {
                 Context context);
 
         @Get("/glossary/name/{glossaryName}/terms")
-        Mono<Response<List<AtlasGlossaryTerm>>> listTermsByGlossaryName(
+        Mono<Response<BinaryData>> listTermsByGlossaryName(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("glossaryName") String glossaryName,
                 @QueryParam("api-version") String apiVersion,
@@ -425,7 +417,7 @@ public final class GlossariesImpl {
      * }</pre>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<AtlasGlossary>>> listGlossariesWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> listGlossariesWithResponseAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context -> service.listGlossaries(this.client.getEndpoint(), accept, requestOptions, context));
@@ -506,8 +498,7 @@ public final class GlossariesImpl {
      * }</pre>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<AtlasGlossary>>> listGlossariesWithResponseAsync(
-            RequestOptions requestOptions, Context context) {
+    public Mono<Response<BinaryData>> listGlossariesWithResponseAsync(RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
         return service.listGlossaries(this.client.getEndpoint(), accept, requestOptions, context);
     }
@@ -587,10 +578,10 @@ public final class GlossariesImpl {
      * }</pre>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<AtlasGlossary>> listGlossariesAsync(RequestOptions requestOptions) {
+    public Mono<BinaryData> listGlossariesAsync(RequestOptions requestOptions) {
         return listGlossariesWithResponseAsync(requestOptions)
                 .flatMap(
-                        (Response<List<AtlasGlossary>> res) -> {
+                        (Response<BinaryData> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -674,10 +665,10 @@ public final class GlossariesImpl {
      * }</pre>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<AtlasGlossary>> listGlossariesAsync(RequestOptions requestOptions, Context context) {
+    public Mono<BinaryData> listGlossariesAsync(RequestOptions requestOptions, Context context) {
         return listGlossariesWithResponseAsync(requestOptions, context)
                 .flatMap(
-                        (Response<List<AtlasGlossary>> res) -> {
+                        (Response<BinaryData> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -761,7 +752,7 @@ public final class GlossariesImpl {
      * }</pre>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<AtlasGlossary> listGlossaries(RequestOptions requestOptions) {
+    public BinaryData listGlossaries(RequestOptions requestOptions) {
         return listGlossariesAsync(requestOptions).block();
     }
 
@@ -840,7 +831,7 @@ public final class GlossariesImpl {
      * }</pre>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<AtlasGlossary>> listGlossariesWithResponse(RequestOptions requestOptions, Context context) {
+    public Response<BinaryData> listGlossariesWithResponse(RequestOptions requestOptions, Context context) {
         return listGlossariesWithResponseAsync(requestOptions, context).block();
     }
 
@@ -1384,7 +1375,7 @@ public final class GlossariesImpl {
      * }</pre>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<AtlasGlossaryCategory>>> createGlossaryCategoriesWithResponseAsync(
+    public Mono<Response<BinaryData>> createGlossaryCategoriesWithResponseAsync(
             BinaryData glossaryCategory, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -1470,7 +1461,7 @@ public final class GlossariesImpl {
      * }</pre>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<AtlasGlossaryCategory>>> createGlossaryCategoriesWithResponseAsync(
+    public Mono<Response<BinaryData>> createGlossaryCategoriesWithResponseAsync(
             BinaryData glossaryCategory, RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
         return service.createGlossaryCategories(
@@ -1554,11 +1545,10 @@ public final class GlossariesImpl {
      * }</pre>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<AtlasGlossaryCategory>> createGlossaryCategoriesAsync(
-            BinaryData glossaryCategory, RequestOptions requestOptions) {
+    public Mono<BinaryData> createGlossaryCategoriesAsync(BinaryData glossaryCategory, RequestOptions requestOptions) {
         return createGlossaryCategoriesWithResponseAsync(glossaryCategory, requestOptions)
                 .flatMap(
-                        (Response<List<AtlasGlossaryCategory>> res) -> {
+                        (Response<BinaryData> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -1644,11 +1634,11 @@ public final class GlossariesImpl {
      * }</pre>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<AtlasGlossaryCategory>> createGlossaryCategoriesAsync(
+    public Mono<BinaryData> createGlossaryCategoriesAsync(
             BinaryData glossaryCategory, RequestOptions requestOptions, Context context) {
         return createGlossaryCategoriesWithResponseAsync(glossaryCategory, requestOptions, context)
                 .flatMap(
-                        (Response<List<AtlasGlossaryCategory>> res) -> {
+                        (Response<BinaryData> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -1734,8 +1724,7 @@ public final class GlossariesImpl {
      * }</pre>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<AtlasGlossaryCategory> createGlossaryCategories(
-            BinaryData glossaryCategory, RequestOptions requestOptions) {
+    public BinaryData createGlossaryCategories(BinaryData glossaryCategory, RequestOptions requestOptions) {
         return createGlossaryCategoriesAsync(glossaryCategory, requestOptions).block();
     }
 
@@ -1816,7 +1805,7 @@ public final class GlossariesImpl {
      * }</pre>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<AtlasGlossaryCategory>> createGlossaryCategoriesWithResponse(
+    public Response<BinaryData> createGlossaryCategoriesWithResponse(
             BinaryData glossaryCategory, RequestOptions requestOptions, Context context) {
         return createGlossaryCategoriesWithResponseAsync(glossaryCategory, requestOptions, context).block();
     }
@@ -3900,7 +3889,7 @@ public final class GlossariesImpl {
      * @param categoryGuid The globally unique identifier of the category.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Map<String, List<AtlasRelatedCategoryHeader>>>> listRelatedCategoriesWithResponseAsync(
+    public Mono<Response<BinaryData>> listRelatedCategoriesWithResponseAsync(
             String categoryGuid, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -3942,7 +3931,7 @@ public final class GlossariesImpl {
      * @param categoryGuid The globally unique identifier of the category.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Map<String, List<AtlasRelatedCategoryHeader>>>> listRelatedCategoriesWithResponseAsync(
+    public Mono<Response<BinaryData>> listRelatedCategoriesWithResponseAsync(
             String categoryGuid, RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
         return service.listRelatedCategories(this.client.getEndpoint(), categoryGuid, accept, requestOptions, context);
@@ -3981,11 +3970,10 @@ public final class GlossariesImpl {
      * @param categoryGuid The globally unique identifier of the category.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Map<String, List<AtlasRelatedCategoryHeader>>> listRelatedCategoriesAsync(
-            String categoryGuid, RequestOptions requestOptions) {
+    public Mono<BinaryData> listRelatedCategoriesAsync(String categoryGuid, RequestOptions requestOptions) {
         return listRelatedCategoriesWithResponseAsync(categoryGuid, requestOptions)
                 .flatMap(
-                        (Response<Map<String, List<AtlasRelatedCategoryHeader>>> res) -> {
+                        (Response<BinaryData> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -4027,11 +4015,11 @@ public final class GlossariesImpl {
      * @param categoryGuid The globally unique identifier of the category.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Map<String, List<AtlasRelatedCategoryHeader>>> listRelatedCategoriesAsync(
+    public Mono<BinaryData> listRelatedCategoriesAsync(
             String categoryGuid, RequestOptions requestOptions, Context context) {
         return listRelatedCategoriesWithResponseAsync(categoryGuid, requestOptions, context)
                 .flatMap(
-                        (Response<Map<String, List<AtlasRelatedCategoryHeader>>> res) -> {
+                        (Response<BinaryData> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -4073,8 +4061,7 @@ public final class GlossariesImpl {
      * @param categoryGuid The globally unique identifier of the category.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Map<String, List<AtlasRelatedCategoryHeader>> listRelatedCategories(
-            String categoryGuid, RequestOptions requestOptions) {
+    public BinaryData listRelatedCategories(String categoryGuid, RequestOptions requestOptions) {
         return listRelatedCategoriesAsync(categoryGuid, requestOptions).block();
     }
 
@@ -4111,7 +4098,7 @@ public final class GlossariesImpl {
      * @param categoryGuid The globally unique identifier of the category.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Map<String, List<AtlasRelatedCategoryHeader>>> listRelatedCategoriesWithResponse(
+    public Response<BinaryData> listRelatedCategoriesWithResponse(
             String categoryGuid, RequestOptions requestOptions, Context context) {
         return listRelatedCategoriesWithResponseAsync(categoryGuid, requestOptions, context).block();
     }
@@ -4149,7 +4136,7 @@ public final class GlossariesImpl {
      * @param categoryGuid The globally unique identifier of the category.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<AtlasRelatedTermHeader>>> listCategoryTermsWithResponseAsync(
+    public Mono<Response<BinaryData>> listCategoryTermsWithResponseAsync(
             String categoryGuid, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -4191,7 +4178,7 @@ public final class GlossariesImpl {
      * @param categoryGuid The globally unique identifier of the category.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<AtlasRelatedTermHeader>>> listCategoryTermsWithResponseAsync(
+    public Mono<Response<BinaryData>> listCategoryTermsWithResponseAsync(
             String categoryGuid, RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
         return service.listCategoryTerms(this.client.getEndpoint(), categoryGuid, accept, requestOptions, context);
@@ -4230,11 +4217,10 @@ public final class GlossariesImpl {
      * @param categoryGuid The globally unique identifier of the category.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<AtlasRelatedTermHeader>> listCategoryTermsAsync(
-            String categoryGuid, RequestOptions requestOptions) {
+    public Mono<BinaryData> listCategoryTermsAsync(String categoryGuid, RequestOptions requestOptions) {
         return listCategoryTermsWithResponseAsync(categoryGuid, requestOptions)
                 .flatMap(
-                        (Response<List<AtlasRelatedTermHeader>> res) -> {
+                        (Response<BinaryData> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -4276,11 +4262,11 @@ public final class GlossariesImpl {
      * @param categoryGuid The globally unique identifier of the category.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<AtlasRelatedTermHeader>> listCategoryTermsAsync(
+    public Mono<BinaryData> listCategoryTermsAsync(
             String categoryGuid, RequestOptions requestOptions, Context context) {
         return listCategoryTermsWithResponseAsync(categoryGuid, requestOptions, context)
                 .flatMap(
-                        (Response<List<AtlasRelatedTermHeader>> res) -> {
+                        (Response<BinaryData> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -4322,7 +4308,7 @@ public final class GlossariesImpl {
      * @param categoryGuid The globally unique identifier of the category.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<AtlasRelatedTermHeader> listCategoryTerms(String categoryGuid, RequestOptions requestOptions) {
+    public BinaryData listCategoryTerms(String categoryGuid, RequestOptions requestOptions) {
         return listCategoryTermsAsync(categoryGuid, requestOptions).block();
     }
 
@@ -4359,7 +4345,7 @@ public final class GlossariesImpl {
      * @param categoryGuid The globally unique identifier of the category.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<AtlasRelatedTermHeader>> listCategoryTermsWithResponse(
+    public Response<BinaryData> listCategoryTermsWithResponse(
             String categoryGuid, RequestOptions requestOptions, Context context) {
         return listCategoryTermsWithResponseAsync(categoryGuid, requestOptions, context).block();
     }
@@ -8820,7 +8806,7 @@ public final class GlossariesImpl {
      * }</pre>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<AtlasGlossaryTerm>>> createGlossaryTermsWithResponseAsync(
+    public Mono<Response<BinaryData>> createGlossaryTermsWithResponseAsync(
             BinaryData glossaryTerm, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -9002,7 +8988,7 @@ public final class GlossariesImpl {
      * }</pre>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<AtlasGlossaryTerm>>> createGlossaryTermsWithResponseAsync(
+    public Mono<Response<BinaryData>> createGlossaryTermsWithResponseAsync(
             BinaryData glossaryTerm, RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
         return service.createGlossaryTerms(this.client.getEndpoint(), glossaryTerm, accept, requestOptions, context);
@@ -9181,11 +9167,10 @@ public final class GlossariesImpl {
      * }</pre>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<AtlasGlossaryTerm>> createGlossaryTermsAsync(
-            BinaryData glossaryTerm, RequestOptions requestOptions) {
+    public Mono<BinaryData> createGlossaryTermsAsync(BinaryData glossaryTerm, RequestOptions requestOptions) {
         return createGlossaryTermsWithResponseAsync(glossaryTerm, requestOptions)
                 .flatMap(
-                        (Response<List<AtlasGlossaryTerm>> res) -> {
+                        (Response<BinaryData> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -9367,11 +9352,11 @@ public final class GlossariesImpl {
      * }</pre>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<AtlasGlossaryTerm>> createGlossaryTermsAsync(
+    public Mono<BinaryData> createGlossaryTermsAsync(
             BinaryData glossaryTerm, RequestOptions requestOptions, Context context) {
         return createGlossaryTermsWithResponseAsync(glossaryTerm, requestOptions, context)
                 .flatMap(
-                        (Response<List<AtlasGlossaryTerm>> res) -> {
+                        (Response<BinaryData> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -9553,7 +9538,7 @@ public final class GlossariesImpl {
      * }</pre>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<AtlasGlossaryTerm> createGlossaryTerms(BinaryData glossaryTerm, RequestOptions requestOptions) {
+    public BinaryData createGlossaryTerms(BinaryData glossaryTerm, RequestOptions requestOptions) {
         return createGlossaryTermsAsync(glossaryTerm, requestOptions).block();
     }
 
@@ -9730,7 +9715,7 @@ public final class GlossariesImpl {
      * }</pre>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<AtlasGlossaryTerm>> createGlossaryTermsWithResponse(
+    public Response<BinaryData> createGlossaryTermsWithResponse(
             BinaryData glossaryTerm, RequestOptions requestOptions, Context context) {
         return createGlossaryTermsWithResponseAsync(glossaryTerm, requestOptions, context).block();
     }
@@ -9777,7 +9762,7 @@ public final class GlossariesImpl {
      * @param termGuid The globally unique identifier for glossary term.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<AtlasRelatedObjectId>>> getEntitiesAssignedWithTermWithResponseAsync(
+    public Mono<Response<BinaryData>> getEntitiesAssignedWithTermWithResponseAsync(
             String termGuid, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -9828,7 +9813,7 @@ public final class GlossariesImpl {
      * @param termGuid The globally unique identifier for glossary term.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<AtlasRelatedObjectId>>> getEntitiesAssignedWithTermWithResponseAsync(
+    public Mono<Response<BinaryData>> getEntitiesAssignedWithTermWithResponseAsync(
             String termGuid, RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
         return service.getEntitiesAssignedWithTerm(
@@ -9877,11 +9862,10 @@ public final class GlossariesImpl {
      * @param termGuid The globally unique identifier for glossary term.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<AtlasRelatedObjectId>> getEntitiesAssignedWithTermAsync(
-            String termGuid, RequestOptions requestOptions) {
+    public Mono<BinaryData> getEntitiesAssignedWithTermAsync(String termGuid, RequestOptions requestOptions) {
         return getEntitiesAssignedWithTermWithResponseAsync(termGuid, requestOptions)
                 .flatMap(
-                        (Response<List<AtlasRelatedObjectId>> res) -> {
+                        (Response<BinaryData> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -9932,11 +9916,11 @@ public final class GlossariesImpl {
      * @param termGuid The globally unique identifier for glossary term.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<AtlasRelatedObjectId>> getEntitiesAssignedWithTermAsync(
+    public Mono<BinaryData> getEntitiesAssignedWithTermAsync(
             String termGuid, RequestOptions requestOptions, Context context) {
         return getEntitiesAssignedWithTermWithResponseAsync(termGuid, requestOptions, context)
                 .flatMap(
-                        (Response<List<AtlasRelatedObjectId>> res) -> {
+                        (Response<BinaryData> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -9987,7 +9971,7 @@ public final class GlossariesImpl {
      * @param termGuid The globally unique identifier for glossary term.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<AtlasRelatedObjectId> getEntitiesAssignedWithTerm(String termGuid, RequestOptions requestOptions) {
+    public BinaryData getEntitiesAssignedWithTerm(String termGuid, RequestOptions requestOptions) {
         return getEntitiesAssignedWithTermAsync(termGuid, requestOptions).block();
     }
 
@@ -10033,7 +10017,7 @@ public final class GlossariesImpl {
      * @param termGuid The globally unique identifier for glossary term.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<AtlasRelatedObjectId>> getEntitiesAssignedWithTermWithResponse(
+    public Response<BinaryData> getEntitiesAssignedWithTermWithResponse(
             String termGuid, RequestOptions requestOptions, Context context) {
         return getEntitiesAssignedWithTermWithResponseAsync(termGuid, requestOptions, context).block();
     }
@@ -10759,7 +10743,7 @@ public final class GlossariesImpl {
      * @param termGuid The globally unique identifier for glossary term.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Map<String, List<AtlasRelatedTermHeader>>>> listRelatedTermsWithResponseAsync(
+    public Mono<Response<BinaryData>> listRelatedTermsWithResponseAsync(
             String termGuid, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -10803,7 +10787,7 @@ public final class GlossariesImpl {
      * @param termGuid The globally unique identifier for glossary term.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Map<String, List<AtlasRelatedTermHeader>>>> listRelatedTermsWithResponseAsync(
+    public Mono<Response<BinaryData>> listRelatedTermsWithResponseAsync(
             String termGuid, RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
         return service.listRelatedTerms(this.client.getEndpoint(), termGuid, accept, requestOptions, context);
@@ -10845,11 +10829,10 @@ public final class GlossariesImpl {
      * @param termGuid The globally unique identifier for glossary term.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Map<String, List<AtlasRelatedTermHeader>>> listRelatedTermsAsync(
-            String termGuid, RequestOptions requestOptions) {
+    public Mono<BinaryData> listRelatedTermsAsync(String termGuid, RequestOptions requestOptions) {
         return listRelatedTermsWithResponseAsync(termGuid, requestOptions)
                 .flatMap(
-                        (Response<Map<String, List<AtlasRelatedTermHeader>>> res) -> {
+                        (Response<BinaryData> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -10894,11 +10877,10 @@ public final class GlossariesImpl {
      * @param termGuid The globally unique identifier for glossary term.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Map<String, List<AtlasRelatedTermHeader>>> listRelatedTermsAsync(
-            String termGuid, RequestOptions requestOptions, Context context) {
+    public Mono<BinaryData> listRelatedTermsAsync(String termGuid, RequestOptions requestOptions, Context context) {
         return listRelatedTermsWithResponseAsync(termGuid, requestOptions, context)
                 .flatMap(
-                        (Response<Map<String, List<AtlasRelatedTermHeader>>> res) -> {
+                        (Response<BinaryData> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -10943,7 +10925,7 @@ public final class GlossariesImpl {
      * @param termGuid The globally unique identifier for glossary term.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Map<String, List<AtlasRelatedTermHeader>> listRelatedTerms(String termGuid, RequestOptions requestOptions) {
+    public BinaryData listRelatedTerms(String termGuid, RequestOptions requestOptions) {
         return listRelatedTermsAsync(termGuid, requestOptions).block();
     }
 
@@ -10983,7 +10965,7 @@ public final class GlossariesImpl {
      * @param termGuid The globally unique identifier for glossary term.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Map<String, List<AtlasRelatedTermHeader>>> listRelatedTermsWithResponse(
+    public Response<BinaryData> listRelatedTermsWithResponse(
             String termGuid, RequestOptions requestOptions, Context context) {
         return listRelatedTermsWithResponseAsync(termGuid, requestOptions, context).block();
     }
@@ -12052,7 +12034,7 @@ public final class GlossariesImpl {
      * @param glossaryGuid The globally unique identifier for glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<AtlasGlossaryCategory>>> listGlossaryCategoriesWithResponseAsync(
+    public Mono<Response<BinaryData>> listGlossaryCategoriesWithResponseAsync(
             String glossaryGuid, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -12142,7 +12124,7 @@ public final class GlossariesImpl {
      * @param glossaryGuid The globally unique identifier for glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<AtlasGlossaryCategory>>> listGlossaryCategoriesWithResponseAsync(
+    public Mono<Response<BinaryData>> listGlossaryCategoriesWithResponseAsync(
             String glossaryGuid, RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
         return service.listGlossaryCategories(this.client.getEndpoint(), glossaryGuid, accept, requestOptions, context);
@@ -12229,11 +12211,10 @@ public final class GlossariesImpl {
      * @param glossaryGuid The globally unique identifier for glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<AtlasGlossaryCategory>> listGlossaryCategoriesAsync(
-            String glossaryGuid, RequestOptions requestOptions) {
+    public Mono<BinaryData> listGlossaryCategoriesAsync(String glossaryGuid, RequestOptions requestOptions) {
         return listGlossaryCategoriesWithResponseAsync(glossaryGuid, requestOptions)
                 .flatMap(
-                        (Response<List<AtlasGlossaryCategory>> res) -> {
+                        (Response<BinaryData> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -12323,11 +12304,11 @@ public final class GlossariesImpl {
      * @param glossaryGuid The globally unique identifier for glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<AtlasGlossaryCategory>> listGlossaryCategoriesAsync(
+    public Mono<BinaryData> listGlossaryCategoriesAsync(
             String glossaryGuid, RequestOptions requestOptions, Context context) {
         return listGlossaryCategoriesWithResponseAsync(glossaryGuid, requestOptions, context)
                 .flatMap(
-                        (Response<List<AtlasGlossaryCategory>> res) -> {
+                        (Response<BinaryData> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -12417,7 +12398,7 @@ public final class GlossariesImpl {
      * @param glossaryGuid The globally unique identifier for glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<AtlasGlossaryCategory> listGlossaryCategories(String glossaryGuid, RequestOptions requestOptions) {
+    public BinaryData listGlossaryCategories(String glossaryGuid, RequestOptions requestOptions) {
         return listGlossaryCategoriesAsync(glossaryGuid, requestOptions).block();
     }
 
@@ -12502,7 +12483,7 @@ public final class GlossariesImpl {
      * @param glossaryGuid The globally unique identifier for glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<AtlasGlossaryCategory>> listGlossaryCategoriesWithResponse(
+    public Response<BinaryData> listGlossaryCategoriesWithResponse(
             String glossaryGuid, RequestOptions requestOptions, Context context) {
         return listGlossaryCategoriesWithResponseAsync(glossaryGuid, requestOptions, context).block();
     }
@@ -12537,7 +12518,7 @@ public final class GlossariesImpl {
      * @param glossaryGuid The globally unique identifier for glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<AtlasRelatedCategoryHeader>>> listGlossaryCategoriesHeadersWithResponseAsync(
+    public Mono<Response<BinaryData>> listGlossaryCategoriesHeadersWithResponseAsync(
             String glossaryGuid, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -12576,7 +12557,7 @@ public final class GlossariesImpl {
      * @param glossaryGuid The globally unique identifier for glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<AtlasRelatedCategoryHeader>>> listGlossaryCategoriesHeadersWithResponseAsync(
+    public Mono<Response<BinaryData>> listGlossaryCategoriesHeadersWithResponseAsync(
             String glossaryGuid, RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
         return service.listGlossaryCategoriesHeaders(
@@ -12613,11 +12594,10 @@ public final class GlossariesImpl {
      * @param glossaryGuid The globally unique identifier for glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<AtlasRelatedCategoryHeader>> listGlossaryCategoriesHeadersAsync(
-            String glossaryGuid, RequestOptions requestOptions) {
+    public Mono<BinaryData> listGlossaryCategoriesHeadersAsync(String glossaryGuid, RequestOptions requestOptions) {
         return listGlossaryCategoriesHeadersWithResponseAsync(glossaryGuid, requestOptions)
                 .flatMap(
-                        (Response<List<AtlasRelatedCategoryHeader>> res) -> {
+                        (Response<BinaryData> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -12656,11 +12636,11 @@ public final class GlossariesImpl {
      * @param glossaryGuid The globally unique identifier for glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<AtlasRelatedCategoryHeader>> listGlossaryCategoriesHeadersAsync(
+    public Mono<BinaryData> listGlossaryCategoriesHeadersAsync(
             String glossaryGuid, RequestOptions requestOptions, Context context) {
         return listGlossaryCategoriesHeadersWithResponseAsync(glossaryGuid, requestOptions, context)
                 .flatMap(
-                        (Response<List<AtlasRelatedCategoryHeader>> res) -> {
+                        (Response<BinaryData> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -12699,8 +12679,7 @@ public final class GlossariesImpl {
      * @param glossaryGuid The globally unique identifier for glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<AtlasRelatedCategoryHeader> listGlossaryCategoriesHeaders(
-            String glossaryGuid, RequestOptions requestOptions) {
+    public BinaryData listGlossaryCategoriesHeaders(String glossaryGuid, RequestOptions requestOptions) {
         return listGlossaryCategoriesHeadersAsync(glossaryGuid, requestOptions).block();
     }
 
@@ -12734,7 +12713,7 @@ public final class GlossariesImpl {
      * @param glossaryGuid The globally unique identifier for glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<AtlasRelatedCategoryHeader>> listGlossaryCategoriesHeadersWithResponse(
+    public Response<BinaryData> listGlossaryCategoriesHeadersWithResponse(
             String glossaryGuid, RequestOptions requestOptions, Context context) {
         return listGlossaryCategoriesHeadersWithResponseAsync(glossaryGuid, requestOptions, context).block();
     }
@@ -14779,7 +14758,7 @@ public final class GlossariesImpl {
      * @param glossaryGuid The globally unique identifier for glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<AtlasGlossaryTerm>>> listGlossaryTermsWithResponseAsync(
+    public Mono<Response<BinaryData>> listGlossaryTermsWithResponseAsync(
             String glossaryGuid, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -14958,7 +14937,7 @@ public final class GlossariesImpl {
      * @param glossaryGuid The globally unique identifier for glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<AtlasGlossaryTerm>>> listGlossaryTermsWithResponseAsync(
+    public Mono<Response<BinaryData>> listGlossaryTermsWithResponseAsync(
             String glossaryGuid, RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
         return service.listGlossaryTerms(this.client.getEndpoint(), glossaryGuid, accept, requestOptions, context);
@@ -15134,10 +15113,10 @@ public final class GlossariesImpl {
      * @param glossaryGuid The globally unique identifier for glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<AtlasGlossaryTerm>> listGlossaryTermsAsync(String glossaryGuid, RequestOptions requestOptions) {
+    public Mono<BinaryData> listGlossaryTermsAsync(String glossaryGuid, RequestOptions requestOptions) {
         return listGlossaryTermsWithResponseAsync(glossaryGuid, requestOptions)
                 .flatMap(
-                        (Response<List<AtlasGlossaryTerm>> res) -> {
+                        (Response<BinaryData> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -15316,11 +15295,11 @@ public final class GlossariesImpl {
      * @param glossaryGuid The globally unique identifier for glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<AtlasGlossaryTerm>> listGlossaryTermsAsync(
+    public Mono<BinaryData> listGlossaryTermsAsync(
             String glossaryGuid, RequestOptions requestOptions, Context context) {
         return listGlossaryTermsWithResponseAsync(glossaryGuid, requestOptions, context)
                 .flatMap(
-                        (Response<List<AtlasGlossaryTerm>> res) -> {
+                        (Response<BinaryData> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -15499,7 +15478,7 @@ public final class GlossariesImpl {
      * @param glossaryGuid The globally unique identifier for glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<AtlasGlossaryTerm> listGlossaryTerms(String glossaryGuid, RequestOptions requestOptions) {
+    public BinaryData listGlossaryTerms(String glossaryGuid, RequestOptions requestOptions) {
         return listGlossaryTermsAsync(glossaryGuid, requestOptions).block();
     }
 
@@ -15673,7 +15652,7 @@ public final class GlossariesImpl {
      * @param glossaryGuid The globally unique identifier for glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<AtlasGlossaryTerm>> listGlossaryTermsWithResponse(
+    public Response<BinaryData> listGlossaryTermsWithResponse(
             String glossaryGuid, RequestOptions requestOptions, Context context) {
         return listGlossaryTermsWithResponseAsync(glossaryGuid, requestOptions, context).block();
     }
@@ -15711,7 +15690,7 @@ public final class GlossariesImpl {
      * @param glossaryGuid The globally unique identifier for glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<AtlasRelatedTermHeader>>> listGlossaryTermHeadersWithResponseAsync(
+    public Mono<Response<BinaryData>> listGlossaryTermHeadersWithResponseAsync(
             String glossaryGuid, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -15753,7 +15732,7 @@ public final class GlossariesImpl {
      * @param glossaryGuid The globally unique identifier for glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<AtlasRelatedTermHeader>>> listGlossaryTermHeadersWithResponseAsync(
+    public Mono<Response<BinaryData>> listGlossaryTermHeadersWithResponseAsync(
             String glossaryGuid, RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
         return service.listGlossaryTermHeaders(
@@ -15793,11 +15772,10 @@ public final class GlossariesImpl {
      * @param glossaryGuid The globally unique identifier for glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<AtlasRelatedTermHeader>> listGlossaryTermHeadersAsync(
-            String glossaryGuid, RequestOptions requestOptions) {
+    public Mono<BinaryData> listGlossaryTermHeadersAsync(String glossaryGuid, RequestOptions requestOptions) {
         return listGlossaryTermHeadersWithResponseAsync(glossaryGuid, requestOptions)
                 .flatMap(
-                        (Response<List<AtlasRelatedTermHeader>> res) -> {
+                        (Response<BinaryData> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -15839,11 +15817,11 @@ public final class GlossariesImpl {
      * @param glossaryGuid The globally unique identifier for glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<AtlasRelatedTermHeader>> listGlossaryTermHeadersAsync(
+    public Mono<BinaryData> listGlossaryTermHeadersAsync(
             String glossaryGuid, RequestOptions requestOptions, Context context) {
         return listGlossaryTermHeadersWithResponseAsync(glossaryGuid, requestOptions, context)
                 .flatMap(
-                        (Response<List<AtlasRelatedTermHeader>> res) -> {
+                        (Response<BinaryData> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -15885,7 +15863,7 @@ public final class GlossariesImpl {
      * @param glossaryGuid The globally unique identifier for glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<AtlasRelatedTermHeader> listGlossaryTermHeaders(String glossaryGuid, RequestOptions requestOptions) {
+    public BinaryData listGlossaryTermHeaders(String glossaryGuid, RequestOptions requestOptions) {
         return listGlossaryTermHeadersAsync(glossaryGuid, requestOptions).block();
     }
 
@@ -15922,7 +15900,7 @@ public final class GlossariesImpl {
      * @param glossaryGuid The globally unique identifier for glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<AtlasRelatedTermHeader>> listGlossaryTermHeadersWithResponse(
+    public Response<BinaryData> listGlossaryTermHeadersWithResponse(
             String glossaryGuid, RequestOptions requestOptions, Context context) {
         return listGlossaryTermHeadersWithResponseAsync(glossaryGuid, requestOptions, context).block();
     }
@@ -17292,7 +17270,7 @@ public final class GlossariesImpl {
      * @param glossaryName The name of the glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<AtlasGlossaryTerm>>> listTermsByGlossaryNameWithResponseAsync(
+    public Mono<Response<BinaryData>> listTermsByGlossaryNameWithResponseAsync(
             String glossaryName, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -17476,7 +17454,7 @@ public final class GlossariesImpl {
      * @param glossaryName The name of the glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<AtlasGlossaryTerm>>> listTermsByGlossaryNameWithResponseAsync(
+    public Mono<Response<BinaryData>> listTermsByGlossaryNameWithResponseAsync(
             String glossaryName, RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
         return service.listTermsByGlossaryName(
@@ -17653,11 +17631,10 @@ public final class GlossariesImpl {
      * @param glossaryName The name of the glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<AtlasGlossaryTerm>> listTermsByGlossaryNameAsync(
-            String glossaryName, RequestOptions requestOptions) {
+    public Mono<BinaryData> listTermsByGlossaryNameAsync(String glossaryName, RequestOptions requestOptions) {
         return listTermsByGlossaryNameWithResponseAsync(glossaryName, requestOptions)
                 .flatMap(
-                        (Response<List<AtlasGlossaryTerm>> res) -> {
+                        (Response<BinaryData> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -17836,11 +17813,11 @@ public final class GlossariesImpl {
      * @param glossaryName The name of the glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<AtlasGlossaryTerm>> listTermsByGlossaryNameAsync(
+    public Mono<BinaryData> listTermsByGlossaryNameAsync(
             String glossaryName, RequestOptions requestOptions, Context context) {
         return listTermsByGlossaryNameWithResponseAsync(glossaryName, requestOptions, context)
                 .flatMap(
-                        (Response<List<AtlasGlossaryTerm>> res) -> {
+                        (Response<BinaryData> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -18019,7 +17996,7 @@ public final class GlossariesImpl {
      * @param glossaryName The name of the glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<AtlasGlossaryTerm> listTermsByGlossaryName(String glossaryName, RequestOptions requestOptions) {
+    public BinaryData listTermsByGlossaryName(String glossaryName, RequestOptions requestOptions) {
         return listTermsByGlossaryNameAsync(glossaryName, requestOptions).block();
     }
 
@@ -18193,7 +18170,7 @@ public final class GlossariesImpl {
      * @param glossaryName The name of the glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<AtlasGlossaryTerm>> listTermsByGlossaryNameWithResponse(
+    public Response<BinaryData> listTermsByGlossaryNameWithResponse(
             String glossaryName, RequestOptions requestOptions, Context context) {
         return listTermsByGlossaryNameWithResponseAsync(glossaryName, requestOptions, context).block();
     }

@@ -7,7 +7,6 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import java.util.List;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the asynchronous PurviewCatalogServiceRestAPIDocument type. */
@@ -2827,7 +2826,7 @@ public final class EntityAsyncClient {
      * }</pre>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<String>>> setClassificationsWithResponse(
+    public Mono<Response<BinaryData>> setClassificationsWithResponse(
             BinaryData entityHeaders, RequestOptions requestOptions) {
         return this.serviceClient.setClassificationsWithResponseAsync(entityHeaders, requestOptions);
     }
@@ -2906,7 +2905,7 @@ public final class EntityAsyncClient {
      * }</pre>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<String>> setClassifications(BinaryData entityHeaders, RequestOptions requestOptions) {
+    public Mono<BinaryData> setClassifications(BinaryData entityHeaders, RequestOptions requestOptions) {
         return this.serviceClient.setClassificationsAsync(entityHeaders, requestOptions);
     }
 

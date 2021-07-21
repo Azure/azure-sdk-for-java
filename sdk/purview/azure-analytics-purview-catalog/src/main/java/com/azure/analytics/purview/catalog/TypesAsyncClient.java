@@ -1,14 +1,12 @@
 package com.azure.analytics.purview.catalog;
 
 import com.azure.analytics.purview.catalog.implementation.TypesImpl;
-import com.azure.analytics.purview.catalog.models.AtlasTypeDefHeader;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import java.util.List;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the asynchronous PurviewCatalogServiceRestAPIDocument type. */
@@ -4923,8 +4921,7 @@ public final class TypesAsyncClient {
      * }</pre>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<AtlasTypeDefHeader>>> listTypeDefinitionHeadersWithResponse(
-            RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> listTypeDefinitionHeadersWithResponse(RequestOptions requestOptions) {
         return this.serviceClient.listTypeDefinitionHeadersWithResponseAsync(requestOptions);
     }
 
@@ -4954,7 +4951,7 @@ public final class TypesAsyncClient {
      * }</pre>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<AtlasTypeDefHeader>> listTypeDefinitionHeaders(RequestOptions requestOptions) {
+    public Mono<BinaryData> listTypeDefinitionHeaders(RequestOptions requestOptions) {
         return this.serviceClient.listTypeDefinitionHeadersAsync(requestOptions);
     }
 
