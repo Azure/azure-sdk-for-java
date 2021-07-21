@@ -96,7 +96,7 @@ public final class EntityRecognitionSkill extends SearchIndexerSkill {
      *
      * @return The version of the {@link EntityRecognitionSkill}.
      */
-    public EntityRecognitionSkillVersion getVersion() {
+    public EntityRecognitionSkillVersion getSkillVersion() {
         return this.version;
     }
 

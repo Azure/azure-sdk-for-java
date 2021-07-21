@@ -733,6 +733,8 @@
     <Or>
       <Package name="com.azure.storage.blob.perf"/>
       <Package name="com.azure.storage.blob.perf.core"/>
+      <Package name="com.azure.storage.file.datalake.perf"/>
+      <Package name="com.azure.storage.file.datalake.perf.core"/>
     </Or>
     <Bug pattern="BC_UNCONFIRMED_CAST, DM_EXIT, RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE"/>
   </Match>
