@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.blob;
 
 import com.azure.storage.common.policy.RequestRetryOptions;
@@ -8,6 +11,8 @@ import java.time.Duration;
 /**
  * This example shows how to approximate the LocationMode behavior from the track 1 SDK. It is a general translation to
  * achieve roughly the same results, but it is not an identical implementation. It may be modified to suit the use case.
+ * For more information on redundant storage, see here:
+ * https://docs.microsoft.com/en-us/azure/storage/common/storage-redundancy
  *
  * In a sense, the track 2 SDK is always primary-only or primary-then-secondary. However, by passing the secondary
  * endpoint as the primary and the primary as the secondary, the behavior of secondary-only or secondary-then-primary
