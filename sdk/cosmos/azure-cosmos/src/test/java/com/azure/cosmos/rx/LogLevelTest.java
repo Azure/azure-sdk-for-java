@@ -5,9 +5,12 @@ package com.azure.cosmos.rx;
 
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
+import com.azure.cosmos.implementation.http.ReactorNettyClient;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
+import io.netty.handler.logging.LogLevel;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.LoggerContext;
@@ -39,7 +42,7 @@ import static org.assertj.core.api.Assertions.fail;
 public class LogLevelTest extends TestSuiteBase {
     public final static String COSMOS_DB_LOGGING_CATEGORY = "com.azure.cosmos";
     public final static String NETWORK_LOGGING_CATEGORY = "com.azure.cosmos.netty-network";
-    public final static String LOG_PATTERN_1 = "HTTP/1.1 200 Ok.";
+    public final static String LOG_PATTERN_1 = "HTTP/1.1 201";
     public final static String LOG_PATTERN_2 = "|  0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f |";
     public final static String LOG_PATTERN_3 = "USER_EVENT: SslHandshakeCompletionEvent(SUCCESS)";
     public final static String LOG_PATTERN_4 = "CONNECT: ";
@@ -64,8 +67,9 @@ public class LogLevelTest extends TestSuiteBase {
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT)
-    public void afterClass() {
+    public void after_LogLevelTest() {
         resetLoggingConfiguration();
+        safeClose(client);
     }
 
     /**
@@ -83,23 +87,16 @@ public class LogLevelTest extends TestSuiteBase {
         final Logger logger = LoggerFactory.getLogger(NETWORK_LOGGING_CATEGORY);
         assertThat(logger.isDebugEnabled()).isTrue();
 
-        CosmosAsyncClient client = getClientBuilder().buildAsyncClient();
-        try {
-            InternalObjectNode docDefinition = getDocumentDefinition();
-            Mono<CosmosItemResponse<InternalObjectNode>> createObservable = createdCollection.createItem(docDefinition,
-                    new CosmosItemRequestOptions());
+        ReactorNettyClient gatewayHttpClient = (ReactorNettyClient) ReflectionUtils.getGatewayHttpClient(client);
+        gatewayHttpClient.enableNetworkLogging();
 
-            CosmosItemResponseValidator validator =
-                new CosmosItemResponseValidator.Builder<CosmosItemResponse<InternalObjectNode>>()
-                    .withId(docDefinition.getId())
-                    .build();
-            validateItemSuccess(createObservable, validator);
+        InternalObjectNode docDefinition = getDocumentDefinition();
+        createdCollection.createItem(docDefinition, new CosmosItemRequestOptions()).block();
 
-            assertThat(consoleWriter.toString()).isEmpty();
-
-        } finally {
-            safeClose(client);
-        }
+        assertThat(consoleWriter.toString()).contains(LOG_PATTERN_1);
+        assertThat(consoleWriter.toString()).contains(LOG_PATTERN_2);
+        assertThat(consoleWriter.toString()).contains(LOG_PATTERN_3);
+        assertThat(consoleWriter.toString()).contains(LOG_PATTERN_4);
     }
 
     /**
@@ -113,21 +110,19 @@ public class LogLevelTest extends TestSuiteBase {
         final StringWriter consoleWriter = new StringWriter();
         addAppenderAndLogger(NETWORK_LOGGING_CATEGORY, Level.WARN, APPENDER_NAME, consoleWriter);
 
-        CosmosAsyncClient client = getClientBuilder().buildAsyncClient();
-        try {
-            InternalObjectNode docDefinition = getDocumentDefinition();
-            Mono<CosmosItemResponse<InternalObjectNode>> createObservable = createdCollection.createItem(docDefinition,
-                    new CosmosItemRequestOptions());
-            CosmosItemResponseValidator validator =
-                new CosmosItemResponseValidator.Builder<CosmosItemResponse<InternalObjectNode>>()
-                    .withId(docDefinition.getId())
-                    .build();
-            validateItemSuccess(createObservable, validator);
+        final Logger logger = LoggerFactory.getLogger(NETWORK_LOGGING_CATEGORY);
+        assertThat(logger.isWarnEnabled()).isTrue();
 
-            assertThat(consoleWriter.toString()).isEmpty();
-        } finally {
-            safeClose(client);
-        }
+        ReactorNettyClient gatewayHttpClient = (ReactorNettyClient) ReflectionUtils.getGatewayHttpClient(client);
+        gatewayHttpClient.enableNetworkLogging();
+
+        InternalObjectNode docDefinition = getDocumentDefinition();
+        createdCollection.createItem(docDefinition, new CosmosItemRequestOptions()).block();
+
+        assertThat(consoleWriter.toString()).contains(LOG_PATTERN_1);
+        assertThat(consoleWriter.toString()).contains(LOG_PATTERN_2);
+        assertThat(consoleWriter.toString()).contains(LOG_PATTERN_3);
+        assertThat(consoleWriter.toString()).contains(LOG_PATTERN_4);
     }
 
     /**
@@ -145,25 +140,16 @@ public class LogLevelTest extends TestSuiteBase {
         Logger logger = LoggerFactory.getLogger(NETWORK_LOGGING_CATEGORY);
         assertThat(logger.isTraceEnabled()).isTrue();
 
-        CosmosAsyncClient client = getClientBuilder().buildAsyncClient();
-        try {
-            InternalObjectNode docDefinition = getDocumentDefinition();
-            Mono<CosmosItemResponse<InternalObjectNode>> createObservable = createdCollection.createItem(docDefinition,
-                    new CosmosItemRequestOptions());
-            CosmosItemResponseValidator validator =
-                new CosmosItemResponseValidator.Builder<CosmosItemResponse<InternalObjectNode>>()
-                    .withId(docDefinition.getId())
-                    .build();
-            validateItemSuccess(createObservable, validator);
+        ReactorNettyClient gatewayHttpClient = (ReactorNettyClient) ReflectionUtils.getGatewayHttpClient(client);
+        gatewayHttpClient.enableNetworkLogging();
 
-            assertThat(consoleWriter.toString()).contains(LOG_PATTERN_1);
-            assertThat(consoleWriter.toString()).contains(LOG_PATTERN_2);
-            assertThat(consoleWriter.toString()).contains(LOG_PATTERN_3);
-            assertThat(consoleWriter.toString()).contains(LOG_PATTERN_4);
+        InternalObjectNode docDefinition = getDocumentDefinition();
+        createdCollection.createItem(docDefinition, new CosmosItemRequestOptions()).block();
 
-        } finally {
-            safeClose(client);
-        }
+        assertThat(consoleWriter.toString()).contains(LOG_PATTERN_1);
+        assertThat(consoleWriter.toString()).contains(LOG_PATTERN_2);
+        assertThat(consoleWriter.toString()).contains(LOG_PATTERN_3);
+        assertThat(consoleWriter.toString()).contains(LOG_PATTERN_4);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
@@ -175,24 +161,16 @@ public class LogLevelTest extends TestSuiteBase {
         Logger logger = LoggerFactory.getLogger(COSMOS_DB_LOGGING_CATEGORY);
         assertThat(logger.isTraceEnabled()).isTrue();
 
-        CosmosAsyncClient client = getClientBuilder().buildAsyncClient();
-        try {
-            InternalObjectNode docDefinition = getDocumentDefinition();
-            Mono<CosmosItemResponse<InternalObjectNode>> createObservable = createdCollection.createItem(docDefinition,
-                    new CosmosItemRequestOptions());
-            CosmosItemResponseValidator validator =
-                new CosmosItemResponseValidator.Builder<CosmosItemResponse<InternalObjectNode>>()
-                    .withId(docDefinition.getId())
-                    .build();
-            validateItemSuccess(createObservable, validator);
+        ReactorNettyClient gatewayHttpClient = (ReactorNettyClient) ReflectionUtils.getGatewayHttpClient(client);
+        gatewayHttpClient.enableNetworkLogging();
 
-            assertThat(consoleWriter.toString()).contains(LOG_PATTERN_1);
-            assertThat(consoleWriter.toString()).contains(LOG_PATTERN_2);
-            assertThat(consoleWriter.toString()).contains(LOG_PATTERN_3);
-            assertThat(consoleWriter.toString()).contains(LOG_PATTERN_4);
-        } finally {
-            safeClose(client);
-        }
+        InternalObjectNode docDefinition = getDocumentDefinition();
+        createdCollection.createItem(docDefinition, new CosmosItemRequestOptions()).block();
+
+        assertThat(consoleWriter.toString()).contains(LOG_PATTERN_1);
+        assertThat(consoleWriter.toString()).contains(LOG_PATTERN_2);
+        assertThat(consoleWriter.toString()).contains(LOG_PATTERN_3);
+        assertThat(consoleWriter.toString()).contains(LOG_PATTERN_4);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
@@ -222,21 +200,16 @@ public class LogLevelTest extends TestSuiteBase {
         assertThat(LoggerFactory.getLogger(COSMOS_DB_LOGGING_CATEGORY).isDebugEnabled()).isTrue();
         assertThat(LoggerFactory.getLogger(NETWORK_LOGGING_CATEGORY).isInfoEnabled()).isTrue();
 
-        CosmosAsyncClient client = getClientBuilder().buildAsyncClient();
-        try {
-            InternalObjectNode docDefinition = getDocumentDefinition();
-            Mono<CosmosItemResponse<InternalObjectNode>> createObservable = createdCollection.createItem(docDefinition,
-                    new CosmosItemRequestOptions());
-            CosmosItemResponseValidator validator =
-                new CosmosItemResponseValidator.Builder<CosmosItemResponse<InternalObjectNode>>()
-                    .withId(docDefinition.getId())
-                    .build();
-            validateItemSuccess(createObservable, validator);
+        ReactorNettyClient gatewayHttpClient = (ReactorNettyClient) ReflectionUtils.getGatewayHttpClient(client);
+        gatewayHttpClient.enableNetworkLogging();
 
-            assertThat(consoleWriter.toString()).isEmpty();
-        } finally {
-            safeClose(client);
-        }
+        InternalObjectNode docDefinition = getDocumentDefinition();
+        createdCollection.createItem(docDefinition, new CosmosItemRequestOptions()).block();
+
+        assertThat(consoleWriter.toString()).contains(LOG_PATTERN_1);
+        assertThat(consoleWriter.toString()).contains(LOG_PATTERN_2);
+        assertThat(consoleWriter.toString()).contains(LOG_PATTERN_3);
+        assertThat(consoleWriter.toString()).contains(LOG_PATTERN_4);
     }
 
     /**
@@ -253,21 +226,16 @@ public class LogLevelTest extends TestSuiteBase {
         Logger logger = LoggerFactory.getLogger(NETWORK_LOGGING_CATEGORY);
         assertThat(logger.isErrorEnabled()).isTrue();
 
-        CosmosAsyncClient client = getClientBuilder().buildAsyncClient();
-        try {
-            InternalObjectNode docDefinition = getDocumentDefinition();
-            Mono<CosmosItemResponse<InternalObjectNode>> createObservable = createdCollection.createItem(docDefinition,
-                    new CosmosItemRequestOptions());
-            CosmosItemResponseValidator validator =
-                new CosmosItemResponseValidator.Builder<CosmosItemResponse<InternalObjectNode>>()
-                    .withId(docDefinition.getId())
-                    .build();
-            validateItemSuccess(createObservable, validator);
+        ReactorNettyClient gatewayHttpClient = (ReactorNettyClient) ReflectionUtils.getGatewayHttpClient(client);
+        gatewayHttpClient.enableNetworkLogging();
 
-            assertThat(consoleWriter.toString()).isEmpty();
-        } finally {
-            safeClose(client);
-        }
+        InternalObjectNode docDefinition = getDocumentDefinition();
+        createdCollection.createItem(docDefinition, new CosmosItemRequestOptions()).block();
+
+        assertThat(consoleWriter.toString()).contains(LOG_PATTERN_1);
+        assertThat(consoleWriter.toString()).contains(LOG_PATTERN_2);
+        assertThat(consoleWriter.toString()).contains(LOG_PATTERN_3);
+        assertThat(consoleWriter.toString()).contains(LOG_PATTERN_4);
     }
 
     /**
@@ -284,21 +252,16 @@ public class LogLevelTest extends TestSuiteBase {
         Logger logger = LoggerFactory.getLogger(NETWORK_LOGGING_CATEGORY);
         assertThat(logger.isInfoEnabled()).isTrue();
 
-        CosmosAsyncClient client = getClientBuilder().buildAsyncClient();
-        try {
-            InternalObjectNode docDefinition = getDocumentDefinition();
-            Mono<CosmosItemResponse<InternalObjectNode>> createObservable = createdCollection.createItem(docDefinition,
-                    new CosmosItemRequestOptions());
-            CosmosItemResponseValidator validator =
-                new CosmosItemResponseValidator.Builder<CosmosItemResponse<InternalObjectNode>>()
-                    .withId(docDefinition.getId())
-                    .build();
-            validateItemSuccess(createObservable, validator);
+        ReactorNettyClient gatewayHttpClient = (ReactorNettyClient) ReflectionUtils.getGatewayHttpClient(client);
+        gatewayHttpClient.enableNetworkLogging();
 
-            assertThat(consoleWriter.toString()).isEmpty();
-        } finally {
-            safeClose(client);
-        }
+        InternalObjectNode docDefinition = getDocumentDefinition();
+        createdCollection.createItem(docDefinition, new CosmosItemRequestOptions()).block();
+
+        assertThat(consoleWriter.toString()).contains(LOG_PATTERN_1);
+        assertThat(consoleWriter.toString()).contains(LOG_PATTERN_2);
+        assertThat(consoleWriter.toString()).contains(LOG_PATTERN_3);
+        assertThat(consoleWriter.toString()).contains(LOG_PATTERN_4);
     }
 
     private InternalObjectNode getDocumentDefinition() {
