@@ -176,7 +176,6 @@ public final class UrlBuilder {
         if (query == null || query.isEmpty()) {
             this.query.clear();
         } else {
-            clearQuery();
             with(query, UrlTokenizerState.QUERY);
         }
         return this;

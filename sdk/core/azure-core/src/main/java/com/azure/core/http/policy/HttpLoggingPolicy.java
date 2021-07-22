@@ -312,6 +312,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         UrlBuilder builder = UrlBuilder.parse(url);
         String allowedQueryString = getAllowedQueryString(url.getQuery(), allowedQueryParameterNames);
         return builder
+                .clearQuery()
                 .setQuery(allowedQueryString)
                 .toString();
     }
