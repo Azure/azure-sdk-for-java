@@ -20,7 +20,7 @@ public final class TopQueryStatisticsInput {
      * The properties of a wait statistics input.
      */
     @JsonProperty(value = "properties", required = true)
-    private TopQueryStatisticsInputProperties properties;
+    private TopQueryStatisticsInputProperties properties = new TopQueryStatisticsInputProperties();
 
     /**
      * Get the properties property: The properties of a wait statistics input.

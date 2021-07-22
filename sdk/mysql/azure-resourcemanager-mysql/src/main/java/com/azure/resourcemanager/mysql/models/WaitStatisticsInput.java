@@ -20,7 +20,7 @@ public final class WaitStatisticsInput {
      * The properties of a wait statistics input.
      */
     @JsonProperty(value = "properties", required = true)
-    private WaitStatisticsInputProperties properties;
+    private WaitStatisticsInputProperties properties = new WaitStatisticsInputProperties();
 
     /**
      * Get the properties property: The properties of a wait statistics input.
