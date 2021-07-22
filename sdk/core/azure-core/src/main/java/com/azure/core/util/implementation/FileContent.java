@@ -9,8 +9,6 @@ import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
-import reactor.core.scheduler.Scheduler;
-import reactor.core.scheduler.Schedulers;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
@@ -22,7 +20,6 @@ import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
-import java.util.Arrays;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -41,6 +38,8 @@ public final class FileContent extends BinaryDataContent {
      *
      * @param file The {@link Path} content.
      * @param chunkSize The requested size for each read of the path.
+     * @throws NullPointerException if {@code file} is null.
+     * @throws IllegalArgumentException if {@code chunkSize} is less than or equal to zero.
      */
     public FileContent(Path file, int chunkSize) {
         Objects.requireNonNull(file, "'file' cannot be null.");
@@ -71,9 +70,12 @@ public final class FileContent extends BinaryDataContent {
 
     @Override
     public byte[] toBytes() {
-        bytes.compareAndSet(null, getBytes());
         byte[] data = this.bytes.get();
-        return Arrays.copyOf(data, data.length);
+        if (data == null) {
+            bytes.set(getBytes());
+            data = this.bytes.get();
+        }
+        return data;
     }
 
     @Override
@@ -92,7 +94,12 @@ public final class FileContent extends BinaryDataContent {
 
     @Override
     public ByteBuffer toByteBuffer() {
-        return ByteBuffer.wrap(toBytes()).asReadOnlyBuffer();
+        try {
+            FileChannel fileChannel = FileChannel.open(file);
+            return fileChannel.map(FileChannel.MapMode.READ_ONLY, 0, length);
+        } catch (IOException exception) {
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(exception));
+        }
     }
 
     @Override
@@ -121,6 +128,7 @@ public final class FileContent extends BinaryDataContent {
     }
 
     private byte[] getBytes() {
+
         return FluxUtil.collectBytesInByteBufferStream(toFluxByteBuffer())
                 // this doesn't seem to be working (newBoundedElastic() didn't work either)
                 // .publishOn(Schedulers.boundedElastic())

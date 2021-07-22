@@ -28,6 +28,9 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.Objects;
 
+import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.core.util.implementation.BinaryDataContent.STREAM_READ_SIZE;
+
 /**
  *
  * BinaryData is a convenient data interchange class for use throughout the Azure SDK for Java. Put simply, BinaryData
@@ -57,12 +60,18 @@ import java.util.Objects;
  * </p>
  *
  * {@link BinaryData} can be created from an {@link InputStream}, a {@link Flux} of {@link ByteBuffer}, a {@link
- * String}, an {@link Object}, or a byte array.
+ * String}, an {@link Object}, a {@link Path file}, or a byte array.
  *
- * <p><strong>Immutable data</strong></p>
+ * <p><strong>A note on data mutability</strong></p>
  *
- * {@link BinaryData} copies data on construction making it immutable. Various APIs are provided to get data out of
- * {@link BinaryData}, they all start with the {@code 'to'} prefix, for example {@link BinaryData#toBytes()}.
+ * {@link BinaryData} does not copy data on construction. BinaryData keeps a reference to the source content
+ * and is accessed when a read request is made. So, any modifications to the underlying source before the content is
+ * read can result in undefined behavior.
+ * <p>
+ * To create an instance of  {@link BinaryData}, use the various
+ * static factory methods available. They all start with {@code 'to'} prefix, for example
+ * {@link BinaryData#toBytes()}.
+ *</p>
  *
  * <p><strong>Create an instance from a byte array</strong></p>
  *
@@ -80,13 +89,20 @@ import java.util.Objects;
  *
  * {@codesnippet com.azure.core.util.BinaryData.fromObject#Object}
  *
+ * <p><strong>Create an instance from {@code Flux<ByteBuffer>}</strong></p>
+ *
+ * {@codesnippet com.azure.core.util.BinaryData.fromFlux#Flux}
+ *
+ * <p><strong>Create an instance from a file</strong></p>
+ *
+ * {@codesnippet com.azure.core.util.BinaryData.fromFile}
+ *
  * @see ObjectSerializer
  * @see JsonSerializer
  * @see <a href="https://aka.ms/azsdk/java/docs/serialization" target="_blank">More about serialization</a>
  */
 public final class BinaryData {
     private static final ClientLogger LOGGER = new ClientLogger(BinaryData.class);
-    private static final int CHUNK_SIZE = 8092;
     static final JsonSerializer SERIALIZER = JsonSerializerProviders.createInstance(true);
     private final BinaryDataContent content;
 
@@ -95,11 +111,13 @@ public final class BinaryData {
     }
 
     /**
-     * Creates an instance of {@link BinaryData} from the given {@link InputStream}.
-     * <p>
-     * If {@code inputStream} is null or empty an empty {@link BinaryData} is returned.
+     * Creates an instance of {@link BinaryData} from the given {@link InputStream}. Depending on the type of
+     * inputStream, the BinaryData instance created may or may not allow reading the content more than once. The
+     * stream content is not cached if the stream is not read into a format that requires the content to be fully read
+     * into memory.
      * <p>
      * <b>NOTE:</b> The {@link InputStream} is not closed by this function.
+     * </p>
      *
      * <p><strong>Create an instance from an InputStream</strong></p>
      *
@@ -108,16 +126,15 @@ public final class BinaryData {
      * @param inputStream The {@link InputStream} that {@link BinaryData} will represent.
      * @return A {@link BinaryData} representing the {@link InputStream}.
      * @throws UncheckedIOException If any error happens while reading the {@link InputStream}.
+     * @throws NullPointerException If {@code inputStream} is null.
      */
     public static BinaryData fromStream(InputStream inputStream) {
+        Objects.requireNonNull(inputStream, "'inputStream' cannot be null.");
         return new BinaryData(new InputStreamContent(inputStream));
     }
 
     /**
      * Creates an instance of {@link BinaryData} from the given {@link InputStream}.
-     * <p>
-     * If {@code inputStream} is null or empty an empty {@link BinaryData} is returned.
-     * <p>
      * <b>NOTE:</b> The {@link InputStream} is not closed by this function.
      *
      * <p><strong>Create an instance from an InputStream</strong></p>
@@ -127,14 +144,15 @@ public final class BinaryData {
      * @param inputStream The {@link InputStream} that {@link BinaryData} will represent.
      * @return A {@link Mono} of {@link BinaryData} representing the {@link InputStream}.
      * @throws UncheckedIOException If any error happens while reading the {@link InputStream}.
+     * @throws NullPointerException If {@code inputStream} is null.
      */
     public static Mono<BinaryData> fromStreamAsync(InputStream inputStream) {
         return Mono.fromCallable(() -> fromStream(inputStream));
     }
 
     /**
-     * Creates an instance of {@link BinaryData} from the given {@link Flux} of {@link ByteBuffer}.
-     * <p>
+     * Creates an instance of {@link BinaryData} from the given {@link Flux} of {@link ByteBuffer}. The source flux
+     * is subscribed to as many times as the content is read. The flux, therefore, should be replayable.
      *
      * <p><strong>Create an instance from a Flux of ByteBuffer</strong></p>
      *
@@ -142,14 +160,18 @@ public final class BinaryData {
      *
      * @param data The {@link Flux} of {@link ByteBuffer} that {@link BinaryData} will represent.
      * @return A {@link Mono} of {@link BinaryData} representing the {@link Flux} of {@link ByteBuffer}.
+     * @throws NullPointerException If {@code data} is null.
      */
     public static Mono<BinaryData> fromFlux(Flux<ByteBuffer> data) {
-        Objects.requireNonNull(data, "'content' cannot be null.");
+        if (data == null) {
+            return monoError(LOGGER, new NullPointerException("'content' cannot be null."));
+        }
         return Mono.just(new BinaryData(new FluxByteBufferContent(data)));
     }
 
     /**
-     * Creates an instance of {@link BinaryData} from the given {@link Flux} of {@link ByteBuffer}.
+     * Creates an instance of {@link BinaryData} from the given {@link Flux} of {@link ByteBuffer}. The source flux
+     * is subscribed to as many times as the content is read. The flux, therefore, should be replayable.
      *
      * <p><strong>Create an instance from a Flux of ByteBuffer</strong></p>
      *
@@ -162,9 +184,11 @@ public final class BinaryData {
      * @throws NullPointerException if {@code data} is null.
      */
     public static Mono<BinaryData> fromFlux(Flux<ByteBuffer> data, Long length) {
-        Objects.requireNonNull(data, "'content' cannot be null.");
+        if (data == null) {
+            return monoError(LOGGER, new NullPointerException("'content' cannot be null."));
+        }
         if (length < 0) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'length' cannot be less than 0."));
+            return monoError(LOGGER, new IllegalArgumentException("'length' cannot be less than 0."));
         }
         return Mono.just(new BinaryData(new FluxByteBufferContent(data, length)));
     }
@@ -174,17 +198,17 @@ public final class BinaryData {
      * <p>
      * The {@link String} is converted into bytes using {@link String#getBytes(Charset)} passing {@link
      * StandardCharsets#UTF_8}.
-     * <p>
-     * If the {@code data} is null or a zero length string an empty {@link BinaryData} will be returned.
-     *
+     * </p>
      * <p><strong>Create an instance from a String</strong></p>
      *
      * {@codesnippet com.azure.core.util.BinaryData.fromString#String}
      *
      * @param data The {@link String} that {@link BinaryData} will represent.
      * @return A {@link BinaryData} representing the {@link String}.
+     * @throws NullPointerException If {@code data} is null.
      */
     public static BinaryData fromString(String data) {
+        Objects.requireNonNull(data, "'data' cannot be null.");
         return new BinaryData(new StringContent(data));
     }
 
@@ -195,6 +219,7 @@ public final class BinaryData {
      * byte array is used as a reference by this instance of {@link BinaryData} and any changes to the byte array
      * outside of this instance will result in the contents of this BinaryData instance to be updated as well. To
      * safely update the byte array, it is recommended to make a copy of the contents first.
+     * </p>
      *
      * <p><strong>Create an instance from a byte array</strong></p>
      *
@@ -202,50 +227,54 @@ public final class BinaryData {
      *
      * @param data The byte array that {@link BinaryData} will represent.
      * @return A {@link BinaryData} representing the byte array.
+     * @throws NullPointerException If {@code data} is null.
      */
     public static BinaryData fromBytes(byte[] data) {
+        Objects.requireNonNull(data, "'data' cannot be null.");
         return new BinaryData(new ByteArrayContent(data));
     }
 
     /**
      * Creates an instance of {@link BinaryData} by serializing the {@link Object} using the default {@link
      * JsonSerializer}.
-     * <p>
-     * If {@code data} is null an empty {@link BinaryData} will be returned.
+     *
      * <p>
      * <b>Note:</b> This method first looks for a {@link JsonSerializerProvider} implementation on the classpath. If no
      * implementation is found, a default Jackson-based implementation will be used to serialize the object.
-     *
+     *</p>
      * <p><strong>Creating an instance from an Object</strong></p>
      *
      * {@codesnippet com.azure.core.util.BinaryData.fromObject#Object}
      *
      * @param data The object that will be JSON serialized that {@link BinaryData} will represent.
      * @return A {@link BinaryData} representing the JSON serialized object.
+     * @throws NullPointerException If {@code data} is null.
      * @see JsonSerializer
      */
     public static BinaryData fromObject(Object data) {
+        Objects.requireNonNull(data, "'data' cannot be null.");
         return fromObject(data, SERIALIZER);
     }
 
     /**
      * Creates an instance of {@link BinaryData} by serializing the {@link Object} using the default {@link
      * JsonSerializer}.
-     * <p>
-     * If {@code data} is null an empty {@link BinaryData} will be returned.
+     *
      * <p>
      * <b>Note:</b> This method first looks for a {@link JsonSerializerProvider} implementation on the classpath. If no
      * implementation is found, a default Jackson-based implementation will be used to serialize the object.
-     *
+     * </p>
      * <p><strong>Creating an instance from an Object</strong></p>
      *
      * {@codesnippet com.azure.core.util.BinaryData.fromObjectAsync#Object}
      *
      * @param data The object that will be JSON serialized that {@link BinaryData} will represent.
      * @return A {@link Mono} of {@link BinaryData} representing the JSON serialized object.
+     * @throws NullPointerException If {@code data} is null.
      * @see JsonSerializer
      */
     public static Mono<BinaryData> fromObjectAsync(Object data) {
+        Objects.requireNonNull(data, "'data' cannot be null.");
         return fromObjectAsync(data, SERIALIZER);
     }
 
@@ -253,10 +282,9 @@ public final class BinaryData {
      * Creates an instance of {@link BinaryData} by serializing the {@link Object} using the passed {@link
      * ObjectSerializer}.
      * <p>
-     * If {@code data} is null an empty {@link BinaryData} will be returned.
-     * <p>
      * The passed {@link ObjectSerializer} can either be one of the implementations offered by the Azure SDKs or your
      * own implementation.
+     * </p>
      *
      * <p><strong>Azure SDK implementations</strong></p>
      * <ul>
@@ -271,23 +299,25 @@ public final class BinaryData {
      * @param data The object that will be serialized that {@link BinaryData} will represent.
      * @param serializer The {@link ObjectSerializer} used to serialize object.
      * @return A {@link BinaryData} representing the serialized object.
-     * @throws NullPointerException If {@code serializer} is null and {@code data} is not null.
+     * @throws NullPointerException If {@code serializer} is null or {@code data} is null.
      * @see ObjectSerializer
      * @see JsonSerializer
      * @see <a href="https://aka.ms/azsdk/java/docs/serialization" target="_blank">More about serialization</a>
      */
     public static BinaryData fromObject(Object data, ObjectSerializer serializer) {
+        Objects.requireNonNull(data, "'data' cannot be null.");
+        Objects.requireNonNull(serializer, "'serializer' cannot be null.");
         return new BinaryData(new SerializableContent(data, serializer));
     }
 
     /**
      * Creates an instance of {@link BinaryData} by serializing the {@link Object} using the passed {@link
      * ObjectSerializer}.
-     * <p>
-     * If {@code data} is null an empty {@link BinaryData} will be returned.
+     *
      * <p>
      * The passed {@link ObjectSerializer} can either be one of the implementations offered by the Azure SDKs or your
      * own implementation.
+     * </p>
      *
      * <p><strong>Azure SDK implementations</strong></p>
      * <ul>
@@ -302,7 +332,7 @@ public final class BinaryData {
      * @param data The object that will be serialized that {@link BinaryData} will represent.
      * @param serializer The {@link ObjectSerializer} used to serialize object.
      * @return A {@link Mono} of {@link BinaryData} representing the serialized object.
-     * @throws NullPointerException If {@code serializer} is null and {@code data} is not null.
+     * @throws NullPointerException If {@code serializer} is null or {@code data} is null.
      * @see ObjectSerializer
      * @see JsonSerializer
      * @see <a href="https://aka.ms/azsdk/java/docs/serialization" target="_blank">More about serialization</a>
@@ -312,18 +342,30 @@ public final class BinaryData {
     }
 
     /**
-     * Creates a {@link BinaryData} that uses {@link Path} as its data.
+     * Creates a {@link BinaryData} that uses {@link Path} as its data. This method checks for the existence of
+     * the file at the time of creating an instance of {@link BinaryData}. The file, however, is not read until there
+     * is an attempt to read the contents of the returned BinaryData instance.
+     *
+     * <p><strong>Create an instance from a file</strong></p>
+     *
+     * {@codesnippet com.azure.core.util.BinaryData.fromFile}
      *
      * @param file The {@link Path} that will be the {@link BinaryData} data.
      * @return A new {@link BinaryData}.
      * @throws NullPointerException If {@code file} is null.
      */
     public static BinaryData fromFile(Path file) {
-        return fromFile(file, CHUNK_SIZE);
+        return fromFile(file, STREAM_READ_SIZE);
     }
 
     /**
-     * Creates a {@link BinaryData} that uses {@link Path} as its data.
+     * Creates a {@link BinaryData} that uses {@link Path file} as its data. This method checks for the existence of
+     * the file at the time of creating an instance of {@link BinaryData}. The file, however, is not read until there
+     * is an attempt to read the contents of the returned BinaryData instance.
+     *
+     * <p><strong>Create an instance from a file</strong></p>
+     *
+     * {@codesnippet com.azure.core.util.BinaryData.fromFile#Path-int}
      *
      * @param file The {@link Path} that will be the {@link BinaryData} data.
      * @param chunkSize The requested size for each read of the path.
@@ -354,7 +396,7 @@ public final class BinaryData {
 
     /**
      * Returns a {@link String} representation of this {@link BinaryData} by converting its data using the UTF-8
-     * character set.
+     * character set. A new instance of String is created each time this method is called.
      *
      * @return A {@link String} representing this {@link BinaryData}.
      */
@@ -364,7 +406,9 @@ public final class BinaryData {
 
     /**
      * Returns an {@link Object} representation of this {@link BinaryData} by deserializing its data using the default
-     * {@link JsonSerializer}.
+     * {@link JsonSerializer}. Each time this method is called, the content is deserialized and a new instance of
+     * type {@code T} is returned. So, calling this method repeatedly to convert the underlying data source into the
+     * same type is not recommended.
      * <p>
      * The type, represented by {@link Class}, should be a non-generic class, for generic classes use {@link
      * #toObject(TypeReference)}.
@@ -388,7 +432,9 @@ public final class BinaryData {
 
     /**
      * Returns an {@link Object} representation of this {@link BinaryData} by deserializing its data using the default
-     * {@link JsonSerializer}.
+     * {@link JsonSerializer}. Each time this method is called, the content is deserialized and a new instance of
+     * type {@code T} is returned. So, calling this method repeatedly to convert the underlying data source into the
+     * same type is not recommended.
      * <p>
      * The type, represented by {@link TypeReference}, can either be a generic or non-generic type. If the type is
      * generic create a sub-type of {@link TypeReference}, if the type is non-generic use {@link
@@ -417,7 +463,9 @@ public final class BinaryData {
 
     /**
      * Returns an {@link Object} representation of this {@link BinaryData} by deserializing its data using the passed
-     * {@link ObjectSerializer}.
+     * {@link ObjectSerializer}. Each time this method is called, the content is deserialized and a new instance of
+     * type {@code T} is returned. So, calling this method repeatedly to convert the underlying data source into the
+     * same type is not recommended.
      * <p>
      * The type, represented by {@link Class}, should be a non-generic class, for generic classes use {@link
      * #toObject(TypeReference, ObjectSerializer)}.
@@ -450,7 +498,9 @@ public final class BinaryData {
 
     /**
      * Returns an {@link Object} representation of this {@link BinaryData} by deserializing its data using the passed
-     * {@link ObjectSerializer}.
+     * {@link ObjectSerializer}. Each time this method is called, the content is deserialized and a new instance of
+     * type {@code T} is returned. So, calling this method repeatedly to convert the underlying data source into the
+     * same type is not recommended.
      * <p>
      * The type, represented by {@link TypeReference}, can either be a generic or non-generic type. If the type is
      * generic create a sub-type of {@link TypeReference}, if the type is non-generic use {@link
@@ -491,7 +541,9 @@ public final class BinaryData {
 
     /**
      * Returns an {@link Object} representation of this {@link BinaryData} by deserializing its data using the default
-     * {@link JsonSerializer}.
+     * {@link JsonSerializer}. Each time this method is called, the content is deserialized and a new instance of
+     * type {@code T} is returned. So, calling this method repeatedly to convert the underlying data source into the
+     * same type is not recommended.
      * <p>
      * The type, represented by {@link Class}, should be a non-generic class, for generic classes use {@link
      * #toObject(TypeReference)}.
@@ -515,7 +567,9 @@ public final class BinaryData {
 
     /**
      * Returns an {@link Object} representation of this {@link BinaryData} by deserializing its data using the default
-     * {@link JsonSerializer}.
+     * {@link JsonSerializer}. Each time this method is called, the content is deserialized and a new instance of
+     * type {@code T} is returned. So, calling this method repeatedly to convert the underlying data source into the
+     * same type is not recommended.
      * <p>
      * The type, represented by {@link TypeReference}, can either be a generic or non-generic type. If the type is
      * generic create a sub-type of {@link TypeReference}, if the type is non-generic use {@link
@@ -544,7 +598,9 @@ public final class BinaryData {
 
     /**
      * Returns an {@link Object} representation of this {@link BinaryData} by deserializing its data using the passed
-     * {@link ObjectSerializer}.
+     * {@link ObjectSerializer}. Each time this method is called, the content is deserialized and a new instance of
+     * type {@code T} is returned. So, calling this method repeatedly to convert the underlying data source into the
+     * same type is not recommended.
      * <p>
      * The type, represented by {@link Class}, should be a non-generic class, for generic classes use {@link
      * #toObject(TypeReference, ObjectSerializer)}.
@@ -577,7 +633,9 @@ public final class BinaryData {
 
     /**
      * Returns an {@link Object} representation of this {@link BinaryData} by deserializing its data using the passed
-     * {@link ObjectSerializer}.
+     * {@link ObjectSerializer}. Each time this method is called, the content is deserialized and a new instance of
+     * type {@code T} is returned. So, calling this method repeatedly to convert the underlying data source into the
+     * same type is not recommended.
      * <p>
      * The type, represented by {@link TypeReference}, can either be a generic or non-generic type. If the type is
      * generic create a sub-type of {@link TypeReference}, if the type is non-generic use {@link
@@ -642,7 +700,8 @@ public final class BinaryData {
     }
 
     /**
-     * Returns the content of this {@link BinaryData} instance as a flux of {@link ByteBuffer ByteBuffers}.
+     * Returns the content of this {@link BinaryData} instance as a flux of {@link ByteBuffer ByteBuffers}. The
+     * content is not read from the underlying data source until the {@link Flux} is subscribed to.
      *
      * @return the content of this {@link BinaryData} instance as a flux of {@link ByteBuffer ByteBuffers}.
      */
@@ -653,6 +712,7 @@ public final class BinaryData {
     /**
      * Returns the length of the content, if it is known. The length can be {@code null} if the source did not
      * specify the length or the length cannot be determined without reading the whole content.
+     *
      * @return the length of the content, if it is known.
      */
     public Long getLength() {

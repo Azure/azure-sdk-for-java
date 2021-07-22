@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
 import java.io.ByteArrayInputStream;
@@ -22,6 +21,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.ReadOnlyBufferException;
@@ -35,6 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static com.azure.core.util.implementation.BinaryDataContent.STREAM_READ_SIZE;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -120,41 +122,28 @@ public class BinaryDataTest {
 
     @Test
     public void createFromNullStream() throws IOException {
-        // Arrange
-        final byte[] expected = new byte[0];
-
-        // Act
-        BinaryData data = BinaryData.fromStream(null);
-        final byte[] actual = new byte[0];
-        data.toStream().read(actual, 0, expected.length);
-
-        // Assert
-        assertArrayEquals(expected, data.toBytes());
-        assertArrayEquals(expected, actual);
+        assertThrows(NullPointerException.class, () -> BinaryData.fromStream(null));
     }
 
     @Test
     public void createFromNullByteArray() {
-        // Arrange
-        final byte[] expected = new byte[0];
-
-        // Act
-        BinaryData actual = BinaryData.fromBytes(null);
-
-        // Assert
-        assertArrayEquals(expected, actual.toBytes());
+        assertThrows(NullPointerException.class, () -> BinaryData.fromBytes(null));
     }
 
     @Test
     public void createFromNullObject() {
-        // Arrange
-        final byte[] expected = new byte[0];
+        assertThrows(NullPointerException.class, () -> BinaryData.fromObject(null, null));
+    }
 
-        // Act
-        BinaryData actual = BinaryData.fromObject(null, null);
+    @Test
+    public void createFromNullFile() {
+        assertThrows(NullPointerException.class, () -> BinaryData.fromFile(null));
+    }
 
-        // Assert
-        assertArrayEquals(expected, actual.toBytes());
+    @Test
+    public void createFromNullFlux() {
+        StepVerifier.create(BinaryData.fromFlux(null))
+                .verifyError(NullPointerException.class);
     }
 
     @Test
@@ -167,6 +156,26 @@ public class BinaryDataTest {
 
         // Assert
         assertArrayEquals(expected, data.toBytes());
+    }
+
+    @Test
+    public void createFromLargeStreamAndReadAsFlux() {
+        // Arrange
+        final byte[] expected = "A".repeat(STREAM_READ_SIZE * 100).concat("A").getBytes(StandardCharsets.UTF_8);
+
+        // Act
+        BinaryData data = BinaryData.fromStream(new ByteArrayInputStream(expected));
+
+        // Assert
+        StepVerifier.create(data.toFluxByteBuffer())
+                // the inputstream should be broken down into a series of byte buffers, each of max CHUNK_SIZE
+                // assert first chunk is equal to CHUNK_SIZE and is a string of repeating A's
+                .assertNext(bb -> assertEquals("A".repeat(STREAM_READ_SIZE), StandardCharsets.UTF_8.decode(bb).toString()))
+                // skip 99 chunks
+                .expectNextCount(99)
+                // assert last chunk is just "A"
+                .assertNext(bb -> assertEquals("A", StandardCharsets.UTF_8.decode(bb).toString()))
+                .verifyComplete();
     }
 
     @Test
@@ -272,24 +281,7 @@ public class BinaryDataTest {
         final String expected = null;
 
         // Arrange & Act
-        final BinaryData data = BinaryData.fromString(expected);
-
-        // Assert
-        assertArrayEquals(new byte[0], data.toBytes());
-        assertEquals("", data.toString());
-    }
-
-    @Test
-    public void createFromNullByte() {
-        // Arrange
-        final byte[] expected = null;
-
-        // Arrange & Act
-        final BinaryData data = BinaryData.fromBytes(expected);
-
-        // Assert
-        assertArrayEquals(new byte[0], data.toBytes());
-        assertEquals("", data.toString());
+        assertThrows(NullPointerException.class, () -> BinaryData.fromString(expected));
     }
 
     @Test
@@ -436,6 +428,25 @@ public class BinaryDataTest {
 
         StepVerifier.create(binaryDataMono)
                 .assertNext(binaryData -> assertEquals("Hello", new String(binaryData.toBytes())))
+                .verifyComplete();
+    }
+
+    @Test
+    public void testFromFile() throws URISyntaxException {
+        URL res = getClass().getClassLoader().getResource("upload.txt");
+        Path path = Paths.get(res.toURI());
+        BinaryData data = BinaryData.fromFile(path);
+        assertEquals("The quick brown fox jumps over the lazy dog", data.toString());
+    }
+
+    @Test
+    public void testFromFileToFlux() throws URISyntaxException {
+        URL res = getClass().getClassLoader().getResource("upload.txt");
+        Path path = Paths.get(res.toURI());
+        BinaryData data = BinaryData.fromFile(path);
+        StepVerifier.create(data.toFluxByteBuffer())
+                .assertNext(bb -> assertEquals("The quick brown fox jumps over the lazy dog",
+                        StandardCharsets.UTF_8.decode(bb).toString()))
                 .verifyComplete();
     }
 

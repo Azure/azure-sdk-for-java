@@ -8,14 +8,12 @@ import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
 import reactor.core.publisher.Flux;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -27,12 +25,15 @@ public final class InputStreamContent extends BinaryDataContent {
     private final InputStream content;
     private final AtomicReference<byte[]> bytes = new AtomicReference<>();
 
+
+    /**
+     * Creates an instance of {@link InputStreamContent}.
+     *
+     * @param inputStream The inputStream that is used as the content for this instance.
+     * @throws NullPointerException if {@code content} is null.
+     */
     public InputStreamContent(InputStream inputStream) {
-        if (Objects.isNull(inputStream)) {
-            this.content = new ByteArrayInputStream(ZERO_BYTE_ARRAY);
-            return;
-        }
-        this.content = inputStream;
+        this.content = Objects.requireNonNull(inputStream, "'inputStream' cannot be null.");
     }
 
     @Override
@@ -50,9 +51,12 @@ public final class InputStreamContent extends BinaryDataContent {
 
     @Override
     public byte[] toBytes() {
-        bytes.compareAndSet(null, getBytes());
         byte[] data = this.bytes.get();
-        return Arrays.copyOf(data, data.length);
+        if (data == null) {
+            bytes.set(getBytes());
+            data = this.bytes.get();
+        }
+        return data;
     }
 
     @Override
@@ -72,7 +76,20 @@ public final class InputStreamContent extends BinaryDataContent {
 
     @Override
     public Flux<ByteBuffer> toFluxByteBuffer() {
-        return Flux.defer(() -> Flux.just(ByteBuffer.wrap(toBytes())));
+        return Flux.generate(() -> 0, (count, sink) -> {
+            byte[] data = new byte[STREAM_READ_SIZE];
+            try {
+                int read = this.content.read(data, 0, data.length);
+                if (read == -1) {
+                    sink.complete();
+                } else {
+                    sink.next(ByteBuffer.wrap(data, 0, read));
+                }
+            } catch (IOException ex) {
+                sink.error(ex);
+            }
+            return 0;
+        });
     }
 
     private byte[] getBytes() {

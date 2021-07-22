@@ -23,13 +23,10 @@ public final class ByteArrayContent extends BinaryDataContent {
      * Creates a new instance of {@link ByteArrayContent}.
      *
      * @param content The byte array content.
+     * @throws NullPointerException if {@code content} is null.
      */
     public ByteArrayContent(byte[] content) {
-        if (content == null || content.length == 0) {
-            this.content = ZERO_BYTE_ARRAY;
-            return;
-        }
-        this.content = content;
+        this.content = Objects.requireNonNull(content, "'content' cannot be null");
     }
 
     @Override

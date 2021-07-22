@@ -11,7 +11,6 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -25,15 +24,10 @@ public final class StringContent extends BinaryDataContent {
     /**
      * Creates a new instance of {@link StringContent}.
      * @param content The string content.
+     * @throws NullPointerException if {@code content} is null.
      */
     public StringContent(String content) {
-        if (content == null) {
-            // this is to maintain backward compatibility with BinaryData
-            bytes.set(ZERO_BYTE_ARRAY);
-            this.content = "";
-            return;
-        }
-        this.content = content;
+        this.content = Objects.requireNonNull(content, "'content' cannot be null.");
     }
 
     @Override
@@ -48,9 +42,12 @@ public final class StringContent extends BinaryDataContent {
 
     @Override
     public byte[] toBytes() {
-        bytes.compareAndSet(null, getBytes());
         byte[] data = this.bytes.get();
-        return Arrays.copyOf(data, data.length);
+        if (data == null) {
+            bytes.set(getBytes());
+            data = this.bytes.get();
+        }
+        return data;
     }
 
     @Override

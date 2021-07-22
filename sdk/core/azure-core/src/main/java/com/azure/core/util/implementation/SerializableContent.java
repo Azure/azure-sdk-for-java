@@ -10,7 +10,6 @@ import reactor.core.publisher.Flux;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -28,16 +27,11 @@ public class SerializableContent extends BinaryDataContent {
      * Creates a new instance of {@link SerializableContent}.
      * @param content The serializable object that forms the content of this instance.
      * @param serializer The serializer that serializes the {@code content}.
+     * @throws NullPointerException if {@code content} or {@code serializer} is null.
      */
     public SerializableContent(Object content, ObjectSerializer serializer) {
-        this.content = content;
-        if (content == null) {
-            bytes.set(ZERO_BYTE_ARRAY);
-            this.serializer = serializer;
-            return;
-        }
-        Objects.requireNonNull(serializer, "'serializer' cannot be null.");
-        this.serializer = serializer;
+        this.content = Objects.requireNonNull(content, "'content' cannot be null.");
+        this.serializer = Objects.requireNonNull(serializer, "'serializer' cannot be null.");
     }
 
     @Override
@@ -52,12 +46,12 @@ public class SerializableContent extends BinaryDataContent {
 
     @Override
     public byte[] toBytes() {
-        byte[] retVal = this.bytes.get();
-        if (retVal == null) {
+        byte[] data = this.bytes.get();
+        if (data == null) {
             bytes.set(getBytes());
-            retVal = this.bytes.get();
+            data = this.bytes.get();
         }
-        return retVal;
+        return data;
     }
 
     @Override

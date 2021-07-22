@@ -7,14 +7,12 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
 import reactor.core.publisher.Flux;
-import reactor.core.scheduler.Scheduler;
-import reactor.core.scheduler.Schedulers;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -24,27 +22,25 @@ public final class FluxByteBufferContent extends BinaryDataContent {
 
     private final Flux<ByteBuffer> content;
     private final AtomicReference<byte[]> bytes = new AtomicReference<>();
-    private final Scheduler scheduler;
     private final Long length;
 
+    /**
+     * Creates an instance of {@link FluxByteBufferContent}.
+     * @param content The content for this instance.
+     * @throws NullPointerException if {@code content} is null.
+     */
     public FluxByteBufferContent(Flux<ByteBuffer> content) {
-        this(content, null, Schedulers.boundedElastic());
+        this(content, null);
     }
 
-    public FluxByteBufferContent(Flux<ByteBuffer> content, Scheduler scheduler) {
-        this(content, null, scheduler);
-    }
-
+    /**
+     * Creates an instance of {@link FluxByteBufferContent}.
+     * @param content The content for this instance.
+     * @param length The length of the content in bytes.
+     * @throws NullPointerException if {@code content} is null.
+     */
     public FluxByteBufferContent(Flux<ByteBuffer> content, Long length) {
-        this(content, length, Schedulers.boundedElastic());
-    }
-
-    public FluxByteBufferContent(Flux<ByteBuffer> content, Long length, Scheduler scheduler) {
-        if (content == null) {
-            content = Flux.just(ByteBuffer.wrap(ZERO_BYTE_ARRAY));
-        }
-        this.content = content;
-        this.scheduler = scheduler;
+        this.content = Objects.requireNonNull(content, "'content' cannot be null.");
         this.length = length;
     }
 
@@ -60,9 +56,12 @@ public final class FluxByteBufferContent extends BinaryDataContent {
 
     @Override
     public byte[] toBytes() {
-        bytes.compareAndSet(null, getBytes());
         byte[] data = this.bytes.get();
-        return Arrays.copyOf(data, data.length);
+        if (data == null) {
+            bytes.set(getBytes());
+            data = this.bytes.get();
+        }
+        return data;
     }
 
     @Override
