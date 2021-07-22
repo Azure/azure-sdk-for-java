@@ -8,6 +8,9 @@ import com.azure.spring.autoconfigure.unity.AzureProperties;
 import com.azure.spring.identity.CredentialPropertiesProvider;
 import org.springframework.util.StringUtils;
 
+/**
+ * Extends the {@link Configuration} to provide Azure Spring related configurations.
+ */
 public class AzureSpringConfiguration extends Configuration implements CredentialPropertiesProvider {
 
     private final Configuration configuration;
