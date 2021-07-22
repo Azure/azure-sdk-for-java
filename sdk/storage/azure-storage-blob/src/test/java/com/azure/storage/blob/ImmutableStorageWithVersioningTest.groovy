@@ -58,8 +58,8 @@ class ImmutableStorageWithVersioningTest extends APISpec {
     private BlobClient vlwBlob
     private String accountName = env.primaryAccount.name
     private String containerName
-    private String resourceGroupName = "XClient"
-    private String subscriptionId = "ba45b233-e2ef-4169-8808-49eb0d8eba0d"
+    private String resourceGroupName = env.resourceGroupName
+    private String subscriptionId = env.subscriptionId
     private String apiVersion = "2021-04-01"
     private TokenCredential credential = new EnvironmentCredentialBuilder().build()
     private BearerTokenAuthenticationPolicy credentialPolicy = new BearerTokenAuthenticationPolicy(credential, "https://management.azure.com/.default")
