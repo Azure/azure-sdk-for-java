@@ -1336,8 +1336,10 @@ class ContainerAPITest extends APISpec {
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_10_02")
     def "list blobs hier options deleted with versions"() {
         setup:
+        def versionedCC = versionedBlobServiceClient.getBlobContainerClient(getContainerName())
+        versionedCC.create()
         def blobName = generateBlobName()
-        def blob = cc.getBlobClient(blobName).getAppendBlobClient()
+        def blob = versionedCC.getBlobClient(blobName).getAppendBlobClient()
         blob.create()
         def metadata = new HashMap<String, String>()
         metadata.put("foo", "bar")
@@ -1347,13 +1349,16 @@ class ContainerAPITest extends APISpec {
             .setDetails(new BlobListDetails().setRetrieveDeletedBlobsWithVersions(true))
 
         when:
-        def blobs = cc.listBlobsByHierarchy("", options, null).iterator()
+        def blobs = versionedCC.listBlobsByHierarchy("", options, null).iterator()
 
         then:
         def b = blobs.next()
         !blobs.hasNext()
         b.getName() == blobName
         b.hasVersionsOnly()
+
+        cleanup:
+        versionedCC.delete()
     }
 
     @Unroll
