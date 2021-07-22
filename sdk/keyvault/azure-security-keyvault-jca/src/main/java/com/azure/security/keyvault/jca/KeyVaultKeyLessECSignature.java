@@ -57,6 +57,9 @@ public abstract class KeyVaultKeyLessECSignature extends SignatureSpi {
             case "SHA-384":
                 this.digestName = "ES384";
                 break;
+            case "SHA-512":
+                this.digestName = "ES512";
+                break;
             default:
                 this.digestName = null;
         }
@@ -218,6 +221,18 @@ public abstract class KeyVaultKeyLessECSignature extends SignatureSpi {
          */
         public KeyVaultSHA256() {
             super("SHA-256");
+        }
+    }
+
+    /**
+     * key vault SHA512
+     */
+    public static final class KeyVaultSHA512 extends KeyVaultKeyLessECSignature {
+        /**
+         * support SHA-512
+         */
+        public KeyVaultSHA512() {
+            super("SHA-512");
         }
     }
 

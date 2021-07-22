@@ -96,7 +96,7 @@ public class KeyVaultJcaProvider extends Provider {
                     null
                 )
             );
-            //TODO: support EC256K & ECP-521
+            //TODO: support EC256K
             putService(
                 new Service(
                     this,
@@ -113,6 +113,16 @@ public class KeyVaultJcaProvider extends Provider {
                     "Signature",
                     "SHA384withECDSA",
                     KeyVaultKeyLessECSignature.KeyVaultSHA384.class.getName(),
+                    null,
+                    null
+                )
+            );
+            putService(
+                new Service(
+                    this,
+                    "Signature",
+                    "SHA512withECDSA",
+                    KeyVaultKeyLessECSignature.KeyVaultSHA512.class.getName(),
                     null,
                     null
                 )
