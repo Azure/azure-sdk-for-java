@@ -13,7 +13,7 @@ public class KeyProperties implements Serializable {
     /**
      * Stores the serial version UID.
      */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 30_10_00;
 
     /**
      * Stores if the key is exportable.

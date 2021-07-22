@@ -278,11 +278,6 @@ public class KeyVaultClient extends DelegateRestClient {
                                        .map(CertificatePolicy::getKeyProperties)
                                        .map(KeyProperties::isExportable)
                                        .orElse(false);
-        String kty = Optional.ofNullable(certificateBundle)
-                             .map(CertificateBundle::getPolicy)
-                             .map(CertificatePolicy::getKeyProperties)
-                             .map(KeyProperties::getKty)
-                             .orElse(null);
         if (isExportable) {
             //
             // Because the certificate is exportable the private key is
@@ -311,6 +306,11 @@ public class KeyVaultClient extends DelegateRestClient {
                 }
                 if (secretBundle.getContentType().equals("application/x-pem-file")) {
                     try {
+                        String kty = Optional.ofNullable(certificateBundle)
+                                             .map(CertificateBundle::getPolicy)
+                                             .map(CertificatePolicy::getKeyProperties)
+                                             .map(KeyProperties::getKty)
+                                             .orElse(null);
                         key = createPrivateKeyFromPem(secretBundle.getValue(), kty);
                     } catch (IOException | NoSuchAlgorithmException | InvalidKeySpecException | IllegalArgumentException ex) {
                         LOGGER.log(WARNING, "Unable to decode key", ex);
