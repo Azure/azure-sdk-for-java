@@ -48,6 +48,13 @@ public class JobOutputAsset extends JobOutput {
 
     /** {@inheritDoc} */
     @Override
+    public JobOutputAsset withPresetOverride(Preset presetOverride) {
+        super.withPresetOverride(presetOverride);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public JobOutputAsset withLabel(String label) {
         super.withLabel(label);
         return this;

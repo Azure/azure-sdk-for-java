@@ -140,12 +140,13 @@ public class AttestationTest extends AttestationClientTestBase {
         byte[] decodedRuntimeData = Base64.getUrlDecoder().decode(runtimeData);
         byte[] decodedSgxQuote = Base64.getUrlDecoder().decode(sgxQuote);
 
-        AttestSgxEnclaveRequest request = new AttestSgxEnclaveRequest();
-        request.setQuote(Arrays.copyOfRange(decodedSgxQuote, 0x10, decodedSgxQuote.length));
-        RuntimeData runtimeData = new RuntimeData();
-        runtimeData.setDataType(DataType.BINARY);
-        runtimeData.setData(decodedRuntimeData);
-        request.setRuntimeData(runtimeData);
+        AttestSgxEnclaveRequest request = new AttestSgxEnclaveRequest()
+            .setQuote(Arrays.copyOfRange(decodedSgxQuote, 0x10, decodedSgxQuote.length))
+            .setRuntimeData(
+                new RuntimeData()
+                    .setDataType(DataType.BINARY)
+                    .setData(decodedRuntimeData)
+            );
         AttestationResponse response = client.attestSgxEnclave(request);
 
         JWTClaimsSet claims = verifyAttestationToken(httpClient, clientUri, response.getToken()).block();
@@ -170,12 +171,13 @@ public class AttestationTest extends AttestationClientTestBase {
         byte[] decodedRuntimeData = Base64.getUrlDecoder().decode(runtimeData);
         byte[] decodedSgxQuote = Base64.getUrlDecoder().decode(sgxQuote);
 
-        AttestSgxEnclaveRequest request = new AttestSgxEnclaveRequest();
-        request.setQuote(Arrays.copyOfRange(decodedSgxQuote, 0x10, decodedSgxQuote.length));
-        RuntimeData runtimeData = new RuntimeData();
-        runtimeData.setDataType(DataType.BINARY);
-        runtimeData.setData(decodedRuntimeData);
-        request.setRuntimeData(runtimeData);
+        AttestSgxEnclaveRequest request = new AttestSgxEnclaveRequest()
+            .setQuote(Arrays.copyOfRange(decodedSgxQuote, 0x10, decodedSgxQuote.length))
+            .setRuntimeData(
+                new RuntimeData()
+                    .setDataType(DataType.BINARY)
+                    .setData(decodedRuntimeData)
+            );
 
         StepVerifier.create(client.attestSgxEnclave(request)
                 .flatMap(response -> verifyAttestationToken(httpClient, clientUri, response.getToken())))

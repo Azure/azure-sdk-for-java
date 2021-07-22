@@ -3,7 +3,7 @@
 package com.azure.test.aad.selenium.groupid.role;
 
 
-import com.azure.test.aad.selenium.AADSeleniumITHelper;
+import com.azure.test.aad.common.AADSeleniumITHelper;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -11,7 +11,6 @@ import org.junit.jupiter.api.TestInstance;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,7 +19,7 @@ import java.util.Map;
 import static com.azure.spring.test.EnvironmentVariable.AAD_SINGLE_TENANT_CLIENT_ID_WITH_ROLE;
 import static com.azure.spring.test.EnvironmentVariable.AAD_SINGLE_TENANT_CLIENT_SECRET_WITH_ROLE;
 import static com.azure.spring.test.EnvironmentVariable.AZURE_CLOUD_TYPE;
-import static com.azure.test.aad.selenium.AADSeleniumITHelper.createDefaultProperties;
+import static com.azure.test.aad.selenium.AADITHelper.createDefaultProperties;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class AADGroupIdRoleIT {
@@ -53,7 +52,6 @@ public class AADGroupIdRoleIT {
         aadSeleniumITHelper.destroy();
     }
 
-    @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
     @SpringBootApplication
     @RestController
     public static class DumbApp {

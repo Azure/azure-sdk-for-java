@@ -1,6 +1,11 @@
 # Release History
 
-## 2.7.0-beta.1 (Unreleased)
+## 2.8.0-beta.1 (Unreleased)
+
+
+## 2.7.0 (2021-07-20)
+### Dependency Upgrades
+- Upgrade to [Spring Integration 5.5.1](https://mvnrepository.com/artifact/org.springframework.integration/spring-integration-core/5.5.1).
 
 
 ## 2.6.0 (2021-06-23)
