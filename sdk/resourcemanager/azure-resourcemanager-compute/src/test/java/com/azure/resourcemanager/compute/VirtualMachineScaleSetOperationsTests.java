@@ -1268,7 +1268,6 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             Assertions.assertNotNull(vm.size());
             Assertions.assertEquals(vm.osType(), OperatingSystemTypes.LINUX);
             Assertions.assertNotNull(vm.computerName().startsWith(vmScaleSet.computerNamePrefix()));
-            Assertions.assertFalse(vm.isLinuxPasswordAuthenticationEnabled());
             Assertions.assertTrue(vm.isOSBasedOnPlatformImage());
             Assertions.assertNull(vm.osDiskId()); // VMSS is un-managed, so osDiskId must be null
             Assertions.assertNotNull(vm.osUnmanagedDiskVhdUri()); // VMSS is un-managed, so osVhd should not be null
