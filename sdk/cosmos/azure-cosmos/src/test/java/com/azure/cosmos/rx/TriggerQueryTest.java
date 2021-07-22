@@ -33,7 +33,7 @@ public class TriggerQueryTest extends TestSuiteBase {
 
     private CosmosAsyncClient client;
 
-    @Factory(dataProvider = "clientBuildersWithDirectTcp")
+    @Factory(dataProvider = "clientBuildersWithDirect")
     public TriggerQueryTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }

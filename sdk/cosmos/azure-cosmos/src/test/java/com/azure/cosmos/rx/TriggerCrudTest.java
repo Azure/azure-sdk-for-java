@@ -24,7 +24,7 @@ public class TriggerCrudTest extends TestSuiteBase {
 
     private CosmosAsyncClient client;
 
-    @Factory(dataProvider = "clientBuildersWithDirectTcp")
+    @Factory(dataProvider = "clientBuildersWithDirect")
     public TriggerCrudTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }

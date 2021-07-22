@@ -28,7 +28,7 @@ public class ReadFeedTriggersTest extends TestSuiteBase {
 
     private CosmosAsyncClient client;
 
-    @Factory(dataProvider = "clientBuildersWithDirectTcp")
+    @Factory(dataProvider = "clientBuildersWithDirect")
     public ReadFeedTriggersTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }

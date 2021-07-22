@@ -34,7 +34,7 @@ public class VeryLargeDocumentQueryTest extends TestSuiteBase {
 
     private CosmosAsyncClient client;
 
-    @Factory(dataProvider = "simpleClientBuildersWithDirectTcp")
+    @Factory(dataProvider = "simpleClientBuildersWithDirect")
     public VeryLargeDocumentQueryTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }

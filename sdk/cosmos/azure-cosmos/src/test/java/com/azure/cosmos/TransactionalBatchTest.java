@@ -26,7 +26,7 @@ public class TransactionalBatchTest extends BatchTestBase {
     private CosmosClient batchClient;
     private CosmosContainer batchContainer;
 
-    @Factory(dataProvider = "simpleClientBuildersWithDirectTcp")
+    @Factory(dataProvider = "simpleClientBuildersWithDirect")
     public TransactionalBatchTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }

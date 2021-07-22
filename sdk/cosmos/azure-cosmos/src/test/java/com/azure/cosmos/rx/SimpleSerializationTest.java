@@ -46,7 +46,7 @@ public class SimpleSerializationTest extends TestSuiteBase {
         private String prop;
     }
 
-    @Factory(dataProvider = "clientBuildersWithDirectTcp")
+    @Factory(dataProvider = "clientBuildersWithDirect")
     public SimpleSerializationTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }

@@ -30,7 +30,7 @@ public class ReadFeedDocumentsTest extends TestSuiteBase {
 
     private CosmosAsyncClient client;
 
-    @Factory(dataProvider = "clientBuildersWithDirectTcp")
+    @Factory(dataProvider = "clientBuildersWithDirect")
     public ReadFeedDocumentsTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }

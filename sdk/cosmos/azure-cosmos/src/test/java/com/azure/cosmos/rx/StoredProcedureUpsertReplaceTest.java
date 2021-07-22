@@ -30,7 +30,7 @@ public class StoredProcedureUpsertReplaceTest extends TestSuiteBase {
 
     private CosmosAsyncClient client;
 
-    @Factory(dataProvider = "clientBuildersWithDirectTcp")
+    @Factory(dataProvider = "clientBuildersWithDirect")
     public StoredProcedureUpsertReplaceTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }

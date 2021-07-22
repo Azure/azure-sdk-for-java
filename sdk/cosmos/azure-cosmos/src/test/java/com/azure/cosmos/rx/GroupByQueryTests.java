@@ -41,7 +41,7 @@ public class GroupByQueryTests extends TestSuiteBase {
     private ArrayList<InternalObjectNode> docs = new ArrayList<>();
     private CosmosAsyncClient client;
 
-    @Factory(dataProvider = "clientBuildersWithDirectTcp")
+    @Factory(dataProvider = "clientBuildersWithDirect")
     public GroupByQueryTests(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }

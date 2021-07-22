@@ -28,7 +28,7 @@ public class ReadFeedUdfsTest extends TestSuiteBase {
 
     private CosmosAsyncClient client;
 
-    @Factory(dataProvider = "clientBuildersWithDirectTcp")
+    @Factory(dataProvider = "clientBuildersWithDirect")
     public ReadFeedUdfsTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }

@@ -66,7 +66,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         return TestUtils.getCollectionNameLink(createdDatabase.getId(), createdCollection.getId());
     }
 
-    @Factory(dataProvider = "clientBuildersWithDirectTcp")
+    @Factory(dataProvider = "clientBuildersWithDirect")
     public ParallelDocumentQueryTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }

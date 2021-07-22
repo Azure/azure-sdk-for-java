@@ -24,7 +24,7 @@ public class TriggerUpsertReplaceTest extends TestSuiteBase {
 
     private CosmosAsyncClient client;
 
-    @Factory(dataProvider = "clientBuildersWithDirectTcp")
+    @Factory(dataProvider = "clientBuildersWithDirect")
     public TriggerUpsertReplaceTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }
