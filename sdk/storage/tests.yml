@@ -43,7 +43,7 @@ stages:
           groupId: com.azure
       TestMode: 'LIVE'
       TimeoutInMinutes: 60
-      Location: canadacentral
+#      Location: canadacentral
 #      Clouds: 'Preview'
       TestStepMavenInputs:
         options: '$(DefaultTestOptions) -T 1C'
