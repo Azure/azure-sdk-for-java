@@ -40,6 +40,7 @@ context-client-method-parameter: true
 required-fields-as-ctor-args: true
 v3: true
 add-credentials: true
+credential-types: tokencredential
 credential-scopes: 'https://attest.azure.net/.default'
 #required-parameter-client-methods: true
 

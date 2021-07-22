@@ -5,6 +5,7 @@
 package com.azure.security.attestation;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -78,6 +79,17 @@ public final class AttestationClientBuilder {
         clientImplBuilder.apiVersion(apiVersion);
         return this;
     }
+    /**
+     * Sets the credential to be used for communicating with the service.
+     * @param credential Specifies the credential to be used for authentication.
+     * @return the AttestationClientBuilder.
+     */
+    public AttestationClientBuilder credential(TokenCredential credential) {
+        Objects.requireNonNull(credential);
+        clientImplBuilder.credential(credential);
+        return this;
+    }
+
 
     /**
      * Sets The HTTP pipeline to send requests through.
