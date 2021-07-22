@@ -112,38 +112,6 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         Assertions.assertTrue(keys.size() > 0);
         String storageAccountKey = keys.get(0).value();
 
-        // Upload the script file as block blob
-        //
-        URI fileUri;
-        if (isPlaybackMode()) {
-            fileUri = new URI("http://nonexisting.blob.core.windows.net/scripts/install_apache.sh");
-        } else {
-            final String storageConnectionString = ResourceManagerUtils.getStorageConnectionString(
-                storageAccount.name(), storageAccountKey, storageManager.environment());
-            // Get the script to upload
-            //
-            String filePath = VirtualMachineScaleSetOperationsTests.class.getResource("/install_apache.sh").getPath();
-            File file = new File(filePath);
-            InputStream inputStream = VirtualMachineScaleSetOperationsTests.class
-                .getResourceAsStream("/install_apache.sh");
-            inputStream = new BufferedInputStream(inputStream);
-            inputStream.mark((int) file.length());
-
-            BlobServiceClient storageClient = new BlobServiceClientBuilder()
-                .connectionString(storageConnectionString)
-                .httpClient(storageManager.httpPipeline().getHttpClient())
-                .buildClient();
-            BlobContainerClient blobContainerClient = storageClient.getBlobContainerClient("scripts");
-            blobContainerClient.create();
-
-            BlockBlobClient blockBlobClient = blobContainerClient.getBlobClient("install_apache.sh")
-                .getBlockBlobClient();
-            blockBlobClient.upload(inputStream, file.length());
-            fileUri = new URI(blockBlobClient.getBlobUrl());
-        }
-        List<String> fileUris = new ArrayList<>();
-        fileUris.add(fileUri.toString());
-
         Network network =
             this
                 .networkManager
@@ -168,7 +136,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                 .withoutPrimaryInternalLoadBalancer()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername(uname)
-                .withRootPassword(password)
+                .withSsh(sshPublicKey())
                 .withUnmanagedDisks()
                 .withNewStorageAccount(generateRandomResourceName("stg", 15))
                 .withExistingStorageAccount(storageAccount)
@@ -177,8 +145,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                 .withType("CustomScriptForLinux")
                 .withVersion("1.4")
                 .withMinorVersionAutoUpgrade()
-                .withPublicSetting("fileUris", fileUris)
-                .withProtectedSetting("commandToExecute", "bash install_apache.sh")
+                .withPublicSetting("commandToExecute", "ls")
                 .withProtectedSetting("storageAccountName", storageAccount.name())
                 .withProtectedSetting("storageAccountKey", storageAccountKey)
                 .attach()
@@ -187,7 +154,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         //
         Map<String, VirtualMachineScaleSetExtension> extensions = virtualMachineScaleSet.extensions();
         Assertions.assertNotNull(extensions);
-        Assertions.assertEquals(1, extensions.size());
+        Assertions.assertTrue(extensions.size() > 0);
         Assertions.assertTrue(extensions.containsKey("CustomScriptForLinux"));
         VirtualMachineScaleSetExtension extension = extensions.get("CustomScriptForLinux");
         Assertions.assertNotNull(extension.publicSettings());
@@ -198,9 +165,9 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             this.computeManager.virtualMachineScaleSets().getById(virtualMachineScaleSet.id());
         // Validate extensions after get
         //
-        extensions = virtualMachineScaleSet.extensions();
+        extensions = scaleSet.extensions();
         Assertions.assertNotNull(extensions);
-        Assertions.assertEquals(1, extensions.size());
+        Assertions.assertTrue(extensions.size() > 0);
         Assertions.assertTrue(extensions.containsKey("CustomScriptForLinux"));
         extension = extensions.get("CustomScriptForLinux");
         Assertions.assertNotNull(extension.publicSettings());
@@ -214,7 +181,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         //
         extensions = virtualMachineScaleSet.extensions();
         Assertions.assertNotNull(extensions);
-        Assertions.assertEquals(1, extensions.size());
+        Assertions.assertTrue(extensions.size() > 0);
         Assertions.assertTrue(extensions.containsKey("CustomScriptForLinux"));
         extension = extensions.get("CustomScriptForLinux");
         Assertions.assertNotNull(extension.publicSettings());
@@ -227,11 +194,6 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         final String vmssName = generateRandomResourceName("vmss", 10);
         final String uname = "jvuser";
         final String password = password();
-        final String apacheInstallScript =
-            "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/resourcemanager/azure-resourcemanager-compute/src/test/resources/install_apache.sh";
-        final String installCommand = "bash install_apache.sh Abc.123x(";
-        List<String> fileUris = new ArrayList<>();
-        fileUris.add(apacheInstallScript);
 
         ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName).withRegion(region).create();
 
@@ -260,7 +222,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                 .withoutPrimaryInternalLoadBalancer()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername(uname)
-                .withRootPassword(password)
+                .withSsh(sshPublicKey())
                 .withUnmanagedDisks()
                 .withNewStorageAccount(generateRandomResourceName("stg", 15))
                 .withNewStorageAccount(generateRandomResourceName("stg", 15))
@@ -269,8 +231,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                 .withType("CustomScriptForLinux")
                 .withVersion("1.4")
                 .withMinorVersionAutoUpgrade()
-                .withPublicSetting("fileUris", fileUris)
-                .withPublicSetting("commandToExecute", installCommand)
+                .withPublicSetting("commandToExecute", "ls")
                 .attach()
                 .withUpgradeMode(UpgradeMode.MANUAL)
                 .create();
@@ -356,7 +317,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                 .withoutPrimaryInternalLoadBalancer()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("jvuser")
-                .withRootPassword(password())
+                .withSsh(sshPublicKey())
                 .withVirtualMachinePublicIp(vmssVmDnsLabel)
                 .withExistingApplicationSecurityGroup(asg)
                 .create();
@@ -500,7 +461,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                 .withoutPrimaryInternalLoadBalancer()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("jvuser")
-                .withRootPassword(password())
+                .withSsh(sshPublicKey())
                 .withSecrets(group)
                 .withNewStorageAccount(generateRandomResourceName("stg", 15))
                 .withNewStorageAccount(generateRandomResourceName("stg3", 15))
@@ -555,7 +516,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                 .withoutPrimaryInternalLoadBalancer()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("jvuser")
-                .withRootPassword(password())
+                .withSsh(sshPublicKey())
                 .withUnmanagedDisks()
                 .withNewStorageAccount(generateRandomResourceName("stg", 15))
                 .withNewStorageAccount(generateRandomResourceName("stg", 15))
@@ -806,7 +767,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                 .withoutPrimaryInternalLoadBalancer()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("jvuser")
-                .withRootPassword(password())
+                .withSsh(sshPublicKey())
                 .create();
 
         final String vmssName2 = generateRandomResourceName("vmss2", 10);
@@ -827,7 +788,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                 .withoutPrimaryInternalLoadBalancer()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("jvuser")
-                .withRootPassword(password())
+                .withSsh(sshPublicKey())
                 .create();
 
         // Validate Network specific properties (LB, VNet, NIC, IPConfig etc..)
@@ -900,7 +861,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                 .withoutPrimaryInternalLoadBalancer()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("jvuser")
-                .withRootPassword(password())
+                .withSsh(sshPublicKey())
                 .withAvailabilityZone(AvailabilityZoneId.ZONE_1) // Zone redundant - zone 1 + zone 2
                 .withAvailabilityZone(AvailabilityZoneId.ZONE_2)
                 .create();
@@ -963,7 +924,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                 .withoutPrimaryInternalLoadBalancer()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("jvuser")
-                .withRootPassword(password())
+                .withSsh(sshPublicKey())
                 .withSystemAssignedManagedServiceIdentity()
                 .create();
 
@@ -1044,7 +1005,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                 .withoutPrimaryInternalLoadBalancer()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("jvuser")
-                .withRootPassword(password())
+                .withSsh(sshPublicKey())
                 .withSystemAssignedManagedServiceIdentity()
                 .withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(BuiltInRole.CONTRIBUTOR)
                 .withSystemAssignedIdentityBasedAccessTo(storageAccount.id(), BuiltInRole.CONTRIBUTOR)
@@ -1143,7 +1104,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .withoutPrimaryInternalLoadBalancer()
             .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
             .withRootUsername("jvuser")
-            .withRootPassword(password())
+            .withSsh(sshPublicKey())
             .withNewStorageAccount(generateRandomResourceName("stg", 15))
             .withNewStorageAccount(generateRandomResourceName("stg3", 15))
             .withUpgradeMode(UpgradeMode.MANUAL)
@@ -1199,7 +1160,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                 .withoutPrimaryInternalLoadBalancer()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("jvuser")
-                .withRootPassword(password())
+                .withSsh(sshPublicKey())
                 .withNewStorageAccount(generateRandomResourceName("stg", 15))
                 .withNewStorageAccount(generateRandomResourceName("stg3", 15))
                 .withUpgradeMode(UpgradeMode.MANUAL)
@@ -1243,7 +1204,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .withoutPrimaryInternalLoadBalancer()
             .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
             .withRootUsername("jvuser")
-            .withRootPassword(password())
+            .withSsh(sshPublicKey())
             .withSpotPriorityVirtualMachine(VirtualMachineEvictionPolicyTypes.DEALLOCATE)
             .create();
 
@@ -1307,7 +1268,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             Assertions.assertNotNull(vm.size());
             Assertions.assertEquals(vm.osType(), OperatingSystemTypes.LINUX);
             Assertions.assertNotNull(vm.computerName().startsWith(vmScaleSet.computerNamePrefix()));
-            Assertions.assertTrue(vm.isLinuxPasswordAuthenticationEnabled());
+            Assertions.assertFalse(vm.isLinuxPasswordAuthenticationEnabled());
             Assertions.assertTrue(vm.isOSBasedOnPlatformImage());
             Assertions.assertNull(vm.osDiskId()); // VMSS is un-managed, so osDiskId must be null
             Assertions.assertNotNull(vm.osUnmanagedDiskVhdUri()); // VMSS is un-managed, so osVhd should not be null
