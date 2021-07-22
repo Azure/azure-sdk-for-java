@@ -160,7 +160,7 @@ public class EventHubClientBuilderTest extends IntegrationTestBase {
                     assertTrue(batch.tryAdd(testData));
                     return asyncProducerClient.send(batch);
                 })
-            ).verifyComplete();
+            ).expectComplete().verify(TIMEOUT);
         } finally {
             asyncProducerClient.close();
         }
@@ -188,7 +188,7 @@ public class EventHubClientBuilderTest extends IntegrationTestBase {
                     assertTrue(batch.tryAdd(testData));
                     return asyncProducerClient.send(batch);
                 })
-            ).verifyComplete();
+            ).expectComplete().verify(TIMEOUT);
         } finally {
             asyncProducerClient.close();
         }
