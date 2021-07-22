@@ -37,7 +37,7 @@ public class TestDataCreationHelper {
         long quotient = size / array.length;
         int remainder = (int) (size % array.length);
 
-        return Flux.just(Boolean.TRUE).repeat(quotient)
+        return Flux.just(Boolean.TRUE).repeat(quotient - 1)
             .map(i -> allocateByteBuffer(array, array.length))
             .concatWithValues(allocateByteBuffer(array, remainder));
     }
