@@ -68,7 +68,7 @@ public class AsynReadWithMultipleClients<T> {
     AsynReadWithMultipleClients(Configuration cfg) {
         logger = LoggerFactory.getLogger(this.getClass());
         this.configuration = cfg;
-        createClients(cfg);
+        createClients();
         if (configuration.getGraphiteEndpoint() != null) {
             final Graphite graphite = new Graphite(new InetSocketAddress(configuration.getGraphiteEndpoint(), configuration.getGraphiteEndpointPort()));
             reporter = GraphiteReporter.forRegistry(metricsRegistry)
@@ -181,7 +181,7 @@ public class AsynReadWithMultipleClients<T> {
     protected void onError(Throwable throwable) {
     }
 
-    private void createClients(Configuration cfg) {
+    private void createClients() {
         String csvFile = "clientHostAndKey.txt";
         String line = "";
         String splitBy = ";";
@@ -194,7 +194,7 @@ public class AsynReadWithMultipleClients<T> {
                     CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
                         .endpoint(endpoint)
                         .key(key)
-                        .preferredRegions(cfg.getPreferredRegionsList())
+                        .preferredRegions(this.configuration.getPreferredRegionsList())
                         .consistencyLevel(configuration.getConsistencyLevel())
                         .connectionSharingAcrossClientsEnabled(true)
                         .contentResponseOnWriteEnabled(Boolean.parseBoolean(configuration.isContentResponseOnWriteEnabled()));
