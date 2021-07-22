@@ -89,9 +89,13 @@ class ImmutableStorageWithVersioningTest extends APISpec {
 
             String serializedBody = new ObjectMapper().writeValueAsString(body)
 
-            httpPipeline.send(new HttpRequest(HttpMethod.PUT, new URL(url), new HttpHeaders(),
+            def response = httpPipeline.send(new HttpRequest(HttpMethod.PUT, new URL(url), new HttpHeaders(),
                 Flux.just(ByteBuffer.wrap(serializedBody.getBytes(StandardCharsets.UTF_8)))))
                 .block()
+            if (response.statusCode/100 != 2) {
+                println response.getBodyAsString().block()
+            }
+            assert response.statusCode/100 == 2
         }
 
         vlwContainer = primaryBlobServiceClient.getBlobContainerClient(containerName)
