@@ -573,7 +573,7 @@ public final class WebPubSubServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void sendToUser(String userId, String message, String contentType) {
         sendToUser(userId, BinaryData.fromString(message), new RequestOptions()
-                .addHeader("Content-Type", contentType));
+                .addRequestCallback(request -> request.getHeaders().set("Content-Type", contentType)));
     }
 
     /**
