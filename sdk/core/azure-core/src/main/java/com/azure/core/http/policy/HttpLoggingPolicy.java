@@ -311,9 +311,9 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     private static String getRedactedUrl(URL url, Set<String> allowedQueryParameterNames) {
         UrlBuilder builder = UrlBuilder.parse(url);
         String allowedQueryString = getAllowedQueryString(url.getQuery(), allowedQueryParameterNames);
-        builder.clearQuery();
-        return builder.setQuery(allowedQueryString)
-            .toString();
+        return builder
+                .setQuery(allowedQueryString)
+                .toString();
     }
 
     /*

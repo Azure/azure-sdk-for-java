@@ -453,7 +453,7 @@ public class UrlBuilderTests {
             .appendQueryParameter("A", "B")
             .appendQueryParameter("A", "D")
             .setPath("index.html");
-        assertEquals(builder.getQuery().get("A"), "B");
+        assertEquals(builder.getQuery().get("A"), "B,D");
     }
 
     @Test

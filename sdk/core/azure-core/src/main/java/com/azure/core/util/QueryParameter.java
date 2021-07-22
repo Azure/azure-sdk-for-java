@@ -14,14 +14,14 @@ import java.util.Objects;
  * If multiple values are added to a query string with the same name (case-insensitive), then the values will be
  * appended at the end of the same {@link QueryParameter} with commas separating them.
  */
-public class QueryParameter {
+public final class QueryParameter {
     private final String name;
 
     // this is the actual internal representation of all values
     private final List<String> values;
 
     // but we also cache it to faster serve our public API
-    private String cachedStringValue;
+    private volatile String cachedStringValue;
 
     /**
      * Create a QueryParameter instance using the provided name and value.
@@ -42,26 +42,11 @@ public class QueryParameter {
      *
      * @param name the name of the parameter.
      * @param values the values of the parameter.
-     * @throws NullPointerException if {@code name} is null.
-     */
-    public QueryParameter(String name, String... values) {
-        Objects.requireNonNull(name, "'name' cannot be null.");
-        this.name = name;
-        this.values = new LinkedList<>();
-        for (String value : values) {
-            this.values.add(value);
-        }
-    }
-
-    /**
-     * Create a QueryParameter instance using the provided name and values.
-     *
-     * @param name the name of the parameter.
-     * @param values the values of the parameter.
-     * @throws NullPointerException if {@code name} is null.
+     * @throws NullPointerException if {@code name} or {@code values} are null.
      */
     public QueryParameter(String name, List<String> values) {
         Objects.requireNonNull(name, "'name' cannot be null.");
+        Objects.requireNonNull(values, "'values' cannot be null");
         this.name = name;
         this.values = new LinkedList<>(values);
     }

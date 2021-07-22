@@ -3,16 +3,17 @@
 
 package com.azure.core.util;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import java.util.LinkedList;
+import java.util.stream.Stream;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-
-import java.util.stream.Stream;
-
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Tests for {@link QueryParameter}.
@@ -34,6 +35,16 @@ public class QueryParameterTest {
     public void testNullArgsConstructor(String name, String value) {
         // Arrange, Act & Assert
         assertThrows(NullPointerException.class, () -> new QueryParameter(name, value));
+    }
+
+    @Test
+    public void testNullValuesConstructor() {
+        // Arrange
+        String name = "a";
+        LinkedList<String> values = null;
+
+        // Act & Assert
+        assertThrows(NullPointerException.class, () -> new QueryParameter(name, values));
     }
 
     @Test

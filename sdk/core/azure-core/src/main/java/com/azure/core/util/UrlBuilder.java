@@ -140,6 +140,7 @@ public final class UrlBuilder {
      * @param queryParameterName The name of the query parameter.
      * @param queryParameterEncodedValue The encoded value of the query parameter.
      * @return The provided query parameter name and encoded value to query string for the final URL.
+     * @throws NullPointerException if {@code queryParameterName} or {@code queryParameterEncodedValue} are null.
      */
     public UrlBuilder setQueryParameter(String queryParameterName, String queryParameterEncodedValue) {
         query.put(queryParameterName, new QueryParameter(queryParameterName, queryParameterEncodedValue));
@@ -152,6 +153,7 @@ public final class UrlBuilder {
      * @param queryParameterName The name of the query parameter.
      * @param queryParameterEncodedValue The encoded value of the query parameter.
      * @return The provided query parameter name and encoded value to query string for the final URL.
+     * @throws NullPointerException if {@code queryParameterName} or {@code queryParameterEncodedValue} are null.
      */
     public UrlBuilder appendQueryParameter(String queryParameterName, String queryParameterEncodedValue) {
         query.compute(queryParameterName, (key, value) -> {
@@ -174,6 +176,7 @@ public final class UrlBuilder {
         if (query == null || query.isEmpty()) {
             this.query.clear();
         } else {
+            clearQuery();
             with(query, UrlTokenizerState.QUERY);
         }
         return this;
@@ -185,9 +188,11 @@ public final class UrlBuilder {
      * @return This UrlBuilder so that multiple setters can be chained together.
      */
     public UrlBuilder clearQuery() {
-        if (query != null && !query.isEmpty()) {
-            query.clear();
+        if (query.isEmpty()) {
+            return this;
         }
+
+        query.clear();
         return this;
     }
 
@@ -198,8 +203,8 @@ public final class UrlBuilder {
      */
     public Map<String, String> getQuery() {
         // This contains a map of key=value query parameters, replacing
-        // multiple values for a single key with the first value in the list
-        // This is done to maintain backward compatibility.
+        // multiple values for a single key with a list of values under the same name,
+        // joined together with a comma. As discussed in https://github.com/Azure/azure-sdk-for-java/pull/21203.
         final Map<String, String> singleKeyValueQuery =
             this.query.entrySet()
                       .stream()
@@ -210,10 +215,10 @@ public final class UrlBuilder {
                                 String value = null;
 
                                 if (parameter != null) {
-                                    // return only the first in the list of multiple
-                                    // values for the same named parameter.
-                                    // e.g. name=a&name=b, returns name=a
-                                    value = parameter.getValuesList().get(0);
+                                    // join all parameters with a comma.
+                                    // name=a&name=b&name=c will become
+                                    // name=a,b,c
+                                    value = String.join(",", parameter.getValuesList());
                                 }
 
                                 return value;
