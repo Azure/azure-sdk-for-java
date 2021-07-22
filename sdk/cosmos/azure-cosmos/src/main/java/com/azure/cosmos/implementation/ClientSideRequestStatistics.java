@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
@@ -30,7 +29,6 @@ import java.util.Set;
 @JsonSerialize(using = ClientSideRequestStatistics.ClientSideRequestStatisticsSerializer.class)
 public class ClientSideRequestStatistics {
     private static final int MAX_SUPPLEMENTAL_REQUESTS_FOR_TO_STRING = 10;
-    private final DiagnosticsClientContext clientContext;
     private final DiagnosticsClientContext diagnosticsClientContext;
 
     private List<StoreResponseStatistics> responseStatisticsList;
@@ -44,13 +42,12 @@ public class ClientSideRequestStatistics {
     private Set<URI> regionsContacted;
     private RetryContext retryContext;
     private GatewayStatistics gatewayStatistics;
-    private RequestTimeline transportRequestTimeline;
+    private RequestTimeline gatewayRequestTimeline;
     private MetadataDiagnosticsContext metadataDiagnosticsContext;
     private SerializationDiagnosticsContext serializationDiagnosticsContext;
 
     public ClientSideRequestStatistics(DiagnosticsClientContext diagnosticsClientContext) {
         this.diagnosticsClientContext = diagnosticsClientContext;
-        this.clientContext = null;
         this.requestStartTimeUTC = Instant.now();
         this.requestEndTimeUTC = Instant.now();
         this.responseStatisticsList = new ArrayList<>();
@@ -66,6 +63,14 @@ public class ClientSideRequestStatistics {
 
     public Duration getDuration() {
         return Duration.between(requestStartTimeUTC, requestEndTimeUTC);
+    }
+
+    public Instant getRequestStartTimeUTC() {
+        return requestStartTimeUTC;
+    }
+
+    public DiagnosticsClientContext getDiagnosticsClientContext() {
+        return diagnosticsClientContext;
     }
 
     public void recordResponse(RxDocumentServiceRequest request, StoreResult storeResult) {
@@ -135,16 +140,21 @@ public class ClientSideRequestStatistics {
                 this.gatewayStatistics.requestCharge = storeResponse
                                                            .getHeaderValue(HttpConstants.HttpHeaders.REQUEST_CHARGE);
                 this.gatewayStatistics.requestTimeline = DirectBridgeInternal.getRequestTimeline(storeResponse);
+                this.gatewayStatistics.partitionKeyRangeId = storeResponse.getPartitionKeyRangeId();
             } else if (exception != null) {
                 this.gatewayStatistics.statusCode = exception.getStatusCode();
                 this.gatewayStatistics.subStatusCode = exception.getSubStatusCode();
-                this.gatewayStatistics.requestTimeline = this.transportRequestTimeline;
+                this.gatewayStatistics.requestTimeline = this.gatewayRequestTimeline;
             }
         }
     }
 
-    public void setTransportClientRequestTimeline(RequestTimeline transportRequestTimeline) {
-        this.transportRequestTimeline = transportRequestTimeline;
+    public void setGatewayRequestTimeline(RequestTimeline transportRequestTimeline) {
+        this.gatewayRequestTimeline = transportRequestTimeline;
+    }
+
+    public RequestTimeline getGatewayRequestTimeline() {
+        return this.gatewayRequestTimeline;
     }
 
     public String recordAddressResolutionStart(URI targetEndpoint) {
@@ -225,22 +235,54 @@ public class ClientSideRequestStatistics {
         return retryContext;
     }
 
-    public static class StoreResponseStatistics {
-        @JsonSerialize(using = StoreResult.StoreResultSerializer.class)
-        StoreResult storeResult;
-        @JsonSerialize(using = DiagnosticsInstantSerializer.class)
-        Instant requestResponseTimeUTC;
-        @JsonSerialize
-        ResourceType requestResourceType;
-        @JsonSerialize
-        OperationType requestOperationType;
+    public List<StoreResponseStatistics> getResponseStatisticsList() {
+        return responseStatisticsList;
     }
 
-    private static class SystemInformation {
-        String usedMemory;
-        String availableMemory;
-        String systemCpuLoad;
-        int availableProcessors;
+    public List<StoreResponseStatistics> getSupplementalResponseStatisticsList() {
+        return supplementalResponseStatisticsList;
+    }
+
+    public Map<String, AddressResolutionStatistics> getAddressResolutionStatistics() {
+        return addressResolutionStatistics;
+    }
+
+    public GatewayStatistics getGatewayStatistics() {
+        return gatewayStatistics;
+    }
+
+    public static class StoreResponseStatistics {
+        @JsonSerialize(using = StoreResult.StoreResultSerializer.class)
+        private StoreResult storeResult;
+        @JsonSerialize(using = DiagnosticsInstantSerializer.class)
+        private Instant requestResponseTimeUTC;
+        @JsonSerialize
+        private ResourceType requestResourceType;
+        @JsonSerialize
+        private OperationType requestOperationType;
+
+        public StoreResult getStoreResult() {
+            return storeResult;
+        }
+
+        public Instant getRequestResponseTimeUTC() {
+            return requestResponseTimeUTC;
+        }
+
+        public ResourceType getRequestResourceType() {
+            return requestResourceType;
+        }
+
+        public OperationType getRequestOperationType() {
+            return requestOperationType;
+        }
+    }
+
+    public static class SystemInformation {
+        private String usedMemory;
+        private String availableMemory;
+        private String systemCpuLoad;
+        private int availableProcessors;
 
         public String getUsedMemory() {
             return usedMemory;
@@ -278,20 +320,7 @@ public class ClientSideRequestStatistics {
             generator.writeStringField("requestStartTimeUTC", DiagnosticsInstantSerializer.fromInstant(statistics.requestStartTimeUTC));
             generator.writeStringField("requestEndTimeUTC", DiagnosticsInstantSerializer.fromInstant(statistics.requestEndTimeUTC));
             generator.writeObjectField("responseStatisticsList", statistics.responseStatisticsList);
-            int supplementalResponseStatisticsListCount = statistics.supplementalResponseStatisticsList.size();
-            int initialIndex =
-                Math.max(supplementalResponseStatisticsListCount - MAX_SUPPLEMENTAL_REQUESTS_FOR_TO_STRING, 0);
-            if (initialIndex != 0) {
-                List<StoreResponseStatistics> subList = statistics.supplementalResponseStatisticsList
-                                                            .subList(initialIndex,
-                                                                     supplementalResponseStatisticsListCount);
-                generator.writeObjectField("supplementalResponseStatisticsList", subList);
-            } else {
-                generator
-                    .writeObjectField("supplementalResponseStatisticsList",
-                                      statistics.supplementalResponseStatisticsList);
-            }
-
+            generator.writeObjectField("supplementalResponseStatisticsList", getCappedSupplementalResponseStatisticsList(statistics.supplementalResponseStatisticsList));
             generator.writeObjectField("addressResolutionStatistics", statistics.addressResolutionStatistics);
             generator.writeObjectField("regionsContacted", statistics.regionsContacted);
             generator.writeObjectField("retryContext", statistics.retryContext);
@@ -300,17 +329,7 @@ public class ClientSideRequestStatistics {
             generator.writeObjectField("gatewayStatistics", statistics.gatewayStatistics);
 
             try {
-                SystemInformation systemInformation = new SystemInformation();
-                Runtime runtime = Runtime.getRuntime();
-                long totalMemory = runtime.totalMemory() / 1024;
-                long freeMemory = runtime.freeMemory() / 1024;
-                long maxMemory = runtime.maxMemory() / 1024;
-                systemInformation.usedMemory = totalMemory - freeMemory + " KB";
-                systemInformation.availableMemory = (maxMemory - (totalMemory - freeMemory)) + " KB";
-                systemInformation.availableProcessors = runtime.availableProcessors();
-
-                // TODO: other system related info also can be captured using a similar approach
-                systemInformation.systemCpuLoad = CpuMemoryMonitor.getCpuLoad().toString();
+                SystemInformation systemInformation = fetchSystemInformation();
                 generator.writeObjectField("systemInformation", systemInformation);
             } catch (Exception e) {
                 // Error while evaluating system information, do nothing
@@ -321,31 +340,65 @@ public class ClientSideRequestStatistics {
         }
     }
 
-    private static class AddressResolutionStatistics {
+    public static List<StoreResponseStatistics> getCappedSupplementalResponseStatisticsList(List<StoreResponseStatistics> supplementalResponseStatisticsList) {
+        int supplementalResponseStatisticsListCount = supplementalResponseStatisticsList.size();
+        int initialIndex =
+            Math.max(supplementalResponseStatisticsListCount - MAX_SUPPLEMENTAL_REQUESTS_FOR_TO_STRING, 0);
+        if (initialIndex != 0) {
+            List<StoreResponseStatistics> subList = supplementalResponseStatisticsList
+                .subList(initialIndex,
+                    supplementalResponseStatisticsListCount);
+            return subList;
+        }
+        return supplementalResponseStatisticsList;
+    }
+
+    public static class AddressResolutionStatistics {
         @JsonSerialize(using = DiagnosticsInstantSerializer.class)
-        Instant startTimeUTC;
+        private Instant startTimeUTC;
         @JsonSerialize(using = DiagnosticsInstantSerializer.class)
-        Instant endTimeUTC;
+        private Instant endTimeUTC;
         @JsonSerialize
-        String targetEndpoint;
+        private String targetEndpoint;
         @JsonSerialize
-        String errorMessage;
+        private String errorMessage;
 
         // If one replica return error we start address call in parallel,
         // on other replica  valid response, we end the current user request,
         // indicating background addressResolution is still inflight
         @JsonSerialize
-        boolean inflightRequest = true;
+        private boolean inflightRequest = true;
+
+        public Instant getStartTimeUTC() {
+            return startTimeUTC;
+        }
+
+        public Instant getEndTimeUTC() {
+            return endTimeUTC;
+        }
+
+        public String getTargetEndpoint() {
+            return targetEndpoint;
+        }
+
+        public String getErrorMessage() {
+            return errorMessage;
+        }
+
+        public boolean isInflightRequest() {
+            return inflightRequest;
+        }
     }
 
-    private static class GatewayStatistics {
-        String sessionToken;
-        OperationType operationType;
-        ResourceType resourceType;
-        int statusCode;
-        int subStatusCode;
-        String requestCharge;
-        RequestTimeline requestTimeline;
+    public static class GatewayStatistics {
+        private String sessionToken;
+        private OperationType operationType;
+        private ResourceType resourceType;
+        private int statusCode;
+        private int subStatusCode;
+        private String requestCharge;
+        private RequestTimeline requestTimeline;
+        private String partitionKeyRangeId;
 
         public String getSessionToken() {
             return sessionToken;
@@ -374,5 +427,24 @@ public class ClientSideRequestStatistics {
         public ResourceType getResourceType() {
             return resourceType;
         }
+
+        public String getPartitionKeyRangeId() {
+            return partitionKeyRangeId;
+        }
+    }
+
+    public static SystemInformation fetchSystemInformation() {
+        SystemInformation systemInformation = new SystemInformation();
+        Runtime runtime = Runtime.getRuntime();
+        long totalMemory = runtime.totalMemory() / 1024;
+        long freeMemory = runtime.freeMemory() / 1024;
+        long maxMemory = runtime.maxMemory() / 1024;
+        systemInformation.usedMemory = totalMemory - freeMemory + " KB";
+        systemInformation.availableMemory = (maxMemory - (totalMemory - freeMemory)) + " KB";
+        systemInformation.availableProcessors = runtime.availableProcessors();
+
+        // TODO: other system related info also can be captured using a similar approach
+        systemInformation.systemCpuLoad = CpuMemoryMonitor.getCpuLoad().toString();
+        return systemInformation;
     }
 }

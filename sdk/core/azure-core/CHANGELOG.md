@@ -1,7 +1,17 @@
 # Release History
 
-## 1.19.0-beta.1 (Unreleased)
+## 1.19.0-beta.2 (Unreleased)
 
+### Feature Added
+ - Added a new constructor `HttpHeaders(int initialCapacity)` which allows configuration of the initial backing map 
+   capacity may allow short-circuiting scenarios where the map would need to be resized and copied in memory.
+
+## 1.19.0-beta.1 (2021-07-07)
+
+### Features Added
+
+ - Added `RequestOptions` for protocol methods
+ - Added support for `BinaryData` type as the request body or response body in `RestProxy`
 
 ## 1.18.0 (2021-07-01)
 
