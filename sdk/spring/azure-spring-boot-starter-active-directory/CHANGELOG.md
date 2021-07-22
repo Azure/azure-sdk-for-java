@@ -1,5 +1,8 @@
 # Release History
 
+## 3.8.0-beta.1 (Unreleased)
+
+
 ## 3.7.0 (2021-07-20)
 ### New Features
 - Add property `azure.activedirectory.application-type` to configure the application type.
