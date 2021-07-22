@@ -330,7 +330,7 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
                 .withNewPrimaryPublicIPAddress(publicIpDnsLabel)
                 .withPopularLinuxImage(linuxImage)
                 .withRootUsername(uname)
-                .withRootPassword(password)
+                .withSsh(sshPublicKey())
                 .withUnmanagedDisks()
                 .defineUnmanagedDataDisk("disk-1")
                 .withNewVhd(30)
