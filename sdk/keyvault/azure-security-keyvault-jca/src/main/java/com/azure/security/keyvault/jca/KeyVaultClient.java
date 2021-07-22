@@ -306,12 +306,12 @@ public class KeyVaultClient extends DelegateRestClient {
                 }
                 if (secretBundle.getContentType().equals("application/x-pem-file")) {
                     try {
-                        String kty = Optional.ofNullable(certificateBundle)
+                        String keyType = Optional.ofNullable(certificateBundle)
                                              .map(CertificateBundle::getPolicy)
                                              .map(CertificatePolicy::getKeyProperties)
                                              .map(KeyProperties::getKty)
                                              .orElse(null);
-                        key = createPrivateKeyFromPem(secretBundle.getValue(), kty);
+                        key = createPrivateKeyFromPem(secretBundle.getValue(), keyType);
                     } catch (IOException | NoSuchAlgorithmException | InvalidKeySpecException | IllegalArgumentException ex) {
                         LOGGER.log(WARNING, "Unable to decode key", ex);
                     }
@@ -359,13 +359,13 @@ public class KeyVaultClient extends DelegateRestClient {
      * Get the private key from the PEM string.
      *
      * @param pemString the PEM file in string format.
-     * @param kty the private key type in string format.
+     * @param keyType the private key type in string format.
      * @return the private key
      * @throws IOException when an I/O error occurs.
      * @throws NoSuchAlgorithmException when algorithm is unavailable.
      * @throws InvalidKeySpecException when the private key cannot be generated.
      */
-    private static PrivateKey createPrivateKeyFromPem(String pemString, String kty)
+    private PrivateKey createPrivateKeyFromPem(String pemString, String keyType)
         throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
         StringBuilder builder = new StringBuilder();
         try (BufferedReader reader = new BufferedReader(new StringReader(pemString))) {
@@ -384,7 +384,7 @@ public class KeyVaultClient extends DelegateRestClient {
         }
         byte[] bytes = Base64.getDecoder().decode(builder.toString());
         PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(bytes);
-        KeyFactory factory = KeyFactory.getInstance(kty);
+        KeyFactory factory = KeyFactory.getInstance(keyType);
         return factory.generatePrivate(spec);
     }
 
