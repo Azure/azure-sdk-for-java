@@ -57,7 +57,7 @@ Please follow [instructions here][contributing_md] to build from source or contr
 
 <!-- Link -->
 [src]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-integration-eventhubs/src
-[package]: https://mvnrepository.com/artifact/com.microsoft.azure/spring-integration-eventhubs
+[package]: https://mvnrepository.com/artifact/com.azure.spring/azure-spring-integration-eventhubs
 [refdocs]: https://azure.github.io/azure-sdk-for-java/springcloud.html#spring-integration-eventhubs
 [sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/tag_azure-spring-boot_3.6.0/eventhubs/azure-spring-integration-sample-eventhubs
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
