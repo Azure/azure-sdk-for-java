@@ -3,6 +3,9 @@
 
 package com.azure.spring.cloud.autoconfigure.context;
 
+import com.azure.core.credential.AccessToken;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.AzureResourceManager;
 import org.junit.jupiter.api.Test;
@@ -11,16 +14,17 @@ import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import reactor.core.publisher.Mono;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 
-public class AzureContextAutoConfigurationTest {
+public class AzureResourceManagerAutoConfigurationTest {
 
     private static final String AZURE_PROPERTY_PREFIX = "spring.cloud.azure.";
 
-    private ApplicationContextRunner contextRunner = new ApplicationContextRunner()
+    private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withConfiguration(AutoConfigurations.of(AzureResourceManagerAutoConfiguration.class));
 
     @Test
@@ -45,7 +49,6 @@ public class AzureContextAutoConfigurationTest {
     @Test
     public void testAzurePropertiesConfigured() {
         this.contextRunner
-            .withUserConfiguration(AzureContextCredentialAutoConfiguration.class)
             .withPropertyValues(
                 AZURE_PROPERTY_PREFIX + "client-id=client1",
                 AZURE_PROPERTY_PREFIX + "client-secret=secret1",
@@ -53,6 +56,7 @@ public class AzureContextAutoConfigurationTest {
                 AZURE_PROPERTY_PREFIX + "resource-group=rg1",
                 AZURE_PROPERTY_PREFIX + "region=region1",
                 AZURE_PROPERTY_PREFIX + "subscriptionId=sub1")
+            .withBean(TestTokenCredential.class)
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureContextProperties.class);
                 assertThat(context.getBean(AzureContextProperties.class).getClientId()).isEqualTo("client1");
@@ -83,4 +87,13 @@ public class AzureContextAutoConfigurationTest {
         }
 
     }
+
+    static class TestTokenCredential implements TokenCredential {
+
+        @Override
+        public Mono<AccessToken> getToken(TokenRequestContext request) {
+            return null;
+        }
+    }
+
 }

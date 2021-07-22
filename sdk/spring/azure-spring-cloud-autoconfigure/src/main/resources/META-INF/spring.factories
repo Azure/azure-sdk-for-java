@@ -2,6 +2,7 @@ org.springframework.boot.env.EnvironmentPostProcessor=com.azure.spring.cloudfoun
   com.azure.spring.cloud.autoconfigure.cloudfoundry.AzureCloudFoundryEnvironmentPostProcessor
 
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.azure.spring.autoconfigure.unity.AzurePropertyAutoConfiguration,\
 com.azure.spring.autoconfigure.unity.identity.AzureDefaultTokenCredentialAutoConfiguration,\
 com.azure.spring.autoconfigure.aad.AADAutoConfiguration,\
 com.azure.spring.autoconfigure.aad.AADAuthenticationFilterAutoConfiguration,\
@@ -16,7 +17,6 @@ com.azure.spring.autoconfigure.jms.PremiumServiceBusJMSAutoConfiguration,\
 com.azure.spring.autoconfigure.storage.StorageAutoConfiguration,\
 com.azure.spring.autoconfigure.storage.StorageHealthConfiguration,\
 com.azure.spring.keyvault.KeyVaultHealthConfiguration,\
-com.azure.spring.autoconfigure.unity.AzurePropertyAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.context.AzureResourceManagerAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.cache.AzureRedisAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.eventhub.AzureEventHubKafkaAutoConfiguration,\
