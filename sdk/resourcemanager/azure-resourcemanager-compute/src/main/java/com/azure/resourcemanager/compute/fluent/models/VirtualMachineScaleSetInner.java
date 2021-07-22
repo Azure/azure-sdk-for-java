@@ -16,6 +16,7 @@ import com.azure.resourcemanager.compute.models.OrchestrationMode;
 import com.azure.resourcemanager.compute.models.Plan;
 import com.azure.resourcemanager.compute.models.ScaleInPolicy;
 import com.azure.resourcemanager.compute.models.Sku;
+import com.azure.resourcemanager.compute.models.SpotRestorePolicy;
 import com.azure.resourcemanager.compute.models.UpgradePolicy;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetIdentity;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMProfile;
@@ -170,6 +171,12 @@ public class VirtualMachineScaleSetInner extends Resource {
      */
     @JsonProperty(value = "properties.orchestrationMode")
     private OrchestrationMode orchestrationMode;
+
+    /*
+     * Specifies the Spot Restore properties for the virtual machine scale set.
+     */
+    @JsonProperty(value = "properties.spotRestorePolicy")
+    private SpotRestorePolicy spotRestorePolicy;
 
     /**
      * Get the sku property: The virtual machine scale set sku.
@@ -581,6 +588,26 @@ public class VirtualMachineScaleSetInner extends Resource {
         return this;
     }
 
+    /**
+     * Get the spotRestorePolicy property: Specifies the Spot Restore properties for the virtual machine scale set.
+     *
+     * @return the spotRestorePolicy value.
+     */
+    public SpotRestorePolicy spotRestorePolicy() {
+        return this.spotRestorePolicy;
+    }
+
+    /**
+     * Set the spotRestorePolicy property: Specifies the Spot Restore properties for the virtual machine scale set.
+     *
+     * @param spotRestorePolicy the spotRestorePolicy value to set.
+     * @return the VirtualMachineScaleSetInner object itself.
+     */
+    public VirtualMachineScaleSetInner withSpotRestorePolicy(SpotRestorePolicy spotRestorePolicy) {
+        this.spotRestorePolicy = spotRestorePolicy;
+        return this;
+    }
+
     /** {@inheritDoc} */
     @Override
     public VirtualMachineScaleSetInner withLocation(String location) {
@@ -627,6 +654,9 @@ public class VirtualMachineScaleSetInner extends Resource {
         }
         if (scaleInPolicy() != null) {
             scaleInPolicy().validate();
+        }
+        if (spotRestorePolicy() != null) {
+            spotRestorePolicy().validate();
         }
     }
 }
