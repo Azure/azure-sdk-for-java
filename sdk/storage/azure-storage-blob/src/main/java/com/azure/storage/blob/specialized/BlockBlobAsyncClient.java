@@ -130,7 +130,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * @return a {@link BlockBlobAsyncClient} with the specified {@code encryptionScope}.
      */
     @Override
-    public BlockBlobAsyncClient getEncryptionScopeClient(String encryptionScope) {
+    public BlockBlobAsyncClient getEncryptionScopeAsyncClient(String encryptionScope) {
         EncryptionScope finalEncryptionScope = null;
         if (encryptionScope != null) {
             finalEncryptionScope = new EncryptionScope().setEncryptionScope(encryptionScope);
@@ -148,7 +148,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * @return a {@link BlockBlobAsyncClient} with the specified {@code customerProvidedKey}.
      */
     @Override
-    public BlockBlobAsyncClient getCustomerProvidedKeyClient(CustomerProvidedKey customerProvidedKey) {
+    public BlockBlobAsyncClient getCustomerProvidedKeyAsyncClient(CustomerProvidedKey customerProvidedKey) {
         CpkInfo finalCustomerProvidedKey = null;
         if (customerProvidedKey != null) {
             finalCustomerProvidedKey = new CpkInfo()
