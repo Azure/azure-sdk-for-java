@@ -69,6 +69,17 @@ public final class AttestationClientBuilder {
     }
 
     /**
+     * Sets the desired API version for this attestation client.
+     * @param apiVersion Specifies the API version to use in the outgoing API calls.
+     * @return
+     */
+    public AttestationClientBuilder apiVersion(String apiVersion) {
+        Objects.requireNonNull(apiVersion);
+        clientImplBuilder.apiVersion(apiVersion);
+        return this;
+    }
+
+    /**
      * Sets The HTTP pipeline to send requests through.
      *
      * @param pipeline the pipeline value.

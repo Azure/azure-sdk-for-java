@@ -229,7 +229,6 @@ public final class AttestationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<String>> attestTpmWithResponse(String request) {
-        Objects.requireNonNull(request);
         return withContext(context -> attestTpmWithResponse(request, context));
     }
 

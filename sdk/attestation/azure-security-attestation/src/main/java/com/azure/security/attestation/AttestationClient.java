@@ -101,6 +101,21 @@ public final class AttestationClient {
      * attestation policy.
      *
      * @param request Attestation request for Intel SGX enclaves.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of an attestation operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AttestationResponse> attestOpenEnclaveWithResponse(AttestOpenEnclaveRequest request) {
+        return withContext(context -> asyncClient.attestOpenEnclaveWithResponse(request, context)).block();
+    }
+
+    /**
+     * Processes an OpenEnclave report , producing an artifact. The type of artifact produced is dependent upon
+     * attestation policy.
+     *
+     * @param request Attestation request for Intel SGX enclaves.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -110,7 +125,6 @@ public final class AttestationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AttestationResponse> attestOpenEnclaveWithResponse(
             AttestOpenEnclaveRequest request, Context context) {
-
         return asyncClient.attestOpenEnclaveWithResponse(request, context).block();
     }
 
@@ -128,6 +142,22 @@ public final class AttestationClient {
     public AttestationResponse attestSgxEnclave(AttestSgxEnclaveRequest request) {
         return asyncClient.attestSgxEnclave(request).block();
     }
+    /**
+     * Processes an SGX enclave quote, producing an artifact. The type of artifact produced is dependent upon
+     * attestation policy.
+     *
+     * @param request Attestation request for Intel SGX enclaves.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of an attestation operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AttestationResponse> attestSgxEnclaveWithResponse(
+        AttestSgxEnclaveRequest request) {
+        return withContext(context -> asyncClient.attestSgxEnclaveWithResponse(request, context)).block();
+    }
+
 
     /**
      * Processes an SGX enclave quote, producing an artifact. The type of artifact produced is dependent upon
@@ -159,6 +189,21 @@ public final class AttestationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public String attestTpm(String request) {
         return asyncClient.attestTpm(request).block();
+    }
+
+    /**
+     * Processes attestation evidence from a VBS enclave, producing an attestation result. The attestation result
+     * produced is dependent upon the attestation policy.
+     *
+     * @param request Attestation request for Trusted Platform Module (TPM) attestation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return attestation response for Trusted Platform Module (TPM) attestation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<String> attestTpmWithResponse(String request) {
+        return withContext(context -> asyncClient.attestTpmWithResponse(request, context)).block();
     }
 
     /**
