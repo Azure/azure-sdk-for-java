@@ -1112,10 +1112,9 @@ public final class KeyVaultConnectionsImpl {
 
     private List<BinaryData> getValues(BinaryData binaryData, String path) {
         try {
-            Object obj = binaryData.toObject(Object.class);
-            Object values = ((Map) obj).get(path);
-            return (List<BinaryData>)
-                    (((List) values).stream().map(BinaryData::fromObject).collect(Collectors.toList()));
+            Map<?, ?> obj = binaryData.toObject(Map.class);
+            List<?> values = (List<?>) obj.get(path);
+            return values.stream().map(BinaryData::fromObject).collect(Collectors.toList());
         } catch (Exception e) {
             return null;
         }
@@ -1123,8 +1122,8 @@ public final class KeyVaultConnectionsImpl {
 
     private String getNextLink(BinaryData binaryData, String path) {
         try {
-            Object obj = binaryData.toObject(Object.class);
-            return (String) ((Map) obj).get(path);
+            Map<?, ?> obj = binaryData.toObject(Map.class);
+            return (String) obj.get(path);
         } catch (Exception e) {
             return null;
         }
