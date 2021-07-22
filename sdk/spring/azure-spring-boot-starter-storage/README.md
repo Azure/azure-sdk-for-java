@@ -114,7 +114,7 @@ Please follow [instructions here][contributing_md] to build from source or contr
 
 <!-- Link -->
 [docs]: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-boot-starter-java-app-with-azure-storage
-[package]: https://mvnrepository.com/artifact/com.microsoft.azure/spring-starter-azure-storage
+[package]: https://mvnrepository.com/artifact/com.azure.spring/azure-spring-boot-starter-storage
 [refdocs]: https://azure.github.io/azure-sdk-for-java/springboot.html#azure-spring-boot
 [src]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-boot-starter-storage
 [sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/tag_azure-spring-boot_3.6.0/storage/azure-spring-boot-sample-storage-resource
