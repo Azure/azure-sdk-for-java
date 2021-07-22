@@ -35,7 +35,7 @@ public class RepeatingInputStream extends InputStream {
 
     @Override
     public synchronized int read() {
-        return (pos < size) ? (RANDOM_BYTES[(int)(pos++ % RANDOM_BYTES_LENGTH)] & 0xFF) : -1;
+        return (pos < size) ? (RANDOM_BYTES[(int) (pos++ % RANDOM_BYTES_LENGTH)] & 0xFF) : -1;
     }
 
     @Override
@@ -62,6 +62,10 @@ public class RepeatingInputStream extends InputStream {
         this.mark = this.pos;
     }
 
+    /**
+     * Same as {@link #mark(int)} but takes long.
+     * @param readLimit read limit.
+     */
     public synchronized void mark(long readLimit) {
         this.readLimit = readLimit;
         this.mark = this.pos;
