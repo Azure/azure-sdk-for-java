@@ -2,28 +2,28 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.query;
 
-import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
-import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
-import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
-import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
-import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.FeedRange;
-import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.implementation.Resource;
-import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
+import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
+import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
+import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.Range;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.SqlQuerySpec;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -134,7 +134,8 @@ public class DocumentQueryExecutionContextFactory {
         QueryInfo queryInfo =
             partitionedQueryExecutionInfo.getQueryInfo();
         queryInfo.setQueryPlanDiagnosticsContext(new QueryInfo.QueryPlanDiagnosticsContext(planFetchStartTime,
-                                                                                           planFetchEndTime));
+            planFetchEndTime,
+            partitionedQueryExecutionInfo.getQueryPlanRequestTimeline()));
         List<Range<String>> queryRanges =
             partitionedQueryExecutionInfo.getQueryRanges();
 

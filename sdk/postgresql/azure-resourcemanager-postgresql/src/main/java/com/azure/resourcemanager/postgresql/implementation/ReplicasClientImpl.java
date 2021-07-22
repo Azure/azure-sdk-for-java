@@ -60,7 +60,7 @@ public final class ReplicasClientImpl implements ReplicasClient {
     private interface ReplicasService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBForPostgreSQL"
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL"
                 + "/servers/{serverName}/replicas")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)

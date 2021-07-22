@@ -640,7 +640,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
          parallelTransferOptions.getMaxConcurrency() appends will be happening at once, so we guarantee buffering of
          only concurrency + 1 chunks at a time.
          */
-        return chunkedSource.flatMapSequential(stagingArea::write, 1)
+        return chunkedSource.flatMapSequential(stagingArea::write, 1, 1)
             .concatWith(Flux.defer(stagingArea::flush))
             .flatMapSequential(bufferAggregator -> {
                 // Report progress as necessary.
@@ -659,7 +659,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                     // but we need to collect the ids.
                     .map(x -> blockId)
                     .flux();
-            }, parallelTransferOptions.getMaxConcurrency())
+            }, parallelTransferOptions.getMaxConcurrency(), 1)
             .collect(Collectors.toList())
             .flatMap(ids ->
                 blockBlobAsyncClient.commitBlockListWithResponse(new BlockBlobCommitBlockListOptions(ids)

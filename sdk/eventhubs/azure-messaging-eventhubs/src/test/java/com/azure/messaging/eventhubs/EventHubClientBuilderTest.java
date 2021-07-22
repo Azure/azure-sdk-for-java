@@ -13,6 +13,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -167,6 +168,9 @@ public class EventHubClientBuilderTest extends IntegrationTestBase {
 
     @Test
     public void sendAndReceiveEventByAzureSasCredential() {
+        Assumptions.assumeTrue(getConnectionString(true) != null,
+            "SAS was not set. Can't run test scenario.");
+
         ConnectionStringProperties properties = getConnectionStringProperties(true);
         String fullyQualifiedNamespace = getFullyQualifiedDomainName();
         String sharedAccessSignature = properties.getSharedAccessSignature();

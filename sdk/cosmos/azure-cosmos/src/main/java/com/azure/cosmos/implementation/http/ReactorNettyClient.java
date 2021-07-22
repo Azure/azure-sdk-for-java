@@ -219,7 +219,7 @@ class ReactorNettyClient implements HttpClient {
         return (conn, state) -> {
             Instant time = Instant.now();
 
-            if (state.equals(HttpClientState.CONNECTED) || state.equals(HttpClientState.ACQUIRED)) {
+            if (state.equals(HttpClientState.CONNECTED)) {
                 if (conn instanceof ConnectionObserver) {
                     ConnectionObserver observer = (ConnectionObserver) conn;
                     ReactorNettyRequestRecord requestRecord =
@@ -228,6 +228,16 @@ class ReactorNettyClient implements HttpClient {
                         throw new IllegalStateException("ReactorNettyRequestRecord not found in context");
                     }
                     requestRecord.setTimeConnected(time);
+                }
+            }else if (state.equals(HttpClientState.ACQUIRED)) {
+                if (conn instanceof ConnectionObserver) {
+                    ConnectionObserver observer = (ConnectionObserver) conn;
+                    ReactorNettyRequestRecord requestRecord =
+                        observer.currentContext().getOrDefault(REACTOR_NETTY_REQUEST_RECORD_KEY, null);
+                    if (requestRecord == null) {
+                        throw new IllegalStateException("ReactorNettyRequestRecord not found in context");
+                    }
+                    requestRecord.setTimeAcquired(time);
                 }
             } else if (state.equals(HttpClientState.CONFIGURED)) {
                 if (conn instanceof HttpClientRequest) {

@@ -126,14 +126,16 @@ public final class AttestationClientImpl {
      * Initializes an instance of AttestationClient client.
      *
      * @param instanceUrl The attestation instance base URI, for example https://mytenant.attest.azure.net.
+     * @param apiVersion Api Version.
      */
-    public AttestationClientImpl(String instanceUrl) {
+    AttestationClientImpl(String instanceUrl, String apiVersion) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                         .build(),
                 JacksonAdapter.createDefaultSerializerAdapter(),
-                instanceUrl);
+                instanceUrl,
+                apiVersion);
     }
 
     /**
@@ -141,9 +143,10 @@ public final class AttestationClientImpl {
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param instanceUrl The attestation instance base URI, for example https://mytenant.attest.azure.net.
+     * @param apiVersion Api Version.
      */
-    public AttestationClientImpl(HttpPipeline httpPipeline, String instanceUrl) {
-        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), instanceUrl);
+    AttestationClientImpl(HttpPipeline httpPipeline, String instanceUrl, String apiVersion) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), instanceUrl, apiVersion);
     }
 
     /**
@@ -152,12 +155,14 @@ public final class AttestationClientImpl {
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param instanceUrl The attestation instance base URI, for example https://mytenant.attest.azure.net.
+     * @param apiVersion Api Version.
      */
-    public AttestationClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String instanceUrl) {
+    AttestationClientImpl(
+            HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String instanceUrl, String apiVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.instanceUrl = instanceUrl;
-        this.apiVersion = "2020-10-01";
+        this.apiVersion = apiVersion;
         this.policies = new PoliciesImpl(this);
         this.policyCertificates = new PolicyCertificatesImpl(this);
         this.attestations = new AttestationsImpl(this);

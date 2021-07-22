@@ -1,6 +1,24 @@
 # Release History
 
-## 11.5.0-beta.1 (Unreleased)
+## 11.5.0-beta.2 (Unreleased)
+
+
+## 11.5.0-beta.1 (2021-07-20)
+
+### Features Added
+
+- Added support for service version `2021-04-30-Preview`. Default version is now `2021-04-30-Preview`.
+- Added Semantic Search capability to `SearchClient` and `SearchAsyncClient`.
+- Added the ability to configure AAD authentication in client builders to enable AAD authentication in clients.
+- Added support for Normalizers in `SearchField` and `SearchIndex` with `CustomNormalizer` and `LexicalNormalizer`.
+- Added new versions of `EntityRecognitionSkill` and `SentimentSkill`. Added `PiiDetectionSkill`.
+- Added support for indexer data identity.
+
+### Dependency Updates
+
+- Updated `azure-core` from `1.17.0` to `1.18.0`.
+- Updated `azure-core-http-netty` from `1.10.0` to `1.10.1`.
+- Updated `azure-core-serializer-json-jackson` from `1.2.4` to `1.2.5`.
 
 ## 11.4.0 (2021-06-08)
 

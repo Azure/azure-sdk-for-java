@@ -51,6 +51,7 @@
       </activation>
       <modules>
         <module>azure-containers-containerregistry</module>
+        <module>azure-containers-containerregistry-perf</module>
       </modules>
     </profile>
   </profiles>
