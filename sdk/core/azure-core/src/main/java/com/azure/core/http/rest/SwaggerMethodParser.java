@@ -285,18 +285,30 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
             if (0 <= parameterIndex && parameterIndex < swaggerMethodArguments.length) {
                 final Object methodArgument = swaggerMethodArguments[substitution.getMethodParameterIndex()];
                 List<Object> methodArguments = new ArrayList<Object>();
+
                 if (methodArgument instanceof List && !substitution.shouldMergeQueryParams()) {
-                    methodArguments.addAll((List<Object>) methodArgument);
+                    if (methodArguments.isEmpty()) {
+                        // if the method type is List or Iterable, at least one set of tests,
+                        // from webpubsub, depends on having an empty value if no parameters are passed
+                        // e.g. excluded=[]. Those tests should be refactored, but adding support
+                        // here to avoid breaking the core pipeline.
+                        urlBuilder.setQueryParameter(substitution.getUrlParameterName(),
+                            UrlEscapers.QUERY_ESCAPER.escape("[]"));
+                    } else {
+                        methodArguments.addAll((List<Object>) methodArgument);
+                    }
                 } else {
                     methodArguments.add(methodArgument);
                 }
+
                 for (Object methodArgumentUnconverted : methodArguments) {
                     String parameterValue = serialize(serializer, methodArgumentUnconverted);
+
                     if (parameterValue != null) {
                         if (substitution.shouldEncode()) {
                             parameterValue = UrlEscapers.QUERY_ESCAPER.escape(parameterValue);
                         }
-                        urlBuilder.setQueryParameter(substitution.getUrlParameterName(), parameterValue);
+                        urlBuilder.appendQueryParameter(substitution.getUrlParameterName(), parameterValue);
                     }
                 }
             }
