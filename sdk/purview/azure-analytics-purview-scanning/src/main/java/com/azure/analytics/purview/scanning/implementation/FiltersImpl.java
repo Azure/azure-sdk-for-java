@@ -1,7 +1,6 @@
 package com.azure.analytics.purview.scanning.implementation;
 
 import com.azure.core.annotation.Get;
-import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
@@ -49,7 +48,6 @@ public final class FiltersImpl {
                 @PathParam("dataSourceName") String dataSourceName,
                 @PathParam("scanName") String scanName,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -59,7 +57,6 @@ public final class FiltersImpl {
                 @PathParam("dataSourceName") String dataSourceName,
                 @PathParam("scanName") String scanName,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
     }
@@ -98,7 +95,6 @@ public final class FiltersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getWithResponseAsync(
             String dataSourceName, String scanName, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.get(
@@ -106,7 +102,6 @@ public final class FiltersImpl {
                                 dataSourceName,
                                 scanName,
                                 this.client.getApiVersion(),
-                                accept,
                                 requestOptions,
                                 context));
     }
@@ -145,13 +140,11 @@ public final class FiltersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getWithResponseAsync(
             String dataSourceName, String scanName, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
         return service.get(
                 this.client.getEndpoint(),
                 dataSourceName,
                 scanName,
                 this.client.getApiVersion(),
-                accept,
                 requestOptions,
                 context);
     }
@@ -352,7 +345,6 @@ public final class FiltersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(
             String dataSourceName, String scanName, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.createOrUpdate(
@@ -360,7 +352,6 @@ public final class FiltersImpl {
                                 dataSourceName,
                                 scanName,
                                 this.client.getApiVersion(),
-                                accept,
                                 requestOptions,
                                 context));
     }
@@ -399,13 +390,11 @@ public final class FiltersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(
             String dataSourceName, String scanName, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
         return service.createOrUpdate(
                 this.client.getEndpoint(),
                 dataSourceName,
                 scanName,
                 this.client.getApiVersion(),
-                accept,
                 requestOptions,
                 context);
     }

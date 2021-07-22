@@ -3,7 +3,6 @@ package com.azure.analytics.purview.catalog.implementation;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.Get;
-import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
@@ -50,7 +49,6 @@ public final class RelationshipsImpl {
         Mono<Response<BinaryData>> create(
                 @HostParam("Endpoint") String endpoint,
                 @BodyParam("application/json") BinaryData relationship,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -58,7 +56,6 @@ public final class RelationshipsImpl {
         Mono<Response<BinaryData>> update(
                 @HostParam("Endpoint") String endpoint,
                 @BodyParam("application/json") BinaryData relationship,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -66,7 +63,6 @@ public final class RelationshipsImpl {
         Mono<Response<BinaryData>> get(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("guid") String guid,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -119,9 +115,8 @@ public final class RelationshipsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createWithResponseAsync(BinaryData relationship, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.create(this.client.getEndpoint(), relationship, accept, requestOptions, context));
+                context -> service.create(this.client.getEndpoint(), relationship, requestOptions, context));
     }
 
     /**
@@ -166,8 +161,7 @@ public final class RelationshipsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createWithResponseAsync(
             BinaryData relationship, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.create(this.client.getEndpoint(), relationship, accept, requestOptions, context);
+        return service.create(this.client.getEndpoint(), relationship, requestOptions, context);
     }
 
     /**
@@ -404,9 +398,8 @@ public final class RelationshipsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateWithResponseAsync(BinaryData relationship, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.update(this.client.getEndpoint(), relationship, accept, requestOptions, context));
+                context -> service.update(this.client.getEndpoint(), relationship, requestOptions, context));
     }
 
     /**
@@ -451,8 +444,7 @@ public final class RelationshipsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateWithResponseAsync(
             BinaryData relationship, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.update(this.client.getEndpoint(), relationship, accept, requestOptions, context);
+        return service.update(this.client.getEndpoint(), relationship, requestOptions, context);
     }
 
     /**
@@ -750,9 +742,7 @@ public final class RelationshipsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getWithResponseAsync(String guid, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-                context -> service.get(this.client.getEndpoint(), guid, accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), guid, requestOptions, context));
     }
 
     /**
@@ -858,8 +848,7 @@ public final class RelationshipsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getWithResponseAsync(
             String guid, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.get(this.client.getEndpoint(), guid, accept, requestOptions, context);
+        return service.get(this.client.getEndpoint(), guid, requestOptions, context);
     }
 
     /**

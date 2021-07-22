@@ -3,7 +3,6 @@ package com.azure.analytics.purview.catalog.implementation;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.Get;
-import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
@@ -49,31 +48,23 @@ public final class EntitiesImpl {
         Mono<Response<BinaryData>> createOrUpdate(
                 @HostParam("Endpoint") String endpoint,
                 @BodyParam("application/json") BinaryData entity,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
         @Get("/atlas/v2/entity/bulk")
         Mono<Response<BinaryData>> listByGuids(
-                @HostParam("Endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+                @HostParam("Endpoint") String endpoint, RequestOptions requestOptions, Context context);
 
         @Post("/atlas/v2/entity/bulk")
         Mono<Response<BinaryData>> createOrUpdateEntities(
                 @HostParam("Endpoint") String endpoint,
                 @BodyParam("application/json") BinaryData entities,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
         @Delete("/atlas/v2/entity/bulk")
         Mono<Response<BinaryData>> deleteByGuids(
-                @HostParam("Endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+                @HostParam("Endpoint") String endpoint, RequestOptions requestOptions, Context context);
 
         @Post("/atlas/v2/entity/bulk/classification")
         Mono<Response<Void>> addClassification(
@@ -86,7 +77,6 @@ public final class EntitiesImpl {
         Mono<Response<BinaryData>> getByGuid(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("guid") String guid,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -95,7 +85,6 @@ public final class EntitiesImpl {
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("guid") String guid,
                 @BodyParam("application/json") BinaryData body,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -103,7 +92,6 @@ public final class EntitiesImpl {
         Mono<Response<BinaryData>> deleteByGuid(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("guid") String guid,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -112,7 +100,6 @@ public final class EntitiesImpl {
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("guid") String guid,
                 @PathParam("classificationName") String classificationName,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -128,7 +115,6 @@ public final class EntitiesImpl {
         Mono<Response<BinaryData>> getClassifications(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("guid") String guid,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -152,7 +138,6 @@ public final class EntitiesImpl {
         Mono<Response<BinaryData>> getByUniqueAttributes(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("typeName") String typeName,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -161,7 +146,6 @@ public final class EntitiesImpl {
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("typeName") String typeName,
                 @BodyParam("application/json") BinaryData atlasEntityWithExtInfo,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -169,7 +153,6 @@ public final class EntitiesImpl {
         Mono<Response<BinaryData>> deleteByUniqueAttribute(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("typeName") String typeName,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -201,7 +184,6 @@ public final class EntitiesImpl {
         Mono<Response<BinaryData>> setClassifications(
                 @HostParam("Endpoint") String endpoint,
                 @BodyParam("application/json") BinaryData entityHeaders,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -209,7 +191,6 @@ public final class EntitiesImpl {
         Mono<Response<BinaryData>> getEntitiesByUniqueAttributes(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("typeName") String typeName,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -217,7 +198,6 @@ public final class EntitiesImpl {
         Mono<Response<BinaryData>> getHeader(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("guid") String guid,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
     }
@@ -348,9 +328,8 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(
             BinaryData entity, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.createOrUpdate(this.client.getEndpoint(), entity, accept, requestOptions, context));
+                context -> service.createOrUpdate(this.client.getEndpoint(), entity, requestOptions, context));
     }
 
     /**
@@ -479,8 +458,7 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(
             BinaryData entity, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.createOrUpdate(this.client.getEndpoint(), entity, accept, requestOptions, context);
+        return service.createOrUpdate(this.client.getEndpoint(), entity, requestOptions, context);
     }
 
     /**
@@ -1109,9 +1087,7 @@ public final class EntitiesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listByGuidsWithResponseAsync(RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-                context -> service.listByGuids(this.client.getEndpoint(), accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.listByGuids(this.client.getEndpoint(), requestOptions, context));
     }
 
     /**
@@ -1211,8 +1187,7 @@ public final class EntitiesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listByGuidsWithResponseAsync(RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.listByGuids(this.client.getEndpoint(), accept, requestOptions, context);
+        return service.listByGuids(this.client.getEndpoint(), requestOptions, context);
     }
 
     /**
@@ -1759,11 +1734,9 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateEntitiesWithResponseAsync(
             BinaryData entities, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.createOrUpdateEntities(
-                                this.client.getEndpoint(), entities, accept, requestOptions, context));
+                        service.createOrUpdateEntities(this.client.getEndpoint(), entities, requestOptions, context));
     }
 
     /**
@@ -1894,8 +1867,7 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateEntitiesWithResponseAsync(
             BinaryData entities, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.createOrUpdateEntities(this.client.getEndpoint(), entities, accept, requestOptions, context);
+        return service.createOrUpdateEntities(this.client.getEndpoint(), entities, requestOptions, context);
     }
 
     /**
@@ -2519,9 +2491,8 @@ public final class EntitiesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> deleteByGuidsWithResponseAsync(RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.deleteByGuids(this.client.getEndpoint(), accept, requestOptions, context));
+                context -> service.deleteByGuids(this.client.getEndpoint(), requestOptions, context));
     }
 
     /**
@@ -2607,8 +2578,7 @@ public final class EntitiesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> deleteByGuidsWithResponseAsync(RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.deleteByGuids(this.client.getEndpoint(), accept, requestOptions, context);
+        return service.deleteByGuids(this.client.getEndpoint(), requestOptions, context);
     }
 
     /**
@@ -3305,9 +3275,8 @@ public final class EntitiesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getByGuidWithResponseAsync(String guid, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.getByGuid(this.client.getEndpoint(), guid, accept, requestOptions, context));
+                context -> service.getByGuid(this.client.getEndpoint(), guid, requestOptions, context));
     }
 
     /**
@@ -3406,8 +3375,7 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getByGuidWithResponseAsync(
             String guid, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.getByGuid(this.client.getEndpoint(), guid, accept, requestOptions, context);
+        return service.getByGuid(this.client.getEndpoint(), guid, requestOptions, context);
     }
 
     /**
@@ -3912,11 +3880,10 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> partialUpdateEntityAttributeByGuidWithResponseAsync(
             String guid, BinaryData body, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.partialUpdateEntityAttributeByGuid(
-                                this.client.getEndpoint(), guid, body, accept, requestOptions, context));
+                                this.client.getEndpoint(), guid, body, requestOptions, context));
     }
 
     /**
@@ -4013,9 +3980,8 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> partialUpdateEntityAttributeByGuidWithResponseAsync(
             String guid, BinaryData body, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
         return service.partialUpdateEntityAttributeByGuid(
-                this.client.getEndpoint(), guid, body, accept, requestOptions, context);
+                this.client.getEndpoint(), guid, body, requestOptions, context);
     }
 
     /**
@@ -4498,9 +4464,8 @@ public final class EntitiesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> deleteByGuidWithResponseAsync(String guid, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.deleteByGuid(this.client.getEndpoint(), guid, accept, requestOptions, context));
+                context -> service.deleteByGuid(this.client.getEndpoint(), guid, requestOptions, context));
     }
 
     /**
@@ -4581,8 +4546,7 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> deleteByGuidWithResponseAsync(
             String guid, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.deleteByGuid(this.client.getEndpoint(), guid, accept, requestOptions, context);
+        return service.deleteByGuid(this.client.getEndpoint(), guid, requestOptions, context);
     }
 
     /**
@@ -4956,11 +4920,10 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getClassificationWithResponseAsync(
             String guid, String classificationName, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getClassification(
-                                this.client.getEndpoint(), guid, classificationName, accept, requestOptions, context));
+                                this.client.getEndpoint(), guid, classificationName, requestOptions, context));
     }
 
     /**
@@ -4998,9 +4961,7 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getClassificationWithResponseAsync(
             String guid, String classificationName, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.getClassification(
-                this.client.getEndpoint(), guid, classificationName, accept, requestOptions, context);
+        return service.getClassification(this.client.getEndpoint(), guid, classificationName, requestOptions, context);
     }
 
     /**
@@ -5268,10 +5229,8 @@ public final class EntitiesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getClassificationsWithResponseAsync(String guid, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.getClassifications(this.client.getEndpoint(), guid, accept, requestOptions, context));
+                context -> service.getClassifications(this.client.getEndpoint(), guid, requestOptions, context));
     }
 
     /**
@@ -5297,8 +5256,7 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getClassificationsWithResponseAsync(
             String guid, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.getClassifications(this.client.getEndpoint(), guid, accept, requestOptions, context);
+        return service.getClassifications(this.client.getEndpoint(), guid, requestOptions, context);
     }
 
     /**
@@ -5994,11 +5952,8 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getByUniqueAttributesWithResponseAsync(
             String typeName, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.getByUniqueAttributes(
-                                this.client.getEndpoint(), typeName, accept, requestOptions, context));
+                context -> service.getByUniqueAttributes(this.client.getEndpoint(), typeName, requestOptions, context));
     }
 
     /**
@@ -6102,8 +6057,7 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getByUniqueAttributesWithResponseAsync(
             String typeName, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.getByUniqueAttributes(this.client.getEndpoint(), typeName, accept, requestOptions, context);
+        return service.getByUniqueAttributes(this.client.getEndpoint(), typeName, requestOptions, context);
     }
 
     /**
@@ -6675,16 +6629,10 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> partialUpdateEntityByUniqueAttributesWithResponseAsync(
             String typeName, BinaryData atlasEntityWithExtInfo, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.partialUpdateEntityByUniqueAttributes(
-                                this.client.getEndpoint(),
-                                typeName,
-                                atlasEntityWithExtInfo,
-                                accept,
-                                requestOptions,
-                                context));
+                                this.client.getEndpoint(), typeName, atlasEntityWithExtInfo, requestOptions, context));
     }
 
     /**
@@ -6826,9 +6774,8 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> partialUpdateEntityByUniqueAttributesWithResponseAsync(
             String typeName, BinaryData atlasEntityWithExtInfo, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
         return service.partialUpdateEntityByUniqueAttributes(
-                this.client.getEndpoint(), typeName, atlasEntityWithExtInfo, accept, requestOptions, context);
+                this.client.getEndpoint(), typeName, atlasEntityWithExtInfo, requestOptions, context);
     }
 
     /**
@@ -7507,11 +7454,9 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> deleteByUniqueAttributeWithResponseAsync(
             String typeName, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.deleteByUniqueAttribute(
-                                this.client.getEndpoint(), typeName, accept, requestOptions, context));
+                        service.deleteByUniqueAttribute(this.client.getEndpoint(), typeName, requestOptions, context));
     }
 
     /**
@@ -7603,8 +7548,7 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> deleteByUniqueAttributeWithResponseAsync(
             String typeName, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.deleteByUniqueAttribute(this.client.getEndpoint(), typeName, accept, requestOptions, context);
+        return service.deleteByUniqueAttribute(this.client.getEndpoint(), typeName, requestOptions, context);
     }
 
     /**
@@ -8785,11 +8729,9 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> setClassificationsWithResponseAsync(
             BinaryData entityHeaders, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.setClassifications(
-                                this.client.getEndpoint(), entityHeaders, accept, requestOptions, context));
+                        service.setClassifications(this.client.getEndpoint(), entityHeaders, requestOptions, context));
     }
 
     /**
@@ -8868,8 +8810,7 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> setClassificationsWithResponseAsync(
             BinaryData entityHeaders, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.setClassifications(this.client.getEndpoint(), entityHeaders, accept, requestOptions, context);
+        return service.setClassifications(this.client.getEndpoint(), entityHeaders, requestOptions, context);
     }
 
     /**
@@ -9313,11 +9254,10 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getEntitiesByUniqueAttributesWithResponseAsync(
             String typeName, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getEntitiesByUniqueAttributes(
-                                this.client.getEndpoint(), typeName, accept, requestOptions, context));
+                                this.client.getEndpoint(), typeName, requestOptions, context));
     }
 
     /**
@@ -9431,9 +9371,7 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getEntitiesByUniqueAttributesWithResponseAsync(
             String typeName, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.getEntitiesByUniqueAttributes(
-                this.client.getEndpoint(), typeName, accept, requestOptions, context);
+        return service.getEntitiesByUniqueAttributes(this.client.getEndpoint(), typeName, requestOptions, context);
     }
 
     /**
@@ -9971,9 +9909,8 @@ public final class EntitiesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getHeaderWithResponseAsync(String guid, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.getHeader(this.client.getEndpoint(), guid, accept, requestOptions, context));
+                context -> service.getHeader(this.client.getEndpoint(), guid, requestOptions, context));
     }
 
     /**
@@ -10042,8 +9979,7 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getHeaderWithResponseAsync(
             String guid, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.getHeader(this.client.getEndpoint(), guid, accept, requestOptions, context);
+        return service.getHeader(this.client.getEndpoint(), guid, requestOptions, context);
     }
 
     /**

@@ -3,7 +3,6 @@ package com.azure.analytics.purview.catalog.implementation;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.Get;
-import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
@@ -50,7 +49,6 @@ public final class TypesImpl {
         Mono<Response<BinaryData>> getClassificationDefByGuid(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("guid") String guid,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -58,7 +56,6 @@ public final class TypesImpl {
         Mono<Response<BinaryData>> getClassificationDefByName(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("name") String name,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -66,7 +63,6 @@ public final class TypesImpl {
         Mono<Response<BinaryData>> getEntityDefinitionByGuid(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("guid") String guid,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -74,7 +70,6 @@ public final class TypesImpl {
         Mono<Response<BinaryData>> getEntityDefinitionByName(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("name") String name,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -82,7 +77,6 @@ public final class TypesImpl {
         Mono<Response<BinaryData>> getEnumDefByGuid(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("guid") String guid,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -90,7 +84,6 @@ public final class TypesImpl {
         Mono<Response<BinaryData>> getEnumDefByName(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("name") String name,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -98,7 +91,6 @@ public final class TypesImpl {
         Mono<Response<BinaryData>> getRelationshipDefByGuid(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("guid") String guid,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -106,7 +98,6 @@ public final class TypesImpl {
         Mono<Response<BinaryData>> getRelationshipDefByName(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("name") String name,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -114,7 +105,6 @@ public final class TypesImpl {
         Mono<Response<BinaryData>> getStructDefByGuid(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("guid") String guid,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -122,7 +112,6 @@ public final class TypesImpl {
         Mono<Response<BinaryData>> getStructDefByName(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("name") String name,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -130,7 +119,6 @@ public final class TypesImpl {
         Mono<Response<BinaryData>> getTypeDefinitionByGuid(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("guid") String guid,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -138,7 +126,6 @@ public final class TypesImpl {
         Mono<Response<BinaryData>> getTypeDefinitionByName(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("name") String name,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -151,16 +138,12 @@ public final class TypesImpl {
 
         @Get("/atlas/v2/types/typedefs")
         Mono<Response<BinaryData>> getAllTypeDefinitions(
-                @HostParam("Endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+                @HostParam("Endpoint") String endpoint, RequestOptions requestOptions, Context context);
 
         @Post("/atlas/v2/types/typedefs")
         Mono<Response<BinaryData>> createTypeDefinitions(
                 @HostParam("Endpoint") String endpoint,
                 @BodyParam("application/json") BinaryData typesDef,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -168,7 +151,6 @@ public final class TypesImpl {
         Mono<Response<BinaryData>> updateAtlasTypeDefinitions(
                 @HostParam("Endpoint") String endpoint,
                 @BodyParam("application/json") BinaryData typesDef,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -181,17 +163,13 @@ public final class TypesImpl {
 
         @Get("/atlas/v2/types/typedefs/headers")
         Mono<Response<BinaryData>> listTypeDefinitionHeaders(
-                @HostParam("Endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+                @HostParam("Endpoint") String endpoint, RequestOptions requestOptions, Context context);
 
         @Get("/types/termtemplatedef/guid/{guid}")
         Mono<Response<BinaryData>> getTermTemplateDefByGuid(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("guid") String guid,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -200,7 +178,6 @@ public final class TypesImpl {
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("name") String name,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
     }
@@ -309,11 +286,9 @@ public final class TypesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getClassificationDefByGuidWithResponseAsync(
             String guid, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.getClassificationDefByGuid(
-                                this.client.getEndpoint(), guid, accept, requestOptions, context));
+                        service.getClassificationDefByGuid(this.client.getEndpoint(), guid, requestOptions, context));
     }
 
     /**
@@ -420,8 +395,7 @@ public final class TypesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getClassificationDefByGuidWithResponseAsync(
             String guid, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.getClassificationDefByGuid(this.client.getEndpoint(), guid, accept, requestOptions, context);
+        return service.getClassificationDefByGuid(this.client.getEndpoint(), guid, requestOptions, context);
     }
 
     /**
@@ -970,11 +944,9 @@ public final class TypesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getClassificationDefByNameWithResponseAsync(
             String name, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.getClassificationDefByName(
-                                this.client.getEndpoint(), name, accept, requestOptions, context));
+                        service.getClassificationDefByName(this.client.getEndpoint(), name, requestOptions, context));
     }
 
     /**
@@ -1081,8 +1053,7 @@ public final class TypesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getClassificationDefByNameWithResponseAsync(
             String name, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.getClassificationDefByName(this.client.getEndpoint(), name, accept, requestOptions, context);
+        return service.getClassificationDefByName(this.client.getEndpoint(), name, requestOptions, context);
     }
 
     /**
@@ -1651,11 +1622,8 @@ public final class TypesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getEntityDefinitionByGuidWithResponseAsync(
             String guid, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.getEntityDefinitionByGuid(
-                                this.client.getEndpoint(), guid, accept, requestOptions, context));
+                context -> service.getEntityDefinitionByGuid(this.client.getEndpoint(), guid, requestOptions, context));
     }
 
     /**
@@ -1782,8 +1750,7 @@ public final class TypesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getEntityDefinitionByGuidWithResponseAsync(
             String guid, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.getEntityDefinitionByGuid(this.client.getEndpoint(), guid, accept, requestOptions, context);
+        return service.getEntityDefinitionByGuid(this.client.getEndpoint(), guid, requestOptions, context);
     }
 
     /**
@@ -2432,11 +2399,8 @@ public final class TypesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getEntityDefinitionByNameWithResponseAsync(
             String name, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.getEntityDefinitionByName(
-                                this.client.getEndpoint(), name, accept, requestOptions, context));
+                context -> service.getEntityDefinitionByName(this.client.getEndpoint(), name, requestOptions, context));
     }
 
     /**
@@ -2563,8 +2527,7 @@ public final class TypesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getEntityDefinitionByNameWithResponseAsync(
             String name, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.getEntityDefinitionByName(this.client.getEndpoint(), name, accept, requestOptions, context);
+        return service.getEntityDefinitionByName(this.client.getEndpoint(), name, requestOptions, context);
     }
 
     /**
@@ -3165,9 +3128,8 @@ public final class TypesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getEnumDefByGuidWithResponseAsync(String guid, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.getEnumDefByGuid(this.client.getEndpoint(), guid, accept, requestOptions, context));
+                context -> service.getEnumDefByGuid(this.client.getEndpoint(), guid, requestOptions, context));
     }
 
     /**
@@ -3247,8 +3209,7 @@ public final class TypesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getEnumDefByGuidWithResponseAsync(
             String guid, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.getEnumDefByGuid(this.client.getEndpoint(), guid, accept, requestOptions, context);
+        return service.getEnumDefByGuid(this.client.getEndpoint(), guid, requestOptions, context);
     }
 
     /**
@@ -3660,9 +3621,8 @@ public final class TypesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getEnumDefByNameWithResponseAsync(String name, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.getEnumDefByName(this.client.getEndpoint(), name, accept, requestOptions, context));
+                context -> service.getEnumDefByName(this.client.getEndpoint(), name, requestOptions, context));
     }
 
     /**
@@ -3742,8 +3702,7 @@ public final class TypesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getEnumDefByNameWithResponseAsync(
             String name, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.getEnumDefByName(this.client.getEndpoint(), name, accept, requestOptions, context);
+        return service.getEnumDefByName(this.client.getEndpoint(), name, requestOptions, context);
     }
 
     /**
@@ -4185,11 +4144,8 @@ public final class TypesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getRelationshipDefByGuidWithResponseAsync(
             String guid, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.getRelationshipDefByGuid(
-                                this.client.getEndpoint(), guid, accept, requestOptions, context));
+                context -> service.getRelationshipDefByGuid(this.client.getEndpoint(), guid, requestOptions, context));
     }
 
     /**
@@ -4298,8 +4254,7 @@ public final class TypesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getRelationshipDefByGuidWithResponseAsync(
             String guid, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.getRelationshipDefByGuid(this.client.getEndpoint(), guid, accept, requestOptions, context);
+        return service.getRelationshipDefByGuid(this.client.getEndpoint(), guid, requestOptions, context);
     }
 
     /**
@@ -4857,11 +4812,8 @@ public final class TypesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getRelationshipDefByNameWithResponseAsync(
             String name, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.getRelationshipDefByName(
-                                this.client.getEndpoint(), name, accept, requestOptions, context));
+                context -> service.getRelationshipDefByName(this.client.getEndpoint(), name, requestOptions, context));
     }
 
     /**
@@ -4970,8 +4922,7 @@ public final class TypesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getRelationshipDefByNameWithResponseAsync(
             String name, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.getRelationshipDefByName(this.client.getEndpoint(), name, accept, requestOptions, context);
+        return service.getRelationshipDefByName(this.client.getEndpoint(), name, requestOptions, context);
     }
 
     /**
@@ -5517,10 +5468,8 @@ public final class TypesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getStructDefByGuidWithResponseAsync(String guid, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.getStructDefByGuid(this.client.getEndpoint(), guid, accept, requestOptions, context));
+                context -> service.getStructDefByGuid(this.client.getEndpoint(), guid, requestOptions, context));
     }
 
     /**
@@ -5618,8 +5567,7 @@ public final class TypesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getStructDefByGuidWithResponseAsync(
             String guid, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.getStructDefByGuid(this.client.getEndpoint(), guid, accept, requestOptions, context);
+        return service.getStructDefByGuid(this.client.getEndpoint(), guid, requestOptions, context);
     }
 
     /**
@@ -6121,10 +6069,8 @@ public final class TypesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getStructDefByNameWithResponseAsync(String name, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.getStructDefByName(this.client.getEndpoint(), name, accept, requestOptions, context));
+                context -> service.getStructDefByName(this.client.getEndpoint(), name, requestOptions, context));
     }
 
     /**
@@ -6222,8 +6168,7 @@ public final class TypesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getStructDefByNameWithResponseAsync(
             String name, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.getStructDefByName(this.client.getEndpoint(), name, accept, requestOptions, context);
+        return service.getStructDefByName(this.client.getEndpoint(), name, requestOptions, context);
     }
 
     /**
@@ -6777,11 +6722,8 @@ public final class TypesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getTypeDefinitionByGuidWithResponseAsync(
             String guid, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.getTypeDefinitionByGuid(
-                                this.client.getEndpoint(), guid, accept, requestOptions, context));
+                context -> service.getTypeDefinitionByGuid(this.client.getEndpoint(), guid, requestOptions, context));
     }
 
     /**
@@ -6930,8 +6872,7 @@ public final class TypesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getTypeDefinitionByGuidWithResponseAsync(
             String guid, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.getTypeDefinitionByGuid(this.client.getEndpoint(), guid, accept, requestOptions, context);
+        return service.getTypeDefinitionByGuid(this.client.getEndpoint(), guid, requestOptions, context);
     }
 
     /**
@@ -7689,11 +7630,8 @@ public final class TypesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getTypeDefinitionByNameWithResponseAsync(
             String name, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.getTypeDefinitionByName(
-                                this.client.getEndpoint(), name, accept, requestOptions, context));
+                context -> service.getTypeDefinitionByName(this.client.getEndpoint(), name, requestOptions, context));
     }
 
     /**
@@ -7842,8 +7780,7 @@ public final class TypesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getTypeDefinitionByNameWithResponseAsync(
             String name, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.getTypeDefinitionByName(this.client.getEndpoint(), name, accept, requestOptions, context);
+        return service.getTypeDefinitionByName(this.client.getEndpoint(), name, requestOptions, context);
     }
 
     /**
@@ -8793,9 +8730,8 @@ public final class TypesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getAllTypeDefinitionsWithResponseAsync(RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.getAllTypeDefinitions(this.client.getEndpoint(), accept, requestOptions, context));
+                context -> service.getAllTypeDefinitions(this.client.getEndpoint(), requestOptions, context));
     }
 
     /**
@@ -9074,8 +9010,7 @@ public final class TypesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getAllTypeDefinitionsWithResponseAsync(
             RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.getAllTypeDefinitions(this.client.getEndpoint(), accept, requestOptions, context);
+        return service.getAllTypeDefinitions(this.client.getEndpoint(), requestOptions, context);
     }
 
     /**
@@ -10479,11 +10414,8 @@ public final class TypesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createTypeDefinitionsWithResponseAsync(
             BinaryData typesDef, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.createTypeDefinitions(
-                                this.client.getEndpoint(), typesDef, accept, requestOptions, context));
+                context -> service.createTypeDefinitions(this.client.getEndpoint(), typesDef, requestOptions, context));
     }
 
     /**
@@ -10759,8 +10691,7 @@ public final class TypesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createTypeDefinitionsWithResponseAsync(
             BinaryData typesDef, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.createTypeDefinitions(this.client.getEndpoint(), typesDef, accept, requestOptions, context);
+        return service.createTypeDefinitions(this.client.getEndpoint(), typesDef, requestOptions, context);
     }
 
     /**
@@ -12153,11 +12084,10 @@ public final class TypesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateAtlasTypeDefinitionsWithResponseAsync(
             BinaryData typesDef, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.updateAtlasTypeDefinitions(
-                                this.client.getEndpoint(), typesDef, accept, requestOptions, context));
+                                this.client.getEndpoint(), typesDef, requestOptions, context));
     }
 
     /**
@@ -12432,8 +12362,7 @@ public final class TypesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateAtlasTypeDefinitionsWithResponseAsync(
             BinaryData typesDef, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.updateAtlasTypeDefinitions(this.client.getEndpoint(), typesDef, accept, requestOptions, context);
+        return service.updateAtlasTypeDefinitions(this.client.getEndpoint(), typesDef, requestOptions, context);
     }
 
     /**
@@ -15191,10 +15120,8 @@ public final class TypesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listTypeDefinitionHeadersWithResponseAsync(RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.listTypeDefinitionHeaders(this.client.getEndpoint(), accept, requestOptions, context));
+                context -> service.listTypeDefinitionHeaders(this.client.getEndpoint(), requestOptions, context));
     }
 
     /**
@@ -15225,8 +15152,7 @@ public final class TypesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listTypeDefinitionHeadersWithResponseAsync(
             RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.listTypeDefinitionHeaders(this.client.getEndpoint(), accept, requestOptions, context);
+        return service.listTypeDefinitionHeaders(this.client.getEndpoint(), requestOptions, context);
     }
 
     /**
@@ -15468,16 +15394,10 @@ public final class TypesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getTermTemplateDefByGuidWithResponseAsync(
             String guid, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getTermTemplateDefByGuid(
-                                this.client.getEndpoint(),
-                                guid,
-                                this.client.getApiVersion(),
-                                accept,
-                                requestOptions,
-                                context));
+                                this.client.getEndpoint(), guid, this.client.getApiVersion(), requestOptions, context));
     }
 
     /**
@@ -15583,9 +15503,8 @@ public final class TypesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getTermTemplateDefByGuidWithResponseAsync(
             String guid, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
         return service.getTermTemplateDefByGuid(
-                this.client.getEndpoint(), guid, this.client.getApiVersion(), accept, requestOptions, context);
+                this.client.getEndpoint(), guid, this.client.getApiVersion(), requestOptions, context);
     }
 
     /**
@@ -16128,16 +16047,10 @@ public final class TypesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getTermTemplateDefByNameWithResponseAsync(
             String name, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getTermTemplateDefByName(
-                                this.client.getEndpoint(),
-                                name,
-                                this.client.getApiVersion(),
-                                accept,
-                                requestOptions,
-                                context));
+                                this.client.getEndpoint(), name, this.client.getApiVersion(), requestOptions, context));
     }
 
     /**
@@ -16243,9 +16156,8 @@ public final class TypesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getTermTemplateDefByNameWithResponseAsync(
             String name, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
         return service.getTermTemplateDefByName(
-                this.client.getEndpoint(), name, this.client.getApiVersion(), accept, requestOptions, context);
+                this.client.getEndpoint(), name, this.client.getApiVersion(), requestOptions, context);
     }
 
     /**

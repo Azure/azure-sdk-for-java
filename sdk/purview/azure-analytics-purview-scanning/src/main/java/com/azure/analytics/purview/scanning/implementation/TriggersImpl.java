@@ -3,7 +3,6 @@ package com.azure.analytics.purview.scanning.implementation;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.Get;
-import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
@@ -51,7 +50,6 @@ public final class TriggersImpl {
                 @PathParam("dataSourceName") String dataSourceName,
                 @PathParam("scanName") String scanName,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -62,7 +60,6 @@ public final class TriggersImpl {
                 @PathParam("scanName") String scanName,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") BinaryData body,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -72,7 +69,6 @@ public final class TriggersImpl {
                 @PathParam("dataSourceName") String dataSourceName,
                 @PathParam("scanName") String scanName,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
     }
@@ -144,7 +140,6 @@ public final class TriggersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getTriggerWithResponseAsync(
             String dataSourceName, String scanName, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getTrigger(
@@ -152,7 +147,6 @@ public final class TriggersImpl {
                                 dataSourceName,
                                 scanName,
                                 this.client.getApiVersion(),
-                                accept,
                                 requestOptions,
                                 context));
     }
@@ -224,13 +218,11 @@ public final class TriggersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getTriggerWithResponseAsync(
             String dataSourceName, String scanName, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
         return service.getTrigger(
                 this.client.getEndpoint(),
                 dataSourceName,
                 scanName,
                 this.client.getApiVersion(),
-                accept,
                 requestOptions,
                 context);
     }
@@ -602,7 +594,6 @@ public final class TriggersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createTriggerWithResponseAsync(
             String dataSourceName, String scanName, BinaryData body, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.createTrigger(
@@ -611,7 +602,6 @@ public final class TriggersImpl {
                                 scanName,
                                 this.client.getApiVersion(),
                                 body,
-                                accept,
                                 requestOptions,
                                 context));
     }
@@ -689,14 +679,12 @@ public final class TriggersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createTriggerWithResponseAsync(
             String dataSourceName, String scanName, BinaryData body, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
         return service.createTrigger(
                 this.client.getEndpoint(),
                 dataSourceName,
                 scanName,
                 this.client.getApiVersion(),
                 body,
-                accept,
                 requestOptions,
                 context);
     }
@@ -1088,7 +1076,6 @@ public final class TriggersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> deleteTriggerWithResponseAsync(
             String dataSourceName, String scanName, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.deleteTrigger(
@@ -1096,7 +1083,6 @@ public final class TriggersImpl {
                                 dataSourceName,
                                 scanName,
                                 this.client.getApiVersion(),
-                                accept,
                                 requestOptions,
                                 context));
     }
@@ -1168,13 +1154,11 @@ public final class TriggersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> deleteTriggerWithResponseAsync(
             String dataSourceName, String scanName, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
         return service.deleteTrigger(
                 this.client.getEndpoint(),
                 dataSourceName,
                 scanName,
                 this.client.getApiVersion(),
-                accept,
                 requestOptions,
                 context);
     }

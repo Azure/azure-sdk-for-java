@@ -1,7 +1,6 @@
 package com.azure.analytics.purview.catalog.implementation;
 
 import com.azure.core.annotation.Get;
-import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
@@ -46,7 +45,6 @@ public final class LineagesImpl {
         Mono<Response<BinaryData>> getLineageGraph(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("guid") String guid,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -55,7 +53,6 @@ public final class LineagesImpl {
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("guid") String guid,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
     }
@@ -166,9 +163,8 @@ public final class LineagesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getLineageGraphWithResponseAsync(String guid, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.getLineageGraph(this.client.getEndpoint(), guid, accept, requestOptions, context));
+                context -> service.getLineageGraph(this.client.getEndpoint(), guid, requestOptions, context));
     }
 
     /**
@@ -278,8 +274,7 @@ public final class LineagesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getLineageGraphWithResponseAsync(
             String guid, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.getLineageGraph(this.client.getEndpoint(), guid, accept, requestOptions, context);
+        return service.getLineageGraph(this.client.getEndpoint(), guid, requestOptions, context);
     }
 
     /**
@@ -841,16 +836,10 @@ public final class LineagesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> nextPageLineageWithResponseAsync(String guid, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.nextPageLineage(
-                                this.client.getEndpoint(),
-                                guid,
-                                this.client.getApiVersion(),
-                                accept,
-                                requestOptions,
-                                context));
+                                this.client.getEndpoint(), guid, this.client.getApiVersion(), requestOptions, context));
     }
 
     /**
@@ -960,9 +949,8 @@ public final class LineagesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> nextPageLineageWithResponseAsync(
             String guid, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
         return service.nextPageLineage(
-                this.client.getEndpoint(), guid, this.client.getApiVersion(), accept, requestOptions, context);
+                this.client.getEndpoint(), guid, this.client.getApiVersion(), requestOptions, context);
     }
 
     /**

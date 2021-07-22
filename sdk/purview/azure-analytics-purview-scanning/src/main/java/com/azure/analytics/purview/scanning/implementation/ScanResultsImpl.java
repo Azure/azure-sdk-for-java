@@ -1,7 +1,6 @@
 package com.azure.analytics.purview.scanning.implementation;
 
 import com.azure.core.annotation.Get;
-import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
@@ -59,7 +58,6 @@ public final class ScanResultsImpl {
                 @PathParam("scanName") String scanName,
                 @PathParam("runId") String runId,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -70,7 +68,6 @@ public final class ScanResultsImpl {
                 @PathParam("scanName") String scanName,
                 @PathParam("runId") String runId,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -80,7 +77,6 @@ public final class ScanResultsImpl {
                 @PathParam("dataSourceName") String dataSourceName,
                 @PathParam("scanName") String scanName,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -88,7 +84,6 @@ public final class ScanResultsImpl {
         Mono<Response<BinaryData>> listScanHistoryNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("Endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
     }
@@ -138,7 +133,6 @@ public final class ScanResultsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> runScanWithResponseAsync(
             String dataSourceName, String scanName, String runId, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.runScan(
@@ -147,7 +141,6 @@ public final class ScanResultsImpl {
                                 scanName,
                                 runId,
                                 this.client.getApiVersion(),
-                                accept,
                                 requestOptions,
                                 context));
     }
@@ -197,14 +190,12 @@ public final class ScanResultsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> runScanWithResponseAsync(
             String dataSourceName, String scanName, String runId, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
         return service.runScan(
                 this.client.getEndpoint(),
                 dataSourceName,
                 scanName,
                 runId,
                 this.client.getApiVersion(),
-                accept,
                 requestOptions,
                 context);
     }
@@ -460,7 +451,6 @@ public final class ScanResultsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> cancelScanWithResponseAsync(
             String dataSourceName, String scanName, String runId, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.cancelScan(
@@ -469,7 +459,6 @@ public final class ScanResultsImpl {
                                 scanName,
                                 runId,
                                 this.client.getApiVersion(),
-                                accept,
                                 requestOptions,
                                 context));
     }
@@ -518,14 +507,12 @@ public final class ScanResultsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> cancelScanWithResponseAsync(
             String dataSourceName, String scanName, String runId, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
         return service.cancelScan(
                 this.client.getEndpoint(),
                 dataSourceName,
                 scanName,
                 runId,
                 this.client.getApiVersion(),
-                accept,
                 requestOptions,
                 context);
     }
@@ -805,7 +792,6 @@ public final class ScanResultsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listScanHistorySinglePageAsync(
             String dataSourceName, String scanName, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listScanHistory(
@@ -813,7 +799,6 @@ public final class ScanResultsImpl {
                                         dataSourceName,
                                         scanName,
                                         this.client.getApiVersion(),
-                                        accept,
                                         requestOptions,
                                         context))
                 .map(
@@ -899,13 +884,11 @@ public final class ScanResultsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listScanHistorySinglePageAsync(
             String dataSourceName, String scanName, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
         return service.listScanHistory(
                         this.client.getEndpoint(),
                         dataSourceName,
                         scanName,
                         this.client.getApiVersion(),
-                        accept,
                         requestOptions,
                         context)
                 .map(
@@ -1286,11 +1269,10 @@ public final class ScanResultsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listScanHistoryNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listScanHistoryNext(
-                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
+                                        nextLink, this.client.getEndpoint(), requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -1365,8 +1347,7 @@ public final class ScanResultsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listScanHistoryNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.listScanHistoryNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context)
+        return service.listScanHistoryNext(nextLink, this.client.getEndpoint(), requestOptions, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(

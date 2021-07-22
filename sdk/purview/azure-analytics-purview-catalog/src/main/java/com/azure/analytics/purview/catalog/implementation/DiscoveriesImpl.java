@@ -1,7 +1,6 @@
 package com.azure.analytics.purview.catalog.implementation;
 
 import com.azure.core.annotation.BodyParam;
-import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Post;
@@ -48,7 +47,6 @@ public final class DiscoveriesImpl {
                 @HostParam("Endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") BinaryData searchRequest,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -57,7 +55,6 @@ public final class DiscoveriesImpl {
                 @HostParam("Endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") BinaryData suggestRequest,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -66,7 +63,6 @@ public final class DiscoveriesImpl {
                 @HostParam("Endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") BinaryData browseRequest,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -75,7 +71,6 @@ public final class DiscoveriesImpl {
                 @HostParam("Endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") BinaryData autoCompleteRequest,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
     }
@@ -203,14 +198,12 @@ public final class DiscoveriesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> queryWithResponseAsync(BinaryData searchRequest, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.query(
                                 this.client.getEndpoint(),
                                 this.client.getApiVersion(),
                                 searchRequest,
-                                accept,
                                 requestOptions,
                                 context));
     }
@@ -339,9 +332,8 @@ public final class DiscoveriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> queryWithResponseAsync(
             BinaryData searchRequest, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
         return service.query(
-                this.client.getEndpoint(), this.client.getApiVersion(), searchRequest, accept, requestOptions, context);
+                this.client.getEndpoint(), this.client.getApiVersion(), searchRequest, requestOptions, context);
     }
 
     /**
@@ -931,14 +923,12 @@ public final class DiscoveriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> suggestWithResponseAsync(
             BinaryData suggestRequest, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.suggest(
                                 this.client.getEndpoint(),
                                 this.client.getApiVersion(),
                                 suggestRequest,
-                                accept,
                                 requestOptions,
                                 context));
     }
@@ -1009,14 +999,8 @@ public final class DiscoveriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> suggestWithResponseAsync(
             BinaryData suggestRequest, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
         return service.suggest(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                suggestRequest,
-                accept,
-                requestOptions,
-                context);
+                this.client.getEndpoint(), this.client.getApiVersion(), suggestRequest, requestOptions, context);
     }
 
     /**
@@ -1358,14 +1342,12 @@ public final class DiscoveriesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> browseWithResponseAsync(BinaryData browseRequest, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.browse(
                                 this.client.getEndpoint(),
                                 this.client.getApiVersion(),
                                 browseRequest,
-                                accept,
                                 requestOptions,
                                 context));
     }
@@ -1421,9 +1403,8 @@ public final class DiscoveriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> browseWithResponseAsync(
             BinaryData browseRequest, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
         return service.browse(
-                this.client.getEndpoint(), this.client.getApiVersion(), browseRequest, accept, requestOptions, context);
+                this.client.getEndpoint(), this.client.getApiVersion(), browseRequest, requestOptions, context);
     }
 
     /**
@@ -1692,14 +1673,12 @@ public final class DiscoveriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> autoCompleteWithResponseAsync(
             BinaryData autoCompleteRequest, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.autoComplete(
                                 this.client.getEndpoint(),
                                 this.client.getApiVersion(),
                                 autoCompleteRequest,
-                                accept,
                                 requestOptions,
                                 context));
     }
@@ -1741,14 +1720,8 @@ public final class DiscoveriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> autoCompleteWithResponseAsync(
             BinaryData autoCompleteRequest, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
         return service.autoComplete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                autoCompleteRequest,
-                accept,
-                requestOptions,
-                context);
+                this.client.getEndpoint(), this.client.getApiVersion(), autoCompleteRequest, requestOptions, context);
     }
 
     /**

@@ -1,7 +1,6 @@
 package com.azure.analytics.purview.scanning.implementation;
 
 import com.azure.core.annotation.Get;
-import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
@@ -55,7 +54,6 @@ public final class SystemScanRulesetsImpl {
         Mono<Response<BinaryData>> listAll(
                 @HostParam("Endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -64,7 +62,6 @@ public final class SystemScanRulesetsImpl {
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("dataSourceType") String dataSourceType,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -73,7 +70,6 @@ public final class SystemScanRulesetsImpl {
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("version") int version,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -81,7 +77,6 @@ public final class SystemScanRulesetsImpl {
         Mono<Response<BinaryData>> getLatest(
                 @HostParam("Endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -89,7 +84,6 @@ public final class SystemScanRulesetsImpl {
         Mono<Response<BinaryData>> listVersionsByDataSource(
                 @HostParam("Endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -97,7 +91,6 @@ public final class SystemScanRulesetsImpl {
         Mono<Response<BinaryData>> listAllNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("Endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -105,7 +98,6 @@ public final class SystemScanRulesetsImpl {
         Mono<Response<BinaryData>> listVersionsByDataSourceNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("Endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
     }
@@ -141,13 +133,11 @@ public final class SystemScanRulesetsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listAllSinglePageAsync(RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listAll(
                                         this.client.getEndpoint(),
                                         this.client.getApiVersion(),
-                                        accept,
                                         requestOptions,
                                         context))
                 .map(
@@ -192,8 +182,7 @@ public final class SystemScanRulesetsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listAllSinglePageAsync(RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.listAll(this.client.getEndpoint(), this.client.getApiVersion(), accept, requestOptions, context)
+        return service.listAll(this.client.getEndpoint(), this.client.getApiVersion(), requestOptions, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -371,14 +360,12 @@ public final class SystemScanRulesetsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getWithResponseAsync(String dataSourceType, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.get(
                                 this.client.getEndpoint(),
                                 dataSourceType,
                                 this.client.getApiVersion(),
-                                accept,
                                 requestOptions,
                                 context));
     }
@@ -411,14 +398,8 @@ public final class SystemScanRulesetsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getWithResponseAsync(
             String dataSourceType, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
         return service.get(
-                this.client.getEndpoint(),
-                dataSourceType,
-                this.client.getApiVersion(),
-                accept,
-                requestOptions,
-                context);
+                this.client.getEndpoint(), dataSourceType, this.client.getApiVersion(), requestOptions, context);
     }
 
     /**
@@ -585,14 +566,12 @@ public final class SystemScanRulesetsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getByVersionWithResponseAsync(int version, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getByVersion(
                                 this.client.getEndpoint(),
                                 version,
                                 this.client.getApiVersion(),
-                                accept,
                                 requestOptions,
                                 context));
     }
@@ -626,9 +605,8 @@ public final class SystemScanRulesetsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getByVersionWithResponseAsync(
             int version, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
         return service.getByVersion(
-                this.client.getEndpoint(), version, this.client.getApiVersion(), accept, requestOptions, context);
+                this.client.getEndpoint(), version, this.client.getApiVersion(), requestOptions, context);
     }
 
     /**
@@ -797,15 +775,10 @@ public final class SystemScanRulesetsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getLatestWithResponseAsync(RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getLatest(
-                                this.client.getEndpoint(),
-                                this.client.getApiVersion(),
-                                accept,
-                                requestOptions,
-                                context));
+                                this.client.getEndpoint(), this.client.getApiVersion(), requestOptions, context));
     }
 
     /**
@@ -834,9 +807,7 @@ public final class SystemScanRulesetsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getLatestWithResponseAsync(RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.getLatest(
-                this.client.getEndpoint(), this.client.getApiVersion(), accept, requestOptions, context);
+        return service.getLatest(this.client.getEndpoint(), this.client.getApiVersion(), requestOptions, context);
     }
 
     /**
@@ -1003,13 +974,11 @@ public final class SystemScanRulesetsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listVersionsByDataSourceSinglePageAsync(RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listVersionsByDataSource(
                                         this.client.getEndpoint(),
                                         this.client.getApiVersion(),
-                                        accept,
                                         requestOptions,
                                         context))
                 .map(
@@ -1056,9 +1025,8 @@ public final class SystemScanRulesetsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listVersionsByDataSourceSinglePageAsync(
             RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
         return service.listVersionsByDataSource(
-                        this.client.getEndpoint(), this.client.getApiVersion(), accept, requestOptions, context)
+                        this.client.getEndpoint(), this.client.getApiVersion(), requestOptions, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -1239,11 +1207,8 @@ public final class SystemScanRulesetsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listAllNextSinglePageAsync(String nextLink, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
-                        context ->
-                                service.listAllNext(
-                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
+                        context -> service.listAllNext(nextLink, this.client.getEndpoint(), requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -1281,8 +1246,7 @@ public final class SystemScanRulesetsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listAllNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.listAllNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context)
+        return service.listAllNext(nextLink, this.client.getEndpoint(), requestOptions, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -1320,11 +1284,10 @@ public final class SystemScanRulesetsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listVersionsByDataSourceNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listVersionsByDataSourceNext(
-                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
+                                        nextLink, this.client.getEndpoint(), requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -1362,9 +1325,7 @@ public final class SystemScanRulesetsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listVersionsByDataSourceNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.listVersionsByDataSourceNext(
-                        nextLink, this.client.getEndpoint(), accept, requestOptions, context)
+        return service.listVersionsByDataSourceNext(nextLink, this.client.getEndpoint(), requestOptions, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
