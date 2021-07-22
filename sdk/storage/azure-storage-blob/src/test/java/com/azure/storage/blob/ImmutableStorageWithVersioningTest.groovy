@@ -99,16 +99,17 @@ class ImmutableStorageWithVersioningTest extends APISpec {
         vlwBlob.upload(new ByteArrayInputStream(new byte[0]), 0)
     }
 
-    private final class Body {
+    // Try making this public
+    public final class Body {
         public String id
         public String name
         public String type
         public Properties properties
     }
-    private final class Properties {
+    public final class Properties {
         public ImmutableStorageWithVersioning immutableStorageWithVersioning
     }
-    private final class ImmutableStorageWithVersioning {
+    public final class ImmutableStorageWithVersioning {
         public boolean enabled
     }
 
