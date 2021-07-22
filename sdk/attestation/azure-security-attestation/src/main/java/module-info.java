@@ -3,6 +3,7 @@
 
 module com.azure.security.attestation {
     requires transitive com.azure.core;
+    requires com.nimbusds.jose.jwt;
     exports com.azure.security.attestation;
     exports com.azure.security.attestation.models;
 

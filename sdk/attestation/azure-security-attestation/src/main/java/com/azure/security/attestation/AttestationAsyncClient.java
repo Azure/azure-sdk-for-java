@@ -26,7 +26,7 @@ import java.util.Objects;
 import static com.azure.core.util.FluxUtil.withContext;
 
 /** Initializes a new instance of the asynchronous AzureAttestationRestClient type. */
-@ServiceClient(builder = AttestationAsyncClientBuilder.class, isAsync = true)
+@ServiceClient(builder = AttestationClientBuilder.class, isAsync = true)
 public final class AttestationAsyncClient {
     private final AttestationsImpl attestImpl;
     private final MetadataConfigurationsImpl metadataImpl;

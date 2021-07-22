@@ -165,7 +165,7 @@ public class AttestationTest extends AttestationClientTestBase {
     @MethodSource("getAttestationClients")
     void testAttestSgxEnclaveAsync(HttpClient httpClient, String clientUri) {
 
-        AttestationAsyncClientBuilder attestationBuilder = getAsyncBuilder(httpClient, clientUri);
+        AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
         AttestationAsyncClient client = attestationBuilder.buildAttestationAsyncClient();
 
         byte[] decodedRuntimeData = Base64.getUrlDecoder().decode(runtimeData);

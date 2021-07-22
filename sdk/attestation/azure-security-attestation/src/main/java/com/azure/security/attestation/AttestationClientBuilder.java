@@ -36,7 +36,6 @@ public final class AttestationClientBuilder {
     private static final String SDK_VERSION = "version";
 
     private final AttestationClientImplBuilder clientImplBuilder;
-    private final AttestationAsyncClientBuilder asyncClientBuilder;
     private final ClientLogger logger = new ClientLogger(AttestationClientBuilder.class);
 
     /**
@@ -44,7 +43,6 @@ public final class AttestationClientBuilder {
      */
     public AttestationClientBuilder() {
         clientImplBuilder = new AttestationClientImplBuilder();
-        asyncClientBuilder = new AttestationAsyncClientBuilder();
     }
 
     /*
@@ -67,7 +65,6 @@ public final class AttestationClientBuilder {
             logger.logExceptionAsError(new IllegalArgumentException(ex));
         }
         clientImplBuilder.instanceUrl(endpoint);
-        asyncClientBuilder.endpoint(endpoint);
         return this;
     }
 
@@ -79,7 +76,6 @@ public final class AttestationClientBuilder {
      */
     public AttestationClientBuilder pipeline(HttpPipeline pipeline) {
         clientImplBuilder.pipeline(pipeline);
-        asyncClientBuilder.pipeline(pipeline);
         return this;
     }
 
@@ -91,7 +87,6 @@ public final class AttestationClientBuilder {
      */
     public AttestationClientBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
         clientImplBuilder.serializerAdapter(serializerAdapter);
-        asyncClientBuilder.serializerAdapter(serializerAdapter);
         return this;
     }
 
@@ -103,7 +98,6 @@ public final class AttestationClientBuilder {
      */
     public AttestationClientBuilder httpClient(HttpClient httpClient) {
         clientImplBuilder.httpClient(httpClient);
-        asyncClientBuilder.httpClient(httpClient);
         return this;
     }
 
@@ -115,7 +109,6 @@ public final class AttestationClientBuilder {
      */
     public AttestationClientBuilder configuration(Configuration configuration) {
         clientImplBuilder.configuration(configuration);
-        asyncClientBuilder.configuration(configuration);
         return this;
     }
 
@@ -127,7 +120,6 @@ public final class AttestationClientBuilder {
      */
     public AttestationClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
         clientImplBuilder.httpLogOptions(httpLogOptions);
-        asyncClientBuilder.httpLogOptions(httpLogOptions);
         return this;
     }
 
@@ -139,7 +131,6 @@ public final class AttestationClientBuilder {
      */
     public AttestationClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         clientImplBuilder.retryPolicy(retryPolicy);
-        asyncClientBuilder.retryPolicy(retryPolicy);
         return this;
     }
 
@@ -151,7 +142,6 @@ public final class AttestationClientBuilder {
      */
     public AttestationClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         clientImplBuilder.addPolicy(customPolicy);
-        asyncClientBuilder.addPolicy(customPolicy);
         return this;
     }
 
@@ -161,7 +151,16 @@ public final class AttestationClientBuilder {
      * @return an instance of AttestationClient.
      */
     public AttestationClient buildAttestationClient() {
-        return new AttestationClient(asyncClientBuilder.buildAttestationAsyncClient());
+        return new AttestationClient(buildAttestationAsyncClient());
+    }
+
+    /**
+     * Builds an instance of AttestationAsyncClient async client.
+     *
+     * @return an instance of AttestationAsyncClient.
+     */
+    public AttestationAsyncClient buildAttestationAsyncClient() {
+        return new AttestationAsyncClient(buildInnerClient());
     }
 
     /**
