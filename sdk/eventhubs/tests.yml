@@ -12,7 +12,7 @@ stages:
         - name: azure-messaging-eventhubs-checkpointstore-blob
           groupId: com.azure
           safeName: azuremessagingeventhubscheckpointstoreblob
-      TimeoutInMinutes: 120
+      TimeoutInMinutes: 240
 #      CloudConfig:
 #          Public:
 #              SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
