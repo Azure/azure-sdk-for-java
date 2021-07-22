@@ -71,7 +71,7 @@ public final class AttestationClientBuilder {
     /**
      * Sets the desired API version for this attestation client.
      * @param apiVersion Specifies the API version to use in the outgoing API calls.
-     * @return
+     * @return the AttestationClientBuilder.
      */
     public AttestationClientBuilder apiVersion(String apiVersion) {
         Objects.requireNonNull(apiVersion);
