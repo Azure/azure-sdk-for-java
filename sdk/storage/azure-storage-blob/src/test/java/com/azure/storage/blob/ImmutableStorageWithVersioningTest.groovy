@@ -56,7 +56,7 @@ class ImmutableStorageWithVersioningTest extends APISpec {
 
     private BlobContainerClient vlwContainer;
     private BlobClient vlwBlob
-    private String accountName = env.primaryAccount.name
+    private String accountName = env.versionedAccount.name
     private String containerName
     private String resourceGroupName = env.resourceGroupName
     private String subscriptionId = env.subscriptionId
