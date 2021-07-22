@@ -73,7 +73,7 @@ public class LocationModeExample {
          client.
          */
         // Create a primary only client by passing the primary endpoint as the preferred and passing no fallback.
-        RequestRetryOptions primaryOnlyRetryOptions = new RequestRetryOptions(null, null, (Duration)null, null, null,
+        RequestRetryOptions primaryOnlyRetryOptions = new RequestRetryOptions(null, null, (Duration) null, null, null,
             null);
         primaryOnlyClient = builder
             .endpoint(primaryEndpoint)
@@ -81,7 +81,7 @@ public class LocationModeExample {
             .buildClient();
 
         // Create a secondary only client by passing the secondary as the preferred and passing no fallback.
-        RequestRetryOptions secondaryOnlyRetryOptions = new RequestRetryOptions(null, null, (Duration)null, null, null,
+        RequestRetryOptions secondaryOnlyRetryOptions = new RequestRetryOptions(null, null, (Duration) null, null, null,
             null);
         secondaryOnlyClient = builder
             .endpoint(secondaryEndpoint)
@@ -89,16 +89,16 @@ public class LocationModeExample {
             .buildClient();
 
         // Create a primary then secondary by passing a primary as the preferred and secondary as a fallback.
-        RequestRetryOptions primaryThenSecondaryRetryOptions = new RequestRetryOptions(null, null, (Duration)null, null,
-            null, secondaryEndpoint);
+        RequestRetryOptions primaryThenSecondaryRetryOptions = new RequestRetryOptions(null, null, (Duration) null,
+            null, null, secondaryEndpoint);
         primaryThenSecondaryClient = builder
             .endpoint(primaryEndpoint)
             .retryOptions(primaryThenSecondaryRetryOptions)
             .buildClient();
 
         // Create a secondary then primary by passing a secondary as the preferred and a primary as a fallback.
-        RequestRetryOptions secondaryThenPrimaryRetryOptions = new RequestRetryOptions(null, null, (Duration)null, null,
-            null, primaryEndpoint);
+        RequestRetryOptions secondaryThenPrimaryRetryOptions = new RequestRetryOptions(null, null, (Duration) null,
+            null, null, primaryEndpoint);
         secondaryThenPrimaryClient = builder
             .endpoint(secondaryEndpoint)
             .retryOptions(secondaryThenPrimaryRetryOptions)
