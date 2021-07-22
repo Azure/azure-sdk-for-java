@@ -121,7 +121,7 @@ public class BlobClientBase {
      * @return a {@link BlobClientBase} with the specified {@code encryptionScope}.
      */
     public BlobClientBase getEncryptionScopeClient(String encryptionScope) {
-        return new BlobClientBase(client.getEncryptionScopeClient(encryptionScope));
+        return new BlobClientBase(client.getEncryptionScopeAsyncClient(encryptionScope));
     }
 
     /**
@@ -132,7 +132,7 @@ public class BlobClientBase {
      * @return a {@link BlobClientBase} with the specified {@code customerProvidedKey}.
      */
     public BlobClientBase getCustomerProvidedKeyClient(CustomerProvidedKey customerProvidedKey) {
-        return new BlobClientBase(client.getCustomerProvidedKeyClient(customerProvidedKey));
+        return new BlobClientBase(client.getCustomerProvidedKeyAsyncClient(customerProvidedKey));
     }
 
     /**

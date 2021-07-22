@@ -82,7 +82,7 @@ public class EncryptedBlobClient extends BlobClient {
      */
     @Override
     public EncryptedBlobClient getEncryptionScopeClient(String encryptionScope) {
-        return new EncryptedBlobClient(encryptedBlobAsyncClient.getEncryptionScopeClient(encryptionScope));
+        return new EncryptedBlobClient(encryptedBlobAsyncClient.getEncryptionScopeAsyncClient(encryptionScope));
     }
 
     /**
@@ -94,7 +94,7 @@ public class EncryptedBlobClient extends BlobClient {
      */
     @Override
     public EncryptedBlobClient getCustomerProvidedKeyClient(CustomerProvidedKey customerProvidedKey) {
-        return new EncryptedBlobClient(encryptedBlobAsyncClient.getCustomerProvidedKeyClient(customerProvidedKey));
+        return new EncryptedBlobClient(encryptedBlobAsyncClient.getCustomerProvidedKeyAsyncClient(customerProvidedKey));
     }
 
     /**

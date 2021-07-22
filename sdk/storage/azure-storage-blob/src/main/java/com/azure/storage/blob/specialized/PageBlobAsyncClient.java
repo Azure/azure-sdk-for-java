@@ -111,7 +111,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * @return a {@link PageBlobAsyncClient} with the specified {@code encryptionScope}.
      */
     @Override
-    public PageBlobAsyncClient getEncryptionScopeClient(String encryptionScope) {
+    public PageBlobAsyncClient getEncryptionScopeAsyncClient(String encryptionScope) {
         EncryptionScope finalEncryptionScope = null;
         if (encryptionScope != null) {
             finalEncryptionScope = new EncryptionScope().setEncryptionScope(encryptionScope);
@@ -129,7 +129,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * @return a {@link PageBlobAsyncClient} with the specified {@code customerProvidedKey}.
      */
     @Override
-    public PageBlobAsyncClient getCustomerProvidedKeyClient(CustomerProvidedKey customerProvidedKey) {
+    public PageBlobAsyncClient getCustomerProvidedKeyAsyncClient(CustomerProvidedKey customerProvidedKey) {
         CpkInfo finalCustomerProvidedKey = null;
         if (customerProvidedKey != null) {
             finalCustomerProvidedKey = new CpkInfo()
