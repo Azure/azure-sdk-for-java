@@ -515,7 +515,7 @@ Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/bl
 <!-- LINKS -->
 [docs]: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-boot-starter-java-app-with-azure-active-directory-b2c-oidc
 [refdocs]: https://azure.github.io/azure-sdk-for-java/springboot.html#azure-spring-boot
-[package]: https://mvnrepository.com/artifact/com.microsoft.azure/azure-active-directory-b2c-spring-boot-starter
+[package]: https://mvnrepository.com/artifact/com.azure.spring/azure-spring-boot-starter-active-directory-b2c
 [sample]: https://github.com/Azure-Samples/azure-spring-boot-samples
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
 [environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
