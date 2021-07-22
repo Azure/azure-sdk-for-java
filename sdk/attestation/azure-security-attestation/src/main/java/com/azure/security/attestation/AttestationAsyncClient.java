@@ -9,6 +9,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.security.attestation.implementation.AttestationClientImpl;
 import com.azure.security.attestation.implementation.AttestationsImpl;
 import com.azure.security.attestation.implementation.MetadataConfigurationsImpl;
@@ -46,6 +47,18 @@ public final class AttestationAsyncClient {
     /**
      * Retrieves metadata about the attestation signing keys in use by the attestation service.
      *
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Object>> getOpenIdMetadataWithResponse() {
+        return withContext(context -> this.getOpenIdMetadataWithResponse(context));
+    }
+
+    /**
+     * Retrieves metadata about the attestation signing keys in use by the attestation service.
+     *
      * @param context - Context for the operation
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -66,7 +79,7 @@ public final class AttestationAsyncClient {
     public Mono<Object> getOpenIdMetadata() {
         // Forward the getOpenIdMetadata to the getOpenIdMetadataWithResponse API implementation.
         return withContext(context -> this.getOpenIdMetadataWithResponse(context))
-            .map(Response::getValue);
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -80,7 +93,19 @@ public final class AttestationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AttestationSigner[]> getAttestationSigners() {
         return withContext(context -> this.getAttestationSignersWithResponse(context))
-            .map(Response::getValue);
+            .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Retrieves the list of {@link AttestationSigner} objects associated with this attestation instance.
+     *
+     * An {@link AttestationSigner} represents an X.509 certificate chain and KeyId which can be used
+     * to validate an attestation token returned by the service.
+     *
+     * @return Returns an array of {@link AttestationSigner} objects.
+     */
+    public Mono<Response<AttestationSigner[]>> getAttestationSignersWithResponse() {
+        return withContext(context -> this.getAttestationSignersWithResponse(context));
     }
 
     /**
@@ -96,6 +121,22 @@ public final class AttestationAsyncClient {
         return this.signerImpl.getWithResponseAsync(context)
             .map(response -> Utilities.generateResponseFromModelType(response, Utilities.attestationSignersFromJwks(response.getValue())));
     }
+
+    /**
+     * Processes an OpenEnclave report , producing an artifact. The type of artifact produced is dependent upon
+     * attestation policy.
+     *
+     * @param request Attestation request for Intel SGX enclaves.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of an attestation operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<AttestationResponse>> attestOpenEnclaveWithResponse(AttestOpenEnclaveRequest request) {
+        return withContext(context -> this.attestOpenEnclaveWithResponse(request, context));
+    }
+
 
     /**
      * Processes an OpenEnclave report , producing an artifact. The type of artifact produced is dependent upon
@@ -126,7 +167,22 @@ public final class AttestationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AttestationResponse> attestOpenEnclave(AttestOpenEnclaveRequest request) {
         return withContext(context -> attestOpenEnclaveWithResponse(request, context))
-            .map(Response::getValue);
+            .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Processes an SGX enclave quote, producing an artifact. The type of artifact produced is dependent upon
+     * attestation policy.
+     *
+     * @param request Attestation request for Intel SGX enclaves.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of an attestation operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<AttestationResponse>> attestSgxEnclaveWithResponse(AttestSgxEnclaveRequest request) {
+        return withContext(context -> attestSgxEnclaveWithResponse(request, context));
     }
 
     /**
@@ -158,7 +214,23 @@ public final class AttestationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AttestationResponse> attestSgxEnclave(AttestSgxEnclaveRequest request) {
         return withContext(context -> attestSgxEnclaveWithResponse(request, context))
-            .map(Response::getValue);
+            .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Processes attestation evidence from a VBS enclave, producing an attestation result. The attestation result
+     * produced is dependent upon the attestation policy.
+     *
+     * @param request Attestation request for Trusted Platform Module (TPM) attestation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return attestation response for Trusted Platform Module (TPM) attestation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<String>> attestTpmWithResponse(String request) {
+        Objects.requireNonNull(request);
+        return withContext(context -> attestTpmWithResponse(request, context));
     }
 
     /**
@@ -191,6 +263,6 @@ public final class AttestationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<String> attestTpm(String request) {
         return withContext(context -> attestTpmWithResponse(request, context))
-            .map(Response::getValue);
+            .flatMap(FluxUtil::toMono);
     }
 }
