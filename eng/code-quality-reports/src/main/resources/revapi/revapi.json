@@ -549,8 +549,8 @@
       },
       {
         "code": "java.method.added",
-          "new": "method com.azure.core.util.HttpClientOptions com.azure.core.util.HttpClientOptions::setResponseTimeout(java.time.Duration)",
-          "justification": "New Setter method."
+        "new": "method com.azure.core.util.HttpClientOptions com.azure.core.util.HttpClientOptions::setResponseTimeout(java.time.Duration)",
+        "justification": "New Setter method."
       },
       {
         "code": "java.annotation.attributeValueChanged",

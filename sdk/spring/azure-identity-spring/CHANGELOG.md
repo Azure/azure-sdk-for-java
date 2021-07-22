@@ -1,7 +1,10 @@
 # Release History
 
-## 1.7.0-beta.1 (Unreleased)
+## 1.8.0-beta.1 (Unreleased)
 
+
+## 1.7.0 (2021-07-20)
+No changes from 1.6.0. 
 
 ## 1.6.0 (2021-06-23)
 ### New Features

@@ -26,7 +26,6 @@ This project provides auto-configuration for the following Azure services:
 - [Event Hubs][event_hubs]
 - [Event Hubs Kafka][event_hubs_kafka]
 - [Service Bus][service_bus]
-- [Storage][storage]
 - [Storage Queue][storage_queue]
 
 ## Examples
@@ -91,14 +90,13 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [event_hubs]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-cloud-starter-eventhubs
 [event_hubs_kafka]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-cloud-starter-eventhubs-kafka
 [service_bus]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-cloud-starter-servicebus
-[storage]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-starter-storage
 [storage_queue]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-cloud-starter-storage-queue
-[app_configuration_sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/appconfiguration/azure-appconfiguration-sample
-[app_configuration_conversation_sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/appconfiguration/azure-appconfiguration-conversion-sample-complete
-[cache_sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/cache/azure-spring-cloud-sample-cache
-[event_hubs_sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/eventhubs/azure-spring-integration-sample-eventhubs
-[event_hubs_kafka_sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/eventhubs/azure-spring-cloud-sample-eventhubs-kafka
-[service_bus_sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/servicebus/azure-spring-integration-sample-servicebus
-[storage_queue_sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/storage/azure-spring-integration-sample-storage-queue
+[app_configuration_sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/tag_azure-spring-boot_3.6.0/appconfiguration/azure-appconfiguration-sample
+[app_configuration_conversation_sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/tag_azure-spring-boot_3.6.0/appconfiguration/azure-appconfiguration-conversion-sample-complete
+[cache_sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/tag_azure-spring-boot_3.6.0/cache/azure-spring-cloud-sample-cache
+[event_hubs_sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/tag_azure-spring-boot_3.6.0/eventhubs/azure-spring-integration-sample-eventhubs
+[event_hubs_kafka_sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/tag_azure-spring-boot_3.6.0/eventhubs/azure-spring-cloud-sample-eventhubs-kafka
+[service_bus_sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/tag_azure-spring-boot_3.6.0/servicebus/azure-spring-integration-sample-servicebus
+[storage_queue_sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/tag_azure-spring-boot_3.6.0/storage/azure-spring-integration-sample-storage-queue
 [environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
 [Add azure-spring-cloud-dependencies]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/AZURE_SPRING_BOMS_USAGE.md#add-azure-spring-cloud-dependencies
