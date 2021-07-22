@@ -92,13 +92,13 @@ class ImmutableStorageWithVersioningTest extends APISpec {
             def response = httpPipeline.send(new HttpRequest(HttpMethod.PUT, new URL(url), new HttpHeaders(),
                 Flux.just(ByteBuffer.wrap(serializedBody.getBytes(StandardCharsets.UTF_8)))))
                 .block()
-            if (response.statusCode/100 != 2) {
+            if (response.statusCode != 201) {
                 println response.getBodyAsString().block()
             }
-            assert response.statusCode/100 == 2
+            assert response.statusCode == 201
         }
 
-        vlwContainer = primaryBlobServiceClient.getBlobContainerClient(containerName)
+        vlwContainer = versionedBlobServiceClient.getBlobContainerClient(containerName)
         vlwBlob = vlwContainer.getBlobClient(generateBlobName())
         vlwBlob.upload(new ByteArrayInputStream(new byte[0]), 0)
     }
@@ -126,8 +126,8 @@ class ImmutableStorageWithVersioningTest extends APISpec {
                 .build()
             def cleanupClient = new BlobServiceClientBuilder()
                 .httpClient(getHttpClient())
-                .credential(env.primaryAccount.credential)
-                .endpoint(env.primaryAccount.blobEndpoint)
+                .credential(env.versionedAccount.credential)
+                .endpoint(env.versionedAccount.blobEndpoint)
                 .buildClient()
 
             def options = new ListBlobContainersOptions().setPrefix(namer.getResourcePrefix())
@@ -621,7 +621,7 @@ class ImmutableStorageWithVersioningTest extends APISpec {
         def immutabilityPolicy = new BlobImmutabilityPolicy()
             .setExpiryTime(expiryTime)
             .setPolicyMode(BlobImmutabilityPolicyMode.UNLOCKED)
-        def sas = primaryBlobServiceClient.generateAccountSas(sasValues)
+        def sas = versionedBlobServiceClient.generateAccountSas(sasValues)
         def client = getBlobClient(sas, vlwContainer.getBlobContainerUrl(), vlwBlob.getBlobName())
 
         when:
