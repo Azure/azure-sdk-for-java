@@ -1,0 +1,144 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.azure-api.net/text/analytics/v3.1/analyze",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.8 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "7addd9c4-2508-4886-a084-bbd192769641",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "263",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "operation-location" : "https://cognitiveusw2dev.azure-api.net/text/analytics/v3.1/analyze/jobs/efc029b0-e4d4-4f94-afe7-e9ec476cab62",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "b807bb8f-07af-4bc2-816e-3eb958dd5eea",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "Date" : "Mon, 14 Jun 2021 20:39:40 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.azure-api.net/text/analytics/v3.1/analyze/jobs/efc029b0-e4d4-4f94-afe7-e9ec476cab62?showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.8 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "0f1dc544-6523-4a38-918b-76d4a835f9e9"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "6",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "d6414dd0-395c-4f89-8aa0-ba11132779dd",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"jobId\":\"efc029b0-e4d4-4f94-afe7-e9ec476cab62\",\"lastUpdateDateTime\":\"2021-06-14T20:39:41Z\",\"createdDateTime\":\"2021-06-14T20:39:40Z\",\"expirationDateTime\":\"2021-06-15T20:39:40Z\",\"status\":\"notStarted\",\"errors\":[],\"displayName\":\"NA\",\"tasks\":{\"completed\":0,\"failed\":0,\"inProgress\":1,\"total\":1}}",
+      "Date" : "Mon, 14 Jun 2021 20:39:46 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.azure-api.net/text/analytics/v3.1/analyze/jobs/efc029b0-e4d4-4f94-afe7-e9ec476cab62?showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.8 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "2b49e550-e5e5-4e5f-afc3-b91543a59d95"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "6",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "676b556c-7b95-480a-aaf7-3015fb762c9d",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"jobId\":\"efc029b0-e4d4-4f94-afe7-e9ec476cab62\",\"lastUpdateDateTime\":\"2021-06-14T20:39:46Z\",\"createdDateTime\":\"2021-06-14T20:39:40Z\",\"expirationDateTime\":\"2021-06-15T20:39:40Z\",\"status\":\"running\",\"errors\":[],\"displayName\":\"NA\",\"tasks\":{\"completed\":0,\"failed\":0,\"inProgress\":1,\"total\":1}}",
+      "Date" : "Mon, 14 Jun 2021 20:39:51 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.azure-api.net/text/analytics/v3.1/analyze/jobs/efc029b0-e4d4-4f94-afe7-e9ec476cab62?showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.8 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ae0092ed-bf28-4422-a0dd-53647790d8d2"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "6",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "36f09f8f-da79-4221-bb91-6e54d0534e70",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"jobId\":\"efc029b0-e4d4-4f94-afe7-e9ec476cab62\",\"lastUpdateDateTime\":\"2021-06-14T20:39:46Z\",\"createdDateTime\":\"2021-06-14T20:39:40Z\",\"expirationDateTime\":\"2021-06-15T20:39:40Z\",\"status\":\"running\",\"errors\":[],\"displayName\":\"NA\",\"tasks\":{\"completed\":0,\"failed\":0,\"inProgress\":1,\"total\":1}}",
+      "Date" : "Mon, 14 Jun 2021 20:39:56 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.azure-api.net/text/analytics/v3.1/analyze/jobs/efc029b0-e4d4-4f94-afe7-e9ec476cab62?showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.8 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "af7e61d0-faf5-40dd-823c-fec4a3754165"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "7",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "2f7f1510-b556-403b-95f4-cf794b9c3254",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"jobId\":\"efc029b0-e4d4-4f94-afe7-e9ec476cab62\",\"lastUpdateDateTime\":\"2021-06-14T20:39:46Z\",\"createdDateTime\":\"2021-06-14T20:39:40Z\",\"expirationDateTime\":\"2021-06-15T20:39:40Z\",\"status\":\"running\",\"errors\":[],\"displayName\":\"NA\",\"tasks\":{\"completed\":0,\"failed\":0,\"inProgress\":1,\"total\":1}}",
+      "Date" : "Mon, 14 Jun 2021 20:40:01 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.azure-api.net/text/analytics/v3.1/analyze/jobs/efc029b0-e4d4-4f94-afe7-e9ec476cab62?showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.8 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "16651334-5886-4265-83f3-20fa2334c884"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "46",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "bf7a053c-2a77-4c5e-8d2c-e5ba3a451520",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"jobId\":\"efc029b0-e4d4-4f94-afe7-e9ec476cab62\",\"lastUpdateDateTime\":\"2021-06-14T20:40:04Z\",\"createdDateTime\":\"2021-06-14T20:39:40Z\",\"expirationDateTime\":\"2021-06-15T20:39:40Z\",\"status\":\"succeeded\",\"errors\":[],\"displayName\":\"NA\",\"tasks\":{\"completed\":1,\"failed\":0,\"inProgress\":0,\"total\":1,\"sentimentAnalysisTasks\":[{\"lastUpdateDateTime\":\"2021-06-14T20:40:04.5387283Z\",\"taskName\":\"SentimentAnalysis_latest\",\"state\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"sentiment\":\"mixed\",\"confidenceScores\":{\"positive\":0.5,\"neutral\":0.0,\"negative\":0.5},\"sentences\":[{\"sentiment\":\"negative\",\"confidenceScores\":{\"positive\":0.0,\"neutral\":0.0,\"negative\":1.0},\"offset\":0,\"length\":31,\"text\":\"The hotel was dark and unclean.\"},{\"sentiment\":\"positive\",\"confidenceScores\":{\"positive\":1.0,\"neutral\":0.0,\"negative\":0.0},\"offset\":32,\"length\":35,\"text\":\"The restaurant had amazing gnocchi.\"}],\"warnings\":[]},{\"id\":\"1\",\"sentiment\":\"mixed\",\"confidenceScores\":{\"positive\":0.5,\"neutral\":0.0,\"negative\":0.5},\"sentences\":[{\"sentiment\":\"positive\",\"confidenceScores\":{\"positive\":1.0,\"neutral\":0.0,\"negative\":0.0},\"offset\":0,\"length\":35,\"text\":\"The restaurant had amazing gnocchi.\"},{\"sentiment\":\"negative\",\"confidenceScores\":{\"positive\":0.0,\"neutral\":0.0,\"negative\":1.0},\"offset\":36,\"length\":31,\"text\":\"The hotel was dark and unclean.\"}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2020-04-01\"}}]}}",
+      "Date" : "Mon, 14 Jun 2021 20:40:06 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.azure-api.net/text/analytics/v3.1/analyze/jobs/efc029b0-e4d4-4f94-afe7-e9ec476cab62?showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.8 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "25ece0d8-920e-4746-89ba-1faeedcc2d83"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "47",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "a85c96b4-44ed-489e-b458-e0b3533c8ee9",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"jobId\":\"efc029b0-e4d4-4f94-afe7-e9ec476cab62\",\"lastUpdateDateTime\":\"2021-06-14T20:40:04Z\",\"createdDateTime\":\"2021-06-14T20:39:40Z\",\"expirationDateTime\":\"2021-06-15T20:39:40Z\",\"status\":\"succeeded\",\"errors\":[],\"displayName\":\"NA\",\"tasks\":{\"completed\":1,\"failed\":0,\"inProgress\":0,\"total\":1,\"sentimentAnalysisTasks\":[{\"lastUpdateDateTime\":\"2021-06-14T20:40:04.5387283Z\",\"taskName\":\"SentimentAnalysis_latest\",\"state\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"sentiment\":\"mixed\",\"confidenceScores\":{\"positive\":0.5,\"neutral\":0.0,\"negative\":0.5},\"sentences\":[{\"sentiment\":\"negative\",\"confidenceScores\":{\"positive\":0.0,\"neutral\":0.0,\"negative\":1.0},\"offset\":0,\"length\":31,\"text\":\"The hotel was dark and unclean.\"},{\"sentiment\":\"positive\",\"confidenceScores\":{\"positive\":1.0,\"neutral\":0.0,\"negative\":0.0},\"offset\":32,\"length\":35,\"text\":\"The restaurant had amazing gnocchi.\"}],\"warnings\":[]},{\"id\":\"1\",\"sentiment\":\"mixed\",\"confidenceScores\":{\"positive\":0.5,\"neutral\":0.0,\"negative\":0.5},\"sentences\":[{\"sentiment\":\"positive\",\"confidenceScores\":{\"positive\":1.0,\"neutral\":0.0,\"negative\":0.0},\"offset\":0,\"length\":35,\"text\":\"The restaurant had amazing gnocchi.\"},{\"sentiment\":\"negative\",\"confidenceScores\":{\"positive\":0.0,\"neutral\":0.0,\"negative\":1.0},\"offset\":36,\"length\":31,\"text\":\"The hotel was dark and unclean.\"}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2020-04-01\"}}]}}",
+      "Date" : "Mon, 14 Jun 2021 20:40:06 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

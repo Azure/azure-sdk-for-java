@@ -49,7 +49,7 @@ public class UploadUtils {
         return data
             .filter(ByteBuffer::hasRemaining)
             // The gate buffers data until threshold is breached.
-            .concatMap(gate::write)
+            .concatMap(gate::write, 0)
             // First buffer is emitted after threshold is breached or there's no more data.
             // Therefore we can make a decision how to upload data on first element.
             .switchOnFirst((signal, flux) -> {
@@ -103,7 +103,7 @@ public class UploadUtils {
                             duplicate.limit(Math.min(duplicate.limit(), (i + 1) * chunkSize));
                             return duplicate;
                         });
-                });
+                }, 1, 1);
         } else {
             return data;
         }

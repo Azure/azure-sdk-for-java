@@ -4,6 +4,7 @@
 package com.azure.core.amqp;
 
 import com.azure.core.amqp.exception.AmqpException;
+import com.azure.core.util.AsyncCloseable;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -13,7 +14,7 @@ import java.time.Duration;
 /**
  * An AMQP session representing bidirectional communication that supports multiple {@link AmqpLink AMQP links}.
  */
-public interface AmqpSession extends Disposable {
+public interface AmqpSession extends Disposable, AsyncCloseable {
     /**
      * Gets the name for this AMQP session.
      *
@@ -91,4 +92,29 @@ public interface AmqpSession extends Disposable {
      * @return A completable mono.
      */
     Mono<Void> rollbackTransaction(AmqpTransaction transaction);
+
+    /**
+     * Gets an existing or newly created {@link AmqpTransactionCoordinator} on the {@link AmqpSession} which maintains
+     * one instance of the {@link AmqpTransactionCoordinator} object. The {@link AmqpTransactionCoordinator} is used to
+     * create/commit or rollback the transaction which can span over one or more message broker entities.
+     * The interface {@link AmqpSession} provides default implementation for back-word compatibility but it throws
+     * {@link RuntimeException} to warn that an implementing class must override and provide implementation of this API.
+     * Azure SDK already provides implementation for this API.
+     *
+     * @return An existing or if it does not exists newly created {@link AmqpTransactionCoordinator}.
+     * @throws UnsupportedOperationException Indicting implementation not found error. Azure SDK should provide
+     * implementation of this API but if runtime is not able to find it in its classpath or version mismatch can cause
+     * this exception.
+     *
+     * @see <a href="https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transactions-v1.0-os.html#section-coordination">Transaction Coordination</a>
+     */
+    default Mono<? extends AmqpTransactionCoordinator> getOrCreateTransactionCoordinator() {
+        return Mono.error(new UnsupportedOperationException("Implementation not found error."));
+    }
+
+    @Override
+    default Mono<Void> closeAsync() {
+        return Mono.fromRunnable(() -> dispose());
+
+    }
 }

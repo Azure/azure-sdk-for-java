@@ -16,6 +16,7 @@ import com.azure.core.util.logging.ClientLogger;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.resolver.AddressResolverGroup;
+import io.netty.resolver.DefaultAddressResolverGroup;
 import io.netty.resolver.NoopAddressResolverGroup;
 import reactor.netty.Connection;
 import reactor.netty.NettyPipeline;
@@ -92,9 +93,9 @@ public class NettyAsyncHttpClientBuilder {
         if (this.baseHttpClient != null) {
             nettyHttpClient = baseHttpClient;
         } else if (this.connectionProvider != null) {
-            nettyHttpClient = HttpClient.create(this.connectionProvider);
+            nettyHttpClient = HttpClient.create(this.connectionProvider).resolver(DefaultAddressResolverGroup.INSTANCE);
         } else {
-            nettyHttpClient = HttpClient.create();
+            nettyHttpClient = HttpClient.create().resolver(DefaultAddressResolverGroup.INSTANCE);
         }
 
         nettyHttpClient = nettyHttpClient

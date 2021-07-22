@@ -4,7 +4,6 @@
 package com.azure.storage.common.implementation;
 
 import com.azure.core.util.Context;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.sas.AccountSasPermission;
@@ -24,9 +23,9 @@ import static com.azure.storage.common.implementation.SasImplUtils.tryAppendQuer
  */
 public class AccountSasImplUtil {
 
-    private final ClientLogger logger = new ClientLogger(AccountSasImplUtil.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AccountSasImplUtil.class);
 
-    private String version;
+    private static final String VERSION = Constants.SAS_SERVICE_VERSION;
 
     private SasProtocol protocol;
 
@@ -48,7 +47,6 @@ public class AccountSasImplUtil {
      * @param sasValues {@link AccountSasSignatureValues}
      */
     public AccountSasImplUtil(AccountSasSignatureValues sasValues) {
-        this.version = sasValues.getVersion();
         this.protocol = sasValues.getProtocol();
         this.startTime = sasValues.getStartTime();
         this.expiryTime = sasValues.getExpiryTime();
@@ -72,11 +70,8 @@ public class AccountSasImplUtil {
         StorageImplUtils.assertNotNull("expiryTime", this.expiryTime);
         StorageImplUtils.assertNotNull("permissions", this.permissions);
 
-        if (CoreUtils.isNullOrEmpty(version)) {
-            version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
-        }
         String stringToSign = stringToSign(storageSharedKeyCredentials);
-        StorageImplUtils.logStringToSign(logger, stringToSign, context);
+        StorageImplUtils.logStringToSign(LOGGER, stringToSign, context);
 
         // Signature is generated on the un-url-encoded values.
         String signature = storageSharedKeyCredentials.computeHmac256(stringToSign);
@@ -94,7 +89,7 @@ public class AccountSasImplUtil {
             Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
             this.sasIpRange == null ? "" : this.sasIpRange.toString(),
             this.protocol == null ? "" : this.protocol.toString(),
-            this.version,
+            VERSION,
             "" // Account SAS requires an additional newline character
         );
     }
@@ -106,7 +101,7 @@ public class AccountSasImplUtil {
          */
         StringBuilder sb = new StringBuilder();
 
-        tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SERVICE_VERSION, this.version);
+        tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SERVICE_VERSION, VERSION);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SERVICES, this.services);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_RESOURCES_TYPES, this.resourceTypes);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_PROTOCOL, this.protocol);

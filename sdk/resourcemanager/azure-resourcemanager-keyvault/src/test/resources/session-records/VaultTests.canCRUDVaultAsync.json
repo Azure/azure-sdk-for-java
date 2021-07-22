@@ -148,7 +148,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javacsmrg25761?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javacsmrg25761?api-version=2021-01-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.4.0 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "67584d21-8e03-4b5b-8730-5a78a7432853",
@@ -449,7 +449,7 @@
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javacsmrg25761?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javacsmrg25761?api-version=2021-01-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.4.0 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "fa6a4066-a958-4e63-a082-a20717044c03",

@@ -190,14 +190,14 @@ or contact [opencode@microsoft.com][coc_contact] with any
 additional questions or comments.
 
 <!-- LINKS -->
-[source]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/quantum/azure-quantum-jobs/src
+[source]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/quantum/azure-quantum-jobs/src
 [style-guide-msft]: https://docs.microsoft.com/style-guide/capitalization
 [token-credential]: https://docs.microsoft.com/dotnet/api/azure.core.tokencredential?view=azure-dotnet
 [resource-groups]: https://docs.microsoft.com/azure/azure-resource-manager/management/manage-resource-groups-portal
 [workspaces]: https://docs.microsoft.com/azure/quantum/how-to-create-quantum-workspaces-with-the-azure-portal
 [location]: https://azure.microsoft.com/global-infrastructure/services/?products=quantum
 [blob-storage]: https://docs.microsoft.com/azure/storage/blobs/storage-blobs-introduction
-[contributing]: https://github.com/Azure/azure-sdk-for-net/tree/master/CONTRIBUTING.md
+[contributing]: https://github.com/Azure/azure-sdk-for-net/tree/main/CONTRIBUTING.md
 [subscriptions]: https://ms.portal.azure.com/#blade/Microsoft_Azure_Billing/SubscriptionsBlade
 [credentials]: https://docs.microsoft.com/dotnet/api/overview/azure/identity-readme#credentials
 [style-guide-msft]: https://docs.microsoft.com/style-guide/capitalization

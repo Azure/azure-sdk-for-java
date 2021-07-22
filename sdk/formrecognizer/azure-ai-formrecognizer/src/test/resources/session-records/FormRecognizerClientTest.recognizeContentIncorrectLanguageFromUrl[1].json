@@ -1,22 +1,22 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//layout/analyze?language=language",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1/layout/analyze?language=language",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.3 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "3736a0be-11f9-4f2c-ad71-3db488c366f0",
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c84cc841-4383-43ad-857d-8eeb716884d5",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "x-envoy-upstream-service-time" : "2",
+      "content-length" : "121",
+      "x-envoy-upstream-service-time" : "4",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "4ac6da99-c728-4a23-8968-7fddcfc2b999",
+      "apim-request-id" : "1c76b4bc-2dfb-4dea-8608-657b1729433d",
       "retry-after" : "0",
-      "Content-Length" : "121",
       "StatusCode" : "400",
       "Body" : "{\"error\":{\"code\":\"NotSupportedLanguage\",\"message\":\"The requested operation is not supported in the language specified.\"}}",
-      "Date" : "Fri, 26 Mar 2021 13:48:27 GMT",
+      "Date" : "Wed, 07 Jul 2021 06:32:43 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

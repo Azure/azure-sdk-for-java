@@ -229,7 +229,7 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -369,7 +369,7 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -515,7 +515,7 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -656,7 +656,7 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -791,7 +791,7 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -936,7 +936,7 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
                     service
                         .createOrUpdateAtScope(
                             this.client.getEndpoint(), scope, this.client.getApiVersion(), parameters, accept, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1073,7 +1073,7 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
                     service
                         .updateAtScope(
                             this.client.getEndpoint(), scope, this.client.getApiVersion(), parameters, accept, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1206,7 +1206,7 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
             .withContext(
                 context ->
                     service.getAtScope(this.client.getEndpoint(), scope, this.client.getApiVersion(), accept, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1312,7 +1312,7 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
                 context ->
                     service
                         .deleteAtScope(this.client.getEndpoint(), scope, this.client.getApiVersion(), accept, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1415,7 +1415,7 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

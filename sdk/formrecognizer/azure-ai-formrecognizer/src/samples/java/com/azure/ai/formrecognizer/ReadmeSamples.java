@@ -151,8 +151,8 @@ public class ReadmeSamples {
      * Code snippet for recognizing receipt data using prebuilt receipt models.
      */
     public void recognizeReceiptFromUrl() {
-        String receiptUrl = "https://docs.microsoft.com/azure/cognitive-services/form-recognizer/media"
-            + "/contoso-allinone.jpg";
+        String receiptUrl = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/formrecognizer"
+                + "/azure-ai-formrecognizer/src/samples/resources/sample-forms/receipts/contoso-allinone.jpg";
         SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
             formRecognizerClient.beginRecognizeReceiptsFromUrl(receiptUrl);
         List<RecognizedForm> receiptPageResults = syncPoller.getFinalResult();
@@ -215,8 +215,8 @@ public class ReadmeSamples {
      */
     public void recognizeBusinessCardFromUrl() {
         String businessCardUrl =
-            "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/formrecognizer"
-                + "/azure-ai-formrecognizer/src/samples/java/sample-forms/businessCards/businessCard.jpg";
+            "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/formrecognizer"
+                + "/azure-ai-formrecognizer/src/samples/resources/sample-forms/businessCards/businessCard.jpg";
 
         SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> analyzeBusinessCardPoller =
             formRecognizerClient.beginRecognizeBusinessCardsFromUrl(businessCardUrl);

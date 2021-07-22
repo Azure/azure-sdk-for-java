@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -15,9 +14,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
 /** A skill that extracts text from image files. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Skills.Vision.OcrSkill")
-@JsonFlatten
 @Fluent
 public final class OcrSkill extends SearchIndexerSkill {
     /*
@@ -32,6 +30,13 @@ public final class OcrSkill extends SearchIndexerSkill {
      */
     @JsonProperty(value = "detectOrientation")
     private Boolean shouldDetectOrientation;
+
+    /*
+     * Defines the sequence of characters to use between the lines of text
+     * recognized by the OCR skill. The default value is "space".
+     */
+    @JsonProperty(value = "lineEnding")
+    private LineEnding lineEnding;
 
     /**
      * Creates an instance of OcrSkill class.
@@ -85,6 +90,28 @@ public final class OcrSkill extends SearchIndexerSkill {
      */
     public OcrSkill setShouldDetectOrientation(Boolean shouldDetectOrientation) {
         this.shouldDetectOrientation = shouldDetectOrientation;
+        return this;
+    }
+
+    /**
+     * Get the lineEnding property: Defines the sequence of characters to use between the lines of text recognized by
+     * the OCR skill. The default value is "space".
+     *
+     * @return the lineEnding value.
+     */
+    public LineEnding getLineEnding() {
+        return this.lineEnding;
+    }
+
+    /**
+     * Set the lineEnding property: Defines the sequence of characters to use between the lines of text recognized by
+     * the OCR skill. The default value is "space".
+     *
+     * @param lineEnding the lineEnding value to set.
+     * @return the OcrSkill object itself.
+     */
+    public OcrSkill setLineEnding(LineEnding lineEnding) {
+        this.lineEnding = lineEnding;
         return this;
     }
 

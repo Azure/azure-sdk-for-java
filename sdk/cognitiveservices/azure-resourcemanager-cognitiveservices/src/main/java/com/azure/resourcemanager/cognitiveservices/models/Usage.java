@@ -17,37 +17,37 @@ public final class Usage {
     /*
      * The unit of the metric.
      */
-    @JsonProperty(value = "unit", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "unit")
     private UnitType unit;
 
     /*
      * The name information for the metric.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "name")
     private MetricName name;
 
     /*
      * The quota period used to summarize the usage values.
      */
-    @JsonProperty(value = "quotaPeriod", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "quotaPeriod")
     private String quotaPeriod;
 
     /*
      * Maximum value for this metric.
      */
-    @JsonProperty(value = "limit", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "limit")
     private Double limit;
 
     /*
      * Current value for this metric.
      */
-    @JsonProperty(value = "currentValue", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "currentValue")
     private Double currentValue;
 
     /*
      * Next reset time for current quota.
      */
-    @JsonProperty(value = "nextResetTime", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "nextResetTime")
     private String nextResetTime;
 
     /*
@@ -66,12 +66,34 @@ public final class Usage {
     }
 
     /**
+     * Set the unit property: The unit of the metric.
+     *
+     * @param unit the unit value to set.
+     * @return the Usage object itself.
+     */
+    public Usage withUnit(UnitType unit) {
+        this.unit = unit;
+        return this;
+    }
+
+    /**
      * Get the name property: The name information for the metric.
      *
      * @return the name value.
      */
     public MetricName name() {
         return this.name;
+    }
+
+    /**
+     * Set the name property: The name information for the metric.
+     *
+     * @param name the name value to set.
+     * @return the Usage object itself.
+     */
+    public Usage withName(MetricName name) {
+        this.name = name;
+        return this;
     }
 
     /**
@@ -84,12 +106,34 @@ public final class Usage {
     }
 
     /**
+     * Set the quotaPeriod property: The quota period used to summarize the usage values.
+     *
+     * @param quotaPeriod the quotaPeriod value to set.
+     * @return the Usage object itself.
+     */
+    public Usage withQuotaPeriod(String quotaPeriod) {
+        this.quotaPeriod = quotaPeriod;
+        return this;
+    }
+
+    /**
      * Get the limit property: Maximum value for this metric.
      *
      * @return the limit value.
      */
     public Double limit() {
         return this.limit;
+    }
+
+    /**
+     * Set the limit property: Maximum value for this metric.
+     *
+     * @param limit the limit value to set.
+     * @return the Usage object itself.
+     */
+    public Usage withLimit(Double limit) {
+        this.limit = limit;
+        return this;
     }
 
     /**
@@ -102,12 +146,34 @@ public final class Usage {
     }
 
     /**
+     * Set the currentValue property: Current value for this metric.
+     *
+     * @param currentValue the currentValue value to set.
+     * @return the Usage object itself.
+     */
+    public Usage withCurrentValue(Double currentValue) {
+        this.currentValue = currentValue;
+        return this;
+    }
+
+    /**
      * Get the nextResetTime property: Next reset time for current quota.
      *
      * @return the nextResetTime value.
      */
     public String nextResetTime() {
         return this.nextResetTime;
+    }
+
+    /**
+     * Set the nextResetTime property: Next reset time for current quota.
+     *
+     * @param nextResetTime the nextResetTime value to set.
+     * @return the Usage object itself.
+     */
+    public Usage withNextResetTime(String nextResetTime) {
+        this.nextResetTime = nextResetTime;
+        return this;
     }
 
     /**

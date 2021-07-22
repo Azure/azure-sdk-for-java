@@ -65,6 +65,8 @@ public abstract class AbstractReactiveCosmosQuery implements RepositoryQuery {
                 + "db");
         } else if (isExistsQuery()) {
             return new ReactiveCosmosQueryExecution.ExistsExecution(operations);
+        } else if (isCountQuery()) {
+            return new ReactiveCosmosQueryExecution.CountExecution(operations);
         } else if (isReactiveSingleResultQuery()) {
             return new ReactiveCosmosQueryExecution.SingleEntityExecution(operations, returnedType);
         } else {
@@ -86,6 +88,8 @@ public abstract class AbstractReactiveCosmosQuery implements RepositoryQuery {
     protected abstract boolean isDeleteQuery();
 
     protected abstract boolean isExistsQuery();
+
+    protected abstract boolean isCountQuery();
 
     protected boolean isPageQuery() {
         return method.isPageQuery();

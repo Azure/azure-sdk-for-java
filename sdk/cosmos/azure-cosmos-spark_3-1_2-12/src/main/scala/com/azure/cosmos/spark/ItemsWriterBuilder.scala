@@ -3,6 +3,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
+import com.azure.cosmos.spark.diagnostics.LoggerHelper
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.connector.write.streaming.StreamingWrite
 import org.apache.spark.sql.connector.write.{BatchWrite, WriteBuilder}
@@ -16,22 +17,24 @@ private class ItemsWriterBuilder
 (
   userConfig: CaseInsensitiveStringMap,
   inputSchema: StructType,
-  cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot]
+  cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot],
+  diagnosticsConfig: DiagnosticsConfig
 )
-  extends WriteBuilder
-    with CosmosLoggingTrait {
-
-  logInfo(s"Instantiated ${this.getClass.getSimpleName}")
+  extends WriteBuilder {
+  @transient private lazy val log = LoggerHelper.getLogger(diagnosticsConfig, this.getClass)
+  log.logInfo(s"Instantiated ${this.getClass.getSimpleName}")
 
   override def buildForBatch(): BatchWrite =
     new ItemsBatchWriter(
       userConfig.asCaseSensitiveMap().asScala.toMap,
       inputSchema,
-      cosmosClientStateHandle)
+      cosmosClientStateHandle,
+      diagnosticsConfig)
 
   override def buildForStreaming(): StreamingWrite =
     new ItemsBatchWriter(
       userConfig.asCaseSensitiveMap().asScala.toMap,
       inputSchema,
-      cosmosClientStateHandle)
+      cosmosClientStateHandle,
+      diagnosticsConfig)
 }

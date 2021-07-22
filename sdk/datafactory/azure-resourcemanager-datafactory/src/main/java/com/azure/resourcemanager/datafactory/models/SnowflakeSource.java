@@ -92,6 +92,13 @@ public final class SnowflakeSource extends CopySource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public SnowflakeSource withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

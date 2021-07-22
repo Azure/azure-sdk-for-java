@@ -1,23 +1,23 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.1-preview.4//entities/recognition/pii?showStats=false&domain=PHI&stringIndexType=Utf16CodeUnit",
+    "Uri" : "https://REDACTED.azure-api.net/text/analytics/v3.1/entities/recognition/pii?showStats=false&loggingOptOut=false&domain=PHI&stringIndexType=Utf16CodeUnit",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.5 (11.0.9.1; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "dfee6146-9a62-4571-b3da-6f48d1810f89",
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.8 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c181b839-670b-48a3-868e-26eb89ea216d",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "928",
+      "x-envoy-upstream-service-time" : "29",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=2",
-      "apim-request-id" : "3e4de370-dbac-4c14-9c96-0dce6dd60ea7",
+      "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=2,CognitiveServices.TextAnalytics.TextRecords=2",
+      "apim-request-id" : "4f32374a-ecb5-4335-83eb-30f79413d50c",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"documents\":[{\"redactedText\":\"********* employee with ssn *********** is using our awesome API's.\",\"id\":\"0\",\"entities\":[{\"text\":\"Microsoft\",\"category\":\"Organization\",\"offset\":0,\"length\":9,\"confidenceScore\":0.92},{\"text\":\"859-98-0987\",\"category\":\"USSocialSecurityNumber\",\"offset\":28,\"length\":11,\"confidenceScore\":0.65}],\"warnings\":[]},{\"redactedText\":\"Your ABA number - ********* - is the first 9 digits in the lower left hand corner of your personal check.\",\"id\":\"1\",\"entities\":[{\"text\":\"111000025\",\"category\":\"PhoneNumber\",\"offset\":18,\"length\":9,\"confidenceScore\":0.8},{\"text\":\"111000025\",\"category\":\"ABARoutingNumber\",\"offset\":18,\"length\":9,\"confidenceScore\":0.75},{\"text\":\"111000025\",\"category\":\"NZSocialWelfareNumber\",\"offset\":18,\"length\":9,\"confidenceScore\":0.65}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-01-15\"}",
-      "Date" : "Wed, 24 Feb 2021 03:42:54 GMT",
+      "Body" : "{\"documents\":[{\"redactedText\":\"********* employee with ssn *********** is using our awesome API's.\",\"id\":\"0\",\"entities\":[{\"text\":\"Microsoft\",\"category\":\"Organization\",\"offset\":0,\"length\":9,\"confidenceScore\":0.9},{\"text\":\"859-98-0987\",\"category\":\"USSocialSecurityNumber\",\"offset\":28,\"length\":11,\"confidenceScore\":0.65}],\"warnings\":[]},{\"redactedText\":\"Your ABA number - ********* - is the first 9 digits in the lower left hand corner of your personal check.\",\"id\":\"1\",\"entities\":[{\"text\":\"111000025\",\"category\":\"PhoneNumber\",\"offset\":18,\"length\":9,\"confidenceScore\":0.8},{\"text\":\"111000025\",\"category\":\"ABARoutingNumber\",\"offset\":18,\"length\":9,\"confidenceScore\":0.75},{\"text\":\"111000025\",\"category\":\"NZSocialWelfareNumber\",\"offset\":18,\"length\":9,\"confidenceScore\":0.65}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-01-15\"}",
+      "Date" : "Mon, 14 Jun 2021 20:42:08 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

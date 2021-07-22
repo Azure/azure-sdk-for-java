@@ -18,6 +18,7 @@ import com.azure.resourcemanager.compute.fluent.models.UpgradeOperationHistorica
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetInner;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetInstanceViewInner;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetSkuInner;
+import com.azure.resourcemanager.compute.models.ExpandTypesForGetVMScaleSets;
 import com.azure.resourcemanager.compute.models.OrchestrationServiceStateInput;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetReimageParameters;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetUpdate;
@@ -417,6 +418,8 @@ public interface VirtualMachineScaleSetsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
+     * @param expand The expand expression to apply on the operation. 'UserData' retrieves the UserData property of the
+     *     VM scale set that was provided by the user during the VM scale set Create/Update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -424,7 +427,23 @@ public interface VirtualMachineScaleSetsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<VirtualMachineScaleSetInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String vmScaleSetName);
+        String resourceGroupName, String vmScaleSetName, ExpandTypesForGetVMScaleSets expand);
+
+    /**
+     * Display information about a virtual machine scale set.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param expand The expand expression to apply on the operation. 'UserData' retrieves the UserData property of the
+     *     VM scale set that was provided by the user during the VM scale set Create/Update operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes a Virtual Machine Scale Set.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<VirtualMachineScaleSetInner> getByResourceGroupAsync(
+        String resourceGroupName, String vmScaleSetName, ExpandTypesForGetVMScaleSets expand);
 
     /**
      * Display information about a virtual machine scale set.
@@ -457,6 +476,8 @@ public interface VirtualMachineScaleSetsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
+     * @param expand The expand expression to apply on the operation. 'UserData' retrieves the UserData property of the
+     *     VM scale set that was provided by the user during the VM scale set Create/Update operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -465,7 +486,7 @@ public interface VirtualMachineScaleSetsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<VirtualMachineScaleSetInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String vmScaleSetName, Context context);
+        String resourceGroupName, String vmScaleSetName, ExpandTypesForGetVMScaleSets expand, Context context);
 
     /**
      * Deallocates specific virtual machines in a VM scale set. Shuts down the virtual machines and releases the compute
@@ -1572,7 +1593,7 @@ public interface VirtualMachineScaleSetsClient
     /**
      * Perform maintenance on one or more virtual machines in a VM scale set. Operation on instances which are not
      * eligible for perform maintenance will be failed. Please refer to best practices for more details:
-     * https://docs.microsoft.com/en-us/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-maintenance-notifications.
+     * https://docs.microsoft.com/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-maintenance-notifications.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
@@ -1590,7 +1611,7 @@ public interface VirtualMachineScaleSetsClient
     /**
      * Perform maintenance on one or more virtual machines in a VM scale set. Operation on instances which are not
      * eligible for perform maintenance will be failed. Please refer to best practices for more details:
-     * https://docs.microsoft.com/en-us/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-maintenance-notifications.
+     * https://docs.microsoft.com/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-maintenance-notifications.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
@@ -1608,7 +1629,7 @@ public interface VirtualMachineScaleSetsClient
     /**
      * Perform maintenance on one or more virtual machines in a VM scale set. Operation on instances which are not
      * eligible for perform maintenance will be failed. Please refer to best practices for more details:
-     * https://docs.microsoft.com/en-us/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-maintenance-notifications.
+     * https://docs.microsoft.com/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-maintenance-notifications.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
@@ -1626,7 +1647,7 @@ public interface VirtualMachineScaleSetsClient
     /**
      * Perform maintenance on one or more virtual machines in a VM scale set. Operation on instances which are not
      * eligible for perform maintenance will be failed. Please refer to best practices for more details:
-     * https://docs.microsoft.com/en-us/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-maintenance-notifications.
+     * https://docs.microsoft.com/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-maintenance-notifications.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
@@ -1645,7 +1666,7 @@ public interface VirtualMachineScaleSetsClient
     /**
      * Perform maintenance on one or more virtual machines in a VM scale set. Operation on instances which are not
      * eligible for perform maintenance will be failed. Please refer to best practices for more details:
-     * https://docs.microsoft.com/en-us/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-maintenance-notifications.
+     * https://docs.microsoft.com/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-maintenance-notifications.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
@@ -1662,7 +1683,7 @@ public interface VirtualMachineScaleSetsClient
     /**
      * Perform maintenance on one or more virtual machines in a VM scale set. Operation on instances which are not
      * eligible for perform maintenance will be failed. Please refer to best practices for more details:
-     * https://docs.microsoft.com/en-us/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-maintenance-notifications.
+     * https://docs.microsoft.com/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-maintenance-notifications.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
@@ -1677,7 +1698,7 @@ public interface VirtualMachineScaleSetsClient
     /**
      * Perform maintenance on one or more virtual machines in a VM scale set. Operation on instances which are not
      * eligible for perform maintenance will be failed. Please refer to best practices for more details:
-     * https://docs.microsoft.com/en-us/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-maintenance-notifications.
+     * https://docs.microsoft.com/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-maintenance-notifications.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
@@ -1693,7 +1714,7 @@ public interface VirtualMachineScaleSetsClient
     /**
      * Perform maintenance on one or more virtual machines in a VM scale set. Operation on instances which are not
      * eligible for perform maintenance will be failed. Please refer to best practices for more details:
-     * https://docs.microsoft.com/en-us/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-maintenance-notifications.
+     * https://docs.microsoft.com/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-maintenance-notifications.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
@@ -1707,7 +1728,7 @@ public interface VirtualMachineScaleSetsClient
     /**
      * Perform maintenance on one or more virtual machines in a VM scale set. Operation on instances which are not
      * eligible for perform maintenance will be failed. Please refer to best practices for more details:
-     * https://docs.microsoft.com/en-us/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-maintenance-notifications.
+     * https://docs.microsoft.com/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-maintenance-notifications.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.

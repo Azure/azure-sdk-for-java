@@ -14,7 +14,7 @@ import reactor.core.publisher.Mono;
 /**
  * {@link HttpPipelinePolicy} to transform PATCH requests into POST requests with the "X-HTTP-Method":"MERGE" header.
  */
-public class CosmosPatchTransformPolicy implements HttpPipelinePolicy {
+public final class CosmosPatchTransformPolicy implements HttpPipelinePolicy {
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         return Mono.defer(() -> {

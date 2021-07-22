@@ -4,6 +4,7 @@
 package com.azure.ai.textanalytics.models;
 
 import com.azure.ai.textanalytics.implementation.TextAnalyticsActionResultPropertiesHelper;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.time.OffsetDateTime;
@@ -12,6 +13,7 @@ import java.util.Locale;
 /**
  * The {@link TextAnalyticsActionResult} model.
  */
+@Immutable
 public class TextAnalyticsActionResult {
     private final ClientLogger logger = new ClientLogger(TextAnalyticsActionResult.class);
 
@@ -23,8 +25,8 @@ public class TextAnalyticsActionResult {
         TextAnalyticsActionResultPropertiesHelper.setAccessor(
             new TextAnalyticsActionResultPropertiesHelper.TextAnalyticsActionResultAccessor() {
                 @Override
-                public void setCompletedAt(TextAnalyticsActionResult actionsResult, OffsetDateTime completedAt) {
-                    actionsResult.setCompletedAt(completedAt);
+                public void setCompletedAt(TextAnalyticsActionResult actionResult, OffsetDateTime completedAt) {
+                    actionResult.setCompletedAt(completedAt);
                 }
 
                 @Override
@@ -42,14 +44,14 @@ public class TextAnalyticsActionResult {
     /**
      * Gets the time when the action was completed.
      *
-     * @return the time when the action was completed.
+     * @return The time when the action was completed.
      */
     public OffsetDateTime getCompletedAt() {
         return completedAt;
     }
 
     /**
-     * Get the error of action.
+     * Gets the error of action.
      *
      * @return The error of action.
      */
@@ -58,7 +60,7 @@ public class TextAnalyticsActionResult {
     }
 
     /**
-     * Get the boolean value indicates if the action result is error or not.
+     * Gets the boolean value indicates if the action result is error or not.
      *
      * @return A boolean indicates if the action result is error or not.
      */

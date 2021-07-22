@@ -8,11 +8,13 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.cognitiveservices.fluent.models.CognitiveServicesAccountEnumerateSkusResultInner;
-import com.azure.resourcemanager.cognitiveservices.fluent.models.CognitiveServicesAccountInner;
-import com.azure.resourcemanager.cognitiveservices.fluent.models.CognitiveServicesAccountKeysInner;
-import com.azure.resourcemanager.cognitiveservices.fluent.models.UsagesResultInner;
+import com.azure.core.util.polling.SyncPoller;
+import com.azure.resourcemanager.cognitiveservices.fluent.models.AccountInner;
+import com.azure.resourcemanager.cognitiveservices.fluent.models.AccountSkuListResultInner;
+import com.azure.resourcemanager.cognitiveservices.fluent.models.ApiKeysInner;
+import com.azure.resourcemanager.cognitiveservices.fluent.models.UsageListResultInner;
 import com.azure.resourcemanager.cognitiveservices.models.RegenerateKeyParameters;
 
 /** An instance of this class provides access to all the operations defined in AccountsClient. */
@@ -27,12 +29,12 @@ public interface AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services Account is an Azure resource representing the provisioned account, its type, location
+     * @return cognitive Services account is an Azure resource representing the provisioned account, it's type, location
      *     and SKU.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CognitiveServicesAccountInner create(
-        String resourceGroupName, String accountName, CognitiveServicesAccountInner account);
+    SyncPoller<PollResult<AccountInner>, AccountInner> beginCreate(
+        String resourceGroupName, String accountName, AccountInner account);
 
     /**
      * Create Cognitive Services Account. Accounts is a resource group wide resource type. It holds the keys for
@@ -45,12 +47,45 @@ public interface AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services Account is an Azure resource representing the provisioned account, its type, location
+     * @return cognitive Services account is an Azure resource representing the provisioned account, it's type, location
      *     and SKU.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CognitiveServicesAccountInner> createWithResponse(
-        String resourceGroupName, String accountName, CognitiveServicesAccountInner account, Context context);
+    SyncPoller<PollResult<AccountInner>, AccountInner> beginCreate(
+        String resourceGroupName, String accountName, AccountInner account, Context context);
+
+    /**
+     * Create Cognitive Services Account. Accounts is a resource group wide resource type. It holds the keys for
+     * developer to access intelligent APIs. It's also the resource type for billing.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param account The parameters to provide for the created account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cognitive Services account is an Azure resource representing the provisioned account, it's type, location
+     *     and SKU.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AccountInner create(String resourceGroupName, String accountName, AccountInner account);
+
+    /**
+     * Create Cognitive Services Account. Accounts is a resource group wide resource type. It holds the keys for
+     * developer to access intelligent APIs. It's also the resource type for billing.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param account The parameters to provide for the created account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cognitive Services account is an Azure resource representing the provisioned account, it's type, location
+     *     and SKU.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AccountInner create(String resourceGroupName, String accountName, AccountInner account, Context context);
 
     /**
      * Updates a Cognitive Services account.
@@ -61,12 +96,12 @@ public interface AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services Account is an Azure resource representing the provisioned account, its type, location
+     * @return cognitive Services account is an Azure resource representing the provisioned account, it's type, location
      *     and SKU.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CognitiveServicesAccountInner update(
-        String resourceGroupName, String accountName, CognitiveServicesAccountInner account);
+    SyncPoller<PollResult<AccountInner>, AccountInner> beginUpdate(
+        String resourceGroupName, String accountName, AccountInner account);
 
     /**
      * Updates a Cognitive Services account.
@@ -78,12 +113,70 @@ public interface AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services Account is an Azure resource representing the provisioned account, its type, location
+     * @return cognitive Services account is an Azure resource representing the provisioned account, it's type, location
      *     and SKU.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CognitiveServicesAccountInner> updateWithResponse(
-        String resourceGroupName, String accountName, CognitiveServicesAccountInner account, Context context);
+    SyncPoller<PollResult<AccountInner>, AccountInner> beginUpdate(
+        String resourceGroupName, String accountName, AccountInner account, Context context);
+
+    /**
+     * Updates a Cognitive Services account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param account The parameters to provide for the created account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cognitive Services account is an Azure resource representing the provisioned account, it's type, location
+     *     and SKU.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AccountInner update(String resourceGroupName, String accountName, AccountInner account);
+
+    /**
+     * Updates a Cognitive Services account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param account The parameters to provide for the created account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cognitive Services account is an Azure resource representing the provisioned account, it's type, location
+     *     and SKU.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AccountInner update(String resourceGroupName, String accountName, AccountInner account, Context context);
+
+    /**
+     * Deletes a Cognitive Services account from the resource group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName);
+
+    /**
+     * Deletes a Cognitive Services account from the resource group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName, Context context);
 
     /**
      * Deletes a Cognitive Services account from the resource group.
@@ -106,10 +199,9 @@ public interface AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(String resourceGroupName, String accountName, Context context);
+    void delete(String resourceGroupName, String accountName, Context context);
 
     /**
      * Returns a Cognitive Services account specified by the parameters.
@@ -119,11 +211,11 @@ public interface AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services Account is an Azure resource representing the provisioned account, its type, location
+     * @return cognitive Services account is an Azure resource representing the provisioned account, it's type, location
      *     and SKU.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CognitiveServicesAccountInner getByResourceGroup(String resourceGroupName, String accountName);
+    AccountInner getByResourceGroup(String resourceGroupName, String accountName);
 
     /**
      * Returns a Cognitive Services account specified by the parameters.
@@ -134,11 +226,11 @@ public interface AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services Account is an Azure resource representing the provisioned account, its type, location
+     * @return cognitive Services account is an Azure resource representing the provisioned account, it's type, location
      *     and SKU.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CognitiveServicesAccountInner> getByResourceGroupWithResponse(
+    Response<AccountInner> getByResourceGroupWithResponse(
         String resourceGroupName, String accountName, Context context);
 
     /**
@@ -151,7 +243,7 @@ public interface AccountsClient {
      * @return the list of cognitive services accounts operation response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<CognitiveServicesAccountInner> listByResourceGroup(String resourceGroupName);
+    PagedIterable<AccountInner> listByResourceGroup(String resourceGroupName);
 
     /**
      * Returns all the resources of a particular type belonging to a resource group.
@@ -164,7 +256,7 @@ public interface AccountsClient {
      * @return the list of cognitive services accounts operation response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<CognitiveServicesAccountInner> listByResourceGroup(String resourceGroupName, Context context);
+    PagedIterable<AccountInner> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
      * Returns all the resources of a particular type belonging to a subscription.
@@ -174,7 +266,7 @@ public interface AccountsClient {
      * @return the list of cognitive services accounts operation response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<CognitiveServicesAccountInner> list();
+    PagedIterable<AccountInner> list();
 
     /**
      * Returns all the resources of a particular type belonging to a subscription.
@@ -186,7 +278,7 @@ public interface AccountsClient {
      * @return the list of cognitive services accounts operation response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<CognitiveServicesAccountInner> list(Context context);
+    PagedIterable<AccountInner> list(Context context);
 
     /**
      * Lists the account keys for the specified Cognitive Services account.
@@ -199,7 +291,7 @@ public interface AccountsClient {
      * @return the access keys for the cognitive services account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CognitiveServicesAccountKeysInner listKeys(String resourceGroupName, String accountName);
+    ApiKeysInner listKeys(String resourceGroupName, String accountName);
 
     /**
      * Lists the account keys for the specified Cognitive Services account.
@@ -213,8 +305,7 @@ public interface AccountsClient {
      * @return the access keys for the cognitive services account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CognitiveServicesAccountKeysInner> listKeysWithResponse(
-        String resourceGroupName, String accountName, Context context);
+    Response<ApiKeysInner> listKeysWithResponse(String resourceGroupName, String accountName, Context context);
 
     /**
      * Regenerates the specified account key for the specified Cognitive Services account.
@@ -228,8 +319,7 @@ public interface AccountsClient {
      * @return the access keys for the cognitive services account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CognitiveServicesAccountKeysInner regenerateKey(
-        String resourceGroupName, String accountName, RegenerateKeyParameters parameters);
+    ApiKeysInner regenerateKey(String resourceGroupName, String accountName, RegenerateKeyParameters parameters);
 
     /**
      * Regenerates the specified account key for the specified Cognitive Services account.
@@ -244,7 +334,7 @@ public interface AccountsClient {
      * @return the access keys for the cognitive services account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CognitiveServicesAccountKeysInner> regenerateKeyWithResponse(
+    Response<ApiKeysInner> regenerateKeyWithResponse(
         String resourceGroupName, String accountName, RegenerateKeyParameters parameters, Context context);
 
     /**
@@ -258,7 +348,7 @@ public interface AccountsClient {
      * @return the list of cognitive services accounts operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CognitiveServicesAccountEnumerateSkusResultInner listSkus(String resourceGroupName, String accountName);
+    AccountSkuListResultInner listSkus(String resourceGroupName, String accountName);
 
     /**
      * List available SKUs for the requested Cognitive Services account.
@@ -272,7 +362,7 @@ public interface AccountsClient {
      * @return the list of cognitive services accounts operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CognitiveServicesAccountEnumerateSkusResultInner> listSkusWithResponse(
+    Response<AccountSkuListResultInner> listSkusWithResponse(
         String resourceGroupName, String accountName, Context context);
 
     /**
@@ -286,7 +376,7 @@ public interface AccountsClient {
      * @return usages for the requested Cognitive Services account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    UsagesResultInner getUsages(String resourceGroupName, String accountName);
+    UsageListResultInner listUsages(String resourceGroupName, String accountName);
 
     /**
      * Get usages for the requested Cognitive Services account.
@@ -302,6 +392,6 @@ public interface AccountsClient {
      * @return usages for the requested Cognitive Services account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<UsagesResultInner> getUsagesWithResponse(
+    Response<UsageListResultInner> listUsagesWithResponse(
         String resourceGroupName, String accountName, String filter, Context context);
 }

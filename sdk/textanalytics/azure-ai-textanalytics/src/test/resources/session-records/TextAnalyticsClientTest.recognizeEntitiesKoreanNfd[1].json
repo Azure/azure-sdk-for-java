@@ -1,23 +1,23 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.1-preview.4//entities/recognition/general?showStats=false&stringIndexType=Utf16CodeUnit",
+    "Uri" : "https://REDACTED.azure-api.net/text/analytics/v3.1/entities/recognition/general?showStats=false&loggingOptOut=false&stringIndexType=Utf16CodeUnit",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.5 (11.0.9.1; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "43cf8d48-13ac-4776-8350-ddafc412a55c",
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.8 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "bf97419d-fee9-4ab4-b691-97b3f66a5b2f",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "103",
+      "x-envoy-upstream-service-time" : "22",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=1",
-      "apim-request-id" : "e0b54b76-c103-4864-ae74-9fa7b033485e",
+      "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=1,CognitiveServices.TextAnalytics.TextRecords=1",
+      "apim-request-id" : "0ccb7f55-204b-466e-95ac-10a0f0ad085e",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"documents\":[{\"id\":\"0\",\"entities\":[{\"text\":\"Microsoft\",\"category\":\"Organization\",\"offset\":13,\"length\":9,\"confidenceScore\":0.98}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-01-15\"}",
-      "Date" : "Wed, 24 Feb 2021 02:53:11 GMT",
+      "Body" : "{\"documents\":[{\"id\":\"0\",\"entities\":[{\"text\":\"Microsoft\",\"category\":\"Organization\",\"offset\":13,\"length\":9,\"confidenceScore\":0.97}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-06-01\"}",
+      "Date" : "Mon, 14 Jun 2021 20:40:47 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

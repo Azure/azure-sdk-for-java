@@ -208,7 +208,8 @@ public final class FormRecognizerClientBuilder {
     }
 
     /**
-     * Gets the default Azure Form Recognizer headers and query parameters allow list.
+     * Gets the default Azure Form Recognizer client headers and query parameters that are logged by default if
+     * HTTP logging is enabled.
      *
      * @return The default {@link HttpLogOptions} allow list.
      */

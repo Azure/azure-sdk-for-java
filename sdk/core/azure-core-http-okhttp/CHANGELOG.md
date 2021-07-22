@@ -1,7 +1,29 @@
 # Release History
 
-## 1.7.0-beta.1 (Unreleased)
+## 1.8.0-beta.1 (Unreleased)
 
+
+## 1.7.1 (2021-07-01)
+
+### Features Added
+
+- Added support for new `HttpClientOptions` configurations.
+
+### Dependency Updates
+
+- Upgraded `azure-core` from `1.17.0` to `1.18.0`.
+
+## 1.7.0 (2021-06-07)
+
+### Dependency Updates
+
+- Upgraded `azure-core` from `1.16.0` to `1.17.0`.
+
+## 1.6.2 (2021-05-07)
+
+### Dependency Updates
+
+- Upgraded `azure-core` from `1.15.0` to `1.16.0`.
 
 ## 1.6.1 (2021-04-02)
 

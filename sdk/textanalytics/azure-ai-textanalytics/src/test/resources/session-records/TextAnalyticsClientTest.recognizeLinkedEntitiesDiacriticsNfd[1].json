@@ -1,23 +1,23 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.1-preview.4//entities/linking?showStats=false&stringIndexType=Utf16CodeUnit",
+    "Uri" : "https://REDACTED.azure-api.net/text/analytics/v3.1/entities/linking?showStats=false&loggingOptOut=false&stringIndexType=Utf16CodeUnit",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.5 (11.0.9.1; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "0d6ac5d1-78cd-4776-baa6-15c90f21a9d9",
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.8 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "2d29590d-9044-4595-88cc-adabbe56f0bd",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "24",
+      "x-envoy-upstream-service-time" : "9",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=1",
-      "apim-request-id" : "037b2703-2743-4b66-b677-23b03dd7fed0",
+      "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=1,CognitiveServices.TextAnalytics.TextRecords=1",
+      "apim-request-id" : "5b3bcd17-b6f1-4382-b0eb-99dc5aca7bbe",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"documents\":[{\"id\":\"0\",\"entities\":[{\"bingId\":\"a093e9b9-90f5-a3d5-c4b8-5855e1b01f85\",\"name\":\"Microsoft\",\"matches\":[{\"text\":\"Microsoft\",\"offset\":15,\"length\":9,\"confidenceScore\":0.24}],\"language\":\"en\",\"id\":\"Microsoft\",\"url\":\"REDACTED\",\"dataSource\":\"Wikipedia\"}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2020-02-01\"}",
-      "Date" : "Wed, 24 Feb 2021 02:57:25 GMT",
+      "Body" : "{\"documents\":[{\"id\":\"0\",\"entities\":[{\"bingId\":\"a093e9b9-90f5-a3d5-c4b8-5855e1b01f85\",\"name\":\"Microsoft\",\"matches\":[{\"text\":\"Microsoft\",\"offset\":15,\"length\":9,\"confidenceScore\":0.24}],\"language\":\"en\",\"id\":\"Microsoft\",\"url\":\"REDACTED\",\"dataSource\":\"Wikipedia\"}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-06-01\"}",
+      "Date" : "Mon, 14 Jun 2021 20:41:11 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

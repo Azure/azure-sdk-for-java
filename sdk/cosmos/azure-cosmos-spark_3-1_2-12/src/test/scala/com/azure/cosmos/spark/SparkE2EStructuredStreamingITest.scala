@@ -11,12 +11,13 @@ import org.apache.spark.sql.streaming.StreamingQueryListener.{QueryProgressEvent
 
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicLong
+import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 
 class SparkE2EStructuredStreamingITest
   extends IntegrationSpec
     with CosmosClient
     with CosmosContainerWithRetention
-    with CosmosLoggingTrait {
+    with BasicLoggingTrait {
 
   override def afterEach(): Unit = {
     this.reinitializeContainer()
@@ -66,7 +67,7 @@ class SparkE2EStructuredStreamingITest
 
     val changeFeedDF = spark
       .readStream
-      .format("cosmos.changeFeed")
+      .format("cosmos.oltp.changeFeed")
       .options(changeFeedCfg)
       .load()
 
@@ -107,7 +108,7 @@ class SparkE2EStructuredStreamingITest
 
     val secondChangeFeedDF = spark
       .readStream
-      .format("cosmos.changeFeed")
+      .format("cosmos.oltp.changeFeed")
       .options(changeFeedCfg)
       .load()
 

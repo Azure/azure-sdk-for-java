@@ -5,10 +5,7 @@ package com.azure.ai.formrecognizer.models;
 
 import com.azure.core.annotation.Fluent;
 
-import java.time.Duration;
 import java.util.List;
-
-import static com.azure.ai.formrecognizer.implementation.Utility.DEFAULT_POLL_INTERVAL;
 
 /**
  * Options that may be passed when using recognize identity documents APIs on Form Recognizer client.
@@ -18,7 +15,6 @@ public final class RecognizeIdentityDocumentOptions {
     private FormContentType contentType;
     private boolean includeFieldElements;
     private List<String> pages;
-    private Duration pollInterval = DEFAULT_POLL_INTERVAL;
 
     /**
      * Get the type of the form. Supported Media types including .pdf, .jpg, .png, .bmp or .tiff type file stream.
@@ -36,16 +32,6 @@ public final class RecognizeIdentityDocumentOptions {
      */
     public boolean isFieldElementsIncluded() {
         return includeFieldElements;
-    }
-
-    /**
-     * Get the duration between each poll for the operation status. If none is specified, a default of
-     * 5 seconds is used.
-     *
-     * @return the {@code pollInterval} value.
-     */
-    public Duration getPollInterval() {
-        return pollInterval;
     }
 
     /**
@@ -69,19 +55,6 @@ public final class RecognizeIdentityDocumentOptions {
      */
     public RecognizeIdentityDocumentOptions setFieldElementsIncluded(final boolean includeFieldElements) {
         this.includeFieldElements = includeFieldElements;
-        return this;
-    }
-
-    /**
-     * Set the duration between each poll for the operation status. If none is specified, a default of
-     * 5 seconds is used.
-     *
-     * @param pollInterval the duration to specify between each poll for the operation status.
-     *
-     * @return the updated {@code RecognizeIdentityDocumentOptions} value.
-     */
-    public RecognizeIdentityDocumentOptions setPollInterval(final Duration pollInterval) {
-        this.pollInterval = pollInterval == null ? DEFAULT_POLL_INTERVAL : pollInterval;
         return this;
     }
 

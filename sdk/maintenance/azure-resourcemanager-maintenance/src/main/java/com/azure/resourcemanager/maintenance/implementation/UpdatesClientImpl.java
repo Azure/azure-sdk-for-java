@@ -39,24 +39,24 @@ public final class UpdatesClientImpl implements UpdatesClient {
     private final UpdatesService service;
 
     /** The service client containing this operation class. */
-    private final MaintenanceClientImpl client;
+    private final MaintenanceManagementClientImpl client;
 
     /**
      * Initializes an instance of UpdatesClientImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    UpdatesClientImpl(MaintenanceClientImpl client) {
+    UpdatesClientImpl(MaintenanceManagementClientImpl client) {
         this.service = RestProxy.create(UpdatesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for MaintenanceClientUpdates to be used by the proxy service to perform
-     * REST calls.
+     * The interface defining all the services for MaintenanceManagementClientUpdates to be used by the proxy service to
+     * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "MaintenanceClientUpd")
+    @ServiceInterface(name = "MaintenanceManagemen")
     private interface UpdatesService {
         @Headers({"Content-Type: application/json"})
         @Get(

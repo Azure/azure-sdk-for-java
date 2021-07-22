@@ -7,18 +7,21 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+
 import java.util.List;
 
-/** Text analytics entity recognition. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
+/**
+ * Text analytics entity recognition.
+ */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "@odata.type",
+    visible = true)
 @JsonTypeName("#Microsoft.Skills.Text.EntityRecognitionSkill")
-@JsonFlatten
 @Fluent
 public final class EntityRecognitionSkill extends SearchIndexerSkill {
     /*
@@ -50,6 +53,18 @@ public final class EntityRecognitionSkill extends SearchIndexerSkill {
     @JsonProperty(value = "minimumPrecision")
     private Double minimumPrecision;
 
+    /*
+     * The version of the model to use when calling the Text Analytics service.
+     * It will default to the latest available when not specified. We recommend
+     * you do not specify this value unless absolutely necessary.
+     */
+    @JsonProperty(value = "modelVersion")
+    private String modelVersion;
+
+    @JsonTypeId
+    @JsonProperty(value = "@odata.type", access = JsonProperty.Access.WRITE_ONLY)
+    private EntityRecognitionSkillVersion version;
+
     /**
      * Creates an instance of EntityRecognitionSkill class.
      *
@@ -58,9 +73,31 @@ public final class EntityRecognitionSkill extends SearchIndexerSkill {
      */
     @JsonCreator
     public EntityRecognitionSkill(
-            @JsonProperty(value = "inputs", required = true) List<InputFieldMappingEntry> inputs,
-            @JsonProperty(value = "outputs", required = true) List<OutputFieldMappingEntry> outputs) {
+        @JsonProperty(value = "inputs", required = true) List<InputFieldMappingEntry> inputs,
+        @JsonProperty(value = "outputs", required = true) List<OutputFieldMappingEntry> outputs) {
+        this(inputs, outputs, EntityRecognitionSkillVersion.V1);
+    }
+
+    /**
+     * Creates an instance of EntityRecognitionSkill class.
+     *
+     * @param inputs the inputs value to set.
+     * @param outputs the outputs value to set.
+     * @param version the EntityRecognitionSkillVersion value to set.
+     */
+    public EntityRecognitionSkill(List<InputFieldMappingEntry> inputs, List<OutputFieldMappingEntry> outputs,
+        EntityRecognitionSkillVersion version) {
         super(inputs, outputs);
+        this.version = version;
+    }
+
+    /**
+     * Gets the version of the {@link EntityRecognitionSkill}.
+     *
+     * @return The version of the {@link EntityRecognitionSkill}.
+     */
+    public EntityRecognitionSkillVersion getSkillVersion() {
+        return this.version;
     }
 
     /**
@@ -160,6 +197,30 @@ public final class EntityRecognitionSkill extends SearchIndexerSkill {
      */
     public EntityRecognitionSkill setCategories(EntityCategory... categories) {
         this.categories = (categories == null) ? null : java.util.Arrays.asList(categories);
+        return this;
+    }
+
+    /**
+     * Get the modelVersion property: The version of the model to use when calling the Text Analytics service. It will
+     * default to the latest available when not specified. We recommend you do not specify this value unless absolutely
+     * necessary.
+     *
+     * @return the modelVersion value.
+     */
+    public String getModelVersion() {
+        return this.modelVersion;
+    }
+
+    /**
+     * Set the modelVersion property: The version of the model to use when calling the Text Analytics service. It will
+     * default to the latest available when not specified. We recommend you do not specify this value unless absolutely
+     * necessary.
+     *
+     * @param modelVersion the modelVersion value to set.
+     * @return the EntityRecognitionSkill object itself.
+     */
+    public EntityRecognitionSkill setModelVersion(String modelVersion) {
+        this.modelVersion = modelVersion;
         return this;
     }
 }

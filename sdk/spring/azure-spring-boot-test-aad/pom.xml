@@ -20,7 +20,7 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-boot-starter-active-directory</artifactId>
-      <version>3.5.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-active-directory;current} -->
+      <version>3.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-active-directory;current} -->
     </dependency>
 
     <!-- spring boot starter dependencies. -->
@@ -33,6 +33,7 @@
       <artifactId>spring-boot-starter-oauth2-client</artifactId>
     </dependency>
 
+    <!-- TEST-->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>

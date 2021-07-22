@@ -22,11 +22,11 @@ public final class HardwareProfile {
      * availability
      * set](https://docs.microsoft.com/rest/api/compute/availabilitysets/listavailablesizes)
      * <br><br> [List all available virtual machine sizes in a region](
-     * https://docs.microsoft.com/en-us/rest/api/compute/resourceskus/list)
-     * <br><br> [List all available virtual machine sizes for
+     * https://docs.microsoft.com/rest/api/compute/resourceskus/list) <br><br>
+     * [List all available virtual machine sizes for
      * resizing](https://docs.microsoft.com/rest/api/compute/virtualmachines/listavailablesizes).
      * For more information about virtual machine sizes, see [Sizes for virtual
-     * machines](https://docs.microsoft.com/en-us/azure/virtual-machines/sizes).
+     * machines](https://docs.microsoft.com/azure/virtual-machines/sizes).
      * <br><br> The available VM sizes depend on region and availability set.
      */
     @JsonProperty(value = "vmSize")
@@ -38,12 +38,11 @@ public final class HardwareProfile {
      * list of available sizes is using these APIs: &lt;br&gt;&lt;br&gt; [List all available virtual machine sizes in an
      * availability set](https://docs.microsoft.com/rest/api/compute/availabilitysets/listavailablesizes)
      * &lt;br&gt;&lt;br&gt; [List all available virtual machine sizes in a region](
-     * https://docs.microsoft.com/en-us/rest/api/compute/resourceskus/list) &lt;br&gt;&lt;br&gt; [List all available
-     * virtual machine sizes for
-     * resizing](https://docs.microsoft.com/rest/api/compute/virtualmachines/listavailablesizes). For more information
-     * about virtual machine sizes, see [Sizes for virtual
-     * machines](https://docs.microsoft.com/en-us/azure/virtual-machines/sizes). &lt;br&gt;&lt;br&gt; The available VM
-     * sizes depend on region and availability set.
+     * https://docs.microsoft.com/rest/api/compute/resourceskus/list) &lt;br&gt;&lt;br&gt; [List all available virtual
+     * machine sizes for resizing](https://docs.microsoft.com/rest/api/compute/virtualmachines/listavailablesizes). For
+     * more information about virtual machine sizes, see [Sizes for virtual
+     * machines](https://docs.microsoft.com/azure/virtual-machines/sizes). &lt;br&gt;&lt;br&gt; The available VM sizes
+     * depend on region and availability set.
      *
      * @return the vmSize value.
      */
@@ -57,12 +56,11 @@ public final class HardwareProfile {
      * list of available sizes is using these APIs: &lt;br&gt;&lt;br&gt; [List all available virtual machine sizes in an
      * availability set](https://docs.microsoft.com/rest/api/compute/availabilitysets/listavailablesizes)
      * &lt;br&gt;&lt;br&gt; [List all available virtual machine sizes in a region](
-     * https://docs.microsoft.com/en-us/rest/api/compute/resourceskus/list) &lt;br&gt;&lt;br&gt; [List all available
-     * virtual machine sizes for
-     * resizing](https://docs.microsoft.com/rest/api/compute/virtualmachines/listavailablesizes). For more information
-     * about virtual machine sizes, see [Sizes for virtual
-     * machines](https://docs.microsoft.com/en-us/azure/virtual-machines/sizes). &lt;br&gt;&lt;br&gt; The available VM
-     * sizes depend on region and availability set.
+     * https://docs.microsoft.com/rest/api/compute/resourceskus/list) &lt;br&gt;&lt;br&gt; [List all available virtual
+     * machine sizes for resizing](https://docs.microsoft.com/rest/api/compute/virtualmachines/listavailablesizes). For
+     * more information about virtual machine sizes, see [Sizes for virtual
+     * machines](https://docs.microsoft.com/azure/virtual-machines/sizes). &lt;br&gt;&lt;br&gt; The available VM sizes
+     * depend on region and availability set.
      *
      * @param vmSize the vmSize value to set.
      * @return the HardwareProfile object itself.

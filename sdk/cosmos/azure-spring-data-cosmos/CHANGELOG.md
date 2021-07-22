@@ -1,10 +1,31 @@
 ## Release History
 
-### 3.7.0-beta.1 (Unreleased)
-#### New Features
-- Upgrade to [spring-boot-dependencies:2.4.5](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.4.5/).
-- Upgrade to [spring-cloud-dependencies:2020.0.2](https://repo.maven.apache.org/maven2/org/springframework/cloud/spring-cloud-dependencies/2020.0.2/).
+## 3.10.0-beta.1 (Unreleased)
 
+
+### 3.9.0 (2021-07-08)
+#### New Features
+* Added `PartitionKey` support to spring data single partition queries.
+* Updated `Spring Boot` to version 2.5.2.
+* Updated `azure-cosmos` to version 4.17.0.
+
+### 3.8.0 (2021-06-11)
+#### New Features
+* Updated `Spring Boot` to version 2.5.0.
+* Updated `azure-cosmos` to version 4.16.0.
+* Added Autoscale RU support feature.
+* Added support for `countBy*` methods on `Repository` and `@Query` annotation.
+
+#### Key Bug Fixes
+* Fixed an issue with `MappingCosmosConverter` handling query with value types.
+* Fixed an issue with `CosmosIndexingPolicy` getting reset on application bootup.
+
+### 3.7.0 (2021-05-12)
+#### New Features
+* Updated Spring Boot to [spring-boot-dependencies:2.4.5](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.4.5/).
+* Updated Spring Cloud to [spring-cloud-dependencies:2020.0.2](https://repo.maven.apache.org/maven2/org/springframework/cloud/spring-cloud-dependencies/2020.0.2/).
+* Added `slice` support for queries that do not require page count.
+* Updated `azure-cosmos` to version 4.15.0.
 
 ### 3.6.0 (2021-04-06)
 #### New Features

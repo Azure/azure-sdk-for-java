@@ -5,6 +5,7 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.FeedResponseDiagnostics;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -16,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import java.net.URI;
 import java.time.Duration;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * This class represents response diagnostic statistics associated with a request to Azure Cosmos DB
@@ -27,6 +29,7 @@ public final class CosmosDiagnostics {
 
     private ClientSideRequestStatistics clientSideRequestStatistics;
     private FeedResponseDiagnostics feedResponseDiagnostics;
+    private AtomicBoolean diagnosticsCapturedInPagedFlux = new AtomicBoolean(false);
 
     static final String USER_AGENT = Utils.getUserAgent();
     static final String USER_AGENT_KEY = "userAgent";
@@ -77,6 +80,7 @@ public final class CosmosDiagnostics {
 
     /**
      * Regions contacted for this request
+     *
      * @return set of regions contacted for this request
      */
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
@@ -99,7 +103,7 @@ public final class CosmosDiagnostics {
             }
 
             if (stringBuilder != null) {
-                stringBuilder.append(USER_AGENT_KEY +"=").append(USER_AGENT).append(System.lineSeparator());
+                stringBuilder.append(USER_AGENT_KEY + "=").append(USER_AGENT).append(System.lineSeparator());
                 stringBuilder.append(feedResponseDiagnostics);
             }
         } else {
@@ -119,5 +123,32 @@ public final class CosmosDiagnostics {
 
     void setFeedResponseDiagnostics(FeedResponseDiagnostics feedResponseDiagnostics) {
         this.feedResponseDiagnostics = feedResponseDiagnostics;
+    }
+
+    private AtomicBoolean isDiagnosticsCapturedInPagedFlux(){
+        return this.diagnosticsCapturedInPagedFlux;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    // the following helper/accessor only helps to access this class outside of this package.//
+    ///////////////////////////////////////////////////////////////////////////////////////////
+
+    static {
+        ImplementationBridgeHelpers.CosmosDiagnosticsHelper.setCosmosDiagnosticsAccessor(
+            new ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor() {
+                @Override
+                public FeedResponseDiagnostics getFeedResponseDiagnostics(CosmosDiagnostics cosmosDiagnostics) {
+                    if (cosmosDiagnostics != null) {
+                        return cosmosDiagnostics.getFeedResponseDiagnostics();
+                    }
+
+                    return null;
+                }
+
+                @Override
+                public AtomicBoolean isDiagnosticsCapturedInPagedFlux(CosmosDiagnostics cosmosDiagnostics) {
+                    return cosmosDiagnostics.isDiagnosticsCapturedInPagedFlux();
+                }
+            });
     }
 }

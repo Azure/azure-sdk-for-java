@@ -163,7 +163,7 @@ class RequestResponseChannelTest {
             receiverSettleMode);
         final AmqpErrorContext errorContext = channel.getErrorContext();
 
-        StepVerifier.create(channel.disposeAsync("Test-method"))
+        StepVerifier.create(channel.closeAsync())
             .then(() -> {
                 sendEndpoints.complete();
                 receiveEndpoints.complete();
@@ -192,7 +192,7 @@ class RequestResponseChannelTest {
         sendEndpoints.next(EndpointState.ACTIVE);
 
         // Act
-        StepVerifier.create(channel.disposeAsync("Test"))
+        StepVerifier.create(channel.closeAsync())
             .then(() -> {
                 sendEndpoints.complete();
                 receiveEndpoints.complete();
@@ -233,7 +233,7 @@ class RequestResponseChannelTest {
         }).when(reactorDispatcher).invoke(any(Runnable.class));
 
         // Act
-        channel.dispose();
+        channel.closeAsync().block();
 
         // Assert
         verify(sender).close();
@@ -465,7 +465,7 @@ class RequestResponseChannelTest {
         assertTrue(channel.isDisposed());
 
         // This turns it into a synchronous operation so we know that it is disposed completely.
-        channel.dispose();
+        channel.closeAsync().block();
 
         // Assert
         verify(receiver).close();

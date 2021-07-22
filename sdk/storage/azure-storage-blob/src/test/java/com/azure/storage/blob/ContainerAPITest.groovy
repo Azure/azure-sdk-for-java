@@ -3,15 +3,13 @@
 
 package com.azure.storage.blob
 
-import com.azure.core.http.rest.PagedIterable
-import com.azure.core.http.rest.PagedResponse
+
 import com.azure.core.http.rest.Response
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.AppendBlobItem
 import com.azure.storage.blob.models.BlobAccessPolicy
 import com.azure.storage.blob.models.BlobErrorCode
-import com.azure.storage.blob.models.BlobItem
 import com.azure.storage.blob.models.BlobListDetails
 import com.azure.storage.blob.models.BlobProperties
 import com.azure.storage.blob.models.BlobRequestConditions
@@ -31,12 +29,10 @@ import com.azure.storage.blob.options.BlobSetAccessTierOptions
 import com.azure.storage.blob.options.PageBlobCreateOptions
 import com.azure.storage.blob.specialized.AppendBlobClient
 import com.azure.storage.blob.specialized.BlobClientBase
-import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.Utility
-import com.azure.storage.common.implementation.StorageImplUtils
+import com.azure.storage.common.test.shared.extensions.PlaybackOnly
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import reactor.test.StepVerifier
-import spock.lang.Requires
-import spock.lang.ResourceLock
 import spock.lang.Unroll
 
 import java.time.Duration
@@ -45,6 +41,14 @@ import java.time.ZoneId
 import java.util.stream.Collectors
 
 class ContainerAPITest extends APISpec {
+
+    String tagKey
+    String tagValue
+
+    def setup() {
+        tagKey = namer.getRandomName(20)
+        tagValue = namer.getRandomName(20)
+    }
 
     def "Create all null"() {
         setup:
@@ -575,7 +579,7 @@ class ContainerAPITest extends APISpec {
         setup:
         def name = generateBlobName()
         def bu = cc.getBlobClient(name).getBlockBlobClient()
-        bu.upload(defaultInputStream.get(), 7)
+        bu.upload(data.defaultInputStream, 7)
 
         when:
         def blobs = cc.listBlobs(new ListBlobsOptions().setPrefix(namer.getResourcePrefix()), null).iterator()
@@ -611,6 +615,7 @@ class ContainerAPITest extends APISpec {
         blob.getProperties().getCreationTime() != null
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "List append blobs flat"() {
         setup:
         def name = generateBlobName()
@@ -729,11 +734,11 @@ class ContainerAPITest extends APISpec {
 
         def tagsBlob = cc.getBlobClient(tagsName).getPageBlobClient()
         def tags = new HashMap<String, String>()
-        tags.put("tag", "value")
+        tags.put(tagKey, tagValue)
         tagsBlob.createWithResponse(new PageBlobCreateOptions(512).setTags(tags), null, null)
 
         def uncommittedBlob = cc.getBlobClient(uncommittedName).getBlockBlobClient()
-        uncommittedBlob.stageBlock(getBlockID(), defaultInputStream.get(), defaultData.remaining())
+        uncommittedBlob.stageBlock(getBlockID(), data.defaultInputStream, data.defaultData.remaining())
 
         return normal.createSnapshot().getSnapshotId()
     }
@@ -785,17 +790,18 @@ class ContainerAPITest extends APISpec {
         blobs.size() == 4 // Normal, copy, metadata, tags
     }
 
-    @Requires( { playbackMode() } )
+    @PlaybackOnly
     def "List blobs flat options last access time"() {
         when:
         def b = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
-        b.upload(defaultInputStream.get(), defaultData.remaining())
+        b.upload(data.defaultInputStream, data.defaultData.remaining())
         def blob = cc.listBlobs().iterator().next()
 
         then:
         blob.getProperties().getLastAccessedTime()
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "List blobs flat options tags"() {
         setup:
         def options = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveTags(true))
@@ -815,7 +821,7 @@ class ContainerAPITest extends APISpec {
         blobs.get(1).getProperties().getCopyCompletionTime() == null
         blobs.get(2).getName() == metadataName
         blobs.get(2).getMetadata() == null
-        blobs.get(3).getTags().get("tag") == "value"
+        blobs.get(3).getTags().get(tagKey) == tagValue
         blobs.get(3).getProperties().getTagCount() == 1
         blobs.size() == 4 // Normal, copy, metadata, tags
     }
@@ -857,26 +863,6 @@ class ContainerAPITest extends APISpec {
         blobs.get(0).getName() == normalName
         blobs.get(4).getName() == uncommittedName
         blobs.size() == 5 // Normal, copy, metadata, tags, uncommitted
-    }
-
-    @ResourceLock("ServiceProperties")
-    def "List blobs flat options deleted"() {
-        setup:
-        enableSoftDelete()
-        def name = generateBlobName()
-        def bu = cc.getBlobClient(name).getAppendBlobClient()
-        bu.create()
-        bu.delete()
-
-        when:
-        def options = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveDeletedBlobs(true))
-        def blobs = cc.listBlobs(options, null).iterator()
-
-        then:
-        blobs.next().getName() == name
-        !blobs.hasNext()
-
-        disableSoftDelete() == null // Must produce a true value or test will fail.
     }
 
     def "List blobs flat options prefix"() {
@@ -937,11 +923,34 @@ class ContainerAPITest extends APISpec {
             .verifyComplete()
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_10_02")
+    def "list blobs flat options deleted with versions"() {
+        setup:
+        def blobName = generateBlobName()
+        def blob = cc.getBlobClient(blobName).getAppendBlobClient()
+        blob.create()
+        def metadata = new HashMap<String, String>()
+        metadata.put("foo", "bar")
+        blob.setMetadata(metadata)
+        blob.delete()
+        def options = new ListBlobsOptions().setPrefix(blobName)
+            .setDetails(new BlobListDetails().setRetrieveDeletedBlobsWithVersions(true))
+
+        when:
+        def blobs = cc.listBlobs(options, null).iterator()
+
+        then:
+        def b = blobs.next()
+        !blobs.hasNext()
+        b.getName() == blobName
+        b.hasVersionsOnly()
+    }
+
     def "List blobs prefix with comma"() {
         setup:
         def prefix = generateBlobName() + ", " + generateBlobName()
         def b = cc.getBlobClient(prefix).getBlockBlobClient()
-        b.upload(defaultInputStream.get(), defaultData.remaining())
+        b.upload(data.defaultInputStream, data.defaultData.remaining())
 
         when:
         ListBlobsOptions options = new ListBlobsOptions().setPrefix(prefix)
@@ -1026,12 +1035,13 @@ class ContainerAPITest extends APISpec {
         pagedResponse2.getContinuationToken() == null
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "List blobs flat rehydrate priority"() {
         setup:
         def name = generateBlobName()
         def bc = cc.getBlobClient(name).getBlockBlobClient()
-        bc.upload(defaultInputStream.get(), 7)
+        bc.upload(data.defaultInputStream, 7)
 
         if (rehydratePriority != null) {
             bc.setAccessTier(AccessTier.ARCHIVE)
@@ -1071,7 +1081,7 @@ class ContainerAPITest extends APISpec {
         def blobs = [] as Collection<BlobClientBase>
         for (i in (1..NUM_BLOBS)) {
             def blob = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
-            blob.upload(defaultInputStream.get(), defaultDataSize)
+            blob.upload(data.defaultInputStream, data.defaultDataSize)
             blobs << blob
         }
 
@@ -1090,7 +1100,7 @@ class ContainerAPITest extends APISpec {
         def blobs = [] as Collection<BlobClientBase>
         for (i in (1..NUM_BLOBS)) {
             def blob = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
-            blob.upload(defaultInputStream.get(), defaultDataSize)
+            blob.upload(data.defaultInputStream, data.defaultDataSize)
             blobs << blob
         }
 
@@ -1105,7 +1115,7 @@ class ContainerAPITest extends APISpec {
     This test requires two accounts that are configured in a very specific way. It is not feasible to setup that
     relationship programmatically, so we have recorded a successful interaction and only test recordings.
     */
-    @Requires( {playbackMode()})
+    @PlaybackOnly
     def "List blobs flat ORS"() {
         setup:
         def sourceContainer = primaryBlobServiceClient.getBlobContainerClient("test1")
@@ -1219,6 +1229,7 @@ class ContainerAPITest extends APISpec {
         blobs.size() == 4 // Normal, copy, metadata, tags
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "List blobs hier options tags"() {
         setup:
         def options = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveTags(true))
@@ -1238,7 +1249,7 @@ class ContainerAPITest extends APISpec {
         blobs.get(1).getProperties().getCopyCompletionTime() == null
         blobs.get(2).getName() == metadataName
         blobs.get(2).getMetadata() == null
-        blobs.get(3).getTags().get("tag") == "value"
+        blobs.get(3).getTags().get(tagKey) == tagValue
         blobs.get(3).getProperties().getTagCount() == 1
         blobs.size() == 4 // Normal, copy, metadata, tags
     }
@@ -1260,26 +1271,6 @@ class ContainerAPITest extends APISpec {
         blobs.get(0).getName() == normalName
         blobs.get(4).getName() == uncommittedName
         blobs.size() == 5 // Normal, copy, metadata, tags, uncommitted
-    }
-
-    @ResourceLock("ServiceProperties")
-    def "List blobs hier options deleted"() {
-        setup:
-        enableSoftDelete()
-        def name = generateBlobName()
-        def bc = cc.getBlobClient(name).getAppendBlobClient()
-        bc.create()
-        bc.delete()
-
-        when:
-        def options = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveDeletedBlobs(true))
-        def blobs = cc.listBlobsByHierarchy("", options, null).iterator()
-
-        then:
-        blobs.next().getName() == name
-        !blobs.hasNext()
-
-        disableSoftDelete() == null
     }
 
     def "List blobs hier options prefix"() {
@@ -1335,6 +1326,29 @@ class ContainerAPITest extends APISpec {
         for (def page : iterableByPage) {
             assert page.value.size() == 1
         }
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_10_02")
+    def "list blobs hier options deleted with versions"() {
+        setup:
+        def blobName = generateBlobName()
+        def blob = cc.getBlobClient(blobName).getAppendBlobClient()
+        blob.create()
+        def metadata = new HashMap<String, String>()
+        metadata.put("foo", "bar")
+        blob.setMetadata(metadata)
+        blob.delete()
+        def options = new ListBlobsOptions().setPrefix(blobName)
+            .setDetails(new BlobListDetails().setRetrieveDeletedBlobsWithVersions(true))
+
+        when:
+        def blobs = cc.listBlobsByHierarchy("", options, null).iterator()
+
+        then:
+        def b = blobs.next()
+        !blobs.hasNext()
+        b.getName() == blobName
+        b.hasVersionsOnly()
     }
 
     @Unroll
@@ -1412,7 +1426,7 @@ class ContainerAPITest extends APISpec {
     This test requires two accounts that are configured in a very specific way. It is not feasible to setup that
     relationship programmatically, so we have recorded a successful interaction and only test recordings.
     */
-    @Requires( {playbackMode()})
+    @PlaybackOnly
     def "List blobs hier ORS"() {
         setup:
         def sourceContainer = primaryBlobServiceClient.getBlobContainerClient("test1")
@@ -1452,12 +1466,13 @@ class ContainerAPITest extends APISpec {
         cc.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(PAGE_SIZE), null).stream().count() == NUM_BLOBS
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "List blobs hier rehydrate priority"() {
         setup:
         def name = generateBlobName()
         def bc = cc.getBlobClient(name).getBlockBlobClient()
-        bc.upload(defaultInputStream.get(), 7)
+        bc.upload(data.defaultInputStream, 7)
 
         if (rehydratePriority != null) {
             bc.setAccessTier(AccessTier.ARCHIVE)
@@ -1478,6 +1493,7 @@ class ContainerAPITest extends APISpec {
         RehydratePriority.HIGH     || _
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "List append blobs hier"() {
         setup:
         def name = generateBlobName()
@@ -1544,7 +1560,7 @@ class ContainerAPITest extends APISpec {
         bu2.createWithResponse(null, null, null, null, null).getStatusCode() == 201
         bu5.getPropertiesWithResponse(null, null, null).getStatusCode() == 200
         bu3.createWithResponse(512, null, null, null, null, null, null).getStatusCode() == 201
-        bu4.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null, null, null, null, null)
+        bu4.uploadWithResponse(data.defaultInputStream, data.defaultDataSize, null, null, null, null, null, null, null)
             .getStatusCode() == 201
 
         when:
@@ -1578,7 +1594,7 @@ class ContainerAPITest extends APISpec {
         bu2.createWithResponse(null, null, null, null, null).getStatusCode() == 201
         bu5.getPropertiesWithResponse(null, null, null).getStatusCode() == 200
         bu3.createWithResponse(512, null, null, null, null, null, null).getStatusCode() == 201
-        bu4.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null, null, null, null, null)
+        bu4.uploadWithResponse(data.defaultInputStream, data.defaultDataSize, null, null, null, null, null, null, null)
             .getStatusCode() == 201
 
         when:
@@ -1641,12 +1657,10 @@ class ContainerAPITest extends APISpec {
             cc.create()
         }
 
-        AppendBlobClient bc = new BlobClientBuilder()
-            .credential(primaryCredential)
-            .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
-            .blobName("rootblob")
-            .httpClient(getHttpClient())
-            .pipeline(cc.getHttpPipeline())
+        AppendBlobClient bc = instrument(new BlobClientBuilder()
+            .credential(env.primaryAccount.credential)
+            .endpoint(env.primaryAccount.blobEndpoint)
+            .blobName("rootblob"))
             .buildClient().getAppendBlobClient()
 
         when:
@@ -1669,11 +1683,10 @@ class ContainerAPITest extends APISpec {
         }
 
         when:
-        cc = new BlobContainerClientBuilder()
-            .credential(primaryCredential)
-            .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
-            .containerName(null)
-            .pipeline(cc.getHttpPipeline())
+        cc = instrument(new BlobContainerClientBuilder()
+            .credential(env.primaryAccount.credential)
+            .endpoint(env.primaryAccount.blobEndpoint)
+            .containerName(null))
             .buildClient()
 
         then:
@@ -1775,7 +1788,7 @@ class ContainerAPITest extends APISpec {
     def "Per call policy"() {
         setup:
         def cc = getContainerClientBuilder(cc.getBlobContainerUrl())
-            .credential(primaryCredential)
+            .credential(env.primaryAccount.credential)
             .addPolicy(getPerCallVersionPolicy())
             .buildClient()
 

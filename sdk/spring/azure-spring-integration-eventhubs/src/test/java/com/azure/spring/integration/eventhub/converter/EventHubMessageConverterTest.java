@@ -6,23 +6,27 @@ package com.azure.spring.integration.eventhub.converter;
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.spring.integration.core.EventHubHeaders;
 import com.azure.spring.integration.core.converter.AzureMessageConverter;
-import com.azure.spring.integration.test.support.AzureMessageConverterTest;
-import org.junit.Test;
+import com.azure.spring.integration.test.support.UnaryAzureMessageConverterTest;
+import org.junit.jupiter.api.Test;
+import org.springframework.integration.support.MessageBuilder;
+import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.util.LinkedMultiValueMap;
 
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.messaging.support.NativeMessageHeaderAccessor.NATIVE_HEADERS;
 
-public class EventHubMessageConverterTest extends AzureMessageConverterTest<EventData> {
+public class EventHubMessageConverterTest extends UnaryAzureMessageConverterTest<EventData> {
 
     private static final String EVENT_DATA = "event-hub-test-string";
 
@@ -31,20 +35,28 @@ public class EventHubMessageConverterTest extends AzureMessageConverterTest<Even
     private static final Long OFFSET = 1234567890L;
     private static final Long SEQUENCE_NUMBER = 123456L;
 
-
     @Override
-    protected EventData getInstance() {
-        return new EventData(this.payload.getBytes());
-    }
-
-    @Override
-    public AzureMessageConverter<EventData> getConverter() {
+    public AzureMessageConverter<EventData, EventData> getConverter() {
         return new EventHubMessageConverter();
     }
 
     @Override
     protected Class<EventData> getTargetClass() {
         return EventData.class;
+    }
+
+    @Override
+    protected void assertMessageHeadersEqual(EventData azureMessage, Message<?> message) {
+        assertEquals(azureMessage.getProperties().get(headerProperties), message.getHeaders().get(headerProperties));
+    }
+
+    @Test
+    public void testNonUtf8DecodingPayload() {
+        String utf16Payload = new String(payload.getBytes(), StandardCharsets.UTF_16);
+        Message<String> message = MessageBuilder.withPayload(utf16Payload).build();
+        EventData azureMessage = getConverter().fromMessage(message, getTargetClass());
+        assertEquals(utf16Payload, azureMessage.getBodyAsString());
+        assertNotEquals(payload, azureMessage.getBodyAsString());
     }
 
     private static class MyEventHubMessageConverter extends EventHubMessageConverter {

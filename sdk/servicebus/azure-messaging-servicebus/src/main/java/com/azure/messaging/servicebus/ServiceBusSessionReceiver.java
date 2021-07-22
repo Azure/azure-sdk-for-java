@@ -3,8 +3,8 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.AmqpRetryOptions;
-import com.azure.core.amqp.implementation.AsyncAutoCloseable;
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.util.AsyncCloseable;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.LockContainer;
@@ -29,7 +29,7 @@ import java.util.function.Function;
 /**
  * Represents an session that is received when "any" session is accepted from the service.
  */
-class ServiceBusSessionReceiver implements AsyncAutoCloseable {
+class ServiceBusSessionReceiver implements AsyncCloseable, AutoCloseable {
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final LockContainer<OffsetDateTime> lockContainer;
     private final AtomicReference<OffsetDateTime> sessionLockedUntil = new AtomicReference<>();

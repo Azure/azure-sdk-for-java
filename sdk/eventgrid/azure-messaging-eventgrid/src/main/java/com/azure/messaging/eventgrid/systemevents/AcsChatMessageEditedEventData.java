@@ -7,8 +7,9 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
+import java.util.Map;
 
-/** Schema of the Data property of an EventGridEvent for an Microsoft.Communication.ChatMessageEdited event. */
+/** Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatMessageEdited event. */
 @Fluent
 public final class AcsChatMessageEditedEventData extends AcsChatMessageEventBaseProperties {
     /*
@@ -16,6 +17,12 @@ public final class AcsChatMessageEditedEventData extends AcsChatMessageEventBase
      */
     @JsonProperty(value = "messageBody")
     private String messageBody;
+
+    /*
+     * The chat message metadata
+     */
+    @JsonProperty(value = "metadata")
+    private Map<String, String> metadata;
 
     /*
      * The time at which the message was edited
@@ -40,6 +47,26 @@ public final class AcsChatMessageEditedEventData extends AcsChatMessageEventBase
      */
     public AcsChatMessageEditedEventData setMessageBody(String messageBody) {
         this.messageBody = messageBody;
+        return this;
+    }
+
+    /**
+     * Get the metadata property: The chat message metadata.
+     *
+     * @return the metadata value.
+     */
+    public Map<String, String> getMetadata() {
+        return this.metadata;
+    }
+
+    /**
+     * Set the metadata property: The chat message metadata.
+     *
+     * @param metadata the metadata value to set.
+     * @return the AcsChatMessageEditedEventData object itself.
+     */
+    public AcsChatMessageEditedEventData setMetadata(Map<String, String> metadata) {
+        this.metadata = metadata;
         return this;
     }
 

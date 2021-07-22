@@ -7,6 +7,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.LogLevel;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.nio.file.InvalidPathException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import org.slf4j.helpers.FormattingTuple;
@@ -59,7 +60,9 @@ public final class DefaultLogger extends MarkerIgnoringBase {
         String classPath;
         try {
             classPath = Class.forName(className).getCanonicalName();
-        } catch (ClassNotFoundException e) {
+        } catch (ClassNotFoundException | InvalidPathException e) {
+            // Swallow ClassNotFoundException as the passed class name may not correlate to an actual class.
+            // Swallow InvalidPathException as the className may contain characters that aren't legal file characters.
             classPath = className;
         }
         this.classPath = classPath;

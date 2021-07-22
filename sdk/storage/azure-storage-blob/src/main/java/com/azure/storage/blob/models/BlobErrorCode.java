@@ -156,6 +156,10 @@ public final class BlobErrorCode extends ExpandableStringEnum<BlobErrorCode> {
     public static final BlobErrorCode BLOB_TIER_INADEQUATE_FOR_CONTENT_LENGTH =
             fromString("BlobTierInadequateForContentLength");
 
+    /** Static value BlobUsesCustomerSpecifiedEncryption for BlobErrorCode. */
+    public static final BlobErrorCode BLOB_USES_CUSTOMER_SPECIFIED_ENCRYPTION =
+            fromString("BlobUsesCustomerSpecifiedEncryption");
+
     /** Static value BlockCountExceedsLimit for BlobErrorCode. */
     public static final BlobErrorCode BLOCK_COUNT_EXCEEDS_LIMIT = fromString("BlockCountExceedsLimit");
 

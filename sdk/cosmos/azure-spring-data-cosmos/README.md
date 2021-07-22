@@ -68,18 +68,18 @@ If you are using Maven, add the following dependency.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-spring-data-cosmos</artifactId>
-    <version>3.6.0</version>
+    <version>3.9.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
 
 ### Prerequisites
 
-- Java Development Kit 8
+- [Java Development Kit (JDK)][jdk_link], version 8 or later.
 - An active Azure account. If you don't have one, you can sign up for a [free account][azure_subscription]. Alternatively, you can use the [Azure Cosmos DB Emulator][local_emulator] for development and testing. As emulator https certificate is self signed, you need to import its certificate to java trusted cert store, [explained here][local_emulator_export_ssl_certificates]
 - (Optional) SLF4J is a logging facade.
 - (Optional) [SLF4J binding](https://www.slf4j.org/manual.html) is used to associate a specific logging framework with SLF4J.
-- (Optional) Maven
+- (Optional) [Maven][maven_link]
 
 SLF4J is only needed if you plan to use logging, please also download an SLF4J binding which will link the SLF4J API with the logging implementation of your choice. See the [SLF4J user manual](https://www.slf4j.org/manual.html) for more information.
 
@@ -244,9 +244,13 @@ public class User {
 
 - Annotation `@Container(containerName="myContainer")` specifies container name in Azure Cosmos DB.
 - Annotation `@PartitionKey` on `lastName` field specifies this field as partition key in Azure Cosmos DB.
+
+#### Creating Containers with autoscale throughput
+- Annotation `autoScale` field specifies container to be created with autoscale throughput if set to true. Default is false, which means containers are created with manual throughput.
+- Read more about autoscale throughput [here][autoscale-throughput]
 <!-- embedme src/samples/java/com/azure/spring/data/cosmos/UserSample.java#L14-L19 -->
 ```java
-@Container(containerName = "myContainer")
+@Container(containerName = "myContainer", autoScale = true, ru = "4000")
 public class UserSample {
     @Id
     private String emailAddress;
@@ -277,12 +281,13 @@ public class NestedEntitySample {
 
 ### Create repositories
 Extends CosmosRepository interface, which provides Spring Data repository support.
-<!-- embedme src/samples/java/com/azure/spring/data/cosmos/UserRepository.java#L15-L19 -->
+<!-- embedme src/samples/java/com/azure/spring/data/cosmos/UserRepository.java#L15-L20 -->
 
 ```java
 @Repository
 public interface UserRepository extends CosmosRepository<User, String> {
     Iterable<User> findByFirstName(String firstName);
+    long countByFirstName(String firstName);
     User findOne(String id, String lastName);
 }
 ```
@@ -292,31 +297,37 @@ public interface UserRepository extends CosmosRepository<User, String> {
 #### QueryAnnotation : Using annotated queries in repositories
 Azure spring data cosmos supports specifying annotated queries in the repositories using `@Query`.
 - Examples for annotated queries in synchronous CosmosRepository:
-<!-- embedme src/samples/java/com/azure/spring/data/cosmos/AnnotatedQueriesUserRepositoryCodeSnippet.java#L11-L17 -->
+<!-- embedme src/samples/java/com/azure/spring/data/cosmos/AnnotatedQueriesUserRepositoryCodeSnippet.java#L11-L20 -->
 
 ```java
 public interface AnnotatedQueriesUserRepositoryCodeSnippet extends CosmosRepository<User, String> {
-    @Query(value = "select * from c where c.firstName = @firstName and c.lastName = @lastName")
+    @Query("select * from c where c.firstName = @firstName and c.lastName = @lastName")
     List<User> getUsersByFirstNameAndLastName(@Param("firstName") String firstName, @Param("lastName") String lastName);
 
-    @Query(value = "select * from c offset @offset limit @limit")
+    @Query("select * from c offset @offset limit @limit")
     List<User> getUsersWithOffsetLimit(@Param("offset") int offset, @Param("limit") int limit);
+
+    @Query("select value count(1) from c where c.firstName = @firstName")
+    long getNumberOfUsersWithFirstName(@Param("firstName") String firstName);
 }
 ```
 
 - Examples for annotated queries in ReactiveCosmosRepository.
-<!-- embedme src/samples/java/com/azure/spring/data/cosmos/AnnotatedQueriesUserReactiveRepositoryCodeSnippet.java#L11-L20 -->
+<!-- embedme src/samples/java/com/azure/spring/data/cosmos/AnnotatedQueriesUserReactiveRepositoryCodeSnippet.java#L12-L24 -->
 
 ```java
 public interface AnnotatedQueriesUserReactiveRepositoryCodeSnippet extends ReactiveCosmosRepository<User, String> {
-    @Query(value = "select * from c where c.firstName = @firstName and c.lastName = @lastName")
+    @Query("select * from c where c.firstName = @firstName and c.lastName = @lastName")
     Flux<User> getUsersByTitleAndValue(@Param("firstName") int firstName, @Param("lastName") String lastName);
 
-    @Query(value = "select * from c offset @offset limit @limit")
+    @Query("select * from c offset @offset limit @limit")
     Flux<User> getUsersWithOffsetLimit(@Param("offset") int offset, @Param("limit") int limit);
 
-    @Query(value = "select count(c.id) as num_ids, c.lastName from c group by c.lastName")
+    @Query("select count(c.id) as num_ids, c.lastName from c group by c.lastName")
     Flux<ObjectNode> getCoursesGroupByDepartment();
+
+    @Query("select value count(1) from c where c.lastName = @lastName")
+    Mono<Long> getNumberOfUsersWithLastName(@Param("lastName") String lastName);
 }
 ```
 
@@ -446,7 +457,7 @@ public class MyItem {
 ### Spring Data custom query, pageable and sorting
 - Azure-spring-data-cosmos supports [spring data custom queries][spring_data_custom_query]
 - Example, find operation, e.g., `findByAFieldAndBField`
-- Supports [Spring Data pageable and sort](https://docs.spring.io/spring-data/commons/docs/current/reference/html/#repositories.special-parameters).
+- Supports [Spring Data Pageable, Slice and Sort](https://docs.spring.io/spring-data/commons/docs/current/reference/html/#repositories.special-parameters).
   - Based on available RUs on the database account, cosmosDB can return items less than or equal to the requested size.
   - Due to this variable number of returned items in every iteration, user should not rely on the totalPageSize, and instead iterating over pageable should be done in this way.
 <!-- embedme src/samples/java/com/azure/spring/data/cosmos/PageableRepositoryCodeSnippet.java#L24-L35 -->
@@ -462,6 +473,28 @@ private List<T> findAllWithPageSize(int pageSize) {
         pageContent = page.getContent();
     }
     return pageContent;
+}
+```
+<!-- embedme src/samples/java/com/azure/spring/data/cosmos/SliceQueriesUserRepository.java#L17-L20 -->
+```java
+public interface SliceQueriesUserRepository extends CosmosRepository<User, String> {
+    @Query("select * from c where c.lastName = @lastName")
+    Slice<User> getUsersByLastName(@Param("lastName") String lastName, Pageable pageable);
+}
+```
+<!-- embedme src/samples/java/com/azure/spring/data/cosmos/SliceRepositoryCodeSnippet.java#L22-L33 -->
+```java
+private List<User> getUsersByLastName(String lastName, int pageSize) {
+
+    final CosmosPageRequest pageRequest = new CosmosPageRequest(0, pageSize, null);
+    Slice<User> slice = repository.getUsersByLastName(lastName, pageRequest);
+    List<User> content = slice.getContent();
+    while (slice.hasNext()) {
+        Pageable nextPageable = slice.nextPageable();
+        slice = repository.getUsersByLastName(lastName, nextPageable);
+        content.addAll(slice.getContent());
+    }
+    return content;
 }
 ```
 
@@ -519,7 +552,7 @@ azure.cosmos.secondary.database=your-secondary-cosmosDb-dbName
 azure.cosmos.secondary.populateQueryMetrics=if-populate-query-metrics
 ```
 
-- The [Entity](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/cosmos/azure-spring-data-cosmos#define-an-entity) and [Repository](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/cosmos/azure-spring-data-cosmos#create-repositories) definition is similar as above. You can put different database entities into different packages.
+- The [Entity](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/cosmos/azure-spring-data-cosmos#define-an-entity) and [Repository](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/cosmos/azure-spring-data-cosmos#create-repositories) definition is similar as above. You can put different database entities into different packages.
 
 - The `@EnableReactiveCosmosRepositories` or `@EnableCosmosRepositories` support user-define the cosmos template, use `reactiveCosmosTemplateRef` or `cosmosTemplateRef` to config the name of the `ReactiveCosmosTemplate` or `CosmosTemplate` bean to be used with the repositories detected.
 - If you have multiple cosmos database accounts, you can define multiple `CosmosAsyncClient`. If the single cosmos account has multiple databases, you can use the same `CosmosAsyncClient` to initialize the cosmos template.
@@ -709,7 +742,7 @@ azure.cosmos.database=your-cosmosDb-dbName
 azure.cosmos.populate-query-metrics=if-populate-query-metrics
 ```
 
-- The [Entity](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/cosmos/azure-spring-data-cosmos#define-an-entity) and [Repository](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/cosmos/azure-spring-data-cosmos#create-repositories) definition is similar as above. You can put different database entities into different packages.
+- The [Entity](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/cosmos/azure-spring-data-cosmos#define-an-entity) and [Repository](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/cosmos/azure-spring-data-cosmos#create-repositories) definition is similar as above. You can put different database entities into different packages.
 - You can use `EnableReactiveCosmosRepositories` with different `reactiveCosmosTemplateRef` to define multiple databases in single cosmos account.
 
 <!-- embedme ../../spring/azure-spring-boot-samples/azure-spring-boot-sample-cosmos-multi-database-single-account/src/main/java/com/azure/spring/sample/cosmos/multi/database/DatasourceConfiguration.java#L15-L62 -->
@@ -822,7 +855,7 @@ public class MultiDatabaseApplication implements CommandLineRunner {
 
 ## Beta version package
 
-Beta version built from `master` branch are available, you can refer to the [instruction](https://github.com/Azure/azure-sdk-for-java/blob/master/CONTRIBUTING.md#nightly-package-builds) to use beta version packages.
+Beta version built from `master` branch are available, you can refer to the [instruction](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md#nightly-package-builds) to use beta version packages.
 
 ## Troubleshooting
 
@@ -851,6 +884,8 @@ For example, if you want to use spring logback as logging framework, add the fol
   <logger name="com.azure.cosmos" level="error"/>
   <logger name="org.springframework" level="error"/>
   <logger name="io.netty" level="error"/>
+  <!-- This will enable query logging, to include query parameter logging, set this logger to TRACE -->  
+  <logger name="com.azure.cosmos.implementation.SqlQuerySpecLogger" level="DEBUG"/>  
 </configuration>
 ```
 
@@ -891,18 +926,21 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
 [azure_subscription]: https://azure.microsoft.com/free/
-[samples]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/cosmos/azure-spring-data-cosmos/src/samples/java/com/azure/spring/data/cosmos
-[sample-for-multi-database]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-cosmos-multi-database-multi-account
-[sample-for-multi-database-single-account]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-cosmos-multi-database-single-account
+[samples]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/cosmos/azure-spring-data-cosmos/src/samples/java/com/azure/spring/data/cosmos
+[sample-for-multi-database]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/tag_azure-spring-boot_3.6.0/cosmos/azure-spring-boot-sample-cosmos-multi-database-multi-account
+[sample-for-multi-database-single-account]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/tag_azure-spring-boot_3.6.0/cosmos/azure-spring-boot-sample-cosmos-multi-database-single-account
 [sql_api_query]: https://docs.microsoft.com/azure/cosmos-db/sql-api-sql-query
 [local_emulator]: https://docs.microsoft.com/azure/cosmos-db/local-emulator
 [local_emulator_export_ssl_certificates]: https://docs.microsoft.com/azure/cosmos-db/local-emulator-export-ssl-certificates
 [spring_data_commons_id_annotation]: https://github.com/spring-projects/spring-data-commons/blob/master/src/main/java/org/springframework/data/annotation/Id.java
 [azure_cosmos_db_partition]: https://docs.microsoft.com/azure/cosmos-db/partition-data
-[address_repository_it_test]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/cosmos/azure-spring-data-cosmos-test/src/test/java/com/azure/spring/data/cosmos/repository/integration/AddressRepositoryIT.java
+[address_repository_it_test]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-spring-data-cosmos-test/src/test/java/com/azure/spring/data/cosmos/repository/integration/AddressRepositoryIT.java
 [azure_spring_data_cosmos_docs]: https://docs.microsoft.com/azure/cosmos-db/sql-api-sdk-java-spring-v3
 [spring_data_custom_query]: https://docs.spring.io/spring-data/commons/docs/current/reference/html/#repositories.query-methods.details
 [sql_queries_in_cosmos]: https://docs.microsoft.com/azure/cosmos-db/tutorial-query-sql-api
 [sql_queries_getting_started]: https://docs.microsoft.com/azure/cosmos-db/sql-query-getting-started
+[jdk_link]: https://docs.microsoft.com/java/azure/jdk/
+[maven_link]: https://maven.apache.org/
+[autoscale-throughput]: https://docs.microsoft.com/azure/cosmos-db/provision-throughput-autoscale
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcosmos%2F%2Fazure-spring-data-cosmos%2FREADME.png)
