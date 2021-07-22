@@ -162,7 +162,7 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [azure_service_bus]: https://azure.microsoft.com/services/service-bus/
 [contributing_md]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/CONTRIBUTING.md
 [docs]: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-cloud-stream-binder-java-app-with-service-bus
-[package]: https://mvnrepository.com/artifact/com.microsoft.azure/spring-cloud-azure-servicebus-topic-stream-binder
+[package]: https://mvnrepository.com/artifact/com.azure.spring/azure-spring-cloud-stream-binder-servicebus-topic
 [refdocs]: https://azure.github.io/azure-sdk-for-java/springcloud.html#azure-spring-cloud-stream-binder-servicebus-topic
 [sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/tag_azure-spring-boot_3.6.0/servicebus/azure-spring-cloud-sample-servicebus-topic-binder
 [spring_boot_logging]: https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#boot-features-logging
