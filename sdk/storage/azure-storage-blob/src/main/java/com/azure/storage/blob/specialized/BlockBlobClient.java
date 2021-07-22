@@ -103,7 +103,7 @@ public final class BlockBlobClient extends BlobClientBase {
      */
     @Override
     public BlockBlobClient getEncryptionScopeClient(String encryptionScope) {
-        return new BlockBlobClient(client.getEncryptionScopeClient(encryptionScope));
+        return new BlockBlobClient(client.getEncryptionScopeAsyncClient(encryptionScope));
     }
 
     /**
@@ -115,7 +115,7 @@ public final class BlockBlobClient extends BlobClientBase {
      */
     @Override
     public BlockBlobClient getCustomerProvidedKeyClient(CustomerProvidedKey customerProvidedKey) {
-        return new BlockBlobClient(client.getCustomerProvidedKeyClient(customerProvidedKey));
+        return new BlockBlobClient(client.getCustomerProvidedKeyAsyncClient(customerProvidedKey));
     }
 
     /**
