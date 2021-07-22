@@ -51,7 +51,6 @@ public final class AttestationAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any object.
      */
-//    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Object>> getOpenIdMetadataWithResponse(Context context) {
         return this.metadataImpl.getWithResponseAsync(context);
     }
@@ -109,7 +108,6 @@ public final class AttestationAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of an attestation operation.
      */
-//    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AttestationResponse>> attestOpenEnclaveWithResponse(AttestOpenEnclaveRequest request, Context context) {
         return this.attestImpl.attestOpenEnclaveWithResponseAsync(request.toGenerated(), context)
             .map(response -> Utilities.generateResponseFromModelType(response, AttestationResponse.fromGenerated(response.getValue())));
@@ -142,7 +140,6 @@ public final class AttestationAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of an attestation operation.
      */
-//    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AttestationResponse>> attestSgxEnclaveWithResponse(AttestSgxEnclaveRequest request, Context context) {
         return this.attestImpl.attestSgxEnclaveWithResponseAsync(request.toGenerated(), context)
             .map(response ->  Utilities.generateResponseFromModelType(response, AttestationResponse.fromGenerated(response.getValue())));
@@ -175,7 +172,6 @@ public final class AttestationAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return attestation response for Trusted Platform Module (TPM) attestation.
      */
-//    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<String>> attestTpmWithResponse(String request, Context context) {
         Objects.requireNonNull(request);
         return this.attestImpl.attestTpmWithResponseAsync(new com.azure.security.attestation.implementation.models.TpmAttestationRequest().setData(request.getBytes(StandardCharsets.UTF_8)), context)
