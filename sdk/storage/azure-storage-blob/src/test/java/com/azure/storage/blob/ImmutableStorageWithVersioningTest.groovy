@@ -56,10 +56,10 @@ class ImmutableStorageWithVersioningTest extends APISpec {
 
     private BlobContainerClient vlwContainer;
     private BlobClient vlwBlob
-    private String accountName = env.primaryAccount.name
+    private String accountName = env.versionedAccount.name
     private String containerName
-    private String resourceGroupName = "XClient"
-    private String subscriptionId = "ba45b233-e2ef-4169-8808-49eb0d8eba0d"
+    private String resourceGroupName = env.resourceGroupName
+    private String subscriptionId = env.subscriptionId
     private String apiVersion = "2021-04-01"
     private TokenCredential credential = new EnvironmentCredentialBuilder().build()
     private BearerTokenAuthenticationPolicy credentialPolicy = new BearerTokenAuthenticationPolicy(credential, "https://management.azure.com/.default")
@@ -89,26 +89,31 @@ class ImmutableStorageWithVersioningTest extends APISpec {
 
             String serializedBody = new ObjectMapper().writeValueAsString(body)
 
-            httpPipeline.send(new HttpRequest(HttpMethod.PUT, new URL(url), new HttpHeaders(),
+            def response = httpPipeline.send(new HttpRequest(HttpMethod.PUT, new URL(url), new HttpHeaders(),
                 Flux.just(ByteBuffer.wrap(serializedBody.getBytes(StandardCharsets.UTF_8)))))
                 .block()
+            if (response.statusCode != 201) {
+                println response.getBodyAsString().block()
+            }
+            assert response.statusCode == 201
         }
 
-        vlwContainer = primaryBlobServiceClient.getBlobContainerClient(containerName)
+        vlwContainer = versionedBlobServiceClient.getBlobContainerClient(containerName)
         vlwBlob = vlwContainer.getBlobClient(generateBlobName())
         vlwBlob.upload(new ByteArrayInputStream(new byte[0]), 0)
     }
 
-    private final class Body {
+    // Try making this public
+    public final class Body {
         public String id
         public String name
         public String type
         public Properties properties
     }
-    private final class Properties {
+    public final class Properties {
         public ImmutableStorageWithVersioning immutableStorageWithVersioning
     }
-    private final class ImmutableStorageWithVersioning {
+    public final class ImmutableStorageWithVersioning {
         public boolean enabled
     }
 
@@ -121,8 +126,8 @@ class ImmutableStorageWithVersioningTest extends APISpec {
                 .build()
             def cleanupClient = new BlobServiceClientBuilder()
                 .httpClient(getHttpClient())
-                .credential(env.primaryAccount.credential)
-                .endpoint(env.primaryAccount.blobEndpoint)
+                .credential(env.versionedAccount.credential)
+                .endpoint(env.versionedAccount.blobEndpoint)
                 .buildClient()
 
             def options = new ListBlobContainersOptions().setPrefix(namer.getResourcePrefix())
@@ -616,7 +621,7 @@ class ImmutableStorageWithVersioningTest extends APISpec {
         def immutabilityPolicy = new BlobImmutabilityPolicy()
             .setExpiryTime(expiryTime)
             .setPolicyMode(BlobImmutabilityPolicyMode.UNLOCKED)
-        def sas = primaryBlobServiceClient.generateAccountSas(sasValues)
+        def sas = versionedBlobServiceClient.generateAccountSas(sasValues)
         def client = getBlobClient(sas, vlwContainer.getBlobContainerUrl(), vlwBlob.getBlobName())
 
         when:

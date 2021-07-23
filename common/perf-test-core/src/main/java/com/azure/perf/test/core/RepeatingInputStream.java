@@ -10,13 +10,14 @@ import java.util.Random;
  * Represents a repeating input stream with mark support enabled.
  */
 public class RepeatingInputStream extends InputStream {
-    private static final int RANDOM_BYTES_LENGTH = 1024 * 1024; // 1MB
+    private static final int RANDOM_BYTES_LENGTH = Integer.parseInt(
+        System.getProperty("azure.core.perf.test.data.buffer.size", "1048576")); // 1MB default;
     private static final byte[] RANDOM_BYTES;
-    private final int size;
+    private final long size;
 
-    private int mark = 0;
-    private int readLimit = Integer.MAX_VALUE;
-    private int pos = 0;
+    private long mark = 0;
+    private long readLimit = Long.MAX_VALUE;
+    private long pos = 0;
 
     static {
         Random random = new Random(0);
@@ -28,13 +29,13 @@ public class RepeatingInputStream extends InputStream {
      * Creates an Instance of the repeating input stream.
      * @param size the size of the stream.
      */
-    public  RepeatingInputStream(int size) {
+    public  RepeatingInputStream(long size) {
         this.size = size;
     }
 
     @Override
     public synchronized int read() {
-        return (pos < size) ? (RANDOM_BYTES[pos++ % RANDOM_BYTES_LENGTH] & 0xFF) : -1;
+        return (pos < size) ? (RANDOM_BYTES[(int) (pos++ % RANDOM_BYTES_LENGTH)] & 0xFF) : -1;
     }
 
     @Override
@@ -57,6 +58,15 @@ public class RepeatingInputStream extends InputStream {
 
     @Override
     public synchronized void mark(int readLimit) {
+        this.readLimit = readLimit;
+        this.mark = this.pos;
+    }
+
+    /**
+     * Same as {@link #mark(int)} but takes long.
+     * @param readLimit read limit.
+     */
+    public synchronized void mark(long readLimit) {
         this.readLimit = readLimit;
         this.mark = this.pos;
     }

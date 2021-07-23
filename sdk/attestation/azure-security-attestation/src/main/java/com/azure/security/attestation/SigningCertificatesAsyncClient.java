@@ -13,7 +13,7 @@ import com.azure.security.attestation.models.CloudErrorException;
 import com.azure.security.attestation.models.JsonWebKeySet;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the asynchronous AttestationClient type. */
+/** Initializes a new instance of the asynchronous AzureAttestationRestClient type. */
 @ServiceClient(builder = AttestationClientBuilder.class, isAsync = true)
 public final class SigningCertificatesAsyncClient {
     private final SigningCertificatesImpl serviceClient;
@@ -36,7 +36,8 @@ public final class SigningCertificatesAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<JsonWebKeySet>> getWithResponse() {
-        return this.serviceClient.getWithResponseAsync();
+        return this.serviceClient.getWithResponseAsync()
+            .map(response -> Utilities.generateResponseFromModelType(response, JsonWebKeySet.fromGenerated(response.getValue())));
     }
 
     /**
@@ -48,6 +49,7 @@ public final class SigningCertificatesAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<JsonWebKeySet> get() {
-        return this.serviceClient.getAsync();
+        return this.serviceClient.getAsync()
+            .map(JsonWebKeySet::fromGenerated);
     }
 }
