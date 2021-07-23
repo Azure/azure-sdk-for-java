@@ -114,10 +114,10 @@ Please follow [instructions here][contributing_md] to build from source or contr
 
 <!-- Link -->
 [docs]: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-boot-starter-java-app-with-azure-storage
-[package]: https://mvnrepository.com/artifact/com.microsoft.azure/spring-starter-azure-storage
+[package]: https://mvnrepository.com/artifact/com.azure.spring/azure-spring-boot-starter-storage
 [refdocs]: https://azure.github.io/azure-sdk-for-java/springboot.html#azure-spring-boot
 [src]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-boot-starter-storage
-[sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/azure-spring-boot_3.7/storage/azure-spring-boot-sample-storage-resource
+[sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/tag_azure-spring-boot_3.6.0/storage/azure-spring-boot-sample-storage-resource
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
 [logging_doc]: https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#boot-features-logging
 [contributing_md]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/CONTRIBUTING.md
