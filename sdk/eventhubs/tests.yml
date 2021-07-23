@@ -13,5 +13,17 @@ stages:
           groupId: com.azure
           safeName: azuremessagingeventhubscheckpointstoreblob
       TimeoutInMinutes: 240
+      CloudConfig:
+          Public:
+              SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
+          Canary:
+              SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
+              Location: 'centraluseuap'
+          UsGov:
+              SubscriptionConfiguration: $(sub-config-gov-test-resources)
+              Location: 'usdodeast'
+          China:
+              SubscriptionConfiguration: $(sub-config-cn-test-resources)
+              Location: 'chinanorth2'
       EnvVars:
         AZURE_LOG_LEVEL: 2
