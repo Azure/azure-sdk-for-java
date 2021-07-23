@@ -12,12 +12,12 @@ import com.azure.cosmos.models.SqlQuerySpec;
 
 import java.util.Collections;
 
-class DocDBUtils {
+public class DocDBUtils {
 
     private DocDBUtils() {
     }
 
-    static Database getDatabase(AsyncDocumentClient client, String databaseId) {
+    public static Database getDatabase(AsyncDocumentClient client, String databaseId) {
         FeedResponse<Database> feedResponsePages = client
                 .queryDatabases(new SqlQuerySpec("SELECT * FROM root r WHERE r.id=@id",
                     Collections.singletonList(new SqlParameter("@id", databaseId))), null)
@@ -29,7 +29,7 @@ class DocDBUtils {
         return feedResponsePages.getResults().get(0);
     }
 
-    static DocumentCollection getCollection(AsyncDocumentClient client, String databaseLink,
+    public static DocumentCollection getCollection(AsyncDocumentClient client, String databaseLink,
             String collectionId) {
         FeedResponse<DocumentCollection> feedResponsePages = client
                 .queryCollections(databaseLink,

@@ -4,12 +4,19 @@
 package com.azure.cosmos.benchmark;
 
 import com.azure.cosmos.benchmark.ctl.AsyncCtlWorkload;
+import com.azure.cosmos.benchmark.encryption.AsyncEncryptionBenchmark;
+import com.azure.cosmos.benchmark.encryption.AsyncEncryptionQueryBenchmark;
+import com.azure.cosmos.benchmark.encryption.AsyncEncryptionQuerySinglePartitionMultiple;
+import com.azure.cosmos.benchmark.encryption.AsyncEncryptionReadBenchmark;
+import com.azure.cosmos.benchmark.encryption.AsyncEncryptionWriteBenchmark;
+import com.azure.cosmos.benchmark.encryption.EncryptionReadMyWriteWorkflow;
 import com.azure.cosmos.benchmark.linkedin.LICtlWorkload;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
-import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Optional;
 
 import static com.azure.cosmos.benchmark.Configuration.Operation.CtlWorkload;
 import static com.azure.cosmos.benchmark.Configuration.Operation.LinkedInCtlWorkload;
@@ -37,15 +44,18 @@ public class Main {
             if (cfg.isSync()) {
                 syncBenchmark(cfg);
             } else {
-                if(cfg.getOperationType().equals(ReadThroughputWithMultipleClients)) {
+                if (cfg.getOperationType().equals(ReadThroughputWithMultipleClients)) {
                     asyncMultiClientBenchmark(cfg);
-                } else if(cfg.getOperationType().equals(CtlWorkload)) {
+                } else if (cfg.getOperationType().equals(CtlWorkload)) {
                     asyncCtlWorkload(cfg);
                 } else if (cfg.getOperationType().equals(LinkedInCtlWorkload)) {
                     linkedInCtlWorkload(cfg);
-                }
-                else {
-                    asyncBenchmark(cfg);
+                } else {
+                    if (cfg.isEncryptionEnabled()) {
+                        asyncEncryptionBenchmark(cfg);
+                    } else {
+                        asyncBenchmark(cfg);
+                    }
                 }
             }
         } catch (ParameterException e) {
@@ -144,6 +154,53 @@ public class Main {
 
                 case ReadMyWrites:
                     benchmark = new ReadMyWriteWorkflow(cfg);
+                    break;
+
+                default:
+                    throw new RuntimeException(cfg.getOperationType() + " is not supported");
+            }
+
+            LOGGER.info("Starting {}", cfg.getOperationType());
+            benchmark.run();
+        } finally {
+            if (benchmark != null) {
+                benchmark.shutdown();
+            }
+        }
+    }
+
+    private static void asyncEncryptionBenchmark(Configuration cfg) throws Exception {
+        LOGGER.info("Async encryption benchmark ...");
+        AsyncEncryptionBenchmark<?> benchmark = null;
+        try {
+            switch (cfg.getOperationType()) {
+                case WriteThroughput:
+                case WriteLatency:
+                    benchmark = new AsyncEncryptionWriteBenchmark(cfg);
+                    break;
+
+                case ReadThroughput:
+                case ReadLatency:
+                    benchmark = new AsyncEncryptionReadBenchmark(cfg);
+                    break;
+
+                case QueryCross:
+                case QuerySingle:
+                case QueryParallel:
+                case QueryOrderby:
+                case QueryAggregate:
+                case QueryTopOrderby:
+                case QueryAggregateTopOrderby:
+                case QueryInClauseParallel:
+                    benchmark = new AsyncEncryptionQueryBenchmark(cfg);
+                    break;
+
+                case QuerySingleMany:
+                    benchmark = new AsyncEncryptionQuerySinglePartitionMultiple(cfg);
+                    break;
+
+                case ReadMyWrites:
+                    benchmark = new EncryptionReadMyWriteWorkflow(cfg);
                     break;
 
                 default:
