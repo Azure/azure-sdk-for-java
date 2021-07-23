@@ -22,7 +22,8 @@
       },
       "JavaTestVersion": "1.11",
       "AZURE_TEST_HTTP_CLIENTS": "netty",
-      "AdditionalTestOptions": "-DskipTests"
+      "StorageRunStressScenarios" : "true",
+      "AdditionalOptions": "-DskipTests"
     },
     {
       "Agent": {
@@ -30,7 +31,8 @@
       },
       "JavaTestVersion": "1.8",
       "AZURE_TEST_HTTP_CLIENTS": "netty",
-      "AdditionalTestOptions": "-DskipTests"
+      "StorageRunStressScenarios" : "true",
+      "AdditionalOptions": "-DskipTests"
     }
   ]
 }
