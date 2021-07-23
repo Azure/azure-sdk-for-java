@@ -22,7 +22,6 @@
       },
       "JavaTestVersion": "1.11",
       "AZURE_TEST_HTTP_CLIENTS": "netty",
-      "TestGoals": "install",
       "AdditionalTestOptions": "-DskipTests"
     },
     {
@@ -31,7 +30,6 @@
       },
       "JavaTestVersion": "1.8",
       "AZURE_TEST_HTTP_CLIENTS": "netty",
-      "TestGoals": "install",
       "AdditionalTestOptions": "-DskipTests"
     }
   ]
