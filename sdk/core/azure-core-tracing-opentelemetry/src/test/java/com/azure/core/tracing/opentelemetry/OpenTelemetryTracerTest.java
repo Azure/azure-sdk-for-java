@@ -738,13 +738,12 @@ public class OpenTelemetryTracerTest {
 
     @Test
     public void startSpanWithAttributes() {
-
-        final Map<String, Object> attributes = Map.of(
-            "S", "foo",
-            "I", 1,
-            "L", 10L,
-            "D", 0.1d,
-            "B", true);
+        final Map<String, Object> attributes = new HashMap<>();
+        attributes.put("S", "foo");
+        attributes.put("I", 1);
+        attributes.put("L", 10L);
+        attributes.put("D", 0.1d);
+        attributes.put("B", true);
 
         final StartSpanOptions options = new StartSpanOptions(METHOD_NAME);
         attributes.forEach((k, v) -> options.setAttribute(k, v));
