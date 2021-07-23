@@ -106,9 +106,9 @@ class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
                     .filter(partitionEvent -> isMatchingEvent(partitionEvent.getData(), testEventData.getMessageId()))
                     .take(numberOfEvents)
                     .subscribe(partitionEvent -> {
-                            EventData event = partitionEvent.getData();
-                            logger.info("Event[{}] matched.", event.getSequenceNumber());
-                        }, error -> Assertions.fail("An error should not have occurred:" + error.toString()),
+                        EventData event = partitionEvent.getData();
+                        logger.info("Event[{}] matched.", event.getSequenceNumber());
+                    }, error -> Assertions.fail("An error should not have occurred:" + error.toString()),
                         () -> {
                             long count = countDownLatch.getCount();
                             logger.info("Finished consuming events. Counting down: {}", count);
