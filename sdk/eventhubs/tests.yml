@@ -4,7 +4,7 @@ stages:
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
       ServiceDirectory: eventhubs
-      Clouds: 'Public,UsGov,China,Canary'
+      Clouds: 'Public,Canary,UsGov,China'
       Artifacts:
         - name: azure-messaging-eventhubs
           groupId: com.azure

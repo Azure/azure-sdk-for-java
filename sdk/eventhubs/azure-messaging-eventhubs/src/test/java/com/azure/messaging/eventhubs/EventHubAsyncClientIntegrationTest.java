@@ -106,9 +106,9 @@ class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
                     .filter(partitionEvent -> isMatchingEvent(partitionEvent.getData(), testEventData.getMessageId()))
                     .take(numberOfEvents)
                     .subscribe(partitionEvent -> {
-                        EventData event = partitionEvent.getData();
-                        logger.info("Event[{}] matched.", event.getSequenceNumber());
-                    }, error -> Assertions.fail("An error should not have occurred:" + error.toString()),
+                            EventData event = partitionEvent.getData();
+                            logger.info("Event[{}] matched.", event.getSequenceNumber());
+                        }, error -> Assertions.fail("An error should not have occurred:" + error.toString()),
                         () -> {
                             long count = countDownLatch.getCount();
                             logger.info("Finished consuming events. Counting down: {}", count);
@@ -139,11 +139,9 @@ class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
         try (EventHubAsyncClient client = createBuilder(true)
             .buildAsyncClient()) {
             StepVerifier.create(client.getProperties())
-                .consumeRecordedWith(eventHubProperties -> {
-                    eventHubProperties.stream().forEach(properties -> {
-                        Assertions.assertEquals(getEventHubName(), properties.getName());
-                        Assertions.assertEquals(NUMBER_OF_PARTITIONS, properties.getPartitionIds().stream().count());
-                    });
+                .assertNext(properties -> {
+                    Assertions.assertEquals(getEventHubName(), properties.getName());
+                    Assertions.assertEquals(NUMBER_OF_PARTITIONS, properties.getPartitionIds().stream().count());
                 })
                 .expectComplete()
                 .verify(TIMEOUT);
