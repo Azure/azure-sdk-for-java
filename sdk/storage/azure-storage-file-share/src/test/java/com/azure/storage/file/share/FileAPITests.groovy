@@ -425,7 +425,7 @@ class FileAPITests extends APISpec {
 
     def "Download empty file"() {
         setup:
-        primaryFileClient.create(1)
+        primaryFileClient.create(0)
 
         when:
         def outStream = new ByteArrayOutputStream()
