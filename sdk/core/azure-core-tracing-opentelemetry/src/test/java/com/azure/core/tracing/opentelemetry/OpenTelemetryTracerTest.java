@@ -51,7 +51,12 @@ import static com.azure.core.util.tracing.Tracer.SPAN_BUILDER_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 import static com.azure.core.util.tracing.Tracer.USER_SPAN_NAME_KEY;
 import static io.opentelemetry.api.trace.StatusCode.UNSET;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests Azure-OpenTelemetry tracing package using openTelemetry-sdk
@@ -748,7 +753,7 @@ public class OpenTelemetryTracerTest {
         final ReadableSpan span = (ReadableSpan) started.getData(PARENT_SPAN_KEY).get();
 
         // TODO(limolkova) file bug for opentelemetery -
-        //  creating time attributes are not set on the span
+        //  start time attributes are not set on the span
         //verifySpanAttributes(attributes, span.toSpanData().getAttributes());
     }
 
