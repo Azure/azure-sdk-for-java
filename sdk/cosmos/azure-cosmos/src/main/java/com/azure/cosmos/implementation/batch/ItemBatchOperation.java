@@ -97,6 +97,11 @@ public final class ItemBatchOperation<TInternal> implements CosmosItemOperation 
         return (T)this.item;
     }
 
+    @Override
+    public <T> T getContext() {
+        return null;
+    }
+
     public String getId() {
         return this.id;
     }

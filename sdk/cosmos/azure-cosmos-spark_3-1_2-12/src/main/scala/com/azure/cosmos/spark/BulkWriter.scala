@@ -32,7 +32,7 @@ import java.util.UUID
 import java.util.concurrent.Semaphore
 import java.util.concurrent.atomic.{AtomicBoolean, AtomicInteger, AtomicLong, AtomicReference}
 import java.util.concurrent.locks.ReentrantLock
-import scala.collection.concurrent.TrieMap
+import scala.collection.JavaConverters._
 
 //scalastyle:off null
 //scalastyle:off multiple.string.literals
@@ -58,19 +58,9 @@ class BulkWriter(container: CosmosAsyncContainer,
   private val errorCaptureFirstException = new AtomicReference[Throwable]()
   private val bulkInputEmitter: Sinks.Many[CosmosItemOperation] = Sinks.many().unicast().onBackpressureBuffer()
 
-  // TODO: moderakh discuss the context issue in the core SDK bulk api with the team.
-  // public <TContext> Flux<CosmosBulkOperationResponse<TContext>> processBulkOperations(
-  //    Flux<CosmosItemOperation> operations,
-  //    BulkProcessingOptions<TContext> bulkOptions)
-  // trying to play further with bulk api of the core SDK for the spark integration.
-  // Currently we have the above API in the core SDK and context is tied to the options instead of the input operations flux.
-  // The use case of the context is to pass a context info along each individual operation in the input operations flux.
-  // I think this beta public API has issues.
-  // This means it is not possible to pass context per operation.
-  // I think we need to change this public API to allow passing context per operation
-  // TODO: moderakh once that is added in the core SDK, drop activeOperations and rely on the core SDK
-  // context passing for bulk
-  private val activeOperations = new TrieMap[CosmosItemOperation, OperationContext]()
+  // TODO: fabianm - remove this later
+  // Leaving activeOperations here primarily for debugging purposes (for example in case of hangs)
+  private val activeOperations = java.util.concurrent.ConcurrentHashMap.newKeySet[CosmosItemOperation]().asScala
   private val semaphore = new Semaphore(maxPendingOperations)
 
   private val totalScheduledMetrics = new AtomicLong(0)
@@ -122,9 +112,9 @@ class BulkWriter(container: CosmosAsyncContainer,
         var isGettingRetried = false
         try {
           val itemOperation = resp.getOperation
-          val contextOpt = activeOperations.remove(itemOperation)
-          assume(contextOpt.isDefined) // can't find the operation context!
-          val context = contextOpt.get
+          val itemOperationFound = activeOperations.remove(itemOperation)
+          assume(itemOperationFound) // can't find the item operation in list of active operations!
+          val context = itemOperation.getContext[OperationContext]
 
           if (resp.getException != null) {
             Option(resp.getException) match {
@@ -135,7 +125,7 @@ class BulkWriter(container: CosmosAsyncContainer,
                     s"ignored encountered ${cosmosException.getStatusCode}, Context: ${operationContext.toString}")
                   totalSuccessfulIngestionMetrics.getAndIncrement()
                   // work done
-                } else if (shouldRetry(cosmosException, contextOpt.get)) {
+                } else if (shouldRetry(cosmosException, context)) {
                   // requeue
                   log.logWarning(s"for itemId=[${context.itemId}], partitionKeyValue=[${context.partitionKeyValue}], " +
                     s"encountered ${cosmosException.getStatusCode}, will retry! " +
@@ -220,11 +210,11 @@ class BulkWriter(container: CosmosAsyncContainer,
 
     val bulkItemOperation = writeConfig.itemWriteStrategy match {
       case ItemWriteStrategy.ItemOverwrite =>
-        BulkOperations.getUpsertItemOperation(objectNode, partitionKeyValue)
+        BulkOperations.getUpsertItemOperation(objectNode, partitionKeyValue, operationContext)
       case ItemWriteStrategy.ItemAppend =>
-        BulkOperations.getCreateItemOperation(objectNode, partitionKeyValue)
+        BulkOperations.getCreateItemOperation(objectNode, partitionKeyValue, operationContext)
       case ItemWriteStrategy.ItemDelete =>
-        BulkOperations.getDeleteItemOperation(operationContext.itemId, partitionKeyValue)
+        BulkOperations.getDeleteItemOperation(operationContext.itemId, partitionKeyValue, operationContext)
       case ItemWriteStrategy.ItemDeleteIfNotModified =>
         BulkOperations.getDeleteItemOperation(
           operationContext.itemId,
@@ -232,12 +222,13 @@ class BulkWriter(container: CosmosAsyncContainer,
           operationContext.eTag match {
             case Some(eTag) => new BulkItemRequestOptions().setIfMatchETag(eTag)
             case _ =>  new BulkItemRequestOptions()
-          })
+          },
+          operationContext)
       case _ =>
         throw new RuntimeException(s"${writeConfig.itemWriteStrategy} not supported")
     }
 
-    activeOperations.put(bulkItemOperation, operationContext)
+    activeOperations.add(bulkItemOperation)
 
     // For FAIL_NON_SERIALIZED, will keep retry, while for other errors, use the default behavior
     bulkInputEmitter.emitNext(bulkItemOperation, emitFailureHandler)

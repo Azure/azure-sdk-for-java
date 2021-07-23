@@ -34,6 +34,11 @@ public class FlushBuffersItemOperation implements CosmosItemOperation {
         return null;
     }
 
+    @Override
+    public <T> T getContext() {
+        return null;
+    }
+
     public static FlushBuffersItemOperation singleton() {
         return singletonInstance;
     }
