@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.tools.bomgenerator.models;
 
 import org.jboss.shrinkwrap.resolver.api.maven.PackagingType;

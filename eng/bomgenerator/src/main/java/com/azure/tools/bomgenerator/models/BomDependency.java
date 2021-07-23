@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.tools.bomgenerator.models;
 
 import org.jboss.shrinkwrap.resolver.api.maven.ScopeType;
@@ -29,10 +32,6 @@ public class BomDependency extends BomDependencyNoVersion {
     @Override
     public String toString() {
         return this.getGroupId() + ":" + this.getArtifactId() + ":" + this.getVersion();
-    }
-
-    public static BomDependencyNoVersion convertTo(BomDependency bomDependency) {
-        return new BomDependencyNoVersion(bomDependency.getGroupId(), bomDependency.getArtifactId());
     }
 
     @Override

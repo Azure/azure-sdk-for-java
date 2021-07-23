@@ -1,8 +1,11 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.tools.bomgenerator;
 
 import java.util.regex.Matcher;
 
-import static com.azure.tools.bomgenerator.Utils.AZURE_CORE_GROUPID;
+import static com.azure.tools.bomgenerator.Utils.BASE_AZURE_GROUPID;
 import static com.azure.tools.bomgenerator.Utils.COMMANDLINE_EXTERNALDEPENDENCIES;
 import static com.azure.tools.bomgenerator.Utils.COMMANDLINE_GROUPID;
 import static com.azure.tools.bomgenerator.Utils.COMMANDLINE_INPUTFILE;

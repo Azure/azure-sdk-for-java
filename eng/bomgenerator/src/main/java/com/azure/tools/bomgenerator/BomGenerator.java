@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.tools.bomgenerator;
 
 import com.azure.tools.bomgenerator.models.BomDependency;
@@ -21,7 +24,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.stream.Collectors;
 
-import static com.azure.tools.bomgenerator.Utils.AZURE_CORE_GROUPID;
+import static com.azure.tools.bomgenerator.Utils.BASE_AZURE_GROUPID;
 import static com.azure.tools.bomgenerator.Utils.AZURE_PERF_LIBRARY_IDENTIFIER;
 import static com.azure.tools.bomgenerator.Utils.AZURE_TEST_LIBRARY_IDENTIFIER;
 import static com.azure.tools.bomgenerator.Utils.EXCLUSION_LIST;
@@ -79,7 +82,7 @@ public class BomGenerator {
                 }
             }
         } catch (IOException exception) {
-            exception.printStackTrace();
+            logger.error("Input file parsing failed. Exception{}", exception.toString());
         }
 
         return inputDependencies;
@@ -106,68 +109,75 @@ public class BomGenerator {
         if (EXCLUSION_LIST.contains(artifactId)
             || artifactId.contains(AZURE_PERF_LIBRARY_IDENTIFIER)
             || (artifactId.contains(AZURE_TEST_LIBRARY_IDENTIFIER))) {
-            logger.trace("Skipping dependency {}:{}", AZURE_CORE_GROUPID, artifactId);
+            logger.trace("Skipping dependency {}:{}", BASE_AZURE_GROUPID, artifactId);
             return null;
         }
 
-        return new BomDependency(AZURE_CORE_GROUPID, artifactId, version);
+        return new BomDependency(BASE_AZURE_GROUPID, artifactId, version);
+    }
+	
+    private Model readModel() {
+        MavenXpp3Reader reader = new MavenXpp3Reader();
+        try {
+            Model model = reader.read(new FileReader(this.pomFileName));
+            return model;
+        } catch (XmlPullParserException | IOException e) {
+            logger.error("BOM reading failed with: {}", e.toString());
+        }
+
+        return null;
+    }
+	
+	private void writeModel(Model model) {
+        String pomFileName = this.pomFileName;
+        writeModel(pomFileName, model);
+    }
+
+    private void writeModel(String fileName, Model model) {
+        MavenXpp3Writer writer = new MavenXpp3Writer();
+        try {
+            writer.write(new FileWriter(fileName), model);
+        } catch (IOException exception) {
+            logger.error("BOM writing failed with: {}", exception.toString());
+        }
     }
 
     private List<BomDependency> resolveExternalDependencies() {
         List<BomDependency> externalDependencies = new ArrayList<>();
-        MavenXpp3Reader reader = new MavenXpp3Reader();
-        try {
-            Model model = reader.read(new FileReader(this.pomFileName));
-            DependencyManagement management = model.getDependencyManagement();
-            List<Dependency> externalBomDependencies = management.getDependencies().stream().filter(dependency -> dependency.getType().equals(POM_TYPE)).collect(Collectors.toList());
-            externalDependencies.addAll(Utils.getExternalDependenciesContent(externalBomDependencies));
-        } catch (XmlPullParserException | IOException e) {
-            e.printStackTrace();
-        }
-
+        List<Dependency> externalBomDependencies = getExternalDependencies();
+        externalDependencies.addAll(Utils.getExternalDependenciesContent(externalBomDependencies));
         return externalDependencies;
     }
 
+    private List<Dependency> getExternalDependencies() {
+        Model model = readModel();
+        DependencyManagement management = model.getDependencyManagement();
+        return management.getDependencies().stream().filter(dependency -> dependency.getType().equals(POM_TYPE)).collect(Collectors.toList());
+    }
+
     private void rewriteExistingBomFile() {
-        MavenXpp3Reader reader = new MavenXpp3Reader();
-        try {
-            Model model = reader.read(new FileReader(this.pomFileName));
-            DependencyManagement management = model.getDependencyManagement();
-            List<Dependency> dependencies = management.getDependencies();
-            dependencies.sort(new DependencyComparator());
-            management.setDependencies(dependencies);
-            MavenXpp3Writer writer = new MavenXpp3Writer();
-            writer.write(new FileWriter(this.pomFileName), model);
-        } catch (Exception exception) {
-            exception.printStackTrace();
-        }
+        Model model = readModel();
+        DependencyManagement management = model.getDependencyManagement();
+        List<Dependency> dependencies = management.getDependencies();
+        dependencies.sort(new DependencyComparator());
+        management.setDependencies(dependencies);
+        writeModel(model);
     }
 
     private void writeBom(Collection<BomDependency> bomDependencies) {
-        MavenXpp3Reader reader = new MavenXpp3Reader();
-        try {
-            Model model = reader.read(new FileReader(this.pomFileName));
-            DependencyManagement management = model.getDependencyManagement();
-            List<Dependency> externalBomDependencies = management.getDependencies().stream().filter(dependency -> dependency.getType().equals(POM_TYPE)).collect(Collectors.toList());
-
-
-            List<Dependency> dependencies = bomDependencies.stream().map(bomDependency -> {
-                Dependency dependency = new Dependency();
-                dependency.setGroupId(bomDependency.getGroupId());
-                dependency.setArtifactId(bomDependency.getArtifactId());
-                dependency.setVersion(bomDependency.getVersion());
-                return dependency;
-            }).collect(Collectors.toList());
-            dependencies.addAll(externalBomDependencies);
-
-            dependencies.sort(new DependencyComparator());
-            management.setDependencies(dependencies);
-
-            // Now that we have the new dependencies.
-            MavenXpp3Writer writer = new MavenXpp3Writer();
-            writer.write(new FileWriter(this.outputFileName), model);
-        } catch (Exception exception) {
-            exception.printStackTrace();
-        }
+        Model model = readModel();
+        DependencyManagement management = model.getDependencyManagement();
+        List<Dependency> externalBomDependencies = management.getDependencies().stream().filter(dependency -> dependency.getType().equals(POM_TYPE)).collect(Collectors.toList());
+        List<Dependency> dependencies = bomDependencies.stream().map(bomDependency -> {
+            Dependency dependency = new Dependency();
+            dependency.setGroupId(bomDependency.getGroupId());
+            dependency.setArtifactId(bomDependency.getArtifactId());
+            dependency.setVersion(bomDependency.getVersion());
+            return dependency;
+        }).collect(Collectors.toList());
+        dependencies.addAll(externalBomDependencies);
+        dependencies.sort(new DependencyComparator());
+        management.setDependencies(dependencies);
+        writeModel(this.outputFileName, model);
     }
 }
