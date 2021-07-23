@@ -78,7 +78,7 @@ Please follow [instructions here][contributing_md] to build from source or contr
 
 <!-- Link -->
 [src]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-cloud-autoconfigure/src/
-[package]: https://mvnrepository.com/artifact/com.microsoft.azure/spring-cloud-azure-autoconfigure
+[package]: https://mvnrepository.com/artifact/com.azure.spring/azure-spring-cloud-autoconfigure
 [refdocs]: https://azure.github.io/azure-sdk-for-java/springcloud.html#azure-spring-cloud-autoconfigure
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
 [spring_io]: https://start.spring.io
