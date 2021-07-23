@@ -95,6 +95,28 @@ public interface Tracer {
     Context start(String methodName, Context context);
 
     /**
+     * Creates a new tracing span.
+     * <p>
+     * The {@code context} will be checked for information about a parent span. If a parent span is found, the new span
+     * will be added as a child. Otherwise, the parent span will be created and added to the {@code context} and any
+     * downstream {@code start()} calls will use the created span as the parent.
+     *
+     * <p><strong>Code samples</strong></p>
+     *
+     * <p>Starts a tracing span with provided method name and explicit parent span</p>
+     * {@codesnippet com.azure.core.util.tracing.start#string-context}
+     *
+     * @param options span creation options.
+     * @param context Additional metadata that is passed through the call stack.
+     * @return The updated {@link Context} object containing the returned span.
+     * @throws NullPointerException if {@code options} or {@code context} is {@code null}.
+     */
+    default Context start(StartSpanOptions options, Context context) {
+        // TODO(limolkova) codesnippet
+        return start(options.getSpanName(), context);
+    }
+
+    /**
      * Creates a new tracing span for AMQP calls.
      *
      * <p>
