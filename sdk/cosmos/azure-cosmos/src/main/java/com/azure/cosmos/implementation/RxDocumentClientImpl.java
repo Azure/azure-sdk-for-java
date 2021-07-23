@@ -307,6 +307,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             if (this.credential != null) {
                 hasAuthKeyResourceToken = false;
+                this.authorizationTokenType = AuthorizationTokenType.PrimaryMasterKey;
                 this.authorizationTokenProvider = new BaseAuthorizationTokenProvider(this.credential);
             } else if (masterKeyOrResourceToken != null && ResourceTokenAuthorizationHelper.isResourceToken(masterKeyOrResourceToken)) {
                 this.authorizationTokenProvider = null;

@@ -64,7 +64,7 @@ public class DCDocumentCrudTest extends TestSuiteBase {
 
     @DataProvider
     public static Object[][] directClientBuilder() {
-        return new Object[][] { { createDCBuilder(Protocol.HTTPS) }, { createDCBuilder(Protocol.TCP) } };
+        return new Object[][] { { createDCBuilder(Protocol.TCP) } };
     }
 
     static Builder createDCBuilder(Protocol protocol) {
