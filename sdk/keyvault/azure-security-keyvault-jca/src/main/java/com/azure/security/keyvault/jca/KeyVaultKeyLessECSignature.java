@@ -7,10 +7,7 @@ import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.ProviderException;
-import java.security.SignatureSpi;
 import java.security.PrivateKey;
-import java.security.InvalidParameterException;
-import java.security.PublicKey;
 import java.security.SecureRandom;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.AlgorithmParameters;
@@ -24,7 +21,7 @@ import static com.azure.security.keyvault.jca.KeyVaultEncode.encodeByte;
 /**
  * KeyVault EC signature to support key less
  */
-public abstract class KeyVaultKeyLessECSignature extends SignatureSpi {
+public abstract class KeyVaultKeyLessECSignature extends AbstractKeyVaultKeyLessSignature {
     // message digest implementation we use
     private final MessageDigest messageDigest;
 
@@ -32,9 +29,9 @@ public abstract class KeyVaultKeyLessECSignature extends SignatureSpi {
     private boolean needsReset;
 
     // signature parameters
-    private ECParameterSpec sigParams = null;
+    private ECParameterSpec signatureParameters = null;
 
-    private final String digestName;
+    private final String keyVaultDigestName;
 
     private KeyVaultClient keyVaultClient;
 
@@ -43,39 +40,20 @@ public abstract class KeyVaultKeyLessECSignature extends SignatureSpi {
     /**
      * Constructs a new KeyVaultKeyLessECSignature that will use the specified digest
      */
-    KeyVaultKeyLessECSignature(String digestName) {
+    KeyVaultKeyLessECSignature(String digestName, String keyVaultDigestName) {
         setKeyVaultClient(createKeyVaultClientBySystemProperty());
         try {
             messageDigest = MessageDigest.getInstance(digestName);
         } catch (NoSuchAlgorithmException e) {
             throw new ProviderException(e);
         }
-        switch (digestName) {
-            case "SHA-256":
-                this.digestName = "ES256";
-                break;
-            case "SHA-384":
-                this.digestName = "ES384";
-                break;
-            case "SHA-512":
-                this.digestName = "ES512";
-                break;
-            default:
-                this.digestName = null;
-        }
+        this.keyVaultDigestName = keyVaultDigestName;
         this.needsReset = false;
     }
 
     //add this for test
     void setKeyVaultClient(KeyVaultClient keyVaultClient) {
         this.keyVaultClient = keyVaultClient;
-    }
-
-    // After throw UnsupportedOperationException, other methods will be called.
-    // such as RSAPSSSignature#engineInitVerify.
-    @Override
-    protected void engineInitVerify(PublicKey publicKey) {
-        throw new UnsupportedOperationException("engineInitVerify() not supported");
     }
 
     @Override
@@ -144,25 +122,10 @@ public abstract class KeyVaultKeyLessECSignature extends SignatureSpi {
 
         byte[] mHash = getDigestValue();
         String encode = Base64.getEncoder().encodeToString(mHash);
-        byte[] encrypted = keyVaultClient.getSignedWithPrivateKey(digestName, encode, keyId);
+        byte[] encrypted = keyVaultClient.getSignedWithPrivateKey(keyVaultDigestName, encode, keyId);
         return encodeByte(encrypted);
     }
 
-    // After throw UnsupportedOperationException, other methods will be called.
-    // such as RSAPSSSignature#engineVerify.
-    @Override
-    protected boolean engineVerify(byte[] signature) {
-        throw new UnsupportedOperationException("getParameter() not supported");
-    }
-
-    // After throw UnsupportedOperationException, other methods will be called.
-    // such as RSAPSSSignature#engineSetParameter.
-    @Override
-    @Deprecated
-    protected void engineSetParameter(String param, Object value)
-        throws InvalidParameterException {
-        throw new UnsupportedOperationException("setParameter() not supported");
-    }
 
     // After throw UnsupportedOperationException, other methods will be called.
     // such as ECDSASignature#engineSetParameter.
@@ -173,27 +136,18 @@ public abstract class KeyVaultKeyLessECSignature extends SignatureSpi {
             throw new InvalidAlgorithmParameterException("No parameter accepted");
         }
 
-        sigParams = (ECParameterSpec) params;
-    }
-
-    // After throw UnsupportedOperationException, other methods will be called.
-    // such as ECDSASignature#engineGetParameter.
-    @Override
-    @Deprecated
-    protected Object engineGetParameter(String param)
-        throws InvalidParameterException {
-        throw new UnsupportedOperationException("getParameter() not supported");
+        signatureParameters = (ECParameterSpec) params;
     }
 
     @Override
     protected AlgorithmParameters engineGetParameters() {
-        if (sigParams == null) {
+        if (signatureParameters == null) {
             return null;
         }
         try {
-            AlgorithmParameters ap = AlgorithmParameters.getInstance("EC");
-            ap.init(sigParams);
-            return ap;
+            AlgorithmParameters parameters = AlgorithmParameters.getInstance("EC");
+            parameters.init(signatureParameters);
+            return parameters;
         } catch (Exception e) {
             // should never happen
             throw new ProviderException("Error retrieving EC parameters", e);
@@ -208,7 +162,7 @@ public abstract class KeyVaultKeyLessECSignature extends SignatureSpi {
          * support SHA-384
          */
         public KeyVaultSHA384() {
-            super("SHA-384");
+            super("SHA-384", "ES384");
         }
     }
 
@@ -220,7 +174,7 @@ public abstract class KeyVaultKeyLessECSignature extends SignatureSpi {
          * support SHA-256
          */
         public KeyVaultSHA256() {
-            super("SHA-256");
+            super("SHA-256", "ES256");
         }
     }
 
@@ -232,7 +186,7 @@ public abstract class KeyVaultKeyLessECSignature extends SignatureSpi {
          * support SHA-512
          */
         public KeyVaultSHA512() {
-            super("SHA-512");
+            super("SHA-512", "ES512");
         }
     }
 

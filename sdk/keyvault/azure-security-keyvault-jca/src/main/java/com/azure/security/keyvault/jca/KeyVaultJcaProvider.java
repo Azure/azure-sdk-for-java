@@ -96,7 +96,6 @@ public class KeyVaultJcaProvider extends Provider {
                     null
                 )
             );
-            //TODO: support EC256K
             putService(
                 new Service(
                     this,

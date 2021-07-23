@@ -7,6 +7,7 @@ import java.math.BigInteger;
 
 /**
  * encode signature
+ * Ref: https://datatracker.ietf.org/doc/html/rfc7518#section-3.4
  */
 public class KeyVaultEncode {
 

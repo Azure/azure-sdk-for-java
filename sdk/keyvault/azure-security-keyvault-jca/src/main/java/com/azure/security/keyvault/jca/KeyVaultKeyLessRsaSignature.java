@@ -24,10 +24,10 @@ import static com.azure.security.keyvault.jca.KeyVaultClient.createKeyVaultClien
 /**
  * key vault Rsa signature to support key less
  */
-public class KeyVaultKeyLessRsaSignature extends SignatureSpi {
+public class KeyVaultKeyLessRsaSignature extends AbstractKeyVaultKeyLessSignature {
 
     // message digest implementation we use for hashing the data
-    private MessageDigest messageDigest;
+    private MessageDigest keyVaultDigestName;
 
     // flag indicating whether the digest is reset
     private boolean digestReset = true;
@@ -53,14 +53,7 @@ public class KeyVaultKeyLessRsaSignature extends SignatureSpi {
      */
     public KeyVaultKeyLessRsaSignature(KeyVaultClient keyVaultClient) {
         this.keyVaultClient = keyVaultClient;
-        this.messageDigest = null;
-    }
-
-    // After throw UnsupportedOperationException, other methods will be called.
-    // such as RSAPSSSignature#engineInitVerify.
-    @Override
-    protected void engineInitVerify(PublicKey publicKey) {
-        throw new UnsupportedOperationException("getParameter() not supported");
+        this.keyVaultDigestName = null;
     }
 
     @Override
@@ -96,7 +89,7 @@ public class KeyVaultKeyLessRsaSignature extends SignatureSpi {
      */
     private void resetDigest() {
         if (!digestReset) {
-            this.messageDigest.reset();
+            this.keyVaultDigestName.reset();
             digestReset = true;
         }
     }
@@ -106,13 +99,13 @@ public class KeyVaultKeyLessRsaSignature extends SignatureSpi {
      */
     private byte[] getDigestValue() {
         digestReset = true;
-        return this.messageDigest.digest();
+        return this.keyVaultDigestName.digest();
     }
 
     @Override
     protected void engineUpdate(byte b) throws SignatureException {
         ensureInit();
-        this.messageDigest.update(b);
+        this.keyVaultDigestName.update(b);
         digestReset = false;
     }
 
@@ -120,7 +113,7 @@ public class KeyVaultKeyLessRsaSignature extends SignatureSpi {
     protected void engineUpdate(byte[] b, int off, int len)
         throws SignatureException {
         ensureInit();
-        this.messageDigest.update(b, off, len);
+        this.keyVaultDigestName.update(b, off, len);
         digestReset = false;
     }
 
@@ -132,7 +125,7 @@ public class KeyVaultKeyLessRsaSignature extends SignatureSpi {
             // hack for working around API bug
             throw new RuntimeException(se.getMessage());
         }
-        this.messageDigest.update(b);
+        this.keyVaultDigestName.update(b);
         digestReset = false;
     }
 
@@ -146,21 +139,6 @@ public class KeyVaultKeyLessRsaSignature extends SignatureSpi {
         return encrypted;
     }
 
-    // After throw UnsupportedOperationException, other methods will be called.
-    // such as RSAPSSSignature#engineVerify.
-    @Override
-    protected boolean engineVerify(byte[] sigBytes) {
-        throw new UnsupportedOperationException("engineVerify() not supported");
-    }
-
-    // After throw UnsupportedOperationException, other methods will be called.
-    // such as RSAPSSSignature#engineSetParameter.
-    @Deprecated
-    @Override
-    protected void engineSetParameter(String param, Object value) {
-        throw new UnsupportedOperationException("engineSetParameter(param, value) not supported");
-    }
-
     @Override
     protected void engineSetParameter(AlgorithmParameterSpec params)
         throws InvalidAlgorithmParameterException {
@@ -172,22 +150,14 @@ public class KeyVaultKeyLessRsaSignature extends SignatureSpi {
         }
         String newHashAlg = this.signatureParameters.getDigestAlgorithm();
         // re-allocate md if not yet assigned or algorithm changed
-        if ((this.messageDigest == null) || !(this.messageDigest.getAlgorithm().equalsIgnoreCase(newHashAlg))) {
+        if ((this.keyVaultDigestName == null) || !(this.keyVaultDigestName.getAlgorithm().equalsIgnoreCase(newHashAlg))) {
             try {
-                this.messageDigest = MessageDigest.getInstance(newHashAlg);
+                this.keyVaultDigestName = MessageDigest.getInstance(newHashAlg);
             } catch (NoSuchAlgorithmException nsae) {
                 // should not happen as we pick default digest algorithm
                 throw new InvalidAlgorithmParameterException("Unsupported digest algorithm " + newHashAlg, nsae);
             }
         }
-    }
-
-    // After throw UnsupportedOperationException, other methods will be called.
-    // such as RSAPSSSignature#engineGetParameter.
-    @Deprecated
-    @Override
-    protected Object engineGetParameter(String param) {
-        throw new UnsupportedOperationException("engineGetParameter(param) not supported");
     }
 
     @Override

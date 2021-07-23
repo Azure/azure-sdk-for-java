@@ -13,7 +13,7 @@ public class KeyVaultPrivateKey implements PrivateKey {
     /**
      * Stores the serial version UID.
      */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 30_10_00;
 
     private String kid;
 
