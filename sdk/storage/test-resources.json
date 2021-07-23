@@ -16,30 +16,17 @@
                 "description": "The tenant ID to which the application and resources belong."
             }
         },
-        "testApplicationId": {
-          "type": "string",
-          "metadata": {
-            "description": "The client id of the service principal used to run tests."
-          }
-        },
         "testApplicationOid": {
             "type": "string",
             "metadata": {
                 "description": "The principal to assign the role to. This is application object id."
             }
-        },
-        "testApplicationSecret": {
-          "type": "string",
-          "metadata": {
-            "description": "The application client secret used to run tests."
-          }
         }
     },
     "variables": {
         "storageApiVersion": "2019-06-01",
         "keyVaultApiVersion": "2016-10-01",
         "authorizationApiVersion": "2018-09-01-preview",
-        "authorizationRulesName": "[concat('authr', parameters('baseName'))]",
         "blobDataContributorRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/ba92f5b4-2d11-453d-a403-e96b0029c9fe')]",
         "contributorRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c')]",
         "blobDataOwnerRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/b7e6dc6d-f1e8-4753-8033-0f276bb0955b')]",
