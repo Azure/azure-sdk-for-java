@@ -90,13 +90,11 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         SpanBuilder spanBuilder;
         switch (processKind) {
             case SEND:
-
                 // use previously created span builder from the LINK process.
                 spanBuilder = getOrDefault(context, SPAN_BUILDER_KEY, null, SpanBuilder.class);
                 if (spanBuilder == null) {
                     return context;
                 }
-
                 return startSpanInternal(spanBuilder, this::addMessagingAttributes, false, context);
             case MESSAGE:
                 spanBuilder = createSpanBuilder(spanName, null, SpanKind.PRODUCER, null, context);
@@ -125,7 +123,6 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         if (span.isRecording()) {
             span = HttpTraceUtil.setSpanStatus(span, responseCode, throwable);
         }
-
         span.end();
         endScope(context);
     }
@@ -202,7 +199,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
 
     @Override
     public Context getSharedSpanBuilder(String spanName, Context context) {
-        // this is used to create messaging send spanBuilder, and it's CLIENT span
+        // this is used to create messaging send spanBuilder, and it's a CLIENT span
         return context.addData(SPAN_BUILDER_KEY, createSpanBuilder(spanName, null, SpanKind.CLIENT, null, context));
     }
 
@@ -343,7 +340,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
             if (value instanceof Boolean) {
                 attributesBuilder.put(key, (boolean) value);
             } else if (value instanceof String) {
-                attributesBuilder.put(key, (String) value);
+                attributesBuilder.put(key, String.valueOf(value));
             } else if (value instanceof Double) {
                 attributesBuilder.put(key, (Double) value);
             } else if (value instanceof Long) {
