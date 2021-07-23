@@ -6,8 +6,6 @@ package com.azure.spring.keyvault;
 import com.azure.spring.autoconfigure.unity.AbstractLegacyPropertyEnvironmentPostProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.configurationprocessor.json.JSONException;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MutablePropertySources;
 import org.springframework.core.env.PropertiesPropertySource;
@@ -15,8 +13,8 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
 
@@ -45,36 +43,41 @@ public class PostLegacyPropertyEnvironmentPostProcessor extends AbstractLegacyPr
     }
 
     /**
+     * No-op for {@link KeyVaultEnvironmentPostProcessor} has been executed.
+     * @param environment The application environment to load property from.
+     * @return An empty map.
+     */
+    @Override
+    protected Map<String, String> getMultipleKeyVaultsPropertyMap(ConfigurableEnvironment environment) {
+        return null;
+    }
+
+    /**
      * When only legacy properties are detected from each key vault property source, convert legacy properties to
      * the current, and create a new {@link Properties} to store the converted current properties of each key vault
      * property source.
      *
-     * @param legacyToCurrentMap A {@JSONObject} contains a map of all legacy properties and associated current properties.
+     * @param legacyToCurrentMap A map contains a map of all legacy properties and associated current properties.
      * @param environment The application environment to get and set properties.
      * @return A {@link Properties} to store mapped current properties
      */
     @Override
-    protected Properties mapLegacyPropertyToCurrent(JSONObject legacyToCurrentMap,
-                                                ConfigurableEnvironment environment) {
+    protected Properties mapLegacyPropertyToCurrent(Map<String, String> legacyToCurrentMap,
+                                                    ConfigurableEnvironment environment) {
         Properties properties = new Properties();
         List<KeyVaultPropertySource> propertySourceList = getKeyVaultPropertySourceList(environment);
         for (int i = propertySourceList.size()-1; i >=0; i--) {
             KeyVaultPropertySource kvSource = propertySourceList.get(i);
-            Iterator iterator = legacyToCurrentMap.keys();
-            while (iterator.hasNext()) {
-                String legacyPropertyName = (String) iterator.next();
+            for (Map.Entry<String, String> entry : legacyToCurrentMap.entrySet()) {
+                String legacyPropertyName = entry.getKey();
                 Object legacyPropertyValue = kvSource.getProperty(legacyPropertyName);
                 if (null != legacyPropertyValue) {
-                    try {
-                        String currentPropertyName = legacyToCurrentMap.getString(legacyPropertyName);
-                        Object currentPropertyValue = kvSource.getProperty(currentPropertyName);;
-                        if (null == currentPropertyValue) {
-                            properties.put(currentPropertyName, legacyPropertyValue);
-                            LOGGER.warn("Deprecated property {} detected in Key Vault property source {}! "
-                                    + "Use {} instead!", legacyPropertyName, kvSource.getName(), currentPropertyName);
-                        }
-                    } catch (JSONException e) {
-                        LOGGER.error("Error while loading current property name mapping to {}", legacyPropertyName);
+                    String currentPropertyName = entry.getValue();
+                    Object currentPropertyValue = kvSource.getProperty(currentPropertyName);
+                    if (null == currentPropertyValue) {
+                        properties.put(currentPropertyName, legacyPropertyValue);
+                        LOGGER.warn("Deprecated property {} detected in Key Vault property source {}! "
+                                + "Use {} instead!", legacyPropertyName, kvSource.getName(), currentPropertyName);
                     }
                 }
             }

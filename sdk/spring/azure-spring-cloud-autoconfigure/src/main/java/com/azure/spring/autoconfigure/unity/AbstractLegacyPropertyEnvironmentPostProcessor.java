@@ -4,11 +4,7 @@
 package com.azure.spring.autoconfigure.unity;
 
 import com.azure.spring.keyvault.KeyVaultEnvironmentPostProcessor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.configurationprocessor.json.JSONException;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.boot.env.EnvironmentPostProcessor;
 import org.springframework.core.Ordered;
 import org.springframework.core.env.ConfigurableEnvironment;
@@ -17,6 +13,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UncheckedIOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 import java.util.Properties;
 
 /**
@@ -26,56 +26,53 @@ import java.util.Properties;
  */
 public abstract class AbstractLegacyPropertyEnvironmentPostProcessor implements EnvironmentPostProcessor, Ordered {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractLegacyPropertyEnvironmentPostProcessor.class);
+    protected static final Map<String, String> SPRING_PROPERTY_MAP = new HashMap<String, String>();
+    static {
+        // Load the map of each service's legacy properties and associated current properties from classpath.
+        try (
+                InputStream inputStream = AbstractLegacyPropertyEnvironmentPostProcessor.class
+                                              .getClassLoader()
+                                              .getResourceAsStream("legacy-property-mapping.properties");
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream))
+        ) {
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                SPRING_PROPERTY_MAP.put(line.split("=")[0], line.split("=")[1]);
+            }
+        } catch (IOException exception) {
+            throw new UncheckedIOException("Fail to load legacy-property-mapping.properties", exception);
+        }
+    }
 
     public abstract int getOrder();
 
     public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
 
-        JSONObject legacyToCurrentMap = loadPropertyMapFromClassPath();
-        if (null == legacyToCurrentMap) {
-            return;
-        }
+        Map<String, String> legacyToCurrentMap = new HashMap<String, String>(SPRING_PROPERTY_MAP);
+        Optional.ofNullable(getMultipleKeyVaultsPropertyMap(environment))
+                .ifPresent(legacyToCurrentMap::putAll);
         Properties properties = mapLegacyPropertyToCurrent(legacyToCurrentMap, environment);
         setConvertedPropertyToEnvironment(environment, properties);
     }
 
     /**
-     * Load the mapping relationship of each legacy properties and the associated current properties from class path.
+     * Build a legacy Key Vault property map of multiple key vault use case. When multiple Key Vaults are used, Key
+     * Vault property names are not fixed and varies across user definition.
      *
-     * @return A {@JSONObject} contains a map of all legacy properties and associated current properties.
+     * @param environment The application environment to load property from.
+     * @return A map contains all possbile Key Vault properties.
      */
-    private JSONObject loadPropertyMapFromClassPath() {
-
-        InputStream inputStream = AbstractLegacyPropertyEnvironmentPostProcessor.class
-                                      .getClassLoader()
-                                      .getResourceAsStream("legacy-property-mapping.json");
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-        StringBuilder content = new StringBuilder();
-        String line;
-        try {
-            while ((line = bufferedReader.readLine()) != null) {
-                content.append(line);
-            }
-            return new JSONObject(content.toString());
-        } catch (IOException exception) {
-            LOGGER.error("Error while loading legacy-property-mapping.json", exception);
-            return null;
-        } catch (JSONException exception) {
-            LOGGER.error("Error while parsing legacy-property-mapping.json to JSONObject", exception);
-            return null;
-        }
-    }
+    protected abstract Map<String, String> getMultipleKeyVaultsPropertyMap(ConfigurableEnvironment environment);
 
     /**
      * Convert legacy properties to the current and create new {@link Properties} to store mapped current properties
      * if only legacy properties are configured.
      *
-     * @param legacyToCurrentMap A {@JSONObject} contains a map of all legacy properties and associated current ones.
+     * @param legacyToCurrentMap A map contains a map of all legacy properties and associated current ones.
      * @param environment The application environment to get and set properties.
      * @return A {@link Properties} to store mapped current properties
      */
-    protected abstract Properties mapLegacyPropertyToCurrent(JSONObject legacyToCurrentMap,
+    protected abstract Properties mapLegacyPropertyToCurrent(Map<String, String> legacyToCurrentMap,
                                                              ConfigurableEnvironment environment);
 
     /**
