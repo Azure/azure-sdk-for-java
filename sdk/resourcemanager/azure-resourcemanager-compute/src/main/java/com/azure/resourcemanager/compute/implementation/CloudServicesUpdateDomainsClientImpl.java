@@ -164,6 +164,7 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
         }
         final String apiVersion = "2021-03-01";
         final String accept = "application/json";
+        UpdateDomainInner parameters = null;
         return FluxUtil
             .withContext(
                 context ->
@@ -175,7 +176,7 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
                             updateDomain,
                             this.client.getSubscriptionId(),
                             apiVersion,
-                            null,
+                            parameters,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -219,6 +220,7 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
         }
         final String apiVersion = "2021-03-01";
         final String accept = "application/json";
+        UpdateDomainInner parameters = null;
         context = this.client.mergeContext(context);
         return service
             .walkUpdateDomain(
@@ -228,7 +230,7 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
                 updateDomain,
                 this.client.getSubscriptionId(),
                 apiVersion,
-                null,
+                parameters,
                 accept,
                 context);
     }

@@ -1,6 +1,16 @@
 # Release History
 
 ## 2.7.0-beta.1 (Unreleased)
+### Dependency Updates
+
+- Updated `api-version` to `2021-04-01`.
+
+### Breaking Changes
+
+- property `publicIpAddressSkuName` in `PublicIpAddressSku` is renamed to `name`.
+- property `publicIpAddressSkuTier` in `PublicIpAddressSku` is renamed to `tier`.
+- Class `AggregationType` is renamed to `AggregationTypeEnum`.
+- Enum `SecurityTypes` changed to subclass of `ExpandableStringEnum`.
 
 
 ## 2.6.0 (2021-06-18)
