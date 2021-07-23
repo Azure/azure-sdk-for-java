@@ -440,7 +440,6 @@ class FileAPITests extends APISpec {
             assert !result[0]
         }
 
-
         where:
         fileSize | _
         0        | _
