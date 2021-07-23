@@ -124,7 +124,10 @@ public class VirtualMachineScaleSetInner extends Resource {
 
     /*
      * Whether to force strictly even Virtual Machine distribution cross
-     * x-zones in case there is zone outage.
+     * x-zones in case there is zone outage. zoneBalance property can only be
+     * set if the zones property of the scale set contains more than one zone.
+     * If there are no zones or only one zone specified, then zoneBalance
+     * property should not be set.
      */
     @JsonProperty(value = "properties.zoneBalance")
     private Boolean zoneBalance;
@@ -438,7 +441,8 @@ public class VirtualMachineScaleSetInner extends Resource {
 
     /**
      * Get the zoneBalance property: Whether to force strictly even Virtual Machine distribution cross x-zones in case
-     * there is zone outage.
+     * there is zone outage. zoneBalance property can only be set if the zones property of the scale set contains more
+     * than one zone. If there are no zones or only one zone specified, then zoneBalance property should not be set.
      *
      * @return the zoneBalance value.
      */
@@ -448,7 +452,8 @@ public class VirtualMachineScaleSetInner extends Resource {
 
     /**
      * Set the zoneBalance property: Whether to force strictly even Virtual Machine distribution cross x-zones in case
-     * there is zone outage.
+     * there is zone outage. zoneBalance property can only be set if the zones property of the scale set contains more
+     * than one zone. If there are no zones or only one zone specified, then zoneBalance property should not be set.
      *
      * @param zoneBalance the zoneBalance value to set.
      * @return the VirtualMachineScaleSetInner object itself.
