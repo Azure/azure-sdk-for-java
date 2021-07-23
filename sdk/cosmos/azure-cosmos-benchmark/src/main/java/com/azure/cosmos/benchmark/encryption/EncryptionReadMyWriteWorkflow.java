@@ -197,6 +197,15 @@ public class EncryptionReadMyWriteWorkflow extends AsyncEncryptionBenchmark<Docu
         BridgeInternal.setProperty(document, "dataField2", randomVal);
         BridgeInternal.setProperty(document, "dataField3", randomVal);
         BridgeInternal.setProperty(document, "dataField4", randomVal);
+        for (int j = 1; j <= configuration.getEncryptedStringFieldCount(); j++) {
+            document.set(ENCRYPTED_STRING_FIELD + j, idString);
+        }
+        for (int j = 1; j <= configuration.getEncryptedLongFieldCount(); j++) {
+            document.set(ENCRYPTED_LONG_FIELD + j, 1234l);
+        }
+        for (int j = 1; j <= configuration.getEncryptedDoubleFieldCount(); j++) {
+            document.set(ENCRYPTED_DOUBLE_FIELD + j, 1234.01d);
+        }
 
         Integer key = i == null ? cacheKey() : i;
         return client.createDocument(getCollectionLink(), document, null, false)

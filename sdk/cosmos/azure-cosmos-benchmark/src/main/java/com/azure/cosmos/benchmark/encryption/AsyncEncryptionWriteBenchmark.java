@@ -67,18 +67,26 @@ public class AsyncEncryptionWriteBenchmark extends AsyncEncryptionBenchmark<Cosm
     protected void performWorkload(BaseSubscriber<CosmosItemResponse> baseSubscriber, long i) throws InterruptedException {
         String id = uuid + i;
         Mono<CosmosItemResponse<PojoizedJson>> obs;
+        PojoizedJson newDoc = BenchmarkHelper.generateDocument(id,
+            dataFieldValue,
+            partitionKey,
+            configuration.getDocumentDataFieldCount());
+        for (int j = 1; j <= configuration.getEncryptedStringFieldCount(); j++) {
+            newDoc.setProperty(ENCRYPTED_STRING_FIELD + j, uuid);
+        }
+        for (int j = 1; j <= configuration.getEncryptedLongFieldCount(); j++) {
+            newDoc.setProperty(ENCRYPTED_LONG_FIELD + j, 1234l);
+        }
+        for (int j = 1; j <= configuration.getEncryptedDoubleFieldCount(); j++) {
+            newDoc.setProperty(ENCRYPTED_DOUBLE_FIELD + j, 1234.01d);
+        }
         if (configuration.isDisablePassingPartitionKeyAsOptionOnWrite()) {
             // require parsing partition key from the doc
-            obs = cosmosEncryptionAsyncContainer.createItem(BenchmarkHelper.generateDocument(id,
-                dataFieldValue,
-                partitionKey,
-                configuration.getDocumentDataFieldCount()), new PartitionKey(id), new CosmosItemRequestOptions());
+            obs = cosmosEncryptionAsyncContainer.createItem(newDoc, new PartitionKey(id),
+                new CosmosItemRequestOptions());
         } else {
             // more optimized for write as partition key is already passed as config
-            obs = cosmosEncryptionAsyncContainer.createItem(BenchmarkHelper.generateDocument(id,
-                dataFieldValue,
-                partitionKey,
-                configuration.getDocumentDataFieldCount()),
+            obs = cosmosEncryptionAsyncContainer.createItem(newDoc,
                 new PartitionKey(id),
                 null);
         }

@@ -97,7 +97,7 @@ public class Configuration {
         " separated preferred regions list")
     private List<String> preferredRegionsList;
 
-    @Parameter(names = "-encryptionFieldType", description = "Number of string field that need to be encrypted")
+    @Parameter(names = "-encryptedStringFieldCount", description = "Number of string field that need to be encrypted")
     private int encryptedStringFieldCount = 1;
 
     @Parameter(names = "-encryptedLongFieldCount", description = "Number of long field that need to be encrypted")

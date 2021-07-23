@@ -101,9 +101,9 @@ public abstract class AsyncEncryptionBenchmark<T> {
     private static final String FAILURE_COUNTER_METER_NAME = "#Unsuccessful Operations";
     private static final String LATENCY_METER_NAME = "latency";
     private static final String dataEncryptionKeyId = "theDataEncryptionKey";
-    private static final String ENCRYPTED_STRING_FIELD = "encryptedStringField";
-    private static final String ENCRYPTED_LONG_FIELD = "encryptedLongField";
-    private static final String ENCRYPTED_DOUBLE_FIELD = "encryptedDoubleField";
+    static final String ENCRYPTED_STRING_FIELD = "encryptedStringField";
+    static final String ENCRYPTED_LONG_FIELD = "encryptedLongField";
+    static final String ENCRYPTED_DOUBLE_FIELD = "encryptedDoubleField";
 
     final CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient;
     CosmosEncryptionAsyncDatabase cosmosEncryptionAsyncDatabase;
@@ -416,7 +416,7 @@ public abstract class AsyncEncryptionBenchmark<T> {
     // load config from resource src/resources/encryption_settings.properties
     private static Properties loadConfig() throws IOException {
 
-        try (InputStream input = new FileInputStream("src/main/resources/encryption_setting.properties")) {
+        try (InputStream input = AsyncEncryptionBenchmark.class.getClassLoader().getResourceAsStream("encryption_setting.properties");) {
             Properties prop = new Properties();
             prop.load(input);
             return prop;
