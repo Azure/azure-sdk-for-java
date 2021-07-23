@@ -5,7 +5,6 @@ package com.azure.spring.integration.servicebus.factory;
 
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.AmqpRetryOptions;
-import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.util.ClientOptions;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusErrorContext;
