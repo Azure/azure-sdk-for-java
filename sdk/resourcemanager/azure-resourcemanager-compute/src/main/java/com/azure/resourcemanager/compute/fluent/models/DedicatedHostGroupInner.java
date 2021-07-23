@@ -27,7 +27,7 @@ public final class DedicatedHostGroupInner extends Resource {
      * Dedicated Host Group Properties.
      */
     @JsonProperty(value = "properties")
-    private DedicatedHostGroupProperties properties;
+    private DedicatedHostGroupProperties innerProperties;
 
     /*
      * Availability Zone to use for this host group. Only single zone is
@@ -39,12 +39,12 @@ public final class DedicatedHostGroupInner extends Resource {
     private List<String> zones;
 
     /**
-     * Get the properties property: Dedicated Host Group Properties.
+     * Get the innerProperties property: Dedicated Host Group Properties.
      *
-     * @return the properties value.
+     * @return the innerProperties value.
      */
-    private DedicatedHostGroupProperties properties() {
-        return this.properties;
+    private DedicatedHostGroupProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -91,7 +91,7 @@ public final class DedicatedHostGroupInner extends Resource {
      * @return the platformFaultDomainCount value.
      */
     public Integer platformFaultDomainCount() {
-        return this.properties() == null ? null : this.properties().platformFaultDomainCount();
+        return this.innerProperties() == null ? null : this.innerProperties().platformFaultDomainCount();
     }
 
     /**
@@ -101,10 +101,10 @@ public final class DedicatedHostGroupInner extends Resource {
      * @return the DedicatedHostGroupInner object itself.
      */
     public DedicatedHostGroupInner withPlatformFaultDomainCount(Integer platformFaultDomainCount) {
-        if (this.properties() == null) {
-            this.properties = new DedicatedHostGroupProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DedicatedHostGroupProperties();
         }
-        this.properties().withPlatformFaultDomainCount(platformFaultDomainCount);
+        this.innerProperties().withPlatformFaultDomainCount(platformFaultDomainCount);
         return this;
     }
 
@@ -114,7 +114,7 @@ public final class DedicatedHostGroupInner extends Resource {
      * @return the hosts value.
      */
     public List<SubResourceReadOnly> hosts() {
-        return this.properties() == null ? null : this.properties().hosts();
+        return this.innerProperties() == null ? null : this.innerProperties().hosts();
     }
 
     /**
@@ -124,7 +124,7 @@ public final class DedicatedHostGroupInner extends Resource {
      * @return the instanceView value.
      */
     public DedicatedHostGroupInstanceView instanceView() {
-        return this.properties() == null ? null : this.properties().instanceView();
+        return this.innerProperties() == null ? null : this.innerProperties().instanceView();
     }
 
     /**
@@ -136,7 +136,7 @@ public final class DedicatedHostGroupInner extends Resource {
      * @return the supportAutomaticPlacement value.
      */
     public Boolean supportAutomaticPlacement() {
-        return this.properties() == null ? null : this.properties().supportAutomaticPlacement();
+        return this.innerProperties() == null ? null : this.innerProperties().supportAutomaticPlacement();
     }
 
     /**
@@ -149,10 +149,10 @@ public final class DedicatedHostGroupInner extends Resource {
      * @return the DedicatedHostGroupInner object itself.
      */
     public DedicatedHostGroupInner withSupportAutomaticPlacement(Boolean supportAutomaticPlacement) {
-        if (this.properties() == null) {
-            this.properties = new DedicatedHostGroupProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DedicatedHostGroupProperties();
         }
-        this.properties().withSupportAutomaticPlacement(supportAutomaticPlacement);
+        this.innerProperties().withSupportAutomaticPlacement(supportAutomaticPlacement);
         return this;
     }
 
@@ -162,8 +162,8 @@ public final class DedicatedHostGroupInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (properties() != null) {
-            properties().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

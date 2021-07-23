@@ -45,7 +45,7 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
      * Describes the properties of a virtual machine scale set virtual machine.
      */
     @JsonProperty(value = "properties")
-    private VirtualMachineScaleSetVMPropertiesInner properties;
+    private VirtualMachineScaleSetVMPropertiesInner innerProperties;
 
     /*
      * Specifies information about the marketplace image used to create the
@@ -90,12 +90,12 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
     }
 
     /**
-     * Get the properties property: Describes the properties of a virtual machine scale set virtual machine.
+     * Get the innerProperties property: Describes the properties of a virtual machine scale set virtual machine.
      *
-     * @return the properties value.
+     * @return the innerProperties value.
      */
-    private VirtualMachineScaleSetVMPropertiesInner properties() {
-        return this.properties;
+    private VirtualMachineScaleSetVMPropertiesInner innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -164,7 +164,7 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
      * @return the latestModelApplied value.
      */
     public Boolean latestModelApplied() {
-        return this.properties() == null ? null : this.properties().latestModelApplied();
+        return this.innerProperties() == null ? null : this.innerProperties().latestModelApplied();
     }
 
     /**
@@ -173,7 +173,7 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
      * @return the vmId value.
      */
     public String vmId() {
-        return this.properties() == null ? null : this.properties().vmId();
+        return this.innerProperties() == null ? null : this.innerProperties().vmId();
     }
 
     /**
@@ -182,7 +182,7 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
      * @return the instanceView value.
      */
     public VirtualMachineScaleSetVMInstanceViewInner instanceView() {
-        return this.properties() == null ? null : this.properties().instanceView();
+        return this.innerProperties() == null ? null : this.innerProperties().instanceView();
     }
 
     /**
@@ -191,7 +191,7 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
      * @return the hardwareProfile value.
      */
     public HardwareProfile hardwareProfile() {
-        return this.properties() == null ? null : this.properties().hardwareProfile();
+        return this.innerProperties() == null ? null : this.innerProperties().hardwareProfile();
     }
 
     /**
@@ -201,10 +201,10 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
      * @return the VirtualMachineScaleSetVMInner object itself.
      */
     public VirtualMachineScaleSetVMInner withHardwareProfile(HardwareProfile hardwareProfile) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachineScaleSetVMPropertiesInner();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetVMPropertiesInner();
         }
-        this.properties().withHardwareProfile(hardwareProfile);
+        this.innerProperties().withHardwareProfile(hardwareProfile);
         return this;
     }
 
@@ -214,7 +214,7 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
      * @return the storageProfile value.
      */
     public StorageProfile storageProfile() {
-        return this.properties() == null ? null : this.properties().storageProfile();
+        return this.innerProperties() == null ? null : this.innerProperties().storageProfile();
     }
 
     /**
@@ -224,10 +224,10 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
      * @return the VirtualMachineScaleSetVMInner object itself.
      */
     public VirtualMachineScaleSetVMInner withStorageProfile(StorageProfile storageProfile) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachineScaleSetVMPropertiesInner();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetVMPropertiesInner();
         }
-        this.properties().withStorageProfile(storageProfile);
+        this.innerProperties().withStorageProfile(storageProfile);
         return this;
     }
 
@@ -239,7 +239,7 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
      * @return the additionalCapabilities value.
      */
     public AdditionalCapabilities additionalCapabilities() {
-        return this.properties() == null ? null : this.properties().additionalCapabilities();
+        return this.innerProperties() == null ? null : this.innerProperties().additionalCapabilities();
     }
 
     /**
@@ -251,10 +251,10 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
      * @return the VirtualMachineScaleSetVMInner object itself.
      */
     public VirtualMachineScaleSetVMInner withAdditionalCapabilities(AdditionalCapabilities additionalCapabilities) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachineScaleSetVMPropertiesInner();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetVMPropertiesInner();
         }
-        this.properties().withAdditionalCapabilities(additionalCapabilities);
+        this.innerProperties().withAdditionalCapabilities(additionalCapabilities);
         return this;
     }
 
@@ -264,7 +264,7 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
      * @return the osProfile value.
      */
     public OSProfile osProfile() {
-        return this.properties() == null ? null : this.properties().osProfile();
+        return this.innerProperties() == null ? null : this.innerProperties().osProfile();
     }
 
     /**
@@ -274,10 +274,10 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
      * @return the VirtualMachineScaleSetVMInner object itself.
      */
     public VirtualMachineScaleSetVMInner withOsProfile(OSProfile osProfile) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachineScaleSetVMPropertiesInner();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetVMPropertiesInner();
         }
-        this.properties().withOsProfile(osProfile);
+        this.innerProperties().withOsProfile(osProfile);
         return this;
     }
 
@@ -287,7 +287,7 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
      * @return the securityProfile value.
      */
     public SecurityProfile securityProfile() {
-        return this.properties() == null ? null : this.properties().securityProfile();
+        return this.innerProperties() == null ? null : this.innerProperties().securityProfile();
     }
 
     /**
@@ -297,10 +297,10 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
      * @return the VirtualMachineScaleSetVMInner object itself.
      */
     public VirtualMachineScaleSetVMInner withSecurityProfile(SecurityProfile securityProfile) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachineScaleSetVMPropertiesInner();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetVMPropertiesInner();
         }
-        this.properties().withSecurityProfile(securityProfile);
+        this.innerProperties().withSecurityProfile(securityProfile);
         return this;
     }
 
@@ -310,7 +310,7 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
      * @return the networkProfile value.
      */
     public NetworkProfile networkProfile() {
-        return this.properties() == null ? null : this.properties().networkProfile();
+        return this.innerProperties() == null ? null : this.innerProperties().networkProfile();
     }
 
     /**
@@ -320,10 +320,10 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
      * @return the VirtualMachineScaleSetVMInner object itself.
      */
     public VirtualMachineScaleSetVMInner withNetworkProfile(NetworkProfile networkProfile) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachineScaleSetVMPropertiesInner();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetVMPropertiesInner();
         }
-        this.properties().withNetworkProfile(networkProfile);
+        this.innerProperties().withNetworkProfile(networkProfile);
         return this;
     }
 
@@ -333,7 +333,7 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
      * @return the networkProfileConfiguration value.
      */
     public VirtualMachineScaleSetVMNetworkProfileConfiguration networkProfileConfiguration() {
-        return this.properties() == null ? null : this.properties().networkProfileConfiguration();
+        return this.innerProperties() == null ? null : this.innerProperties().networkProfileConfiguration();
     }
 
     /**
@@ -344,10 +344,10 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
      */
     public VirtualMachineScaleSetVMInner withNetworkProfileConfiguration(
         VirtualMachineScaleSetVMNetworkProfileConfiguration networkProfileConfiguration) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachineScaleSetVMPropertiesInner();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetVMPropertiesInner();
         }
-        this.properties().withNetworkProfileConfiguration(networkProfileConfiguration);
+        this.innerProperties().withNetworkProfileConfiguration(networkProfileConfiguration);
         return this;
     }
 
@@ -358,7 +358,7 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
      * @return the diagnosticsProfile value.
      */
     public DiagnosticsProfile diagnosticsProfile() {
-        return this.properties() == null ? null : this.properties().diagnosticsProfile();
+        return this.innerProperties() == null ? null : this.innerProperties().diagnosticsProfile();
     }
 
     /**
@@ -369,10 +369,10 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
      * @return the VirtualMachineScaleSetVMInner object itself.
      */
     public VirtualMachineScaleSetVMInner withDiagnosticsProfile(DiagnosticsProfile diagnosticsProfile) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachineScaleSetVMPropertiesInner();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetVMPropertiesInner();
         }
-        this.properties().withDiagnosticsProfile(diagnosticsProfile);
+        this.innerProperties().withDiagnosticsProfile(diagnosticsProfile);
         return this;
     }
 
@@ -389,7 +389,7 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
      * @return the availabilitySet value.
      */
     public SubResource availabilitySet() {
-        return this.properties() == null ? null : this.properties().availabilitySet();
+        return this.innerProperties() == null ? null : this.innerProperties().availabilitySet();
     }
 
     /**
@@ -406,10 +406,10 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
      * @return the VirtualMachineScaleSetVMInner object itself.
      */
     public VirtualMachineScaleSetVMInner withAvailabilitySet(SubResource availabilitySet) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachineScaleSetVMPropertiesInner();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetVMPropertiesInner();
         }
-        this.properties().withAvailabilitySet(availabilitySet);
+        this.innerProperties().withAvailabilitySet(availabilitySet);
         return this;
     }
 
@@ -419,7 +419,7 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
      * @return the provisioningState value.
      */
     public String provisioningState() {
-        return this.properties() == null ? null : this.properties().provisioningState();
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -436,7 +436,7 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
      * @return the licenseType value.
      */
     public String licenseType() {
-        return this.properties() == null ? null : this.properties().licenseType();
+        return this.innerProperties() == null ? null : this.innerProperties().licenseType();
     }
 
     /**
@@ -454,10 +454,10 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
      * @return the VirtualMachineScaleSetVMInner object itself.
      */
     public VirtualMachineScaleSetVMInner withLicenseType(String licenseType) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachineScaleSetVMPropertiesInner();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetVMPropertiesInner();
         }
-        this.properties().withLicenseType(licenseType);
+        this.innerProperties().withLicenseType(licenseType);
         return this;
     }
 
@@ -468,7 +468,7 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
      * @return the modelDefinitionApplied value.
      */
     public String modelDefinitionApplied() {
-        return this.properties() == null ? null : this.properties().modelDefinitionApplied();
+        return this.innerProperties() == null ? null : this.innerProperties().modelDefinitionApplied();
     }
 
     /**
@@ -477,7 +477,7 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
      * @return the protectionPolicy value.
      */
     public VirtualMachineScaleSetVMProtectionPolicy protectionPolicy() {
-        return this.properties() == null ? null : this.properties().protectionPolicy();
+        return this.innerProperties() == null ? null : this.innerProperties().protectionPolicy();
     }
 
     /**
@@ -488,10 +488,10 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
      */
     public VirtualMachineScaleSetVMInner withProtectionPolicy(
         VirtualMachineScaleSetVMProtectionPolicy protectionPolicy) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachineScaleSetVMPropertiesInner();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetVMPropertiesInner();
         }
-        this.properties().withProtectionPolicy(protectionPolicy);
+        this.innerProperties().withProtectionPolicy(protectionPolicy);
         return this;
     }
 
@@ -502,7 +502,7 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
      * @return the userData value.
      */
     public String userData() {
-        return this.properties() == null ? null : this.properties().userData();
+        return this.innerProperties() == null ? null : this.innerProperties().userData();
     }
 
     /**
@@ -513,10 +513,10 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
      * @return the VirtualMachineScaleSetVMInner object itself.
      */
     public VirtualMachineScaleSetVMInner withUserData(String userData) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachineScaleSetVMPropertiesInner();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetVMPropertiesInner();
         }
-        this.properties().withUserData(userData);
+        this.innerProperties().withUserData(userData);
         return this;
     }
 
@@ -529,8 +529,8 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
         if (sku() != null) {
             sku().validate();
         }
-        if (properties() != null) {
-            properties().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
         if (plan() != null) {
             plan().validate();

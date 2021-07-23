@@ -34,7 +34,7 @@ public final class VirtualMachineScaleSetUpdate extends UpdateResource {
      * Describes the properties of a Virtual Machine Scale Set.
      */
     @JsonProperty(value = "properties")
-    private VirtualMachineScaleSetUpdateProperties properties;
+    private VirtualMachineScaleSetUpdateProperties innerProperties;
 
     /*
      * The identity of the virtual machine scale set, if configured.
@@ -83,12 +83,12 @@ public final class VirtualMachineScaleSetUpdate extends UpdateResource {
     }
 
     /**
-     * Get the properties property: Describes the properties of a Virtual Machine Scale Set.
+     * Get the innerProperties property: Describes the properties of a Virtual Machine Scale Set.
      *
-     * @return the properties value.
+     * @return the innerProperties value.
      */
-    private VirtualMachineScaleSetUpdateProperties properties() {
-        return this.properties;
+    private VirtualMachineScaleSetUpdateProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -124,7 +124,7 @@ public final class VirtualMachineScaleSetUpdate extends UpdateResource {
      * @return the upgradePolicy value.
      */
     public UpgradePolicy upgradePolicy() {
-        return this.properties() == null ? null : this.properties().upgradePolicy();
+        return this.innerProperties() == null ? null : this.innerProperties().upgradePolicy();
     }
 
     /**
@@ -134,10 +134,10 @@ public final class VirtualMachineScaleSetUpdate extends UpdateResource {
      * @return the VirtualMachineScaleSetUpdate object itself.
      */
     public VirtualMachineScaleSetUpdate withUpgradePolicy(UpgradePolicy upgradePolicy) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachineScaleSetUpdateProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetUpdateProperties();
         }
-        this.properties().withUpgradePolicy(upgradePolicy);
+        this.innerProperties().withUpgradePolicy(upgradePolicy);
         return this;
     }
 
@@ -147,7 +147,7 @@ public final class VirtualMachineScaleSetUpdate extends UpdateResource {
      * @return the automaticRepairsPolicy value.
      */
     public AutomaticRepairsPolicy automaticRepairsPolicy() {
-        return this.properties() == null ? null : this.properties().automaticRepairsPolicy();
+        return this.innerProperties() == null ? null : this.innerProperties().automaticRepairsPolicy();
     }
 
     /**
@@ -157,10 +157,10 @@ public final class VirtualMachineScaleSetUpdate extends UpdateResource {
      * @return the VirtualMachineScaleSetUpdate object itself.
      */
     public VirtualMachineScaleSetUpdate withAutomaticRepairsPolicy(AutomaticRepairsPolicy automaticRepairsPolicy) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachineScaleSetUpdateProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetUpdateProperties();
         }
-        this.properties().withAutomaticRepairsPolicy(automaticRepairsPolicy);
+        this.innerProperties().withAutomaticRepairsPolicy(automaticRepairsPolicy);
         return this;
     }
 
@@ -170,7 +170,7 @@ public final class VirtualMachineScaleSetUpdate extends UpdateResource {
      * @return the virtualMachineProfile value.
      */
     public VirtualMachineScaleSetUpdateVMProfile virtualMachineProfile() {
-        return this.properties() == null ? null : this.properties().virtualMachineProfile();
+        return this.innerProperties() == null ? null : this.innerProperties().virtualMachineProfile();
     }
 
     /**
@@ -181,10 +181,10 @@ public final class VirtualMachineScaleSetUpdate extends UpdateResource {
      */
     public VirtualMachineScaleSetUpdate withVirtualMachineProfile(
         VirtualMachineScaleSetUpdateVMProfile virtualMachineProfile) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachineScaleSetUpdateProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetUpdateProperties();
         }
-        this.properties().withVirtualMachineProfile(virtualMachineProfile);
+        this.innerProperties().withVirtualMachineProfile(virtualMachineProfile);
         return this;
     }
 
@@ -194,7 +194,7 @@ public final class VirtualMachineScaleSetUpdate extends UpdateResource {
      * @return the overprovision value.
      */
     public Boolean overprovision() {
-        return this.properties() == null ? null : this.properties().overprovision();
+        return this.innerProperties() == null ? null : this.innerProperties().overprovision();
     }
 
     /**
@@ -204,10 +204,10 @@ public final class VirtualMachineScaleSetUpdate extends UpdateResource {
      * @return the VirtualMachineScaleSetUpdate object itself.
      */
     public VirtualMachineScaleSetUpdate withOverprovision(Boolean overprovision) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachineScaleSetUpdateProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetUpdateProperties();
         }
-        this.properties().withOverprovision(overprovision);
+        this.innerProperties().withOverprovision(overprovision);
         return this;
     }
 
@@ -219,7 +219,7 @@ public final class VirtualMachineScaleSetUpdate extends UpdateResource {
      * @return the doNotRunExtensionsOnOverprovisionedVMs value.
      */
     public Boolean doNotRunExtensionsOnOverprovisionedVMs() {
-        return this.properties() == null ? null : this.properties().doNotRunExtensionsOnOverprovisionedVMs();
+        return this.innerProperties() == null ? null : this.innerProperties().doNotRunExtensionsOnOverprovisionedVMs();
     }
 
     /**
@@ -232,10 +232,10 @@ public final class VirtualMachineScaleSetUpdate extends UpdateResource {
      */
     public VirtualMachineScaleSetUpdate withDoNotRunExtensionsOnOverprovisionedVMs(
         Boolean doNotRunExtensionsOnOverprovisionedVMs) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachineScaleSetUpdateProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetUpdateProperties();
         }
-        this.properties().withDoNotRunExtensionsOnOverprovisionedVMs(doNotRunExtensionsOnOverprovisionedVMs);
+        this.innerProperties().withDoNotRunExtensionsOnOverprovisionedVMs(doNotRunExtensionsOnOverprovisionedVMs);
         return this;
     }
 
@@ -247,7 +247,7 @@ public final class VirtualMachineScaleSetUpdate extends UpdateResource {
      * @return the singlePlacementGroup value.
      */
     public Boolean singlePlacementGroup() {
-        return this.properties() == null ? null : this.properties().singlePlacementGroup();
+        return this.innerProperties() == null ? null : this.innerProperties().singlePlacementGroup();
     }
 
     /**
@@ -259,10 +259,10 @@ public final class VirtualMachineScaleSetUpdate extends UpdateResource {
      * @return the VirtualMachineScaleSetUpdate object itself.
      */
     public VirtualMachineScaleSetUpdate withSinglePlacementGroup(Boolean singlePlacementGroup) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachineScaleSetUpdateProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetUpdateProperties();
         }
-        this.properties().withSinglePlacementGroup(singlePlacementGroup);
+        this.innerProperties().withSinglePlacementGroup(singlePlacementGroup);
         return this;
     }
 
@@ -274,7 +274,7 @@ public final class VirtualMachineScaleSetUpdate extends UpdateResource {
      * @return the additionalCapabilities value.
      */
     public AdditionalCapabilities additionalCapabilities() {
-        return this.properties() == null ? null : this.properties().additionalCapabilities();
+        return this.innerProperties() == null ? null : this.innerProperties().additionalCapabilities();
     }
 
     /**
@@ -286,10 +286,10 @@ public final class VirtualMachineScaleSetUpdate extends UpdateResource {
      * @return the VirtualMachineScaleSetUpdate object itself.
      */
     public VirtualMachineScaleSetUpdate withAdditionalCapabilities(AdditionalCapabilities additionalCapabilities) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachineScaleSetUpdateProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetUpdateProperties();
         }
-        this.properties().withAdditionalCapabilities(additionalCapabilities);
+        this.innerProperties().withAdditionalCapabilities(additionalCapabilities);
         return this;
     }
 
@@ -300,7 +300,7 @@ public final class VirtualMachineScaleSetUpdate extends UpdateResource {
      * @return the scaleInPolicy value.
      */
     public ScaleInPolicy scaleInPolicy() {
-        return this.properties() == null ? null : this.properties().scaleInPolicy();
+        return this.innerProperties() == null ? null : this.innerProperties().scaleInPolicy();
     }
 
     /**
@@ -311,10 +311,10 @@ public final class VirtualMachineScaleSetUpdate extends UpdateResource {
      * @return the VirtualMachineScaleSetUpdate object itself.
      */
     public VirtualMachineScaleSetUpdate withScaleInPolicy(ScaleInPolicy scaleInPolicy) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachineScaleSetUpdateProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetUpdateProperties();
         }
-        this.properties().withScaleInPolicy(scaleInPolicy);
+        this.innerProperties().withScaleInPolicy(scaleInPolicy);
         return this;
     }
 
@@ -325,7 +325,7 @@ public final class VirtualMachineScaleSetUpdate extends UpdateResource {
      * @return the proximityPlacementGroup value.
      */
     public SubResource proximityPlacementGroup() {
-        return this.properties() == null ? null : this.properties().proximityPlacementGroup();
+        return this.innerProperties() == null ? null : this.innerProperties().proximityPlacementGroup();
     }
 
     /**
@@ -336,10 +336,10 @@ public final class VirtualMachineScaleSetUpdate extends UpdateResource {
      * @return the VirtualMachineScaleSetUpdate object itself.
      */
     public VirtualMachineScaleSetUpdate withProximityPlacementGroup(SubResource proximityPlacementGroup) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachineScaleSetUpdateProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetUpdateProperties();
         }
-        this.properties().withProximityPlacementGroup(proximityPlacementGroup);
+        this.innerProperties().withProximityPlacementGroup(proximityPlacementGroup);
         return this;
     }
 
@@ -357,8 +357,8 @@ public final class VirtualMachineScaleSetUpdate extends UpdateResource {
         if (plan() != null) {
             plan().validate();
         }
-        if (properties() != null) {
-            properties().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
         if (identity() != null) {
             identity().validate();

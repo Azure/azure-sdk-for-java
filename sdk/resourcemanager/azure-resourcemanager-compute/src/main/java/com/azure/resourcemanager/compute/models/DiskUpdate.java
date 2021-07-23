@@ -21,7 +21,7 @@ public final class DiskUpdate {
      * Disk resource update properties.
      */
     @JsonProperty(value = "properties")
-    private DiskUpdateProperties properties;
+    private DiskUpdateProperties innerProperties;
 
     /*
      * Resource tags
@@ -38,12 +38,12 @@ public final class DiskUpdate {
     private DiskSku sku;
 
     /**
-     * Get the properties property: Disk resource update properties.
+     * Get the innerProperties property: Disk resource update properties.
      *
-     * @return the properties value.
+     * @return the innerProperties value.
      */
-    private DiskUpdateProperties properties() {
-        return this.properties;
+    private DiskUpdateProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -94,7 +94,7 @@ public final class DiskUpdate {
      * @return the osType value.
      */
     public OperatingSystemTypes osType() {
-        return this.properties() == null ? null : this.properties().osType();
+        return this.innerProperties() == null ? null : this.innerProperties().osType();
     }
 
     /**
@@ -104,10 +104,10 @@ public final class DiskUpdate {
      * @return the DiskUpdate object itself.
      */
     public DiskUpdate withOsType(OperatingSystemTypes osType) {
-        if (this.properties() == null) {
-            this.properties = new DiskUpdateProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiskUpdateProperties();
         }
-        this.properties().withOsType(osType);
+        this.innerProperties().withOsType(osType);
         return this;
     }
 
@@ -120,7 +120,7 @@ public final class DiskUpdate {
      * @return the diskSizeGB value.
      */
     public Integer diskSizeGB() {
-        return this.properties() == null ? null : this.properties().diskSizeGB();
+        return this.innerProperties() == null ? null : this.innerProperties().diskSizeGB();
     }
 
     /**
@@ -133,10 +133,10 @@ public final class DiskUpdate {
      * @return the DiskUpdate object itself.
      */
     public DiskUpdate withDiskSizeGB(Integer diskSizeGB) {
-        if (this.properties() == null) {
-            this.properties = new DiskUpdateProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiskUpdateProperties();
         }
-        this.properties().withDiskSizeGB(diskSizeGB);
+        this.innerProperties().withDiskSizeGB(diskSizeGB);
         return this;
     }
 
@@ -147,7 +147,7 @@ public final class DiskUpdate {
      * @return the encryptionSettingsCollection value.
      */
     public EncryptionSettingsCollection encryptionSettingsCollection() {
-        return this.properties() == null ? null : this.properties().encryptionSettingsCollection();
+        return this.innerProperties() == null ? null : this.innerProperties().encryptionSettingsCollection();
     }
 
     /**
@@ -158,10 +158,10 @@ public final class DiskUpdate {
      * @return the DiskUpdate object itself.
      */
     public DiskUpdate withEncryptionSettingsCollection(EncryptionSettingsCollection encryptionSettingsCollection) {
-        if (this.properties() == null) {
-            this.properties = new DiskUpdateProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiskUpdateProperties();
         }
-        this.properties().withEncryptionSettingsCollection(encryptionSettingsCollection);
+        this.innerProperties().withEncryptionSettingsCollection(encryptionSettingsCollection);
         return this;
     }
 
@@ -172,7 +172,7 @@ public final class DiskUpdate {
      * @return the diskIopsReadWrite value.
      */
     public Long diskIopsReadWrite() {
-        return this.properties() == null ? null : this.properties().diskIopsReadWrite();
+        return this.innerProperties() == null ? null : this.innerProperties().diskIopsReadWrite();
     }
 
     /**
@@ -183,10 +183,10 @@ public final class DiskUpdate {
      * @return the DiskUpdate object itself.
      */
     public DiskUpdate withDiskIopsReadWrite(Long diskIopsReadWrite) {
-        if (this.properties() == null) {
-            this.properties = new DiskUpdateProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiskUpdateProperties();
         }
-        this.properties().withDiskIopsReadWrite(diskIopsReadWrite);
+        this.innerProperties().withDiskIopsReadWrite(diskIopsReadWrite);
         return this;
     }
 
@@ -197,7 +197,7 @@ public final class DiskUpdate {
      * @return the diskMBpsReadWrite value.
      */
     public Long diskMBpsReadWrite() {
-        return this.properties() == null ? null : this.properties().diskMBpsReadWrite();
+        return this.innerProperties() == null ? null : this.innerProperties().diskMBpsReadWrite();
     }
 
     /**
@@ -208,10 +208,10 @@ public final class DiskUpdate {
      * @return the DiskUpdate object itself.
      */
     public DiskUpdate withDiskMBpsReadWrite(Long diskMBpsReadWrite) {
-        if (this.properties() == null) {
-            this.properties = new DiskUpdateProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiskUpdateProperties();
         }
-        this.properties().withDiskMBpsReadWrite(diskMBpsReadWrite);
+        this.innerProperties().withDiskMBpsReadWrite(diskMBpsReadWrite);
         return this;
     }
 
@@ -222,7 +222,7 @@ public final class DiskUpdate {
      * @return the diskIopsReadOnly value.
      */
     public Long diskIopsReadOnly() {
-        return this.properties() == null ? null : this.properties().diskIopsReadOnly();
+        return this.innerProperties() == null ? null : this.innerProperties().diskIopsReadOnly();
     }
 
     /**
@@ -233,10 +233,10 @@ public final class DiskUpdate {
      * @return the DiskUpdate object itself.
      */
     public DiskUpdate withDiskIopsReadOnly(Long diskIopsReadOnly) {
-        if (this.properties() == null) {
-            this.properties = new DiskUpdateProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiskUpdateProperties();
         }
-        this.properties().withDiskIopsReadOnly(diskIopsReadOnly);
+        this.innerProperties().withDiskIopsReadOnly(diskIopsReadOnly);
         return this;
     }
 
@@ -248,7 +248,7 @@ public final class DiskUpdate {
      * @return the diskMBpsReadOnly value.
      */
     public Long diskMBpsReadOnly() {
-        return this.properties() == null ? null : this.properties().diskMBpsReadOnly();
+        return this.innerProperties() == null ? null : this.innerProperties().diskMBpsReadOnly();
     }
 
     /**
@@ -260,10 +260,10 @@ public final class DiskUpdate {
      * @return the DiskUpdate object itself.
      */
     public DiskUpdate withDiskMBpsReadOnly(Long diskMBpsReadOnly) {
-        if (this.properties() == null) {
-            this.properties = new DiskUpdateProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiskUpdateProperties();
         }
-        this.properties().withDiskMBpsReadOnly(diskMBpsReadOnly);
+        this.innerProperties().withDiskMBpsReadOnly(diskMBpsReadOnly);
         return this;
     }
 
@@ -274,7 +274,7 @@ public final class DiskUpdate {
      * @return the maxShares value.
      */
     public Integer maxShares() {
-        return this.properties() == null ? null : this.properties().maxShares();
+        return this.innerProperties() == null ? null : this.innerProperties().maxShares();
     }
 
     /**
@@ -285,10 +285,10 @@ public final class DiskUpdate {
      * @return the DiskUpdate object itself.
      */
     public DiskUpdate withMaxShares(Integer maxShares) {
-        if (this.properties() == null) {
-            this.properties = new DiskUpdateProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiskUpdateProperties();
         }
-        this.properties().withMaxShares(maxShares);
+        this.innerProperties().withMaxShares(maxShares);
         return this;
     }
 
@@ -299,7 +299,7 @@ public final class DiskUpdate {
      * @return the encryption value.
      */
     public Encryption encryption() {
-        return this.properties() == null ? null : this.properties().encryption();
+        return this.innerProperties() == null ? null : this.innerProperties().encryption();
     }
 
     /**
@@ -310,10 +310,10 @@ public final class DiskUpdate {
      * @return the DiskUpdate object itself.
      */
     public DiskUpdate withEncryption(Encryption encryption) {
-        if (this.properties() == null) {
-            this.properties = new DiskUpdateProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiskUpdateProperties();
         }
-        this.properties().withEncryption(encryption);
+        this.innerProperties().withEncryption(encryption);
         return this;
     }
 
@@ -323,7 +323,7 @@ public final class DiskUpdate {
      * @return the networkAccessPolicy value.
      */
     public NetworkAccessPolicy networkAccessPolicy() {
-        return this.properties() == null ? null : this.properties().networkAccessPolicy();
+        return this.innerProperties() == null ? null : this.innerProperties().networkAccessPolicy();
     }
 
     /**
@@ -333,10 +333,10 @@ public final class DiskUpdate {
      * @return the DiskUpdate object itself.
      */
     public DiskUpdate withNetworkAccessPolicy(NetworkAccessPolicy networkAccessPolicy) {
-        if (this.properties() == null) {
-            this.properties = new DiskUpdateProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiskUpdateProperties();
         }
-        this.properties().withNetworkAccessPolicy(networkAccessPolicy);
+        this.innerProperties().withNetworkAccessPolicy(networkAccessPolicy);
         return this;
     }
 
@@ -346,7 +346,7 @@ public final class DiskUpdate {
      * @return the diskAccessId value.
      */
     public String diskAccessId() {
-        return this.properties() == null ? null : this.properties().diskAccessId();
+        return this.innerProperties() == null ? null : this.innerProperties().diskAccessId();
     }
 
     /**
@@ -356,10 +356,10 @@ public final class DiskUpdate {
      * @return the DiskUpdate object itself.
      */
     public DiskUpdate withDiskAccessId(String diskAccessId) {
-        if (this.properties() == null) {
-            this.properties = new DiskUpdateProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiskUpdateProperties();
         }
-        this.properties().withDiskAccessId(diskAccessId);
+        this.innerProperties().withDiskAccessId(diskAccessId);
         return this;
     }
 
@@ -370,7 +370,7 @@ public final class DiskUpdate {
      * @return the tier value.
      */
     public String tier() {
-        return this.properties() == null ? null : this.properties().tier();
+        return this.innerProperties() == null ? null : this.innerProperties().tier();
     }
 
     /**
@@ -381,10 +381,10 @@ public final class DiskUpdate {
      * @return the DiskUpdate object itself.
      */
     public DiskUpdate withTier(String tier) {
-        if (this.properties() == null) {
-            this.properties = new DiskUpdateProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiskUpdateProperties();
         }
-        this.properties().withTier(tier);
+        this.innerProperties().withTier(tier);
         return this;
     }
 
@@ -395,7 +395,7 @@ public final class DiskUpdate {
      * @return the burstingEnabled value.
      */
     public Boolean burstingEnabled() {
-        return this.properties() == null ? null : this.properties().burstingEnabled();
+        return this.innerProperties() == null ? null : this.innerProperties().burstingEnabled();
     }
 
     /**
@@ -406,10 +406,10 @@ public final class DiskUpdate {
      * @return the DiskUpdate object itself.
      */
     public DiskUpdate withBurstingEnabled(Boolean burstingEnabled) {
-        if (this.properties() == null) {
-            this.properties = new DiskUpdateProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiskUpdateProperties();
         }
-        this.properties().withBurstingEnabled(burstingEnabled);
+        this.innerProperties().withBurstingEnabled(burstingEnabled);
         return this;
     }
 
@@ -419,7 +419,7 @@ public final class DiskUpdate {
      * @return the purchasePlan value.
      */
     public PurchasePlanAutoGenerated purchasePlan() {
-        return this.properties() == null ? null : this.properties().purchasePlan();
+        return this.innerProperties() == null ? null : this.innerProperties().purchasePlan();
     }
 
     /**
@@ -429,10 +429,10 @@ public final class DiskUpdate {
      * @return the DiskUpdate object itself.
      */
     public DiskUpdate withPurchasePlan(PurchasePlanAutoGenerated purchasePlan) {
-        if (this.properties() == null) {
-            this.properties = new DiskUpdateProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiskUpdateProperties();
         }
-        this.properties().withPurchasePlan(purchasePlan);
+        this.innerProperties().withPurchasePlan(purchasePlan);
         return this;
     }
 
@@ -442,7 +442,7 @@ public final class DiskUpdate {
      * @return the propertyUpdatesInProgress value.
      */
     public PropertyUpdatesInProgress propertyUpdatesInProgress() {
-        return this.properties() == null ? null : this.properties().propertyUpdatesInProgress();
+        return this.innerProperties() == null ? null : this.innerProperties().propertyUpdatesInProgress();
     }
 
     /**
@@ -451,7 +451,7 @@ public final class DiskUpdate {
      * @return the supportsHibernation value.
      */
     public Boolean supportsHibernation() {
-        return this.properties() == null ? null : this.properties().supportsHibernation();
+        return this.innerProperties() == null ? null : this.innerProperties().supportsHibernation();
     }
 
     /**
@@ -461,10 +461,10 @@ public final class DiskUpdate {
      * @return the DiskUpdate object itself.
      */
     public DiskUpdate withSupportsHibernation(Boolean supportsHibernation) {
-        if (this.properties() == null) {
-            this.properties = new DiskUpdateProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiskUpdateProperties();
         }
-        this.properties().withSupportsHibernation(supportsHibernation);
+        this.innerProperties().withSupportsHibernation(supportsHibernation);
         return this;
     }
 
@@ -474,8 +474,8 @@ public final class DiskUpdate {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (properties() != null) {
-            properties().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
         if (sku() != null) {
             sku().validate();

@@ -25,7 +25,7 @@ public final class AvailabilitySetUpdate extends UpdateResource {
      * The instance view of a resource.
      */
     @JsonProperty(value = "properties")
-    private AvailabilitySetProperties properties;
+    private AvailabilitySetProperties innerProperties;
 
     /*
      * Sku of the availability set
@@ -34,12 +34,12 @@ public final class AvailabilitySetUpdate extends UpdateResource {
     private Sku sku;
 
     /**
-     * Get the properties property: The instance view of a resource.
+     * Get the innerProperties property: The instance view of a resource.
      *
-     * @return the properties value.
+     * @return the innerProperties value.
      */
-    private AvailabilitySetProperties properties() {
-        return this.properties;
+    private AvailabilitySetProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -75,7 +75,7 @@ public final class AvailabilitySetUpdate extends UpdateResource {
      * @return the platformUpdateDomainCount value.
      */
     public Integer platformUpdateDomainCount() {
-        return this.properties() == null ? null : this.properties().platformUpdateDomainCount();
+        return this.innerProperties() == null ? null : this.innerProperties().platformUpdateDomainCount();
     }
 
     /**
@@ -85,10 +85,10 @@ public final class AvailabilitySetUpdate extends UpdateResource {
      * @return the AvailabilitySetUpdate object itself.
      */
     public AvailabilitySetUpdate withPlatformUpdateDomainCount(Integer platformUpdateDomainCount) {
-        if (this.properties() == null) {
-            this.properties = new AvailabilitySetProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AvailabilitySetProperties();
         }
-        this.properties().withPlatformUpdateDomainCount(platformUpdateDomainCount);
+        this.innerProperties().withPlatformUpdateDomainCount(platformUpdateDomainCount);
         return this;
     }
 
@@ -98,7 +98,7 @@ public final class AvailabilitySetUpdate extends UpdateResource {
      * @return the platformFaultDomainCount value.
      */
     public Integer platformFaultDomainCount() {
-        return this.properties() == null ? null : this.properties().platformFaultDomainCount();
+        return this.innerProperties() == null ? null : this.innerProperties().platformFaultDomainCount();
     }
 
     /**
@@ -108,10 +108,10 @@ public final class AvailabilitySetUpdate extends UpdateResource {
      * @return the AvailabilitySetUpdate object itself.
      */
     public AvailabilitySetUpdate withPlatformFaultDomainCount(Integer platformFaultDomainCount) {
-        if (this.properties() == null) {
-            this.properties = new AvailabilitySetProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AvailabilitySetProperties();
         }
-        this.properties().withPlatformFaultDomainCount(platformFaultDomainCount);
+        this.innerProperties().withPlatformFaultDomainCount(platformFaultDomainCount);
         return this;
     }
 
@@ -121,7 +121,7 @@ public final class AvailabilitySetUpdate extends UpdateResource {
      * @return the virtualMachines value.
      */
     public List<SubResource> virtualMachines() {
-        return this.properties() == null ? null : this.properties().virtualMachines();
+        return this.innerProperties() == null ? null : this.innerProperties().virtualMachines();
     }
 
     /**
@@ -131,10 +131,10 @@ public final class AvailabilitySetUpdate extends UpdateResource {
      * @return the AvailabilitySetUpdate object itself.
      */
     public AvailabilitySetUpdate withVirtualMachines(List<SubResource> virtualMachines) {
-        if (this.properties() == null) {
-            this.properties = new AvailabilitySetProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AvailabilitySetProperties();
         }
-        this.properties().withVirtualMachines(virtualMachines);
+        this.innerProperties().withVirtualMachines(virtualMachines);
         return this;
     }
 
@@ -145,7 +145,7 @@ public final class AvailabilitySetUpdate extends UpdateResource {
      * @return the proximityPlacementGroup value.
      */
     public SubResource proximityPlacementGroup() {
-        return this.properties() == null ? null : this.properties().proximityPlacementGroup();
+        return this.innerProperties() == null ? null : this.innerProperties().proximityPlacementGroup();
     }
 
     /**
@@ -156,10 +156,10 @@ public final class AvailabilitySetUpdate extends UpdateResource {
      * @return the AvailabilitySetUpdate object itself.
      */
     public AvailabilitySetUpdate withProximityPlacementGroup(SubResource proximityPlacementGroup) {
-        if (this.properties() == null) {
-            this.properties = new AvailabilitySetProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AvailabilitySetProperties();
         }
-        this.properties().withProximityPlacementGroup(proximityPlacementGroup);
+        this.innerProperties().withProximityPlacementGroup(proximityPlacementGroup);
         return this;
     }
 
@@ -169,7 +169,7 @@ public final class AvailabilitySetUpdate extends UpdateResource {
      * @return the statuses value.
      */
     public List<InstanceViewStatus> statuses() {
-        return this.properties() == null ? null : this.properties().statuses();
+        return this.innerProperties() == null ? null : this.innerProperties().statuses();
     }
 
     /**
@@ -180,8 +180,8 @@ public final class AvailabilitySetUpdate extends UpdateResource {
     @Override
     public void validate() {
         super.validate();
-        if (properties() != null) {
-            properties().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
         if (sku() != null) {
             sku().validate();

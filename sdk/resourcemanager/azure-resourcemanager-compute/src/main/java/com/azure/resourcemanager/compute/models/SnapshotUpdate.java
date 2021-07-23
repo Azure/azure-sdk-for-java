@@ -21,7 +21,7 @@ public final class SnapshotUpdate {
      * Snapshot resource update properties.
      */
     @JsonProperty(value = "properties")
-    private SnapshotUpdateProperties properties;
+    private SnapshotUpdateProperties innerProperties;
 
     /*
      * Resource tags
@@ -40,12 +40,12 @@ public final class SnapshotUpdate {
     private SnapshotSku sku;
 
     /**
-     * Get the properties property: Snapshot resource update properties.
+     * Get the innerProperties property: Snapshot resource update properties.
      *
-     * @return the properties value.
+     * @return the innerProperties value.
      */
-    private SnapshotUpdateProperties properties() {
-        return this.properties;
+    private SnapshotUpdateProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -98,7 +98,7 @@ public final class SnapshotUpdate {
      * @return the osType value.
      */
     public OperatingSystemTypes osType() {
-        return this.properties() == null ? null : this.properties().osType();
+        return this.innerProperties() == null ? null : this.innerProperties().osType();
     }
 
     /**
@@ -108,10 +108,10 @@ public final class SnapshotUpdate {
      * @return the SnapshotUpdate object itself.
      */
     public SnapshotUpdate withOsType(OperatingSystemTypes osType) {
-        if (this.properties() == null) {
-            this.properties = new SnapshotUpdateProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SnapshotUpdateProperties();
         }
-        this.properties().withOsType(osType);
+        this.innerProperties().withOsType(osType);
         return this;
     }
 
@@ -124,7 +124,7 @@ public final class SnapshotUpdate {
      * @return the diskSizeGB value.
      */
     public Integer diskSizeGB() {
-        return this.properties() == null ? null : this.properties().diskSizeGB();
+        return this.innerProperties() == null ? null : this.innerProperties().diskSizeGB();
     }
 
     /**
@@ -137,10 +137,10 @@ public final class SnapshotUpdate {
      * @return the SnapshotUpdate object itself.
      */
     public SnapshotUpdate withDiskSizeGB(Integer diskSizeGB) {
-        if (this.properties() == null) {
-            this.properties = new SnapshotUpdateProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SnapshotUpdateProperties();
         }
-        this.properties().withDiskSizeGB(diskSizeGB);
+        this.innerProperties().withDiskSizeGB(diskSizeGB);
         return this;
     }
 
@@ -151,7 +151,7 @@ public final class SnapshotUpdate {
      * @return the encryptionSettingsCollection value.
      */
     public EncryptionSettingsCollection encryptionSettingsCollection() {
-        return this.properties() == null ? null : this.properties().encryptionSettingsCollection();
+        return this.innerProperties() == null ? null : this.innerProperties().encryptionSettingsCollection();
     }
 
     /**
@@ -162,10 +162,10 @@ public final class SnapshotUpdate {
      * @return the SnapshotUpdate object itself.
      */
     public SnapshotUpdate withEncryptionSettingsCollection(EncryptionSettingsCollection encryptionSettingsCollection) {
-        if (this.properties() == null) {
-            this.properties = new SnapshotUpdateProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SnapshotUpdateProperties();
         }
-        this.properties().withEncryptionSettingsCollection(encryptionSettingsCollection);
+        this.innerProperties().withEncryptionSettingsCollection(encryptionSettingsCollection);
         return this;
     }
 
@@ -176,7 +176,7 @@ public final class SnapshotUpdate {
      * @return the encryption value.
      */
     public Encryption encryption() {
-        return this.properties() == null ? null : this.properties().encryption();
+        return this.innerProperties() == null ? null : this.innerProperties().encryption();
     }
 
     /**
@@ -187,10 +187,10 @@ public final class SnapshotUpdate {
      * @return the SnapshotUpdate object itself.
      */
     public SnapshotUpdate withEncryption(Encryption encryption) {
-        if (this.properties() == null) {
-            this.properties = new SnapshotUpdateProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SnapshotUpdateProperties();
         }
-        this.properties().withEncryption(encryption);
+        this.innerProperties().withEncryption(encryption);
         return this;
     }
 
@@ -200,7 +200,7 @@ public final class SnapshotUpdate {
      * @return the networkAccessPolicy value.
      */
     public NetworkAccessPolicy networkAccessPolicy() {
-        return this.properties() == null ? null : this.properties().networkAccessPolicy();
+        return this.innerProperties() == null ? null : this.innerProperties().networkAccessPolicy();
     }
 
     /**
@@ -210,10 +210,10 @@ public final class SnapshotUpdate {
      * @return the SnapshotUpdate object itself.
      */
     public SnapshotUpdate withNetworkAccessPolicy(NetworkAccessPolicy networkAccessPolicy) {
-        if (this.properties() == null) {
-            this.properties = new SnapshotUpdateProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SnapshotUpdateProperties();
         }
-        this.properties().withNetworkAccessPolicy(networkAccessPolicy);
+        this.innerProperties().withNetworkAccessPolicy(networkAccessPolicy);
         return this;
     }
 
@@ -223,7 +223,7 @@ public final class SnapshotUpdate {
      * @return the diskAccessId value.
      */
     public String diskAccessId() {
-        return this.properties() == null ? null : this.properties().diskAccessId();
+        return this.innerProperties() == null ? null : this.innerProperties().diskAccessId();
     }
 
     /**
@@ -233,10 +233,10 @@ public final class SnapshotUpdate {
      * @return the SnapshotUpdate object itself.
      */
     public SnapshotUpdate withDiskAccessId(String diskAccessId) {
-        if (this.properties() == null) {
-            this.properties = new SnapshotUpdateProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SnapshotUpdateProperties();
         }
-        this.properties().withDiskAccessId(diskAccessId);
+        this.innerProperties().withDiskAccessId(diskAccessId);
         return this;
     }
 
@@ -246,7 +246,7 @@ public final class SnapshotUpdate {
      * @return the supportsHibernation value.
      */
     public Boolean supportsHibernation() {
-        return this.properties() == null ? null : this.properties().supportsHibernation();
+        return this.innerProperties() == null ? null : this.innerProperties().supportsHibernation();
     }
 
     /**
@@ -256,10 +256,10 @@ public final class SnapshotUpdate {
      * @return the SnapshotUpdate object itself.
      */
     public SnapshotUpdate withSupportsHibernation(Boolean supportsHibernation) {
-        if (this.properties() == null) {
-            this.properties = new SnapshotUpdateProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SnapshotUpdateProperties();
         }
-        this.properties().withSupportsHibernation(supportsHibernation);
+        this.innerProperties().withSupportsHibernation(supportsHibernation);
         return this;
     }
 
@@ -269,8 +269,8 @@ public final class SnapshotUpdate {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (properties() != null) {
-            properties().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
         if (sku() != null) {
             sku().validate();

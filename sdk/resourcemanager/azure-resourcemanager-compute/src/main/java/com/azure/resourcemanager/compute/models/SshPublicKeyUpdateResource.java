@@ -20,15 +20,15 @@ public final class SshPublicKeyUpdateResource extends UpdateResource {
      * Properties of the SSH public key.
      */
     @JsonProperty(value = "properties")
-    private SshPublicKeyResourceProperties properties;
+    private SshPublicKeyResourceProperties innerProperties;
 
     /**
-     * Get the properties property: Properties of the SSH public key.
+     * Get the innerProperties property: Properties of the SSH public key.
      *
-     * @return the properties value.
+     * @return the innerProperties value.
      */
-    private SshPublicKeyResourceProperties properties() {
-        return this.properties;
+    private SshPublicKeyResourceProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -47,7 +47,7 @@ public final class SshPublicKeyUpdateResource extends UpdateResource {
      * @return the publicKey value.
      */
     public String publicKey() {
-        return this.properties() == null ? null : this.properties().publicKey();
+        return this.innerProperties() == null ? null : this.innerProperties().publicKey();
     }
 
     /**
@@ -60,10 +60,10 @@ public final class SshPublicKeyUpdateResource extends UpdateResource {
      * @return the SshPublicKeyUpdateResource object itself.
      */
     public SshPublicKeyUpdateResource withPublicKey(String publicKey) {
-        if (this.properties() == null) {
-            this.properties = new SshPublicKeyResourceProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SshPublicKeyResourceProperties();
         }
-        this.properties().withPublicKey(publicKey);
+        this.innerProperties().withPublicKey(publicKey);
         return this;
     }
 
@@ -75,8 +75,8 @@ public final class SshPublicKeyUpdateResource extends UpdateResource {
     @Override
     public void validate() {
         super.validate();
-        if (properties() != null) {
-            properties().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

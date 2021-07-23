@@ -28,7 +28,7 @@ public final class VirtualMachineScaleSetIpConfiguration extends SubResource {
      * properties.
      */
     @JsonProperty(value = "properties")
-    private VirtualMachineScaleSetIpConfigurationProperties properties;
+    private VirtualMachineScaleSetIpConfigurationProperties innerProperties;
 
     /**
      * Get the name property: The IP configuration name.
@@ -51,12 +51,13 @@ public final class VirtualMachineScaleSetIpConfiguration extends SubResource {
     }
 
     /**
-     * Get the properties property: Describes a virtual machine scale set network profile's IP configuration properties.
+     * Get the innerProperties property: Describes a virtual machine scale set network profile's IP configuration
+     * properties.
      *
-     * @return the properties value.
+     * @return the innerProperties value.
      */
-    private VirtualMachineScaleSetIpConfigurationProperties properties() {
-        return this.properties;
+    private VirtualMachineScaleSetIpConfigurationProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -72,7 +73,7 @@ public final class VirtualMachineScaleSetIpConfiguration extends SubResource {
      * @return the subnet value.
      */
     public ApiEntityReference subnet() {
-        return this.properties() == null ? null : this.properties().subnet();
+        return this.innerProperties() == null ? null : this.innerProperties().subnet();
     }
 
     /**
@@ -82,10 +83,10 @@ public final class VirtualMachineScaleSetIpConfiguration extends SubResource {
      * @return the VirtualMachineScaleSetIpConfiguration object itself.
      */
     public VirtualMachineScaleSetIpConfiguration withSubnet(ApiEntityReference subnet) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachineScaleSetIpConfigurationProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetIpConfigurationProperties();
         }
-        this.properties().withSubnet(subnet);
+        this.innerProperties().withSubnet(subnet);
         return this;
     }
 
@@ -96,7 +97,7 @@ public final class VirtualMachineScaleSetIpConfiguration extends SubResource {
      * @return the primary value.
      */
     public Boolean primary() {
-        return this.properties() == null ? null : this.properties().primary();
+        return this.innerProperties() == null ? null : this.innerProperties().primary();
     }
 
     /**
@@ -107,10 +108,10 @@ public final class VirtualMachineScaleSetIpConfiguration extends SubResource {
      * @return the VirtualMachineScaleSetIpConfiguration object itself.
      */
     public VirtualMachineScaleSetIpConfiguration withPrimary(Boolean primary) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachineScaleSetIpConfigurationProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetIpConfigurationProperties();
         }
-        this.properties().withPrimary(primary);
+        this.innerProperties().withPrimary(primary);
         return this;
     }
 
@@ -120,7 +121,7 @@ public final class VirtualMachineScaleSetIpConfiguration extends SubResource {
      * @return the publicIpAddressConfiguration value.
      */
     public VirtualMachineScaleSetPublicIpAddressConfiguration publicIpAddressConfiguration() {
-        return this.properties() == null ? null : this.properties().publicIpAddressConfiguration();
+        return this.innerProperties() == null ? null : this.innerProperties().publicIpAddressConfiguration();
     }
 
     /**
@@ -131,10 +132,10 @@ public final class VirtualMachineScaleSetIpConfiguration extends SubResource {
      */
     public VirtualMachineScaleSetIpConfiguration withPublicIpAddressConfiguration(
         VirtualMachineScaleSetPublicIpAddressConfiguration publicIpAddressConfiguration) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachineScaleSetIpConfigurationProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetIpConfigurationProperties();
         }
-        this.properties().withPublicIpAddressConfiguration(publicIpAddressConfiguration);
+        this.innerProperties().withPublicIpAddressConfiguration(publicIpAddressConfiguration);
         return this;
     }
 
@@ -145,7 +146,7 @@ public final class VirtualMachineScaleSetIpConfiguration extends SubResource {
      * @return the privateIpAddressVersion value.
      */
     public IpVersion privateIpAddressVersion() {
-        return this.properties() == null ? null : this.properties().privateIpAddressVersion();
+        return this.innerProperties() == null ? null : this.innerProperties().privateIpAddressVersion();
     }
 
     /**
@@ -156,10 +157,10 @@ public final class VirtualMachineScaleSetIpConfiguration extends SubResource {
      * @return the VirtualMachineScaleSetIpConfiguration object itself.
      */
     public VirtualMachineScaleSetIpConfiguration withPrivateIpAddressVersion(IpVersion privateIpAddressVersion) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachineScaleSetIpConfigurationProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetIpConfigurationProperties();
         }
-        this.properties().withPrivateIpAddressVersion(privateIpAddressVersion);
+        this.innerProperties().withPrivateIpAddressVersion(privateIpAddressVersion);
         return this;
     }
 
@@ -171,7 +172,7 @@ public final class VirtualMachineScaleSetIpConfiguration extends SubResource {
      * @return the applicationGatewayBackendAddressPools value.
      */
     public List<SubResource> applicationGatewayBackendAddressPools() {
-        return this.properties() == null ? null : this.properties().applicationGatewayBackendAddressPools();
+        return this.innerProperties() == null ? null : this.innerProperties().applicationGatewayBackendAddressPools();
     }
 
     /**
@@ -184,10 +185,10 @@ public final class VirtualMachineScaleSetIpConfiguration extends SubResource {
      */
     public VirtualMachineScaleSetIpConfiguration withApplicationGatewayBackendAddressPools(
         List<SubResource> applicationGatewayBackendAddressPools) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachineScaleSetIpConfigurationProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetIpConfigurationProperties();
         }
-        this.properties().withApplicationGatewayBackendAddressPools(applicationGatewayBackendAddressPools);
+        this.innerProperties().withApplicationGatewayBackendAddressPools(applicationGatewayBackendAddressPools);
         return this;
     }
 
@@ -197,7 +198,7 @@ public final class VirtualMachineScaleSetIpConfiguration extends SubResource {
      * @return the applicationSecurityGroups value.
      */
     public List<SubResource> applicationSecurityGroups() {
-        return this.properties() == null ? null : this.properties().applicationSecurityGroups();
+        return this.innerProperties() == null ? null : this.innerProperties().applicationSecurityGroups();
     }
 
     /**
@@ -208,10 +209,10 @@ public final class VirtualMachineScaleSetIpConfiguration extends SubResource {
      */
     public VirtualMachineScaleSetIpConfiguration withApplicationSecurityGroups(
         List<SubResource> applicationSecurityGroups) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachineScaleSetIpConfigurationProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetIpConfigurationProperties();
         }
-        this.properties().withApplicationSecurityGroups(applicationSecurityGroups);
+        this.innerProperties().withApplicationSecurityGroups(applicationSecurityGroups);
         return this;
     }
 
@@ -223,7 +224,7 @@ public final class VirtualMachineScaleSetIpConfiguration extends SubResource {
      * @return the loadBalancerBackendAddressPools value.
      */
     public List<SubResource> loadBalancerBackendAddressPools() {
-        return this.properties() == null ? null : this.properties().loadBalancerBackendAddressPools();
+        return this.innerProperties() == null ? null : this.innerProperties().loadBalancerBackendAddressPools();
     }
 
     /**
@@ -236,10 +237,10 @@ public final class VirtualMachineScaleSetIpConfiguration extends SubResource {
      */
     public VirtualMachineScaleSetIpConfiguration withLoadBalancerBackendAddressPools(
         List<SubResource> loadBalancerBackendAddressPools) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachineScaleSetIpConfigurationProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetIpConfigurationProperties();
         }
-        this.properties().withLoadBalancerBackendAddressPools(loadBalancerBackendAddressPools);
+        this.innerProperties().withLoadBalancerBackendAddressPools(loadBalancerBackendAddressPools);
         return this;
     }
 
@@ -251,7 +252,7 @@ public final class VirtualMachineScaleSetIpConfiguration extends SubResource {
      * @return the loadBalancerInboundNatPools value.
      */
     public List<SubResource> loadBalancerInboundNatPools() {
-        return this.properties() == null ? null : this.properties().loadBalancerInboundNatPools();
+        return this.innerProperties() == null ? null : this.innerProperties().loadBalancerInboundNatPools();
     }
 
     /**
@@ -264,10 +265,10 @@ public final class VirtualMachineScaleSetIpConfiguration extends SubResource {
      */
     public VirtualMachineScaleSetIpConfiguration withLoadBalancerInboundNatPools(
         List<SubResource> loadBalancerInboundNatPools) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachineScaleSetIpConfigurationProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetIpConfigurationProperties();
         }
-        this.properties().withLoadBalancerInboundNatPools(loadBalancerInboundNatPools);
+        this.innerProperties().withLoadBalancerInboundNatPools(loadBalancerInboundNatPools);
         return this;
     }
 
@@ -283,8 +284,8 @@ public final class VirtualMachineScaleSetIpConfiguration extends SubResource {
                     new IllegalArgumentException(
                         "Missing required property name in model VirtualMachineScaleSetIpConfiguration"));
         }
-        if (properties() != null) {
-            properties().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

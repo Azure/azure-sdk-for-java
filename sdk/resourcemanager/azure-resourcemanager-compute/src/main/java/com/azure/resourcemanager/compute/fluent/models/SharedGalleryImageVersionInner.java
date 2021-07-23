@@ -20,15 +20,15 @@ public final class SharedGalleryImageVersionInner extends PirSharedGalleryResour
      * Describes the properties of a gallery image version.
      */
     @JsonProperty(value = "properties")
-    private SharedGalleryImageVersionProperties properties;
+    private SharedGalleryImageVersionProperties innerProperties;
 
     /**
-     * Get the properties property: Describes the properties of a gallery image version.
+     * Get the innerProperties property: Describes the properties of a gallery image version.
      *
-     * @return the properties value.
+     * @return the innerProperties value.
      */
-    private SharedGalleryImageVersionProperties properties() {
-        return this.properties;
+    private SharedGalleryImageVersionProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -45,7 +45,7 @@ public final class SharedGalleryImageVersionInner extends PirSharedGalleryResour
      * @return the publishedDate value.
      */
     public OffsetDateTime publishedDate() {
-        return this.properties() == null ? null : this.properties().publishedDate();
+        return this.innerProperties() == null ? null : this.innerProperties().publishedDate();
     }
 
     /**
@@ -56,10 +56,10 @@ public final class SharedGalleryImageVersionInner extends PirSharedGalleryResour
      * @return the SharedGalleryImageVersionInner object itself.
      */
     public SharedGalleryImageVersionInner withPublishedDate(OffsetDateTime publishedDate) {
-        if (this.properties() == null) {
-            this.properties = new SharedGalleryImageVersionProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SharedGalleryImageVersionProperties();
         }
-        this.properties().withPublishedDate(publishedDate);
+        this.innerProperties().withPublishedDate(publishedDate);
         return this;
     }
 
@@ -70,7 +70,7 @@ public final class SharedGalleryImageVersionInner extends PirSharedGalleryResour
      * @return the endOfLifeDate value.
      */
     public OffsetDateTime endOfLifeDate() {
-        return this.properties() == null ? null : this.properties().endOfLifeDate();
+        return this.innerProperties() == null ? null : this.innerProperties().endOfLifeDate();
     }
 
     /**
@@ -81,10 +81,10 @@ public final class SharedGalleryImageVersionInner extends PirSharedGalleryResour
      * @return the SharedGalleryImageVersionInner object itself.
      */
     public SharedGalleryImageVersionInner withEndOfLifeDate(OffsetDateTime endOfLifeDate) {
-        if (this.properties() == null) {
-            this.properties = new SharedGalleryImageVersionProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SharedGalleryImageVersionProperties();
         }
-        this.properties().withEndOfLifeDate(endOfLifeDate);
+        this.innerProperties().withEndOfLifeDate(endOfLifeDate);
         return this;
     }
 
@@ -96,8 +96,8 @@ public final class SharedGalleryImageVersionInner extends PirSharedGalleryResour
     @Override
     public void validate() {
         super.validate();
-        if (properties() != null) {
-            properties().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

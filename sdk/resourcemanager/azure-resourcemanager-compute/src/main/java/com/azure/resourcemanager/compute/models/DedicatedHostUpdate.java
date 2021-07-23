@@ -22,15 +22,15 @@ public final class DedicatedHostUpdate extends UpdateResource {
      * Properties of the dedicated host.
      */
     @JsonProperty(value = "properties")
-    private DedicatedHostProperties properties;
+    private DedicatedHostProperties innerProperties;
 
     /**
-     * Get the properties property: Properties of the dedicated host.
+     * Get the innerProperties property: Properties of the dedicated host.
      *
-     * @return the properties value.
+     * @return the innerProperties value.
      */
-    private DedicatedHostProperties properties() {
-        return this.properties;
+    private DedicatedHostProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -46,7 +46,7 @@ public final class DedicatedHostUpdate extends UpdateResource {
      * @return the platformFaultDomain value.
      */
     public Integer platformFaultDomain() {
-        return this.properties() == null ? null : this.properties().platformFaultDomain();
+        return this.innerProperties() == null ? null : this.innerProperties().platformFaultDomain();
     }
 
     /**
@@ -56,10 +56,10 @@ public final class DedicatedHostUpdate extends UpdateResource {
      * @return the DedicatedHostUpdate object itself.
      */
     public DedicatedHostUpdate withPlatformFaultDomain(Integer platformFaultDomain) {
-        if (this.properties() == null) {
-            this.properties = new DedicatedHostProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DedicatedHostProperties();
         }
-        this.properties().withPlatformFaultDomain(platformFaultDomain);
+        this.innerProperties().withPlatformFaultDomain(platformFaultDomain);
         return this;
     }
 
@@ -70,7 +70,7 @@ public final class DedicatedHostUpdate extends UpdateResource {
      * @return the autoReplaceOnFailure value.
      */
     public Boolean autoReplaceOnFailure() {
-        return this.properties() == null ? null : this.properties().autoReplaceOnFailure();
+        return this.innerProperties() == null ? null : this.innerProperties().autoReplaceOnFailure();
     }
 
     /**
@@ -81,10 +81,10 @@ public final class DedicatedHostUpdate extends UpdateResource {
      * @return the DedicatedHostUpdate object itself.
      */
     public DedicatedHostUpdate withAutoReplaceOnFailure(Boolean autoReplaceOnFailure) {
-        if (this.properties() == null) {
-            this.properties = new DedicatedHostProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DedicatedHostProperties();
         }
-        this.properties().withAutoReplaceOnFailure(autoReplaceOnFailure);
+        this.innerProperties().withAutoReplaceOnFailure(autoReplaceOnFailure);
         return this;
     }
 
@@ -95,7 +95,7 @@ public final class DedicatedHostUpdate extends UpdateResource {
      * @return the hostId value.
      */
     public String hostId() {
-        return this.properties() == null ? null : this.properties().hostId();
+        return this.innerProperties() == null ? null : this.innerProperties().hostId();
     }
 
     /**
@@ -104,7 +104,7 @@ public final class DedicatedHostUpdate extends UpdateResource {
      * @return the virtualMachines value.
      */
     public List<SubResourceReadOnly> virtualMachines() {
-        return this.properties() == null ? null : this.properties().virtualMachines();
+        return this.innerProperties() == null ? null : this.innerProperties().virtualMachines();
     }
 
     /**
@@ -116,7 +116,7 @@ public final class DedicatedHostUpdate extends UpdateResource {
      * @return the licenseType value.
      */
     public DedicatedHostLicenseTypes licenseType() {
-        return this.properties() == null ? null : this.properties().licenseType();
+        return this.innerProperties() == null ? null : this.innerProperties().licenseType();
     }
 
     /**
@@ -129,10 +129,10 @@ public final class DedicatedHostUpdate extends UpdateResource {
      * @return the DedicatedHostUpdate object itself.
      */
     public DedicatedHostUpdate withLicenseType(DedicatedHostLicenseTypes licenseType) {
-        if (this.properties() == null) {
-            this.properties = new DedicatedHostProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DedicatedHostProperties();
         }
-        this.properties().withLicenseType(licenseType);
+        this.innerProperties().withLicenseType(licenseType);
         return this;
     }
 
@@ -142,7 +142,7 @@ public final class DedicatedHostUpdate extends UpdateResource {
      * @return the provisioningTime value.
      */
     public OffsetDateTime provisioningTime() {
-        return this.properties() == null ? null : this.properties().provisioningTime();
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningTime();
     }
 
     /**
@@ -151,7 +151,7 @@ public final class DedicatedHostUpdate extends UpdateResource {
      * @return the provisioningState value.
      */
     public String provisioningState() {
-        return this.properties() == null ? null : this.properties().provisioningState();
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -160,7 +160,7 @@ public final class DedicatedHostUpdate extends UpdateResource {
      * @return the instanceView value.
      */
     public DedicatedHostInstanceView instanceView() {
-        return this.properties() == null ? null : this.properties().instanceView();
+        return this.innerProperties() == null ? null : this.innerProperties().instanceView();
     }
 
     /**
@@ -171,8 +171,8 @@ public final class DedicatedHostUpdate extends UpdateResource {
     @Override
     public void validate() {
         super.validate();
-        if (properties() != null) {
-            properties().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

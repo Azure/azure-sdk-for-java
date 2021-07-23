@@ -29,15 +29,15 @@ public final class SharedGalleryImageInner extends PirSharedGalleryResource {
      * Describes the properties of a gallery image definition.
      */
     @JsonProperty(value = "properties")
-    private SharedGalleryImageProperties properties;
+    private SharedGalleryImageProperties innerProperties;
 
     /**
-     * Get the properties property: Describes the properties of a gallery image definition.
+     * Get the innerProperties property: Describes the properties of a gallery image definition.
      *
-     * @return the properties value.
+     * @return the innerProperties value.
      */
-    private SharedGalleryImageProperties properties() {
-        return this.properties;
+    private SharedGalleryImageProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -55,7 +55,7 @@ public final class SharedGalleryImageInner extends PirSharedGalleryResource {
      * @return the osType value.
      */
     public OperatingSystemTypes osType() {
-        return this.properties() == null ? null : this.properties().osType();
+        return this.innerProperties() == null ? null : this.innerProperties().osType();
     }
 
     /**
@@ -67,10 +67,10 @@ public final class SharedGalleryImageInner extends PirSharedGalleryResource {
      * @return the SharedGalleryImageInner object itself.
      */
     public SharedGalleryImageInner withOsType(OperatingSystemTypes osType) {
-        if (this.properties() == null) {
-            this.properties = new SharedGalleryImageProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SharedGalleryImageProperties();
         }
-        this.properties().withOsType(osType);
+        this.innerProperties().withOsType(osType);
         return this;
     }
 
@@ -81,7 +81,7 @@ public final class SharedGalleryImageInner extends PirSharedGalleryResource {
      * @return the osState value.
      */
     public OperatingSystemStateTypes osState() {
-        return this.properties() == null ? null : this.properties().osState();
+        return this.innerProperties() == null ? null : this.innerProperties().osState();
     }
 
     /**
@@ -92,10 +92,10 @@ public final class SharedGalleryImageInner extends PirSharedGalleryResource {
      * @return the SharedGalleryImageInner object itself.
      */
     public SharedGalleryImageInner withOsState(OperatingSystemStateTypes osState) {
-        if (this.properties() == null) {
-            this.properties = new SharedGalleryImageProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SharedGalleryImageProperties();
         }
-        this.properties().withOsState(osState);
+        this.innerProperties().withOsState(osState);
         return this;
     }
 
@@ -106,7 +106,7 @@ public final class SharedGalleryImageInner extends PirSharedGalleryResource {
      * @return the endOfLifeDate value.
      */
     public OffsetDateTime endOfLifeDate() {
-        return this.properties() == null ? null : this.properties().endOfLifeDate();
+        return this.innerProperties() == null ? null : this.innerProperties().endOfLifeDate();
     }
 
     /**
@@ -117,10 +117,10 @@ public final class SharedGalleryImageInner extends PirSharedGalleryResource {
      * @return the SharedGalleryImageInner object itself.
      */
     public SharedGalleryImageInner withEndOfLifeDate(OffsetDateTime endOfLifeDate) {
-        if (this.properties() == null) {
-            this.properties = new SharedGalleryImageProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SharedGalleryImageProperties();
         }
-        this.properties().withEndOfLifeDate(endOfLifeDate);
+        this.innerProperties().withEndOfLifeDate(endOfLifeDate);
         return this;
     }
 
@@ -130,7 +130,7 @@ public final class SharedGalleryImageInner extends PirSharedGalleryResource {
      * @return the identifier value.
      */
     public GalleryImageIdentifier identifier() {
-        return this.properties() == null ? null : this.properties().identifier();
+        return this.innerProperties() == null ? null : this.innerProperties().identifier();
     }
 
     /**
@@ -140,10 +140,10 @@ public final class SharedGalleryImageInner extends PirSharedGalleryResource {
      * @return the SharedGalleryImageInner object itself.
      */
     public SharedGalleryImageInner withIdentifier(GalleryImageIdentifier identifier) {
-        if (this.properties() == null) {
-            this.properties = new SharedGalleryImageProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SharedGalleryImageProperties();
         }
-        this.properties().withIdentifier(identifier);
+        this.innerProperties().withIdentifier(identifier);
         return this;
     }
 
@@ -154,7 +154,7 @@ public final class SharedGalleryImageInner extends PirSharedGalleryResource {
      * @return the recommended value.
      */
     public RecommendedMachineConfiguration recommended() {
-        return this.properties() == null ? null : this.properties().recommended();
+        return this.innerProperties() == null ? null : this.innerProperties().recommended();
     }
 
     /**
@@ -165,10 +165,10 @@ public final class SharedGalleryImageInner extends PirSharedGalleryResource {
      * @return the SharedGalleryImageInner object itself.
      */
     public SharedGalleryImageInner withRecommended(RecommendedMachineConfiguration recommended) {
-        if (this.properties() == null) {
-            this.properties = new SharedGalleryImageProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SharedGalleryImageProperties();
         }
-        this.properties().withRecommended(recommended);
+        this.innerProperties().withRecommended(recommended);
         return this;
     }
 
@@ -178,7 +178,7 @@ public final class SharedGalleryImageInner extends PirSharedGalleryResource {
      * @return the disallowed value.
      */
     public Disallowed disallowed() {
-        return this.properties() == null ? null : this.properties().disallowed();
+        return this.innerProperties() == null ? null : this.innerProperties().disallowed();
     }
 
     /**
@@ -188,10 +188,10 @@ public final class SharedGalleryImageInner extends PirSharedGalleryResource {
      * @return the SharedGalleryImageInner object itself.
      */
     public SharedGalleryImageInner withDisallowed(Disallowed disallowed) {
-        if (this.properties() == null) {
-            this.properties = new SharedGalleryImageProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SharedGalleryImageProperties();
         }
-        this.properties().withDisallowed(disallowed);
+        this.innerProperties().withDisallowed(disallowed);
         return this;
     }
 
@@ -201,7 +201,7 @@ public final class SharedGalleryImageInner extends PirSharedGalleryResource {
      * @return the hyperVGeneration value.
      */
     public HyperVGeneration hyperVGeneration() {
-        return this.properties() == null ? null : this.properties().hyperVGeneration();
+        return this.innerProperties() == null ? null : this.innerProperties().hyperVGeneration();
     }
 
     /**
@@ -211,10 +211,10 @@ public final class SharedGalleryImageInner extends PirSharedGalleryResource {
      * @return the SharedGalleryImageInner object itself.
      */
     public SharedGalleryImageInner withHyperVGeneration(HyperVGeneration hyperVGeneration) {
-        if (this.properties() == null) {
-            this.properties = new SharedGalleryImageProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SharedGalleryImageProperties();
         }
-        this.properties().withHyperVGeneration(hyperVGeneration);
+        this.innerProperties().withHyperVGeneration(hyperVGeneration);
         return this;
     }
 
@@ -224,7 +224,7 @@ public final class SharedGalleryImageInner extends PirSharedGalleryResource {
      * @return the features value.
      */
     public List<GalleryImageFeature> features() {
-        return this.properties() == null ? null : this.properties().features();
+        return this.innerProperties() == null ? null : this.innerProperties().features();
     }
 
     /**
@@ -234,10 +234,10 @@ public final class SharedGalleryImageInner extends PirSharedGalleryResource {
      * @return the SharedGalleryImageInner object itself.
      */
     public SharedGalleryImageInner withFeatures(List<GalleryImageFeature> features) {
-        if (this.properties() == null) {
-            this.properties = new SharedGalleryImageProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SharedGalleryImageProperties();
         }
-        this.properties().withFeatures(features);
+        this.innerProperties().withFeatures(features);
         return this;
     }
 
@@ -248,7 +248,7 @@ public final class SharedGalleryImageInner extends PirSharedGalleryResource {
      * @return the purchasePlan value.
      */
     public ImagePurchasePlan purchasePlan() {
-        return this.properties() == null ? null : this.properties().purchasePlan();
+        return this.innerProperties() == null ? null : this.innerProperties().purchasePlan();
     }
 
     /**
@@ -259,10 +259,10 @@ public final class SharedGalleryImageInner extends PirSharedGalleryResource {
      * @return the SharedGalleryImageInner object itself.
      */
     public SharedGalleryImageInner withPurchasePlan(ImagePurchasePlan purchasePlan) {
-        if (this.properties() == null) {
-            this.properties = new SharedGalleryImageProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SharedGalleryImageProperties();
         }
-        this.properties().withPurchasePlan(purchasePlan);
+        this.innerProperties().withPurchasePlan(purchasePlan);
         return this;
     }
 
@@ -274,8 +274,8 @@ public final class SharedGalleryImageInner extends PirSharedGalleryResource {
     @Override
     public void validate() {
         super.validate();
-        if (properties() != null) {
-            properties().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

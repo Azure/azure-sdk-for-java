@@ -28,7 +28,7 @@ public final class VirtualMachineScaleSetUpdatePublicIpAddressConfiguration {
      * PublicIPAddress configuration
      */
     @JsonProperty(value = "properties")
-    private VirtualMachineScaleSetUpdatePublicIpAddressConfigurationProperties properties;
+    private VirtualMachineScaleSetUpdatePublicIpAddressConfigurationProperties innerProperties;
 
     /**
      * Get the name property: The publicIP address configuration name.
@@ -51,13 +51,13 @@ public final class VirtualMachineScaleSetUpdatePublicIpAddressConfiguration {
     }
 
     /**
-     * Get the properties property: Describes a virtual machines scale set IP Configuration's PublicIPAddress
+     * Get the innerProperties property: Describes a virtual machines scale set IP Configuration's PublicIPAddress
      * configuration.
      *
-     * @return the properties value.
+     * @return the innerProperties value.
      */
-    private VirtualMachineScaleSetUpdatePublicIpAddressConfigurationProperties properties() {
-        return this.properties;
+    private VirtualMachineScaleSetUpdatePublicIpAddressConfigurationProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -66,7 +66,7 @@ public final class VirtualMachineScaleSetUpdatePublicIpAddressConfiguration {
      * @return the idleTimeoutInMinutes value.
      */
     public Integer idleTimeoutInMinutes() {
-        return this.properties() == null ? null : this.properties().idleTimeoutInMinutes();
+        return this.innerProperties() == null ? null : this.innerProperties().idleTimeoutInMinutes();
     }
 
     /**
@@ -77,10 +77,10 @@ public final class VirtualMachineScaleSetUpdatePublicIpAddressConfiguration {
      */
     public VirtualMachineScaleSetUpdatePublicIpAddressConfiguration withIdleTimeoutInMinutes(
         Integer idleTimeoutInMinutes) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachineScaleSetUpdatePublicIpAddressConfigurationProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetUpdatePublicIpAddressConfigurationProperties();
         }
-        this.properties().withIdleTimeoutInMinutes(idleTimeoutInMinutes);
+        this.innerProperties().withIdleTimeoutInMinutes(idleTimeoutInMinutes);
         return this;
     }
 
@@ -90,7 +90,7 @@ public final class VirtualMachineScaleSetUpdatePublicIpAddressConfiguration {
      * @return the dnsSettings value.
      */
     public VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings dnsSettings() {
-        return this.properties() == null ? null : this.properties().dnsSettings();
+        return this.innerProperties() == null ? null : this.innerProperties().dnsSettings();
     }
 
     /**
@@ -101,10 +101,10 @@ public final class VirtualMachineScaleSetUpdatePublicIpAddressConfiguration {
      */
     public VirtualMachineScaleSetUpdatePublicIpAddressConfiguration withDnsSettings(
         VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings dnsSettings) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachineScaleSetUpdatePublicIpAddressConfigurationProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetUpdatePublicIpAddressConfigurationProperties();
         }
-        this.properties().withDnsSettings(dnsSettings);
+        this.innerProperties().withDnsSettings(dnsSettings);
         return this;
     }
 
@@ -114,7 +114,7 @@ public final class VirtualMachineScaleSetUpdatePublicIpAddressConfiguration {
      * @return the deleteOption value.
      */
     public DeleteOptions deleteOption() {
-        return this.properties() == null ? null : this.properties().deleteOption();
+        return this.innerProperties() == null ? null : this.innerProperties().deleteOption();
     }
 
     /**
@@ -124,10 +124,10 @@ public final class VirtualMachineScaleSetUpdatePublicIpAddressConfiguration {
      * @return the VirtualMachineScaleSetUpdatePublicIpAddressConfiguration object itself.
      */
     public VirtualMachineScaleSetUpdatePublicIpAddressConfiguration withDeleteOption(DeleteOptions deleteOption) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachineScaleSetUpdatePublicIpAddressConfigurationProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetUpdatePublicIpAddressConfigurationProperties();
         }
-        this.properties().withDeleteOption(deleteOption);
+        this.innerProperties().withDeleteOption(deleteOption);
         return this;
     }
 
@@ -137,8 +137,8 @@ public final class VirtualMachineScaleSetUpdatePublicIpAddressConfiguration {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (properties() != null) {
-            properties().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

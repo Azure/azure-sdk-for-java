@@ -24,15 +24,15 @@ public final class RollingUpgradeStatusInfoInner extends Resource {
      * The status of the latest virtual machine scale set rolling upgrade.
      */
     @JsonProperty(value = "properties")
-    private RollingUpgradeStatusInfoProperties properties;
+    private RollingUpgradeStatusInfoProperties innerProperties;
 
     /**
-     * Get the properties property: The status of the latest virtual machine scale set rolling upgrade.
+     * Get the innerProperties property: The status of the latest virtual machine scale set rolling upgrade.
      *
-     * @return the properties value.
+     * @return the innerProperties value.
      */
-    private RollingUpgradeStatusInfoProperties properties() {
-        return this.properties;
+    private RollingUpgradeStatusInfoProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -55,7 +55,7 @@ public final class RollingUpgradeStatusInfoInner extends Resource {
      * @return the policy value.
      */
     public RollingUpgradePolicy policy() {
-        return this.properties() == null ? null : this.properties().policy();
+        return this.innerProperties() == null ? null : this.innerProperties().policy();
     }
 
     /**
@@ -64,7 +64,7 @@ public final class RollingUpgradeStatusInfoInner extends Resource {
      * @return the runningStatus value.
      */
     public RollingUpgradeRunningStatus runningStatus() {
-        return this.properties() == null ? null : this.properties().runningStatus();
+        return this.innerProperties() == null ? null : this.innerProperties().runningStatus();
     }
 
     /**
@@ -73,7 +73,7 @@ public final class RollingUpgradeStatusInfoInner extends Resource {
      * @return the progress value.
      */
     public RollingUpgradeProgressInfo progress() {
-        return this.properties() == null ? null : this.properties().progress();
+        return this.innerProperties() == null ? null : this.innerProperties().progress();
     }
 
     /**
@@ -82,7 +82,7 @@ public final class RollingUpgradeStatusInfoInner extends Resource {
      * @return the error value.
      */
     public ApiError error() {
-        return this.properties() == null ? null : this.properties().error();
+        return this.innerProperties() == null ? null : this.innerProperties().error();
     }
 
     /**
@@ -91,8 +91,8 @@ public final class RollingUpgradeStatusInfoInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (properties() != null) {
-            properties().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

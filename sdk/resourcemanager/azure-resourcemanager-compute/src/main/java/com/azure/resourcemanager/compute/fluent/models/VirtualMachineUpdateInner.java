@@ -47,7 +47,7 @@ public final class VirtualMachineUpdateInner extends UpdateResource {
      * Describes the properties of a Virtual Machine.
      */
     @JsonProperty(value = "properties")
-    private VirtualMachinePropertiesInner properties;
+    private VirtualMachinePropertiesInner innerProperties;
 
     /*
      * The identity of the virtual machine, if configured.
@@ -90,12 +90,12 @@ public final class VirtualMachineUpdateInner extends UpdateResource {
     }
 
     /**
-     * Get the properties property: Describes the properties of a Virtual Machine.
+     * Get the innerProperties property: Describes the properties of a Virtual Machine.
      *
-     * @return the properties value.
+     * @return the innerProperties value.
      */
-    private VirtualMachinePropertiesInner properties() {
-        return this.properties;
+    private VirtualMachinePropertiesInner innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -151,7 +151,7 @@ public final class VirtualMachineUpdateInner extends UpdateResource {
      * @return the hardwareProfile value.
      */
     public HardwareProfile hardwareProfile() {
-        return this.properties() == null ? null : this.properties().hardwareProfile();
+        return this.innerProperties() == null ? null : this.innerProperties().hardwareProfile();
     }
 
     /**
@@ -161,10 +161,10 @@ public final class VirtualMachineUpdateInner extends UpdateResource {
      * @return the VirtualMachineUpdateInner object itself.
      */
     public VirtualMachineUpdateInner withHardwareProfile(HardwareProfile hardwareProfile) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachinePropertiesInner();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachinePropertiesInner();
         }
-        this.properties().withHardwareProfile(hardwareProfile);
+        this.innerProperties().withHardwareProfile(hardwareProfile);
         return this;
     }
 
@@ -174,7 +174,7 @@ public final class VirtualMachineUpdateInner extends UpdateResource {
      * @return the storageProfile value.
      */
     public StorageProfile storageProfile() {
-        return this.properties() == null ? null : this.properties().storageProfile();
+        return this.innerProperties() == null ? null : this.innerProperties().storageProfile();
     }
 
     /**
@@ -184,10 +184,10 @@ public final class VirtualMachineUpdateInner extends UpdateResource {
      * @return the VirtualMachineUpdateInner object itself.
      */
     public VirtualMachineUpdateInner withStorageProfile(StorageProfile storageProfile) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachinePropertiesInner();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachinePropertiesInner();
         }
-        this.properties().withStorageProfile(storageProfile);
+        this.innerProperties().withStorageProfile(storageProfile);
         return this;
     }
 
@@ -198,7 +198,7 @@ public final class VirtualMachineUpdateInner extends UpdateResource {
      * @return the additionalCapabilities value.
      */
     public AdditionalCapabilities additionalCapabilities() {
-        return this.properties() == null ? null : this.properties().additionalCapabilities();
+        return this.innerProperties() == null ? null : this.innerProperties().additionalCapabilities();
     }
 
     /**
@@ -209,10 +209,10 @@ public final class VirtualMachineUpdateInner extends UpdateResource {
      * @return the VirtualMachineUpdateInner object itself.
      */
     public VirtualMachineUpdateInner withAdditionalCapabilities(AdditionalCapabilities additionalCapabilities) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachinePropertiesInner();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachinePropertiesInner();
         }
-        this.properties().withAdditionalCapabilities(additionalCapabilities);
+        this.innerProperties().withAdditionalCapabilities(additionalCapabilities);
         return this;
     }
 
@@ -223,7 +223,7 @@ public final class VirtualMachineUpdateInner extends UpdateResource {
      * @return the osProfile value.
      */
     public OSProfile osProfile() {
-        return this.properties() == null ? null : this.properties().osProfile();
+        return this.innerProperties() == null ? null : this.innerProperties().osProfile();
     }
 
     /**
@@ -234,10 +234,10 @@ public final class VirtualMachineUpdateInner extends UpdateResource {
      * @return the VirtualMachineUpdateInner object itself.
      */
     public VirtualMachineUpdateInner withOsProfile(OSProfile osProfile) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachinePropertiesInner();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachinePropertiesInner();
         }
-        this.properties().withOsProfile(osProfile);
+        this.innerProperties().withOsProfile(osProfile);
         return this;
     }
 
@@ -247,7 +247,7 @@ public final class VirtualMachineUpdateInner extends UpdateResource {
      * @return the networkProfile value.
      */
     public NetworkProfile networkProfile() {
-        return this.properties() == null ? null : this.properties().networkProfile();
+        return this.innerProperties() == null ? null : this.innerProperties().networkProfile();
     }
 
     /**
@@ -257,10 +257,10 @@ public final class VirtualMachineUpdateInner extends UpdateResource {
      * @return the VirtualMachineUpdateInner object itself.
      */
     public VirtualMachineUpdateInner withNetworkProfile(NetworkProfile networkProfile) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachinePropertiesInner();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachinePropertiesInner();
         }
-        this.properties().withNetworkProfile(networkProfile);
+        this.innerProperties().withNetworkProfile(networkProfile);
         return this;
     }
 
@@ -270,7 +270,7 @@ public final class VirtualMachineUpdateInner extends UpdateResource {
      * @return the securityProfile value.
      */
     public SecurityProfile securityProfile() {
-        return this.properties() == null ? null : this.properties().securityProfile();
+        return this.innerProperties() == null ? null : this.innerProperties().securityProfile();
     }
 
     /**
@@ -280,10 +280,10 @@ public final class VirtualMachineUpdateInner extends UpdateResource {
      * @return the VirtualMachineUpdateInner object itself.
      */
     public VirtualMachineUpdateInner withSecurityProfile(SecurityProfile securityProfile) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachinePropertiesInner();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachinePropertiesInner();
         }
-        this.properties().withSecurityProfile(securityProfile);
+        this.innerProperties().withSecurityProfile(securityProfile);
         return this;
     }
 
@@ -294,7 +294,7 @@ public final class VirtualMachineUpdateInner extends UpdateResource {
      * @return the diagnosticsProfile value.
      */
     public DiagnosticsProfile diagnosticsProfile() {
-        return this.properties() == null ? null : this.properties().diagnosticsProfile();
+        return this.innerProperties() == null ? null : this.innerProperties().diagnosticsProfile();
     }
 
     /**
@@ -305,10 +305,10 @@ public final class VirtualMachineUpdateInner extends UpdateResource {
      * @return the VirtualMachineUpdateInner object itself.
      */
     public VirtualMachineUpdateInner withDiagnosticsProfile(DiagnosticsProfile diagnosticsProfile) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachinePropertiesInner();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachinePropertiesInner();
         }
-        this.properties().withDiagnosticsProfile(diagnosticsProfile);
+        this.innerProperties().withDiagnosticsProfile(diagnosticsProfile);
         return this;
     }
 
@@ -327,7 +327,7 @@ public final class VirtualMachineUpdateInner extends UpdateResource {
      * @return the availabilitySet value.
      */
     public SubResource availabilitySet() {
-        return this.properties() == null ? null : this.properties().availabilitySet();
+        return this.innerProperties() == null ? null : this.innerProperties().availabilitySet();
     }
 
     /**
@@ -346,10 +346,10 @@ public final class VirtualMachineUpdateInner extends UpdateResource {
      * @return the VirtualMachineUpdateInner object itself.
      */
     public VirtualMachineUpdateInner withAvailabilitySet(SubResource availabilitySet) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachinePropertiesInner();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachinePropertiesInner();
         }
-        this.properties().withAvailabilitySet(availabilitySet);
+        this.innerProperties().withAvailabilitySet(availabilitySet);
         return this;
     }
 
@@ -364,7 +364,7 @@ public final class VirtualMachineUpdateInner extends UpdateResource {
      * @return the virtualMachineScaleSet value.
      */
     public SubResource virtualMachineScaleSet() {
-        return this.properties() == null ? null : this.properties().virtualMachineScaleSet();
+        return this.innerProperties() == null ? null : this.innerProperties().virtualMachineScaleSet();
     }
 
     /**
@@ -379,10 +379,10 @@ public final class VirtualMachineUpdateInner extends UpdateResource {
      * @return the VirtualMachineUpdateInner object itself.
      */
     public VirtualMachineUpdateInner withVirtualMachineScaleSet(SubResource virtualMachineScaleSet) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachinePropertiesInner();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachinePropertiesInner();
         }
-        this.properties().withVirtualMachineScaleSet(virtualMachineScaleSet);
+        this.innerProperties().withVirtualMachineScaleSet(virtualMachineScaleSet);
         return this;
     }
 
@@ -393,7 +393,7 @@ public final class VirtualMachineUpdateInner extends UpdateResource {
      * @return the proximityPlacementGroup value.
      */
     public SubResource proximityPlacementGroup() {
-        return this.properties() == null ? null : this.properties().proximityPlacementGroup();
+        return this.innerProperties() == null ? null : this.innerProperties().proximityPlacementGroup();
     }
 
     /**
@@ -404,10 +404,10 @@ public final class VirtualMachineUpdateInner extends UpdateResource {
      * @return the VirtualMachineUpdateInner object itself.
      */
     public VirtualMachineUpdateInner withProximityPlacementGroup(SubResource proximityPlacementGroup) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachinePropertiesInner();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachinePropertiesInner();
         }
-        this.properties().withProximityPlacementGroup(proximityPlacementGroup);
+        this.innerProperties().withProximityPlacementGroup(proximityPlacementGroup);
         return this;
     }
 
@@ -418,7 +418,7 @@ public final class VirtualMachineUpdateInner extends UpdateResource {
      * @return the priority value.
      */
     public VirtualMachinePriorityTypes priority() {
-        return this.properties() == null ? null : this.properties().priority();
+        return this.innerProperties() == null ? null : this.innerProperties().priority();
     }
 
     /**
@@ -429,10 +429,10 @@ public final class VirtualMachineUpdateInner extends UpdateResource {
      * @return the VirtualMachineUpdateInner object itself.
      */
     public VirtualMachineUpdateInner withPriority(VirtualMachinePriorityTypes priority) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachinePropertiesInner();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachinePropertiesInner();
         }
-        this.properties().withPriority(priority);
+        this.innerProperties().withPriority(priority);
         return this;
     }
 
@@ -445,7 +445,7 @@ public final class VirtualMachineUpdateInner extends UpdateResource {
      * @return the evictionPolicy value.
      */
     public VirtualMachineEvictionPolicyTypes evictionPolicy() {
-        return this.properties() == null ? null : this.properties().evictionPolicy();
+        return this.innerProperties() == null ? null : this.innerProperties().evictionPolicy();
     }
 
     /**
@@ -458,10 +458,10 @@ public final class VirtualMachineUpdateInner extends UpdateResource {
      * @return the VirtualMachineUpdateInner object itself.
      */
     public VirtualMachineUpdateInner withEvictionPolicy(VirtualMachineEvictionPolicyTypes evictionPolicy) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachinePropertiesInner();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachinePropertiesInner();
         }
-        this.properties().withEvictionPolicy(evictionPolicy);
+        this.innerProperties().withEvictionPolicy(evictionPolicy);
         return this;
     }
 
@@ -472,7 +472,7 @@ public final class VirtualMachineUpdateInner extends UpdateResource {
      * @return the billingProfile value.
      */
     public BillingProfile billingProfile() {
-        return this.properties() == null ? null : this.properties().billingProfile();
+        return this.innerProperties() == null ? null : this.innerProperties().billingProfile();
     }
 
     /**
@@ -483,10 +483,10 @@ public final class VirtualMachineUpdateInner extends UpdateResource {
      * @return the VirtualMachineUpdateInner object itself.
      */
     public VirtualMachineUpdateInner withBillingProfile(BillingProfile billingProfile) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachinePropertiesInner();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachinePropertiesInner();
         }
-        this.properties().withBillingProfile(billingProfile);
+        this.innerProperties().withBillingProfile(billingProfile);
         return this;
     }
 
@@ -497,7 +497,7 @@ public final class VirtualMachineUpdateInner extends UpdateResource {
      * @return the host value.
      */
     public SubResource host() {
-        return this.properties() == null ? null : this.properties().host();
+        return this.innerProperties() == null ? null : this.innerProperties().host();
     }
 
     /**
@@ -508,10 +508,10 @@ public final class VirtualMachineUpdateInner extends UpdateResource {
      * @return the VirtualMachineUpdateInner object itself.
      */
     public VirtualMachineUpdateInner withHost(SubResource host) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachinePropertiesInner();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachinePropertiesInner();
         }
-        this.properties().withHost(host);
+        this.innerProperties().withHost(host);
         return this;
     }
 
@@ -523,7 +523,7 @@ public final class VirtualMachineUpdateInner extends UpdateResource {
      * @return the hostGroup value.
      */
     public SubResource hostGroup() {
-        return this.properties() == null ? null : this.properties().hostGroup();
+        return this.innerProperties() == null ? null : this.innerProperties().hostGroup();
     }
 
     /**
@@ -535,10 +535,10 @@ public final class VirtualMachineUpdateInner extends UpdateResource {
      * @return the VirtualMachineUpdateInner object itself.
      */
     public VirtualMachineUpdateInner withHostGroup(SubResource hostGroup) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachinePropertiesInner();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachinePropertiesInner();
         }
-        this.properties().withHostGroup(hostGroup);
+        this.innerProperties().withHostGroup(hostGroup);
         return this;
     }
 
@@ -548,7 +548,7 @@ public final class VirtualMachineUpdateInner extends UpdateResource {
      * @return the provisioningState value.
      */
     public String provisioningState() {
-        return this.properties() == null ? null : this.properties().provisioningState();
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -557,7 +557,7 @@ public final class VirtualMachineUpdateInner extends UpdateResource {
      * @return the instanceView value.
      */
     public VirtualMachineInstanceViewInner instanceView() {
-        return this.properties() == null ? null : this.properties().instanceView();
+        return this.innerProperties() == null ? null : this.innerProperties().instanceView();
     }
 
     /**
@@ -574,7 +574,7 @@ public final class VirtualMachineUpdateInner extends UpdateResource {
      * @return the licenseType value.
      */
     public String licenseType() {
-        return this.properties() == null ? null : this.properties().licenseType();
+        return this.innerProperties() == null ? null : this.innerProperties().licenseType();
     }
 
     /**
@@ -592,10 +592,10 @@ public final class VirtualMachineUpdateInner extends UpdateResource {
      * @return the VirtualMachineUpdateInner object itself.
      */
     public VirtualMachineUpdateInner withLicenseType(String licenseType) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachinePropertiesInner();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachinePropertiesInner();
         }
-        this.properties().withLicenseType(licenseType);
+        this.innerProperties().withLicenseType(licenseType);
         return this;
     }
 
@@ -606,7 +606,7 @@ public final class VirtualMachineUpdateInner extends UpdateResource {
      * @return the vmId value.
      */
     public String vmId() {
-        return this.properties() == null ? null : this.properties().vmId();
+        return this.innerProperties() == null ? null : this.innerProperties().vmId();
     }
 
     /**
@@ -617,7 +617,7 @@ public final class VirtualMachineUpdateInner extends UpdateResource {
      * @return the extensionsTimeBudget value.
      */
     public String extensionsTimeBudget() {
-        return this.properties() == null ? null : this.properties().extensionsTimeBudget();
+        return this.innerProperties() == null ? null : this.innerProperties().extensionsTimeBudget();
     }
 
     /**
@@ -629,10 +629,10 @@ public final class VirtualMachineUpdateInner extends UpdateResource {
      * @return the VirtualMachineUpdateInner object itself.
      */
     public VirtualMachineUpdateInner withExtensionsTimeBudget(String extensionsTimeBudget) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachinePropertiesInner();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachinePropertiesInner();
         }
-        this.properties().withExtensionsTimeBudget(extensionsTimeBudget);
+        this.innerProperties().withExtensionsTimeBudget(extensionsTimeBudget);
         return this;
     }
 
@@ -648,7 +648,7 @@ public final class VirtualMachineUpdateInner extends UpdateResource {
      * @return the platformFaultDomain value.
      */
     public Integer platformFaultDomain() {
-        return this.properties() == null ? null : this.properties().platformFaultDomain();
+        return this.innerProperties() == null ? null : this.innerProperties().platformFaultDomain();
     }
 
     /**
@@ -664,10 +664,10 @@ public final class VirtualMachineUpdateInner extends UpdateResource {
      * @return the VirtualMachineUpdateInner object itself.
      */
     public VirtualMachineUpdateInner withPlatformFaultDomain(Integer platformFaultDomain) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachinePropertiesInner();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachinePropertiesInner();
         }
-        this.properties().withPlatformFaultDomain(platformFaultDomain);
+        this.innerProperties().withPlatformFaultDomain(platformFaultDomain);
         return this;
     }
 
@@ -677,7 +677,7 @@ public final class VirtualMachineUpdateInner extends UpdateResource {
      * @return the scheduledEventsProfile value.
      */
     public ScheduledEventsProfile scheduledEventsProfile() {
-        return this.properties() == null ? null : this.properties().scheduledEventsProfile();
+        return this.innerProperties() == null ? null : this.innerProperties().scheduledEventsProfile();
     }
 
     /**
@@ -687,10 +687,10 @@ public final class VirtualMachineUpdateInner extends UpdateResource {
      * @return the VirtualMachineUpdateInner object itself.
      */
     public VirtualMachineUpdateInner withScheduledEventsProfile(ScheduledEventsProfile scheduledEventsProfile) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachinePropertiesInner();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachinePropertiesInner();
         }
-        this.properties().withScheduledEventsProfile(scheduledEventsProfile);
+        this.innerProperties().withScheduledEventsProfile(scheduledEventsProfile);
         return this;
     }
 
@@ -701,7 +701,7 @@ public final class VirtualMachineUpdateInner extends UpdateResource {
      * @return the userData value.
      */
     public String userData() {
-        return this.properties() == null ? null : this.properties().userData();
+        return this.innerProperties() == null ? null : this.innerProperties().userData();
     }
 
     /**
@@ -712,10 +712,10 @@ public final class VirtualMachineUpdateInner extends UpdateResource {
      * @return the VirtualMachineUpdateInner object itself.
      */
     public VirtualMachineUpdateInner withUserData(String userData) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachinePropertiesInner();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachinePropertiesInner();
         }
-        this.properties().withUserData(userData);
+        this.innerProperties().withUserData(userData);
         return this;
     }
 
@@ -730,8 +730,8 @@ public final class VirtualMachineUpdateInner extends UpdateResource {
         if (plan() != null) {
             plan().validate();
         }
-        if (properties() != null) {
-            properties().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
         if (identity() != null) {
             identity().validate();

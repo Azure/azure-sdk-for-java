@@ -24,15 +24,15 @@ public final class ProximityPlacementGroupInner extends Resource {
      * Describes the properties of a Proximity Placement Group.
      */
     @JsonProperty(value = "properties")
-    private ProximityPlacementGroupProperties properties;
+    private ProximityPlacementGroupProperties innerProperties;
 
     /**
-     * Get the properties property: Describes the properties of a Proximity Placement Group.
+     * Get the innerProperties property: Describes the properties of a Proximity Placement Group.
      *
-     * @return the properties value.
+     * @return the innerProperties value.
      */
-    private ProximityPlacementGroupProperties properties() {
-        return this.properties;
+    private ProximityPlacementGroupProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -57,7 +57,7 @@ public final class ProximityPlacementGroupInner extends Resource {
      * @return the proximityPlacementGroupType value.
      */
     public ProximityPlacementGroupType proximityPlacementGroupType() {
-        return this.properties() == null ? null : this.properties().proximityPlacementGroupType();
+        return this.innerProperties() == null ? null : this.innerProperties().proximityPlacementGroupType();
     }
 
     /**
@@ -70,10 +70,10 @@ public final class ProximityPlacementGroupInner extends Resource {
      */
     public ProximityPlacementGroupInner withProximityPlacementGroupType(
         ProximityPlacementGroupType proximityPlacementGroupType) {
-        if (this.properties() == null) {
-            this.properties = new ProximityPlacementGroupProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProximityPlacementGroupProperties();
         }
-        this.properties().withProximityPlacementGroupType(proximityPlacementGroupType);
+        this.innerProperties().withProximityPlacementGroupType(proximityPlacementGroupType);
         return this;
     }
 
@@ -83,7 +83,7 @@ public final class ProximityPlacementGroupInner extends Resource {
      * @return the virtualMachines value.
      */
     public List<SubResourceWithColocationStatus> virtualMachines() {
-        return this.properties() == null ? null : this.properties().virtualMachines();
+        return this.innerProperties() == null ? null : this.innerProperties().virtualMachines();
     }
 
     /**
@@ -93,7 +93,7 @@ public final class ProximityPlacementGroupInner extends Resource {
      * @return the virtualMachineScaleSets value.
      */
     public List<SubResourceWithColocationStatus> virtualMachineScaleSets() {
-        return this.properties() == null ? null : this.properties().virtualMachineScaleSets();
+        return this.innerProperties() == null ? null : this.innerProperties().virtualMachineScaleSets();
     }
 
     /**
@@ -103,7 +103,7 @@ public final class ProximityPlacementGroupInner extends Resource {
      * @return the availabilitySets value.
      */
     public List<SubResourceWithColocationStatus> availabilitySets() {
-        return this.properties() == null ? null : this.properties().availabilitySets();
+        return this.innerProperties() == null ? null : this.innerProperties().availabilitySets();
     }
 
     /**
@@ -112,7 +112,7 @@ public final class ProximityPlacementGroupInner extends Resource {
      * @return the colocationStatus value.
      */
     public InstanceViewStatus colocationStatus() {
-        return this.properties() == null ? null : this.properties().colocationStatus();
+        return this.innerProperties() == null ? null : this.innerProperties().colocationStatus();
     }
 
     /**
@@ -122,10 +122,10 @@ public final class ProximityPlacementGroupInner extends Resource {
      * @return the ProximityPlacementGroupInner object itself.
      */
     public ProximityPlacementGroupInner withColocationStatus(InstanceViewStatus colocationStatus) {
-        if (this.properties() == null) {
-            this.properties = new ProximityPlacementGroupProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProximityPlacementGroupProperties();
         }
-        this.properties().withColocationStatus(colocationStatus);
+        this.innerProperties().withColocationStatus(colocationStatus);
         return this;
     }
 
@@ -135,8 +135,8 @@ public final class ProximityPlacementGroupInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (properties() != null) {
-            properties().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

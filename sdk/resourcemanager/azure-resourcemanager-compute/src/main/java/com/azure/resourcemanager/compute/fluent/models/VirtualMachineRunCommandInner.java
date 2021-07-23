@@ -24,15 +24,15 @@ public final class VirtualMachineRunCommandInner extends Resource {
      * Describes the properties of a Virtual Machine run command.
      */
     @JsonProperty(value = "properties")
-    private VirtualMachineRunCommandProperties properties;
+    private VirtualMachineRunCommandProperties innerProperties;
 
     /**
-     * Get the properties property: Describes the properties of a Virtual Machine run command.
+     * Get the innerProperties property: Describes the properties of a Virtual Machine run command.
      *
-     * @return the properties value.
+     * @return the innerProperties value.
      */
-    private VirtualMachineRunCommandProperties properties() {
-        return this.properties;
+    private VirtualMachineRunCommandProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -55,7 +55,7 @@ public final class VirtualMachineRunCommandInner extends Resource {
      * @return the source value.
      */
     public VirtualMachineRunCommandScriptSource source() {
-        return this.properties() == null ? null : this.properties().source();
+        return this.innerProperties() == null ? null : this.innerProperties().source();
     }
 
     /**
@@ -65,10 +65,10 @@ public final class VirtualMachineRunCommandInner extends Resource {
      * @return the VirtualMachineRunCommandInner object itself.
      */
     public VirtualMachineRunCommandInner withSource(VirtualMachineRunCommandScriptSource source) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachineRunCommandProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineRunCommandProperties();
         }
-        this.properties().withSource(source);
+        this.innerProperties().withSource(source);
         return this;
     }
 
@@ -78,7 +78,7 @@ public final class VirtualMachineRunCommandInner extends Resource {
      * @return the parameters value.
      */
     public List<RunCommandInputParameter> parameters() {
-        return this.properties() == null ? null : this.properties().parameters();
+        return this.innerProperties() == null ? null : this.innerProperties().parameters();
     }
 
     /**
@@ -88,10 +88,10 @@ public final class VirtualMachineRunCommandInner extends Resource {
      * @return the VirtualMachineRunCommandInner object itself.
      */
     public VirtualMachineRunCommandInner withParameters(List<RunCommandInputParameter> parameters) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachineRunCommandProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineRunCommandProperties();
         }
-        this.properties().withParameters(parameters);
+        this.innerProperties().withParameters(parameters);
         return this;
     }
 
@@ -101,7 +101,7 @@ public final class VirtualMachineRunCommandInner extends Resource {
      * @return the protectedParameters value.
      */
     public List<RunCommandInputParameter> protectedParameters() {
-        return this.properties() == null ? null : this.properties().protectedParameters();
+        return this.innerProperties() == null ? null : this.innerProperties().protectedParameters();
     }
 
     /**
@@ -111,10 +111,10 @@ public final class VirtualMachineRunCommandInner extends Resource {
      * @return the VirtualMachineRunCommandInner object itself.
      */
     public VirtualMachineRunCommandInner withProtectedParameters(List<RunCommandInputParameter> protectedParameters) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachineRunCommandProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineRunCommandProperties();
         }
-        this.properties().withProtectedParameters(protectedParameters);
+        this.innerProperties().withProtectedParameters(protectedParameters);
         return this;
     }
 
@@ -125,7 +125,7 @@ public final class VirtualMachineRunCommandInner extends Resource {
      * @return the asyncExecution value.
      */
     public Boolean asyncExecution() {
-        return this.properties() == null ? null : this.properties().asyncExecution();
+        return this.innerProperties() == null ? null : this.innerProperties().asyncExecution();
     }
 
     /**
@@ -136,10 +136,10 @@ public final class VirtualMachineRunCommandInner extends Resource {
      * @return the VirtualMachineRunCommandInner object itself.
      */
     public VirtualMachineRunCommandInner withAsyncExecution(Boolean asyncExecution) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachineRunCommandProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineRunCommandProperties();
         }
-        this.properties().withAsyncExecution(asyncExecution);
+        this.innerProperties().withAsyncExecution(asyncExecution);
         return this;
     }
 
@@ -149,7 +149,7 @@ public final class VirtualMachineRunCommandInner extends Resource {
      * @return the runAsUser value.
      */
     public String runAsUser() {
-        return this.properties() == null ? null : this.properties().runAsUser();
+        return this.innerProperties() == null ? null : this.innerProperties().runAsUser();
     }
 
     /**
@@ -159,10 +159,10 @@ public final class VirtualMachineRunCommandInner extends Resource {
      * @return the VirtualMachineRunCommandInner object itself.
      */
     public VirtualMachineRunCommandInner withRunAsUser(String runAsUser) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachineRunCommandProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineRunCommandProperties();
         }
-        this.properties().withRunAsUser(runAsUser);
+        this.innerProperties().withRunAsUser(runAsUser);
         return this;
     }
 
@@ -172,7 +172,7 @@ public final class VirtualMachineRunCommandInner extends Resource {
      * @return the runAsPassword value.
      */
     public String runAsPassword() {
-        return this.properties() == null ? null : this.properties().runAsPassword();
+        return this.innerProperties() == null ? null : this.innerProperties().runAsPassword();
     }
 
     /**
@@ -182,10 +182,10 @@ public final class VirtualMachineRunCommandInner extends Resource {
      * @return the VirtualMachineRunCommandInner object itself.
      */
     public VirtualMachineRunCommandInner withRunAsPassword(String runAsPassword) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachineRunCommandProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineRunCommandProperties();
         }
-        this.properties().withRunAsPassword(runAsPassword);
+        this.innerProperties().withRunAsPassword(runAsPassword);
         return this;
     }
 
@@ -195,7 +195,7 @@ public final class VirtualMachineRunCommandInner extends Resource {
      * @return the timeoutInSeconds value.
      */
     public Integer timeoutInSeconds() {
-        return this.properties() == null ? null : this.properties().timeoutInSeconds();
+        return this.innerProperties() == null ? null : this.innerProperties().timeoutInSeconds();
     }
 
     /**
@@ -205,10 +205,10 @@ public final class VirtualMachineRunCommandInner extends Resource {
      * @return the VirtualMachineRunCommandInner object itself.
      */
     public VirtualMachineRunCommandInner withTimeoutInSeconds(Integer timeoutInSeconds) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachineRunCommandProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineRunCommandProperties();
         }
-        this.properties().withTimeoutInSeconds(timeoutInSeconds);
+        this.innerProperties().withTimeoutInSeconds(timeoutInSeconds);
         return this;
     }
 
@@ -218,7 +218,7 @@ public final class VirtualMachineRunCommandInner extends Resource {
      * @return the outputBlobUri value.
      */
     public String outputBlobUri() {
-        return this.properties() == null ? null : this.properties().outputBlobUri();
+        return this.innerProperties() == null ? null : this.innerProperties().outputBlobUri();
     }
 
     /**
@@ -228,10 +228,10 @@ public final class VirtualMachineRunCommandInner extends Resource {
      * @return the VirtualMachineRunCommandInner object itself.
      */
     public VirtualMachineRunCommandInner withOutputBlobUri(String outputBlobUri) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachineRunCommandProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineRunCommandProperties();
         }
-        this.properties().withOutputBlobUri(outputBlobUri);
+        this.innerProperties().withOutputBlobUri(outputBlobUri);
         return this;
     }
 
@@ -241,7 +241,7 @@ public final class VirtualMachineRunCommandInner extends Resource {
      * @return the errorBlobUri value.
      */
     public String errorBlobUri() {
-        return this.properties() == null ? null : this.properties().errorBlobUri();
+        return this.innerProperties() == null ? null : this.innerProperties().errorBlobUri();
     }
 
     /**
@@ -251,10 +251,10 @@ public final class VirtualMachineRunCommandInner extends Resource {
      * @return the VirtualMachineRunCommandInner object itself.
      */
     public VirtualMachineRunCommandInner withErrorBlobUri(String errorBlobUri) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachineRunCommandProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineRunCommandProperties();
         }
-        this.properties().withErrorBlobUri(errorBlobUri);
+        this.innerProperties().withErrorBlobUri(errorBlobUri);
         return this;
     }
 
@@ -264,7 +264,7 @@ public final class VirtualMachineRunCommandInner extends Resource {
      * @return the provisioningState value.
      */
     public String provisioningState() {
-        return this.properties() == null ? null : this.properties().provisioningState();
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -273,7 +273,7 @@ public final class VirtualMachineRunCommandInner extends Resource {
      * @return the instanceView value.
      */
     public VirtualMachineRunCommandInstanceView instanceView() {
-        return this.properties() == null ? null : this.properties().instanceView();
+        return this.innerProperties() == null ? null : this.innerProperties().instanceView();
     }
 
     /**
@@ -282,8 +282,8 @@ public final class VirtualMachineRunCommandInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (properties() != null) {
-            properties().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

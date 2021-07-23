@@ -27,7 +27,7 @@ public final class ImageInner extends Resource {
      * Describes the properties of an Image.
      */
     @JsonProperty(value = "properties")
-    private ImageProperties properties;
+    private ImageProperties innerProperties;
 
     /*
      * The extended location of the Image.
@@ -36,12 +36,12 @@ public final class ImageInner extends Resource {
     private ExtendedLocation extendedLocation;
 
     /**
-     * Get the properties property: Describes the properties of an Image.
+     * Get the innerProperties property: Describes the properties of an Image.
      *
-     * @return the properties value.
+     * @return the innerProperties value.
      */
-    private ImageProperties properties() {
-        return this.properties;
+    private ImageProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -84,7 +84,7 @@ public final class ImageInner extends Resource {
      * @return the sourceVirtualMachine value.
      */
     public SubResource sourceVirtualMachine() {
-        return this.properties() == null ? null : this.properties().sourceVirtualMachine();
+        return this.innerProperties() == null ? null : this.innerProperties().sourceVirtualMachine();
     }
 
     /**
@@ -94,10 +94,10 @@ public final class ImageInner extends Resource {
      * @return the ImageInner object itself.
      */
     public ImageInner withSourceVirtualMachine(SubResource sourceVirtualMachine) {
-        if (this.properties() == null) {
-            this.properties = new ImageProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ImageProperties();
         }
-        this.properties().withSourceVirtualMachine(sourceVirtualMachine);
+        this.innerProperties().withSourceVirtualMachine(sourceVirtualMachine);
         return this;
     }
 
@@ -107,7 +107,7 @@ public final class ImageInner extends Resource {
      * @return the storageProfile value.
      */
     public ImageStorageProfile storageProfile() {
-        return this.properties() == null ? null : this.properties().storageProfile();
+        return this.innerProperties() == null ? null : this.innerProperties().storageProfile();
     }
 
     /**
@@ -117,10 +117,10 @@ public final class ImageInner extends Resource {
      * @return the ImageInner object itself.
      */
     public ImageInner withStorageProfile(ImageStorageProfile storageProfile) {
-        if (this.properties() == null) {
-            this.properties = new ImageProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ImageProperties();
         }
-        this.properties().withStorageProfile(storageProfile);
+        this.innerProperties().withStorageProfile(storageProfile);
         return this;
     }
 
@@ -130,7 +130,7 @@ public final class ImageInner extends Resource {
      * @return the provisioningState value.
      */
     public String provisioningState() {
-        return this.properties() == null ? null : this.properties().provisioningState();
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -142,7 +142,7 @@ public final class ImageInner extends Resource {
      * @return the hyperVGeneration value.
      */
     public HyperVGenerationTypes hyperVGeneration() {
-        return this.properties() == null ? null : this.properties().hyperVGeneration();
+        return this.innerProperties() == null ? null : this.innerProperties().hyperVGeneration();
     }
 
     /**
@@ -155,10 +155,10 @@ public final class ImageInner extends Resource {
      * @return the ImageInner object itself.
      */
     public ImageInner withHyperVGeneration(HyperVGenerationTypes hyperVGeneration) {
-        if (this.properties() == null) {
-            this.properties = new ImageProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ImageProperties();
         }
-        this.properties().withHyperVGeneration(hyperVGeneration);
+        this.innerProperties().withHyperVGeneration(hyperVGeneration);
         return this;
     }
 
@@ -168,8 +168,8 @@ public final class ImageInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (properties() != null) {
-            properties().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
         if (extendedLocation() != null) {
             extendedLocation().validate();

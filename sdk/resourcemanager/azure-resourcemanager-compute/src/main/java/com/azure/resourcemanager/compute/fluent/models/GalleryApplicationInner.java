@@ -22,15 +22,15 @@ public final class GalleryApplicationInner extends Resource {
      * Describes the properties of a gallery Application Definition.
      */
     @JsonProperty(value = "properties")
-    private GalleryApplicationProperties properties;
+    private GalleryApplicationProperties innerProperties;
 
     /**
-     * Get the properties property: Describes the properties of a gallery Application Definition.
+     * Get the innerProperties property: Describes the properties of a gallery Application Definition.
      *
-     * @return the properties value.
+     * @return the innerProperties value.
      */
-    private GalleryApplicationProperties properties() {
-        return this.properties;
+    private GalleryApplicationProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -54,7 +54,7 @@ public final class GalleryApplicationInner extends Resource {
      * @return the description value.
      */
     public String description() {
-        return this.properties() == null ? null : this.properties().description();
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -65,10 +65,10 @@ public final class GalleryApplicationInner extends Resource {
      * @return the GalleryApplicationInner object itself.
      */
     public GalleryApplicationInner withDescription(String description) {
-        if (this.properties() == null) {
-            this.properties = new GalleryApplicationProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GalleryApplicationProperties();
         }
-        this.properties().withDescription(description);
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -78,7 +78,7 @@ public final class GalleryApplicationInner extends Resource {
      * @return the eula value.
      */
     public String eula() {
-        return this.properties() == null ? null : this.properties().eula();
+        return this.innerProperties() == null ? null : this.innerProperties().eula();
     }
 
     /**
@@ -88,10 +88,10 @@ public final class GalleryApplicationInner extends Resource {
      * @return the GalleryApplicationInner object itself.
      */
     public GalleryApplicationInner withEula(String eula) {
-        if (this.properties() == null) {
-            this.properties = new GalleryApplicationProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GalleryApplicationProperties();
         }
-        this.properties().withEula(eula);
+        this.innerProperties().withEula(eula);
         return this;
     }
 
@@ -101,7 +101,7 @@ public final class GalleryApplicationInner extends Resource {
      * @return the privacyStatementUri value.
      */
     public String privacyStatementUri() {
-        return this.properties() == null ? null : this.properties().privacyStatementUri();
+        return this.innerProperties() == null ? null : this.innerProperties().privacyStatementUri();
     }
 
     /**
@@ -111,10 +111,10 @@ public final class GalleryApplicationInner extends Resource {
      * @return the GalleryApplicationInner object itself.
      */
     public GalleryApplicationInner withPrivacyStatementUri(String privacyStatementUri) {
-        if (this.properties() == null) {
-            this.properties = new GalleryApplicationProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GalleryApplicationProperties();
         }
-        this.properties().withPrivacyStatementUri(privacyStatementUri);
+        this.innerProperties().withPrivacyStatementUri(privacyStatementUri);
         return this;
     }
 
@@ -124,7 +124,7 @@ public final class GalleryApplicationInner extends Resource {
      * @return the releaseNoteUri value.
      */
     public String releaseNoteUri() {
-        return this.properties() == null ? null : this.properties().releaseNoteUri();
+        return this.innerProperties() == null ? null : this.innerProperties().releaseNoteUri();
     }
 
     /**
@@ -134,10 +134,10 @@ public final class GalleryApplicationInner extends Resource {
      * @return the GalleryApplicationInner object itself.
      */
     public GalleryApplicationInner withReleaseNoteUri(String releaseNoteUri) {
-        if (this.properties() == null) {
-            this.properties = new GalleryApplicationProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GalleryApplicationProperties();
         }
-        this.properties().withReleaseNoteUri(releaseNoteUri);
+        this.innerProperties().withReleaseNoteUri(releaseNoteUri);
         return this;
     }
 
@@ -148,7 +148,7 @@ public final class GalleryApplicationInner extends Resource {
      * @return the endOfLifeDate value.
      */
     public OffsetDateTime endOfLifeDate() {
-        return this.properties() == null ? null : this.properties().endOfLifeDate();
+        return this.innerProperties() == null ? null : this.innerProperties().endOfLifeDate();
     }
 
     /**
@@ -159,10 +159,10 @@ public final class GalleryApplicationInner extends Resource {
      * @return the GalleryApplicationInner object itself.
      */
     public GalleryApplicationInner withEndOfLifeDate(OffsetDateTime endOfLifeDate) {
-        if (this.properties() == null) {
-            this.properties = new GalleryApplicationProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GalleryApplicationProperties();
         }
-        this.properties().withEndOfLifeDate(endOfLifeDate);
+        this.innerProperties().withEndOfLifeDate(endOfLifeDate);
         return this;
     }
 
@@ -174,7 +174,7 @@ public final class GalleryApplicationInner extends Resource {
      * @return the supportedOSType value.
      */
     public OperatingSystemTypes supportedOSType() {
-        return this.properties() == null ? null : this.properties().supportedOSType();
+        return this.innerProperties() == null ? null : this.innerProperties().supportedOSType();
     }
 
     /**
@@ -186,10 +186,10 @@ public final class GalleryApplicationInner extends Resource {
      * @return the GalleryApplicationInner object itself.
      */
     public GalleryApplicationInner withSupportedOSType(OperatingSystemTypes supportedOSType) {
-        if (this.properties() == null) {
-            this.properties = new GalleryApplicationProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GalleryApplicationProperties();
         }
-        this.properties().withSupportedOSType(supportedOSType);
+        this.innerProperties().withSupportedOSType(supportedOSType);
         return this;
     }
 
@@ -199,8 +199,8 @@ public final class GalleryApplicationInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (properties() != null) {
-            properties().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

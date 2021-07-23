@@ -22,15 +22,15 @@ public final class DiskAccessInner extends Resource {
      * The properties property.
      */
     @JsonProperty(value = "properties")
-    private DiskAccessProperties properties;
+    private DiskAccessProperties innerProperties;
 
     /**
-     * Get the properties property: The properties property.
+     * Get the innerProperties property: The properties property.
      *
-     * @return the properties value.
+     * @return the innerProperties value.
      */
-    private DiskAccessProperties properties() {
-        return this.properties;
+    private DiskAccessProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -54,7 +54,7 @@ public final class DiskAccessInner extends Resource {
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
-        return this.properties() == null ? null : this.properties().privateEndpointConnections();
+        return this.innerProperties() == null ? null : this.innerProperties().privateEndpointConnections();
     }
 
     /**
@@ -63,7 +63,7 @@ public final class DiskAccessInner extends Resource {
      * @return the provisioningState value.
      */
     public String provisioningState() {
-        return this.properties() == null ? null : this.properties().provisioningState();
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -72,7 +72,7 @@ public final class DiskAccessInner extends Resource {
      * @return the timeCreated value.
      */
     public OffsetDateTime timeCreated() {
-        return this.properties() == null ? null : this.properties().timeCreated();
+        return this.innerProperties() == null ? null : this.innerProperties().timeCreated();
     }
 
     /**
@@ -81,8 +81,8 @@ public final class DiskAccessInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (properties() != null) {
-            properties().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

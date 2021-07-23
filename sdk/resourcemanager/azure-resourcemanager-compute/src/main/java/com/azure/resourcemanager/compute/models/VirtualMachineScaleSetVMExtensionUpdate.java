@@ -31,7 +31,7 @@ public final class VirtualMachineScaleSetVMExtensionUpdate extends SubResourceRe
      * Describes the properties of a Virtual Machine Extension.
      */
     @JsonProperty(value = "properties")
-    private VirtualMachineExtensionUpdateProperties properties;
+    private VirtualMachineExtensionUpdateProperties innerProperties;
 
     /**
      * Get the name property: The name of the extension.
@@ -52,12 +52,12 @@ public final class VirtualMachineScaleSetVMExtensionUpdate extends SubResourceRe
     }
 
     /**
-     * Get the properties property: Describes the properties of a Virtual Machine Extension.
+     * Get the innerProperties property: Describes the properties of a Virtual Machine Extension.
      *
-     * @return the properties value.
+     * @return the innerProperties value.
      */
-    private VirtualMachineExtensionUpdateProperties properties() {
-        return this.properties;
+    private VirtualMachineExtensionUpdateProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -67,7 +67,7 @@ public final class VirtualMachineScaleSetVMExtensionUpdate extends SubResourceRe
      * @return the forceUpdateTag value.
      */
     public String forceUpdateTag() {
-        return this.properties() == null ? null : this.properties().forceUpdateTag();
+        return this.innerProperties() == null ? null : this.innerProperties().forceUpdateTag();
     }
 
     /**
@@ -78,10 +78,10 @@ public final class VirtualMachineScaleSetVMExtensionUpdate extends SubResourceRe
      * @return the VirtualMachineScaleSetVMExtensionUpdate object itself.
      */
     public VirtualMachineScaleSetVMExtensionUpdate withForceUpdateTag(String forceUpdateTag) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachineExtensionUpdateProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineExtensionUpdateProperties();
         }
-        this.properties().withForceUpdateTag(forceUpdateTag);
+        this.innerProperties().withForceUpdateTag(forceUpdateTag);
         return this;
     }
 
@@ -91,7 +91,7 @@ public final class VirtualMachineScaleSetVMExtensionUpdate extends SubResourceRe
      * @return the publisher value.
      */
     public String publisher() {
-        return this.properties() == null ? null : this.properties().publisher();
+        return this.innerProperties() == null ? null : this.innerProperties().publisher();
     }
 
     /**
@@ -101,33 +101,33 @@ public final class VirtualMachineScaleSetVMExtensionUpdate extends SubResourceRe
      * @return the VirtualMachineScaleSetVMExtensionUpdate object itself.
      */
     public VirtualMachineScaleSetVMExtensionUpdate withPublisher(String publisher) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachineExtensionUpdateProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineExtensionUpdateProperties();
         }
-        this.properties().withPublisher(publisher);
+        this.innerProperties().withPublisher(publisher);
         return this;
     }
 
     /**
-     * Get the typePropertiesType property: Specifies the type of the extension; an example is "CustomScriptExtension".
+     * Get the type property: Specifies the type of the extension; an example is "CustomScriptExtension".
      *
-     * @return the typePropertiesType value.
+     * @return the type value.
      */
     public String typePropertiesType() {
-        return this.properties() == null ? null : this.properties().typePropertiesType();
+        return this.innerProperties() == null ? null : this.innerProperties().type();
     }
 
     /**
-     * Set the typePropertiesType property: Specifies the type of the extension; an example is "CustomScriptExtension".
+     * Set the type property: Specifies the type of the extension; an example is "CustomScriptExtension".
      *
-     * @param typePropertiesType the typePropertiesType value to set.
+     * @param type the type value to set.
      * @return the VirtualMachineScaleSetVMExtensionUpdate object itself.
      */
-    public VirtualMachineScaleSetVMExtensionUpdate withTypePropertiesType(String typePropertiesType) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachineExtensionUpdateProperties();
+    public VirtualMachineScaleSetVMExtensionUpdate withTypePropertiesType(String type) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineExtensionUpdateProperties();
         }
-        this.properties().withTypePropertiesType(typePropertiesType);
+        this.innerProperties().withType(type);
         return this;
     }
 
@@ -137,7 +137,7 @@ public final class VirtualMachineScaleSetVMExtensionUpdate extends SubResourceRe
      * @return the typeHandlerVersion value.
      */
     public String typeHandlerVersion() {
-        return this.properties() == null ? null : this.properties().typeHandlerVersion();
+        return this.innerProperties() == null ? null : this.innerProperties().typeHandlerVersion();
     }
 
     /**
@@ -147,10 +147,10 @@ public final class VirtualMachineScaleSetVMExtensionUpdate extends SubResourceRe
      * @return the VirtualMachineScaleSetVMExtensionUpdate object itself.
      */
     public VirtualMachineScaleSetVMExtensionUpdate withTypeHandlerVersion(String typeHandlerVersion) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachineExtensionUpdateProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineExtensionUpdateProperties();
         }
-        this.properties().withTypeHandlerVersion(typeHandlerVersion);
+        this.innerProperties().withTypeHandlerVersion(typeHandlerVersion);
         return this;
     }
 
@@ -162,7 +162,7 @@ public final class VirtualMachineScaleSetVMExtensionUpdate extends SubResourceRe
      * @return the autoUpgradeMinorVersion value.
      */
     public Boolean autoUpgradeMinorVersion() {
-        return this.properties() == null ? null : this.properties().autoUpgradeMinorVersion();
+        return this.innerProperties() == null ? null : this.innerProperties().autoUpgradeMinorVersion();
     }
 
     /**
@@ -174,10 +174,10 @@ public final class VirtualMachineScaleSetVMExtensionUpdate extends SubResourceRe
      * @return the VirtualMachineScaleSetVMExtensionUpdate object itself.
      */
     public VirtualMachineScaleSetVMExtensionUpdate withAutoUpgradeMinorVersion(Boolean autoUpgradeMinorVersion) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachineExtensionUpdateProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineExtensionUpdateProperties();
         }
-        this.properties().withAutoUpgradeMinorVersion(autoUpgradeMinorVersion);
+        this.innerProperties().withAutoUpgradeMinorVersion(autoUpgradeMinorVersion);
         return this;
     }
 
@@ -188,7 +188,7 @@ public final class VirtualMachineScaleSetVMExtensionUpdate extends SubResourceRe
      * @return the enableAutomaticUpgrade value.
      */
     public Boolean enableAutomaticUpgrade() {
-        return this.properties() == null ? null : this.properties().enableAutomaticUpgrade();
+        return this.innerProperties() == null ? null : this.innerProperties().enableAutomaticUpgrade();
     }
 
     /**
@@ -199,10 +199,10 @@ public final class VirtualMachineScaleSetVMExtensionUpdate extends SubResourceRe
      * @return the VirtualMachineScaleSetVMExtensionUpdate object itself.
      */
     public VirtualMachineScaleSetVMExtensionUpdate withEnableAutomaticUpgrade(Boolean enableAutomaticUpgrade) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachineExtensionUpdateProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineExtensionUpdateProperties();
         }
-        this.properties().withEnableAutomaticUpgrade(enableAutomaticUpgrade);
+        this.innerProperties().withEnableAutomaticUpgrade(enableAutomaticUpgrade);
         return this;
     }
 
@@ -212,7 +212,7 @@ public final class VirtualMachineScaleSetVMExtensionUpdate extends SubResourceRe
      * @return the settings value.
      */
     public Object settings() {
-        return this.properties() == null ? null : this.properties().settings();
+        return this.innerProperties() == null ? null : this.innerProperties().settings();
     }
 
     /**
@@ -222,10 +222,10 @@ public final class VirtualMachineScaleSetVMExtensionUpdate extends SubResourceRe
      * @return the VirtualMachineScaleSetVMExtensionUpdate object itself.
      */
     public VirtualMachineScaleSetVMExtensionUpdate withSettings(Object settings) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachineExtensionUpdateProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineExtensionUpdateProperties();
         }
-        this.properties().withSettings(settings);
+        this.innerProperties().withSettings(settings);
         return this;
     }
 
@@ -236,7 +236,7 @@ public final class VirtualMachineScaleSetVMExtensionUpdate extends SubResourceRe
      * @return the protectedSettings value.
      */
     public Object protectedSettings() {
-        return this.properties() == null ? null : this.properties().protectedSettings();
+        return this.innerProperties() == null ? null : this.innerProperties().protectedSettings();
     }
 
     /**
@@ -247,10 +247,10 @@ public final class VirtualMachineScaleSetVMExtensionUpdate extends SubResourceRe
      * @return the VirtualMachineScaleSetVMExtensionUpdate object itself.
      */
     public VirtualMachineScaleSetVMExtensionUpdate withProtectedSettings(Object protectedSettings) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachineExtensionUpdateProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineExtensionUpdateProperties();
         }
-        this.properties().withProtectedSettings(protectedSettings);
+        this.innerProperties().withProtectedSettings(protectedSettings);
         return this;
     }
 
@@ -262,8 +262,8 @@ public final class VirtualMachineScaleSetVMExtensionUpdate extends SubResourceRe
     @Override
     public void validate() {
         super.validate();
-        if (properties() != null) {
-            properties().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

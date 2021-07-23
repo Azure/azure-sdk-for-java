@@ -20,15 +20,15 @@ public final class NetworkInterfaceReference extends SubResource {
      * Describes a network interface reference properties.
      */
     @JsonProperty(value = "properties")
-    private NetworkInterfaceReferenceProperties properties;
+    private NetworkInterfaceReferenceProperties innerProperties;
 
     /**
-     * Get the properties property: Describes a network interface reference properties.
+     * Get the innerProperties property: Describes a network interface reference properties.
      *
-     * @return the properties value.
+     * @return the innerProperties value.
      */
-    private NetworkInterfaceReferenceProperties properties() {
-        return this.properties;
+    private NetworkInterfaceReferenceProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -45,7 +45,7 @@ public final class NetworkInterfaceReference extends SubResource {
      * @return the primary value.
      */
     public Boolean primary() {
-        return this.properties() == null ? null : this.properties().primary();
+        return this.innerProperties() == null ? null : this.innerProperties().primary();
     }
 
     /**
@@ -56,10 +56,10 @@ public final class NetworkInterfaceReference extends SubResource {
      * @return the NetworkInterfaceReference object itself.
      */
     public NetworkInterfaceReference withPrimary(Boolean primary) {
-        if (this.properties() == null) {
-            this.properties = new NetworkInterfaceReferenceProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkInterfaceReferenceProperties();
         }
-        this.properties().withPrimary(primary);
+        this.innerProperties().withPrimary(primary);
         return this;
     }
 
@@ -69,7 +69,7 @@ public final class NetworkInterfaceReference extends SubResource {
      * @return the deleteOption value.
      */
     public DeleteOptions deleteOption() {
-        return this.properties() == null ? null : this.properties().deleteOption();
+        return this.innerProperties() == null ? null : this.innerProperties().deleteOption();
     }
 
     /**
@@ -79,10 +79,10 @@ public final class NetworkInterfaceReference extends SubResource {
      * @return the NetworkInterfaceReference object itself.
      */
     public NetworkInterfaceReference withDeleteOption(DeleteOptions deleteOption) {
-        if (this.properties() == null) {
-            this.properties = new NetworkInterfaceReferenceProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkInterfaceReferenceProperties();
         }
-        this.properties().withDeleteOption(deleteOption);
+        this.innerProperties().withDeleteOption(deleteOption);
         return this;
     }
 
@@ -92,8 +92,8 @@ public final class NetworkInterfaceReference extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (properties() != null) {
-            properties().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

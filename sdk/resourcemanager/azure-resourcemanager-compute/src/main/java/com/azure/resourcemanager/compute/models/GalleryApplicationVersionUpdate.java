@@ -20,15 +20,15 @@ public final class GalleryApplicationVersionUpdate extends UpdateResourceDefinit
      * Describes the properties of a gallery image version.
      */
     @JsonProperty(value = "properties")
-    private GalleryApplicationVersionProperties properties;
+    private GalleryApplicationVersionProperties innerProperties;
 
     /**
-     * Get the properties property: Describes the properties of a gallery image version.
+     * Get the innerProperties property: Describes the properties of a gallery image version.
      *
-     * @return the properties value.
+     * @return the innerProperties value.
      */
-    private GalleryApplicationVersionProperties properties() {
-        return this.properties;
+    private GalleryApplicationVersionProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -44,7 +44,7 @@ public final class GalleryApplicationVersionUpdate extends UpdateResourceDefinit
      * @return the publishingProfile value.
      */
     public GalleryApplicationVersionPublishingProfile publishingProfile() {
-        return this.properties() == null ? null : this.properties().publishingProfile();
+        return this.innerProperties() == null ? null : this.innerProperties().publishingProfile();
     }
 
     /**
@@ -55,10 +55,10 @@ public final class GalleryApplicationVersionUpdate extends UpdateResourceDefinit
      */
     public GalleryApplicationVersionUpdate withPublishingProfile(
         GalleryApplicationVersionPublishingProfile publishingProfile) {
-        if (this.properties() == null) {
-            this.properties = new GalleryApplicationVersionProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GalleryApplicationVersionProperties();
         }
-        this.properties().withPublishingProfile(publishingProfile);
+        this.innerProperties().withPublishingProfile(publishingProfile);
         return this;
     }
 
@@ -68,7 +68,7 @@ public final class GalleryApplicationVersionUpdate extends UpdateResourceDefinit
      * @return the provisioningState value.
      */
     public GalleryApplicationVersionPropertiesProvisioningState provisioningState() {
-        return this.properties() == null ? null : this.properties().provisioningState();
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -77,7 +77,7 @@ public final class GalleryApplicationVersionUpdate extends UpdateResourceDefinit
      * @return the replicationStatus value.
      */
     public ReplicationStatus replicationStatus() {
-        return this.properties() == null ? null : this.properties().replicationStatus();
+        return this.innerProperties() == null ? null : this.innerProperties().replicationStatus();
     }
 
     /**
@@ -88,8 +88,8 @@ public final class GalleryApplicationVersionUpdate extends UpdateResourceDefinit
     @Override
     public void validate() {
         super.validate();
-        if (properties() != null) {
-            properties().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

@@ -20,15 +20,15 @@ public final class GalleryUpdate extends UpdateResourceDefinition {
      * Describes the properties of a Shared Image Gallery.
      */
     @JsonProperty(value = "properties")
-    private GalleryProperties properties;
+    private GalleryProperties innerProperties;
 
     /**
-     * Get the properties property: Describes the properties of a Shared Image Gallery.
+     * Get the innerProperties property: Describes the properties of a Shared Image Gallery.
      *
-     * @return the properties value.
+     * @return the innerProperties value.
      */
-    private GalleryProperties properties() {
-        return this.properties;
+    private GalleryProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -44,7 +44,7 @@ public final class GalleryUpdate extends UpdateResourceDefinition {
      * @return the description value.
      */
     public String description() {
-        return this.properties() == null ? null : this.properties().description();
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -54,10 +54,10 @@ public final class GalleryUpdate extends UpdateResourceDefinition {
      * @return the GalleryUpdate object itself.
      */
     public GalleryUpdate withDescription(String description) {
-        if (this.properties() == null) {
-            this.properties = new GalleryProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GalleryProperties();
         }
-        this.properties().withDescription(description);
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -67,7 +67,7 @@ public final class GalleryUpdate extends UpdateResourceDefinition {
      * @return the identifier value.
      */
     public GalleryIdentifier identifier() {
-        return this.properties() == null ? null : this.properties().identifier();
+        return this.innerProperties() == null ? null : this.innerProperties().identifier();
     }
 
     /**
@@ -77,10 +77,10 @@ public final class GalleryUpdate extends UpdateResourceDefinition {
      * @return the GalleryUpdate object itself.
      */
     public GalleryUpdate withIdentifier(GalleryIdentifier identifier) {
-        if (this.properties() == null) {
-            this.properties = new GalleryProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GalleryProperties();
         }
-        this.properties().withIdentifier(identifier);
+        this.innerProperties().withIdentifier(identifier);
         return this;
     }
 
@@ -90,7 +90,7 @@ public final class GalleryUpdate extends UpdateResourceDefinition {
      * @return the provisioningState value.
      */
     public GalleryPropertiesProvisioningState provisioningState() {
-        return this.properties() == null ? null : this.properties().provisioningState();
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -99,7 +99,7 @@ public final class GalleryUpdate extends UpdateResourceDefinition {
      * @return the sharingProfile value.
      */
     public SharingProfile sharingProfile() {
-        return this.properties() == null ? null : this.properties().sharingProfile();
+        return this.innerProperties() == null ? null : this.innerProperties().sharingProfile();
     }
 
     /**
@@ -109,10 +109,10 @@ public final class GalleryUpdate extends UpdateResourceDefinition {
      * @return the GalleryUpdate object itself.
      */
     public GalleryUpdate withSharingProfile(SharingProfile sharingProfile) {
-        if (this.properties() == null) {
-            this.properties = new GalleryProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GalleryProperties();
         }
-        this.properties().withSharingProfile(sharingProfile);
+        this.innerProperties().withSharingProfile(sharingProfile);
         return this;
     }
 
@@ -124,8 +124,8 @@ public final class GalleryUpdate extends UpdateResourceDefinition {
     @Override
     public void validate() {
         super.validate();
-        if (properties() != null) {
-            properties().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

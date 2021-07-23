@@ -22,15 +22,15 @@ public final class RestorePointCollectionUpdate extends UpdateResource {
      * The restore point collection properties.
      */
     @JsonProperty(value = "properties")
-    private RestorePointCollectionProperties properties;
+    private RestorePointCollectionProperties innerProperties;
 
     /**
-     * Get the properties property: The restore point collection properties.
+     * Get the innerProperties property: The restore point collection properties.
      *
-     * @return the properties value.
+     * @return the innerProperties value.
      */
-    private RestorePointCollectionProperties properties() {
-        return this.properties;
+    private RestorePointCollectionProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -47,7 +47,7 @@ public final class RestorePointCollectionUpdate extends UpdateResource {
      * @return the source value.
      */
     public RestorePointCollectionSourceProperties source() {
-        return this.properties() == null ? null : this.properties().source();
+        return this.innerProperties() == null ? null : this.innerProperties().source();
     }
 
     /**
@@ -58,10 +58,10 @@ public final class RestorePointCollectionUpdate extends UpdateResource {
      * @return the RestorePointCollectionUpdate object itself.
      */
     public RestorePointCollectionUpdate withSource(RestorePointCollectionSourceProperties source) {
-        if (this.properties() == null) {
-            this.properties = new RestorePointCollectionProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RestorePointCollectionProperties();
         }
-        this.properties().withSource(source);
+        this.innerProperties().withSource(source);
         return this;
     }
 
@@ -71,7 +71,7 @@ public final class RestorePointCollectionUpdate extends UpdateResource {
      * @return the provisioningState value.
      */
     public String provisioningState() {
-        return this.properties() == null ? null : this.properties().provisioningState();
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -80,7 +80,7 @@ public final class RestorePointCollectionUpdate extends UpdateResource {
      * @return the restorePointCollectionId value.
      */
     public String restorePointCollectionId() {
-        return this.properties() == null ? null : this.properties().restorePointCollectionId();
+        return this.innerProperties() == null ? null : this.innerProperties().restorePointCollectionId();
     }
 
     /**
@@ -89,7 +89,7 @@ public final class RestorePointCollectionUpdate extends UpdateResource {
      * @return the restorePoints value.
      */
     public List<RestorePointInner> restorePoints() {
-        return this.properties() == null ? null : this.properties().restorePoints();
+        return this.innerProperties() == null ? null : this.innerProperties().restorePoints();
     }
 
     /**
@@ -100,8 +100,8 @@ public final class RestorePointCollectionUpdate extends UpdateResource {
     @Override
     public void validate() {
         super.validate();
-        if (properties() != null) {
-            properties().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

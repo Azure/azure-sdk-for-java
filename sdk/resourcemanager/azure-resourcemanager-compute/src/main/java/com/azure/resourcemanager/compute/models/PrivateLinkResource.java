@@ -20,7 +20,7 @@ public final class PrivateLinkResource {
      * Resource properties.
      */
     @JsonProperty(value = "properties")
-    private PrivateLinkResourceProperties properties;
+    private PrivateLinkResourceProperties innerProperties;
 
     /*
      * private link resource Id
@@ -41,12 +41,12 @@ public final class PrivateLinkResource {
     private String type;
 
     /**
-     * Get the properties property: Resource properties.
+     * Get the innerProperties property: Resource properties.
      *
-     * @return the properties value.
+     * @return the innerProperties value.
      */
-    private PrivateLinkResourceProperties properties() {
-        return this.properties;
+    private PrivateLinkResourceProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -82,7 +82,7 @@ public final class PrivateLinkResource {
      * @return the groupId value.
      */
     public String groupId() {
-        return this.properties() == null ? null : this.properties().groupId();
+        return this.innerProperties() == null ? null : this.innerProperties().groupId();
     }
 
     /**
@@ -91,7 +91,7 @@ public final class PrivateLinkResource {
      * @return the requiredMembers value.
      */
     public List<String> requiredMembers() {
-        return this.properties() == null ? null : this.properties().requiredMembers();
+        return this.innerProperties() == null ? null : this.innerProperties().requiredMembers();
     }
 
     /**
@@ -100,7 +100,7 @@ public final class PrivateLinkResource {
      * @return the requiredZoneNames value.
      */
     public List<String> requiredZoneNames() {
-        return this.properties() == null ? null : this.properties().requiredZoneNames();
+        return this.innerProperties() == null ? null : this.innerProperties().requiredZoneNames();
     }
 
     /**
@@ -110,10 +110,10 @@ public final class PrivateLinkResource {
      * @return the PrivateLinkResource object itself.
      */
     public PrivateLinkResource withRequiredZoneNames(List<String> requiredZoneNames) {
-        if (this.properties() == null) {
-            this.properties = new PrivateLinkResourceProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateLinkResourceProperties();
         }
-        this.properties().withRequiredZoneNames(requiredZoneNames);
+        this.innerProperties().withRequiredZoneNames(requiredZoneNames);
         return this;
     }
 
@@ -123,8 +123,8 @@ public final class PrivateLinkResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (properties() != null) {
-            properties().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

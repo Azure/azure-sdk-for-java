@@ -32,7 +32,7 @@ public final class AvailabilitySetInner extends Resource {
      * The instance view of a resource.
      */
     @JsonProperty(value = "properties")
-    private AvailabilitySetProperties properties;
+    private AvailabilitySetProperties innerProperties;
 
     /*
      * Sku of the availability set, only name is required to be set. See
@@ -44,12 +44,12 @@ public final class AvailabilitySetInner extends Resource {
     private Sku sku;
 
     /**
-     * Get the properties property: The instance view of a resource.
+     * Get the innerProperties property: The instance view of a resource.
      *
-     * @return the properties value.
+     * @return the innerProperties value.
      */
-    private AvailabilitySetProperties properties() {
-        return this.properties;
+    private AvailabilitySetProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -96,7 +96,7 @@ public final class AvailabilitySetInner extends Resource {
      * @return the platformUpdateDomainCount value.
      */
     public Integer platformUpdateDomainCount() {
-        return this.properties() == null ? null : this.properties().platformUpdateDomainCount();
+        return this.innerProperties() == null ? null : this.innerProperties().platformUpdateDomainCount();
     }
 
     /**
@@ -106,10 +106,10 @@ public final class AvailabilitySetInner extends Resource {
      * @return the AvailabilitySetInner object itself.
      */
     public AvailabilitySetInner withPlatformUpdateDomainCount(Integer platformUpdateDomainCount) {
-        if (this.properties() == null) {
-            this.properties = new AvailabilitySetProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AvailabilitySetProperties();
         }
-        this.properties().withPlatformUpdateDomainCount(platformUpdateDomainCount);
+        this.innerProperties().withPlatformUpdateDomainCount(platformUpdateDomainCount);
         return this;
     }
 
@@ -119,7 +119,7 @@ public final class AvailabilitySetInner extends Resource {
      * @return the platformFaultDomainCount value.
      */
     public Integer platformFaultDomainCount() {
-        return this.properties() == null ? null : this.properties().platformFaultDomainCount();
+        return this.innerProperties() == null ? null : this.innerProperties().platformFaultDomainCount();
     }
 
     /**
@@ -129,10 +129,10 @@ public final class AvailabilitySetInner extends Resource {
      * @return the AvailabilitySetInner object itself.
      */
     public AvailabilitySetInner withPlatformFaultDomainCount(Integer platformFaultDomainCount) {
-        if (this.properties() == null) {
-            this.properties = new AvailabilitySetProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AvailabilitySetProperties();
         }
-        this.properties().withPlatformFaultDomainCount(platformFaultDomainCount);
+        this.innerProperties().withPlatformFaultDomainCount(platformFaultDomainCount);
         return this;
     }
 
@@ -142,7 +142,7 @@ public final class AvailabilitySetInner extends Resource {
      * @return the virtualMachines value.
      */
     public List<SubResource> virtualMachines() {
-        return this.properties() == null ? null : this.properties().virtualMachines();
+        return this.innerProperties() == null ? null : this.innerProperties().virtualMachines();
     }
 
     /**
@@ -152,10 +152,10 @@ public final class AvailabilitySetInner extends Resource {
      * @return the AvailabilitySetInner object itself.
      */
     public AvailabilitySetInner withVirtualMachines(List<SubResource> virtualMachines) {
-        if (this.properties() == null) {
-            this.properties = new AvailabilitySetProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AvailabilitySetProperties();
         }
-        this.properties().withVirtualMachines(virtualMachines);
+        this.innerProperties().withVirtualMachines(virtualMachines);
         return this;
     }
 
@@ -166,7 +166,7 @@ public final class AvailabilitySetInner extends Resource {
      * @return the proximityPlacementGroup value.
      */
     public SubResource proximityPlacementGroup() {
-        return this.properties() == null ? null : this.properties().proximityPlacementGroup();
+        return this.innerProperties() == null ? null : this.innerProperties().proximityPlacementGroup();
     }
 
     /**
@@ -177,10 +177,10 @@ public final class AvailabilitySetInner extends Resource {
      * @return the AvailabilitySetInner object itself.
      */
     public AvailabilitySetInner withProximityPlacementGroup(SubResource proximityPlacementGroup) {
-        if (this.properties() == null) {
-            this.properties = new AvailabilitySetProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AvailabilitySetProperties();
         }
-        this.properties().withProximityPlacementGroup(proximityPlacementGroup);
+        this.innerProperties().withProximityPlacementGroup(proximityPlacementGroup);
         return this;
     }
 
@@ -190,7 +190,7 @@ public final class AvailabilitySetInner extends Resource {
      * @return the statuses value.
      */
     public List<InstanceViewStatus> statuses() {
-        return this.properties() == null ? null : this.properties().statuses();
+        return this.innerProperties() == null ? null : this.innerProperties().statuses();
     }
 
     /**
@@ -199,8 +199,8 @@ public final class AvailabilitySetInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (properties() != null) {
-            properties().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
         if (sku() != null) {
             sku().validate();

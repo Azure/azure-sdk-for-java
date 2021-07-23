@@ -29,7 +29,7 @@ public final class VirtualMachineScaleSetPublicIpAddressConfiguration {
      * PublicIPAddress configuration
      */
     @JsonProperty(value = "properties")
-    private VirtualMachineScaleSetPublicIpAddressConfigurationProperties properties;
+    private VirtualMachineScaleSetPublicIpAddressConfigurationProperties innerProperties;
 
     /*
      * Describes the public IP Sku
@@ -58,13 +58,13 @@ public final class VirtualMachineScaleSetPublicIpAddressConfiguration {
     }
 
     /**
-     * Get the properties property: Describes a virtual machines scale set IP Configuration's PublicIPAddress
+     * Get the innerProperties property: Describes a virtual machines scale set IP Configuration's PublicIPAddress
      * configuration.
      *
-     * @return the properties value.
+     * @return the innerProperties value.
      */
-    private VirtualMachineScaleSetPublicIpAddressConfigurationProperties properties() {
-        return this.properties;
+    private VirtualMachineScaleSetPublicIpAddressConfigurationProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -93,7 +93,7 @@ public final class VirtualMachineScaleSetPublicIpAddressConfiguration {
      * @return the idleTimeoutInMinutes value.
      */
     public Integer idleTimeoutInMinutes() {
-        return this.properties() == null ? null : this.properties().idleTimeoutInMinutes();
+        return this.innerProperties() == null ? null : this.innerProperties().idleTimeoutInMinutes();
     }
 
     /**
@@ -103,10 +103,10 @@ public final class VirtualMachineScaleSetPublicIpAddressConfiguration {
      * @return the VirtualMachineScaleSetPublicIpAddressConfiguration object itself.
      */
     public VirtualMachineScaleSetPublicIpAddressConfiguration withIdleTimeoutInMinutes(Integer idleTimeoutInMinutes) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachineScaleSetPublicIpAddressConfigurationProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetPublicIpAddressConfigurationProperties();
         }
-        this.properties().withIdleTimeoutInMinutes(idleTimeoutInMinutes);
+        this.innerProperties().withIdleTimeoutInMinutes(idleTimeoutInMinutes);
         return this;
     }
 
@@ -116,7 +116,7 @@ public final class VirtualMachineScaleSetPublicIpAddressConfiguration {
      * @return the dnsSettings value.
      */
     public VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings dnsSettings() {
-        return this.properties() == null ? null : this.properties().dnsSettings();
+        return this.innerProperties() == null ? null : this.innerProperties().dnsSettings();
     }
 
     /**
@@ -127,10 +127,10 @@ public final class VirtualMachineScaleSetPublicIpAddressConfiguration {
      */
     public VirtualMachineScaleSetPublicIpAddressConfiguration withDnsSettings(
         VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings dnsSettings) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachineScaleSetPublicIpAddressConfigurationProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetPublicIpAddressConfigurationProperties();
         }
-        this.properties().withDnsSettings(dnsSettings);
+        this.innerProperties().withDnsSettings(dnsSettings);
         return this;
     }
 
@@ -140,7 +140,7 @@ public final class VirtualMachineScaleSetPublicIpAddressConfiguration {
      * @return the ipTags value.
      */
     public List<VirtualMachineScaleSetIpTag> ipTags() {
-        return this.properties() == null ? null : this.properties().ipTags();
+        return this.innerProperties() == null ? null : this.innerProperties().ipTags();
     }
 
     /**
@@ -150,10 +150,10 @@ public final class VirtualMachineScaleSetPublicIpAddressConfiguration {
      * @return the VirtualMachineScaleSetPublicIpAddressConfiguration object itself.
      */
     public VirtualMachineScaleSetPublicIpAddressConfiguration withIpTags(List<VirtualMachineScaleSetIpTag> ipTags) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachineScaleSetPublicIpAddressConfigurationProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetPublicIpAddressConfigurationProperties();
         }
-        this.properties().withIpTags(ipTags);
+        this.innerProperties().withIpTags(ipTags);
         return this;
     }
 
@@ -163,7 +163,7 @@ public final class VirtualMachineScaleSetPublicIpAddressConfiguration {
      * @return the publicIpPrefix value.
      */
     public SubResource publicIpPrefix() {
-        return this.properties() == null ? null : this.properties().publicIpPrefix();
+        return this.innerProperties() == null ? null : this.innerProperties().publicIpPrefix();
     }
 
     /**
@@ -173,10 +173,10 @@ public final class VirtualMachineScaleSetPublicIpAddressConfiguration {
      * @return the VirtualMachineScaleSetPublicIpAddressConfiguration object itself.
      */
     public VirtualMachineScaleSetPublicIpAddressConfiguration withPublicIpPrefix(SubResource publicIpPrefix) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachineScaleSetPublicIpAddressConfigurationProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetPublicIpAddressConfigurationProperties();
         }
-        this.properties().withPublicIpPrefix(publicIpPrefix);
+        this.innerProperties().withPublicIpPrefix(publicIpPrefix);
         return this;
     }
 
@@ -187,7 +187,7 @@ public final class VirtualMachineScaleSetPublicIpAddressConfiguration {
      * @return the publicIpAddressVersion value.
      */
     public IpVersion publicIpAddressVersion() {
-        return this.properties() == null ? null : this.properties().publicIpAddressVersion();
+        return this.innerProperties() == null ? null : this.innerProperties().publicIpAddressVersion();
     }
 
     /**
@@ -199,10 +199,10 @@ public final class VirtualMachineScaleSetPublicIpAddressConfiguration {
      */
     public VirtualMachineScaleSetPublicIpAddressConfiguration withPublicIpAddressVersion(
         IpVersion publicIpAddressVersion) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachineScaleSetPublicIpAddressConfigurationProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetPublicIpAddressConfigurationProperties();
         }
-        this.properties().withPublicIpAddressVersion(publicIpAddressVersion);
+        this.innerProperties().withPublicIpAddressVersion(publicIpAddressVersion);
         return this;
     }
 
@@ -212,7 +212,7 @@ public final class VirtualMachineScaleSetPublicIpAddressConfiguration {
      * @return the deleteOption value.
      */
     public DeleteOptions deleteOption() {
-        return this.properties() == null ? null : this.properties().deleteOption();
+        return this.innerProperties() == null ? null : this.innerProperties().deleteOption();
     }
 
     /**
@@ -222,10 +222,10 @@ public final class VirtualMachineScaleSetPublicIpAddressConfiguration {
      * @return the VirtualMachineScaleSetPublicIpAddressConfiguration object itself.
      */
     public VirtualMachineScaleSetPublicIpAddressConfiguration withDeleteOption(DeleteOptions deleteOption) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachineScaleSetPublicIpAddressConfigurationProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetPublicIpAddressConfigurationProperties();
         }
-        this.properties().withDeleteOption(deleteOption);
+        this.innerProperties().withDeleteOption(deleteOption);
         return this;
     }
 
@@ -241,8 +241,8 @@ public final class VirtualMachineScaleSetPublicIpAddressConfiguration {
                     new IllegalArgumentException(
                         "Missing required property name in model VirtualMachineScaleSetPublicIpAddressConfiguration"));
         }
-        if (properties() != null) {
-            properties().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
         if (sku() != null) {
             sku().validate();

@@ -20,15 +20,15 @@ public final class VirtualMachineExtensionImageInner extends Resource {
      * Describes the properties of a Virtual Machine Extension Image.
      */
     @JsonProperty(value = "properties")
-    private VirtualMachineExtensionImageProperties properties;
+    private VirtualMachineExtensionImageProperties innerProperties;
 
     /**
-     * Get the properties property: Describes the properties of a Virtual Machine Extension Image.
+     * Get the innerProperties property: Describes the properties of a Virtual Machine Extension Image.
      *
-     * @return the properties value.
+     * @return the innerProperties value.
      */
-    private VirtualMachineExtensionImageProperties properties() {
-        return this.properties;
+    private VirtualMachineExtensionImageProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -51,7 +51,7 @@ public final class VirtualMachineExtensionImageInner extends Resource {
      * @return the operatingSystem value.
      */
     public String operatingSystem() {
-        return this.properties() == null ? null : this.properties().operatingSystem();
+        return this.innerProperties() == null ? null : this.innerProperties().operatingSystem();
     }
 
     /**
@@ -61,10 +61,10 @@ public final class VirtualMachineExtensionImageInner extends Resource {
      * @return the VirtualMachineExtensionImageInner object itself.
      */
     public VirtualMachineExtensionImageInner withOperatingSystem(String operatingSystem) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachineExtensionImageProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineExtensionImageProperties();
         }
-        this.properties().withOperatingSystem(operatingSystem);
+        this.innerProperties().withOperatingSystem(operatingSystem);
         return this;
     }
 
@@ -74,7 +74,7 @@ public final class VirtualMachineExtensionImageInner extends Resource {
      * @return the computeRole value.
      */
     public String computeRole() {
-        return this.properties() == null ? null : this.properties().computeRole();
+        return this.innerProperties() == null ? null : this.innerProperties().computeRole();
     }
 
     /**
@@ -84,10 +84,10 @@ public final class VirtualMachineExtensionImageInner extends Resource {
      * @return the VirtualMachineExtensionImageInner object itself.
      */
     public VirtualMachineExtensionImageInner withComputeRole(String computeRole) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachineExtensionImageProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineExtensionImageProperties();
         }
-        this.properties().withComputeRole(computeRole);
+        this.innerProperties().withComputeRole(computeRole);
         return this;
     }
 
@@ -98,7 +98,7 @@ public final class VirtualMachineExtensionImageInner extends Resource {
      * @return the handlerSchema value.
      */
     public String handlerSchema() {
-        return this.properties() == null ? null : this.properties().handlerSchema();
+        return this.innerProperties() == null ? null : this.innerProperties().handlerSchema();
     }
 
     /**
@@ -109,10 +109,10 @@ public final class VirtualMachineExtensionImageInner extends Resource {
      * @return the VirtualMachineExtensionImageInner object itself.
      */
     public VirtualMachineExtensionImageInner withHandlerSchema(String handlerSchema) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachineExtensionImageProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineExtensionImageProperties();
         }
-        this.properties().withHandlerSchema(handlerSchema);
+        this.innerProperties().withHandlerSchema(handlerSchema);
         return this;
     }
 
@@ -124,7 +124,7 @@ public final class VirtualMachineExtensionImageInner extends Resource {
      * @return the vmScaleSetEnabled value.
      */
     public Boolean vmScaleSetEnabled() {
-        return this.properties() == null ? null : this.properties().vmScaleSetEnabled();
+        return this.innerProperties() == null ? null : this.innerProperties().vmScaleSetEnabled();
     }
 
     /**
@@ -136,10 +136,10 @@ public final class VirtualMachineExtensionImageInner extends Resource {
      * @return the VirtualMachineExtensionImageInner object itself.
      */
     public VirtualMachineExtensionImageInner withVmScaleSetEnabled(Boolean vmScaleSetEnabled) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachineExtensionImageProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineExtensionImageProperties();
         }
-        this.properties().withVmScaleSetEnabled(vmScaleSetEnabled);
+        this.innerProperties().withVmScaleSetEnabled(vmScaleSetEnabled);
         return this;
     }
 
@@ -149,7 +149,7 @@ public final class VirtualMachineExtensionImageInner extends Resource {
      * @return the supportsMultipleExtensions value.
      */
     public Boolean supportsMultipleExtensions() {
-        return this.properties() == null ? null : this.properties().supportsMultipleExtensions();
+        return this.innerProperties() == null ? null : this.innerProperties().supportsMultipleExtensions();
     }
 
     /**
@@ -159,10 +159,10 @@ public final class VirtualMachineExtensionImageInner extends Resource {
      * @return the VirtualMachineExtensionImageInner object itself.
      */
     public VirtualMachineExtensionImageInner withSupportsMultipleExtensions(Boolean supportsMultipleExtensions) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachineExtensionImageProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineExtensionImageProperties();
         }
-        this.properties().withSupportsMultipleExtensions(supportsMultipleExtensions);
+        this.innerProperties().withSupportsMultipleExtensions(supportsMultipleExtensions);
         return this;
     }
 
@@ -172,8 +172,8 @@ public final class VirtualMachineExtensionImageInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (properties() != null) {
-            properties().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

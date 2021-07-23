@@ -21,7 +21,7 @@ public final class DiskEncryptionSetUpdate {
      * disk encryption set resource update properties.
      */
     @JsonProperty(value = "properties")
-    private DiskEncryptionSetUpdateProperties properties;
+    private DiskEncryptionSetUpdateProperties innerProperties;
 
     /*
      * Resource tags
@@ -38,12 +38,12 @@ public final class DiskEncryptionSetUpdate {
     private EncryptionSetIdentity identity;
 
     /**
-     * Get the properties property: disk encryption set resource update properties.
+     * Get the innerProperties property: disk encryption set resource update properties.
      *
-     * @return the properties value.
+     * @return the innerProperties value.
      */
-    private DiskEncryptionSetUpdateProperties properties() {
-        return this.properties;
+    private DiskEncryptionSetUpdateProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -94,7 +94,7 @@ public final class DiskEncryptionSetUpdate {
      * @return the encryptionType value.
      */
     public DiskEncryptionSetType encryptionType() {
-        return this.properties() == null ? null : this.properties().encryptionType();
+        return this.innerProperties() == null ? null : this.innerProperties().encryptionType();
     }
 
     /**
@@ -104,10 +104,10 @@ public final class DiskEncryptionSetUpdate {
      * @return the DiskEncryptionSetUpdate object itself.
      */
     public DiskEncryptionSetUpdate withEncryptionType(DiskEncryptionSetType encryptionType) {
-        if (this.properties() == null) {
-            this.properties = new DiskEncryptionSetUpdateProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiskEncryptionSetUpdateProperties();
         }
-        this.properties().withEncryptionType(encryptionType);
+        this.innerProperties().withEncryptionType(encryptionType);
         return this;
     }
 
@@ -118,7 +118,7 @@ public final class DiskEncryptionSetUpdate {
      * @return the activeKey value.
      */
     public KeyForDiskEncryptionSet activeKey() {
-        return this.properties() == null ? null : this.properties().activeKey();
+        return this.innerProperties() == null ? null : this.innerProperties().activeKey();
     }
 
     /**
@@ -129,10 +129,10 @@ public final class DiskEncryptionSetUpdate {
      * @return the DiskEncryptionSetUpdate object itself.
      */
     public DiskEncryptionSetUpdate withActiveKey(KeyForDiskEncryptionSet activeKey) {
-        if (this.properties() == null) {
-            this.properties = new DiskEncryptionSetUpdateProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiskEncryptionSetUpdateProperties();
         }
-        this.properties().withActiveKey(activeKey);
+        this.innerProperties().withActiveKey(activeKey);
         return this;
     }
 
@@ -143,7 +143,7 @@ public final class DiskEncryptionSetUpdate {
      * @return the rotationToLatestKeyVersionEnabled value.
      */
     public Boolean rotationToLatestKeyVersionEnabled() {
-        return this.properties() == null ? null : this.properties().rotationToLatestKeyVersionEnabled();
+        return this.innerProperties() == null ? null : this.innerProperties().rotationToLatestKeyVersionEnabled();
     }
 
     /**
@@ -154,10 +154,10 @@ public final class DiskEncryptionSetUpdate {
      * @return the DiskEncryptionSetUpdate object itself.
      */
     public DiskEncryptionSetUpdate withRotationToLatestKeyVersionEnabled(Boolean rotationToLatestKeyVersionEnabled) {
-        if (this.properties() == null) {
-            this.properties = new DiskEncryptionSetUpdateProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiskEncryptionSetUpdateProperties();
         }
-        this.properties().withRotationToLatestKeyVersionEnabled(rotationToLatestKeyVersionEnabled);
+        this.innerProperties().withRotationToLatestKeyVersionEnabled(rotationToLatestKeyVersionEnabled);
         return this;
     }
 
@@ -167,8 +167,8 @@ public final class DiskEncryptionSetUpdate {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (properties() != null) {
-            properties().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
         if (identity() != null) {
             identity().validate();

@@ -30,7 +30,7 @@ public final class ComputeOperationValueInner {
      * Describes the properties of a Compute Operation Value Display.
      */
     @JsonProperty(value = "display")
-    private ComputeOperationValueDisplay display;
+    private ComputeOperationValueDisplay innerDisplay;
 
     /**
      * Get the origin property: The origin of the compute operation.
@@ -51,12 +51,12 @@ public final class ComputeOperationValueInner {
     }
 
     /**
-     * Get the display property: Describes the properties of a Compute Operation Value Display.
+     * Get the innerDisplay property: Describes the properties of a Compute Operation Value Display.
      *
-     * @return the display value.
+     * @return the innerDisplay value.
      */
-    private ComputeOperationValueDisplay display() {
-        return this.display;
+    private ComputeOperationValueDisplay innerDisplay() {
+        return this.innerDisplay;
     }
 
     /**
@@ -65,7 +65,7 @@ public final class ComputeOperationValueInner {
      * @return the operation value.
      */
     public String operation() {
-        return this.display() == null ? null : this.display().operation();
+        return this.innerDisplay() == null ? null : this.innerDisplay().operation();
     }
 
     /**
@@ -74,7 +74,7 @@ public final class ComputeOperationValueInner {
      * @return the resource value.
      */
     public String resource() {
-        return this.display() == null ? null : this.display().resource();
+        return this.innerDisplay() == null ? null : this.innerDisplay().resource();
     }
 
     /**
@@ -83,7 +83,7 @@ public final class ComputeOperationValueInner {
      * @return the description value.
      */
     public String description() {
-        return this.display() == null ? null : this.display().description();
+        return this.innerDisplay() == null ? null : this.innerDisplay().description();
     }
 
     /**
@@ -92,7 +92,7 @@ public final class ComputeOperationValueInner {
      * @return the provider value.
      */
     public String provider() {
-        return this.display() == null ? null : this.display().provider();
+        return this.innerDisplay() == null ? null : this.innerDisplay().provider();
     }
 
     /**
@@ -101,8 +101,8 @@ public final class ComputeOperationValueInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (display() != null) {
-            display().validate();
+        if (innerDisplay() != null) {
+            innerDisplay().validate();
         }
     }
 }

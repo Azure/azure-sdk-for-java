@@ -32,7 +32,7 @@ public final class DiskEncryptionSetInner extends Resource {
      * The properties property.
      */
     @JsonProperty(value = "properties")
-    private EncryptionSetProperties properties;
+    private EncryptionSetProperties innerProperties;
 
     /**
      * Get the identity property: The managed identity for the disk encryption set. It should be given permission on the
@@ -57,12 +57,12 @@ public final class DiskEncryptionSetInner extends Resource {
     }
 
     /**
-     * Get the properties property: The properties property.
+     * Get the innerProperties property: The properties property.
      *
-     * @return the properties value.
+     * @return the innerProperties value.
      */
-    private EncryptionSetProperties properties() {
-        return this.properties;
+    private EncryptionSetProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -85,7 +85,7 @@ public final class DiskEncryptionSetInner extends Resource {
      * @return the encryptionType value.
      */
     public DiskEncryptionSetType encryptionType() {
-        return this.properties() == null ? null : this.properties().encryptionType();
+        return this.innerProperties() == null ? null : this.innerProperties().encryptionType();
     }
 
     /**
@@ -95,10 +95,10 @@ public final class DiskEncryptionSetInner extends Resource {
      * @return the DiskEncryptionSetInner object itself.
      */
     public DiskEncryptionSetInner withEncryptionType(DiskEncryptionSetType encryptionType) {
-        if (this.properties() == null) {
-            this.properties = new EncryptionSetProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EncryptionSetProperties();
         }
-        this.properties().withEncryptionType(encryptionType);
+        this.innerProperties().withEncryptionType(encryptionType);
         return this;
     }
 
@@ -108,7 +108,7 @@ public final class DiskEncryptionSetInner extends Resource {
      * @return the activeKey value.
      */
     public KeyForDiskEncryptionSet activeKey() {
-        return this.properties() == null ? null : this.properties().activeKey();
+        return this.innerProperties() == null ? null : this.innerProperties().activeKey();
     }
 
     /**
@@ -118,10 +118,10 @@ public final class DiskEncryptionSetInner extends Resource {
      * @return the DiskEncryptionSetInner object itself.
      */
     public DiskEncryptionSetInner withActiveKey(KeyForDiskEncryptionSet activeKey) {
-        if (this.properties() == null) {
-            this.properties = new EncryptionSetProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EncryptionSetProperties();
         }
-        this.properties().withActiveKey(activeKey);
+        this.innerProperties().withActiveKey(activeKey);
         return this;
     }
 
@@ -132,7 +132,7 @@ public final class DiskEncryptionSetInner extends Resource {
      * @return the previousKeys value.
      */
     public List<KeyForDiskEncryptionSet> previousKeys() {
-        return this.properties() == null ? null : this.properties().previousKeys();
+        return this.innerProperties() == null ? null : this.innerProperties().previousKeys();
     }
 
     /**
@@ -141,7 +141,7 @@ public final class DiskEncryptionSetInner extends Resource {
      * @return the provisioningState value.
      */
     public String provisioningState() {
-        return this.properties() == null ? null : this.properties().provisioningState();
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -151,7 +151,7 @@ public final class DiskEncryptionSetInner extends Resource {
      * @return the rotationToLatestKeyVersionEnabled value.
      */
     public Boolean rotationToLatestKeyVersionEnabled() {
-        return this.properties() == null ? null : this.properties().rotationToLatestKeyVersionEnabled();
+        return this.innerProperties() == null ? null : this.innerProperties().rotationToLatestKeyVersionEnabled();
     }
 
     /**
@@ -162,10 +162,10 @@ public final class DiskEncryptionSetInner extends Resource {
      * @return the DiskEncryptionSetInner object itself.
      */
     public DiskEncryptionSetInner withRotationToLatestKeyVersionEnabled(Boolean rotationToLatestKeyVersionEnabled) {
-        if (this.properties() == null) {
-            this.properties = new EncryptionSetProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EncryptionSetProperties();
         }
-        this.properties().withRotationToLatestKeyVersionEnabled(rotationToLatestKeyVersionEnabled);
+        this.innerProperties().withRotationToLatestKeyVersionEnabled(rotationToLatestKeyVersionEnabled);
         return this;
     }
 
@@ -175,7 +175,7 @@ public final class DiskEncryptionSetInner extends Resource {
      * @return the lastKeyRotationTimestamp value.
      */
     public OffsetDateTime lastKeyRotationTimestamp() {
-        return this.properties() == null ? null : this.properties().lastKeyRotationTimestamp();
+        return this.innerProperties() == null ? null : this.innerProperties().lastKeyRotationTimestamp();
     }
 
     /**
@@ -187,8 +187,8 @@ public final class DiskEncryptionSetInner extends Resource {
         if (identity() != null) {
             identity().validate();
         }
-        if (properties() != null) {
-            properties().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

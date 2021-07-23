@@ -20,15 +20,15 @@ public final class GalleryImageVersionUpdate extends UpdateResourceDefinition {
      * Describes the properties of a gallery image version.
      */
     @JsonProperty(value = "properties")
-    private GalleryImageVersionProperties properties;
+    private GalleryImageVersionProperties innerProperties;
 
     /**
-     * Get the properties property: Describes the properties of a gallery image version.
+     * Get the innerProperties property: Describes the properties of a gallery image version.
      *
-     * @return the properties value.
+     * @return the innerProperties value.
      */
-    private GalleryImageVersionProperties properties() {
-        return this.properties;
+    private GalleryImageVersionProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -44,7 +44,7 @@ public final class GalleryImageVersionUpdate extends UpdateResourceDefinition {
      * @return the publishingProfile value.
      */
     public GalleryImageVersionPublishingProfile publishingProfile() {
-        return this.properties() == null ? null : this.properties().publishingProfile();
+        return this.innerProperties() == null ? null : this.innerProperties().publishingProfile();
     }
 
     /**
@@ -54,10 +54,10 @@ public final class GalleryImageVersionUpdate extends UpdateResourceDefinition {
      * @return the GalleryImageVersionUpdate object itself.
      */
     public GalleryImageVersionUpdate withPublishingProfile(GalleryImageVersionPublishingProfile publishingProfile) {
-        if (this.properties() == null) {
-            this.properties = new GalleryImageVersionProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GalleryImageVersionProperties();
         }
-        this.properties().withPublishingProfile(publishingProfile);
+        this.innerProperties().withPublishingProfile(publishingProfile);
         return this;
     }
 
@@ -67,7 +67,7 @@ public final class GalleryImageVersionUpdate extends UpdateResourceDefinition {
      * @return the provisioningState value.
      */
     public GalleryImageVersionPropertiesProvisioningState provisioningState() {
-        return this.properties() == null ? null : this.properties().provisioningState();
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -76,7 +76,7 @@ public final class GalleryImageVersionUpdate extends UpdateResourceDefinition {
      * @return the storageProfile value.
      */
     public GalleryImageVersionStorageProfile storageProfile() {
-        return this.properties() == null ? null : this.properties().storageProfile();
+        return this.innerProperties() == null ? null : this.innerProperties().storageProfile();
     }
 
     /**
@@ -86,10 +86,10 @@ public final class GalleryImageVersionUpdate extends UpdateResourceDefinition {
      * @return the GalleryImageVersionUpdate object itself.
      */
     public GalleryImageVersionUpdate withStorageProfile(GalleryImageVersionStorageProfile storageProfile) {
-        if (this.properties() == null) {
-            this.properties = new GalleryImageVersionProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GalleryImageVersionProperties();
         }
-        this.properties().withStorageProfile(storageProfile);
+        this.innerProperties().withStorageProfile(storageProfile);
         return this;
     }
 
@@ -99,7 +99,7 @@ public final class GalleryImageVersionUpdate extends UpdateResourceDefinition {
      * @return the replicationStatus value.
      */
     public ReplicationStatus replicationStatus() {
-        return this.properties() == null ? null : this.properties().replicationStatus();
+        return this.innerProperties() == null ? null : this.innerProperties().replicationStatus();
     }
 
     /**
@@ -110,8 +110,8 @@ public final class GalleryImageVersionUpdate extends UpdateResourceDefinition {
     @Override
     public void validate() {
         super.validate();
-        if (properties() != null) {
-            properties().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

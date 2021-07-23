@@ -19,15 +19,15 @@ public class PirSharedGalleryResource extends PirResource {
      * The identifier information of shared gallery.
      */
     @JsonProperty(value = "identifier")
-    private SharedGalleryIdentifier identifier;
+    private SharedGalleryIdentifier innerIdentifier;
 
     /**
-     * Get the identifier property: The identifier information of shared gallery.
+     * Get the innerIdentifier property: The identifier information of shared gallery.
      *
-     * @return the identifier value.
+     * @return the innerIdentifier value.
      */
-    private SharedGalleryIdentifier identifier() {
-        return this.identifier;
+    private SharedGalleryIdentifier innerIdentifier() {
+        return this.innerIdentifier;
     }
 
     /**
@@ -36,7 +36,7 @@ public class PirSharedGalleryResource extends PirResource {
      * @return the uniqueId value.
      */
     public String uniqueId() {
-        return this.identifier() == null ? null : this.identifier().uniqueId();
+        return this.innerIdentifier() == null ? null : this.innerIdentifier().uniqueId();
     }
 
     /**
@@ -46,10 +46,10 @@ public class PirSharedGalleryResource extends PirResource {
      * @return the PirSharedGalleryResource object itself.
      */
     public PirSharedGalleryResource withUniqueId(String uniqueId) {
-        if (this.identifier() == null) {
-            this.identifier = new SharedGalleryIdentifier();
+        if (this.innerIdentifier() == null) {
+            this.innerIdentifier = new SharedGalleryIdentifier();
         }
-        this.identifier().withUniqueId(uniqueId);
+        this.innerIdentifier().withUniqueId(uniqueId);
         return this;
     }
 
@@ -61,8 +61,8 @@ public class PirSharedGalleryResource extends PirResource {
     @Override
     public void validate() {
         super.validate();
-        if (identifier() != null) {
-            identifier().validate();
+        if (innerIdentifier() != null) {
+            innerIdentifier().validate();
         }
     }
 }

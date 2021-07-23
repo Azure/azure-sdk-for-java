@@ -31,15 +31,15 @@ public final class GalleryImageInner extends Resource {
      * Describes the properties of a gallery image definition.
      */
     @JsonProperty(value = "properties")
-    private GalleryImageProperties properties;
+    private GalleryImageProperties innerProperties;
 
     /**
-     * Get the properties property: Describes the properties of a gallery image definition.
+     * Get the innerProperties property: Describes the properties of a gallery image definition.
      *
-     * @return the properties value.
+     * @return the innerProperties value.
      */
-    private GalleryImageProperties properties() {
-        return this.properties;
+    private GalleryImageProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -63,7 +63,7 @@ public final class GalleryImageInner extends Resource {
      * @return the description value.
      */
     public String description() {
-        return this.properties() == null ? null : this.properties().description();
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -74,10 +74,10 @@ public final class GalleryImageInner extends Resource {
      * @return the GalleryImageInner object itself.
      */
     public GalleryImageInner withDescription(String description) {
-        if (this.properties() == null) {
-            this.properties = new GalleryImageProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GalleryImageProperties();
         }
-        this.properties().withDescription(description);
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -87,7 +87,7 @@ public final class GalleryImageInner extends Resource {
      * @return the eula value.
      */
     public String eula() {
-        return this.properties() == null ? null : this.properties().eula();
+        return this.innerProperties() == null ? null : this.innerProperties().eula();
     }
 
     /**
@@ -97,10 +97,10 @@ public final class GalleryImageInner extends Resource {
      * @return the GalleryImageInner object itself.
      */
     public GalleryImageInner withEula(String eula) {
-        if (this.properties() == null) {
-            this.properties = new GalleryImageProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GalleryImageProperties();
         }
-        this.properties().withEula(eula);
+        this.innerProperties().withEula(eula);
         return this;
     }
 
@@ -110,7 +110,7 @@ public final class GalleryImageInner extends Resource {
      * @return the privacyStatementUri value.
      */
     public String privacyStatementUri() {
-        return this.properties() == null ? null : this.properties().privacyStatementUri();
+        return this.innerProperties() == null ? null : this.innerProperties().privacyStatementUri();
     }
 
     /**
@@ -120,10 +120,10 @@ public final class GalleryImageInner extends Resource {
      * @return the GalleryImageInner object itself.
      */
     public GalleryImageInner withPrivacyStatementUri(String privacyStatementUri) {
-        if (this.properties() == null) {
-            this.properties = new GalleryImageProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GalleryImageProperties();
         }
-        this.properties().withPrivacyStatementUri(privacyStatementUri);
+        this.innerProperties().withPrivacyStatementUri(privacyStatementUri);
         return this;
     }
 
@@ -133,7 +133,7 @@ public final class GalleryImageInner extends Resource {
      * @return the releaseNoteUri value.
      */
     public String releaseNoteUri() {
-        return this.properties() == null ? null : this.properties().releaseNoteUri();
+        return this.innerProperties() == null ? null : this.innerProperties().releaseNoteUri();
     }
 
     /**
@@ -143,10 +143,10 @@ public final class GalleryImageInner extends Resource {
      * @return the GalleryImageInner object itself.
      */
     public GalleryImageInner withReleaseNoteUri(String releaseNoteUri) {
-        if (this.properties() == null) {
-            this.properties = new GalleryImageProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GalleryImageProperties();
         }
-        this.properties().withReleaseNoteUri(releaseNoteUri);
+        this.innerProperties().withReleaseNoteUri(releaseNoteUri);
         return this;
     }
 
@@ -158,7 +158,7 @@ public final class GalleryImageInner extends Resource {
      * @return the osType value.
      */
     public OperatingSystemTypes osType() {
-        return this.properties() == null ? null : this.properties().osType();
+        return this.innerProperties() == null ? null : this.innerProperties().osType();
     }
 
     /**
@@ -170,10 +170,10 @@ public final class GalleryImageInner extends Resource {
      * @return the GalleryImageInner object itself.
      */
     public GalleryImageInner withOsType(OperatingSystemTypes osType) {
-        if (this.properties() == null) {
-            this.properties = new GalleryImageProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GalleryImageProperties();
         }
-        this.properties().withOsType(osType);
+        this.innerProperties().withOsType(osType);
         return this;
     }
 
@@ -184,7 +184,7 @@ public final class GalleryImageInner extends Resource {
      * @return the osState value.
      */
     public OperatingSystemStateTypes osState() {
-        return this.properties() == null ? null : this.properties().osState();
+        return this.innerProperties() == null ? null : this.innerProperties().osState();
     }
 
     /**
@@ -195,10 +195,10 @@ public final class GalleryImageInner extends Resource {
      * @return the GalleryImageInner object itself.
      */
     public GalleryImageInner withOsState(OperatingSystemStateTypes osState) {
-        if (this.properties() == null) {
-            this.properties = new GalleryImageProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GalleryImageProperties();
         }
-        this.properties().withOsState(osState);
+        this.innerProperties().withOsState(osState);
         return this;
     }
 
@@ -208,7 +208,7 @@ public final class GalleryImageInner extends Resource {
      * @return the hyperVGeneration value.
      */
     public HyperVGeneration hyperVGeneration() {
-        return this.properties() == null ? null : this.properties().hyperVGeneration();
+        return this.innerProperties() == null ? null : this.innerProperties().hyperVGeneration();
     }
 
     /**
@@ -218,10 +218,10 @@ public final class GalleryImageInner extends Resource {
      * @return the GalleryImageInner object itself.
      */
     public GalleryImageInner withHyperVGeneration(HyperVGeneration hyperVGeneration) {
-        if (this.properties() == null) {
-            this.properties = new GalleryImageProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GalleryImageProperties();
         }
-        this.properties().withHyperVGeneration(hyperVGeneration);
+        this.innerProperties().withHyperVGeneration(hyperVGeneration);
         return this;
     }
 
@@ -232,7 +232,7 @@ public final class GalleryImageInner extends Resource {
      * @return the endOfLifeDate value.
      */
     public OffsetDateTime endOfLifeDate() {
-        return this.properties() == null ? null : this.properties().endOfLifeDate();
+        return this.innerProperties() == null ? null : this.innerProperties().endOfLifeDate();
     }
 
     /**
@@ -243,10 +243,10 @@ public final class GalleryImageInner extends Resource {
      * @return the GalleryImageInner object itself.
      */
     public GalleryImageInner withEndOfLifeDate(OffsetDateTime endOfLifeDate) {
-        if (this.properties() == null) {
-            this.properties = new GalleryImageProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GalleryImageProperties();
         }
-        this.properties().withEndOfLifeDate(endOfLifeDate);
+        this.innerProperties().withEndOfLifeDate(endOfLifeDate);
         return this;
     }
 
@@ -256,7 +256,7 @@ public final class GalleryImageInner extends Resource {
      * @return the identifier value.
      */
     public GalleryImageIdentifier identifier() {
-        return this.properties() == null ? null : this.properties().identifier();
+        return this.innerProperties() == null ? null : this.innerProperties().identifier();
     }
 
     /**
@@ -266,10 +266,10 @@ public final class GalleryImageInner extends Resource {
      * @return the GalleryImageInner object itself.
      */
     public GalleryImageInner withIdentifier(GalleryImageIdentifier identifier) {
-        if (this.properties() == null) {
-            this.properties = new GalleryImageProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GalleryImageProperties();
         }
-        this.properties().withIdentifier(identifier);
+        this.innerProperties().withIdentifier(identifier);
         return this;
     }
 
@@ -280,7 +280,7 @@ public final class GalleryImageInner extends Resource {
      * @return the recommended value.
      */
     public RecommendedMachineConfiguration recommended() {
-        return this.properties() == null ? null : this.properties().recommended();
+        return this.innerProperties() == null ? null : this.innerProperties().recommended();
     }
 
     /**
@@ -291,10 +291,10 @@ public final class GalleryImageInner extends Resource {
      * @return the GalleryImageInner object itself.
      */
     public GalleryImageInner withRecommended(RecommendedMachineConfiguration recommended) {
-        if (this.properties() == null) {
-            this.properties = new GalleryImageProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GalleryImageProperties();
         }
-        this.properties().withRecommended(recommended);
+        this.innerProperties().withRecommended(recommended);
         return this;
     }
 
@@ -304,7 +304,7 @@ public final class GalleryImageInner extends Resource {
      * @return the disallowed value.
      */
     public Disallowed disallowed() {
-        return this.properties() == null ? null : this.properties().disallowed();
+        return this.innerProperties() == null ? null : this.innerProperties().disallowed();
     }
 
     /**
@@ -314,10 +314,10 @@ public final class GalleryImageInner extends Resource {
      * @return the GalleryImageInner object itself.
      */
     public GalleryImageInner withDisallowed(Disallowed disallowed) {
-        if (this.properties() == null) {
-            this.properties = new GalleryImageProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GalleryImageProperties();
         }
-        this.properties().withDisallowed(disallowed);
+        this.innerProperties().withDisallowed(disallowed);
         return this;
     }
 
@@ -328,7 +328,7 @@ public final class GalleryImageInner extends Resource {
      * @return the purchasePlan value.
      */
     public ImagePurchasePlan purchasePlan() {
-        return this.properties() == null ? null : this.properties().purchasePlan();
+        return this.innerProperties() == null ? null : this.innerProperties().purchasePlan();
     }
 
     /**
@@ -339,10 +339,10 @@ public final class GalleryImageInner extends Resource {
      * @return the GalleryImageInner object itself.
      */
     public GalleryImageInner withPurchasePlan(ImagePurchasePlan purchasePlan) {
-        if (this.properties() == null) {
-            this.properties = new GalleryImageProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GalleryImageProperties();
         }
-        this.properties().withPurchasePlan(purchasePlan);
+        this.innerProperties().withPurchasePlan(purchasePlan);
         return this;
     }
 
@@ -352,7 +352,7 @@ public final class GalleryImageInner extends Resource {
      * @return the provisioningState value.
      */
     public GalleryImagePropertiesProvisioningState provisioningState() {
-        return this.properties() == null ? null : this.properties().provisioningState();
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -361,7 +361,7 @@ public final class GalleryImageInner extends Resource {
      * @return the features value.
      */
     public List<GalleryImageFeature> features() {
-        return this.properties() == null ? null : this.properties().features();
+        return this.innerProperties() == null ? null : this.innerProperties().features();
     }
 
     /**
@@ -371,10 +371,10 @@ public final class GalleryImageInner extends Resource {
      * @return the GalleryImageInner object itself.
      */
     public GalleryImageInner withFeatures(List<GalleryImageFeature> features) {
-        if (this.properties() == null) {
-            this.properties = new GalleryImageProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GalleryImageProperties();
         }
-        this.properties().withFeatures(features);
+        this.innerProperties().withFeatures(features);
         return this;
     }
 
@@ -384,8 +384,8 @@ public final class GalleryImageInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (properties() != null) {
-            properties().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

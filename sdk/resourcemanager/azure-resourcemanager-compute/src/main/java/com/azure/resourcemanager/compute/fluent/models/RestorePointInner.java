@@ -24,15 +24,15 @@ public final class RestorePointInner extends ProxyResource {
      * The restore point properties.
      */
     @JsonProperty(value = "properties")
-    private RestorePointProperties properties;
+    private RestorePointProperties innerProperties;
 
     /**
-     * Get the properties property: The restore point properties.
+     * Get the innerProperties property: The restore point properties.
      *
-     * @return the properties value.
+     * @return the innerProperties value.
      */
-    private RestorePointProperties properties() {
-        return this.properties;
+    private RestorePointProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -42,7 +42,7 @@ public final class RestorePointInner extends ProxyResource {
      * @return the excludeDisks value.
      */
     public List<ApiEntityReference> excludeDisks() {
-        return this.properties() == null ? null : this.properties().excludeDisks();
+        return this.innerProperties() == null ? null : this.innerProperties().excludeDisks();
     }
 
     /**
@@ -53,10 +53,10 @@ public final class RestorePointInner extends ProxyResource {
      * @return the RestorePointInner object itself.
      */
     public RestorePointInner withExcludeDisks(List<ApiEntityReference> excludeDisks) {
-        if (this.properties() == null) {
-            this.properties = new RestorePointProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RestorePointProperties();
         }
-        this.properties().withExcludeDisks(excludeDisks);
+        this.innerProperties().withExcludeDisks(excludeDisks);
         return this;
     }
 
@@ -66,7 +66,7 @@ public final class RestorePointInner extends ProxyResource {
      * @return the sourceMetadata value.
      */
     public RestorePointSourceMetadata sourceMetadata() {
-        return this.properties() == null ? null : this.properties().sourceMetadata();
+        return this.innerProperties() == null ? null : this.innerProperties().sourceMetadata();
     }
 
     /**
@@ -75,7 +75,7 @@ public final class RestorePointInner extends ProxyResource {
      * @return the provisioningState value.
      */
     public String provisioningState() {
-        return this.properties() == null ? null : this.properties().provisioningState();
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -85,7 +85,7 @@ public final class RestorePointInner extends ProxyResource {
      * @return the consistencyMode value.
      */
     public ConsistencyModeTypes consistencyMode() {
-        return this.properties() == null ? null : this.properties().consistencyMode();
+        return this.innerProperties() == null ? null : this.innerProperties().consistencyMode();
     }
 
     /**
@@ -95,7 +95,7 @@ public final class RestorePointInner extends ProxyResource {
      * @return the provisioningDetails value.
      */
     public RestorePointProvisioningDetails provisioningDetails() {
-        return this.properties() == null ? null : this.properties().provisioningDetails();
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningDetails();
     }
 
     /**
@@ -104,8 +104,8 @@ public final class RestorePointInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (properties() != null) {
-            properties().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

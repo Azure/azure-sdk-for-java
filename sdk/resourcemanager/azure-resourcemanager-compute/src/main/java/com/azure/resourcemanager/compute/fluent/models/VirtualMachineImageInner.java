@@ -28,15 +28,15 @@ public final class VirtualMachineImageInner extends VirtualMachineImageResourceI
      * Describes the properties of a Virtual Machine Image.
      */
     @JsonProperty(value = "properties")
-    private VirtualMachineImageProperties properties;
+    private VirtualMachineImageProperties innerProperties;
 
     /**
-     * Get the properties property: Describes the properties of a Virtual Machine Image.
+     * Get the innerProperties property: Describes the properties of a Virtual Machine Image.
      *
-     * @return the properties value.
+     * @return the innerProperties value.
      */
-    private VirtualMachineImageProperties properties() {
-        return this.properties;
+    private VirtualMachineImageProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -80,7 +80,7 @@ public final class VirtualMachineImageInner extends VirtualMachineImageResourceI
      * @return the plan value.
      */
     public PurchasePlan plan() {
-        return this.properties() == null ? null : this.properties().plan();
+        return this.innerProperties() == null ? null : this.innerProperties().plan();
     }
 
     /**
@@ -90,10 +90,10 @@ public final class VirtualMachineImageInner extends VirtualMachineImageResourceI
      * @return the VirtualMachineImageInner object itself.
      */
     public VirtualMachineImageInner withPlan(PurchasePlan plan) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachineImageProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineImageProperties();
         }
-        this.properties().withPlan(plan);
+        this.innerProperties().withPlan(plan);
         return this;
     }
 
@@ -103,7 +103,7 @@ public final class VirtualMachineImageInner extends VirtualMachineImageResourceI
      * @return the osDiskImage value.
      */
     public OSDiskImage osDiskImage() {
-        return this.properties() == null ? null : this.properties().osDiskImage();
+        return this.innerProperties() == null ? null : this.innerProperties().osDiskImage();
     }
 
     /**
@@ -113,10 +113,10 @@ public final class VirtualMachineImageInner extends VirtualMachineImageResourceI
      * @return the VirtualMachineImageInner object itself.
      */
     public VirtualMachineImageInner withOsDiskImage(OSDiskImage osDiskImage) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachineImageProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineImageProperties();
         }
-        this.properties().withOsDiskImage(osDiskImage);
+        this.innerProperties().withOsDiskImage(osDiskImage);
         return this;
     }
 
@@ -126,7 +126,7 @@ public final class VirtualMachineImageInner extends VirtualMachineImageResourceI
      * @return the dataDiskImages value.
      */
     public List<DataDiskImage> dataDiskImages() {
-        return this.properties() == null ? null : this.properties().dataDiskImages();
+        return this.innerProperties() == null ? null : this.innerProperties().dataDiskImages();
     }
 
     /**
@@ -136,10 +136,10 @@ public final class VirtualMachineImageInner extends VirtualMachineImageResourceI
      * @return the VirtualMachineImageInner object itself.
      */
     public VirtualMachineImageInner withDataDiskImages(List<DataDiskImage> dataDiskImages) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachineImageProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineImageProperties();
         }
-        this.properties().withDataDiskImages(dataDiskImages);
+        this.innerProperties().withDataDiskImages(dataDiskImages);
         return this;
     }
 
@@ -149,7 +149,7 @@ public final class VirtualMachineImageInner extends VirtualMachineImageResourceI
      * @return the automaticOSUpgradeProperties value.
      */
     public AutomaticOSUpgradeProperties automaticOSUpgradeProperties() {
-        return this.properties() == null ? null : this.properties().automaticOSUpgradeProperties();
+        return this.innerProperties() == null ? null : this.innerProperties().automaticOSUpgradeProperties();
     }
 
     /**
@@ -160,10 +160,10 @@ public final class VirtualMachineImageInner extends VirtualMachineImageResourceI
      */
     public VirtualMachineImageInner withAutomaticOSUpgradeProperties(
         AutomaticOSUpgradeProperties automaticOSUpgradeProperties) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachineImageProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineImageProperties();
         }
-        this.properties().withAutomaticOSUpgradeProperties(automaticOSUpgradeProperties);
+        this.innerProperties().withAutomaticOSUpgradeProperties(automaticOSUpgradeProperties);
         return this;
     }
 
@@ -173,7 +173,7 @@ public final class VirtualMachineImageInner extends VirtualMachineImageResourceI
      * @return the hyperVGeneration value.
      */
     public HyperVGenerationTypes hyperVGeneration() {
-        return this.properties() == null ? null : this.properties().hyperVGeneration();
+        return this.innerProperties() == null ? null : this.innerProperties().hyperVGeneration();
     }
 
     /**
@@ -183,10 +183,10 @@ public final class VirtualMachineImageInner extends VirtualMachineImageResourceI
      * @return the VirtualMachineImageInner object itself.
      */
     public VirtualMachineImageInner withHyperVGeneration(HyperVGenerationTypes hyperVGeneration) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachineImageProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineImageProperties();
         }
-        this.properties().withHyperVGeneration(hyperVGeneration);
+        this.innerProperties().withHyperVGeneration(hyperVGeneration);
         return this;
     }
 
@@ -196,7 +196,7 @@ public final class VirtualMachineImageInner extends VirtualMachineImageResourceI
      * @return the disallowed value.
      */
     public DisallowedConfiguration disallowed() {
-        return this.properties() == null ? null : this.properties().disallowed();
+        return this.innerProperties() == null ? null : this.innerProperties().disallowed();
     }
 
     /**
@@ -206,10 +206,10 @@ public final class VirtualMachineImageInner extends VirtualMachineImageResourceI
      * @return the VirtualMachineImageInner object itself.
      */
     public VirtualMachineImageInner withDisallowed(DisallowedConfiguration disallowed) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachineImageProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineImageProperties();
         }
-        this.properties().withDisallowed(disallowed);
+        this.innerProperties().withDisallowed(disallowed);
         return this;
     }
 
@@ -219,7 +219,7 @@ public final class VirtualMachineImageInner extends VirtualMachineImageResourceI
      * @return the features value.
      */
     public List<VirtualMachineImageFeature> features() {
-        return this.properties() == null ? null : this.properties().features();
+        return this.innerProperties() == null ? null : this.innerProperties().features();
     }
 
     /**
@@ -229,10 +229,10 @@ public final class VirtualMachineImageInner extends VirtualMachineImageResourceI
      * @return the VirtualMachineImageInner object itself.
      */
     public VirtualMachineImageInner withFeatures(List<VirtualMachineImageFeature> features) {
-        if (this.properties() == null) {
-            this.properties = new VirtualMachineImageProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineImageProperties();
         }
-        this.properties().withFeatures(features);
+        this.innerProperties().withFeatures(features);
         return this;
     }
 
@@ -244,8 +244,8 @@ public final class VirtualMachineImageInner extends VirtualMachineImageResourceI
     @Override
     public void validate() {
         super.validate();
-        if (properties() != null) {
-            properties().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

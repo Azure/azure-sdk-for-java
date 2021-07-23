@@ -32,7 +32,7 @@ public final class VirtualMachineExtensionUpdateProperties {
      * "CustomScriptExtension".
      */
     @JsonProperty(value = "type")
-    private String typePropertiesType;
+    private String type;
 
     /*
      * Specifies the version of the script handler.
@@ -112,22 +112,22 @@ public final class VirtualMachineExtensionUpdateProperties {
     }
 
     /**
-     * Get the typePropertiesType property: Specifies the type of the extension; an example is "CustomScriptExtension".
+     * Get the type property: Specifies the type of the extension; an example is "CustomScriptExtension".
      *
-     * @return the typePropertiesType value.
+     * @return the type value.
      */
-    public String typePropertiesType() {
-        return this.typePropertiesType;
+    public String type() {
+        return this.type;
     }
 
     /**
-     * Set the typePropertiesType property: Specifies the type of the extension; an example is "CustomScriptExtension".
+     * Set the type property: Specifies the type of the extension; an example is "CustomScriptExtension".
      *
-     * @param typePropertiesType the typePropertiesType value to set.
+     * @param type the type value to set.
      * @return the VirtualMachineExtensionUpdateProperties object itself.
      */
-    public VirtualMachineExtensionUpdateProperties withTypePropertiesType(String typePropertiesType) {
-        this.typePropertiesType = typePropertiesType;
+    public VirtualMachineExtensionUpdateProperties withType(String type) {
+        this.type = type;
         return this;
     }
 
