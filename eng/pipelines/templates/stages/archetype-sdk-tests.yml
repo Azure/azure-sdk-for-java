@@ -81,14 +81,10 @@ parameters:
       Location: 'centraluseuap'
     UsGov:
       SubscriptionConfiguration: $(sub-config-gov-test-resources)
-      Location: 'usgoviowa'
+      Location: 'usdodeast'
     China:
        SubscriptionConfiguration: $(sub-config-cn-test-resources)
-       Location: 'chinanorth'
-#    UsGov:
-#      SubscriptionConfiguration: $(sub-config-gov-test-resources)
-#    China:
-#      SubscriptionConfiguration: $(sub-config-cn-test-resources)
+       Location: 'chinanorth2'
 - name: MatrixConfigs
   type: object
   default:
