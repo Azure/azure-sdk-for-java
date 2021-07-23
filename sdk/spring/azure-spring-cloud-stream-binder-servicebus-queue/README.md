@@ -49,6 +49,7 @@ spring.cloud.azure.resource-group | Name of Azure resource group | Yes |
 spring.cloud.azure.region | Region name of the Azure resource group, e.g. westus | Yes | 
 spring.cloud.azure.servicebus.namespace | Service Bus Namespace. Auto creating if missing | Yes |
 spring.cloud.azure.servicebus.transportType | Service Bus transportType, supported value of `AMQP` and `AMQP_WEB_SOCKETS` | No | `AMQP`
+spring.cloud.azure.servicebus.retry-Options | Service Bus retry options | No |
 
 ##### Serivce Bus Queue Producer Properties
 
@@ -106,6 +107,16 @@ Set it to `true` if a message that trigger any exception in consumer will be for
 Set it to `false` if a message that trigger any exception in consumer will be re-queued. 
 
 Default: `false`
+
+**_receiveMode_**
+
+The modes for receiving messages.
+
+`PEEK_LOCK`, received message is not deleted from the queue or subscription, instead it is temporarily locked to the receiver, making it invisible to other receivers.
+
+`RECEIVE_AND_DELETE`, received message is removed from the queue or subscription and immediately deleted.
+
+Default: `PEEK_LOCK`
 ##### Support for Service Bus Message Headers and Properties
 The following table illustrates how Spring message headers are mapped to Service Bus message headers and properties.
 When creat a message, developers can specify the header or property of a Service Bus message by below constants.

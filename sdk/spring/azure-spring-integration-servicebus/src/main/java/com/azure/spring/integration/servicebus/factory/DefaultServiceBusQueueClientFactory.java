@@ -44,7 +44,8 @@ public class DefaultServiceBusQueueClientFactory extends AbstractServiceBusSende
         this.serviceBusClientBuilder = new ServiceBusClientBuilder()
                                                 .connectionString(connectionString)
                                                 .transportType(amqpTransportType)
-                                                .clientOptions(new ClientOptions().setApplicationId(SPRING_SERVICE_BUS_APPLICATION_ID));
+                                                .clientOptions(new ClientOptions()
+                                                .setApplicationId(SPRING_SERVICE_BUS_APPLICATION_ID));
     }
 
     @Override
@@ -96,16 +97,8 @@ public class DefaultServiceBusQueueClientFactory extends AbstractServiceBusSende
         return serviceBusClientBuilder.sender().queueName(name).buildAsyncClient();
     }
 
-    public void proxyOptions(ProxyOptions proxyOptions) {
-        serviceBusClientBuilder.proxyOptions(proxyOptions);
-    }
-
     public void retryOptions(AmqpRetryOptions amqpRetryOptions) {
         serviceBusClientBuilder.retryOptions(amqpRetryOptions);
-    }
-
-    public void transportType(AmqpTransportType transportType) {
-        serviceBusClientBuilder.transportType(transportType);
     }
 
 }
