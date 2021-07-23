@@ -14,6 +14,7 @@ import org.springframework.core.env.PropertiesPropertySource;
 import java.util.Properties;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PreLegacyPropertyProcessorTest {
@@ -28,12 +29,38 @@ public class PreLegacyPropertyProcessorTest {
     @Test
     public void testMapLegacyToCurrent() {
         Properties properties = new Properties();
-        properties.setProperty("azure.storage.account-key", "fakeuri");
+        properties.setProperty("azure.storage.account-key", "fakekey");
+        properties.setProperty("azure.keyvault.uri", "fakeuri");
+        properties.setProperty("spring.cloud.azure.keyvault.uri", "trueuri");
         PropertiesPropertySource propertySource = new PropertiesPropertySource("test", properties);
         ConfigurableEnvironment environment = getEnvironment(propertySource, processor);
 
         assertTrue(environment.getPropertySources().contains(processor.getClass().getName()));
-        assertEquals("fakeuri", environment.getProperty("spring.cloud.azure.storage.account-key"));
+        assertEquals("fakekey", environment.getProperty("spring.cloud.azure.storage.account-key"));
+        assertEquals("trueuri", environment.getProperty("spring.cloud.azure.keyvault.uri"));
+
+    }
+
+    @Test
+    public void testMultipleKeyVaults() {
+        Properties properties = new Properties();
+        properties.setProperty("azure.keyvault.order", "one, two");
+        properties.setProperty("spring.cloud.azure.keyvault.order", "three, four");
+        properties.setProperty("azure.keyvault.one.uri", "uri");
+        properties.setProperty("azure.keyvault.two.client-id", "id");
+        properties.setProperty("azure.keyvault.three.client-key", "key");
+        properties.setProperty("azure.keyvault.four.authority-host", "host");
+        properties.setProperty("azure.keyvault.five.enabled", "true");
+
+        PropertiesPropertySource propertySource = new PropertiesPropertySource("test", properties);
+        ConfigurableEnvironment environment = getEnvironment(propertySource, processor);
+
+        assertTrue(environment.getPropertySources().contains(processor.getClass().getName()));
+        assertEquals("uri", environment.getProperty("spring.cloud.azure.keyvault.one.uri"));
+        assertEquals("id", environment.getProperty("spring.cloud.azure.keyvault.two.credential.client-id"));
+        assertEquals("key", environment.getProperty("spring.cloud.azure.keyvault.three.credential.client-secret"));
+        assertEquals("host", environment.getProperty("spring.cloud.azure.keyvault.four.environment.authority-host"));
+        assertNull(environment.getProperty("spring.cloud.azure.keyvault.five.enabled"));
 
     }
 
