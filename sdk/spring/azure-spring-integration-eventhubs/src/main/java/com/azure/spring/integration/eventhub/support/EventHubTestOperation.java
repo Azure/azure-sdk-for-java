@@ -76,7 +76,9 @@ public class EventHubTestOperation extends EventHubTemplate {
         if (getStartPosition() == StartPosition.EARLIEST) {
             processorsByNameAndGroup.get(name).values().forEach(c -> {
                 EventHubProcessorSupport cs = (EventHubProcessorSupport) c;
-                eventHubsByName.get(name).forEach(m -> cs.onEvent(eventContextSupplier.get(), m));
+                if (eventHubsByName.containsKey(name)) {
+                    eventHubsByName.get(name).forEach(m -> cs.onEvent(eventContextSupplier.get(), m));
+                }
             });
         }
     }
