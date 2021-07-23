@@ -7,10 +7,9 @@
 
 ### Breaking Changes
 
-- property `publicIpAddressSkuName` in `PublicIpAddressSku` is renamed to `name`.
-- property `publicIpAddressSkuTier` in `PublicIpAddressSku` is renamed to `tier`.
+- Property `publicIpAddressSkuName` in `PublicIpAddressSku` is renamed to `name`.
+- Property `publicIpAddressSkuTier` in `PublicIpAddressSku` is renamed to `tier`.
 - Enum `SecurityTypes` changed to subclass of `ExpandableStringEnum`.
-
 
 ## 2.6.0 (2021-06-18)
 
