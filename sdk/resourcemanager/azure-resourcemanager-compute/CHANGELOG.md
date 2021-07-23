@@ -9,7 +9,6 @@
 
 - property `publicIpAddressSkuName` in `PublicIpAddressSku` is renamed to `name`.
 - property `publicIpAddressSkuTier` in `PublicIpAddressSku` is renamed to `tier`.
-- Class `AggregationType` is renamed to `AggregationTypeEnum`.
 - Enum `SecurityTypes` changed to subclass of `ExpandableStringEnum`.
 
 
