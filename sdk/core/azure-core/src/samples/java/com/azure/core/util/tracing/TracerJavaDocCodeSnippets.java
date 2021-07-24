@@ -31,7 +31,7 @@ public class TracerJavaDocCodeSnippets {
         // BEGIN: com.azure.core.util.tracing.start#options-context
         // start a new CLIENT tracing span with the given startt options and explicit parent span
         StartSpanOptions options = new StartSpanOptions("azure.keyvault.secrets/setsecret", StartSpanOptions.Kind.CLIENT);
-        Context updatedContext = tracer.start(options, traceContext);
+        Context updatedClientSpanContext = tracer.start(options, traceContext);
         System.out.printf("Span returned in the context object: %s%n",
             updatedContext.getData(PARENT_SPAN_KEY).get());
         // END: com.azure.core.util.tracing.start#options-context
