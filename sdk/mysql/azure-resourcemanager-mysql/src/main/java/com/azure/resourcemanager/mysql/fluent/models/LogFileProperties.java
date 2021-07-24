@@ -37,7 +37,7 @@ public final class LogFileProperties {
      * Type of the log file.
      */
     @JsonProperty(value = "type")
-    private String typePropertiesType;
+    private String type;
 
     /*
      * The url to download the log file from.
@@ -84,22 +84,22 @@ public final class LogFileProperties {
     }
 
     /**
-     * Get the typePropertiesType property: Type of the log file.
+     * Get the type property: Type of the log file.
      *
-     * @return the typePropertiesType value.
+     * @return the type value.
      */
-    public String typePropertiesType() {
-        return this.typePropertiesType;
+    public String type() {
+        return this.type;
     }
 
     /**
-     * Set the typePropertiesType property: Type of the log file.
+     * Set the type property: Type of the log file.
      *
-     * @param typePropertiesType the typePropertiesType value to set.
+     * @param type the type value to set.
      * @return the LogFileProperties object itself.
      */
-    public LogFileProperties withTypePropertiesType(String typePropertiesType) {
-        this.typePropertiesType = typePropertiesType;
+    public LogFileProperties withType(String type) {
+        this.type = type;
         return this;
     }
 

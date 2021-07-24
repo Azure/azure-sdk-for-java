@@ -20,15 +20,15 @@ public final class WaitStatisticsInput {
      * The properties of a wait statistics input.
      */
     @JsonProperty(value = "properties", required = true)
-    private WaitStatisticsInputProperties properties = new WaitStatisticsInputProperties();
+    private WaitStatisticsInputProperties innerProperties = new WaitStatisticsInputProperties();
 
     /**
-     * Get the properties property: The properties of a wait statistics input.
+     * Get the innerProperties property: The properties of a wait statistics input.
      *
-     * @return the properties value.
+     * @return the innerProperties value.
      */
-    private WaitStatisticsInputProperties properties() {
-        return this.properties;
+    private WaitStatisticsInputProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -37,7 +37,7 @@ public final class WaitStatisticsInput {
      * @return the observationStartTime value.
      */
     public OffsetDateTime observationStartTime() {
-        return this.properties() == null ? null : this.properties().observationStartTime();
+        return this.innerProperties() == null ? null : this.innerProperties().observationStartTime();
     }
 
     /**
@@ -47,10 +47,10 @@ public final class WaitStatisticsInput {
      * @return the WaitStatisticsInput object itself.
      */
     public WaitStatisticsInput withObservationStartTime(OffsetDateTime observationStartTime) {
-        if (this.properties() == null) {
-            this.properties = new WaitStatisticsInputProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WaitStatisticsInputProperties();
         }
-        this.properties().withObservationStartTime(observationStartTime);
+        this.innerProperties().withObservationStartTime(observationStartTime);
         return this;
     }
 
@@ -60,7 +60,7 @@ public final class WaitStatisticsInput {
      * @return the observationEndTime value.
      */
     public OffsetDateTime observationEndTime() {
-        return this.properties() == null ? null : this.properties().observationEndTime();
+        return this.innerProperties() == null ? null : this.innerProperties().observationEndTime();
     }
 
     /**
@@ -70,10 +70,10 @@ public final class WaitStatisticsInput {
      * @return the WaitStatisticsInput object itself.
      */
     public WaitStatisticsInput withObservationEndTime(OffsetDateTime observationEndTime) {
-        if (this.properties() == null) {
-            this.properties = new WaitStatisticsInputProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WaitStatisticsInputProperties();
         }
-        this.properties().withObservationEndTime(observationEndTime);
+        this.innerProperties().withObservationEndTime(observationEndTime);
         return this;
     }
 
@@ -83,7 +83,7 @@ public final class WaitStatisticsInput {
      * @return the aggregationWindow value.
      */
     public String aggregationWindow() {
-        return this.properties() == null ? null : this.properties().aggregationWindow();
+        return this.innerProperties() == null ? null : this.innerProperties().aggregationWindow();
     }
 
     /**
@@ -93,10 +93,10 @@ public final class WaitStatisticsInput {
      * @return the WaitStatisticsInput object itself.
      */
     public WaitStatisticsInput withAggregationWindow(String aggregationWindow) {
-        if (this.properties() == null) {
-            this.properties = new WaitStatisticsInputProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WaitStatisticsInputProperties();
         }
-        this.properties().withAggregationWindow(aggregationWindow);
+        this.innerProperties().withAggregationWindow(aggregationWindow);
         return this;
     }
 
@@ -106,12 +106,13 @@ public final class WaitStatisticsInput {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (properties() == null) {
+        if (innerProperties() == null) {
             throw logger
                 .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property properties in model WaitStatisticsInput"));
+                    new IllegalArgumentException(
+                        "Missing required property innerProperties in model WaitStatisticsInput"));
         } else {
-            properties().validate();
+            innerProperties().validate();
         }
     }
 }

@@ -19,15 +19,15 @@ public final class DatabaseInner extends ProxyResource {
      * The properties of a database.
      */
     @JsonProperty(value = "properties")
-    private DatabaseProperties properties;
+    private DatabaseProperties innerProperties;
 
     /**
-     * Get the properties property: The properties of a database.
+     * Get the innerProperties property: The properties of a database.
      *
-     * @return the properties value.
+     * @return the innerProperties value.
      */
-    private DatabaseProperties properties() {
-        return this.properties;
+    private DatabaseProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -36,7 +36,7 @@ public final class DatabaseInner extends ProxyResource {
      * @return the charset value.
      */
     public String charset() {
-        return this.properties() == null ? null : this.properties().charset();
+        return this.innerProperties() == null ? null : this.innerProperties().charset();
     }
 
     /**
@@ -46,10 +46,10 @@ public final class DatabaseInner extends ProxyResource {
      * @return the DatabaseInner object itself.
      */
     public DatabaseInner withCharset(String charset) {
-        if (this.properties() == null) {
-            this.properties = new DatabaseProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseProperties();
         }
-        this.properties().withCharset(charset);
+        this.innerProperties().withCharset(charset);
         return this;
     }
 
@@ -59,7 +59,7 @@ public final class DatabaseInner extends ProxyResource {
      * @return the collation value.
      */
     public String collation() {
-        return this.properties() == null ? null : this.properties().collation();
+        return this.innerProperties() == null ? null : this.innerProperties().collation();
     }
 
     /**
@@ -69,10 +69,10 @@ public final class DatabaseInner extends ProxyResource {
      * @return the DatabaseInner object itself.
      */
     public DatabaseInner withCollation(String collation) {
-        if (this.properties() == null) {
-            this.properties = new DatabaseProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseProperties();
         }
-        this.properties().withCollation(collation);
+        this.innerProperties().withCollation(collation);
         return this;
     }
 
@@ -82,8 +82,8 @@ public final class DatabaseInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (properties() != null) {
-            properties().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

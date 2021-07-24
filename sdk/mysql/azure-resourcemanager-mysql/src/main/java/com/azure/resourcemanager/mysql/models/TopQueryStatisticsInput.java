@@ -20,15 +20,15 @@ public final class TopQueryStatisticsInput {
      * The properties of a wait statistics input.
      */
     @JsonProperty(value = "properties", required = true)
-    private TopQueryStatisticsInputProperties properties = new TopQueryStatisticsInputProperties();
+    private TopQueryStatisticsInputProperties innerProperties = new TopQueryStatisticsInputProperties();
 
     /**
-     * Get the properties property: The properties of a wait statistics input.
+     * Get the innerProperties property: The properties of a wait statistics input.
      *
-     * @return the properties value.
+     * @return the innerProperties value.
      */
-    private TopQueryStatisticsInputProperties properties() {
-        return this.properties;
+    private TopQueryStatisticsInputProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -37,7 +37,7 @@ public final class TopQueryStatisticsInput {
      * @return the numberOfTopQueries value.
      */
     public int numberOfTopQueries() {
-        return this.properties() == null ? 0 : this.properties().numberOfTopQueries();
+        return this.innerProperties() == null ? 0 : this.innerProperties().numberOfTopQueries();
     }
 
     /**
@@ -47,10 +47,10 @@ public final class TopQueryStatisticsInput {
      * @return the TopQueryStatisticsInput object itself.
      */
     public TopQueryStatisticsInput withNumberOfTopQueries(int numberOfTopQueries) {
-        if (this.properties() == null) {
-            this.properties = new TopQueryStatisticsInputProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TopQueryStatisticsInputProperties();
         }
-        this.properties().withNumberOfTopQueries(numberOfTopQueries);
+        this.innerProperties().withNumberOfTopQueries(numberOfTopQueries);
         return this;
     }
 
@@ -60,7 +60,7 @@ public final class TopQueryStatisticsInput {
      * @return the aggregationFunction value.
      */
     public String aggregationFunction() {
-        return this.properties() == null ? null : this.properties().aggregationFunction();
+        return this.innerProperties() == null ? null : this.innerProperties().aggregationFunction();
     }
 
     /**
@@ -70,10 +70,10 @@ public final class TopQueryStatisticsInput {
      * @return the TopQueryStatisticsInput object itself.
      */
     public TopQueryStatisticsInput withAggregationFunction(String aggregationFunction) {
-        if (this.properties() == null) {
-            this.properties = new TopQueryStatisticsInputProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TopQueryStatisticsInputProperties();
         }
-        this.properties().withAggregationFunction(aggregationFunction);
+        this.innerProperties().withAggregationFunction(aggregationFunction);
         return this;
     }
 
@@ -83,7 +83,7 @@ public final class TopQueryStatisticsInput {
      * @return the observedMetric value.
      */
     public String observedMetric() {
-        return this.properties() == null ? null : this.properties().observedMetric();
+        return this.innerProperties() == null ? null : this.innerProperties().observedMetric();
     }
 
     /**
@@ -93,10 +93,10 @@ public final class TopQueryStatisticsInput {
      * @return the TopQueryStatisticsInput object itself.
      */
     public TopQueryStatisticsInput withObservedMetric(String observedMetric) {
-        if (this.properties() == null) {
-            this.properties = new TopQueryStatisticsInputProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TopQueryStatisticsInputProperties();
         }
-        this.properties().withObservedMetric(observedMetric);
+        this.innerProperties().withObservedMetric(observedMetric);
         return this;
     }
 
@@ -106,7 +106,7 @@ public final class TopQueryStatisticsInput {
      * @return the observationStartTime value.
      */
     public OffsetDateTime observationStartTime() {
-        return this.properties() == null ? null : this.properties().observationStartTime();
+        return this.innerProperties() == null ? null : this.innerProperties().observationStartTime();
     }
 
     /**
@@ -116,10 +116,10 @@ public final class TopQueryStatisticsInput {
      * @return the TopQueryStatisticsInput object itself.
      */
     public TopQueryStatisticsInput withObservationStartTime(OffsetDateTime observationStartTime) {
-        if (this.properties() == null) {
-            this.properties = new TopQueryStatisticsInputProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TopQueryStatisticsInputProperties();
         }
-        this.properties().withObservationStartTime(observationStartTime);
+        this.innerProperties().withObservationStartTime(observationStartTime);
         return this;
     }
 
@@ -129,7 +129,7 @@ public final class TopQueryStatisticsInput {
      * @return the observationEndTime value.
      */
     public OffsetDateTime observationEndTime() {
-        return this.properties() == null ? null : this.properties().observationEndTime();
+        return this.innerProperties() == null ? null : this.innerProperties().observationEndTime();
     }
 
     /**
@@ -139,10 +139,10 @@ public final class TopQueryStatisticsInput {
      * @return the TopQueryStatisticsInput object itself.
      */
     public TopQueryStatisticsInput withObservationEndTime(OffsetDateTime observationEndTime) {
-        if (this.properties() == null) {
-            this.properties = new TopQueryStatisticsInputProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TopQueryStatisticsInputProperties();
         }
-        this.properties().withObservationEndTime(observationEndTime);
+        this.innerProperties().withObservationEndTime(observationEndTime);
         return this;
     }
 
@@ -152,7 +152,7 @@ public final class TopQueryStatisticsInput {
      * @return the aggregationWindow value.
      */
     public String aggregationWindow() {
-        return this.properties() == null ? null : this.properties().aggregationWindow();
+        return this.innerProperties() == null ? null : this.innerProperties().aggregationWindow();
     }
 
     /**
@@ -162,10 +162,10 @@ public final class TopQueryStatisticsInput {
      * @return the TopQueryStatisticsInput object itself.
      */
     public TopQueryStatisticsInput withAggregationWindow(String aggregationWindow) {
-        if (this.properties() == null) {
-            this.properties = new TopQueryStatisticsInputProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TopQueryStatisticsInputProperties();
         }
-        this.properties().withAggregationWindow(aggregationWindow);
+        this.innerProperties().withAggregationWindow(aggregationWindow);
         return this;
     }
 
@@ -175,13 +175,13 @@ public final class TopQueryStatisticsInput {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (properties() == null) {
+        if (innerProperties() == null) {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property properties in model TopQueryStatisticsInput"));
+                        "Missing required property innerProperties in model TopQueryStatisticsInput"));
         } else {
-            properties().validate();
+            innerProperties().validate();
         }
     }
 }

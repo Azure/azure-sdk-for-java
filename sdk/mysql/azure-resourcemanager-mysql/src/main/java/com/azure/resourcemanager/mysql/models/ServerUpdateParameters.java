@@ -33,7 +33,7 @@ public final class ServerUpdateParameters {
      * The properties that can be updated for a server.
      */
     @JsonProperty(value = "properties")
-    private ServerUpdateParametersProperties properties;
+    private ServerUpdateParametersProperties innerProperties;
 
     /*
      * Application-specific metadata in the form of key-value pairs.
@@ -83,12 +83,12 @@ public final class ServerUpdateParameters {
     }
 
     /**
-     * Get the properties property: The properties that can be updated for a server.
+     * Get the innerProperties property: The properties that can be updated for a server.
      *
-     * @return the properties value.
+     * @return the innerProperties value.
      */
-    private ServerUpdateParametersProperties properties() {
-        return this.properties;
+    private ServerUpdateParametersProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -117,7 +117,7 @@ public final class ServerUpdateParameters {
      * @return the storageProfile value.
      */
     public StorageProfile storageProfile() {
-        return this.properties() == null ? null : this.properties().storageProfile();
+        return this.innerProperties() == null ? null : this.innerProperties().storageProfile();
     }
 
     /**
@@ -127,10 +127,10 @@ public final class ServerUpdateParameters {
      * @return the ServerUpdateParameters object itself.
      */
     public ServerUpdateParameters withStorageProfile(StorageProfile storageProfile) {
-        if (this.properties() == null) {
-            this.properties = new ServerUpdateParametersProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerUpdateParametersProperties();
         }
-        this.properties().withStorageProfile(storageProfile);
+        this.innerProperties().withStorageProfile(storageProfile);
         return this;
     }
 
@@ -140,7 +140,7 @@ public final class ServerUpdateParameters {
      * @return the administratorLoginPassword value.
      */
     public String administratorLoginPassword() {
-        return this.properties() == null ? null : this.properties().administratorLoginPassword();
+        return this.innerProperties() == null ? null : this.innerProperties().administratorLoginPassword();
     }
 
     /**
@@ -150,10 +150,10 @@ public final class ServerUpdateParameters {
      * @return the ServerUpdateParameters object itself.
      */
     public ServerUpdateParameters withAdministratorLoginPassword(String administratorLoginPassword) {
-        if (this.properties() == null) {
-            this.properties = new ServerUpdateParametersProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerUpdateParametersProperties();
         }
-        this.properties().withAdministratorLoginPassword(administratorLoginPassword);
+        this.innerProperties().withAdministratorLoginPassword(administratorLoginPassword);
         return this;
     }
 
@@ -163,7 +163,7 @@ public final class ServerUpdateParameters {
      * @return the version value.
      */
     public ServerVersion version() {
-        return this.properties() == null ? null : this.properties().version();
+        return this.innerProperties() == null ? null : this.innerProperties().version();
     }
 
     /**
@@ -173,10 +173,10 @@ public final class ServerUpdateParameters {
      * @return the ServerUpdateParameters object itself.
      */
     public ServerUpdateParameters withVersion(ServerVersion version) {
-        if (this.properties() == null) {
-            this.properties = new ServerUpdateParametersProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerUpdateParametersProperties();
         }
-        this.properties().withVersion(version);
+        this.innerProperties().withVersion(version);
         return this;
     }
 
@@ -186,7 +186,7 @@ public final class ServerUpdateParameters {
      * @return the sslEnforcement value.
      */
     public SslEnforcementEnum sslEnforcement() {
-        return this.properties() == null ? null : this.properties().sslEnforcement();
+        return this.innerProperties() == null ? null : this.innerProperties().sslEnforcement();
     }
 
     /**
@@ -196,10 +196,10 @@ public final class ServerUpdateParameters {
      * @return the ServerUpdateParameters object itself.
      */
     public ServerUpdateParameters withSslEnforcement(SslEnforcementEnum sslEnforcement) {
-        if (this.properties() == null) {
-            this.properties = new ServerUpdateParametersProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerUpdateParametersProperties();
         }
-        this.properties().withSslEnforcement(sslEnforcement);
+        this.innerProperties().withSslEnforcement(sslEnforcement);
         return this;
     }
 
@@ -209,7 +209,7 @@ public final class ServerUpdateParameters {
      * @return the minimalTlsVersion value.
      */
     public MinimalTlsVersionEnum minimalTlsVersion() {
-        return this.properties() == null ? null : this.properties().minimalTlsVersion();
+        return this.innerProperties() == null ? null : this.innerProperties().minimalTlsVersion();
     }
 
     /**
@@ -219,10 +219,10 @@ public final class ServerUpdateParameters {
      * @return the ServerUpdateParameters object itself.
      */
     public ServerUpdateParameters withMinimalTlsVersion(MinimalTlsVersionEnum minimalTlsVersion) {
-        if (this.properties() == null) {
-            this.properties = new ServerUpdateParametersProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerUpdateParametersProperties();
         }
-        this.properties().withMinimalTlsVersion(minimalTlsVersion);
+        this.innerProperties().withMinimalTlsVersion(minimalTlsVersion);
         return this;
     }
 
@@ -233,7 +233,7 @@ public final class ServerUpdateParameters {
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccessEnum publicNetworkAccess() {
-        return this.properties() == null ? null : this.properties().publicNetworkAccess();
+        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
     }
 
     /**
@@ -244,10 +244,10 @@ public final class ServerUpdateParameters {
      * @return the ServerUpdateParameters object itself.
      */
     public ServerUpdateParameters withPublicNetworkAccess(PublicNetworkAccessEnum publicNetworkAccess) {
-        if (this.properties() == null) {
-            this.properties = new ServerUpdateParametersProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerUpdateParametersProperties();
         }
-        this.properties().withPublicNetworkAccess(publicNetworkAccess);
+        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
         return this;
     }
 
@@ -257,7 +257,7 @@ public final class ServerUpdateParameters {
      * @return the replicationRole value.
      */
     public String replicationRole() {
-        return this.properties() == null ? null : this.properties().replicationRole();
+        return this.innerProperties() == null ? null : this.innerProperties().replicationRole();
     }
 
     /**
@@ -267,10 +267,10 @@ public final class ServerUpdateParameters {
      * @return the ServerUpdateParameters object itself.
      */
     public ServerUpdateParameters withReplicationRole(String replicationRole) {
-        if (this.properties() == null) {
-            this.properties = new ServerUpdateParametersProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerUpdateParametersProperties();
         }
-        this.properties().withReplicationRole(replicationRole);
+        this.innerProperties().withReplicationRole(replicationRole);
         return this;
     }
 
@@ -286,8 +286,8 @@ public final class ServerUpdateParameters {
         if (sku() != null) {
             sku().validate();
         }
-        if (properties() != null) {
-            properties().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

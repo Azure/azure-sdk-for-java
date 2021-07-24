@@ -19,15 +19,15 @@ public final class ConfigurationInner extends ProxyResource {
      * The properties of a configuration.
      */
     @JsonProperty(value = "properties")
-    private ConfigurationProperties properties;
+    private ConfigurationProperties innerProperties;
 
     /**
-     * Get the properties property: The properties of a configuration.
+     * Get the innerProperties property: The properties of a configuration.
      *
-     * @return the properties value.
+     * @return the innerProperties value.
      */
-    private ConfigurationProperties properties() {
-        return this.properties;
+    private ConfigurationProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -36,7 +36,7 @@ public final class ConfigurationInner extends ProxyResource {
      * @return the value value.
      */
     public String value() {
-        return this.properties() == null ? null : this.properties().value();
+        return this.innerProperties() == null ? null : this.innerProperties().value();
     }
 
     /**
@@ -46,10 +46,10 @@ public final class ConfigurationInner extends ProxyResource {
      * @return the ConfigurationInner object itself.
      */
     public ConfigurationInner withValue(String value) {
-        if (this.properties() == null) {
-            this.properties = new ConfigurationProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConfigurationProperties();
         }
-        this.properties().withValue(value);
+        this.innerProperties().withValue(value);
         return this;
     }
 
@@ -59,7 +59,7 @@ public final class ConfigurationInner extends ProxyResource {
      * @return the description value.
      */
     public String description() {
-        return this.properties() == null ? null : this.properties().description();
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -68,7 +68,7 @@ public final class ConfigurationInner extends ProxyResource {
      * @return the defaultValue value.
      */
     public String defaultValue() {
-        return this.properties() == null ? null : this.properties().defaultValue();
+        return this.innerProperties() == null ? null : this.innerProperties().defaultValue();
     }
 
     /**
@@ -77,7 +77,7 @@ public final class ConfigurationInner extends ProxyResource {
      * @return the dataType value.
      */
     public String dataType() {
-        return this.properties() == null ? null : this.properties().dataType();
+        return this.innerProperties() == null ? null : this.innerProperties().dataType();
     }
 
     /**
@@ -86,7 +86,7 @@ public final class ConfigurationInner extends ProxyResource {
      * @return the allowedValues value.
      */
     public String allowedValues() {
-        return this.properties() == null ? null : this.properties().allowedValues();
+        return this.innerProperties() == null ? null : this.innerProperties().allowedValues();
     }
 
     /**
@@ -95,7 +95,7 @@ public final class ConfigurationInner extends ProxyResource {
      * @return the source value.
      */
     public String source() {
-        return this.properties() == null ? null : this.properties().source();
+        return this.innerProperties() == null ? null : this.innerProperties().source();
     }
 
     /**
@@ -105,10 +105,10 @@ public final class ConfigurationInner extends ProxyResource {
      * @return the ConfigurationInner object itself.
      */
     public ConfigurationInner withSource(String source) {
-        if (this.properties() == null) {
-            this.properties = new ConfigurationProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConfigurationProperties();
         }
-        this.properties().withSource(source);
+        this.innerProperties().withSource(source);
         return this;
     }
 
@@ -118,8 +118,8 @@ public final class ConfigurationInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (properties() != null) {
-            properties().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

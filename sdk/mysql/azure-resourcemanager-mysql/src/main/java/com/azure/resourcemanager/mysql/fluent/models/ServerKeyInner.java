@@ -27,7 +27,7 @@ public final class ServerKeyInner extends ProxyResource {
      * Properties of the ServerKey Resource.
      */
     @JsonProperty(value = "properties")
-    private ServerKeyProperties properties;
+    private ServerKeyProperties innerProperties;
 
     /**
      * Get the kind property: Kind of encryption protector used to protect the key.
@@ -39,12 +39,12 @@ public final class ServerKeyInner extends ProxyResource {
     }
 
     /**
-     * Get the properties property: Properties of the ServerKey Resource.
+     * Get the innerProperties property: Properties of the ServerKey Resource.
      *
-     * @return the properties value.
+     * @return the innerProperties value.
      */
-    private ServerKeyProperties properties() {
-        return this.properties;
+    private ServerKeyProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -53,7 +53,7 @@ public final class ServerKeyInner extends ProxyResource {
      * @return the serverKeyType value.
      */
     public ServerKeyType serverKeyType() {
-        return this.properties() == null ? null : this.properties().serverKeyType();
+        return this.innerProperties() == null ? null : this.innerProperties().serverKeyType();
     }
 
     /**
@@ -63,10 +63,10 @@ public final class ServerKeyInner extends ProxyResource {
      * @return the ServerKeyInner object itself.
      */
     public ServerKeyInner withServerKeyType(ServerKeyType serverKeyType) {
-        if (this.properties() == null) {
-            this.properties = new ServerKeyProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerKeyProperties();
         }
-        this.properties().withServerKeyType(serverKeyType);
+        this.innerProperties().withServerKeyType(serverKeyType);
         return this;
     }
 
@@ -76,7 +76,7 @@ public final class ServerKeyInner extends ProxyResource {
      * @return the uri value.
      */
     public String uri() {
-        return this.properties() == null ? null : this.properties().uri();
+        return this.innerProperties() == null ? null : this.innerProperties().uri();
     }
 
     /**
@@ -86,10 +86,10 @@ public final class ServerKeyInner extends ProxyResource {
      * @return the ServerKeyInner object itself.
      */
     public ServerKeyInner withUri(String uri) {
-        if (this.properties() == null) {
-            this.properties = new ServerKeyProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerKeyProperties();
         }
-        this.properties().withUri(uri);
+        this.innerProperties().withUri(uri);
         return this;
     }
 
@@ -99,7 +99,7 @@ public final class ServerKeyInner extends ProxyResource {
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
-        return this.properties() == null ? null : this.properties().creationDate();
+        return this.innerProperties() == null ? null : this.innerProperties().creationDate();
     }
 
     /**
@@ -108,8 +108,8 @@ public final class ServerKeyInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (properties() != null) {
-            properties().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

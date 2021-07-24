@@ -19,15 +19,15 @@ public final class RecoverableServerResourceInner extends ProxyResource {
      * Resource properties.
      */
     @JsonProperty(value = "properties")
-    private RecoverableServerProperties properties;
+    private RecoverableServerProperties innerProperties;
 
     /**
-     * Get the properties property: Resource properties.
+     * Get the innerProperties property: Resource properties.
      *
-     * @return the properties value.
+     * @return the innerProperties value.
      */
-    private RecoverableServerProperties properties() {
-        return this.properties;
+    private RecoverableServerProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -36,7 +36,7 @@ public final class RecoverableServerResourceInner extends ProxyResource {
      * @return the lastAvailableBackupDateTime value.
      */
     public String lastAvailableBackupDateTime() {
-        return this.properties() == null ? null : this.properties().lastAvailableBackupDateTime();
+        return this.innerProperties() == null ? null : this.innerProperties().lastAvailableBackupDateTime();
     }
 
     /**
@@ -45,7 +45,7 @@ public final class RecoverableServerResourceInner extends ProxyResource {
      * @return the serviceLevelObjective value.
      */
     public String serviceLevelObjective() {
-        return this.properties() == null ? null : this.properties().serviceLevelObjective();
+        return this.innerProperties() == null ? null : this.innerProperties().serviceLevelObjective();
     }
 
     /**
@@ -54,7 +54,7 @@ public final class RecoverableServerResourceInner extends ProxyResource {
      * @return the edition value.
      */
     public String edition() {
-        return this.properties() == null ? null : this.properties().edition();
+        return this.innerProperties() == null ? null : this.innerProperties().edition();
     }
 
     /**
@@ -63,7 +63,7 @@ public final class RecoverableServerResourceInner extends ProxyResource {
      * @return the vCore value.
      */
     public Integer vCore() {
-        return this.properties() == null ? null : this.properties().vCore();
+        return this.innerProperties() == null ? null : this.innerProperties().vCore();
     }
 
     /**
@@ -72,7 +72,7 @@ public final class RecoverableServerResourceInner extends ProxyResource {
      * @return the hardwareGeneration value.
      */
     public String hardwareGeneration() {
-        return this.properties() == null ? null : this.properties().hardwareGeneration();
+        return this.innerProperties() == null ? null : this.innerProperties().hardwareGeneration();
     }
 
     /**
@@ -81,7 +81,7 @@ public final class RecoverableServerResourceInner extends ProxyResource {
      * @return the version value.
      */
     public String version() {
-        return this.properties() == null ? null : this.properties().version();
+        return this.innerProperties() == null ? null : this.innerProperties().version();
     }
 
     /**
@@ -90,8 +90,8 @@ public final class RecoverableServerResourceInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (properties() != null) {
-            properties().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

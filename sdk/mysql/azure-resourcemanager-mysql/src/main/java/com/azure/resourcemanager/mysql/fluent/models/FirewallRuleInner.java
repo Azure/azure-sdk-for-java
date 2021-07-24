@@ -19,15 +19,15 @@ public final class FirewallRuleInner extends ProxyResource {
      * The properties of a firewall rule.
      */
     @JsonProperty(value = "properties", required = true)
-    private FirewallRuleProperties properties = new FirewallRuleProperties();
+    private FirewallRuleProperties innerProperties = new FirewallRuleProperties();
 
     /**
-     * Get the properties property: The properties of a firewall rule.
+     * Get the innerProperties property: The properties of a firewall rule.
      *
-     * @return the properties value.
+     * @return the innerProperties value.
      */
-    private FirewallRuleProperties properties() {
-        return this.properties;
+    private FirewallRuleProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -36,7 +36,7 @@ public final class FirewallRuleInner extends ProxyResource {
      * @return the startIpAddress value.
      */
     public String startIpAddress() {
-        return this.properties() == null ? null : this.properties().startIpAddress();
+        return this.innerProperties() == null ? null : this.innerProperties().startIpAddress();
     }
 
     /**
@@ -46,10 +46,10 @@ public final class FirewallRuleInner extends ProxyResource {
      * @return the FirewallRuleInner object itself.
      */
     public FirewallRuleInner withStartIpAddress(String startIpAddress) {
-        if (this.properties() == null) {
-            this.properties = new FirewallRuleProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FirewallRuleProperties();
         }
-        this.properties().withStartIpAddress(startIpAddress);
+        this.innerProperties().withStartIpAddress(startIpAddress);
         return this;
     }
 
@@ -59,7 +59,7 @@ public final class FirewallRuleInner extends ProxyResource {
      * @return the endIpAddress value.
      */
     public String endIpAddress() {
-        return this.properties() == null ? null : this.properties().endIpAddress();
+        return this.innerProperties() == null ? null : this.innerProperties().endIpAddress();
     }
 
     /**
@@ -69,10 +69,10 @@ public final class FirewallRuleInner extends ProxyResource {
      * @return the FirewallRuleInner object itself.
      */
     public FirewallRuleInner withEndIpAddress(String endIpAddress) {
-        if (this.properties() == null) {
-            this.properties = new FirewallRuleProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FirewallRuleProperties();
         }
-        this.properties().withEndIpAddress(endIpAddress);
+        this.innerProperties().withEndIpAddress(endIpAddress);
         return this;
     }
 
@@ -82,12 +82,13 @@ public final class FirewallRuleInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (properties() == null) {
+        if (innerProperties() == null) {
             throw logger
                 .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property properties in model FirewallRuleInner"));
+                    new IllegalArgumentException(
+                        "Missing required property innerProperties in model FirewallRuleInner"));
         } else {
-            properties().validate();
+            innerProperties().validate();
         }
     }
 }

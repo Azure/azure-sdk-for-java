@@ -20,15 +20,15 @@ public final class LogFileInner extends ProxyResource {
      * The properties of the log file.
      */
     @JsonProperty(value = "properties")
-    private LogFileProperties properties;
+    private LogFileProperties innerProperties;
 
     /**
-     * Get the properties property: The properties of the log file.
+     * Get the innerProperties property: The properties of the log file.
      *
-     * @return the properties value.
+     * @return the innerProperties value.
      */
-    private LogFileProperties properties() {
-        return this.properties;
+    private LogFileProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -37,7 +37,7 @@ public final class LogFileInner extends ProxyResource {
      * @return the sizeInKB value.
      */
     public Long sizeInKB() {
-        return this.properties() == null ? null : this.properties().sizeInKB();
+        return this.innerProperties() == null ? null : this.innerProperties().sizeInKB();
     }
 
     /**
@@ -47,10 +47,10 @@ public final class LogFileInner extends ProxyResource {
      * @return the LogFileInner object itself.
      */
     public LogFileInner withSizeInKB(Long sizeInKB) {
-        if (this.properties() == null) {
-            this.properties = new LogFileProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LogFileProperties();
         }
-        this.properties().withSizeInKB(sizeInKB);
+        this.innerProperties().withSizeInKB(sizeInKB);
         return this;
     }
 
@@ -60,7 +60,7 @@ public final class LogFileInner extends ProxyResource {
      * @return the createdTime value.
      */
     public OffsetDateTime createdTime() {
-        return this.properties() == null ? null : this.properties().createdTime();
+        return this.innerProperties() == null ? null : this.innerProperties().createdTime();
     }
 
     /**
@@ -69,29 +69,29 @@ public final class LogFileInner extends ProxyResource {
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
-        return this.properties() == null ? null : this.properties().lastModifiedTime();
+        return this.innerProperties() == null ? null : this.innerProperties().lastModifiedTime();
     }
 
     /**
-     * Get the typePropertiesType property: Type of the log file.
+     * Get the type property: Type of the log file.
      *
-     * @return the typePropertiesType value.
+     * @return the type value.
      */
     public String typePropertiesType() {
-        return this.properties() == null ? null : this.properties().typePropertiesType();
+        return this.innerProperties() == null ? null : this.innerProperties().type();
     }
 
     /**
-     * Set the typePropertiesType property: Type of the log file.
+     * Set the type property: Type of the log file.
      *
-     * @param typePropertiesType the typePropertiesType value to set.
+     * @param type the type value to set.
      * @return the LogFileInner object itself.
      */
-    public LogFileInner withTypePropertiesType(String typePropertiesType) {
-        if (this.properties() == null) {
-            this.properties = new LogFileProperties();
+    public LogFileInner withTypePropertiesType(String type) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LogFileProperties();
         }
-        this.properties().withTypePropertiesType(typePropertiesType);
+        this.innerProperties().withType(type);
         return this;
     }
 
@@ -101,7 +101,7 @@ public final class LogFileInner extends ProxyResource {
      * @return the url value.
      */
     public String url() {
-        return this.properties() == null ? null : this.properties().url();
+        return this.innerProperties() == null ? null : this.innerProperties().url();
     }
 
     /**
@@ -111,10 +111,10 @@ public final class LogFileInner extends ProxyResource {
      * @return the LogFileInner object itself.
      */
     public LogFileInner withUrl(String url) {
-        if (this.properties() == null) {
-            this.properties = new LogFileProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LogFileProperties();
         }
-        this.properties().withUrl(url);
+        this.innerProperties().withUrl(url);
         return this;
     }
 
@@ -124,8 +124,8 @@ public final class LogFileInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (properties() != null) {
-            properties().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

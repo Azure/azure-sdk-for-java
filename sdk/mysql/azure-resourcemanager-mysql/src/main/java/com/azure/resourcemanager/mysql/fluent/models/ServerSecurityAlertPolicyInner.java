@@ -21,15 +21,15 @@ public final class ServerSecurityAlertPolicyInner extends ProxyResource {
      * Resource properties.
      */
     @JsonProperty(value = "properties")
-    private SecurityAlertPolicyProperties properties;
+    private SecurityAlertPolicyProperties innerProperties;
 
     /**
-     * Get the properties property: Resource properties.
+     * Get the innerProperties property: Resource properties.
      *
-     * @return the properties value.
+     * @return the innerProperties value.
      */
-    private SecurityAlertPolicyProperties properties() {
-        return this.properties;
+    private SecurityAlertPolicyProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -38,7 +38,7 @@ public final class ServerSecurityAlertPolicyInner extends ProxyResource {
      * @return the state value.
      */
     public ServerSecurityAlertPolicyState state() {
-        return this.properties() == null ? null : this.properties().state();
+        return this.innerProperties() == null ? null : this.innerProperties().state();
     }
 
     /**
@@ -48,10 +48,10 @@ public final class ServerSecurityAlertPolicyInner extends ProxyResource {
      * @return the ServerSecurityAlertPolicyInner object itself.
      */
     public ServerSecurityAlertPolicyInner withState(ServerSecurityAlertPolicyState state) {
-        if (this.properties() == null) {
-            this.properties = new SecurityAlertPolicyProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SecurityAlertPolicyProperties();
         }
-        this.properties().withState(state);
+        this.innerProperties().withState(state);
         return this;
     }
 
@@ -62,7 +62,7 @@ public final class ServerSecurityAlertPolicyInner extends ProxyResource {
      * @return the disabledAlerts value.
      */
     public List<String> disabledAlerts() {
-        return this.properties() == null ? null : this.properties().disabledAlerts();
+        return this.innerProperties() == null ? null : this.innerProperties().disabledAlerts();
     }
 
     /**
@@ -73,10 +73,10 @@ public final class ServerSecurityAlertPolicyInner extends ProxyResource {
      * @return the ServerSecurityAlertPolicyInner object itself.
      */
     public ServerSecurityAlertPolicyInner withDisabledAlerts(List<String> disabledAlerts) {
-        if (this.properties() == null) {
-            this.properties = new SecurityAlertPolicyProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SecurityAlertPolicyProperties();
         }
-        this.properties().withDisabledAlerts(disabledAlerts);
+        this.innerProperties().withDisabledAlerts(disabledAlerts);
         return this;
     }
 
@@ -86,7 +86,7 @@ public final class ServerSecurityAlertPolicyInner extends ProxyResource {
      * @return the emailAddresses value.
      */
     public List<String> emailAddresses() {
-        return this.properties() == null ? null : this.properties().emailAddresses();
+        return this.innerProperties() == null ? null : this.innerProperties().emailAddresses();
     }
 
     /**
@@ -96,10 +96,10 @@ public final class ServerSecurityAlertPolicyInner extends ProxyResource {
      * @return the ServerSecurityAlertPolicyInner object itself.
      */
     public ServerSecurityAlertPolicyInner withEmailAddresses(List<String> emailAddresses) {
-        if (this.properties() == null) {
-            this.properties = new SecurityAlertPolicyProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SecurityAlertPolicyProperties();
         }
-        this.properties().withEmailAddresses(emailAddresses);
+        this.innerProperties().withEmailAddresses(emailAddresses);
         return this;
     }
 
@@ -109,7 +109,7 @@ public final class ServerSecurityAlertPolicyInner extends ProxyResource {
      * @return the emailAccountAdmins value.
      */
     public Boolean emailAccountAdmins() {
-        return this.properties() == null ? null : this.properties().emailAccountAdmins();
+        return this.innerProperties() == null ? null : this.innerProperties().emailAccountAdmins();
     }
 
     /**
@@ -119,10 +119,10 @@ public final class ServerSecurityAlertPolicyInner extends ProxyResource {
      * @return the ServerSecurityAlertPolicyInner object itself.
      */
     public ServerSecurityAlertPolicyInner withEmailAccountAdmins(Boolean emailAccountAdmins) {
-        if (this.properties() == null) {
-            this.properties = new SecurityAlertPolicyProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SecurityAlertPolicyProperties();
         }
-        this.properties().withEmailAccountAdmins(emailAccountAdmins);
+        this.innerProperties().withEmailAccountAdmins(emailAccountAdmins);
         return this;
     }
 
@@ -133,7 +133,7 @@ public final class ServerSecurityAlertPolicyInner extends ProxyResource {
      * @return the storageEndpoint value.
      */
     public String storageEndpoint() {
-        return this.properties() == null ? null : this.properties().storageEndpoint();
+        return this.innerProperties() == null ? null : this.innerProperties().storageEndpoint();
     }
 
     /**
@@ -144,10 +144,10 @@ public final class ServerSecurityAlertPolicyInner extends ProxyResource {
      * @return the ServerSecurityAlertPolicyInner object itself.
      */
     public ServerSecurityAlertPolicyInner withStorageEndpoint(String storageEndpoint) {
-        if (this.properties() == null) {
-            this.properties = new SecurityAlertPolicyProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SecurityAlertPolicyProperties();
         }
-        this.properties().withStorageEndpoint(storageEndpoint);
+        this.innerProperties().withStorageEndpoint(storageEndpoint);
         return this;
     }
 
@@ -158,7 +158,7 @@ public final class ServerSecurityAlertPolicyInner extends ProxyResource {
      * @return the storageAccountAccessKey value.
      */
     public String storageAccountAccessKey() {
-        return this.properties() == null ? null : this.properties().storageAccountAccessKey();
+        return this.innerProperties() == null ? null : this.innerProperties().storageAccountAccessKey();
     }
 
     /**
@@ -169,10 +169,10 @@ public final class ServerSecurityAlertPolicyInner extends ProxyResource {
      * @return the ServerSecurityAlertPolicyInner object itself.
      */
     public ServerSecurityAlertPolicyInner withStorageAccountAccessKey(String storageAccountAccessKey) {
-        if (this.properties() == null) {
-            this.properties = new SecurityAlertPolicyProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SecurityAlertPolicyProperties();
         }
-        this.properties().withStorageAccountAccessKey(storageAccountAccessKey);
+        this.innerProperties().withStorageAccountAccessKey(storageAccountAccessKey);
         return this;
     }
 
@@ -182,7 +182,7 @@ public final class ServerSecurityAlertPolicyInner extends ProxyResource {
      * @return the retentionDays value.
      */
     public Integer retentionDays() {
-        return this.properties() == null ? null : this.properties().retentionDays();
+        return this.innerProperties() == null ? null : this.innerProperties().retentionDays();
     }
 
     /**
@@ -192,10 +192,10 @@ public final class ServerSecurityAlertPolicyInner extends ProxyResource {
      * @return the ServerSecurityAlertPolicyInner object itself.
      */
     public ServerSecurityAlertPolicyInner withRetentionDays(Integer retentionDays) {
-        if (this.properties() == null) {
-            this.properties = new SecurityAlertPolicyProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SecurityAlertPolicyProperties();
         }
-        this.properties().withRetentionDays(retentionDays);
+        this.innerProperties().withRetentionDays(retentionDays);
         return this;
     }
 
@@ -205,8 +205,8 @@ public final class ServerSecurityAlertPolicyInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (properties() != null) {
-            properties().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

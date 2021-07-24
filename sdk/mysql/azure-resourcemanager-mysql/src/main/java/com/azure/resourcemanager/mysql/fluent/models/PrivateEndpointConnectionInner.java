@@ -21,15 +21,15 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
      * Resource properties.
      */
     @JsonProperty(value = "properties")
-    private PrivateEndpointConnectionProperties properties;
+    private PrivateEndpointConnectionProperties innerProperties;
 
     /**
-     * Get the properties property: Resource properties.
+     * Get the innerProperties property: Resource properties.
      *
-     * @return the properties value.
+     * @return the innerProperties value.
      */
-    private PrivateEndpointConnectionProperties properties() {
-        return this.properties;
+    private PrivateEndpointConnectionProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -38,7 +38,7 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
      * @return the privateEndpoint value.
      */
     public PrivateEndpointProperty privateEndpoint() {
-        return this.properties() == null ? null : this.properties().privateEndpoint();
+        return this.innerProperties() == null ? null : this.innerProperties().privateEndpoint();
     }
 
     /**
@@ -48,10 +48,10 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
      * @return the PrivateEndpointConnectionInner object itself.
      */
     public PrivateEndpointConnectionInner withPrivateEndpoint(PrivateEndpointProperty privateEndpoint) {
-        if (this.properties() == null) {
-            this.properties = new PrivateEndpointConnectionProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateEndpointConnectionProperties();
         }
-        this.properties().withPrivateEndpoint(privateEndpoint);
+        this.innerProperties().withPrivateEndpoint(privateEndpoint);
         return this;
     }
 
@@ -61,7 +61,7 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
      * @return the privateLinkServiceConnectionState value.
      */
     public PrivateLinkServiceConnectionStateProperty privateLinkServiceConnectionState() {
-        return this.properties() == null ? null : this.properties().privateLinkServiceConnectionState();
+        return this.innerProperties() == null ? null : this.innerProperties().privateLinkServiceConnectionState();
     }
 
     /**
@@ -72,10 +72,10 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
      */
     public PrivateEndpointConnectionInner withPrivateLinkServiceConnectionState(
         PrivateLinkServiceConnectionStateProperty privateLinkServiceConnectionState) {
-        if (this.properties() == null) {
-            this.properties = new PrivateEndpointConnectionProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateEndpointConnectionProperties();
         }
-        this.properties().withPrivateLinkServiceConnectionState(privateLinkServiceConnectionState);
+        this.innerProperties().withPrivateLinkServiceConnectionState(privateLinkServiceConnectionState);
         return this;
     }
 
@@ -85,7 +85,7 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
      * @return the provisioningState value.
      */
     public String provisioningState() {
-        return this.properties() == null ? null : this.properties().provisioningState();
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -94,8 +94,8 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (properties() != null) {
-            properties().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

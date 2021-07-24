@@ -19,15 +19,15 @@ public final class ServerUpgradeParameters {
      * The properties that can be updated for a server.
      */
     @JsonProperty(value = "properties")
-    private ServerUpgradeParametersProperties properties;
+    private ServerUpgradeParametersProperties innerProperties;
 
     /**
-     * Get the properties property: The properties that can be updated for a server.
+     * Get the innerProperties property: The properties that can be updated for a server.
      *
-     * @return the properties value.
+     * @return the innerProperties value.
      */
-    private ServerUpgradeParametersProperties properties() {
-        return this.properties;
+    private ServerUpgradeParametersProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -36,7 +36,7 @@ public final class ServerUpgradeParameters {
      * @return the targetServerVersion value.
      */
     public String targetServerVersion() {
-        return this.properties() == null ? null : this.properties().targetServerVersion();
+        return this.innerProperties() == null ? null : this.innerProperties().targetServerVersion();
     }
 
     /**
@@ -46,10 +46,10 @@ public final class ServerUpgradeParameters {
      * @return the ServerUpgradeParameters object itself.
      */
     public ServerUpgradeParameters withTargetServerVersion(String targetServerVersion) {
-        if (this.properties() == null) {
-            this.properties = new ServerUpgradeParametersProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerUpgradeParametersProperties();
         }
-        this.properties().withTargetServerVersion(targetServerVersion);
+        this.innerProperties().withTargetServerVersion(targetServerVersion);
         return this;
     }
 
@@ -59,8 +59,8 @@ public final class ServerUpgradeParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (properties() != null) {
-            properties().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

@@ -19,15 +19,15 @@ public final class QueryTextInner extends ProxyResource {
      * The properties of a query text.
      */
     @JsonProperty(value = "properties")
-    private QueryTextProperties properties;
+    private QueryTextProperties innerProperties;
 
     /**
-     * Get the properties property: The properties of a query text.
+     * Get the innerProperties property: The properties of a query text.
      *
-     * @return the properties value.
+     * @return the innerProperties value.
      */
-    private QueryTextProperties properties() {
-        return this.properties;
+    private QueryTextProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -36,7 +36,7 @@ public final class QueryTextInner extends ProxyResource {
      * @return the queryId value.
      */
     public String queryId() {
-        return this.properties() == null ? null : this.properties().queryId();
+        return this.innerProperties() == null ? null : this.innerProperties().queryId();
     }
 
     /**
@@ -46,10 +46,10 @@ public final class QueryTextInner extends ProxyResource {
      * @return the QueryTextInner object itself.
      */
     public QueryTextInner withQueryId(String queryId) {
-        if (this.properties() == null) {
-            this.properties = new QueryTextProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new QueryTextProperties();
         }
-        this.properties().withQueryId(queryId);
+        this.innerProperties().withQueryId(queryId);
         return this;
     }
 
@@ -59,7 +59,7 @@ public final class QueryTextInner extends ProxyResource {
      * @return the queryText value.
      */
     public String queryText() {
-        return this.properties() == null ? null : this.properties().queryText();
+        return this.innerProperties() == null ? null : this.innerProperties().queryText();
     }
 
     /**
@@ -69,10 +69,10 @@ public final class QueryTextInner extends ProxyResource {
      * @return the QueryTextInner object itself.
      */
     public QueryTextInner withQueryText(String queryText) {
-        if (this.properties() == null) {
-            this.properties = new QueryTextProperties();
+        if (this.innerProperties() == null) {
+            this.innerProperties = new QueryTextProperties();
         }
-        this.properties().withQueryText(queryText);
+        this.innerProperties().withQueryText(queryText);
         return this;
     }
 
@@ -82,8 +82,8 @@ public final class QueryTextInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (properties() != null) {
-            properties().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }
