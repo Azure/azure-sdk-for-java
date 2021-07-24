@@ -25,15 +25,13 @@ import java.util.Properties;
 /**
  * Convert legacy properties to the current and set into environment before {@link KeyVaultEnvironmentPostProcessor}.
  */
-public class PreLegacyPropertyEnvironmentPostProcessor extends AbstractLegacyPropertyEnvironmentPostProcessor{
+public class PreLegacyPropertyEnvironmentPostProcessor extends AbstractLegacyPropertyEnvironmentPostProcessor {
 
     public static final int DEFAULT_ORDER = ConfigFileApplicationListener.DEFAULT_ORDER + 1;
     private static final Map<String, String> KEYVAULT_PROPERTY_SUFFIX_MAP = new HashMap<String, String>();
     private static final Logger LOGGER = LoggerFactory.getLogger(PreLegacyPropertyEnvironmentPostProcessor.class);
     private static final String KEYVAULT_LEGACY_PREFIX = "azure.keyvault";
     public static final String DELIMITER = ".";
-
-    private int order = DEFAULT_ORDER;
 
     static {
         // Load the mapping relationship of Key Vault legacy properties and associated current properties from
@@ -42,7 +40,7 @@ public class PreLegacyPropertyEnvironmentPostProcessor extends AbstractLegacyPro
             InputStream inputStream = AbstractLegacyPropertyEnvironmentPostProcessor.class
                 .getClassLoader()
                 .getResourceAsStream("legacy-keyvault-property-suffix-mapping.properties");
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream))
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"))
         ) {
             String line;
             while ((line = bufferedReader.readLine()) != null) {
@@ -56,7 +54,7 @@ public class PreLegacyPropertyEnvironmentPostProcessor extends AbstractLegacyPro
 
     @Override
     public int getOrder() {
-        return order;
+        return DEFAULT_ORDER;
     }
 
     /**
@@ -76,7 +74,7 @@ public class PreLegacyPropertyEnvironmentPostProcessor extends AbstractLegacyPro
         Map<String, String> legacyToCurrentMap = new HashMap<String, String>();
         for (String keyVault : keyVaultNames.split(",")) {
             keyVault = keyVault.trim();
-            for(Map.Entry<String, String> mapping : KEYVAULT_PROPERTY_SUFFIX_MAP.entrySet()) {
+            for (Map.Entry<String, String> mapping : KEYVAULT_PROPERTY_SUFFIX_MAP.entrySet()) {
                 String legacy = String.join(DELIMITER, KEYVAULT_LEGACY_PREFIX, keyVault, mapping.getKey());
                 String current = String.join(DELIMITER, KeyVaultProperties.PREFIX, keyVault, mapping.getValue());
                 legacyToCurrentMap.put(legacy, current);
@@ -139,6 +137,12 @@ public class PreLegacyPropertyEnvironmentPostProcessor extends AbstractLegacyPro
                      .orElse(null);
     }
 
+    /**
+     * Add the mapped current properties to application environment, of which the precedence does not count.
+     *
+     * @param environment The application environment to set properties.
+     * @param properties The converted current properties to be configured.
+     */
     @Override
     protected void setConvertedPropertyToEnvironment(ConfigurableEnvironment environment, Properties properties) {
         // This post-processor is called multiple times but sets the properties only once.

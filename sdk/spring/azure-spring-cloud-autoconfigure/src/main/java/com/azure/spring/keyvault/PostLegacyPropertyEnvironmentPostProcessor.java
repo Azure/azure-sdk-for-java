@@ -36,10 +36,9 @@ public class PostLegacyPropertyEnvironmentPostProcessor extends AbstractLegacyPr
     public static final int DEFAULT_ORDER = KeyVaultEnvironmentPostProcessor.DEFAULT_ORDER + 1;
     private static final Logger LOGGER = LoggerFactory.getLogger(PostLegacyPropertyEnvironmentPostProcessor.class);
 
-    private int order = DEFAULT_ORDER;
     @Override
     public int getOrder() {
-        return order;
+        return DEFAULT_ORDER;
     }
 
     /**
@@ -66,7 +65,8 @@ public class PostLegacyPropertyEnvironmentPostProcessor extends AbstractLegacyPr
                                                     ConfigurableEnvironment environment) {
         Properties properties = new Properties();
         List<KeyVaultPropertySource> propertySourceList = getKeyVaultPropertySourceList(environment);
-        for (int i = propertySourceList.size()-1; i >=0; i--) {
+        // Reverse traversal to keep the Key Vault property source of higher precedence could override the lower ones.
+        for (int i = propertySourceList.size() - 1; i >= 0; i--) {
             KeyVaultPropertySource kvSource = propertySourceList.get(i);
             for (Map.Entry<String, String> entry : legacyToCurrentMap.entrySet()) {
                 String legacyPropertyName = entry.getKey();
@@ -112,13 +112,19 @@ public class PostLegacyPropertyEnvironmentPostProcessor extends AbstractLegacyPr
                 .ifPresent(source -> propertySourceList.add((KeyVaultPropertySource) source));
     }
 
+    /**
+     * Add the mapped current properties to application environment, of which the precedence should be higher than that
+     * of all of local Key Vault property sources to keep properties in multiple Key Vault sources in order.
+     *
+     * @param environment The application environment to set properties.
+     * @param properties The converted current properties to be configured.
+     */
     @Override
     protected void setConvertedPropertyToEnvironment(ConfigurableEnvironment environment, Properties properties) {
         // This post-processor is called multiple times but sets the properties only once.
         if (!CollectionUtils.isEmpty(properties)) {
             PropertiesPropertySource convertedPropertySource =
                 new PropertiesPropertySource(PostLegacyPropertyEnvironmentPostProcessor.class.getName(), properties);
-            // This property source should have higher precedence than that of all of local Key Vault property sources.
             final MutablePropertySources sources = environment.getPropertySources();
             if (sources.contains(SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME)) {
                 sources.addAfter(

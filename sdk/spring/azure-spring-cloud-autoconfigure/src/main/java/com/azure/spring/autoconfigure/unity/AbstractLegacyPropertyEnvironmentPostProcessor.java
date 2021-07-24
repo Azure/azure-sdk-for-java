@@ -26,14 +26,14 @@ import java.util.Properties;
  */
 public abstract class AbstractLegacyPropertyEnvironmentPostProcessor implements EnvironmentPostProcessor, Ordered {
 
-    protected static final Map<String, String> SPRING_PROPERTY_MAP = new HashMap<String, String>();
+    private static final Map<String, String> SPRING_PROPERTY_MAP = new HashMap<String, String>();
     static {
         // Load the map of each service's legacy properties and associated current properties from classpath.
         try (
                 InputStream inputStream = AbstractLegacyPropertyEnvironmentPostProcessor.class
                                               .getClassLoader()
                                               .getResourceAsStream("legacy-property-mapping.properties");
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream))
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"))
         ) {
             String line;
             while ((line = bufferedReader.readLine()) != null) {
@@ -80,7 +80,7 @@ public abstract class AbstractLegacyPropertyEnvironmentPostProcessor implements 
      * of which the precedence varies in different processors.
      *
      * @param environment The application environment to set properties.
-     * @param properties
+     * @param properties The converted current properties to be configured.
      */
     protected abstract void setConvertedPropertyToEnvironment(ConfigurableEnvironment environment, Properties properties);
 }
