@@ -8,7 +8,6 @@ import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.tracing.StartSpanOptions;
 import io.opentelemetry.api.GlobalOpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
-import io.opentelemetry.api.common.AttributeType;
 import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.SpanBuilder;
@@ -422,10 +421,14 @@ public class OpenTelemetryTracerTest {
     }
 
     class TestScope implements Scope {
-        public boolean closed = false;
+        private boolean closed = false;
         @Override
         public void close() {
             closed = true;
+        }
+
+        public boolean isClosed() {
+            return this.closed;
         }
     }
 
@@ -433,7 +436,7 @@ public class OpenTelemetryTracerTest {
     public void endSpanClosesScope() {
         final TestScope testScope = new TestScope();
         openTelemetryTracer.end("foo", null, tracingContext.addData(SCOPE_KEY, testScope));
-        assertTrue(testScope.closed);
+        assertTrue(testScope.isClosed());
     }
 
     @Test
@@ -773,7 +776,7 @@ public class OpenTelemetryTracerTest {
 
         final Attributes expectedAttributes = Attributes.builder()
             .put("S", "foo")
-            .put("L", 10l)
+            .put("L", 10L)
             .put("D", 0.1d)
             .put("B", true)
             .put("S[]",  new String[]{"foo"})
