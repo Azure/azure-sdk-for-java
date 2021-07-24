@@ -8,6 +8,7 @@ import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.tracing.StartSpanOptions;
 import io.opentelemetry.api.GlobalOpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
+import io.opentelemetry.api.common.AttributeType;
 import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.SpanBuilder;
@@ -34,10 +35,7 @@ import org.junit.jupiter.api.Test;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import static com.azure.core.tracing.opentelemetry.OpenTelemetryTracer.AZ_NAMESPACE_KEY;
 import static com.azure.core.tracing.opentelemetry.OpenTelemetryTracer.MESSAGE_ENQUEUED_TIME;
@@ -766,6 +764,23 @@ public class OpenTelemetryTracerTest {
         attributes.put("L", 10L);
         attributes.put("D", 0.1d);
         attributes.put("B", true);
+        attributes.put("S[]", new String[]{"foo"});
+        attributes.put("L[]", new long[]{10L});
+        attributes.put("D[]", new double[]{0.1d});
+        attributes.put("B[]", new boolean[]{true});
+        attributes.put("I[]", new int[]{1});
+
+
+        final Attributes expectedAttributes = Attributes.builder()
+            .put("S", "foo")
+            .put("L", 10l)
+            .put("D", 0.1d)
+            .put("B", true)
+            .put("S[]",  new String[]{"foo"})
+            .put("L[]", new long[] {10L})
+            .put("D[]", new double[] {0.1d})
+            .put("B[]", new boolean[] {true})
+            .build();
 
         final StartSpanOptions options = new StartSpanOptions(METHOD_NAME);
         attributes.forEach((k, v) -> options.setAttribute(k, v));
@@ -773,8 +788,7 @@ public class OpenTelemetryTracerTest {
         final Context started = openTelemetryTracer.start(options, tracingContext);
         final ReadableSpan span = (ReadableSpan) started.getData(PARENT_SPAN_KEY).get();
 
-        // TODO(limolkova) https://github.com/open-telemetry/opentelemetry-java/issues/3421
-        //verifySpanAttributes(attributes, span.toSpanData().getAttributes());
+        verifySpanAttributes(expectedAttributes, span.toSpanData().getAttributes());
     }
 
     private static void assertSpanWithExplicitParent(Context updatedContext, String parentSpanId) {
@@ -813,7 +827,15 @@ public class OpenTelemetryTracerTest {
     private static void verifySpanAttributes(Map<String, Object> expectedMap, Attributes actualAttributeMap) {
         assertEquals(expectedMap.size(), actualAttributeMap.size());
 
-        actualAttributeMap.forEach((attributeKey, attributeValue) ->
-            assertEquals(expectedMap.get(attributeKey.getKey()), attributeValue));
+        actualAttributeMap.forEach((attributeKey, attributeValue) -> {
+            assertEquals(expectedMap.get(attributeKey.getKey()), attributeValue);
+        });
     }
+
+    private static void verifySpanAttributes(Attributes expected, Attributes actual) {
+        assertEquals(expected.size(), actual.size());
+
+        assertTrue(expected.asMap().entrySet().stream().allMatch(e -> e.getValue().equals(actual.get(e.getKey()))));
+    }
+
 }
