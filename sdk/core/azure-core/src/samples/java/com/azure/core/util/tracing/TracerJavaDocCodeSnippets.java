@@ -28,6 +28,16 @@ public class TracerJavaDocCodeSnippets {
             updatedContext.getData(PARENT_SPAN_KEY).get());
         // END: com.azure.core.util.tracing.start#string-context
 
+        // BEGIN: com.azure.core.util.tracing.start#options-context
+        // pass the current tracing span context to the calling method
+        Context traceContext = new Context(PARENT_SPAN_KEY, "<user-current-span>");
+        // start a new tracing span with the given method name and explicit parent span
+        StartSpanOptions options = new StartSpanOptions("azure.keyvault.secrets/setsecret", StartSpanOptions.Kind.CLIENT);
+        Context updatedContext = tracer.start(options, traceContext);
+        System.out.printf("Span returned in the context object: %s%n",
+            updatedContext.getData(PARENT_SPAN_KEY).get());
+        // END: com.azure.core.util.tracing.start#string-context
+		
         // BEGIN: com.azure.core.util.tracing.start#string-context-processKind-SEND
         // pass the current tracing span and request metadata to the calling method
         Context sendContext = new Context(PARENT_SPAN_KEY, "<user-current-span>")
