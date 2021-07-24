@@ -51,12 +51,7 @@ import static com.azure.core.util.tracing.Tracer.SPAN_BUILDER_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 import static com.azure.core.util.tracing.Tracer.USER_SPAN_NAME_KEY;
 import static io.opentelemetry.api.trace.StatusCode.UNSET;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Tests Azure-OpenTelemetry tracing package using openTelemetry-sdk
@@ -428,6 +423,35 @@ public class OpenTelemetryTracerTest {
         assertEquals("exception", event.getName());
     }
 
+    class TestScope implements Scope {
+        public boolean closed = false;
+        @Override
+        public void close() {
+            closed = true;
+        }
+    }
+
+    @Test
+    public void endSpanClosesScope() {
+        final TestScope testScope = new TestScope();
+        openTelemetryTracer.end("foo", null, tracingContext.addData(SCOPE_KEY, testScope));
+        assertTrue(testScope.closed);
+    }
+
+    @Test
+    public void startEndCurrentSpan() {
+        Span parentSpan = Span.current();
+
+        final StartSpanOptions options = new StartSpanOptions("foo")
+            .setMakeCurrent(true);
+
+        final Context started = openTelemetryTracer.start(options, tracingContext);
+        assertSame(Span.current(), started.getData(PARENT_SPAN_KEY).get());
+
+        openTelemetryTracer.end("foo", null, started);
+        assertSame(parentSpan, Span.current());
+    }
+
     @Test
     public void setAttributeTest() {
         // Arrange
@@ -731,8 +755,6 @@ public class OpenTelemetryTracerTest {
         final StartSpanOptions options = new StartSpanOptions(METHOD_NAME)
             .setMakeCurrent(true);
         final Context started = openTelemetryTracer.start(options, Context.NONE);
-        final ReadableSpan span = (ReadableSpan) started.getData(PARENT_SPAN_KEY).get();
-
         assertTrue(started.getData(SCOPE_KEY).isPresent());
     }
 
@@ -751,8 +773,7 @@ public class OpenTelemetryTracerTest {
         final Context started = openTelemetryTracer.start(options, tracingContext);
         final ReadableSpan span = (ReadableSpan) started.getData(PARENT_SPAN_KEY).get();
 
-        // TODO(limolkova) file bug for opentelemetery -
-        //  start time attributes are not set on the span
+        // TODO(limolkova) https://github.com/open-telemetry/opentelemetry-java/issues/3421
         //verifySpanAttributes(attributes, span.toSpanData().getAttributes());
     }
 

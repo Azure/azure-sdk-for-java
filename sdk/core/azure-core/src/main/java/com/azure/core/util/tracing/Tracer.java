@@ -104,7 +104,7 @@ public interface Tracer {
      * <p><strong>Code samples</strong></p>
      *
      * <p>Starts a tracing span with provided method name and explicit parent span</p>
-     * {@codesnippet com.azure.core.util.tracing.start#string-context}
+     * {@codesnippet com.azure.core.util.tracing.start#options-context}
      *
      * @param options span creation options.
      * @param context Additional metadata that is passed through the call stack.
@@ -112,7 +112,6 @@ public interface Tracer {
      * @throws NullPointerException if {@code options} or {@code context} is {@code null}.
      */
     default Context start(StartSpanOptions options, Context context) {
-        // TODO(limolkova) codesnippet
         return start(options.getSpanName(), context);
     }
 

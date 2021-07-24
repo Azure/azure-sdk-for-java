@@ -43,7 +43,6 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     static final String AZ_NAMESPACE_KEY = "az.namespace";
     static final String MESSAGE_BUS_DESTINATION = "message_bus.destination";
     static final String PEER_ENDPOINT = "peer.address";
-    static final String SCOPE_CONTEXT_KEY = "scope";
     private final ClientLogger logger = new ClientLogger(OpenTelemetryTracer.class);
 
     /**
@@ -263,7 +262,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
 
         context = context.addData(PARENT_SPAN_KEY, span);
         if (makeCurrent) {
-            return context.addData(SCOPE_CONTEXT_KEY, span.makeCurrent());
+            return context.addData(SCOPE_KEY, span.makeCurrent());
         }
         return context;
     }
@@ -315,7 +314,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
 
 
     private void endScope(Context context) {
-        Scope scope = getOrDefault(context, SCOPE_CONTEXT_KEY, null, Scope.class);
+        Scope scope = getOrDefault(context, SCOPE_KEY, null, Scope.class);
         if (scope != null) {
             scope.close();
         }
