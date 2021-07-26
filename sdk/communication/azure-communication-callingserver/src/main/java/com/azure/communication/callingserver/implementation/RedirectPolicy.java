@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.communication.common.implementation;
+package com.azure.communication.callingserver.implementation;
 
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
@@ -14,8 +14,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * HttpPipelinePolicy to redirect requests when 302 message is received to the new location marked by the
- * Location header.
+ * HttpPipelinePolicy to redirect requests when a redirect response (Http codes 301 or 302) is received to the
+ * new location marked by the Location header.
  */
 public final class RedirectPolicy implements HttpPipelinePolicy {
     private static final int MAX_REDIRECTS = 10;
