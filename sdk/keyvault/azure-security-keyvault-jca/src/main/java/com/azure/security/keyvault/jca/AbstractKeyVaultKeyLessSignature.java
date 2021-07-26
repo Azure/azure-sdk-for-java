@@ -1,7 +1,14 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.security.keyvault.jca;
 
-import java.security.*;
+import java.security.InvalidParameterException;
+import java.security.PublicKey;
+import java.security.SignatureSpi;
 
+/**
+ * KeyVault Signature to key less sign
+ */
 public abstract class AbstractKeyVaultKeyLessSignature extends SignatureSpi {
 
     // After throw UnsupportedOperationException, other methods will be called.
@@ -35,6 +42,5 @@ public abstract class AbstractKeyVaultKeyLessSignature extends SignatureSpi {
         throws InvalidParameterException {
         throw new UnsupportedOperationException("setParameter() not supported");
     }
-
 
 }

@@ -354,7 +354,6 @@ To grant access use the command line below:
         --certificate-permissions get list
 ```
 
-
 ## Troubleshooting
 ### Enable client logging
 Azure SDKs for Java offers a consistent logging story to help aid in troubleshooting application errors and expedite their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
