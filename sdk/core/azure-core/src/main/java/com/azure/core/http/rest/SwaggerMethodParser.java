@@ -284,23 +284,19 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
             final int parameterIndex = substitution.getMethodParameterIndex();
             if (0 <= parameterIndex && parameterIndex < swaggerMethodArguments.length) {
                 final Object methodArgument = swaggerMethodArguments[substitution.getMethodParameterIndex()];
-                List<Object> methodArguments = new ArrayList<Object>();
+                Object methodArgumentUnconverted = methodArgument;
 
                 if (substitution.shouldMergeQueryParams() && methodArgument instanceof List) {
-                    methodArguments.addAll((List<Object>) methodArgument);
-                } else {
-                    methodArguments.add(methodArgument);
+                    methodArgumentUnconverted = (List<Object>) methodArgument;
                 }
 
-                for (Object methodArgumentUnconverted : methodArguments) {
-                    String parameterValue = serialize(serializer, methodArgumentUnconverted);
+                String parameterValue = serialize(serializer, methodArgumentUnconverted);
 
-                    if (parameterValue != null) {
-                        if (substitution.shouldEncode()) {
-                            parameterValue = UrlEscapers.QUERY_ESCAPER.escape(parameterValue);
-                        }
-                        urlBuilder.addQueryParameter(substitution.getUrlParameterName(), parameterValue);
+                if (parameterValue != null) {
+                    if (substitution.shouldEncode()) {
+                        parameterValue = UrlEscapers.QUERY_ESCAPER.escape(parameterValue);
                     }
+                    urlBuilder.addQueryParameter(substitution.getUrlParameterName(), parameterValue);
                 }
             }
         }
