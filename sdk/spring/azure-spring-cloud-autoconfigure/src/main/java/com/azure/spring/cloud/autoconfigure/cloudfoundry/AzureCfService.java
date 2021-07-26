@@ -75,13 +75,13 @@ enum AzureCfService {
         return this.azureServiceName + ".";
     }
 
-    public static final Map<String, String> getImmutableMap(String... values) {
+    private static Map<String, String> getImmutableMap(String... values) {
         int pairs = values.length / 2;
         Map<String, String> output = new HashMap<>(pairs);
 
         for (int i = 0; i < pairs; i++) {
-            String key = values[2*i];
-            String value = values[(2*i) + 1];
+            String key = values[2 * i];
+            String value = values[(2 * i) + 1];
             output.put(key, value);
         }
 

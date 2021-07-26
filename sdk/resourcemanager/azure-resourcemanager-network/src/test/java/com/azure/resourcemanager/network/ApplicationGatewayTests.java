@@ -307,9 +307,9 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
     private Secret createKeyVaultSecret(String servicePrincipal, String identityPrincipal) throws Exception {
         String vaultName = generateRandomResourceName("vlt", 10);
         String secretName = generateRandomResourceName("srt", 10);
-        BufferedReader Buff = new BufferedReader(new FileReader(new File(getClass().getClassLoader()
+        BufferedReader buff = new BufferedReader(new FileReader(new File(getClass().getClassLoader()
             .getResource("test.certificate").getFile())));
-        String secretValue = Buff.readLine();
+        String secretValue = buff.readLine();
 
         Vault vault =
             keyVaultManager

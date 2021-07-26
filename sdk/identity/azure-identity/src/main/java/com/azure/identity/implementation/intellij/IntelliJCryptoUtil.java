@@ -44,7 +44,7 @@ public class IntelliJCryptoUtil {
     }
 
 
-    public static InputStream getDecryptedInputStream (InputStream encryptedInputStream, byte[] keyData, byte[] ivData) {
+    public static InputStream getDecryptedInputStream(InputStream encryptedInputStream, byte[] keyData, byte[] ivData) {
         try {
             Cipher cipher = Cipher.getInstance("AES/CBC/NoPadding");
 
@@ -91,7 +91,7 @@ public class IntelliJCryptoUtil {
 
     public static byte[] decodeHexString(String string) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        for (int i = 0; i < string.length(); i+=2) {
+        for (int i = 0; i < string.length(); i += 2) {
             int b = Integer.parseInt(string.substring(i, i + 2), 16);
             outputStream.write(b);
         }

@@ -22,7 +22,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.*;
+import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Properties;
+import java.util.Map;
+
 
 public class KubernetesClustersTests extends ContainerServiceManagementTest {
     private static final String SSH_KEY = sshPublicKey();
