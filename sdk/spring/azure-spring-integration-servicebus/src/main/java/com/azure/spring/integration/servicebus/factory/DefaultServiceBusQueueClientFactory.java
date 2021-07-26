@@ -13,6 +13,7 @@ import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.spring.integration.servicebus.ServiceBusClientConfig;
 import com.azure.spring.integration.servicebus.ServiceBusMessageProcessor;
+import org.springframework.beans.factory.DisposableBean;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -23,7 +24,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author Warren Zhu
  */
 public class DefaultServiceBusQueueClientFactory extends AbstractServiceBusSenderFactory
-    implements ServiceBusQueueClientFactory {
+    implements ServiceBusQueueClientFactory, DisposableBean {
 
     private final Map<String, ServiceBusProcessorClient> processorClientMap = new ConcurrentHashMap<>();
     private final Map<String, ServiceBusSenderAsyncClient> senderClientMap = new ConcurrentHashMap<>();
@@ -39,6 +40,21 @@ public class DefaultServiceBusQueueClientFactory extends AbstractServiceBusSende
         super(connectionString);
         this.serviceBusClientBuilder = new ServiceBusClientBuilder().connectionString(connectionString);
         this.serviceBusClientBuilder.transportType(amqpTransportType);
+    }
+
+    @Override
+    public void destroy() {
+        if (!processorClientMap.isEmpty()) {
+            processorClientMap.values()
+                              .stream()
+                              .filter(ServiceBusProcessorClient::isRunning)
+                              .forEach(ServiceBusProcessorClient::close);
+        }
+        if (!senderClientMap.isEmpty()) {
+            senderClientMap.values()
+                           .stream()
+                           .forEach(ServiceBusSenderAsyncClient::close);
+        }
     }
 
     @Override

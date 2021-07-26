@@ -13,6 +13,7 @@ import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.spring.cloud.context.core.util.Tuple;
 import com.azure.spring.integration.servicebus.ServiceBusClientConfig;
 import com.azure.spring.integration.servicebus.ServiceBusMessageProcessor;
+import org.springframework.beans.factory.DisposableBean;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -23,7 +24,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author Warren Zhu
  */
 public class DefaultServiceBusTopicClientFactory extends AbstractServiceBusSenderFactory
-    implements ServiceBusTopicClientFactory {
+    implements ServiceBusTopicClientFactory, DisposableBean {
 
 
     private final ServiceBusClientBuilder serviceBusClientBuilder;
@@ -38,6 +39,21 @@ public class DefaultServiceBusTopicClientFactory extends AbstractServiceBusSende
         super(connectionString);
         this.serviceBusClientBuilder = new ServiceBusClientBuilder().connectionString(connectionString);
         this.serviceBusClientBuilder.transportType(amqpTransportType);
+    }
+
+    @Override
+    public void destroy() {
+        if (!topicProcessorMap.isEmpty()) {
+            topicProcessorMap.values()
+                             .stream()
+                             .filter(ServiceBusProcessorClient::isRunning)
+                             .forEach(ServiceBusProcessorClient::close);
+        }
+        if (!topicSenderMap.isEmpty()) {
+            topicSenderMap.values()
+                          .stream()
+                          .forEach(ServiceBusSenderAsyncClient::close);
+        }
     }
 
     @Override
