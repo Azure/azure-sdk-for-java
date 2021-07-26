@@ -232,9 +232,9 @@ public final class UrlBuilder {
      *
      * @return the query that has been assigned to this UrlBuilder.
      */
-    public Map<String, QueryParameter> getQueryParameters() {
-        return this.query;
-    }
+    // public Map<String, QueryParameter> getQueryParameters() {
+    //     return this.query;
+    // }
 
     /**
      * Returns the query string currently configured in this UrlBuilder instance.
