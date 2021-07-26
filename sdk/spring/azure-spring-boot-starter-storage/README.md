@@ -38,17 +38,17 @@ Name | Description | Required
  azure.storage.file-endpoint | The file endpoint URL of the Azure Storage account. | [Optional] Required when storage file service is used |
 
 #### Autowire a resource 
-You can use the annotation of `@Value("azure-blob://[your-containerName]/[your-blobName]")` to autowire a **blob** `Resource`.
+You can use the annotation of `@Value("azure-blob://[your-container-name]/[your-blob-name]")` to autowire a **blob** `Resource`.
 
 ```java
-@Value("azure-blob://[your-containerName]/[your-blobName]")
+@Value("azure-blob://[your-container-name]/[your-blob-name]")
 private Resource storageResource;
 ```
 
-You can use the annotation of `azure-file://[your-fileshareName]/[your-fileName]")` to autowire a **file** `Resource`.
+You can use the annotation of `azure-file://[your-fileshare-name]/[your-fileName]")` to autowire a **file** `Resource`.
 
 ```java
-@Value("azure-file://[your-fileshareName]/[your-fileName]")
+@Value("azure-file://[your-fileshare-name]/[your-fileName]")
 private Resource storageResource;
 ```
 
@@ -61,7 +61,7 @@ private Resource storageResource;
 You can write to a resource in Azure Blob storage by casting the Spring `Resource` to `WritableResource`. 
 
 ```java
- ((WritableResource) this.storageResource).getOutputStream())
+ ((WritableResource) this.azureBlobResource).getOutputStream();
 ```
 
 #### Other operations 
