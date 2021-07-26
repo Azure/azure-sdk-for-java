@@ -59,15 +59,16 @@ public final class TracerProxy {
      * will be added as a child. Otherwise, the parent span will be created and added to the {@code context} and any
      * downstream {@code start()} calls will use the created span as the parent.
      *
+     * @param methodName Name of the method triggering the span creation.
      * @param spanOptions span creation options.
      * @param context Additional metadata that is passed through the call stack.
      * @return An updated {@link Context} object.
      */
-    public static Context start(StartSpanOptions spanOptions, Context context) {
+    public static Context start(String methodName, StartSpanOptions spanOptions, Context context) {
         if (tracer == null) {
             return context;
         }
-        return tracer.start(spanOptions, context);
+        return tracer.start(methodName, spanOptions, context);
     }
 
     /**
