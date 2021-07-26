@@ -198,8 +198,13 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
         }
 
         for (Field f : getAllDeclaredFields(value.getClass())) {
-            // Why is this setting accessible to true?
-            f.setAccessible(true);
+            // only drill into classes defined in azure sdk
+            if (value.getClass().getPackage().getName().contains("com.azure")) {
+                // Why is this setting accessible to true?
+                f.setAccessible(true);
+            } else {
+                return;
+            }
             try {
                 escapeMapKeys(f.get(value), logger);
             } catch (IllegalAccessException e) {
