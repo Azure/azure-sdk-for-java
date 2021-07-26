@@ -1,6 +1,8 @@
 # Release History
 
-## 12.13.0-beta.1 (Unreleased)
+## 12.14.0-beta.1 (Unreleased)
+
+## 12.13.0 (2021-07-22)
 - Added support to get a blob client that uses an encryption scope and customer provided key. 
 
 ## 12.12.0 (2021-06-09)
