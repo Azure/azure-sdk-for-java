@@ -1,7 +1,24 @@
 # Release History
-## 7.3.0-beta.3 (Unreleased)
-### New Features
-- Added support receiving dead-letter queue (DLQ) for 'ServiceBusProcessorClient' and session receiver using 'subQueue'
+
+## 7.4.0-beta.1 (Unreleased)
+
+
+## 7.3.0 (2021-07-08)
+### Features Added
+- Added support for receiving dead-letter queue (DLQ) for `ServiceBusProcessorClient` and session receiver using `subQueue`
+- Added support for configuring `maxAutoLockRenewDuration` for `ServiceBusProcessorClient` in `ServiceBusClientBuilder`.
+- Added support for using `AzureSasCredential` and `AzureNamedKeyCredential` to access a service bus in `ServiceBusClientBuilder`.
+- Exposing `ServiceBusClientBuilder.crossEntityTransaction()` for cross entity transactions support.
+- Exposing `AmqpMessageBody#value` and `AmqpMessageBody#sequence` to support value and sequence amqp types.
+
+### Bugs Fixed
+- Fixed a bug that does not create respect properties when creating Subscription Rule with CorrelationFilter. Issue [21299](https://github.com/Azure/azure-sdk-for-java/issues/21299).
+- Fixed a but that causes the settlement API not to return or throw error if retry timeout is long enough. Issue [22299](https://github.com/Azure/azure-sdk-for-java/issues/22299).
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.18.0`.
+- Upgraded `azure-core-amqp` dependency to `2.3.0`.
+- Upgraded `azure-core-http-netty` to `1.10.1`.
 
 ## 7.2.3 (2021-06-14)
 ### Fixed

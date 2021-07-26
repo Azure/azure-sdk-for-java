@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.digitaltwins.core.helpers;
 
 public class ConsoleLogger {
@@ -30,7 +33,7 @@ public class ConsoleLogger {
      * Prints a message to console. Use this for logging successful events.
      * @param message Message to be printed
      */
-    public static void printSuccess(String message){
+    public static void printSuccess(String message) {
         System.out.println(ANSI_GREEN + message + ANSI_RESET);
     }
 

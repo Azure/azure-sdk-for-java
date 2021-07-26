@@ -68,7 +68,7 @@ If you are using Maven, add the following dependency.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-spring-data-cosmos</artifactId>
-    <version>3.8.0</version>
+    <version>3.9.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -927,8 +927,8 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 [coc_contact]: mailto:opencode@microsoft.com
 [azure_subscription]: https://azure.microsoft.com/free/
 [samples]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/cosmos/azure-spring-data-cosmos/src/samples/java/com/azure/spring/data/cosmos
-[sample-for-multi-database]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/cosmos/azure-spring-boot-sample-cosmos-multi-database-multi-account
-[sample-for-multi-database-single-account]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/cosmos/azure-spring-boot-sample-cosmos-multi-database-single-account
+[sample-for-multi-database]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/tag_azure-spring-boot_3.6.0/cosmos/azure-spring-boot-sample-cosmos-multi-database-multi-account
+[sample-for-multi-database-single-account]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/tag_azure-spring-boot_3.6.0/cosmos/azure-spring-boot-sample-cosmos-multi-database-single-account
 [sql_api_query]: https://docs.microsoft.com/azure/cosmos-db/sql-api-sql-query
 [local_emulator]: https://docs.microsoft.com/azure/cosmos-db/local-emulator
 [local_emulator_export_ssl_certificates]: https://docs.microsoft.com/azure/cosmos-db/local-emulator-export-ssl-certificates

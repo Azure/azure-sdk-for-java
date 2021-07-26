@@ -12,7 +12,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-spring-data-cosmos</artifactId>
-  <version>3.9.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;current} -->
+  <version>3.10.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;current} -->
   <packaging>jar</packaging>
   <name>Spring Data for Azure Cosmos DB SQL API</name>
   <description>Spring Data for Azure Cosmos DB SQL API</description>
@@ -28,7 +28,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-core</artifactId>
-      <version>5.3.8</version> <!-- {x-version-update;org.springframework:spring-core;external_dependency} -->
+      <version>5.3.9</version> <!-- {x-version-update;org.springframework:spring-core;external_dependency} -->
       <exclusions>
         <exclusion>
           <groupId>commons-logging</groupId>
@@ -39,27 +39,27 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-web</artifactId>
-      <version>5.3.8</version> <!-- {x-version-update;org.springframework:spring-web;external_dependency} -->
+      <version>5.3.9</version> <!-- {x-version-update;org.springframework:spring-web;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-beans</artifactId>
-      <version>5.3.8</version> <!-- {x-version-update;org.springframework:spring-beans;external_dependency} -->
+      <version>5.3.9</version> <!-- {x-version-update;org.springframework:spring-beans;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context</artifactId>
-      <version>5.3.8</version> <!-- {x-version-update;org.springframework:spring-context;external_dependency} -->
+      <version>5.3.9</version> <!-- {x-version-update;org.springframework:spring-context;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-tx</artifactId>
-      <version>5.3.8</version> <!-- {x-version-update;org.springframework:spring-tx;external_dependency} -->
+      <version>5.3.9</version> <!-- {x-version-update;org.springframework:spring-tx;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.data</groupId>
       <artifactId>spring-data-commons</artifactId>
-      <version>2.5.2</version> <!-- {x-version-update;org.springframework.data:spring-data-commons;external_dependency} -->
+      <version>2.5.3</version> <!-- {x-version-update;org.springframework.data:spring-data-commons;external_dependency} -->
       <exclusions>
         <exclusion>
           <groupId>org.slf4j</groupId>
@@ -70,27 +70,27 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-expression</artifactId>
-      <version>5.3.8</version> <!-- {x-version-update;org.springframework:spring-expression;external_dependency} -->
+      <version>5.3.9</version> <!-- {x-version-update;org.springframework:spring-expression;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.17.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+      <version>4.18.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.module</groupId>
       <artifactId>jackson-module-parameter-names</artifactId>
-      <version>2.12.3</version> <!-- {x-version-update;com.fasterxml.jackson.module:jackson-module-parameter-names;external_dependency} -->
+      <version>2.12.4</version> <!-- {x-version-update;com.fasterxml.jackson.module:jackson-module-parameter-names;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.datatype</groupId>
       <artifactId>jackson-datatype-jdk8</artifactId>
-      <version>2.12.3</version> <!-- {x-version-update;com.fasterxml.jackson.datatype:jackson-datatype-jdk8;external_dependency} -->
+      <version>2.12.4</version> <!-- {x-version-update;com.fasterxml.jackson.datatype:jackson-datatype-jdk8;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.datatype</groupId>
       <artifactId>jackson-datatype-jsr310</artifactId>
-      <version>2.12.3</version> <!-- {x-version-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
+      <version>2.12.4</version> <!-- {x-version-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.javatuples</groupId>
@@ -130,7 +130,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
-      <version>2.5.2</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
+      <version>2.5.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
       <scope>test</scope>
       <exclusions>
         <exclusion>
@@ -142,13 +142,13 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.7</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.8</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
-      <version>1.7.31</version> <!-- {x-version-update;org.slf4j:slf4j-simple;external_dependency} -->
+      <version>1.7.32</version> <!-- {x-version-update;org.slf4j:slf4j-simple;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <!-- Added this provided dependency to include necessary annotations used by "reactor-core".
@@ -167,7 +167,7 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
-      <version>1.7.31</version> <!-- {x-version-update;org.slf4j:slf4j-api;external_dependency} -->
+      <version>1.7.32</version> <!-- {x-version-update;org.slf4j:slf4j-api;external_dependency} -->
     </dependency>
   </dependencies>
 
@@ -181,20 +181,20 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.springframework:spring-beans:[5.3.8]</include> <!-- {x-include-update;org.springframework:spring-beans;external_dependency} -->
-                <include>org.springframework:spring-web:[5.3.8]</include> <!-- {x-include-update;org.springframework:spring-web;external_dependency} -->
-                <include>org.springframework:spring-tx:[5.3.8]</include> <!-- {x-include-update;org.springframework:spring-tx;external_dependency} -->
-                <include>org.springframework:spring-expression:[5.3.8]</include> <!-- {x-include-update;org.springframework:spring-expression;external_dependency} -->
-                <include>org.springframework:spring-core:[5.3.8]</include> <!-- {x-include-update;org.springframework:spring-core;external_dependency} -->
-                <include>org.springframework:spring-context:[5.3.8]</include> <!-- {x-include-update;org.springframework:spring-context;external_dependency} -->
-                <include>org.springframework.data:spring-data-commons:[2.5.2]</include> <!-- {x-include-update;org.springframework.data:spring-data-commons;external_dependency} -->
+                <include>org.springframework:spring-beans:[5.3.9]</include> <!-- {x-include-update;org.springframework:spring-beans;external_dependency} -->
+                <include>org.springframework:spring-web:[5.3.9]</include> <!-- {x-include-update;org.springframework:spring-web;external_dependency} -->
+                <include>org.springframework:spring-tx:[5.3.9]</include> <!-- {x-include-update;org.springframework:spring-tx;external_dependency} -->
+                <include>org.springframework:spring-expression:[5.3.9]</include> <!-- {x-include-update;org.springframework:spring-expression;external_dependency} -->
+                <include>org.springframework:spring-core:[5.3.9]</include> <!-- {x-include-update;org.springframework:spring-core;external_dependency} -->
+                <include>org.springframework:spring-context:[5.3.9]</include> <!-- {x-include-update;org.springframework:spring-context;external_dependency} -->
+                <include>org.springframework.data:spring-data-commons:[2.5.3]</include> <!-- {x-include-update;org.springframework.data:spring-data-commons;external_dependency} -->
                 <include>org.javatuples:javatuples:[1.2]</include> <!-- {x-include-update;org.javatuples:javatuples;external_dependency} -->
-                <include>com.fasterxml.jackson.datatype:jackson-datatype-jdk8:[2.12.3]</include> <!-- {x-include-update;com.fasterxml.jackson.datatype:jackson-datatype-jdk8;external_dependency} -->
-                <include>com.fasterxml.jackson.datatype:jackson-datatype-jsr310:[2.12.3]</include> <!-- {x-include-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
-                <include>com.fasterxml.jackson.module:jackson-module-parameter-names:[2.12.3]</include> <!-- {x-include-update;com.fasterxml.jackson.module:jackson-module-parameter-names;external_dependency} -->
+                <include>com.fasterxml.jackson.datatype:jackson-datatype-jdk8:[2.12.4]</include> <!-- {x-include-update;com.fasterxml.jackson.datatype:jackson-datatype-jdk8;external_dependency} -->
+                <include>com.fasterxml.jackson.datatype:jackson-datatype-jsr310:[2.12.4]</include> <!-- {x-include-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
+                <include>com.fasterxml.jackson.module:jackson-module-parameter-names:[2.12.4]</include> <!-- {x-include-update;com.fasterxml.jackson.module:jackson-module-parameter-names;external_dependency} -->
                 <include>javax.annotation:javax.annotation-api:[1.3.2]</include> <!-- {x-include-update;javax.annotation:javax.annotation-api;external_dependency} -->
                 <include>org.apache.commons:commons-lang3:[3.12.0]</include> <!-- {x-include-update;org.apache.commons:commons-lang3;external_dependency} -->
-                <include>org.slf4j:slf4j-api:[1.7.31]</include> <!-- {x-include-update;org.slf4j:slf4j-api;external_dependency} -->
+                <include>org.slf4j:slf4j-api:[1.7.32]</include> <!-- {x-include-update;org.slf4j:slf4j-api;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

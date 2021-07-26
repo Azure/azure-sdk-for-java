@@ -34,7 +34,7 @@ public class ManagementChannel implements AmqpManagementNode {
         this.createChannel = Objects.requireNonNull(createChannel, "'createChannel' cannot be null.");
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");
-        this.logger = new ClientLogger(String.format("%s<%s>", ManagementChannel.class, entityPath));
+        this.logger = new ClientLogger(String.format("%s<%s>", ManagementChannel.class.getName(), entityPath));
         this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
         this.tokenManager = Objects.requireNonNull(tokenManager, "'tokenManager' cannot be null.");
     }

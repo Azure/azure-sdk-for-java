@@ -1,61 +1,61 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1//prebuilt/businessCard/analyze?includeTextDetails=false",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1/prebuilt/businessCard/analyze?includeTextDetails=false",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "85a1b783-79cd-4cf1-b041-bf2acf575926",
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "187b68bc-0ff0-4a15-8d10-961f1072e8ee",
       "Content-Type" : "image/jpeg"
     },
     "Response" : {
       "content-length" : "0",
-      "x-envoy-upstream-service-time" : "562",
+      "x-envoy-upstream-service-time" : "621",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "70f59a5f-58a2-418c-b0c5-5b7bbc8127ff",
+      "apim-request-id" : "1f58361d-c6c4-4a3b-9d77-87a4d136e33a",
       "retry-after" : "0",
       "StatusCode" : "202",
-      "Operation-Location" : "https://mariari-canada-central.cognitiveservices.azure.com/formrecognizer/v2.1/prebuilt/businessCard/analyzeResults/70f59a5f-58a2-418c-b0c5-5b7bbc8127ff",
-      "Date" : "Tue, 11 May 2021 21:19:45 GMT"
+      "Operation-Location" : "https://shafangfr.cognitiveservices.azure.com/formrecognizer/v2.1/prebuilt/businessCard/analyzeResults/1f58361d-c6c4-4a3b-9d77-87a4d136e33a",
+      "Date" : "Wed, 07 Jul 2021 06:29:13 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1//prebuilt/businessCard/analyzeResults/70f59a5f-58a2-418c-b0c5-5b7bbc8127ff",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1/prebuilt/businessCard/analyzeResults/1f58361d-c6c4-4a3b-9d77-87a4d136e33a",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "4ac2f747-4e4b-4a7b-8510-7e21f575885e"
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "80a3423b-d41c-47ae-8dab-d1fdc7be50a6"
     },
     "Response" : {
       "content-length" : "2684",
-      "x-envoy-upstream-service-time" : "15",
+      "x-envoy-upstream-service-time" : "22",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "c0e102c8-baec-42b1-9e02-4f9d5316f843",
+      "apim-request-id" : "5f7dd542-a4a4-44de-9f1c-97f1b317368b",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"status\":\"succeeded\",\"createdDateTime\":\"2021-05-11T21:19:45Z\",\"lastUpdatedDateTime\":\"2021-05-11T21:19:47Z\",\"analyzeResult\":{\"version\":\"2.1.0\",\"readResults\":[{\"page\":1,\"angle\":-16.6836,\"width\":4032,\"height\":3024,\"unit\":\"pixel\"}],\"documentResults\":[{\"docType\":\"prebuilt:businesscard\",\"pageRange\":[1,1],\"fields\":{\"Addresses\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"string\",\"valueString\":\"2 Kingdom Street Paddington, London, W2 6BD\",\"text\":\"2 Kingdom Street Paddington, London, W2 6BD\",\"boundingBox\":[1227.3,2138.3,2520.2,1690.5,2597,1912.3,1304.1,2360.1],\"page\":1,\"confidence\":0.98}]},\"CompanyNames\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"string\",\"valueString\":\"Contoso\",\"text\":\"Contoso\",\"boundingBox\":[1146,1926,2224,1587,2285,1756,1202,2099],\"page\":1,\"confidence\":0.168}]},\"ContactNames\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"object\",\"valueObject\":{\"FirstName\":{\"type\":\"string\",\"valueString\":\"Avery\",\"text\":\"Avery\",\"boundingBox\":[666,1102,1111,995,1140,1114,696,1216],\"page\":1},\"LastName\":{\"type\":\"string\",\"valueString\":\"Smith\",\"text\":\"Smith\",\"boundingBox\":[1170,981,1571,881,1600,1000,1200,1100],\"page\":1}},\"text\":\"Dr. Avery Smith\",\"boundingBox\":[414.1,1153,1572,880.8,1601.3,1005.6,443.5,1277.9],\"page\":1,\"confidence\":0.979}]},\"Departments\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"string\",\"valueString\":\"Cloud & Al Department\",\"text\":\"Cloud & Al Department\",\"boundingBox\":[473.6,1409.5,1586,1134,1607.3,1219.8,494.9,1495.3],\"page\":1,\"confidence\":0.989}]},\"Emails\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"string\",\"valueString\":\"avery.smith@contoso.com\",\"text\":\"avery.smith@contoso.com\",\"boundingBox\":[2106,934,2908,706,2921,769,2122,993],\"page\":1,\"confidence\":0.99}]},\"Faxes\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"phoneNumber\",\"text\":\"+44 (0) 20 6789 2345\",\"boundingBox\":[2520.4,1195.5,3191.8,983.5,3215.8,1059.2,2544.3,1271.3],\"page\":1,\"confidence\":0.99}]},\"JobTitles\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"string\",\"valueString\":\"Senior Researcher\",\"text\":\"Senior Researcher\",\"boundingBox\":[451,1312,1315.9,1103.6,1334.7,1181.7,469.8,1390],\"page\":1,\"confidence\":0.99}]},\"MobilePhones\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"phoneNumber\",\"text\":\"+44 (0) 7911 123456\",\"boundingBox\":[2426.8,1040.1,3065.5,846,3087.2,917.6,2448.5,1111.7],\"page\":1,\"confidence\":0.99}]},\"Websites\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"string\",\"valueString\":\"https://www.contoso.com/\",\"text\":\"https://www.contoso.com/\",\"boundingBox\":[2120,1003,2981,757,3006,824,2139,1075],\"page\":1,\"confidence\":0.99}]},\"WorkPhones\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"phoneNumber\",\"text\":\"+44 (0) 20 9876 5432\",\"boundingBox\":[2468.2,1118.1,3130.3,914.6,3152.9,988.2,2490.8,1191.6],\"page\":1,\"confidence\":0.989}]}}}]}}",
-      "Date" : "Tue, 11 May 2021 21:19:50 GMT",
+      "Body" : "{\"status\":\"succeeded\",\"createdDateTime\":\"2021-07-07T06:29:13Z\",\"lastUpdatedDateTime\":\"2021-07-07T06:29:16Z\",\"analyzeResult\":{\"version\":\"2.1.0\",\"readResults\":[{\"page\":1,\"angle\":-16.6836,\"width\":4032,\"height\":3024,\"unit\":\"pixel\"}],\"documentResults\":[{\"docType\":\"prebuilt:businesscard\",\"pageRange\":[1,1],\"fields\":{\"Addresses\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"string\",\"valueString\":\"2 Kingdom Street Paddington, London, W2 6BD\",\"text\":\"2 Kingdom Street Paddington, London, W2 6BD\",\"boundingBox\":[1227.3,2138.3,2520.2,1690.5,2597,1912.3,1304.1,2360.1],\"page\":1,\"confidence\":0.98}]},\"CompanyNames\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"string\",\"valueString\":\"Contoso\",\"text\":\"Contoso\",\"boundingBox\":[1146,1926,2224,1587,2285,1756,1202,2099],\"page\":1,\"confidence\":0.168}]},\"ContactNames\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"object\",\"valueObject\":{\"FirstName\":{\"type\":\"string\",\"valueString\":\"Avery\",\"text\":\"Avery\",\"boundingBox\":[666,1102,1111,995,1140,1114,696,1216],\"page\":1},\"LastName\":{\"type\":\"string\",\"valueString\":\"Smith\",\"text\":\"Smith\",\"boundingBox\":[1170,981,1571,881,1600,1000,1200,1100],\"page\":1}},\"text\":\"Dr. Avery Smith\",\"boundingBox\":[414.1,1153,1572,880.8,1601.3,1005.6,443.5,1277.9],\"page\":1,\"confidence\":0.979}]},\"Departments\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"string\",\"valueString\":\"Cloud & Al Department\",\"text\":\"Cloud & Al Department\",\"boundingBox\":[473.6,1409.5,1586,1134,1607.3,1219.8,494.9,1495.3],\"page\":1,\"confidence\":0.989}]},\"Emails\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"string\",\"valueString\":\"avery.smith@contoso.com\",\"text\":\"avery.smith@contoso.com\",\"boundingBox\":[2106,934,2908,706,2921,769,2122,993],\"page\":1,\"confidence\":0.99}]},\"Faxes\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"phoneNumber\",\"text\":\"+44 (0) 20 6789 2345\",\"boundingBox\":[2520.4,1195.5,3191.8,983.5,3215.8,1059.2,2544.3,1271.3],\"page\":1,\"confidence\":0.99}]},\"JobTitles\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"string\",\"valueString\":\"Senior Researcher\",\"text\":\"Senior Researcher\",\"boundingBox\":[451,1312,1315.9,1103.6,1334.7,1181.7,469.8,1390],\"page\":1,\"confidence\":0.99}]},\"MobilePhones\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"phoneNumber\",\"text\":\"+44 (0) 7911 123456\",\"boundingBox\":[2426.8,1040.1,3065.5,846,3087.2,917.6,2448.5,1111.7],\"page\":1,\"confidence\":0.99}]},\"Websites\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"string\",\"valueString\":\"https://www.contoso.com/\",\"text\":\"https://www.contoso.com/\",\"boundingBox\":[2120,1003,2981,757,3006,824,2139,1075],\"page\":1,\"confidence\":0.99}]},\"WorkPhones\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"phoneNumber\",\"text\":\"+44 (0) 20 9876 5432\",\"boundingBox\":[2468.2,1118.1,3130.3,914.6,3152.9,988.2,2490.8,1191.6],\"page\":1,\"confidence\":0.989}]}}}]}}",
+      "Date" : "Wed, 07 Jul 2021 06:29:18 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1//prebuilt/businessCard/analyzeResults/70f59a5f-58a2-418c-b0c5-5b7bbc8127ff",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1/prebuilt/businessCard/analyzeResults/1f58361d-c6c4-4a3b-9d77-87a4d136e33a",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "aeadf4db-072a-4722-92a4-14bbaeec4a8f"
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "2b5df037-4014-4421-991f-47a14a3017c3"
     },
     "Response" : {
       "content-length" : "2684",
-      "x-envoy-upstream-service-time" : "16",
+      "x-envoy-upstream-service-time" : "18",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "50da6b6e-5e7a-41a8-9174-de2368b955ca",
+      "apim-request-id" : "d63fe1a7-2f5e-41a8-8d67-5b9db574f387",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"status\":\"succeeded\",\"createdDateTime\":\"2021-05-11T21:19:45Z\",\"lastUpdatedDateTime\":\"2021-05-11T21:19:47Z\",\"analyzeResult\":{\"version\":\"2.1.0\",\"readResults\":[{\"page\":1,\"angle\":-16.6836,\"width\":4032,\"height\":3024,\"unit\":\"pixel\"}],\"documentResults\":[{\"docType\":\"prebuilt:businesscard\",\"pageRange\":[1,1],\"fields\":{\"Addresses\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"string\",\"valueString\":\"2 Kingdom Street Paddington, London, W2 6BD\",\"text\":\"2 Kingdom Street Paddington, London, W2 6BD\",\"boundingBox\":[1227.3,2138.3,2520.2,1690.5,2597,1912.3,1304.1,2360.1],\"page\":1,\"confidence\":0.98}]},\"CompanyNames\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"string\",\"valueString\":\"Contoso\",\"text\":\"Contoso\",\"boundingBox\":[1146,1926,2224,1587,2285,1756,1202,2099],\"page\":1,\"confidence\":0.168}]},\"ContactNames\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"object\",\"valueObject\":{\"FirstName\":{\"type\":\"string\",\"valueString\":\"Avery\",\"text\":\"Avery\",\"boundingBox\":[666,1102,1111,995,1140,1114,696,1216],\"page\":1},\"LastName\":{\"type\":\"string\",\"valueString\":\"Smith\",\"text\":\"Smith\",\"boundingBox\":[1170,981,1571,881,1600,1000,1200,1100],\"page\":1}},\"text\":\"Dr. Avery Smith\",\"boundingBox\":[414.1,1153,1572,880.8,1601.3,1005.6,443.5,1277.9],\"page\":1,\"confidence\":0.979}]},\"Departments\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"string\",\"valueString\":\"Cloud & Al Department\",\"text\":\"Cloud & Al Department\",\"boundingBox\":[473.6,1409.5,1586,1134,1607.3,1219.8,494.9,1495.3],\"page\":1,\"confidence\":0.989}]},\"Emails\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"string\",\"valueString\":\"avery.smith@contoso.com\",\"text\":\"avery.smith@contoso.com\",\"boundingBox\":[2106,934,2908,706,2921,769,2122,993],\"page\":1,\"confidence\":0.99}]},\"Faxes\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"phoneNumber\",\"text\":\"+44 (0) 20 6789 2345\",\"boundingBox\":[2520.4,1195.5,3191.8,983.5,3215.8,1059.2,2544.3,1271.3],\"page\":1,\"confidence\":0.99}]},\"JobTitles\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"string\",\"valueString\":\"Senior Researcher\",\"text\":\"Senior Researcher\",\"boundingBox\":[451,1312,1315.9,1103.6,1334.7,1181.7,469.8,1390],\"page\":1,\"confidence\":0.99}]},\"MobilePhones\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"phoneNumber\",\"text\":\"+44 (0) 7911 123456\",\"boundingBox\":[2426.8,1040.1,3065.5,846,3087.2,917.6,2448.5,1111.7],\"page\":1,\"confidence\":0.99}]},\"Websites\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"string\",\"valueString\":\"https://www.contoso.com/\",\"text\":\"https://www.contoso.com/\",\"boundingBox\":[2120,1003,2981,757,3006,824,2139,1075],\"page\":1,\"confidence\":0.99}]},\"WorkPhones\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"phoneNumber\",\"text\":\"+44 (0) 20 9876 5432\",\"boundingBox\":[2468.2,1118.1,3130.3,914.6,3152.9,988.2,2490.8,1191.6],\"page\":1,\"confidence\":0.989}]}}}]}}",
-      "Date" : "Tue, 11 May 2021 21:19:50 GMT",
+      "Body" : "{\"status\":\"succeeded\",\"createdDateTime\":\"2021-07-07T06:29:13Z\",\"lastUpdatedDateTime\":\"2021-07-07T06:29:16Z\",\"analyzeResult\":{\"version\":\"2.1.0\",\"readResults\":[{\"page\":1,\"angle\":-16.6836,\"width\":4032,\"height\":3024,\"unit\":\"pixel\"}],\"documentResults\":[{\"docType\":\"prebuilt:businesscard\",\"pageRange\":[1,1],\"fields\":{\"Addresses\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"string\",\"valueString\":\"2 Kingdom Street Paddington, London, W2 6BD\",\"text\":\"2 Kingdom Street Paddington, London, W2 6BD\",\"boundingBox\":[1227.3,2138.3,2520.2,1690.5,2597,1912.3,1304.1,2360.1],\"page\":1,\"confidence\":0.98}]},\"CompanyNames\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"string\",\"valueString\":\"Contoso\",\"text\":\"Contoso\",\"boundingBox\":[1146,1926,2224,1587,2285,1756,1202,2099],\"page\":1,\"confidence\":0.168}]},\"ContactNames\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"object\",\"valueObject\":{\"FirstName\":{\"type\":\"string\",\"valueString\":\"Avery\",\"text\":\"Avery\",\"boundingBox\":[666,1102,1111,995,1140,1114,696,1216],\"page\":1},\"LastName\":{\"type\":\"string\",\"valueString\":\"Smith\",\"text\":\"Smith\",\"boundingBox\":[1170,981,1571,881,1600,1000,1200,1100],\"page\":1}},\"text\":\"Dr. Avery Smith\",\"boundingBox\":[414.1,1153,1572,880.8,1601.3,1005.6,443.5,1277.9],\"page\":1,\"confidence\":0.979}]},\"Departments\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"string\",\"valueString\":\"Cloud & Al Department\",\"text\":\"Cloud & Al Department\",\"boundingBox\":[473.6,1409.5,1586,1134,1607.3,1219.8,494.9,1495.3],\"page\":1,\"confidence\":0.989}]},\"Emails\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"string\",\"valueString\":\"avery.smith@contoso.com\",\"text\":\"avery.smith@contoso.com\",\"boundingBox\":[2106,934,2908,706,2921,769,2122,993],\"page\":1,\"confidence\":0.99}]},\"Faxes\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"phoneNumber\",\"text\":\"+44 (0) 20 6789 2345\",\"boundingBox\":[2520.4,1195.5,3191.8,983.5,3215.8,1059.2,2544.3,1271.3],\"page\":1,\"confidence\":0.99}]},\"JobTitles\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"string\",\"valueString\":\"Senior Researcher\",\"text\":\"Senior Researcher\",\"boundingBox\":[451,1312,1315.9,1103.6,1334.7,1181.7,469.8,1390],\"page\":1,\"confidence\":0.99}]},\"MobilePhones\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"phoneNumber\",\"text\":\"+44 (0) 7911 123456\",\"boundingBox\":[2426.8,1040.1,3065.5,846,3087.2,917.6,2448.5,1111.7],\"page\":1,\"confidence\":0.99}]},\"Websites\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"string\",\"valueString\":\"https://www.contoso.com/\",\"text\":\"https://www.contoso.com/\",\"boundingBox\":[2120,1003,2981,757,3006,824,2139,1075],\"page\":1,\"confidence\":0.99}]},\"WorkPhones\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"phoneNumber\",\"text\":\"+44 (0) 20 9876 5432\",\"boundingBox\":[2468.2,1118.1,3130.3,914.6,3152.9,988.2,2490.8,1191.6],\"page\":1,\"confidence\":0.989}]}}}]}}",
+      "Date" : "Wed, 07 Jul 2021 06:29:18 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

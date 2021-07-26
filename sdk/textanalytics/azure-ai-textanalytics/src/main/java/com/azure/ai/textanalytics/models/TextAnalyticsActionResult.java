@@ -44,14 +44,14 @@ public class TextAnalyticsActionResult {
     /**
      * Gets the time when the action was completed.
      *
-     * @return the time when the action was completed.
+     * @return The time when the action was completed.
      */
     public OffsetDateTime getCompletedAt() {
         return completedAt;
     }
 
     /**
-     * Get the error of action.
+     * Gets the error of action.
      *
      * @return The error of action.
      */
@@ -60,7 +60,7 @@ public class TextAnalyticsActionResult {
     }
 
     /**
-     * Get the boolean value indicates if the action result is error or not.
+     * Gets the boolean value indicates if the action result is error or not.
      *
      * @return A boolean indicates if the action result is error or not.
      */

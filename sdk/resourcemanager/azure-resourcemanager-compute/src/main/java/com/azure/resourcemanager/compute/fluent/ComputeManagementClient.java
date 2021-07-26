@@ -158,6 +158,20 @@ public interface ComputeManagementClient {
     RestorePointsClient getRestorePoints();
 
     /**
+     * Gets the CapacityReservationGroupsClient object to access its operations.
+     *
+     * @return the CapacityReservationGroupsClient object.
+     */
+    CapacityReservationGroupsClient getCapacityReservationGroups();
+
+    /**
+     * Gets the CapacityReservationsClient object to access its operations.
+     *
+     * @return the CapacityReservationsClient object.
+     */
+    CapacityReservationsClient getCapacityReservations();
+
+    /**
      * Gets the VirtualMachineScaleSetExtensionsClient object to access its operations.
      *
      * @return the VirtualMachineScaleSetExtensionsClient object.

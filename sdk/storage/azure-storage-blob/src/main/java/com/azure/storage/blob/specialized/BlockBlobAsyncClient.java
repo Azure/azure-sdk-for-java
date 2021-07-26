@@ -130,7 +130,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * @return a {@link BlockBlobAsyncClient} with the specified {@code encryptionScope}.
      */
     @Override
-    public BlockBlobAsyncClient getEncryptionScopeClient(String encryptionScope) {
+    public BlockBlobAsyncClient getEncryptionScopeAsyncClient(String encryptionScope) {
         EncryptionScope finalEncryptionScope = null;
         if (encryptionScope != null) {
             finalEncryptionScope = new EncryptionScope().setEncryptionScope(encryptionScope);
@@ -148,7 +148,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * @return a {@link BlockBlobAsyncClient} with the specified {@code customerProvidedKey}.
      */
     @Override
-    public BlockBlobAsyncClient getCustomerProvidedKeyClient(CustomerProvidedKey customerProvidedKey) {
+    public BlockBlobAsyncClient getCustomerProvidedKeyAsyncClient(CustomerProvidedKey customerProvidedKey) {
         CpkInfo finalCustomerProvidedKey = null;
         if (customerProvidedKey != null) {
             finalCustomerProvidedKey = new CpkInfo()
@@ -415,16 +415,15 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         String sourceAuth = options.getSourceAuthorization() == null
             ? null : options.getSourceAuthorization().toString();
 
-        URL url;
         try {
-            url = new URL(options.getSourceUrl());
+            new URL(options.getSourceUrl());
         } catch (MalformedURLException ex) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'sourceUrl' is not a valid url."));
         }
 
         // TODO (kasobol-msft) add metadata back (https://github.com/Azure/azure-sdk-for-net/issues/15969)
         return this.azureBlobStorage.getBlockBlobs().putBlobFromUrlWithResponseAsync(
-            containerName, blobName, 0, url, null, null, null,
+            containerName, blobName, 0, options.getSourceUrl(), null, null, null,
             destinationRequestConditions.getLeaseId(), options.getTier(),
             destinationRequestConditions.getIfModifiedSince(), destinationRequestConditions.getIfUnmodifiedSince(),
             destinationRequestConditions.getIfMatch(), destinationRequestConditions.getIfNoneMatch(),
@@ -611,9 +610,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         BlobRequestConditions sourceRequestConditions = (options.getSourceRequestConditions() == null)
             ? new BlobRequestConditions() : options.getSourceRequestConditions();
 
-        URL url;
         try {
-            url = new URL(options.getSourceUrl());
+            new URL(options.getSourceUrl());
         } catch (MalformedURLException ex) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'sourceUrl' is not a valid url."));
         }
@@ -622,7 +620,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
             ? null : options.getSourceAuthorization().toString();
 
         return this.azureBlobStorage.getBlockBlobs().stageBlockFromURLWithResponseAsync(containerName, blobName,
-            options.getBase64BlockId(), 0, url, sourceRange.toHeaderValue(), options.getSourceContentMd5(), null, null,
+            options.getBase64BlockId(), 0, options.getSourceUrl(), sourceRange.toHeaderValue(), options.getSourceContentMd5(), null, null,
             options.getLeaseId(), sourceRequestConditions.getIfModifiedSince(),
             sourceRequestConditions.getIfUnmodifiedSince(), sourceRequestConditions.getIfMatch(),
             sourceRequestConditions.getIfNoneMatch(), null, sourceAuth, getCustomerProvidedKey(),

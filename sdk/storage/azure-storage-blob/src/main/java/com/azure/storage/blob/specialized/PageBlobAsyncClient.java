@@ -113,7 +113,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * @return a {@link PageBlobAsyncClient} with the specified {@code encryptionScope}.
      */
     @Override
-    public PageBlobAsyncClient getEncryptionScopeClient(String encryptionScope) {
+    public PageBlobAsyncClient getEncryptionScopeAsyncClient(String encryptionScope) {
         EncryptionScope finalEncryptionScope = null;
         if (encryptionScope != null) {
             finalEncryptionScope = new EncryptionScope().setEncryptionScope(encryptionScope);
@@ -131,7 +131,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * @return a {@link PageBlobAsyncClient} with the specified {@code customerProvidedKey}.
      */
     @Override
-    public PageBlobAsyncClient getCustomerProvidedKeyClient(CustomerProvidedKey customerProvidedKey) {
+    public PageBlobAsyncClient getCustomerProvidedKeyAsyncClient(CustomerProvidedKey customerProvidedKey) {
         CpkInfo finalCustomerProvidedKey = null;
         if (customerProvidedKey != null) {
             finalCustomerProvidedKey = new CpkInfo()
@@ -519,9 +519,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         BlobRequestConditions sourceRequestConditions = (options.getSourceRequestConditions() == null)
             ? new BlobRequestConditions() : options.getSourceRequestConditions();
 
-        URL url;
         try {
-            url = new URL(options.getSourceUrl());
+            new URL(options.getSourceUrl());
         } catch (MalformedURLException ex) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'sourceUrl' is not a valid url."));
         }
@@ -530,7 +529,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
             ? null : options.getSourceAuthorization().toString();
 
         return this.azureBlobStorage.getPageBlobs().uploadPagesFromURLWithResponseAsync(
-            containerName, blobName, url, sourceRangeString, 0, rangeString, options.getSourceContentMd5(), null, null,
+            containerName, blobName, options.getSourceUrl(), sourceRangeString, 0, rangeString, options.getSourceContentMd5(), null, null,
             destRequestConditions.getLeaseId(), destRequestConditions.getIfSequenceNumberLessThanOrEqualTo(),
             destRequestConditions.getIfSequenceNumberLessThan(), destRequestConditions.getIfSequenceNumberEqualTo(),
             destRequestConditions.getIfModifiedSince(), destRequestConditions.getIfUnmodifiedSince(),
@@ -804,13 +803,12 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         blobRange = blobRange == null ? new BlobRange(0) : blobRange;
         requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
 
-        URL url = null;
         if (prevSnapshotUrl == null && prevSnapshot == null) {
             throw logger.logExceptionAsError(new IllegalArgumentException("prevSnapshot cannot be null"));
         }
         if (prevSnapshotUrl != null) {
             try {
-                url = new URL(prevSnapshotUrl);
+                new URL(prevSnapshotUrl);
             } catch (MalformedURLException ex) {
                 throw logger.logExceptionAsError(new IllegalArgumentException("'prevSnapshotUrl' is not a valid url."));
             }
@@ -818,7 +816,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         context = context == null ? Context.NONE : context;
 
         return this.azureBlobStorage.getPageBlobs().getPageRangesDiffWithResponseAsync(containerName, blobName,
-            getSnapshotId(), null, prevSnapshot, url, blobRange.toHeaderValue(), requestConditions.getLeaseId(),
+            getSnapshotId(), null, prevSnapshot, prevSnapshotUrl, blobRange.toHeaderValue(), requestConditions.getLeaseId(),
             requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
             requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(),
             null, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
@@ -1073,16 +1071,15 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         PageBlobCopyIncrementalRequestConditions modifiedRequestConditions = (options.getRequestConditions() == null)
             ? new PageBlobCopyIncrementalRequestConditions() : options.getRequestConditions();
 
-        URL url;
         try {
-            url = builder.toUrl();
+            builder.toUrl();
         } catch (MalformedURLException e) {
             // We are parsing a valid url and adding a query parameter. If this fails, we can't recover.
             throw logger.logExceptionAsError(new IllegalArgumentException(e));
         }
         context = context == null ? Context.NONE : context;
 
-        return this.azureBlobStorage.getPageBlobs().copyIncrementalWithResponseAsync(containerName, blobName, url, null,
+        return this.azureBlobStorage.getPageBlobs().copyIncrementalWithResponseAsync(containerName, blobName, builder.toString(), null,
             modifiedRequestConditions.getIfModifiedSince(), modifiedRequestConditions.getIfUnmodifiedSince(),
             modifiedRequestConditions.getIfMatch(), modifiedRequestConditions.getIfNoneMatch(),
             modifiedRequestConditions.getTagsConditions(), null,

@@ -18,6 +18,8 @@ import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayRequestRoutingRuleInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
+import reactor.core.publisher.Mono;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -113,8 +115,13 @@ class ApplicationGatewayRequestRoutingRuleImpl
 
     @Override
     public PublicIpAddress getPublicIpAddress() {
-        final String pipId = this.publicIpAddressId();
-        return (pipId != null) ? this.parent().manager().publicIpAddresses().getById(pipId) : null;
+        return this.getPublicIpAddressAsync().block();
+    }
+
+    @Override
+    public Mono<PublicIpAddress> getPublicIpAddressAsync() {
+        String pipId = this.publicIpAddressId();
+        return pipId == null ? Mono.empty() : this.parent().manager().publicIpAddresses().getByIdAsync(pipId);
     }
 
     @Override

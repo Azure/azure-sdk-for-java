@@ -45,17 +45,17 @@
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
-      <version>2.12.3</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+      <version>2.12.4</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-core</artifactId>
-      <version>2.12.3</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
+      <version>2.12.4</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-annotations</artifactId>
-      <version>2.12.3</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
+      <version>2.12.4</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
     </dependency>
 
     <!-- Other Dependencies -->

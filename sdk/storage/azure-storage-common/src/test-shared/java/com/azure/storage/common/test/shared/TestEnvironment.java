@@ -17,6 +17,9 @@ public final class TestEnvironment {
     private final TestMode testMode;
     private final String serviceVersion;
 
+    private final String resourceGroupName;
+    private final String subscriptionId;
+
     private final TestAccount primaryAccount;
     private final TestAccount secondaryAccount;
     private final TestAccount managedDiskAccount;
@@ -30,6 +33,8 @@ public final class TestEnvironment {
     private TestEnvironment() {
         this.testMode = readTestModeFromEnvironment();
         this.serviceVersion = readServiceVersionFromEnvironment();
+        this.resourceGroupName = Configuration.getGlobalConfiguration().get("STORAGE_RESOURCE_GROUP_NAME");
+        this.subscriptionId = Configuration.getGlobalConfiguration().get("STORAGE_SUBSCRIPTION_ID");
         this.primaryAccount = readTestAccountFromEnvironment("PRIMARY_STORAGE_", this.testMode);
         this.secondaryAccount = readTestAccountFromEnvironment("SECONDARY_STORAGE_", this.testMode);
         this.managedDiskAccount = readTestAccountFromEnvironment("MANAGED_DISK_STORAGE_", this.testMode);
@@ -142,5 +147,13 @@ public final class TestEnvironment {
 
     public String getServiceVersion() {
         return serviceVersion;
+    }
+
+    public String getResourceGroupName() {
+        return resourceGroupName;
+    }
+
+    public String getSubscriptionId() {
+        return subscriptionId;
     }
 }

@@ -269,7 +269,7 @@ public class BlobAsyncClientBase {
      * @param encryptionScope the encryption scope for the blob, pass {@code null} to use no encryption scope.
      * @return a {@link BlobAsyncClientBase} with the specified {@code encryptionScope}.
      */
-    public BlobAsyncClientBase getEncryptionScopeClient(String encryptionScope) {
+    public BlobAsyncClientBase getEncryptionScopeAsyncClient(String encryptionScope) {
         EncryptionScope finalEncryptionScope = null;
         if (encryptionScope != null) {
             finalEncryptionScope = new EncryptionScope().setEncryptionScope(encryptionScope);
@@ -286,7 +286,7 @@ public class BlobAsyncClientBase {
      * pass {@code null} to use no customer provided key.
      * @return a {@link BlobAsyncClientBase} with the specified {@code customerProvidedKey}.
      */
-    public BlobAsyncClientBase getCustomerProvidedKeyClient(CustomerProvidedKey customerProvidedKey) {
+    public BlobAsyncClientBase getCustomerProvidedKeyAsyncClient(CustomerProvidedKey customerProvidedKey) {
         CpkInfo finalCustomerProvidedKey = null;
         if (customerProvidedKey != null) {
             finalCustomerProvidedKey = new CpkInfo()
@@ -371,7 +371,7 @@ public class BlobAsyncClientBase {
      * @return The decoded name of the blob.
      */
     public final String getBlobName() {
-        return (blobName == null) ? null : Utility.urlDecode(blobName);
+        return blobName; // The blob name is decoded when the client is constructor
     }
 
     /**
@@ -640,15 +640,14 @@ public class BlobAsyncClientBase {
         BlobBeginCopySourceRequestConditions sourceModifiedRequestConditions,
         BlobRequestConditions destinationRequestConditions, BlobImmutabilityPolicy immutabilityPolicy,
         Boolean legalHold) {
-        URL url;
         try {
-            url = new URL(sourceUrl);
+            new URL(sourceUrl);
         } catch (MalformedURLException ex) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'sourceUrl' is not a valid url.", ex));
         }
 
         return withContext(
-            context -> azureBlobStorage.getBlobs().startCopyFromURLWithResponseAsync(containerName, blobName, url, null, metadata,
+            context -> azureBlobStorage.getBlobs().startCopyFromURLWithResponseAsync(containerName, blobName, sourceUrl, null, metadata,
                 tier, priority, sourceModifiedRequestConditions.getIfModifiedSince(),
                 sourceModifiedRequestConditions.getIfUnmodifiedSince(), sourceModifiedRequestConditions.getIfMatch(),
                 sourceModifiedRequestConditions.getIfNoneMatch(), sourceModifiedRequestConditions.getTagsConditions(),
@@ -878,9 +877,8 @@ public class BlobAsyncClientBase {
         BlobImmutabilityPolicy immutabilityPolicy = options.getImmutabilityPolicy() == null
             ? new BlobImmutabilityPolicy() : options.getImmutabilityPolicy();
 
-        URL url;
         try {
-            url = new URL(options.getCopySource());
+            new URL(options.getCopySource());
         } catch (MalformedURLException ex) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'copySource' is not a valid url."));
         }
@@ -888,7 +886,7 @@ public class BlobAsyncClientBase {
             ? null : options.getSourceAuthorization().toString();
 
         return this.azureBlobStorage.getBlobs().copyFromURLWithResponseAsync(
-            containerName, blobName, url, null, options.getMetadata(), options.getTier(),
+            containerName, blobName, options.getCopySource(), null, options.getMetadata(), options.getTier(),
             sourceModifiedRequestConditions.getIfModifiedSince(),
             sourceModifiedRequestConditions.getIfUnmodifiedSince(), sourceModifiedRequestConditions.getIfMatch(),
             sourceModifiedRequestConditions.getIfNoneMatch(), destRequestConditions.getIfModifiedSince(),
