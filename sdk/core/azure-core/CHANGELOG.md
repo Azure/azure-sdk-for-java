@@ -17,6 +17,13 @@
  - Added `RequestOptions` for protocol methods
  - Added support for `BinaryData` type as the request body or response body in `RestProxy`
 
+## 1.19.0-beta.1 (2021-07-07)
+
+### Features Added
+
+- Added `RequestOptions` for protocol methods
+- Added support for `BinaryData` type as the request body or response body in `RestProxy`
+
 ## 1.18.0 (2021-07-01)
 
 ### Features Added
