@@ -410,7 +410,7 @@ public final class FluxUtil {
      * @return a Mono which performs the write operation when subscribed
      */
     public static Mono<Void> writeFile(Flux<ByteBuffer> content, AsynchronousFileChannel outFile, long position) {
-        return Mono.create(emitter -> content.subscribe(new Subscriber<ByteBuffer>() {
+        return Mono.create(emitter -> content.subscribe(new CoreSubscriber<ByteBuffer>() {
             // volatile ensures that writes to these fields by one thread will be immediately visible to other threads.
             // An I/O pool thread will write to isWriting and read isCompleted,
             // while another thread may read isWriting and write to isCompleted.
