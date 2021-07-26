@@ -6,8 +6,8 @@ package com.azure.core.http.rest;
 /**
  * A Query Substitution is a value that can be used to replace placeholder values in a URL
  * in the query.
- * Placeholders look like: "http://host.com/filename.html?{querParameter1}&{querParameter1}",
- * where "{querParameter1}" and "{fileName}" are the placeholders.
+ * Placeholders look like: "http://host.com/filename.html?{queryParameter1}&amp;{queryParameter2}",
+ * where "{queryParameter1}" and "{queryParameter2}" are the placeholders.
  */
 class QuerySubstitution extends Substitution {
     private final boolean multipleParams;
@@ -31,7 +31,7 @@ class QuerySubstitution extends Substitution {
     /**
      * Get whether or not the value from the same query parameter name are sent as a list or multiple
      * different paramteres.
-     * @return Whether or not this query parameter list values should be sent as a list or as 
+     * @return Whether or not this query parameter list values should be sent as a list or as
      * individual query params.
      */
     public boolean shouldMergeQueryParams() {
