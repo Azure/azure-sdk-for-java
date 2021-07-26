@@ -3,6 +3,7 @@
 
 package com.azure.core.util;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -17,8 +18,13 @@ import java.util.Objects;
 public final class QueryParameter {
     private final String name;
 
+    // this is the internal representation of a single value
+    // for this parameter. this is the common case (vs. having name=a&name=b etc.)
+    private String value = null;
+
     // this is the actual internal representation of all values
-    private final List<String> values;
+    // in case we have name=a&name=b&name=c
+    private List<String> values;
 
     // but we also cache it to faster serve our public API
     private volatile String cachedStringValue;
@@ -33,8 +39,7 @@ public final class QueryParameter {
     public QueryParameter(String name, String value) {
         Objects.requireNonNull(name, "'name' cannot be null.");
         this.name = name;
-        this.values = new LinkedList<>();
-        this.values.add(value);
+        this.value = value;
     }
 
     /**
@@ -76,7 +81,13 @@ public final class QueryParameter {
      * @return the values of this {@link QueryParameter} that are separated by a comma
      */
     public String[] getValues() {
-        return values.toArray(new String[] { });
+        if (values == null) {
+            // most common case
+            return new String[] {value};
+        }
+        else {
+            return values.toArray(new String[] { });
+        }
     }
 
     /**
@@ -85,7 +96,15 @@ public final class QueryParameter {
      * @return An unmodifiable list containing all values associated with this parameter.
      */
     public List<String> getValuesList() {
-        return Collections.unmodifiableList(values);
+        if (values == null) {
+            // most common case is that we don't have a list of values, but a single one
+            // a convenience return value is implemented here to avoid NPEs.
+            // List.of() would be a better option but it is Java 9+ only.
+            return Collections.unmodifiableList(Arrays.asList(value));
+        }
+        else {
+            return Collections.unmodifiableList(values);
+        }
     }
 
     /**
@@ -94,8 +113,14 @@ public final class QueryParameter {
      * @param value the value to add
      */
     public void addValue(String value) {
-        this.values.add(value);
-        this.cachedStringValue = null;
+        if (values == null) {
+            values = new LinkedList<>();
+            values.add(this.value); // add current standalone value
+        }
+
+        values.add(value);
+        cachedStringValue = null;
+        value = null;
     }
 
     /**
@@ -111,7 +136,12 @@ public final class QueryParameter {
 
     private void checkCachedStringValue() {
         if (cachedStringValue == null) {
-            cachedStringValue = String.join(",", values);
+            if (values == null) {
+                cachedStringValue = value;
+            }
+            else {
+                cachedStringValue = String.join(",", values);
+            }
         }
     }
 }
