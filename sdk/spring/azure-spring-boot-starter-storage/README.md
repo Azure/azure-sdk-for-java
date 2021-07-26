@@ -20,11 +20,11 @@ The project provides a Spring Boot Starter `azure-spring-boot-starter-storage` t
 ```
 
 ## Key concepts
-The [Azure Storage platform][azure_storage] is Microsoft's cloud storage solution for modern data storage scenarios. Core storage services offer a massively scalable object store for data objects, disk storage for Azure virtual machines (VMs), a file system service for the cloud, a messaging store for reliable messaging, and a NoSQL store.
+The [Azure Storage platform] is Microsoft's cloud storage solution for modern data storage scenarios. Core storage services offer a massively scalable object store for data objects, disk storage for Azure virtual machines (VMs), a file system service for the cloud, a messaging store for reliable messaging, and a NoSQL store.
 
 ## Examples
 
-Please use this [sample][sample] as a reference for how to use **Azure Spring Boot Storage Starter** in your projects. 
+Please use this [sample] as a reference for how to use **Azure Spring Boot Storage Starter** in your projects. 
 
 #### Auto-configuration for Azure Blob storage
 
@@ -45,10 +45,10 @@ You can use the annotation of `@Value("azure-blob://[your-container-name]/[your-
 private Resource storageResource;
 ```
 
-You can use the annotation of `azure-file://[your-fileshare-name]/[your-fileName]")` to autowire a **file** `Resource`.
+You can use the annotation of `azure-file://[your-fileshare-name]/[your-file-name]")` to autowire a **file** `Resource`.
 
 ```java
-@Value("azure-file://[your-fileshare-name]/[your-fileName]")
+@Value("azure-file://[your-fileshare-name]/[your-file-name]")
 private Resource storageResource;
 ```
 
@@ -130,7 +130,7 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [contributing_md]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/CONTRIBUTING.md
 [maven]: https://maven.apache.org/
 [azure_blob_storage]: https://docs.microsoft.com/azure/storage/blobs/storage-blobs-introduction
-[azure_storage]: https://azure.microsoft.com/services/storage/
+[Azure Storage platform]: https://azure.microsoft.com/services/storage/
 [other_operation]: https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#resources
 [environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
 [Add azure-spring-boot-bom]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/AZURE_SPRING_BOMS_USAGE.md#add-azure-spring-boot-bom
