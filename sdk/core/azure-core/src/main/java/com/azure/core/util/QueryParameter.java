@@ -119,7 +119,6 @@ public final class QueryParameter {
 
         values.add(value);
         cachedStringValue = null;
-        value = null;
     }
 
     /**
