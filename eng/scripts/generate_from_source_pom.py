@@ -23,7 +23,8 @@ import os
 import time
 import json
 import lxml.etree as ET
-from eng.versioning.utils import version_update_marker
+
+version_update_pattern = re.compile(r'\{x-version-update;([^;]+);([^}]+)\}')
 
 # Only azure-client-sdk-parent and spring-boot-starter-parent are valid parent POMs for Track 2 libraries.
 valid_parents = ['azure-client-sdk-parent', 'spring-boot-starter-parent', 'azure-spring-boot-test-parent']
@@ -246,7 +247,7 @@ def get_dependency_version(element: ET.Element):
     comment = get_version_tag(element)
 
     is_beta_dependency = False
-    match = version_update_marker.search(comment)
+    match = version_update_pattern.search(comment)
     if match and match.group(1).startswith('beta_'):
         is_beta_dependency = True
 
