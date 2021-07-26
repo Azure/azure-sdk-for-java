@@ -20,7 +20,7 @@ public final class QueryParameter {
 
     // this is the internal representation of a single value
     // for this parameter. this is the common case (vs. having name=a&name=b etc.)
-    private final String value = null;
+    private final String value;
 
     // this is the actual internal representation of all values
     // in case we have name=a&name=b&name=c
@@ -53,6 +53,7 @@ public final class QueryParameter {
         Objects.requireNonNull(name, "'name' cannot be null.");
         Objects.requireNonNull(values, "'values' cannot be null");
         this.name = name;
+        this.value = null;
         this.values = new LinkedList<>(values);
     }
 
