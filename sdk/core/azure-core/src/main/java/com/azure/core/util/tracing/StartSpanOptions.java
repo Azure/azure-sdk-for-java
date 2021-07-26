@@ -27,29 +27,24 @@ public class StartSpanOptions {
         CLIENT,
     }
 
-    private final String spanName;
     private boolean makeCurrent;
     private final Kind spanKind;
     private Map<String, Object> attributes;
 
     /**
      * Describes span with given name and INTERNAL kind
-     *
-     * @param spanName The name of the span to be created.
      */
-    public StartSpanOptions(String spanName) {
-        this(spanName, Kind.INTERNAL);
+    public StartSpanOptions() {
+        this(Kind.INTERNAL);
     }
 
     /**
      * Describes span with given name and kind
      *
-     * @param spanName The name of the span to be created.
      * @param kind The kind of the span to be created, only INTERNAL and CLIENT are supported.
      */
-    public StartSpanOptions(String spanName, Kind kind) {
-        Objects.requireNonNull(spanName, "'spanName' cannot be null.");
-        this.spanName = spanName;
+    public StartSpanOptions(Kind kind) {
+        Objects.requireNonNull(kind, "'kind' cannot be null.");
         this.spanKind = kind;
         this.attributes = null;
         this.makeCurrent = false;
@@ -90,14 +85,6 @@ public class StartSpanOptions {
      */
     public Kind getSpanKind() {
         return this.spanKind;
-    }
-
-    /**
-     * Gets span name.
-     * @return span name.
-     */
-    public String getSpanName() {
-        return this.spanName;
     }
 
     /**

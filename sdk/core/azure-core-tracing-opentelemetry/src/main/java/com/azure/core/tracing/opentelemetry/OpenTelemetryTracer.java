@@ -65,10 +65,10 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
      * {@inheritDoc}
      */
     @Override
-    public Context start(StartSpanOptions options, Context context) {
+    public Context start(String spanName, StartSpanOptions options, Context context) {
         Objects.requireNonNull(options, "'options' cannot be null.");
         SpanBuilder spanBuilder = createSpanBuilder(
-            options.getSpanName(),
+            spanName,
             null,
             convertToOtelKind(options.getSpanKind()),
             options.getAttributes(),
@@ -361,7 +361,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
      * Extracts the {@link SpanContext trace identifiers} and the {@link SpanContext} of the current tracing span as
      * text and returns in a {@link Context} object.
      *
-     * @param span The current tracing span.
+     * @param context The context with current tracing span describing unique message context.
      * @return The {@link Context} containing the {@link SpanContext} and trace-parent of the current span.
      */
     private Context setDiagnosticId(Context context) {

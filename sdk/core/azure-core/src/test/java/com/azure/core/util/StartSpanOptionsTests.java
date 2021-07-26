@@ -11,20 +11,18 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class StartSpanOptionsTests {
     @Test
-    public void nameOnly() {
-        StartSpanOptions options = new StartSpanOptions("foo");
+    public void defaultCtor() {
+        StartSpanOptions options = new StartSpanOptions();
 
-        assertEquals("foo", options.getSpanName());
         assertEquals(StartSpanOptions.Kind.INTERNAL, options.getSpanKind());
         assertNull(options.getAttributes());
         assertFalse(options.getMakeCurrent());
     }
 
     @Test
-    public void nameAndClient() {
-        StartSpanOptions options = new StartSpanOptions("foo", StartSpanOptions.Kind.CLIENT);
+    public void clientSpan() {
+        StartSpanOptions options = new StartSpanOptions(StartSpanOptions.Kind.CLIENT);
 
-        assertEquals("foo", options.getSpanName());
         assertEquals(StartSpanOptions.Kind.CLIENT, options.getSpanKind());
         assertNull(options.getAttributes());
         assertFalse(options.getMakeCurrent());
@@ -32,14 +30,14 @@ public class StartSpanOptionsTests {
 
     @Test
     public void setMakeCurrent() {
-        StartSpanOptions options = new StartSpanOptions("foo", StartSpanOptions.Kind.CLIENT)
+        StartSpanOptions options = new StartSpanOptions(StartSpanOptions.Kind.CLIENT)
             .setMakeCurrent(true);
         assertTrue(options.getMakeCurrent());
     }
 
     @Test
     public void setAttributes() {
-        StartSpanOptions options = new StartSpanOptions("foo", StartSpanOptions.Kind.CLIENT)
+        StartSpanOptions options = new StartSpanOptions(StartSpanOptions.Kind.CLIENT)
             .setAttribute("foo", "bar")
             .setAttribute("1", 1);
 

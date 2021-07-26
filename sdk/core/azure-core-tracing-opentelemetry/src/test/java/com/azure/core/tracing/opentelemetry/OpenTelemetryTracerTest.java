@@ -443,10 +443,10 @@ public class OpenTelemetryTracerTest {
     public void startEndCurrentSpan() {
         Span parentSpan = Span.current();
 
-        final StartSpanOptions options = new StartSpanOptions("foo")
+        final StartSpanOptions options = new StartSpanOptions()
             .setMakeCurrent(true);
 
-        final Context started = openTelemetryTracer.start(options, tracingContext);
+        final Context started = openTelemetryTracer.start(METHOD_NAME, options, tracingContext);
         assertSame(Span.current(), started.getData(PARENT_SPAN_KEY).get());
 
         openTelemetryTracer.end("foo", null, started);
@@ -678,8 +678,8 @@ public class OpenTelemetryTracerTest {
         scope.close();
         parentSpan.end();
 
-        final StartSpanOptions options = new StartSpanOptions(METHOD_NAME);
-        final Context started = openTelemetryTracer.start(options, Context.NONE);
+        final StartSpanOptions options = new StartSpanOptions();
+        final Context started = openTelemetryTracer.start(METHOD_NAME, options, Context.NONE);
         final ReadableSpan span = (ReadableSpan) started.getData(PARENT_SPAN_KEY).get();
         final SpanData spanData = span.toSpanData();
 
@@ -693,9 +693,9 @@ public class OpenTelemetryTracerTest {
 
     @Test
     public void startSpanWithOptionsNameUserNameWins() {
-        final StartSpanOptions options = new StartSpanOptions(METHOD_NAME);
+        final StartSpanOptions options = new StartSpanOptions();
 
-        final Context started = openTelemetryTracer.start(options, tracingContext.addData(USER_SPAN_NAME_KEY, "foo"));
+        final Context started = openTelemetryTracer.start(METHOD_NAME, options, tracingContext.addData(USER_SPAN_NAME_KEY, "foo"));
         final ReadableSpan span = (ReadableSpan) started.getData(PARENT_SPAN_KEY).get();
 
         assertEquals("foo", span.getName());
@@ -703,9 +703,9 @@ public class OpenTelemetryTracerTest {
 
     @Test
     public void startSpanWithOptionsNameImplicitParent() {
-        final StartSpanOptions options = new StartSpanOptions(METHOD_NAME);
+        final StartSpanOptions options = new StartSpanOptions();
 
-        final Context started = openTelemetryTracer.start(options, Context.NONE);
+        final Context started = openTelemetryTracer.start(METHOD_NAME, options, Context.NONE);
         final ReadableSpan span = (ReadableSpan) started.getData(PARENT_SPAN_KEY).get();
         final SpanData spanData = span.toSpanData();
 
@@ -721,10 +721,10 @@ public class OpenTelemetryTracerTest {
 
     @Test
     public void startSpanWithOptionsNameExplicitParent() {
-        final StartSpanOptions options = new StartSpanOptions(METHOD_NAME);
+        final StartSpanOptions options = new StartSpanOptions();
 
         final Span explicitParentSpan = tracer.spanBuilder("foo").setNoParent().startSpan();
-        final Context started = openTelemetryTracer.start(options, new Context(PARENT_SPAN_KEY, explicitParentSpan));
+        final Context started = openTelemetryTracer.start(METHOD_NAME, options, new Context(PARENT_SPAN_KEY, explicitParentSpan));
 
         final ReadableSpan span = (ReadableSpan) started.getData(PARENT_SPAN_KEY).get();
         final SpanData spanData = span.toSpanData();
@@ -735,8 +735,8 @@ public class OpenTelemetryTracerTest {
 
     @Test
     public void startSpanWithInternalKind() {
-        final StartSpanOptions options = new StartSpanOptions(METHOD_NAME, StartSpanOptions.Kind.INTERNAL);
-        final Context started = openTelemetryTracer.start(options, Context.NONE);
+        final StartSpanOptions options = new StartSpanOptions(StartSpanOptions.Kind.INTERNAL);
+        final Context started = openTelemetryTracer.start(METHOD_NAME, options, Context.NONE);
         final ReadableSpan span = (ReadableSpan) started.getData(PARENT_SPAN_KEY).get();
 
         assertEquals(SpanKind.INTERNAL, span.getKind());
@@ -744,8 +744,8 @@ public class OpenTelemetryTracerTest {
 
     @Test
     public void startSpanWithClientKind() {
-        final StartSpanOptions options = new StartSpanOptions(METHOD_NAME, StartSpanOptions.Kind.CLIENT);
-        final Context started = openTelemetryTracer.start(options, Context.NONE);
+        final StartSpanOptions options = new StartSpanOptions(StartSpanOptions.Kind.CLIENT);
+        final Context started = openTelemetryTracer.start(METHOD_NAME, options, Context.NONE);
         final ReadableSpan span = (ReadableSpan) started.getData(PARENT_SPAN_KEY).get();
 
         assertEquals(SpanKind.CLIENT, span.getKind());
@@ -753,9 +753,9 @@ public class OpenTelemetryTracerTest {
 
     @Test
     public void startSpanWithMakeCurrent() {
-        final StartSpanOptions options = new StartSpanOptions(METHOD_NAME)
+        final StartSpanOptions options = new StartSpanOptions()
             .setMakeCurrent(true);
-        final Context started = openTelemetryTracer.start(options, Context.NONE);
+        final Context started = openTelemetryTracer.start(METHOD_NAME, options, Context.NONE);
         assertTrue(started.getData(SCOPE_KEY).isPresent());
     }
 
@@ -785,10 +785,10 @@ public class OpenTelemetryTracerTest {
             .put("B[]", new boolean[] {true})
             .build();
 
-        final StartSpanOptions options = new StartSpanOptions(METHOD_NAME);
+        final StartSpanOptions options = new StartSpanOptions();
         attributes.forEach((k, v) -> options.setAttribute(k, v));
 
-        final Context started = openTelemetryTracer.start(options, tracingContext);
+        final Context started = openTelemetryTracer.start(METHOD_NAME, options, tracingContext);
         final ReadableSpan span = (ReadableSpan) started.getData(PARENT_SPAN_KEY).get();
 
         verifySpanAttributes(expectedAttributes, span.toSpanData().getAttributes());

@@ -106,13 +106,15 @@ public interface Tracer {
      * <p>Starts a tracing span with provided method name and explicit parent span</p>
      * {@codesnippet com.azure.core.util.tracing.start#options-context}
      *
+     * @param methodName Name of the method triggering the span creation.
      * @param options span creation options.
      * @param context Additional metadata that is passed through the call stack.
      * @return The updated {@link Context} object containing the returned span.
      * @throws NullPointerException if {@code options} or {@code context} is {@code null}.
      */
-    default Context start(StartSpanOptions options, Context context) {
-        return start(options.getSpanName(), context);
+    default Context start(String methodName, StartSpanOptions options, Context context) {
+        // fall back to old API if not overriden.
+        return start(methodName, context);
     }
 
     /**
