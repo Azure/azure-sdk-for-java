@@ -341,7 +341,7 @@ certificate will be added with the alias of `mycert`.
     5. Certificates from classpath.
 
 ### Key-Less certificates
-You can set the private key as non-exportable to ensure the security of the key.
+You can set the private key as [non-exportable][non-exportable] to ensure the security of the key.
 
 Note if you want to use a key less certificate, you must add `sign` permissions to the principal.
 
@@ -390,4 +390,5 @@ Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/bl
 [sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/tag_azure-spring-boot_3.6.0/keyvault/azure-spring-boot-sample-keyvault-certificates-server-side
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
 [environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
+[non-exportable]: https://docs.microsoft.com/en-us/azure/key-vault/certificates/about-certificates#exportable-or-non-exportable-key
 
