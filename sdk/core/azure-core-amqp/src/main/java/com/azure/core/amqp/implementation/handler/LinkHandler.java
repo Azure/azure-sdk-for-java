@@ -4,6 +4,7 @@
 package com.azure.core.amqp.implementation.handler;
 
 import com.azure.core.amqp.exception.AmqpErrorContext;
+import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.LinkErrorContext;
 import com.azure.core.amqp.implementation.ExceptionUtil;
 import com.azure.core.util.logging.ClientLogger;
@@ -33,6 +34,8 @@ abstract class LinkHandler extends Handler {
             link.getName(),
             condition != null ? condition.getCondition() : NOT_APPLICABLE,
             condition != null ? condition.getDescription() : NOT_APPLICABLE);
+
+        handleRemoteLinkClosed("onLinkLocalClose", event);
     }
 
     @Override
@@ -88,7 +91,8 @@ abstract class LinkHandler extends Handler {
 
             onError(exception);
         } else {
-            close();
+            // close();
+            onError(new AmqpException(true, "This link is remotely closed without a condition.", getErrorContext(link)));
         }
     }
 }
