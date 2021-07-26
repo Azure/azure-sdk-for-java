@@ -16,6 +16,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -35,6 +36,8 @@ import com.azure.security.keyvault.keys.models.KeyProperties;
 import com.azure.security.keyvault.keys.models.KeyType;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import com.azure.security.keyvault.keys.models.RandomBytes;
+import com.azure.security.keyvault.keys.models.ReleaseKeyOptions;
+import com.azure.security.keyvault.keys.models.ReleaseKeyResult;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -227,7 +230,8 @@ public final class KeyAsyncClient {
             .setKty(createKeyOptions.getKeyType())
             .setKeyOps(createKeyOptions.getKeyOperations())
             .setKeyAttributes(new KeyRequestAttributes(createKeyOptions))
-            .setTags(createKeyOptions.getTags());
+            .setTags(createKeyOptions.getTags())
+            .setReleasePolicy(createKeyOptions.getReleasePolicy());
 
         return service.createKey(vaultUrl, createKeyOptions.getName(), apiVersion, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
@@ -767,10 +771,13 @@ public final class KeyAsyncClient {
         context = context == null ? Context.NONE : context;
         KeyRequestParameters parameters = new KeyRequestParameters()
             .setTags(keyProperties.getTags())
-            .setKeyAttributes(new KeyRequestAttributes(keyProperties));
+            .setKeyAttributes(new KeyRequestAttributes(keyProperties))
+            .setReleasePolicy(keyProperties.getReleasePolicy());
+
         if (keyOperations.length > 0) {
             parameters.setKeyOps(Arrays.asList(keyOperations));
         }
+
         return service.updateKey(vaultUrl, keyProperties.getName(), keyProperties.getVersion(), apiVersion, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignored -> logger.verbose("Updating key - {}", keyProperties.getName()))
@@ -1379,7 +1386,7 @@ public final class KeyAsyncClient {
      *
      * @param count The requested number of random bytes.
      *
-     * @return The requested number of bytes containing random values from a managed HSM.
+     * @return A {@link Mono} containing the requested number of bytes containing random values from a managed HSM.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RandomBytes> getRandomBytes(int count) {
@@ -1402,7 +1409,8 @@ public final class KeyAsyncClient {
      *
      * @param count The requested number of random bytes.
      *
-     * @return The requested number of bytes containing random values from a managed HSM.
+     * @return A {@link Mono} containing the {@link Response HTTP response} for this operation and the requested number
+     * of bytes containing random values from a managed HSM.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RandomBytes>> getRandomBytesWithResponse(int count) {
@@ -1421,6 +1429,81 @@ public final class KeyAsyncClient {
                 .doOnSuccess(response -> logger.verbose("Got {} random bytes.", count))
                 .doOnError(error -> logger.warning("Failed to get random bytes - {}", error))
                 .map(response -> new SimpleResponse<>(response, new RandomBytes(response.getValue().getBytes())));
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
+        }
+    }
+
+    /**
+     * Releases a key.
+     *
+     * <p>The key must be exportable. This operation requires the 'keys/release' permission.</p>
+     *
+     * @param name The name of the key to release.
+     * @param target The attestation assertion for the target of the key release.
+     *
+     * @return A {@link Mono} containing the {@link ReleaseKeyResult} containing the released key.
+     *
+     * @throws IllegalArgumentException If {@code name} or {@code target} are {@code null} or empty.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ReleaseKeyResult> releaseKey(String name, String target) {
+        try {
+            return releaseKeyWithResponse(name, null, target, new ReleaseKeyOptions())
+                .flatMap(FluxUtil::toMono);
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
+        }
+    }
+
+    /**
+     * Releases a key.
+     *
+     * <p>The key must be exportable. This operation requires the 'keys/release' permission.</p>
+     *
+     * @param name The name of the key to release.
+     * @param version Version of the key to release.This parameter is optional.
+     * @param target The attestation assertion for the target of the key release.
+     * @param options Additional options for releasing a key.
+     *
+     * @return A {@link Mono} containing the {@link Response HTTP response} for this operation and the
+     * {@link ReleaseKeyResult} containing the released key.
+     *
+     * @throws IllegalArgumentException If {@code name} or {@code target} are {@code null} or empty.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ReleaseKeyResult>> releaseKeyWithResponse(String name, String version, String target,
+                                                                   ReleaseKeyOptions options) {
+        try {
+            return withContext(context -> releaseKeyWithResponse(name, version, target, options, context));
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
+        }
+    }
+
+    Mono<Response<ReleaseKeyResult>> releaseKeyWithResponse(String name, String version, String target,
+                                                            ReleaseKeyOptions options, Context context) {
+        try {
+            if (CoreUtils.isNullOrEmpty(name)) {
+                throw new IllegalArgumentException("'name' cannot be null or empty");
+            }
+
+            if (CoreUtils.isNullOrEmpty(target)) {
+                throw new IllegalArgumentException("'target' cannot be null or empty");
+            }
+
+            options = options == null ? new ReleaseKeyOptions() : options;
+
+            KeyReleaseParameters keyReleaseParameters = new KeyReleaseParameters()
+                .setTarget(target)
+                .setAlgorithm(options.getAlgorithm())
+                .setNonce(options.getNonce());
+
+            return service.release(vaultUrl, name, version, apiVersion, keyReleaseParameters, "application/json",
+                context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+                .doOnRequest(ignored -> logger.verbose("Releasing key with name %s and version %s.", name, version))
+                .doOnSuccess(response -> logger.verbose("Released key with name %s and version %s.", name, version))
+                .doOnError(error -> logger.warning("Failed to release key - {}", error));
         } catch (RuntimeException e) {
             return monoError(logger, e);
         }

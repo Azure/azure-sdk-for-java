@@ -174,4 +174,30 @@ public class CreateRsaKeyOptions extends CreateKeyOptions {
 
         return this;
     }
+
+    /**
+     * Set a flag that indicates if the private key can be exported.
+     *
+     * @param exportable A flag that indicates if the private key can be exported.
+     *
+     * @return The updated {@link CreateRsaKeyOptions} object.
+     */
+    public CreateRsaKeyOptions setExportable(Boolean exportable) {
+        super.setExportable(exportable);
+
+        return this;
+    }
+
+    /**
+     * Set the policy rules under which the key can be exported.
+     *
+     * @param releasePolicy The policy rules to set.
+     *
+     * @return The updated {@link CreateRsaKeyOptions} object.
+     */
+    public CreateRsaKeyOptions setReleasePolicy(KeyReleasePolicy releasePolicy) {
+        super.setReleasePolicy(releasePolicy);
+
+        return this;
+    }
 }

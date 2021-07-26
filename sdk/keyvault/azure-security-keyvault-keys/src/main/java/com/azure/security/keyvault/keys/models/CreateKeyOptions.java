@@ -50,6 +50,29 @@ public class CreateKeyOptions {
      */
     private Boolean enabled;
 
+    /*
+     * Indicates if the private key can be exported.
+     */
+    private Boolean exportable;
+
+    /**
+     * The number of days a key is retained before being deleted for a soft delete-enabled Key Vault.
+     */
+    private Integer recoverableDays;
+
+    /**
+     * Reflects the deletion recovery level currently in effect for keys in the current vault. If it contains
+     * 'Purgeable', the key can be permanently deleted by a privileged user; otherwise, only the system can purge the
+     * key, at the end of the retention interval. Possible values include: 'Purgeable', 'Recoverable+Purgeable',
+     * 'Recoverable', 'Recoverable+ProtectedSubscription'.
+     */
+    private String recoveryLevel;
+
+    /*
+     * The policy rules under which the key can be exported.
+     */
+    private KeyReleasePolicy releasePolicy;
+
     /**
      * Creates instance of {@link CreateKeyOptions} with {@code name} as key name and {@code keyType} as type of the
      * key.
@@ -194,4 +217,91 @@ public class CreateKeyOptions {
         return this.name;
     }
 
+    /**
+     * Get a flag that indicates if the private key can be exported.
+     *
+     * @return A flag that indicates if the private key can be exported.
+     */
+    public Boolean isExportable() {
+        return this.exportable;
+    }
+
+    /**
+     * Set a flag that indicates if the private key can be exported.
+     *
+     * @param exportable A flag that indicates if the private key can be exported.
+     *
+     * @return The updated {@link CreateKeyOptions} object.
+     */
+    public CreateKeyOptions setExportable(Boolean exportable) {
+        this.exportable = exportable;
+
+        return this;
+    }
+
+    /**
+     * Get the number of days a key is retained before being deleted for a soft delete-enabled Key Vault.
+     *
+     * @return The recoverable days.
+     */
+    public Integer getRecoverableDays() {
+        return recoverableDays;
+    }
+
+    /**
+     * Sets the number of days a key is retained before being deleted for a soft delete-enabled Key Vault.
+     *
+     * @param recoverableDays The recoverable days.
+     *
+     * @return The updated {@link CreateKeyOptions} object.
+     */
+    public CreateKeyOptions setRecoverableDays(Integer recoverableDays) {
+        this.recoverableDays = recoverableDays;
+
+        return this;
+    }
+
+    /**
+     * Get the key recovery level.
+     *
+     * @return The key recovery level.
+     */
+    public String getRecoveryLevel() {
+        return this.recoveryLevel;
+    }
+
+    /**
+     * Get the key recovery level.
+     *
+     * @param recoveryLevel The key recovery level.
+     *
+     * @return The updated {@link CreateKeyOptions} object.
+     */
+    public CreateKeyOptions setRecoveryLevel(String recoveryLevel) {
+        this.recoveryLevel = recoveryLevel;
+
+        return this;
+    }
+
+    /**
+     * Get the policy rules under which the key can be exported.
+     *
+     * @return The policy rules under which the key can be exported.
+     */
+    public KeyReleasePolicy getReleasePolicy() {
+        return this.releasePolicy;
+    }
+
+    /**
+     * Set the policy rules under which the key can be exported.
+     *
+     * @param releasePolicy The policy rules to set.
+     *
+     * @return The updated {@link CreateKeyOptions} object.
+     */
+    public CreateKeyOptions setReleasePolicy(KeyReleasePolicy releasePolicy) {
+        this.releasePolicy = releasePolicy;
+
+        return this;
+    }
 }
