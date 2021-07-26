@@ -9,6 +9,7 @@ import com.azure.spring.integration.core.api.CheckpointMode;
 import com.azure.spring.integration.core.api.PartitionSupplier;
 import com.azure.spring.integration.core.api.SendOperation;
 import com.azure.spring.integration.servicebus.converter.ServiceBusMessageConverter;
+import com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders;
 import com.azure.spring.integration.servicebus.factory.ServiceBusSenderFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,13 +54,27 @@ public class ServiceBusTemplate<T extends ServiceBusSenderFactory> implements Se
                                                  Message<U> message,
                                                  PartitionSupplier partitionSupplier) {
         Assert.hasText(destination, "destination can't be null or empty");
-        String partitionKey = getPartitionKey(partitionSupplier);
+        String partitionKey = calculatePartitionKey(message, partitionSupplier);
         ServiceBusMessage serviceBusMessage = messageConverter.fromMessage(message, ServiceBusMessage.class);
 
-        if (StringUtils.hasText(partitionKey)) {
+        if (!StringUtils.hasText(serviceBusMessage.getPartitionKey()) && StringUtils.hasText(partitionKey)) {
             serviceBusMessage.setPartitionKey(partitionKey);
         }
         return this.clientFactory.getOrCreateSender(destination).sendMessage(serviceBusMessage).toFuture();
+    }
+
+    private <U> String calculatePartitionKey(Message<U> message, PartitionSupplier partitionSupplier) {
+        String partitionKey;
+        if (StringUtils.hasText(message.getHeaders().get(ServiceBusMessageHeaders.SESSION_ID, String.class))) {
+            partitionKey = message.getHeaders().get(ServiceBusMessageHeaders.SESSION_ID).toString();
+        } else {
+            if (StringUtils.hasText(message.getHeaders().get(ServiceBusMessageHeaders.PARTITION_KEY, String.class))) {
+                partitionKey = message.getHeaders().get(ServiceBusMessageHeaders.PARTITION_KEY, String.class);
+            } else {
+                partitionKey = getPartitionKey(partitionSupplier);
+            }
+        }
+        return partitionKey;
     }
 
     public CheckpointConfig getCheckpointConfig() {

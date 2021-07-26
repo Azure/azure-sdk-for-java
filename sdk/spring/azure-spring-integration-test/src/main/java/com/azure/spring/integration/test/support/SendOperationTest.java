@@ -79,6 +79,26 @@ public abstract class SendOperationTest<O extends SendOperation> {
     }
 
     @Test
+    public void testSendWithSessionId() throws ExecutionException, InterruptedException {
+        Message<?> messageWithSeesionId = new GenericMessage<>("testPayload",
+            ImmutableMap.of("key1", "value1", "azure_service_bus_session_id", "TestSessionId"));
+        CompletableFuture<Void> future = this.sendOperation.sendAsync(destination, messageWithSeesionId);
+
+        assertNull(future.get());
+        verifySendCalled(1);
+    }
+
+    @Test
+    public void testSendWithSessionIdAndPartitionKeyDifferent() throws ExecutionException, InterruptedException {
+        Message<?> messageWithSeesionId = new GenericMessage<>("testPayload", ImmutableMap.of("key1", "value1",
+            "azure_service_bus_session_id", "TestSessionId", "azure_service_bus_partition_key", "TestPartitionKey"));
+        CompletableFuture<Void> future = this.sendOperation.sendAsync(destination, messageWithSeesionId);
+
+        assertNull(future.get());
+        verifySendCalled(1);
+    }
+
+    @Test
     public void testSendWithoutPartition() throws ExecutionException, InterruptedException {
         CompletableFuture<Void> future = this.sendOperation.sendAsync(destination, message, new PartitionSupplier());
 
