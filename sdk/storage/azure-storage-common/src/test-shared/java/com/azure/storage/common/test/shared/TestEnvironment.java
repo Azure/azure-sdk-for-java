@@ -36,6 +36,7 @@ public final class TestEnvironment {
         this.testMode = readTestModeFromEnvironment();
         this.serviceVersion = readServiceVersionFromEnvironment();
         this.httpClientType = readHttpClientTypeFromEnvironment();
+        System.out.println(String.format("Tests will run with %s http client", this.httpClientType));
         this.resourceGroupName = Configuration.getGlobalConfiguration().get("STORAGE_RESOURCE_GROUP_NAME");
         this.subscriptionId = Configuration.getGlobalConfiguration().get("STORAGE_SUBSCRIPTION_ID");
         this.primaryAccount = readTestAccountFromEnvironment("PRIMARY_STORAGE_", this.testMode);
