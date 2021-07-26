@@ -155,7 +155,7 @@ public final class UrlBuilder {
      * @return The provided query parameter name and encoded value to query string for the final URL.
      * @throws NullPointerException if {@code queryParameterName} or {@code queryParameterEncodedValue} are null.
      */
-    public UrlBuilder appendQueryParameter(String queryParameterName, String queryParameterEncodedValue) {
+    public UrlBuilder addQueryParameter(String queryParameterName, String queryParameterEncodedValue) {
         query.compute(queryParameterName, (key, value) -> {
             if (value == null) {
                 return new QueryParameter(queryParameterName, queryParameterEncodedValue);
@@ -298,9 +298,9 @@ public final class UrlBuilder {
                         for (String entry : queryString.split("&")) {
                             String[] nameValue = entry.split("=");
                             if (nameValue.length == 2) {
-                                appendQueryParameter(nameValue[0], nameValue[1]);
+                                addQueryParameter(nameValue[0], nameValue[1]);
                             } else {
-                                appendQueryParameter(nameValue[0], "");
+                                addQueryParameter(nameValue[0], "");
                             }
                         }
                     }

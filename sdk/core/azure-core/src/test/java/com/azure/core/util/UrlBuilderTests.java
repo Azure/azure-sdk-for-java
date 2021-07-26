@@ -439,8 +439,8 @@ public class UrlBuilderTests {
         final UrlBuilder builder = new UrlBuilder()
             .setScheme("http")
             .setHost("www.example.com")
-            .appendQueryParameter("A", "B")
-            .appendQueryParameter("A", "D")
+            .addQueryParameter("A", "B")
+            .addQueryParameter("A", "D")
             .setPath("index.html");
         assertEquals("http://www.example.com/index.html?A=B&A=D", builder.toString());
     }
@@ -450,8 +450,8 @@ public class UrlBuilderTests {
         final UrlBuilder builder = new UrlBuilder()
             .setScheme("http")
             .setHost("www.example.com")
-            .appendQueryParameter("A", "B")
-            .appendQueryParameter("A", "D")
+            .addQueryParameter("A", "B")
+            .addQueryParameter("A", "D")
             .setPath("index.html");
         assertEquals(builder.getQuery().get("A"), "B,D");
     }
@@ -461,8 +461,8 @@ public class UrlBuilderTests {
         final UrlBuilder builder = new UrlBuilder()
             .setScheme("http")
             .setHost("www.example.com")
-            .appendQueryParameter("A", "B")
-            .appendQueryParameter("A", "D")
+            .addQueryParameter("A", "B")
+            .addQueryParameter("A", "D")
             .setPath("index.html");
         assertEquals(builder.getQueryParameters().get("A").getValuesList().size(), 2);
     }

@@ -299,7 +299,7 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
                         if (substitution.shouldEncode()) {
                             parameterValue = UrlEscapers.QUERY_ESCAPER.escape(parameterValue);
                         }
-                        urlBuilder.appendQueryParameter(substitution.getUrlParameterName(), parameterValue);
+                        urlBuilder.addQueryParameter(substitution.getUrlParameterName(), parameterValue);
                     }
                 }
             }
