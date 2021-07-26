@@ -22,6 +22,7 @@ from datetime import timedelta
 import os
 import time
 import json
+import re
 import lxml.etree as ET
 
 version_update_pattern = re.compile(r'\{x-version-update;([^;]+);([^}]+)\}')
