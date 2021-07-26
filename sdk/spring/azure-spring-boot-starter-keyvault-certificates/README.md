@@ -390,5 +390,5 @@ Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/bl
 [sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/tag_azure-spring-boot_3.6.0/keyvault/azure-spring-boot-sample-keyvault-certificates-server-side
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
 [environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
-[non-exportable]: https://docs.microsoft.com/en-us/azure/key-vault/certificates/about-certificates#exportable-or-non-exportable-key
+[non-exportable]: https://docs.microsoft.com/azure/key-vault/certificates/about-certificates#exportable-or-non-exportable-key
 
