@@ -6,8 +6,6 @@ package com.azure.security.keyvault.jca;
 import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.security.PrivateKey;
-import java.security.PublicKey;
-import java.security.SignatureSpi;
 import java.security.SecureRandom;
 import java.security.SignatureException;
 import java.security.NoSuchAlgorithmException;
@@ -27,10 +25,7 @@ import static com.azure.security.keyvault.jca.KeyVaultClient.createKeyVaultClien
 public class KeyVaultKeyLessRsaSignature extends AbstractKeyVaultKeyLessSignature {
 
     // message digest implementation we use for hashing the data
-    private MessageDigest keyVaultDigestName;
-
-    // flag indicating whether the digest is reset
-    private boolean digestReset = true;
+    private MessageDigest messageDigest;
 
     // PSS parameters from signatures and keys respectively
     // required for PSS signatures
@@ -53,7 +48,7 @@ public class KeyVaultKeyLessRsaSignature extends AbstractKeyVaultKeyLessSignatur
      */
     public KeyVaultKeyLessRsaSignature(KeyVaultClient keyVaultClient) {
         this.keyVaultClient = keyVaultClient;
-        this.keyVaultDigestName = null;
+        this.messageDigest = null;
     }
 
     @Override
@@ -67,7 +62,6 @@ public class KeyVaultKeyLessRsaSignature extends AbstractKeyVaultKeyLessSignatur
     protected void engineInitSign(PrivateKey privateKey, SecureRandom random) {
         if (privateKey instanceof KeyVaultPrivateKey) {
             keyId = ((KeyVaultPrivateKey) privateKey).getKid();
-            resetDigest();
         } else {
             throw new UnsupportedOperationException("engineInitSign() not supported which private key is not instance of KeyVaultPrivateKey");
         }
@@ -85,36 +79,23 @@ public class KeyVaultKeyLessRsaSignature extends AbstractKeyVaultKeyLessSignatur
     }
 
     /**
-     * Reset the message digest if it is not already reset.
-     */
-    private void resetDigest() {
-        if (!digestReset) {
-            this.keyVaultDigestName.reset();
-            digestReset = true;
-        }
-    }
-
-    /**
      * Return the message digest value.
      */
     private byte[] getDigestValue() {
-        digestReset = true;
-        return this.keyVaultDigestName.digest();
+        return this.messageDigest.digest();
     }
 
     @Override
     protected void engineUpdate(byte b) throws SignatureException {
         ensureInit();
-        this.keyVaultDigestName.update(b);
-        digestReset = false;
+        this.messageDigest.update(b);
     }
 
     @Override
     protected void engineUpdate(byte[] b, int off, int len)
         throws SignatureException {
         ensureInit();
-        this.keyVaultDigestName.update(b, off, len);
-        digestReset = false;
+        this.messageDigest.update(b, off, len);
     }
 
     @Override
@@ -125,34 +106,27 @@ public class KeyVaultKeyLessRsaSignature extends AbstractKeyVaultKeyLessSignatur
             // hack for working around API bug
             throw new RuntimeException(se.getMessage());
         }
-        this.keyVaultDigestName.update(b);
-        digestReset = false;
+        this.messageDigest.update(b);
     }
 
     @Override
     protected byte[] engineSign() throws SignatureException {
         ensureInit();
         byte[] mHash = getDigestValue();
-
         String encode = Base64.getEncoder().encodeToString(mHash);
-        byte[] encrypted = keyVaultClient.getSignedWithPrivateKey("PS256", encode, keyId);
-        return encrypted;
+        //For all RSA type certificate in keyVault, we can use PS256 to encrypt.
+        return keyVaultClient.getSignedWithPrivateKey("PS256", encode, keyId);
     }
 
     @Override
     protected void engineSetParameter(AlgorithmParameterSpec params)
         throws InvalidAlgorithmParameterException {
         this.signatureParameters = (PSSParameterSpec) params;
-
-        // disallow changing parameters when digest has been used
-        if (!digestReset) {
-            throw new ProviderException("Cannot set parameters during operations");
-        }
         String newHashAlg = this.signatureParameters.getDigestAlgorithm();
         // re-allocate md if not yet assigned or algorithm changed
-        if ((this.keyVaultDigestName == null) || !(this.keyVaultDigestName.getAlgorithm().equalsIgnoreCase(newHashAlg))) {
+        if ((this.messageDigest == null) || !(this.messageDigest.getAlgorithm().equalsIgnoreCase(newHashAlg))) {
             try {
-                this.keyVaultDigestName = MessageDigest.getInstance(newHashAlg);
+                this.messageDigest = MessageDigest.getInstance(newHashAlg);
             } catch (NoSuchAlgorithmException nsae) {
                 // should not happen as we pick default digest algorithm
                 throw new InvalidAlgorithmParameterException("Unsupported digest algorithm " + newHashAlg, nsae);
@@ -162,16 +136,16 @@ public class KeyVaultKeyLessRsaSignature extends AbstractKeyVaultKeyLessSignatur
 
     @Override
     protected AlgorithmParameters engineGetParameters() {
-        AlgorithmParameters ap = null;
+        AlgorithmParameters parameters = null;
         if (this.signatureParameters != null) {
             try {
-                ap = AlgorithmParameters.getInstance("RSASSA-PSS");
-                ap.init(this.signatureParameters);
+                parameters = AlgorithmParameters.getInstance("RSASSA-PSS");
+                parameters.init(this.signatureParameters);
             } catch (GeneralSecurityException gse) {
                 throw new ProviderException(gse.getMessage());
             }
         }
-        return ap;
+        return parameters;
     }
 
 }

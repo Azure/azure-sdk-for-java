@@ -25,9 +25,6 @@ public abstract class KeyVaultKeyLessECSignature extends AbstractKeyVaultKeyLess
     // message digest implementation we use
     private final MessageDigest messageDigest;
 
-    // flag indicating whether the digest has been reset
-    private boolean needsReset;
-
     // signature parameters
     private ECParameterSpec signatureParameters = null;
 
@@ -48,7 +45,6 @@ public abstract class KeyVaultKeyLessECSignature extends AbstractKeyVaultKeyLess
             throw new ProviderException(e);
         }
         this.keyVaultDigestName = keyVaultDigestName;
-        this.needsReset = false;
     }
 
     //add this for test
@@ -67,21 +63,8 @@ public abstract class KeyVaultKeyLessECSignature extends AbstractKeyVaultKeyLess
     protected void engineInitSign(PrivateKey privateKey, SecureRandom random) {
         if (privateKey instanceof KeyVaultPrivateKey) {
             keyId = ((KeyVaultPrivateKey) privateKey).getKid();
-            resetDigest();
         } else {
             throw new UnsupportedOperationException("engineInitSign() not supported which private key is not instance of KeyVaultPrivateKey");
-        }
-    }
-
-    /**
-     * Resets the message digest if needed.
-     */
-    protected void resetDigest() {
-        if (needsReset) {
-            if (messageDigest != null) {
-                messageDigest.reset();
-            }
-            needsReset = false;
         }
     }
 
@@ -90,20 +73,17 @@ public abstract class KeyVaultKeyLessECSignature extends AbstractKeyVaultKeyLess
      * @return the message digest value.
      */
     protected byte[] getDigestValue() {
-        needsReset = false;
         return messageDigest.digest();
     }
 
     @Override
     protected void engineUpdate(byte b) {
         messageDigest.update(b);
-        needsReset = true;
     }
 
     @Override
     protected void engineUpdate(byte[] b, int off, int len) {
         messageDigest.update(b, off, len);
-        needsReset = true;
     }
 
     @Override
@@ -112,20 +92,16 @@ public abstract class KeyVaultKeyLessECSignature extends AbstractKeyVaultKeyLess
         if (len <= 0) {
             return;
         }
-
         messageDigest.update(byteBuffer);
-        needsReset = true;
     }
 
     @Override
     protected byte[] engineSign() {
-
         byte[] mHash = getDigestValue();
         String encode = Base64.getEncoder().encodeToString(mHash);
         byte[] encrypted = keyVaultClient.getSignedWithPrivateKey(keyVaultDigestName, encode, keyId);
         return encodeByte(encrypted);
     }
-
 
     // After throw UnsupportedOperationException, other methods will be called.
     // such as ECDSASignature#engineSetParameter.
@@ -135,7 +111,6 @@ public abstract class KeyVaultKeyLessECSignature extends AbstractKeyVaultKeyLess
         if (params != null && !(params instanceof ECParameterSpec)) {
             throw new InvalidAlgorithmParameterException("No parameter accepted");
         }
-
         signatureParameters = (ECParameterSpec) params;
     }
 
