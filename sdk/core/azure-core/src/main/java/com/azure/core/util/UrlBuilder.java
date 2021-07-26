@@ -214,10 +214,9 @@ public final class UrlBuilder {
                                 String value = null;
 
                                 if (parameter != null) {
-                                    // join all parameters with a comma.
-                                    // name=a&name=b&name=c will become
-                                    // name=a,b,c
-                                    value = String.join(",", parameter.getValuesList());
+                                    // get all parameters joined by a comma.
+                                    // name=a&name=b&name=c becomes name=a,b,c
+                                    value = parameter.getValue();
                                 }
 
                                 return value;
