@@ -20,7 +20,7 @@ public final class QueryParameter {
 
     // this is the internal representation of a single value
     // for this parameter. this is the common case (vs. having name=a&name=b etc.)
-    private String value = null;
+    private final String value = null;
 
     // this is the actual internal representation of all values
     // in case we have name=a&name=b&name=c
@@ -84,8 +84,7 @@ public final class QueryParameter {
         if (values == null) {
             // most common case
             return new String[] {value};
-        }
-        else {
+        } else {
             return values.toArray(new String[] { });
         }
     }
@@ -101,8 +100,7 @@ public final class QueryParameter {
             // a convenience return value is implemented here to avoid NPEs.
             // List.of() would be a better option but it is Java 9+ only.
             return Collections.unmodifiableList(Arrays.asList(value));
-        }
-        else {
+        } else {
             return Collections.unmodifiableList(values);
         }
     }
@@ -138,8 +136,7 @@ public final class QueryParameter {
         if (cachedStringValue == null) {
             if (values == null) {
                 cachedStringValue = value;
-            }
-            else {
+            } else {
                 cachedStringValue = String.join(",", values);
             }
         }
