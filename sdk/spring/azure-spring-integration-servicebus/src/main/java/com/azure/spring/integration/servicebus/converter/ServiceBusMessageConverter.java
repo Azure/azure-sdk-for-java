@@ -115,7 +115,12 @@ public class ServiceBusMessageConverter
         getAndRemove(copySpringMessageHeaders, CORRELATION_ID).ifPresent(message::setCorrelationId);
         getAndRemove(copySpringMessageHeaders, TO).ifPresent(message::setTo);
         getAndRemove(copySpringMessageHeaders, REPLY_TO_SESSION_ID).ifPresent(message::setReplyToSessionId);
-        getAndRemove(copySpringMessageHeaders, PARTITION_KEY).ifPresent(message::setPartitionKey);
+
+        if (StringUtils.hasText(message.getSessionId())) {
+            message.setPartitionKey(message.getSessionId());
+        } else {
+            getAndRemove(copySpringMessageHeaders, PARTITION_KEY).ifPresent(message::setPartitionKey);
+        }
 
         copySpringMessageHeaders.forEach((key, value) -> {
             message.getApplicationProperties().put(key, value.toString());

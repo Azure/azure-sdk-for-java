@@ -1,7 +1,8 @@
 # Release History
 
 ## 2.8.0-beta.1 (Unreleased)
-
+### Breaking Changes
+- Remove the default logic for automatically adding partition key for each message. ([#23135](https://github.com/Azure/azure-sdk-for-java/pull/23135))
 
 ## 2.7.0 (2021-07-20)
 ### Key Bug Fixes
