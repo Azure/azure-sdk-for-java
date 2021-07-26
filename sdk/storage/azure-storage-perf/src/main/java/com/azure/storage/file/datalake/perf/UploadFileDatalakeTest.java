@@ -22,8 +22,13 @@ public class UploadFileDatalakeTest extends FileTestBase<StoragePerfStressOption
 
     public UploadFileDatalakeTest(StoragePerfStressOptions options) {
         super(options);
-        inputStream = (RepeatingInputStream) TestDataCreationHelper.createRandomInputStream(options.getSize());
-        byteBufferFlux = createRandomByteBufferFlux(options.getSize());
+        if (options.isSync()) {
+            inputStream = (RepeatingInputStream) TestDataCreationHelper.createRandomInputStream(options.getSize());
+            byteBufferFlux = null;
+        } else {
+            byteBufferFlux = createRandomByteBufferFlux(options.getSize());
+            inputStream = null;
+        }
     }
 
     @Override

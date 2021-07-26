@@ -196,7 +196,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * @return a {@link BlobAsyncClient} with the specified {@code encryptionScope}.
      */
     @Override
-    public BlobAsyncClient getEncryptionScopeClient(String encryptionScope) {
+    public BlobAsyncClient getEncryptionScopeAsyncClient(String encryptionScope) {
         EncryptionScope finalEncryptionScope = null;
         if (encryptionScope != null) {
             finalEncryptionScope = new EncryptionScope().setEncryptionScope(encryptionScope);
@@ -214,7 +214,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * @return a {@link BlobAsyncClient} with the specified {@code customerProvidedKey}.
      */
     @Override
-    public BlobAsyncClient getCustomerProvidedKeyClient(CustomerProvidedKey customerProvidedKey) {
+    public BlobAsyncClient getCustomerProvidedKeyAsyncClient(CustomerProvidedKey customerProvidedKey) {
         CpkInfo finalCustomerProvidedKey = null;
         if (customerProvidedKey != null) {
             finalCustomerProvidedKey = new CpkInfo()
@@ -572,12 +572,14 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
             // no specified length: use azure.core's converter
             if (data == null && options.getOptionalLength() == null) {
                 // We can only buffer up to max int due to restrictions in ByteBuffer.
-                int chunkSize = (int) Math.min(Integer.MAX_VALUE, parallelTransferOptions.getBlockSizeLong());
+                int chunkSize = (int) Math.min(Constants.MAX_INPUT_STREAM_CONVERTER_BUFFER_LENGTH,
+                    parallelTransferOptions.getBlockSizeLong());
                 data = FluxUtil.toFluxByteBuffer(options.getDataStream(), chunkSize);
             // specified length (legacy requirement): use custom converter. no marking because we buffer anyway.
             } else if (data == null) {
                 // We can only buffer up to max int due to restrictions in ByteBuffer.
-                int chunkSize = (int) Math.min(Integer.MAX_VALUE, parallelTransferOptions.getBlockSizeLong());
+                int chunkSize = (int) Math.min(Constants.MAX_INPUT_STREAM_CONVERTER_BUFFER_LENGTH,
+                    parallelTransferOptions.getBlockSizeLong());
                 data = Utility.convertStreamToByteBuffer(
                     options.getDataStream(), options.getOptionalLength(), chunkSize, false);
             }

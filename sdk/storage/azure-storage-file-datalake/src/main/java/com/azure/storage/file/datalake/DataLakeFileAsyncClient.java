@@ -329,12 +329,14 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
             // no specified length: use azure.core's converter
             if (data == null && options.getOptionalLength() == null) {
                 // We can only buffer up to max int due to restrictions in ByteBuffer.
-                int chunkSize = (int) Math.min(Integer.MAX_VALUE, validatedParallelTransferOptions.getBlockSizeLong());
+                int chunkSize = (int) Math.min(Constants.MAX_INPUT_STREAM_CONVERTER_BUFFER_LENGTH,
+                    validatedParallelTransferOptions.getBlockSizeLong());
                 data = FluxUtil.toFluxByteBuffer(options.getDataStream(), chunkSize);
             // specified length (legacy requirement): use custom converter. no marking because we buffer anyway.
             } else if (data == null) {
                 // We can only buffer up to max int due to restrictions in ByteBuffer.
-                int chunkSize = (int) Math.min(Integer.MAX_VALUE, validatedParallelTransferOptions.getBlockSizeLong());
+                int chunkSize = (int) Math.min(Constants.MAX_INPUT_STREAM_CONVERTER_BUFFER_LENGTH,
+                    validatedParallelTransferOptions.getBlockSizeLong());
                 data = Utility.convertStreamToByteBuffer(
                     options.getDataStream(), options.getOptionalLength(), chunkSize, false);
             }

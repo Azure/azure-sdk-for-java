@@ -630,6 +630,12 @@
         "justification": "com.google.code.gson:gson:jar:2.8.7 added this new method."
       },
       {
+        "code": "java.field.constantValueChanged",
+        "old": "field com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY",
+        "new": "field com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY",
+        "justification": "Old field value spelled incorrectly and was used in preview version of tracing package"
+      },
+      {
         "code": "java.field.serialVersionUIDChanged",
         "old": "field com.azure.security.keyvault.jca.model.KeyProperties.serialVersionUID",
         "new": "field com.azure.security.keyvault.jca.model.KeyProperties.serialVersionUID",
