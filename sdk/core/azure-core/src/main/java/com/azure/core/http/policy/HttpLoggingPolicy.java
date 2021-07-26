@@ -311,6 +311,12 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     private static String getRedactedUrl(URL url, Set<String> allowedQueryParameterNames) {
         UrlBuilder builder = UrlBuilder.parse(url);
         String allowedQueryString = getAllowedQueryString(url.getQuery(), allowedQueryParameterNames);
+
+        // return a UrlBuilder with a new query.
+        // builder.clearQuery() is required here to explicitly clear
+        // UrlBuilder.query field - simply calling setQuery() will not do it.
+        // setQuery() could have full-replacement semantics, but some SDKs are
+        // using it as an appending mechanism.
         return builder
                 .clearQuery()
                 .setQuery(allowedQueryString)
