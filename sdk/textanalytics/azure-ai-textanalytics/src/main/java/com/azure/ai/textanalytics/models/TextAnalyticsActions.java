@@ -192,7 +192,7 @@ public final class TextAnalyticsActions {
      * @return The {@link TextAnalyticsActions} object itself.
      *
      * @throws IllegalArgumentException if more than one {@link ExtractSummaryAction} action are passed in.
-     * Currently service v3.2-preview.1 only accepts up to one action per type.
+     * Currently service v3.1 only accepts up to one action per type.
      */
     public TextAnalyticsActions setExtractSummaryActions(ExtractSummaryAction... extractSummaryActions) {
         validateActionsNumber(extractSummaryActions, ExtractSummaryAction.class.getName());
