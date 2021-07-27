@@ -4,41 +4,28 @@
 
 package com.azure.resourcemanager.compute.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /** Defines values for SecurityTypes. */
-public enum SecurityTypes {
-    /** Enum value TrustedLaunch. */
-    TRUSTED_LAUNCH("TrustedLaunch");
-
-    /** The actual serialized value for a SecurityTypes instance. */
-    private final String value;
-
-    SecurityTypes(String value) {
-        this.value = value;
-    }
+public final class SecurityTypes extends ExpandableStringEnum<SecurityTypes> {
+    /** Static value TrustedLaunch for SecurityTypes. */
+    public static final SecurityTypes TRUSTED_LAUNCH = fromString("TrustedLaunch");
 
     /**
-     * Parses a serialized value to a SecurityTypes instance.
+     * Creates or finds a SecurityTypes from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed SecurityTypes object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding SecurityTypes.
      */
     @JsonCreator
-    public static SecurityTypes fromString(String value) {
-        SecurityTypes[] items = SecurityTypes.values();
-        for (SecurityTypes item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static SecurityTypes fromString(String name) {
+        return fromString(name, SecurityTypes.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /** @return known SecurityTypes values. */
+    public static Collection<SecurityTypes> values() {
+        return values(SecurityTypes.class);
     }
 }

@@ -109,6 +109,13 @@ public final class VirtualMachineScaleSetVMProfile {
     @JsonProperty(value = "userData")
     private String userData;
 
+    /*
+     * Specifies the capacity reservation related details of a scale set.
+     * <br><br>Minimum api-version: 2021-04-01.
+     */
+    @JsonProperty(value = "capacityReservation")
+    private CapacityReservationProfile capacityReservation;
+
     /**
      * Get the osProfile property: Specifies the operating system settings for the virtual machines in the scale set.
      *
@@ -387,6 +394,28 @@ public final class VirtualMachineScaleSetVMProfile {
     }
 
     /**
+     * Get the capacityReservation property: Specifies the capacity reservation related details of a scale set.
+     * &lt;br&gt;&lt;br&gt;Minimum api-version: 2021-04-01.
+     *
+     * @return the capacityReservation value.
+     */
+    public CapacityReservationProfile capacityReservation() {
+        return this.capacityReservation;
+    }
+
+    /**
+     * Set the capacityReservation property: Specifies the capacity reservation related details of a scale set.
+     * &lt;br&gt;&lt;br&gt;Minimum api-version: 2021-04-01.
+     *
+     * @param capacityReservation the capacityReservation value to set.
+     * @return the VirtualMachineScaleSetVMProfile object itself.
+     */
+    public VirtualMachineScaleSetVMProfile withCapacityReservation(CapacityReservationProfile capacityReservation) {
+        this.capacityReservation = capacityReservation;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -415,6 +444,9 @@ public final class VirtualMachineScaleSetVMProfile {
         }
         if (scheduledEventsProfile() != null) {
             scheduledEventsProfile().validate();
+        }
+        if (capacityReservation() != null) {
+            capacityReservation().validate();
         }
     }
 }
