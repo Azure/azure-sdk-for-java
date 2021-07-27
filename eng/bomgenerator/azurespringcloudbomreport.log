@@ -1,0 +1,23 @@
+Dropped dependency com.azure.spring:azure-spring-cloud-feature-management:2.0.0.
+		Includes dependency org.springframework:spring-context:5.3.7. Expected dependency org.springframework:spring-context:5.3.8
+		Includes dependency com.fasterxml.jackson.core:jackson-annotations:2.11.4. Expected dependency com.fasterxml.jackson.core:jackson-annotations:2.12.3
+		Includes dependency com.fasterxml.jackson.core:jackson-databind:2.11.4. Expected dependency com.fasterxml.jackson.core:jackson-databind:2.12.3
+Dropped dependency com.azure.spring:azure-spring-cloud-feature-management-web:2.0.0.
+		Includes dependency org.springframework:spring-context:5.3.7. Expected dependency org.springframework:spring-context:5.3.8
+		Includes dependency com.fasterxml.jackson.core:jackson-annotations:2.11.4. Expected dependency com.fasterxml.jackson.core:jackson-annotations:2.12.3
+		Includes dependency com.fasterxml.jackson.core:jackson-databind:2.11.4. Expected dependency com.fasterxml.jackson.core:jackson-databind:2.12.3
+		Includes dependency org.springframework:spring-web:5.3.7. Expected dependency org.springframework:spring-web:5.3.8
+Dropped dependency com.azure.spring:azure-spring-integration-storage-queue:2.7.0.
+		Includes dependency com.azure:azure-core-http-netty:1.10.0. Expected dependency com.azure:azure-core-http-netty:1.10.1
+		Includes dependency com.azure:azure-core:1.17.0. Expected dependency com.azure:azure-core:1.18.0
+Dropped dependency com.azure:azure-storage-queue:12.10.0.
+		Includes dependency com.azure:azure-core-http-netty:1.10.0. Expected dependency com.azure:azure-core-http-netty:1.10.1
+		Includes dependency com.azure:azure-core:1.17.0. Expected dependency com.azure:azure-core:1.18.0
+Dropped dependency com.azure.spring:azure-spring-cloud-starter-appconfiguration-config:2.0.0.
+		Includes dependency org.springframework:spring-context:5.3.7. Expected dependency org.springframework:spring-context:5.3.8
+		Includes dependency com.fasterxml.jackson.core:jackson-annotations:2.11.4. Expected dependency com.fasterxml.jackson.core:jackson-annotations:2.12.3
+		Includes dependency com.fasterxml.jackson.core:jackson-databind:2.11.4. Expected dependency com.fasterxml.jackson.core:jackson-databind:2.12.3
+		Includes dependency org.springframework:spring-web:5.3.7. Expected dependency org.springframework:spring-web:5.3.8
+Dropped dependency com.azure.spring:azure-spring-cloud-starter-storage-queue:2.7.0.
+		Includes dependency com.azure:azure-core-http-netty:1.10.0. Expected dependency com.azure:azure-core-http-netty:1.10.1
+		Includes dependency com.azure:azure-core:1.17.0. Expected dependency com.azure:azure-core:1.18.0

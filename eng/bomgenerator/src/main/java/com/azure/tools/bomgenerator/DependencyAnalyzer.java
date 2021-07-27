@@ -30,6 +30,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
+import static com.azure.tools.bomgenerator.Utils.IGNORE_CONFLICT_LIST;
 import static com.azure.tools.bomgenerator.Utils.RESOLVED_EXCLUSION_LIST;
 import static com.azure.tools.bomgenerator.Utils.toBomDependencyNoVersion;
 
@@ -70,6 +71,7 @@ public class DependencyAnalyzer {
 
     public boolean validate() {
         analyze();
+        generateReport();
         return nameToVersionToChildrenDependencyTree.values().stream().anyMatch(value -> value.size() > 1);
     }
 
@@ -240,6 +242,11 @@ public class DependencyAnalyzer {
             BomDependency dependency = new BomDependency(dependencyNoVersion.getGroupId(), dependencyNoVersion.getArtifactId(), eligibleVersion);
             if (!externalDependencies.contains(dependency)) {
                 bomEligibleDependencies.add(dependency);
+            }
+
+            if(IGNORE_CONFLICT_LIST.contains(dependency.getArtifactId())) {
+                // Conflicts in this dependency are ok, as they are likely to not cause issues across different versions.
+                return;
             }
 
             // All the other versions of this library are made ineligible.
