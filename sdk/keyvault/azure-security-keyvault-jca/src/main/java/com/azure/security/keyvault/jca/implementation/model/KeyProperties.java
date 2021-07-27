@@ -3,17 +3,10 @@
 
 package com.azure.security.keyvault.jca.implementation.model;
 
-import java.io.Serializable;
-
 /**
  * The KeyProperties REST model.
  */
-public class KeyProperties implements Serializable {
-    
-    /**
-     * Stores the serial version UID.
-     */
-    private static final long serialVersionUID = 1L;
+public class KeyProperties {
 
     /**
      * Stores if the key is exportable.

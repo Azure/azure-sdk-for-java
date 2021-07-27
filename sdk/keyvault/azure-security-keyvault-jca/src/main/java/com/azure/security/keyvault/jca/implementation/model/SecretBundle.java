@@ -3,17 +3,10 @@
 
 package com.azure.security.keyvault.jca.implementation.model;
 
-import java.io.Serializable;
-
 /**
  * The SecretBundle REST model.
  */
-public class SecretBundle implements Serializable {
-    
-    /**
-     * Stores the serial version UID.
-     */
-    private static final long serialVersionUID = 1L;
+public class SecretBundle {
     
     /**
      * Stores the content type.

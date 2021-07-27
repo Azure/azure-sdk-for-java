@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * The Azure Key Vault JCA Provider package.
+ * The Azure Key Vault JCA Provider certificates package.
  */
 package com.azure.security.keyvault.jca.implementation.certificates;

@@ -3,18 +3,12 @@
 
 package com.azure.security.keyvault.jca.implementation.model;
 
-import java.io.Serializable;
 import java.util.List;
 
 /**
  * The CertificateItem REST model.
  */
-public class CertificateListResult implements Serializable {
-
-    /**
-     * Stores the serial version UID.
-     */
-    private static final long serialVersionUID = 1L;
+public class CertificateListResult {
 
     /**
      * Stores the value.

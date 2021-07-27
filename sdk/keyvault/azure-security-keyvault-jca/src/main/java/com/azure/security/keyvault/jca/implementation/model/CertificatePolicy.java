@@ -4,17 +4,11 @@
 package com.azure.security.keyvault.jca.implementation.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.io.Serializable;
 
 /**
  * The CertificatePolicy REST model.
  */
-public class CertificatePolicy implements Serializable {
-    
-    /**
-     * Stores the serial version UID.
-     */
-    private static final long serialVersionUID = 1L;
+public class CertificatePolicy {
 
     /**
      * Stores the key properties.
