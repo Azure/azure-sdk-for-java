@@ -8,6 +8,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.CredentialUnavailableException;
 import com.azure.identity.AzureAuthorityHosts;
 import com.azure.identity.implementation.intellij.IntelliJKdbxDatabase;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.aad.msal4jextensions.persistence.mac.KeyChainAccessor;
@@ -227,6 +228,20 @@ public class IntelliJCacheAccessor {
         }
     }
 
+
+    /**
+     * Parse the auth details of the specified file.
+     * @param file the file input;
+     * @return the parsed {@link IntelliJAuthMethodDetails} from the file input.
+     * @throws IOException when invalid file path is specified.
+     */
+    public IntelliJAuthMethodDetails parseAuthMethodDetails(File file) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper()
+            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        return objectMapper
+            .readValue(file, IntelliJAuthMethodDetails.class);
+    }
+
     /**
      * Get the current authentication method details of Azure Tools plugin in IntelliJ IDE.
      *
@@ -247,9 +262,8 @@ public class IntelliJCacheAccessor {
             throw logger.logExceptionAsError(
                     new CredentialUnavailableException(INTELLIJ_CREDENTIAL_NOT_AVAILABLE_ERROR));
         }
-        ObjectMapper objectMapper = new ObjectMapper();
-        IntelliJAuthMethodDetails authMethodDetails = objectMapper
-                                                  .readValue(authFile, IntelliJAuthMethodDetails.class);
+
+        IntelliJAuthMethodDetails authMethodDetails = parseAuthMethodDetails(authFile);
 
         String authType = authMethodDetails.getAuthMethod();
         if (CoreUtils.isNullOrEmpty(authType)) {

@@ -28,13 +28,13 @@ import java.util.zip.GZIPInputStream;
 
 public class IntelliJKdbxDatabase {
 
-    private static XPath XPATH = XPathFactory.newInstance().newXPath();
+    private static final XPath XPATH = XPathFactory.newInstance().newXPath();
 
-    private static String STANDARD_PROPERTY_NAME_USER_NAME = "UserName";
-    private static String STANDARD_PROPERTY_NAME_PASSWORD = "Password";
-    private static String STANDARD_PROPERTY_NAME_URL = "URL";
-    private static String STANDARD_PROPERTY_NAME_TITLE = "Title";
-    private static String STANDARD_PROPERTY_NAME_NOTES = "Notes";
+    private static final String STANDARD_PROPERTY_NAME_USER_NAME = "UserName";
+    private static final String STANDARD_PROPERTY_NAME_PASSWORD = "Password";
+    private static final String STANDARD_PROPERTY_NAME_URL = "URL";
+    private static final String STANDARD_PROPERTY_NAME_TITLE = "Title";
+    private static final String STANDARD_PROPERTY_NAME_NOTES = "Notes";
 
     private Document document;
     private Element rootElement;
@@ -93,8 +93,8 @@ public class IntelliJKdbxDatabase {
             throw new IllegalStateException("File version did not match");
         } else {
             byte headerType;
-            while((headerType = littleEndianDataInputStream.readByte()) != 0) {
-                switch(headerType) {
+            while ((headerType = littleEndianDataInputStream.readByte()) != 0) {
+                switch (headerType) {
                     case 1:
                         readByteArray(littleEndianDataInputStream);
                         break;
@@ -178,8 +178,8 @@ public class IntelliJKdbxDatabase {
             Document doc = dBuilder.parse(inputStream);
             NodeList protectedContent = (NodeList) XPATH.evaluate("//*[@Protected='True']", doc, XPathConstants.NODESET);
 
-            for(int i = 0; i < protectedContent.getLength(); ++i) {
-                Element element = (Element)protectedContent.item(i);
+            for (int i = 0; i < protectedContent.getLength(); ++i) {
+                Element element = (Element) protectedContent.item(i);
                 Element res = getElement(".", element, false);
                 String base64 = res == null ? null : res.getTextContent();
                 byte[] encrypted = Base64.getDecoder().decode(base64.getBytes());
@@ -215,13 +215,13 @@ public class IntelliJKdbxDatabase {
         Element currentElement = startElement;
         String[] pathTokens = elementPath.split("/");
 
-        for(int i = 0; i < pathTokens.length; ++i) {
+        for (int i = 0; i < pathTokens.length; ++i) {
             String elementName = pathTokens[i];
 
             try {
                 Element nextElement = (Element) XPATH.evaluate(elementName, currentElement, XPathConstants.NODE);
                 if (nextElement == null) {
-                    nextElement = (Element)currentElement.appendChild(currentElement.getOwnerDocument()
+                    nextElement = (Element) currentElement.appendChild(currentElement.getOwnerDocument()
                         .createElement(elementName));
                 }
 
@@ -255,7 +255,7 @@ public class IntelliJKdbxDatabase {
 
     private String getDatabaseEntryValue(Element dbRootGroup, String toMatch) {
 
-        for (Element entry: getElements("Entry", dbRootGroup)){
+        for (Element entry: getElements("Entry", dbRootGroup)) {
             if (match(entry, toMatch)) {
                 return getProperty(entry, STANDARD_PROPERTY_NAME_PASSWORD);
             }
@@ -287,8 +287,8 @@ public class IntelliJKdbxDatabase {
             NodeList nodes = (NodeList) XPATH.evaluate(elementPath, parentElement, XPathConstants.NODESET);
             ArrayList<Element> result = new ArrayList<>(nodes.getLength());
 
-            for(int i = 0; i < nodes.getLength(); ++i) {
-                result.add((Element)nodes.item(i));
+            for (int i = 0; i < nodes.getLength(); ++i) {
+                result.add((Element) nodes.item(i));
             }
 
             return result;

@@ -3,6 +3,8 @@
 
 package com.azure.identity.implementation.intellij;
 
+import com.azure.core.util.logging.ClientLogger;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
@@ -11,6 +13,8 @@ import java.util.UUID;
 
 public class IntelliJKdbxMetadata {
     public static final UUID AES_CIPHER = UUID.fromString("31C1F2E6-BF71-4350-BE58-05216AFC5AFF");
+    private final ClientLogger logger = new ClientLogger(IntelliJKdbxMetadata.class);
+
     private UUID cipherUuid;
     private DatabaseCompressionFlags databaseCompressionFlags;
     private byte[] baseSeed;
@@ -60,7 +64,9 @@ public class IntelliJKdbxMetadata {
         return this.encryptionIv;
     }
 
-    public byte[] getEncryptionKey() { return this.encryptionKey; }
+    public byte[] getEncryptionKey() {
+        return this.encryptionKey;
+    }
 
     public byte[] getInitBytes() {
         return this.initBytes;
@@ -70,7 +76,7 @@ public class IntelliJKdbxMetadata {
         ByteBuffer b = ByteBuffer.wrap(uuid);
         UUID incoming = new UUID(b.getLong(), b.getLong(8));
         if (!incoming.equals(AES_CIPHER)) {
-            throw new IllegalStateException("Unknown Cipher UUID " + incoming.toString());
+            throw logger.logExceptionAsError(new IllegalStateException("Unknown Cipher UUID " + incoming.toString()));
         } else {
             this.cipherUuid = incoming;
         }
