@@ -103,7 +103,6 @@
             },
             "kind": "StorageV2",
             "properties": {
-                "isHnsEnabled": true,
                 "networkAcls": {
                     "bypass": "AzureServices",
                     "virtualNetworkRules": [],
@@ -184,7 +183,6 @@
             },
             "kind": "StorageV2",
             "properties": {
-                "isHnsEnabled": true,
                 "networkAcls": {
                     "bypass": "AzureServices",
                     "virtualNetworkRules": [],
@@ -217,7 +215,6 @@
           },
           "kind": "StorageV2",
           "properties": {
-            "isHnsEnabled": true,
             "networkAcls": {
               "bypass": "AzureServices",
               "virtualNetworkRules": [],
@@ -282,7 +279,6 @@
             },
             "kind": "StorageV2",
             "properties": {
-                "isHnsEnabled": true,
                 "networkAcls": {
                     "bypass": "AzureServices",
                     "virtualNetworkRules": [],
@@ -315,7 +311,6 @@
           },
           "kind": "StorageV2",
           "properties": {
-            "isHnsEnabled": true,
             "networkAcls": {
               "bypass": "AzureServices",
               "virtualNetworkRules": [],
@@ -453,7 +448,6 @@
             },
             "kind": "FileStorage",
             "properties": {
-                "isHnsEnabled": true,
                 "networkAcls": {
                     "bypass": "AzureServices",
                     "virtualNetworkRules": [],
