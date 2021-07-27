@@ -8,7 +8,7 @@ import java.io.Serializable;
 /**
  * The CertificateBundle REST model.
  */
-public class CertificateBundle implements Serializable {
+public final class CertificateBundle implements Serializable {
     
     /**
      * Stores the serial version UID.

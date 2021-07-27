@@ -14,7 +14,7 @@ import static java.util.logging.Level.WARNING;
 /**
  * The Jackson JsonConverter.
  */
-class JacksonJsonConverter implements JsonConverter {
+final class JacksonJsonConverter implements JsonConverter {
 
     /**
      * Stores the logger.

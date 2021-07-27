@@ -3,7 +3,7 @@
 
 package com.azure.security.keyvault.jca.test;
 
-import com.azure.security.keyvault.jca.AuthClient;
+import com.azure.security.keyvault.jca.AccessTokenRestClient;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 
@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  * The JUnit test for the AuthClient.
  */
 @EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = "myalias")
-public class AuthClientTest {
+public class AccessTokenRestClientTest {
 
     /**
      * Test getAuthorizationToken method.
@@ -27,8 +27,8 @@ public class AuthClientTest {
         String tenantId = System.getenv("AZURE_KEYVAULT_TENANT_ID");
         String clientId = System.getenv("AZURE_KEYVAULT_CLIENT_ID");
         String clientSecret = System.getenv("AZURE_KEYVAULT_CLIENT_SECRET");
-        AuthClient authClient = new AuthClient();
-        String result = authClient.getAccessToken(
+        AccessTokenRestClient client = new AccessTokenRestClient();
+        String result = client.getAccessToken(
             "https://management.azure.com/",
             null,
             tenantId,

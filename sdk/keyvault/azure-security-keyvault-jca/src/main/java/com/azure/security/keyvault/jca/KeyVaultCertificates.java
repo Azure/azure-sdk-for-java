@@ -17,7 +17,7 @@ import java.util.Optional;
 /**
  * Store certificates loaded from KeyVault.
  */
-public class KeyVaultCertificates implements AzureCertificates {
+public final class KeyVaultCertificates implements AzureCertificates {
 
     /**
      * Stores the list of aliases.

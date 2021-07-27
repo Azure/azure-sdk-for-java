@@ -8,7 +8,7 @@ import java.io.Serializable;
 /**
  * An OAuth2 token.
  */
-public class OAuthToken implements Serializable {
+public final class OAuthToken implements Serializable {
     
     /**
      * Stores the serial version UID.

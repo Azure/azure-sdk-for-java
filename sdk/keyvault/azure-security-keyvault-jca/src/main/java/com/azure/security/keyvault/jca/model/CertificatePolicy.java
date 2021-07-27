@@ -9,7 +9,7 @@ import java.io.Serializable;
 /**
  * The CertificatePolicy REST model.
  */
-public class CertificatePolicy implements Serializable {
+public final class CertificatePolicy implements Serializable {
     
     /**
      * Stores the serial version UID.

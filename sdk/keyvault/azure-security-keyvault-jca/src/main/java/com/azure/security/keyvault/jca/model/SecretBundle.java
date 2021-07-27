@@ -8,7 +8,7 @@ import java.io.Serializable;
 /**
  * The SecretBundle REST model.
  */
-public class SecretBundle implements Serializable {
+public final class SecretBundle implements Serializable {
     
     /**
      * Stores the serial version UID.

@@ -41,7 +41,7 @@ import static java.util.logging.Level.WARNING;
 /**
  * The REST client specific to Azure Key Vault.
  */
-public class KeyVaultClient extends DelegateRestClient {
+public final class KeyVaultClient extends DelegateRestClient {
 
     /**
      * Stores the logger.
@@ -151,7 +151,7 @@ public class KeyVaultClient extends DelegateRestClient {
         LOGGER.entering("KeyVaultClient", "getAccessToken");
         String accessToken = null;
         try {
-            AuthClient authClient = new AuthClient();
+            AccessTokenRestClient client = new AccessTokenRestClient();
 
             String resource = URLEncoder.encode(keyVaultBaseUri, "UTF-8");
             if (managedIdentity != null) {
@@ -159,10 +159,10 @@ public class KeyVaultClient extends DelegateRestClient {
             }
 
             if (tenantId != null && clientId != null && clientSecret != null) {
-                accessToken = authClient.getAccessToken(resource, aadAuthenticationUrl, tenantId, clientId,
+                accessToken = client.getAccessToken(resource, aadAuthenticationUrl, tenantId, clientId,
                     clientSecret);
             } else {
-                accessToken = authClient.getAccessToken(resource, managedIdentity);
+                accessToken = client.getAccessToken(resource, managedIdentity);
             }
         } catch (Throwable throwable) {
             LOGGER.log(WARNING, "Unsupported encoding or missing Httpclient", throwable);

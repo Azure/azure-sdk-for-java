@@ -13,7 +13,7 @@ import static java.util.logging.Level.INFO;
 /**
  * The REST client specific to getting an access token for Azure REST APIs.
  */
-public class AuthClient extends DelegateRestClient {
+public final class AccessTokenRestClient extends DelegateRestClient {
 
     /**
      * Stores the Client ID fragment.
@@ -54,7 +54,7 @@ public class AuthClient extends DelegateRestClient {
     /**
      * Stores our logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(AuthClient.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(AccessTokenRestClient.class.getName());
 
     /**
      * Constructor.
@@ -63,7 +63,7 @@ public class AuthClient extends DelegateRestClient {
      * The constructor creates a default RestClient.
      * </p>
      */
-    public AuthClient() {
+    public AccessTokenRestClient() {
         super(RestClientFactory.createClient());
     }
 
