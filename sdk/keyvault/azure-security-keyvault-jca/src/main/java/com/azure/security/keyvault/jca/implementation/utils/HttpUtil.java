@@ -27,12 +27,12 @@ public final class HttpUtil {
 
     static final String USER_AGENT_KEY = "User-Agent";
     static final String DEFAULT_USER_AGENT_VALUE_PREFIX = "az-se-kv-jca/";
-    static final String DEFAULT_VERSION = "unknown";
-    static final String VERSION = Optional.of(HttpUtil.class)
-                                          .map(Class::getPackage)
-                                          .map(Package::getImplementationVersion)
-                                          .orElse(DEFAULT_VERSION);
-    static final String USER_AGENT_VALUE = getUserAgentPrefix() + VERSION;
+    public static final String DEFAULT_VERSION = "unknown";
+    public static final String VERSION = Optional.of(HttpUtil.class)
+                                                 .map(Class::getPackage)
+                                                 .map(Package::getImplementationVersion)
+                                                 .orElse(DEFAULT_VERSION);
+    public static final String USER_AGENT_VALUE = getUserAgentPrefix() + VERSION;
 
     public static String get(String url, Map<String, String> headers) {
         String result = null;
@@ -63,7 +63,7 @@ public final class HttpUtil {
         return result;
     }
 
-    static String getUserAgentPrefix() {
+    public static String getUserAgentPrefix() {
         return Optional.of(HttpUtil.class)
                        .map(Class::getClassLoader)
                        .map(c -> c.getResourceAsStream("azure-security-keyvault-jca-user-agent-value-prefix.txt"))
