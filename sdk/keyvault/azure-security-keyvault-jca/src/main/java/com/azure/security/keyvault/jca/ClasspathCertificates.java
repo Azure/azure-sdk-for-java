@@ -30,6 +30,11 @@ import static java.util.logging.Level.WARNING;
  */
 public final class ClasspathCertificates implements AzureCertificates {
 
+    /**
+     * Constructor of ClasspathCertificates. It can only be used in this package.
+     */
+    ClasspathCertificates() {
+    }
 
     /**
      * Stores the logger.
