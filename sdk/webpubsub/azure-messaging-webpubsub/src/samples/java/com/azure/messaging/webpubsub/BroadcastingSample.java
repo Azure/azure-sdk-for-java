@@ -6,6 +6,7 @@ package com.azure.messaging.webpubsub;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.Context;
 
 public class BroadcastingSample {
     private static final String CONNECTION_STRING = Configuration.getGlobalConfiguration().get("WEB_PUB_SUB_CS");
@@ -28,7 +29,8 @@ public class BroadcastingSample {
         for (int i = 0; i < 10; i++) {
             data[i] = (byte) i;
         }
-        chatHub.sendToAll(BinaryData.fromBytes(data), new RequestOptions()
-                .addRequestCallback(request -> request.getHeaders().set("Content-Type", "application/octet-stream")));
+        chatHub.sendToAllWithResponse(BinaryData.fromBytes(data), new RequestOptions()
+                .addRequestCallback(request -> request.getHeaders().set("Content-Type", "application/octet-stream")),
+                Context.NONE);
     }
 }

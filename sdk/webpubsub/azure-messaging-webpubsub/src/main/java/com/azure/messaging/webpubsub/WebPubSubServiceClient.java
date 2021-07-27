@@ -59,24 +59,8 @@ public final class WebPubSubServiceClient {
 
     /**
      * Broadcast content inside request body to all the connected client connections.
-     * @param contentType Upload file type.
      * @param message The payload body.
-     * @param contentLength The contentLength parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void sendToAll(
-            String contentType, BinaryData message, long contentLength, RequestOptions requestOptions) {
-        this.serviceClient.sendToAll(hub, contentType, message, contentLength, requestOptions);
-    }
-
-    /**
-     * Broadcast content inside request body to all the connected client connections.
      * @param contentType Upload file type.
-     * @param message The payload body.
      * @param contentLength The contentLength parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
@@ -87,9 +71,8 @@ public final class WebPubSubServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> sendToAllWithResponse(
-
-            String contentType,
             BinaryData message,
+            String contentType,
             long contentLength,
             RequestOptions requestOptions,
             Context context) {
@@ -107,22 +90,9 @@ public final class WebPubSubServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void sendToAll(String message, String contentType) {
-        sendToAll(BinaryData.fromString(message),
+        sendToAllWithResponse(BinaryData.fromString(message),
                 new RequestOptions().addRequestCallback(request -> request.getHeaders().set("Content-Type",
-                        contentType)));
-    }
-
-    /**
-     * Broadcast content inside request body to all the connected client connections.
-     * @param message The payload body.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void sendToAll(BinaryData message, RequestOptions requestOptions) {
-        this.serviceClient.sendToAll(hub, message, requestOptions);
+                        contentType)), Context.NONE);
     }
 
     /**
@@ -145,20 +115,6 @@ public final class WebPubSubServiceClient {
      * Check if the connection with the given connectionId exists.
      * @param connectionId The connection Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @return whether resource exists.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public boolean connectionExists(String connectionId, RequestOptions requestOptions) {
-        return this.serviceClient.connectionExists(hub, connectionId, requestOptions);
-    }
-
-    /**
-     * Check if the connection with the given connectionId exists.
-     * @param connectionId The connection Id.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @return the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -169,19 +125,6 @@ public final class WebPubSubServiceClient {
     public Response<Boolean> connectionExistsWithResponse(
             String connectionId, RequestOptions requestOptions, Context context) {
         return this.serviceClient.connectionExistsWithResponse(hub, connectionId, requestOptions, context);
-    }
-
-    /**
-     * Close the client connection.
-     * @param connectionId Target connection Id.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void closeClientConnection(String connectionId, RequestOptions requestOptions) {
-        this.serviceClient.closeClientConnection(hub, connectionId, requestOptions);
     }
 
     /**
@@ -203,30 +146,8 @@ public final class WebPubSubServiceClient {
     /**
      * Send content inside request body to the specific connection.
      * @param connectionId The connection Id.
-     * @param contentType Upload file type.
      * @param message The payload body.
-     * @param contentLength The contentLength parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void sendToConnection(
-
-            String connectionId,
-            String contentType,
-            BinaryData message,
-            long contentLength,
-            RequestOptions requestOptions) {
-        this.serviceClient.sendToConnection(hub, connectionId, contentType, message, contentLength, requestOptions);
-    }
-
-    /**
-     * Send content inside request body to the specific connection.
-     * @param connectionId The connection Id.
      * @param contentType Upload file type.
-     * @param message The payload body.
      * @param contentLength The contentLength parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
@@ -237,10 +158,9 @@ public final class WebPubSubServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> sendToConnectionWithResponse(
-
             String connectionId,
-            String contentType,
             BinaryData message,
+            String contentType,
             long contentLength,
             RequestOptions requestOptions,
             Context context) {
@@ -260,23 +180,9 @@ public final class WebPubSubServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void sendToConnection(
             String connectionId, String message, String contentType) {
-        this.sendToConnection(connectionId, BinaryData.fromString(message),
+        this.sendToConnectionWithResponse(connectionId, BinaryData.fromString(message),
                 new RequestOptions().addRequestCallback(request -> request.getHeaders()
-                        .set("Content-Type", contentType)));
-    }
-
-    /**
-     * Send content inside request body to the specific connection.
-     * @param connectionId The connection Id.
-     * @param message The payload body.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void sendToConnection(String connectionId, BinaryData message, RequestOptions requestOptions) {
-        this.serviceClient.sendToConnection(hub, connectionId, message, requestOptions);
+                        .set("Content-Type", contentType)), Context.NONE);
     }
 
     /**
@@ -300,20 +206,6 @@ public final class WebPubSubServiceClient {
      * Check if there are any client connections inside the given group.
      * @param group Target group name, which length should be greater than 0 and less than 1025.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @return whether resource exists.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public boolean groupExists(String group, RequestOptions requestOptions) {
-        return this.serviceClient.groupExists(hub, group, requestOptions);
-    }
-
-    /**
-     * Check if there are any client connections inside the given group.
-     * @param group Target group name, which length should be greater than 0 and less than 1025.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @return the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -329,30 +221,8 @@ public final class WebPubSubServiceClient {
     /**
      * Send content inside request body to a group of connections.
      * @param group Target group name, which length should be greater than 0 and less than 1025.
-     * @param contentType Upload file type.
      * @param message The payload body.
-     * @param contentLength The contentLength parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void sendToGroup(
-
-            String group,
-            String contentType,
-            BinaryData message,
-            long contentLength,
-            RequestOptions requestOptions) {
-        this.serviceClient.sendToGroup(hub, group, contentType, message, contentLength, requestOptions);
-    }
-
-    /**
-     * Send content inside request body to a group of connections.
-     * @param group Target group name, which length should be greater than 0 and less than 1025.
      * @param contentType Upload file type.
-     * @param message The payload body.
      * @param contentLength The contentLength parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
@@ -363,10 +233,9 @@ public final class WebPubSubServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> sendToGroupWithResponse(
-
             String group,
-            String contentType,
             BinaryData message,
+            String contentType,
             long contentLength,
             RequestOptions requestOptions,
             Context context) {
@@ -385,22 +254,8 @@ public final class WebPubSubServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void sendToGroup(String group, String message, String contentType) {
-        sendToGroup(group, BinaryData.fromString(message), new RequestOptions()
-                .addRequestCallback(request -> request.getHeaders().set("Content-Type", contentType)));
-    }
-
-    /**
-     * Send content inside request body to a group of connections.
-     * @param group Target group name, which length should be greater than 0 and less than 1025.
-     * @param message The payload body.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void sendToGroup(String group, BinaryData message, RequestOptions requestOptions) {
-        this.serviceClient.sendToGroup(hub, group, message, requestOptions);
+        sendToGroupWithResponse(group, BinaryData.fromString(message), new RequestOptions()
+                .addRequestCallback(request -> request.getHeaders().set("Content-Type", contentType)), Context.NONE);
     }
 
     /**
@@ -425,20 +280,6 @@ public final class WebPubSubServiceClient {
      * @param group Target group name, which length should be greater than 0 and less than 1025.
      * @param connectionId Target connection Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void addConnectionToGroup(String group, String connectionId, RequestOptions requestOptions) {
-        this.serviceClient.addConnectionToGroup(hub, group, connectionId, requestOptions);
-    }
-
-    /**
-     * Add a connection to the target group.
-     * @param group Target group name, which length should be greater than 0 and less than 1025.
-     * @param connectionId Target connection Id.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @return the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -449,21 +290,6 @@ public final class WebPubSubServiceClient {
     public Response<Void> addConnectionToGroupWithResponse(
             String group, String connectionId, RequestOptions requestOptions, Context context) {
         return this.serviceClient.addConnectionToGroupWithResponse(hub, group, connectionId, requestOptions, context);
-    }
-
-    /**
-     * Remove a connection from the target group.
-     * @param group Target group name, which length should be greater than 0 and less than 1025.
-     * @param connectionId Target connection Id.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void removeConnectionFromGroup(
-            String group, String connectionId, RequestOptions requestOptions) {
-        this.serviceClient.removeConnectionFromGroup(hub, group, connectionId, requestOptions);
     }
 
     /**
@@ -488,20 +314,6 @@ public final class WebPubSubServiceClient {
      * Check if there are any client connections connected for the given user.
      * @param userId Target user Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @return whether resource exists.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public boolean userExists(String userId, RequestOptions requestOptions) {
-        return this.serviceClient.userExists(hub, userId, requestOptions);
-    }
-
-    /**
-     * Check if there are any client connections connected for the given user.
-     * @param userId Target user Id.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @return the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -517,30 +329,8 @@ public final class WebPubSubServiceClient {
     /**
      * Send content inside request body to the specific user.
      * @param userId The user Id.
-     * @param contentType Upload file type.
      * @param message The payload body.
-     * @param contentLength The contentLength parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void sendToUser(
-
-            String userId,
-            String contentType,
-            BinaryData message,
-            long contentLength,
-            RequestOptions requestOptions) {
-        this.serviceClient.sendToUser(hub, userId, contentType, message, contentLength, requestOptions);
-    }
-
-    /**
-     * Send content inside request body to the specific user.
-     * @param userId The user Id.
      * @param contentType Upload file type.
-     * @param message The payload body.
      * @param contentLength The contentLength parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
@@ -552,8 +342,8 @@ public final class WebPubSubServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> sendToUserWithResponse(
             String userId,
-            String contentType,
             BinaryData message,
+            String contentType,
             long contentLength,
             RequestOptions requestOptions,
             Context context) {
@@ -572,22 +362,8 @@ public final class WebPubSubServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void sendToUser(String userId, String message, String contentType) {
-        sendToUser(userId, BinaryData.fromString(message), new RequestOptions()
-                .addRequestCallback(request -> request.getHeaders().set("Content-Type", contentType)));
-    }
-
-    /**
-     * Send content inside request body to the specific user.
-     * @param userId The user Id.
-     * @param message The payload body.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void sendToUser(String userId, BinaryData message, RequestOptions requestOptions) {
-        this.serviceClient.sendToUser(hub, userId, message, requestOptions);
+        sendToUserWithResponse(userId, BinaryData.fromString(message), new RequestOptions()
+                .addRequestCallback(request -> request.getHeaders().set("Content-Type", contentType)), Context.NONE);
     }
 
     /**
@@ -612,20 +388,6 @@ public final class WebPubSubServiceClient {
      * @param group Target group name, which length should be greater than 0 and less than 1025.
      * @param userId Target user Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void addUserToGroup(String group, String userId, RequestOptions requestOptions) {
-        this.serviceClient.addUserToGroup(hub, group, userId, requestOptions);
-    }
-
-    /**
-     * Add a user to the target group.
-     * @param group Target group name, which length should be greater than 0 and less than 1025.
-     * @param userId Target user Id.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @return the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -636,20 +398,6 @@ public final class WebPubSubServiceClient {
     public Response<Void> addUserToGroupWithResponse(
             String group, String userId, RequestOptions requestOptions, Context context) {
         return this.serviceClient.addUserToGroupWithResponse(hub, group, userId, requestOptions, context);
-    }
-
-    /**
-     * Remove a user from the target group.
-     * @param group Target group name, which length should be greater than 0 and less than 1025.
-     * @param userId Target user Id.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void removeUserFromGroup(String group, String userId, RequestOptions requestOptions) {
-        this.serviceClient.removeUserFromGroup(hub, group, userId, requestOptions);
     }
 
     /**
@@ -673,19 +421,6 @@ public final class WebPubSubServiceClient {
      * Remove a user from all groups.
      * @param userId Target user Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void removeUserFromAllGroups(String userId, RequestOptions requestOptions) {
-        this.serviceClient.removeUserFromAllGroups(hub, userId, requestOptions);
-    }
-
-    /**
-     * Remove a user from all groups.
-     * @param userId Target user Id.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @return the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -696,20 +431,6 @@ public final class WebPubSubServiceClient {
     public Response<Void> removeUserFromAllGroupsWithResponse(
             String userId, RequestOptions requestOptions, Context context) {
         return this.serviceClient.removeUserFromAllGroupsWithResponse(hub, userId, requestOptions, context);
-    }
-
-    /**
-     * Grant permission to the connection.
-     * @param permission The permission: current supported actions are joinLeaveGroup and sendToGroup.
-     * @param connectionId Target connection Id.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void grantPermission(String permission, String connectionId, RequestOptions requestOptions) {
-        this.serviceClient.grantPermission(hub, permission, connectionId, requestOptions);
     }
 
     /**
@@ -734,20 +455,6 @@ public final class WebPubSubServiceClient {
      * @param permission The permission: current supported actions are joinLeaveGroup and sendToGroup.
      * @param connectionId Target connection Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void revokePermission(String permission, String connectionId, RequestOptions requestOptions) {
-        this.serviceClient.revokePermission(hub, permission, connectionId, requestOptions);
-    }
-
-    /**
-     * Revoke permission for the connection.
-     * @param permission The permission: current supported actions are joinLeaveGroup and sendToGroup.
-     * @param connectionId Target connection Id.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @return the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -758,21 +465,6 @@ public final class WebPubSubServiceClient {
     public Response<Void> revokePermissionWithResponse(
             String permission, String connectionId, RequestOptions requestOptions, Context context) {
         return this.serviceClient.revokePermissionWithResponse(hub, permission, connectionId, requestOptions, context);
-    }
-
-    /**
-     * Check if a connection has permission to the specified action.
-     * @param permission The permission: current supported actions are joinLeaveGroup and sendToGroup.
-     * @param connectionId Target connection Id.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @return whether resource exists.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public boolean checkPermission(String permission, String connectionId, RequestOptions requestOptions) {
-        return this.serviceClient.checkPermission(hub, permission, connectionId, requestOptions);
     }
 
     /**
