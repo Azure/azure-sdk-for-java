@@ -109,15 +109,18 @@ public final class QueryParameter {
     /**
      * Add a new value to the end of the QueryParameter.
      *
-     * @param value the value to add
+     * @param newValue the value to add
      */
-    public void addValue(String value) {
+    public void addValue(String newValue) {
         if (values == null) {
             values = new LinkedList<>();
-            values.add(this.value); // add current standalone value
+            // add current standalone value to the list
+            // as the list is empty
+            values.add(this.value);
         }
 
-        values.add(value);
+        // add additional value to the parameter value list
+        values.add(newValue);
         cachedStringValue = null;
     }
 

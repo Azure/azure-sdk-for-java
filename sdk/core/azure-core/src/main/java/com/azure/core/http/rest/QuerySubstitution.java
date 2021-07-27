@@ -29,12 +29,12 @@ class QuerySubstitution extends Substitution {
     }
 
     /**
-     * Get whether or not the value from the same query parameter name are sent as a list or multiple
-     * different paramteres.
+     * Get whether or not the values from the same query parameter name are sent as a list or multiple
+     * different parameters.
      * @return Whether or not this query parameter list values should be sent as a list or as
      * individual query params.
      */
-    public boolean shouldMergeQueryParams() {
+    public boolean mergeParameters() {
         return multipleParams;
     }
 }

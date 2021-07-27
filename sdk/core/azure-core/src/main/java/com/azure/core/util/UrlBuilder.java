@@ -227,16 +227,6 @@ public final class UrlBuilder {
     }
 
     /**
-     * Get the query that has been assigned to this UrlBuilder, with {@link QueryParameter} as the
-     * value type.
-     *
-     * @return the query that has been assigned to this UrlBuilder.
-     */
-    // public Map<String, QueryParameter> getQueryParameters() {
-    //     return this.query;
-    // }
-
-    /**
      * Returns the query string currently configured in this UrlBuilder instance.
      * @return A String containing the currently configured query string.
      */

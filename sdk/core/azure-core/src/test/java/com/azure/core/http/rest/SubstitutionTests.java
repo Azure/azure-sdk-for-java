@@ -22,6 +22,6 @@ public class SubstitutionTests {
         assertEquals("A", s.getUrlParameterName());
         assertEquals(2, s.getMethodParameterIndex());
         assertEquals(true, s.shouldEncode());
-        assertEquals(true, s.shouldMergeQueryParams());
+        assertEquals(true, s.mergeParameters());
     }
 }

@@ -284,23 +284,16 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
             final int parameterIndex = substitution.getMethodParameterIndex();
             if (0 <= parameterIndex && parameterIndex < swaggerMethodArguments.length) {
                 final Object methodArgument = swaggerMethodArguments[substitution.getMethodParameterIndex()];
-                List<Object> methodArguments = new ArrayList<Object>();
 
-                if (substitution.shouldMergeQueryParams() && methodArgument instanceof List) {
-                    methodArguments.addAll((List<Object>) methodArgument);
-                } else {
-                    methodArguments.add(methodArgument);
-                }
-
-                for (Object methodArgumentUnconverted : methodArguments) {
-                    String parameterValue = serialize(serializer, methodArgumentUnconverted);
-
-                    if (parameterValue != null) {
-                        if (substitution.shouldEncode()) {
-                            parameterValue = UrlEscapers.QUERY_ESCAPER.escape(parameterValue);
-                        }
-                        urlBuilder.addQueryParameter(substitution.getUrlParameterName(), parameterValue);
+                if (substitution.mergeParameters() && methodArgument instanceof List) {
+                    List<Object> methodArguments = (List<Object>) methodArgument;
+                    for (Object argument : methodArguments) {
+                        addSerializedQueryParameter(serializer, argument, substitution.shouldEncode(),
+                            urlBuilder, substitution.getUrlParameterName());
                     }
+                } else {
+                    addSerializedQueryParameter(serializer, methodArgument, substitution.shouldEncode(),
+                            urlBuilder, substitution.getUrlParameterName());
                 }
             }
         }
@@ -462,6 +455,21 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
     @Override
     public Type getReturnValueWireType() {
         return returnValueWireType;
+    }
+
+    private static void addSerializedQueryParameter(SerializerAdapter adapter, Object value, boolean shouldEncode,
+            UrlBuilder urlBuilder, String parameterName) {
+
+        String parameterValue = serialize(adapter, value);
+
+        if (parameterValue != null) {
+            if (shouldEncode) {
+                parameterValue = UrlEscapers.QUERY_ESCAPER.escape(parameterValue);
+            }
+
+            // add parameter to the urlBuilder
+            urlBuilder.addQueryParameter(parameterName, parameterValue);
+        }
     }
 
     private static String serialize(SerializerAdapter serializer, Object value) {
