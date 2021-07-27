@@ -26,25 +26,25 @@ public final class DiscoveriesImpl {
     private final DiscoveriesService service;
 
     /** The service client containing this operation class. */
-    private final PurviewCatalogServiceRestAPIDocumentImpl client;
+    private final PurviewCatalogClientImpl client;
 
     /**
      * Initializes an instance of DiscoveriesImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    DiscoveriesImpl(PurviewCatalogServiceRestAPIDocumentImpl client) {
+    DiscoveriesImpl(PurviewCatalogClientImpl client) {
         this.service =
                 RestProxy.create(DiscoveriesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for PurviewCatalogServiceRestAPIDocumentDiscoveries to be used by the
-     * proxy service to perform REST calls.
+     * The interface defining all the services for PurviewCatalogClientDiscoveries to be used by the proxy service to
+     * perform REST calls.
      */
     @Host("{Endpoint}/api")
-    @ServiceInterface(name = "PurviewCatalogServic")
+    @ServiceInterface(name = "PurviewCatalogClient")
     private interface DiscoveriesService {
         @Post("/search/query")
         Mono<Response<BinaryData>> query(

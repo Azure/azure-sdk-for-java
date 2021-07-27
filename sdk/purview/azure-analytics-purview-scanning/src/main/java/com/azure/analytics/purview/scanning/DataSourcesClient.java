@@ -14,8 +14,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 
-/** Initializes a new instance of the synchronous MicrosoftScanningClient type. */
-@ServiceClient(builder = MicrosoftScanningClientBuilder.class)
+/** Initializes a new instance of the synchronous PurviewScanningClient type. */
+@ServiceClient(builder = PurviewScanningClientBuilder.class)
 public final class DataSourcesClient {
     private final DataSourcesImpl serviceClient;
 

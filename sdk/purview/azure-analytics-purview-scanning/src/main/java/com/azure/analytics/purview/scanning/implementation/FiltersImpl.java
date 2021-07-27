@@ -27,24 +27,24 @@ public final class FiltersImpl {
     private final FiltersService service;
 
     /** The service client containing this operation class. */
-    private final MicrosoftScanningClientImpl client;
+    private final PurviewScanningClientImpl client;
 
     /**
      * Initializes an instance of FiltersImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    FiltersImpl(MicrosoftScanningClientImpl client) {
+    FiltersImpl(PurviewScanningClientImpl client) {
         this.service = RestProxy.create(FiltersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for MicrosoftScanningClientFilters to be used by the proxy service to
+     * The interface defining all the services for PurviewScanningClientFilters to be used by the proxy service to
      * perform REST calls.
      */
     @Host("{Endpoint}")
-    @ServiceInterface(name = "MicrosoftScanningCli")
+    @ServiceInterface(name = "PurviewScanningClien")
     private interface FiltersService {
         @Get("/datasources/{dataSourceName}/scans/{scanName}/filters/custom")
         Mono<Response<BinaryData>> get(

@@ -15,8 +15,8 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the asynchronous PurviewCatalogServiceRestAPIDocument type. */
-@ServiceClient(builder = PurviewCatalogServiceRestAPIDocumentBuilder.class, isAsync = true)
+/** Initializes a new instance of the asynchronous PurviewCatalogClient type. */
+@ServiceClient(builder = PurviewCatalogClientBuilder.class, isAsync = true)
 public final class GlossaryAsyncClient {
     private final GlossariesImpl serviceClient;
 

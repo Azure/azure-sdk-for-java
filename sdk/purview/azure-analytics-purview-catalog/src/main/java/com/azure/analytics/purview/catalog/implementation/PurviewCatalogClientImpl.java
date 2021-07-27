@@ -12,8 +12,8 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 
-/** Initializes a new instance of the PurviewCatalogServiceRestAPIDocument type. */
-public final class PurviewCatalogServiceRestAPIDocumentImpl {
+/** Initializes a new instance of the PurviewCatalogClient type. */
+public final class PurviewCatalogClientImpl {
     /** The catalog endpoint of your Purview account. Example: https://{accountName}.catalog.purview.azure.com. */
     private final String endpoint;
 
@@ -135,13 +135,13 @@ public final class PurviewCatalogServiceRestAPIDocumentImpl {
     }
 
     /**
-     * Initializes an instance of PurviewCatalogServiceRestAPIDocument client.
+     * Initializes an instance of PurviewCatalogClient client.
      *
      * @param endpoint The catalog endpoint of your Purview account. Example:
      *     https://{accountName}.catalog.purview.azure.com.
      * @param apiVersion Api Version.
      */
-    public PurviewCatalogServiceRestAPIDocumentImpl(String endpoint, String apiVersion) {
+    public PurviewCatalogClientImpl(String endpoint, String apiVersion) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
@@ -152,19 +152,19 @@ public final class PurviewCatalogServiceRestAPIDocumentImpl {
     }
 
     /**
-     * Initializes an instance of PurviewCatalogServiceRestAPIDocument client.
+     * Initializes an instance of PurviewCatalogClient client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint The catalog endpoint of your Purview account. Example:
      *     https://{accountName}.catalog.purview.azure.com.
      * @param apiVersion Api Version.
      */
-    public PurviewCatalogServiceRestAPIDocumentImpl(HttpPipeline httpPipeline, String endpoint, String apiVersion) {
+    public PurviewCatalogClientImpl(HttpPipeline httpPipeline, String endpoint, String apiVersion) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, apiVersion);
     }
 
     /**
-     * Initializes an instance of PurviewCatalogServiceRestAPIDocument client.
+     * Initializes an instance of PurviewCatalogClient client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
@@ -172,7 +172,7 @@ public final class PurviewCatalogServiceRestAPIDocumentImpl {
      *     https://{accountName}.catalog.purview.azure.com.
      * @param apiVersion Api Version.
      */
-    public PurviewCatalogServiceRestAPIDocumentImpl(
+    public PurviewCatalogClientImpl(
             HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint, String apiVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;

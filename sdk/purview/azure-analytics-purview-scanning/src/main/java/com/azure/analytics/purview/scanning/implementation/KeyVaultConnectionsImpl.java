@@ -36,14 +36,14 @@ public final class KeyVaultConnectionsImpl {
     private final KeyVaultConnectionsService service;
 
     /** The service client containing this operation class. */
-    private final MicrosoftScanningClientImpl client;
+    private final PurviewScanningClientImpl client;
 
     /**
      * Initializes an instance of KeyVaultConnectionsImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    KeyVaultConnectionsImpl(MicrosoftScanningClientImpl client) {
+    KeyVaultConnectionsImpl(PurviewScanningClientImpl client) {
         this.service =
                 RestProxy.create(
                         KeyVaultConnectionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
@@ -51,11 +51,11 @@ public final class KeyVaultConnectionsImpl {
     }
 
     /**
-     * The interface defining all the services for MicrosoftScanningClientKeyVaultConnections to be used by the proxy
+     * The interface defining all the services for PurviewScanningClientKeyVaultConnections to be used by the proxy
      * service to perform REST calls.
      */
     @Host("{Endpoint}")
-    @ServiceInterface(name = "MicrosoftScanningCli")
+    @ServiceInterface(name = "PurviewScanningClien")
     private interface KeyVaultConnectionsService {
         @Get("/azureKeyVaults/{keyVaultName}")
         Mono<Response<BinaryData>> get(
@@ -1168,7 +1168,7 @@ public final class KeyVaultConnectionsImpl {
             Map<?, ?> obj = binaryData.toObject(Map.class);
             List<?> values = (List<?>) obj.get(path);
             return values.stream().map(BinaryData::fromObject).collect(Collectors.toList());
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             return null;
         }
     }
@@ -1177,7 +1177,7 @@ public final class KeyVaultConnectionsImpl {
         try {
             Map<?, ?> obj = binaryData.toObject(Map.class);
             return (String) obj.get(path);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             return null;
         }
     }

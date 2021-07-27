@@ -29,24 +29,24 @@ public final class TriggersImpl {
     private final TriggersService service;
 
     /** The service client containing this operation class. */
-    private final MicrosoftScanningClientImpl client;
+    private final PurviewScanningClientImpl client;
 
     /**
      * Initializes an instance of TriggersImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    TriggersImpl(MicrosoftScanningClientImpl client) {
+    TriggersImpl(PurviewScanningClientImpl client) {
         this.service = RestProxy.create(TriggersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for MicrosoftScanningClientTriggers to be used by the proxy service to
+     * The interface defining all the services for PurviewScanningClientTriggers to be used by the proxy service to
      * perform REST calls.
      */
     @Host("{Endpoint}")
-    @ServiceInterface(name = "MicrosoftScanningCli")
+    @ServiceInterface(name = "PurviewScanningClien")
     private interface TriggersService {
         @Get("/datasources/{dataSourceName}/scans/{scanName}/triggers/default")
         Mono<Response<BinaryData>> getTrigger(

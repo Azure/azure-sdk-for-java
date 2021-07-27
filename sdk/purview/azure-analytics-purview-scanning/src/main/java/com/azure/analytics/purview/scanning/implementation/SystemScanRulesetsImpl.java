@@ -33,14 +33,14 @@ public final class SystemScanRulesetsImpl {
     private final SystemScanRulesetsService service;
 
     /** The service client containing this operation class. */
-    private final MicrosoftScanningClientImpl client;
+    private final PurviewScanningClientImpl client;
 
     /**
      * Initializes an instance of SystemScanRulesetsImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    SystemScanRulesetsImpl(MicrosoftScanningClientImpl client) {
+    SystemScanRulesetsImpl(PurviewScanningClientImpl client) {
         this.service =
                 RestProxy.create(
                         SystemScanRulesetsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
@@ -48,11 +48,11 @@ public final class SystemScanRulesetsImpl {
     }
 
     /**
-     * The interface defining all the services for MicrosoftScanningClientSystemScanRulesets to be used by the proxy
+     * The interface defining all the services for PurviewScanningClientSystemScanRulesets to be used by the proxy
      * service to perform REST calls.
      */
     @Host("{Endpoint}")
-    @ServiceInterface(name = "MicrosoftScanningCli")
+    @ServiceInterface(name = "PurviewScanningClien")
     private interface SystemScanRulesetsService {
         @Get("/systemScanRulesets")
         Mono<Response<BinaryData>> listAll(
@@ -1449,7 +1449,7 @@ public final class SystemScanRulesetsImpl {
             Map<?, ?> obj = binaryData.toObject(Map.class);
             List<?> values = (List<?>) obj.get(path);
             return values.stream().map(BinaryData::fromObject).collect(Collectors.toList());
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             return null;
         }
     }
@@ -1458,7 +1458,7 @@ public final class SystemScanRulesetsImpl {
         try {
             Map<?, ?> obj = binaryData.toObject(Map.class);
             return (String) obj.get(path);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             return null;
         }
     }

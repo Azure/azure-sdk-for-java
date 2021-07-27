@@ -15,8 +15,8 @@ import com.azure.core.util.Context;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 
-/** Initializes a new instance of the synchronous PurviewCatalogServiceRestAPIDocument type. */
-@ServiceClient(builder = PurviewCatalogServiceRestAPIDocumentBuilder.class)
+/** Initializes a new instance of the synchronous PurviewCatalogClient type. */
+@ServiceClient(builder = PurviewCatalogClientBuilder.class)
 public final class GlossaryClient {
     private final GlossariesImpl serviceClient;
 

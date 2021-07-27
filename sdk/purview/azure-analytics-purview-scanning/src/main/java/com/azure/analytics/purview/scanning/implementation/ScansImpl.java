@@ -36,24 +36,24 @@ public final class ScansImpl {
     private final ScansService service;
 
     /** The service client containing this operation class. */
-    private final MicrosoftScanningClientImpl client;
+    private final PurviewScanningClientImpl client;
 
     /**
      * Initializes an instance of ScansImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    ScansImpl(MicrosoftScanningClientImpl client) {
+    ScansImpl(PurviewScanningClientImpl client) {
         this.service = RestProxy.create(ScansService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for MicrosoftScanningClientScans to be used by the proxy service to
-     * perform REST calls.
+     * The interface defining all the services for PurviewScanningClientScans to be used by the proxy service to perform
+     * REST calls.
      */
     @Host("{Endpoint}")
-    @ServiceInterface(name = "MicrosoftScanningCli")
+    @ServiceInterface(name = "PurviewScanningClien")
     private interface ScansService {
         @Put("/datasources/{dataSourceName}/scans/{scanName}")
         Mono<Response<BinaryData>> createOrUpdate(
@@ -2322,7 +2322,7 @@ public final class ScansImpl {
             Map<?, ?> obj = binaryData.toObject(Map.class);
             List<?> values = (List<?>) obj.get(path);
             return values.stream().map(BinaryData::fromObject).collect(Collectors.toList());
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             return null;
         }
     }
@@ -2331,7 +2331,7 @@ public final class ScansImpl {
         try {
             Map<?, ?> obj = binaryData.toObject(Map.class);
             return (String) obj.get(path);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             return null;
         }
     }

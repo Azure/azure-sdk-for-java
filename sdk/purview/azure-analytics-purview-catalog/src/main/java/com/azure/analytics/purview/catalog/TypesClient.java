@@ -13,8 +13,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 
-/** Initializes a new instance of the synchronous PurviewCatalogServiceRestAPIDocument type. */
-@ServiceClient(builder = PurviewCatalogServiceRestAPIDocumentBuilder.class)
+/** Initializes a new instance of the synchronous PurviewCatalogClient type. */
+@ServiceClient(builder = PurviewCatalogClientBuilder.class)
 public final class TypesClient {
     private final TypesImpl serviceClient;
 

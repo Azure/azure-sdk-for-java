@@ -14,8 +14,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the asynchronous MicrosoftScanningClient type. */
-@ServiceClient(builder = MicrosoftScanningClientBuilder.class, isAsync = true)
+/** Initializes a new instance of the asynchronous PurviewScanningClient type. */
+@ServiceClient(builder = PurviewScanningClientBuilder.class, isAsync = true)
 public final class ScanResultAsyncClient {
     private final ScanResultsImpl serviceClient;
 

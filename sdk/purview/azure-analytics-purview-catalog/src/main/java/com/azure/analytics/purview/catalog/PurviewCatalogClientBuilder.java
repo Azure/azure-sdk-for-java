@@ -4,12 +4,11 @@
 
 package com.azure.analytics.purview.catalog;
 
+import com.azure.analytics.purview.catalog.implementation.PurviewCatalogClientImpl;
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
@@ -18,8 +17,8 @@ import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.serializer.JsonSerializerProviders;
-import com.azure.core.util.serializer.ObjectSerializer;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,19 +27,23 @@ import java.util.Map;
 /** A builder for creating a new instance of the PurviewCatalogClient type. */
 @ServiceClientBuilder(
         serviceClients = {
-            PurviewCatalogBaseClient.class,
-            EntityBaseClient.class,
-            GlossaryBaseClient.class,
-            DiscoveryBaseClient.class,
-            RelationshipBaseClient.class,
-            TypesBaseClient.class
+            EntityClient.class,
+            GlossaryClient.class,
+            DiscoveryClient.class,
+            LineageClient.class,
+            RelationshipClient.class,
+            TypesClient.class,
+            EntityAsyncClient.class,
+            GlossaryAsyncClient.class,
+            DiscoveryAsyncClient.class,
+            LineageAsyncClient.class,
+            RelationshipAsyncClient.class,
+            TypesAsyncClient.class
         })
 public final class PurviewCatalogClientBuilder {
     private static final String SDK_NAME = "name";
 
     private static final String SDK_VERSION = "version";
-
-    static final String[] DEFAULT_SCOPES = new String[] {"https://purview.azure.net/.default"};
 
     private final Map<String, String> properties = new HashMap<>();
 
@@ -101,16 +104,16 @@ public final class PurviewCatalogClientBuilder {
     /*
      * The serializer to serialize an object into a string
      */
-    private ObjectSerializer serializer;
+    private SerializerAdapter serializerAdapter;
 
     /**
      * Sets The serializer to serialize an object into a string.
      *
-     * @param serializer the serializer value.
+     * @param serializerAdapter the serializerAdapter value.
      * @return the PurviewCatalogClientBuilder.
      */
-    public PurviewCatalogClientBuilder serializer(ObjectSerializer serializer) {
-        this.serializer = serializer;
+    public PurviewCatalogClientBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
+        this.serializerAdapter = serializerAdapter;
         return this;
     }
 
@@ -144,22 +147,6 @@ public final class PurviewCatalogClientBuilder {
      */
     public PurviewCatalogClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
-        return this;
-    }
-
-    /*
-     * The TokenCredential used for authentication.
-     */
-    private TokenCredential tokenCredential;
-
-    /**
-     * Sets The TokenCredential used for authentication.
-     *
-     * @param tokenCredential the tokenCredential value.
-     * @return the PurviewCatalogClientBuilder.
-     */
-    public PurviewCatalogClientBuilder credential(TokenCredential tokenCredential) {
-        this.tokenCredential = tokenCredential;
         return this;
     }
 
@@ -212,6 +199,26 @@ public final class PurviewCatalogClientBuilder {
         return this;
     }
 
+    /**
+     * Builds an instance of PurviewCatalogClientImpl with the provided parameters.
+     *
+     * @return an instance of PurviewCatalogClientImpl.
+     */
+    private PurviewCatalogClientImpl buildInnerClient() {
+        if (apiVersion == null) {
+            this.apiVersion = "2021-05-01-preview";
+        }
+        if (pipeline == null) {
+            this.pipeline = createHttpPipeline();
+        }
+        if (serializerAdapter == null) {
+            this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
+        }
+        PurviewCatalogClientImpl client =
+                new PurviewCatalogClientImpl(pipeline, serializerAdapter, endpoint, apiVersion);
+        return client;
+    }
+
     private HttpPipeline createHttpPipeline() {
         Configuration buildConfiguration =
                 (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
@@ -219,9 +226,6 @@ public final class PurviewCatalogClientBuilder {
             httpLogOptions = new HttpLogOptions();
         }
         List<HttpPipelinePolicy> policies = new ArrayList<>();
-        if (tokenCredential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
-        }
         String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
         String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
         policies.add(
@@ -241,116 +245,110 @@ public final class PurviewCatalogClientBuilder {
     }
 
     /**
-     * Builds an instance of PurviewCatalogBaseClient low level client.
+     * Builds an instance of EntityAsyncClient async client.
      *
-     * @return an instance of PurviewCatalogBaseClient.
+     * @return an instance of EntityAsyncClient.
      */
-    public PurviewCatalogBaseClient buildPurviewCatalogBaseClient() {
-        if (apiVersion == null) {
-            this.apiVersion = "2021-05-01-preview";
-        }
-        if (pipeline == null) {
-            this.pipeline = createHttpPipeline();
-        }
-        if (serializer == null) {
-            this.serializer = JsonSerializerProviders.createInstance();
-        }
-        PurviewCatalogBaseClient client = new PurviewCatalogBaseClient(endpoint, apiVersion, pipeline, serializer);
-        return client;
+    public EntityAsyncClient buildEntityAsyncClient() {
+        return new EntityAsyncClient(buildInnerClient().getEntities());
     }
 
     /**
-     * Builds an instance of EntityBaseClient low level client.
+     * Builds an instance of GlossaryAsyncClient async client.
      *
-     * @return an instance of EntityBaseClient.
+     * @return an instance of GlossaryAsyncClient.
      */
-    public EntityBaseClient buildEntityBaseClient() {
-        if (apiVersion == null) {
-            this.apiVersion = "2021-05-01-preview";
-        }
-        if (pipeline == null) {
-            this.pipeline = createHttpPipeline();
-        }
-        if (serializer == null) {
-            this.serializer = JsonSerializerProviders.createInstance();
-        }
-        EntityBaseClient client = new EntityBaseClient(endpoint, apiVersion, pipeline, serializer);
-        return client;
+    public GlossaryAsyncClient buildGlossaryAsyncClient() {
+        return new GlossaryAsyncClient(buildInnerClient().getGlossaries());
     }
 
     /**
-     * Builds an instance of GlossaryBaseClient low level client.
+     * Builds an instance of DiscoveryAsyncClient async client.
      *
-     * @return an instance of GlossaryBaseClient.
+     * @return an instance of DiscoveryAsyncClient.
      */
-    public GlossaryBaseClient buildGlossaryBaseClient() {
-        if (apiVersion == null) {
-            this.apiVersion = "2021-05-01-preview";
-        }
-        if (pipeline == null) {
-            this.pipeline = createHttpPipeline();
-        }
-        if (serializer == null) {
-            this.serializer = JsonSerializerProviders.createInstance();
-        }
-        GlossaryBaseClient client = new GlossaryBaseClient(endpoint, apiVersion, pipeline, serializer);
-        return client;
+    public DiscoveryAsyncClient buildDiscoveryAsyncClient() {
+        return new DiscoveryAsyncClient(buildInnerClient().getDiscoveries());
     }
 
     /**
-     * Builds an instance of DiscoveryBaseClient low level client.
+     * Builds an instance of LineageAsyncClient async client.
      *
-     * @return an instance of DiscoveryBaseClient.
+     * @return an instance of LineageAsyncClient.
      */
-    public DiscoveryBaseClient buildDiscoveryBaseClient() {
-        if (apiVersion == null) {
-            this.apiVersion = "2021-05-01-preview";
-        }
-        if (pipeline == null) {
-            this.pipeline = createHttpPipeline();
-        }
-        if (serializer == null) {
-            this.serializer = JsonSerializerProviders.createInstance();
-        }
-        DiscoveryBaseClient client = new DiscoveryBaseClient(endpoint, apiVersion, pipeline, serializer);
-        return client;
+    public LineageAsyncClient buildLineageAsyncClient() {
+        return new LineageAsyncClient(buildInnerClient().getLineages());
     }
 
     /**
-     * Builds an instance of RelationshipBaseClient low level client.
+     * Builds an instance of RelationshipAsyncClient async client.
      *
-     * @return an instance of RelationshipBaseClient.
+     * @return an instance of RelationshipAsyncClient.
      */
-    public RelationshipBaseClient buildRelationshipBaseClient() {
-        if (apiVersion == null) {
-            this.apiVersion = "2021-05-01-preview";
-        }
-        if (pipeline == null) {
-            this.pipeline = createHttpPipeline();
-        }
-        if (serializer == null) {
-            this.serializer = JsonSerializerProviders.createInstance();
-        }
-        RelationshipBaseClient client = new RelationshipBaseClient(endpoint, apiVersion, pipeline, serializer);
-        return client;
+    public RelationshipAsyncClient buildRelationshipAsyncClient() {
+        return new RelationshipAsyncClient(buildInnerClient().getRelationships());
     }
 
     /**
-     * Builds an instance of TypesBaseClient low level client.
+     * Builds an instance of TypesAsyncClient async client.
      *
-     * @return an instance of TypesBaseClient.
+     * @return an instance of TypesAsyncClient.
      */
-    public TypesBaseClient buildTypesBaseClient() {
-        if (apiVersion == null) {
-            this.apiVersion = "2021-05-01-preview";
-        }
-        if (pipeline == null) {
-            this.pipeline = createHttpPipeline();
-        }
-        if (serializer == null) {
-            this.serializer = JsonSerializerProviders.createInstance();
-        }
-        TypesBaseClient client = new TypesBaseClient(endpoint, apiVersion, pipeline, serializer);
-        return client;
+    public TypesAsyncClient buildTypesAsyncClient() {
+        return new TypesAsyncClient(buildInnerClient().getTypes());
+    }
+
+    /**
+     * Builds an instance of EntityClient sync client.
+     *
+     * @return an instance of EntityClient.
+     */
+    public EntityClient buildEntityClient() {
+        return new EntityClient(buildInnerClient().getEntities());
+    }
+
+    /**
+     * Builds an instance of GlossaryClient sync client.
+     *
+     * @return an instance of GlossaryClient.
+     */
+    public GlossaryClient buildGlossaryClient() {
+        return new GlossaryClient(buildInnerClient().getGlossaries());
+    }
+
+    /**
+     * Builds an instance of DiscoveryClient sync client.
+     *
+     * @return an instance of DiscoveryClient.
+     */
+    public DiscoveryClient buildDiscoveryClient() {
+        return new DiscoveryClient(buildInnerClient().getDiscoveries());
+    }
+
+    /**
+     * Builds an instance of LineageClient sync client.
+     *
+     * @return an instance of LineageClient.
+     */
+    public LineageClient buildLineageClient() {
+        return new LineageClient(buildInnerClient().getLineages());
+    }
+
+    /**
+     * Builds an instance of RelationshipClient sync client.
+     *
+     * @return an instance of RelationshipClient.
+     */
+    public RelationshipClient buildRelationshipClient() {
+        return new RelationshipClient(buildInnerClient().getRelationships());
+    }
+
+    /**
+     * Builds an instance of TypesClient sync client.
+     *
+     * @return an instance of TypesClient.
+     */
+    public TypesClient buildTypesClient() {
+        return new TypesClient(buildInnerClient().getTypes());
     }
 }

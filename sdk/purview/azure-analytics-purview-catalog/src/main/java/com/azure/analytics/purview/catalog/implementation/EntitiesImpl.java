@@ -29,24 +29,24 @@ public final class EntitiesImpl {
     private final EntitiesService service;
 
     /** The service client containing this operation class. */
-    private final PurviewCatalogServiceRestAPIDocumentImpl client;
+    private final PurviewCatalogClientImpl client;
 
     /**
      * Initializes an instance of EntitiesImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    EntitiesImpl(PurviewCatalogServiceRestAPIDocumentImpl client) {
+    EntitiesImpl(PurviewCatalogClientImpl client) {
         this.service = RestProxy.create(EntitiesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for PurviewCatalogServiceRestAPIDocumentEntities to be used by the proxy
-     * service to perform REST calls.
+     * The interface defining all the services for PurviewCatalogClientEntities to be used by the proxy service to
+     * perform REST calls.
      */
     @Host("{Endpoint}/api")
-    @ServiceInterface(name = "PurviewCatalogServic")
+    @ServiceInterface(name = "PurviewCatalogClient")
     private interface EntitiesService {
         @Post("/atlas/v2/entity")
         Mono<Response<BinaryData>> createOrUpdate(

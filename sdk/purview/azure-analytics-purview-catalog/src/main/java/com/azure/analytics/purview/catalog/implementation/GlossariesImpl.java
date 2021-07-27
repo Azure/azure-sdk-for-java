@@ -32,25 +32,25 @@ public final class GlossariesImpl {
     private final GlossariesService service;
 
     /** The service client containing this operation class. */
-    private final PurviewCatalogServiceRestAPIDocumentImpl client;
+    private final PurviewCatalogClientImpl client;
 
     /**
      * Initializes an instance of GlossariesImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    GlossariesImpl(PurviewCatalogServiceRestAPIDocumentImpl client) {
+    GlossariesImpl(PurviewCatalogClientImpl client) {
         this.service =
                 RestProxy.create(GlossariesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for PurviewCatalogServiceRestAPIDocumentGlossaries to be used by the
-     * proxy service to perform REST calls.
+     * The interface defining all the services for PurviewCatalogClientGlossaries to be used by the proxy service to
+     * perform REST calls.
      */
     @Host("{Endpoint}/api")
-    @ServiceInterface(name = "PurviewCatalogServic")
+    @ServiceInterface(name = "PurviewCatalogClient")
     private interface GlossariesService {
         @Get("/atlas/v2/glossary")
         Mono<Response<BinaryData>> listGlossaries(

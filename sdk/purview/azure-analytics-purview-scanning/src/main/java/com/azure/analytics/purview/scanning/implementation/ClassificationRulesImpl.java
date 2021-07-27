@@ -36,14 +36,14 @@ public final class ClassificationRulesImpl {
     private final ClassificationRulesService service;
 
     /** The service client containing this operation class. */
-    private final MicrosoftScanningClientImpl client;
+    private final PurviewScanningClientImpl client;
 
     /**
      * Initializes an instance of ClassificationRulesImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    ClassificationRulesImpl(MicrosoftScanningClientImpl client) {
+    ClassificationRulesImpl(PurviewScanningClientImpl client) {
         this.service =
                 RestProxy.create(
                         ClassificationRulesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
@@ -51,11 +51,11 @@ public final class ClassificationRulesImpl {
     }
 
     /**
-     * The interface defining all the services for MicrosoftScanningClientClassificationRules to be used by the proxy
+     * The interface defining all the services for PurviewScanningClientClassificationRules to be used by the proxy
      * service to perform REST calls.
      */
     @Host("{Endpoint}")
-    @ServiceInterface(name = "MicrosoftScanningCli")
+    @ServiceInterface(name = "PurviewScanningClien")
     private interface ClassificationRulesService {
         @Get("/classificationrules/{classificationRuleName}")
         Mono<Response<BinaryData>> get(
@@ -1734,7 +1734,7 @@ public final class ClassificationRulesImpl {
             Map<?, ?> obj = binaryData.toObject(Map.class);
             List<?> values = (List<?>) obj.get(path);
             return values.stream().map(BinaryData::fromObject).collect(Collectors.toList());
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             return null;
         }
     }
@@ -1743,7 +1743,7 @@ public final class ClassificationRulesImpl {
         try {
             Map<?, ?> obj = binaryData.toObject(Map.class);
             return (String) obj.get(path);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             return null;
         }
     }

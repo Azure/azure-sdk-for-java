@@ -29,25 +29,25 @@ public final class RelationshipsImpl {
     private final RelationshipsService service;
 
     /** The service client containing this operation class. */
-    private final PurviewCatalogServiceRestAPIDocumentImpl client;
+    private final PurviewCatalogClientImpl client;
 
     /**
      * Initializes an instance of RelationshipsImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    RelationshipsImpl(PurviewCatalogServiceRestAPIDocumentImpl client) {
+    RelationshipsImpl(PurviewCatalogClientImpl client) {
         this.service =
                 RestProxy.create(RelationshipsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for PurviewCatalogServiceRestAPIDocumentRelationships to be used by the
-     * proxy service to perform REST calls.
+     * The interface defining all the services for PurviewCatalogClientRelationships to be used by the proxy service to
+     * perform REST calls.
      */
     @Host("{Endpoint}/api")
-    @ServiceInterface(name = "PurviewCatalogServic")
+    @ServiceInterface(name = "PurviewCatalogClient")
     private interface RelationshipsService {
         @Post("/atlas/v2/relationship")
         Mono<Response<BinaryData>> create(

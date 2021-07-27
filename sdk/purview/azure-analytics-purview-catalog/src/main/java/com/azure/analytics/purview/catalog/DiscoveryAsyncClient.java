@@ -13,8 +13,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the asynchronous PurviewCatalogServiceRestAPIDocument type. */
-@ServiceClient(builder = PurviewCatalogServiceRestAPIDocumentBuilder.class, isAsync = true)
+/** Initializes a new instance of the asynchronous PurviewCatalogClient type. */
+@ServiceClient(builder = PurviewCatalogClientBuilder.class, isAsync = true)
 public final class DiscoveryAsyncClient {
     private final DiscoveriesImpl serviceClient;
 

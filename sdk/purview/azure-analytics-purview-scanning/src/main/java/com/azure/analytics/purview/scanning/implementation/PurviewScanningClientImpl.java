@@ -12,8 +12,8 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 
-/** Initializes a new instance of the MicrosoftScanningClient type. */
-public final class MicrosoftScanningClientImpl {
+/** Initializes a new instance of the PurviewScanningClient type. */
+public final class PurviewScanningClientImpl {
     /** The scanning endpoint of your purview account. Example: https://{accountName}.scan.purview.azure.com. */
     private final String endpoint;
 
@@ -171,13 +171,13 @@ public final class MicrosoftScanningClientImpl {
     }
 
     /**
-     * Initializes an instance of MicrosoftScanningClient client.
+     * Initializes an instance of PurviewScanningClient client.
      *
      * @param endpoint The scanning endpoint of your purview account. Example:
      *     https://{accountName}.scan.purview.azure.com.
      * @param apiVersion Api Version.
      */
-    public MicrosoftScanningClientImpl(String endpoint, String apiVersion) {
+    public PurviewScanningClientImpl(String endpoint, String apiVersion) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
@@ -188,19 +188,19 @@ public final class MicrosoftScanningClientImpl {
     }
 
     /**
-     * Initializes an instance of MicrosoftScanningClient client.
+     * Initializes an instance of PurviewScanningClient client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint The scanning endpoint of your purview account. Example:
      *     https://{accountName}.scan.purview.azure.com.
      * @param apiVersion Api Version.
      */
-    public MicrosoftScanningClientImpl(HttpPipeline httpPipeline, String endpoint, String apiVersion) {
+    public PurviewScanningClientImpl(HttpPipeline httpPipeline, String endpoint, String apiVersion) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, apiVersion);
     }
 
     /**
-     * Initializes an instance of MicrosoftScanningClient client.
+     * Initializes an instance of PurviewScanningClient client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
@@ -208,7 +208,7 @@ public final class MicrosoftScanningClientImpl {
      *     https://{accountName}.scan.purview.azure.com.
      * @param apiVersion Api Version.
      */
-    public MicrosoftScanningClientImpl(
+    public PurviewScanningClientImpl(
             HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint, String apiVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
