@@ -36,7 +36,6 @@ public final class TestConstants {
     public static final String TEST_ENDPOINT = "https://fake.test.config.io";
     public static final String TEST_KV_API = TEST_ENDPOINT + "/kv?key=fake-key*&label=fake-label";
     public static final String TEST_ID = "fake-conn-id";
-    public static final String TEST_SECRET = "ZmFrZS1jb25uLXNlY3JldA=="; // Base64 encoded
     public static final String TEST_ACCESS_TOKEN = "fake_token";
     // from
     // fake-conn-secret
