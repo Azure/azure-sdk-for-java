@@ -9,15 +9,9 @@ import org.springframework.boot.env.EnvironmentPostProcessor;
 import org.springframework.core.Ordered;
 import org.springframework.core.env.ConfigurableEnvironment;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UncheckedIOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
 import java.util.Properties;
+
+import static com.azure.spring.utils.PropertyLoader.loadProperties;
 
 /**
  * Abstract class to convert legacy properties to the current when only legacy properties are configured,
@@ -26,53 +20,39 @@ import java.util.Properties;
  */
 public abstract class AbstractLegacyPropertyEnvironmentPostProcessor implements EnvironmentPostProcessor, Ordered {
 
-    private static final Map<String, String> SPRING_PROPERTY_MAP = new HashMap<String, String>();
+    private static Properties springPropertyMap;
+    protected ConfigurableEnvironment environment;
     static {
         // Load the map of each service's legacy properties and associated current properties from classpath.
-        try (
-                InputStream inputStream = AbstractLegacyPropertyEnvironmentPostProcessor.class
-                                              .getClassLoader()
-                                              .getResourceAsStream("legacy-property-mapping.properties");
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"))
-        ) {
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                SPRING_PROPERTY_MAP.put(line.split("=")[0], line.split("=")[1]);
-            }
-        } catch (IOException exception) {
-            throw new UncheckedIOException("Fail to load legacy-property-mapping.properties", exception);
-        }
+        springPropertyMap = loadProperties("legacy-property-mapping.properties");
     }
 
+    @Override
     public abstract int getOrder();
 
+    @Override
     public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
-
-        Map<String, String> legacyToCurrentMap = new HashMap<String, String>(SPRING_PROPERTY_MAP);
-        Optional.ofNullable(getMultipleKeyVaultsPropertyMap(environment))
-                .ifPresent(legacyToCurrentMap::putAll);
+        this.environment = environment;
+        Properties legacyToCurrentMap = buildLegacyToCurrentPropertyMap();
         Properties properties = mapLegacyPropertyToCurrent(legacyToCurrentMap, environment);
         setConvertedPropertyToEnvironment(environment, properties);
     }
 
-    /**
-     * Build a legacy Key Vault property map of multiple key vault use case. When multiple Key Vaults are used, Key
-     * Vault property names are not fixed and varies across user definition.
-     *
-     * @param environment The application environment to load property from.
-     * @return A map contains all possbile Key Vault properties.
-     */
-    protected abstract Map<String, String> getMultipleKeyVaultsPropertyMap(ConfigurableEnvironment environment);
+    protected Properties buildLegacyToCurrentPropertyMap(){
+        Properties legacyToCurrentMap = new Properties();
+        legacyToCurrentMap.putAll(springPropertyMap);
+        return legacyToCurrentMap;
+    }
 
     /**
      * Convert legacy properties to the current and create new {@link Properties} to store mapped current properties
      * if only legacy properties are configured.
      *
-     * @param legacyToCurrentMap A map contains a map of all legacy properties and associated current ones.
+     * @param legacyToCurrentMap A {@link Properties} contains a map of all legacy properties and associated current ones.
      * @param environment The application environment to get and set properties.
      * @return A {@link Properties} to store mapped current properties
      */
-    protected abstract Properties mapLegacyPropertyToCurrent(Map<String, String> legacyToCurrentMap,
+    protected abstract Properties mapLegacyPropertyToCurrent(Properties legacyToCurrentMap,
                                                              ConfigurableEnvironment environment);
 
     /**

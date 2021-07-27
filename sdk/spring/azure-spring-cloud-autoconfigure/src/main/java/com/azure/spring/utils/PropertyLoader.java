@@ -3,8 +3,12 @@
 
 package com.azure.spring.utils;
 
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.support.PropertiesLoaderUtils;
+
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UncheckedIOException;
 import java.util.Properties;
 
 /**
@@ -36,5 +40,14 @@ public class PropertyLoader {
 
     public static String getProjectVersion() {
         return getProperty(PROJECT_PROPERTY_FILE, "project.version");
+    }
+
+    public static Properties loadProperties(String file) {
+        try {
+            return PropertiesLoaderUtils.loadProperties(new ClassPathResource(file));
+        } catch (IOException exception) {
+            throw new UncheckedIOException("Fail to load legacy-keyvault-property-suffix-mapping.properties",
+                exception);
+        }
     }
 }

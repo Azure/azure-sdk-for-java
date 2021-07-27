@@ -13,14 +13,10 @@ import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.PropertiesPropertySource;
 import org.springframework.util.CollectionUtils;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UncheckedIOException;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+
+import static com.azure.spring.utils.PropertyLoader.loadProperties;
 
 /**
  * Convert legacy properties to the current and set into environment before {@link KeyVaultEnvironmentPostProcessor}.
@@ -28,7 +24,7 @@ import java.util.Properties;
 public class PreLegacyPropertyEnvironmentPostProcessor extends AbstractLegacyPropertyEnvironmentPostProcessor {
 
     public static final int DEFAULT_ORDER = ConfigFileApplicationListener.DEFAULT_ORDER + 1;
-    private static final Map<String, String> KEYVAULT_PROPERTY_SUFFIX_MAP = new HashMap<String, String>();
+    private static Properties keyvaultPropertySuffixMap;
     private static final Logger LOGGER = LoggerFactory.getLogger(PreLegacyPropertyEnvironmentPostProcessor.class);
     private static final String KEYVAULT_LEGACY_PREFIX = "azure.keyvault";
     public static final String DELIMITER = ".";
@@ -36,39 +32,7 @@ public class PreLegacyPropertyEnvironmentPostProcessor extends AbstractLegacyPro
     static {
         // Load the mapping relationship of Key Vault legacy properties and associated current properties from
         // classpath, this is used for handling multiple key vault cases.
-        try (
-            InputStream inputStream = AbstractLegacyPropertyEnvironmentPostProcessor.class
-                .getClassLoader()
-                .getResourceAsStream("legacy-keyvault-property-suffix-mapping.properties");
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"))
-        ) {
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                KEYVAULT_PROPERTY_SUFFIX_MAP.put(line.split("=")[0], line.split("=")[1]);
-            }
-        } catch (IOException exception) {
-            throw new UncheckedIOException("Fail to load legacy-keyvault-property-suffix-mapping.properties",
-                exception);
-        }
-    }
-
-    static {
-        // Load the mapping relationship of Key Vault legacy properties and associated current properties from
-        // classpath, this is used for handling multiple key vault cases.
-        try (
-            InputStream inputStream = AbstractLegacyPropertyEnvironmentPostProcessor.class
-                .getClassLoader()
-                .getResourceAsStream("legacy-keyvault-property-suffix-mapping.properties");
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream))
-        ) {
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                KEYVAULT_PROPERTY_SUFFIX_MAP.put(line.split("=")[0], line.split("=")[1]);
-            }
-        } catch (IOException exception) {
-            throw new UncheckedIOException("Fail to load legacy-keyvault-property-suffix-mapping.properties",
-                exception);
-        }
+        keyvaultPropertySuffixMap = loadProperties("legacy-keyvault-property-suffix-mapping.properties");
     }
 
     @Override
@@ -76,26 +40,31 @@ public class PreLegacyPropertyEnvironmentPostProcessor extends AbstractLegacyPro
         return DEFAULT_ORDER;
     }
 
+    @Override
+    protected Properties buildLegacyToCurrentPropertyMap() {
+        Properties legacyToCurrentMap = super.buildLegacyToCurrentPropertyMap();
+        String keyVaultNames = getMultipleKeyVaultNames(environment);
+        if (keyVaultNames != null) {
+            return addMultipleKVPropertyToMap(keyVaultNames, legacyToCurrentMap);
+        }
+        return legacyToCurrentMap;
+    }
+
     /**
      * Build a legacy Key Vault property map of multiple key vault use case. When multiple Key Vaults are used, Key
      * Vault property names are not fixed and varies across user definition.
      *
-     * @param environment The application environment to load property from.
-     * @return A map contains all possible Key Vault properties.
+     * @param keyVaultNames A string with all Key Vaults names concatenated by commas.
+     * @param legacyToCurrentMap A {@link Properties} contains a map of all legacy properties and associated current ones.
+     * @return A map contains all possible Key Vault properties names.
      */
-    @Override
-    protected Map<String, String> getMultipleKeyVaultsPropertyMap(ConfigurableEnvironment environment) {
-        String keyVaultNames = getMultipleKeyVaultNames(environment);
-        if (null == keyVaultNames) {
-            return null;
-        }
-
-        Map<String, String> legacyToCurrentMap = new HashMap<String, String>();
+    protected Properties addMultipleKVPropertyToMap(String keyVaultNames,
+                                                    Properties legacyToCurrentMap) {
         for (String keyVault : keyVaultNames.split(",")) {
             keyVault = keyVault.trim();
-            for (Map.Entry<String, String> mapping : KEYVAULT_PROPERTY_SUFFIX_MAP.entrySet()) {
-                String legacy = String.join(DELIMITER, KEYVAULT_LEGACY_PREFIX, keyVault, mapping.getKey());
-                String current = String.join(DELIMITER, KeyVaultProperties.PREFIX, keyVault, mapping.getValue());
+            for(Map.Entry<Object, Object> mapping : keyvaultPropertySuffixMap.entrySet()) {
+                String legacy = createLegacyPropertyName(keyVault, (String) mapping.getKey());
+                String current = createCurrentPropertyName(keyVault, (String) mapping.getValue());
                 legacyToCurrentMap.put(legacy, current);
             }
         }
@@ -118,23 +87,47 @@ public class PreLegacyPropertyEnvironmentPostProcessor extends AbstractLegacyPro
     }
 
     /**
+     * For the use case of multiple Key Vaults, create the legacy Key Vault property name for a specific Key Vault.
+     *
+     * @param keyVaultName The name of a Key Vault, which is used as the property name's infix.
+     * @param legacyPropertySuffix Suffix of a legacy Key Vault property name, which is loaded from the keys of
+     *                             legacy-keyvault-property-suffix-mapping.properties
+     * @return A legacy Key Vault property name with a Key Vault name as infix.
+     */
+    private String createLegacyPropertyName(String keyVaultName, String legacyPropertySuffix) {
+        return String.join(DELIMITER, KEYVAULT_LEGACY_PREFIX, keyVaultName, legacyPropertySuffix);
+    }
+
+    /**
+     * For the use case of multiple Key Vaults, create the current Key Vault property name for a specific Key Vault.
+     *
+     * @param keyVaultName The name of a Key Vault, which is used as the property name's infix.
+     * @param currentPropertySuffix Suffix of a current Key Vault property name, which is loaded from the values of
+     *                             legacy-keyvault-property-suffix-mapping.properties
+     * @return A current Key Vault property name with a Key Vault name as infix.
+     */
+    private String createCurrentPropertyName(String keyVaultName, String currentPropertySuffix) {
+        return String.join(DELIMITER, KeyVaultProperties.PREFIX, keyVaultName, currentPropertySuffix);
+    }
+
+    /**
      * When only legacy properties are detected from all property sources, convert legacy properties to the current,
      * and create a new {@link Properties} to store all of the converted current properties.
-     * @param legacyToCurrentMap A map contains a map of all legacy properties and associated current properties.
+     * @param legacyToCurrentMap A {@link Properties} contains a map of all legacy properties and associated current properties.
      * @param environment The application environment to get and set properties.
      * @return A {@link Properties} to store mapped current properties
      */
     @Override
-    protected Properties mapLegacyPropertyToCurrent(Map<String, String> legacyToCurrentMap,
+    protected Properties mapLegacyPropertyToCurrent(Properties legacyToCurrentMap,
                                                     ConfigurableEnvironment environment) {
         Properties properties = new Properties();
-        for (Map.Entry<String, String> entry : legacyToCurrentMap.entrySet()) {
-            String legacyPropertyName = entry.getKey();
+        for (Map.Entry<Object, Object> entry : legacyToCurrentMap.entrySet()) {
+            String legacyPropertyName = (String) entry.getKey();
             Object legacyPropertyValue = getPropertyValue(legacyPropertyName, environment);
-            if (null != legacyPropertyValue) {
-                String currentPropertyName = entry.getValue();
-                Object currentPropertyValue = getPropertyValue(currentPropertyName, environment);
-                if (null == currentPropertyValue) {
+            if (legacyPropertyValue != null) {
+                String currentPropertyName = (String) entry.getValue();
+                Object currentPropertyValue = getPropertyValue(currentPropertyName, environment);;
+                if (currentPropertyValue == null) {
                     properties.put(currentPropertyName, legacyPropertyValue);
                     LOGGER.warn("Deprecated property {} detected! Use {} instead!", legacyPropertyName,
                         currentPropertyName);
