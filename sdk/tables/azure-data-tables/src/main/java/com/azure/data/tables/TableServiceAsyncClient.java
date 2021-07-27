@@ -624,7 +624,7 @@ public final class TableServiceAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Sets the properties of the account's Table service. Prints out the details of the
-     * {@link Response HTTP response}.</p></p>
+     * {@link Response HTTP response}.</p>
      * {@codesnippet com.azure.data.tables.tableServiceAsyncClient.setPropertiesWithResponse#TableServiceProperties}
      *
      * @param tableServiceProperties The {@link TableServiceProperties} to set.

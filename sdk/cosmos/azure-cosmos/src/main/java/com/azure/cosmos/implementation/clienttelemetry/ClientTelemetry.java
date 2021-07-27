@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.cosmos.implementation.clientTelemetry;
+package com.azure.cosmos.implementation.clienttelemetry;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
@@ -200,7 +200,8 @@ public class ClientTelemetry {
 
                         HttpRequest httpRequest = new HttpRequest(HttpMethod.POST, targetEndpoint,
                             targetEndpoint.getPort(), httpHeaders, fluxBytes);
-                        Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest);
+                        Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest,
+                            Duration.ofSeconds(Configs.getHttpResponseTimeoutInSeconds()));
                         return httpResponseMono.flatMap(response -> {
                             if (response.statusCode() != HttpConstants.StatusCodes.OK) {
                                 logger.error("Client telemetry request did not succeeded, status code {}",
