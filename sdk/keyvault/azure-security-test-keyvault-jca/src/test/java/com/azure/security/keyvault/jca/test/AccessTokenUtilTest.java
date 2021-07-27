@@ -27,8 +27,7 @@ public class AccessTokenUtilTest {
         String tenantId = System.getenv("AZURE_KEYVAULT_TENANT_ID");
         String clientId = System.getenv("AZURE_KEYVAULT_CLIENT_ID");
         String clientSecret = System.getenv("AZURE_KEYVAULT_CLIENT_SECRET");
-        AccessTokenUtil client = new AccessTokenUtil();
-        String result = client.getAccessToken(
+        String result = AccessTokenUtil.getAccessToken(
             "https://management.azure.com/",
             null,
             tenantId,
