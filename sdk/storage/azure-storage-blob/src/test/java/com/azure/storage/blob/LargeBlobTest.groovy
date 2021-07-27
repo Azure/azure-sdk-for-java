@@ -18,8 +18,6 @@ import spock.lang.Specification
 
 import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
-import java.util.concurrent.ConcurrentHashMap
-import java.util.concurrent.atomic.AtomicLong
 
 @ResourceLock("LargeBlobTest")
 class LargeBlobTest extends Specification {
@@ -36,12 +34,6 @@ class LargeBlobTest extends Specification {
     BlobClient blobClient
     BlobAsyncClient blobAsyncClient
     String blobName
-    List<Long> putBlockPayloadSizes = Collections.synchronizedList(new ArrayList<>())
-    AtomicLong blocksCount = new AtomicLong()
-    List<Long> putBlobPayloadSizes = Collections.synchronizedList(new ArrayList<>())
-    AtomicLong singleUploadCount = new AtomicLong()
-    ConcurrentHashMap<String, Boolean> retryTracker = new ConcurrentHashMap<>()
-    boolean collectSize = true
 
     def setupSpec() {
         azuriteFixture = new AzuriteFixture()
