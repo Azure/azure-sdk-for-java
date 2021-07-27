@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.ApiEntityReference;
@@ -16,43 +17,66 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Restore Point details. */
+@JsonFlatten
 @Fluent
-public final class RestorePointInner extends ProxyResource {
+public class RestorePointInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RestorePointInner.class);
+
+    /*
+     * List of disk resource ids that the customer wishes to exclude from the
+     * restore point. If no disks are specified, all disks will be included.
+     */
+    @JsonProperty(value = "properties.excludeDisks")
+    private List<ApiEntityReference> excludeDisks;
 
     /*
      * Gets the details of the VM captured at the time of the restore point
      * creation.
      */
-    @JsonProperty(value = "sourceMetadata", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.sourceMetadata", access = JsonProperty.Access.WRITE_ONLY)
     private RestorePointSourceMetadata sourceMetadata;
 
     /*
      * Gets the provisioning state of the restore point.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * Gets the consistency mode for the restore point. Please refer to
      * https://aka.ms/RestorePoints for more details.
      */
-    @JsonProperty(value = "consistencyMode", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.consistencyMode", access = JsonProperty.Access.WRITE_ONLY)
     private ConsistencyModeTypes consistencyMode;
 
     /*
      * Gets the provisioning details set by the server during Create restore
      * point operation.
      */
-    @JsonProperty(value = "provisioningDetails", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.provisioningDetails", access = JsonProperty.Access.WRITE_ONLY)
     private RestorePointProvisioningDetails provisioningDetails;
 
-    /*
-     * List of disk resource ids that the customer wishes to exclude from the
-     * restore point. If no disks are specified, all disks will be included.
+    /**
+     * Get the excludeDisks property: List of disk resource ids that the customer wishes to exclude from the restore
+     * point. If no disks are specified, all disks will be included.
+     *
+     * @return the excludeDisks value.
      */
-    @JsonProperty(value = "excludeDisks")
-    private List<ApiEntityReference> excludeDisks;
+    public List<ApiEntityReference> excludeDisks() {
+        return this.excludeDisks;
+    }
+
+    /**
+     * Set the excludeDisks property: List of disk resource ids that the customer wishes to exclude from the restore
+     * point. If no disks are specified, all disks will be included.
+     *
+     * @param excludeDisks the excludeDisks value to set.
+     * @return the RestorePointInner object itself.
+     */
+    public RestorePointInner withExcludeDisks(List<ApiEntityReference> excludeDisks) {
+        this.excludeDisks = excludeDisks;
+        return this;
+    }
 
     /**
      * Get the sourceMetadata property: Gets the details of the VM captured at the time of the restore point creation.
@@ -93,41 +117,19 @@ public final class RestorePointInner extends ProxyResource {
     }
 
     /**
-     * Get the excludeDisks property: List of disk resource ids that the customer wishes to exclude from the restore
-     * point. If no disks are specified, all disks will be included.
-     *
-     * @return the excludeDisks value.
-     */
-    public List<ApiEntityReference> excludeDisks() {
-        return this.excludeDisks;
-    }
-
-    /**
-     * Set the excludeDisks property: List of disk resource ids that the customer wishes to exclude from the restore
-     * point. If no disks are specified, all disks will be included.
-     *
-     * @param excludeDisks the excludeDisks value to set.
-     * @return the RestorePointInner object itself.
-     */
-    public RestorePointInner withExcludeDisks(List<ApiEntityReference> excludeDisks) {
-        this.excludeDisks = excludeDisks;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (excludeDisks() != null) {
+            excludeDisks().forEach(e -> e.validate());
+        }
         if (sourceMetadata() != null) {
             sourceMetadata().validate();
         }
         if (provisioningDetails() != null) {
             provisioningDetails().validate();
-        }
-        if (excludeDisks() != null) {
-            excludeDisks().forEach(e -> e.validate());
         }
     }
 }

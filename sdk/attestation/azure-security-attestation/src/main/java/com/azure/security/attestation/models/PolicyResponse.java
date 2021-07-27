@@ -42,5 +42,14 @@ public final class PolicyResponse {
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    public void validate() {}
+    public void validate() { }
+
+    /**
+     * Returns a public model type from an implementation model type.
+     * @param generated generated
+     * @return implementation type.
+     */
+    public static PolicyResponse fromGenerated(com.azure.security.attestation.implementation.models.PolicyResponse generated) {
+        return new PolicyResponse().setToken(generated.getToken());
+    }
 }
