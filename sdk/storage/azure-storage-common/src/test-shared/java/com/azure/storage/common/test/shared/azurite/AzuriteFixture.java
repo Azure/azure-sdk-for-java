@@ -16,7 +16,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Base64;
 import java.util.Comparator;
-import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -47,7 +46,7 @@ public class AzuriteFixture implements Closeable {
         try {
             Configuration configuration = Configuration.getGlobalConfiguration();
             String azuriteLocation = configuration.get(AZURITE_LOCATION_KEY);
-            File defaultPath = new File(Objects.requireNonNullElse(configuration.get("APPDATA"), ""), "npm");
+            File defaultPath = new File(configuration.get("APPDATA", ""), "npm");
 
             if (azuriteLocation == null || azuriteLocation.trim().isEmpty()) {
                 if (defaultPath.isDirectory()) {
