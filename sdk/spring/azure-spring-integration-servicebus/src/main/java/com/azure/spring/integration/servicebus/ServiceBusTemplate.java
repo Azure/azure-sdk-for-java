@@ -17,6 +17,7 @@ import org.springframework.messaging.Message;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 import static com.azure.spring.integration.core.api.CheckpointMode.MANUAL;
@@ -55,7 +56,7 @@ public class ServiceBusTemplate<T extends ServiceBusSenderFactory> implements Se
         Assert.hasText(destination, "destination can't be null or empty");
         ServiceBusMessage serviceBusMessage = messageConverter.fromMessage(message, ServiceBusMessage.class);
 
-        if (!StringUtils.hasText(serviceBusMessage.getPartitionKey())) {
+        if (Objects.nonNull(serviceBusMessage) && !StringUtils.hasText(serviceBusMessage.getPartitionKey())) {
             String partitionKey = getPartitionKey(partitionSupplier);
             serviceBusMessage.setPartitionKey(partitionKey);
         }
