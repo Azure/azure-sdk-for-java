@@ -54,7 +54,9 @@ steps:
       JobType: 'test'
       SDKType: ${{ parameters.SDKType }}
       ServiceDirectory: ${{ parameters.ServiceDirectory }}
-
+  - script: |
+      pip install lxml
+    displayName: 'pip install lxml'
   - task: PythonScript@0
     displayName: 'Generate directories variable for sparse checkout'
     inputs:

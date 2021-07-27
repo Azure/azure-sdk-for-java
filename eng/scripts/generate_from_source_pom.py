@@ -188,6 +188,7 @@ def add_project_to_dependency_and_module_mappings(file_path: str, project_depend
 
         dependency_version, is_beta_dependency = get_dependency_version(dependency)
         if is_beta_dependency:
+            print(module_path_mapping)
             beta_dependencies.append(module_path_mapping[dependency_identifier])
 
         if dependency_version != artifact_identifier_to_source_version[dependency_identifier] or is_beta_dependency:
