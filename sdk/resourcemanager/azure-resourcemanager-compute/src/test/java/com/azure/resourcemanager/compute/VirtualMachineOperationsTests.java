@@ -40,10 +40,12 @@ import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.CreatedResources;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
+import com.azure.resourcemanager.resources.models.GenericResource;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -54,6 +56,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 public class VirtualMachineOperationsTests extends ComputeManagementTest {
     private String rgName = "";
@@ -917,6 +920,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
     }
 
     @Test
+    @Disabled
     public void canCreateVirtualMachineWithDeleteOption() throws Exception {
         Region region = Region.US_WEST2;
 
@@ -954,7 +958,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                 .withSizeInGB(10))
             .withDataDiskDefaultDeleteOptions(DeleteOptions.DELETE)
             .withOSDiskDeleteOptions(DeleteOptions.DELETE)
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .withSize(VirtualMachineSizeTypes.STANDARD_A1_V2)
             .withPrimaryNetworkInterfaceDeleteOptions(DeleteOptions.DELETE)
             .create();
 
@@ -963,7 +967,9 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         computeManager.virtualMachines().deleteById(vm1.id());
 
         // verify that nic, public ip, os/data disk is deleted
-        // TODO
+        List<GenericResource> resources = computeManager.resourceManager().genericResources().listByResourceGroup(rgName).stream().collect(Collectors.toList());
+        // only Network remains in the resource group, others is deleted together with the virtual machine resource
+        Assertions.assertEquals(1, resources.size());
     }
 
     private CreatablesInfo prepareCreatableVirtualMachines(

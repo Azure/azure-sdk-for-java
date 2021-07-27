@@ -138,6 +138,8 @@ class VirtualMachineImpl
     private String creatableAvailabilitySetKey;
     // unique key of a creatable network interface that needs to be used as virtual machine's primary network interface
     private String creatablePrimaryNetworkInterfaceKey;
+    //
+    private DeleteOptions primaryNetworkInterfaceDeleteOptions;
     // unique key of a creatable network interfaces that needs to be used as virtual machine's secondary network
     // interface
     private List<String> creatableSecondaryNetworkInterfaceKeys;
@@ -1968,7 +1970,7 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachineImpl withPrimaryNetworkInterfaceDeleteOptions(DeleteOptions deleteOptions) {
-        // TODO
+        this.primaryNetworkInterfaceDeleteOptions = deleteOptions;
         return this;
     }
 
@@ -2156,6 +2158,9 @@ class VirtualMachineImpl
                 NetworkInterfaceReference nicReference = new NetworkInterfaceReference();
                 nicReference.withPrimary(true);
                 nicReference.withId(primaryNetworkInterface.id());
+                if (this.primaryNetworkInterfaceDeleteOptions != null) {
+                    nicReference.withDeleteOption(this.primaryNetworkInterfaceDeleteOptions);
+                }
                 this.innerModel().networkProfile().networkInterfaces().add(nicReference);
             }
         }
@@ -2604,6 +2609,9 @@ class VirtualMachineImpl
                 if (dataDisk.caching() == null) {
                     dataDisk.withCaching(getDefaultCachingType());
                 }
+                if (dataDisk.deleteOption() == null) {
+                    dataDisk.withDeleteOption(getDeleteOptions());
+                }
                 // Don't set default storage account type for the attachable managed disks, it is already
                 // defined in the managed disk and not allowed to change.
                 dataDisk.withName(null);
@@ -2626,6 +2634,9 @@ class VirtualMachineImpl
                 }
                 if (dataDisk.managedDisk().storageAccountType() == null) {
                     dataDisk.managedDisk().withStorageAccountType(getDefaultStorageAccountType());
+                }
+                if (dataDisk.deleteOption() == null) {
+                    dataDisk.withDeleteOption(getDeleteOptions());
                 }
                 dataDisk.withName(null);
                 dataDisks.add(dataDisk);
