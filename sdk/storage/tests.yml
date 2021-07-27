@@ -89,18 +89,18 @@ stages:
             displayName: 'Publish test logs'
             artifact: test-log-$(System.StageName)-$(System.JobName)-$(System.JobAttempt)
             condition: always()
-      CloudConfig:
-          Public:
-              SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
-          Canary:
-              SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
-              Location: 'centraluseuap'
-          UsGov:
-              SubscriptionConfiguration: $(sub-config-gov-test-resources)
-              Location: 'usdodeast'
-          China:
-              SubscriptionConfiguration: $(sub-config-cn-test-resources)
-              Location: 'chinanorth2'
+#      CloudConfig:
+#          Public:
+#              SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
+#          Canary:
+#              SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
+#              Location: 'centraluseuap'
+#          UsGov:
+#              SubscriptionConfiguration: $(sub-config-gov-test-resources)
+#              Location: 'usdodeast'
+#          China:
+#              SubscriptionConfiguration: $(sub-config-cn-test-resources)
+#              Location: 'chinanorth2'
       EnvVars:
         AZURE_TENANT_ID: $(aad-azure-sdk-test-tenant-id)
         AZURE_CLIENT_ID: $(aad-azure-sdk-test-client-id)
