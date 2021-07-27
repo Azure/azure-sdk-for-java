@@ -49,14 +49,6 @@
                         <configuration>
                             <createSourcesJar>true</createSourcesJar>
                             <shadeSourcesContent>true</shadeSourcesContent>
-			                      <filters>
-                                <filter>
-                                    <artifact>com.azure:azure-security-keyvault-jca</artifact>
-                                    <excludes>
-                                        <exclude>module-info.java</exclude>
-                                    </excludes>
-                                </filter>
-                            </filters>
                             <relocations>
                                 <relocation>
                                     <pattern>com.fasterxml.jackson</pattern>
@@ -99,7 +91,7 @@
               <version>1.0.0.RC1</version>  <!-- {x-version-update;org.moditect:moditect-maven-plugin;external_dependency} -->
               <executions>
                 <execution>
-                  <id>add-module-infos</id>
+                  <id>add-module-info</id>
                   <phase>package</phase>
                   <goals>
                     <goal>add-module-info</goal>
@@ -108,7 +100,7 @@
                     <overwriteExistingFiles>true</overwriteExistingFiles>
                     <module>
                       <moduleInfoFile>
-                        src/main/module-info.java
+                        src/main/resources/module-info.java
                       </moduleInfoFile>
                     </module>
                   </configuration>
