@@ -3,7 +3,7 @@
 package com.azure.security.keyvault.jca.test;
 
 import com.azure.security.keyvault.jca.KeyVaultJcaProvider;
-import com.azure.security.keyvault.jca.model.CertificateBundle;
+import com.azure.security.keyvault.jca.implementation.model.CertificateBundle;
 
 public class TestModularization {
     /**

@@ -11,5 +11,5 @@ module com.azure.security.keyvault.jca {
     requires com.fasterxml.jackson.databind;
 
     exports com.azure.security.keyvault.jca;
-    exports com.azure.security.keyvault.jca.model;
+    exports com.azure.security.keyvault.jca.implementation.model;
 }
