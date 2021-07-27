@@ -63,7 +63,7 @@ public class PostLegacyPropertyProcessorTest {
         when(keyVaultOperationOne.getProperty("azure.cosmos.uri")).thenReturn("one");
         when(keyVaultOperationOne.getProperty("spring.cloud.azure.cosmos.uri")).thenReturn(null);
 
-        List<PropertySource> sourceList = new ArrayList<PropertySource>();
+        List<PropertySource<?>> sourceList = new ArrayList<>();
         buildNonKvPropertySource(sourceList);
         buildKvPropertySource(sourceList);
 
@@ -83,7 +83,7 @@ public class PostLegacyPropertyProcessorTest {
         when(keyVaultOperationOne.getProperty("azure.cosmos.uri")).thenReturn("one");
         when(keyVaultOperationOne.getProperty("spring.cloud.azure.cosmos.uri")).thenReturn("two");
 
-        List<PropertySource> sourceList = new ArrayList<PropertySource>();
+        List<PropertySource<?>> sourceList = new ArrayList<PropertySource<?>>();
         buildNonKvPropertySource(sourceList);
         buildKvPropertySource(sourceList);
 
@@ -94,7 +94,7 @@ public class PostLegacyPropertyProcessorTest {
 
     @Test
     public void testNoKvSources() {
-        List<PropertySource> sourceList = new ArrayList<PropertySource>();
+        List<PropertySource<?>> sourceList = new ArrayList<PropertySource<?>>();
         buildNonKvPropertySource(sourceList);
 
         ConfigurableEnvironment environment = getEnvironment(sourceList, processor);
@@ -107,7 +107,7 @@ public class PostLegacyPropertyProcessorTest {
         when(keyVaultOperationTwo.getProperty("azure.cosmos.uri")).thenReturn("two");
         when(keyVaultOperationTwo.getProperty("spring.cloud.azure.cosmos.uri")).thenReturn("two");
 
-        List<PropertySource> sourceList = new ArrayList<PropertySource>();
+        List<PropertySource<?>> sourceList = new ArrayList<PropertySource<?>>();
         buildNonKvPropertySource(sourceList);
         buildKvPropertySource(sourceList);
 
@@ -124,7 +124,7 @@ public class PostLegacyPropertyProcessorTest {
         when(keyVaultOperationTwo.getProperty("azure.cosmos.uri")).thenReturn("two");
         when(keyVaultOperationTwo.getProperty("spring.cloud.azure.cosmos.uri")).thenReturn("four");
 
-        List<PropertySource> sourceList = new ArrayList<PropertySource>();
+        List<PropertySource<?>> sourceList = new ArrayList<PropertySource<?>>();
         buildNonKvPropertySource(sourceList);
         buildKvPropertySource(sourceList);
 
@@ -133,7 +133,7 @@ public class PostLegacyPropertyProcessorTest {
         assertEquals("three", environment.getProperty("spring.cloud.azure.cosmos.uri"));
     }
 
-    private List<PropertySource> buildNonKvPropertySource(List<PropertySource> sourceList) {
+    private List<PropertySource<?>> buildNonKvPropertySource(List<PropertySource<?>> sourceList) {
         Properties test = new Properties();
         test.setProperty("spring.cloud.azure.keyvault.order", "first, second");
         test.setProperty("azure.cosmos.key", "fake");
@@ -141,7 +141,7 @@ public class PostLegacyPropertyProcessorTest {
         return sourceList;
     }
 
-    private List<PropertySource> buildKvPropertySource(List<PropertySource> sourceList) {
+    private List<PropertySource<?>> buildKvPropertySource(List<PropertySource<?>> sourceList) {
         KeyVaultPropertySource kvSourceOne = new KeyVaultPropertySource("first", keyVaultOperationOne);
 
         KeyVaultPropertySource kvSourceTwo = new KeyVaultPropertySource("second", keyVaultOperationTwo);
@@ -151,7 +151,7 @@ public class PostLegacyPropertyProcessorTest {
         return sourceList;
     }
 
-    private ConfigurableEnvironment getEnvironment(List<PropertySource> sourceList,
+    private ConfigurableEnvironment getEnvironment(List<PropertySource<?>> sourceList,
                                                    EnvironmentPostProcessor environmentPostProcessor) {
         SpringApplication springApplication = getSpringApplication(environmentPostProcessor.getClass());
         ConfigurableApplicationContext context = springApplication.run();

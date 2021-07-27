@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.spring.autoconfigure.unity;
 
 import com.azure.spring.keyvault.KeyVaultEnvironmentPostProcessor;
@@ -23,7 +25,7 @@ import java.util.Properties;
 /**
  * Convert legacy properties to the current and set into environment before {@link KeyVaultEnvironmentPostProcessor}.
  */
-public class PreLegacyPropertyEnvironmentPostProcessor extends AbstractLegacyPropertyEnvironmentPostProcessor{
+public class PreLegacyPropertyEnvironmentPostProcessor extends AbstractLegacyPropertyEnvironmentPostProcessor {
 
     public static final int DEFAULT_ORDER = ConfigFileApplicationListener.DEFAULT_ORDER + 1;
     private static final Map<String, String> KEYVAULT_PROPERTY_SUFFIX_MAP = new HashMap<String, String>();
@@ -31,7 +33,24 @@ public class PreLegacyPropertyEnvironmentPostProcessor extends AbstractLegacyPro
     private static final String KEYVAULT_LEGACY_PREFIX = "azure.keyvault";
     public static final String DELIMITER = ".";
 
-    private int order = DEFAULT_ORDER;
+    static {
+        // Load the mapping relationship of Key Vault legacy properties and associated current properties from
+        // classpath, this is used for handling multiple key vault cases.
+        try (
+            InputStream inputStream = AbstractLegacyPropertyEnvironmentPostProcessor.class
+                .getClassLoader()
+                .getResourceAsStream("legacy-keyvault-property-suffix-mapping.properties");
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"))
+        ) {
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                KEYVAULT_PROPERTY_SUFFIX_MAP.put(line.split("=")[0], line.split("=")[1]);
+            }
+        } catch (IOException exception) {
+            throw new UncheckedIOException("Fail to load legacy-keyvault-property-suffix-mapping.properties",
+                exception);
+        }
+    }
 
     static {
         // Load the mapping relationship of Key Vault legacy properties and associated current properties from
@@ -54,7 +73,7 @@ public class PreLegacyPropertyEnvironmentPostProcessor extends AbstractLegacyPro
 
     @Override
     public int getOrder() {
-        return order;
+        return DEFAULT_ORDER;
     }
 
     /**
@@ -66,24 +85,36 @@ public class PreLegacyPropertyEnvironmentPostProcessor extends AbstractLegacyPro
      */
     @Override
     protected Map<String, String> getMultipleKeyVaultsPropertyMap(ConfigurableEnvironment environment) {
+        String keyVaultNames = getMultipleKeyVaultNames(environment);
+        if (null == keyVaultNames) {
+            return null;
+        }
+
         Map<String, String> legacyToCurrentMap = new HashMap<String, String>();
-
-        String keyVaultNames = new StringBuilder()
-            .append((String) getPropertyValue(KeyVaultProperties.getPropertyName(KeyVaultProperties.Property.ORDER),
-                environment))
-            .append(",")
-            .append((String) getPropertyValue(KEYVAULT_LEGACY_PREFIX + ".order", environment))
-            .toString();
-
         for (String keyVault : keyVaultNames.split(",")) {
             keyVault = keyVault.trim();
-            for(Map.Entry<String, String> mapping : KEYVAULT_PROPERTY_SUFFIX_MAP.entrySet()) {
+            for (Map.Entry<String, String> mapping : KEYVAULT_PROPERTY_SUFFIX_MAP.entrySet()) {
                 String legacy = String.join(DELIMITER, KEYVAULT_LEGACY_PREFIX, keyVault, mapping.getKey());
                 String current = String.join(DELIMITER, KeyVaultProperties.PREFIX, keyVault, mapping.getValue());
                 legacyToCurrentMap.put(legacy, current);
             }
         }
         return legacyToCurrentMap;
+    }
+
+    /**
+     * Load all possible Key Vault names from property "spring.cloud.azure.keyvault.order" if existed. Otherwise load
+     * from legacy property "azure.keyvault.order".
+     *
+     * @param environment The application environment to load multiple Key Vault names from.
+     * @return A string with all Key Vaults names concatenated by commas, or null if no Key Vault names specified.
+     */
+    private String getMultipleKeyVaultNames(ConfigurableEnvironment environment) {
+        if (getPropertyValue(KeyVaultProperties.PREFIX + ".order", environment) != null) {
+            return (String) getPropertyValue(KeyVaultProperties.PREFIX + ".order", environment);
+        } else {
+            return (String) getPropertyValue(KEYVAULT_LEGACY_PREFIX + ".order", environment);
+        }
     }
 
     /**
@@ -94,14 +125,15 @@ public class PreLegacyPropertyEnvironmentPostProcessor extends AbstractLegacyPro
      * @return A {@link Properties} to store mapped current properties
      */
     @Override
-    protected Properties mapLegacyPropertyToCurrent(Map<String, String> legacyToCurrentMap, ConfigurableEnvironment environment) {
+    protected Properties mapLegacyPropertyToCurrent(Map<String, String> legacyToCurrentMap,
+                                                    ConfigurableEnvironment environment) {
         Properties properties = new Properties();
         for (Map.Entry<String, String> entry : legacyToCurrentMap.entrySet()) {
             String legacyPropertyName = entry.getKey();
             Object legacyPropertyValue = getPropertyValue(legacyPropertyName, environment);
             if (null != legacyPropertyValue) {
                 String currentPropertyName = entry.getValue();
-                Object currentPropertyValue = getPropertyValue(currentPropertyName, environment);;
+                Object currentPropertyValue = getPropertyValue(currentPropertyName, environment);
                 if (null == currentPropertyValue) {
                     properties.put(currentPropertyName, legacyPropertyValue);
                     LOGGER.warn("Deprecated property {} detected! Use {} instead!", legacyPropertyName,
@@ -118,12 +150,18 @@ public class PreLegacyPropertyEnvironmentPostProcessor extends AbstractLegacyPro
      * @param environment Environment to get value from.
      * @return Property value.
      */
-    private Object getPropertyValue(String propertyName, ConfigurableEnvironment environment) {
+    protected Object getPropertyValue(String propertyName, ConfigurableEnvironment environment) {
         return Binder.get(environment)
                      .bind(propertyName, Bindable.of(Object.class))
                      .orElse(null);
     }
 
+    /**
+     * Add the mapped current properties to application environment, of which the precedence does not count.
+     *
+     * @param environment The application environment to set properties.
+     * @param properties The converted current properties to be configured.
+     */
     @Override
     protected void setConvertedPropertyToEnvironment(ConfigurableEnvironment environment, Properties properties) {
         // This post-processor is called multiple times but sets the properties only once.

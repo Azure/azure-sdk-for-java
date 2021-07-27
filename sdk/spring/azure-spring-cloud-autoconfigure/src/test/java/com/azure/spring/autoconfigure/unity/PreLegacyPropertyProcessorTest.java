@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.autoconfigure.unity;
 
+import com.azure.cosmos.ConnectionMode;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
@@ -42,6 +43,24 @@ public class PreLegacyPropertyProcessorTest {
     }
 
     @Test
+    public void testRelaxBinding() {
+        Properties properties = new Properties();
+        properties.setProperty("azure.storage.accountKey", "fakekey");
+        properties.put("azure.cosmos.connection-mode", ConnectionMode.DIRECT);
+        properties.put("azure.cosmos.allow_telemetry", false);
+        properties.put("azure.keyvault.REFRESH_INTERVAL", 1000L);
+        PropertiesPropertySource propertySource = new PropertiesPropertySource("test", properties);
+        ConfigurableEnvironment environment = getEnvironment(propertySource, processor);
+
+        assertTrue(environment.getPropertySources().contains(processor.getClass().getName()));
+        assertEquals("fakekey", environment.getProperty("spring.cloud.azure.storage.account-key"));
+        assertEquals(ConnectionMode.DIRECT, environment.getProperty("spring.cloud.azure.cosmos.connection-mode", ConnectionMode.class));
+        assertEquals(false, environment.getProperty("spring.cloud.azure.cosmos.allow-telemetry", Boolean.class));
+        assertEquals(1000L, environment.getProperty("spring.cloud.azure.keyvault.refresh-interval", Long.class));
+
+    }
+
+    @Test
     public void testMultipleKeyVaults() {
         Properties properties = new Properties();
         properties.setProperty("azure.keyvault.order", "one, two");
@@ -56,8 +75,8 @@ public class PreLegacyPropertyProcessorTest {
         ConfigurableEnvironment environment = getEnvironment(propertySource, processor);
 
         assertTrue(environment.getPropertySources().contains(processor.getClass().getName()));
-        assertEquals("uri", environment.getProperty("spring.cloud.azure.keyvault.one.uri"));
-        assertEquals("id", environment.getProperty("spring.cloud.azure.keyvault.two.credential.client-id"));
+        assertNull(environment.getProperty("spring.cloud.azure.keyvault.one.uri"));
+        assertNull(environment.getProperty("spring.cloud.azure.keyvault.two.credential.client-id"));
         assertEquals("key", environment.getProperty("spring.cloud.azure.keyvault.three.credential.client-secret"));
         assertEquals("host", environment.getProperty("spring.cloud.azure.keyvault.four.environment.authority-host"));
         assertNull(environment.getProperty("spring.cloud.azure.keyvault.five.enabled"));
