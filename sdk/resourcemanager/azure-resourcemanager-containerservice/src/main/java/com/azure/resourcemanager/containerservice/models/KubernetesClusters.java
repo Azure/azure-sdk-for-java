@@ -3,6 +3,8 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.containerservice.ContainerServiceManager;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
@@ -48,6 +50,26 @@ public interface KubernetesClusters
      *     region
      */
     Mono<Set<String>> listKubernetesVersionsAsync(Region region);
+
+    /**
+     * Returns the list of available orchestrators for the given Azure region.
+     *
+     * @param region the Azure region to query into
+     * @param resourceTypes the resource type of container service
+     * @return a list of orchestrators which can be used when creating a service in this region
+     */
+    PagedIterable<OrchestratorVersionProfile> listOrchestrators(Region region,
+                                                                ContainerServiceResourceTypes resourceTypes);
+
+    /**
+     * Returns the list of available orchestrators for the given Azure region.
+     *
+     * @param region the Azure region to query into
+     * @param resourceTypes the resource type of container service
+     * @return a list of orchestrators which can be used when creating a service in this region
+     */
+    PagedFlux<OrchestratorVersionProfile> listOrchestratorsAsync(Region region,
+                                                                 ContainerServiceResourceTypes resourceTypes);
 
     /**
      * Returns the admin Kube.config content which can be used with a Kubernetes client.

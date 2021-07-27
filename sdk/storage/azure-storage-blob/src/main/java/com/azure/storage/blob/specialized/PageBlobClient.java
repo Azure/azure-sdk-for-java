@@ -81,7 +81,7 @@ public final class PageBlobClient extends BlobClientBase {
      */
     @Override
     public PageBlobClient getEncryptionScopeClient(String encryptionScope) {
-        return new PageBlobClient(pageBlobAsyncClient.getEncryptionScopeClient(encryptionScope));
+        return new PageBlobClient(pageBlobAsyncClient.getEncryptionScopeAsyncClient(encryptionScope));
     }
 
     /**
@@ -93,7 +93,7 @@ public final class PageBlobClient extends BlobClientBase {
      */
     @Override
     public PageBlobClient getCustomerProvidedKeyClient(CustomerProvidedKey customerProvidedKey) {
-        return new PageBlobClient(pageBlobAsyncClient.getCustomerProvidedKeyClient(customerProvidedKey));
+        return new PageBlobClient(pageBlobAsyncClient.getCustomerProvidedKeyAsyncClient(customerProvidedKey));
     }
 
     /**

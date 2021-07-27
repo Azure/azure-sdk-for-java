@@ -10,6 +10,7 @@ import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.AdditionalCapabilities;
 import com.azure.resourcemanager.compute.models.BillingProfile;
+import com.azure.resourcemanager.compute.models.CapacityReservationProfile;
 import com.azure.resourcemanager.compute.models.DiagnosticsProfile;
 import com.azure.resourcemanager.compute.models.HardwareProfile;
 import com.azure.resourcemanager.compute.models.NetworkProfile;
@@ -254,6 +255,13 @@ public class VirtualMachineUpdateInner extends UpdateResource {
      */
     @JsonProperty(value = "properties.userData")
     private String userData;
+
+    /*
+     * Specifies information about the capacity reservation that is used to
+     * allocate virtual machine. <br><br>Minimum api-version: 2021-04-01.
+     */
+    @JsonProperty(value = "properties.capacityReservation")
+    private CapacityReservationProfile capacityReservation;
 
     /**
      * Get the plan property: Specifies information about the marketplace image used to create the virtual machine. This
@@ -837,6 +845,28 @@ public class VirtualMachineUpdateInner extends UpdateResource {
         return this;
     }
 
+    /**
+     * Get the capacityReservation property: Specifies information about the capacity reservation that is used to
+     * allocate virtual machine. &lt;br&gt;&lt;br&gt;Minimum api-version: 2021-04-01.
+     *
+     * @return the capacityReservation value.
+     */
+    public CapacityReservationProfile capacityReservation() {
+        return this.capacityReservation;
+    }
+
+    /**
+     * Set the capacityReservation property: Specifies information about the capacity reservation that is used to
+     * allocate virtual machine. &lt;br&gt;&lt;br&gt;Minimum api-version: 2021-04-01.
+     *
+     * @param capacityReservation the capacityReservation value to set.
+     * @return the VirtualMachineUpdateInner object itself.
+     */
+    public VirtualMachineUpdateInner withCapacityReservation(CapacityReservationProfile capacityReservation) {
+        this.capacityReservation = capacityReservation;
+        return this;
+    }
+
     /** {@inheritDoc} */
     @Override
     public VirtualMachineUpdateInner withTags(Map<String, String> tags) {
@@ -887,6 +917,9 @@ public class VirtualMachineUpdateInner extends UpdateResource {
         }
         if (scheduledEventsProfile() != null) {
             scheduledEventsProfile().validate();
+        }
+        if (capacityReservation() != null) {
+            capacityReservation().validate();
         }
     }
 }

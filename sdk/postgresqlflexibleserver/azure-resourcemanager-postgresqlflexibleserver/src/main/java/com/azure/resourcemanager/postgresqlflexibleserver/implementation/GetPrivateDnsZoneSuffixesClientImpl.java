@@ -55,7 +55,7 @@ public final class GetPrivateDnsZoneSuffixesClientImpl implements GetPrivateDnsZ
     @ServiceInterface(name = "PostgreSqlManagement")
     private interface GetPrivateDnsZoneSuffixesService {
         @Headers({"Content-Type: application/json"})
-        @Post("/providers/Microsoft.DBForPostgreSql/getPrivateDnsZoneSuffix")
+        @Post("/providers/Microsoft.DBforPostgreSQL/getPrivateDnsZoneSuffix")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<String>> execute(
